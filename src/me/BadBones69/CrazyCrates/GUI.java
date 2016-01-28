@@ -67,6 +67,7 @@ public class GUI implements Listener{
 									}
 									Crate.put(player, crate);
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("QuadCrate")){
+										Api.Key.put(player, "VirtualKey");
 										QCC.startBuild(player, player.getLocation(), Material.CHEST);
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CSGO")){

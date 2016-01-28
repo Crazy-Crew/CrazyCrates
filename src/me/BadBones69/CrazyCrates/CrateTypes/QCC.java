@@ -399,14 +399,18 @@ public class QCC implements Listener{ // Quad Crate Control.
 										public void run() {
 											for(Location loc : Rest.get(player)){
 												HashMap<Location, BlockState> locs = crates.get(player);
-												for(Location loc2 : chests.get(player)){
-													if(locs.get(loc)!=null){
-														loc2.getBlock().setType(Material.AIR);
+												if(chests.get(player)!=null){
+													for(Location loc2 : chests.get(player)){
+														if(locs.get(loc)!=null){
+															loc2.getBlock().setType(Material.AIR);
+														}
 													}
 												}
 											}
-											for(Entity h : Rewards.get(player)){
-												h.remove();
+											if(Rewards.get(player)!=null){
+												for(Entity h : Rewards.get(player)){
+													h.remove();
+												}
 											}
 											Rewards.remove(player);
 											player.getWorld().playSound(player.getLocation().clone(), Sound.STEP_STONE, 1, 1);
