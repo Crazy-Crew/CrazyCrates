@@ -39,6 +39,10 @@ public class CC implements Listener{ //Crate Control
 					}
 				}
 			}
+			if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
+				Main.settings.getLocations().set("Locations.Clear", null);
+				Main.settings.saveLocations();
+			}
 			for(String location : Main.settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
 				String Crate = Main.settings.getLocations().getString("Locations."+location+".Crate");
 				World w = Bukkit.getWorld(Main.settings.getLocations().getString("Locations."+location+".World"));

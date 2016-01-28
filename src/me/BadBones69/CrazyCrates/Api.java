@@ -277,6 +277,10 @@ public class Api{
 		Main.settings.saveData();
 	}
 	public static void addKeys(int Amount, Player player, String crate, String Type){
+		if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
+			Main.settings.getLocations().set("Locations.Clear", null);
+			Main.settings.saveLocations();
+		}
 		if(Type.equals("Virtual")){
 			String uuid = player.getUniqueId().toString();
 			int keys = getKeys(player, crate);

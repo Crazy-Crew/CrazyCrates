@@ -93,6 +93,10 @@ public class Main extends JavaPlugin{
 					sender.sendMessage(Api.color("&e&lAll Crate Locations:"));
 					sender.sendMessage(Api.color("&c[Locations Name]&8, &c[Crate]&8, &c[World]&8, &c[X]&8, &c[Y]&8, &c[Z]"));
 					int line = 1;
+					if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
+						Main.settings.getLocations().set("Locations.Clear", null);
+						Main.settings.saveLocations();
+					}
 					for(String i : settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
 						String crate = settings.getLocations().getString("Locations." + i + ".Crate");
 						String W = settings.getLocations().getString("Locations." + i + ".World");
@@ -111,6 +115,10 @@ public class Main extends JavaPlugin{
 				if(args[0].equalsIgnoreCase("TP")){// /CC TP <Location>
 					if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
 					String Loc = args[1];
+					if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
+						Main.settings.getLocations().set("Locations.Clear", null);
+						Main.settings.saveLocations();
+					}
 					for(String name : settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
 						if(name.equalsIgnoreCase(Loc)){
 							World W = Bukkit.getServer().getWorld(settings.getLocations().getString("Locations." + name + ".World"));
@@ -132,6 +140,10 @@ public class Main extends JavaPlugin{
 					if(settings.getLocations().getConfigurationSection("Locations") == null){
 						settings.getLocations().set("Locations.clear", null);
 						settings.saveLocations();
+					}
+					if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
+						Main.settings.getLocations().set("Locations.Clear", null);
+						Main.settings.saveLocations();
 					}
 					for(String name : settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
 						if(name.equalsIgnoreCase(LN)){
@@ -158,6 +170,10 @@ public class Main extends JavaPlugin{
 								sender.sendMessage(Api.color(Api.getPrefix()+"&cThere is no Location called &6"+LN+"&c."));
 								return true;
 							}
+							if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
+								Main.settings.getLocations().set("Locations.Clear", null);
+								Main.settings.saveLocations();
+							}
 							for(String name : settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
 								if(name.equalsIgnoreCase(LN)){
 									settings.getLocations().set("Locations."+name+".Crate", crate);
@@ -183,6 +199,10 @@ public class Main extends JavaPlugin{
 							if(settings.getLocations().getConfigurationSection("Locations") == null){
 								settings.getLocations().set("Locations.clear", null);
 								settings.saveLocations();
+							}
+							if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
+								Main.settings.getLocations().set("Locations.Clear", null);
+								Main.settings.saveLocations();
 							}
 							for(String name : settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
 								if(name.equalsIgnoreCase(LN)){
