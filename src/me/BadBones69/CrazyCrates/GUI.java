@@ -70,6 +70,7 @@ public class GUI implements Listener{
 										QCC.startBuild(player, player.getLocation(), Material.CHEST);
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CSGO")){
+										Api.Key.put(player, "VirtualKey");
 										CSGO.openCSGO(player);
 										if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){
 											String msg = Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.BroadCast"));
@@ -79,7 +80,6 @@ public class GUI implements Listener{
 											msg = msg.replaceAll("%player%", player.getName());
 											Bukkit.broadcastMessage(msg);
 										}
-										Api.Key.put(player, "VirtualKey");
 									}
 									return;
 								}
