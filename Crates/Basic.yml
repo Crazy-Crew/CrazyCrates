@@ -1,0 +1,43 @@
+Crate:
+  CrateType: QuadCrate #Type of crate (CSGO/QuadCrate).
+  StartingKeys: 1000 #Starting amount of keys when the player 1st joins.
+  Slot: 10 #Slot the item is in the GUI.
+  OpeningBroadCast: true #Enables/Disables the Broadcasts message when they open a crate.
+  BroadCast: '%Prefix%&6&l%Player% &7is opening a &7&lBasic Chest&7.' #Message that is broadcasted when opening the crate.
+  Item: '54' #Item the crate is in the GUI
+  Name: '&7&lBasic Chest' #Name of the item in the GUI.
+  Lore: 
+    - '&7This crate contains strange objects.' 
+    - '&7You have &6%Keys% keys &7to open this crate with.' #The lore of the item in the GUI.
+  Prizes: #All the prizes that can be gotten in the Crate.
+    1:
+      DisplayName: '&7&lBasic Grass' #Name of the item shown by the crate.
+      DisplayItem: '2' #Item that is shown by the crate.
+      Chance: 40 #Chance of that item getting picked.
+      Firework: false #Firework when it is won.
+      #Items that the player wins if this prize is picked. (If you wish not to give an Item in the prize just delete the Items Section)
+      #Please use these to make the item.
+      #Item: to decide the kind of item it is.
+      #Amount: the amount of that item they get.
+      #Name: a custom name for that item (ColorCode dose work).
+      #Lore: a custom lore for the item (ColorCode does work) and to make a new line in the lore use a , to split the lines.
+      Items:
+        - 'Item:2, Amount:32, Name:&7&lBasic Grass'
+      #Commands are the commands that are run when this prize is won. (If you wish not to use a CMD in the prize just delete the Commands Section)
+      #You can use %Player% to get the player that won the prize.
+      Commands:
+        - 'broadcast &6&l%Player% &7has just won some Basic Grass.'
+    2:
+      DisplayName: '&b&lCheap Helmet'
+      DisplayItem: '314'
+      Chance: 60
+      Firework: false
+      Items:
+        - 'Item:314, Amount:1, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
+    3:
+      DisplayName: '&e&l$1,000'
+      DisplayItem: '175'
+      Chance: 20
+      Firework: true
+      Commands:
+        - 'eco give %Player% 1000'

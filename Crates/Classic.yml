@@ -1,0 +1,33 @@
+Crate:
+  CrateType: QuadCrate
+  StartingKeys: 1000
+  Slot: 12
+  OpeningBroadCast: true
+  BroadCast: '%Prefix%&6&l%Player% &7is opening a &e&lClassic Chest&7.'
+  Item: '54'
+  Name: '&e&lClassic Chest'
+  Lore:
+    - '&7This crate contains classic items.'
+    - '&7You have &6%Keys% keys &7to open this crate with.'
+  Prizes:
+    1:
+      DisplayName: '&a&lFancy Pants'
+      DisplayItem: '304'
+      Chance: 40
+      Firework: false
+      Items:
+        - 'Item:304, MetaData:0, Amount:1, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
+    2:
+      DisplayName: '&b&lClassic Sword'
+      DisplayItem: '276'
+      Chance: 35
+      Firework: false
+      Items:
+        - 'Item:276, MetaData:0, Amount:1, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1'
+    3:
+      DisplayName: '&e&l$100,000'
+      DisplayItem: '175'
+      Chance: 20
+      Firework: true
+      Commands:
+        - 'Eco give %Player% 100000'

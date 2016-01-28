@@ -1,0 +1,34 @@
+Crate:
+  CrateType: QuadCrate
+  StartingKeys: 1000
+  Slot: 14
+  OpeningBroadCast: true
+  BroadCast: '%Prefix%&6&l%Player% &7is opening a &b&lCrazy Chest&7.'
+  Item: '54'
+  Name: '&b&lCrazy Chest'
+  Lore:
+    - '&7This crate contains Crazy things.'
+    - '&7You have &6%Keys% keys &7to open this crate with.'
+  Prizes:
+    1:
+      DisplayName: '&3&lRare ChestPlate'
+      DisplayItem: '311'
+      Chance: 40
+      Firework: false
+      Items:
+        - 'Item:311, MetaData:0, Amount:1, Name:&3Rare ChestPlate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3'
+    2:
+      DisplayName: '&b&lCrazy &4&lSword'
+      DisplayItem: '283'
+      Chance: 35
+      Firework: false
+      Items:
+        - 'Item:283, MetaData:0, Amount:1, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1'
+    3:
+      DisplayName: '&e&l$1,000,000'
+      DisplayItem: '175'
+      Chance: 20
+      Firework: true
+      Commands:
+        - 'Eco give %Player% 1000000'
+      

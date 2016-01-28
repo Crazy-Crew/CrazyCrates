@@ -1,0 +1,11 @@
+name: CrazyCrates
+main: me.BadBones69.CrazyCrates.Main
+author: BadBones69
+version: 1.0
+description: >
+             A Crazy Crate plugin with a bunch of cool features.
+commands:
+  CrazyCrates:
+    description: Opens the GUI.
+  CC:
+    description: Opens the GUI.
