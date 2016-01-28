@@ -1,5 +1,5 @@
 Crate:
-  CrateType: QuadCrate #Type of crate (CSGO/QuadCrate).
+  CrateType: CSGO #Type of crate (CSGO/QuadCrate).
   StartingKeys: 1000 #Starting amount of keys when the player 1st joins.
   Slot: 10 #Slot the item is in the GUI.
   OpeningBroadCast: true #Enables/Disables the Broadcasts message when they open a crate.
@@ -9,6 +9,14 @@ Crate:
   Lore: 
     - '&7This crate contains strange objects.' 
     - '&7You have &6%Keys% keys &7to open this crate with.' #The lore of the item in the GUI.
+  PhysicalKey:
+    Name: '&7&lBasic Crate &b&lKey' #Name of the Key.
+    Lore:
+      - '&7A special Key' #Lore of the Key.
+      - '&7For a special Crate.'
+    Item: '131' #The item the key is.
+    Enchantments:
+      - 'WATER_WORKER:1' #What enchantments the Key has.
   Prizes: #All the prizes that can be gotten in the Crate.
     1:
       DisplayName: '&7&lBasic Grass' #Name of the item shown by the crate.

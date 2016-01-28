@@ -24,6 +24,7 @@ import org.bukkit.plugin.Plugin;
 
 public class Api{
 	public static HashMap<Player, String> path = new HashMap<Player, String>();
+	public static HashMap<Player, String> Key = new HashMap<Player, String>();
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
 	@SuppressWarnings("static-access")
 	public Api(Plugin plugin){
@@ -202,10 +203,12 @@ public class Api{
 		return item;
 	}
 	public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore, Map<Enchantment, Integer> enchants){
+		ArrayList<String> l = new ArrayList<String>();
 		ItemStack item = new ItemStack(material, amount, (short) type);
 		ItemMeta m = item.getItemMeta();
-		m.setDisplayName(name);
-		m.setLore(lore);
+		m.setDisplayName(color(name));
+		for(String L:lore)l.add(color(L));
+		m.setLore(l);
 		item.setItemMeta(m);
 		item.addUnsafeEnchantments(enchants);
 		return item;
@@ -247,6 +250,15 @@ public class Api{
 		p.sendMessage(color("&cThat player is not online at this time."));
 		return false;
 	}
+	public static void removeItem(ItemStack item, Player player){
+		if(item.getAmount() <= 1){
+			player.getInventory().removeItem(item);
+		}
+		if(item.getAmount() > 1){
+			ItemStack i = item;
+			i.setAmount(item.getAmount() - 1);
+		}
+	}
 	public static boolean permCheck(Player player, String perm){
 		if(!player.hasPermission("CrazyCrates." + perm)){
 			player.sendMessage(color("&cYou do not have permission to use that command!"));
@@ -264,16 +276,34 @@ public class Api{
 		Main.settings.getData().set("Players."+uuid+"."+crate, keys-Amount);
 		Main.settings.saveData();
 	}
-	public static void addKeys(int Amount, Player player, String crate){
-		String uuid = player.getUniqueId().toString();
-		int keys = getKeys(player, crate);
-		Main.settings.getData().set("Players."+uuid+"."+crate, keys+Amount);
-		Main.settings.saveData();
-	}
-	public static void setKeys(int Amount, Player player, String crate){
-		String uuid = player.getUniqueId().toString();
-		Main.settings.getData().set("Players."+uuid+"."+crate, Amount);
-		Main.settings.saveData();
+	public static void addKeys(int Amount, Player player, String crate, String Type){
+		if(Type.equals("Virtual")){
+			String uuid = player.getUniqueId().toString();
+			int keys = getKeys(player, crate);
+			Main.settings.getData().set("Players."+uuid+"."+crate, keys+Amount);
+			Main.settings.saveData();
+			return;
+		}
+		if(Type.equals("Physical")){
+			String name = color(Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name"));
+			List<String> lore = Main.settings.getFile(crate).getStringList("Crate.PhysicalKey.Lore");
+			String ma = Main.settings.getFile(crate).getString("Crate.PhysicalKey.Item");
+			int type = 0;
+			if(ma.contains(":")){
+				String[] b = ma.split(":");
+				ma = b[0];
+				type = Integer.parseInt(b[1]);
+			}
+			HashMap<Enchantment, Integer> Enchantments = new HashMap<Enchantment, Integer>();
+			for(String en : Main.settings.getFile(crate).getStringList("Crate.PhysicalKey.Enchantments")){
+				String[] breakdown = en.split(":");
+				String enchantment = breakdown[0];
+				int lvl = Integer.parseInt(breakdown[1]);
+				Enchantments.put(Enchantment.getByName(enchantment), lvl);
+			}
+			player.getInventory().addItem(makeItem(Material.matchMaterial(ma), Amount, type, name, lore, Enchantments));
+			return;
+		}
 	}
 	public static ArrayList<String> getCrates(){
 		ArrayList<String> crates = new ArrayList<String>();

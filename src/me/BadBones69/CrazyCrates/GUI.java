@@ -79,7 +79,7 @@ public class GUI implements Listener{
 											msg = msg.replaceAll("%player%", player.getName());
 											Bukkit.broadcastMessage(msg);
 										}
-										Api.takeKeys(1, player, crate);
+										Api.Key.put(player, "VirtualKey");
 									}
 									return;
 								}

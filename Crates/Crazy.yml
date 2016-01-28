@@ -9,6 +9,14 @@ Crate:
   Lore:
     - '&7This crate contains Crazy things.'
     - '&7You have &6%Keys% keys &7to open this crate with.'
+  PhysicalKey:
+    Name: '&b&lCrazy Crate &6&lKey'
+    Lore:
+      - '&7A special Key'
+      - '&7For a special Crate.'
+    Item: '131'
+    Enchantments:
+      - 'WATER_WORKER:1'
   Prizes:
     1:
       DisplayName: '&3&lRare ChestPlate'
@@ -31,4 +39,3 @@ Crate:
       Firework: true
       Commands:
         - 'Eco give %Player% 1000000'
-      

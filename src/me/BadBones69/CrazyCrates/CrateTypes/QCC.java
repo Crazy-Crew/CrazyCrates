@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import me.BadBones69.CrazyCrates.Api;
+import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
 import me.BadBones69.CrazyCrates.ParticleEffect;
@@ -84,9 +85,11 @@ public class QCC implements Listener{ // Quad Crate Control.
 				return;
 			}
 			if(l.getBlockY()!=player.getLocation().getBlockY()-1&&l.getBlock().getType()!=Material.AIR){
-				player.sendMessage(Api.color(Api.getPrefix()+"&cThere is not enough space to open that here."));
-				GUI.Crate.remove(player);
-				return;
+				if(!l.equals(player.getLocation())){
+					player.sendMessage(Api.color(Api.getPrefix()+"&cThere is not enough space to open that here."));
+					GUI.Crate.remove(player);
+					return;
+				}
 			}
 		}
 		if(player.getLocation().subtract(0, 1, 0).getBlock().getType()==Material.AIR){
@@ -120,7 +123,12 @@ public class QCC implements Listener{ // Quad Crate Control.
 			Bukkit.broadcastMessage(msg);
 		}
 		chests.put(player, Ch);
-		Api.takeKeys(1, player, GUI.Crate.get(player));
+		if(Api.Key.get(player).equals("PhysicalKey")){
+			Api.removeItem(CC.Key.get(player), player);
+		}
+		if(Api.Key.get(player).equals("VirtualKey")){
+			Api.takeKeys(1, player, GUI.Crate.get(player));
+		}
 		rest.clear();
 		HashMap<Location, BlockState> locs = new HashMap<Location, BlockState>();
 		HashMap<Location, BlockState> A = new HashMap<Location, BlockState>();
@@ -405,6 +413,9 @@ public class QCC implements Listener{ // Quad Crate Control.
 											crates.remove(player);
 											chests.remove(player);
 											GUI.Crate.remove(player);
+											if(Api.Key.get(player).equals("PhysicalKey")){
+												player.teleport(CC.LastLoc.get(player));
+											}
 										}
 									}, 6*20);
 								}

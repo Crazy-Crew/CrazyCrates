@@ -9,6 +9,14 @@ Crate:
   Lore:
     - '&7This crate contains classic items.'
     - '&7You have &6%Keys% keys &7to open this crate with.'
+  PhysicalKey:
+    Name: '&e&lClassic Crate &c&lKey'
+    Lore:
+      - '&7A special Key'
+      - '&7For a special Crate.'
+    Item: '131'
+    Enchantments:
+      - 'WATER_WORKER:1'
   Prizes:
     1:
       DisplayName: '&a&lFancy Pants'

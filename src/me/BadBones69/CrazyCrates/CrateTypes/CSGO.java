@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import me.BadBones69.CrazyCrates.Api;
+import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
 
@@ -77,6 +78,12 @@ public class CSGO implements Listener{
 		startCSGO(player, inv);
 	}
 	private static void startCSGO(final Player player, final Inventory inv){
+		if(Api.Key.get(player).equals("PhysicalKey")){
+			Api.removeItem(CC.Key.get(player), player);
+		}
+		if(Api.Key.get(player).equals("VirtualKey")){
+			Api.takeKeys(1, player, GUI.Crate.get(player));
+		}
 		roll.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
 			int time = 1;
 			int full = 0;

@@ -24,6 +24,8 @@ public class SettingsManager {
 	File cfile;
 	FileConfiguration data;
 	File dfile;
+	FileConfiguration locations;
+	File locationsfile;
 	File schem;
 	File schemfolder;
 	File cratefolder;
@@ -53,6 +55,8 @@ public class SettingsManager {
         cfile = new File(p.getDataFolder(), "config.yml");
         config = p.getConfig();
         dfile = new File(p.getDataFolder(), "data.yml");
+        locationsfile = new File(p.getDataFolder(), "Locations.yml");
+        locations = YamlConfiguration.loadConfiguration(locationsfile);
         if (!dfile.exists()) {
         	try {
         		dfile.createNewFile();
@@ -126,6 +130,26 @@ public class SettingsManager {
     }
 	public FileConfiguration getData() {
         return data;
+	}
+	public FileConfiguration getLocations() {
+		if(!locationsfile.exists()){
+			try {
+				locationsfile.createNewFile();
+			} catch (IOException e) {
+				Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create the file Locations.yml!");
+			}
+		}
+        return locations;
+	}
+	public void saveLocations() {
+		try {
+			locations.save(locationsfile);
+		} catch (IOException e) {
+			Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save Locations.yml!");
+		}
+	}
+	public void reloadLocations() {
+		locations = YamlConfiguration.loadConfiguration(locationsfile);
 	}
 	public FileConfiguration getFile(String crate){
 		File file = new File(p.getDataFolder()+"/Crates/", crate+".yml");
