@@ -416,6 +416,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 											player.getWorld().playSound(player.getLocation().clone(), Sound.STEP_STONE, 1, 1);
 											crates.remove(player);
 											chests.remove(player);
+											Rest.remove(player);
 											GUI.Crate.remove(player);
 											if(Api.Key.get(player).equals("PhysicalKey")){
 												player.teleport(CC.LastLoc.get(player));
