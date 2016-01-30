@@ -65,6 +65,15 @@ public class GUI implements Listener{
 										player.sendMessage(Api.color(Api.getPrefix()+"&cYou need a key to open that Crate."));
 										return;
 									}
+									for(String world : getDisabledWorlds()){
+										if(world.equalsIgnoreCase(player.getWorld().getName())){
+											String msg = Main.settings.getConfig().getString("Settings.WorldDisabledMsg");
+											msg = msg.replaceAll("%World%", player.getWorld().getName());
+											msg = msg.replaceAll("%world%", player.getWorld().getName());
+											player.sendMessage(Api.color(Api.getPrefix()+msg));
+											return;
+										}
+									}
 									Crate.put(player, crate);
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("QuadCrate")){
 										Api.Key.put(player, "VirtualKey");
@@ -90,5 +99,12 @@ public class GUI implements Listener{
 				}
 			}
 		}
+	}
+	ArrayList<String> getDisabledWorlds(){
+		ArrayList<String> worlds = new ArrayList<String>();
+		for(String world : Main.settings.getConfig().getStringList("Settings.DisabledWorlds")){
+			worlds.add(world);
+		}
+		return worlds;
 	}
 }

@@ -24,3 +24,11 @@ Settings:
   Prefix: '&8[&bCrazyCrates&8]: '
   InventoryName: '&b&lCrazy &4&lCrates'
   InventorySize: 27
+  NoKeyMsg: '&cYou must have a %Key% &cin your hand to use that Crate.'
+  AlreadyOpeningCrateMsg: '&cYou are already opening a crate.'
+  WorldDisabledMsg: '&cI am sorry but crates are disabled in %World%.'
+  QuadCrate:
+    ToCloseToAnotherPlayer: '&cYou are to close to a player that is opening their Crate.'
+    NeedsMoreRoom: '&cThere is not enough space to open that here.'
+  DisabledWorlds:
+    - 'world_nether'

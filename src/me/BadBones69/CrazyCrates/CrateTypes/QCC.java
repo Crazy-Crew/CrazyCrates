@@ -80,13 +80,15 @@ public class QCC implements Listener{ // Quad Crate Control.
 		BlackList.add(Material.WOOD_BUTTON);
 		for(Location l : Check){
 			if(BlackList.contains(l.getBlock().getType())){
-				player.sendMessage(Api.color(Api.getPrefix()+"&cThere is not enough space to open that here."));
+				String msg = Main.settings.getConfig().getString("Settings.QuadCrate.NeedsMoreRoom");
+				player.sendMessage(Api.color(Api.getPrefix()+msg));
 				GUI.Crate.remove(player);
 				return;
 			}
 			if(l.getBlockY()!=player.getLocation().getBlockY()-1&&l.getBlock().getType()!=Material.AIR){
 				if(!l.equals(player.getLocation())){
-					player.sendMessage(Api.color(Api.getPrefix()+"&cThere is not enough space to open that here."));
+					String msg = Main.settings.getConfig().getString("Settings.QuadCrate.NeedsMoreRoom");
+					player.sendMessage(Api.color(Api.getPrefix()+msg));
 					GUI.Crate.remove(player);
 					return;
 				}
@@ -101,7 +103,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 			if(en instanceof Player){
 				Player p = (Player) en;
 				if(crates.containsKey(p)){
-					player.sendMessage(Api.color(Api.getPrefix()+"&cYou are to close to a player that is opening their Crate."));
+					String msg = Main.settings.getConfig().getString("Settings.QuadCrate.ToCloseToAnotherPlayer");
+					msg = msg.replaceAll("%Player%", p.getName());
+					msg = msg.replaceAll("%player%", p.getName());
+					player.sendMessage(Api.color(Api.getPrefix()+msg));
 					GUI.Crate.remove(player);
 					return;
 				}
@@ -383,8 +388,6 @@ public class QCC implements Listener{ // Quad Crate Control.
 													for(Location loc2 : locs.keySet()){ // Looping though the locations.
 														if(locs.get(loc)!=null){ // Checking to make sure a location isn't null.
 															if(loc.equals(loc2)){
-																//  BlockState block = loc2.getBlock().getState();
-																//	loc2.getWorld().spigot().playEffect(loc2.clone().add(0, -1, 0).add(0, .3, 0), Effect.TILE_BREAK, block.getTypeId(), block.getData().getData(), (float).5, (float).5, (float).5, 0, 10, 100);
 																loc2.getBlock().setTypeIdAndData(locs.get(loc2).getTypeId(), locs.get(loc2).getRawData(), true);
 															}
 														}
@@ -397,12 +400,14 @@ public class QCC implements Listener{ // Quad Crate Control.
 									Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
 										@Override
 										public void run() {
-											for(Location loc : Rest.get(player)){
-												HashMap<Location, BlockState> locs = crates.get(player);
-												if(chests.get(player)!=null){
-													for(Location loc2 : chests.get(player)){
-														if(locs.get(loc)!=null){
-															loc2.getBlock().setType(Material.AIR);
+											if(Rest.get(player)!=null){
+												for(Location loc : Rest.get(player)){
+													HashMap<Location, BlockState> locs = crates.get(player);
+													if(chests.get(player)!=null){
+														for(Location loc2 : chests.get(player)){
+															if(locs.get(loc)!=null){
+																loc2.getBlock().setType(Material.AIR);
+															}
 														}
 													}
 												}

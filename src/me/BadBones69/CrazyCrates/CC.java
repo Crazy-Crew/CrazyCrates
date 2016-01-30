@@ -59,7 +59,10 @@ public class CC implements Listener{ //Crate Control
 							if(item.getItemMeta().hasDisplayName()){
 								if(item.getItemMeta().getDisplayName().equals(KeyName)){
 									if(GUI.Crate.containsKey(player)){
-										player.sendMessage(Api.color(Api.getPrefix()+"&cYou are already opening a crate."));
+										String msg = Main.settings.getConfig().getString("Settings.AlreadyOpeningCrateMsg");
+										msg = msg.replaceAll("%Key%", KeyName);
+										msg = msg.replaceAll("%key%", KeyName);
+										player.sendMessage(Api.color(Api.getPrefix()+msg));
 										return;
 									}
 									GUI.Crate.put(player, Crate);
@@ -72,7 +75,10 @@ public class CC implements Listener{ //Crate Control
 						}
 					}
 					knockBack(player, block.getLocation());
-					player.sendMessage(Api.color(Api.getPrefix()+"&cYou must have a "+KeyName+" &cin your hand to use that Crate."));
+					String msg = Main.settings.getConfig().getString("Settings.NoKeyMsg");
+					msg = msg.replaceAll("%Key%", KeyName);
+					msg = msg.replaceAll("%key%", KeyName);
+					player.sendMessage(Api.color(Api.getPrefix()+msg));
 					return;
 				}
 			}
