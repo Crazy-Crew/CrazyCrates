@@ -25,7 +25,9 @@ Settings:
   InventoryName: '&b&lCrazy &4&lCrates'
   InventorySize: 27
   NoKeyMsg: '&cYou must have a %Key% &cin your hand to use that Crate.'
+  NoVirtualKeyMsg: '&cYou need a key to open that Crate.'
   AlreadyOpeningCrateMsg: '&cYou are already opening a crate.'
+  QuickCrateInUse: '&cThat crate is already in use. Please wait for crate to open up.'
   WorldDisabledMsg: '&cI am sorry but crates are disabled in %World%.'
   QuadCrate:
     ToCloseToAnotherPlayer: '&cYou are to close to a player that is opening their Crate.'

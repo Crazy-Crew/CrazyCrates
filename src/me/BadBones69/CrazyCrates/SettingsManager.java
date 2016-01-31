@@ -66,23 +66,28 @@ public class SettingsManager {
         	}
         }
         data = YamlConfiguration.loadConfiguration(dfile);
-        schemfolder = new File(p.getDataFolder()+"/Schematics");
-        if(!schemfolder.exists()){// https://bukkit.org/threads/how-to-create-a-folder-inside-a-folder.94526/
+        schemfolder = new File(p.getDataFolder()+"/Schematics/");
+        if(!schemfolder.exists()){
         	schemfolder.mkdir();
-        }
-        for(int i=1;i<=6;i++){
-        	schem = new File(p.getDataFolder()+"/Schematics/", i+".schematic");
-            if(!schem.exists()){
-            	InputStream f = getClass().getResourceAsStream("/Schematics/"+i+".schematic");
+        	ArrayList<String> schems = new ArrayList<String>();
+        	schems.add("Classic");
+        	schems.add("Nether");
+        	schems.add("OutDoors");
+        	schems.add("Sea");
+        	schems.add("Soul");
+        	schems.add("Wooden");
+        	for(String sc : schems){
+        		schem = new File(p.getDataFolder()+"/Schematics/", sc+".schematic");
+        		InputStream f = getClass().getResourceAsStream("/Schematics/"+sc+".schematic");
             	try {
             		copyFile(f, schem);
             	}catch (Exception e) {
             		e.printStackTrace();
             	}
-            }
+        	}
         }
     }
-	public void reloadAll(){
+	public void saveAll(){
 		try {config.save(cfile);}
         catch (IOException e){Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save config.yml!");}
 		try {data.save(dfile);}
@@ -182,5 +187,12 @@ public class SettingsManager {
 	}
 	public PluginDescriptionFile getDesc() {
 		return p.getDescription();
+	}
+	public void reloadAll(){
+		config = YamlConfiguration.loadConfiguration(cfile);
+		data = YamlConfiguration.loadConfiguration(dfile);
+		for(File c : getAllCrates()){
+			YamlConfiguration.loadConfiguration(c);
+		}
 	}
 }

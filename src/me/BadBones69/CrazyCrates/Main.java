@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
+import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -32,6 +33,7 @@ public class Main extends JavaPlugin{
 		Bukkit.getServer().getPluginManager().registerEvents(new CC(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new GUI(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new QCC(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new QuickCrate(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new CSGO(this), this);
 		if(Bukkit.getServer().getOnlinePlayers()!=null){
 			for(Player player : Bukkit.getServer().getOnlinePlayers()){

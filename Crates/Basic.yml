@@ -1,6 +1,7 @@
 Crate:
-  CrateType: CSGO #Type of crate (CSGO/QuadCrate).
+  CrateType: CSGO #Type of crate (CSGO/QuadCrate/QuickCrate).
   StartingKeys: 1000 #Starting amount of keys when the player 1st joins.
+  InGUI: true #If the crate shows in the /cc GUI. (If the crate type is QuickCrate then the Crate will not work. Quick Crate requires a Physical Crate.)
   Slot: 10 #Slot the item is in the GUI.
   OpeningBroadCast: true #Enables/Disables the Broadcasts message when they open a crate.
   BroadCast: '%Prefix%&6&l%Player% &7is opening a &7&lBasic Chest&7.' #Message that is broadcasted when opening the crate.

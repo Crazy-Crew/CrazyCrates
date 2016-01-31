@@ -20,25 +20,31 @@ public class GUI implements Listener{
 	static void openGUI(Player player){
 		Inventory inv = Bukkit.createInventory(null, Main.settings.getConfig().getInt("Settings.InventorySize"), Api.color(Main.settings.getConfig().getString("Settings.InventoryName")));
 		for(String crate : Main.settings.getAllCratesNames()){
-			String path = "Crate.";
-			int slot = Main.settings.getFile(crate).getInt(path+"Slot")+1;
-			String ma = Main.settings.getFile(crate).getString(path+"Item");
-			int type = 0;
-			if(ma.contains(":")){
-				String[] b = ma.split(":");
-				ma = b[0];
-				type = Integer.parseInt(b[1]);
+			if(!Main.settings.getFile(crate).contains("Crate.InGUI")){
+				Main.settings.getFile(crate).set("Crate.InGUI", true);
+				Main.settings.saveAll();
 			}
-			String name = Main.settings.getFile(crate).getString(path+"Name");
-			ArrayList<String> lore = new ArrayList<String>();
-			for(String i : Main.settings.getFile(crate).getStringList(path+"Lore")){
-				i=i.replaceAll("%Keys%", Api.getKeys(player, crate)+"");
-				i=i.replaceAll("%keys%", Api.getKeys(player, crate)+"");
-				i=i.replaceAll("%Player%", player.getName());
-				i=i.replaceAll("%player%", player.getName());
-				lore.add(i);
+			if(Main.settings.getFile(crate).getBoolean("Crate.InGUI")){
+				String path = "Crate.";
+				int slot = Main.settings.getFile(crate).getInt(path+"Slot")+1;
+				String ma = Main.settings.getFile(crate).getString(path+"Item");
+				int type = 0;
+				if(ma.contains(":")){
+					String[] b = ma.split(":");
+					ma = b[0];
+					type = Integer.parseInt(b[1]);
+				}
+				String name = Main.settings.getFile(crate).getString(path+"Name");
+				ArrayList<String> lore = new ArrayList<String>();
+				for(String i : Main.settings.getFile(crate).getStringList(path+"Lore")){
+					i=i.replaceAll("%Keys%", Api.getKeys(player, crate)+"");
+					i=i.replaceAll("%keys%", Api.getKeys(player, crate)+"");
+					i=i.replaceAll("%Player%", player.getName());
+					i=i.replaceAll("%player%", player.getName());
+					lore.add(i);
+				}
+				inv.setItem(slot, Api.makeItem(Material.matchMaterial(ma), 1, type, name, lore));
 			}
-			inv.setItem(slot, Api.makeItem(Material.matchMaterial(ma), 1, type, name, lore));
 		}
 		player.openInventory(inv);
 	}
@@ -62,7 +68,8 @@ public class GUI implements Listener{
 										return;
 									}
 									if(Api.getKeys(player, crate)<1){
-										player.sendMessage(Api.color(Api.getPrefix()+"&cYou need a key to open that Crate."));
+										String msg = Main.settings.getConfig().getString("Settings.NoVirtualKeyMsg");
+										player.sendMessage(Api.color(Api.getPrefix()+msg));
 										return;
 									}
 									for(String world : getDisabledWorlds()){

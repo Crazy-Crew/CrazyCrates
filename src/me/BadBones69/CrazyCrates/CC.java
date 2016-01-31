@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
+import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -21,6 +22,7 @@ import org.bukkit.util.Vector;
 public class CC implements Listener{ //Crate Control
 	public static HashMap<Player, ItemStack> Key = new HashMap<Player, ItemStack>();
 	public static HashMap<Player, Location> LastLoc = new HashMap<Player, Location>();
+	public static HashMap<Player, Location> InUse = new HashMap<Player, Location>();
 	@EventHandler
 	public void onCrateOpen(PlayerInteractEvent e){
 		Player player = e.getPlayer();
@@ -93,6 +95,18 @@ public class CC implements Listener{ //Crate Control
 			LastLoc.put(player, player.getLocation());
 			player.teleport(loc.add(.5,0,.5));
 			QCC.startBuild(player, loc, Material.CHEST);
+		}
+		if(C.equalsIgnoreCase("QuickCrate")){
+			if(InUse.containsValue(loc)){
+				String msg = Main.settings.getConfig().getString("Settings.QuickCrateInUse");
+				player.sendMessage(Api.color(Api.getPrefix()+msg));
+				return;
+			}
+			if(!InUse.containsValue(loc)){
+				QuickCrate.openCrate(player, loc, Crate);
+				InUse.put(player, loc);
+				return;
+			}
 		}
 	}
 	void knockBack(Player player, Location loc){
