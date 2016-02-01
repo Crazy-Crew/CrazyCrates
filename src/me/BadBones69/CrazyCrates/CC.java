@@ -3,6 +3,7 @@ package me.BadBones69.CrazyCrates;
 import java.util.HashMap;
 
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
+import me.BadBones69.CrazyCrates.CrateTypes.FireCracker;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
 import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
 import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
@@ -107,10 +108,13 @@ public class CC implements Listener{ //Crate Control
 				return;
 			}
 			if(!InUse.containsValue(loc)){
-				QuickCrate.openCrate(player, loc, Crate);
+				QuickCrate.openCrate(player, loc, Crate, true);
 				InUse.put(player, loc);
 				return;
 			}
+		}
+		if(C.equalsIgnoreCase("FireCracker")){
+			FireCracker.startFireCracker(player, Crate, loc);
 		}
 	}
 	void knockBack(Player player, Location loc){

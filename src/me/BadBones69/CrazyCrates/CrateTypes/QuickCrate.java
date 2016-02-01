@@ -31,8 +31,10 @@ public class QuickCrate implements Listener{
 	public QuickCrate(Plugin plugin){
 		this.plugin = plugin;
 	}
-	public static void openCrate(final Player player, final Location loc, String Crate){
-		Api.removeItem(CC.Key.get(player), player);
+	public static void openCrate(final Player player, final Location loc, String Crate, boolean remove){
+		if(remove){
+			Api.removeItem(CC.Key.get(player), player);
+		}
 		ItemStack it = Api.displayItem(player, loc.clone().add(.5, 1.3, .5));
 		String name = Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString(Api.path.get(player)+".DisplayName"));
 		final Entity reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), it);

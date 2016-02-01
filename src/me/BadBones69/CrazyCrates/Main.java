@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashSet;
 
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
+import me.BadBones69.CrazyCrates.CrateTypes.CrateOnTheGo;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
 import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
 import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
@@ -29,6 +30,11 @@ public class Main extends JavaPlugin implements Listener{
 				QCC.undoBuild(player);
 			}
 		}
+		if(!QuickCrate.Reward.isEmpty()){
+			for(Player player : QuickCrate.Reward.keySet()){
+				QuickCrate.Reward.get(player).remove();
+			}
+		}
 	}
 	@Override
 	public void onEnable(){
@@ -38,6 +44,7 @@ public class Main extends JavaPlugin implements Listener{
 		Bukkit.getServer().getPluginManager().registerEvents(new CC(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new GUI(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new QCC(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new CrateOnTheGo(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new QuickCrate(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new Roulette(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new CSGO(this), this);
@@ -267,8 +274,16 @@ public class Main extends JavaPlugin implements Listener{
 					int amount = Integer.parseInt(args[3]);
 					for(String crate : Api.getCrates()){
 						if(crate.equalsIgnoreCase(args[2])){
-							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given everyone &6"+amount+" &7Keys."));
+							if(settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
+								sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given everyone &6"+amount+" &7Crates."));
+							}else{
+								sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given everyone &6"+amount+" &7Keys."));
+							}
 							for(Player p : Bukkit.getServer().getOnlinePlayers()){
+								if(settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
+									CrateOnTheGo.giveCrate(p, amount, crate);
+									return true;
+								}
 								if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
 									Api.addKeys(amount, p, crate, "Virtual");
 								}
@@ -287,10 +302,15 @@ public class Main extends JavaPlugin implements Listener{
 			}
 			if(args[0].equalsIgnoreCase("Give")){// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
 				if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
-				String type = args[1];
 				if(args.length==3){
+					String type = args[1];
 					for(String crate : Api.getCrates()){
 						if(crate.equalsIgnoreCase(args[2])){
+							if(settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
+								sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+((Player)sender).getName()+" "+1+" &7Crates."));
+								CrateOnTheGo.giveCrate((Player)sender, 1, crate);
+								return true;
+							}
 							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+((Player)sender).getName()+" "+1+" &7Keys."));
 							if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
 								Api.addKeys(1, (Player)sender, crate, "Virtual");
@@ -305,9 +325,15 @@ public class Main extends JavaPlugin implements Listener{
 					return true;
 				}
 				if(args.length==4){
+					String type = args[1];
 					int amount = Integer.parseInt(args[3]);
 					for(String crate : Api.getCrates()){
 						if(crate.equalsIgnoreCase(args[2])){
+							if(settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
+								sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+((Player)sender).getName()+" "+amount+" &7Crates."));
+								CrateOnTheGo.giveCrate((Player)sender, amount, crate);
+								return true;
+							}
 							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+((Player)sender).getName()+" "+amount+" &7Keys."));
 							if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
 								Api.addKeys(amount, (Player)sender, crate, "Virtual");
@@ -322,6 +348,7 @@ public class Main extends JavaPlugin implements Listener{
 					return true;
 				}
 				if(args.length==5){
+					String type = args[1];
 					if(!Api.isOnline(args[4], sender))return true;
 					if(!Api.isInt(args[3])){
 						sender.sendMessage(Api.color(Api.getPrefix()+"&c"+args[3]+" is is not a Number."));
@@ -335,6 +362,11 @@ public class Main extends JavaPlugin implements Listener{
 					Player target = Api.getPlayer(args[4]);
 					for(String crate : Api.getCrates()){
 						if(crate.equalsIgnoreCase(args[2])){
+							if(settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
+								sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+target.getName()+" "+amount+" &7Crates."));
+								CrateOnTheGo.giveCrate(target, amount, crate);
+								return true;
+							}
 							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+target.getName()+" "+amount+" &7Keys."));
 							if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
 								Api.addKeys(amount, target, crate, "Virtual");

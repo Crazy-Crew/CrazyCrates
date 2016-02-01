@@ -82,12 +82,13 @@ public class GUI implements Listener{
 											return;
 										}
 									}
-									Crate.put(player, crate);
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("QuadCrate")){
+										Crate.put(player, crate);
 										Api.Key.put(player, "VirtualKey");
 										QCC.startBuild(player, player.getLocation(), Material.CHEST);
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CSGO")){
+										Crate.put(player, crate);
 										Api.Key.put(player, "VirtualKey");
 										CSGO.openCSGO(player);
 										if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){
@@ -103,6 +104,7 @@ public class GUI implements Listener{
 										player.sendMessage(Api.color(Api.getPrefix()+"&cPlease tell an admin that QuickCrates can not be a Virtual Crate."));
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Roulette")){
+										Crate.put(player, crate);
 										Api.Key.put(player, "VirtualKey");
 										Roulette.openRoulette(player);
 										if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){
@@ -113,6 +115,12 @@ public class GUI implements Listener{
 											msg = msg.replaceAll("%player%", player.getName());
 											Bukkit.broadcastMessage(msg);
 										}
+									}
+									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
+										player.sendMessage(Api.color(Api.getPrefix()+"&cPlease tell an admin that CrateOnTheGo can not be a Virtual Crate."));
+									}
+									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("FireCracker")){
+										player.sendMessage(Api.color(Api.getPrefix()+"&cPlease tell an admin that FireCracker can not be a Virtual Crate."));
 									}
 									return;
 								}
