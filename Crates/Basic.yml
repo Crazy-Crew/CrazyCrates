@@ -1,5 +1,5 @@
 Crate:
-  CrateType: CSGO #Type of crate (CSGO/QuadCrate/QuickCrate).
+  CrateType: CSGO #Type of crate (CSGO/QuadCrate/QuickCrate/Roulette).
   StartingKeys: 1000 #Starting amount of keys when the player 1st joins.
   InGUI: true #If the crate shows in the /cc GUI. (If the crate type is QuickCrate then the Crate will not work. Quick Crate requires a Physical Crate.)
   Slot: 10 #Slot the item is in the GUI.

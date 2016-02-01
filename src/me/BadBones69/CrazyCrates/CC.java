@@ -5,6 +5,7 @@ import java.util.HashMap;
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
 import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
+import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -91,6 +92,9 @@ public class CC implements Listener{ //Crate Control
 		if(C.equalsIgnoreCase("CSGO")){
 			CSGO.openCSGO(player);
 		}
+		if(C.equalsIgnoreCase("Roulette")){
+			Roulette.openRoulette(player);
+		}
 		if(C.equalsIgnoreCase("QuadCrate")){
 			LastLoc.put(player, player.getLocation());
 			player.teleport(loc.add(.5,0,.5));
@@ -111,6 +115,10 @@ public class CC implements Listener{ //Crate Control
 	}
 	void knockBack(Player player, Location loc){
 		Vector v = player.getLocation().toVector().subtract(loc.toVector()).normalize().multiply(1).setY(.1);
+		if(player.isInsideVehicle()){
+			player.getVehicle().setVelocity(v);
+			return;
+		}
 		player.setVelocity(v);
 	}
 }

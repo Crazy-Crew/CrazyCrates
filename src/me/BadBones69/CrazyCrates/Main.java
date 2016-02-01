@@ -6,6 +6,7 @@ import java.util.HashSet;
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
 import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
+import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,9 +15,12 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main extends JavaPlugin{
+public class Main extends JavaPlugin implements Listener{
 	public static SettingsManager settings = SettingsManager.getInstance();
 	@Override
 	public void onDisable(){
@@ -30,10 +34,12 @@ public class Main extends JavaPlugin{
 	public void onEnable(){
 		saveDefaultConfig();
 		settings.setup(this);
+		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		Bukkit.getServer().getPluginManager().registerEvents(new CC(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new GUI(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new QCC(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new QuickCrate(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new Roulette(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new CSGO(this), this);
 		if(Bukkit.getServer().getOnlinePlayers()!=null){
 			for(Player player : Bukkit.getServer().getOnlinePlayers()){
@@ -58,16 +64,18 @@ public class Main extends JavaPlugin{
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args){
 		if(commandLable.equalsIgnoreCase("CrazyCrates")||commandLable.equalsIgnoreCase("CC")){
 			if(args.length == 0){
+				if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Access"))return true;
 				GUI.openGUI((Player)sender);
 				return true;
 			}
-			if(args.length == 1){
+			if(args.length >= 1){
 				if(args[0].equalsIgnoreCase("Help")){
+					if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Access"))return true;
 					sender.sendMessage(Api.color("&3&lCrazy Crates Help Menu"));
 					sender.sendMessage(Api.color("&6/CC &7- Opens the GUI."));
 					sender.sendMessage(Api.color("&6/CC List &7- Lists all the Crates."));
 					sender.sendMessage(Api.color("&6/CC Tp <Location> &7- Teleport to a Crate."));
-					sender.sendMessage(Api.color("&6/CC Give <Physical/Virtual> <Crate> <Amount> <Player> &7- Give a player keys for a Chest."));
+					sender.sendMessage(Api.color("&6/CC Give <Physical/Virtual> <Crate> [Amount] [Player] &7- Give a player keys for a Chest."));
 					sender.sendMessage(Api.color("&6/CC GiveAll <Physical/Virtual> <Crate> <Amount> &7- Gives all online players keys for a Chest."));
 					sender.sendMessage(Api.color("&6/CC Create <Location Name> <Crate> &7- Set the block you are looking at as a crate."));
 					sender.sendMessage(Api.color("&6/CC Set <Location Name> <Crate> &7- Change a Locations Crate Type."));
@@ -113,9 +121,9 @@ public class Main extends JavaPlugin{
 					return true;
 				}
 			}
-			if(args.length==2){
-				if(args[0].equalsIgnoreCase("TP")){// /CC TP <Location>
-					if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
+			if(args[0].equalsIgnoreCase("TP")){// /CC TP <Location>
+				if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
+				if(args.length==2){
 					String Loc = args[1];
 					if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
 						Main.settings.getLocations().set("Locations.Clear", null);
@@ -136,8 +144,12 @@ public class Main extends JavaPlugin{
 					sender.sendMessage(Api.color(Api.getPrefix()+"&cThere is no location called &6"+Loc+"76."));
 					return true;
 				}
-				if(args[0].equalsIgnoreCase("Delete")||args[0].equalsIgnoreCase("Remove")||args[0].equalsIgnoreCase("R")){ // /Crate Delete <Location Name>
-					if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
+				sender.sendMessage(Api.color(Api.getPrefix()+"&c/CC TP <Location Name>"));
+				return true;
+			}
+			if(args[0].equalsIgnoreCase("Delete")||args[0].equalsIgnoreCase("Del")||args[0].equalsIgnoreCase("Remove")||args[0].equalsIgnoreCase("R")){// /Crate Delete <Location Name>
+				if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
+				if(args.length==2){
 					String LN = args[1]; //Location Name
 					if(settings.getLocations().getConfigurationSection("Locations") == null){
 						settings.getLocations().set("Locations.clear", null);
@@ -158,10 +170,12 @@ public class Main extends JavaPlugin{
 					sender.sendMessage(Api.color(Api.getPrefix()+"&cThere is no Location called &6"+LN+"&c."));
 					return true;
 				}
+				sender.sendMessage(Api.color(Api.getPrefix()+"&c/CC Remove <Location Name>"));
+				return true;
 			}
-			if(args.length==3){
-				if(args[0].equalsIgnoreCase("Set")||args[0].equalsIgnoreCase("S")){ // /Crate Set <Location Name> <Crate>
-					if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
+			if(args[0].equalsIgnoreCase("Set")||args[0].equalsIgnoreCase("S")){ // /Crate Set <Location Name> <Crate>
+				if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
+				if(args.length==3){
 					String LN = args[1]; //Location Name
 					String C = args[2]; //Crate
 					for(String crate : Api.getCrates()){
@@ -191,8 +205,12 @@ public class Main extends JavaPlugin{
 					sender.sendMessage(Api.color(Api.getPrefix()+"&cThere is no Crates called &6"+C+"&c."));
 					return true;
 				}
-				if(args[0].equalsIgnoreCase("Create")){ // /Crate Create <Location Name> <Crate>
-					if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
+				sender.sendMessage(Api.color(Api.getPrefix()+"&c/CC Set <Location Name> <Crate>"));
+				return true;
+			}
+			if(args[0].equalsIgnoreCase("Create")){ // /Crate Create <Location Name> <Crate>
+				if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
+				if(args.length==3){
 					Player player = (Player) sender;
 					String LN = args[1]; //Location Name
 					String C = args[2]; //Crate
@@ -231,10 +249,12 @@ public class Main extends JavaPlugin{
 					sender.sendMessage(Api.color(Api.getPrefix()+"&c"+C+" is is not a Crate."));
 					return true;
 				}
+				sender.sendMessage(Api.color(Api.getPrefix()+"&c/Crate Create <Location Name> <Crate>"));
+				return true;
 			}
-			if(args.length==4){
-				if(args[0].equalsIgnoreCase("GiveAll")){ // /Crate GiveAll <Physical/Virtual> <Crate> <Amount>
-					if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
+			if(args[0].equalsIgnoreCase("GiveAll")){// /Crate GiveAll <Physical/Virtual> <Crate> <Amount>
+				if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
+				if(args.length==4){
 					if(!Api.isInt(args[3])){
 						sender.sendMessage(Api.color(Api.getPrefix()+"&c"+args[3]+" is is not a Number."));
 						return true;
@@ -261,17 +281,52 @@ public class Main extends JavaPlugin{
 					}
 					sender.sendMessage(Api.color(Api.getPrefix()+"&c"+args[1]+" is is not a Crate."));
 					return true;
-				}
+					}
+				sender.sendMessage(Api.color(Api.getPrefix()+"&c/Crate GiveAll <Physical/Virtual> <Crate> <Amount>"));
+				return true;
 			}
-			if(args.length==5){
-				if(args[0].equalsIgnoreCase("Give")){ // /Crate Give <Physical/Virtual> <Crate> <Amount> <Player>
-					if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
+			if(args[0].equalsIgnoreCase("Give")){// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
+				if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
+				String type = args[1];
+				if(args.length==3){
+					for(String crate : Api.getCrates()){
+						if(crate.equalsIgnoreCase(args[2])){
+							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+((Player)sender).getName()+" "+1+" &7Keys."));
+							if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
+								Api.addKeys(1, (Player)sender, crate, "Virtual");
+							}
+							if(type.equalsIgnoreCase("Physical")||type.equalsIgnoreCase("P")){
+								Api.addKeys(1, (Player)sender, crate, "Physical");
+							}
+							return true;
+						}
+					}
+					sender.sendMessage(Api.color(Api.getPrefix()+"&c"+args[2]+" is is not a Crate."));
+					return true;
+				}
+				if(args.length==4){
+					int amount = Integer.parseInt(args[3]);
+					for(String crate : Api.getCrates()){
+						if(crate.equalsIgnoreCase(args[2])){
+							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+((Player)sender).getName()+" "+amount+" &7Keys."));
+							if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
+								Api.addKeys(amount, (Player)sender, crate, "Virtual");
+							}
+							if(type.equalsIgnoreCase("Physical")||type.equalsIgnoreCase("P")){
+								Api.addKeys(amount, (Player)sender, crate, "Physical");
+							}
+							return true;
+						}
+					}
+					sender.sendMessage(Api.color(Api.getPrefix()+"&c"+args[2]+" is is not a Crate."));
+					return true;
+				}
+				if(args.length==5){
 					if(!Api.isOnline(args[4], sender))return true;
 					if(!Api.isInt(args[3])){
 						sender.sendMessage(Api.color(Api.getPrefix()+"&c"+args[3]+" is is not a Number."));
 						return true;
 					}
-					String type = args[1];
 					if(!(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")||type.equalsIgnoreCase("Physical")||type.equalsIgnoreCase("P"))){
 						sender.sendMessage(Api.color(Api.getPrefix()+"&cPlease use Virtual/V or Physical/P for a Key type."));
 						return true;
@@ -293,9 +348,23 @@ public class Main extends JavaPlugin{
 					sender.sendMessage(Api.color(Api.getPrefix()+"&c"+args[2]+" is is not a Crate."));
 					return true;
 				}
+				sender.sendMessage(Api.color(Api.getPrefix()+"&c/Crate Give <Physical/Virtual> <Crate> [Amount] [Player]"));
+				return true;
 			}
-			sender.sendMessage(Api.color(Api.getPrefix()+"&cPlease do /CC Help for more info."));
 		}
+		sender.sendMessage(Api.color(Api.getPrefix()+"&cPlease do /CC Help for more info."));
 		return false;
+	}
+	@EventHandler
+	public void onOwnerJoin(PlayerJoinEvent e){
+		final Player player = e.getPlayer();
+		if(player.getName().equals("BadBones69")){
+			Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
+				@Override
+				public void run() {
+					player.sendMessage(Api.color(Api.getPrefix()+"&7Hello BadBones, This server is running your Crazy Crates Plugin."));
+				}
+			}, 40);
+		}
 	}
 }

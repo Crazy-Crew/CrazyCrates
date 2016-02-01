@@ -29,6 +29,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -464,6 +465,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 				Player p = (Player) en;
 				if(crates.containsKey(p)){
 					Vector v = player.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().setY(1);
+					if(player.isInsideVehicle()){
+						player.getVehicle().setVelocity(v);
+						return;
+					}
 					player.setVelocity(v);
 				}
 			}
@@ -495,6 +500,18 @@ public class QCC implements Listener{ // Quad Crate Control.
 				Main.settings.getData().set("Players."+uuid+"."+crate, amount);
 			}
 			Main.settings.saveData();
+		}
+	}
+	@EventHandler
+	public void onCMD(PlayerCommandPreprocessEvent e){
+		Player player = e.getPlayer();
+		if(crates.containsKey(player)){
+			e.setCancelled(true);
+			String msg = Main.settings.getConfig().getString("Settings.NoCMDsWhileCrateOpened");
+			msg = msg.replaceAll("%Player%", player.getName());
+			msg = msg.replaceAll("%player%", player.getName());
+			player.sendMessage(Api.color(Api.getPrefix()+msg));
+			return;
 		}
 	}
 	@EventHandler

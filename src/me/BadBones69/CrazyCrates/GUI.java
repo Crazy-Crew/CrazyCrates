@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
+import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -89,6 +90,21 @@ public class GUI implements Listener{
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CSGO")){
 										Api.Key.put(player, "VirtualKey");
 										CSGO.openCSGO(player);
+										if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){
+											String msg = Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.BroadCast"));
+											msg = msg.replaceAll("%Prefix%", Api.getPrefix());
+											msg = msg.replaceAll("%prefix%", Api.getPrefix());
+											msg = msg.replaceAll("%Player%", player.getName());
+											msg = msg.replaceAll("%player%", player.getName());
+											Bukkit.broadcastMessage(msg);
+										}
+									}
+									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("QuickCrate")){
+										player.sendMessage(Api.color(Api.getPrefix()+"&cPlease tell an admin that QuickCrates can not be a Virtual Crate."));
+									}
+									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Roulette")){
+										Api.Key.put(player, "VirtualKey");
+										Roulette.openRoulette(player);
 										if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){
 											String msg = Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.BroadCast"));
 											msg = msg.replaceAll("%Prefix%", Api.getPrefix());
