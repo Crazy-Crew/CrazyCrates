@@ -33,7 +33,13 @@ public class CC implements Listener{ //Crate Control
 			for(String crate : Main.settings.getAllCratesNames()){
 				String KeyName = Api.color(Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name"));
 				if(e.hasItem()){
-					ItemStack item = player.getItemInHand();
+					ItemStack item = new ItemStack(Material.AIR);
+					if(Api.getVersion()==183){
+						item = OnePointEight.getInHand(player);
+					}
+					if(Api.getVersion()==191){
+						item = OnePointNine.getInHand(player);
+					}
 					if(item.hasItemMeta()){
 						if(item.getItemMeta().hasDisplayName()){
 							if(item.getItemMeta().getDisplayName().equals(KeyName)){
@@ -58,7 +64,15 @@ public class CC implements Listener{ //Crate Control
 					e.setCancelled(true);
 					String KeyName = Api.color(Main.settings.getFile(Crate).getString("Crate.PhysicalKey.Name"));
 					if(e.hasItem()){
-						ItemStack item = player.getItemInHand();
+						ItemStack item = new ItemStack(Material.AIR);
+						String ver = Bukkit.getServer().getClass().getPackage().getName();
+						ver = ver.substring(ver.lastIndexOf('.')+1);
+						if(Api.getVersion()==183){
+							item = OnePointEight.getInHand(player);
+						}
+						if(Api.getVersion()==191){
+							item = OnePointNine.getInHand(player);
+						}
 						if(item.hasItemMeta()){
 							if(item.getItemMeta().hasDisplayName()){
 								if(item.getItemMeta().getDisplayName().equals(KeyName)){

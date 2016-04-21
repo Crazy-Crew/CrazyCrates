@@ -93,7 +93,12 @@ public class CSGO implements Listener{
 				if(full<=80){
 					moveItems(inv, player);
 					setGlass(inv);
-					player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+					if(Api.getVersion()==183){
+						player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+					}
+					if(Api.getVersion()==191){
+						player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+					}
 				}
 				open++;
 				if(open>=5){
@@ -105,11 +110,21 @@ public class CSGO implements Listener{
 					if(slowSpin().contains(time)){
 						moveItems(inv, player);
 						setGlass(inv);
-						player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+						if(Api.getVersion()==183){
+							player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+						}
+						if(Api.getVersion()==191){
+							player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+						}
 					}
 					time++;
 					if(time>=90){
-						player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
+						if(Api.getVersion()==183){
+							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
+						}
+						if(Api.getVersion()==191){
+							player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
+						}
 						Bukkit.getScheduler().cancelTask(roll.get(player));
 						roll.remove(player);
 						String crate = GUI.Crate.get(player);

@@ -6,15 +6,12 @@ import me.BadBones69.CrazyCrates.Api;
 import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
-import net.minecraft.server.v1_8_R3.BlockPosition;
-import net.minecraft.server.v1_8_R3.TileEntityChest;
-import net.minecraft.server.v1_8_R3.TileEntityEnderChest;
+import me.BadBones69.CrazyCrates.OnePointEight;
+import me.BadBones69.CrazyCrates.OnePointNine;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -68,16 +65,11 @@ public class QuickCrate implements Listener{
 	}
 	private static void playChestAction(Block b, boolean open) {
         Location location = b.getLocation();
-        if(b.getType()==Material.CHEST||b.getType()==Material.matchMaterial("146")||b.getType()==Material.ENDER_CHEST){
-        	net.minecraft.server.v1_8_R3.World world = ((CraftWorld) location.getWorld()).getHandle();
-        	BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
-	        if (b.getType() == Material.ENDER_CHEST) {
-	            TileEntityEnderChest tileChest = (TileEntityEnderChest) world.getTileEntity(position);
-	            world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
-	        } else {
-	            TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
-	            world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
-	        }
-        }
+        if(Api.getVersion()==183){
+        	OnePointEight.openChest(b, location, open);
+		}
+		if(Api.getVersion()==191){
+			OnePointNine.openChest(b, location, open);
+		}
     }
 }

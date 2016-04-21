@@ -160,6 +160,17 @@ public class SettingsManager {
 		File file = new File(p.getDataFolder()+"/Crates/", crate+".yml");
 		return YamlConfiguration.loadConfiguration(file);
 	}
+	public File getF(String file){
+		File f = null;
+		if(file.equalsIgnoreCase("Config"))f=new File(p.getDataFolder(), "config.yml");
+		if(file.equalsIgnoreCase("Data"))f=new File(p.getDataFolder(), "data.yml");
+		if(file.equalsIgnoreCase("Locations"))f=new File(p.getDataFolder(), "locations.yml");
+		for(String crate : getAllCratesNames()){
+			if(file.equalsIgnoreCase(crate))f=new File(p.getDataFolder()+"/Crates/", crate+".yml");
+			break;
+		}
+		return f;
+	}
 	public void saveData() {
 		try {
 			data.save(dfile);

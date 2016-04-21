@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -53,7 +54,7 @@ public class FireCracker {
 		}, 0, 2));
 	}
 	private static void fireWork(Location loc, Color color) {
-		Firework fw = loc.getWorld().spawn(loc, Firework.class);
+		Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
 		FireworkMeta fm = fw.getFireworkMeta();
 		fm.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL)
 				.withColor(color)

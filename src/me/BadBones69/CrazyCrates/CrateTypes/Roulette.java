@@ -60,7 +60,12 @@ public class Roulette implements Listener{
 				if(full<=35){
 					inv.setItem(13, pickItem(player));
 					setGlass(inv);
-					player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+					if(Api.getVersion()==183){
+						player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+					}
+					if(Api.getVersion()==191){
+						player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+					}
 					even++;
 					if(even>=4){
 						even=0;
@@ -77,11 +82,21 @@ public class Roulette implements Listener{
 					if(slowSpin().contains(time)){
 						setGlass(inv);
 						inv.setItem(13, pickItem(player));
-						player.playSound(player.getLocation(), Sound.CLICK, 1, 1);
+						if(Api.getVersion()==183){
+							player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+						}
+						if(Api.getVersion()==191){
+							player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+						}
 					}
 					time++;
 					if(time>=45){
-						player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
+						if(Api.getVersion()==183){
+							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
+						}
+						if(Api.getVersion()==191){
+							player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
+						}
 						Bukkit.getScheduler().cancelTask(roll.get(player));
 						roll.remove(player);
 						String crate = GUI.Crate.get(player);

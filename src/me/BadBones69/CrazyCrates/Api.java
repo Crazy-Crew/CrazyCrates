@@ -30,6 +30,12 @@ public class Api{
 	public Api(Plugin plugin){
 		this.plugin = plugin;
 	}
+	public static Integer getVersion(){
+		String ver = Bukkit.getServer().getClass().getPackage().getName();
+		ver = ver.substring(ver.lastIndexOf('.')+1);
+		ver=ver.replaceAll("_", "").replaceAll("R", "").replaceAll("v", "");
+		return Integer.parseInt(ver);
+	}
 	public static String color(String msg){
 		msg = msg.replaceAll("(&([a-f0-9]))", "\u00A7$2");
 		msg = msg.replaceAll("&l", ChatColor.BOLD + "");
@@ -104,11 +110,11 @@ public class Api{
 			HashMap<Enchantment, Integer> enchs = new HashMap<Enchantment, Integer>();
 			String name = "";
 			int amount = 1;
-			Material m = Material.STONE;
+			String m = "Stone";
 			for(String i : l.split(", ")){
 				if(i.contains("Item:")){
 					i = i.replaceAll("Item:", "");
-					m=Material.matchMaterial(i);
+					m=i;
 				}
 				if(i.contains("Name:")){
 					i = i.replaceAll("Name:", "");
@@ -134,7 +140,7 @@ public class Api{
 					}
 				}
 			}
-			items.add(makeItem(m, amount, 0, name, lore, enchs));
+			items.add(makeItem(m, amount, name, lore, enchs));
 		}
 		return items;
 	}
@@ -192,6 +198,24 @@ public class Api{
 		item.setItemMeta(m);
 		return item;
 	}
+	public static ItemStack makeItem(String id, int amount, String name, List<String> lore){
+		ArrayList<String> l = new ArrayList<String>();
+		String ma = id;
+		int type = 0;
+		if(ma.contains(":")){
+			String[] b = ma.split(":");
+			ma = b[0];
+			type = Integer.parseInt(b[1]);
+		}
+		Material material = Material.matchMaterial(ma);
+		ItemStack item = new ItemStack(material, amount, (short) type);
+		ItemMeta m = item.getItemMeta();
+		m.setDisplayName(color(name));
+		for(String L:lore)l.add(color(L));
+		m.setLore(l);
+		item.setItemMeta(m);
+		return item;
+	}
 	public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore){
 		ArrayList<String> l = new ArrayList<String>();
 		ItemStack item = new ItemStack(material, amount, (short) type);
@@ -200,6 +224,25 @@ public class Api{
 		for(String L:lore)l.add(color(L));
 		m.setLore(l);
 		item.setItemMeta(m);
+		return item;
+	}
+	public static ItemStack makeItem(String id, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants){
+		ArrayList<String> l = new ArrayList<String>();
+		String ma = id;
+		int type = 0;
+		if(ma.contains(":")){
+			String[] b = ma.split(":");
+			ma = b[0];
+			type = Integer.parseInt(b[1]);
+		}
+		Material material = Material.matchMaterial(ma);
+		ItemStack item = new ItemStack(material, amount, (short) type);
+		ItemMeta m = item.getItemMeta();
+		m.setDisplayName(color(name));
+		for(String L:lore)l.add(color(L));
+		m.setLore(l);
+		item.setItemMeta(m);
+		item.addUnsafeEnchantments(enchants);
 		return item;
 	}
 	public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore, Map<Enchantment, Integer> enchants){
@@ -232,14 +275,14 @@ public class Api{
 	    }
 	    return true;
 	}
-	public static Player getPlayer(String name){
-		return Bukkit.getServer().getPlayer(name);
-	}
 	public static Location getLoc(Player player){
 		return player.getLocation();
 	}
 	public static void runCMD(Player player, String CMD){
 		player.performCommand(CMD);
+	}
+	public static Player getPlayer(String name){
+		return Bukkit.getServer().getPlayer(name);
 	}
 	public static boolean isOnline(String name, CommandSender p){
 		for(Player player : Bukkit.getServer().getOnlinePlayers()){
@@ -320,10 +363,20 @@ public class Api{
 		return color(Main.settings.getConfig().getString("Settings.Prefix"));
 	}
 	public static void pasteSchem(String schem, Location loc){
-		Schematic.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+		if(Api.getVersion()==183){
+			OnePointEight.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+		}
+		if(Api.getVersion()==191){
+			OnePointNine.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+		}
 	}
 	public static List<Location> getLocations(String shem, Location loc){
-		return Schematic.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+		if(Api.getVersion()==183){
+			return OnePointEight.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+		}
+		else{
+			return OnePointNine.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+		}
 	}
 	public static String pickRandomSchem(){
 		File f = new File(plugin.getDataFolder()+"/Schematics/");

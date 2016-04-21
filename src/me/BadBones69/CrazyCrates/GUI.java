@@ -29,12 +29,6 @@ public class GUI implements Listener{
 				String path = "Crate.";
 				int slot = Main.settings.getFile(crate).getInt(path+"Slot")+1;
 				String ma = Main.settings.getFile(crate).getString(path+"Item");
-				int type = 0;
-				if(ma.contains(":")){
-					String[] b = ma.split(":");
-					ma = b[0];
-					type = Integer.parseInt(b[1]);
-				}
 				String name = Main.settings.getFile(crate).getString(path+"Name");
 				ArrayList<String> lore = new ArrayList<String>();
 				for(String i : Main.settings.getFile(crate).getStringList(path+"Lore")){
@@ -44,7 +38,7 @@ public class GUI implements Listener{
 					i=i.replaceAll("%player%", player.getName());
 					lore.add(i);
 				}
-				inv.setItem(slot, Api.makeItem(Material.matchMaterial(ma), 1, type, name, lore));
+				inv.setItem(slot, Api.makeItem(ma, 1, name, lore));
 			}
 		}
 		player.openInventory(inv);

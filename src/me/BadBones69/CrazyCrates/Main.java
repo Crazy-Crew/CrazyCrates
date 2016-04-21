@@ -69,7 +69,7 @@ public class Main extends JavaPlugin implements Listener{
 	}
 	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args){
-		if(commandLable.equalsIgnoreCase("CrazyCrates")||commandLable.equalsIgnoreCase("CC")){
+		if(commandLable.equalsIgnoreCase("CrazyCrates")||commandLable.equalsIgnoreCase("CC")||commandLable.equalsIgnoreCase("CCrate")||commandLable.equalsIgnoreCase("CrazyCrate")){
 			if(args.length == 0){
 				if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Access"))return true;
 				GUI.openGUI((Player)sender);
@@ -223,18 +223,16 @@ public class Main extends JavaPlugin implements Listener{
 					String C = args[2]; //Crate
 					for(String crate : Api.getCrates()){
 						if(crate.equalsIgnoreCase(C)){
-							if(settings.getLocations().getConfigurationSection("Locations") == null){
+							if(!settings.getLocations().contains("Locations")){
 								settings.getLocations().set("Locations.clear", null);
 								settings.saveLocations();
 							}
-							if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
-								Main.settings.getLocations().set("Locations.Clear", null);
-								Main.settings.saveLocations();
-							}
-							for(String name : settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
-								if(name.equalsIgnoreCase(LN)){
-									player.sendMessage(Api.color(Api.getPrefix()+"&6"+name+" &calready exists."));
-									return true;
+							if(settings.getLocations().contains("Locations")){
+								for(String name : settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
+									if(name.equalsIgnoreCase(LN)){
+										player.sendMessage(Api.color(Api.getPrefix()+"&6"+name+" &calready exists."));
+										return true;
+									}
 								}
 							}
 							Block block = player.getTargetBlock((HashSet<Byte>)null, 5);
@@ -307,11 +305,11 @@ public class Main extends JavaPlugin implements Listener{
 					for(String crate : Api.getCrates()){
 						if(crate.equalsIgnoreCase(args[2])){
 							if(settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
-								sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+((Player)sender).getName()+" "+1+" &7Crates."));
+								sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+ sender.getName()+" "+1+" &7Crates."));
 								CrateOnTheGo.giveCrate((Player)sender, 1, crate);
 								return true;
 							}
-							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+((Player)sender).getName()+" "+1+" &7Keys."));
+							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+ sender.getName()+" "+1+" &7Keys."));
 							if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
 								Api.addKeys(1, (Player)sender, crate, "Virtual");
 							}
@@ -330,11 +328,11 @@ public class Main extends JavaPlugin implements Listener{
 					for(String crate : Api.getCrates()){
 						if(crate.equalsIgnoreCase(args[2])){
 							if(settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
-								sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+((Player)sender).getName()+" "+amount+" &7Crates."));
+								sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+ sender.getName()+" "+amount+" &7Crates."));
 								CrateOnTheGo.giveCrate((Player)sender, amount, crate);
 								return true;
 							}
-							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+((Player)sender).getName()+" "+amount+" &7Keys."));
+							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have given &6"+ sender.getName()+" "+amount+" &7Keys."));
 							if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
 								Api.addKeys(amount, (Player)sender, crate, "Virtual");
 							}

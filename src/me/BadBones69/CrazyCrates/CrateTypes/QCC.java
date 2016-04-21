@@ -8,10 +8,9 @@ import me.BadBones69.CrazyCrates.Api;
 import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
+import me.BadBones69.CrazyCrates.OnePointEight;
+import me.BadBones69.CrazyCrates.OnePointNine;
 import me.BadBones69.CrazyCrates.ParticleEffect;
-import net.minecraft.server.v1_8_R3.BlockPosition;
-import net.minecraft.server.v1_8_R3.TileEntityChest;
-import net.minecraft.server.v1_8_R3.TileEntityEnderChest;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -21,7 +20,6 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -184,7 +182,12 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}
 				if(f==60){
 					loc.getWorld().spigot().playEffect(loc.clone().add(0, .3, 0), Effect.TILE_BREAK, Chest.getId(), 0, (float).5, (float).5, (float).5, 0, 10, 100);
-					loc.getWorld().playSound(loc.clone(), Sound.STEP_STONE, 1, 1);
+					if(Api.getVersion()==183){
+						player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
+					}
+					if(Api.getVersion()==191){
+						player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+					}
 					loc.getBlock().setType(Chest);
 					loc.getBlock().setData((byte)4);
 					Bukkit.getScheduler().cancelTask(P.get(player));
@@ -218,7 +221,12 @@ public class QCC implements Listener{ // Quad Crate Control.
 						}
 						if(f==60){
 							loc.getWorld().spigot().playEffect(loc.clone().add(0, .3, 0), Effect.TILE_BREAK, Chest.getId(), 0, (float).5, (float).5, (float).5, 0, 10, 100);
-							loc.getWorld().playSound(loc.clone(), Sound.STEP_STONE, 1, 1);
+							if(Api.getVersion()==183){
+								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
+							}
+							if(Api.getVersion()==191){
+								player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+							}
 							loc.getBlock().setType(Chest);
 							loc.getBlock().setData((byte)2);
 							Bukkit.getScheduler().cancelTask(P.get(player));
@@ -254,7 +262,12 @@ public class QCC implements Listener{ // Quad Crate Control.
 						}
 						if(f==60){
 							loc.getWorld().spigot().playEffect(loc.clone().add(0, .3, 0), Effect.TILE_BREAK, Chest.getId(), 0, (float).5, (float).5, (float).5, 0, 10, 100);
-							loc.getWorld().playSound(loc.clone(), Sound.STEP_STONE, 1, 1);
+							if(Api.getVersion()==183){
+								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
+							}
+							if(Api.getVersion()==191){
+								player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+							}
 							loc.getBlock().setType(Chest);
 							loc.getBlock().setData((byte)5);
 							Bukkit.getScheduler().cancelTask(P.get(player));
@@ -290,7 +303,12 @@ public class QCC implements Listener{ // Quad Crate Control.
 						}
 						if(f==60){
 							loc.getWorld().spigot().playEffect(loc.clone().add(0, .3, 0), Effect.TILE_BREAK, Chest.getId(), 0, (float).5, (float).5, (float).5, 0, 10, 100);
-							loc.getWorld().playSound(loc.clone(), Sound.STEP_STONE, 1, 1);
+							if(Api.getVersion()==183){
+								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
+							}
+							if(Api.getVersion()==191){
+								player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+							}
 							loc.getBlock().setType(Chest);
 							loc.getBlock().setData((byte)3);
 							Bukkit.getScheduler().cancelTask(P.get(player));
@@ -383,19 +401,26 @@ public class QCC implements Listener{ // Quad Crate Control.
 										@SuppressWarnings("deprecation")
 										@Override
 										public void run() {
-											for(Location loc : Rest.get(player)){ // Rest is all except Chests.
-												HashMap<Location, BlockState> locs = crates.get(player); // Crates holds the Data.
-												if(locs!=null){
-													for(Location loc2 : locs.keySet()){ // Looping though the locations.
-														if(locs.get(loc)!=null){ // Checking to make sure a location isn't null.
-															if(loc.equals(loc2)){
-																loc2.getBlock().setTypeIdAndData(locs.get(loc2).getTypeId(), locs.get(loc2).getRawData(), true);
+											if(Rest.get(player)!=null){
+												for(Location loc : Rest.get(player)){ // Rest is all except Chests.
+													HashMap<Location, BlockState> locs = crates.get(player); // Crates holds the Data.
+													if(locs!=null){
+														for(Location loc2 : locs.keySet()){ // Looping though the locations.
+															if(locs.get(loc)!=null){ // Checking to make sure a location isn't null.
+																if(loc.equals(loc2)){
+																	loc2.getBlock().setTypeIdAndData(locs.get(loc2).getTypeId(), locs.get(loc2).getRawData(), true);
+																}
 															}
 														}
 													}
 												}
 											}
-											player.getLocation().getWorld().playSound(player.getLocation().clone(), Sound.STEP_STONE, 1, 1);
+											if(Api.getVersion()==183){
+												player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
+											}
+											if(Api.getVersion()==191){
+												player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+											}
 										}
 									}, 3*20);
 									Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
@@ -419,7 +444,12 @@ public class QCC implements Listener{ // Quad Crate Control.
 												}
 											}
 											Rewards.remove(player);
-											player.getWorld().playSound(player.getLocation().clone(), Sound.STEP_STONE, 1, 1);
+											if(Api.getVersion()==183){
+												player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
+											}
+											if(Api.getVersion()==191){
+												player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+											}
 											crates.remove(player);
 											chests.remove(player);
 											Rest.remove(player);
@@ -531,15 +561,12 @@ public class QCC implements Listener{ // Quad Crate Control.
 	}
 	private void playChestAction(Block b, boolean open) {
         Location location = b.getLocation();
-        net.minecraft.server.v1_8_R3.World world = ((CraftWorld) location.getWorld()).getHandle();
-        BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
-        if (b.getType() == Material.ENDER_CHEST) {
-            TileEntityEnderChest tileChest = (TileEntityEnderChest) world.getTileEntity(position);
-            world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
-        } else {
-            TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
-            world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
-        }
+        if(Api.getVersion()==183){
+        	OnePointEight.openChest(b, location, open);
+		}
+		if(Api.getVersion()==191){
+			OnePointNine.openChest(b, location, open);
+		}
     }
 	private static ArrayList<Location> getCircle(Location center, double radius, int amount){
         World world = center.getWorld();
