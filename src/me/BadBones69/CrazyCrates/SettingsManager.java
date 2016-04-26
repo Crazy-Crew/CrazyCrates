@@ -202,6 +202,7 @@ public class SettingsManager {
 	public void reloadAll(){
 		config = YamlConfiguration.loadConfiguration(cfile);
 		data = YamlConfiguration.loadConfiguration(dfile);
+		locations = YamlConfiguration.loadConfiguration(locationsfile);
 		for(File c : getAllCrates()){
 			YamlConfiguration.loadConfiguration(c);
 		}

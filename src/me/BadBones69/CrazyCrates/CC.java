@@ -73,51 +73,53 @@ public class CC implements Listener{ //Crate Control
 				Main.settings.getLocations().set("Locations.Clear", null);
 				Main.settings.saveLocations();
 			}
-			for(String location : Main.settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
-				String Crate = Main.settings.getLocations().getString("Locations."+location+".Crate");
-				World w = Bukkit.getWorld(Main.settings.getLocations().getString("Locations."+location+".World"));
-				int x = Main.settings.getLocations().getInt("Locations."+location+".X");
-				int y = Main.settings.getLocations().getInt("Locations."+location+".Y");
-				int z = Main.settings.getLocations().getInt("Locations."+location+".Z");
-				Location loc = new Location(w, x, y, z);
-				if(block.getLocation().equals(loc)){
-					e.setCancelled(true);
-					String KeyName = Api.color(Main.settings.getFile(Crate).getString("Crate.PhysicalKey.Name"));
-					if(e.hasItem()){
-						ItemStack item = new ItemStack(Material.AIR);
-						String ver = Bukkit.getServer().getClass().getPackage().getName();
-						ver = ver.substring(ver.lastIndexOf('.')+1);
-						if(Api.getVersion()==183){
-							item = OnePointEight.getInHand(player);
-						}
-						if(Api.getVersion()==191){
-							item = OnePointNine.getInHand(player);
-						}
-						if(item.hasItemMeta()){
-							if(item.getItemMeta().hasDisplayName()){
-								if(item.getItemMeta().getDisplayName().equals(KeyName)){
-									if(GUI.Crate.containsKey(player)){
-										String msg = Main.settings.getConfig().getString("Settings.AlreadyOpeningCrateMsg");
-										msg = msg.replaceAll("%Key%", KeyName);
-										msg = msg.replaceAll("%key%", KeyName);
-										player.sendMessage(Api.color(Api.getPrefix()+msg));
+			if(Main.settings.getLocations().contains("Locations")){
+				for(String location : Main.settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
+					String Crate = Main.settings.getLocations().getString("Locations."+location+".Crate");
+					World w = Bukkit.getWorld(Main.settings.getLocations().getString("Locations."+location+".World"));
+					int x = Main.settings.getLocations().getInt("Locations."+location+".X");
+					int y = Main.settings.getLocations().getInt("Locations."+location+".Y");
+					int z = Main.settings.getLocations().getInt("Locations."+location+".Z");
+					Location loc = new Location(w, x, y, z);
+					if(block.getLocation().equals(loc)){
+						e.setCancelled(true);
+						String KeyName = Api.color(Main.settings.getFile(Crate).getString("Crate.PhysicalKey.Name"));
+						if(e.hasItem()){
+							ItemStack item = new ItemStack(Material.AIR);
+							String ver = Bukkit.getServer().getClass().getPackage().getName();
+							ver = ver.substring(ver.lastIndexOf('.')+1);
+							if(Api.getVersion()==183){
+								item = OnePointEight.getInHand(player);
+							}
+							if(Api.getVersion()==191){
+								item = OnePointNine.getInHand(player);
+							}
+							if(item.hasItemMeta()){
+								if(item.getItemMeta().hasDisplayName()){
+									if(item.getItemMeta().getDisplayName().equals(KeyName)){
+										if(GUI.Crate.containsKey(player)){
+											String msg = Main.settings.getConfig().getString("Settings.AlreadyOpeningCrateMsg");
+											msg = msg.replaceAll("%Key%", KeyName);
+											msg = msg.replaceAll("%key%", KeyName);
+											player.sendMessage(Api.color(Api.getPrefix()+msg));
+											return;
+										}
+										GUI.Crate.put(player, Crate);
+										Key.put(player, item);
+										Api.Key.put(player, "PhysicalKey");
+										openCrate(player, Crate, loc);
 										return;
 									}
-									GUI.Crate.put(player, Crate);
-									Key.put(player, item);
-									Api.Key.put(player, "PhysicalKey");
-									openCrate(player, Crate, loc);
-									return;
 								}
 							}
 						}
+						knockBack(player, block.getLocation());
+						String msg = Main.settings.getConfig().getString("Settings.NoKeyMsg");
+						msg = msg.replaceAll("%Key%", KeyName);
+						msg = msg.replaceAll("%key%", KeyName);
+						player.sendMessage(Api.color(Api.getPrefix()+msg));
+						return;
 					}
-					knockBack(player, block.getLocation());
-					String msg = Main.settings.getConfig().getString("Settings.NoKeyMsg");
-					msg = msg.replaceAll("%Key%", KeyName);
-					msg = msg.replaceAll("%key%", KeyName);
-					player.sendMessage(Api.color(Api.getPrefix()+msg));
-					return;
 				}
 			}
 		}
