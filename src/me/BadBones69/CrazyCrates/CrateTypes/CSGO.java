@@ -132,10 +132,11 @@ public class CSGO implements Listener{
 						for(String reward : Main.settings.getFile(crate).getConfigurationSection("Crate.Prizes").getKeys(false)){
 							if(name.equals(Api.color(Main.settings.getFile(crate).getString("Crate.Prizes."+reward+".DisplayName")))){
 								getReward(player, reward);
-								GUI.Crate.remove(player);
-								return;
+								break;
 							}
 						}
+						GUI.Crate.remove(player);
+						return;
 					}
 				}
 			}

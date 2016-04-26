@@ -1,6 +1,7 @@
 package me.BadBones69.CrazyCrates;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -59,7 +60,11 @@ public class GUI implements Listener{
 			String id = Main.settings.getFile(crate).getString("Crate.Prizes."+reward+".DisplayItem");
 			String name = Main.settings.getFile(crate).getString("Crate.Prizes."+reward+".DisplayName");
 			List<String> lore = Main.settings.getFile(crate).getStringList("Crate.Prizes."+reward+".Lore");
-			inv.addItem(Api.makeItem(id, 1, name, lore));
+			try{
+				inv.addItem(Api.makeItem(id, 1, name, lore));
+			}catch(Exception e){
+				inv.addItem(Api.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error","&cFor the reward: &c"+reward)));
+			}
 		}
 		player.openInventory(inv);
 	}

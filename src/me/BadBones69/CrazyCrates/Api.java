@@ -88,21 +88,23 @@ public class Api{
 	public static HashMap<ItemStack, String> getItems(Player player){
 		HashMap<ItemStack, String> items = new HashMap<ItemStack, String>();
 		for(String reward : Main.settings.getFile(GUI.Crate.get(player)).getConfigurationSection("Crate.Prizes").getKeys(false)){
-			Material mt = Material.matchMaterial(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.Prizes." + reward + ".DisplayItem"));
+			String id = Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.Prizes." + reward + ".DisplayItem");
+			String name = Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.Prizes." + reward + ".DisplayName");
 			int chance = Main.settings.getFile(GUI.Crate.get(player)).getInt("Crate.Prizes." + reward + ".Chance");
 			int max = 99;
 			if(Main.settings.getFile(GUI.Crate.get(player)).contains("Crate.Prizes." + reward + ".MaxRange")){
 				max=Main.settings.getFile(GUI.Crate.get(player)).getInt("Crate.Prizes." + reward + ".MaxRange")-1;
 			}
-			ItemStack item = new ItemStack(mt);
-			ItemMeta m = item.getItemMeta();
-			m.setDisplayName(color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.Prizes." + reward + ".DisplayName")));
-			item.setItemMeta(m);
-			Random number = new Random();
-			int num;
-			for(int counter = 1; counter<=1; counter++){
-				num = 1 + number.nextInt(max);
-				if(num >= 1 && num <= chance)items.put(item, "Crate.Prizes."+reward);
+			try{
+				ItemStack item = makeItem(id, 1, name);
+				Random number = new Random();
+				int num;
+				for(int counter = 1; counter<=1; counter++){
+					num = 1 + number.nextInt(max);
+					if(num >= 1 && num <= chance)items.put(item, "Crate.Prizes."+reward);
+				}
+			}catch(Exception e){
+				continue;
 			}
 		}
 		return items;
@@ -216,6 +218,20 @@ public class Api{
 		me.setDisplayName(color(name));
 		for(String L:lore)l.add(color(L));
 		me.setLore(l);
+		item.setItemMeta(me);
+		return item;
+	}
+	public static ItemStack makeItem(String type, int amount, String name){
+		int ty = 0;
+		if(type.contains(":")){
+			String[] b = type.split(":");
+			type = b[0];
+			ty = Integer.parseInt(b[1]);
+		}
+		Material m = Material.matchMaterial(type);
+		ItemStack item = new ItemStack(m, amount, (short) ty);
+		ItemMeta me = item.getItemMeta();
+		me.setDisplayName(color(name));
 		item.setItemMeta(me);
 		return item;
 	}
