@@ -10,6 +10,7 @@ Crate:
   Lore:
     - '&7This crate contains classic items.'
     - '&7You have &6%Keys% keys &7to open this crate with.'
+    - '&7&l(&e&l!&7&l) Right click to view rewards.'
   PhysicalKey:
     Name: '&e&lClassic Crate &c&lKey'
     Lore:
@@ -22,6 +23,10 @@ Crate:
     1:
       DisplayName: '&a&lFancy Pants'
       DisplayItem: '304'
+      Lore:
+        - '&7Win a fancy pair of pants.'
+        - '&6&lChance: &c&l40%'
+      MaxRange: 100
       Chance: 40
       Firework: false
       Items:
@@ -29,6 +34,10 @@ Crate:
     2:
       DisplayName: '&b&lClassic Sword'
       DisplayItem: '276'
+      Lore:
+        - '&7Win a old classic sword.'
+        - '&6&lChance: &c&l35%'
+      MaxRange: 100
       Chance: 35
       Firework: false
       Items:
@@ -36,6 +45,10 @@ Crate:
     3:
       DisplayName: '&e&l$100,000'
       DisplayItem: '175'
+      Lore:
+        - '&7Make it rain a lot of Money.'
+        - '&6&lChance: &c&l20%'
+      MaxRange: 100
       Chance: 20
       Firework: true
       Commands:

@@ -7,9 +7,10 @@ Crate:
   BroadCast: '%Prefix%&6&l%Player% &7is opening a &7&lBasic Chest&7.' #Message that is broadcasted when opening the crate.
   Item: '54' #Item the crate is in the GUI
   Name: '&7&lBasic Chest' #Name of the item in the GUI.
-  Lore: 
+  Lore: #The lore of the item in the GUI.
     - '&7This crate contains strange objects.' 
-    - '&7You have &6%Keys% keys &7to open this crate with.' #The lore of the item in the GUI.
+    - '&7You have &6%Keys% keys &7to open this crate with.'
+    - '&7&l(&e&l!&7&l) Right click to view rewards.'
   PhysicalKey:
     Name: '&7&lBasic Crate &b&lKey' #Name of the Key.
     Lore:
@@ -22,7 +23,11 @@ Crate:
     1:
       DisplayName: '&7&lBasic Grass' #Name of the item shown by the crate.
       DisplayItem: '2' #Item that is shown by the crate.
-      Chance: 40 #Chance of that item getting picked.
+      Lore: #Lore will be shown in rewards GUI.
+        - '&7Win some grass for your fields.'
+        - '&6&lChance: &c&l40%'
+      MaxRange: 100 #The max range that the chance will go though.
+      Chance: 40 #Chance of that item getting picked. It would be 40/100 chance because MaxRange is 100.
       Firework: false #Firework when it is won.
       #Items that the player wins if this prize is picked. (If you wish not to give an Item in the prize just delete the Items Section)
       #Please use these to make the item.
@@ -39,6 +44,10 @@ Crate:
     2:
       DisplayName: '&b&lCheap Helmet'
       DisplayItem: '314'
+      Lore:
+        - '&7Win a cheap helmet.'
+        - '&6&lChance: &c&l60%'
+      MaxRange: 100
       Chance: 60
       Firework: false
       Items:
@@ -46,6 +55,10 @@ Crate:
     3:
       DisplayName: '&e&l$1,000'
       DisplayItem: '175'
+      Lore:
+        - '&7Make it rain Money.'
+        - '&6&lChance: &c&l20%'
+      MaxRange: 100
       Chance: 20
       Firework: true
       Commands:

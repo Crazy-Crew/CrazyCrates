@@ -2,6 +2,7 @@ package me.BadBones69.CrazyCrates;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
@@ -12,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -43,11 +45,35 @@ public class GUI implements Listener{
 		}
 		player.openInventory(inv);
 	}
+	public static void openGUI(Player player, String crate){
+		int am = Main.settings.getFile(crate).getConfigurationSection("Crate.Prizes").getKeys(false).size();
+		int size = 9;
+		if(am>=0&&am<=9)size=9;
+		if(am>=10&&am<=18)size=18;
+		if(am>=19&&am<=27)size=27;
+		if(am>=28&&am<=36)size=36;
+		if(am>=37&&am<=45)size=45;
+		if(am>=46&&am<=54)size=54;
+		Inventory inv = Bukkit.createInventory(null, size, Api.color(Main.settings.getFile(crate).getString("Crate.Name")));
+		for(String reward : Main.settings.getFile(crate).getConfigurationSection("Crate.Prizes").getKeys(false)){
+			String id = Main.settings.getFile(crate).getString("Crate.Prizes."+reward+".DisplayItem");
+			String name = Main.settings.getFile(crate).getString("Crate.Prizes."+reward+".DisplayName");
+			List<String> lore = Main.settings.getFile(crate).getStringList("Crate.Prizes."+reward+".Lore");
+			inv.addItem(Api.makeItem(id, 1, name, lore));
+		}
+		player.openInventory(inv);
+	}
 	@EventHandler
 	public void onInvClick(InventoryClickEvent e){
 		Player player = (Player) e.getWhoClicked();
 		Inventory inv = e.getInventory();
 		if(inv!=null){
+			for(String crate : Api.getCrates()){
+				if(inv.getName().equals(Api.color(Main.settings.getFile(crate).getString("Crate.Name")))){
+					e.setCancelled(true);
+					return;
+				}
+			}
 			if(inv.getName().equals(Api.color(Main.settings.getConfig().getString("Settings.InventoryName")))){
 				e.setCancelled(true);
 				if(e.getCurrentItem()!=null){
@@ -58,6 +84,10 @@ public class GUI implements Listener{
 								String path = "Crate.";
 								if(item.getItemMeta().getDisplayName().equals(Api.color(Main.settings.getFile(crate).getString(path+"Name")))){
 									player.closeInventory();
+									if(e.getAction()==InventoryAction.PICKUP_HALF){
+										openGUI(player, crate);
+										return;
+									}
 									if(Crate.containsKey(player)){
 										player.sendMessage(Api.color(Api.getPrefix()+"&cYou are already opening a crate."));
 										return;

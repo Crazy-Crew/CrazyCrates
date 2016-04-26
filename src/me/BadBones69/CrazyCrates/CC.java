@@ -28,7 +28,27 @@ public class CC implements Listener{ //Crate Control
 	@EventHandler
 	public void onCrateOpen(PlayerInteractEvent e){
 		Player player = e.getPlayer();
-		if(e.getAction() == Action.RIGHT_CLICK_BLOCK||e.getAction() == Action.LEFT_CLICK_BLOCK){
+		if(e.getAction() == Action.LEFT_CLICK_BLOCK){
+			Block block = e.getClickedBlock();
+			if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
+				Main.settings.getLocations().set("Locations.Clear", null);
+				Main.settings.saveLocations();
+			}
+			for(String location : Main.settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
+				String Crate = Main.settings.getLocations().getString("Locations."+location+".Crate");
+				World w = Bukkit.getWorld(Main.settings.getLocations().getString("Locations."+location+".World"));
+				int x = Main.settings.getLocations().getInt("Locations."+location+".X");
+				int y = Main.settings.getLocations().getInt("Locations."+location+".Y");
+				int z = Main.settings.getLocations().getInt("Locations."+location+".Z");
+				Location loc = new Location(w, x, y, z);
+				if(block.getLocation().equals(loc)){
+					e.setCancelled(true);
+					GUI.openGUI(player, Crate);
+					return;
+				}
+			}
+		}
+		if(e.getAction() == Action.RIGHT_CLICK_BLOCK){
 			Block block = e.getClickedBlock();
 			for(String crate : Main.settings.getAllCratesNames()){
 				String KeyName = Api.color(Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name"));

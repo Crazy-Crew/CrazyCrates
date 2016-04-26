@@ -90,6 +90,10 @@ public class Api{
 		for(String reward : Main.settings.getFile(GUI.Crate.get(player)).getConfigurationSection("Crate.Prizes").getKeys(false)){
 			Material mt = Material.matchMaterial(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.Prizes." + reward + ".DisplayItem"));
 			int chance = Main.settings.getFile(GUI.Crate.get(player)).getInt("Crate.Prizes." + reward + ".Chance");
+			int max = 99;
+			if(Main.settings.getFile(GUI.Crate.get(player)).contains("Crate.Prizes." + reward + ".MaxRange")){
+				max=Main.settings.getFile(GUI.Crate.get(player)).getInt("Crate.Prizes." + reward + ".MaxRange")-1;
+			}
 			ItemStack item = new ItemStack(mt);
 			ItemMeta m = item.getItemMeta();
 			m.setDisplayName(color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.Prizes." + reward + ".DisplayName")));
@@ -97,7 +101,7 @@ public class Api{
 			Random number = new Random();
 			int num;
 			for(int counter = 1; counter<=1; counter++){
-				num = 1 + number.nextInt(99);
+				num = 1 + number.nextInt(max);
 				if(num >= 1 && num <= chance)items.put(item, "Crate.Prizes."+reward);
 			}
 		}
@@ -198,22 +202,21 @@ public class Api{
 		item.setItemMeta(m);
 		return item;
 	}
-	public static ItemStack makeItem(String id, int amount, String name, List<String> lore){
+	public static ItemStack makeItem(String type, int amount, String name, List<String> lore){
 		ArrayList<String> l = new ArrayList<String>();
-		String ma = id;
-		int type = 0;
-		if(ma.contains(":")){
-			String[] b = ma.split(":");
-			ma = b[0];
-			type = Integer.parseInt(b[1]);
+		int ty = 0;
+		if(type.contains(":")){
+			String[] b = type.split(":");
+			type = b[0];
+			ty = Integer.parseInt(b[1]);
 		}
-		Material material = Material.matchMaterial(ma);
-		ItemStack item = new ItemStack(material, amount, (short) type);
-		ItemMeta m = item.getItemMeta();
-		m.setDisplayName(color(name));
+		Material m = Material.matchMaterial(type);
+		ItemStack item = new ItemStack(m, amount, (short) ty);
+		ItemMeta me = item.getItemMeta();
+		me.setDisplayName(color(name));
 		for(String L:lore)l.add(color(L));
-		m.setLore(l);
-		item.setItemMeta(m);
+		me.setLore(l);
+		item.setItemMeta(me);
 		return item;
 	}
 	public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore){
