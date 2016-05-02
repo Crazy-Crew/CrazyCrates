@@ -25,6 +25,7 @@ public class CC implements Listener{ //Crate Control
 	public static HashMap<Player, ItemStack> Key = new HashMap<Player, ItemStack>();
 	public static HashMap<Player, Location> LastLoc = new HashMap<Player, Location>();
 	public static HashMap<Player, Location> InUse = new HashMap<Player, Location>();
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onCrateOpen(PlayerInteractEvent e){
 		Player player = e.getPlayer();
@@ -54,11 +55,11 @@ public class CC implements Listener{ //Crate Control
 				String KeyName = Api.color(Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name"));
 				if(e.hasItem()){
 					ItemStack item = new ItemStack(Material.AIR);
-					if(Api.getVersion()==183){
-						item = OnePointEight.getInHand(player);
-					}
 					if(Api.getVersion()==191){
-						item = OnePointNine.getInHand(player);
+						item = player.getInventory().getItemInMainHand();
+					}
+					else{
+						item = player.getItemInHand();
 					}
 					if(item.hasItemMeta()){
 						if(item.getItemMeta().hasDisplayName()){
@@ -88,11 +89,11 @@ public class CC implements Listener{ //Crate Control
 							ItemStack item = new ItemStack(Material.AIR);
 							String ver = Bukkit.getServer().getClass().getPackage().getName();
 							ver = ver.substring(ver.lastIndexOf('.')+1);
-							if(Api.getVersion()==183){
-								item = OnePointEight.getInHand(player);
-							}
 							if(Api.getVersion()==191){
-								item = OnePointNine.getInHand(player);
+								item = player.getInventory().getItemInMainHand();
+							}
+							else{
+								item = player.getItemInHand();
 							}
 							if(item.hasItemMeta()){
 								if(item.getItemMeta().hasDisplayName()){
@@ -134,7 +135,6 @@ public class CC implements Listener{ //Crate Control
 		}
 		if(C.equalsIgnoreCase("QuadCrate")){
 			LastLoc.put(player, player.getLocation());
-			player.teleport(loc.add(.5,0,.5));
 			QCC.startBuild(player, loc, Material.CHEST);
 		}
 		if(C.equalsIgnoreCase("QuickCrate")){

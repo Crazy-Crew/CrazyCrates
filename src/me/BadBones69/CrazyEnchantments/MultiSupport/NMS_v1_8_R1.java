@@ -1,33 +1,32 @@
-package me.BadBones69.CrazyCrates;
-
+package me.BadBones69.CrazyEnchantments.MultiSupport;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.server.v1_8_R3.NBTCompressedStreamTools;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import net.minecraft.server.v1_8_R1.NBTCompressedStreamTools;
+import net.minecraft.server.v1_8_R1.NBTTagCompound;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class OnePointEight {
+public class NMS_v1_8_R1 {
 	@SuppressWarnings("deprecation")
 	public static ItemStack getInHand(Player player){
 		return player.getItemInHand();
 	}
 	public static void openChest(Block b, Location location, Boolean open){
-		net.minecraft.server.v1_8_R3.World world = ((CraftWorld) location.getWorld()).getHandle();
-    	net.minecraft.server.v1_8_R3.BlockPosition position = new net.minecraft.server.v1_8_R3.BlockPosition(location.getX(), location.getY(), location.getZ());
+		net.minecraft.server.v1_8_R1.World world = ((CraftWorld) location.getWorld()).getHandle();
+    	net.minecraft.server.v1_8_R1.BlockPosition position = new net.minecraft.server.v1_8_R1.BlockPosition(location.getX(), location.getY(), location.getZ());
         if (b.getType() == Material.ENDER_CHEST) {
-        	net.minecraft.server.v1_8_R3.TileEntityEnderChest tileChest = (net.minecraft.server.v1_8_R3.TileEntityEnderChest) world.getTileEntity(position);
+        	net.minecraft.server.v1_8_R1.TileEntityEnderChest tileChest = (net.minecraft.server.v1_8_R1.TileEntityEnderChest) world.getTileEntity(position);
             world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
         } else {
-        	net.minecraft.server.v1_8_R3.TileEntityChest tileChest = (net.minecraft.server.v1_8_R3.TileEntityChest) world.getTileEntity(position);
+        	net.minecraft.server.v1_8_R1.TileEntityChest tileChest = (net.minecraft.server.v1_8_R1.TileEntityChest) world.getTileEntity(position);
             world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
         }
 	}

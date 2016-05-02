@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_8_R1;
+import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_8_R2;
+import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_8_R3;
+import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_9_R1;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -382,20 +387,33 @@ public class Api{
 		return color(Main.settings.getConfig().getString("Settings.Prefix"));
 	}
 	public static void pasteSchem(String schem, Location loc){
-		if(Api.getVersion()==183){
-			OnePointEight.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
-		}
 		if(Api.getVersion()==191){
-			OnePointNine.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+			NMS_v1_9_R1.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+		}
+		if(Api.getVersion()==183){
+			NMS_v1_8_R3.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+		}
+		if(Api.getVersion()==182){
+			NMS_v1_8_R2.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+		}
+		if(Api.getVersion()==181){
+			NMS_v1_8_R1.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
 		}
 	}
 	public static List<Location> getLocations(String shem, Location loc){
+		if(Api.getVersion()==191){
+			return NMS_v1_9_R1.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+		}
 		if(Api.getVersion()==183){
-			return OnePointEight.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+			return NMS_v1_8_R3.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
 		}
-		else{
-			return OnePointNine.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+		if(Api.getVersion()==182){
+			return NMS_v1_8_R2.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
 		}
+		if(Api.getVersion()==181){
+			return NMS_v1_8_R1.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+		}
+		return null;
 	}
 	public static String pickRandomSchem(){
 		File f = new File(plugin.getDataFolder()+"/Schematics/");

@@ -8,9 +8,11 @@ import me.BadBones69.CrazyCrates.Api;
 import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
-import me.BadBones69.CrazyCrates.OnePointEight;
-import me.BadBones69.CrazyCrates.OnePointNine;
 import me.BadBones69.CrazyCrates.ParticleEffect;
+import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_8_R1;
+import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_8_R2;
+import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_8_R3;
+import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_9_R1;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -33,6 +35,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
@@ -62,9 +66,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 	 * @param Chest Chest Type.
 	 */
 	public static void startBuild(final Player player, final Location loc, Material Chest){
+		Location Lo = loc.clone();
 		final ArrayList<Location> Ch = getChests(loc);
 		String schem = Api.pickRandomSchem();
-		List<Location> Check = Api.getLocations(schem, player.getLocation());
+		List<Location> Check = Api.getLocations(schem, Lo.clone());
 		ArrayList<Location> rest = new ArrayList<Location>();
 		rest.add(loc.clone().add(0, -1, 0));
 		HashMap<Location, Boolean> checks = new HashMap<Location, Boolean>();
@@ -72,20 +77,20 @@ public class QCC implements Listener{ // Quad Crate Control.
 			checks.put(l, false);
 		}
 		opened.put(player, checks);
-		ArrayList<Material> BlackList = new ArrayList<Material>();
-		BlackList.add(Material.SIGN_POST);
-		BlackList.add(Material.WALL_SIGN);
-		BlackList.add(Material.STONE_BUTTON);
-		BlackList.add(Material.WOOD_BUTTON);
+		ArrayList<Material> BlockList = new ArrayList<Material>();
+		BlockList.add(Material.SIGN_POST);
+		BlockList.add(Material.WALL_SIGN);
+		BlockList.add(Material.STONE_BUTTON);
+		BlockList.add(Material.WOOD_BUTTON);
 		for(Location l : Check){
-			if(BlackList.contains(l.getBlock().getType())){
+			if(BlockList.contains(l.getBlock().getType())){
 				String msg = Main.settings.getConfig().getString("Settings.QuadCrate.NeedsMoreRoom");
 				player.sendMessage(Api.color(Api.getPrefix()+msg));
 				GUI.Crate.remove(player);
 				return;
 			}
-			if(l.getBlockY()!=player.getLocation().getBlockY()-1&&l.getBlock().getType()!=Material.AIR){
-				if(!l.equals(player.getLocation())){
+			if(l.getBlockY()!=Lo.clone().getBlockY()-1&&l.getBlock().getType()!=Material.AIR){
+				if(!l.equals(Lo.clone())){
 					String msg = Main.settings.getConfig().getString("Settings.QuadCrate.NeedsMoreRoom");
 					player.sendMessage(Api.color(Api.getPrefix()+msg));
 					GUI.Crate.remove(player);
@@ -93,12 +98,12 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}
 			}
 		}
-		if(player.getLocation().subtract(0, 1, 0).getBlock().getType()==Material.AIR){
+		if(Lo.clone().subtract(0, 1, 0).getBlock().getType()==Material.AIR){
 			player.sendMessage(Api.color(Api.getPrefix()+"&cYou must be standing on a block."));
 			GUI.Crate.remove(player);
 			return;
 		}
-		for(Entity en : player.getNearbyEntities(6, 6, 6)){
+		for(Entity en : player.getNearbyEntities(3, 3, 3)){
 			if(en instanceof Player){
 				Player p = (Player) en;
 				if(crates.containsKey(p)){
@@ -111,6 +116,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}
 			}
 		}
+		player.teleport(loc.clone().add(.5,0,.5));
 		for(Entity en : player.getNearbyEntities(2, 2, 2)){
 			if(en instanceof Player){
 				Player p = (Player) en;
@@ -136,7 +142,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 		rest.clear();
 		HashMap<Location, BlockState> locs = new HashMap<Location, BlockState>();
 		HashMap<Location, BlockState> A = new HashMap<Location, BlockState>();
-		for(Location l : Api.getLocations(schem, player.getLocation())){
+		for(Location l : Api.getLocations(schem, Lo.clone())){
 			boolean found = false;
 			for(Location L : chests.get(player)){
 				if(l.getBlockX()==L.getBlockX()&&l.getBlockY()==L.getBlockY()&&l.getBlockZ()==L.getBlockZ()){
@@ -150,7 +156,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 			}
 			A.put(l, l.getBlock().getState());
 		}
-		Api.pasteSchem(schem, player.getLocation());
+		Api.pasteSchem(schem, Lo.clone());
 		All.put(player, A);
 		crates.put(player, locs);
 		Rest.put(player, rest);
@@ -318,6 +324,18 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}, 0, 1));
 			}
 		}, 181);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
+			@Override
+			public void run() {
+				P.put(player, Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
+					@Override
+					public void run() {
+						undoBuild(player);
+						player.sendMessage(Api.getPrefix()+Api.color(Main.settings.getConfig().getString("Settings.QuadCrate.Out-Of-Time")));
+					}
+				}, Main.settings.getConfig().getInt("Settings.QuadCrate.Timer")*20));
+			}
+		}, 241);
 	}
 	/**
 	 * Undoes the Crate Build.
@@ -545,6 +563,20 @@ public class QCC implements Listener{ // Quad Crate Control.
 		}
 	}
 	@EventHandler
+	public void onTeleport(PlayerTeleportEvent e){
+		Player player = e.getPlayer();
+		if(crates.containsKey(player)){
+			if(e.getCause()==TeleportCause.ENDER_PEARL){
+				e.setCancelled(true);
+				String msg = Main.settings.getConfig().getString("Settings.No-Teleporting-Msg");
+				msg = msg.replaceAll("%Player%", player.getName());
+				msg = msg.replaceAll("%player%", player.getName());
+				player.sendMessage(Api.color(Api.getPrefix()+msg));
+				return;
+			}
+		}
+	}
+	@EventHandler
 	public void onLeave(PlayerQuitEvent e){
 		Player player = e.getPlayer();
 		if(crates.containsKey(player)){
@@ -561,11 +593,17 @@ public class QCC implements Listener{ // Quad Crate Control.
 	}
 	private void playChestAction(Block b, boolean open) {
         Location location = b.getLocation();
-        if(Api.getVersion()==183){
-        	OnePointEight.openChest(b, location, open);
+        if(Api.getVersion()==191){
+        	NMS_v1_9_R1.openChest(b, location, open);
 		}
-		if(Api.getVersion()==191){
-			OnePointNine.openChest(b, location, open);
+		if(Api.getVersion()==183){
+			NMS_v1_8_R3.openChest(b, location, open);
+		}
+		if(Api.getVersion()==182){
+			NMS_v1_8_R2.openChest(b, location, open);
+		}
+		if(Api.getVersion()==181){
+			NMS_v1_8_R1.openChest(b, location, open);
 		}
     }
 	private static ArrayList<Location> getCircle(Location center, double radius, int amount){

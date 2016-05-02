@@ -24,6 +24,7 @@ Settings:
   Prefix: '&8[&bCrazyCrates&8]: '
   InventoryName: '&b&lCrazy &4&lCrates'
   InventorySize: 27
+  No-Teleporting-Msg: '&cYou may not teleport away while opening a crate.'
   NoCMDsWhileCrateOpened: '&cYou are not allowed to use commands while opening Crates.'
   NoKeyMsg: '&cYou must have a %Key% &cin your hand to use that Crate.'
   NoVirtualKeyMsg: '&cYou need a key to open that Crate.'
@@ -33,5 +34,7 @@ Settings:
   QuadCrate:
     ToCloseToAnotherPlayer: '&cYou are to close to a player that is opening their Crate.'
     NeedsMoreRoom: '&cThere is not enough space to open that here.'
+    Timer: 300
+    Out-Of-Time: '&cYou took 5 Minutes to open the crate so it closed.'
   DisabledWorlds:
     - 'world_nether'

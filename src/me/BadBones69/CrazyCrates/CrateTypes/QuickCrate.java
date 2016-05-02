@@ -6,8 +6,10 @@ import me.BadBones69.CrazyCrates.Api;
 import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
-import me.BadBones69.CrazyCrates.OnePointEight;
-import me.BadBones69.CrazyCrates.OnePointNine;
+import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_8_R1;
+import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_8_R2;
+import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_8_R3;
+import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_9_R1;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -65,11 +67,17 @@ public class QuickCrate implements Listener{
 	}
 	private static void playChestAction(Block b, boolean open) {
         Location location = b.getLocation();
-        if(Api.getVersion()==183){
-        	OnePointEight.openChest(b, location, open);
+        if(Api.getVersion()==191){
+        	NMS_v1_9_R1.openChest(b, location, open);
 		}
-		if(Api.getVersion()==191){
-			OnePointNine.openChest(b, location, open);
+		if(Api.getVersion()==183){
+			NMS_v1_8_R3.openChest(b, location, open);
+		}
+		if(Api.getVersion()==182){
+			NMS_v1_8_R2.openChest(b, location, open);
+		}
+		if(Api.getVersion()==181){
+			NMS_v1_8_R1.openChest(b, location, open);
 		}
     }
 }
