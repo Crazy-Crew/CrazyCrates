@@ -1,6 +1,10 @@
 package me.BadBones69.CrazyCrates;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +39,38 @@ public class Api{
 	public Api(Plugin plugin){
 		this.plugin = plugin;
 	}
+	public static void hasUpdate(){
+		try {
+			HttpURLConnection c = (HttpURLConnection)new URL("http://www.spigotmc.org/api/general.php").openConnection();
+			c.setDoOutput(true);
+			c.setRequestMethod("POST");
+			c.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=17599").getBytes("UTF-8"));
+			String oldVersion = plugin.getDescription().getVersion();
+			String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine().replaceAll("[a-zA-Z ]", "");
+			if(!newVersion.equals(oldVersion)) {
+				Bukkit.getConsoleSender().sendMessage(Api.getPrefix()+Api.color("&cYour server is running &7v"+oldVersion+"&c and the newest is &7v"+newVersion+"&c."));
+			}
+		}
+		catch(Exception e) {
+			return;
+		}
+	}
+	public static void hasUpdate(Player player){
+		try {
+			HttpURLConnection c = (HttpURLConnection)new URL("http://www.spigotmc.org/api/general.php").openConnection();
+			c.setDoOutput(true);
+			c.setRequestMethod("POST");
+			c.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=17599").getBytes("UTF-8"));
+			String oldVersion = plugin.getDescription().getVersion();
+			String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine().replaceAll("[a-zA-Z ]", "");
+			if(!newVersion.equals(oldVersion)) {
+				player.sendMessage(Api.getPrefix()+Api.color("&cYour server is running &7v"+oldVersion+"&c and the newest is &7v"+newVersion+"&c."));
+			}
+		}
+		catch(Exception e) {
+			return;
+		}
+	}
 	public static Integer getVersion(){
 		String ver = Bukkit.getServer().getClass().getPackage().getName();
 		ver = ver.substring(ver.lastIndexOf('.')+1);
@@ -42,11 +78,7 @@ public class Api{
 		return Integer.parseInt(ver);
 	}
 	public static String color(String msg){
-		msg = msg.replaceAll("(&([a-f0-9]))", "\u00A7$2");
-		msg = msg.replaceAll("&l", ChatColor.BOLD + "");
-		msg = msg.replaceAll("&o", ChatColor.ITALIC + "");
-		msg = msg.replaceAll("&k", ChatColor.MAGIC + "");
-		msg = msg.replaceAll("&n", ChatColor.UNDERLINE + "");
+		msg = ChatColor.translateAlternateColorCodes('&', msg);
 		return msg;
 	}
 	public static String removeColor(String msg){

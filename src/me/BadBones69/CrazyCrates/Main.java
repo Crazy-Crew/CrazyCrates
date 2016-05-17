@@ -40,6 +40,7 @@ public class Main extends JavaPlugin implements Listener{
 	public void onEnable(){
 		saveDefaultConfig();
 		settings.setup(this);
+		Api.hasUpdate();
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		Bukkit.getServer().getPluginManager().registerEvents(new CC(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new GUI(), this);
@@ -386,15 +387,17 @@ public class Main extends JavaPlugin implements Listener{
 		return false;
 	}
 	@EventHandler
-	public void onOwnerJoin(PlayerJoinEvent e){
+	public void onJoin(PlayerJoinEvent e){
 		final Player player = e.getPlayer();
-		if(player.getName().equals("BadBones69")){
-			Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
-				@Override
-				public void run() {
-					player.sendMessage(Api.color(Api.getPrefix()+"&7Hello BadBones, This server is running your Crazy Crates Plugin."));
+		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
+			@Override
+			public void run() {
+				if(player.getName().equals("BadBones69")){
+					player.sendMessage(Api.getPrefix()+Api.color("&7This server is running your Crazy Crates Plugin. "
+						+ "&7It is running version &av"+Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates").getDescription().getVersion()+"&7."));
 				}
-			}, 40);
-		}
+				if(player.isOp())Api.hasUpdate(player);
+			}
+		}, 40);
 	}
 }
