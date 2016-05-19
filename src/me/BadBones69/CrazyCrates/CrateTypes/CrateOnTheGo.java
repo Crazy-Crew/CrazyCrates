@@ -71,7 +71,7 @@ public class CrateOnTheGo implements Listener{
 			}
 		}
 	}
-	private static ItemStack pickItem(Player player){
+	public static ItemStack pickItem(Player player){
 		HashMap<ItemStack, String> items = Api.getItems(player);
 		int stop = 0;
 		for(;items.size()==0;stop++){

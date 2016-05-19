@@ -3,6 +3,8 @@ package me.BadBones69.CrazyCrates;
 import java.util.HashMap;
 
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
+import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
+import me.BadBones69.CrazyCrates.CrateTypes.CrateOnTheGo;
 import me.BadBones69.CrazyCrates.CrateTypes.FireCracker;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
 import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
@@ -55,7 +57,7 @@ public class CC implements Listener{ //Crate Control
 				String KeyName = Api.color(Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name"));
 				if(e.hasItem()){
 					ItemStack item = new ItemStack(Material.AIR);
-					if(Api.getVersion()==191){
+					if(Api.getVersion()>=191){
 						item = player.getInventory().getItemInMainHand();
 					}
 					else{
@@ -89,7 +91,7 @@ public class CC implements Listener{ //Crate Control
 							ItemStack item = new ItemStack(Material.AIR);
 							String ver = Bukkit.getServer().getClass().getPackage().getName();
 							ver = ver.substring(ver.lastIndexOf('.')+1);
-							if(Api.getVersion()==191){
+							if(Api.getVersion()>=191){
 								item = player.getInventory().getItemInMainHand();
 							}
 							else{
@@ -130,8 +132,27 @@ public class CC implements Listener{ //Crate Control
 		if(C.equalsIgnoreCase("CSGO")){
 			CSGO.openCSGO(player);
 		}
+		if(C.equalsIgnoreCase("CrateOnTheGo")){
+			if(Api.Key.get(player).equals("PhysicalKey")){
+				Api.removeItem(Key.get(player), player);
+			}
+			String name = CrateOnTheGo.pickItem(player).getItemMeta().getDisplayName();
+			for(String reward : Main.settings.getFile(Crate).getConfigurationSection("Crate.Prizes").getKeys(false)){
+				if(name.equals(Api.color(Main.settings.getFile(Crate).getString("Crate.Prizes."+reward+".DisplayName")))){
+					CrateOnTheGo.getReward(player, reward);
+					if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean(Api.path.get(player) + ".Firework")){
+						Api.fireWork(loc.clone().add(.5, 0, .5));
+					}
+					GUI.Crate.remove(player);
+					return;
+				}
+			}
+		}
 		if(C.equalsIgnoreCase("Roulette")){
 			Roulette.openRoulette(player);
+		}
+		if(C.equalsIgnoreCase("Cosmic")){
+			Cosmic.openCosmic(player);
 		}
 		if(C.equalsIgnoreCase("QuadCrate")){
 			LastLoc.put(player, player.getLocation());

@@ -1,8 +1,8 @@
 Crate:
-  CrateType: CSGO #Type of crate (CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker).
-  StartingKeys: 1000 #Starting amount of keys when the player 1st joins.
+  CrateType: CSGO #Type of crate (CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Cosmic(This requires a additional info to work.)).
+  StartingKeys: 1 #Starting amount of keys when the player 1st joins.
   InGUI: true #If the crate shows in the /cc GUI. (If the crate type is QuickCrate/CrateOnTheGo/FireCracker then the Crate will not work. Quick Crate requires a Physical Crate.)
-  Slot: 10 #Slot the item is in the GUI.
+  Slot: 12 #Slot the item is in the GUI.
   OpeningBroadCast: true #Enables/Disables the Broadcasts message when they open a crate.
   BroadCast: '%Prefix%&6&l%Player% &7is opening a &7&lBasic Chest&7.' #Message that is broadcasted when opening the crate.
   Item: '54' #Item the crate is in the GUI
@@ -19,6 +19,25 @@ Crate:
     Item: '131' #The item the key is.
     Enchantments:
       - 'WATER_WORKER:1' #What enchantments the Key has.
+#         For Cosmic Crates Only
+#############################################
+#  Tiers: #The tiers in the Crate
+#    Basic: #The Config Name for the Crate
+#      Name: '&8Basic Prize' #The in-game name of the Crate
+#      Color: 7 #Use the MetaData for the color of the glass
+#      Chance: 80 #Chance of that item getting picked. It would be 80/100 chance because MaxRange is 100.
+#      MaxRange: 100 #The max range that the chance will go though.
+#    UnCommon:
+#      Name: '&aUnCommon Prize'
+#      Color: 5
+#      Chance: 55
+#      MaxRange: 100
+#    Rare:
+#      Name: '&4Rare Prize'
+#      Color: 14
+#      Chance: 20
+#      MaxRange: 100
+#############################################
   Prizes: #All the prizes that can be gotten in the Crate.
     1:
       DisplayName: '&7&lBasic Grass' #Name of the item shown by the crate.
@@ -29,6 +48,13 @@ Crate:
       MaxRange: 100 #The max range that the chance will go though.
       Chance: 40 #Chance of that item getting picked. It would be 40/100 chance because MaxRange is 100.
       Firework: false #Firework when it is won.
+#        For Cosmic Crates Only
+#############################################
+#       Tiers: #The Tiers the rewards can be found in.
+#         - 'Basic'
+#         - 'UnCommon'
+#         - 'Rare'
+#############################################
       #Items that the player wins if this prize is picked. (If you wish not to give an Item in the prize just delete the Items Section)
       #Please use these to make the item.
       #Item: to decide the kind of item it is.

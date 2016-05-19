@@ -1,15 +1,10 @@
 name: CrazyCrates
 main: me.BadBones69.CrazyCrates.Main
 author: BadBones69
-version: 1.5.7.4
+version: 1.5.8
 description: >
              Want some good quality crates without paying money for them? Then check this Crate Plugin Out.
 commands:
   CrazyCrates:
     description: Opens the GUI.
-  CC:
-    description: Opens the GUI.
-  CCrate:
-    description: Opens the GUI.
-  CrazyCrate:
-    description: Opens the GUI.
+    aliases: [cc, ccrate, crazycrate, crate]

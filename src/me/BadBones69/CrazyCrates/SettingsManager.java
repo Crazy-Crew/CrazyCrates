@@ -42,12 +42,15 @@ public class SettingsManager {
         		File basic = new File(p.getDataFolder()+"/Crates/", "Basic.yml");
          		File classic = new File(p.getDataFolder()+"/Crates/", "Classic.yml");
          		File crazy = new File(p.getDataFolder()+"/Crates/", "Crazy.yml");
+         		File galcatic = new File(p.getDataFolder()+"/Crates/", "Galactic.yml");
          		InputStream B = getClass().getResourceAsStream("/Crates/Basic.yml");
          		InputStream Cl = getClass().getResourceAsStream("/Crates/Classic.yml");
          		InputStream Cr = getClass().getResourceAsStream("/Crates/Crazy.yml");
+         		InputStream Gl = getClass().getResourceAsStream("/Crates/Galactic.yml");
          		copyFile(B, basic);
          		copyFile(Cl, classic);
          		copyFile(Cr, crazy);
+         		copyFile(Gl, galcatic);
          	}catch (Exception e) {
          		e.printStackTrace();
          	}
@@ -101,15 +104,19 @@ public class SettingsManager {
 	public ArrayList<File> getAllCrates(){
 		ArrayList<File> files = new ArrayList<File>();
 		for(String name : cratefolder.list()){
-			files.add(new File(cratefolder, name));
+			if(!name.equalsIgnoreCase(".DS_Store")){
+				files.add(new File(cratefolder, name));
+			}
 		}
 		return files;
 	}
 	public ArrayList<String> getAllCratesNames(){
 		ArrayList<String> files = new ArrayList<String>();
 		for(String name : cratefolder.list()){
-			File f = new File(cratefolder, name);
-			files.add(f.getName().replaceAll(".yml", ""));
+			if(!name.equalsIgnoreCase(".DS_Store")){
+				File f = new File(cratefolder, name);
+				files.add(f.getName().replaceAll(".yml", ""));
+			}
 		}
 		return files;
 	}

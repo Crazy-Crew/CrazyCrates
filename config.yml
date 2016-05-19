@@ -31,6 +31,11 @@ Settings:
   AlreadyOpeningCrateMsg: '&cYou are already opening a crate.'
   QuickCrateInUse: '&cThat crate is already in use. Please wait for crate to open up.'
   WorldDisabledMsg: '&cI am sorry but crates are disabled in %World%.'
+  Reload: '&3You have just reloaded the Config and Data Files.'
+  Not-Online: '&cThat player is not online at this time.'
+  No-Permission: '&cYou do not have permission to use that command!'
+  Crate-Already-Opened: '&cYou are already opening a crate.'
+  Cant-Be-Virtual-Crate: '&cPlease tell an admin that CrateOnTheGo can not be a Virtual Crate.'
   QuadCrate:
     ToCloseToAnotherPlayer: '&cYou are to close to a player that is opening their Crate.'
     NeedsMoreRoom: '&cThere is not enough space to open that here.'

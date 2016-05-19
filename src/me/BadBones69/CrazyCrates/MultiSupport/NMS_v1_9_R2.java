@@ -1,16 +1,16 @@
-package me.BadBones69.CrazyEnchantments.MultiSupport;
+package me.BadBones69.CrazyCrates.MultiSupport;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.server.v1_9_R1.BlockPosition;
-import net.minecraft.server.v1_9_R1.NBTCompressedStreamTools;
-import net.minecraft.server.v1_9_R1.NBTTagCompound;
-import net.minecraft.server.v1_9_R1.TileEntityChest;
-import net.minecraft.server.v1_9_R1.TileEntityEnderChest;
-import net.minecraft.server.v1_9_R1.World;
+import net.minecraft.server.v1_9_R2.BlockPosition;
+import net.minecraft.server.v1_9_R2.NBTCompressedStreamTools;
+import net.minecraft.server.v1_9_R2.NBTTagCompound;
+import net.minecraft.server.v1_9_R2.TileEntityChest;
+import net.minecraft.server.v1_9_R2.TileEntityEnderChest;
+import net.minecraft.server.v1_9_R2.World;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,12 +18,12 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class NMS_v1_9_R1 {
+public class NMS_v1_9_R2 {
 	public static ItemStack getInHand(Player player){
 		return player.getInventory().getItemInMainHand();
 	}
 	public static void openChest(Block b, Location location, Boolean open){
-		World world = ((org.bukkit.craftbukkit.v1_9_R1.CraftWorld) location.getWorld()).getHandle();
+		World world = ((org.bukkit.craftbukkit.v1_9_R2.CraftWorld) location.getWorld()).getHandle();
 		BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
         if (b.getType() == Material.ENDER_CHEST) {
         	TileEntityEnderChest tileChest = (TileEntityEnderChest) world.getTileEntity(position);

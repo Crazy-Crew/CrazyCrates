@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
+import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
 import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
 
@@ -30,7 +31,7 @@ public class GUI implements Listener{
 			}
 			if(Main.settings.getFile(crate).getBoolean("Crate.InGUI")){
 				String path = "Crate.";
-				int slot = Main.settings.getFile(crate).getInt(path+"Slot")+1;
+				int slot = Main.settings.getFile(crate).getInt(path+"Slot")-1;
 				String ma = Main.settings.getFile(crate).getString(path+"Item");
 				String name = Main.settings.getFile(crate).getString(path+"Name");
 				ArrayList<String> lore = new ArrayList<String>();
@@ -94,7 +95,7 @@ public class GUI implements Listener{
 										return;
 									}
 									if(Crate.containsKey(player)){
-										player.sendMessage(Api.color(Api.getPrefix()+"&cYou are already opening a crate."));
+										player.sendMessage(Api.color(Api.getPrefix()+Main.settings.getConfig().getString("Settings.Crate-Already-Opened")));
 										return;
 									}
 									if(Api.getKeys(player, crate)<1){
@@ -110,6 +111,11 @@ public class GUI implements Listener{
 											player.sendMessage(Api.color(Api.getPrefix()+msg));
 											return;
 										}
+									}
+									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Cosmic")){
+										Crate.put(player, crate);
+										Api.Key.put(player, "VirtualKey");
+										Cosmic.openCosmic(player);
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("QuadCrate")){
 										Crate.put(player, crate);
@@ -130,7 +136,7 @@ public class GUI implements Listener{
 										}
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("QuickCrate")){
-										player.sendMessage(Api.color(Api.getPrefix()+"&cPlease tell an admin that QuickCrates can not be a Virtual Crate."));
+										player.sendMessage(Api.color(Api.getPrefix()+Main.settings.getConfig().getString("Settings.Cant-Be-Virtual-Crate")));
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Roulette")){
 										Crate.put(player, crate);
@@ -146,10 +152,10 @@ public class GUI implements Listener{
 										}
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
-										player.sendMessage(Api.color(Api.getPrefix()+"&cPlease tell an admin that CrateOnTheGo can not be a Virtual Crate."));
+										player.sendMessage(Api.color(Api.getPrefix()+Main.settings.getConfig().getString("Settings.Cant-Be-Virtual-Crate")));
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("FireCracker")){
-										player.sendMessage(Api.color(Api.getPrefix()+"&cPlease tell an admin that FireCracker can not be a Virtual Crate."));
+										player.sendMessage(Api.color(Api.getPrefix()+Main.settings.getConfig().getString("Settings.Cant-Be-Virtual-Crate")));
 									}
 									return;
 								}

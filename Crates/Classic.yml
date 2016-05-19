@@ -1,8 +1,8 @@
 Crate:
   CrateType: QuickCrate
-  StartingKeys: 1000
+  StartingKeys: 1
   InGUI: false
-  Slot: 12
+  Slot: 14
   OpeningBroadCast: true
   BroadCast: '%Prefix%&6&l%Player% &7is opening a &e&lClassic Chest&7.'
   Item: '54'

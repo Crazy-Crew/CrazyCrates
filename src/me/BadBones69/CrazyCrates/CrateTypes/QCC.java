@@ -9,10 +9,11 @@ import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
 import me.BadBones69.CrazyCrates.ParticleEffect;
-import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_8_R1;
-import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_8_R2;
-import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_8_R3;
-import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_9_R1;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R1;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R2;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R3;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R1;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R2;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -188,10 +189,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}
 				if(f==60){
 					loc.getWorld().spigot().playEffect(loc.clone().add(0, .3, 0), Effect.TILE_BREAK, Chest.getId(), 0, (float).5, (float).5, (float).5, 0, 10, 100);
-					if(Api.getVersion()==183){
+					if(Api.getVersion()<=183){
 						player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 					}
-					if(Api.getVersion()==191){
+					if(Api.getVersion()>=191){
 						player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
 					}
 					loc.getBlock().setType(Chest);
@@ -227,10 +228,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 						}
 						if(f==60){
 							loc.getWorld().spigot().playEffect(loc.clone().add(0, .3, 0), Effect.TILE_BREAK, Chest.getId(), 0, (float).5, (float).5, (float).5, 0, 10, 100);
-							if(Api.getVersion()==183){
+							if(Api.getVersion()<=183){
 								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 							}
-							if(Api.getVersion()==191){
+							if(Api.getVersion()>=191){
 								player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
 							}
 							loc.getBlock().setType(Chest);
@@ -268,10 +269,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 						}
 						if(f==60){
 							loc.getWorld().spigot().playEffect(loc.clone().add(0, .3, 0), Effect.TILE_BREAK, Chest.getId(), 0, (float).5, (float).5, (float).5, 0, 10, 100);
-							if(Api.getVersion()==183){
+							if(Api.getVersion()<=183){
 								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 							}
-							if(Api.getVersion()==191){
+							if(Api.getVersion()>=191){
 								player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
 							}
 							loc.getBlock().setType(Chest);
@@ -309,10 +310,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 						}
 						if(f==60){
 							loc.getWorld().spigot().playEffect(loc.clone().add(0, .3, 0), Effect.TILE_BREAK, Chest.getId(), 0, (float).5, (float).5, (float).5, 0, 10, 100);
-							if(Api.getVersion()==183){
+							if(Api.getVersion()<=183){
 								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 							}
-							if(Api.getVersion()==191){
+							if(Api.getVersion()>=191){
 								player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
 							}
 							loc.getBlock().setType(Chest);
@@ -433,10 +434,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 													}
 												}
 											}
-											if(Api.getVersion()==183){
+											if(Api.getVersion()<=183){
 												player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 											}
-											if(Api.getVersion()==191){
+											if(Api.getVersion()>=191){
 												player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
 											}
 										}
@@ -462,10 +463,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 												}
 											}
 											Rewards.remove(player);
-											if(Api.getVersion()==183){
+											if(Api.getVersion()<=183){
 												player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 											}
-											if(Api.getVersion()==191){
+											if(Api.getVersion()>=191){
 												player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
 											}
 											crates.remove(player);
@@ -593,6 +594,9 @@ public class QCC implements Listener{ // Quad Crate Control.
 	}
 	private void playChestAction(Block b, boolean open) {
         Location location = b.getLocation();
+        if(Api.getVersion()==192){
+        	NMS_v1_9_R2.openChest(b, location, open);
+		}
         if(Api.getVersion()==191){
         	NMS_v1_9_R1.openChest(b, location, open);
 		}

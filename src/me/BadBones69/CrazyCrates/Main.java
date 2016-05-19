@@ -1,9 +1,12 @@
 package me.BadBones69.CrazyCrates;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
+import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
 import me.BadBones69.CrazyCrates.CrateTypes.CrateOnTheGo;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
 import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
@@ -11,14 +14,20 @@ import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener{
@@ -45,10 +54,11 @@ public class Main extends JavaPlugin implements Listener{
 		Bukkit.getServer().getPluginManager().registerEvents(new CC(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new GUI(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new QCC(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new CSGO(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new Cosmic(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new Roulette(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new CrateOnTheGo(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new QuickCrate(this), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new Roulette(this), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new CSGO(this), this);
 		if(Bukkit.getServer().getOnlinePlayers()!=null){
 			for(Player player : Bukkit.getServer().getOnlinePlayers()){
 				String uuid = player.getUniqueId().toString();
@@ -70,7 +80,8 @@ public class Main extends JavaPlugin implements Listener{
 	}
 	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args){
-		if(commandLable.equalsIgnoreCase("CrazyCrates")||commandLable.equalsIgnoreCase("CC")||commandLable.equalsIgnoreCase("CCrate")||commandLable.equalsIgnoreCase("CrazyCrate")){
+		if(commandLable.equalsIgnoreCase("CrazyCrates")||commandLable.equalsIgnoreCase("CC")||commandLable.equalsIgnoreCase("Crate")
+				||commandLable.equalsIgnoreCase("CCrate")||commandLable.equalsIgnoreCase("CrazyCrate")){
 			if(args.length == 0){
 				if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Access"))return true;
 				GUI.openGUI((Player)sender);
@@ -81,6 +92,7 @@ public class Main extends JavaPlugin implements Listener{
 					if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Access"))return true;
 					sender.sendMessage(Api.color("&3&lCrazy Crates Help Menu"));
 					sender.sendMessage(Api.color("&6/CC &7- Opens the GUI."));
+					sender.sendMessage(Api.color("&6/CC Admin &7- Opens the Admin Keys GUI."));
 					sender.sendMessage(Api.color("&6/CC List &7- Lists all the Crates."));
 					sender.sendMessage(Api.color("&6/CC Tp <Location> &7- Teleport to a Crate."));
 					sender.sendMessage(Api.color("&6/CC Give <Physical/Virtual> <Crate> [Amount] [Player] &7- Give a player keys for a Chest."));
@@ -97,7 +109,34 @@ public class Main extends JavaPlugin implements Listener{
 					settings.reloadConfig();
 					settings.reloadData();
 					settings.reloadAll();
-					sender.sendMessage(Api.color(Api.getPrefix()+"&3You have just reloaded the Config and Data Files."));
+					sender.sendMessage(Api.color(Api.getPrefix()+settings.getConfig().getString("Settings.Reload")));
+					return true;
+				}
+				if(args[0].equalsIgnoreCase("Admin")){
+					if(!(sender instanceof Player))return true;
+					Player player = (Player)sender;
+					if(!Api.permCheck(player, "Admin"))return true;
+					int size=Api.getCrates().size();
+					int slots=9;
+					for(;size>9;size-=9)slots+=9;
+					Inventory inv = Bukkit.createInventory(null, slots, Api.color("&4&lAdmin Keys"));
+					for(String crate : Api.getCrates()){
+						String name = settings.getFile(crate).getString("Crate.PhysicalKey.Name");
+						List<String> lore = settings.getFile(crate).getStringList("Crate.PhysicalKey.Lore");
+						String id = settings.getFile(crate).getString("Crate.PhysicalKey.Item");
+						HashMap<Enchantment, Integer> Enchantments = new HashMap<Enchantment, Integer>();
+						for(String en : Main.settings.getFile(crate).getStringList("Crate.PhysicalKey.Enchantments")){
+							String[] breakdown = en.split(":");
+							String enchantment = breakdown[0];
+							int lvl = Integer.parseInt(breakdown[1]);
+							Enchantments.put(Enchantment.getByName(enchantment), lvl);
+						}
+						lore.add("");
+						lore.add("&7&l(&6&l!&7&l) Left click for Physical Key");
+						lore.add("&7&l(&6&l!&7&l) Right click for Virtual Key");
+						inv.addItem(Api.makeItem(id, 1, name, lore, Enchantments));
+					}
+					player.openInventory(inv);
 					return true;
 				}
 				if(args[0].equalsIgnoreCase("List")){
@@ -145,7 +184,7 @@ public class Main extends JavaPlugin implements Listener{
 							int Z = settings.getLocations().getInt("Locations." + name + ".Z");
 							Location loc = new Location(W,X,Y,Z);
 							((Player)sender).teleport(loc);
-							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have been teleported to &6"+name+"76."));
+							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have been teleported to &6"+name+"&7."));
 							return true;
 						}
 					}
@@ -385,6 +424,48 @@ public class Main extends JavaPlugin implements Listener{
 		}
 		sender.sendMessage(Api.color(Api.getPrefix()+"&cPlease do /CC Help for more info."));
 		return false;
+	}
+	@EventHandler
+	public void onInvClick(InventoryClickEvent e){
+		Inventory inv = e.getInventory();
+		Player player = (Player)e.getWhoClicked();
+		if(inv!=null){
+			if(inv.getName().equals(Api.color("&4&lAdmin Keys"))){
+				e.setCancelled(true);
+				if(!Api.permCheck(player, "Admin")){
+					player.closeInventory();
+					return;
+				}
+				int slot = e.getRawSlot();
+				if(slot<inv.getSize()){
+					if(e.getAction()==InventoryAction.PICKUP_ALL){
+						ItemStack item = inv.getItem(slot);
+						if(item!=null){
+							if(item.getType()!=Material.AIR){
+								for(String crate : Api.getCrates()){
+									if(settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
+										CrateOnTheGo.giveCrate(player, 1, crate);
+										return;
+									}
+								}
+								player.getInventory().addItem(inv.getItem(slot));
+							}
+						}
+					}
+					if(e.getAction()==InventoryAction.PICKUP_HALF){
+						ItemStack item = inv.getItem(slot);
+						for(String crate : Api.getCrates()){
+							String name = settings.getFile(crate).getString("Crate.PhysicalKey.Name");
+							if(item.getItemMeta().getDisplayName().equals(Api.color(name))){
+								Api.addKeys(1, player, crate, "Virtual");
+								player.sendMessage(Api.getPrefix()+Api.color("&a&l+1 "+name));
+								return;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e){

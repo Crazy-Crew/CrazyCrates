@@ -11,10 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_8_R1;
-import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_8_R2;
-import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_8_R3;
-import me.BadBones69.CrazyEnchantments.MultiSupport.NMS_v1_9_R1;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R1;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R2;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R3;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R1;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R2;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -48,7 +49,7 @@ public class Api{
 			String oldVersion = plugin.getDescription().getVersion();
 			String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine().replaceAll("[a-zA-Z ]", "");
 			if(!newVersion.equals(oldVersion)) {
-				Bukkit.getConsoleSender().sendMessage(Api.getPrefix()+Api.color("&cYour server is running &7v"+oldVersion+"&c and the newest is &7v"+newVersion+"&c."));
+				Bukkit.getConsoleSender().sendMessage(getPrefix()+color("&cYour server is running &7v"+oldVersion+"&c and the newest is &7v"+newVersion+"&c."));
 			}
 		}
 		catch(Exception e) {
@@ -64,7 +65,7 @@ public class Api{
 			String oldVersion = plugin.getDescription().getVersion();
 			String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine().replaceAll("[a-zA-Z ]", "");
 			if(!newVersion.equals(oldVersion)) {
-				player.sendMessage(Api.getPrefix()+Api.color("&cYour server is running &7v"+oldVersion+"&c and the newest is &7v"+newVersion+"&c."));
+				player.sendMessage(getPrefix()+color("&cYour server is running &7v"+oldVersion+"&c and the newest is &7v"+newVersion+"&c."));
 			}
 		}
 		catch(Exception e) {
@@ -346,7 +347,7 @@ public class Api{
 				return true;
 			}
 		}
-		p.sendMessage(color("&cThat player is not online at this time."));
+		p.sendMessage(color(Main.settings.getConfig().getString("Settings.Not-Online")));
 		return false;
 	}
 	public static void removeItem(ItemStack item, Player player){
@@ -354,13 +355,28 @@ public class Api{
 			player.getInventory().removeItem(item);
 		}
 		if(item.getAmount() > 1){
-			ItemStack i = item;
-			i.setAmount(item.getAmount() - 1);
+			item.setAmount(item.getAmount() - 1);
+		}
+	}
+	@SuppressWarnings("deprecation")
+	public static ItemStack getItemInHand(Player player){
+		if(getVersion()>=191){
+			return player.getInventory().getItemInMainHand();
+		}else{
+			return player.getItemInHand();
+		}
+	}
+	@SuppressWarnings("deprecation")
+	public static void setItemInHand(Player player, ItemStack item){
+		if(getVersion()>=191){
+			player.getInventory().setItemInMainHand(item);
+		}else{
+			player.setItemInHand(item);
 		}
 	}
 	public static boolean permCheck(Player player, String perm){
 		if(!player.hasPermission("CrazyCrates." + perm)){
-			player.sendMessage(color("&cYou do not have permission to use that command!"));
+			player.sendMessage(color(Main.settings.getConfig().getString("Settings.No-Permission")));
 			return false;
 		}
 		return true;
@@ -411,7 +427,9 @@ public class Api{
 	public static ArrayList<String> getCrates(){
 		ArrayList<String> crates = new ArrayList<String>();
 		for(String crate : Main.settings.getAllCratesNames()){
-			crates.add(crate);
+			if(!crate.equalsIgnoreCase(".DS_Store")){
+				crates.add(crate);
+			}
 		}
 		return crates;
 	}
@@ -419,30 +437,36 @@ public class Api{
 		return color(Main.settings.getConfig().getString("Settings.Prefix"));
 	}
 	public static void pasteSchem(String schem, Location loc){
-		if(Api.getVersion()==191){
+		if(getVersion()==192){
+			NMS_v1_9_R2.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+		}
+		if(getVersion()==191){
 			NMS_v1_9_R1.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
 		}
-		if(Api.getVersion()==183){
+		if(getVersion()==183){
 			NMS_v1_8_R3.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
 		}
-		if(Api.getVersion()==182){
+		if(getVersion()==182){
 			NMS_v1_8_R2.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
 		}
-		if(Api.getVersion()==181){
+		if(getVersion()==181){
 			NMS_v1_8_R1.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
 		}
 	}
 	public static List<Location> getLocations(String shem, Location loc){
-		if(Api.getVersion()==191){
+		if(getVersion()==192){
+			return NMS_v1_9_R2.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+		}
+		if(getVersion()==191){
 			return NMS_v1_9_R1.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
 		}
-		if(Api.getVersion()==183){
+		if(getVersion()==183){
 			return NMS_v1_8_R3.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
 		}
-		if(Api.getVersion()==182){
+		if(getVersion()==182){
 			return NMS_v1_8_R2.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
 		}
-		if(Api.getVersion()==181){
+		if(getVersion()==181){
 			return NMS_v1_8_R1.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
 		}
 		return null;
@@ -452,7 +476,9 @@ public class Api{
 		String[] schems = f.list();
 		ArrayList<String> schematics = new ArrayList<String>();
 		for(String i : schems){
-			schematics.add(i);
+			if(!i.equalsIgnoreCase(".DS_Store")){
+				schematics.add(i);
+			}
 		}
 		Random r = new Random();
 		return schematics.get(r.nextInt(schematics.size()));

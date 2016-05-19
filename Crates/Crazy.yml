@@ -1,8 +1,8 @@
 Crate:
   CrateType: QuadCrate
-  StartingKeys: 1000
+  StartingKeys: 1
   InGUI: true
-  Slot: 14
+  Slot: 16
   OpeningBroadCast: true
   BroadCast: '%Prefix%&6&l%Player% &7is opening a &b&lCrazy Chest&7.'
   Item: '54'
