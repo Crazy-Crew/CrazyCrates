@@ -107,6 +107,11 @@ public class CC implements Listener{ //Crate Control
 											player.sendMessage(Api.color(Api.getPrefix()+msg));
 											return;
 										}
+										if(InUse.containsValue(loc)){
+											String msg = Main.settings.getConfig().getString("Settings.QuickCrateInUse");
+											player.sendMessage(Api.color(Api.getPrefix()+msg));
+											return;
+										}
 										GUI.Crate.put(player, Crate);
 										Key.put(player, item);
 										Api.Key.put(player, "PhysicalKey");
@@ -163,8 +168,7 @@ public class CC implements Listener{ //Crate Control
 				String msg = Main.settings.getConfig().getString("Settings.QuickCrateInUse");
 				player.sendMessage(Api.color(Api.getPrefix()+msg));
 				return;
-			}
-			if(!InUse.containsValue(loc)){
+			}else{
 				QuickCrate.openCrate(player, loc, Crate, true);
 				InUse.put(player, loc);
 				return;
