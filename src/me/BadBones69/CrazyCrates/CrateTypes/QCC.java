@@ -55,6 +55,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 	public static HashMap<Player, ArrayList<Location>> Rest = new HashMap<Player, ArrayList<Location>>();
 	public static HashMap<Player, ArrayList<Entity>> Rewards = new HashMap<Player, ArrayList<Entity>>();
 	public static HashMap<Player, Integer> P = new HashMap<Player, Integer>();
+	public static HashMap<Player, Integer> timer = new HashMap<Player, Integer>();
 	/**
 	 * Starts building the Crate Setup.
 	 * @param player Player that is opening the chest.
@@ -328,7 +329,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
 			@Override
 			public void run() {
-				P.put(player, Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
+				timer.put(player, Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
 					@Override
 					public void run() {
 						undoBuild(player);
@@ -356,6 +357,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 		if(P.containsKey(player)){
 			Bukkit.getScheduler().cancelTask(P.get(player));
 			P.remove(player);
+		}
+		if(timer.containsKey(player)){
+			Bukkit.getScheduler().cancelTask(timer.get(player));
+			timer.remove(player);
 		}
 		if(Rewards.containsKey(player)){
 			for(Entity h : Rewards.get(player)){

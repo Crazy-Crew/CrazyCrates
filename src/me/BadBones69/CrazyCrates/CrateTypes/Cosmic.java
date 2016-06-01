@@ -38,8 +38,16 @@ public class Cosmic implements Listener{
 		for(int i : picks.get(player))inv.setItem(i, pickTier(player));
 		player.openInventory(inv);
 	}
-	private static void startRoll(Player player){
+	private static void makeRoll(Player player){
 		Inventory inv = Bukkit.createInventory(null, 27, Api.color("&8Cosmic Crate - Shuffling"));
+		for(int i=0;i<27;i++){
+			inv.setItem(i, pickTier(player));
+		}
+		if(Api.getVersion()>=191)player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+		if(Api.getVersion()<=183)player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+		player.openInventory(inv);
+	}
+	private static void startRoll(Player player, Inventory inv){
 		for(int i=0;i<27;i++){
 			inv.setItem(i, pickTier(player));
 		}
@@ -123,11 +131,13 @@ public class Cosmic implements Listener{
 						if(Api.Key.get(player).equals("PhysicalKey")){
 							ItemStack it = new ItemStack(Material.AIR);
 							for(ItemStack i : player.getOpenInventory().getBottomInventory().getContents()){
-								if(i.hasItemMeta()){
-									if(i.getItemMeta().hasDisplayName()){
-										if(i.getItemMeta().getDisplayName().equals(CC.Key.get(player).getItemMeta().getDisplayName())){
-											it=i;
-											break;
+								if(i!=null){
+									if(i.hasItemMeta()){
+										if(i.getItemMeta().hasDisplayName()){
+											if(i.getItemMeta().getDisplayName().equals(CC.Key.get(player).getItemMeta().getDisplayName())){
+												it=i;
+												break;
+											}
 										}
 									}
 								}
@@ -152,7 +162,11 @@ public class Cosmic implements Listener{
 							int time = 0;
 							@Override
 							public void run() {
-								startRoll(player);
+								if(time==0){
+									makeRoll(player);
+								}else{
+									startRoll(player, player.getOpenInventory().getTopInventory());
+								}
 								time++;
 								if(time==40){
 									Bukkit.getScheduler().cancelTask(roll.get(player));
@@ -256,20 +270,21 @@ public class Cosmic implements Listener{
 		return items.get(r.nextInt(items.size()));
 	}
 	private static ItemStack pickTier(Player player){
+		FileConfiguration file = getFile(player);
 		ItemStack item = new ItemStack(Material.AIR);
 		Random r = new Random();
 		int stop = 0;
 		for(;item.getType()==Material.AIR;stop++){
-			if(stop==500){
+			if(stop==100){
 				break;
 			}
 			int num;
 			for(int counter = 1; counter<=1; counter++){
 				String tier = getTiers(player).get(r.nextInt(getTiers(player).size()));
-				int chance = getFile(player).getInt("Crate.Tiers." + tier + ".Chance");
-				int max = getFile(player).getInt("Crate.Tiers." + tier + ".MaxRange")-1;
+				int chance = file.getInt("Crate.Tiers." + tier + ".Chance");
+				int max = file.getInt("Crate.Tiers." + tier + ".MaxRange")-1;
 				num = 1 + r.nextInt(max);
-				if(num >= 1 && num <= chance)item=Api.makeItem(Material.STAINED_GLASS_PANE, 1, getFile(player).getInt("Crate.Tiers."+tier+".Color"), getFile(player).getString("Crate.Tiers."+tier+".Name"));
+				if(num >= 1 && num <= chance)item=Api.makeItem(Material.STAINED_GLASS_PANE, 1, file.getInt("Crate.Tiers."+tier+".Color"), file.getString("Crate.Tiers."+tier+".Name"));
 			}
 		}
 		return item;
