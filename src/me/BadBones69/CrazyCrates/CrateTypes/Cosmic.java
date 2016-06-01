@@ -38,16 +38,8 @@ public class Cosmic implements Listener{
 		for(int i : picks.get(player))inv.setItem(i, pickTier(player));
 		player.openInventory(inv);
 	}
-	private static void makeRoll(Player player){
+	private static void startRoll(Player player){
 		Inventory inv = Bukkit.createInventory(null, 27, Api.color("&8Cosmic Crate - Shuffling"));
-		for(int i=0;i<27;i++){
-			inv.setItem(i, pickTier(player));
-		}
-		if(Api.getVersion()>=191)player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
-		if(Api.getVersion()<=183)player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
-		player.openInventory(inv);
-	}
-	private static void startRoll(Player player, Inventory inv){
 		for(int i=0;i<27;i++){
 			inv.setItem(i, pickTier(player));
 		}
@@ -162,11 +154,7 @@ public class Cosmic implements Listener{
 							int time = 0;
 							@Override
 							public void run() {
-								if(time==0){
-									makeRoll(player);
-								}else{
-									startRoll(player, player.getOpenInventory().getTopInventory());
-								}
+								startRoll(player);
 								time++;
 								if(time==40){
 									Bukkit.getScheduler().cancelTask(roll.get(player));

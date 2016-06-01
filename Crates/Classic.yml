@@ -30,7 +30,7 @@ Crate:
       Chance: 40
       Firework: false
       Items:
-        - 'Item:304, MetaData:0, Amount:1, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
+        - 'Item:304, Amount:1, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
     2:
       DisplayName: '&b&lClassic Sword'
       DisplayItem: '276'
@@ -41,7 +41,7 @@ Crate:
       Chance: 35
       Firework: false
       Items:
-        - 'Item:276, MetaData:0, Amount:1, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1'
+        - 'Item:276, Amount:1, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1'
     3:
       DisplayName: '&e&l$100,000'
       DisplayItem: '175'
