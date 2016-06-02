@@ -110,8 +110,6 @@ public class Main extends JavaPlugin implements Listener{
 				}
 				if(args[0].equalsIgnoreCase("Reload")){
 					if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
-					settings.reloadConfig();
-					settings.reloadData();
 					settings.reloadAll();
 					if(!settings.getLocations().contains("Locations")){
 						settings.getLocations().set("Locations.Clear", null);
