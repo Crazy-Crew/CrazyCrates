@@ -49,6 +49,10 @@ public class Main extends JavaPlugin implements Listener{
 	public void onEnable(){
 		saveDefaultConfig();
 		settings.setup(this);
+		if(!settings.getLocations().contains("Locations")){
+			settings.getLocations().set("Locations.Clear", null);
+			settings.saveLocations();
+		}
 		Api.hasUpdate();
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		Bukkit.getServer().getPluginManager().registerEvents(new CC(), this);
@@ -109,6 +113,10 @@ public class Main extends JavaPlugin implements Listener{
 					settings.reloadConfig();
 					settings.reloadData();
 					settings.reloadAll();
+					if(!settings.getLocations().contains("Locations")){
+						settings.getLocations().set("Locations.Clear", null);
+						settings.saveLocations();
+					}
 					sender.sendMessage(Api.color(Api.getPrefix()+settings.getConfig().getString("Settings.Reload")));
 					return true;
 				}

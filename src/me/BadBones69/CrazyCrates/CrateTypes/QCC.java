@@ -478,6 +478,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 											chests.remove(player);
 											Rest.remove(player);
 											GUI.Crate.remove(player);
+											if(timer.containsKey(player)){
+												Bukkit.getScheduler().cancelTask(timer.get(player));
+												timer.remove(player);
+											}
 											if(Api.Key.get(player).equals("PhysicalKey")){
 												player.teleport(CC.LastLoc.get(player));
 											}
