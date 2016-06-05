@@ -69,7 +69,7 @@ public class CSGO implements Listener{
 		inv.setItem(8+18, Api.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
 	}
 	public static void openCSGO(Player player){
-		Inventory inv = Bukkit.createInventory(null, 27, Api.color("&8&lCSGO Crate"));
+		Inventory inv = Bukkit.createInventory(null, 27, Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")));
 		setGlass(inv);
 		for(int i=9;i>8&&i<18;i++){
 			inv.setItem(i, pickItem(player));
@@ -206,8 +206,14 @@ public class CSGO implements Listener{
 	@EventHandler
 	public void onInvClick(InventoryClickEvent e){
 		Inventory inv = e.getInventory();
+		Player player = (Player) e.getWhoClicked();
+		if(GUI.Crate.containsKey(player)){
+			if(!Main.settings.getFile(GUI.Crate.get(e.getWhoClicked())).getString("Crate.CrateType").equalsIgnoreCase("CSGO"))return;
+		}else{
+			return;
+		}
 		if(inv!=null){
-			if(inv.getName().equals(Api.color("&8&lCSGO Crate"))){
+			if(inv.getName().equals(Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")))){
 				e.setCancelled(true);
 			}
 		}

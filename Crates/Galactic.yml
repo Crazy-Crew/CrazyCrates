@@ -1,5 +1,6 @@
 Crate:
   CrateType: Cosmic #Type of crate.
+  CrateName: '&8Galactic Crate' #Name of the Inventory if a GUI crate.
   StartingKeys: 1 #Starting amount of keys when the player 1st joins.
   InGUI: true #If the crate shows in the /cc GUI.
   Slot: 14 #Slot the item is in the GUI.

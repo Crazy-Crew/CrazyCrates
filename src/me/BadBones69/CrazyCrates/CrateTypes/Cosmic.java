@@ -34,12 +34,12 @@ public class Cosmic implements Listener{
 		this.plugin = plugin;
 	}
 	private static void showRewards(Player player){
-		Inventory inv = Bukkit.createInventory(null, 27, Api.color("&8Cosmic Crate - Prizes"));
+		Inventory inv = Bukkit.createInventory(null, 27, Api.color(getFile(player).getString("Crate.CrateName")+" - Prizes"));
 		for(int i : picks.get(player))inv.setItem(i, pickTier(player));
 		player.openInventory(inv);
 	}
 	private static void startRoll(Player player){
-		Inventory inv = Bukkit.createInventory(null, 27, Api.color("&8Cosmic Crate - Shuffling"));
+		Inventory inv = Bukkit.createInventory(null, 27, Api.color(getFile(player).getString("Crate.CrateName")+" - Shuffling"));
 		for(int i=0;i<27;i++){
 			inv.setItem(i, pickTier(player));
 		}
@@ -55,7 +55,7 @@ public class Cosmic implements Listener{
 		}
 	}
 	public static void openCosmic(Player player){
-		Inventory inv = Bukkit.createInventory(null, 27, Api.color("&8Cosmic Crate - Choose"));
+		Inventory inv = Bukkit.createInventory(null, 27, Api.color(getFile(player).getString("Crate.CrateName")+" - Choose"));
 		setChests(inv);
 		player.openInventory(inv);
 	}
@@ -64,10 +64,15 @@ public class Cosmic implements Listener{
 		final Inventory inv = e.getInventory();
 		final Player player = (Player) e.getWhoClicked();
 		if(inv!=null){
-			if(inv.getName().equals(Api.color("&8Cosmic Crate - Shuffling"))){
+			if(GUI.Crate.containsKey(player)){
+				if(!getFile(player).getString("Crate.CrateType").equalsIgnoreCase("Cosmic"))return;
+			}else{
+				return;
+			}
+			if(inv.getName().equals(Api.color(getFile(player).getString("Crate.CrateName")+" - Shuffling"))){
 				e.setCancelled(true);
 			}
-			if(inv.getName().equals(Api.color("&8Cosmic Crate - Prizes"))){
+			if(inv.getName().equals(Api.color(getFile(player).getString("Crate.CrateName")+" - Prizes"))){
 				e.setCancelled(true);
 				int slot = e.getRawSlot();
 				if(inCosmic(slot)){
@@ -96,7 +101,7 @@ public class Cosmic implements Listener{
 					}
 				}
 			}
-			if(inv.getName().equals(Api.color("&8Cosmic Crate - Choose"))){
+			if(inv.getName().equals(Api.color(getFile(player).getString("Crate.CrateName")+" - Choose"))){
 				e.setCancelled(true);
 				int slot = e.getRawSlot();
 				if(inCosmic(slot)){
@@ -173,7 +178,12 @@ public class Cosmic implements Listener{
 	public void onInvClose(InventoryCloseEvent e){
 		Inventory inv = e.getInventory();
 		Player player = (Player) e.getPlayer();
-		if(inv.getName().equals(Api.color("&8Cosmic Crate - Prizes"))){
+		if(GUI.Crate.containsKey(player)){
+			if(!getFile(player).getString("Crate.CrateType").equalsIgnoreCase("Cosmic"))return;
+		}else{
+			return;
+		}
+		if(inv.getName().equals(Api.color(getFile(player).getString("Crate.CrateName")+" - Prizes"))){
 			boolean T=false;
 			for(int i : picks.get(player)){
 				if(inv.getItem(i)!=null){
@@ -210,7 +220,7 @@ public class Cosmic implements Listener{
 				glass.remove(player);
 			}
 		}
-		if(inv.getName().equals(Api.color("&8Cosmic Crate - Choose"))){
+		if(inv.getName().equals(Api.color(getFile(player).getString("Crate.CrateName")+" - Choose"))){
 			if(!glass.containsKey(player)||glass.get(player).size()<4){
 				if(GUI.Crate.containsKey(player)){
 					GUI.Crate.remove(player);

@@ -5,13 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
-import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
-import me.BadBones69.CrazyCrates.CrateTypes.CrateOnTheGo;
-import me.BadBones69.CrazyCrates.CrateTypes.QCC;
-import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
-import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,6 +22,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
+import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
+import me.BadBones69.CrazyCrates.CrateTypes.CrateOnTheGo;
+import me.BadBones69.CrazyCrates.CrateTypes.QCC;
+import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
+import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
+import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
 
 public class Main extends JavaPlugin implements Listener{
 	public static SettingsManager settings = SettingsManager.getInstance();
@@ -53,12 +54,17 @@ public class Main extends JavaPlugin implements Listener{
 			settings.getLocations().set("Locations.Clear", null);
 			settings.saveLocations();
 		}
+		if(!settings.getData().contains("Players")){
+			settings.getData().set("Players.Clear", null);
+			settings.saveData();
+		}
 		Api.hasUpdate();
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		Bukkit.getServer().getPluginManager().registerEvents(new CC(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new GUI(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new QCC(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new CSGO(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new Wonder(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new Cosmic(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new Roulette(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new CrateOnTheGo(), this);
@@ -111,9 +117,15 @@ public class Main extends JavaPlugin implements Listener{
 				if(args[0].equalsIgnoreCase("Reload")){
 					if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
 					settings.reloadAll();
+					saveDefaultConfig();
+					settings.setup(this);
 					if(!settings.getLocations().contains("Locations")){
 						settings.getLocations().set("Locations.Clear", null);
 						settings.saveLocations();
+					}
+					if(!settings.getData().contains("Players")){
+						settings.getData().set("Players.Clear", null);
+						settings.saveData();
 					}
 					sender.sendMessage(Api.color(Api.getPrefix()+settings.getConfig().getString("Settings.Reload")));
 					return true;

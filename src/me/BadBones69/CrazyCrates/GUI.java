@@ -9,6 +9,7 @@ import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
 import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
 import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
+import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -62,7 +63,7 @@ public class GUI implements Listener{
 			String name = Main.settings.getFile(crate).getString("Crate.Prizes."+reward+".DisplayName");
 			List<String> lore = Main.settings.getFile(crate).getStringList("Crate.Prizes."+reward+".Lore");
 			try{
-				inv.addItem(Api.makeItem(id, 1, name, lore));
+				inv.setItem(inv.firstEmpty(), Api.makeItem(id, 1, name, lore));
 			}catch(Exception e){
 				inv.addItem(Api.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error","&cFor the reward: &c"+reward)));
 			}
@@ -111,6 +112,11 @@ public class GUI implements Listener{
 											player.sendMessage(Api.color(Api.getPrefix()+msg));
 											return;
 										}
+									}
+									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Wonder")){
+										Crate.put(player, crate);
+										Api.Key.put(player, "VirtualKey");
+										Wonder.startWonder(player);
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Cosmic")){
 										Crate.put(player, crate);

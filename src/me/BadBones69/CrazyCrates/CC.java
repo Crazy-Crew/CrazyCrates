@@ -2,14 +2,6 @@ package me.BadBones69.CrazyCrates;
 
 import java.util.HashMap;
 
-import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
-import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
-import me.BadBones69.CrazyCrates.CrateTypes.CrateOnTheGo;
-import me.BadBones69.CrazyCrates.CrateTypes.FireCracker;
-import me.BadBones69.CrazyCrates.CrateTypes.QCC;
-import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
-import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,6 +14,15 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
+import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
+import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
+import me.BadBones69.CrazyCrates.CrateTypes.CrateOnTheGo;
+import me.BadBones69.CrazyCrates.CrateTypes.FireCracker;
+import me.BadBones69.CrazyCrates.CrateTypes.QCC;
+import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
+import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
+import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
 
 public class CC implements Listener{ //Crate Control
 	public static HashMap<Player, ItemStack> Key = new HashMap<Player, ItemStack>();
@@ -134,6 +135,12 @@ public class CC implements Listener{ //Crate Control
 	}
 	void openCrate(Player player, String Crate, Location loc){
 		String C = Main.settings.getFile(Crate).getString("Crate.CrateType");
+		if(C.equalsIgnoreCase("Wonder")){
+			Wonder.startWonder(player);
+		}
+		if(C.equalsIgnoreCase("Cosmic")){
+			Cosmic.openCosmic(player);
+		}
 		if(C.equalsIgnoreCase("CSGO")){
 			CSGO.openCSGO(player);
 		}
@@ -155,9 +162,6 @@ public class CC implements Listener{ //Crate Control
 		}
 		if(C.equalsIgnoreCase("Roulette")){
 			Roulette.openRoulette(player);
-		}
-		if(C.equalsIgnoreCase("Cosmic")){
-			Cosmic.openCosmic(player);
 		}
 		if(C.equalsIgnoreCase("QuadCrate")){
 			LastLoc.put(player, player.getLocation());

@@ -37,7 +37,7 @@ public class Roulette implements Listener{
 		}
 	}
 	public static void openRoulette(Player player){
-		Inventory inv = Bukkit.createInventory(null, 27, Api.color("&8&lRoulette Crate"));
+		Inventory inv = Bukkit.createInventory(null, 27, Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")));
 		setGlass(inv);
 		inv.setItem(13, pickItem(player));
 		player.openInventory(inv);
@@ -166,11 +166,19 @@ public class Roulette implements Listener{
 	}
 	@EventHandler
 	public void onInvClick(InventoryClickEvent e){
+		Player player = (Player) e.getWhoClicked();
+		if(GUI.Crate.containsKey(player)){
+			if(!Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateType").equalsIgnoreCase("Roulette"))return;
+		}else{
+			return;
+		}
 		Inventory inv = e.getInventory();
 		if(inv!=null){
-			if(inv.getName().equals(Api.color("&8&lRoulette Crate"))){
+			player.sendMessage("1");
+			if(inv.getName().equals(Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")))){
 				e.setCancelled(true);
 			}
+			player.sendMessage("2");
 		}
 	}
 	@EventHandler
