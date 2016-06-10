@@ -35,9 +35,14 @@ public class QuickCrate implements Listener{
 		if(remove){
 			Api.removeItem(CC.Key.get(player), player);
 		}
-		ItemStack it = Api.displayItem(player, loc.clone().add(.5, 1.3, .5));
-		String name = Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString(Api.path.get(player)+".DisplayName"));
-		final Entity reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), it);
+		if(!CC.Rewards.containsKey(player)){
+			CC.getItems(player);
+		}
+		ItemStack item = CC.pickItem(player, loc.clone().add(.5, 1.3, .5));
+		String path = CC.Rewards.get(player).get(item);
+		CC.getReward(player, path);
+		String name = Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString(path+".DisplayName"));
+		final Entity reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), item);
 		reward.setVelocity(new Vector(0,.2,0));
 		reward.setCustomName(name);
 		reward.setCustomNameVisible(true);
@@ -52,6 +57,7 @@ public class QuickCrate implements Listener{
 					playChestAction(loc.getBlock(), false);
 					GUI.Crate.remove(player);
 					CC.InUse.remove(player);
+					CC.Rewards.remove(player);
 				}
 			}
 		}, 5*20);

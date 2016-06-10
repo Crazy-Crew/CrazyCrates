@@ -483,4 +483,10 @@ public class Api{
 		Random r = new Random();
 		return schematics.get(r.nextInt(schematics.size()));
 	}
+	public static boolean isInvFull(Player player){
+		if(player.getInventory().firstEmpty()==-1){
+			return true;
+		}
+		return false;
+	}
 }

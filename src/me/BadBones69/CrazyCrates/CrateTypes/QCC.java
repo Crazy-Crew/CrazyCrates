@@ -23,6 +23,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -117,6 +118,9 @@ public class QCC implements Listener{ // Quad Crate Control.
 					return;
 				}
 			}
+		}
+		if(!CC.Rewards.containsKey(player)){
+			CC.getItems(player);
 		}
 		player.teleport(loc.clone().add(.5,0,.5));
 		for(Entity en : player.getNearbyEntities(2, 2, 2)){
@@ -354,6 +358,9 @@ public class QCC implements Listener{ // Quad Crate Control.
 		crates.remove(player);
 		chests.remove(player);
 		GUI.Crate.remove(player);
+		if(CC.Rewards.containsKey(player)){
+			CC.Rewards.remove(player);
+		}
 		if(P.containsKey(player)){
 			Bukkit.getScheduler().cancelTask(P.get(player));
 			P.remove(player);
@@ -392,13 +399,15 @@ public class QCC implements Listener{ // Quad Crate Control.
 					for(final Location l : chests.get(player)){
 						Location B = e.getClickedBlock().getLocation();
 						if(l.getBlockX()==B.getBlockX()&&l.getBlockY()==B.getBlockY()&&l.getBlockZ()==B.getBlockZ()){
+							FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
 							e.setCancelled(true);
 							if(player==e.getPlayer()){
 								playChestAction(e.getClickedBlock(), true);
 								if(!opened.get(player).get(l)){
 									ArrayList<Entity> rewards = new ArrayList<Entity>();
-									ItemStack it = Api.displayItem(player, B.clone().add(.5, 1.3, .5));
-									String name = Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString(Api.path.get(player)+".DisplayName"));
+									ItemStack it = CC.pickItem(player, B.clone().add(.5, 1.3, .5));
+									CC.getReward(player, CC.Rewards.get(player).get(it));
+									String name = Api.color(file.getString(CC.Rewards.get(player).get(it)+".DisplayName"));
 									final Entity reward = player.getWorld().dropItem(B.clone().add(.5, 1, .5), it);
 									reward.setVelocity(new Vector(0,.2,0));
 									reward.setCustomName(name);
@@ -478,6 +487,9 @@ public class QCC implements Listener{ // Quad Crate Control.
 											chests.remove(player);
 											Rest.remove(player);
 											GUI.Crate.remove(player);
+											if(CC.Rewards.containsKey(player)){
+												CC.Rewards.remove(player);
+											}
 											if(timer.containsKey(player)){
 												Bukkit.getScheduler().cancelTask(timer.get(player));
 												timer.remove(player);
@@ -564,12 +576,14 @@ public class QCC implements Listener{ // Quad Crate Control.
 	public void onCMD(PlayerCommandPreprocessEvent e){
 		Player player = e.getPlayer();
 		if(crates.containsKey(player)){
-			e.setCancelled(true);
-			String msg = Main.settings.getConfig().getString("Settings.NoCMDsWhileCrateOpened");
-			msg = msg.replaceAll("%Player%", player.getName());
-			msg = msg.replaceAll("%player%", player.getName());
-			player.sendMessage(Api.color(Api.getPrefix()+msg));
-			return;
+			if(!e.getMessage().toLowerCase().contains("plugman")){
+				e.setCancelled(true);
+				String msg = Main.settings.getConfig().getString("Settings.NoCMDsWhileCrateOpened");
+				msg = msg.replaceAll("%Player%", player.getName());
+				msg = msg.replaceAll("%player%", player.getName());
+				player.sendMessage(Api.color(Api.getPrefix()+msg));
+				return;
+			}
 		}
 	}
 	@EventHandler

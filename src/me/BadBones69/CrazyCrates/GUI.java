@@ -115,21 +115,25 @@ public class GUI implements Listener{
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Wonder")){
 										Crate.put(player, crate);
+										CC.Crate.put(player, crate);
 										Api.Key.put(player, "VirtualKey");
 										Wonder.startWonder(player);
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Cosmic")){
 										Crate.put(player, crate);
+										CC.Crate.put(player, crate);
 										Api.Key.put(player, "VirtualKey");
 										Cosmic.openCosmic(player);
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("QuadCrate")){
 										Crate.put(player, crate);
+										CC.Crate.put(player, crate);
 										Api.Key.put(player, "VirtualKey");
 										QCC.startBuild(player, player.getLocation(), Material.CHEST);
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CSGO")){
 										Crate.put(player, crate);
+										CC.Crate.put(player, crate);
 										Api.Key.put(player, "VirtualKey");
 										CSGO.openCSGO(player);
 										if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){
@@ -146,6 +150,7 @@ public class GUI implements Listener{
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Roulette")){
 										Crate.put(player, crate);
+										CC.Crate.put(player, crate);
 										Api.Key.put(player, "VirtualKey");
 										Roulette.openRoulette(player);
 										if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){

@@ -1,12 +1,16 @@
 package me.BadBones69.CrazyCrates;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,7 +21,6 @@ import org.bukkit.util.Vector;
 
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
 import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
-import me.BadBones69.CrazyCrates.CrateTypes.CrateOnTheGo;
 import me.BadBones69.CrazyCrates.CrateTypes.FireCracker;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
 import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
@@ -25,6 +28,8 @@ import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
 import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
 
 public class CC implements Listener{ //Crate Control
+	public static HashMap<Player, HashMap<ItemStack, String>> Rewards = new HashMap<Player, HashMap<ItemStack, String>>();
+	public static HashMap<Player, String> Crate = new HashMap<Player, String>();
 	public static HashMap<Player, ItemStack> Key = new HashMap<Player, ItemStack>();
 	public static HashMap<Player, Location> LastLoc = new HashMap<Player, Location>();
 	public static HashMap<Player, Location> InUse = new HashMap<Player, Location>();
@@ -114,6 +119,7 @@ public class CC implements Listener{ //Crate Control
 											return;
 										}
 										GUI.Crate.put(player, Crate);
+										CC.Crate.put(player, Crate);
 										Key.put(player, item);
 										Api.Key.put(player, "PhysicalKey");
 										openCrate(player, Crate, loc);
@@ -148,17 +154,18 @@ public class CC implements Listener{ //Crate Control
 			if(Api.Key.get(player).equals("PhysicalKey")){
 				Api.removeItem(Key.get(player), player);
 			}
-			String name = CrateOnTheGo.pickItem(player).getItemMeta().getDisplayName();
-			for(String reward : Main.settings.getFile(Crate).getConfigurationSection("Crate.Prizes").getKeys(false)){
-				if(name.equals(Api.color(Main.settings.getFile(Crate).getString("Crate.Prizes."+reward+".DisplayName")))){
-					CrateOnTheGo.getReward(player, reward);
-					if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean(Api.path.get(player) + ".Firework")){
-						Api.fireWork(loc.clone().add(.5, 0, .5));
-					}
-					GUI.Crate.remove(player);
-					return;
-				}
+			GUI.Crate.put(player, Crate);
+			if(!CC.Rewards.containsKey(player)){
+				CC.getItems(player);
 			}
+			ItemStack it = pickItem(player);
+			String path = Rewards.get(player).get(it);
+			getReward(player, path);
+			if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean(path + ".Firework")){
+				Api.fireWork(player.getLocation().add(0, 1, 0));
+			}
+			GUI.Crate.remove(player);
+			return;
 		}
 		if(C.equalsIgnoreCase("Roulette")){
 			Roulette.openRoulette(player);
@@ -189,5 +196,97 @@ public class CC implements Listener{ //Crate Control
 			return;
 		}
 		player.setVelocity(v);
+	}
+	public static void getItems(Player player){
+		FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
+		ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+		HashMap<ItemStack, String> path = new HashMap<ItemStack, String>();
+		for(String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)){
+			String id = file.getString("Crate.Prizes." + reward + ".DisplayItem");
+			String name = file.getString("Crate.Prizes." + reward + ".DisplayName");
+			try{
+				items.add(Api.makeItem(id, 1, name));
+				path.put(Api.makeItem(id, 1, name), "Crate.Prizes."+reward);
+			}catch(Exception e){
+				continue;
+			}
+		}
+		Rewards.put(player, path);
+	}
+	public static ItemStack pickItem(Player player){
+		FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
+		if(!Rewards.containsKey(player)){
+			getItems(player);
+		}
+		Set<ItemStack> items = Rewards.get(player).keySet();
+		ArrayList<ItemStack> Items = new ArrayList<ItemStack>();
+		Random r = new Random();
+		for(int stop=0;Items.size()==0;stop++){
+			if(stop==100){
+				break;
+			}
+			for(ItemStack i : items){
+				String path = Rewards.get(player).get(i);
+				ItemStack item = Api.makeItem(file.getString(path+".DisplayItem"), 1, file.getString(path+".DisplayName"));
+				int max = file.getInt(path+".MaxRange");
+				int chance = file.getInt(path+".Chance");
+				int num;
+				for(int counter = 1; counter<=1; counter++){
+					num = 1 + r.nextInt(max);
+					if(num >= 1 && num <= chance)Items.add(item);
+				}
+			}
+		}
+		return Items.get(r.nextInt(Items.size()));
+	}
+	public static ItemStack pickItem(Player player, Location loc){
+		FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
+		if(!Rewards.containsKey(player)){
+			getItems(player);
+		}
+		Set<ItemStack> items = Rewards.get(player).keySet();
+		ArrayList<ItemStack> Items = new ArrayList<ItemStack>();
+		Random r = new Random();
+		for(int stop=0;Items.size()==0;stop++){
+			if(stop==100){
+				break;
+			}
+			for(ItemStack i : items){
+				String path = Rewards.get(player).get(i);
+				ItemStack item = Api.makeItem(file.getString(path+".DisplayItem"), 1, file.getString(path+".DisplayName"));
+				int max = file.getInt(path+".MaxRange");
+				int chance = file.getInt(path+".Chance");
+				int num;
+				for(int counter = 1; counter<=1; counter++){
+					num = 1 + r.nextInt(max);
+					if(num >= 1 && num <= chance)Items.add(item);
+				}
+			}
+		}
+		ItemStack item = Items.get(r.nextInt(Items.size()));
+		if(file.getBoolean("Crate.Prizes."+Rewards.get(player).get(item)+".Firework")){
+			Api.fireWork(loc);
+		}
+		return item;
+	}
+	public static void getReward(Player player, String path){
+		FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
+		if(file.contains(path + ".Items")){
+			for(ItemStack i : Api.getFinalItems(path, player)){
+				if(!Api.isInvFull(player)){
+					player.getInventory().addItem(i);
+				}else{
+					player.getWorld().dropItemNaturally(player.getLocation(), i);
+				}
+			}
+		}
+		if(file.contains(path + ".Commands")){
+			for(String command : file.getStringList(path + ".Commands")){
+				command = Api.color(command);
+				command = command.replace("%Player%", player.getName());
+				command = command.replace("%player%", player.getName());
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+			}
+		}
 	}
 }
