@@ -18,8 +18,7 @@ Crate:
       - '&7A special Key'
       - '&7For a special Crate.'
     Item: '131'
-    Enchantments:
-      - 'WATER_WORKER:1'
+    Glowing: True
   Prizes:
     1:
       DisplayName: '&3&lRare ChestPlate'

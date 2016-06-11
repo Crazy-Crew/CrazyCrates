@@ -12,7 +12,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,10 +28,12 @@ import me.BadBones69.CrazyCrates.CrateTypes.CrateOnTheGo;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
 import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
 import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
+import me.BadBones69.CrazyCrates.CrateTypes.Wheel;
 import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
 
 public class Main extends JavaPlugin implements Listener{
 	public static SettingsManager settings = SettingsManager.getInstance();
+	private static HashMap<Player, HashMap<ItemStack, ItemStack>> Keys = new HashMap<Player, HashMap<ItemStack, ItemStack>>();
 	@Override
 	public void onDisable(){
 		if(!QCC.crates.isEmpty()){
@@ -48,7 +49,6 @@ public class Main extends JavaPlugin implements Listener{
 	}
 	@Override
 	public void onEnable(){
-		saveDefaultConfig();
 		settings.setup(this);
 		if(!settings.getLocations().contains("Locations")){
 			settings.getLocations().set("Locations.Clear", null);
@@ -64,6 +64,7 @@ public class Main extends JavaPlugin implements Listener{
 		Bukkit.getServer().getPluginManager().registerEvents(new GUI(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new QCC(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new CSGO(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new Wheel(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new Wonder(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new Cosmic(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new Roulette(this), this);
@@ -106,18 +107,16 @@ public class Main extends JavaPlugin implements Listener{
 					sender.sendMessage(Api.color("&6/CC List &7- Lists all the Crates."));
 					sender.sendMessage(Api.color("&6/CC Tp <Location> &7- Teleport to a Crate."));
 					sender.sendMessage(Api.color("&6/CC Give <Physical/Virtual> <Crate> [Amount] [Player] &7- Give a player keys for a Chest."));
-					sender.sendMessage(Api.color("&6/CC GiveAll <Physical/Virtual> <Crate> <Amount> &7- Gives all online players keys for a Chest."));
+					sender.sendMessage(Api.color("&6/CC GiveAll <Physical/Virtual> <Crate> [Amount] &7- Gives all online players keys for a Chest."));
 					sender.sendMessage(Api.color("&6/CC Create <Location Name> <Crate> &7- Set the block you are looking at as a crate."));
 					sender.sendMessage(Api.color("&6/CC Set <Location Name> <Crate> &7- Change a Locations Crate Type."));
 					sender.sendMessage(Api.color("&6/CC Remove <Location Name> &7- Delete a Crate Location."));
 					sender.sendMessage(Api.color("&6/CC Reload &7- Reloads the Config and Data Files."));
-					sender.sendMessage(Api.color("&8&lCreated by: &4&lBadBones69"));
 					return true;
 				}
 				if(args[0].equalsIgnoreCase("Reload")){
 					if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
 					settings.reloadAll();
-					saveDefaultConfig();
 					settings.setup(this);
 					if(!settings.getLocations().contains("Locations")){
 						settings.getLocations().set("Locations.Clear", null);
@@ -138,22 +137,24 @@ public class Main extends JavaPlugin implements Listener{
 					int slots=9;
 					for(;size>9;size-=9)slots+=9;
 					Inventory inv = Bukkit.createInventory(null, slots, Api.color("&4&lAdmin Keys"));
+					HashMap<ItemStack, ItemStack> keys = new HashMap<ItemStack, ItemStack>();
 					for(String crate : Api.getCrates()){
 						String name = settings.getFile(crate).getString("Crate.PhysicalKey.Name");
 						List<String> lore = settings.getFile(crate).getStringList("Crate.PhysicalKey.Lore");
 						String id = settings.getFile(crate).getString("Crate.PhysicalKey.Item");
-						HashMap<Enchantment, Integer> Enchantments = new HashMap<Enchantment, Integer>();
-						for(String en : Main.settings.getFile(crate).getStringList("Crate.PhysicalKey.Enchantments")){
-							String[] breakdown = en.split(":");
-							String enchantment = breakdown[0];
-							int lvl = Integer.parseInt(breakdown[1]);
-							Enchantments.put(Enchantment.getByName(enchantment), lvl);
+						Boolean enchanted = false;
+						if(settings.getFile(crate).contains("Crate.PhysicalKey.Glowing")){
+							enchanted=settings.getFile(crate).getBoolean("Crate.PhysicalKey.Glowing");
 						}
 						lore.add("");
 						lore.add("&7&l(&6&l!&7&l) Left click for Physical Key");
 						lore.add("&7&l(&6&l!&7&l) Right click for Virtual Key");
-						inv.addItem(Api.makeItem(id, 1, name, lore, Enchantments));
+						ItemStack item1 = Api.makeItem(id, 1, name, lore, enchanted);
+						ItemStack item2 = Api.makeItem(id, 1, name, settings.getFile(crate).getStringList("Crate.PhysicalKey.Lore"), enchanted);
+						inv.addItem(item1);
+						keys.put(item1, item2);
 					}
+					Keys.put(player, keys);
 					player.openInventory(inv);
 					return true;
 				}
@@ -201,7 +202,7 @@ public class Main extends JavaPlugin implements Listener{
 							int Y = settings.getLocations().getInt("Locations." + name + ".Y");
 							int Z = settings.getLocations().getInt("Locations." + name + ".Z");
 							Location loc = new Location(W,X,Y,Z);
-							((Player)sender).teleport(loc);
+							((Player)sender).teleport(loc.add(.5, 0, .5));
 							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have been teleported to &6"+name+"&7."));
 							return true;
 						}
@@ -224,11 +225,11 @@ public class Main extends JavaPlugin implements Listener{
 						Main.settings.getLocations().set("Locations.Clear", null);
 						Main.settings.saveLocations();
 					}
-					for(String name : settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
-						if(name.equalsIgnoreCase(LN)){
-							settings.getLocations().set("Locations."+name, null);
+					for(String location : settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
+						if(location.equalsIgnoreCase(LN)){
+							settings.getLocations().set("Locations."+location, null);
 							settings.saveLocations();
-							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have just removed &6"+name+"&7."));
+							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have just removed &6"+location+"&7."));
 							return true;
 						}
 					}
@@ -255,11 +256,11 @@ public class Main extends JavaPlugin implements Listener{
 								Main.settings.getLocations().set("Locations.Clear", null);
 								Main.settings.saveLocations();
 							}
-							for(String name : settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
-								if(name.equalsIgnoreCase(LN)){
-									settings.getLocations().set("Locations."+name+".Crate", crate);
+							for(String location : settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
+								if(location.equalsIgnoreCase(LN)){
+									settings.getLocations().set("Locations."+location+".Crate", crate);
 									settings.saveLocations();
-									sender.sendMessage(Api.color(Api.getPrefix()+"&7You have just set &6"+name+" &7as a &6"+crate+" &7Crate."));
+									sender.sendMessage(Api.color(Api.getPrefix()+"&7You have just set &6"+location+" &7as a &6"+crate+" &7Crate."));
 									return true;
 								}
 							}
@@ -317,17 +318,20 @@ public class Main extends JavaPlugin implements Listener{
 			}
 			if(args[0].equalsIgnoreCase("GiveAll")){// /Crate GiveAll <Physical/Virtual> <Crate> <Amount>
 				if(sender instanceof Player)if(!Api.permCheck((Player)sender, "Admin"))return true;
-				if(args.length==4){
-					if(!Api.isInt(args[3])){
-						sender.sendMessage(Api.color(Api.getPrefix()+"&c"+args[3]+" is is not a Number."));
-						return true;
+				if(args.length>=3){
+					int amount = 1;
+					if(args.length>=4){
+						if(!Api.isInt(args[3])){
+							sender.sendMessage(Api.color(Api.getPrefix()+"&c"+args[3]+" is is not a Number."));
+							return true;
+						}
+						amount = Integer.parseInt(args[3]);
 					}
 					String type = args[1];
 					if(!(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")||type.equalsIgnoreCase("Physical")||type.equalsIgnoreCase("P"))){
 						sender.sendMessage(Api.color(Api.getPrefix()+"&cPlease use Virtual/V or Physical/P for a Key type."));
 						return true;
 					}
-					int amount = Integer.parseInt(args[3]);
 					for(String crate : Api.getCrates()){
 						if(crate.equalsIgnoreCase(args[2])){
 							if(settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
@@ -466,7 +470,7 @@ public class Main extends JavaPlugin implements Listener{
 										return;
 									}
 								}
-								player.getInventory().addItem(inv.getItem(slot));
+								player.getInventory().addItem(Keys.get(player).get(item));
 							}
 						}
 					}

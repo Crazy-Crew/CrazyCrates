@@ -19,8 +19,7 @@ Crate:
       - '&7A special Key' #Lore of the Key.
       - '&7For a special Crate.'
     Item: '131' #The item the key is.
-    Enchantments:
-      - 'WATER_WORKER:1' #What enchantments the Key has.
+    Glowing: True
   Tiers: #The tiers in the Crate
     Basic: #The Config Name for the Crate
       Name: '&8Basic Prize' #The in-game name of the Crate

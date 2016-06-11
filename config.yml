@@ -24,6 +24,7 @@ Settings:
   Prefix: '&8[&bCrazyCrates&8]: '
   InventoryName: '&b&lCrazy &4&lCrates'
   InventorySize: 27
+  KnockBack: True
   No-Teleporting-Msg: '&cYou may not teleport away while opening a crate.'
   NoCMDsWhileCrateOpened: '&cYou are not allowed to use commands while opening Crates.'
   NoKeyMsg: '&cYou must have a %Key% &cin your hand to use that Crate.'

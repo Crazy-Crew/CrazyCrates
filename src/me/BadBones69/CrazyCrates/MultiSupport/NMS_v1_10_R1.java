@@ -1,27 +1,31 @@
 package me.BadBones69.CrazyCrates.MultiSupport;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.server.v1_8_R1.NBTCompressedStreamTools;
-import net.minecraft.server.v1_8_R1.NBTTagCompound;
-import net.minecraft.server.v1_8_R1.NBTTagList;
+import net.minecraft.server.v1_10_R1.BlockPosition;
+import net.minecraft.server.v1_10_R1.NBTCompressedStreamTools;
+import net.minecraft.server.v1_10_R1.NBTTagCompound;
+import net.minecraft.server.v1_10_R1.TileEntityChest;
+import net.minecraft.server.v1_10_R1.TileEntityEnderChest;
+import net.minecraft.server.v1_10_R1.World;
+import net.minecraft.server.v1_10_R1.NBTTagList;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_10_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class NMS_v1_8_R1 {
+public class NMS_v1_10_R1 {
 	public static ItemStack addGlow(ItemStack item){
 		if(item.hasItemMeta()){
 			if(item.getItemMeta().hasEnchants())return item;
 		}
-		net.minecraft.server.v1_8_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_10_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
         NBTTagCompound tag = null;
         if (!nmsStack.hasTag()) {
             tag = new NBTTagCompound();
@@ -34,19 +38,18 @@ public class NMS_v1_8_R1 {
         nmsStack.setTag(tag);
         return CraftItemStack.asCraftMirror(nmsStack);
 	}
-	@SuppressWarnings("deprecation")
 	public static ItemStack getInHand(Player player){
-		return player.getItemInHand();
+		return player.getInventory().getItemInMainHand();
 	}
 	public static void openChest(Block b, Location location, Boolean open){
-		net.minecraft.server.v1_8_R1.World world = ((CraftWorld) location.getWorld()).getHandle();
-    	net.minecraft.server.v1_8_R1.BlockPosition position = new net.minecraft.server.v1_8_R1.BlockPosition(location.getX(), location.getY(), location.getZ());
+		World world = ((org.bukkit.craftbukkit.v1_10_R1.CraftWorld) location.getWorld()).getHandle();
+		BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
         if (b.getType() == Material.ENDER_CHEST) {
-        	net.minecraft.server.v1_8_R1.TileEntityEnderChest tileChest = (net.minecraft.server.v1_8_R1.TileEntityEnderChest) world.getTileEntity(position);
-            world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
+        	TileEntityEnderChest tileChest = (TileEntityEnderChest) world.getTileEntity(position);
+            world.playBlockAction(position, tileChest.getBlock(), 1, open ? 1 : 0);
         } else {
-        	net.minecraft.server.v1_8_R1.TileEntityChest tileChest = (net.minecraft.server.v1_8_R1.TileEntityChest) world.getTileEntity(position);
-            world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
+        	TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
+            world.playBlockAction(position, tileChest.getBlock(), 1, open ? 1 : 0);
         }
 	}
 	// http://stackoverflow.com/questions/24101928/setting-block-data-from-schematic-in-bukkit

@@ -1,5 +1,5 @@
 Crate:
-  CrateType: CSGO #Type of crate (CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Cosmic(This requires a additional info to work.)).
+  CrateType: CSGO #Type of crate (CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/Cosmic(This requires a additional info to work.)).
   CrateName: '&8Basic Crate' #Name of the Inventory if a GUI crate.
   StartingKeys: 1 #Starting amount of keys when the player 1st joins.
   InGUI: true #If the crate shows in the /cc GUI. (If the crate type is QuickCrate/CrateOnTheGo/FireCracker then the Crate will not work. Quick Crate requires a Physical Crate.)
@@ -18,8 +18,7 @@ Crate:
       - '&7A special Key' #Lore of the Key.
       - '&7For a special Crate.'
     Item: '131' #The item the key is.
-    Enchantments:
-      - 'WATER_WORKER:1' #What enchantments the Key has.
+    Glowing: True
 #         For Cosmic Crates Only
 #############################################
 #  Tiers: #The tiers in the Crate

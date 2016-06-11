@@ -5,12 +5,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
-import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
-import me.BadBones69.CrazyCrates.CrateTypes.QCC;
-import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
-import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -20,6 +14,13 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
+import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
+import me.BadBones69.CrazyCrates.CrateTypes.QCC;
+import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
+import me.BadBones69.CrazyCrates.CrateTypes.Wheel;
+import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
 
 public class GUI implements Listener{
 	public static HashMap<Player, String> Crate = new HashMap<Player, String>();
@@ -112,6 +113,12 @@ public class GUI implements Listener{
 											player.sendMessage(Api.color(Api.getPrefix()+msg));
 											return;
 										}
+									}
+									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Wheel")){
+										Crate.put(player, crate);
+										CC.Crate.put(player, crate);
+										Api.Key.put(player, "VirtualKey");
+										Wheel.startWheel(player);
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Wonder")){
 										Crate.put(player, crate);

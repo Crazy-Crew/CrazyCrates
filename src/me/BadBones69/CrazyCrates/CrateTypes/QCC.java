@@ -3,17 +3,7 @@ package me.BadBones69.CrazyCrates.CrateTypes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import me.BadBones69.CrazyCrates.Api;
-import me.BadBones69.CrazyCrates.CC;
-import me.BadBones69.CrazyCrates.GUI;
-import me.BadBones69.CrazyCrates.Main;
-import me.BadBones69.CrazyCrates.ParticleEffect;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R1;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R2;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R3;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R1;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R2;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -42,6 +32,17 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
+
+import me.BadBones69.CrazyCrates.Api;
+import me.BadBones69.CrazyCrates.CC;
+import me.BadBones69.CrazyCrates.GUI;
+import me.BadBones69.CrazyCrates.Main;
+import me.BadBones69.CrazyCrates.ParticleEffect;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R1;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R2;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R3;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R1;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R2;
 
 public class QCC implements Listener{ // Quad Crate Control.
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
@@ -171,6 +172,13 @@ public class QCC implements Listener{ // Quad Crate Control.
 		spawnChest(Ch, player, Chest);
 	}
 	private static void spawnChest(final ArrayList<Location> locs, final Player player, final Material Chest){
+		ArrayList<ParticleEffect> particles = new ArrayList<ParticleEffect>();
+		particles.add(ParticleEffect.FLAME);
+		particles.add(ParticleEffect.VILLAGER_HAPPY);
+		particles.add(ParticleEffect.SPELL_WITCH);
+		particles.add(ParticleEffect.REDSTONE);
+		Random r = new Random();
+		final ParticleEffect particle = particles.get(r.nextInt(particles.size()));
 		P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
 			double r = 0;
 			int i = 0;
@@ -183,8 +191,8 @@ public class QCC implements Listener{ // Quad Crate Control.
 			public void run() {
 				ArrayList<Location> L = getCircle(l, r, 10);
 				ArrayList<Location> L2 = getCircleReverse(l, r, 10);
-				ParticleEffect.FLAME.display(0, 0, 0, 0, 1, L.get(i), 100);
-				ParticleEffect.FLAME.display(0, 0, 0, 0, 1, L2.get(i), 100);
+				particle.display(0, 0, 0, 0, 1, L.get(i), 100);
+				particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
 				i++;f++;e++;
 				l.add(0, -.05, 0);
 				if(i==10)i=0;
@@ -222,8 +230,8 @@ public class QCC implements Listener{ // Quad Crate Control.
 					public void run() {
 						ArrayList<Location> L = getCircle(l, r, 10);
 						ArrayList<Location> L2 = getCircleReverse(l, r, 10);
-						ParticleEffect.FLAME.display(0, 0, 0, 0, 1, L.get(i), 100);
-						ParticleEffect.FLAME.display(0, 0, 0, 0, 1, L2.get(i), 100);
+						particle.display(0, 0, 0, 0, 1, L.get(i), 100);
+						particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
 						i++;f++;e++;
 						l.add(0, -.05, 0);
 						if(i==10)i=0;
@@ -263,8 +271,8 @@ public class QCC implements Listener{ // Quad Crate Control.
 					public void run() {
 						ArrayList<Location> L = getCircle(l, r, 10);
 						ArrayList<Location> L2 = getCircleReverse(l, r, 10);
-						ParticleEffect.FLAME.display(0, 0, 0, 0, 1, L.get(i), 100);
-						ParticleEffect.FLAME.display(0, 0, 0, 0, 1, L2.get(i), 100);
+						particle.display(0, 0, 0, 0, 1, L.get(i), 100);
+						particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
 						i++;f++;e++;
 						l.add(0, -.05, 0);
 						if(i==10)i=0;
@@ -304,8 +312,8 @@ public class QCC implements Listener{ // Quad Crate Control.
 					public void run() {
 						ArrayList<Location> L = getCircle(l, r, 10);
 						ArrayList<Location> L2 = getCircleReverse(l, r, 10);
-						ParticleEffect.FLAME.display(0, 0, 0, 0, 1, L.get(i), 100);
-						ParticleEffect.FLAME.display(0, 0, 0, 0, 1, L2.get(i), 100);
+						particle.display(0, 0, 0, 0, 1, L.get(i), 100);
+						particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
 						i++;f++;e++;
 						l.add(0, -.05, 0);
 						if(i==10)i=0;

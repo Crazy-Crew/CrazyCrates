@@ -25,6 +25,7 @@ import me.BadBones69.CrazyCrates.CrateTypes.FireCracker;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
 import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
 import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
+import me.BadBones69.CrazyCrates.CrateTypes.Wheel;
 import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
 
 public class CC implements Listener{ //Crate Control
@@ -128,7 +129,9 @@ public class CC implements Listener{ //Crate Control
 								}
 							}
 						}
-						knockBack(player, block.getLocation());
+						if(!Main.settings.getConfig().contains("Settings.KnockBack")||Main.settings.getConfig().getBoolean("Settings.KnockBack")){
+							knockBack(player, block.getLocation());
+						}
 						String msg = Main.settings.getConfig().getString("Settings.NoKeyMsg");
 						msg = msg.replaceAll("%Key%", KeyName);
 						msg = msg.replaceAll("%key%", KeyName);
@@ -141,6 +144,9 @@ public class CC implements Listener{ //Crate Control
 	}
 	void openCrate(Player player, String Crate, Location loc){
 		String C = Main.settings.getFile(Crate).getString("Crate.CrateType");
+		if(C.equalsIgnoreCase("Wheel")){
+			Wheel.startWheel(player);
+		}
 		if(C.equalsIgnoreCase("Wonder")){
 			Wonder.startWonder(player);
 		}

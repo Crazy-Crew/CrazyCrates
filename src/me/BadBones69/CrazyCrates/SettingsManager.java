@@ -61,7 +61,16 @@ public class SettingsManager {
 			}
 		}
 		cfile = new File(p.getDataFolder(), "config.yml");
-		config = p.getConfig();
+		if (!cfile.exists()) {
+			try{
+        		File en = new File(p.getDataFolder(), "/config.yml");
+         		InputStream E = getClass().getResourceAsStream("/config.yml");
+         		copyFile(E, en);
+         	}catch (Exception e) {
+         		e.printStackTrace();
+         	}
+		}
+		config = YamlConfiguration.loadConfiguration(cfile);
 		locationsfile = new File(p.getDataFolder(), "Locations.yml");
 		if (!locationsfile.exists()) {
 			try {

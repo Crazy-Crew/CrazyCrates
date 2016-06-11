@@ -10,12 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R1;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R2;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R3;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R1;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R2;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,6 +26,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_10_R1;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R1;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R2;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R3;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R1;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R2;
 
 public class Api{
 	public static HashMap<Player, String> path = new HashMap<Player, String>();
@@ -72,6 +74,30 @@ public class Api{
 			return;
 		}
 	}
+	public static ItemStack addGlow(ItemStack item) {
+		if(getVersion()==1101){
+			return NMS_v1_10_R1.addGlow(item);
+		}
+		if(getVersion()==192){
+			return NMS_v1_9_R2.addGlow(item);
+		}
+		if(getVersion()==191){
+			return NMS_v1_9_R1.addGlow(item);
+		}
+		if(getVersion()==183){
+			return NMS_v1_8_R3.addGlow(item);
+		}
+		if(getVersion()==182){
+			return NMS_v1_8_R2.addGlow(item);
+		}
+		if(getVersion()==181){
+			return NMS_v1_8_R1.addGlow(item);
+		}else{
+			Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is to far out of date. "
+					+ "Please update or remove this plugin to stop further Errors.");
+			return item;
+		}
+    }
 	public static Integer getVersion(){
 		String ver = Bukkit.getServer().getClass().getPackage().getName();
 		ver = ver.substring(ver.lastIndexOf('.')+1);
@@ -259,6 +285,26 @@ public class Api{
 		item.setItemMeta(me);
 		return item;
 	}
+	public static ItemStack makeItem(String type, int amount, String name, List<String> lore, Boolean Enchanted){
+		ArrayList<String> l = new ArrayList<String>();
+		int ty = 0;
+		if(type.contains(":")){
+			String[] b = type.split(":");
+			type = b[0];
+			ty = Integer.parseInt(b[1]);
+		}
+		Material m = Material.matchMaterial(type);
+		ItemStack item = new ItemStack(m, amount, (short) ty);
+		ItemMeta me = item.getItemMeta();
+		me.setDisplayName(color(name));
+		for(String L:lore)l.add(color(L));
+		me.setLore(l);
+		item.setItemMeta(me);
+		if(Enchanted){
+			item=addGlow(item);
+		}
+		return item;
+	}
 	public static ItemStack makeItem(String type, int amount, String name){
 		int ty = 0;
 		if(type.contains(":")){
@@ -406,21 +452,12 @@ public class Api{
 		if(Type.equals("Physical")){
 			String name = color(Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name"));
 			List<String> lore = Main.settings.getFile(crate).getStringList("Crate.PhysicalKey.Lore");
-			String ma = Main.settings.getFile(crate).getString("Crate.PhysicalKey.Item");
-			int type = 0;
-			if(ma.contains(":")){
-				String[] b = ma.split(":");
-				ma = b[0];
-				type = Integer.parseInt(b[1]);
+			String ID = Main.settings.getFile(crate).getString("Crate.PhysicalKey.Item");
+			Boolean enchanted = false;
+			if(Main.settings.getFile(crate).contains("Crate.PhysicalKey.Glowing")){
+				enchanted=Main.settings.getFile(crate).getBoolean("Crate.PhysicalKey.Glowing");
 			}
-			HashMap<Enchantment, Integer> Enchantments = new HashMap<Enchantment, Integer>();
-			for(String en : Main.settings.getFile(crate).getStringList("Crate.PhysicalKey.Enchantments")){
-				String[] breakdown = en.split(":");
-				String enchantment = breakdown[0];
-				int lvl = Integer.parseInt(breakdown[1]);
-				Enchantments.put(Enchantment.getByName(enchantment), lvl);
-			}
-			player.getInventory().addItem(makeItem(Material.matchMaterial(ma), Amount, type, name, lore, Enchantments));
+			player.getInventory().addItem(makeItem(ID, Amount, name, lore, enchanted));
 			return;
 		}
 	}
@@ -488,5 +525,9 @@ public class Api{
 			return true;
 		}
 		return false;
+	}
+	public static Integer randomNumber(int min, int max){
+		Random i = new Random();
+		return min+i.nextInt(max-min);
 	}
 }
