@@ -6,12 +6,10 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
@@ -38,11 +36,7 @@ import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
 import me.BadBones69.CrazyCrates.ParticleEffect;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R1;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R2;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R3;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R1;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R2;
+import me.BadBones69.CrazyCrates.ParticleEffect.BlockData;
 
 public class QCC implements Listener{ // Quad Crate Control.
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
@@ -201,7 +195,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 					r=r+.08;
 				}
 				if(f==60){
-					loc.getWorld().spigot().playEffect(loc.clone().add(0, .3, 0), Effect.TILE_BREAK, Chest.getId(), 0, (float).5, (float).5, (float).5, 0, 10, 100);
+					ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte)0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
 					if(Api.getVersion()<=183){
 						player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 					}
@@ -240,7 +234,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 							r=r+.08;
 						}
 						if(f==60){
-							loc.getWorld().spigot().playEffect(loc.clone().add(0, .3, 0), Effect.TILE_BREAK, Chest.getId(), 0, (float).5, (float).5, (float).5, 0, 10, 100);
+							ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte)0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
 							if(Api.getVersion()<=183){
 								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 							}
@@ -281,7 +275,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 							r=r+.08;
 						}
 						if(f==60){
-							loc.getWorld().spigot().playEffect(loc.clone().add(0, .3, 0), Effect.TILE_BREAK, Chest.getId(), 0, (float).5, (float).5, (float).5, 0, 10, 100);
+							ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte)0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);;
 							if(Api.getVersion()<=183){
 								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 							}
@@ -322,7 +316,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 							r=r+.08;
 						}
 						if(f==60){
-							loc.getWorld().spigot().playEffect(loc.clone().add(0, .3, 0), Effect.TILE_BREAK, Chest.getId(), 0, (float).5, (float).5, (float).5, 0, 10, 100);
+							ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte)0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
 							if(Api.getVersion()<=183){
 								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 							}
@@ -410,7 +404,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 							FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
 							e.setCancelled(true);
 							if(player==e.getPlayer()){
-								playChestAction(e.getClickedBlock(), true);
+								Api.playChestAction(e.getClickedBlock(), true);
 								if(!opened.get(player).get(l)){
 									ArrayList<Entity> rewards = new ArrayList<Entity>();
 									ItemStack it = CC.pickItem(player, B.clone().add(.5, 1.3, .5));
@@ -623,24 +617,6 @@ public class QCC implements Listener{ // Quad Crate Control.
 		U.add(loc.clone().add(0, 0, -2));
 		return U;
 	}
-	private void playChestAction(Block b, boolean open) {
-        Location location = b.getLocation();
-        if(Api.getVersion()==192){
-        	NMS_v1_9_R2.openChest(b, location, open);
-		}
-        if(Api.getVersion()==191){
-        	NMS_v1_9_R1.openChest(b, location, open);
-		}
-		if(Api.getVersion()==183){
-			NMS_v1_8_R3.openChest(b, location, open);
-		}
-		if(Api.getVersion()==182){
-			NMS_v1_8_R2.openChest(b, location, open);
-		}
-		if(Api.getVersion()==181){
-			NMS_v1_8_R1.openChest(b, location, open);
-		}
-    }
 	private static ArrayList<Location> getCircle(Location center, double radius, int amount){
         World world = center.getWorld();
         double increment = (2 * Math.PI) / amount;

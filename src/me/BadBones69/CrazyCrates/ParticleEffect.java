@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import me.BadBones69.CrazyCrates.ReflectionUtils.PackageType;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+
+import me.BadBones69.CrazyCrates.ReflectionUtils.PackageType;
 
 /**
  * <b>ParticleEffect Library</b>
@@ -382,8 +382,43 @@ public enum ParticleEffect {
 	 * <li>The offset values have no influence on this particle effect
 	 * </ul>
 	 */
-	MOB_APPEARANCE("mobappearance", 41, 8);
-
+	MOB_APPEARANCE("mobappearance", 41, 8),
+	/**
+	 * A particle effect which is displayed by ender dragon:
+	 * <ul>
+	 * <li>It looks like witch spell
+	 * <li>The speed value has no influence on this particle effect
+	 * <li>The offset values have no influence on this particle effect
+	 * </ul>
+	 */
+	DRAGON_BREATH("dragonbreath", 42, 9),
+	/**
+	 * A particle effect which is displayed by skulker bullets and end rods:
+	 * <ul>
+	 * <li>It looks like slow falling snow
+	 * <li>The speed value has no influence on this particle effect
+	 * <li>The offset values have no influence on this particle effect
+	 * </ul>
+	 */
+	END_ROD("endRod", 43, 9),
+	/**
+	 * A particle effect which is displayed by mobs when damaged:
+	 * <ul>
+	 * <li>It looks like small hearts
+	 * <li>The speed value has no influence on this particle effect
+	 * <li>The offset values have no influence on this particle effect
+	 * </ul>
+	 */
+	DAMAGE_INDICATOR("damageIndicator", 44, 9),
+	/**
+	 * A particle effect which is displayed by swinging swords:
+	 * <ul>
+	 * <li>It looks like a swinging sword
+	 * <li>The speed value has no influence on this particle effect
+	 * <li>The offset values have no influence on this particle effect
+	 * </ul>
+	 */
+	SWEEP_ATTACK("sweepAttack", 45, 9);
 	private static final Map<String, ParticleEffect> NAME_MAP = new HashMap<String, ParticleEffect>();
 	private static final Map<Integer, ParticleEffect> ID_MAP = new HashMap<Integer, ParticleEffect>();
 	private final String name;
@@ -1404,7 +1439,7 @@ public enum ParticleEffect {
 				return;
 			}
 			try {
-				version = Integer.parseInt(Character.toString(PackageType.getServerVersion().charAt(3)));
+				version = Integer.parseInt(PackageType.getServerVersion().split("_")[1]);
 				if (version > 7) {
 					enumParticle = PackageType.MINECRAFT_SERVER.getClass("EnumParticle");
 				}
@@ -1527,14 +1562,16 @@ public enum ParticleEffect {
 			if (range < 1) {
 				throw new IllegalArgumentException("The range is lower than 1");
 			}
-			if(center.getWorld()!=null){
-				String worldName = center.getWorld().getName();
-				double squared = range * range;
-				for (Player player : Bukkit.getOnlinePlayers()) {
-					if (!player.getWorld().getName().equals(worldName) || player.getLocation().distanceSquared(center) > squared) {
-						continue;
+			if(center!=null){
+				if(center.getWorld()!=null){
+					String worldName = center.getWorld().getName();
+					double squared = range * range;
+					for (Player player : Bukkit.getOnlinePlayers()) {
+						if (!player.getWorld().getName().equals(worldName) || player.getLocation().distanceSquared(center) > squared) {
+							continue;
+						}
+						sendTo(center, player);
 					}
-					sendTo(center, player);
 				}
 			}
 		}

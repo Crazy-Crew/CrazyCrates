@@ -294,5 +294,13 @@ public class CC implements Listener{ //Crate Control
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
 			}
 		}
+		if(file.contains(path + ".Messages")){
+			for(String msg : file.getStringList(path + ".Messages")){
+				msg = Api.color(msg);
+				msg = msg.replace("%Player%", player.getName());
+				msg = msg.replace("%player%", player.getName());
+				player.sendMessage(msg);
+			}
+		}
 	}
 }

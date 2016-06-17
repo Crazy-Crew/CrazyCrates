@@ -67,6 +67,10 @@ Crate:
       #You can use %Player% to get the player that won the prize.
       Commands:
         - 'broadcast &6&l%Player% &7has just won some Basic Grass.'
+      #Messages: option allows you to send players messages and not have to pm them with commands.
+      #If you do not wish to have players get messaged that they won this prize then just remove the Messages: option.
+      Messages:
+        - '&7You just won a &7&lBasic Grass&7.'
     2:
       DisplayName: '&b&lCheap Helmet'
       DisplayItem: '314'
@@ -89,3 +93,5 @@ Crate:
       Firework: true
       Commands:
         - 'eco give %Player% 1000'
+      Messages:
+        - '&7You just won &a$1,000&7.'

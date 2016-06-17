@@ -104,6 +104,7 @@ public class Roulette implements Listener{
 						ItemStack item = inv.getItem(13);
 						String path = CC.Rewards.get(player).get(item);
 						CC.getReward(player, path);
+						CC.Rewards.remove(player);
 						GUI.Crate.remove(player);
 						return;
 					}

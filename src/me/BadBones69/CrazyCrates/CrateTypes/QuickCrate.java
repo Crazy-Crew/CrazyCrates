@@ -2,19 +2,8 @@ package me.BadBones69.CrazyCrates.CrateTypes;
 
 import java.util.HashMap;
 
-import me.BadBones69.CrazyCrates.Api;
-import me.BadBones69.CrazyCrates.CC;
-import me.BadBones69.CrazyCrates.GUI;
-import me.BadBones69.CrazyCrates.Main;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R1;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R2;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R3;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R1;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R2;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +12,11 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
+
+import me.BadBones69.CrazyCrates.Api;
+import me.BadBones69.CrazyCrates.CC;
+import me.BadBones69.CrazyCrates.GUI;
+import me.BadBones69.CrazyCrates.Main;
 
 public class QuickCrate implements Listener{
 	public static HashMap<Player, Entity> Reward = new HashMap<Player, Entity>();
@@ -47,14 +41,14 @@ public class QuickCrate implements Listener{
 		reward.setCustomName(name);
 		reward.setCustomNameVisible(true);
 		Reward.put(player, reward);
-		playChestAction(loc.getBlock(), true);
+		Api.playChestAction(loc.getBlock(), true);
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
 			@Override
 			public void run() {
 				if(Reward.get(player)!=null){
 					Reward.get(player).remove();
 					Reward.remove(player);
-					playChestAction(loc.getBlock(), false);
+					Api.playChestAction(loc.getBlock(), false);
 					GUI.Crate.remove(player);
 					CC.InUse.remove(player);
 					CC.Rewards.remove(player);
@@ -72,22 +66,4 @@ public class QuickCrate implements Listener{
 			}
 		}
 	}
-	private static void playChestAction(Block b, boolean open) {
-        Location location = b.getLocation();
-        if(Api.getVersion()==192){
-        	NMS_v1_9_R2.openChest(b, location, open);
-		}
-        if(Api.getVersion()==191){
-        	NMS_v1_9_R1.openChest(b, location, open);
-		}
-		if(Api.getVersion()==183){
-			NMS_v1_8_R3.openChest(b, location, open);
-		}
-		if(Api.getVersion()==182){
-			NMS_v1_8_R2.openChest(b, location, open);
-		}
-		if(Api.getVersion()==181){
-			NMS_v1_8_R1.openChest(b, location, open);
-		}
-    }
 }

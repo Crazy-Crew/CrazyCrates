@@ -18,7 +18,9 @@ import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -93,7 +95,7 @@ public class Api{
 		if(getVersion()==181){
 			return NMS_v1_8_R1.addGlow(item);
 		}else{
-			Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is to far out of date. "
+			Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too far out of date. "
 					+ "Please update or remove this plugin to stop further Errors.");
 			return item;
 		}
@@ -131,20 +133,29 @@ public class Api{
 		int pick = r.nextInt(I.size());
 		String pa = P.get(pick);
 		path.put(player, pa);
-		if(Main.settings.getFile(GUI.Crate.get(player)).contains(path.get(player) + ".Items")){
+		FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
+		if(file.contains(path.get(player) + ".Items")){
 			for(ItemStack i : getFinalItems(path.get(player), player)){
 				player.getInventory().addItem(i);
 			}
 		}
-		if(Main.settings.getFile(GUI.Crate.get(player)).contains(path.get(player) + ".Commands")){
-			for(String command : Main.settings.getFile(GUI.Crate.get(player)).getStringList(path.get(player) + ".Commands")){
+		if(file.contains(path.get(player) + ".Commands")){
+			for(String command : file.getStringList(path.get(player) + ".Commands")){
 				command = color(command);
 				command = command.replace("%Player%", player.getName());
 				command = command.replace("%player%", player.getName());
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
 			}
 		}
-		if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean(path.get(player) + ".Firework")){
+		if(file.contains(path.get(player) + ".Messages")){
+			for(String msg : file.getStringList(path + ".Messages")){
+				msg = Api.color(msg);
+				msg = msg.replace("%Player%", player.getName());
+				msg = msg.replace("%player%", player.getName());
+				player.sendMessage(msg);
+			}
+		}
+		if(file.getBoolean(path.get(player) + ".Firework")){
 			fireWork(chest);
 		}
 		return I.get(pick);
@@ -474,6 +485,9 @@ public class Api{
 		return color(Main.settings.getConfig().getString("Settings.Prefix"));
 	}
 	public static void pasteSchem(String schem, Location loc){
+		if(getVersion()==1101){
+			NMS_v1_10_R1.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+		}
 		if(getVersion()==192){
 			NMS_v1_9_R2.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
 		}
@@ -491,6 +505,9 @@ public class Api{
 		}
 	}
 	public static List<Location> getLocations(String shem, Location loc){
+		if(getVersion()==1101){
+			return NMS_v1_10_R1.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+		}
 		if(getVersion()==192){
 			return NMS_v1_9_R2.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
 		}
@@ -508,6 +525,27 @@ public class Api{
 		}
 		return null;
 	}
+	public static void playChestAction(Block b, boolean open) {
+        Location location = b.getLocation();
+        if(Api.getVersion()==1101){
+        	NMS_v1_10_R1.openChest(b, location, open);
+		}
+        if(Api.getVersion()==192){
+        	NMS_v1_9_R2.openChest(b, location, open);
+		}
+        if(Api.getVersion()==191){
+        	NMS_v1_9_R1.openChest(b, location, open);
+		}
+		if(Api.getVersion()==183){
+			NMS_v1_8_R3.openChest(b, location, open);
+		}
+		if(Api.getVersion()==182){
+			NMS_v1_8_R2.openChest(b, location, open);
+		}
+		if(Api.getVersion()==181){
+			NMS_v1_8_R1.openChest(b, location, open);
+		}
+    }
 	public static String pickRandomSchem(){
 		File f = new File(plugin.getDataFolder()+"/Schematics/");
 		String[] schems = f.list();
