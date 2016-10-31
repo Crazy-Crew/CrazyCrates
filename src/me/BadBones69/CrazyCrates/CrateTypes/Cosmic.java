@@ -10,6 +10,9 @@ import me.BadBones69.CrazyCrates.Api;
 import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
+import me.BadBones69.CrazyCrates.API.CrateType;
+import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
+import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -44,8 +47,11 @@ public class Cosmic implements Listener{
 		for(int i=0;i<27;i++){
 			inv.setItem(i, pickTier(player));
 		}
-		if(Api.getVersion()>=191)player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
-		if(Api.getVersion()<=183)player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+		if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+			player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+		}else{
+			player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+		}
 		player.openInventory(inv);
 	}
 	private static void setChests(Inventory inv){
@@ -82,21 +88,32 @@ public class Cosmic implements Listener{
 						if(slot==i){
 							ItemStack item = e.getCurrentItem();
 							String tier = tiers.get(player).get(item);
-							if(item.getItemMeta().getDisplayName().equals(Api.color(file.getString("Crate.Tiers."+tier+".Name")))){
-								String reward = pickReward(player, tier);
-								int stop=0;
-								for(;reward.equals("");stop++){
-									if(stop==500)break;
-									reward = pickReward(player, tier);
+							if(item.hasItemMeta()){
+								if(item.getItemMeta().hasDisplayName()){
+									if(item.getItemMeta().getDisplayName().equals(Api.color(file.getString("Crate.Tiers."+tier+".Name")))){
+										String reward = pickReward(player, tier);
+										int stop=0;
+										for(;reward.equals("");stop++){
+											if(stop==500)break;
+											reward = pickReward(player, tier);
+										}
+										CC.getReward(player, "Crate.Prizes."+reward);
+										Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.COSMIC, CC.Crate.get(player), reward));
+										String id = file.getString("Crate.Prizes."+reward+".DisplayItem");
+										String name = file.getString("Crate.Prizes."+reward+".DisplayName");
+										List<String> lore = file.getStringList("Crate.Prizes."+reward+".Lore");
+										e.setCurrentItem(Api.makeItem(id, 1, name, lore));
+										if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+											player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
+										}else{
+											player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
+										}
+										if(file.getBoolean("Crate.Prizes."+reward+".Firework")){
+											Api.fireWork(player.getLocation().add(0, 1, 0));
+										}
+										return;
+									}
 								}
-								CC.getReward(player, "Crate.Prizes."+reward);
-								String id = file.getString("Crate.Prizes."+reward+".DisplayItem");
-								String name = file.getString("Crate.Prizes."+reward+".DisplayName");
-								List<String> lore = file.getStringList("Crate.Prizes."+reward+".Lore");
-								e.setCurrentItem(Api.makeItem(id, 1, name, lore));
-								if(Api.getVersion()>=191)player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
-								if(Api.getVersion()<=183)player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
-								return;
 							}
 						}
 					}
@@ -107,69 +124,80 @@ public class Cosmic implements Listener{
 				int slot = e.getRawSlot();
 				if(inCosmic(slot)){
 					ItemStack item = e.getCurrentItem();
-					if(item.getType()==Material.CHEST){
-						if(!glass.containsKey(player))glass.put(player, new ArrayList<Integer>());
-						if(glass.get(player).size()<4){
-							e.setCurrentItem(Api.makeItem(Material.THIN_GLASS, (slot+1), 0, "&f&l???", Arrays.asList("&7You have chosen #"+(slot+1)+".")));
-							glass.get(player).add(slot);
+					if(item!=null){
+						if(item.getType()==Material.CHEST){
+							if(!glass.containsKey(player))glass.put(player, new ArrayList<Integer>());
+							if(glass.get(player).size()<4){
+								e.setCurrentItem(Api.makeItem(Material.THIN_GLASS, (slot+1), 0, "&f&l???", Arrays.asList("&7You have chosen #"+(slot+1)+".")));
+								glass.get(player).add(slot);
+							}
+							if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+								player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+							}else{
+								player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+							}
 						}
-						if(Api.getVersion()>=191)player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
-						if(Api.getVersion()<=183)player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
-					}
-					if(item.getType()==Material.THIN_GLASS){
-						if(!glass.containsKey(player))glass.put(player, new ArrayList<Integer>());
-						e.setCurrentItem(Api.makeItem(Material.CHEST, (slot+1), 0, "&f&l???", Arrays.asList("&7You may choose 4 crates.")));
-						ArrayList<Integer> l = new ArrayList<Integer>();
-						for(int i : glass.get(player))if(i!=slot)l.add(i);
-						glass.put(player, l);
-						if(Api.getVersion()>=191)player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
-						if(Api.getVersion()<=183)player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
-					}
-					if(glass.get(player).size()>=4){
-						if(Api.Key.get(player).equals("PhysicalKey")){
-							ItemStack it = new ItemStack(Material.AIR);
-							for(ItemStack i : player.getOpenInventory().getBottomInventory().getContents()){
-								if(i!=null){
-									if(i.hasItemMeta()){
-										if(i.getItemMeta().hasDisplayName()){
-											if(i.getItemMeta().getDisplayName().equals(CC.Key.get(player).getItemMeta().getDisplayName())){
-												it=i;
-												break;
+						if(item.getType()==Material.THIN_GLASS){
+							if(!glass.containsKey(player))glass.put(player, new ArrayList<Integer>());
+							e.setCurrentItem(Api.makeItem(Material.CHEST, (slot+1), 0, "&f&l???", Arrays.asList("&7You may choose 4 crates.")));
+							ArrayList<Integer> l = new ArrayList<Integer>();
+							for(int i : glass.get(player))if(i!=slot)l.add(i);
+							glass.put(player, l);
+							if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+								player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+							}else{
+								player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+							}
+						}
+						if(glass.get(player).size()>=4){
+							if(Api.Key.get(player).equals("PhysicalKey")){
+								ItemStack it = new ItemStack(Material.AIR);
+								for(ItemStack i : player.getOpenInventory().getBottomInventory().getContents()){
+									if(i!=null){
+										if(i.hasItemMeta()){
+											if(i.getItemMeta().hasDisplayName()){
+												if(i.getItemMeta().getDisplayName().equals(CC.Key.get(player).getItemMeta().getDisplayName())){
+													it=i;
+													break;
+												}
 											}
 										}
 									}
 								}
-							}
-							if(it.getType()==Material.AIR){
-								player.closeInventory();
-								player.sendMessage(Api.getPrefix()+Api.color("&cNo key was found."));
-								if(GUI.Crate.containsKey(player)){
-									GUI.Crate.remove(player);
+								if(it.getType()==Material.AIR){
+									player.closeInventory();
+									player.sendMessage(Api.getPrefix()+Api.color("&cNo key was found."));
+									if(GUI.Crate.containsKey(player)){
+										GUI.Crate.remove(player);
+									}
+									if(glass.containsKey(player)){
+										glass.remove(player);
+									}
+									return;
 								}
-								if(glass.containsKey(player)){
-									glass.remove(player);
-								}
-								return;
+								Api.removeItem(it, player);
 							}
-							Api.removeItem(it, player);
+							if(Api.Key.get(player).equals("VirtualKey")){
+								Api.takeKeys(1, player, GUI.Crate.get(player));
+							}
+							roll.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
+								int time = 0;
+								@Override
+								public void run() {
+									startRoll(player);
+									time++;
+									if(time==40){
+										Bukkit.getScheduler().cancelTask(roll.get(player));
+										showRewards(player);
+										if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+											player.playSound(player.getLocation(), Sound.valueOf("BLOCK_ANVIL_LAND"), 1, 1);
+										}else{
+											player.playSound(player.getLocation(), Sound.valueOf("ANVIL_LAND"), 1, 1);
+										}
+									}
+								}
+							}, 0, 2));
 						}
-						if(Api.Key.get(player).equals("VirtualKey")){
-							Api.takeKeys(1, player, GUI.Crate.get(player));
-						}
-						roll.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
-							int time = 0;
-							@Override
-							public void run() {
-								startRoll(player);
-								time++;
-								if(time==40){
-									Bukkit.getScheduler().cancelTask(roll.get(player));
-									showRewards(player);
-									if(Api.getVersion()>=191)player.playSound(player.getLocation(), Sound.valueOf("BLOCK_ANVIL_LAND"), 1, 1);
-									if(Api.getVersion()<=183)player.playSound(player.getLocation(), Sound.valueOf("ANVIL_LAND"), 1, 1);
-								}
-							}
-						}, 0, 2));
 					}
 				}
 			}
@@ -180,7 +208,13 @@ public class Cosmic implements Listener{
 		Inventory inv = e.getInventory();
 		Player player = (Player) e.getPlayer();
 		if(CC.Crate.containsKey(player)){
-			if(!getFile(player).getString("Crate.CrateType").equalsIgnoreCase("Cosmic"))return;
+			if(getFile(player)==null){
+				return;
+			}else{
+				if(!getFile(player).getString("Crate.CrateType").equalsIgnoreCase("Cosmic")){
+					return;
+				}
+			}
 		}else{
 			return;
 		}
@@ -209,8 +243,11 @@ public class Cosmic implements Listener{
 				}
 			}
 			if(T){
-				if(Api.getVersion()>=191)player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
-				if(Api.getVersion()<=183)player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+				if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+					player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+				}else{
+					player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+				}
 			}
 			if(GUI.Crate.containsKey(player)){
 				GUI.Crate.remove(player);

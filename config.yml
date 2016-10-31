@@ -20,6 +20,11 @@
 #ARROW_KNOCKBACK
 #ARROW_FIRE
 #ARROW_INFINITE
+#THORNS
+#MENDING
+#LUCK
+#LURE
+#FROST_WALKER
 Settings:
   Prefix: '&8[&bCrazyCrates&8]: '
   InventoryName: '&b&lCrazy &4&lCrates'

@@ -2,6 +2,7 @@ package me.BadBones69.CrazyCrates.CrateTypes;
 
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +15,8 @@ import me.BadBones69.CrazyCrates.Api;
 import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
+import me.BadBones69.CrazyCrates.API.CrateType;
+import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
 
 public class CrateOnTheGo implements Listener{
 	public static void giveCrate(Player player, int amount, String crate){
@@ -57,6 +60,7 @@ public class CrateOnTheGo implements Listener{
 								ItemStack it = CC.pickItem(player);
 								String path = CC.Rewards.get(player).get(it);
 								CC.getReward(player, path);
+								Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.CRATE_ON_THE_GO, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
 								if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean(path + ".Firework")){
 									Api.fireWork(player.getLocation().add(0, 1, 0));
 								}

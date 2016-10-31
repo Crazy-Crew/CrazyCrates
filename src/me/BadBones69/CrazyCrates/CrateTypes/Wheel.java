@@ -19,6 +19,9 @@ import me.BadBones69.CrazyCrates.Api;
 import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
+import me.BadBones69.CrazyCrates.API.CrateType;
+import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
+import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
 public class Wheel implements Listener{
 	public static HashMap<Player, Integer> crate = new HashMap<Player, Integer>();
@@ -67,7 +70,7 @@ public class Wheel implements Listener{
 				if(full<timer){
 					inv.setItem(slots.get(i), Api.makeItem("160:5", 1, Rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()));
 					inv.setItem(slots.get(f), Rewards.get(player).get(slots.get(f)));
-					if(Api.getVersion()>=191){
+					if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 						player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
 					}else{
 						player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
@@ -79,7 +82,7 @@ public class Wheel implements Listener{
 					if(slowSpin().contains(slower)){
 						inv.setItem(slots.get(i), Api.makeItem("160:5", 1, Rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()));
 						inv.setItem(slots.get(f), Rewards.get(player).get(slots.get(f)));
-						if(Api.getVersion()>=191){
+						if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 							player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
 						}else{
 							player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
@@ -88,7 +91,7 @@ public class Wheel implements Listener{
 						f++;
 					}
 					if(full==timer+47){
-						if(Api.getVersion()>=191){
+						if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 							player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
 						}else{
 							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
@@ -109,7 +112,10 @@ public class Wheel implements Listener{
 						}
 					}
 					if(full>=(timer+55+47)){
-						CC.getReward(player, CC.Rewards.get(player).get(Rewards.get(player).get(slots.get(f))));
+						String path = CC.Rewards.get(player).get(Rewards.get(player).get(slots.get(f)));
+						CC.getReward(player, path);
+						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WHEEL, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
+						player.closeInventory();
 						GUI.Crate.remove(player);
 						CC.Rewards.remove(player);
 						Bukkit.getScheduler().cancelTask(crate.get(player));

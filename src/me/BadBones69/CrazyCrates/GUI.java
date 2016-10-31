@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -63,8 +64,19 @@ public class GUI implements Listener{
 			String id = Main.settings.getFile(crate).getString("Crate.Prizes."+reward+".DisplayItem");
 			String name = Main.settings.getFile(crate).getString("Crate.Prizes."+reward+".DisplayName");
 			List<String> lore = Main.settings.getFile(crate).getStringList("Crate.Prizes."+reward+".Lore");
+			HashMap<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
+			if(Main.settings.getFile(crate).contains("Crate.Prizes."+reward+".DisplayEnchantments")){
+				for(String enchant : Main.settings.getFile(crate).getStringList("Crate.Prizes."+reward+".DisplayEnchantments")){
+					String[] b = enchant.split(":");
+					enchantments.put(Enchantment.getByName(b[0]), Integer.parseInt(b[1]));
+				}
+			}
 			try{
-				inv.setItem(inv.firstEmpty(), Api.makeItem(id, 1, name, lore));
+				if(enchantments.size()>0){
+					inv.setItem(inv.firstEmpty(), Api.makeItem(id, 1, name, lore, enchantments));
+				}else{
+					inv.setItem(inv.firstEmpty(), Api.makeItem(id, 1, name, lore));
+				}
 			}catch(Exception e){
 				inv.addItem(Api.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error","&cFor the reward: &c"+reward)));
 			}

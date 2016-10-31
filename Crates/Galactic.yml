@@ -1,7 +1,7 @@
 Crate:
   CrateType: Cosmic #Type of crate.
   CrateName: '&8Galactic Crate' #Name of the Inventory if a GUI crate.
-  StartingKeys: 1 #Starting amount of keys when the player 1st joins.
+  StartingKeys: 0 #Starting amount of keys when the player 1st joins.
   InGUI: true #If the crate shows in the /cc GUI.
   Slot: 14 #Slot the item is in the GUI.
   OpeningBroadCast: False #Enables/Disables the Broadcasts message when they open a crate.
@@ -68,6 +68,9 @@ Crate:
       Lore:
         - '&7Win a cheap helmet.'
         - '&6&lChance: &c&l60%'
+      DisplayEnchantments:
+        - 'PROTECTION_ENVIRONMENTAL:1'
+        - 'OXYGEN:1'
       MaxRange: 100
       Chance: 60
       Firework: false
@@ -98,6 +101,9 @@ Crate:
       Lore:
         - '&7Win a crazy cool sword.'
         - '&6&lChance: &c&l10%'
+      DisplayEnchantments:
+        - 'DAMAGE_ALL:5'
+        - 'FIRE_ASPECT:1'
       MaxRange: 100
       Chance: 10
       Firework: false

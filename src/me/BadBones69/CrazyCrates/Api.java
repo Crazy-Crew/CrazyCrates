@@ -35,6 +35,7 @@ import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R2;
 import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R3;
 import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R1;
 import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R2;
+import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
 public class Api{
 	public static HashMap<Player, String> path = new HashMap<Player, String>();
@@ -75,36 +76,6 @@ public class Api{
 		catch(Exception e) {
 			return;
 		}
-	}
-	public static ItemStack addGlow(ItemStack item) {
-		if(getVersion()==1101){
-			return NMS_v1_10_R1.addGlow(item);
-		}
-		if(getVersion()==192){
-			return NMS_v1_9_R2.addGlow(item);
-		}
-		if(getVersion()==191){
-			return NMS_v1_9_R1.addGlow(item);
-		}
-		if(getVersion()==183){
-			return NMS_v1_8_R3.addGlow(item);
-		}
-		if(getVersion()==182){
-			return NMS_v1_8_R2.addGlow(item);
-		}
-		if(getVersion()==181){
-			return NMS_v1_8_R1.addGlow(item);
-		}else{
-			Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too far out of date. "
-					+ "Please update or remove this plugin to stop further Errors.");
-			return item;
-		}
-    }
-	public static Integer getVersion(){
-		String ver = Bukkit.getServer().getClass().getPackage().getName();
-		ver = ver.substring(ver.lastIndexOf('.')+1);
-		ver=ver.replaceAll("_", "").replaceAll("R", "").replaceAll("v", "");
-		return Integer.parseInt(ver);
 	}
 	public static String color(String msg){
 		msg = ChatColor.translateAlternateColorCodes('&', msg);
@@ -227,27 +198,32 @@ public class Api{
 	}
 	public static ArrayList<String> getEnchants(){
 		ArrayList<String> en = new ArrayList<String>();
-		en.add("PROTECTION_ENVIRONMENTAL");
-		en.add("PROTECTION_FIRE");
-		en.add("PROTECTION_FALL");
-		en.add("PROTECTION_EXPLOSIONS");
-		en.add("ROTECTION_PROJECTILE");
-		en.add("OXYGEN");
-		en.add("WATER_WORKER");
-		en.add("DAMAGE_ALL");
-		en.add("DAMAGE_UNDEAD");
-		en.add("DAMAGE_ARTHROPODS");
-		en.add("KNOCKBACK");
-		en.add("FIRE_ASPECT");
-		en.add("LOOT_BONUS_MOBS");
-		en.add("DIG_SPEED");
-		en.add("SILK_TOUCH");
-		en.add("DURABILITY");
-		en.add("LOOT_BONUS_BLOCKS");
-		en.add("ARROW_DAMAGE");
-		en.add("ARROW_KNOCKBACK");
-		en.add("ARROW_FIRE");
-		en.add("ARROW_INFINITE");
+        en.add("PROTECTION_ENVIRONMENTAL");
+        en.add("PROTECTION_FIRE");
+        en.add("PROTECTION_FALL");
+        en.add("PROTECTION_EXPLOSIONS");
+        en.add("POTECTION_PROJECTILE");
+        en.add("OXYGEN");
+        en.add("WATER_WORKER");
+        en.add("DAMAGE_ALL");
+        en.add("DAMAGE_UNDEAD");
+        en.add("DAMAGE_ARTHROPODS");
+        en.add("KNOCKBACK");
+        en.add("FIRE_ASPECT");
+        en.add("LOOT_BONUS_MOBS");
+        en.add("DIG_SPEED");
+        en.add("SILK_TOUCH");
+        en.add("DURABILITY");
+        en.add("LOOT_BONUS_BLOCKS");
+        en.add("ARROW_DAMAGE");
+        en.add("ARROW_KNOCKBACK");
+        en.add("ARROW_FIRE");
+        en.add("ARROW_INFINITE");
+        en.add("THORNS");
+        en.add("MENDING");
+        en.add("LUCK");
+        en.add("LURE");
+        en.add("FROST_WALKER");
 		return en;
 	}
 	public static void fireWork(Location loc) {
@@ -417,7 +393,7 @@ public class Api{
 	}
 	@SuppressWarnings("deprecation")
 	public static ItemStack getItemInHand(Player player){
-		if(getVersion()>=191){
+		if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 			return player.getInventory().getItemInMainHand();
 		}else{
 			return player.getItemInHand();
@@ -425,7 +401,7 @@ public class Api{
 	}
 	@SuppressWarnings("deprecation")
 	public static void setItemInHand(Player player, ItemStack item){
-		if(getVersion()>=191){
+		if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 			player.getInventory().setItemInMainHand(item);
 		}else{
 			player.setItemInHand(item);
@@ -485,66 +461,118 @@ public class Api{
 		return color(Main.settings.getConfig().getString("Settings.Prefix"));
 	}
 	public static void pasteSchem(String schem, Location loc){
-		if(getVersion()==1101){
-			NMS_v1_10_R1.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
-		}
-		if(getVersion()==192){
-			NMS_v1_9_R2.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
-		}
-		if(getVersion()==191){
-			NMS_v1_9_R1.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
-		}
-		if(getVersion()==183){
-			NMS_v1_8_R3.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
-		}
-		if(getVersion()==182){
-			NMS_v1_8_R2.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
-		}
-		if(getVersion()==181){
-			NMS_v1_8_R1.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+		switch(Version.getVersion()){
+			case TOO_NEW:
+				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. "
+						+ "Please update or remove this plugin to stop further Errors.");
+				break;
+			case v1_10_R1:
+				NMS_v1_10_R1.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+				break;
+			case v1_9_R2:
+				NMS_v1_9_R2.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+				break;
+			case v1_9_R1:
+				NMS_v1_9_R1.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+				break;
+			case v1_8_R3:
+				NMS_v1_8_R3.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+				break;
+			case v1_8_R2:
+				NMS_v1_8_R2.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+				break;
+			case v1_8_R1:
+				NMS_v1_8_R1.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+				break;
+			case TOO_OLD:
+				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too far out of date. "
+						+ "Please update or remove this plugin to stop further Errors.");
+				break;
 		}
 	}
 	public static List<Location> getLocations(String shem, Location loc){
-		if(getVersion()==1101){
-			return NMS_v1_10_R1.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
-		}
-		if(getVersion()==192){
-			return NMS_v1_9_R2.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
-		}
-		if(getVersion()==191){
-			return NMS_v1_9_R1.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
-		}
-		if(getVersion()==183){
-			return NMS_v1_8_R3.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
-		}
-		if(getVersion()==182){
-			return NMS_v1_8_R2.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
-		}
-		if(getVersion()==181){
-			return NMS_v1_8_R1.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+		switch(Version.getVersion()){
+			case TOO_NEW:
+				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. "
+						+ "Please update or remove this plugin to stop further Errors.");
+				break;
+			case v1_10_R1:
+				return NMS_v1_10_R1.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+			case v1_9_R2:
+				return NMS_v1_9_R2.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+			case v1_9_R1:
+				return NMS_v1_9_R1.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+			case v1_8_R3:
+				return NMS_v1_8_R3.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+			case v1_8_R2:
+				return NMS_v1_8_R2.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+			case v1_8_R1:
+				return NMS_v1_8_R1.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
+			case TOO_OLD:
+				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too far out of date. "
+						+ "Please update or remove this plugin to stop further Errors.");
+				break;
 		}
 		return null;
 	}
 	public static void playChestAction(Block b, boolean open) {
         Location location = b.getLocation();
-        if(Api.getVersion()==1101){
-        	NMS_v1_10_R1.openChest(b, location, open);
+        Material type = b.getType();
+        if(type == Material.CHEST || type == Material.TRAPPED_CHEST || type == Material.ENDER_CHEST){
+        	switch(Version.getVersion()){
+				case TOO_NEW:
+					Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. "
+							+ "Please update or remove this plugin to stop further Errors.");
+					break;
+				case v1_10_R1:
+					NMS_v1_10_R1.openChest(b, location, open);
+					break;
+				case v1_9_R2:
+					NMS_v1_9_R2.openChest(b, location, open);
+					break;
+				case v1_9_R1:
+					NMS_v1_9_R1.openChest(b, location, open);
+					break;
+				case v1_8_R3:
+					NMS_v1_8_R3.openChest(b, location, open);
+					break;
+				case v1_8_R2:
+					NMS_v1_8_R2.openChest(b, location, open);
+					break;
+				case v1_8_R1:
+					NMS_v1_8_R1.openChest(b, location, open);
+					break;
+				case TOO_OLD:
+					Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too far out of date. "
+							+ "Please update or remove this plugin to stop further Errors.");
+					break;
+			}
+        }
+    }
+	public static ItemStack addGlow(ItemStack item) {
+		switch(Version.getVersion()){
+			case TOO_NEW:
+				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. "
+						+ "Please update or remove this plugin to stop further Errors.");
+				break;
+			case v1_10_R1:
+				return NMS_v1_10_R1.addGlow(item);
+			case v1_9_R2:
+				return NMS_v1_9_R2.addGlow(item);
+			case v1_9_R1:
+				return NMS_v1_9_R1.addGlow(item);
+			case v1_8_R3:
+				return NMS_v1_8_R3.addGlow(item);
+			case v1_8_R2:
+				return NMS_v1_8_R2.addGlow(item);
+			case v1_8_R1:
+				return NMS_v1_8_R1.addGlow(item);
+			case TOO_OLD:
+				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too far out of date. "
+						+ "Please update or remove this plugin to stop further Errors.");
+				break;
 		}
-        if(Api.getVersion()==192){
-        	NMS_v1_9_R2.openChest(b, location, open);
-		}
-        if(Api.getVersion()==191){
-        	NMS_v1_9_R1.openChest(b, location, open);
-		}
-		if(Api.getVersion()==183){
-			NMS_v1_8_R3.openChest(b, location, open);
-		}
-		if(Api.getVersion()==182){
-			NMS_v1_8_R2.openChest(b, location, open);
-		}
-		if(Api.getVersion()==181){
-			NMS_v1_8_R1.openChest(b, location, open);
-		}
+		return item;
     }
 	public static String pickRandomSchem(){
 		File f = new File(plugin.getDataFolder()+"/Schematics/");

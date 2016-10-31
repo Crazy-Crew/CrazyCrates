@@ -37,6 +37,9 @@ import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
 import me.BadBones69.CrazyCrates.ParticleEffect;
 import me.BadBones69.CrazyCrates.ParticleEffect.BlockData;
+import me.BadBones69.CrazyCrates.API.CrateType;
+import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
+import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
 public class QCC implements Listener{ // Quad Crate Control.
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
@@ -196,11 +199,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}
 				if(f==60){
 					ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte)0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
-					if(Api.getVersion()<=183){
-						player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
-					}
-					if(Api.getVersion()>=191){
+					if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 						player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+					}else{
+						player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 					}
 					loc.getBlock().setType(Chest);
 					loc.getBlock().setData((byte)4);
@@ -235,11 +237,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 						}
 						if(f==60){
 							ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte)0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
-							if(Api.getVersion()<=183){
-								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
-							}
-							if(Api.getVersion()>=191){
+							if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 								player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+							}else{
+								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 							}
 							loc.getBlock().setType(Chest);
 							loc.getBlock().setData((byte)2);
@@ -276,11 +277,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 						}
 						if(f==60){
 							ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte)0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);;
-							if(Api.getVersion()<=183){
-								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
-							}
-							if(Api.getVersion()>=191){
+							if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 								player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+							}else{
+								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 							}
 							loc.getBlock().setType(Chest);
 							loc.getBlock().setData((byte)5);
@@ -317,11 +317,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 						}
 						if(f==60){
 							ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte)0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
-							if(Api.getVersion()<=183){
-								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
-							}
-							if(Api.getVersion()>=191){
+							if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 								player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+							}else{
+								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 							}
 							loc.getBlock().setType(Chest);
 							loc.getBlock().setData((byte)3);
@@ -408,7 +407,9 @@ public class QCC implements Listener{ // Quad Crate Control.
 								if(!opened.get(player).get(l)){
 									ArrayList<Entity> rewards = new ArrayList<Entity>();
 									ItemStack it = CC.pickItem(player, B.clone().add(.5, 1.3, .5));
-									CC.getReward(player, CC.Rewards.get(player).get(it));
+									String path = CC.Rewards.get(player).get(it);
+									CC.getReward(player, path);
+									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.QUAD_CRATE, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
 									String name = Api.color(file.getString(CC.Rewards.get(player).get(it)+".DisplayName"));
 									final Entity reward = player.getWorld().dropItem(B.clone().add(.5, 1, .5), it);
 									reward.setVelocity(new Vector(0,.2,0));
@@ -450,11 +451,11 @@ public class QCC implements Listener{ // Quad Crate Control.
 													}
 												}
 											}
-											if(Api.getVersion()<=183){
-												player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
-											}
-											if(Api.getVersion()>=191){
+											if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 												player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+											}
+											else{
+												player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 											}
 										}
 									}, 3*20);
@@ -479,11 +480,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 												}
 											}
 											Rewards.remove(player);
-											if(Api.getVersion()<=183){
-												player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
-											}
-											if(Api.getVersion()>=191){
+											if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 												player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+											}else{
+												player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 											}
 											crates.remove(player);
 											chests.remove(player);

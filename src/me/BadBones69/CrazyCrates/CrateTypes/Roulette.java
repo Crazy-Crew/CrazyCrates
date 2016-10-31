@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import me.BadBones69.CrazyCrates.Api;
-import me.BadBones69.CrazyCrates.CC;
-import me.BadBones69.CrazyCrates.GUI;
-import me.BadBones69.CrazyCrates.Main;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -20,6 +15,14 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+
+import me.BadBones69.CrazyCrates.Api;
+import me.BadBones69.CrazyCrates.CC;
+import me.BadBones69.CrazyCrates.GUI;
+import me.BadBones69.CrazyCrates.Main;
+import me.BadBones69.CrazyCrates.API.CrateType;
+import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
+import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
 public class Roulette implements Listener{
 	public static HashMap<Player, Integer> roll = new HashMap<Player, Integer>();
@@ -62,11 +65,10 @@ public class Roulette implements Listener{
 				if(full<=15){
 					inv.setItem(13, CC.pickItem(player));
 					setGlass(inv);
-					if(Api.getVersion()==183){
-						player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
-					}
-					if(Api.getVersion()==191){
+					if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 						player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+					}else{
+						player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
 					}
 					even++;
 					if(even>=4){
@@ -84,26 +86,25 @@ public class Roulette implements Listener{
 					if(slowSpin().contains(time)){
 						setGlass(inv);
 						inv.setItem(13, CC.pickItem(player));
-						if(Api.getVersion()<=183){
-							player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
-						}
-						if(Api.getVersion()>=191){
+						if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 							player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+						}else{
+							player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
 						}
 					}
 					time++;
 					if(time>=23){
-						if(Api.getVersion()<=183){
-							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
-						}
-						if(Api.getVersion()>=191){
+						if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 							player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
+						}else{
+							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
 						}
 						Bukkit.getScheduler().cancelTask(roll.get(player));
 						roll.remove(player);
 						ItemStack item = inv.getItem(13);
 						String path = CC.Rewards.get(player).get(item);
 						CC.getReward(player, path);
+						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.ROULETTE, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
 						CC.Rewards.remove(player);
 						GUI.Crate.remove(player);
 						return;

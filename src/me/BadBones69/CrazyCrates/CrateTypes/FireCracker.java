@@ -48,7 +48,7 @@ public class FireCracker {
 				if(l==25){
 					Bukkit.getScheduler().cancelTask(F.get(player));
 					F.remove(player);
-					QuickCrate.openCrate(player, C, crate, false);
+					QuickCrate.openCrate(player, C, false);
 				}
 			}
 		}, 0, 2));

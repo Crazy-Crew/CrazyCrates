@@ -34,7 +34,6 @@ public class CC implements Listener{ //Crate Control
 	public static HashMap<Player, ItemStack> Key = new HashMap<Player, ItemStack>();
 	public static HashMap<Player, Location> LastLoc = new HashMap<Player, Location>();
 	public static HashMap<Player, Location> InUse = new HashMap<Player, Location>();
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onCrateOpen(PlayerInteractEvent e){
 		Player player = e.getPlayer();
@@ -53,7 +52,11 @@ public class CC implements Listener{ //Crate Control
 				Location loc = new Location(w, x, y, z);
 				if(block.getLocation().equals(loc)){
 					e.setCancelled(true);
-					GUI.openGUI(player, Crate);
+					if(Crate.equalsIgnoreCase("Menu")){
+						return;
+					}else{
+						GUI.openGUI(player, Crate);
+					}
 					return;
 				}
 			}
@@ -64,12 +67,7 @@ public class CC implements Listener{ //Crate Control
 				String KeyName = Api.color(Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name"));
 				if(e.hasItem()){
 					ItemStack item = new ItemStack(Material.AIR);
-					if(Api.getVersion()>=191){
-						item = player.getInventory().getItemInMainHand();
-					}
-					else{
-						item = player.getItemInHand();
-					}
+					item = Api.getItemInHand(player);
 					if(item.hasItemMeta()){
 						if(item.getItemMeta().hasDisplayName()){
 							if(item.getItemMeta().getDisplayName().equals(KeyName)){
@@ -93,17 +91,16 @@ public class CC implements Listener{ //Crate Control
 					Location loc = new Location(w, x, y, z);
 					if(block.getLocation().equals(loc)){
 						e.setCancelled(true);
+						if(Crate.equalsIgnoreCase("Menu")){
+							player.performCommand("crazycrates");
+							return;
+						}
 						String KeyName = Api.color(Main.settings.getFile(Crate).getString("Crate.PhysicalKey.Name"));
 						if(e.hasItem()){
 							ItemStack item = new ItemStack(Material.AIR);
 							String ver = Bukkit.getServer().getClass().getPackage().getName();
 							ver = ver.substring(ver.lastIndexOf('.')+1);
-							if(Api.getVersion()>=191){
-								item = player.getInventory().getItemInMainHand();
-							}
-							else{
-								item = player.getItemInHand();
-							}
+							item = Api.getItemInHand(player);
 							if(item.hasItemMeta()){
 								if(item.getItemMeta().hasDisplayName()){
 									if(item.getItemMeta().getDisplayName().equals(KeyName)){
@@ -186,7 +183,7 @@ public class CC implements Listener{ //Crate Control
 				player.sendMessage(Api.color(Api.getPrefix()+msg));
 				return;
 			}else{
-				QuickCrate.openCrate(player, loc, Crate, true);
+				QuickCrate.openCrate(player, loc, true);
 				InUse.put(player, loc);
 				return;
 			}

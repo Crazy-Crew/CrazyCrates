@@ -1,7 +1,7 @@
 Crate:
   CrateType: QuadCrate
   CrateName: '&8Crazy Crate'
-  StartingKeys: 1
+  StartingKeys: 0
   InGUI: true
   Slot: 16
   OpeningBroadCast: true
@@ -26,6 +26,9 @@ Crate:
       Lore:
         - '&7Win a very rare chest plate.'
         - '&6&lChance: &c&l40%'
+      DisplayEnchantments:
+        - 'PROTECTION_ENVIRONMENTAL:5'
+        - 'DURABILITY:3'
       MaxRange: 100
       Chance: 40
       Firework: false
@@ -37,6 +40,9 @@ Crate:
       Lore:
         - '&7Win a crazy cool sword.'
         - '&6&lChance: &c&l35%'
+      DisplayEnchantments:
+        - 'DAMAGE_ALL:5'
+        - 'FIRE_ASPECT:1'
       MaxRange: 100
       Chance: 35
       Firework: false

@@ -1,7 +1,7 @@
 Crate:
   CrateType: CSGO #Type of crate (CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/Cosmic(This requires a additional info to work.)).
   CrateName: '&8Basic Crate' #Name of the Inventory if a GUI crate.
-  StartingKeys: 1 #Starting amount of keys when the player 1st joins.
+  StartingKeys: 0 #Starting amount of keys when the player 1st joins.
   InGUI: true #If the crate shows in the /cc GUI. (If the crate type is QuickCrate/CrateOnTheGo/FireCracker then the Crate will not work. Quick Crate requires a Physical Crate.)
   Slot: 12 #Slot the item is in the GUI.
   OpeningBroadCast: true #Enables/Disables the Broadcasts message when they open a crate.
@@ -18,7 +18,7 @@ Crate:
       - '&7A special Key' #Lore of the Key.
       - '&7For a special Crate.'
     Item: '131' #The item the key is.
-    Glowing: True
+    Glowing: True #Makes the key look enchanted.
 #         For Cosmic Crates Only
 #############################################
 #  Tiers: #The tiers in the Crate
@@ -77,6 +77,9 @@ Crate:
       Lore:
         - '&7Win a cheap helmet.'
         - '&6&lChance: &c&l60%'
+      DisplayEnchantments: #Adds enchantments to the display item.
+        - 'PROTECTION_ENVIRONMENTAL:1'
+        - 'OXYGEN:1'
       MaxRange: 100
       Chance: 60
       Firework: false

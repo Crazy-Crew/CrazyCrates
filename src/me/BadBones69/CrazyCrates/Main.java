@@ -105,6 +105,7 @@ public class Main extends JavaPlugin implements Listener{
 					sender.sendMessage(Api.color("&6/CC &7- Opens the GUI."));
 					sender.sendMessage(Api.color("&6/CC Admin &7- Opens the Admin Keys GUI."));
 					sender.sendMessage(Api.color("&6/CC List &7- Lists all the Crates."));
+					sender.sendMessage(Api.color("&6/CC Open <Crate> [Player] &7- Opens a crate for a player."));
 					sender.sendMessage(Api.color("&6/CC Tp <Location> &7- Teleport to a Crate."));
 					sender.sendMessage(Api.color("&6/CC Give <Physical/Virtual> <Crate> [Amount] [Player] &7- Give a player keys for a Chest."));
 					sender.sendMessage(Api.color("&6/CC GiveAll <Physical/Virtual> <Crate> [Amount] &7- Gives all online players keys for a Chest."));
@@ -164,6 +165,7 @@ public class Main extends JavaPlugin implements Listener{
 					for(String vo : settings.getAllCratesNames()){
 						crates += Api.color("&a"+vo+"&8, ");
 					}
+					crates += Api.color("&aMenu&8, ");
 					crates = crates.substring(0, crates.length()-2);
 					sender.sendMessage(Api.color("&e&lCrates:&f "+crates));
 					sender.sendMessage(Api.color("&e&lAll Crate Locations:"));
@@ -245,16 +247,15 @@ public class Main extends JavaPlugin implements Listener{
 					String LN = args[1]; //Location Name
 					String C = args[2]; //Crate
 					for(String crate : Api.getCrates()){
-						if(crate.equalsIgnoreCase(C)){
+						if(crate.equalsIgnoreCase(C)||C.equalsIgnoreCase("Menu")){
 							if(settings.getLocations().getConfigurationSection("Locations") == null){
 								settings.getLocations().set("Locations.clear", null);
 								settings.saveLocations();
 								sender.sendMessage(Api.color(Api.getPrefix()+"&cThere is no Location called &6"+LN+"&c."));
 								return true;
 							}
-							if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
-								Main.settings.getLocations().set("Locations.Clear", null);
-								Main.settings.saveLocations();
+							if(C.equalsIgnoreCase("Menu")){
+								crate = "Menu";
 							}
 							for(String location : settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
 								if(location.equalsIgnoreCase(LN)){
@@ -281,11 +282,7 @@ public class Main extends JavaPlugin implements Listener{
 					String LN = args[1]; //Location Name
 					String C = args[2]; //Crate
 					for(String crate : Api.getCrates()){
-						if(crate.equalsIgnoreCase(C)){
-							if(!settings.getLocations().contains("Locations")){
-								settings.getLocations().set("Locations.clear", null);
-								settings.saveLocations();
-							}
+						if(crate.equalsIgnoreCase(C)||C.equalsIgnoreCase("Menu")){
 							if(settings.getLocations().contains("Locations")){
 								for(String name : settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
 									if(name.equalsIgnoreCase(LN)){
@@ -293,6 +290,9 @@ public class Main extends JavaPlugin implements Listener{
 										return true;
 									}
 								}
+							}
+							if(C.equalsIgnoreCase("Menu")){
+								crate = "Menu";
 							}
 							Block block = player.getTargetBlock((HashSet<Byte>)null, 5);
 							if(block.isEmpty()){
@@ -358,6 +358,89 @@ public class Main extends JavaPlugin implements Listener{
 					return true;
 					}
 				sender.sendMessage(Api.color(Api.getPrefix()+"&c/Crate GiveAll <Physical/Virtual> <Crate> <Amount>"));
+				return true;
+			}
+			if(args[0].equalsIgnoreCase("Open")){// /CC Open <Crate> [Player]
+				if(sender instanceof Player)if(!Api.permCheck((Player) sender, "Admin"))return true;
+				if(args.length>=2){
+					for(String crate : Api.getCrates()){
+						if(crate.equalsIgnoreCase(args[1])){
+							Player player = null;
+							String type = Main.settings.getFile(crate).getString("Crate.CrateType");
+							if(args.length>=3){
+								if(Api.isOnline(args[2], sender)){
+									player = Api.getPlayer(args[2]);
+								}else{
+									return true;
+								}
+							}else{
+								if(!(sender instanceof Player)){
+									sender.sendMessage(Api.color(Api.getPrefix()+"&c/Crate Open <Crate> [Player]"));
+									return true;
+								}else{
+									player = (Player) sender;
+								}
+							}
+							if(GUI.Crate.containsKey(player)){
+								sender.sendMessage(Api.color(Api.getPrefix()+Main.settings.getConfig().getString("Settings.Crate-Already-Opened")));
+								return true;
+							}
+							if(type.equalsIgnoreCase("Wheel")){
+								GUI.Crate.put(player, crate);
+								CC.Crate.put(player, crate);
+								Api.Key.put(player, "Free");
+								Wheel.startWheel(player);
+							}
+							if(type.equalsIgnoreCase("Wonder")){
+								GUI.Crate.put(player, crate);
+								CC.Crate.put(player, crate);
+								Api.Key.put(player, "Free");
+								Wonder.startWonder(player);
+							}
+							if(type.equalsIgnoreCase("Cosmic")){
+								GUI.Crate.put(player, crate);
+								CC.Crate.put(player, crate);
+								Api.Key.put(player, "Free");
+								Cosmic.openCosmic(player);
+							}
+							if(type.equalsIgnoreCase("QuadCrate")){
+								GUI.Crate.put(player, crate);
+								CC.Crate.put(player, crate);
+								Api.Key.put(player, "Free");
+								QCC.startBuild(player, player.getLocation(), Material.CHEST);
+							}
+							if(type.equalsIgnoreCase("CSGO")){
+								GUI.Crate.put(player, crate);
+								CC.Crate.put(player, crate);
+								Api.Key.put(player, "Free");
+								CSGO.openCSGO(player);
+							}
+							if(type.equalsIgnoreCase("Roulette")){
+								GUI.Crate.put(player, crate);
+								CC.Crate.put(player, crate);
+								Api.Key.put(player, "Free");
+								Roulette.openRoulette(player);
+							}
+							if(type.equalsIgnoreCase("QuickCrate")){
+								sender.sendMessage(Api.color(Api.getPrefix()+Main.settings.getConfig().getString("Settings.Cant-Be-Virtual-Crate")));
+								return true;
+							}
+							if(type.equalsIgnoreCase("CrateOnTheGo")){
+								sender.sendMessage(Api.color(Api.getPrefix()+Main.settings.getConfig().getString("Settings.Cant-Be-Virtual-Crate")));
+								return true;
+							}
+							if(type.equalsIgnoreCase("FireCracker")){
+								sender.sendMessage(Api.color(Api.getPrefix()+Main.settings.getConfig().getString("Settings.Cant-Be-Virtual-Crate")));
+								return true;
+							}
+							sender.sendMessage(Api.color(Api.getPrefix()+"&7You have just opened the &6"+crate+" &7crate for &6"+player.getName()+"&7."));
+							return true;
+						}
+					}
+					sender.sendMessage(Api.color(Api.getPrefix()+"&c"+args[1]+" is is not a Crate."));
+					return true;
+				}
+				sender.sendMessage(Api.color(Api.getPrefix()+"&c/Crate Open <Crate> [Player]"));
 				return true;
 			}
 			if(args[0].equalsIgnoreCase("Give")){// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
@@ -499,7 +582,9 @@ public class Main extends JavaPlugin implements Listener{
 					player.sendMessage(Api.getPrefix()+Api.color("&7This server is running your Crazy Crates Plugin. "
 						+ "&7It is running version &av"+Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates").getDescription().getVersion()+"&7."));
 				}
-				if(player.isOp())Api.hasUpdate(player);
+				if(player.isOp()){
+					Api.hasUpdate(player);
+				}
 			}
 		}, 40);
 	}

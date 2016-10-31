@@ -18,6 +18,8 @@ import me.BadBones69.CrazyCrates.Api;
 import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
+import me.BadBones69.CrazyCrates.API.CrateType;
+import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
 
 public class Wonder implements Listener{
 	private static HashMap<Player, HashMap<ItemStack, String>> Items = new HashMap<Player, HashMap<ItemStack, String>>();
@@ -78,7 +80,9 @@ public class Wonder implements Listener{
 					Bukkit.getScheduler().cancelTask(crate.get(player));
 					crate.remove(player);
 					player.closeInventory();
-					CC.getReward(player, CC.Rewards.get(player).get(It));
+					String path = CC.Rewards.get(player).get(It);
+					CC.getReward(player, path);
+					Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WONDER, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
 					GUI.Crate.remove(player);
 					CC.Rewards.remove(player);
 					return;
