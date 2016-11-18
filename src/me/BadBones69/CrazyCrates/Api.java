@@ -30,6 +30,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_10_R1;
+import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_11_R1;
 import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R1;
 import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R2;
 import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R3;
@@ -224,6 +225,7 @@ public class Api{
         en.add("LUCK");
         en.add("LURE");
         en.add("FROST_WALKER");
+        en.add("DEPTH_STRIDER");
 		return en;
 	}
 	public static void fireWork(Location loc) {
@@ -466,6 +468,9 @@ public class Api{
 				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. "
 						+ "Please update or remove this plugin to stop further Errors.");
 				break;
+			case v1_11_R1:
+				NMS_v1_11_R1.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
+				break;
 			case v1_10_R1:
 				NMS_v1_10_R1.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
 				break;
@@ -496,6 +501,8 @@ public class Api{
 				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. "
 						+ "Please update or remove this plugin to stop further Errors.");
 				break;
+			case v1_11_R1:
+				return NMS_v1_11_R1.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
 			case v1_10_R1:
 				return NMS_v1_10_R1.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
 			case v1_9_R2:
@@ -524,6 +531,8 @@ public class Api{
 					Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. "
 							+ "Please update or remove this plugin to stop further Errors.");
 					break;
+				case v1_11_R1:
+					NMS_v1_11_R1.openChest(b, location, open);
 				case v1_10_R1:
 					NMS_v1_10_R1.openChest(b, location, open);
 					break;
@@ -555,6 +564,8 @@ public class Api{
 				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. "
 						+ "Please update or remove this plugin to stop further Errors.");
 				break;
+			case v1_11_R1:
+				return NMS_v1_11_R1.addGlow(item);
 			case v1_10_R1:
 				return NMS_v1_10_R1.addGlow(item);
 			case v1_9_R2:

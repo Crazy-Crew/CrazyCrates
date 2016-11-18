@@ -88,30 +88,32 @@ public class Cosmic implements Listener{
 						if(slot==i){
 							ItemStack item = e.getCurrentItem();
 							String tier = tiers.get(player).get(item);
-							if(item.hasItemMeta()){
-								if(item.getItemMeta().hasDisplayName()){
-									if(item.getItemMeta().getDisplayName().equals(Api.color(file.getString("Crate.Tiers."+tier+".Name")))){
-										String reward = pickReward(player, tier);
-										int stop=0;
-										for(;reward.equals("");stop++){
-											if(stop==500)break;
-											reward = pickReward(player, tier);
+							if(item != null){
+								if(item.hasItemMeta()){
+									if(item.getItemMeta().hasDisplayName()){
+										if(item.getItemMeta().getDisplayName().equals(Api.color(file.getString("Crate.Tiers."+tier+".Name")))){
+											String reward = pickReward(player, tier);
+											int stop=0;
+											for(;reward.equals("");stop++){
+												if(stop==500)break;
+												reward = pickReward(player, tier);
+											}
+											CC.getReward(player, "Crate.Prizes."+reward);
+											Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.COSMIC, CC.Crate.get(player), reward));
+											String id = file.getString("Crate.Prizes."+reward+".DisplayItem");
+											String name = file.getString("Crate.Prizes."+reward+".DisplayName");
+											List<String> lore = file.getStringList("Crate.Prizes."+reward+".Lore");
+											e.setCurrentItem(Api.makeItem(id, 1, name, lore));
+											if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+												player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
+											}else{
+												player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
+											}
+											if(file.getBoolean("Crate.Prizes."+reward+".Firework")){
+												Api.fireWork(player.getLocation().add(0, 1, 0));
+											}
+											return;
 										}
-										CC.getReward(player, "Crate.Prizes."+reward);
-										Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.COSMIC, CC.Crate.get(player), reward));
-										String id = file.getString("Crate.Prizes."+reward+".DisplayItem");
-										String name = file.getString("Crate.Prizes."+reward+".DisplayName");
-										List<String> lore = file.getStringList("Crate.Prizes."+reward+".Lore");
-										e.setCurrentItem(Api.makeItem(id, 1, name, lore));
-										if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
-											player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
-										}else{
-											player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
-										}
-										if(file.getBoolean("Crate.Prizes."+reward+".Firework")){
-											Api.fireWork(player.getLocation().add(0, 1, 0));
-										}
-										return;
 									}
 								}
 							}
