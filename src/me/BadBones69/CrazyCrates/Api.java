@@ -337,6 +337,28 @@ public class Api{
 		item.addUnsafeEnchantments(enchants);
 		return item;
 	}
+	public static ItemStack makeItem(String id, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants, Boolean glowing){
+		ArrayList<String> l = new ArrayList<String>();
+		String ma = id;
+		int type = 0;
+		if(ma.contains(":")){
+			String[] b = ma.split(":");
+			ma = b[0];
+			type = Integer.parseInt(b[1]);
+		}
+		Material material = Material.matchMaterial(ma);
+		ItemStack item = new ItemStack(material, amount, (short) type);
+		ItemMeta m = item.getItemMeta();
+		m.setDisplayName(color(name));
+		for(String L:lore)l.add(color(L));
+		m.setLore(l);
+		item.setItemMeta(m);
+		item.addUnsafeEnchantments(enchants);
+		if(glowing){
+			addGlow(item);
+		}
+		return item;
+	}
 	public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore, Map<Enchantment, Integer> enchants){
 		ArrayList<String> l = new ArrayList<String>();
 		ItemStack item = new ItemStack(material, amount, (short) type);
@@ -533,6 +555,7 @@ public class Api{
 					break;
 				case v1_11_R1:
 					NMS_v1_11_R1.openChest(b, location, open);
+					break;
 				case v1_10_R1:
 					NMS_v1_10_R1.openChest(b, location, open);
 					break;

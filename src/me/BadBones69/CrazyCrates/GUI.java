@@ -65,6 +65,14 @@ public class GUI implements Listener{
 			String name = Main.settings.getFile(crate).getString("Crate.Prizes."+reward+".DisplayName");
 			List<String> lore = Main.settings.getFile(crate).getStringList("Crate.Prizes."+reward+".Lore");
 			HashMap<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
+			Boolean glowing = false;
+			int amount = 1;
+			if(Main.settings.getFile(crate).contains("Crate.Prizes."+reward+".Glowing")){
+				glowing = Main.settings.getFile(crate).getBoolean("Crate.Prizes."+reward+".Glowing");
+			}
+			if(Main.settings.getFile(crate).contains("Crate.Prizes."+reward+".DisplayAmount")){
+				amount = Main.settings.getFile(crate).getInt("Crate.Prizes."+reward+".DisplayAmount");
+			}
 			if(Main.settings.getFile(crate).contains("Crate.Prizes."+reward+".DisplayEnchantments")){
 				for(String enchant : Main.settings.getFile(crate).getStringList("Crate.Prizes."+reward+".DisplayEnchantments")){
 					String[] b = enchant.split(":");
@@ -73,9 +81,9 @@ public class GUI implements Listener{
 			}
 			try{
 				if(enchantments.size()>0){
-					inv.setItem(inv.firstEmpty(), Api.makeItem(id, 1, name, lore, enchantments));
+					inv.setItem(inv.firstEmpty(), Api.makeItem(id, amount, name, lore, enchantments, glowing));
 				}else{
-					inv.setItem(inv.firstEmpty(), Api.makeItem(id, 1, name, lore));
+					inv.setItem(inv.firstEmpty(), Api.makeItem(id, amount, name, lore, glowing));
 				}
 			}catch(Exception e){
 				inv.addItem(Api.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error","&cFor the reward: &c"+reward)));

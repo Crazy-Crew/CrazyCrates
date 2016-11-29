@@ -42,12 +42,14 @@ Crate:
     1:
       DisplayName: '&7&lBasic Grass' #Name of the item shown by the crate.
       DisplayItem: '2' #Item that is shown by the crate.
+      DisplayAmount: 1 #The amount that is displayed.
       Lore: #Lore will be shown in rewards GUI.
         - '&7Win some grass for your fields.'
         - '&6&lChance: &c&l40%'
       MaxRange: 100 #The max range that the chance will go though.
       Chance: 40 #Chance of that item getting picked. It would be 40/100 chance because MaxRange is 100.
       Firework: false #Firework when it is won.
+      Glowing: false #Toggle if the item has a glowing effect but doesn't have an enchantment on it.
 #        For Cosmic Crates Only
 #############################################
 #       Tiers: #The Tiers the rewards can be found in.
@@ -74,6 +76,7 @@ Crate:
     2:
       DisplayName: '&b&lCheap Helmet'
       DisplayItem: '314'
+      DisplayAmount: 1
       Lore:
         - '&7Win a cheap helmet.'
         - '&6&lChance: &c&l60%'
@@ -83,17 +86,20 @@ Crate:
       MaxRange: 100
       Chance: 60
       Firework: false
+      Glowing: false
       Items:
         - 'Item:314, Amount:1, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
     3:
       DisplayName: '&e&l$1,000'
       DisplayItem: '175'
+      DisplayAmount: 1
       Lore:
         - '&7Make it rain Money.'
         - '&6&lChance: &c&l20%'
       MaxRange: 100
       Chance: 20
       Firework: true
+      Glowing: false
       Commands:
         - 'eco give %Player% 1000'
       Messages:

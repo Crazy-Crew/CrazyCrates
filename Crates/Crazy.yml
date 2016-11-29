@@ -23,6 +23,7 @@ Crate:
     1:
       DisplayName: '&3&lRare ChestPlate'
       DisplayItem: '311'
+      DisplayAmount: 1
       Lore:
         - '&7Win a very rare chest plate.'
         - '&6&lChance: &c&l40%'
@@ -32,11 +33,13 @@ Crate:
       MaxRange: 100
       Chance: 40
       Firework: false
+      Glowing: false
       Items:
         - 'Item:311, Amount:1, Name:&3Rare ChestPlate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3'
     2:
       DisplayName: '&b&lCrazy &4&lSword'
       DisplayItem: '283'
+      DisplayAmount: 1
       Lore:
         - '&7Win a crazy cool sword.'
         - '&6&lChance: &c&l35%'
@@ -46,6 +49,7 @@ Crate:
       MaxRange: 100
       Chance: 35
       Firework: false
+      Glowing: false
       Items:
         - 'Item:283, Amount:1, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1'
       Messages:
@@ -53,12 +57,14 @@ Crate:
     3:
       DisplayName: '&e&l$1,000,000'
       DisplayItem: '175'
+      DisplayAmount: 1
       Lore:
         - '&7Make it rain a butt load of Money.'
         - '&6&lChance: &c&l20%'
       MaxRange: 100
       Chance: 20
       Firework: true
+      Glowing: false
       Commands:
         - 'Eco give %Player% 1000000'
       Messages:

@@ -23,6 +23,7 @@ Crate:
     1:
       DisplayName: '&a&lFancy Pants'
       DisplayItem: '304'
+      DisplayAmount: 1
       Lore:
         - '&7Win a fancy pair of pants.'
         - '&6&lChance: &c&l40%'
@@ -31,6 +32,7 @@ Crate:
       MaxRange: 100
       Chance: 40
       Firework: false
+      Glowing: false
       Items:
         - 'Item:304, Amount:1, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
       Messages:
@@ -38,6 +40,7 @@ Crate:
     2:
       DisplayName: '&b&lClassic Sword'
       DisplayItem: '276'
+      DisplayAmount: 1
       Lore:
         - '&7Win a old classic sword.'
         - '&6&lChance: &c&l35%'
@@ -47,6 +50,7 @@ Crate:
       MaxRange: 100
       Chance: 35
       Firework: false
+      Glowing: false
       Items:
         - 'Item:276, Amount:1, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1'
       Messages:
@@ -54,12 +58,14 @@ Crate:
     3:
       DisplayName: '&e&l$100,000'
       DisplayItem: '175'
+      DisplayAmount: 1
       Lore:
         - '&7Make it rain a lot of Money.'
         - '&6&lChance: &c&l20%'
       MaxRange: 100
       Chance: 20
       Firework: true
+      Glowing: false
       Commands:
         - 'Eco give %Player% 100000'
       Messages:
