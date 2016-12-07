@@ -22,6 +22,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -257,6 +258,7 @@ public class Api{
 		item.setItemMeta(m);
 		return item;
 	}
+	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(String type, int amount, String name, List<String> lore){
 		ArrayList<String> l = new ArrayList<String>();
 		int ty = 0;
@@ -267,6 +269,24 @@ public class Api{
 		}
 		Material m = Material.matchMaterial(type);
 		ItemStack item = new ItemStack(m, amount, (short) ty);
+		if(m == Material.MONSTER_EGG){
+			switch(Version.getVersion()){
+			case v1_11_R1:
+				item = NMS_v1_11_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_10_R1:
+				item = NMS_v1_10_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_9_R2:
+				item = NMS_v1_9_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_9_R1:
+				item = NMS_v1_9_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			default:
+				break;
+			}
+		}
 		ItemMeta me = item.getItemMeta();
 		me.setDisplayName(color(name));
 		for(String L:lore)l.add(color(L));
@@ -274,6 +294,7 @@ public class Api{
 		item.setItemMeta(me);
 		return item;
 	}
+	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(String type, int amount, String name, List<String> lore, Boolean Enchanted){
 		ArrayList<String> l = new ArrayList<String>();
 		int ty = 0;
@@ -284,6 +305,24 @@ public class Api{
 		}
 		Material m = Material.matchMaterial(type);
 		ItemStack item = new ItemStack(m, amount, (short) ty);
+		if(m == Material.MONSTER_EGG){
+			switch(Version.getVersion()){
+			case v1_11_R1:
+				item = NMS_v1_11_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_10_R1:
+				item = NMS_v1_10_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_9_R2:
+				item = NMS_v1_9_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_9_R1:
+				item = NMS_v1_9_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			default:
+				break;
+			}
+		}
 		ItemMeta me = item.getItemMeta();
 		me.setDisplayName(color(name));
 		for(String L:lore)l.add(color(L));
@@ -294,6 +333,7 @@ public class Api{
 		}
 		return item;
 	}
+	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(String type, int amount, String name){
 		int ty = 0;
 		if(type.contains(":")){
@@ -303,32 +343,88 @@ public class Api{
 		}
 		Material m = Material.matchMaterial(type);
 		ItemStack item = new ItemStack(m, amount, (short) ty);
+		if(m == Material.MONSTER_EGG){
+			switch(Version.getVersion()){
+			case v1_11_R1:
+				item = NMS_v1_11_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_10_R1:
+				item = NMS_v1_10_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_9_R2:
+				item = NMS_v1_9_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_9_R1:
+				item = NMS_v1_9_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			default:
+				break;
+			}
+		}
 		ItemMeta me = item.getItemMeta();
 		me.setDisplayName(color(name));
 		item.setItemMeta(me);
 		return item;
 	}
-	public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore){
+	@SuppressWarnings("deprecation")
+	public static ItemStack makeItem(Material material, int amount, int ty, String name, List<String> lore){
 		ArrayList<String> l = new ArrayList<String>();
-		ItemStack item = new ItemStack(material, amount, (short) type);
+		ItemStack item = new ItemStack(material, amount, (short) ty);
 		ItemMeta m = item.getItemMeta();
+		if(material == Material.MONSTER_EGG){
+			switch(Version.getVersion()){
+			case v1_11_R1:
+				item = NMS_v1_11_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_10_R1:
+				item = NMS_v1_10_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_9_R2:
+				item = NMS_v1_9_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_9_R1:
+				item = NMS_v1_9_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			default:
+				break;
+			}
+		}
 		m.setDisplayName(color(name));
 		for(String L:lore)l.add(color(L));
 		m.setLore(l);
 		item.setItemMeta(m);
 		return item;
 	}
+	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(String id, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants){
 		ArrayList<String> l = new ArrayList<String>();
 		String ma = id;
-		int type = 0;
+		int ty = 0;
 		if(ma.contains(":")){
 			String[] b = ma.split(":");
 			ma = b[0];
-			type = Integer.parseInt(b[1]);
+			ty = Integer.parseInt(b[1]);
 		}
 		Material material = Material.matchMaterial(ma);
-		ItemStack item = new ItemStack(material, amount, (short) type);
+		ItemStack item = new ItemStack(material, amount, (short) ty);
+		if(material == Material.MONSTER_EGG){
+			switch(Version.getVersion()){
+			case v1_11_R1:
+				item = NMS_v1_11_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_10_R1:
+				item = NMS_v1_10_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_9_R2:
+				item = NMS_v1_9_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_9_R1:
+				item = NMS_v1_9_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			default:
+				break;
+			}
+		}
 		ItemMeta m = item.getItemMeta();
 		m.setDisplayName(color(name));
 		for(String L:lore)l.add(color(L));
@@ -337,17 +433,36 @@ public class Api{
 		item.addUnsafeEnchantments(enchants);
 		return item;
 	}
+	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(String id, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants, Boolean glowing){
 		ArrayList<String> l = new ArrayList<String>();
 		String ma = id;
-		int type = 0;
+		int ty = 0;
 		if(ma.contains(":")){
 			String[] b = ma.split(":");
 			ma = b[0];
-			type = Integer.parseInt(b[1]);
+			ty = Integer.parseInt(b[1]);
 		}
 		Material material = Material.matchMaterial(ma);
-		ItemStack item = new ItemStack(material, amount, (short) type);
+		ItemStack item = new ItemStack(material, amount, (short) ty);
+		if(material == Material.MONSTER_EGG){
+			switch(Version.getVersion()){
+			case v1_11_R1:
+				item = NMS_v1_11_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_10_R1:
+				item = NMS_v1_10_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_9_R2:
+				item = NMS_v1_9_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_9_R1:
+				item = NMS_v1_9_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			default:
+				break;
+			}
+		}
 		ItemMeta m = item.getItemMeta();
 		m.setDisplayName(color(name));
 		for(String L:lore)l.add(color(L));
@@ -359,9 +474,28 @@ public class Api{
 		}
 		return item;
 	}
-	public static ItemStack makeItem(Material material, int amount, int type, String name, List<String> lore, Map<Enchantment, Integer> enchants){
+	@SuppressWarnings("deprecation")
+	public static ItemStack makeItem(Material material, int amount, int ty, String name, List<String> lore, Map<Enchantment, Integer> enchants){
 		ArrayList<String> l = new ArrayList<String>();
-		ItemStack item = new ItemStack(material, amount, (short) type);
+		ItemStack item = new ItemStack(material, amount, (short) ty);
+		if(material == Material.MONSTER_EGG){
+			switch(Version.getVersion()){
+			case v1_11_R1:
+				item = NMS_v1_11_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_10_R1:
+				item = NMS_v1_10_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_9_R2:
+				item = NMS_v1_9_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			case v1_9_R1:
+				item = NMS_v1_9_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
+			default:
+				break;
+			}
+		}
 		ItemMeta m = item.getItemMeta();
 		m.setDisplayName(color(name));
 		for(String L:lore)l.add(color(L));

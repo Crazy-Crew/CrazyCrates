@@ -17,6 +17,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_10_R1.inventory.CraftItemStack;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -114,5 +115,20 @@ public class NMS_v1_10_R1 {
 		catch(Exception e){e.printStackTrace();}
 		return locations;
 	}
+	
+	@SuppressWarnings("deprecation")
+	public static ItemStack getSpawnEgg(EntityType type, int amount) {
+        ItemStack item = new ItemStack(Material.MONSTER_EGG, amount);
+        net.minecraft.server.v1_10_R1.ItemStack stack = CraftItemStack.asNMSCopy(item);
+        NBTTagCompound tagCompound = stack.getTag();
+        if(tagCompound == null){
+            tagCompound = new NBTTagCompound();
+        }
+        NBTTagCompound id = new NBTTagCompound();
+        id.setString("id", type.getName());
+        tagCompound.set("EntityTag", id);
+        stack.setTag(tagCompound);
+        return CraftItemStack.asBukkitCopy(stack);
+    }
 	
 }
