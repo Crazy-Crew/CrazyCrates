@@ -11,7 +11,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import me.BadBones69.CrazyCrates.Api;
+import me.BadBones69.CrazyCrates.Methods;
 import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
@@ -31,13 +31,13 @@ public class CrateOnTheGo implements Listener{
 		String name = Main.settings.getFile(crate).getString(path+"Name");
 		ArrayList<String> lore = new ArrayList<String>();
 		for(String i : Main.settings.getFile(crate).getStringList(path+"Lore")){
-			i=i.replaceAll("%Keys%", Api.getKeys(player, crate)+"");
-			i=i.replaceAll("%keys%", Api.getKeys(player, crate)+"");
+			i=i.replaceAll("%Keys%", Methods.getKeys(player, crate)+"");
+			i=i.replaceAll("%keys%", Methods.getKeys(player, crate)+"");
 			i=i.replaceAll("%Player%", player.getName());
 			i=i.replaceAll("%player%", player.getName());
 			lore.add(i);
 		}
-		player.getInventory().addItem(Api.makeItem(Material.matchMaterial(ma), amount, type, name, lore));
+		player.getInventory().addItem(Methods.makeItem(Material.matchMaterial(ma), amount, type, name, lore));
 	}
 	@EventHandler
 	public void onCrateOpen(PlayerInteractEvent e){
@@ -49,20 +49,20 @@ public class CrateOnTheGo implements Listener{
 					if(item.getItemMeta().hasDisplayName()){
 						for(String crate : Main.settings.getAllCratesNames()){
 							String name = Main.settings.getFile(crate).getString("Crate.Name");
-							name = Api.color(name);
+							name = Methods.color(name);
 							if(item.getItemMeta().getDisplayName().equals(name)){
 								e.setCancelled(true);
 								GUI.Crate.put(player, crate);
 								if(!CC.Rewards.containsKey(player)){
 									CC.getItems(player);
 								}
-								Api.removeItem(item, player);
+								Methods.removeItem(item, player);
 								ItemStack it = CC.pickItem(player);
 								String path = CC.Rewards.get(player).get(it);
 								CC.getReward(player, path);
 								Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.CRATE_ON_THE_GO, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
 								if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean(path + ".Firework")){
-									Api.fireWork(player.getLocation().add(0, 1, 0));
+									Methods.fireWork(player.getLocation().add(0, 1, 0));
 								}
 								GUI.Crate.remove(player);
 								CC.Rewards.remove(player);

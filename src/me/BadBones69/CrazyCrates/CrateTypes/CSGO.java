@@ -16,7 +16,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import me.BadBones69.CrazyCrates.Api;
+import me.BadBones69.CrazyCrates.Methods;
 import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
@@ -42,8 +42,8 @@ public class CSGO implements Listener{
 		for(int i : Glass.keySet()){
 			if(inv.getItem(i)==null){
 				int color = r.nextInt(15);
-				inv.setItem(i, Api.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
-				inv.setItem(i+18, Api.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
+				inv.setItem(i, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
+				inv.setItem(i+18, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
 			}
 		}
 		for(int i=1;i<10;i++){
@@ -61,19 +61,19 @@ public class CSGO implements Listener{
 		inv.setItem(2+18, Glass.get(3));
 		inv.setItem(3, Glass.get(5));
 		inv.setItem(3+18, Glass.get(5));
-		inv.setItem(4, Api.makeItem(Material.STAINED_GLASS, 1, 15, " "));
-		inv.setItem(4+18, Api.makeItem(Material.STAINED_GLASS, 1, 15, " "));
+		inv.setItem(4, Methods.makeItem(Material.STAINED_GLASS, 1, 15, " "));
+		inv.setItem(4+18, Methods.makeItem(Material.STAINED_GLASS, 1, 15, " "));
 		inv.setItem(5, Glass.get(6));
 		inv.setItem(5+18, Glass.get(6));
 		inv.setItem(6, Glass.get(7));
 		inv.setItem(6+18, Glass.get(7));
 		inv.setItem(7, Glass.get(8));
 		inv.setItem(7+18, Glass.get(8));
-		inv.setItem(8, Api.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
-		inv.setItem(8+18, Api.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
+		inv.setItem(8, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
+		inv.setItem(8+18, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
 	}
 	public static void openCSGO(Player player){
-		Inventory inv = Bukkit.createInventory(null, 27, Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")));
+		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")));
 		setGlass(inv);
 		for(int i=9;i>8&&i<18;i++){
 			inv.setItem(i, CC.pickItem(player));
@@ -82,11 +82,11 @@ public class CSGO implements Listener{
 		startCSGO(player, inv);
 	}
 	private static void startCSGO(final Player player, final Inventory inv){
-		if(Api.Key.get(player).equals("PhysicalKey")){
-			Api.removeItem(CC.Key.get(player), player);
+		if(Methods.Key.get(player).equals("PhysicalKey")){
+			Methods.removeItem(CC.Key.get(player), player);
 		}
-		if(Api.Key.get(player).equals("VirtualKey")){
-			Api.takeKeys(1, player, GUI.Crate.get(player));
+		if(Methods.Key.get(player).equals("VirtualKey")){
+			Methods.takeKeys(1, player, GUI.Crate.get(player));
 		}
 		roll.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
 			int time = 1;
@@ -175,7 +175,7 @@ public class CSGO implements Listener{
 			return;
 		}
 		if(inv!=null){
-			if(inv.getName().equals(Api.color(Main.settings.getFile(CC.Crate.get(player)).getString("Crate.CrateName")))){
+			if(inv.getName().equals(Methods.color(Main.settings.getFile(CC.Crate.get(player)).getString("Crate.CrateName")))){
 				e.setCancelled(true);
 			}
 		}

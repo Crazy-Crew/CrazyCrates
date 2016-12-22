@@ -14,7 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import me.BadBones69.CrazyCrates.Api;
+import me.BadBones69.CrazyCrates.Methods;
 import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
@@ -30,7 +30,7 @@ public class Wonder implements Listener{
 		this.plugin = plugin;
 	}
 	public static void startWonder(final Player player){
-		final Inventory inv = Bukkit.createInventory(null, 45, Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")));
+		final Inventory inv = Bukkit.createInventory(null, 45, Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")));
 		final HashMap<ItemStack, String> items = new HashMap<ItemStack, String>();
 		final ArrayList<String> slots = new ArrayList<String>();
 		for(int i=0;i<45;i++){
@@ -39,11 +39,11 @@ public class Wonder implements Listener{
 			inv.setItem(i, item);
 		}
 		Items.put(player, items);
-		if(Api.Key.get(player).equals("PhysicalKey")){
-			Api.removeItem(CC.Key.get(player), player);
+		if(Methods.Key.get(player).equals("PhysicalKey")){
+			Methods.removeItem(CC.Key.get(player), player);
 		}
-		if(Api.Key.get(player).equals("VirtualKey")){
-			Api.takeKeys(1, player, GUI.Crate.get(player));
+		if(Methods.Key.get(player).equals("VirtualKey")){
+			Methods.takeKeys(1, player, GUI.Crate.get(player));
 		}
 		player.openInventory(inv);
 		crate.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
@@ -59,8 +59,8 @@ public class Wonder implements Listener{
 				if(timer>=2&&fulltime<=65){
 					slots.remove(slot1+"");slots.remove(slot2+"");
 					Slots.add(slot1);Slots.add(slot2);
-					inv.setItem(slot1, Api.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
-					inv.setItem(slot2, Api.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
+					inv.setItem(slot1, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
+					inv.setItem(slot2, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
 					for(String slot : slots){
 						It = CC.pickItem(player);
 						inv.setItem(Integer.parseInt(slot), It);
@@ -71,8 +71,8 @@ public class Wonder implements Listener{
 				if(fulltime>67){
 					int color = r.nextInt(15);
 					for(int slot : Slots){
-						inv.setItem(slot, Api.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
-						inv.setItem(slot, Api.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
+						inv.setItem(slot, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
+						inv.setItem(slot, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
 					}
 				}
 				player.openInventory(inv);
@@ -103,7 +103,7 @@ public class Wonder implements Listener{
 			return;
 		}
 		if(inv!=null){
-			if(inv.getName().equals(Api.color(Main.settings.getFile(CC.Crate.get(player)).getString("Crate.CrateName")))){
+			if(inv.getName().equals(Methods.color(Main.settings.getFile(CC.Crate.get(player)).getString("Crate.CrateName")))){
 				e.setCancelled(true);
 			}
 		}

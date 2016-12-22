@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import me.BadBones69.CrazyCrates.Api;
+import me.BadBones69.CrazyCrates.Methods;
+import me.BadBones69.CrazyCrates.API.FireworkDamageAPI;
 import me.BadBones69.CrazyCrates.CC;
 
 import org.bukkit.Bukkit;
@@ -25,7 +26,7 @@ public class FireCracker {
 		this.plugin = plugin;
 	}
 	public static void startFireCracker(final Player player, final String crate, final Location C){
-		Api.removeItem(CC.Key.get(player), player);
+		Methods.removeItem(CC.Key.get(player), player);
 		final ArrayList<Color> colors = new ArrayList<Color>();
 		colors.add(Color.RED);
 		colors.add(Color.YELLOW);
@@ -64,6 +65,7 @@ public class FireCracker {
 				.build());
 		fm.setPower(0);
 		fw.setFireworkMeta(fm);
+		FireworkDamageAPI.addFirework(fw);
 		detonate(fw);
 	}
 	private static void detonate(final Firework f) {

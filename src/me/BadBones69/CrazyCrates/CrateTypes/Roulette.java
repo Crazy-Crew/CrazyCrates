@@ -16,7 +16,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import me.BadBones69.CrazyCrates.Api;
+import me.BadBones69.CrazyCrates.Methods;
 import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
@@ -37,23 +37,23 @@ public class Roulette implements Listener{
 			if(i!=13){
 				int color =  r.nextInt(15);
 				if(color==8)color=1;
-				inv.setItem(i, Api.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
+				inv.setItem(i, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
 			}
 		}
 	}
 	public static void openRoulette(Player player){
-		Inventory inv = Bukkit.createInventory(null, 27, Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")));
+		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")));
 		setGlass(inv);
 		inv.setItem(13, CC.pickItem(player));
 		player.openInventory(inv);
 		startRoulette(player, inv);
 	}
 	private static void startRoulette(final Player player, final Inventory inv){
-		if(Api.Key.get(player).equals("PhysicalKey")){
-			Api.removeItem(CC.Key.get(player), player);
+		if(Methods.Key.get(player).equals("PhysicalKey")){
+			Methods.removeItem(CC.Key.get(player), player);
 		}
-		if(Api.Key.get(player).equals("VirtualKey")){
-			Api.takeKeys(1, player, GUI.Crate.get(player));
+		if(Methods.Key.get(player).equals("VirtualKey")){
+			Methods.takeKeys(1, player, GUI.Crate.get(player));
 		}
 		roll.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
 			int time = 1;
@@ -136,7 +136,7 @@ public class Roulette implements Listener{
 		}
 		Inventory inv = e.getInventory();
 		if(inv!=null){
-			if(inv.getName().equals(Api.color(Main.settings.getFile(CC.Crate.get(player)).getString("Crate.CrateName")))){
+			if(inv.getName().equals(Methods.color(Main.settings.getFile(CC.Crate.get(player)).getString("Crate.CrateName")))){
 				e.setCancelled(true);
 			}
 		}

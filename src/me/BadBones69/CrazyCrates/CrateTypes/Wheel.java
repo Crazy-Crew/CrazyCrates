@@ -15,7 +15,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import me.BadBones69.CrazyCrates.Api;
+import me.BadBones69.CrazyCrates.Methods;
 import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
@@ -32,9 +32,9 @@ public class Wheel implements Listener{
 		this.plugin = plugin;
 	}
 	public static void startWheel(final Player player){
-		final Inventory inv = Bukkit.createInventory(null, 54, Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")));
+		final Inventory inv = Bukkit.createInventory(null, 54, Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")));
 		for(int i=0;i<54;i++){
-			inv.setItem(i, Api.makeItem("160:15", 1, " "));
+			inv.setItem(i, Methods.makeItem("160:15", 1, " "));
 		} 
 		HashMap<Integer, ItemStack> items = new HashMap<Integer, ItemStack>();
 		for(int i : getBorder()){
@@ -43,11 +43,11 @@ public class Wheel implements Listener{
 			items.put(i, item);
 		}
 		Rewards.put(player, items);
-		if(Api.Key.get(player).equals("PhysicalKey")){
-			Api.removeItem(CC.Key.get(player), player);
+		if(Methods.Key.get(player).equals("PhysicalKey")){
+			Methods.removeItem(CC.Key.get(player), player);
 		}
-		if(Api.Key.get(player).equals("VirtualKey")){
-			Api.takeKeys(1, player, GUI.Crate.get(player));
+		if(Methods.Key.get(player).equals("VirtualKey")){
+			Methods.takeKeys(1, player, GUI.Crate.get(player));
 		}
 		player.openInventory(inv);
 		crate.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
@@ -55,7 +55,7 @@ public class Wheel implements Listener{
 			int i = 0;
 			int f = 17;
 			int full = 0;
-			int timer = Api.randomNumber(42, 68);
+			int timer = Methods.randomNumber(42, 68);
 			int slower = 0;
 			int open = 0;
 			int slow = 0;
@@ -68,7 +68,7 @@ public class Wheel implements Listener{
 					f=0;
 				}
 				if(full<timer){
-					inv.setItem(slots.get(i), Api.makeItem("160:5", 1, Rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()));
+					inv.setItem(slots.get(i), Methods.makeItem("160:5", 1, Rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()));
 					inv.setItem(slots.get(f), Rewards.get(player).get(slots.get(f)));
 					if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 						player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
@@ -80,7 +80,7 @@ public class Wheel implements Listener{
 				}
 				if(full>=timer){
 					if(slowSpin().contains(slower)){
-						inv.setItem(slots.get(i), Api.makeItem("160:5", 1, Rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()));
+						inv.setItem(slots.get(i), Methods.makeItem("160:5", 1, Rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()));
 						inv.setItem(slots.get(f), Rewards.get(player).get(slots.get(f)));
 						if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 							player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
@@ -105,7 +105,7 @@ public class Wheel implements Listener{
 							if(color==8)color=0;
 							for(int slot=0;slot<54;slot++){
 								if(!getBorder().contains(slot)){
-									inv.setItem(slot, Api.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
+									inv.setItem(slot, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
 								}
 							}
 							slow=0;
@@ -141,7 +141,7 @@ public class Wheel implements Listener{
 			return;
 		}
 		if(inv!=null){
-			if(inv.getName().equals(Api.color(Main.settings.getFile(CC.Crate.get(player)).getString("Crate.CrateName")))){
+			if(inv.getName().equals(Methods.color(Main.settings.getFile(CC.Crate.get(player)).getString("Crate.CrateName")))){
 				e.setCancelled(true);
 			}
 		}

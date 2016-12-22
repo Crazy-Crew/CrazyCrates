@@ -30,6 +30,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
+import me.BadBones69.CrazyCrates.API.FireworkDamageAPI;
 import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_10_R1;
 import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_11_R1;
 import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R1;
@@ -39,45 +40,13 @@ import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R1;
 import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R2;
 import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
-public class Api{
+public class Methods{
 	public static HashMap<Player, String> path = new HashMap<Player, String>();
 	public static HashMap<Player, String> Key = new HashMap<Player, String>();
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
 	@SuppressWarnings("static-access")
-	public Api(Plugin plugin){
+	public Methods(Plugin plugin){
 		this.plugin = plugin;
-	}
-	public static void hasUpdate(){
-		try {
-			HttpURLConnection c = (HttpURLConnection)new URL("http://www.spigotmc.org/api/general.php").openConnection();
-			c.setDoOutput(true);
-			c.setRequestMethod("POST");
-			c.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=17599").getBytes("UTF-8"));
-			String oldVersion = plugin.getDescription().getVersion();
-			String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine().replaceAll("[a-zA-Z ]", "");
-			if(!newVersion.equals(oldVersion)) {
-				Bukkit.getConsoleSender().sendMessage(getPrefix()+color("&cYour server is running &7v"+oldVersion+"&c and the newest is &7v"+newVersion+"&c."));
-			}
-		}
-		catch(Exception e) {
-			return;
-		}
-	}
-	public static void hasUpdate(Player player){
-		try {
-			HttpURLConnection c = (HttpURLConnection)new URL("http://www.spigotmc.org/api/general.php").openConnection();
-			c.setDoOutput(true);
-			c.setRequestMethod("POST");
-			c.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=17599").getBytes("UTF-8"));
-			String oldVersion = plugin.getDescription().getVersion();
-			String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine().replaceAll("[a-zA-Z ]", "");
-			if(!newVersion.equals(oldVersion)) {
-				player.sendMessage(getPrefix()+color("&cYour server is running &7v"+oldVersion+"&c and the newest is &7v"+newVersion+"&c."));
-			}
-		}
-		catch(Exception e) {
-			return;
-		}
 	}
 	public static String color(String msg){
 		msg = ChatColor.translateAlternateColorCodes('&', msg);
@@ -122,7 +91,7 @@ public class Api{
 		}
 		if(file.contains(path.get(player) + ".Messages")){
 			for(String msg : file.getStringList(path + ".Messages")){
-				msg = Api.color(msg);
+				msg = Methods.color(msg);
 				msg = msg.replace("%Player%", player.getName());
 				msg = msg.replace("%player%", player.getName());
 				player.sendMessage(msg);
@@ -242,6 +211,7 @@ public class Api{
 				.build());
 		fm.setPower(0);
 		fw.setFireworkMeta(fm);
+		FireworkDamageAPI.addFirework(fw);
 		detonate(fw);
 	}
 	private static void detonate(final Firework f) {
@@ -764,4 +734,39 @@ public class Api{
 		Random i = new Random();
 		return min+i.nextInt(max-min);
 	}
+	
+	public static void hasUpdate(){
+		try {
+			HttpURLConnection c = (HttpURLConnection)new URL("http://www.spigotmc.org/api/general.php").openConnection();
+			c.setDoOutput(true);
+			c.setRequestMethod("POST");
+			c.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=17599").getBytes("UTF-8"));
+			String oldVersion = plugin.getDescription().getVersion();
+			String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine().replaceAll("[a-zA-Z ]", "");
+			if(!newVersion.equals(oldVersion)) {
+				Bukkit.getConsoleSender().sendMessage(getPrefix()+color("&cYour server is running &7v"+oldVersion+"&c and the newest is &7v"+newVersion+"&c."));
+			}
+		}
+		catch(Exception e) {
+			return;
+		}
+	}
+	
+	public static void hasUpdate(Player player){
+		try {
+			HttpURLConnection c = (HttpURLConnection)new URL("http://www.spigotmc.org/api/general.php").openConnection();
+			c.setDoOutput(true);
+			c.setRequestMethod("POST");
+			c.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=17599").getBytes("UTF-8"));
+			String oldVersion = plugin.getDescription().getVersion();
+			String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine().replaceAll("[a-zA-Z ]", "");
+			if(!newVersion.equals(oldVersion)) {
+				player.sendMessage(getPrefix()+color("&cYour server is running &7v"+oldVersion+"&c and the newest is &7v"+newVersion+"&c."));
+			}
+		}
+		catch(Exception e) {
+			return;
+		}
+	}
+	
 }

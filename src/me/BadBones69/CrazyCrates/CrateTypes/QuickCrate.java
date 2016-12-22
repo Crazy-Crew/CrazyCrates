@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import me.BadBones69.CrazyCrates.Api;
+import me.BadBones69.CrazyCrates.Methods;
 import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
@@ -29,7 +29,7 @@ public class QuickCrate implements Listener{
 	}
 	public static void openCrate(final Player player, final Location loc, boolean remove){
 		if(remove){
-			Api.removeItem(CC.Key.get(player), player);
+			Methods.removeItem(CC.Key.get(player), player);
 		}
 		if(!CC.Rewards.containsKey(player)){
 			CC.getItems(player);
@@ -38,20 +38,20 @@ public class QuickCrate implements Listener{
 		String path = CC.Rewards.get(player).get(item);
 		CC.getReward(player, path);
 		Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.QUICK_CRATE, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
-		String name = Api.color(Main.settings.getFile(GUI.Crate.get(player)).getString(path+".DisplayName"));
+		String name = Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString(path+".DisplayName"));
 		final Entity reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), item);
 		reward.setVelocity(new Vector(0,.2,0));
 		reward.setCustomName(name);
 		reward.setCustomNameVisible(true);
 		Reward.put(player, reward);
-		Api.playChestAction(loc.getBlock(), true);
+		Methods.playChestAction(loc.getBlock(), true);
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
 			@Override
 			public void run() {
 				if(Reward.get(player)!=null){
 					Reward.get(player).remove();
 					Reward.remove(player);
-					Api.playChestAction(loc.getBlock(), false);
+					Methods.playChestAction(loc.getBlock(), false);
 					GUI.Crate.remove(player);
 					CC.InUse.remove(player);
 					CC.Rewards.remove(player);

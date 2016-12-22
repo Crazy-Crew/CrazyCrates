@@ -64,10 +64,10 @@ public class CC implements Listener{ //Crate Control
 		if(e.getAction() == Action.RIGHT_CLICK_BLOCK){
 			Block block = e.getClickedBlock();
 			for(String crate : Main.settings.getAllCratesNames()){
-				String KeyName = Api.color(Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name"));
+				String KeyName = Methods.color(Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name"));
 				if(e.hasItem()){
 					ItemStack item = new ItemStack(Material.AIR);
-					item = Api.getItemInHand(player);
+					item = Methods.getItemInHand(player);
 					if(item.hasItemMeta()){
 						if(item.getItemMeta().hasDisplayName()){
 							if(item.getItemMeta().getDisplayName().equals(KeyName)){
@@ -95,12 +95,12 @@ public class CC implements Listener{ //Crate Control
 							player.performCommand("crazycrates");
 							return;
 						}
-						String KeyName = Api.color(Main.settings.getFile(Crate).getString("Crate.PhysicalKey.Name"));
+						String KeyName = Methods.color(Main.settings.getFile(Crate).getString("Crate.PhysicalKey.Name"));
 						if(e.hasItem()){
 							ItemStack item = new ItemStack(Material.AIR);
 							String ver = Bukkit.getServer().getClass().getPackage().getName();
 							ver = ver.substring(ver.lastIndexOf('.')+1);
-							item = Api.getItemInHand(player);
+							item = Methods.getItemInHand(player);
 							if(item.hasItemMeta()){
 								if(item.getItemMeta().hasDisplayName()){
 									if(item.getItemMeta().getDisplayName().equals(KeyName)){
@@ -108,18 +108,18 @@ public class CC implements Listener{ //Crate Control
 											String msg = Main.settings.getConfig().getString("Settings.AlreadyOpeningCrateMsg");
 											msg = msg.replaceAll("%Key%", KeyName);
 											msg = msg.replaceAll("%key%", KeyName);
-											player.sendMessage(Api.color(Api.getPrefix()+msg));
+											player.sendMessage(Methods.color(Methods.getPrefix()+msg));
 											return;
 										}
 										if(InUse.containsValue(loc)){
 											String msg = Main.settings.getConfig().getString("Settings.QuickCrateInUse");
-											player.sendMessage(Api.color(Api.getPrefix()+msg));
+											player.sendMessage(Methods.color(Methods.getPrefix()+msg));
 											return;
 										}
 										GUI.Crate.put(player, Crate);
 										CC.Crate.put(player, Crate);
 										Key.put(player, item);
-										Api.Key.put(player, "PhysicalKey");
+										Methods.Key.put(player, "PhysicalKey");
 										openCrate(player, Crate, loc);
 										return;
 									}
@@ -132,7 +132,7 @@ public class CC implements Listener{ //Crate Control
 						String msg = Main.settings.getConfig().getString("Settings.NoKeyMsg");
 						msg = msg.replaceAll("%Key%", KeyName);
 						msg = msg.replaceAll("%key%", KeyName);
-						player.sendMessage(Api.color(Api.getPrefix()+msg));
+						player.sendMessage(Methods.color(Methods.getPrefix()+msg));
 						return;
 					}
 				}
@@ -154,8 +154,8 @@ public class CC implements Listener{ //Crate Control
 			CSGO.openCSGO(player);
 		}
 		if(C.equalsIgnoreCase("CrateOnTheGo")){
-			if(Api.Key.get(player).equals("PhysicalKey")){
-				Api.removeItem(Key.get(player), player);
+			if(Methods.Key.get(player).equals("PhysicalKey")){
+				Methods.removeItem(Key.get(player), player);
 			}
 			GUI.Crate.put(player, Crate);
 			if(!CC.Rewards.containsKey(player)){
@@ -165,7 +165,7 @@ public class CC implements Listener{ //Crate Control
 			String path = Rewards.get(player).get(it);
 			getReward(player, path);
 			if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean(path + ".Firework")){
-				Api.fireWork(player.getLocation().add(0, 1, 0));
+				Methods.fireWork(player.getLocation().add(0, 1, 0));
 			}
 			GUI.Crate.remove(player);
 			return;
@@ -180,7 +180,7 @@ public class CC implements Listener{ //Crate Control
 		if(C.equalsIgnoreCase("QuickCrate")){
 			if(InUse.containsValue(loc)){
 				String msg = Main.settings.getConfig().getString("Settings.QuickCrateInUse");
-				player.sendMessage(Api.color(Api.getPrefix()+msg));
+				player.sendMessage(Methods.color(Methods.getPrefix()+msg));
 				return;
 			}else{
 				QuickCrate.openCrate(player, loc, true);
@@ -208,8 +208,8 @@ public class CC implements Listener{ //Crate Control
 			String id = file.getString("Crate.Prizes." + reward + ".DisplayItem");
 			String name = file.getString("Crate.Prizes." + reward + ".DisplayName");
 			try{
-				items.add(Api.makeItem(id, 1, name));
-				path.put(Api.makeItem(id, 1, name), "Crate.Prizes."+reward);
+				items.add(Methods.makeItem(id, 1, name));
+				path.put(Methods.makeItem(id, 1, name), "Crate.Prizes."+reward);
 			}catch(Exception e){
 				continue;
 			}
@@ -230,7 +230,7 @@ public class CC implements Listener{ //Crate Control
 			}
 			for(ItemStack i : items){
 				String path = Rewards.get(player).get(i);
-				ItemStack item = Api.makeItem(file.getString(path+".DisplayItem"), 1, file.getString(path+".DisplayName"));
+				ItemStack item = Methods.makeItem(file.getString(path+".DisplayItem"), 1, file.getString(path+".DisplayName"));
 				int max = file.getInt(path+".MaxRange");
 				int chance = file.getInt(path+".Chance");
 				int num;
@@ -256,7 +256,7 @@ public class CC implements Listener{ //Crate Control
 			}
 			for(ItemStack i : items){
 				String path = Rewards.get(player).get(i);
-				ItemStack item = Api.makeItem(file.getString(path+".DisplayItem"), 1, file.getString(path+".DisplayName"));
+				ItemStack item = Methods.makeItem(file.getString(path+".DisplayItem"), 1, file.getString(path+".DisplayName"));
 				int max = file.getInt(path+".MaxRange");
 				int chance = file.getInt(path+".Chance");
 				int num;
@@ -268,15 +268,15 @@ public class CC implements Listener{ //Crate Control
 		}
 		ItemStack item = Items.get(r.nextInt(Items.size()));
 		if(file.getBoolean("Crate.Prizes."+Rewards.get(player).get(item)+".Firework")){
-			Api.fireWork(loc);
+			Methods.fireWork(loc);
 		}
 		return item;
 	}
 	public static void getReward(Player player, String path){
 		FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
 		if(file.contains(path + ".Items")){
-			for(ItemStack i : Api.getFinalItems(path, player)){
-				if(!Api.isInvFull(player)){
+			for(ItemStack i : Methods.getFinalItems(path, player)){
+				if(!Methods.isInvFull(player)){
 					player.getInventory().addItem(i);
 				}else{
 					player.getWorld().dropItemNaturally(player.getLocation(), i);
@@ -285,7 +285,7 @@ public class CC implements Listener{ //Crate Control
 		}
 		if(file.contains(path + ".Commands")){
 			for(String command : file.getStringList(path + ".Commands")){
-				command = Api.color(command);
+				command = Methods.color(command);
 				command = command.replace("%Player%", player.getName());
 				command = command.replace("%player%", player.getName());
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
@@ -293,7 +293,7 @@ public class CC implements Listener{ //Crate Control
 		}
 		if(file.contains(path + ".Messages")){
 			for(String msg : file.getStringList(path + ".Messages")){
-				msg = Api.color(msg);
+				msg = Methods.color(msg);
 				msg = msg.replace("%Player%", player.getName());
 				msg = msg.replace("%player%", player.getName());
 				player.sendMessage(msg);
