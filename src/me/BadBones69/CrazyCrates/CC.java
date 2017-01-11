@@ -201,7 +201,7 @@ public class CC implements Listener{ //Crate Control
 		player.setVelocity(v);
 	}
 	public static void getItems(Player player){
-		FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
+		FileConfiguration file = Main.settings.getFile(CC.Crate.get(player));
 		ArrayList<ItemStack> items = new ArrayList<ItemStack>();
 		HashMap<ItemStack, String> path = new HashMap<ItemStack, String>();
 		for(String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)){
@@ -217,7 +217,7 @@ public class CC implements Listener{ //Crate Control
 		Rewards.put(player, path);
 	}
 	public static ItemStack pickItem(Player player){
-		FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
+		FileConfiguration file = Main.settings.getFile(CC.Crate.get(player));
 		if(!Rewards.containsKey(player)){
 			getItems(player);
 		}
