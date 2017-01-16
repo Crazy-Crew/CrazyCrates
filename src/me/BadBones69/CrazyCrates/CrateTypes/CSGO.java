@@ -27,10 +27,6 @@ import me.BadBones69.CrazyCrates.MultiSupport.Version;
 public class CSGO implements Listener{
 	public static HashMap<Player, Integer> roll = new HashMap<Player, Integer>();
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
-	@SuppressWarnings("static-access")
-	public CSGO(Plugin plugin){
-		this.plugin = plugin;
-	}
 	private static void setGlass(Inventory inv){
 		Random r = new Random();
 		HashMap<Integer, ItemStack> Glass = new HashMap<Integer, ItemStack>();
@@ -131,6 +127,9 @@ public class CSGO implements Listener{
 						ItemStack item = inv.getItem(13);
 						String path = CC.Rewards.get(player).get(item);
 						CC.getReward(player, path);
+						if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.Prizes."+path.replace("Crate.Prizes.", "")+".Firework")){
+							Methods.fireWork(player.getLocation().add(0, 1, 0));
+						}
 						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.CSGO, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
 						GUI.Crate.remove(player);
 						if(CC.Rewards.containsKey(player)){

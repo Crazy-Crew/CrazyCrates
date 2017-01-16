@@ -42,11 +42,8 @@ import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
 import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
 public class QCC implements Listener{ // Quad Crate Control.
+	
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
-	@SuppressWarnings("static-access")
-	public QCC(Plugin plugin){
-		this.plugin = plugin;
-	}
 	public static HashMap<Player, HashMap<Location, BlockState>> crates = new HashMap<Player, HashMap<Location, BlockState>>();
 	public static HashMap<Player, HashMap<Location, BlockState>> All = new HashMap<Player, HashMap<Location, BlockState>>();
 	public static HashMap<Player, HashMap<Location, Boolean>> opened = new HashMap<Player, HashMap<Location, Boolean>>();
@@ -55,6 +52,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 	public static HashMap<Player, ArrayList<Entity>> Rewards = new HashMap<Player, ArrayList<Entity>>();
 	public static HashMap<Player, Integer> P = new HashMap<Player, Integer>();
 	public static HashMap<Player, Integer> timer = new HashMap<Player, Integer>();
+	
 	/**
 	 * Starts building the Crate Setup.
 	 * @param player Player that is opening the chest.
@@ -168,6 +166,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 		player.teleport(L.add(.5, 0, .5));
 		spawnChest(Ch, player, Chest);
 	}
+	
 	private static void spawnChest(final ArrayList<Location> locs, final Player player, final Material Chest){
 		ArrayList<ParticleEffect> particles = new ArrayList<ParticleEffect>();
 		particles.add(ParticleEffect.FLAME);
@@ -344,6 +343,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 			}
 		}, 241);
 	}
+	
 	/**
 	 * Undoes the Crate Build.
 	 * @param player The player that opened the Crate.
@@ -377,6 +377,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 			Rewards.remove(player);
 		}
 	}
+	
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent e){
 		Location loc = e.getBlock().getLocation();
@@ -392,6 +393,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 			e.setCancelled(true);
 		}
 	}
+	
 	@EventHandler
 	public void onChestClick(PlayerInteractEvent e){
 		if(e.getAction()==Action.RIGHT_CLICK_BLOCK||e.getAction()==Action.LEFT_CLICK_BLOCK){
@@ -411,7 +413,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 									CC.getReward(player, path);
 									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.QUAD_CRATE, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
 									String name = Methods.color(file.getString(CC.Rewards.get(player).get(it)+".DisplayName"));
-									final Entity reward = player.getWorld().dropItem(B.clone().add(.5, 1, .5), it);
+									final Entity reward = player.getWorld().dropItem(B.clone().add(.5, 1, .5), Methods.addLore(it.clone(), new Random().nextInt(Integer.MAX_VALUE) + ""));
 									reward.setVelocity(new Vector(0,.2,0));
 									reward.setCustomName(name);
 									reward.setCustomNameVisible(true);
@@ -422,6 +424,9 @@ public class QCC implements Listener{ // Quad Crate Control.
 									}
 									rewards.add(reward);
 									Rewards.put(player, rewards);
+									if(file.getBoolean("Crate.Prizes."+path.replace("Crate.Prizes.", "")+".Firework")){
+										Methods.fireWork(B.clone().add(.5, 1, .5));
+									}
 								}
 								boolean trigger = true;
 								for(Location loc : opened.get(player).keySet()){
@@ -510,7 +515,8 @@ public class QCC implements Listener{ // Quad Crate Control.
 			}
 		}
 	}
-	@EventHandler
+	
+	@EventHandler	
 	public void onItemPickup(PlayerPickupItemEvent e){
 		Entity item = e.getItem();
 		for(Player p : Rewards.keySet()){

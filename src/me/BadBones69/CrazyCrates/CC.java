@@ -98,8 +98,6 @@ public class CC implements Listener{ //Crate Control
 						String KeyName = Methods.color(Main.settings.getFile(Crate).getString("Crate.PhysicalKey.Name"));
 						if(e.hasItem()){
 							ItemStack item = new ItemStack(Material.AIR);
-							String ver = Bukkit.getServer().getClass().getPackage().getName();
-							ver = ver.substring(ver.lastIndexOf('.')+1);
 							item = Methods.getItemInHand(player);
 							if(item.hasItemMeta()){
 								if(item.getItemMeta().hasDisplayName()){
@@ -126,7 +124,7 @@ public class CC implements Listener{ //Crate Control
 								}
 							}
 						}
-						if(!Main.settings.getConfig().contains("Settings.KnockBack")||Main.settings.getConfig().getBoolean("Settings.KnockBack")){
+						if(!Main.settings.getConfig().contains("Settings.KnockBack") || Main.settings.getConfig().getBoolean("Settings.KnockBack")){
 							knockBack(player, block.getLocation());
 						}
 						String msg = Main.settings.getConfig().getString("Settings.NoKeyMsg");
@@ -189,7 +187,15 @@ public class CC implements Listener{ //Crate Control
 			}
 		}
 		if(C.equalsIgnoreCase("FireCracker")){
-			FireCracker.startFireCracker(player, Crate, loc);
+			if(InUse.containsValue(loc)){
+				String msg = Main.settings.getConfig().getString("Settings.QuickCrateInUse");
+				player.sendMessage(Methods.color(Methods.getPrefix()+msg));
+				return;
+			}else{
+				FireCracker.startFireCracker(player, Crate, loc);
+				InUse.put(player, loc);
+				return;
+			}
 		}
 	}
 	void knockBack(Player player, Location loc){

@@ -63,14 +63,14 @@ public class Main extends JavaPlugin implements Listener{
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		Bukkit.getServer().getPluginManager().registerEvents(new CC(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new GUI(), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new QCC(this), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new CSGO(this), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new Wheel(this), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new Wonder(this), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new Cosmic(this), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new Roulette(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new QCC(), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new CSGO(), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new Wheel(), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new Wonder(), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new Cosmic(), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new Roulette(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new CrateOnTheGo(), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new QuickCrate(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new QuickCrate(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new FireworkDamageAPI(this), this);
 		if(Bukkit.getServer().getOnlinePlayers()!=null){
 			for(Player player : Bukkit.getServer().getOnlinePlayers()){

@@ -25,10 +25,6 @@ public class Wonder implements Listener{
 	private static HashMap<Player, HashMap<ItemStack, String>> Items = new HashMap<Player, HashMap<ItemStack, String>>();
 	private static HashMap<Player, Integer> crate = new HashMap<Player, Integer>();
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
-	@SuppressWarnings("static-access")
-	public Wonder(Plugin plugin){
-		this.plugin = plugin;
-	}
 	public static void startWonder(final Player player){
 		final Inventory inv = Bukkit.createInventory(null, 45, Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")));
 		final HashMap<ItemStack, String> items = new HashMap<ItemStack, String>();
@@ -82,6 +78,9 @@ public class Wonder implements Listener{
 					player.closeInventory();
 					String path = CC.Rewards.get(player).get(It);
 					CC.getReward(player, path);
+					if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.Prizes."+path.replace("Crate.Prizes.", "")+".Firework")){
+						Methods.fireWork(player.getLocation().add(0, 1, 0));
+					}
 					Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WONDER, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
 					GUI.Crate.remove(player);
 					CC.Rewards.remove(player);

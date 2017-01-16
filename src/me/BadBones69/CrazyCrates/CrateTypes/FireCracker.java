@@ -19,12 +19,10 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.plugin.Plugin;
 
 public class FireCracker {
-	static HashMap<Player, Integer> F = new HashMap<Player, Integer>();
+	
+	private static HashMap<Player, Integer> F = new HashMap<Player, Integer>();
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
-	@SuppressWarnings("static-access")
-	public FireCracker(Plugin plugin){
-		this.plugin = plugin;
-	}
+	
 	public static void startFireCracker(final Player player, final String crate, final Location C){
 		Methods.removeItem(CC.Key.get(player), player);
 		final ArrayList<Color> colors = new ArrayList<Color>();
@@ -54,8 +52,9 @@ public class FireCracker {
 			}
 		}, 0, 2));
 	}
+	
 	private static void fireWork(Location loc, Color color) {
-		Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
+		final Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
 		FireworkMeta fm = fw.getFireworkMeta();
 		fm.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL)
 				.withColor(color)
@@ -66,13 +65,11 @@ public class FireCracker {
 		fm.setPower(0);
 		fw.setFireworkMeta(fm);
 		FireworkDamageAPI.addFirework(fw);
-		detonate(fw);
-	}
-	private static void detonate(final Firework f) {
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
-				f.detonate();
+				fw.detonate();
 			}
 		}, 1);
 	}
+	
 }

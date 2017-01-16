@@ -21,12 +21,10 @@ import me.BadBones69.CrazyCrates.API.CrateType;
 import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
 
 public class QuickCrate implements Listener{
+	
 	public static HashMap<Player, Entity> Reward = new HashMap<Player, Entity>();
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
-	@SuppressWarnings("static-access")
-	public QuickCrate(Plugin plugin){
-		this.plugin = plugin;
-	}
+	
 	public static void openCrate(final Player player, final Location loc, boolean remove){
 		if(remove){
 			Methods.removeItem(CC.Key.get(player), player);
@@ -45,6 +43,9 @@ public class QuickCrate implements Listener{
 		reward.setCustomNameVisible(true);
 		Reward.put(player, reward);
 		Methods.playChestAction(loc.getBlock(), true);
+		if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.Prizes."+path.replace("Crate.Prizes.", "")+".Firework")){
+			Methods.fireWork(loc.clone().add(.5, 1, .5));
+		}
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
 			@Override
 			public void run() {
@@ -59,6 +60,7 @@ public class QuickCrate implements Listener{
 			}
 		}, 5*20);
 	}
+	
 	@EventHandler
 	public void onItemPickup(PlayerPickupItemEvent e){
 		Entity item = e.getItem();

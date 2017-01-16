@@ -199,7 +199,7 @@ public class Methods{
 		return en;
 	}
 	public static void fireWork(Location loc) {
-		Firework fw = loc.getWorld().spawn(loc, Firework.class);
+		final Firework fw = loc.getWorld().spawn(loc, Firework.class);
 		FireworkMeta fm = fw.getFireworkMeta();
 		fm.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE)
 				.withColor(Color.RED)
@@ -212,12 +212,9 @@ public class Methods{
 		fm.setPower(0);
 		fw.setFireworkMeta(fm);
 		FireworkDamageAPI.addFirework(fw);
-		detonate(fw);
-	}
-	private static void detonate(final Firework f) {
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
-				f.detonate();
+				fw.detonate();
 			}
 		}, 2);
 	}

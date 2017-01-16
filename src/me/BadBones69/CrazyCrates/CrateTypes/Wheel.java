@@ -27,10 +27,6 @@ public class Wheel implements Listener{
 	public static HashMap<Player, Integer> crate = new HashMap<Player, Integer>();
 	public static HashMap<Player, HashMap<Integer, ItemStack>> Rewards = new HashMap<Player, HashMap<Integer, ItemStack>>();
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
-	@SuppressWarnings("static-access")
-	public Wheel(Plugin plugin){
-		this.plugin = plugin;
-	}
 	public static void startWheel(final Player player){
 		final Inventory inv = Bukkit.createInventory(null, 54, Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")));
 		for(int i=0;i<54;i++){
@@ -114,6 +110,9 @@ public class Wheel implements Listener{
 					if(full>=(timer+55+47)){
 						String path = CC.Rewards.get(player).get(Rewards.get(player).get(slots.get(f)));
 						CC.getReward(player, path);
+						if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.Prizes."+path.replace("Crate.Prizes.", "")+".Firework")){
+							Methods.fireWork(player.getLocation().add(0, 1, 0));
+						}
 						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WHEEL, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
 						player.closeInventory();
 						GUI.Crate.remove(player);
