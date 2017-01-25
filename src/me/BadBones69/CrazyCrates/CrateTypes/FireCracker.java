@@ -6,7 +6,9 @@ import java.util.Random;
 
 import me.BadBones69.CrazyCrates.Methods;
 import me.BadBones69.CrazyCrates.API.FireworkDamageAPI;
+import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.CC;
+import me.BadBones69.CrazyCrates.GUI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -24,7 +26,12 @@ public class FireCracker {
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
 	
 	public static void startFireCracker(final Player player, final String crate, final Location C){
-		Methods.removeItem(CC.Key.get(player), player);
+		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
+			Methods.removeItem(CC.Key.get(player), player);
+		}
+		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
+			Methods.takeKeys(1, player, GUI.Crate.get(player));
+		}
 		final ArrayList<Color> colors = new ArrayList<Color>();
 		colors.add(Color.RED);
 		colors.add(Color.YELLOW);

@@ -18,6 +18,7 @@ import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
 import me.BadBones69.CrazyCrates.API.CrateType;
+import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
 
 public class QuickCrate implements Listener{
@@ -27,7 +28,12 @@ public class QuickCrate implements Listener{
 	
 	public static void openCrate(final Player player, final Location loc, boolean remove){
 		if(remove){
-			Methods.removeItem(CC.Key.get(player), player);
+			if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
+				Methods.removeItem(CC.Key.get(player), player);
+			}
+			if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
+				Methods.takeKeys(1, player, GUI.Crate.get(player));
+			}
 		}
 		if(!CC.Rewards.containsKey(player)){
 			CC.getItems(player);

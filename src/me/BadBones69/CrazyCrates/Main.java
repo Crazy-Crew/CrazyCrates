@@ -110,7 +110,14 @@ public class Main extends JavaPlugin implements Listener{
 		if(commandLable.equalsIgnoreCase("CrazyCrates")||commandLable.equalsIgnoreCase("CC")||commandLable.equalsIgnoreCase("Crate")
 				||commandLable.equalsIgnoreCase("CCrate")||commandLable.equalsIgnoreCase("CrazyCrate")){
 			if(args.length == 0){
-				if(sender instanceof Player)if(!Methods.permCheck((Player)sender, "Access"))return true;
+				if(sender instanceof Player){
+					if(!Methods.permCheck((Player)sender, "Access")){
+						return true;
+					}
+				}else{
+					sender.sendMessage(Methods.getPrefix() + Methods.color("&cYou must be a player to use this command."));
+					return true;
+				}
 				GUI.openGUI((Player)sender);
 				return true;
 			}
