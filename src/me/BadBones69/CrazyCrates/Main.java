@@ -23,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.BadBones69.CrazyCrates.API.FireworkDamageAPI;
+import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
 import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
 import me.BadBones69.CrazyCrates.CrateTypes.CrateOnTheGo;
@@ -31,10 +32,14 @@ import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
 import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
 import me.BadBones69.CrazyCrates.CrateTypes.Wheel;
 import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
+import me.BadBones69.CrazyCrates.MultiSupport.PlaceholderAPISupport;
+import me.BadBones69.CrazyCrates.MultiSupport.Support;
 
 public class Main extends JavaPlugin implements Listener{
+	
 	public static SettingsManager settings = SettingsManager.getInstance();
 	private static HashMap<Player, HashMap<ItemStack, ItemStack>> Keys = new HashMap<Player, HashMap<ItemStack, ItemStack>>();
+	
 	@Override
 	public void onDisable(){
 		if(!QCC.crates.isEmpty()){
@@ -48,6 +53,7 @@ public class Main extends JavaPlugin implements Listener{
 			}
 		}
 	}
+	
 	@Override
 	public void onEnable(){
 		settings.setup(this);
@@ -72,7 +78,10 @@ public class Main extends JavaPlugin implements Listener{
 		Bukkit.getServer().getPluginManager().registerEvents(new CrateOnTheGo(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new QuickCrate(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new FireworkDamageAPI(this), this);
-		if(Bukkit.getServer().getOnlinePlayers()!=null){
+		if(Support.hasPlaceholderAPI()){
+			new PlaceholderAPISupport(this).hook();
+		}
+		if(Bukkit.getServer().getOnlinePlayers() != null){
 			for(Player player : Bukkit.getServer().getOnlinePlayers()){
 				String uuid = player.getUniqueId().toString();
 				if(!Main.settings.getData().contains("Players."+uuid)){
@@ -91,6 +100,7 @@ public class Main extends JavaPlugin implements Listener{
 			System.out.println("Error Submitting stats!");
 		}
 	}
+	
 	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args){
 		if(commandLable.equalsIgnoreCase("CrazyCrates")||commandLable.equalsIgnoreCase("CC")||commandLable.equalsIgnoreCase("Crate")
@@ -390,37 +400,37 @@ public class Main extends JavaPlugin implements Listener{
 							if(type.equalsIgnoreCase("Wheel")){
 								GUI.Crate.put(player, crate);
 								CC.Crate.put(player, crate);
-								Methods.Key.put(player, "Free");
+								Methods.Key.put(player, KeyType.FREE);
 								Wheel.startWheel(player);
 							}
 							if(type.equalsIgnoreCase("Wonder")){
 								GUI.Crate.put(player, crate);
 								CC.Crate.put(player, crate);
-								Methods.Key.put(player, "Free");
+								Methods.Key.put(player, KeyType.FREE);
 								Wonder.startWonder(player);
 							}
 							if(type.equalsIgnoreCase("Cosmic")){
 								GUI.Crate.put(player, crate);
 								CC.Crate.put(player, crate);
-								Methods.Key.put(player, "Free");
+								Methods.Key.put(player, KeyType.FREE);
 								Cosmic.openCosmic(player);
 							}
 							if(type.equalsIgnoreCase("QuadCrate")){
 								GUI.Crate.put(player, crate);
 								CC.Crate.put(player, crate);
-								Methods.Key.put(player, "Free");
+								Methods.Key.put(player, KeyType.FREE);
 								QCC.startBuild(player, player.getLocation(), Material.CHEST);
 							}
 							if(type.equalsIgnoreCase("CSGO")){
 								GUI.Crate.put(player, crate);
 								CC.Crate.put(player, crate);
-								Methods.Key.put(player, "Free");
+								Methods.Key.put(player, KeyType.FREE);
 								CSGO.openCSGO(player);
 							}
 							if(type.equalsIgnoreCase("Roulette")){
 								GUI.Crate.put(player, crate);
 								CC.Crate.put(player, crate);
-								Methods.Key.put(player, "Free");
+								Methods.Key.put(player, KeyType.FREE);
 								Roulette.openRoulette(player);
 							}
 							if(type.equalsIgnoreCase("QuickCrate")){

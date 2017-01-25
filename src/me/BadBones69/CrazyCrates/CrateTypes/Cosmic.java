@@ -11,6 +11,7 @@ import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
 import me.BadBones69.CrazyCrates.API.CrateType;
+import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
 import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
@@ -150,7 +151,7 @@ public class Cosmic implements Listener{
 							}
 						}
 						if(glass.get(player).size()>=4){
-							if(Methods.Key.get(player).equals("PhysicalKey")){
+							if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
 								ItemStack it = new ItemStack(Material.AIR);
 								for(ItemStack i : player.getOpenInventory().getBottomInventory().getContents()){
 									if(i!=null){
@@ -177,7 +178,7 @@ public class Cosmic implements Listener{
 								}
 								Methods.removeItem(it, player);
 							}
-							if(Methods.Key.get(player).equals("VirtualKey")){
+							if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
 								Methods.takeKeys(1, player, GUI.Crate.get(player));
 							}
 							roll.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){

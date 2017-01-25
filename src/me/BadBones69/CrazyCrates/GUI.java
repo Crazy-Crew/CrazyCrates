@@ -1,5 +1,6 @@
 package me.BadBones69.CrazyCrates;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
 import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
@@ -38,9 +40,10 @@ public class GUI implements Listener{
 				String ma = Main.settings.getFile(crate).getString(path+"Item");
 				String name = Main.settings.getFile(crate).getString(path+"Name");
 				ArrayList<String> lore = new ArrayList<String>();
+				String keys = NumberFormat.getNumberInstance().format(Methods.getKeys(player, crate));
 				for(String i : Main.settings.getFile(crate).getStringList(path+"Lore")){
-					i=i.replaceAll("%Keys%", Methods.getKeys(player, crate)+"");
-					i=i.replaceAll("%keys%", Methods.getKeys(player, crate)+"");
+					i=i.replaceAll("%Keys%", keys);
+					i=i.replaceAll("%keys%", keys);
 					i=i.replaceAll("%Player%", player.getName());
 					i=i.replaceAll("%player%", player.getName());
 					lore.add(i);
@@ -50,6 +53,7 @@ public class GUI implements Listener{
 		}
 		player.openInventory(inv);
 	}
+	
 	public static void openGUI(Player player, String crate){
 		int am = Main.settings.getFile(crate).getConfigurationSection("Crate.Prizes").getKeys(false).size();
 		int size = 9;
@@ -91,6 +95,7 @@ public class GUI implements Listener{
 		}
 		player.openInventory(inv);
 	}
+	
 	@EventHandler
 	public void onInvClick(InventoryClickEvent e){
 		Player player = (Player) e.getWhoClicked();
@@ -111,9 +116,11 @@ public class GUI implements Listener{
 							for(String crate : Main.settings.getAllCratesNames()){
 								String path = "Crate.";
 								if(item.getItemMeta().getDisplayName().equals(Methods.color(Main.settings.getFile(crate).getString(path+"Name")))){
-									player.closeInventory();
 									if(e.getAction()==InventoryAction.PICKUP_HALF){
-										openGUI(player, crate);
+										if(Main.settings.getConfig().getBoolean("Settings.Show-Preview")){
+											player.closeInventory();
+											openGUI(player, crate);
+										}
 										return;
 									}
 									if(Crate.containsKey(player)){
@@ -137,31 +144,31 @@ public class GUI implements Listener{
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Wheel")){
 										Crate.put(player, crate);
 										CC.Crate.put(player, crate);
-										Methods.Key.put(player, "VirtualKey");
+										Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 										Wheel.startWheel(player);
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Wonder")){
 										Crate.put(player, crate);
 										CC.Crate.put(player, crate);
-										Methods.Key.put(player, "VirtualKey");
+										Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 										Wonder.startWonder(player);
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Cosmic")){
 										Crate.put(player, crate);
 										CC.Crate.put(player, crate);
-										Methods.Key.put(player, "VirtualKey");
+										Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 										Cosmic.openCosmic(player);
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("QuadCrate")){
 										Crate.put(player, crate);
 										CC.Crate.put(player, crate);
-										Methods.Key.put(player, "VirtualKey");
+										Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 										QCC.startBuild(player, player.getLocation(), Material.CHEST);
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CSGO")){
 										Crate.put(player, crate);
 										CC.Crate.put(player, crate);
-										Methods.Key.put(player, "VirtualKey");
+										Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 										CSGO.openCSGO(player);
 										if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){
 											String msg = Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.BroadCast"));
@@ -178,7 +185,7 @@ public class GUI implements Listener{
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Roulette")){
 										Crate.put(player, crate);
 										CC.Crate.put(player, crate);
-										Methods.Key.put(player, "VirtualKey");
+										Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 										Roulette.openRoulette(player);
 										if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){
 											String msg = Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.BroadCast"));
@@ -204,6 +211,7 @@ public class GUI implements Listener{
 			}
 		}
 	}
+	
 	ArrayList<String> getDisabledWorlds(){
 		ArrayList<String> worlds = new ArrayList<String>();
 		for(String world : Main.settings.getConfig().getStringList("Settings.DisabledWorlds")){

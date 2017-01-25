@@ -19,6 +19,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
 import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
 import me.BadBones69.CrazyCrates.CrateTypes.FireCracker;
@@ -29,17 +30,20 @@ import me.BadBones69.CrazyCrates.CrateTypes.Wheel;
 import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
 
 public class CC implements Listener{ //Crate Control
+	
 	public static HashMap<Player, HashMap<ItemStack, String>> Rewards = new HashMap<Player, HashMap<ItemStack, String>>();
 	public static HashMap<Player, String> Crate = new HashMap<Player, String>();
 	public static HashMap<Player, ItemStack> Key = new HashMap<Player, ItemStack>();
 	public static HashMap<Player, Location> LastLoc = new HashMap<Player, Location>();
 	public static HashMap<Player, Location> InUse = new HashMap<Player, Location>();
+	
 	@EventHandler
 	public void onCrateOpen(PlayerInteractEvent e){
 		Player player = e.getPlayer();
+		FileConfiguration config = Main.settings.getConfig();
 		if(e.getAction() == Action.LEFT_CLICK_BLOCK){
 			Block block = e.getClickedBlock();
-			if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
+			if(Main.settings.getLocations().getConfigurationSection("Locations") == null){
 				Main.settings.getLocations().set("Locations.Clear", null);
 				Main.settings.saveLocations();
 			}
@@ -55,7 +59,9 @@ public class CC implements Listener{ //Crate Control
 					if(Crate.equalsIgnoreCase("Menu")){
 						return;
 					}else{
-						GUI.openGUI(player, Crate);
+						if(config.getBoolean("Settings.Show-Preview")){
+							GUI.openGUI(player, Crate);
+						}
 					}
 					return;
 				}
@@ -63,20 +69,6 @@ public class CC implements Listener{ //Crate Control
 		}
 		if(e.getAction() == Action.RIGHT_CLICK_BLOCK){
 			Block block = e.getClickedBlock();
-			for(String crate : Main.settings.getAllCratesNames()){
-				String KeyName = Methods.color(Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name"));
-				if(e.hasItem()){
-					ItemStack item = new ItemStack(Material.AIR);
-					item = Methods.getItemInHand(player);
-					if(item.hasItemMeta()){
-						if(item.getItemMeta().hasDisplayName()){
-							if(item.getItemMeta().getDisplayName().equals(KeyName)){
-								e.setCancelled(true);
-							}
-						}
-					}
-				}
-			}
 			if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
 				Main.settings.getLocations().set("Locations.Clear", null);
 				Main.settings.saveLocations();
@@ -96,47 +88,65 @@ public class CC implements Listener{ //Crate Control
 							return;
 						}
 						String KeyName = Methods.color(Main.settings.getFile(Crate).getString("Crate.PhysicalKey.Name"));
+						ItemStack key = null;
+						Boolean hasKey = false;
+						Boolean isPhysical = false;
 						if(e.hasItem()){
-							ItemStack item = new ItemStack(Material.AIR);
-							item = Methods.getItemInHand(player);
-							if(item.hasItemMeta()){
-								if(item.getItemMeta().hasDisplayName()){
-									if(item.getItemMeta().getDisplayName().equals(KeyName)){
-										if(GUI.Crate.containsKey(player)){
-											String msg = Main.settings.getConfig().getString("Settings.AlreadyOpeningCrateMsg");
-											msg = msg.replaceAll("%Key%", KeyName);
-											msg = msg.replaceAll("%key%", KeyName);
-											player.sendMessage(Methods.color(Methods.getPrefix()+msg));
-											return;
-										}
-										if(InUse.containsValue(loc)){
-											String msg = Main.settings.getConfig().getString("Settings.QuickCrateInUse");
-											player.sendMessage(Methods.color(Methods.getPrefix()+msg));
-											return;
-										}
-										GUI.Crate.put(player, Crate);
-										CC.Crate.put(player, Crate);
-										Key.put(player, item);
-										Methods.Key.put(player, "PhysicalKey");
-										openCrate(player, Crate, loc);
-										return;
+							key = Methods.getItemInHand(player);
+							if(key.hasItemMeta()){
+								if(key.getItemMeta().hasDisplayName()){
+									if(key.getItemMeta().getDisplayName().equals(KeyName)){
+										hasKey = true;
+										isPhysical = true;
 									}
 								}
 							}
 						}
-						if(!Main.settings.getConfig().contains("Settings.KnockBack") || Main.settings.getConfig().getBoolean("Settings.KnockBack")){
-							knockBack(player, block.getLocation());
+						if(config.getBoolean("Settings.Physical-Accepts-Virtual-Keys")){
+							if(Methods.getKeys(player, Crate) >= 1){
+								hasKey = true;
+							}
 						}
-						String msg = Main.settings.getConfig().getString("Settings.NoKeyMsg");
-						msg = msg.replaceAll("%Key%", KeyName);
-						msg = msg.replaceAll("%key%", KeyName);
-						player.sendMessage(Methods.color(Methods.getPrefix()+msg));
-						return;
+						if(hasKey){
+							if(GUI.Crate.containsKey(player)){
+								String msg = config.getString("Settings.AlreadyOpeningCrateMsg");
+								msg = msg.replaceAll("%Key%", KeyName);
+								msg = msg.replaceAll("%key%", KeyName);
+								player.sendMessage(Methods.color(Methods.getPrefix()+msg));
+								return;
+							}
+							if(InUse.containsValue(loc)){
+								String msg = config.getString("Settings.QuickCrateInUse");
+								player.sendMessage(Methods.color(Methods.getPrefix()+msg));
+								return;
+							}
+							GUI.Crate.put(player, Crate);
+							CC.Crate.put(player, Crate);
+							if(isPhysical){
+								Key.put(player, key);
+								Methods.Key.put(player, KeyType.PHYSICAL_KEY);
+							}else{
+								Methods.Key.put(player, KeyType.VIRTUAL_KEY);
+								LastLoc.put(player, player.getLocation());
+							}
+							openCrate(player, Crate, loc);
+							return;
+						}else{
+							if(config.getBoolean("Settings.KnockBack")){
+								knockBack(player, block.getLocation());
+							}
+							String msg = config.getString("Settings.NoKeyMsg");
+							msg = msg.replaceAll("%Key%", KeyName);
+							msg = msg.replaceAll("%key%", KeyName);
+							player.sendMessage(Methods.color(Methods.getPrefix()+msg));
+							return;
+						}
 					}
 				}
 			}
 		}
 	}
+	
 	void openCrate(Player player, String Crate, Location loc){
 		String C = Main.settings.getFile(Crate).getString("Crate.CrateType");
 		if(C.equalsIgnoreCase("Wheel")){
@@ -152,7 +162,7 @@ public class CC implements Listener{ //Crate Control
 			CSGO.openCSGO(player);
 		}
 		if(C.equalsIgnoreCase("CrateOnTheGo")){
-			if(Methods.Key.get(player).equals("PhysicalKey")){
+			if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
 				Methods.removeItem(Key.get(player), player);
 			}
 			GUI.Crate.put(player, Crate);
@@ -198,6 +208,7 @@ public class CC implements Listener{ //Crate Control
 			}
 		}
 	}
+	
 	void knockBack(Player player, Location loc){
 		Vector v = player.getLocation().toVector().subtract(loc.toVector()).normalize().multiply(1).setY(.1);
 		if(player.isInsideVehicle()){
@@ -206,6 +217,7 @@ public class CC implements Listener{ //Crate Control
 		}
 		player.setVelocity(v);
 	}
+	
 	public static void getItems(Player player){
 		FileConfiguration file = Main.settings.getFile(CC.Crate.get(player));
 		ArrayList<ItemStack> items = new ArrayList<ItemStack>();
@@ -222,6 +234,7 @@ public class CC implements Listener{ //Crate Control
 		}
 		Rewards.put(player, path);
 	}
+	
 	public static ItemStack pickItem(Player player){
 		FileConfiguration file = Main.settings.getFile(CC.Crate.get(player));
 		if(!Rewards.containsKey(player)){
@@ -248,6 +261,7 @@ public class CC implements Listener{ //Crate Control
 		}
 		return Items.get(r.nextInt(Items.size()));
 	}
+	
 	public static ItemStack pickItem(Player player, Location loc){
 		FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
 		if(!Rewards.containsKey(player)){
@@ -278,6 +292,7 @@ public class CC implements Listener{ //Crate Control
 		}
 		return item;
 	}
+	
 	public static void getReward(Player player, String path){
 		FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
 		if(file.contains(path + ".Items")){
@@ -306,4 +321,5 @@ public class CC implements Listener{ //Crate Control
 			}
 		}
 	}
+	
 }

@@ -31,6 +31,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import me.BadBones69.CrazyCrates.API.FireworkDamageAPI;
+import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_10_R1;
 import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_11_R1;
 import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R1;
@@ -41,13 +42,11 @@ import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R2;
 import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
 public class Methods{
+	
 	public static HashMap<Player, String> path = new HashMap<Player, String>();
-	public static HashMap<Player, String> Key = new HashMap<Player, String>();
+	public static HashMap<Player, KeyType> Key = new HashMap<Player, KeyType>();
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
-	@SuppressWarnings("static-access")
-	public Methods(Plugin plugin){
-		this.plugin = plugin;
-	}
+	
 	public static String color(String msg){
 		msg = ChatColor.translateAlternateColorCodes('&', msg);
 		return msg;

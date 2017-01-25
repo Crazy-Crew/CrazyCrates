@@ -1,35 +1,11 @@
-#=========Enchantments=========#
-#PROTECTION_ENVIRONMENTAL
-#PROTECTION_FIRE
-#PROTECTION_FALL
-#PROTECTION_EXPLOSIONS
-#PROTECTION_PROJECTILE
-#OXYGEN
-#WATER_WORKER
-#DAMAGE_ALL
-#DAMAGE_UNDEAD
-#DAMAGE_ARTHROPODS
-#KNOCKBACK
-#FIRE_ASPECT
-#LOOT_BONUS_MOBS
-#DIG_SPEED
-#SILK_TOUCH
-#DURABILITY
-#LOOT_BONUS_BLOCKS
-#ARROW_DAMAGE
-#ARROW_KNOCKBACK
-#ARROW_FIRE
-#ARROW_INFINITE
-#THORNS
-#MENDING
-#LUCK
-#LURE
-#FROST_WALKER
+#List of all the enchantments: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html
 Settings:
   Prefix: '&8[&bCrazyCrates&8]: '
   InventoryName: '&b&lCrazy &4&lCrates'
   InventorySize: 27
   KnockBack: True
+  Show-Preview: true #Toggle this on and off if you want to show the preview for the crates when left clicked.
+  Physical-Accepts-Virtual-Keys: true #If physical crates can accept virtual keys.
   No-Teleporting-Msg: '&cYou may not teleport away while opening a crate.'
   NoCMDsWhileCrateOpened: '&cYou are not allowed to use commands while opening Crates.'
   NoKeyMsg: '&cYou must have a %Key% &cin your hand to use that Crate.'

@@ -38,6 +38,7 @@ import me.BadBones69.CrazyCrates.Main;
 import me.BadBones69.CrazyCrates.ParticleEffect;
 import me.BadBones69.CrazyCrates.ParticleEffect.BlockData;
 import me.BadBones69.CrazyCrates.API.CrateType;
+import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
 import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
@@ -135,10 +136,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 			Bukkit.broadcastMessage(msg);
 		}
 		chests.put(player, Ch);
-		if(Methods.Key.get(player).equals("PhysicalKey")){
+		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
 			Methods.removeItem(CC.Key.get(player), player);
 		}
-		if(Methods.Key.get(player).equals("VirtualKey")){
+		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
 			Methods.takeKeys(1, player, GUI.Crate.get(player));
 		}
 		rest.clear();
@@ -501,8 +502,9 @@ public class QCC implements Listener{ // Quad Crate Control.
 												Bukkit.getScheduler().cancelTask(timer.get(player));
 												timer.remove(player);
 											}
-											if(Methods.Key.get(player).equals("PhysicalKey")){
+											if(CC.LastLoc.containsKey(player)){
 												player.teleport(CC.LastLoc.get(player));
+												CC.LastLoc.remove(player);
 											}
 										}
 									}, 6*20);

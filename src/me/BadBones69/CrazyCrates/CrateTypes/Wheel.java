@@ -20,6 +20,7 @@ import me.BadBones69.CrazyCrates.CC;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
 import me.BadBones69.CrazyCrates.API.CrateType;
+import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
 import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
@@ -39,10 +40,10 @@ public class Wheel implements Listener{
 			items.put(i, item);
 		}
 		Rewards.put(player, items);
-		if(Methods.Key.get(player).equals("PhysicalKey")){
+		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
 			Methods.removeItem(CC.Key.get(player), player);
 		}
-		if(Methods.Key.get(player).equals("VirtualKey")){
+		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
 			Methods.takeKeys(1, player, GUI.Crate.get(player));
 		}
 		player.openInventory(inv);

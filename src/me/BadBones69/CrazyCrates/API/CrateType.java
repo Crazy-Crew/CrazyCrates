@@ -2,8 +2,16 @@ package me.BadBones69.CrazyCrates.API;
 
 public enum CrateType {
 	
-	COSMIC("Cosmic"), CRATE_ON_THE_GO("Crate_On_The_Go"), CSGO("CSGO"), FIRE_CRACKER("Fire_Cracker"),
-	QUAD_CRATE("Quad_Crate"),QUICK_CRATE("Quick_Crate"), ROULETTE("Roulette"), WHEEL("Wheel"), WONDER("Wonder");
+	MENU("Menu"),
+	COSMIC("Cosmic"), 
+	CRATE_ON_THE_GO("Crate_On_The_Go"), 
+	CSGO("CSGO"), 
+	FIRE_CRACKER("Fire_Cracker"),
+	QUAD_CRATE("Quad_Crate"),
+	QUICK_CRATE("Quick_Crate"), 
+	ROULETTE("Roulette"), 
+	WHEEL("Wheel"), 
+	WONDER("Wonder");
 	
 	String Name;
 	
