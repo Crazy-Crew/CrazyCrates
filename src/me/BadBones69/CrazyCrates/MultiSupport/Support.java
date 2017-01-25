@@ -11,4 +11,11 @@ public class Support {
 		return false;
 	}
 	
+	public static boolean hasMVdWPlaceholderAPI(){
+		if(Bukkit.getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI") != null){
+			return true;
+		}
+		return false;
+	}
+	
 }
