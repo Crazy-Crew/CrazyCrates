@@ -19,6 +19,7 @@ import me.BadBones69.CrazyCrates.API.CrateType;
 import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
 
 public class CrateOnTheGo implements Listener{
+	
 	public static void giveCrate(Player player, int amount, String crate){
 		String path = "Crate.";
 		String ma = Main.settings.getFile(crate).getString(path+"Item");
@@ -39,34 +40,35 @@ public class CrateOnTheGo implements Listener{
 		}
 		player.getInventory().addItem(Methods.makeItem(Material.matchMaterial(ma), amount, type, name, lore));
 	}
+	
 	@EventHandler
 	public void onCrateOpen(PlayerInteractEvent e){
 		Player player = e.getPlayer();
-		if(e.getAction()==Action.RIGHT_CLICK_BLOCK){
+		if(e.getAction() == Action.RIGHT_CLICK_BLOCK){
 			if(e.hasItem()){
 				ItemStack item = e.getItem();
 				if(item.hasItemMeta()){
 					if(item.getItemMeta().hasDisplayName()){
 						for(String crate : Main.settings.getAllCratesNames()){
-							String name = Main.settings.getFile(crate).getString("Crate.Name");
-							name = Methods.color(name);
-							if(item.getItemMeta().getDisplayName().equals(name)){
-								e.setCancelled(true);
-								GUI.Crate.put(player, crate);
-								if(!CC.Rewards.containsKey(player)){
-									CC.getItems(player);
+							if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
+								if(item.getItemMeta().getDisplayName().equals(Methods.color(Main.settings.getFile(crate).getString("Crate.Name")))){
+									e.setCancelled(true);
+									GUI.Crate.put(player, crate);
+									if(!CC.Rewards.containsKey(player)){
+										CC.getItems(player);
+									}
+									Methods.removeItem(item, player);
+									ItemStack it = CC.pickItem(player);
+									String path = CC.Rewards.get(player).get(it);
+									CC.getReward(player, path);
+									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.CRATE_ON_THE_GO, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
+									if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean(path + ".Firework")){
+										Methods.fireWork(player.getLocation().add(0, 1, 0));
+									}
+									GUI.Crate.remove(player);
+									CC.Rewards.remove(player);
+									return;
 								}
-								Methods.removeItem(item, player);
-								ItemStack it = CC.pickItem(player);
-								String path = CC.Rewards.get(player).get(it);
-								CC.getReward(player, path);
-								Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.CRATE_ON_THE_GO, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
-								if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean(path + ".Firework")){
-									Methods.fireWork(player.getLocation().add(0, 1, 0));
-								}
-								GUI.Crate.remove(player);
-								CC.Rewards.remove(player);
-								return;
 							}
 						}
 					}
@@ -74,4 +76,5 @@ public class CrateOnTheGo implements Listener{
 			}
 		}
 	}
+	
 }
