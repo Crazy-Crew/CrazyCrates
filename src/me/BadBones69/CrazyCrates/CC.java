@@ -68,6 +68,19 @@ public class CC implements Listener{ //Crate Control
 			}
 		}
 		if(e.getAction() == Action.RIGHT_CLICK_BLOCK){
+			for(String crate : Main.settings.getAllCratesNames()){
+				if(e.hasItem()){
+					ItemStack key = Methods.getItemInHand(player);
+					if(key.hasItemMeta()){
+						if(key.getItemMeta().hasDisplayName()){
+							if(key.getItemMeta().getDisplayName().equals(Methods.color(Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name")))){
+								e.setCancelled(true);
+								player.updateInventory();
+							}
+						}
+					}
+				}
+			}
 			Block block = e.getClickedBlock();
 			if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
 				Main.settings.getLocations().set("Locations.Clear", null);
