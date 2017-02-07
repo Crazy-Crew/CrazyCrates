@@ -155,7 +155,7 @@ public class Methods{
 					}
 				}
 				for(String enc : getEnchants()){
-					if(i.contains(enc+":")){
+					if(i.toLowerCase().startsWith(enc.toLowerCase() + ":")){
 						String[] breakdown = i.split(":");
 						int lvl = Integer.parseInt(breakdown[1]);
 						enchs.put(Enchantment.getByName(enc), lvl);
@@ -548,19 +548,14 @@ public class Methods{
 		Main.settings.getData().set("Players."+uuid+"."+crate, keys-Amount);
 		Main.settings.saveData();
 	}
-	public static void addKeys(int Amount, Player player, String crate, String Type){
-		if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
-			Main.settings.getLocations().set("Locations.Clear", null);
-			Main.settings.saveLocations();
-		}
-		if(Type.equals("Virtual")){
+	public static void addKeys(int Amount, Player player, String crate, KeyType type){
+		if(type == KeyType.VIRTUAL_KEY){
 			String uuid = player.getUniqueId().toString();
 			int keys = getKeys(player, crate);
 			Main.settings.getData().set("Players."+uuid+"."+crate, keys+Amount);
 			Main.settings.saveData();
 			return;
-		}
-		if(Type.equals("Physical")){
+		} else if(type == KeyType.PHYSICAL_KEY){
 			String name = color(Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name"));
 			List<String> lore = Main.settings.getFile(crate).getStringList("Crate.PhysicalKey.Lore");
 			String ID = Main.settings.getFile(crate).getString("Crate.PhysicalKey.Item");
@@ -571,6 +566,16 @@ public class Methods{
 			player.getInventory().addItem(makeItem(ID, Amount, name, lore, enchanted));
 			return;
 		}
+	}
+	public static ItemStack getKey(String crate){
+		String name = color(Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name"));
+		List<String> lore = Main.settings.getFile(crate).getStringList("Crate.PhysicalKey.Lore");
+		String ID = Main.settings.getFile(crate).getString("Crate.PhysicalKey.Item");
+		Boolean enchanted = false;
+		if(Main.settings.getFile(crate).contains("Crate.PhysicalKey.Glowing")){
+			enchanted = Main.settings.getFile(crate).getBoolean("Crate.PhysicalKey.Glowing");
+		}
+		return makeItem(ID, 1, name, lore, enchanted);
 	}
 	public static ArrayList<String> getCrates(){
 		ArrayList<String> crates = new ArrayList<String>();

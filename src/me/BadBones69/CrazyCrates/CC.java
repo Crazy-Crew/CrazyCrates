@@ -106,13 +106,9 @@ public class CC implements Listener{ //Crate Control
 						Boolean isPhysical = false;
 						if(e.hasItem()){
 							key = Methods.getItemInHand(player);
-							if(key.hasItemMeta()){
-								if(key.getItemMeta().hasDisplayName()){
-									if(key.getItemMeta().getDisplayName().equals(KeyName)){
-										hasKey = true;
-										isPhysical = true;
-									}
-								}
+							if(key.isSimilar(Methods.getKey(Crate))){
+								hasKey = true;
+								isPhysical = true;
 							}
 						}
 						if(config.getBoolean("Settings.Physical-Accepts-Virtual-Keys")){
@@ -122,9 +118,8 @@ public class CC implements Listener{ //Crate Control
 						}
 						if(hasKey){
 							if(GUI.Crate.containsKey(player)){
-								String msg = config.getString("Settings.AlreadyOpeningCrateMsg");
-								msg = msg.replaceAll("%Key%", KeyName);
-								msg = msg.replaceAll("%key%", KeyName);
+								String msg = config.getString("Settings.AlreadyOpeningCrateMsg")
+										.replaceAll("%Key%", KeyName).replaceAll("%key%", KeyName);
 								player.sendMessage(Methods.color(Methods.getPrefix()+msg));
 								return;
 							}
@@ -263,12 +258,19 @@ public class CC implements Listener{ //Crate Control
 			for(ItemStack i : items){
 				String path = Rewards.get(player).get(i);
 				ItemStack item = Methods.makeItem(file.getString(path+".DisplayItem"), 1, file.getString(path+".DisplayName"));
+				if(file.contains(path + ".Glowing")){
+					if(file.getBoolean(path + ".Glowing")){
+						item = Methods.addGlow(item);
+					}
+				}
 				int max = file.getInt(path+".MaxRange");
 				int chance = file.getInt(path+".Chance");
 				int num;
 				for(int counter = 1; counter<=1; counter++){
 					num = 1 + r.nextInt(max);
-					if(num >= 1 && num <= chance)Items.add(item);
+					if(num >= 1 && num <= chance){
+						Items.add(item);
+					}
 				}
 			}
 		}

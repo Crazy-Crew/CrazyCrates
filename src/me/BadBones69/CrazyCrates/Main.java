@@ -368,10 +368,10 @@ public class Main extends JavaPlugin implements Listener{
 									return true;
 								}
 								if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
-									Methods.addKeys(amount, p, crate, "Virtual");
+									Methods.addKeys(amount, p, crate, KeyType.VIRTUAL_KEY);
 								}
 								if(type.equalsIgnoreCase("Physical")||type.equalsIgnoreCase("P")){
-									Methods.addKeys(amount, p, crate, "Physical");
+									Methods.addKeys(amount, p, crate, KeyType.PHYSICAL_KEY);
 								}
 							}
 							return true;
@@ -479,10 +479,10 @@ public class Main extends JavaPlugin implements Listener{
 							}
 							sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+ sender.getName()+" "+1+" &7Keys."));
 							if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
-								Methods.addKeys(1, (Player)sender, crate, "Virtual");
+								Methods.addKeys(1, (Player)sender, crate, KeyType.VIRTUAL_KEY);
 							}
 							if(type.equalsIgnoreCase("Physical")||type.equalsIgnoreCase("P")){
-								Methods.addKeys(1, (Player)sender, crate, "Physical");
+								Methods.addKeys(1, (Player)sender, crate, KeyType.PHYSICAL_KEY);
 							}
 							return true;
 						}
@@ -506,10 +506,10 @@ public class Main extends JavaPlugin implements Listener{
 							}
 							sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+ sender.getName()+" "+amount+" &7Keys."));
 							if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
-								Methods.addKeys(amount, (Player)sender, crate, "Virtual");
+								Methods.addKeys(amount, (Player)sender, crate, KeyType.VIRTUAL_KEY);
 							}
 							if(type.equalsIgnoreCase("Physical")||type.equalsIgnoreCase("P")){
-								Methods.addKeys(amount, (Player)sender, crate, "Physical");
+								Methods.addKeys(amount, (Player)sender, crate, KeyType.PHYSICAL_KEY);
 							}
 							return true;
 						}
@@ -539,10 +539,10 @@ public class Main extends JavaPlugin implements Listener{
 							}
 							sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+target.getName()+" "+amount+" &7Keys."));
 							if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
-								Methods.addKeys(amount, target, crate, "Virtual");
+								Methods.addKeys(amount, target, crate, KeyType.VIRTUAL_KEY);
 							}
 							if(type.equalsIgnoreCase("Physical")||type.equalsIgnoreCase("P")){
-								Methods.addKeys(amount, target, crate, "Physical");
+								Methods.addKeys(amount, target, crate, KeyType.PHYSICAL_KEY);
 							}
 							return true;
 						}
@@ -589,7 +589,7 @@ public class Main extends JavaPlugin implements Listener{
 						for(String crate : Methods.getCrates()){
 							String name = settings.getFile(crate).getString("Crate.PhysicalKey.Name");
 							if(item.getItemMeta().getDisplayName().equals(Methods.color(name))){
-								Methods.addKeys(1, player, crate, "Virtual");
+								Methods.addKeys(1, player, crate, KeyType.VIRTUAL_KEY);
 								player.sendMessage(Methods.getPrefix()+Methods.color("&a&l+1 "+name));
 								return;
 							}
