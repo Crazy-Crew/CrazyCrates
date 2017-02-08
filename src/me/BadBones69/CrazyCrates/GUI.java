@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -54,7 +55,7 @@ public class GUI implements Listener{
 		player.openInventory(inv);
 	}
 	
-	public static void openGUI(Player player, String crate){
+	public static void openPreview(Player player, String crate){
 		int am = Main.settings.getFile(crate).getConfigurationSection("Crate.Prizes").getKeys(false).size();
 		int size = 9;
 		if(am>=0&&am<=9)size=9;
@@ -100,6 +101,7 @@ public class GUI implements Listener{
 	public void onInvClick(InventoryClickEvent e){
 		Player player = (Player) e.getWhoClicked();
 		Inventory inv = e.getInventory();
+		FileConfiguration config = Main.settings.getConfig();
 		if(inv!=null){
 			for(String crate : Methods.getCrates()){
 				if(inv.getName().equals(Methods.color(Main.settings.getFile(crate).getString("Crate.Name")))){
@@ -107,7 +109,7 @@ public class GUI implements Listener{
 					return;
 				}
 			}
-			if(inv.getName().equals(Methods.color(Main.settings.getConfig().getString("Settings.InventoryName")))){
+			if(inv.getName().equals(Methods.color(config.getString("Settings.InventoryName")))){
 				e.setCancelled(true);
 				if(e.getCurrentItem()!=null){
 					ItemStack item = e.getCurrentItem();
@@ -117,29 +119,37 @@ public class GUI implements Listener{
 								String path = "Crate.";
 								if(item.getItemMeta().getDisplayName().equals(Methods.color(Main.settings.getFile(crate).getString(path+"Name")))){
 									if(e.getAction()==InventoryAction.PICKUP_HALF){
-										if(Main.settings.getConfig().getBoolean("Settings.Show-Preview")){
+										if(config.getBoolean("Settings.Show-Preview")){
 											player.closeInventory();
-											openGUI(player, crate);
+											openPreview(player, crate);
 										}
 										return;
 									}
 									if(Crate.containsKey(player)){
-										player.sendMessage(Methods.color(Methods.getPrefix()+Main.settings.getConfig().getString("Settings.Crate-Already-Opened")));
+										player.sendMessage(Methods.color(Methods.getPrefix()+config.getString("Settings.Crate-Already-Opened")));
 										return;
 									}
 									if(Methods.getKeys(player, crate)<1){
-										String msg = Main.settings.getConfig().getString("Settings.NoVirtualKeyMsg");
+										String msg = config.getString("Settings.NoVirtualKeyMsg");
 										player.sendMessage(Methods.color(Methods.getPrefix()+msg));
 										return;
 									}
 									for(String world : getDisabledWorlds()){
 										if(world.equalsIgnoreCase(player.getWorld().getName())){
-											String msg = Main.settings.getConfig().getString("Settings.WorldDisabledMsg");
+											String msg = config.getString("Settings.WorldDisabledMsg");
 											msg = msg.replaceAll("%World%", player.getWorld().getName());
 											msg = msg.replaceAll("%world%", player.getWorld().getName());
 											player.sendMessage(Methods.color(Methods.getPrefix()+msg));
 											return;
 										}
+									}
+									if(Methods.isInvFull(player)){
+										if(config.contains("Settings.Inventory-Full")){
+											player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.Inventory-Full")));
+										}else{
+											player.sendMessage(Methods.color(Methods.getPrefix() + "&cYour inventory is full, please make room before opening a crate."));
+										}
+										return;
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Wheel")){
 										Crate.put(player, crate);
@@ -180,7 +190,7 @@ public class GUI implements Listener{
 										}
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("QuickCrate")){
-										player.sendMessage(Methods.color(Methods.getPrefix()+Main.settings.getConfig().getString("Settings.Cant-Be-Virtual-Crate")));
+										player.sendMessage(Methods.color(Methods.getPrefix()+config.getString("Settings.Cant-Be-Virtual-Crate")));
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Roulette")){
 										Crate.put(player, crate);
@@ -197,10 +207,10 @@ public class GUI implements Listener{
 										}
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
-										player.sendMessage(Methods.color(Methods.getPrefix()+Main.settings.getConfig().getString("Settings.Cant-Be-Virtual-Crate")));
+										player.sendMessage(Methods.color(Methods.getPrefix()+config.getString("Settings.Cant-Be-Virtual-Crate")));
 									}
 									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("FireCracker")){
-										player.sendMessage(Methods.color(Methods.getPrefix()+Main.settings.getConfig().getString("Settings.Cant-Be-Virtual-Crate")));
+										player.sendMessage(Methods.color(Methods.getPrefix()+config.getString("Settings.Cant-Be-Virtual-Crate")));
 									}
 									return;
 								}

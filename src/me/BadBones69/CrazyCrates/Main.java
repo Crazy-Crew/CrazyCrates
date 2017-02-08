@@ -129,6 +129,7 @@ public class Main extends JavaPlugin implements Listener{
 					sender.sendMessage(Methods.color("&6/CC Admin &7- Opens the Admin Keys GUI."));
 					sender.sendMessage(Methods.color("&6/CC List &7- Lists all the Crates."));
 					sender.sendMessage(Methods.color("&6/CC Open <Crate> [Player] &7- Opens a crate for a player."));
+					sender.sendMessage(Methods.color("&6/CC Preview <Crate> [Player] &7- Opens a preview of a crate."));
 					sender.sendMessage(Methods.color("&6/CC Tp <Location> &7- Teleport to a Crate."));
 					sender.sendMessage(Methods.color("&6/CC Give <Physical/Virtual> <Crate> [Amount] [Player] &7- Give a player keys for a Chest."));
 					sender.sendMessage(Methods.color("&6/CC GiveAll <Physical/Virtual> <Crate> [Amount] &7- Gives all online players keys for a Chest."));
@@ -381,6 +382,42 @@ public class Main extends JavaPlugin implements Listener{
 					return true;
 					}
 				sender.sendMessage(Methods.color(Methods.getPrefix()+"&c/Crate GiveAll <Physical/Virtual> <Crate> <Amount>"));
+				return true;
+			}
+			if(args[0].equalsIgnoreCase("Preview")){// /CC Preview <Crate> [Player]
+				if(sender instanceof Player){
+					if(!Methods.permCheck((Player) sender, "preview")){
+						return true;
+					}
+				}
+				if(args.length >= 2){
+					String crate = "";
+					Player player = null;
+					for(String c : Methods.getCrates()){
+						if(c.equalsIgnoreCase(args[1])){
+							crate = c;
+						}
+					}
+					if(!crate.equalsIgnoreCase("")){
+						if(args.length >= 3){
+							if(Methods.isOnline(args[2], sender)){
+								player = Methods.getPlayer(args[2]);
+							}else{
+								return true;
+							}
+						}else{
+							if(!(sender instanceof Player)){
+								sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
+								return true;
+							}else{
+								player = (Player) sender;
+							}
+						}
+						GUI.openPreview(player, crate);
+						return true;
+					}
+				}
+				sender.sendMessage(Methods.color(Methods.getPrefix()+"&c/Crate Preview <Crate> [Player]"));
 				return true;
 			}
 			if(args[0].equalsIgnoreCase("Open")){// /CC Open <Crate> [Player]

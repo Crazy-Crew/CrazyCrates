@@ -509,7 +509,7 @@ public class Methods{
 				return true;
 			}
 		}
-		p.sendMessage(color(Main.settings.getConfig().getString("Settings.Not-Online")));
+		p.sendMessage(color(getPrefix() + Main.settings.getConfig().getString("Settings.Not-Online")));
 		return false;
 	}
 	public static void removeItem(ItemStack item, Player player){

@@ -60,7 +60,7 @@ public class CC implements Listener{ //Crate Control
 						return;
 					}else{
 						if(config.getBoolean("Settings.Show-Preview")){
-							GUI.openGUI(player, Crate);
+							GUI.openPreview(player, Crate);
 						}
 					}
 					return;
@@ -81,13 +81,13 @@ public class CC implements Listener{ //Crate Control
 					}
 				}
 			}
-			Block block = e.getClickedBlock();
 			if(Main.settings.getLocations().getConfigurationSection("Locations")==null){
 				Main.settings.getLocations().set("Locations.Clear", null);
 				Main.settings.saveLocations();
 			}
 			if(Main.settings.getLocations().contains("Locations")){
 				for(String location : Main.settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
+					Block block = e.getClickedBlock();
 					String Crate = Main.settings.getLocations().getString("Locations."+location+".Crate");
 					World w = Bukkit.getWorld(Main.settings.getLocations().getString("Locations."+location+".World"));
 					int x = Main.settings.getLocations().getInt("Locations."+location+".X");
@@ -118,14 +118,20 @@ public class CC implements Listener{ //Crate Control
 						}
 						if(hasKey){
 							if(GUI.Crate.containsKey(player)){
-								String msg = config.getString("Settings.AlreadyOpeningCrateMsg")
-										.replaceAll("%Key%", KeyName).replaceAll("%key%", KeyName);
-								player.sendMessage(Methods.color(Methods.getPrefix()+msg));
+								player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.AlreadyOpeningCrateMsg")
+									.replaceAll("%Key%", KeyName).replaceAll("%key%", KeyName)));
 								return;
 							}
 							if(InUse.containsValue(loc)){
-								String msg = config.getString("Settings.QuickCrateInUse");
-								player.sendMessage(Methods.color(Methods.getPrefix()+msg));
+								player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.QuickCrateInUse")));
+								return;
+							}
+							if(Methods.isInvFull(player)){
+								if(config.contains("Settings.Inventory-Full")){
+									player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.Inventory-Full")));
+								}else{
+									player.sendMessage(Methods.color(Methods.getPrefix() + "&cYour inventory is full, please make room before opening a crate."));
+								}
 								return;
 							}
 							GUI.Crate.put(player, Crate);

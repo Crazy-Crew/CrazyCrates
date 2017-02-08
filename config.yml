@@ -18,6 +18,7 @@ Settings:
   No-Permission: '&cYou do not have permission to use that command!'
   Crate-Already-Opened: '&cYou are already opening a crate.'
   Cant-Be-Virtual-Crate: '&cPlease tell an admin that CrateOnTheGo can not be a Virtual Crate.'
+  Inventory-Full: '&cYour inventory is full, please make room before opening a crate.'
   QuadCrate:
     ToCloseToAnotherPlayer: '&cYou are to close to a player that is opening their Crate.'
     NeedsMoreRoom: '&cThere is not enough space to open that here.'
