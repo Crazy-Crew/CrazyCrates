@@ -51,10 +51,12 @@ public class Methods{
 		msg = ChatColor.translateAlternateColorCodes('&', msg);
 		return msg;
 	}
+	
 	public static String removeColor(String msg){
 		msg = ChatColor.stripColor(msg);
 		return msg;
 	}
+	
 	public static ItemStack displayItem(Player player, Location chest){
 		HashMap<ItemStack, String> items = getItems(player);
 		int stop = 0;
@@ -739,6 +741,37 @@ public class Methods{
 	public static Integer randomNumber(int min, int max){
 		Random i = new Random();
 		return min+i.nextInt(max-min);
+	}
+	
+	public static boolean isSimilar(ItemStack one, ItemStack two){
+		if(one.getType() == two.getType()){
+			if((one.hasItemMeta())){
+				
+			}
+		}
+		return false;
+	}
+	
+	public static boolean isKey(ItemStack one, ItemStack two){
+		if(one.getType() == two.getType()){
+			if(one.hasItemMeta()){
+				if(one.getItemMeta().hasDisplayName()){
+					if(one.getItemMeta().getDisplayName().equalsIgnoreCase(two.getItemMeta().getDisplayName())){
+						if(one.getItemMeta().hasLore()){
+							int i = 0;
+							for(String lore : one.getItemMeta().getLore()){
+								if(!lore.equals(two.getItemMeta().getLore().get(i))){
+									return false;
+								}
+								i++;
+							}
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 	
 	public static void hasUpdate(){

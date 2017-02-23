@@ -13,21 +13,23 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
-import me.BadBones69.CrazyCrates.Methods;
-import me.BadBones69.CrazyCrates.CC;
+import me.BadBones69.CrazyCrates.CrateControl;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
+import me.BadBones69.CrazyCrates.Methods;
 import me.BadBones69.CrazyCrates.API.CrateType;
+import me.BadBones69.CrazyCrates.API.CrazyCrates;
 import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
 import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
 public class Wheel implements Listener{
+	
 	public static HashMap<Player, Integer> crate = new HashMap<Player, Integer>();
 	public static HashMap<Player, HashMap<Integer, ItemStack>> Rewards = new HashMap<Player, HashMap<Integer, ItemStack>>();
-	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
+	private static CrazyCrates CC = CrazyCrates.getInstance();
+	
 	public static void startWheel(final Player player){
 		final Inventory inv = Bukkit.createInventory(null, 54, Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")));
 		for(int i=0;i<54;i++){
@@ -41,13 +43,13 @@ public class Wheel implements Listener{
 		}
 		Rewards.put(player, items);
 		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
-			Methods.removeItem(CC.Key.get(player), player);
+			Methods.removeItem(CrateControl.Key.get(player), player);
 		}
 		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
 			Methods.takeKeys(1, player, GUI.Crate.get(player));
 		}
 		player.openInventory(inv);
-		crate.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
+		crate.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
 			ArrayList<Integer> slots = getBorder();
 			int i = 0;
 			int f = 17;
@@ -109,15 +111,15 @@ public class Wheel implements Listener{
 						}
 					}
 					if(full>=(timer+55+47)){
-						String path = CC.Rewards.get(player).get(Rewards.get(player).get(slots.get(f)));
+						String path = CrateControl.Rewards.get(player).get(Rewards.get(player).get(slots.get(f)));
 						CC.getReward(player, path);
 						if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.Prizes."+path.replace("Crate.Prizes.", "")+".Firework")){
 							Methods.fireWork(player.getLocation().add(0, 1, 0));
 						}
-						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WHEEL, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
+						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WHEEL, CrateControl.Crate.get(player), path.replace("Crate.Prizes.", "")));
 						player.closeInventory();
 						GUI.Crate.remove(player);
-						CC.Rewards.remove(player);
+						CrateControl.Rewards.remove(player);
 						Bukkit.getScheduler().cancelTask(crate.get(player));
 					}
 					slower++;
@@ -135,13 +137,13 @@ public class Wheel implements Listener{
 	public void onInvClick(InventoryClickEvent e){
 		Inventory inv = e.getInventory();
 		Player player = (Player) e.getWhoClicked();
-		if(CC.Crate.containsKey(player)){
-			if(!Main.settings.getFile(CC.Crate.get(e.getWhoClicked())).getString("Crate.CrateType").equalsIgnoreCase("Wheel"))return;
+		if(CrateControl.Crate.containsKey(player)){
+			if(!Main.settings.getFile(CrateControl.Crate.get(e.getWhoClicked())).getString("Crate.CrateType").equalsIgnoreCase("Wheel"))return;
 		}else{
 			return;
 		}
 		if(inv!=null){
-			if(inv.getName().equals(Methods.color(Main.settings.getFile(CC.Crate.get(player)).getString("Crate.CrateName")))){
+			if(inv.getName().equals(Methods.color(Main.settings.getFile(CrateControl.Crate.get(player)).getString("Crate.CrateName")))){
 				e.setCancelled(true);
 			}
 		}

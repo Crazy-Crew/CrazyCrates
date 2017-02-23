@@ -1,10 +1,10 @@
 name: CrazyCrates
 main: me.BadBones69.CrazyCrates.Main
 author: BadBones69
-version: 1.6.4
+version: 1.6.4.1
 softdepend: [MVdWPlaceholderAPI, PlaceholderAPI]
 description: Want some good quality crates without paying money for them? Then check this crate plugin out.
 commands:
   CrazyCrates:
     description: Opens the GUI.
-    aliases: [cc, ccrate, crazycrate, crate]
+    aliases: [cc, ccrate, crazycrate, crate, crates]

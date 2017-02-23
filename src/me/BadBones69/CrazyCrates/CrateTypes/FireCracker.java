@@ -4,12 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import me.BadBones69.CrazyCrates.Methods;
-import me.BadBones69.CrazyCrates.API.FireworkDamageAPI;
-import me.BadBones69.CrazyCrates.API.KeyType;
-import me.BadBones69.CrazyCrates.CC;
-import me.BadBones69.CrazyCrates.GUI;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -18,16 +12,21 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.plugin.Plugin;
+
+import me.BadBones69.CrazyCrates.CrateControl;
+import me.BadBones69.CrazyCrates.GUI;
+import me.BadBones69.CrazyCrates.Main;
+import me.BadBones69.CrazyCrates.Methods;
+import me.BadBones69.CrazyCrates.API.FireworkDamageAPI;
+import me.BadBones69.CrazyCrates.API.KeyType;
 
 public class FireCracker {
 	
 	private static HashMap<Player, Integer> F = new HashMap<Player, Integer>();
-	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
 	
 	public static void startFireCracker(final Player player, final String crate, final Location C){
 		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
-			Methods.removeItem(CC.Key.get(player), player);
+			Methods.removeItem(CrateControl.Key.get(player), player);
 		}
 		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
 			Methods.takeKeys(1, player, GUI.Crate.get(player));
@@ -41,7 +40,7 @@ public class FireCracker {
 		colors.add(Color.AQUA);
 		colors.add(Color.MAROON);
 		colors.add(Color.PURPLE);
-		F.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
+		F.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
 			Random r = new Random();
 			int color = r.nextInt(colors.size());
 			int l = 0;
@@ -72,7 +71,7 @@ public class FireCracker {
 		fm.setPower(0);
 		fw.setFireworkMeta(fm);
 		FireworkDamageAPI.addFirework(fw);
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
 			public void run() {
 				fw.detonate();
 			}

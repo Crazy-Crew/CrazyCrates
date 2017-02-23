@@ -12,13 +12,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import me.BadBones69.CrazyCrates.Methods;
-import me.BadBones69.CrazyCrates.CC;
+import me.BadBones69.CrazyCrates.CrateControl;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
 import me.BadBones69.CrazyCrates.API.CrateType;
+import me.BadBones69.CrazyCrates.API.CrazyCrates;
 import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
 
 public class CrateOnTheGo implements Listener{
+	
+	private static CrazyCrates CC = CrazyCrates.getInstance();
 	
 	public static void giveCrate(Player player, int amount, String crate){
 		String path = "Crate.";
@@ -54,19 +57,19 @@ public class CrateOnTheGo implements Listener{
 								if(item.getItemMeta().getDisplayName().equals(Methods.color(Main.settings.getFile(crate).getString("Crate.Name")))){
 									e.setCancelled(true);
 									GUI.Crate.put(player, crate);
-									if(!CC.Rewards.containsKey(player)){
+									if(!CrateControl.Rewards.containsKey(player)){
 										CC.getItems(player);
 									}
 									Methods.removeItem(item, player);
 									ItemStack it = CC.pickItem(player);
-									String path = CC.Rewards.get(player).get(it);
+									String path = CrateControl.Rewards.get(player).get(it);
 									CC.getReward(player, path);
-									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.CRATE_ON_THE_GO, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
+									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.CRATE_ON_THE_GO, CrateControl.Crate.get(player), path.replace("Crate.Prizes.", "")));
 									if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean(path + ".Firework")){
 										Methods.fireWork(player.getLocation().add(0, 1, 0));
 									}
 									GUI.Crate.remove(player);
-									CC.Rewards.remove(player);
+									CrateControl.Rewards.remove(player);
 									return;
 								}
 							}

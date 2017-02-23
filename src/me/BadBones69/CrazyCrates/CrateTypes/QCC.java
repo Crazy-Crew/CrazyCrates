@@ -28,23 +28,22 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import me.BadBones69.CrazyCrates.Methods;
-import me.BadBones69.CrazyCrates.CC;
+import me.BadBones69.CrazyCrates.CrateControl;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
+import me.BadBones69.CrazyCrates.Methods;
 import me.BadBones69.CrazyCrates.ParticleEffect;
 import me.BadBones69.CrazyCrates.ParticleEffect.BlockData;
 import me.BadBones69.CrazyCrates.API.CrateType;
+import me.BadBones69.CrazyCrates.API.CrazyCrates;
 import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
 import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
 public class QCC implements Listener{ // Quad Crate Control.
 	
-	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
 	public static HashMap<Player, HashMap<Location, BlockState>> crates = new HashMap<Player, HashMap<Location, BlockState>>();
 	public static HashMap<Player, HashMap<Location, BlockState>> All = new HashMap<Player, HashMap<Location, BlockState>>();
 	public static HashMap<Player, HashMap<Location, Boolean>> opened = new HashMap<Player, HashMap<Location, Boolean>>();
@@ -53,6 +52,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 	public static HashMap<Player, ArrayList<Entity>> Rewards = new HashMap<Player, ArrayList<Entity>>();
 	public static HashMap<Player, Integer> P = new HashMap<Player, Integer>();
 	public static HashMap<Player, Integer> timer = new HashMap<Player, Integer>();
+	private static CrazyCrates CC = CrazyCrates.getInstance();
 	
 	/**
 	 * Starts building the Crate Setup.
@@ -116,7 +116,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}
 			}
 		}
-		if(!CC.Rewards.containsKey(player)){
+		if(!CrateControl.Rewards.containsKey(player)){
 			CC.getItems(player);
 		}
 		player.teleport(loc.clone().add(.5,0,.5));
@@ -137,7 +137,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 		}
 		chests.put(player, Ch);
 		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
-			Methods.removeItem(CC.Key.get(player), player);
+			Methods.removeItem(CrateControl.Key.get(player), player);
 		}
 		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
 			Methods.takeKeys(1, player, GUI.Crate.get(player));
@@ -176,7 +176,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 		particles.add(ParticleEffect.REDSTONE);
 		Random r = new Random();
 		final ParticleEffect particle = particles.get(r.nextInt(particles.size()));
-		P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
+		P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
 			double r = 0;
 			int i = 0;
 			int e = 0;
@@ -211,10 +211,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}
 			}
 		}, 0, 1));
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
 			@Override
 			public void run() {
-				P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
+				P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
 					double r = 0;
 					int i = 0;
 					int e = 0;
@@ -251,10 +251,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}, 0, 1));
 			}
 		}, 61);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
 			@Override
 			public void run() {
-				P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
+				P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
 					double r = 0;
 					int i = 0;
 					int e = 0;
@@ -291,10 +291,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}, 0, 1));
 			}
 		}, 121);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
 			@Override
 			public void run() {
-				P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
+				P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
 					double r = 0;
 					int i = 0;
 					int e = 0;
@@ -331,10 +331,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}, 0, 1));
 			}
 		}, 181);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
 			@Override
 			public void run() {
-				timer.put(player, Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
+				timer.put(player, Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
 					@Override
 					public void run() {
 						undoBuild(player);
@@ -360,8 +360,8 @@ public class QCC implements Listener{ // Quad Crate Control.
 		crates.remove(player);
 		chests.remove(player);
 		GUI.Crate.remove(player);
-		if(CC.Rewards.containsKey(player)){
-			CC.Rewards.remove(player);
+		if(CrateControl.Rewards.containsKey(player)){
+			CrateControl.Rewards.remove(player);
 		}
 		if(P.containsKey(player)){
 			Bukkit.getScheduler().cancelTask(P.get(player));
@@ -410,10 +410,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 								if(!opened.get(player).get(l)){
 									ArrayList<Entity> rewards = new ArrayList<Entity>();
 									ItemStack it = CC.pickItem(player, B.clone().add(.5, 1.3, .5));
-									String path = CC.Rewards.get(player).get(it);
+									String path = CrateControl.Rewards.get(player).get(it);
 									CC.getReward(player, path);
-									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.QUAD_CRATE, CC.Crate.get(player), path.replace("Crate.Prizes.", "")));
-									String name = Methods.color(file.getString(CC.Rewards.get(player).get(it)+".DisplayName"));
+									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.QUAD_CRATE, CrateControl.Crate.get(player), path.replace("Crate.Prizes.", "")));
+									String name = Methods.color(file.getString(CrateControl.Rewards.get(player).get(it)+".DisplayName"));
 									final Entity reward = player.getWorld().dropItem(B.clone().add(.5, 1, .5), Methods.addLore(it.clone(), new Random().nextInt(Integer.MAX_VALUE) + ""));
 									reward.setVelocity(new Vector(0,.2,0));
 									reward.setCustomName(name);
@@ -439,7 +439,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 									}
 								}
 								if(trigger){
-									Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
+									Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
 										@SuppressWarnings("deprecation")
 										@Override
 										public void run() {
@@ -465,7 +465,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 											}
 										}
 									}, 3*20);
-									Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
+									Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
 										@Override
 										public void run() {
 											if(Rest.get(player)!=null){
@@ -495,16 +495,16 @@ public class QCC implements Listener{ // Quad Crate Control.
 											chests.remove(player);
 											Rest.remove(player);
 											GUI.Crate.remove(player);
-											if(CC.Rewards.containsKey(player)){
-												CC.Rewards.remove(player);
+											if(CrateControl.Rewards.containsKey(player)){
+												CrateControl.Rewards.remove(player);
 											}
 											if(timer.containsKey(player)){
 												Bukkit.getScheduler().cancelTask(timer.get(player));
 												timer.remove(player);
 											}
-											if(CC.LastLoc.containsKey(player)){
-												player.teleport(CC.LastLoc.get(player));
-												CC.LastLoc.remove(player);
+											if(CrateControl.LastLoc.containsKey(player)){
+												player.teleport(CrateControl.LastLoc.get(player));
+												CrateControl.LastLoc.remove(player);
 											}
 										}
 									}, 6*20);
@@ -554,6 +554,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 			}
 		}
 	}
+	
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent e){
 		if(crates.containsKey(e.getPlayer())){
@@ -569,6 +570,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 			}
 		}
 	}
+	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e){
 		Player player = e.getPlayer();
@@ -582,6 +584,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 			Main.settings.saveData();
 		}
 	}
+	
 	@EventHandler
 	public void onCMD(PlayerCommandPreprocessEvent e){
 		Player player = e.getPlayer();
@@ -596,6 +599,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 			}
 		}
 	}
+	
 	@EventHandler
 	public void onTeleport(PlayerTeleportEvent e){
 		Player player = e.getPlayer();
@@ -610,6 +614,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 			}
 		}
 	}
+	
 	@EventHandler
 	public void onLeave(PlayerQuitEvent e){
 		Player player = e.getPlayer();
@@ -617,6 +622,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 			undoBuild(player);
 		}
 	}
+	
 	private static ArrayList<Location> getChests(Location loc){
 		ArrayList<Location> U = new ArrayList<Location>();
 		U.add(loc.clone().add(2, 0, 0));
@@ -625,6 +631,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 		U.add(loc.clone().add(0, 0, -2));
 		return U;
 	}
+	
 	private static ArrayList<Location> getCircle(Location center, double radius, int amount){
         World world = center.getWorld();
         double increment = (2 * Math.PI) / amount;
@@ -637,6 +644,7 @@ public class QCC implements Listener{ // Quad Crate Control.
         }
         return locations;
     }
+	
 	public static ArrayList<Location> getCircleReverse(Location center, double radius, int amount){
         World world = center.getWorld();
         double increment = (2 * Math.PI) / amount;
@@ -649,4 +657,5 @@ public class QCC implements Listener{ // Quad Crate Control.
         }
         return locations;
     }
+	
 }

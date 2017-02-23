@@ -18,6 +18,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import me.BadBones69.CrazyCrates.API.CrateType;
 import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
 import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
@@ -27,8 +28,10 @@ import me.BadBones69.CrazyCrates.CrateTypes.Wheel;
 import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
 
 public class GUI implements Listener{
+	
 	public static HashMap<Player, String> Crate = new HashMap<Player, String>();
-	static void openGUI(Player player){
+	
+	public static void openGUI(Player player){
 		Inventory inv = Bukkit.createInventory(null, Main.settings.getConfig().getInt("Settings.InventorySize"), Methods.color(Main.settings.getConfig().getString("Settings.InventoryName")));
 		for(String crate : Main.settings.getAllCratesNames()){
 			if(!Main.settings.getFile(crate).contains("Crate.InGUI")){
@@ -43,11 +46,9 @@ public class GUI implements Listener{
 				ArrayList<String> lore = new ArrayList<String>();
 				String keys = NumberFormat.getNumberInstance().format(Methods.getKeys(player, crate));
 				for(String i : Main.settings.getFile(crate).getStringList(path+"Lore")){
-					i=i.replaceAll("%Keys%", keys);
-					i=i.replaceAll("%keys%", keys);
-					i=i.replaceAll("%Player%", player.getName());
-					i=i.replaceAll("%player%", player.getName());
-					lore.add(i);
+					lore.add(i
+							.replaceAll("%Keys%", keys).replaceAll("%keys%", keys)
+							.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName()));
 				}
 				inv.setItem(slot, Methods.makeItem(ma, 1, name, lore));
 			}
@@ -56,15 +57,11 @@ public class GUI implements Listener{
 	}
 	
 	public static void openPreview(Player player, String crate){
-		int am = Main.settings.getFile(crate).getConfigurationSection("Crate.Prizes").getKeys(false).size();
-		int size = 9;
-		if(am>=0&&am<=9)size=9;
-		if(am>=10&&am<=18)size=18;
-		if(am>=19&&am<=27)size=27;
-		if(am>=28&&am<=36)size=36;
-		if(am>=37&&am<=45)size=45;
-		if(am>=46&&am<=54)size=54;
-		Inventory inv = Bukkit.createInventory(null, size, Methods.color(Main.settings.getFile(crate).getString("Crate.Name")));
+		int slots = 9;
+		for(int size = Main.settings.getFile(crate).getConfigurationSection("Crate.Prizes").getKeys(false).size(); size > 9 && slots < 54; size -= 9){
+			slots += 9;
+		}
+		Inventory inv = Bukkit.createInventory(null, slots, Methods.color(Main.settings.getFile(crate).getString("Crate.Name")));
 		for(String reward : Main.settings.getFile(crate).getConfigurationSection("Crate.Prizes").getKeys(false)){
 			String id = Main.settings.getFile(crate).getString("Crate.Prizes."+reward+".DisplayItem");
 			String name = Main.settings.getFile(crate).getString("Crate.Prizes."+reward+".DisplayName");
@@ -85,7 +82,7 @@ public class GUI implements Listener{
 				}
 			}
 			try{
-				if(enchantments.size()>0){
+				if(enchantments.size() > 0){
 					inv.setItem(inv.firstEmpty(), Methods.makeItem(id, amount, name, lore, enchantments, glowing));
 				}else{
 					inv.setItem(inv.firstEmpty(), Methods.makeItem(id, amount, name, lore, glowing));
@@ -111,14 +108,14 @@ public class GUI implements Listener{
 			}
 			if(inv.getName().equals(Methods.color(config.getString("Settings.InventoryName")))){
 				e.setCancelled(true);
-				if(e.getCurrentItem()!=null){
+				if(e.getCurrentItem() != null){
 					ItemStack item = e.getCurrentItem();
 					if(item.hasItemMeta()){
 						if(item.getItemMeta().hasDisplayName()){
 							for(String crate : Main.settings.getAllCratesNames()){
 								String path = "Crate.";
 								if(item.getItemMeta().getDisplayName().equals(Methods.color(Main.settings.getFile(crate).getString(path+"Name")))){
-									if(e.getAction()==InventoryAction.PICKUP_HALF){
+									if(e.getAction() == InventoryAction.PICKUP_HALF){
 										if(config.getBoolean("Settings.Show-Preview")){
 											player.closeInventory();
 											openPreview(player, crate);
@@ -136,10 +133,8 @@ public class GUI implements Listener{
 									}
 									for(String world : getDisabledWorlds()){
 										if(world.equalsIgnoreCase(player.getWorld().getName())){
-											String msg = config.getString("Settings.WorldDisabledMsg");
-											msg = msg.replaceAll("%World%", player.getWorld().getName());
-											msg = msg.replaceAll("%world%", player.getWorld().getName());
-											player.sendMessage(Methods.color(Methods.getPrefix()+msg));
+											player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.WorldDisabledMsg")
+											.replaceAll("%World%", player.getWorld().getName()).replaceAll("%world%", player.getWorld().getName())));
 											return;
 										}
 									}
@@ -151,66 +146,64 @@ public class GUI implements Listener{
 										}
 										return;
 									}
-									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Wheel")){
-										Crate.put(player, crate);
-										CC.Crate.put(player, crate);
-										Methods.Key.put(player, KeyType.VIRTUAL_KEY);
-										Wheel.startWheel(player);
-									}
-									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Wonder")){
-										Crate.put(player, crate);
-										CC.Crate.put(player, crate);
-										Methods.Key.put(player, KeyType.VIRTUAL_KEY);
-										Wonder.startWonder(player);
-									}
-									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Cosmic")){
-										Crate.put(player, crate);
-										CC.Crate.put(player, crate);
-										Methods.Key.put(player, KeyType.VIRTUAL_KEY);
-										Cosmic.openCosmic(player);
-									}
-									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("QuadCrate")){
-										Crate.put(player, crate);
-										CC.Crate.put(player, crate);
-										Methods.Key.put(player, KeyType.VIRTUAL_KEY);
-										QCC.startBuild(player, player.getLocation(), Material.CHEST);
-									}
-									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CSGO")){
-										Crate.put(player, crate);
-										CC.Crate.put(player, crate);
-										Methods.Key.put(player, KeyType.VIRTUAL_KEY);
-										CSGO.openCSGO(player);
-										if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){
-											String msg = Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.BroadCast"));
-											msg = msg.replaceAll("%Prefix%", Methods.getPrefix());
-											msg = msg.replaceAll("%prefix%", Methods.getPrefix());
-											msg = msg.replaceAll("%Player%", player.getName());
-											msg = msg.replaceAll("%player%", player.getName());
-											Bukkit.broadcastMessage(msg);
-										}
-									}
-									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("QuickCrate")){
-										player.sendMessage(Methods.color(Methods.getPrefix()+config.getString("Settings.Cant-Be-Virtual-Crate")));
-									}
-									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("Roulette")){
-										Crate.put(player, crate);
-										CC.Crate.put(player, crate);
-										Methods.Key.put(player, KeyType.VIRTUAL_KEY);
-										Roulette.openRoulette(player);
-										if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){
-											String msg = Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.BroadCast"));
-											msg = msg.replaceAll("%Prefix%", Methods.getPrefix());
-											msg = msg.replaceAll("%prefix%", Methods.getPrefix());
-											msg = msg.replaceAll("%Player%", player.getName());
-											msg = msg.replaceAll("%player%", player.getName());
-											Bukkit.broadcastMessage(msg);
-										}
-									}
-									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
-										player.sendMessage(Methods.color(Methods.getPrefix()+config.getString("Settings.Cant-Be-Virtual-Crate")));
-									}
-									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("FireCracker")){
-										player.sendMessage(Methods.color(Methods.getPrefix()+config.getString("Settings.Cant-Be-Virtual-Crate")));
+									switch(CrateType.getFromName(Main.settings.getFile(crate).getString("Crate.CrateType"))){
+										case COSMIC:
+											Crate.put(player, crate);
+											CrateControl.Crate.put(player, crate);
+											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
+											Cosmic.openCosmic(player);
+											break;
+										case CRATE_ON_THE_GO:
+											player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.Cant-Be-Virtual-Crate")));
+											break;
+										case CSGO:
+											Crate.put(player, crate);
+											CrateControl.Crate.put(player, crate);
+											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
+											CSGO.openCSGO(player);
+											if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){
+												Bukkit.broadcastMessage(Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.BroadCast")
+														.replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix())
+														.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
+											}
+											break;
+										case FIRE_CRACKER:
+											player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.Cant-Be-Virtual-Crate")));
+											break;
+										case MENU:
+											break;
+										case QUAD_CRATE:
+											player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.Cant-Be-Virtual-Crate")));
+											break;
+										case QUICK_CRATE:
+											Crate.put(player, crate);
+											CrateControl.Crate.put(player, crate);
+											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
+											QCC.startBuild(player, player.getLocation(), Material.CHEST);
+											break;
+										case ROULETTE:
+											Crate.put(player, crate);
+											CrateControl.Crate.put(player, crate);
+											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
+											Roulette.openRoulette(player);
+											if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){
+												Bukkit.broadcastMessage(Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.BroadCast")
+														.replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix())
+														.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
+											}
+											break;
+										case WHEEL:
+											Crate.put(player, crate);
+											CrateControl.Crate.put(player, crate);
+											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
+											Wheel.startWheel(player);
+											break;
+										case WONDER:
+											Crate.put(player, crate);
+											CrateControl.Crate.put(player, crate);
+											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
+											Wonder.startWonder(player);
+											break;
 									}
 									return;
 								}
@@ -222,11 +215,12 @@ public class GUI implements Listener{
 		}
 	}
 	
-	ArrayList<String> getDisabledWorlds(){
+	private ArrayList<String> getDisabledWorlds(){
 		ArrayList<String> worlds = new ArrayList<String>();
 		for(String world : Main.settings.getConfig().getStringList("Settings.DisabledWorlds")){
 			worlds.add(world);
 		}
 		return worlds;
 	}
+	
 }

@@ -15,11 +15,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.BadBones69.CrazyCrates.API.FireworkDamageAPI;
@@ -39,21 +39,6 @@ import me.BadBones69.CrazyCrates.MultiSupport.Support;
 public class Main extends JavaPlugin implements Listener{
 	
 	public static SettingsManager settings = SettingsManager.getInstance();
-	private static HashMap<Player, HashMap<ItemStack, ItemStack>> Keys = new HashMap<Player, HashMap<ItemStack, ItemStack>>();
-	
-	@Override
-	public void onDisable(){
-		if(!QCC.crates.isEmpty()){
-			for(Player player : QCC.crates.keySet()){
-				QCC.undoBuild(player);
-			}
-		}
-		if(!QuickCrate.Reward.isEmpty()){
-			for(Player player : QuickCrate.Reward.keySet()){
-				QuickCrate.Reward.get(player).remove();
-			}
-		}
-	}
 	
 	@Override
 	public void onEnable(){
@@ -67,18 +52,19 @@ public class Main extends JavaPlugin implements Listener{
 			settings.saveData();
 		}
 		Methods.hasUpdate();
-		Bukkit.getServer().getPluginManager().registerEvents(this, this);
-		Bukkit.getServer().getPluginManager().registerEvents(new CC(), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new GUI(), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new QCC(), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new CSGO(), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new Wheel(), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new Wonder(), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new Cosmic(), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new Roulette(), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new CrateOnTheGo(), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new QuickCrate(), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new FireworkDamageAPI(this), this);
+		PluginManager pm  = Bukkit.getPluginManager();
+		pm.registerEvents(this, this);
+		pm.registerEvents(new CrateControl(), this);
+		pm.registerEvents(new GUI(), this);
+		pm.registerEvents(new QCC(), this);
+		pm.registerEvents(new CSGO(), this);
+		pm.registerEvents(new Wheel(), this);
+		pm.registerEvents(new Wonder(), this);
+		pm.registerEvents(new Cosmic(), this);
+		pm.registerEvents(new Roulette(), this);
+		pm.registerEvents(new CrateOnTheGo(), this);
+		pm.registerEvents(new QuickCrate(), this);
+		pm.registerEvents(new FireworkDamageAPI(this), this);
 		if(Support.hasPlaceholderAPI()){
 			new PlaceholderAPISupport(this).hook();
 		}
@@ -105,10 +91,24 @@ public class Main extends JavaPlugin implements Listener{
 		}
 	}
 	
+	@Override
+	public void onDisable(){
+		if(!QCC.crates.isEmpty()){
+			for(Player player : QCC.crates.keySet()){
+				QCC.undoBuild(player);
+			}
+		}
+		if(!QuickCrate.Reward.isEmpty()){
+			for(Player player : QuickCrate.Reward.keySet()){
+				QuickCrate.Reward.get(player).remove();
+			}
+		}
+	}
+	
 	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args){
 		if(commandLable.equalsIgnoreCase("CrazyCrates")||commandLable.equalsIgnoreCase("CC")||commandLable.equalsIgnoreCase("Crate")
-				||commandLable.equalsIgnoreCase("CCrate")||commandLable.equalsIgnoreCase("CrazyCrate")){
+				|| commandLable.equalsIgnoreCase("Crates")||commandLable.equalsIgnoreCase("CCrate")||commandLable.equalsIgnoreCase("CrazyCrate")){
 			if(args.length == 0){
 				if(sender instanceof Player){
 					if(!Methods.permCheck((Player)sender, "Access")){
@@ -179,7 +179,7 @@ public class Main extends JavaPlugin implements Listener{
 						inv.addItem(item1);
 						keys.put(item1, item2);
 					}
-					Keys.put(player, keys);
+					CrateControl.Keys.put(player, keys);
 					player.openInventory(inv);
 					return true;
 				}
@@ -447,37 +447,37 @@ public class Main extends JavaPlugin implements Listener{
 							}
 							if(type.equalsIgnoreCase("Wheel")){
 								GUI.Crate.put(player, crate);
-								CC.Crate.put(player, crate);
+								CrateControl.Crate.put(player, crate);
 								Methods.Key.put(player, KeyType.FREE);
 								Wheel.startWheel(player);
 							}
 							if(type.equalsIgnoreCase("Wonder")){
 								GUI.Crate.put(player, crate);
-								CC.Crate.put(player, crate);
+								CrateControl.Crate.put(player, crate);
 								Methods.Key.put(player, KeyType.FREE);
 								Wonder.startWonder(player);
 							}
 							if(type.equalsIgnoreCase("Cosmic")){
 								GUI.Crate.put(player, crate);
-								CC.Crate.put(player, crate);
+								CrateControl.Crate.put(player, crate);
 								Methods.Key.put(player, KeyType.FREE);
 								Cosmic.openCosmic(player);
 							}
 							if(type.equalsIgnoreCase("QuadCrate")){
 								GUI.Crate.put(player, crate);
-								CC.Crate.put(player, crate);
+								CrateControl.Crate.put(player, crate);
 								Methods.Key.put(player, KeyType.FREE);
 								QCC.startBuild(player, player.getLocation(), Material.CHEST);
 							}
 							if(type.equalsIgnoreCase("CSGO")){
 								GUI.Crate.put(player, crate);
-								CC.Crate.put(player, crate);
+								CrateControl.Crate.put(player, crate);
 								Methods.Key.put(player, KeyType.FREE);
 								CSGO.openCSGO(player);
 							}
 							if(type.equalsIgnoreCase("Roulette")){
 								GUI.Crate.put(player, crate);
-								CC.Crate.put(player, crate);
+								CrateControl.Crate.put(player, crate);
 								Methods.Key.put(player, KeyType.FREE);
 								Roulette.openRoulette(player);
 							}
@@ -594,48 +594,11 @@ public class Main extends JavaPlugin implements Listener{
 		sender.sendMessage(Methods.color(Methods.getPrefix()+"&cPlease do /CC Help for more info."));
 		return false;
 	}
-	@EventHandler
-	public void onInvClick(InventoryClickEvent e){
-		Inventory inv = e.getInventory();
-		Player player = (Player)e.getWhoClicked();
-		if(inv!=null){
-			if(inv.getName().equals(Methods.color("&4&lAdmin Keys"))){
-				e.setCancelled(true);
-				if(!Methods.permCheck(player, "Admin")){
-					player.closeInventory();
-					return;
-				}
-				int slot = e.getRawSlot();
-				if(slot<inv.getSize()){
-					if(e.getAction()==InventoryAction.PICKUP_ALL){
-						ItemStack item = inv.getItem(slot);
-						if(item!=null){
-							if(item.getType()!=Material.AIR){
-								for(String crate : Methods.getCrates()){
-									if(settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
-										CrateOnTheGo.giveCrate(player, 1, crate);
-										return;
-									}
-								}
-								player.getInventory().addItem(Keys.get(player).get(item));
-							}
-						}
-					}
-					if(e.getAction()==InventoryAction.PICKUP_HALF){
-						ItemStack item = inv.getItem(slot);
-						for(String crate : Methods.getCrates()){
-							String name = settings.getFile(crate).getString("Crate.PhysicalKey.Name");
-							if(item.getItemMeta().getDisplayName().equals(Methods.color(name))){
-								Methods.addKeys(1, player, crate, KeyType.VIRTUAL_KEY);
-								player.sendMessage(Methods.getPrefix()+Methods.color("&a&l+1 "+name));
-								return;
-							}
-						}
-					}
-				}
-			}
-		}
+	
+	public static Plugin getPlugin(){
+		return Bukkit.getPluginManager().getPlugin("CrazyCrates");
 	}
+	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e){
 		final Player player = e.getPlayer();
@@ -652,4 +615,5 @@ public class Main extends JavaPlugin implements Listener{
 			}
 		}, 40);
 	}
+	
 }

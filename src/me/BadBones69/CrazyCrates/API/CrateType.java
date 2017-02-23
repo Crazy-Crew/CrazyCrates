@@ -13,10 +13,10 @@ public enum CrateType {
 	WHEEL("Wheel"), 
 	WONDER("Wonder");
 	
-	String Name;
+	private String Name;
 	
 	private CrateType(String name){
-		Name=name;
+		Name = name;
 	}
 	
 	public String getName(){
