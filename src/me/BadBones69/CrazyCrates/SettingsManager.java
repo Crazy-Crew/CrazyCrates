@@ -142,6 +142,9 @@ public class SettingsManager {
 	public ArrayList<File> getAllCrates() {
 		ArrayList<File> files = new ArrayList<File>();
 		for (String name : cratefolder.list()) {
+			if (!name.equalsIgnoreCase(name.substring(name.lastIndexOf('.') + 1, name.length()), "yml")) {
+				continue;
+			}
 			if (!name.equalsIgnoreCase(".DS_Store")) {
 				files.add(new File(cratefolder, name));
 			}
@@ -152,6 +155,9 @@ public class SettingsManager {
 	public ArrayList<String> getAllCratesNames() {
 		ArrayList<String> files = new ArrayList<String>();
 		for (String name : cratefolder.list()) {
+			if (!name.equalsIgnoreCase(name.substring(name.lastIndexOf('.') + 1, name.length()), "yml")) {
+				continue;
+			}
 			if (!name.equalsIgnoreCase(".DS_Store")) {
 				File f = new File(cratefolder, name);
 				files.add(f.getName().replaceAll(".yml", ""));
