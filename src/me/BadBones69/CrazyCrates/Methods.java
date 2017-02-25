@@ -587,9 +587,7 @@ public class Methods{
 	public static ArrayList<String> getCrates(){
 		ArrayList<String> crates = new ArrayList<String>();
 		for(String crate : Main.settings.getAllCratesNames()){
-			if(!crate.equalsIgnoreCase(".DS_Store")){
-				crates.add(crate);
-			}
+			crates.add(crate);
 		}
 		return crates;
 	}
