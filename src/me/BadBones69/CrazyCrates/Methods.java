@@ -743,15 +743,6 @@ public class Methods{
 		return min+i.nextInt(max-min);
 	}
 	
-	public static boolean isSimilar(ItemStack one, ItemStack two){
-		if(one.getType() == two.getType()){
-			if((one.hasItemMeta())){
-				
-			}
-		}
-		return false;
-	}
-	
 	public static boolean isKey(ItemStack one, ItemStack two){
 		if(one.getType() == two.getType()){
 			if(one.hasItemMeta()){
