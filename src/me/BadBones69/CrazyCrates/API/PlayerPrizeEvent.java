@@ -8,7 +8,7 @@ public class PlayerPrizeEvent extends Event{
 	
 	private Player player;
 	private CrateType crateType;
-	private String prize;
+	private Prize prize;
 	private String crateName;
 	
 	private static final HandlerList handlers = new HandlerList();
@@ -21,7 +21,7 @@ public class PlayerPrizeEvent extends Event{
 	    return handlers;
 	}
 	
-	public PlayerPrizeEvent(Player player, CrateType crateType, String crateName, String prize){
+	public PlayerPrizeEvent(Player player, CrateType crateType, String crateName, Prize prize){
 		this.player = player;
 		this.crateType = crateType;
 		this.prize = prize;
@@ -40,7 +40,7 @@ public class PlayerPrizeEvent extends Event{
 		return crateName;
 	}
 	
-	public String getPrize(){
+	public Prize getPrize(){
 		return prize;
 	}
 	

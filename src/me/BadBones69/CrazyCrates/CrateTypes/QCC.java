@@ -11,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +26,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import me.BadBones69.CrazyCrates.CrateControl;
@@ -37,9 +35,9 @@ import me.BadBones69.CrazyCrates.Methods;
 import me.BadBones69.CrazyCrates.ParticleEffect;
 import me.BadBones69.CrazyCrates.ParticleEffect.BlockData;
 import me.BadBones69.CrazyCrates.API.CrateType;
-import me.BadBones69.CrazyCrates.API.CrazyCrates;
 import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
+import me.BadBones69.CrazyCrates.API.Prize;
 import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
 public class QCC implements Listener{ // Quad Crate Control.
@@ -52,7 +50,6 @@ public class QCC implements Listener{ // Quad Crate Control.
 	public static HashMap<Player, ArrayList<Entity>> Rewards = new HashMap<Player, ArrayList<Entity>>();
 	public static HashMap<Player, Integer> P = new HashMap<Player, Integer>();
 	public static HashMap<Player, Integer> timer = new HashMap<Player, Integer>();
-	private static CrazyCrates CC = CrazyCrates.getInstance();
 	
 	/**
 	 * Starts building the Crate Setup.
@@ -116,9 +113,6 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}
 			}
 		}
-		if(!CrateControl.Rewards.containsKey(player)){
-			CC.getItems(player);
-		}
 		player.teleport(loc.clone().add(.5,0,.5));
 		for(Entity en : player.getNearbyEntities(2, 2, 2)){
 			if(en instanceof Player){
@@ -127,8 +121,8 @@ public class QCC implements Listener{ // Quad Crate Control.
 				p.setVelocity(v);
 			}
 		}
-		if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){
-			String msg = Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.BroadCast"));
+		if(GUI.Crate.get(player).getFile().getBoolean("Crate.OpeningBroadCast")){
+			String msg = Methods.color(GUI.Crate.get(player).getFile().getString("Crate.BroadCast"));
 			msg = msg.replaceAll("%Prefix%", Methods.getPrefix());
 			msg = msg.replaceAll("%prefix%", Methods.getPrefix());
 			msg = msg.replaceAll("%Player%", player.getName());
@@ -360,9 +354,6 @@ public class QCC implements Listener{ // Quad Crate Control.
 		crates.remove(player);
 		chests.remove(player);
 		GUI.Crate.remove(player);
-		if(CrateControl.Rewards.containsKey(player)){
-			CrateControl.Rewards.remove(player);
-		}
 		if(P.containsKey(player)){
 			Bukkit.getScheduler().cancelTask(P.get(player));
 			P.remove(player);
@@ -402,21 +393,18 @@ public class QCC implements Listener{ // Quad Crate Control.
 				for(final Player player : chests.keySet()){
 					for(final Location l : chests.get(player)){
 						Location B = e.getClickedBlock().getLocation();
-						if(l.getBlockX()==B.getBlockX()&&l.getBlockY()==B.getBlockY()&&l.getBlockZ()==B.getBlockZ()){
-							FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
+						if(l.getBlockX() == B.getBlockX() && l.getBlockY() == B.getBlockY() && l.getBlockZ() == B.getBlockZ()){
 							e.setCancelled(true);
-							if(player==e.getPlayer()){
+							if(player == e.getPlayer()){
 								Methods.playChestAction(e.getClickedBlock(), true);
 								if(!opened.get(player).get(l)){
 									ArrayList<Entity> rewards = new ArrayList<Entity>();
-									ItemStack it = CC.pickItem(player, B.clone().add(.5, 1.3, .5));
-									String path = CrateControl.Rewards.get(player).get(it);
-									CC.getReward(player, path);
-									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.QUAD_CRATE, CrateControl.Crate.get(player), path.replace("Crate.Prizes.", "")));
-									String name = Methods.color(file.getString(CrateControl.Rewards.get(player).get(it)+".DisplayName"));
-									final Entity reward = player.getWorld().dropItem(B.clone().add(.5, 1, .5), Methods.addLore(it.clone(), new Random().nextInt(Integer.MAX_VALUE) + ""));
+									Prize prize = Main.CC.pickPrize(player, B.clone().add(.5, 1.3, .5));
+									Main.CC.getReward(player, prize);
+									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.QUAD_CRATE, CrateControl.Crate.get(player).getName(), prize));
+									final Entity reward = player.getWorld().dropItem(B.clone().add(.5, 1, .5), Methods.addLore(prize.getDisplayItem().clone(), new Random().nextInt(Integer.MAX_VALUE) + ""));
 									reward.setVelocity(new Vector(0,.2,0));
-									reward.setCustomName(name);
+									reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
 									reward.setCustomNameVisible(true);
 									if(Rewards.containsKey(player)){
 										for(Entity h : Rewards.get(player)){
@@ -425,7 +413,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 									}
 									rewards.add(reward);
 									Rewards.put(player, rewards);
-									if(file.getBoolean("Crate.Prizes."+path.replace("Crate.Prizes.", "")+".Firework")){
+									if(prize.toggleFirework()){
 										Methods.fireWork(B.clone().add(.5, 1, .5));
 									}
 								}
@@ -495,9 +483,6 @@ public class QCC implements Listener{ // Quad Crate Control.
 											chests.remove(player);
 											Rest.remove(player);
 											GUI.Crate.remove(player);
-											if(CrateControl.Rewards.containsKey(player)){
-												CrateControl.Rewards.remove(player);
-											}
 											if(timer.containsKey(player)){
 												Bukkit.getScheduler().cancelTask(timer.get(player));
 												timer.remove(player);

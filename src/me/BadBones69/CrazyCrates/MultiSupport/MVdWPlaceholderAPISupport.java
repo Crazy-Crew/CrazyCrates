@@ -9,11 +9,12 @@ import be.maximvdw.placeholderapi.PlaceholderReplaceEvent;
 import be.maximvdw.placeholderapi.PlaceholderReplacer;
 import me.BadBones69.CrazyCrates.Main;
 import me.BadBones69.CrazyCrates.Methods;
+import me.BadBones69.CrazyCrates.API.Crate;
 
 public class MVdWPlaceholderAPISupport {
 	
 	public static void registerPlaceholders(Plugin plugin){
-		for(final String crate : Main.settings.getAllCratesNames()){
+		for(final Crate crate : Main.CC.getCrates()){
 			PlaceholderAPI.registerPlaceholder(plugin, "crazycrates_" + crate, new PlaceholderReplacer() {
 				@Override
 				public String onPlaceholderReplace(PlaceholderReplaceEvent e) {

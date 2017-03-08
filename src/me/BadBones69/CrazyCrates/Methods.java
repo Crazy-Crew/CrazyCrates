@@ -30,6 +30,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
+import me.BadBones69.CrazyCrates.API.Crate;
 import me.BadBones69.CrazyCrates.API.FireworkDamageAPI;
 import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_10_R1;
@@ -57,61 +58,16 @@ public class Methods{
 		return msg;
 	}
 	
-	public static ItemStack displayItem(Player player, Location chest){
-		HashMap<ItemStack, String> items = getItems(player);
-		int stop = 0;
-		for(;items.size()==0;stop++){
-			if(stop==100){
-				break;
-			}
-			items=getItems(player);
-		}
-		Random r = new Random();
-		ArrayList<ItemStack> I = new ArrayList<ItemStack>();
-		ArrayList<String> P = new ArrayList<String>();
-		I.addAll(items.keySet());
-		for(ItemStack it : I){
-			P.add(items.get(it));
-		}
-		int pick = r.nextInt(I.size());
-		String pa = P.get(pick);
-		path.put(player, pa);
-		FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
-		if(file.contains(path.get(player) + ".Items")){
-			for(ItemStack i : getFinalItems(path.get(player), player)){
-				player.getInventory().addItem(i);
-			}
-		}
-		if(file.contains(path.get(player) + ".Commands")){
-			for(String command : file.getStringList(path.get(player) + ".Commands")){
-				command = color(command);
-				command = command.replace("%Player%", player.getName());
-				command = command.replace("%player%", player.getName());
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-			}
-		}
-		if(file.contains(path.get(player) + ".Messages")){
-			for(String msg : file.getStringList(path + ".Messages")){
-				msg = Methods.color(msg);
-				msg = msg.replace("%Player%", player.getName());
-				msg = msg.replace("%player%", player.getName());
-				player.sendMessage(msg);
-			}
-		}
-		if(file.getBoolean(path.get(player) + ".Firework")){
-			fireWork(chest);
-		}
-		return I.get(pick);
-	}
 	public static HashMap<ItemStack, String> getItems(Player player){
 		HashMap<ItemStack, String> items = new HashMap<ItemStack, String>();
-		for(String reward : Main.settings.getFile(GUI.Crate.get(player)).getConfigurationSection("Crate.Prizes").getKeys(false)){
-			String id = Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.Prizes." + reward + ".DisplayItem");
-			String name = Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.Prizes." + reward + ".DisplayName");
-			int chance = Main.settings.getFile(GUI.Crate.get(player)).getInt("Crate.Prizes." + reward + ".Chance");
+		FileConfiguration file = GUI.Crate.get(player).getFile();
+		for(String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)){
+			String id = file.getString("Crate.Prizes." + reward + ".DisplayItem");
+			String name = file.getString("Crate.Prizes." + reward + ".DisplayName");
+			int chance = file.getInt("Crate.Prizes." + reward + ".Chance");
 			int max = 99;
-			if(Main.settings.getFile(GUI.Crate.get(player)).contains("Crate.Prizes." + reward + ".MaxRange")){
-				max=Main.settings.getFile(GUI.Crate.get(player)).getInt("Crate.Prizes." + reward + ".MaxRange")-1;
+			if(file.contains("Crate.Prizes." + reward + ".MaxRange")){
+				max=file.getInt("Crate.Prizes." + reward + ".MaxRange")-1;
 			}
 			try{
 				ItemStack item = makeItem(id, 1, name);
@@ -127,47 +83,7 @@ public class Methods{
 		}
 		return items;
 	}
-	public static ArrayList<ItemStack> getFinalItems(String reward, Player player){
-		ArrayList<ItemStack> items = new ArrayList<ItemStack>();
-		for(String l : Main.settings.getFile(GUI.Crate.get(player)).getStringList(reward+".Items")){
-			ArrayList<String> lore = new ArrayList<String>();
-			HashMap<Enchantment, Integer> enchs = new HashMap<Enchantment, Integer>();
-			String name = "";
-			int amount = 1;
-			String m = "Stone";
-			for(String i : l.split(", ")){
-				if(i.contains("Item:")){
-					i = i.replaceAll("Item:", "");
-					m=i;
-				}
-				if(i.contains("Name:")){
-					i = i.replaceAll("Name:", "");
-					i = i.replaceAll("_", " ");
-					name = color(i);
-				}
-				if(i.contains("Amount:")){
-					i = i.replaceAll("Amount:", "");
-					amount = Integer.parseInt(i);
-				}
-				if(i.contains("Lore:")){
-					i = i.replaceAll("Lore:", "");
-					for(String L : i.split(",")){
-						L = color(L);
-						lore.add(L);
-					}
-				}
-				for(Enchantment enc : Enchantment.values()){
-					if(i.contains(enc.getName() + ":") || i.contains(getEnchantmentName(enc) + ":")){
-						String[] breakdown = i.split(":");
-						int lvl = Integer.parseInt(breakdown[1]);
-						enchs.put(enc, lvl);
-					}
-				}
-			}
-			items.add(makeItem(m, amount, name, lore, enchs));
-		}
-		return items;
-	}
+	
 	public static String getEnchantmentName(Enchantment en){
 		HashMap<String, String> enchants = new HashMap<String, String>();
 		enchants.put("ARROW_DAMAGE", "Power");
@@ -545,42 +461,42 @@ public class Methods{
 		}
 		return true;
 	}
-	public static int getKeys(Player player, String crate){
+	public static int getKeys(Player player, Crate crate){
 		String uuid = player.getUniqueId().toString();
-		return Main.settings.getData().getInt("Players."+uuid+"."+crate);
+		return Main.settings.getData().getInt("Players." + uuid + "." + crate.getName());
 	}
-	public static void takeKeys(int Amount, Player player, String crate){
+	public static void takeKeys(int Amount, Player player, Crate crate){
 		String uuid = player.getUniqueId().toString();
 		int keys = getKeys(player, crate);
-		Main.settings.getData().set("Players."+uuid+"."+crate, keys-Amount);
+		Main.settings.getData().set("Players." + uuid + "." + crate.getName(), keys - Amount);
 		Main.settings.saveData();
 	}
-	public static void addKeys(int Amount, Player player, String crate, KeyType type){
+	public static void addKeys(int Amount, Player player, Crate crate, KeyType type){
 		if(type == KeyType.VIRTUAL_KEY){
 			String uuid = player.getUniqueId().toString();
 			int keys = getKeys(player, crate);
-			Main.settings.getData().set("Players."+uuid+"."+crate, keys+Amount);
+			Main.settings.getData().set("Players." + uuid + "." + crate.getName(), keys + Amount);
 			Main.settings.saveData();
-			return;
-		} else if(type == KeyType.PHYSICAL_KEY){
-			String name = color(Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name"));
-			List<String> lore = Main.settings.getFile(crate).getStringList("Crate.PhysicalKey.Lore");
-			String ID = Main.settings.getFile(crate).getString("Crate.PhysicalKey.Item");
+		}else if(type == KeyType.PHYSICAL_KEY){
+			FileConfiguration file = crate.getFile();
+			String name = color(file.getString("Crate.PhysicalKey.Name"));
+			List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
+			String ID = file.getString("Crate.PhysicalKey.Item");
 			Boolean enchanted = false;
-			if(Main.settings.getFile(crate).contains("Crate.PhysicalKey.Glowing")){
-				enchanted=Main.settings.getFile(crate).getBoolean("Crate.PhysicalKey.Glowing");
+			if(file.contains("Crate.PhysicalKey.Glowing")){
+				enchanted = file.getBoolean("Crate.PhysicalKey.Glowing");
 			}
 			player.getInventory().addItem(makeItem(ID, Amount, name, lore, enchanted));
-			return;
 		}
 	}
-	public static ItemStack getKey(String crate){
-		String name = color(Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name"));
-		List<String> lore = Main.settings.getFile(crate).getStringList("Crate.PhysicalKey.Lore");
-		String ID = Main.settings.getFile(crate).getString("Crate.PhysicalKey.Item");
+	public static ItemStack getKey(Crate crate){
+		FileConfiguration file = crate.getFile();
+		String name = color(file.getString("Crate.PhysicalKey.Name"));
+		List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
+		String ID = file.getString("Crate.PhysicalKey.Item");
 		Boolean enchanted = false;
-		if(Main.settings.getFile(crate).contains("Crate.PhysicalKey.Glowing")){
-			enchanted = Main.settings.getFile(crate).getBoolean("Crate.PhysicalKey.Glowing");
+		if(file.contains("Crate.PhysicalKey.Glowing")){
+			enchanted = file.getBoolean("Crate.PhysicalKey.Glowing");
 		}
 		return makeItem(ID, 1, name, lore, enchanted);
 	}
@@ -741,7 +657,7 @@ public class Methods{
 		return min+i.nextInt(max-min);
 	}
 	
-	public static boolean isKey(ItemStack one, ItemStack two){
+	public static boolean isSimilar(ItemStack one, ItemStack two){
 		if(one.getType() == two.getType()){
 			if(one.hasItemMeta()){
 				if(one.getItemMeta().hasDisplayName()){

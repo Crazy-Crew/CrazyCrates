@@ -19,19 +19,32 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import me.BadBones69.CrazyCrates.API.CrazyCrates;
+import me.BadBones69.CrazyCrates.API.Crate;
 import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.CrateTypes.CrateOnTheGo;
 
 public class CrateControl implements Listener{ //Crate Control
 	
-	public static HashMap<Player, HashMap<ItemStack, ItemStack>> Keys = new HashMap<Player, HashMap<ItemStack, ItemStack>>();
-	public static HashMap<Player, HashMap<ItemStack, String>> Rewards = new HashMap<Player, HashMap<ItemStack, String>>();
-	public static HashMap<Player, String> Crate = new HashMap<Player, String>();
+	/**
+	 * The keys for the /CE Admin menu.
+	 */
+	public static HashMap<Player, HashMap<ItemStack, ItemStack>> previewKeys = new HashMap<Player, HashMap<ItemStack, ItemStack>>();
+	/**
+	 * The crates that players are in.
+	 */
+	public static HashMap<Player, Crate> Crate = new HashMap<Player, Crate>();
+	/**
+	 * The key itemstack for the crate to remove 1 when used.
+	 */
 	public static HashMap<Player, ItemStack> Key = new HashMap<Player, ItemStack>();
+	/**
+	 * The last location for the quad crate to teleport players back.
+	 */
 	public static HashMap<Player, Location> LastLoc = new HashMap<Player, Location>();
+	/**
+	 * A list of crate locations that are in use.
+	 */
 	public static HashMap<Player, Location> InUse = new HashMap<Player, Location>();
-	private CrazyCrates CC = CrazyCrates.getInstance();
 	
 	@EventHandler
 	public void onCrateOpen(PlayerInteractEvent e){
@@ -44,19 +57,23 @@ public class CrateControl implements Listener{ //Crate Control
 				Main.settings.saveLocations();
 			}
 			for(String location : Main.settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
-				String Crate = Main.settings.getLocations().getString("Locations."+location+".Crate");
+				String crate = Main.settings.getLocations().getString("Locations."+location+".Crate");
 				World w = Bukkit.getWorld(Main.settings.getLocations().getString("Locations."+location+".World"));
-				int x = Main.settings.getLocations().getInt("Locations."+location+".X");
-				int y = Main.settings.getLocations().getInt("Locations."+location+".Y");
-				int z = Main.settings.getLocations().getInt("Locations."+location+".Z");
+				int x = Main.settings.getLocations().getInt("Locations." + location + ".X");
+				int y = Main.settings.getLocations().getInt("Locations." + location + ".Y");
+				int z = Main.settings.getLocations().getInt("Locations." + location + ".Z");
 				Location loc = new Location(w, x, y, z);
 				if(block.getLocation().equals(loc)){
 					e.setCancelled(true);
-					if(Crate.equalsIgnoreCase("Menu")){
+					if(crate.equalsIgnoreCase("Menu")){
 						return;
 					}else{
 						if(config.getBoolean("Settings.Show-Preview")){
-							GUI.openPreview(player, Crate);
+							for(Crate c : Main.CC.getCrates()){
+								if(c.getName().equalsIgnoreCase(crate)){
+									GUI.openPreview(player, c);
+								}
+							}
 						}
 					}
 					return;
@@ -96,16 +113,25 @@ public class CrateControl implements Listener{ //Crate Control
 						ItemStack key = null;
 						Boolean hasKey = false;
 						Boolean isPhysical = false;
-						if(e.hasItem()){
+						if(Methods.getItemInHand(player) != null){
 							key = Methods.getItemInHand(player);
-							if(Methods.isKey(key, Methods.getKey(crate))){
-								hasKey = true;
-								isPhysical = true;
+							for(Crate c : Main.CC.getCrates()){
+								if(c.getName().equalsIgnoreCase(crate)){
+									if(Methods.isSimilar(key, Methods.getKey(c))){
+										hasKey = true;
+										isPhysical = true;
+									}
+								}
 							}
+							
 						}
 						if(config.getBoolean("Settings.Physical-Accepts-Virtual-Keys")){
-							if(Methods.getKeys(player, crate) >= 1){
-								hasKey = true;
+							for(Crate c : Main.CC.getCrates()){
+								if(c.getName().equalsIgnoreCase(crate)){
+									if(Methods.getKeys(player, c) >= 1){
+										hasKey = true;
+									}
+								}
 							}
 						}
 						if(hasKey){
@@ -126,8 +152,11 @@ public class CrateControl implements Listener{ //Crate Control
 								}
 								return;
 							}
-							GUI.Crate.put(player, crate);
-							Crate.put(player, crate);
+							for(Crate c : Main.CC.getCrates()){
+								if(c.getName().equalsIgnoreCase(crate)){
+									GUI.Crate.put(player, c);
+								}
+							}
 							if(isPhysical){
 								Key.put(player, key);
 								Methods.Key.put(player, KeyType.PHYSICAL_KEY);
@@ -135,7 +164,12 @@ public class CrateControl implements Listener{ //Crate Control
 								Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 								LastLoc.put(player, player.getLocation());
 							}
-							CC.openCrate(player, crate, loc);
+							for(Crate c : Main.CC.getCrates()){
+								if(c.getName().equalsIgnoreCase(crate)){
+									Crate.put(player, c);
+									Main.CC.openCrate(player, c.getCrateType(), loc);
+								}
+							}
 							return;
 						}else{
 							if(config.getBoolean("Settings.KnockBack")){
@@ -166,27 +200,27 @@ public class CrateControl implements Listener{ //Crate Control
 				}
 				int slot = e.getRawSlot();
 				if(slot<inv.getSize()){
-					if(e.getAction()==InventoryAction.PICKUP_ALL){
+					if(e.getAction() == InventoryAction.PICKUP_ALL){
 						ItemStack item = inv.getItem(slot);
-						if(item!=null){
+						if(item != null){
 							if(item.getType()!=Material.AIR){
-								for(String crate : Methods.getCrates()){
-									if(Main.settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
+								for(Crate crate : Main.CC.getCrates()){
+									if(crate.getFile().getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
 										CrateOnTheGo.giveCrate(player, 1, crate);
 										return;
 									}
 								}
-								player.getInventory().addItem(Keys.get(player).get(item));
+								player.getInventory().addItem(previewKeys.get(player).get(item));
 							}
 						}
 					}
-					if(e.getAction()==InventoryAction.PICKUP_HALF){
+					if(e.getAction() == InventoryAction.PICKUP_HALF){
 						ItemStack item = inv.getItem(slot);
-						for(String crate : Methods.getCrates()){
-							String name = Main.settings.getFile(crate).getString("Crate.PhysicalKey.Name");
+						for(Crate crate : Main.CC.getCrates()){
+							String name = crate.getFile().getString("Crate.PhysicalKey.Name");
 							if(item.getItemMeta().getDisplayName().equals(Methods.color(name))){
 								Methods.addKeys(1, player, crate, KeyType.VIRTUAL_KEY);
-								player.sendMessage(Methods.getPrefix()+Methods.color("&a&l+1 "+name));
+								player.sendMessage(Methods.getPrefix()+Methods.color("&a&l+1 " + name));
 								return;
 							}
 						}

@@ -1,14 +1,16 @@
 package me.BadBones69.CrazyCrates.API;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,13 +30,14 @@ import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
 public class CrazyCrates {
 	
 	private static CrazyCrates instance = new CrazyCrates();
+	private ArrayList<Crate> crates = new ArrayList<Crate>();
 	
 	public static CrazyCrates getInstance(){
 		return instance;
 	}
 	
-	public void openCrate(Player player, String crate, Location loc){
-		switch(CrateType.getFromName(Main.settings.getFile(crate).getString("Crate.CrateType"))){
+	public void openCrate(Player player, CrateType crate, Location loc){
+		switch(crate){
 			case MENU:
 				GUI.openGUI(player);
 				break;
@@ -61,7 +64,7 @@ public class CrazyCrates {
 				if(CrateControl.InUse.containsValue(loc)){
 					player.sendMessage(Methods.color(Methods.getPrefix() + Main.settings.getConfig().getString("Settings.QuickCrateInUse")));
 				}else{
-					FireCracker.startFireCracker(player, crate, loc);
+					FireCracker.startFireCracker(player, crate.getName(), loc);
 					CrateControl.InUse.put(player, loc);
 				}
 				break;
@@ -77,14 +80,9 @@ public class CrazyCrates {
 				if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
 					Methods.removeItem(CrateControl.Key.get(player), player);
 				}
-				GUI.Crate.put(player, crate);
-				if(!CrateControl.Rewards.containsKey(player)){
-					getItems(player);
-				}
-				ItemStack it = pickItem(player);
-				String path = CrateControl.Rewards.get(player).get(it);
-				getReward(player, path);
-				if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean(path + ".Firework")){
+				Prize prize = pickPrize(player);
+				getReward(player, prize);
+				if(prize.toggleFirework()){
 					Methods.fireWork(player.getLocation().add(0, 1, 0));
 				}
 				GUI.Crate.remove(player);
@@ -92,111 +90,179 @@ public class CrazyCrates {
 		}
 	}
 	
-	public void getReward(Player player, String path){
-		FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
-		if(file.contains(path + ".Items")){
-			for(ItemStack i : Methods.getFinalItems(path, player)){
-				if(!Methods.isInvFull(player)){
-					player.getInventory().addItem(i);
-				}else{
-					player.getWorld().dropItemNaturally(player.getLocation(), i);
+	public void loadCrates(){
+		crates.clear();
+		for(String crateName : Main.settings.getAllCratesNames()){
+			FileConfiguration file = Main.settings.getFile(crateName);
+			ArrayList<Prize> prizes = new ArrayList<Prize>();
+			for(String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)){
+				ArrayList<String> msgs = new ArrayList<String>();
+				ArrayList<String> commands = new ArrayList<String>();
+				for(String msg : file.getStringList("Crate.Prizes." + prize + ".Messages")){
+					msgs.add(msg);
 				}
+				for(String cmd : file.getStringList("Crate.Prizes." + prize + ".Commands")){
+					commands.add(cmd);
+				}
+				prizes.add(new Prize(prize, getDisplayItem(file, prize), msgs, commands,
+						getItems(file, prize), file.getInt("Crate.Prizes." + prize + ".Chance"), file.getInt("Crate.Prizes." + prize + ".MaxRange"), file.getBoolean("Crate.Prizes." + prize + ".Firework")));
 			}
-		}
-		if(file.contains(path + ".Commands")){
-			for(String command : file.getStringList(path + ".Commands")){
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Methods.color(command
-						.replace("%Player%", player.getName()).replace("%player%", player.getName())));
-			}
-		}
-		if(file.contains(path + ".Messages")){
-			for(String msg : file.getStringList(path + ".Messages")){
-				player.sendMessage(Methods.color(msg)
-						.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName()));
-			}
+			crates.add(new Crate(crateName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file));
 		}
 	}
 	
-	public ItemStack pickItem(Player player){
-		FileConfiguration file = Main.settings.getFile(CrateControl.Crate.get(player));
-		if(!CrateControl.Rewards.containsKey(player)){
-			getItems(player);
-		}
-		Set<ItemStack> items = CrateControl.Rewards.get(player).keySet();
-		ArrayList<ItemStack> Items = new ArrayList<ItemStack>();
-		Random r = new Random();
-		for(int stop = 0; Items.size() == 0; stop++){
-			if(stop == 100){
-				break;
+	public ArrayList<Crate> getCrates(){
+		return crates;
+	}
+	
+	public void getReward(Player player, Prize prize){
+		for(ItemStack i : prize.getItems()){
+			if(!Methods.isInvFull(player)){
+				player.getInventory().addItem(i);
+			}else{
+				player.getWorld().dropItemNaturally(player.getLocation(), i);
 			}
-			for(ItemStack i : items){
-				String path = CrateControl.Rewards.get(player).get(i);
-				ItemStack item = Methods.makeItem(file.getString(path + ".DisplayItem"), 1, file.getString(path + ".DisplayName"));
-				if(file.contains(path + ".Glowing")){
-					if(file.getBoolean(path + ".Glowing")){
-						item = Methods.addGlow(item);
-					}
-				}
-				int max = file.getInt(path + ".MaxRange");
-				int chance = file.getInt(path + ".Chance");
+		}
+		for(String command : prize.getCommands()){
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Methods.color(command
+					.replace("%Player%", player.getName()).replace("%player%", player.getName())));
+		}
+		for(String msg : prize.getMessages()){
+			player.sendMessage(Methods.color(msg)
+					.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName()));
+		}
+	}
+	
+	public Prize pickPrize(Player player){
+		Crate crate = CrateControl.Crate.get(player);
+		ArrayList<Prize> prizes = new ArrayList<Prize>();
+		for(int stop = 0; prizes.size() == 0 && stop <= 2000; stop++){
+			for(Prize prize : crate.getPrizes()){
+				int max = prize.getMaxRange();
+				int chance = prize.getChance();
 				int num;
 				for(int counter = 1; counter <= 1; counter++){
-					num = 1 + r.nextInt(max);
+					num = 1 + new Random().nextInt(max);
 					if(num >= 1 && num <= chance){
-						Items.add(item);
+						prizes.add(prize);
 					}
 				}
 			}
 		}
-		return Items.get(r.nextInt(Items.size()));
+		return prizes.get(new Random().nextInt(prizes.size()));
 	}
 	
-	public ItemStack pickItem(Player player, Location loc){
-		FileConfiguration file = Main.settings.getFile(GUI.Crate.get(player));
-		if(!CrateControl.Rewards.containsKey(player)){
-			getItems(player);
-		}
-		Set<ItemStack> items = CrateControl.Rewards.get(player).keySet();
-		ArrayList<ItemStack> Items = new ArrayList<ItemStack>();
-		Random r = new Random();
-		for(int stop = 0; Items.size() == 0; stop++){
-			if(stop == 100){
-				break;
-			}
-			for(ItemStack i : items){
-				String path = CrateControl.Rewards.get(player).get(i);
-				ItemStack item = Methods.makeItem(file.getString(path + ".DisplayItem"), 1, file.getString(path + ".DisplayName"));
-				int max = file.getInt(path + ".MaxRange");
-				int chance = file.getInt(path + ".Chance");
+	public Prize pickPrize(Player player, Location loc){
+		Crate crate = CrateControl.Crate.get(player);
+		ArrayList<Prize> prizes = new ArrayList<Prize>();
+		for(int stop = 0; prizes.size() == 0 && stop <= 2000; stop++){
+			for(Prize prize : crate.getPrizes()){
+				int max = prize.getMaxRange();
+				int chance = prize.getChance();
 				int num;
 				for(int counter = 1; counter <= 1; counter++){
-					num = 1 + r.nextInt(max);
-					if(num >= 1 && num <= chance)Items.add(item);
+					num = 1 + new Random().nextInt(max);
+					if(num >= 1 && num <= chance){
+						prizes.add(prize);
+					}
 				}
 			}
 		}
-		ItemStack item = Items.get(r.nextInt(Items.size()));
-		if(file.getBoolean("Crate.Prizes." + CrateControl.Rewards.get(player).get(item) + ".Firework")){
+		Prize prize = prizes.get(new Random().nextInt(prizes.size()));
+		if(prize.toggleFirework()){
 			Methods.fireWork(loc);
 		}
-		return item;
+		return prize;
 	}
 	
-	public void getItems(Player player){
-		FileConfiguration file = Main.settings.getFile(CrateControl.Crate.get(player));
-		ArrayList<ItemStack> items = new ArrayList<ItemStack>();
-		HashMap<ItemStack, String> path = new HashMap<ItemStack, String>();
-		for(String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)){
-			String id = file.getString("Crate.Prizes." + reward + ".DisplayItem");
-			String name = file.getString("Crate.Prizes." + reward + ".DisplayName");
-			try{
-				items.add(Methods.makeItem(id, 1, name));
-				path.put(Methods.makeItem(id, 1, name), "Crate.Prizes."+reward);
-			}catch(Exception e){
-				continue;
+	private ItemStack getKey(FileConfiguration file){
+		String name = file.getString("Crate.PhysicalKey.Name");
+		List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
+		String id = file.getString("Crate.PhysicalKey.Item");
+		Boolean enchanted = false;
+		if(file.contains("Crate.PhysicalKey.Glowing")){
+			enchanted = file.getBoolean("Crate.PhysicalKey.Glowing");
+		}
+		return Methods.makeItem(id, 1, name, lore, enchanted);
+	}
+	
+	private ItemStack getDisplayItem(FileConfiguration file, String prize){
+		String path = "Crate.Prizes." + prize + ".";
+		String id = file.getString(path + "DisplayItem");
+		String name = file.getString(path + "DisplayName");
+		int amount = 1;
+		if(file.contains(path + "DisplayAmount")){
+			amount = file.getInt(path + "DisplayAmount");
+		}
+		List<String> lore = new ArrayList<String>();
+		if(file.contains(path + "Lore")){
+			lore = file.getStringList(path + "Lore");
+		}
+		HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+		if(file.contains(path + "DisplayEnchantments")){
+			for(String enchant : file.getStringList(path + "DisplayEnchantments")){
+				for(Enchantment enc : Enchantment.values()){
+					enchant = enchant.toLowerCase();
+					if(enchant.contains(enc.getName().toLowerCase() + ":") || enchant.contains(Methods.getEnchantmentName(enc).toLowerCase() + ":")){
+						String[] breakdown = enchant.split(":");
+						int lvl = Integer.parseInt(breakdown[1]);
+						enchants.put(enc, lvl);
+					}
+				}
 			}
 		}
-		CrateControl.Rewards.put(player, path);
+		boolean glowing = false;
+		if(file.contains(path + "Glowing")){
+			glowing = file.getBoolean(path + "Glowing");
+		}
+		try{
+			return Methods.makeItem(id, amount, name, lore, enchants, glowing);
+		}catch(Exception e){
+			Bukkit.broadcastMessage("1");
+			return Methods.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
+		}
+	}
+	
+	private ArrayList<ItemStack> getItems(FileConfiguration file, String prize){
+		ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+		for(String l : file.getStringList("Crate.Prizes." + prize + ".Items")){
+			ArrayList<String> lore = new ArrayList<String>();
+			HashMap<Enchantment, Integer> enchs = new HashMap<Enchantment, Integer>();
+			String name = "";
+			int amount = 1;
+			String m = "Stone";
+			for(String i : l.split(", ")){
+				if(i.contains("Item:")){
+					i = i.replaceAll("Item:", "");
+					m = i;
+				}
+				if(i.contains("Name:")){
+					i = i.replaceAll("Name:", "");
+					i = i.replaceAll("_", " ");
+					name = Methods.color(i);
+				}
+				if(i.contains("Amount:")){
+					i = i.replaceAll("Amount:", "");
+					amount = Integer.parseInt(i);
+				}
+				if(i.contains("Lore:")){
+					i = i.replaceAll("Lore:", "");
+					for(String L : i.split(",")){
+						L = Methods.color(L);
+						lore.add(L);
+					}
+				}
+				for(Enchantment enc : Enchantment.values()){
+					if(i.contains(enc.getName() + ":") || i.contains(Methods.getEnchantmentName(enc) + ":")){
+						String[] breakdown = i.split(":");
+						int lvl = Integer.parseInt(breakdown[1]);
+						enchs.put(enc, lvl);
+					}
+				}
+			}
+			items.add(Methods.makeItem(m, amount, name, lore, enchs));
+		}
+		return items;
 	}
 	
 }

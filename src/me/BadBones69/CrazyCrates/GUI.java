@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -18,8 +19,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import me.BadBones69.CrazyCrates.API.Crate;
 import me.BadBones69.CrazyCrates.API.CrateType;
 import me.BadBones69.CrazyCrates.API.KeyType;
+import me.BadBones69.CrazyCrates.API.Prize;
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
 import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
@@ -29,23 +32,31 @@ import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
 
 public class GUI implements Listener{
 	
-	public static HashMap<Player, String> Crate = new HashMap<Player, String>();
+	/**
+	 * The crate that the player is opening.
+	 */
+	public static HashMap<Player, Crate> Crate = new HashMap<Player, Crate>();
+	/**
+	 * All the preview inventories.
+	 */
+	private static HashMap<Crate, Inventory> previews = new HashMap<Crate, Inventory>();
 	
 	public static void openGUI(Player player){
 		Inventory inv = Bukkit.createInventory(null, Main.settings.getConfig().getInt("Settings.InventorySize"), Methods.color(Main.settings.getConfig().getString("Settings.InventoryName")));
-		for(String crate : Main.settings.getAllCratesNames()){
-			if(!Main.settings.getFile(crate).contains("Crate.InGUI")){
-				Main.settings.getFile(crate).set("Crate.InGUI", true);
+		for(Crate crate : Main.CC.getCrates()){
+			FileConfiguration file = crate.getFile();
+			if(!file.contains("Crate.InGUI")){
+				file.set("Crate.InGUI", true);
 				Main.settings.saveAll();
 			}
-			if(Main.settings.getFile(crate).getBoolean("Crate.InGUI")){
+			if(file.getBoolean("Crate.InGUI")){
 				String path = "Crate.";
-				int slot = Main.settings.getFile(crate).getInt(path+"Slot")-1;
-				String ma = Main.settings.getFile(crate).getString(path+"Item");
-				String name = Main.settings.getFile(crate).getString(path+"Name");
+				int slot = file.getInt(path+"Slot")-1;
+				String ma = file.getString(path+"Item");
+				String name = file.getString(path+"Name");
 				ArrayList<String> lore = new ArrayList<String>();
 				String keys = NumberFormat.getNumberInstance().format(Methods.getKeys(player, crate));
-				for(String i : Main.settings.getFile(crate).getStringList(path+"Lore")){
+				for(String i : file.getStringList(path+"Lore")){
 					lore.add(i
 							.replaceAll("%Keys%", keys).replaceAll("%keys%", keys)
 							.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName()));
@@ -56,40 +67,13 @@ public class GUI implements Listener{
 		player.openInventory(inv);
 	}
 	
-	public static void openPreview(Player player, String crate){
-		int slots = 9;
-		for(int size = Main.settings.getFile(crate).getConfigurationSection("Crate.Prizes").getKeys(false).size(); size > 9 && slots < 54; size -= 9){
-			slots += 9;
-		}
-		Inventory inv = Bukkit.createInventory(null, slots, Methods.color(Main.settings.getFile(crate).getString("Crate.Name")));
-		for(String reward : Main.settings.getFile(crate).getConfigurationSection("Crate.Prizes").getKeys(false)){
-			String id = Main.settings.getFile(crate).getString("Crate.Prizes."+reward+".DisplayItem");
-			String name = Main.settings.getFile(crate).getString("Crate.Prizes."+reward+".DisplayName");
-			List<String> lore = Main.settings.getFile(crate).getStringList("Crate.Prizes."+reward+".Lore");
-			HashMap<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
-			Boolean glowing = false;
-			int amount = 1;
-			if(Main.settings.getFile(crate).contains("Crate.Prizes."+reward+".Glowing")){
-				glowing = Main.settings.getFile(crate).getBoolean("Crate.Prizes."+reward+".Glowing");
-			}
-			if(Main.settings.getFile(crate).contains("Crate.Prizes."+reward+".DisplayAmount")){
-				amount = Main.settings.getFile(crate).getInt("Crate.Prizes."+reward+".DisplayAmount");
-			}
-			if(Main.settings.getFile(crate).contains("Crate.Prizes."+reward+".DisplayEnchantments")){
-				for(String enchant : Main.settings.getFile(crate).getStringList("Crate.Prizes."+reward+".DisplayEnchantments")){
-					String[] b = enchant.split(":");
-					enchantments.put(Enchantment.getByName(b[0]), Integer.parseInt(b[1]));
-				}
-			}
-			try{
-				if(enchantments.size() > 0){
-					inv.setItem(inv.firstEmpty(), Methods.makeItem(id, amount, name, lore, enchantments, glowing));
-				}else{
-					inv.setItem(inv.firstEmpty(), Methods.makeItem(id, amount, name, lore, glowing));
-				}
-			}catch(Exception e){
-				inv.addItem(Methods.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error","&cFor the reward: &c"+reward)));
-			}
+	public static void openPreview(Player player, Crate crate){
+		Inventory inv;
+		if(previews.containsKey(crate)){
+			inv = previews.get(crate);
+		}else{
+			loadPreviews(crate);
+			inv = previews.get(crate);
 		}
 		player.openInventory(inv);
 	}
@@ -99,9 +83,9 @@ public class GUI implements Listener{
 		Player player = (Player) e.getWhoClicked();
 		Inventory inv = e.getInventory();
 		FileConfiguration config = Main.settings.getConfig();
-		if(inv!=null){
-			for(String crate : Methods.getCrates()){
-				if(inv.getName().equals(Methods.color(Main.settings.getFile(crate).getString("Crate.Name")))){
+		if(inv != null){
+			for(Crate crate : Main.CC.getCrates()){
+				if(inv.getName().equals(Methods.color(crate.getFile().getString("Crate.Name")))){
 					e.setCancelled(true);
 					return;
 				}
@@ -112,9 +96,10 @@ public class GUI implements Listener{
 					ItemStack item = e.getCurrentItem();
 					if(item.hasItemMeta()){
 						if(item.getItemMeta().hasDisplayName()){
-							for(String crate : Main.settings.getAllCratesNames()){
+							for(Crate crate : Main.CC.getCrates()){
+								FileConfiguration file = crate.getFile();
 								String path = "Crate.";
-								if(item.getItemMeta().getDisplayName().equals(Methods.color(Main.settings.getFile(crate).getString(path+"Name")))){
+								if(item.getItemMeta().getDisplayName().equals(Methods.color(file.getString(path+"Name")))){
 									if(e.getAction() == InventoryAction.PICKUP_HALF){
 										if(config.getBoolean("Settings.Show-Preview")){
 											player.closeInventory();
@@ -126,7 +111,7 @@ public class GUI implements Listener{
 										player.sendMessage(Methods.color(Methods.getPrefix()+config.getString("Settings.Crate-Already-Opened")));
 										return;
 									}
-									if(Methods.getKeys(player, crate)<1){
+									if(Methods.getKeys(player, crate) < 1){
 										String msg = config.getString("Settings.NoVirtualKeyMsg");
 										player.sendMessage(Methods.color(Methods.getPrefix()+msg));
 										return;
@@ -146,7 +131,7 @@ public class GUI implements Listener{
 										}
 										return;
 									}
-									switch(CrateType.getFromName(Main.settings.getFile(crate).getString("Crate.CrateType"))){
+									switch(CrateType.getFromName(file.getString("Crate.CrateType"))){
 										case COSMIC:
 											Crate.put(player, crate);
 											CrateControl.Crate.put(player, crate);
@@ -161,8 +146,8 @@ public class GUI implements Listener{
 											CrateControl.Crate.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											CSGO.openCSGO(player);
-											if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){
-												Bukkit.broadcastMessage(Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.BroadCast")
+											if(file.getBoolean("Crate.OpeningBroadCast")){
+												Bukkit.broadcastMessage(Methods.color(file.getString("Crate.BroadCast")
 														.replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix())
 														.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
 											}
@@ -173,21 +158,21 @@ public class GUI implements Listener{
 										case MENU:
 											break;
 										case QUAD_CRATE:
-											player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.Cant-Be-Virtual-Crate")));
-											break;
-										case QUICK_CRATE:
 											Crate.put(player, crate);
 											CrateControl.Crate.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											QCC.startBuild(player, player.getLocation(), Material.CHEST);
+											break;
+										case QUICK_CRATE:
+											player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.Cant-Be-Virtual-Crate")));
 											break;
 										case ROULETTE:
 											Crate.put(player, crate);
 											CrateControl.Crate.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											Roulette.openRoulette(player);
-											if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.OpeningBroadCast")){
-												Bukkit.broadcastMessage(Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.BroadCast")
+											if(file.getBoolean("Crate.OpeningBroadCast")){
+												Bukkit.broadcastMessage(Methods.color(file.getString("Crate.BroadCast")
 														.replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix())
 														.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
 											}
@@ -213,6 +198,66 @@ public class GUI implements Listener{
 				}
 			}
 		}
+	}
+	
+	public static void loadPreviews(){
+		previews.clear();
+		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading all crate preview inventories...");
+		for(Crate crate : Main.CC.getCrates()){
+			Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading " + crate.getName() + " preview....");
+			int slots = 9;
+			for(int size = crate.getPrizes().size(); size > 9 && slots < 54; size -= 9){
+				slots += 9;
+			}
+			Inventory inv = Bukkit.createInventory(null, slots, Methods.color(crate.getFile().getString("Crate.Name")));
+			for(Prize prize : crate.getPrizes()){
+				inv.addItem(prize.getDisplayItem());
+			}
+			Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> " + crate.getName() + " loaded.");
+			previews.put(crate, inv);
+		}
+		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> All crate previews have been loaded.");
+	}
+	
+	public static void loadPreviews(Crate crate){
+		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading " + crate + " preview....");
+		FileConfiguration file = crate.getFile();
+		int slots = 9;
+		for(int size = file.getConfigurationSection("Crate.Prizes").getKeys(false).size(); size > 9 && slots < 54; size -= 9){
+			slots += 9;
+		}
+		Inventory inv = Bukkit.createInventory(null, slots, Methods.color(file.getString("Crate.Name")));
+		for(String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)){
+			String id = file.getString("Crate.Prizes."+reward+".DisplayItem");
+			String name = file.getString("Crate.Prizes."+reward+".DisplayName");
+			List<String> lore = file.getStringList("Crate.Prizes."+reward+".Lore");
+			HashMap<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
+			Boolean glowing = false;
+			int amount = 1;
+			if(file.contains("Crate.Prizes." + reward + ".Glowing")){
+				glowing = file.getBoolean("Crate.Prizes." + reward + ".Glowing");
+			}
+			if(file.contains("Crate.Prizes." + reward + ".DisplayAmount")){
+				amount = file.getInt("Crate.Prizes." + reward + ".DisplayAmount");
+			}
+			if(file.contains("Crate.Prizes." + reward + ".DisplayEnchantments")){
+				for(String enchant : file.getStringList("Crate.Prizes." + reward + ".DisplayEnchantments")){
+					String[] b = enchant.split(":");
+					enchantments.put(Enchantment.getByName(b[0]), Integer.parseInt(b[1]));
+				}
+			}
+			try{
+				if(enchantments.size() > 0){
+					inv.setItem(inv.firstEmpty(), Methods.makeItem(id, amount, name, lore, enchantments, glowing));
+				}else{
+					inv.setItem(inv.firstEmpty(), Methods.makeItem(id, amount, name, lore, glowing));
+				}
+			}catch(Exception e){
+				inv.addItem(Methods.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error","&cFor the reward: &c"+reward)));
+			}
+		}
+		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> " + crate + " loaded.");
+		previews.put(crate, inv);
 	}
 	
 	private ArrayList<String> getDisabledWorlds(){

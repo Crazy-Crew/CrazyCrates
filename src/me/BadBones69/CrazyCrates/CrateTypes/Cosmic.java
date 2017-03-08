@@ -3,7 +3,6 @@ package me.BadBones69.CrazyCrates.CrateTypes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -23,9 +22,9 @@ import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
 import me.BadBones69.CrazyCrates.Methods;
 import me.BadBones69.CrazyCrates.API.CrateType;
-import me.BadBones69.CrazyCrates.API.CrazyCrates;
 import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
+import me.BadBones69.CrazyCrates.API.Prize;
 import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
 public class Cosmic implements Listener{
@@ -34,7 +33,6 @@ public class Cosmic implements Listener{
 	public static HashMap<Player, Integer> roll = new HashMap<Player, Integer>();
 	private static HashMap<Player, ArrayList<Integer>> glass = new HashMap<Player, ArrayList<Integer>>();
 	private static HashMap<Player, ArrayList<Integer>> picks = new HashMap<Player, ArrayList<Integer>>();
-	private static CrazyCrates CC = CrazyCrates.getInstance();
 	
 	private static void showRewards(Player player){
 		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(getFile(player).getString("Crate.CrateName")+" - Prizes"));
@@ -96,24 +94,19 @@ public class Cosmic implements Listener{
 									if(item.hasItemMeta()){
 										if(item.getItemMeta().hasDisplayName()){
 											if(item.getItemMeta().getDisplayName().equals(Methods.color(file.getString("Crate.Tiers."+tier+".Name")))){
-												String reward = pickReward(player, tier);
-												int stop=0;
-												for(;reward.equals("");stop++){
-													if(stop==500)break;
-													reward = pickReward(player, tier);
+												Prize prize = pickReward(player, tier);
+												for(int stop = 0; prize == null && stop <= 2000; stop++){
+													prize = pickReward(player, tier);
 												}
-												CC.getReward(player, "Crate.Prizes."+reward);
-												Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.COSMIC, CrateControl.Crate.get(player), reward));
-												String id = file.getString("Crate.Prizes."+reward+".DisplayItem");
-												String name = file.getString("Crate.Prizes."+reward+".DisplayName");
-												List<String> lore = file.getStringList("Crate.Prizes."+reward+".Lore");
-												e.setCurrentItem(Methods.makeItem(id, 1, name, lore));
+												Main.CC.getReward(player, prize);
+												Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.COSMIC, CrateControl.Crate.get(player).getName(), prize));
+												e.setCurrentItem(prize.getDisplayItem());
 												if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 													player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
 												}else{
 													player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
 												}
-												if(file.getBoolean("Crate.Prizes."+reward+".Firework")){
+												if(prize.toggleFirework()){
 													Methods.fireWork(player.getLocation().add(0, 1, 0));
 												}
 												return;
@@ -236,14 +229,12 @@ public class Cosmic implements Listener{
 							if(item.getItemMeta().hasDisplayName()){
 								String tier = tiers.get(player).get(item);
 								if(item.getItemMeta().getDisplayName().equals(Methods.color(getFile(player).getString("Crate.Tiers."+tier+".Name")))){
-									String reward = pickReward(player, tier);
-									int stop=0;
-									for(;reward.equals("");stop++){
-										if(stop==500)break;
-										reward = pickReward(player, tier);
+									Prize prize = pickReward(player, tier);
+									for(int stop = 0; prize == null && stop <= 2000; stop++){
+										prize = pickReward(player, tier);
 									}
-									CC.getReward(player, "Crate.Prizes."+reward);
-									T=true;
+									Main.CC.getReward(player, prize);
+									T = true;
 								}
 							}
 						}
@@ -260,15 +251,12 @@ public class Cosmic implements Listener{
 			if(GUI.Crate.containsKey(player)){
 				GUI.Crate.remove(player);
 			}
-			if(CrateControl.Rewards.containsKey(player)){
-				CrateControl.Rewards.remove(player);
-			}
 			if(glass.containsKey(player)){
 				picks.put((Player) player, glass.get(player));
 				glass.remove(player);
 			}
 		}
-		if(inv.getName().equals(Methods.color(getFile(player).getString("Crate.CrateName")+" - Choose"))){
+		if(inv.getName().equals(Methods.color(getFile(player).getString("Crate.CrateName") + " - Choose"))){
 			if(!glass.containsKey(player)||glass.get(player).size()<4){
 				if(GUI.Crate.containsKey(player)){
 					GUI.Crate.remove(player);
@@ -281,24 +269,29 @@ public class Cosmic implements Listener{
 		}
 	}
 	
-	public static String pickReward(Player player, String tier){
-		ArrayList<String> items = new ArrayList<String>();
+	public static Prize pickReward(Player player, String tier){
+		ArrayList<Prize> prizes = new ArrayList<Prize>();
 		Random r = new Random();
-		for(String reward : getFile(player).getConfigurationSection("Crate.Prizes").getKeys(false)){
-			for(String T : getFile(player).getStringList("Crate.Prizes."+reward+".Tiers")){
-				if(T.equalsIgnoreCase(tier)){
-					int chance = getFile(player).getInt("Crate.Prizes." + reward + ".Chance");
-					int max = getFile(player).getInt("Crate.Prizes." + reward + ".MaxRange")-1;
+		FileConfiguration file = GUI.Crate.get(player).getFile();
+		for(Prize prize : GUI.Crate.get(player).getPrizes()){
+			for(String tierCheck : file.getStringList("Crate.Prizes." + prize.getName() + ".Tiers")){
+				if(tierCheck.equalsIgnoreCase(tier)){
+					int chance = prize.getChance();
+					int max = prize.getMaxRange() - 1;
 					int num;
 					for(int counter = 1; counter<=1; counter++){
 						num = 1 + r.nextInt(max);
-						if(num >= 1 && num <= chance)items.add(reward);
+						if(num >= 1 && num <= chance){
+							prizes.add(prize);
+						}
 					}
 				}
 			}
 		}
-		if(items.size()==0)return "";
-		return items.get(r.nextInt(items.size()));
+		if(prizes.size() == 0){
+			return null;
+		}
+		return prizes.get(r.nextInt(prizes.size()));
 	}
 	
 	private static ItemStack pickTier(Player player){
@@ -322,7 +315,7 @@ public class Cosmic implements Listener{
 				int max = file.getInt("Crate.Tiers." + tier + ".MaxRange")-1;
 				int num = 1 + r.nextInt(max);
 				if(num >= 1 && num <= chance){
-					item=Methods.makeItem(Material.STAINED_GLASS_PANE, 1, file.getInt("Crate.Tiers."+tier+".Color"), file.getString("Crate.Tiers."+tier+".Name"));
+					item = Methods.makeItem(Material.STAINED_GLASS_PANE, 1, file.getInt("Crate.Tiers." + tier + ".Color"), file.getString("Crate.Tiers." + tier + ".Name"));
 				}
 			}
 		}
@@ -330,7 +323,7 @@ public class Cosmic implements Listener{
 	}
 	
 	private static FileConfiguration getFile(Player player){
-		return Main.settings.getFile(CrateControl.Crate.get(player));
+		return CrateControl.Crate.get(player).getFile();
 	}
 	
 	private boolean inCosmic(int slot){

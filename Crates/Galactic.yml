@@ -145,7 +145,7 @@ Crate:
       MaxRange: 100
       Chance: 10
       Firework: true
-      Glowing: false
+      Glowing: true
       Tiers:
         - 'UnCommon'
         - 'Rare'

@@ -20,15 +20,14 @@ import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
 import me.BadBones69.CrazyCrates.Methods;
 import me.BadBones69.CrazyCrates.API.CrateType;
-import me.BadBones69.CrazyCrates.API.CrazyCrates;
 import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
+import me.BadBones69.CrazyCrates.API.Prize;
 import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
 public class CSGO implements Listener{
 	
 	public static HashMap<Player, Integer> roll = new HashMap<Player, Integer>();
-	private static CrazyCrates CC = CrazyCrates.getInstance();
 	
 	private static void setGlass(Inventory inv){
 		Random r = new Random();
@@ -73,10 +72,10 @@ public class CSGO implements Listener{
 	}
 	
 	public static void openCSGO(Player player){
-		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")));
+		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(GUI.Crate.get(player).getFile().getString("Crate.CrateName")));
 		setGlass(inv);
-		for(int i=9;i>8&&i<18;i++){
-			inv.setItem(i, CC.pickItem(player));
+		for(int i=9; i > 8 && i < 18; i++){
+			inv.setItem(i, Main.CC.pickPrize(player).getDisplayItem());
 		}
 		player.openInventory(inv);
 		startCSGO(player, inv);
@@ -95,7 +94,7 @@ public class CSGO implements Listener{
 			int open = 0;
 			@Override
 			public void run(){
-				if(full<=50){//When Spinning
+				if(full <= 50){//When Spinning
 					moveItems(inv, player);
 					setGlass(inv);
 					if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
@@ -105,12 +104,12 @@ public class CSGO implements Listener{
 					}
 				}
 				open++;
-				if(open>=5){
+				if(open >= 5){
 					player.openInventory(inv);
-					open=0;
+					open = 0;
 				}
 				full++;
-				if(full>51){
+				if(full > 51){
 					if(slowSpin().contains(time)){//When Slowing Down
 						moveItems(inv, player);
 						setGlass(inv);
@@ -121,7 +120,7 @@ public class CSGO implements Listener{
 						}
 					}
 					time++;
-					if(time>=60){// When done
+					if(time >= 60){// When done
 						if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 							player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
 						}else{
@@ -129,17 +128,18 @@ public class CSGO implements Listener{
 						}
 						Bukkit.getScheduler().cancelTask(roll.get(player));
 						roll.remove(player);
-						ItemStack item = inv.getItem(13);
-						String path = CrateControl.Rewards.get(player).get(item);
-						CC.getReward(player, path);
-						if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.Prizes."+path.replace("Crate.Prizes.", "")+".Firework")){
+						Prize prize = null;
+						for(Prize p : GUI.Crate.get(player).getPrizes()){
+							if(inv.getItem(13).isSimilar(p.getDisplayItem())){
+								prize = p;
+							}
+						}
+						Main.CC.getReward(player, prize);
+						if(prize.toggleFirework()){
 							Methods.fireWork(player.getLocation().add(0, 1, 0));
 						}
-						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.CSGO, CrateControl.Crate.get(player), path.replace("Crate.Prizes.", "")));
+						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.CSGO, CrateControl.Crate.get(player).getName(), prize));
 						GUI.Crate.remove(player);
-						if(CrateControl.Rewards.containsKey(player)){
-							CrateControl.Rewards.remove(player);
-						}
 						return;
 					}
 				}
@@ -149,10 +149,10 @@ public class CSGO implements Listener{
 	
 	private static ArrayList<Integer> slowSpin(){
 		ArrayList<Integer> slow = new ArrayList<Integer>();
-		int full = 125;
+		int full = 120;
 		int cut = 15;
-		for(int i=125;cut>0;full--){
-			if(full<=i-cut||full>=i-cut){
+		for(int i = 120; cut > 0; full--){
+			if(full <= i - cut || full >= i - cut){
 				slow.add(i);
 				i=i-cut;
 				cut--;
@@ -163,11 +163,11 @@ public class CSGO implements Listener{
 	
 	private static void moveItems(Inventory inv, Player player){
 		ArrayList<ItemStack> items = new ArrayList<ItemStack>();
-		for(int i=9;i>8&&i<17;i++){
+		for(int i = 9; i > 8 && i < 17; i++){
 			items.add(inv.getItem(i));
 		}
-		inv.setItem(9, CC.pickItem(player));
-		for(int i=0;i<8;i++){
+		inv.setItem(9, Main.CC.pickPrize(player).getDisplayItem());
+		for(int i = 0; i < 8; i++){
 			inv.setItem(i+10, items.get(i));
 		}
 	}
@@ -177,12 +177,12 @@ public class CSGO implements Listener{
 		Inventory inv = e.getInventory();
 		Player player = (Player) e.getWhoClicked();
 		if(CrateControl.Crate.containsKey(player)){
-			if(!Main.settings.getFile(CrateControl.Crate.get(e.getWhoClicked())).getString("Crate.CrateType").equalsIgnoreCase("CSGO"))return;
+			if(!CrateControl.Crate.get(e.getWhoClicked()).getFile().getString("Crate.CrateType").equalsIgnoreCase("CSGO"))return;
 		}else{
 			return;
 		}
 		if(inv!=null){
-			if(inv.getName().equals(Methods.color(Main.settings.getFile(CrateControl.Crate.get(player)).getString("Crate.CrateName")))){
+			if(inv.getName().equals(Methods.color(CrateControl.Crate.get(player).getFile().getString("Crate.CrateName")))){
 				e.setCancelled(true);
 			}
 		}

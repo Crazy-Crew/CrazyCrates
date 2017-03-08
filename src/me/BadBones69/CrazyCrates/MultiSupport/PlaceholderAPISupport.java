@@ -7,6 +7,7 @@ import org.bukkit.plugin.Plugin;
 
 import me.BadBones69.CrazyCrates.Main;
 import me.BadBones69.CrazyCrates.Methods;
+import me.BadBones69.CrazyCrates.API.Crate;
 import me.clip.placeholderapi.external.EZPlaceholderHook;
 
 public class PlaceholderAPISupport extends EZPlaceholderHook{
@@ -17,8 +18,8 @@ public class PlaceholderAPISupport extends EZPlaceholderHook{
 
 	@Override
 	public String onPlaceholderRequest(Player player, String placeHolder) {
-		for(String crate : Main.settings.getAllCratesNames()){
-			if(placeHolder.equalsIgnoreCase(crate)){
+		for(Crate crate : Main.CC.getCrates()){
+			if(placeHolder.equalsIgnoreCase(crate.getName())){
 				return NumberFormat.getNumberInstance().format(Methods.getKeys(player, crate));
 			}
 		}

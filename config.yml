@@ -3,7 +3,8 @@ Settings:
   Prefix: '&8[&bCrazyCrates&8]: '
   InventoryName: '&b&lCrazy &4&lCrates'
   InventorySize: 27
-  KnockBack: True
+  KnockBack: true
+  Update-Checker: true
   Show-Preview: true #Toggle this on and off if you want to show the preview for the crates when left clicked.
   Physical-Accepts-Virtual-Keys: true #If physical crates can accept virtual keys.
   No-Teleporting-Msg: '&cYou may not teleport away while opening a crate.'
@@ -17,7 +18,7 @@ Settings:
   Not-Online: '&cThat player is not online at this time.'
   No-Permission: '&cYou do not have permission to use that command!'
   Crate-Already-Opened: '&cYou are already opening a crate.'
-  Cant-Be-Virtual-Crate: '&cPlease tell an admin that CrateOnTheGo can not be a Virtual Crate.'
+  Cant-Be-Virtual-Crate: '&cThat crate type can not be used as a virtual crate.'
   Inventory-Full: '&cYour inventory is full, please make room before opening a crate.'
   QuadCrate:
     ToCloseToAnotherPlayer: '&cYou are to close to a player that is opening their Crate.'

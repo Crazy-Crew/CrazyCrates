@@ -7,11 +7,11 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,6 +22,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.BadBones69.CrazyCrates.API.Crate;
+import me.BadBones69.CrazyCrates.API.CrateType;
+import me.BadBones69.CrazyCrates.API.CrazyCrates;
 import me.BadBones69.CrazyCrates.API.FireworkDamageAPI;
 import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
@@ -39,6 +42,7 @@ import me.BadBones69.CrazyCrates.MultiSupport.Support;
 public class Main extends JavaPlugin implements Listener{
 	
 	public static SettingsManager settings = SettingsManager.getInstance();
+	public static CrazyCrates CC = CrazyCrates.getInstance();
 	
 	@Override
 	public void onEnable(){
@@ -52,6 +56,8 @@ public class Main extends JavaPlugin implements Listener{
 			settings.saveData();
 		}
 		Methods.hasUpdate();
+		CC.loadCrates();
+		GUI.loadPreviews();
 		PluginManager pm  = Bukkit.getPluginManager();
 		pm.registerEvents(this, this);
 		pm.registerEvents(new CrateControl(), this);
@@ -74,11 +80,11 @@ public class Main extends JavaPlugin implements Listener{
 		if(Bukkit.getServer().getOnlinePlayers() != null){
 			for(Player player : Bukkit.getServer().getOnlinePlayers()){
 				String uuid = player.getUniqueId().toString();
-				if(!Main.settings.getData().contains("Players."+uuid)){
-					Main.settings.getData().set("Players."+uuid+".Name", player.getName());
+				if(!Main.settings.getData().contains("Players." + uuid)){
+					Main.settings.getData().set("Players." + uuid + ".Name", player.getName());
 					for(String crate : Main.settings.getAllCratesNames()){
 						int amount = Main.settings.getFile(crate).getInt("Crate.StartingKeys");
-						Main.settings.getData().set("Players."+uuid+"."+crate, amount);
+						Main.settings.getData().set("Players." + uuid + "." + crate, amount);
 					}
 					Main.settings.saveData();
 				}
@@ -151,6 +157,8 @@ public class Main extends JavaPlugin implements Listener{
 						settings.getData().set("Players.Clear", null);
 						settings.saveData();
 					}
+					CC.loadCrates();
+					GUI.loadPreviews();
 					sender.sendMessage(Methods.color(Methods.getPrefix()+settings.getConfig().getString("Settings.Reload")));
 					return true;
 				}
@@ -179,7 +187,7 @@ public class Main extends JavaPlugin implements Listener{
 						inv.addItem(item1);
 						keys.put(item1, item2);
 					}
-					CrateControl.Keys.put(player, keys);
+					CrateControl.previewKeys.put(player, keys);
 					player.openInventory(inv);
 					return true;
 				}
@@ -356,15 +364,16 @@ public class Main extends JavaPlugin implements Listener{
 						sender.sendMessage(Methods.color(Methods.getPrefix()+"&cPlease use Virtual/V or Physical/P for a Key type."));
 						return true;
 					}
-					for(String crate : Methods.getCrates()){
-						if(crate.equalsIgnoreCase(args[2])){
-							if(settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
+					for(Crate crate : CC.getCrates()){
+						FileConfiguration file = crate.getFile();
+						if(crate.getName().equalsIgnoreCase(args[2])){
+							if(file.getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
 								sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given everyone &6"+amount+" &7Crates."));
 							}else{
 								sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given everyone &6"+amount+" &7Keys."));
 							}
 							for(Player p : Bukkit.getServer().getOnlinePlayers()){
-								if(settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
+								if(file.getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
 									CrateOnTheGo.giveCrate(p, amount, crate);
 									return true;
 								}
@@ -391,14 +400,14 @@ public class Main extends JavaPlugin implements Listener{
 					}
 				}
 				if(args.length >= 2){
-					String crate = "";
+					Crate crate = null;
 					Player player = null;
-					for(String c : Methods.getCrates()){
-						if(c.equalsIgnoreCase(args[1])){
+					for(Crate c : CC.getCrates()){
+						if(c.getName().equalsIgnoreCase(args[1])){
 							crate = c;
 						}
 					}
-					if(!crate.equalsIgnoreCase("")){
+					if(crate != null){
 						if(args.length >= 3){
 							if(Methods.isOnline(args[2], sender)){
 								player = Methods.getPlayer(args[2]);
@@ -426,7 +435,6 @@ public class Main extends JavaPlugin implements Listener{
 					for(String crate : Methods.getCrates()){
 						if(crate.equalsIgnoreCase(args[1])){
 							Player player = null;
-							String type = Main.settings.getFile(crate).getString("Crate.CrateType");
 							if(args.length>=3){
 								if(Methods.isOnline(args[2], sender)){
 									player = Methods.getPlayer(args[2]);
@@ -445,56 +453,28 @@ public class Main extends JavaPlugin implements Listener{
 								sender.sendMessage(Methods.color(Methods.getPrefix()+Main.settings.getConfig().getString("Settings.Crate-Already-Opened")));
 								return true;
 							}
-							if(type.equalsIgnoreCase("Wheel")){
-								GUI.Crate.put(player, crate);
-								CrateControl.Crate.put(player, crate);
-								Methods.Key.put(player, KeyType.FREE);
-								Wheel.startWheel(player);
-							}
-							if(type.equalsIgnoreCase("Wonder")){
-								GUI.Crate.put(player, crate);
-								CrateControl.Crate.put(player, crate);
-								Methods.Key.put(player, KeyType.FREE);
-								Wonder.startWonder(player);
-							}
-							if(type.equalsIgnoreCase("Cosmic")){
-								GUI.Crate.put(player, crate);
-								CrateControl.Crate.put(player, crate);
-								Methods.Key.put(player, KeyType.FREE);
-								Cosmic.openCosmic(player);
-							}
-							if(type.equalsIgnoreCase("QuadCrate")){
-								GUI.Crate.put(player, crate);
-								CrateControl.Crate.put(player, crate);
-								Methods.Key.put(player, KeyType.FREE);
-								QCC.startBuild(player, player.getLocation(), Material.CHEST);
-							}
-							if(type.equalsIgnoreCase("CSGO")){
-								GUI.Crate.put(player, crate);
-								CrateControl.Crate.put(player, crate);
-								Methods.Key.put(player, KeyType.FREE);
-								CSGO.openCSGO(player);
-							}
-							if(type.equalsIgnoreCase("Roulette")){
-								GUI.Crate.put(player, crate);
-								CrateControl.Crate.put(player, crate);
-								Methods.Key.put(player, KeyType.FREE);
-								Roulette.openRoulette(player);
-							}
-							if(type.equalsIgnoreCase("QuickCrate")){
-								sender.sendMessage(Methods.color(Methods.getPrefix()+Main.settings.getConfig().getString("Settings.Cant-Be-Virtual-Crate")));
+							CrateType type = CrateType.getFromName(Main.settings.getFile(crate).getString("Crate.CrateType"));
+							if(type != null){
+								if(type != CrateType.CRATE_ON_THE_GO && type != CrateType.QUICK_CRATE && type != CrateType.FIRE_CRACKER){
+									
+									for(Crate c : Main.CC.getCrates()){
+										if(c.getName().equalsIgnoreCase(crate)){
+											CrateControl.Crate.put(player, c);
+											GUI.Crate.put(player, c);
+										}
+									}
+									Methods.Key.put(player, KeyType.FREE);
+									CC.openCrate(player, type, player.getLocation());
+									sender.sendMessage(Methods.color(Methods.getPrefix() + "&7You have just opened the &6" + crate + " &7crate for &6" + player.getName() + "&7."));
+									return true;
+								}else{
+									sender.sendMessage(Methods.color(Methods.getPrefix() + Main.settings.getConfig().getString("Settings.Cant-Be-Virtual-Crate")));
+									return true;
+								}
+							}else{
+								sender.sendMessage(Methods.color(Methods.getPrefix() + "&c" + args[1] + " is is not a Crate."));
 								return true;
 							}
-							if(type.equalsIgnoreCase("CrateOnTheGo")){
-								sender.sendMessage(Methods.color(Methods.getPrefix()+Main.settings.getConfig().getString("Settings.Cant-Be-Virtual-Crate")));
-								return true;
-							}
-							if(type.equalsIgnoreCase("FireCracker")){
-								sender.sendMessage(Methods.color(Methods.getPrefix()+Main.settings.getConfig().getString("Settings.Cant-Be-Virtual-Crate")));
-								return true;
-							}
-							sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have just opened the &6"+crate+" &7crate for &6"+player.getName()+"&7."));
-							return true;
 						}
 					}
 					sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[1]+" is is not a Crate."));
@@ -507,9 +487,9 @@ public class Main extends JavaPlugin implements Listener{
 				if(sender instanceof Player)if(!Methods.permCheck((Player)sender, "Admin"))return true;
 				if(args.length==3){
 					String type = args[1];
-					for(String crate : Methods.getCrates()){
-						if(crate.equalsIgnoreCase(args[2])){
-							if(settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
+					for(Crate crate : CC.getCrates()){
+						if(crate.getName().equalsIgnoreCase(args[2])){
+							if(crate.getFile().getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
 								sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+ sender.getName()+" "+1+" &7Crates."));
 								CrateOnTheGo.giveCrate((Player)sender, 1, crate);
 								return true;
@@ -534,9 +514,9 @@ public class Main extends JavaPlugin implements Listener{
 						return true;
 					}
 					int amount = Integer.parseInt(args[3]);
-					for(String crate : Methods.getCrates()){
-						if(crate.equalsIgnoreCase(args[2])){
-							if(settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
+					for(Crate crate : CC.getCrates()){
+						if(crate.getName().equalsIgnoreCase(args[2])){
+							if(crate.getFile().getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
 								sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+ sender.getName()+" "+amount+" &7Crates."));
 								CrateOnTheGo.giveCrate((Player)sender, amount, crate);
 								return true;
@@ -567,9 +547,9 @@ public class Main extends JavaPlugin implements Listener{
 					}
 					int amount = Integer.parseInt(args[3]);
 					Player target = Methods.getPlayer(args[4]);
-					for(String crate : Methods.getCrates()){
-						if(crate.equalsIgnoreCase(args[2])){
-							if(settings.getFile(crate).getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
+					for(Crate crate : CC.getCrates()){
+						if(crate.getName().equalsIgnoreCase(args[2])){
+							if(crate.getFile().getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
 								sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+target.getName()+" "+amount+" &7Crates."));
 								CrateOnTheGo.giveCrate(target, amount, crate);
 								return true;
@@ -610,7 +590,13 @@ public class Main extends JavaPlugin implements Listener{
 						+ "&7It is running version &av"+Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates").getDescription().getVersion()+"&7."));
 				}
 				if(player.isOp()){
-					Methods.hasUpdate(player);
+					if(settings.getConfig().contains("Settings.Update-Checker")){
+						if(settings.getConfig().getBoolean("Settings.Update-Checker")){
+							Methods.hasUpdate(player);
+						}
+					}else{
+						Methods.hasUpdate(player);
+					}
 				}
 			}
 		}, 40);

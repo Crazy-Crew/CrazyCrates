@@ -13,22 +13,20 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import me.BadBones69.CrazyCrates.CrateControl;
 import me.BadBones69.CrazyCrates.GUI;
 import me.BadBones69.CrazyCrates.Main;
 import me.BadBones69.CrazyCrates.Methods;
 import me.BadBones69.CrazyCrates.API.CrateType;
-import me.BadBones69.CrazyCrates.API.CrazyCrates;
 import me.BadBones69.CrazyCrates.API.KeyType;
 import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
+import me.BadBones69.CrazyCrates.API.Prize;
 import me.BadBones69.CrazyCrates.MultiSupport.Version;
 
 public class Roulette implements Listener{
 	
 	public static HashMap<Player, Integer> roll = new HashMap<Player, Integer>();
-	private static CrazyCrates CC = CrazyCrates.getInstance();
 	
 	private static void setGlass(Inventory inv){
 		Random r = new Random();
@@ -42,9 +40,9 @@ public class Roulette implements Listener{
 	}
 	
 	public static void openRoulette(Player player){
-		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(Main.settings.getFile(GUI.Crate.get(player)).getString("Crate.CrateName")));
+		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(GUI.Crate.get(player).getFile().getString("Crate.CrateName")));
 		setGlass(inv);
-		inv.setItem(13, CC.pickItem(player));
+		inv.setItem(13, Main.CC.pickPrize(player).getDisplayItem());
 		player.openInventory(inv);
 		startRoulette(player, inv);
 	}
@@ -63,53 +61,56 @@ public class Roulette implements Listener{
 			int open = 0;
 			@Override
 			public void run(){
-				if(full<=15){
-					inv.setItem(13, CC.pickItem(player));
+				if(full <= 15){
+					inv.setItem(13, Main.CC.pickPrize(player).getDisplayItem());
 					setGlass(inv);
-					if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+					if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()){
 						player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
 					}else{
 						player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
 					}
 					even++;
-					if(even>=4){
-						even=0;
-						inv.setItem(13, CC.pickItem(player));
+					if(even >= 4){
+						even = 0;
+						inv.setItem(13, Main.CC.pickPrize(player).getDisplayItem());
 					}
 				}
 				open++;
-				if(open>=5){
+				if(open >= 5){
 					player.openInventory(inv);
-					open=0;
+					open = 0;
 				}
 				full++;
-				if(full>16){
+				if(full > 16){
 					if(slowSpin().contains(time)){
 						setGlass(inv);
-						inv.setItem(13, CC.pickItem(player));
-						if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+						inv.setItem(13, Main.CC.pickPrize(player).getDisplayItem());
+						if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()){
 							player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
 						}else{
 							player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
 						}
 					}
 					time++;
-					if(time>=23){
-						if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+					if(time >= 23){
+						if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()){
 							player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
 						}else{
 							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
 						}
 						Bukkit.getScheduler().cancelTask(roll.get(player));
 						roll.remove(player);
-						ItemStack item = inv.getItem(13);
-						String path = CrateControl.Rewards.get(player).get(item);
-						CC.getReward(player, path);
-						if(Main.settings.getFile(GUI.Crate.get(player)).getBoolean("Crate.Prizes."+path.replace("Crate.Prizes.", "")+".Firework")){
+						Prize prize = null;
+						for(Prize p : GUI.Crate.get(player).getPrizes()){
+							if(inv.getItem(13).isSimilar(p.getDisplayItem())){
+								prize = p;
+							}
+						}
+						Main.CC.getReward(player, prize);
+						if(prize.toggleFirework()){
 							Methods.fireWork(player.getLocation().add(0, 1, 0));
 						}
-						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.ROULETTE, CrateControl.Crate.get(player), path.replace("Crate.Prizes.", "")));
-						CrateControl.Rewards.remove(player);
+						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.ROULETTE, CrateControl.Crate.get(player).getName(), prize));
 						GUI.Crate.remove(player);
 						return;
 					}
@@ -136,13 +137,13 @@ public class Roulette implements Listener{
 	public void onInvClick(InventoryClickEvent e){
 		Player player = (Player) e.getWhoClicked();
 		if(CrateControl.Crate.containsKey(player)){
-			if(!Main.settings.getFile(CrateControl.Crate.get(player)).getString("Crate.CrateType").equalsIgnoreCase("Roulette"))return;
+			if(!CrateControl.Crate.get(player).getFile().getString("Crate.CrateType").equalsIgnoreCase("Roulette"))return;
 		}else{
 			return;
 		}
 		Inventory inv = e.getInventory();
 		if(inv!=null){
-			if(inv.getName().equals(Methods.color(Main.settings.getFile(CrateControl.Crate.get(player)).getString("Crate.CrateName")))){
+			if(inv.getName().equals(Methods.color(CrateControl.Crate.get(player).getFile().getString("Crate.CrateName")))){
 				e.setCancelled(true);
 			}
 		}
