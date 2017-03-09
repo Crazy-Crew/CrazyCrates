@@ -33,6 +33,7 @@ import me.BadBones69.CrazyCrates.CrateTypes.CrateOnTheGo;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
 import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
 import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
+import me.BadBones69.CrazyCrates.CrateTypes.War;
 import me.BadBones69.CrazyCrates.CrateTypes.Wheel;
 import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
 import me.BadBones69.CrazyCrates.MultiSupport.MVdWPlaceholderAPISupport;
@@ -60,16 +61,17 @@ public class Main extends JavaPlugin implements Listener{
 		GUI.loadPreviews();
 		PluginManager pm  = Bukkit.getPluginManager();
 		pm.registerEvents(this, this);
-		pm.registerEvents(new CrateControl(), this);
 		pm.registerEvents(new GUI(), this);
 		pm.registerEvents(new QCC(), this);
+		pm.registerEvents(new War(), this);
 		pm.registerEvents(new CSGO(), this);
 		pm.registerEvents(new Wheel(), this);
 		pm.registerEvents(new Wonder(), this);
 		pm.registerEvents(new Cosmic(), this);
 		pm.registerEvents(new Roulette(), this);
-		pm.registerEvents(new CrateOnTheGo(), this);
 		pm.registerEvents(new QuickCrate(), this);
+		pm.registerEvents(new CrateControl(), this);
+		pm.registerEvents(new CrateOnTheGo(), this);
 		pm.registerEvents(new FireworkDamageAPI(this), this);
 		if(Support.hasPlaceholderAPI()){
 			new PlaceholderAPISupport(this).hook();

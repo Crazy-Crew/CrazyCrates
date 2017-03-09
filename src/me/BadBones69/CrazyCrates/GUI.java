@@ -27,6 +27,7 @@ import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
 import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
 import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
+import me.BadBones69.CrazyCrates.CrateTypes.War;
 import me.BadBones69.CrazyCrates.CrateTypes.Wheel;
 import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
 
@@ -188,6 +189,12 @@ public class GUI implements Listener{
 											CrateControl.Crate.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											Wonder.startWonder(player);
+											break;
+										case WAR:
+											Crate.put(player, crate);
+											CrateControl.Crate.put(player, crate);
+											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
+											War.openWarCrate(player);
 											break;
 									}
 									return;

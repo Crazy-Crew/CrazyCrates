@@ -24,6 +24,7 @@ import me.BadBones69.CrazyCrates.CrateTypes.FireCracker;
 import me.BadBones69.CrazyCrates.CrateTypes.QCC;
 import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
 import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
+import me.BadBones69.CrazyCrates.CrateTypes.War;
 import me.BadBones69.CrazyCrates.CrateTypes.Wheel;
 import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
 
@@ -55,6 +56,9 @@ public class CrazyCrates {
 				break;
 			case WONDER:
 				Wonder.startWonder(player);
+				break;
+			case WAR:
+				War.openWarCrate(player);
 				break;
 			case QUAD_CRATE:
 				CrateControl.LastLoc.put(player, player.getLocation());
@@ -218,7 +222,6 @@ public class CrazyCrates {
 		try{
 			return Methods.makeItem(id, amount, name, lore, enchants, glowing);
 		}catch(Exception e){
-			Bukkit.broadcastMessage("1");
 			return Methods.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
 		}
 	}
@@ -260,7 +263,11 @@ public class CrazyCrates {
 					}
 				}
 			}
-			items.add(Methods.makeItem(m, amount, name, lore, enchs));
+			try{
+				items.add(Methods.makeItem(m, amount, name, lore, enchs));
+			}catch(Exception e){
+				items.add(Methods.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize)));
+			}
 		}
 		return items;
 	}

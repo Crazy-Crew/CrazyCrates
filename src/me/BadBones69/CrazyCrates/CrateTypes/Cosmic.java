@@ -71,7 +71,7 @@ public class Cosmic implements Listener{
 	public void onInvClick(InventoryClickEvent e){
 		final Inventory inv = e.getInventory();
 		final Player player = (Player) e.getWhoClicked();
-		if(inv!=null){
+		if(inv != null){
 			if(CrateControl.Crate.containsKey(player)){
 				if(!getFile(player).getString("Crate.CrateType").equalsIgnoreCase("Cosmic"))return;
 			}else{

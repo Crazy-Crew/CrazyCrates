@@ -11,7 +11,8 @@ public enum CrateType {
 	QUICK_CRATE("QuickCrate"),
 	ROULETTE("Roulette"),
 	WHEEL("Wheel"),
-	WONDER("Wonder");
+	WONDER("Wonder"),
+	WAR("War");
 	
 	private String Name;
 	

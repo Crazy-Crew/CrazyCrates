@@ -38,7 +38,7 @@ public class CSGO implements Listener{
 			}
 		}
 		for(int i : Glass.keySet()){
-			if(inv.getItem(i)==null){
+			if(inv.getItem(i) == null){
 				int color = r.nextInt(15);
 				inv.setItem(i, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
 				inv.setItem(i+18, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
@@ -74,7 +74,7 @@ public class CSGO implements Listener{
 	public static void openCSGO(Player player){
 		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(GUI.Crate.get(player).getFile().getString("Crate.CrateName")));
 		setGlass(inv);
-		for(int i=9; i > 8 && i < 18; i++){
+		for(int i = 9; i > 8 && i < 18; i++){
 			inv.setItem(i, Main.CC.pickPrize(player).getDisplayItem());
 		}
 		player.openInventory(inv);
