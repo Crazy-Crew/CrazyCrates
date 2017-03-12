@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 
 import me.BadBones69.CrazyCrates.API.Crate;
@@ -218,7 +219,7 @@ public class Methods{
 		me.setLore(l);
 		item.setItemMeta(me);
 		if(Enchanted){
-			item=addGlow(item);
+			item = addGlow(item);
 		}
 		return item;
 	}
@@ -359,7 +360,7 @@ public class Methods{
 		item.setItemMeta(m);
 		item.addUnsafeEnchantments(enchants);
 		if(glowing){
-			addGlow(item);
+			item = addGlow(item);
 		}
 		return item;
 	}
@@ -393,6 +394,43 @@ public class Methods{
 		item.addUnsafeEnchantments(enchants);
 		return item;
 	}
+	
+	/**
+	 * 
+	 * @param player
+	 * @param name
+	 * @param amount
+	 * @param lore
+	 * @param enchants
+	 * @param glowing
+	 * @return
+	 */
+	public static ItemStack makePlayerHead(String player, int amount, String name, ArrayList<String> lore, Map<Enchantment, Integer> enchants, boolean glowing){
+		ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
+		SkullMeta m = (SkullMeta) head.getItemMeta();
+		if(!player.equals("")){
+			m.setOwner(player);
+		}
+		if(name != null){
+			m.setDisplayName(color(name));
+		}
+		if(lore != null){
+			ArrayList<String> l = new ArrayList<String>();
+			for(String L:lore){
+				l.add(color(L));
+			}
+			m.setLore(l);
+		}
+		head.setItemMeta(m);
+		if(enchants != null){
+			head.addUnsafeEnchantments(enchants);
+		}
+		if(glowing){
+			head = addGlow(head);
+		}
+		return head;
+	}
+	
 	public static ItemStack addLore(ItemStack item, String i){
 		ArrayList<String> lore = new ArrayList<String>();
 		ItemMeta m = item.getItemMeta();
@@ -647,14 +685,14 @@ public class Methods{
 		return schematics.get(r.nextInt(schematics.size()));
 	}
 	public static boolean isInvFull(Player player){
-		if(player.getInventory().firstEmpty()==-1){
+		if(player.getInventory().firstEmpty() == -1){
 			return true;
 		}
 		return false;
 	}
 	public static Integer randomNumber(int min, int max){
 		Random i = new Random();
-		return min+i.nextInt(max-min);
+		return min + i.nextInt(max - min);
 	}
 	
 	public static boolean isSimilar(ItemStack one, ItemStack two){
@@ -663,14 +701,16 @@ public class Methods{
 				if(one.getItemMeta().hasDisplayName()){
 					if(one.getItemMeta().getDisplayName().equalsIgnoreCase(two.getItemMeta().getDisplayName())){
 						if(one.getItemMeta().hasLore()){
-							int i = 0;
-							for(String lore : one.getItemMeta().getLore()){
-								if(!lore.equals(two.getItemMeta().getLore().get(i))){
-									return false;
+							if(one.getItemMeta().getLore().size() == two.getItemMeta().getLore().size()){
+								int i = 0;
+								for(String lore : one.getItemMeta().getLore()){
+									if(!lore.equals(two.getItemMeta().getLore().get(i))){
+										return false;
+									}
+									i++;
 								}
-								i++;
+								return true;
 							}
-							return true;
 						}
 					}
 				}

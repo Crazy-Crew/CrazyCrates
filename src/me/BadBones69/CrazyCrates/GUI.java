@@ -210,20 +210,25 @@ public class GUI implements Listener{
 	public static void loadPreviews(){
 		previews.clear();
 		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading all crate preview inventories...");
-		for(Crate crate : Main.CC.getCrates()){
-			Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading " + crate.getName() + " preview....");
-			int slots = 9;
-			for(int size = crate.getPrizes().size(); size > 9 && slots < 54; size -= 9){
-				slots += 9;
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
+			@Override
+			public void run() {
+				for(Crate crate : Main.CC.getCrates()){
+					Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading " + crate.getName() + " preview....");
+					int slots = 9;
+					for(int size = crate.getPrizes().size(); size > 9 && slots < 54; size -= 9){
+						slots += 9;
+					}
+					Inventory inv = Bukkit.createInventory(null, slots, Methods.color(crate.getFile().getString("Crate.Name")));
+					for(Prize prize : crate.getPrizes()){
+						inv.addItem(prize.getDisplayItem());
+					}
+					Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> " + crate.getName() + " loaded.");
+					previews.put(crate, inv);
+				}
+				Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> All crate previews have been loaded.");
 			}
-			Inventory inv = Bukkit.createInventory(null, slots, Methods.color(crate.getFile().getString("Crate.Name")));
-			for(Prize prize : crate.getPrizes()){
-				inv.addItem(prize.getDisplayItem());
-			}
-			Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> " + crate.getName() + " loaded.");
-			previews.put(crate, inv);
-		}
-		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> All crate previews have been loaded.");
+		}, 10);
 	}
 	
 	public static void loadPreviews(Crate crate){

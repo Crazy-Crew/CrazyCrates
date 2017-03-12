@@ -109,7 +109,8 @@ public class CrazyCrates {
 					commands.add(cmd);
 				}
 				prizes.add(new Prize(prize, getDisplayItem(file, prize), msgs, commands,
-						getItems(file, prize), file.getInt("Crate.Prizes." + prize + ".Chance"), file.getInt("Crate.Prizes." + prize + ".MaxRange"), file.getBoolean("Crate.Prizes." + prize + ".Firework")));
+						getItems(file, prize), file.getInt("Crate.Prizes." + prize + ".Chance"),
+						file.getInt("Crate.Prizes." + prize + ".MaxRange"), file.getBoolean("Crate.Prizes." + prize + ".Firework")));
 			}
 			crates.add(new Crate(crateName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file));
 		}
@@ -198,9 +199,11 @@ public class CrazyCrates {
 		if(file.contains(path + "DisplayAmount")){
 			amount = file.getInt(path + "DisplayAmount");
 		}
-		List<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<String>();
 		if(file.contains(path + "Lore")){
-			lore = file.getStringList(path + "Lore");
+			for(String l : file.getStringList(path + "Lore")){
+				lore.add(l);
+			}
 		}
 		HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
 		if(file.contains(path + "DisplayEnchantments")){
@@ -215,12 +218,20 @@ public class CrazyCrates {
 				}
 			}
 		}
+		String player = "";
+		if(file.contains(path + "Player")){
+			player = file.getString(path + "Player");
+		}
 		boolean glowing = false;
 		if(file.contains(path + "Glowing")){
 			glowing = file.getBoolean(path + "Glowing");
 		}
 		try{
-			return Methods.makeItem(id, amount, name, lore, enchants, glowing);
+			if(Methods.makeItem(id, amount, "").getType() == Material.SKULL_ITEM){
+				return Methods.makePlayerHead(player, amount, name, lore, enchants, glowing);
+			}else{
+				return Methods.makeItem(id, amount, name, lore, enchants, glowing);
+			}
 		}catch(Exception e){
 			return Methods.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
 		}
@@ -230,14 +241,15 @@ public class CrazyCrates {
 		ArrayList<ItemStack> items = new ArrayList<ItemStack>();
 		for(String l : file.getStringList("Crate.Prizes." + prize + ".Items")){
 			ArrayList<String> lore = new ArrayList<String>();
-			HashMap<Enchantment, Integer> enchs = new HashMap<Enchantment, Integer>();
+			HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
 			String name = "";
 			int amount = 1;
-			String m = "Stone";
+			String id = "Stone";
+			String player = "";
 			for(String i : l.split(", ")){
 				if(i.contains("Item:")){
 					i = i.replaceAll("Item:", "");
-					m = i;
+					id = i;
 				}
 				if(i.contains("Name:")){
 					i = i.replaceAll("Name:", "");
@@ -255,16 +267,24 @@ public class CrazyCrates {
 						lore.add(L);
 					}
 				}
+				if(i.contains("Player:")){
+					i = i.replaceAll("Player:", "");
+					player = i;
+				}
 				for(Enchantment enc : Enchantment.values()){
 					if(i.contains(enc.getName() + ":") || i.contains(Methods.getEnchantmentName(enc) + ":")){
 						String[] breakdown = i.split(":");
 						int lvl = Integer.parseInt(breakdown[1]);
-						enchs.put(enc, lvl);
+						enchants.put(enc, lvl);
 					}
 				}
 			}
 			try{
-				items.add(Methods.makeItem(m, amount, name, lore, enchs));
+				if(Methods.makeItem(id, amount, name).getType() == Material.SKULL_ITEM){
+					items.add(Methods.makePlayerHead(player, amount, name, lore, enchants, false));
+				}else{
+					items.add(Methods.makeItem(id, amount, name, lore, enchants));
+				}
 			}catch(Exception e){
 				items.add(Methods.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize)));
 			}
