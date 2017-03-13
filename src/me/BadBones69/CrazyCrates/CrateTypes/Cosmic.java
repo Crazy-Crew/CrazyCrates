@@ -220,21 +220,25 @@ public class Cosmic implements Listener{
 			return;
 		}
 		if(inv.getName().equals(Methods.color(getFile(player).getString("Crate.CrateName")+" - Prizes"))){
-			boolean T=false;
+			boolean T = false;
 			for(int i : picks.get(player)){
-				if(inv.getItem(i)!=null){
-					if(inv.getItem(i).getType()==Material.STAINED_GLASS_PANE){
+				if(inv.getItem(i) != null){
+					if(inv.getItem(i).getType() == Material.STAINED_GLASS_PANE){
 						ItemStack item = inv.getItem(i);
 						if(item.hasItemMeta()){
 							if(item.getItemMeta().hasDisplayName()){
-								String tier = tiers.get(player).get(item);
-								if(item.getItemMeta().getDisplayName().equals(Methods.color(getFile(player).getString("Crate.Tiers."+tier+".Name")))){
-									Prize prize = pickReward(player, tier);
-									for(int stop = 0; prize == null && stop <= 2000; stop++){
-										prize = pickReward(player, tier);
+								if(tiers.containsKey(player)){
+									if(tiers.get(player).containsKey(item)){
+										String tier = tiers.get(player).get(item);
+										if(item.getItemMeta().getDisplayName().equals(Methods.color(getFile(player).getString("Crate.Tiers." + tier + ".Name")))){
+											Prize prize = pickReward(player, tier);
+											for(int stop = 0; prize == null && stop <= 2000; stop++){
+												prize = pickReward(player, tier);
+											}
+											Main.CC.getReward(player, prize);
+											T = true;
+										}
 									}
-									Main.CC.getReward(player, prize);
-									T = true;
 								}
 							}
 						}
