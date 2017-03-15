@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -751,6 +752,40 @@ public class Methods{
 		catch(Exception e) {
 			return;
 		}
+	}
+	
+	public static Set<String> getEnchantments(){
+		HashMap<String, String> enchants = new HashMap<String, String>();
+		enchants.put("ARROW_DAMAGE", "Power");
+		enchants.put("ARROW_FIRE", "Flame");
+		enchants.put("ARROW_INFINITE", "Infinity");
+		enchants.put("ARROW_KNOCKBACK", "Punch");
+		enchants.put("DAMAGE_ALL", "Sharpness");
+		enchants.put("DAMAGE_ARTHROPODS", "Bane_Of_Arthropods");
+		enchants.put("DAMAGE_UNDEAD", "Smite");
+		enchants.put("DEPTH_STRIDER", "Depth_Strider");
+		enchants.put("DIG_SPEED", "Efficiency");
+		enchants.put("DURABILITY", "Unbreaking");
+		enchants.put("FIRE_ASPECT", "Fire_Aspect");
+		enchants.put("KNOCKBACK", "KnockBack");
+		enchants.put("LOOT_BONUS_BLOCKS", "Fortune");
+		enchants.put("LOOT_BONUS_MOBS", "Looting");
+		enchants.put("LUCK", "Luck_Of_The_Sea");
+		enchants.put("LURE", "Lure");
+		enchants.put("OXYGEN", "Respiration");
+		enchants.put("PROTECTION_ENVIRONMENTAL", "Protection");
+		enchants.put("PROTECTION_EXPLOSIONS", "Blast_Protection");
+		enchants.put("PROTECTION_FALL", "Feather_Falling");
+		enchants.put("PROTECTION_FIRE", "Fire_Protection");
+		enchants.put("PROTECTION_PROJECTILE", "Projectile_Protection");
+		enchants.put("SILK_TOUCH", "Silk_Touch");
+		enchants.put("THORNS", "Thorns");
+		enchants.put("WATER_WORKER", "Aqua_Affinity");
+		enchants.put("BINDING_CURSE", "Curse_Of_Binding");
+		enchants.put("MENDING", "Mending");
+		enchants.put("FROST_WALKER", "Frost_Walker");
+		enchants.put("VANISHING_CURSE", "Curse_Of_Vanishing");
+		return enchants.keySet();
 	}
 	
 }

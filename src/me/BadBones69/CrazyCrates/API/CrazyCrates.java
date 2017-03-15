@@ -209,11 +209,13 @@ public class CrazyCrates {
 		if(file.contains(path + "DisplayEnchantments")){
 			for(String enchant : file.getStringList(path + "DisplayEnchantments")){
 				for(Enchantment enc : Enchantment.values()){
-					enchant = enchant.toLowerCase();
-					if(enchant.contains(enc.getName().toLowerCase() + ":") || enchant.contains(Methods.getEnchantmentName(enc).toLowerCase() + ":")){
-						String[] breakdown = enchant.split(":");
-						int lvl = Integer.parseInt(breakdown[1]);
-						enchants.put(enc, lvl);
+					if(Methods.getEnchantments().contains(enc.getName())){
+						enchant = enchant.toLowerCase();
+						if(enchant.contains(enc.getName().toLowerCase() + ":") || enchant.contains(Methods.getEnchantmentName(enc).toLowerCase() + ":")){
+							String[] breakdown = enchant.split(":");
+							int lvl = Integer.parseInt(breakdown[1]);
+							enchants.put(enc, lvl);
+						}
 					}
 				}
 			}
