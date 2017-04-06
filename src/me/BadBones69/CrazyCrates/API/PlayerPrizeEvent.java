@@ -1,4 +1,4 @@
-package me.BadBones69.CrazyCrates.API;
+package me.badbones69.crazycrates.api;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

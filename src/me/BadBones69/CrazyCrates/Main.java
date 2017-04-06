@@ -1,4 +1,4 @@
-package me.BadBones69.CrazyCrates;
+package me.badbones69.crazycrates;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -22,23 +22,24 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.BadBones69.CrazyCrates.API.Crate;
-import me.BadBones69.CrazyCrates.API.CrateType;
-import me.BadBones69.CrazyCrates.API.CrazyCrates;
-import me.BadBones69.CrazyCrates.API.FireworkDamageAPI;
-import me.BadBones69.CrazyCrates.API.KeyType;
-import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
-import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
-import me.BadBones69.CrazyCrates.CrateTypes.CrateOnTheGo;
-import me.BadBones69.CrazyCrates.CrateTypes.QCC;
-import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
-import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
-import me.BadBones69.CrazyCrates.CrateTypes.War;
-import me.BadBones69.CrazyCrates.CrateTypes.Wheel;
-import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
-import me.BadBones69.CrazyCrates.MultiSupport.MVdWPlaceholderAPISupport;
-import me.BadBones69.CrazyCrates.MultiSupport.PlaceholderAPISupport;
-import me.BadBones69.CrazyCrates.MultiSupport.Support;
+import me.badbones69.crazycrates.api.Crate;
+import me.badbones69.crazycrates.api.CrateType;
+import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.FireworkDamageAPI;
+import me.badbones69.crazycrates.api.KeyType;
+import me.badbones69.crazycrates.cratetypes.CSGO;
+import me.badbones69.crazycrates.cratetypes.Cosmic;
+import me.badbones69.crazycrates.cratetypes.CrateOnTheGo;
+import me.badbones69.crazycrates.cratetypes.QCC;
+import me.badbones69.crazycrates.cratetypes.QuickCrate;
+import me.badbones69.crazycrates.cratetypes.Roulette;
+import me.badbones69.crazycrates.cratetypes.War;
+import me.badbones69.crazycrates.cratetypes.Wheel;
+import me.badbones69.crazycrates.cratetypes.Wonder;
+import me.badbones69.crazycrates.multisupport.MVdWPlaceholderAPISupport;
+import me.badbones69.crazycrates.multisupport.PlaceholderAPISupport;
+import me.badbones69.crazycrates.multisupport.Support;
+import me.badbones69.crazycrates.multisupport.Version;
 
 public class Main extends JavaPlugin implements Listener{
 	
@@ -72,7 +73,11 @@ public class Main extends JavaPlugin implements Listener{
 		pm.registerEvents(new QuickCrate(), this);
 		pm.registerEvents(new CrateControl(), this);
 		pm.registerEvents(new CrateOnTheGo(), this);
-		pm.registerEvents(new FireworkDamageAPI(this), this);
+		try{
+			if(Version.getVersion().getVersionInteger() >= Version.v1_11_R1.getVersionInteger()){
+				pm.registerEvents(new FireworkDamageAPI(this), this);
+			}
+		}catch(Exception e){}
 		if(Support.hasPlaceholderAPI()){
 			new PlaceholderAPISupport(this).hook();
 		}
@@ -97,6 +102,9 @@ public class Main extends JavaPlugin implements Listener{
 		} catch (IOException e) {
 			System.out.println("Error Submitting stats!");
 		}
+		try {
+			new MCUpdate(this, true);
+		} catch (IOException e) {}
 	}
 	
 	@Override
@@ -491,6 +499,10 @@ public class Main extends JavaPlugin implements Listener{
 					String type = args[1];
 					for(Crate crate : CC.getCrates()){
 						if(crate.getName().equalsIgnoreCase(args[2])){
+							if(!(sender instanceof Player)){
+								sender.sendMessage(Methods.color(Methods.getPrefix() + "&cYou must be a player to run this command."));
+								return true;
+							}
 							if(crate.getFile().getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
 								sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+ sender.getName()+" "+1+" &7Crates."));
 								CrateOnTheGo.giveCrate((Player)sender, 1, crate);

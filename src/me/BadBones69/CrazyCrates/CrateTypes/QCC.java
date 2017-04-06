@@ -1,4 +1,4 @@
-package me.BadBones69.CrazyCrates.CrateTypes;
+package me.badbones69.crazycrates.cratetypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,17 +28,17 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.util.Vector;
 
-import me.BadBones69.CrazyCrates.CrateControl;
-import me.BadBones69.CrazyCrates.GUI;
-import me.BadBones69.CrazyCrates.Main;
-import me.BadBones69.CrazyCrates.Methods;
-import me.BadBones69.CrazyCrates.ParticleEffect;
-import me.BadBones69.CrazyCrates.ParticleEffect.BlockData;
-import me.BadBones69.CrazyCrates.API.CrateType;
-import me.BadBones69.CrazyCrates.API.KeyType;
-import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
-import me.BadBones69.CrazyCrates.API.Prize;
-import me.BadBones69.CrazyCrates.MultiSupport.Version;
+import me.badbones69.crazycrates.CrateControl;
+import me.badbones69.crazycrates.GUI;
+import me.badbones69.crazycrates.Main;
+import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.ParticleEffect;
+import me.badbones69.crazycrates.ParticleEffect.BlockData;
+import me.badbones69.crazycrates.api.CrateType;
+import me.badbones69.crazycrates.api.KeyType;
+import me.badbones69.crazycrates.api.PlayerPrizeEvent;
+import me.badbones69.crazycrates.api.Prize;
+import me.badbones69.crazycrates.multisupport.Version;
 
 public class QCC implements Listener{ // Quad Crate Control.
 	

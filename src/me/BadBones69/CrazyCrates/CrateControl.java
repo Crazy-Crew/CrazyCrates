@@ -1,4 +1,4 @@
-package me.BadBones69.CrazyCrates;
+package me.badbones69.crazycrates;
 
 import java.util.HashMap;
 
@@ -19,9 +19,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import me.BadBones69.CrazyCrates.API.Crate;
-import me.BadBones69.CrazyCrates.API.KeyType;
-import me.BadBones69.CrazyCrates.CrateTypes.CrateOnTheGo;
+import me.badbones69.crazycrates.api.Crate;
+import me.badbones69.crazycrates.api.KeyType;
+import me.badbones69.crazycrates.cratetypes.CrateOnTheGo;
 
 public class CrateControl implements Listener{ //Crate Control
 	

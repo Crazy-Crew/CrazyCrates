@@ -1,4 +1,4 @@
-package me.BadBones69.CrazyCrates.MultiSupport;
+package me.badbones69.crazycrates.multisupport;
 
 import java.text.NumberFormat;
 
@@ -7,9 +7,9 @@ import org.bukkit.plugin.Plugin;
 import be.maximvdw.placeholderapi.PlaceholderAPI;
 import be.maximvdw.placeholderapi.PlaceholderReplaceEvent;
 import be.maximvdw.placeholderapi.PlaceholderReplacer;
-import me.BadBones69.CrazyCrates.Main;
-import me.BadBones69.CrazyCrates.Methods;
-import me.BadBones69.CrazyCrates.API.Crate;
+import me.badbones69.crazycrates.Main;
+import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.api.Crate;
 
 public class MVdWPlaceholderAPISupport {
 	

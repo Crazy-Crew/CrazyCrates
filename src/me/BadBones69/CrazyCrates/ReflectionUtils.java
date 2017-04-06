@@ -1,4 +1,4 @@
-package me.BadBones69.CrazyCrates;
+package me.badbones69.crazycrates;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

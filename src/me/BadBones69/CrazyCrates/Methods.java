@@ -1,4 +1,4 @@
-package me.BadBones69.CrazyCrates;
+package me.badbones69.crazycrates;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,17 +32,17 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 
-import me.BadBones69.CrazyCrates.API.Crate;
-import me.BadBones69.CrazyCrates.API.FireworkDamageAPI;
-import me.BadBones69.CrazyCrates.API.KeyType;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_10_R1;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_11_R1;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R1;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R2;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_8_R3;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R1;
-import me.BadBones69.CrazyCrates.MultiSupport.NMS_v1_9_R2;
-import me.BadBones69.CrazyCrates.MultiSupport.Version;
+import me.badbones69.crazycrates.api.Crate;
+import me.badbones69.crazycrates.api.FireworkDamageAPI;
+import me.badbones69.crazycrates.api.KeyType;
+import me.badbones69.crazycrates.multisupport.NMS_v1_10_R1;
+import me.badbones69.crazycrates.multisupport.NMS_v1_11_R1;
+import me.badbones69.crazycrates.multisupport.NMS_v1_8_R1;
+import me.badbones69.crazycrates.multisupport.NMS_v1_8_R2;
+import me.badbones69.crazycrates.multisupport.NMS_v1_8_R3;
+import me.badbones69.crazycrates.multisupport.NMS_v1_9_R1;
+import me.badbones69.crazycrates.multisupport.NMS_v1_9_R2;
+import me.badbones69.crazycrates.multisupport.Version;
 
 public class Methods{
 	

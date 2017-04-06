@@ -1,4 +1,4 @@
-package me.BadBones69.CrazyCrates.MultiSupport;
+package me.badbones69.crazycrates.multisupport;
 
 import org.bukkit.Bukkit;
 

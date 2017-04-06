@@ -1,4 +1,4 @@
-package me.BadBones69.CrazyCrates.MultiSupport;
+package me.badbones69.crazycrates.multisupport;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;

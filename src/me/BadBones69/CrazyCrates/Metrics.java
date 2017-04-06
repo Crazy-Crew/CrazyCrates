@@ -25,7 +25,7 @@
  * authors and contributors and should not be interpreted as representing official policies,
  * either expressed or implied, of anybody else.
  */
-package me.BadBones69.CrazyCrates;
+package me.badbones69.crazycrates;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;

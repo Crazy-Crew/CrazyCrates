@@ -1,4 +1,4 @@
-package me.BadBones69.CrazyCrates.CrateTypes;
+package me.badbones69.crazycrates.cratetypes;
 
 import java.util.HashMap;
 
@@ -11,14 +11,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.util.Vector;
 
-import me.BadBones69.CrazyCrates.CrateControl;
-import me.BadBones69.CrazyCrates.GUI;
-import me.BadBones69.CrazyCrates.Main;
-import me.BadBones69.CrazyCrates.Methods;
-import me.BadBones69.CrazyCrates.API.CrateType;
-import me.BadBones69.CrazyCrates.API.KeyType;
-import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
-import me.BadBones69.CrazyCrates.API.Prize;
+import me.badbones69.crazycrates.CrateControl;
+import me.badbones69.crazycrates.GUI;
+import me.badbones69.crazycrates.Main;
+import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.api.CrateType;
+import me.badbones69.crazycrates.api.KeyType;
+import me.badbones69.crazycrates.api.PlayerPrizeEvent;
+import me.badbones69.crazycrates.api.Prize;
 
 public class QuickCrate implements Listener{
 	

@@ -1,4 +1,4 @@
-package me.BadBones69.CrazyCrates.CrateTypes;
+package me.badbones69.crazycrates.cratetypes;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -14,16 +14,16 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import me.BadBones69.CrazyCrates.CrateControl;
-import me.BadBones69.CrazyCrates.GUI;
-import me.BadBones69.CrazyCrates.Main;
-import me.BadBones69.CrazyCrates.Methods;
-import me.BadBones69.CrazyCrates.API.Crate;
-import me.BadBones69.CrazyCrates.API.CrateType;
-import me.BadBones69.CrazyCrates.API.KeyType;
-import me.BadBones69.CrazyCrates.API.PlayerPrizeEvent;
-import me.BadBones69.CrazyCrates.API.Prize;
-import me.BadBones69.CrazyCrates.MultiSupport.Version;
+import me.badbones69.crazycrates.CrateControl;
+import me.badbones69.crazycrates.GUI;
+import me.badbones69.crazycrates.Main;
+import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.api.Crate;
+import me.badbones69.crazycrates.api.CrateType;
+import me.badbones69.crazycrates.api.KeyType;
+import me.badbones69.crazycrates.api.PlayerPrizeEvent;
+import me.badbones69.crazycrates.api.Prize;
+import me.badbones69.crazycrates.multisupport.Version;
 
 public class War implements Listener{
 	
@@ -186,18 +186,22 @@ public class War implements Listener{
 	}
 	
 	private static void setRandomPrizes(Player player, Inventory inv){
-		for(int i = 0; i < 9; i++){
-			inv.setItem(i, Main.CC.pickPrize(player).getDisplayItem());
+		if(inv.getName().equalsIgnoreCase(Methods.color(GUI.Crate.get(player).getFile().getString("Crate.CrateName")))){
+			for(int i = 0; i < 9; i++){
+				inv.setItem(i, Main.CC.pickPrize(player).getDisplayItem());
+			}
 		}
 	}
 	
 	private static void setRandomGlass(Player player, Inventory inv){
-		int color = new Random().nextInt(15);
-		if(color == 8){
-			color = 0;
-		}
-		for(int i = 0; i < 9; i++){
-			inv.setItem(i, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, "&" + getColorCode().get(color) + "&l???"));
+		if(inv.getName().equalsIgnoreCase(Methods.color(GUI.Crate.get(player).getFile().getString("Crate.CrateName")))){
+			int color = new Random().nextInt(15);
+			if(color == 8){
+				color = 0;
+			}
+			for(int i = 0; i < 9; i++){
+				inv.setItem(i, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, "&" + getColorCode().get(color) + "&l???"));
+			}
 		}
 	}
 	

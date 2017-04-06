@@ -1,4 +1,4 @@
-package me.BadBones69.CrazyCrates.API;
+package me.badbones69.crazycrates.api;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,19 +14,19 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import me.BadBones69.CrazyCrates.CrateControl;
-import me.BadBones69.CrazyCrates.GUI;
-import me.BadBones69.CrazyCrates.Main;
-import me.BadBones69.CrazyCrates.Methods;
-import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
-import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
-import me.BadBones69.CrazyCrates.CrateTypes.FireCracker;
-import me.BadBones69.CrazyCrates.CrateTypes.QCC;
-import me.BadBones69.CrazyCrates.CrateTypes.QuickCrate;
-import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
-import me.BadBones69.CrazyCrates.CrateTypes.War;
-import me.BadBones69.CrazyCrates.CrateTypes.Wheel;
-import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
+import me.badbones69.crazycrates.CrateControl;
+import me.badbones69.crazycrates.GUI;
+import me.badbones69.crazycrates.Main;
+import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.cratetypes.CSGO;
+import me.badbones69.crazycrates.cratetypes.Cosmic;
+import me.badbones69.crazycrates.cratetypes.FireCracker;
+import me.badbones69.crazycrates.cratetypes.QCC;
+import me.badbones69.crazycrates.cratetypes.QuickCrate;
+import me.badbones69.crazycrates.cratetypes.Roulette;
+import me.badbones69.crazycrates.cratetypes.War;
+import me.badbones69.crazycrates.cratetypes.Wheel;
+import me.badbones69.crazycrates.cratetypes.Wonder;
 
 public class CrazyCrates {
 	

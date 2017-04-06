@@ -1,4 +1,4 @@
-package me.BadBones69.CrazyCrates.CrateTypes;
+package me.badbones69.crazycrates.cratetypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,12 +13,12 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import me.BadBones69.CrazyCrates.CrateControl;
-import me.BadBones69.CrazyCrates.GUI;
-import me.BadBones69.CrazyCrates.Main;
-import me.BadBones69.CrazyCrates.Methods;
-import me.BadBones69.CrazyCrates.API.FireworkDamageAPI;
-import me.BadBones69.CrazyCrates.API.KeyType;
+import me.badbones69.crazycrates.CrateControl;
+import me.badbones69.crazycrates.GUI;
+import me.badbones69.crazycrates.Main;
+import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.api.FireworkDamageAPI;
+import me.badbones69.crazycrates.api.KeyType;
 
 public class FireCracker {
 	

@@ -1,4 +1,4 @@
-package me.BadBones69.CrazyCrates;
+package me.badbones69.crazycrates;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -19,17 +19,17 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import me.BadBones69.CrazyCrates.API.Crate;
-import me.BadBones69.CrazyCrates.API.CrateType;
-import me.BadBones69.CrazyCrates.API.KeyType;
-import me.BadBones69.CrazyCrates.API.Prize;
-import me.BadBones69.CrazyCrates.CrateTypes.CSGO;
-import me.BadBones69.CrazyCrates.CrateTypes.Cosmic;
-import me.BadBones69.CrazyCrates.CrateTypes.QCC;
-import me.BadBones69.CrazyCrates.CrateTypes.Roulette;
-import me.BadBones69.CrazyCrates.CrateTypes.War;
-import me.BadBones69.CrazyCrates.CrateTypes.Wheel;
-import me.BadBones69.CrazyCrates.CrateTypes.Wonder;
+import me.badbones69.crazycrates.api.Crate;
+import me.badbones69.crazycrates.api.CrateType;
+import me.badbones69.crazycrates.api.KeyType;
+import me.badbones69.crazycrates.api.Prize;
+import me.badbones69.crazycrates.cratetypes.CSGO;
+import me.badbones69.crazycrates.cratetypes.Cosmic;
+import me.badbones69.crazycrates.cratetypes.QCC;
+import me.badbones69.crazycrates.cratetypes.Roulette;
+import me.badbones69.crazycrates.cratetypes.War;
+import me.badbones69.crazycrates.cratetypes.Wheel;
+import me.badbones69.crazycrates.cratetypes.Wonder;
 
 public class GUI implements Listener{
 	
