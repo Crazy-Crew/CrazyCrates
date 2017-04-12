@@ -26,6 +26,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import me.badbones69.crazycrates.CrateControl;
@@ -513,6 +514,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 			}
 		}
 	}
+
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e){
 		Player player = e.getPlayer();
@@ -558,16 +560,21 @@ public class QCC implements Listener{ // Quad Crate Control.
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e){
-		Player player = e.getPlayer();
-		String uuid = player.getUniqueId().toString();
-		if(!Main.settings.getData().contains("Players."+uuid)){
-			Main.settings.getData().set("Players."+uuid+".Name", player.getName());
-			for(String crate : Main.settings.getAllCratesNames()){
-				int amount = Main.settings.getFile(crate).getInt("Crate.StartingKeys");
-				Main.settings.getData().set("Players."+uuid+"."+crate, amount);
+		new BukkitRunnable(){
+			@Override
+			public void run() {
+				Player player = e.getPlayer();
+				String uuid = player.getUniqueId().toString();
+				if(!Main.settings.getData().contains("Players."+uuid)){
+					Main.settings.getData().set("Players."+uuid+".Name", player.getName());
+					for(String crate : Main.settings.getAllCratesNames()){
+						int amount = Main.settings.getFile(crate).getInt("Crate.StartingKeys");
+						Main.settings.getData().set("Players."+uuid+"."+crate, amount);
+					}
+					Main.settings.saveData();
+				}
 			}
-			Main.settings.saveData();
-		}
+		}.runTaskAsynchronously(Methods.plugin);
 	}
 	
 	@EventHandler
