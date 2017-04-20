@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import me.badbones69.crazycrates.api.Crate;
 import me.badbones69.crazycrates.api.CrateType;
@@ -454,7 +455,7 @@ public class Main extends JavaPlugin implements Listener{
 									player = (Player) sender;
 								}
 							}
-							if(GUI.Crate.containsKey(player)){
+							if(GUI.crates.containsKey(player)){
 								sender.sendMessage(Methods.color(Methods.getPrefix()+Main.settings.getConfig().getString("Settings.Crate-Already-Opened")));
 								return true;
 							}
@@ -465,7 +466,7 @@ public class Main extends JavaPlugin implements Listener{
 									for(Crate c : Main.CC.getCrates()){
 										if(c.getName().equalsIgnoreCase(crate)){
 											CrateControl.Crate.put(player, c);
-											GUI.Crate.put(player, c);
+											GUI.crates.put(player, c);
 										}
 									}
 									Methods.Key.put(player, KeyType.FREE);
@@ -590,8 +591,8 @@ public class Main extends JavaPlugin implements Listener{
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e){
-		final Player player = e.getPlayer();
-		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
+		new BukkitRunnable(){
+			Player player = e.getPlayer();
 			@Override
 			public void run() {
 				if(player.getName().equals("BadBones69")){
@@ -608,7 +609,7 @@ public class Main extends JavaPlugin implements Listener{
 					}
 				}
 			}
-		}, 40);
+		}.runTaskLaterAsynchronously(this, 40);
 	}
 	
 }

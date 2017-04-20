@@ -32,7 +32,7 @@ public class War implements Listener{
 	private static HashMap<Player, Boolean> canClose = new HashMap<Player, Boolean>();
 	
 	public static void openWarCrate(Player player){
-		Inventory inv = Bukkit.createInventory(null, 9, Methods.color(GUI.Crate.get(player).getFile().getString("Crate.CrateName")));
+		Inventory inv = Bukkit.createInventory(null, 9, Methods.color(GUI.crates.get(player).getFile().getString("Crate.CrateName")));
 		setRandomPrizes(player, inv);
 		player.openInventory(inv);
 		canPick.put(player, false);
@@ -45,7 +45,7 @@ public class War implements Listener{
 			Methods.removeItem(CrateControl.Key.get(player), player);
 		}
 		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
-			Methods.takeKeys(1, player, GUI.Crate.get(player));
+			Methods.takeKeys(1, player, GUI.crates.get(player));
 		}
 		roll.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
 			int full = 0;
@@ -93,8 +93,8 @@ public class War implements Listener{
 				}
 			}
 			if(canPick.containsKey(player)){
-				if(GUI.Crate.containsKey(player)){
-					if(GUI.Crate.get(player).getCrateType() == CrateType.WAR){
+				if(GUI.crates.containsKey(player)){
+					if(GUI.crates.get(player).getCrateType() == CrateType.WAR){
 						if(canPick.get(player)){
 							ItemStack item = e.getCurrentItem();
 							if(item != null){
@@ -113,7 +113,7 @@ public class War implements Listener{
 										Methods.fireWork(player.getLocation().add(0, 1, 0));
 									}
 									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.CSGO, CrateControl.Crate.get(player).getName(), prize));
-									GUI.Crate.remove(player);
+									GUI.crates.remove(player);
 									if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()){
 										player.playSound(player.getLocation(), Sound.valueOf("BLOCK_ANVIL_PLACE"), 1, 1);
 									}else{
@@ -186,7 +186,7 @@ public class War implements Listener{
 	}
 	
 	private static void setRandomPrizes(Player player, Inventory inv){
-		if(inv.getName().equalsIgnoreCase(Methods.color(GUI.Crate.get(player).getFile().getString("Crate.CrateName")))){
+		if(inv.getName().equalsIgnoreCase(Methods.color(GUI.crates.get(player).getFile().getString("Crate.CrateName")))){
 			for(int i = 0; i < 9; i++){
 				inv.setItem(i, Main.CC.pickPrize(player).getDisplayItem());
 			}
@@ -194,7 +194,7 @@ public class War implements Listener{
 	}
 	
 	private static void setRandomGlass(Player player, Inventory inv){
-		if(inv.getName().equalsIgnoreCase(Methods.color(GUI.Crate.get(player).getFile().getString("Crate.CrateName")))){
+		if(inv.getName().equalsIgnoreCase(Methods.color(GUI.crates.get(player).getFile().getString("Crate.CrateName")))){
 			int color = new Random().nextInt(15);
 			if(color == 8){
 				color = 0;

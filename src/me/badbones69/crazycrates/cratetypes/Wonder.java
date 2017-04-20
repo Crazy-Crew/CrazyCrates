@@ -28,7 +28,7 @@ public class Wonder implements Listener{
 	private static HashMap<Player, Integer> crate = new HashMap<Player, Integer>();
 	
 	public static void startWonder(final Player player){
-		final Inventory inv = Bukkit.createInventory(null, 45, Methods.color(GUI.Crate.get(player).getFile().getString("Crate.CrateName")));
+		final Inventory inv = Bukkit.createInventory(null, 45, Methods.color(GUI.crates.get(player).getFile().getString("Crate.CrateName")));
 		final HashMap<ItemStack, String> items = new HashMap<ItemStack, String>();
 		final ArrayList<String> slots = new ArrayList<String>();
 		for(int i=0;i<45;i++){
@@ -41,7 +41,7 @@ public class Wonder implements Listener{
 			Methods.removeItem(CrateControl.Key.get(player), player);
 		}
 		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
-			Methods.takeKeys(1, player, GUI.Crate.get(player));
+			Methods.takeKeys(1, player, GUI.crates.get(player));
 		}
 		player.openInventory(inv);
 		crate.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
@@ -83,7 +83,7 @@ public class Wonder implements Listener{
 						Methods.fireWork(player.getLocation().add(0, 1, 0));
 					}
 					Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WONDER, CrateControl.Crate.get(player).getName(), p));
-					GUI.Crate.remove(player);
+					GUI.crates.remove(player);
 					return;
 				}
 				fulltime++;

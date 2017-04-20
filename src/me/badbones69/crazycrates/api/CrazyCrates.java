@@ -89,7 +89,7 @@ public class CrazyCrates {
 				if(prize.toggleFirework()){
 					Methods.fireWork(player.getLocation().add(0, 1, 0));
 				}
-				GUI.Crate.remove(player);
+				GUI.crates.remove(player);
 				break;
 		}
 	}

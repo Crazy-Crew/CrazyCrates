@@ -84,21 +84,21 @@ public class QCC implements Listener{ // Quad Crate Control.
 			if(BlockList.contains(l.getBlock().getType())){
 				String msg = Main.settings.getConfig().getString("Settings.QuadCrate.NeedsMoreRoom");
 				player.sendMessage(Methods.color(Methods.getPrefix()+msg));
-				GUI.Crate.remove(player);
+				GUI.crates.remove(player);
 				return;
 			}
 			if(l.getBlockY()!=Lo.clone().getBlockY()-1&&l.getBlock().getType()!=Material.AIR){
 				if(!l.equals(Lo.clone())){
 					String msg = Main.settings.getConfig().getString("Settings.QuadCrate.NeedsMoreRoom");
 					player.sendMessage(Methods.color(Methods.getPrefix()+msg));
-					GUI.Crate.remove(player);
+					GUI.crates.remove(player);
 					return;
 				}
 			}
 		}
 		if(Lo.clone().subtract(0, 1, 0).getBlock().getType()==Material.AIR){
 			player.sendMessage(Methods.color(Methods.getPrefix()+"&cYou must be standing on a block."));
-			GUI.Crate.remove(player);
+			GUI.crates.remove(player);
 			return;
 		}
 		for(Entity en : player.getNearbyEntities(3, 3, 3)){
@@ -109,7 +109,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 					msg = msg.replaceAll("%Player%", p.getName());
 					msg = msg.replaceAll("%player%", p.getName());
 					player.sendMessage(Methods.color(Methods.getPrefix()+msg));
-					GUI.Crate.remove(player);
+					GUI.crates.remove(player);
 					return;
 				}
 			}
@@ -122,8 +122,8 @@ public class QCC implements Listener{ // Quad Crate Control.
 				p.setVelocity(v);
 			}
 		}
-		if(GUI.Crate.get(player).getFile().getBoolean("Crate.OpeningBroadCast")){
-			String msg = Methods.color(GUI.Crate.get(player).getFile().getString("Crate.BroadCast"));
+		if(GUI.crates.get(player).getFile().getBoolean("Crate.OpeningBroadCast")){
+			String msg = Methods.color(GUI.crates.get(player).getFile().getString("Crate.BroadCast"));
 			msg = msg.replaceAll("%Prefix%", Methods.getPrefix());
 			msg = msg.replaceAll("%prefix%", Methods.getPrefix());
 			msg = msg.replaceAll("%Player%", player.getName());
@@ -135,7 +135,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 			Methods.removeItem(CrateControl.Key.get(player), player);
 		}
 		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
-			Methods.takeKeys(1, player, GUI.Crate.get(player));
+			Methods.takeKeys(1, player, GUI.crates.get(player));
 		}
 		rest.clear();
 		HashMap<Location, BlockState> locs = new HashMap<Location, BlockState>();
@@ -354,7 +354,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 		}
 		crates.remove(player);
 		chests.remove(player);
-		GUI.Crate.remove(player);
+		GUI.crates.remove(player);
 		if(P.containsKey(player)){
 			Bukkit.getScheduler().cancelTask(P.get(player));
 			P.remove(player);
@@ -483,7 +483,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 											crates.remove(player);
 											chests.remove(player);
 											Rest.remove(player);
-											GUI.Crate.remove(player);
+											GUI.crates.remove(player);
 											if(timer.containsKey(player)){
 												Bukkit.getScheduler().cancelTask(timer.get(player));
 												timer.remove(player);

@@ -29,7 +29,7 @@ public class FireCracker {
 			Methods.removeItem(CrateControl.Key.get(player), player);
 		}
 		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
-			Methods.takeKeys(1, player, GUI.Crate.get(player));
+			Methods.takeKeys(1, player, GUI.crates.get(player));
 		}
 		final ArrayList<Color> colors = new ArrayList<Color>();
 		colors.add(Color.RED);

@@ -30,7 +30,7 @@ public class QuickCrate implements Listener{
 				Methods.removeItem(CrateControl.Key.get(player), player);
 			}
 			if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
-				Methods.takeKeys(1, player, GUI.Crate.get(player));
+				Methods.takeKeys(1, player, GUI.crates.get(player));
 			}
 		}
 		Prize prize = Main.CC.pickPrize(player, loc.clone().add(.5, 1.3, .5));
@@ -52,7 +52,7 @@ public class QuickCrate implements Listener{
 					Reward.get(player).remove();
 					Reward.remove(player);
 					Methods.playChestAction(loc.getBlock(), false);
-					GUI.Crate.remove(player);
+					GUI.crates.remove(player);
 					CrateControl.InUse.remove(player);
 				}
 			}

@@ -62,7 +62,7 @@ public class Methods{
 	
 	public static HashMap<ItemStack, String> getItems(Player player){
 		HashMap<ItemStack, String> items = new HashMap<ItemStack, String>();
-		FileConfiguration file = GUI.Crate.get(player).getFile();
+		FileConfiguration file = GUI.crates.get(player).getFile();
 		for(String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)){
 			String id = file.getString("Crate.Prizes." + reward + ".DisplayItem");
 			String name = file.getString("Crate.Prizes." + reward + ".DisplayName");

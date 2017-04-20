@@ -54,7 +54,7 @@ public class CrateOnTheGo implements Listener{
 							if(crate.getFile().getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
 								if(item.getItemMeta().getDisplayName().equals(Methods.color(crate.getFile().getString("Crate.Name")))){
 									e.setCancelled(true);
-									GUI.Crate.put(player, crate);
+									GUI.crates.put(player, crate);
 									Methods.removeItem(item, player);
 									Prize prize = Main.CC.pickPrize(player);
 									Main.CC.getReward(player, prize);
@@ -62,7 +62,7 @@ public class CrateOnTheGo implements Listener{
 									if(prize.toggleFirework()){
 										Methods.fireWork(player.getLocation().add(0, 1, 0));
 									}
-									GUI.Crate.remove(player);
+									GUI.crates.remove(player);
 									return;
 								}
 							}

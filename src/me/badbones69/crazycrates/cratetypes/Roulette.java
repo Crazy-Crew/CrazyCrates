@@ -40,7 +40,7 @@ public class Roulette implements Listener{
 	}
 	
 	public static void openRoulette(Player player){
-		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(GUI.Crate.get(player).getFile().getString("Crate.CrateName")));
+		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(GUI.crates.get(player).getFile().getString("Crate.CrateName")));
 		setGlass(inv);
 		inv.setItem(13, Main.CC.pickPrize(player).getDisplayItem());
 		player.openInventory(inv);
@@ -52,7 +52,7 @@ public class Roulette implements Listener{
 			Methods.removeItem(CrateControl.Key.get(player), player);
 		}
 		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
-			Methods.takeKeys(1, player, GUI.Crate.get(player));
+			Methods.takeKeys(1, player, GUI.crates.get(player));
 		}
 		roll.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
 			int time = 1;
@@ -101,7 +101,7 @@ public class Roulette implements Listener{
 						Bukkit.getScheduler().cancelTask(roll.get(player));
 						roll.remove(player);
 						Prize prize = null;
-						for(Prize p : GUI.Crate.get(player).getPrizes()){
+						for(Prize p : GUI.crates.get(player).getPrizes()){
 							if(inv.getItem(13).isSimilar(p.getDisplayItem())){
 								prize = p;
 							}
@@ -111,7 +111,7 @@ public class Roulette implements Listener{
 							Methods.fireWork(player.getLocation().add(0, 1, 0));
 						}
 						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.ROULETTE, CrateControl.Crate.get(player).getName(), prize));
-						GUI.Crate.remove(player);
+						GUI.crates.remove(player);
 						return;
 					}
 				}
@@ -156,8 +156,8 @@ public class Roulette implements Listener{
 			Bukkit.getScheduler().cancelTask(roll.get(player));
 			roll.remove(player);
 		}
-		if(GUI.Crate.containsKey(player)){
-			GUI.Crate.remove(player);
+		if(GUI.crates.containsKey(player)){
+			GUI.crates.remove(player);
 		}
 	}
 	

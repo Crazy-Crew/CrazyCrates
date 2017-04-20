@@ -30,7 +30,7 @@ public class Wheel implements Listener{
 	public static HashMap<Player, HashMap<Integer, ItemStack>> Rewards = new HashMap<Player, HashMap<Integer, ItemStack>>();
 	
 	public static void startWheel(final Player player){
-		final Inventory inv = Bukkit.createInventory(null, 54, Methods.color(GUI.Crate.get(player).getFile().getString("Crate.CrateName")));
+		final Inventory inv = Bukkit.createInventory(null, 54, Methods.color(GUI.crates.get(player).getFile().getString("Crate.CrateName")));
 		for(int i=0;i<54;i++){
 			inv.setItem(i, Methods.makeItem("160:15", 1, " "));
 		} 
@@ -45,7 +45,7 @@ public class Wheel implements Listener{
 			Methods.removeItem(CrateControl.Key.get(player), player);
 		}
 		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
-			Methods.takeKeys(1, player, GUI.Crate.get(player));
+			Methods.takeKeys(1, player, GUI.crates.get(player));
 		}
 		player.openInventory(inv);
 		crate.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
@@ -111,7 +111,7 @@ public class Wheel implements Listener{
 					}
 					if(full >= (timer + 55 + 47)){
 						Prize prize = null;
-						for(Prize p : GUI.Crate.get(player).getPrizes()){
+						for(Prize p : GUI.crates.get(player).getPrizes()){
 							if(Rewards.get(player).get(slots.get(f)).isSimilar(p.getDisplayItem())){
 								prize = p;
 							}
@@ -122,7 +122,7 @@ public class Wheel implements Listener{
 						}
 						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WHEEL, CrateControl.Crate.get(player).getName(), prize));
 						player.closeInventory();
-						GUI.Crate.remove(player);
+						GUI.crates.remove(player);
 						Bukkit.getScheduler().cancelTask(crate.get(player));
 					}
 					slower++;

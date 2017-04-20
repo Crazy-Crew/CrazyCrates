@@ -36,7 +36,7 @@ public class GUI implements Listener{
 	/**
 	 * The crate that the player is opening.
 	 */
-	public static HashMap<Player, Crate> Crate = new HashMap<Player, Crate>();
+	public static HashMap<Player, Crate> crates = new HashMap<Player, Crate>();
 	/**
 	 * All the preview inventories.
 	 */
@@ -108,7 +108,7 @@ public class GUI implements Listener{
 										}
 										return;
 									}
-									if(Crate.containsKey(player)){
+									if(crates.containsKey(player)){
 										player.sendMessage(Methods.color(Methods.getPrefix()+config.getString("Settings.Crate-Already-Opened")));
 										return;
 									}
@@ -134,7 +134,7 @@ public class GUI implements Listener{
 									}
 									switch(CrateType.getFromName(file.getString("Crate.CrateType"))){
 										case COSMIC:
-											Crate.put(player, crate);
+											crates.put(player, crate);
 											CrateControl.Crate.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											Cosmic.openCosmic(player);
@@ -143,7 +143,7 @@ public class GUI implements Listener{
 											player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.Cant-Be-Virtual-Crate")));
 											break;
 										case CSGO:
-											Crate.put(player, crate);
+											crates.put(player, crate);
 											CrateControl.Crate.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											CSGO.openCSGO(player);
@@ -159,7 +159,7 @@ public class GUI implements Listener{
 										case MENU:
 											break;
 										case QUAD_CRATE:
-											Crate.put(player, crate);
+											crates.put(player, crate);
 											CrateControl.Crate.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											QCC.startBuild(player, player.getLocation(), Material.CHEST);
@@ -168,7 +168,7 @@ public class GUI implements Listener{
 											player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.Cant-Be-Virtual-Crate")));
 											break;
 										case ROULETTE:
-											Crate.put(player, crate);
+											crates.put(player, crate);
 											CrateControl.Crate.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											Roulette.openRoulette(player);
@@ -179,19 +179,19 @@ public class GUI implements Listener{
 											}
 											break;
 										case WHEEL:
-											Crate.put(player, crate);
+											crates.put(player, crate);
 											CrateControl.Crate.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											Wheel.startWheel(player);
 											break;
 										case WONDER:
-											Crate.put(player, crate);
+											crates.put(player, crate);
 											CrateControl.Crate.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											Wonder.startWonder(player);
 											break;
 										case WAR:
-											Crate.put(player, crate);
+											crates.put(player, crate);
 											CrateControl.Crate.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											War.openWarCrate(player);

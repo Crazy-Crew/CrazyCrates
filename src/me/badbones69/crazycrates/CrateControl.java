@@ -135,7 +135,7 @@ public class CrateControl implements Listener{ //Crate Control
 							}
 						}
 						if(hasKey){
-							if(GUI.Crate.containsKey(player)){
+							if(GUI.crates.containsKey(player)){
 								player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.AlreadyOpeningCrateMsg")
 									.replaceAll("%Key%", KeyName).replaceAll("%key%", KeyName)));
 								return;
@@ -154,7 +154,7 @@ public class CrateControl implements Listener{ //Crate Control
 							}
 							for(Crate c : Main.CC.getCrates()){
 								if(c.getName().equalsIgnoreCase(crate)){
-									GUI.Crate.put(player, c);
+									GUI.crates.put(player, c);
 								}
 							}
 							if(isPhysical){

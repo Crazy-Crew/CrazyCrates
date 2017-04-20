@@ -167,8 +167,8 @@ public class Cosmic implements Listener{
 								if(it.getType()==Material.AIR){
 									player.closeInventory();
 									player.sendMessage(Methods.getPrefix()+Methods.color("&cNo key was found."));
-									if(GUI.Crate.containsKey(player)){
-										GUI.Crate.remove(player);
+									if(GUI.crates.containsKey(player)){
+										GUI.crates.remove(player);
 									}
 									if(glass.containsKey(player)){
 										glass.remove(player);
@@ -178,7 +178,7 @@ public class Cosmic implements Listener{
 								Methods.removeItem(it, player);
 							}
 							if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
-								Methods.takeKeys(1, player, GUI.Crate.get(player));
+								Methods.takeKeys(1, player, GUI.crates.get(player));
 							}
 							roll.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
 								int time = 0;
@@ -209,7 +209,7 @@ public class Cosmic implements Listener{
 		Inventory inv = e.getInventory();
 		Player player = (Player) e.getPlayer();
 		if(CrateControl.Crate.containsKey(player)){
-			if(getFile(player)==null){
+			if(getFile(player) == null){
 				return;
 			}else{
 				if(!getFile(player).getString("Crate.CrateType").equalsIgnoreCase("Cosmic")){
@@ -219,7 +219,7 @@ public class Cosmic implements Listener{
 		}else{
 			return;
 		}
-		if(inv.getName().equals(Methods.color(getFile(player).getString("Crate.CrateName")+" - Prizes"))){
+		if(inv.getName().equals(Methods.color(getFile(player).getString("Crate.CrateName") + " - Prizes"))){
 			boolean T = false;
 			for(int i : picks.get(player)){
 				if(inv.getItem(i) != null){
@@ -246,14 +246,14 @@ public class Cosmic implements Listener{
 				}
 			}
 			if(T){
-				if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+				if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()){
 					player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
 				}else{
 					player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
 				}
 			}
-			if(GUI.Crate.containsKey(player)){
-				GUI.Crate.remove(player);
+			if(GUI.crates.containsKey(player)){
+				GUI.crates.remove(player);
 			}
 			if(glass.containsKey(player)){
 				picks.put((Player) player, glass.get(player));
@@ -261,9 +261,9 @@ public class Cosmic implements Listener{
 			}
 		}
 		if(inv.getName().equals(Methods.color(getFile(player).getString("Crate.CrateName") + " - Choose"))){
-			if(!glass.containsKey(player)||glass.get(player).size()<4){
-				if(GUI.Crate.containsKey(player)){
-					GUI.Crate.remove(player);
+			if(!glass.containsKey(player) || glass.get(player).size() < 4){
+				if(GUI.crates.containsKey(player)){
+					GUI.crates.remove(player);
 				}
 			}
 			if(glass.containsKey(player)){
@@ -276,17 +276,19 @@ public class Cosmic implements Listener{
 	public static Prize pickReward(Player player, String tier){
 		ArrayList<Prize> prizes = new ArrayList<Prize>();
 		Random r = new Random();
-		FileConfiguration file = GUI.Crate.get(player).getFile();
-		for(Prize prize : GUI.Crate.get(player).getPrizes()){
-			for(String tierCheck : file.getStringList("Crate.Prizes." + prize.getName() + ".Tiers")){
-				if(tierCheck.equalsIgnoreCase(tier)){
-					int chance = prize.getChance();
-					int max = prize.getMaxRange() - 1;
-					int num;
-					for(int counter = 1; counter<=1; counter++){
-						num = 1 + r.nextInt(max);
-						if(num >= 1 && num <= chance){
-							prizes.add(prize);
+		if(GUI.crates.containsKey(player)){
+			FileConfiguration file = GUI.crates.get(player).getFile();
+			for(Prize prize : GUI.crates.get(player).getPrizes()){
+				for(String tierCheck : file.getStringList("Crate.Prizes." + prize.getName() + ".Tiers")){
+					if(tierCheck.equalsIgnoreCase(tier)){
+						int chance = prize.getChance();
+						int max = prize.getMaxRange() - 1;
+						int num;
+						for(int counter = 1; counter<=1; counter++){
+							num = 1 + r.nextInt(max);
+							if(num >= 1 && num <= chance){
+								prizes.add(prize);
+							}
 						}
 					}
 				}
