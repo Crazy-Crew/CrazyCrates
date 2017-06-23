@@ -9,34 +9,37 @@ public enum Version {
 	v1_9_R1(191), v1_9_R2(192),
 	v1_10_R1(1101),
 	v1_11_R1(1111),
+	v1_12_R1(1121),
 	TOO_NEW(-2);
 	
-	Integer versionInteger;
-	Version version;
-	Version newest;
+	public static Version currentVersion;
 	
-	private Version(Integer versionInteger){
+	private Integer versionInteger;
+	
+	private Version(int versionInteger){
 		this.versionInteger = versionInteger;
 	}
 	
 	/**
 	 * 
-	 * @return Get the server's minecraft version.
+	 * @return Get the server's Minecraft version.
 	 */
 	public static Version getVersion(){
-		String ver = Bukkit.getServer().getClass().getPackage().getName();
-		ver = ver.substring(ver.lastIndexOf('.')+1);
-		ver=ver.replaceAll("_", "").replaceAll("R", "").replaceAll("v", "");
-		int version = Integer.parseInt(ver);
-		if(version == Version.v1_11_R1.getVersionInteger())return Version.v1_11_R1;
-		if(version == Version.v1_10_R1.getVersionInteger())return Version.v1_10_R1;
-		if(version == Version.v1_9_R2.getVersionInteger())return Version.v1_9_R2;
-		if(version == Version.v1_9_R1.getVersionInteger())return Version.v1_9_R1;
-		if(version == Version.v1_8_R3.getVersionInteger())return Version.v1_8_R3;
-		if(version == Version.v1_8_R2.getVersionInteger())return Version.v1_8_R2;
-		if(version == Version.v1_8_R1.getVersionInteger())return Version.v1_8_R1;
-		if(version > Version.v1_11_R1.getVersionInteger()) return Version.TOO_NEW;
-		return Version.TOO_OLD;
+		if(currentVersion == null){
+			String ver = Bukkit.getServer().getClass().getPackage().getName();
+			int v = Integer.parseInt(ver
+					.substring(ver.lastIndexOf('.') + 1)
+					.replaceAll("_", "")
+					.replaceAll("R", "")
+					.replaceAll("v", ""));
+			for(Version version : values()){
+				if(version.getVersionInteger() == v){
+					currentVersion = version;
+					break;
+				}
+			}
+		}
+		return currentVersion;
 	}
 	
 	/**
@@ -45,6 +48,25 @@ public enum Version {
 	 */
 	public Integer getVersionInteger(){
 		return this.versionInteger;
+	}
+	
+	/**
+	 * This checks if the current version is older, newer, or is the checked version.
+	 * @param version The version you are checking.
+	 * @return -1 if older, 0 if the same, and 1 if newer.
+	 */
+	public Integer comparedTo(Version version){
+		int resault = -1;
+		int current = this.getVersionInteger();
+		int check = version.getVersionInteger();
+		if(current > check){
+			resault = 1;
+		}else if(current == check){
+			resault = 0;
+		}else if(current < check){
+			resault = -1;
+		}
+		return resault;
 	}
 	
 }

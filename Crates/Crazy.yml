@@ -3,10 +3,11 @@ Crate:
   CrateName: '&8Crazy Crate'
   StartingKeys: 0
   InGUI: true
-  Slot: 16
+  Slot: 25
   OpeningBroadCast: true
   BroadCast: '%Prefix%&6&l%Player% &7is opening a &b&lCrazy Chest&7.'
   Item: '54'
+  Glowing: false
   Name: '&b&lCrazy Chest'
   Lore:
     - '&7This crate contains Crazy things.'

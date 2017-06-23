@@ -42,7 +42,7 @@ public class War implements Listener{
 	
 	private static void startWar(final Player player, final Inventory inv){
 		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
-			Methods.removeItem(CrateControl.Key.get(player), player);
+			Methods.removeItem(CrateControl.keys.get(player), player);
 		}
 		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
 			Methods.takeKeys(1, player, GUI.crates.get(player));
@@ -112,7 +112,7 @@ public class War implements Listener{
 									if(prize.toggleFirework()){
 										Methods.fireWork(player.getLocation().add(0, 1, 0));
 									}
-									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.CSGO, CrateControl.Crate.get(player).getName(), prize));
+									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.CSGO, CrateControl.crates.get(player).getName(), prize));
 									GUI.crates.remove(player);
 									if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()){
 										player.playSound(player.getLocation(), Sound.valueOf("BLOCK_ANVIL_PLACE"), 1, 1);

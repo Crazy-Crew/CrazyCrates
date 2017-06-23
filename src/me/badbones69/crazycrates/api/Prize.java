@@ -8,6 +8,7 @@ public class Prize {
 	
 	private int chance;
 	private String name;
+	private String crate;
 	private int maxRange;
 	private boolean firework;
 	private ItemStack displayItem;
@@ -16,8 +17,9 @@ public class Prize {
 	private ArrayList<ItemStack> items;
 	
 	public Prize(String name, ItemStack displayItem, ArrayList<String> messages, ArrayList<String> commands,
-			ArrayList<ItemStack> items, int chance, int maxRange, boolean firework){
+			ArrayList<ItemStack> items, String crate, int chance, int maxRange, boolean firework){
 		this.name = name;
+		this.crate = crate;
 		this.items = items;
 		this.chance = chance;
 		this.firework = firework;
@@ -45,6 +47,10 @@ public class Prize {
 	
 	public ArrayList<ItemStack> getItems(){
 		return this.items;
+	}
+	
+	public String getCrate(){
+		return this.crate;
 	}
 	
 	public int getChance(){

@@ -22,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import me.badbones69.crazycrates.api.Crate;
 import me.badbones69.crazycrates.api.CrateType;
 import me.badbones69.crazycrates.api.KeyType;
+import me.badbones69.crazycrates.api.Messages;
 import me.badbones69.crazycrates.api.Prize;
 import me.badbones69.crazycrates.cratetypes.CSGO;
 import me.badbones69.crazycrates.cratetypes.Cosmic;
@@ -43,7 +44,62 @@ public class GUI implements Listener{
 	private static HashMap<Crate, Inventory> previews = new HashMap<Crate, Inventory>();
 	
 	public static void openGUI(Player player){
-		Inventory inv = Bukkit.createInventory(null, Main.settings.getConfig().getInt("Settings.InventorySize"), Methods.color(Main.settings.getConfig().getString("Settings.InventoryName")));
+		int size = Main.settings.getConfig().getInt("Settings.InventorySize");
+		Inventory inv = Bukkit.createInventory(null, size, Methods.color(Main.settings.getConfig().getString("Settings.InventoryName")));
+		if(Main.settings.getConfig().contains("Settings.Filler.Toggle")){
+			if(Main.settings.getConfig().getBoolean("Settings.Filler.Toggle")){
+				String id = Main.settings.getConfig().getString("Settings.Filler.Item");
+				String name = Main.settings.getConfig().getString("Settings.Filler.Name");
+				List<String> lore = Main.settings.getConfig().getStringList("Settings.Filler.Lore");
+				ItemStack item = Methods.makeItem(id, 1, name, lore);
+				for(int i = 0; i < size; i++){
+					inv.setItem(i, item.clone());
+				}
+			}
+		}
+		if(Main.settings.getConfig().contains("Settings.GUI-Customizer")){
+			for(String custom : Main.settings.getConfig().getStringList("Settings.GUI-Customizer")){
+				String name = "";
+				String item = "1";
+				int slot = 0;
+				ArrayList<String> lore = new ArrayList<String>();
+				String[] b = custom.split(", ");
+				for(String i : b){
+					if(i.contains("Item:")){
+						i = i.replace("Item:", "");
+						item = i;
+					}
+					if(i.contains("Name:")){
+						i = i.replace("Name:", "");
+						for(Crate c : Main.CC.getCrates()){
+							i = i.replaceAll("%" + c.getName().toLowerCase() +"%", Methods.getKeys(player, c) + "");
+						}
+						i = i.replaceAll("%player%", player.getName());
+						name = i;
+					}
+					if(i.contains("Lore:")){
+						i = i.replace("Lore:", "");
+						String[] d = i.split(",");
+						for(String l : d){
+							for(Crate c : Main.CC.getCrates()){
+								i = i.replaceAll("%" + c.getName().toLowerCase() +"%", Methods.getKeys(player, c) + "");
+							}
+							i = i.replaceAll("%player%", player.getName());
+							lore.add(l);
+						}
+					}
+					if(i.contains("Slot:")){
+						i = i.replace("Slot:", "");
+						slot = Integer.parseInt(i);
+					}
+				}
+				if(slot > size){
+					continue;
+				}
+				slot--;
+				inv.setItem(slot, Methods.makeItem(item, 1, name, lore));
+			}
+		}
 		for(Crate crate : Main.CC.getCrates()){
 			FileConfiguration file = crate.getFile();
 			if(!file.contains("Crate.InGUI")){
@@ -52,17 +108,27 @@ public class GUI implements Listener{
 			}
 			if(file.getBoolean("Crate.InGUI")){
 				String path = "Crate.";
-				int slot = file.getInt(path+"Slot")-1;
+				int slot = file.getInt(path+"Slot");
 				String ma = file.getString(path+"Item");
 				String name = file.getString(path+"Name");
 				ArrayList<String> lore = new ArrayList<String>();
 				String keys = NumberFormat.getNumberInstance().format(Methods.getKeys(player, crate));
-				for(String i : file.getStringList(path+"Lore")){
+				Boolean glowing = false;
+				for(String i : file.getStringList(path + "Lore")){
 					lore.add(i
 							.replaceAll("%Keys%", keys).replaceAll("%keys%", keys)
 							.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName()));
 				}
-				inv.setItem(slot, Methods.makeItem(ma, 1, name, lore));
+				if(file.contains(path + "Glowing")){
+					if(file.getBoolean(path + "Glowing")){
+						glowing = true;
+					}
+				}
+				if(slot > size){
+					continue;
+				}
+				slot--;
+				inv.setItem(slot, Methods.makeItem(ma, 1, name, lore, glowing));
 			}
 		}
 		player.openInventory(inv);
@@ -109,7 +175,7 @@ public class GUI implements Listener{
 										return;
 									}
 									if(crates.containsKey(player)){
-										player.sendMessage(Methods.color(Methods.getPrefix()+config.getString("Settings.Crate-Already-Opened")));
+										player.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
 										return;
 									}
 									if(Methods.getKeys(player, crate) < 1){
@@ -119,14 +185,16 @@ public class GUI implements Listener{
 									}
 									for(String world : getDisabledWorlds()){
 										if(world.equalsIgnoreCase(player.getWorld().getName())){
-											player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.WorldDisabledMsg")
-											.replaceAll("%World%", player.getWorld().getName()).replaceAll("%world%", player.getWorld().getName())));
+											HashMap<String, String> placeholders = new HashMap<String, String>();
+											placeholders.put("%World%", player.getWorld().getName());
+											placeholders.put("%world%", player.getWorld().getName());
+											player.sendMessage(Messages.WORLD_DISABLED_MESSAGE.getMessage(placeholders));
 											return;
 										}
 									}
 									if(Methods.isInvFull(player)){
 										if(config.contains("Settings.Inventory-Full")){
-											player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.Inventory-Full")));
+											player.sendMessage(Messages.INVENTORY_FULL.getMessage());
 										}else{
 											player.sendMessage(Methods.color(Methods.getPrefix() + "&cYour inventory is full, please make room before opening a crate."));
 										}
@@ -135,67 +203,62 @@ public class GUI implements Listener{
 									switch(CrateType.getFromName(file.getString("Crate.CrateType"))){
 										case COSMIC:
 											crates.put(player, crate);
-											CrateControl.Crate.put(player, crate);
+											CrateControl.crates.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											Cosmic.openCosmic(player);
 											break;
 										case CRATE_ON_THE_GO:
-											player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.Cant-Be-Virtual-Crate")));
-											break;
+											player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
+											return;
 										case CSGO:
 											crates.put(player, crate);
-											CrateControl.Crate.put(player, crate);
+											CrateControl.crates.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											CSGO.openCSGO(player);
-											if(file.getBoolean("Crate.OpeningBroadCast")){
-												Bukkit.broadcastMessage(Methods.color(file.getString("Crate.BroadCast")
-														.replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix())
-														.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
-											}
 											break;
 										case FIRE_CRACKER:
-											player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.Cant-Be-Virtual-Crate")));
-											break;
+											player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
+											return;
 										case MENU:
 											break;
 										case QUAD_CRATE:
 											crates.put(player, crate);
-											CrateControl.Crate.put(player, crate);
+											CrateControl.crates.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											QCC.startBuild(player, player.getLocation(), Material.CHEST);
 											break;
 										case QUICK_CRATE:
-											player.sendMessage(Methods.color(Methods.getPrefix() + config.getString("Settings.Cant-Be-Virtual-Crate")));
-											break;
+											player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
+											return;
 										case ROULETTE:
 											crates.put(player, crate);
-											CrateControl.Crate.put(player, crate);
+											CrateControl.crates.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											Roulette.openRoulette(player);
-											if(file.getBoolean("Crate.OpeningBroadCast")){
-												Bukkit.broadcastMessage(Methods.color(file.getString("Crate.BroadCast")
-														.replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix())
-														.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
-											}
 											break;
 										case WHEEL:
 											crates.put(player, crate);
-											CrateControl.Crate.put(player, crate);
+											CrateControl.crates.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											Wheel.startWheel(player);
 											break;
 										case WONDER:
 											crates.put(player, crate);
-											CrateControl.Crate.put(player, crate);
+											CrateControl.crates.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											Wonder.startWonder(player);
 											break;
 										case WAR:
 											crates.put(player, crate);
-											CrateControl.Crate.put(player, crate);
+											CrateControl.crates.put(player, crate);
 											Methods.Key.put(player, KeyType.VIRTUAL_KEY);
 											War.openWarCrate(player);
 											break;
+									}
+									if(file.getBoolean("Crate.OpeningBroadCast")){
+										Bukkit.broadcastMessage(Methods.color(file.getString("Crate.BroadCast")
+												.replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix())
+												.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
 									}
 									return;
 								}
@@ -209,10 +272,10 @@ public class GUI implements Listener{
 	
 	public static void loadPreviews(){
 		previews.clear();
-		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading all crate preview inventories...");
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
 			@Override
 			public void run() {
+				Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading all crate preview inventories...");
 				for(Crate crate : Main.CC.getCrates()){
 					Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading " + crate.getName() + " preview....");
 					int slots = 9;

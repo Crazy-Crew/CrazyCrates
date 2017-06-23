@@ -37,6 +37,7 @@ import me.badbones69.crazycrates.ParticleEffect;
 import me.badbones69.crazycrates.ParticleEffect.BlockData;
 import me.badbones69.crazycrates.api.CrateType;
 import me.badbones69.crazycrates.api.KeyType;
+import me.badbones69.crazycrates.api.Messages;
 import me.badbones69.crazycrates.api.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.Prize;
 import me.badbones69.crazycrates.multisupport.Version;
@@ -82,15 +83,13 @@ public class QCC implements Listener{ // Quad Crate Control.
 		BlockList.add(Material.WOOD_BUTTON);
 		for(Location l : Check){
 			if(BlockList.contains(l.getBlock().getType())){
-				String msg = Main.settings.getConfig().getString("Settings.QuadCrate.NeedsMoreRoom");
-				player.sendMessage(Methods.color(Methods.getPrefix()+msg));
+				player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
 				GUI.crates.remove(player);
 				return;
 			}
 			if(l.getBlockY()!=Lo.clone().getBlockY()-1&&l.getBlock().getType()!=Material.AIR){
 				if(!l.equals(Lo.clone())){
-					String msg = Main.settings.getConfig().getString("Settings.QuadCrate.NeedsMoreRoom");
-					player.sendMessage(Methods.color(Methods.getPrefix()+msg));
+					player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
 					GUI.crates.remove(player);
 					return;
 				}
@@ -105,10 +104,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 			if(en instanceof Player){
 				Player p = (Player) en;
 				if(crates.containsKey(p)){
-					String msg = Main.settings.getConfig().getString("Settings.QuadCrate.ToCloseToAnotherPlayer");
-					msg = msg.replaceAll("%Player%", p.getName());
-					msg = msg.replaceAll("%player%", p.getName());
-					player.sendMessage(Methods.color(Methods.getPrefix()+msg));
+					HashMap<String, String> placeholders = new HashMap<String, String>();
+					placeholders.put("%Player%", p.getName());
+					placeholders.put("%player%", p.getName());
+					player.sendMessage(Messages.TO_CLOSE_TO_ANOTHER_PLAYER.getMessage(placeholders));
 					GUI.crates.remove(player);
 					return;
 				}
@@ -132,7 +131,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 		}
 		chests.put(player, Ch);
 		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
-			Methods.removeItem(CrateControl.Key.get(player), player);
+			Methods.removeItem(CrateControl.keys.get(player), player);
 		}
 		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
 			Methods.takeKeys(1, player, GUI.crates.get(player));
@@ -333,7 +332,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 					@Override
 					public void run() {
 						undoBuild(player);
-						player.sendMessage(Methods.getPrefix()+Methods.color(Main.settings.getConfig().getString("Settings.QuadCrate.Out-Of-Time")));
+						player.sendMessage(Messages.OUT_OF_TIME.getMessage());
 					}
 				}, Main.settings.getConfig().getInt("Settings.QuadCrate.Timer")*20));
 			}
@@ -402,7 +401,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 									ArrayList<Entity> rewards = new ArrayList<Entity>();
 									Prize prize = Main.CC.pickPrize(player, B.clone().add(.5, 1.3, .5));
 									Main.CC.getReward(player, prize);
-									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.QUAD_CRATE, CrateControl.Crate.get(player).getName(), prize));
+									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.QUAD_CRATE, CrateControl.crates.get(player).getName(), prize));
 									final Entity reward = player.getWorld().dropItem(B.clone().add(.5, 1, .5), Methods.addLore(prize.getDisplayItem().clone(), new Random().nextInt(Integer.MAX_VALUE) + ""));
 									reward.setVelocity(new Vector(0,.2,0));
 									reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
@@ -488,9 +487,9 @@ public class QCC implements Listener{ // Quad Crate Control.
 												Bukkit.getScheduler().cancelTask(timer.get(player));
 												timer.remove(player);
 											}
-											if(CrateControl.LastLoc.containsKey(player)){
-												player.teleport(CrateControl.LastLoc.get(player));
-												CrateControl.LastLoc.remove(player);
+											if(CrateControl.lastLocation.containsKey(player)){
+												player.teleport(CrateControl.lastLocation.get(player));
+												CrateControl.lastLocation.remove(player);
 											}
 										}
 									}, 6*20);
@@ -583,10 +582,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 		if(crates.containsKey(player)){
 			if(!e.getMessage().toLowerCase().contains("plugman")){
 				e.setCancelled(true);
-				String msg = Main.settings.getConfig().getString("Settings.NoCMDsWhileCrateOpened");
-				msg = msg.replaceAll("%Player%", player.getName());
-				msg = msg.replaceAll("%player%", player.getName());
-				player.sendMessage(Methods.color(Methods.getPrefix()+msg));
+				HashMap<String, String> placeholders = new HashMap<String, String>();
+				placeholders.put("%Player%", player.getName());
+				placeholders.put("%player%", player.getName());
+				player.sendMessage(Messages.NO_COMMANDS_WHILE_CRATE_OPENED.getMessage());
 				return;
 			}
 		}
@@ -598,10 +597,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 		if(crates.containsKey(player)){
 			if(e.getCause()==TeleportCause.ENDER_PEARL){
 				e.setCancelled(true);
-				String msg = Main.settings.getConfig().getString("Settings.No-Teleporting-Msg");
-				msg = msg.replaceAll("%Player%", player.getName());
-				msg = msg.replaceAll("%player%", player.getName());
-				player.sendMessage(Methods.color(Methods.getPrefix()+msg));
+				HashMap<String, String> placeholders = new HashMap<String, String>();
+				placeholders.put("%Player%", player.getName());
+				placeholders.put("%player%", player.getName());
+				player.sendMessage(Messages.NO_TELEPORTING_MESSAGE.getMessage());
 				return;
 			}
 		}

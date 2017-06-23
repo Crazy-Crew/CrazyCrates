@@ -29,14 +29,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import me.badbones69.crazycrates.api.Crate;
 import me.badbones69.crazycrates.api.FireworkDamageAPI;
 import me.badbones69.crazycrates.api.KeyType;
+import me.badbones69.crazycrates.api.Messages;
 import me.badbones69.crazycrates.multisupport.NMS_v1_10_R1;
 import me.badbones69.crazycrates.multisupport.NMS_v1_11_R1;
+import me.badbones69.crazycrates.multisupport.NMS_v1_12_R1;
 import me.badbones69.crazycrates.multisupport.NMS_v1_8_R1;
 import me.badbones69.crazycrates.multisupport.NMS_v1_8_R2;
 import me.badbones69.crazycrates.multisupport.NMS_v1_8_R3;
@@ -122,6 +128,7 @@ public class Methods{
 		}
 		return enchants.get(en.getName());
 	}
+
 	public static void fireWork(Location loc) {
 		final Firework fw = loc.getWorld().spawn(loc, Firework.class);
 		FireworkMeta fm = fw.getFireworkMeta();
@@ -142,6 +149,7 @@ public class Methods{
 			}
 		}, 2);
 	}
+
 	public static ItemStack makeItem(Material material, int amount, int type, String name){
 		ItemStack item = new ItemStack(material, amount, (short) type);
 		ItemMeta m = item.getItemMeta();
@@ -149,19 +157,28 @@ public class Methods{
 		item.setItemMeta(m);
 		return item;
 	}
+	
 	@SuppressWarnings("deprecation")
-	public static ItemStack makeItem(String type, int amount, String name, List<String> lore){
+	public static ItemStack makeItem(String id, int amount, String name, List<String> lore){
 		ArrayList<String> l = new ArrayList<String>();
 		int ty = 0;
-		if(type.contains(":")){
-			String[] b = type.split(":");
-			type = b[0];
-			ty = Integer.parseInt(b[1]);
+		PotionType potionType = null;
+		if(id.contains(":")){
+			String[] b = id.split(":");
+			id = b[0];
+			if(isInt(b[1])){
+				ty = Integer.parseInt(b[1]);
+			}else{
+				potionType = getPotionType(PotionEffectType.getByName(b[1]));
+			}
 		}
-		Material m = Material.matchMaterial(type);
+		Material m = Material.matchMaterial(id);
 		ItemStack item = new ItemStack(m, amount, (short) ty);
 		if(m == Material.MONSTER_EGG){
 			switch(Version.getVersion()){
+			case v1_12_R1:
+				item = NMS_v1_12_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
 			case v1_11_R1:
 				item = NMS_v1_11_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 				break;
@@ -183,21 +200,35 @@ public class Methods{
 		for(String L:lore)l.add(color(L));
 		me.setLore(l);
 		item.setItemMeta(me);
+		if(item.getType() == Material.TIPPED_ARROW && potionType != null){
+			PotionMeta pm = (PotionMeta) item.getItemMeta();
+			pm.setBasePotionData(new PotionData(potionType));
+			item.setItemMeta(pm);
+		}
 		return item;
 	}
+	
 	@SuppressWarnings("deprecation")
-	public static ItemStack makeItem(String type, int amount, String name, List<String> lore, Boolean Enchanted){
+	public static ItemStack makeItem(String id, int amount, String name, List<String> lore, Boolean Enchanted){
 		ArrayList<String> l = new ArrayList<String>();
 		int ty = 0;
-		if(type.contains(":")){
-			String[] b = type.split(":");
-			type = b[0];
-			ty = Integer.parseInt(b[1]);
+		PotionType potionType = null;
+		if(id.contains(":")){
+			String[] b = id.split(":");
+			id = b[0];
+			if(isInt(b[1])){
+				ty = Integer.parseInt(b[1]);
+			}else{
+				potionType = getPotionType(PotionEffectType.getByName(b[1]));
+			}
 		}
-		Material m = Material.matchMaterial(type);
+		Material m = Material.matchMaterial(id);
 		ItemStack item = new ItemStack(m, amount, (short) ty);
 		if(m == Material.MONSTER_EGG){
 			switch(Version.getVersion()){
+			case v1_12_R1:
+				item = NMS_v1_12_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
 			case v1_11_R1:
 				item = NMS_v1_11_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 				break;
@@ -219,23 +250,37 @@ public class Methods{
 		for(String L:lore)l.add(color(L));
 		me.setLore(l);
 		item.setItemMeta(me);
+		if(item.getType() == Material.TIPPED_ARROW && potionType != null){
+			PotionMeta pm = (PotionMeta) item.getItemMeta();
+			pm.setBasePotionData(new PotionData(potionType));
+			item.setItemMeta(pm);
+		}
 		if(Enchanted){
 			item = addGlow(item);
 		}
 		return item;
 	}
+	
 	@SuppressWarnings("deprecation")
-	public static ItemStack makeItem(String type, int amount, String name){
+	public static ItemStack makeItem(String id, int amount, String name){
 		int ty = 0;
-		if(type.contains(":")){
-			String[] b = type.split(":");
-			type = b[0];
-			ty = Integer.parseInt(b[1]);
+		PotionType potionType = null;
+		if(id.contains(":")){
+			String[] b = id.split(":");
+			id = b[0];
+			if(isInt(b[1])){
+				ty = Integer.parseInt(b[1]);
+			}else{
+				potionType = getPotionType(PotionEffectType.getByName(b[1]));
+			}
 		}
-		Material m = Material.matchMaterial(type);
+		Material m = Material.matchMaterial(id);
 		ItemStack item = new ItemStack(m, amount, (short) ty);
 		if(m == Material.MONSTER_EGG){
 			switch(Version.getVersion()){
+			case v1_12_R1:
+				item = NMS_v1_12_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
 			case v1_11_R1:
 				item = NMS_v1_11_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 				break;
@@ -255,8 +300,14 @@ public class Methods{
 		ItemMeta me = item.getItemMeta();
 		me.setDisplayName(color(name));
 		item.setItemMeta(me);
+		if(item.getType() == Material.TIPPED_ARROW && potionType != null){
+			PotionMeta pm = (PotionMeta) item.getItemMeta();
+			pm.setBasePotionData(new PotionData(potionType));
+			item.setItemMeta(pm);
+		}
 		return item;
 	}
+	
 	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(Material material, int amount, int ty, String name, List<String> lore){
 		ArrayList<String> l = new ArrayList<String>();
@@ -264,6 +315,9 @@ public class Methods{
 		ItemMeta m = item.getItemMeta();
 		if(material == Material.MONSTER_EGG){
 			switch(Version.getVersion()){
+			case v1_12_R1:
+				item = NMS_v1_12_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
 			case v1_11_R1:
 				item = NMS_v1_11_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 				break;
@@ -286,20 +340,29 @@ public class Methods{
 		item.setItemMeta(m);
 		return item;
 	}
+
 	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(String id, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants){
 		ArrayList<String> l = new ArrayList<String>();
-		String ma = id;
+		String type = id;
 		int ty = 0;
-		if(ma.contains(":")){
-			String[] b = ma.split(":");
-			ma = b[0];
-			ty = Integer.parseInt(b[1]);
+		PotionType potionType = null;
+		if(type.contains(":")){
+			String[] b = type.split(":");
+			type = b[0];
+			if(isInt(b[1])){
+				ty = Integer.parseInt(b[1]);
+			}else{
+				potionType = getPotionType(PotionEffectType.getByName(b[1]));
+			}
 		}
-		Material material = Material.matchMaterial(ma);
+		Material material = Material.matchMaterial(type);
 		ItemStack item = new ItemStack(material, amount, (short) ty);
 		if(material == Material.MONSTER_EGG){
 			switch(Version.getVersion()){
+			case v1_12_R1:
+				item = NMS_v1_12_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
 			case v1_11_R1:
 				item = NMS_v1_11_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 				break;
@@ -322,22 +385,36 @@ public class Methods{
 		m.setLore(l);
 		item.setItemMeta(m);
 		item.addUnsafeEnchantments(enchants);
+		if(item.getType() == Material.TIPPED_ARROW && potionType != null){
+			PotionMeta pm = (PotionMeta) item.getItemMeta();
+			pm.setBasePotionData(new PotionData(potionType));
+			item.setItemMeta(pm);
+		}
 		return item;
 	}
+
 	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(String id, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants, Boolean glowing){
 		ArrayList<String> l = new ArrayList<String>();
-		String ma = id;
+		String type = id;
 		int ty = 0;
-		if(ma.contains(":")){
-			String[] b = ma.split(":");
-			ma = b[0];
-			ty = Integer.parseInt(b[1]);
+		PotionType potionType = null;
+		if(type.contains(":")){
+			String[] b = type.split(":");
+			type = b[0];
+			if(isInt(b[1])){
+				ty = Integer.parseInt(b[1]);
+			}else{
+				potionType = getPotionType(PotionEffectType.getByName(b[1]));
+			}
 		}
-		Material material = Material.matchMaterial(ma);
+		Material material = Material.matchMaterial(type);
 		ItemStack item = new ItemStack(material, amount, (short) ty);
 		if(material == Material.MONSTER_EGG){
 			switch(Version.getVersion()){
+			case v1_12_R1:
+				item = NMS_v1_12_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
 			case v1_11_R1:
 				item = NMS_v1_11_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 				break;
@@ -360,17 +437,26 @@ public class Methods{
 		m.setLore(l);
 		item.setItemMeta(m);
 		item.addUnsafeEnchantments(enchants);
+		if(item.getType() == Material.TIPPED_ARROW && potionType != null){
+			PotionMeta pm = (PotionMeta) item.getItemMeta();
+			pm.setBasePotionData(new PotionData(potionType));
+			item.setItemMeta(pm);
+		}
 		if(glowing){
 			item = addGlow(item);
 		}
 		return item;
 	}
+
 	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(Material material, int amount, int ty, String name, List<String> lore, Map<Enchantment, Integer> enchants){
 		ArrayList<String> l = new ArrayList<String>();
 		ItemStack item = new ItemStack(material, amount, (short) ty);
 		if(material == Material.MONSTER_EGG){
 			switch(Version.getVersion()){
+			case v1_12_R1:
+				item = NMS_v1_12_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+				break;
 			case v1_11_R1:
 				item = NMS_v1_11_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 				break;
@@ -443,6 +529,41 @@ public class Methods{
 		item.setItemMeta(m);
 		return item;
 	}
+
+	public static PotionType getPotionType(PotionEffectType type){
+		PotionType potionType = null;
+		if(type.equals(PotionEffectType.FIRE_RESISTANCE)){
+			potionType = PotionType.FIRE_RESISTANCE;
+		}else if(type.equals(PotionEffectType.HARM)){
+			potionType = PotionType.INSTANT_DAMAGE;
+		}else if(type.equals(PotionEffectType.HEAL)){
+			potionType = PotionType.INSTANT_HEAL;
+		}else if(type.equals(PotionEffectType.INVISIBILITY)){
+			potionType = PotionType.INVISIBILITY;
+		}else if(type.equals(PotionEffectType.JUMP)){
+			potionType = PotionType.JUMP;
+		}else if(type.equals(PotionEffectType.LUCK)){
+			potionType = PotionType.LUCK;
+		}else if(type.equals(PotionEffectType.NIGHT_VISION)){
+			potionType = PotionType.NIGHT_VISION;
+		}else if(type.equals(PotionEffectType.POISON)){
+			potionType = PotionType.POISON;
+		}else if(type.equals(PotionEffectType.REGENERATION)){
+			potionType = PotionType.REGEN;
+		}else if(type.equals(PotionEffectType.SLOW)){
+			potionType = PotionType.SLOWNESS;
+		}else if(type.equals(PotionEffectType.SPEED)){
+			potionType = PotionType.SPEED;
+		}else if(type.equals(PotionEffectType.INCREASE_DAMAGE)){
+			potionType = PotionType.STRENGTH;
+		}else if(type.equals(PotionEffectType.WATER_BREATHING)){
+			potionType = PotionType.WATER_BREATHING;
+		}else if(type.equals(PotionEffectType.WEAKNESS)){
+			potionType = PotionType.WEAKNESS;
+		}
+		return potionType;
+	}
+	
 	public static boolean isInt(String s) {
 	    try {
 	        Integer.parseInt(s);
@@ -451,24 +572,29 @@ public class Methods{
 	    }
 	    return true;
 	}
+
 	public static Location getLoc(Player player){
 		return player.getLocation();
 	}
+
 	public static void runCMD(Player player, String CMD){
 		player.performCommand(CMD);
 	}
+
 	public static Player getPlayer(String name){
 		return Bukkit.getServer().getPlayer(name);
 	}
+
 	public static boolean isOnline(String name, CommandSender p){
 		for(Player player : Bukkit.getServer().getOnlinePlayers()){
 			if(player.getName().equalsIgnoreCase(name)){
 				return true;
 			}
 		}
-		p.sendMessage(color(getPrefix() + Main.settings.getConfig().getString("Settings.Not-Online")));
+		p.sendMessage(Messages.NOT_ONLINE.getMessage());
 		return false;
 	}
+	
 	public static void removeItem(ItemStack item, Player player){
 		if(item.getAmount() <= 1){
 			player.getInventory().removeItem(item);
@@ -477,6 +603,7 @@ public class Methods{
 			item.setAmount(item.getAmount() - 1);
 		}
 	}
+
 	@SuppressWarnings("deprecation")
 	public static ItemStack getItemInHand(Player player){
 		if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
@@ -485,6 +612,7 @@ public class Methods{
 			return player.getItemInHand();
 		}
 	}
+
 	@SuppressWarnings("deprecation")
 	public static void setItemInHand(Player player, ItemStack item){
 		if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
@@ -493,23 +621,27 @@ public class Methods{
 			player.setItemInHand(item);
 		}
 	}
+
 	public static boolean permCheck(Player player, String perm){
 		if(!player.hasPermission("CrazyCrates." + perm)){
-			player.sendMessage(color(Main.settings.getConfig().getString("Settings.No-Permission")));
+			player.sendMessage(Messages.NO_PERMISSION.getMessage());
 			return false;
 		}
 		return true;
 	}
+
 	public static int getKeys(Player player, Crate crate){
 		String uuid = player.getUniqueId().toString();
 		return Main.settings.getData().getInt("Players." + uuid + "." + crate.getName());
 	}
+
 	public static void takeKeys(int Amount, Player player, Crate crate){
 		String uuid = player.getUniqueId().toString();
 		int keys = getKeys(player, crate);
 		Main.settings.getData().set("Players." + uuid + "." + crate.getName(), keys - Amount);
 		Main.settings.saveData();
 	}
+
 	public static void addKeys(int Amount, Player player, Crate crate, KeyType type){
 		if(type == KeyType.VIRTUAL_KEY){
 			String uuid = player.getUniqueId().toString();
@@ -528,6 +660,7 @@ public class Methods{
 			player.getInventory().addItem(makeItem(ID, Amount, name, lore, enchanted));
 		}
 	}
+
 	public static ItemStack getKey(Crate crate){
 		FileConfiguration file = crate.getFile();
 		String name = color(file.getString("Crate.PhysicalKey.Name"));
@@ -539,6 +672,7 @@ public class Methods{
 		}
 		return makeItem(ID, 1, name, lore, enchanted);
 	}
+
 	public static ArrayList<String> getCrates(){
 		ArrayList<String> crates = new ArrayList<String>();
 		for(String crate : Main.settings.getAllCratesNames()){
@@ -546,14 +680,23 @@ public class Methods{
 		}
 		return crates;
 	}
+
 	public static String getPrefix(){
 		return color(Main.settings.getConfig().getString("Settings.Prefix"));
 	}
+	
+	public static String getPrefix(String msg){
+		return color(Main.settings.getConfig().getString("Settings.Prefix") + msg);
+	}
+	
 	public static void pasteSchem(String schem, Location loc){
 		switch(Version.getVersion()){
 			case TOO_NEW:
 				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. "
 						+ "Please update or remove this plugin to stop further Errors.");
+				break;
+			case v1_12_R1:
+				NMS_v1_12_R1.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
 				break;
 			case v1_11_R1:
 				NMS_v1_11_R1.pasteSchematic(new File(plugin.getDataFolder()+"/Schematics/"+schem), loc);
@@ -582,12 +725,15 @@ public class Methods{
 				break;
 		}
 	}
+
 	public static List<Location> getLocations(String shem, Location loc){
 		switch(Version.getVersion()){
 			case TOO_NEW:
 				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. "
 						+ "Please update or remove this plugin to stop further Errors.");
 				break;
+			case v1_12_R1:
+				return NMS_v1_12_R1.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
 			case v1_11_R1:
 				return NMS_v1_11_R1.getLocations(new File(plugin.getDataFolder()+"/Schematics/"+shem), loc);
 			case v1_10_R1:
@@ -609,6 +755,7 @@ public class Methods{
 		}
 		return null;
 	}
+
 	public static void playChestAction(Block b, boolean open) {
         Location location = b.getLocation();
         Material type = b.getType();
@@ -617,6 +764,9 @@ public class Methods{
 				case TOO_NEW:
 					Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. "
 							+ "Please update or remove this plugin to stop further Errors.");
+					break;
+				case v1_12_R1:
+					NMS_v1_12_R1.openChest(b, location, open);
 					break;
 				case v1_11_R1:
 					NMS_v1_11_R1.openChest(b, location, open);
@@ -646,12 +796,15 @@ public class Methods{
 			}
         }
     }
+
 	public static ItemStack addGlow(ItemStack item) {
 		switch(Version.getVersion()){
 			case TOO_NEW:
 				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. "
 						+ "Please update or remove this plugin to stop further Errors.");
 				break;
+			case v1_12_R1:
+				return NMS_v1_12_R1.addGlow(item);
 			case v1_11_R1:
 				return NMS_v1_11_R1.addGlow(item);
 			case v1_10_R1:
@@ -673,6 +826,7 @@ public class Methods{
 		}
 		return item;
     }
+
 	public static String pickRandomSchem(){
 		File f = new File(plugin.getDataFolder()+"/Schematics/");
 		String[] schems = f.list();
@@ -685,12 +839,14 @@ public class Methods{
 		Random r = new Random();
 		return schematics.get(r.nextInt(schematics.size()));
 	}
+
 	public static boolean isInvFull(Player player){
 		if(player.getInventory().firstEmpty() == -1){
 			return true;
 		}
 		return false;
 	}
+
 	public static Integer randomNumber(int min, int max){
 		Random i = new Random();
 		return min + i.nextInt(max - min);

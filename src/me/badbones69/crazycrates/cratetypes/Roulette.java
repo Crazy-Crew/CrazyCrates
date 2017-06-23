@@ -49,7 +49,7 @@ public class Roulette implements Listener{
 	
 	private static void startRoulette(final Player player, final Inventory inv){
 		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
-			Methods.removeItem(CrateControl.Key.get(player), player);
+			Methods.removeItem(CrateControl.keys.get(player), player);
 		}
 		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
 			Methods.takeKeys(1, player, GUI.crates.get(player));
@@ -110,7 +110,7 @@ public class Roulette implements Listener{
 						if(prize.toggleFirework()){
 							Methods.fireWork(player.getLocation().add(0, 1, 0));
 						}
-						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.ROULETTE, CrateControl.Crate.get(player).getName(), prize));
+						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.ROULETTE, CrateControl.crates.get(player).getName(), prize));
 						GUI.crates.remove(player);
 						return;
 					}
@@ -136,14 +136,14 @@ public class Roulette implements Listener{
 	@EventHandler
 	public void onInvClick(InventoryClickEvent e){
 		Player player = (Player) e.getWhoClicked();
-		if(CrateControl.Crate.containsKey(player)){
-			if(!CrateControl.Crate.get(player).getFile().getString("Crate.CrateType").equalsIgnoreCase("Roulette"))return;
+		if(CrateControl.crates.containsKey(player)){
+			if(!CrateControl.crates.get(player).getFile().getString("Crate.CrateType").equalsIgnoreCase("Roulette"))return;
 		}else{
 			return;
 		}
 		Inventory inv = e.getInventory();
 		if(inv!=null){
-			if(inv.getName().equals(Methods.color(CrateControl.Crate.get(player).getFile().getString("Crate.CrateName")))){
+			if(inv.getName().equals(Methods.color(CrateControl.crates.get(player).getFile().getString("Crate.CrateName")))){
 				e.setCancelled(true);
 			}
 		}

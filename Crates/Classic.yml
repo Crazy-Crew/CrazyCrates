@@ -7,6 +7,7 @@ Crate:
   OpeningBroadCast: true
   BroadCast: '%Prefix%&6&l%Player% &7is opening a &e&lClassic Chest&7.'
   Item: '54'
+  Glowing: false
   Name: '&e&lClassic Chest'
   Lore:
     - '&7This crate contains classic items.'

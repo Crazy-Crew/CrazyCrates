@@ -3,10 +3,11 @@ Crate:
   CrateName: '&8Galactic Crate' #Name of the Inventory if a GUI crate.
   StartingKeys: 0 #Starting amount of keys when the player 1st joins.
   InGUI: true #If the crate shows in the /cc GUI.
-  Slot: 14 #Slot the item is in the GUI.
-  OpeningBroadCast: False #Enables/Disables the Broadcasts message when they open a crate.
+  Slot: 23 #Slot the item is in the GUI.
+  OpeningBroadCast: false #Enables/Disables the Broadcasts message when they open a crate.
   BroadCast: '' #Message that is broadcasted when opening the crate.
   Item: '130' #Item the crate is in the GUI
+  Glowing: false #If the crate in the main /cc GUI is glowing or not.
   Name: '&d&lGalactic Chest' #Name of the item in the GUI.
   Lore: #The lore of the item in the GUI.
     - '&7This crate contains strange objects,' 
@@ -19,7 +20,7 @@ Crate:
       - '&7A special Key' #Lore of the Key.
       - '&7For a special Crate.'
     Item: '131' #The item the key is.
-    Glowing: True
+    Glowing: true
   Tiers: #The tiers in the Crate
     Basic: #The Config Name for the Crate
       Name: '&8Basic Prize' #The in-game name of the Crate

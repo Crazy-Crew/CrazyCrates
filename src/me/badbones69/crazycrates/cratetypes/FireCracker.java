@@ -26,7 +26,7 @@ public class FireCracker {
 	
 	public static void startFireCracker(final Player player, final String crate, final Location C){
 		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
-			Methods.removeItem(CrateControl.Key.get(player), player);
+			Methods.removeItem(CrateControl.keys.get(player), player);
 		}
 		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
 			Methods.takeKeys(1, player, GUI.crates.get(player));

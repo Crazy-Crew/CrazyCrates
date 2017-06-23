@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import me.badbones69.crazycrates.CrateControl;
@@ -22,12 +24,13 @@ import me.badbones69.crazycrates.api.Prize;
 
 public class QuickCrate implements Listener{
 	
-	public static HashMap<Player, Entity> Reward = new HashMap<Player, Entity>();
+	public static HashMap<Player, Entity> Reward = new HashMap<>();
+	private static HashMap<Player, BukkitTask> tasks = new HashMap<>();
 	
 	public static void openCrate(final Player player, final Location loc, boolean remove){
 		if(remove){
 			if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
-				Methods.removeItem(CrateControl.Key.get(player), player);
+				Methods.removeItem(CrateControl.keys.get(player), player);
 			}
 			if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
 				Methods.takeKeys(1, player, GUI.crates.get(player));
@@ -35,7 +38,7 @@ public class QuickCrate implements Listener{
 		}
 		Prize prize = Main.CC.pickPrize(player, loc.clone().add(.5, 1.3, .5));
 		Main.CC.getReward(player, prize);
-		Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.QUICK_CRATE, CrateControl.Crate.get(player).getName(), prize));
+		Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.QUICK_CRATE, CrateControl.crates.get(player).getName(), prize));
 		final Entity reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), prize.getDisplayItem());
 		reward.setVelocity(new Vector(0,.2,0));
 		reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
@@ -45,18 +48,12 @@ public class QuickCrate implements Listener{
 		if(prize.toggleFirework()){
 			Methods.fireWork(loc.clone().add(.5, 1, .5));
 		}
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
+		tasks.put(player, new BukkitRunnable(){
 			@Override
 			public void run() {
-				if(Reward.get(player)!=null){
-					Reward.get(player).remove();
-					Reward.remove(player);
-					Methods.playChestAction(loc.getBlock(), false);
-					GUI.crates.remove(player);
-					CrateControl.InUse.remove(player);
-				}
+				endQuickCrate(player, loc);
 			}
-		}, 5*20);
+		}.runTaskLater(Main.getPlugin(), 5*20));
 	}
 	
 	@EventHandler
@@ -67,6 +64,20 @@ public class QuickCrate implements Listener{
 				e.setCancelled(true);
 				return;
 			}
+		}
+	}
+	
+	public static void endQuickCrate(Player player, Location loc){
+		if(tasks.containsKey(player)){
+			tasks.get(player).cancel();
+			tasks.remove(player);
+		}
+		if(Reward.get(player) != null){
+			Reward.get(player).remove();
+			Reward.remove(player);
+			Methods.playChestAction(loc.getBlock(), false);
+			GUI.crates.remove(player);
+			CrateControl.inUse.remove(player);
 		}
 	}
 	

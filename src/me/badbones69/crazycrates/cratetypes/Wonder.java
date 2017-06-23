@@ -38,7 +38,7 @@ public class Wonder implements Listener{
 		}
 		Items.put(player, items);
 		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
-			Methods.removeItem(CrateControl.Key.get(player), player);
+			Methods.removeItem(CrateControl.keys.get(player), player);
 		}
 		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
 			Methods.takeKeys(1, player, GUI.crates.get(player));
@@ -82,7 +82,7 @@ public class Wonder implements Listener{
 					if(p.toggleFirework()){
 						Methods.fireWork(player.getLocation().add(0, 1, 0));
 					}
-					Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WONDER, CrateControl.Crate.get(player).getName(), p));
+					Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WONDER, CrateControl.crates.get(player).getName(), p));
 					GUI.crates.remove(player);
 					return;
 				}
@@ -99,13 +99,13 @@ public class Wonder implements Listener{
 	public void onInvClick(InventoryClickEvent e){
 		Inventory inv = e.getInventory();
 		Player player = (Player) e.getWhoClicked();
-		if(CrateControl.Crate.containsKey(player)){
-			if(!CrateControl.Crate.get(e.getWhoClicked()).getFile().getString("Crate.CrateType").equalsIgnoreCase("Wonder"))return;
+		if(CrateControl.crates.containsKey(player)){
+			if(!CrateControl.crates.get(e.getWhoClicked()).getFile().getString("Crate.CrateType").equalsIgnoreCase("Wonder"))return;
 		}else{
 			return;
 		}
 		if(inv != null){
-			if(inv.getName().equals(Methods.color(CrateControl.Crate.get(player).getFile().getString("Crate.CrateName")))){
+			if(inv.getName().equals(Methods.color(CrateControl.crates.get(player).getFile().getString("Crate.CrateName")))){
 				e.setCancelled(true);
 			}
 		}

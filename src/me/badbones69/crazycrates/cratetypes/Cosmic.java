@@ -72,7 +72,7 @@ public class Cosmic implements Listener{
 		final Inventory inv = e.getInventory();
 		final Player player = (Player) e.getWhoClicked();
 		if(inv != null){
-			if(CrateControl.Crate.containsKey(player)){
+			if(CrateControl.crates.containsKey(player)){
 				if(!getFile(player).getString("Crate.CrateType").equalsIgnoreCase("Cosmic"))return;
 			}else{
 				return;
@@ -99,7 +99,7 @@ public class Cosmic implements Listener{
 													prize = pickReward(player, tier);
 												}
 												Main.CC.getReward(player, prize);
-												Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.COSMIC, CrateControl.Crate.get(player).getName(), prize));
+												Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.COSMIC, CrateControl.crates.get(player).getName(), prize));
 												e.setCurrentItem(prize.getDisplayItem());
 												if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
 													player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
@@ -156,7 +156,7 @@ public class Cosmic implements Listener{
 									if(i!=null){
 										if(i.hasItemMeta()){
 											if(i.getItemMeta().hasDisplayName()){
-												if(i.getItemMeta().getDisplayName().equals(CrateControl.Key.get(player).getItemMeta().getDisplayName())){
+												if(i.getItemMeta().getDisplayName().equals(CrateControl.keys.get(player).getItemMeta().getDisplayName())){
 													it=i;
 													break;
 												}
@@ -208,7 +208,7 @@ public class Cosmic implements Listener{
 	public void onInvClose(InventoryCloseEvent e){
 		Inventory inv = e.getInventory();
 		Player player = (Player) e.getPlayer();
-		if(CrateControl.Crate.containsKey(player)){
+		if(CrateControl.crates.containsKey(player)){
 			if(getFile(player) == null){
 				return;
 			}else{
@@ -329,7 +329,7 @@ public class Cosmic implements Listener{
 	}
 	
 	private static FileConfiguration getFile(Player player){
-		return CrateControl.Crate.get(player).getFile();
+		return CrateControl.crates.get(player).getFile();
 	}
 	
 	private boolean inCosmic(int slot){

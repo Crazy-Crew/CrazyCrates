@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -61,28 +62,28 @@ public class CrazyCrates {
 				War.openWarCrate(player);
 				break;
 			case QUAD_CRATE:
-				CrateControl.LastLoc.put(player, player.getLocation());
+				CrateControl.lastLocation.put(player, player.getLocation());
 				QCC.startBuild(player, loc, Material.CHEST);
 				break;
 			case FIRE_CRACKER:
-				if(CrateControl.InUse.containsValue(loc)){
-					player.sendMessage(Methods.color(Methods.getPrefix() + Main.settings.getConfig().getString("Settings.QuickCrateInUse")));
+				if(CrateControl.inUse.containsValue(loc)){
+					player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
 				}else{
 					FireCracker.startFireCracker(player, crate.getName(), loc);
-					CrateControl.InUse.put(player, loc);
+					CrateControl.inUse.put(player, loc);
 				}
 				break;
 			case QUICK_CRATE:
-				if(CrateControl.InUse.containsValue(loc)){
-					player.sendMessage(Methods.color(Methods.getPrefix() + Main.settings.getConfig().getString("Settings.QuickCrateInUse")));
+				if(CrateControl.inUse.containsValue(loc)){
+					player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
 				}else{
 					QuickCrate.openCrate(player, loc, true);
-					CrateControl.InUse.put(player, loc);
+					CrateControl.inUse.put(player, loc);
 				}
 				break;
 			case CRATE_ON_THE_GO:
 				if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
-					Methods.removeItem(CrateControl.Key.get(player), player);
+					Methods.removeItem(CrateControl.keys.get(player), player);
 				}
 				Prize prize = pickPrize(player);
 				getReward(player, prize);
@@ -92,28 +93,42 @@ public class CrazyCrates {
 				GUI.crates.remove(player);
 				break;
 		}
+		FileConfiguration file = CrateControl.crates.get(player).getFile();
+		if(file.getBoolean("Crate.OpeningBroadCast")){
+			Bukkit.broadcastMessage(Methods.color(file.getString("Crate.BroadCast")
+					.replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix())
+					.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
+		}
 	}
 	
 	public void loadCrates(){
 		crates.clear();
+		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading all crate information...");
 		for(String crateName : Main.settings.getAllCratesNames()){
-			FileConfiguration file = Main.settings.getFile(crateName);
-			ArrayList<Prize> prizes = new ArrayList<Prize>();
-			for(String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)){
-				ArrayList<String> msgs = new ArrayList<String>();
-				ArrayList<String> commands = new ArrayList<String>();
-				for(String msg : file.getStringList("Crate.Prizes." + prize + ".Messages")){
-					msgs.add(msg);
+			Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading " + crateName + " information....");
+			try{
+				FileConfiguration file = Main.settings.getFile(crateName);
+				ArrayList<Prize> prizes = new ArrayList<Prize>();
+				for(String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)){
+					ArrayList<String> msgs = new ArrayList<String>();
+					ArrayList<String> commands = new ArrayList<String>();
+					for(String msg : file.getStringList("Crate.Prizes." + prize + ".Messages")){
+						msgs.add(msg);
+					}
+					for(String cmd : file.getStringList("Crate.Prizes." + prize + ".Commands")){
+						commands.add(cmd);
+					}
+					prizes.add(new Prize(prize, getDisplayItem(file, prize), msgs, commands,
+							getItems(file, prize), crateName, file.getInt("Crate.Prizes." + prize + ".Chance"),
+							file.getInt("Crate.Prizes." + prize + ".MaxRange"), file.getBoolean("Crate.Prizes." + prize + ".Firework")));
 				}
-				for(String cmd : file.getStringList("Crate.Prizes." + prize + ".Commands")){
-					commands.add(cmd);
-				}
-				prizes.add(new Prize(prize, getDisplayItem(file, prize), msgs, commands,
-						getItems(file, prize), file.getInt("Crate.Prizes." + prize + ".Chance"),
-						file.getInt("Crate.Prizes." + prize + ".MaxRange"), file.getBoolean("Crate.Prizes." + prize + ".Firework")));
+				crates.add(new Crate(crateName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file));
+				Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> " + crateName + " has been loaded.");
+			}catch(Exception e){
+				Bukkit.getLogger().log(Level.WARNING, "[Crazy Crates]>> There was an error while loading the " + crateName + ".yml file.");
 			}
-			crates.add(new Crate(crateName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file));
 		}
+		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> All crate information has been loaded.");
 	}
 	
 	public ArrayList<Crate> getCrates(){
@@ -121,25 +136,51 @@ public class CrazyCrates {
 	}
 	
 	public void getReward(Player player, Prize prize){
-		for(ItemStack i : prize.getItems()){
-			if(!Methods.isInvFull(player)){
-				player.getInventory().addItem(i);
-			}else{
-				player.getWorld().dropItemNaturally(player.getLocation(), i);
+		if(prize != null){
+			for(ItemStack i : prize.getItems()){
+				if(!Methods.isInvFull(player)){
+					player.getInventory().addItem(i);
+				}else{
+					player.getWorld().dropItemNaturally(player.getLocation(), i);
+				}
 			}
-		}
-		for(String command : prize.getCommands()){
-			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Methods.color(command
-					.replace("%Player%", player.getName()).replace("%player%", player.getName())));
-		}
-		for(String msg : prize.getMessages()){
-			player.sendMessage(Methods.color(msg)
-					.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName()));
+			for(String command : prize.getCommands()){// /give %player% iron %random%:1-64
+				if(command.contains("%random%:")){
+					String cmd = command;
+					command = "";
+					for(String word : cmd.split(" ")){
+						if(word.startsWith("%random%:")){
+							word = word.replace("%random%:", "");
+							try{
+								int min = Integer.parseInt(word.split("-")[0]);
+								int max = Integer.parseInt(word.split("-")[1]);
+								command += pickNumber(min, max) + " ";
+							}catch(Exception e){
+								command += "1 ";
+								Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> The prize " + prize.getName() + " in the " + prize.getCrate() +
+										" crate has errored when trying to run a command.");
+								Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> Command: " + cmd);
+							}
+						}else{
+							command += word + " ";
+						}
+					}
+					command = command.substring(0, command.length() - 1);
+				}
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Methods.color(command
+						.replace("%Player%", player.getName()).replace("%player%", player.getName())));
+			}
+			for(String msg : prize.getMessages()){
+				player.sendMessage(Methods.color(msg)
+						.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName()));
+			}
+		}else{
+			Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> No prize was found when giving " + player.getName() + " a prize.");
 		}
 	}
 	
 	public Prize pickPrize(Player player){
-		Crate crate = CrateControl.Crate.get(player);
+		Crate crate = CrateControl.crates.get(player);
 		ArrayList<Prize> prizes = new ArrayList<Prize>();
 		for(int stop = 0; prizes.size() == 0 && stop <= 2000; stop++){
 			for(Prize prize : crate.getPrizes()){
@@ -158,7 +199,7 @@ public class CrazyCrates {
 	}
 	
 	public Prize pickPrize(Player player, Location loc){
-		Crate crate = CrateControl.Crate.get(player);
+		Crate crate = CrateControl.crates.get(player);
 		ArrayList<Prize> prizes = new ArrayList<Prize>();
 		for(int stop = 0; prizes.size() == 0 && stop <= 2000; stop++){
 			for(Prize prize : crate.getPrizes()){
@@ -292,6 +333,11 @@ public class CrazyCrates {
 			}
 		}
 		return items;
+	}
+	
+	private Integer pickNumber(int min, int max){
+		max++;
+		return min + new Random().nextInt(max - min);
 	}
 	
 }
