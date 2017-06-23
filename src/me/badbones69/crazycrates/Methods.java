@@ -173,6 +173,9 @@ public class Methods{
 			}
 		}
 		Material m = Material.matchMaterial(id);
+		if(m == Material.MOB_SPAWNER){
+			ty = 0;
+		}
 		ItemStack item = new ItemStack(m, amount, (short) ty);
 		if(m == Material.MONSTER_EGG){
 			switch(Version.getVersion()){
@@ -200,10 +203,12 @@ public class Methods{
 		for(String L:lore)l.add(color(L));
 		me.setLore(l);
 		item.setItemMeta(me);
-		if(item.getType() == Material.TIPPED_ARROW && potionType != null){
-			PotionMeta pm = (PotionMeta) item.getItemMeta();
-			pm.setBasePotionData(new PotionData(potionType));
-			item.setItemMeta(pm);
+		if(Version.getVersion().comparedTo(Version.v1_8_R3) == 1){
+			if(item.getType() == Material.TIPPED_ARROW && potionType != null){
+				PotionMeta pm = (PotionMeta) item.getItemMeta();
+				pm.setBasePotionData(new PotionData(potionType));
+				item.setItemMeta(pm);
+			}
 		}
 		return item;
 	}
@@ -223,6 +228,9 @@ public class Methods{
 			}
 		}
 		Material m = Material.matchMaterial(id);
+		if(m == Material.MOB_SPAWNER){
+			ty = 0;
+		}
 		ItemStack item = new ItemStack(m, amount, (short) ty);
 		if(m == Material.MONSTER_EGG){
 			switch(Version.getVersion()){
@@ -250,10 +258,12 @@ public class Methods{
 		for(String L:lore)l.add(color(L));
 		me.setLore(l);
 		item.setItemMeta(me);
-		if(item.getType() == Material.TIPPED_ARROW && potionType != null){
-			PotionMeta pm = (PotionMeta) item.getItemMeta();
-			pm.setBasePotionData(new PotionData(potionType));
-			item.setItemMeta(pm);
+		if(Version.getVersion().comparedTo(Version.v1_8_R3) == 1){
+			if(item.getType() == Material.TIPPED_ARROW && potionType != null){
+				PotionMeta pm = (PotionMeta) item.getItemMeta();
+				pm.setBasePotionData(new PotionData(potionType));
+				item.setItemMeta(pm);
+			}
 		}
 		if(Enchanted){
 			item = addGlow(item);
@@ -275,6 +285,9 @@ public class Methods{
 			}
 		}
 		Material m = Material.matchMaterial(id);
+		if(m == Material.MOB_SPAWNER){
+			ty = 0;
+		}
 		ItemStack item = new ItemStack(m, amount, (short) ty);
 		if(m == Material.MONSTER_EGG){
 			switch(Version.getVersion()){
@@ -300,10 +313,12 @@ public class Methods{
 		ItemMeta me = item.getItemMeta();
 		me.setDisplayName(color(name));
 		item.setItemMeta(me);
-		if(item.getType() == Material.TIPPED_ARROW && potionType != null){
-			PotionMeta pm = (PotionMeta) item.getItemMeta();
-			pm.setBasePotionData(new PotionData(potionType));
-			item.setItemMeta(pm);
+		if(Version.getVersion().comparedTo(Version.v1_8_R3) == 1){
+			if(item.getType() == Material.TIPPED_ARROW && potionType != null){
+				PotionMeta pm = (PotionMeta) item.getItemMeta();
+				pm.setBasePotionData(new PotionData(potionType));
+				item.setItemMeta(pm);
+			}
 		}
 		return item;
 	}
@@ -357,6 +372,9 @@ public class Methods{
 			}
 		}
 		Material material = Material.matchMaterial(type);
+		if(material == Material.MOB_SPAWNER){
+			ty = 0;
+		}
 		ItemStack item = new ItemStack(material, amount, (short) ty);
 		if(material == Material.MONSTER_EGG){
 			switch(Version.getVersion()){
@@ -385,10 +403,12 @@ public class Methods{
 		m.setLore(l);
 		item.setItemMeta(m);
 		item.addUnsafeEnchantments(enchants);
-		if(item.getType() == Material.TIPPED_ARROW && potionType != null){
-			PotionMeta pm = (PotionMeta) item.getItemMeta();
-			pm.setBasePotionData(new PotionData(potionType));
-			item.setItemMeta(pm);
+		if(Version.getVersion().comparedTo(Version.v1_8_R3) == 1){
+			if(item.getType() == Material.TIPPED_ARROW && potionType != null){
+				PotionMeta pm = (PotionMeta) item.getItemMeta();
+				pm.setBasePotionData(new PotionData(potionType));
+				item.setItemMeta(pm);
+			}
 		}
 		return item;
 	}
@@ -409,6 +429,9 @@ public class Methods{
 			}
 		}
 		Material material = Material.matchMaterial(type);
+		if(material == Material.MOB_SPAWNER){
+			ty = 0;
+		}
 		ItemStack item = new ItemStack(material, amount, (short) ty);
 		if(material == Material.MONSTER_EGG){
 			switch(Version.getVersion()){
@@ -437,10 +460,12 @@ public class Methods{
 		m.setLore(l);
 		item.setItemMeta(m);
 		item.addUnsafeEnchantments(enchants);
-		if(item.getType() == Material.TIPPED_ARROW && potionType != null){
-			PotionMeta pm = (PotionMeta) item.getItemMeta();
-			pm.setBasePotionData(new PotionData(potionType));
-			item.setItemMeta(pm);
+		if(Version.getVersion().comparedTo(Version.v1_8_R3) == 1){
+			if(item.getType() == Material.TIPPED_ARROW && potionType != null){
+				PotionMeta pm = (PotionMeta) item.getItemMeta();
+				pm.setBasePotionData(new PotionData(potionType));
+				item.setItemMeta(pm);
+			}
 		}
 		if(glowing){
 			item = addGlow(item);
