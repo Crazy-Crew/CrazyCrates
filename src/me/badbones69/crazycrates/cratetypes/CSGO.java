@@ -97,7 +97,7 @@ public class CSGO implements Listener{
 				if(full <= 50){//When Spinning
 					moveItems(inv, player);
 					setGlass(inv);
-					if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+					if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()){
 						player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
 					}else{
 						player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);

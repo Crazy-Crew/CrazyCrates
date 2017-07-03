@@ -315,7 +315,8 @@ public class CrazyCrates {
 					player = i;
 				}
 				for(Enchantment enc : Enchantment.values()){
-					if(i.contains(enc.getName() + ":") || i.contains(Methods.getEnchantmentName(enc) + ":")){
+					if(i.toLowerCase().contains(enc.getName().toLowerCase() + ":") || 
+							i.toLowerCase().contains(Methods.getEnchantmentName(enc).toLowerCase() + ":")){
 						String[] breakdown = i.split(":");
 						int lvl = Integer.parseInt(breakdown[1]);
 						enchants.put(enc, lvl);
