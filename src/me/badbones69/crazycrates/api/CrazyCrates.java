@@ -38,6 +38,37 @@ public class CrazyCrates {
 		return instance;
 	}
 	
+	public void loadCrates(){
+		crates.clear();
+		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading all crate information...");
+		for(String crateName : Main.settings.getAllCratesNames()){
+			Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading " + crateName + ".yml information....");
+			try{
+				FileConfiguration file = Main.settings.getFile(crateName);
+				ArrayList<Prize> prizes = new ArrayList<Prize>();
+				for(String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)){
+					ArrayList<String> msgs = new ArrayList<String>();
+					ArrayList<String> commands = new ArrayList<String>();
+					for(String msg : file.getStringList("Crate.Prizes." + prize + ".Messages")){
+						msgs.add(msg);
+					}
+					for(String cmd : file.getStringList("Crate.Prizes." + prize + ".Commands")){
+						commands.add(cmd);
+					}
+					prizes.add(new Prize(prize, getDisplayItem(file, prize), msgs, commands,
+							getItems(file, prize), crateName, file.getInt("Crate.Prizes." + prize + ".Chance"),
+							file.getInt("Crate.Prizes." + prize + ".MaxRange"), file.getBoolean("Crate.Prizes." + prize + ".Firework")));
+				}
+				crates.add(new Crate(crateName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file));
+				Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> " + crateName + ".yml has been loaded.");
+			}catch(Exception e){
+				Bukkit.getLogger().log(Level.WARNING, "[Crazy Crates]>> There was an error while loading the " + crateName + ".yml file.");
+				e.printStackTrace();
+			}
+		}
+		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> All crate information has been loaded.");
+	}
+	
 	public void openCrate(Player player, CrateType crate, Location loc){
 		switch(crate){
 			case MENU:
@@ -101,36 +132,6 @@ public class CrazyCrates {
 		}
 	}
 	
-	public void loadCrates(){
-		crates.clear();
-		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading all crate information...");
-		for(String crateName : Main.settings.getAllCratesNames()){
-			Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading " + crateName + " information....");
-			try{
-				FileConfiguration file = Main.settings.getFile(crateName);
-				ArrayList<Prize> prizes = new ArrayList<Prize>();
-				for(String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)){
-					ArrayList<String> msgs = new ArrayList<String>();
-					ArrayList<String> commands = new ArrayList<String>();
-					for(String msg : file.getStringList("Crate.Prizes." + prize + ".Messages")){
-						msgs.add(msg);
-					}
-					for(String cmd : file.getStringList("Crate.Prizes." + prize + ".Commands")){
-						commands.add(cmd);
-					}
-					prizes.add(new Prize(prize, getDisplayItem(file, prize), msgs, commands,
-							getItems(file, prize), crateName, file.getInt("Crate.Prizes." + prize + ".Chance"),
-							file.getInt("Crate.Prizes." + prize + ".MaxRange"), file.getBoolean("Crate.Prizes." + prize + ".Firework")));
-				}
-				crates.add(new Crate(crateName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file));
-				Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> " + crateName + " has been loaded.");
-			}catch(Exception e){
-				Bukkit.getLogger().log(Level.WARNING, "[Crazy Crates]>> There was an error while loading the " + crateName + ".yml file.");
-			}
-		}
-		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> All crate information has been loaded.");
-	}
-	
 	public ArrayList<Crate> getCrates(){
 		return crates;
 	}
@@ -178,6 +179,50 @@ public class CrazyCrates {
 			Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> No prize was found when giving " + player.getName() + " a prize.");
 		}
 	}
+	
+	public Boolean addOfflineKeys(String player, Crate crate, int keys) {
+		try {
+			FileConfiguration data = Main.settings.getData();
+			player = player.toLowerCase();
+			for(String uuid : data.getConfigurationSection("Players").getKeys(false)) {
+				if(data.getString("Players." + uuid + ".Name").equalsIgnoreCase(player)) {
+					if(data.contains("Players." + uuid + "." + crate.getName())) {
+						keys += data.getInt("Players." + uuid + "." + crate.getName());
+					}
+					data.set("Players." + uuid + "." + crate.getName(), keys);
+					Main.settings.saveData();	
+					return true;
+				}
+			}
+			if(data.contains("Offline-Players." + player + "." + crate.getName())) {
+				keys += data.getInt("Offline-Players." + player + "." + crate.getName());
+			}
+			data.set("Offline-Players." + player + "." + crate.getName(), keys);
+			Main.settings.saveData();
+			return true;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public void loadOfflinePlayersKeys(Player player) {
+		FileConfiguration data = Main.settings.getData();
+		String name = player.getName().toLowerCase();
+		if(data.contains("Offline-Players." + name)) {
+			for(Crate crate : getCrates()) {
+				if(data.contains("Offline-Players." + name + "." + crate.getName())) {
+					if(data.getInt("Offline-Players." + name + "." + crate.getName()) > 0) {
+						Methods.addKeys(data.getInt("Offline-Players." + name + "." + crate.getName()),
+								player, crate, KeyType.VIRTUAL_KEY);
+					}
+				}
+			}
+			data.set("Offline-Players." + name, null);
+			Main.settings.saveData();
+		}
+	}
+	
 	
 	public Prize pickPrize(Player player){
 		Crate crate = CrateControl.crates.get(player);

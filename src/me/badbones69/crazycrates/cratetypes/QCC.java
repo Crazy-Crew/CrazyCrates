@@ -121,14 +121,6 @@ public class QCC implements Listener{ // Quad Crate Control.
 				p.setVelocity(v);
 			}
 		}
-		if(GUI.crates.get(player).getFile().getBoolean("Crate.OpeningBroadCast")){
-			String msg = Methods.color(GUI.crates.get(player).getFile().getString("Crate.BroadCast"));
-			msg = msg.replaceAll("%Prefix%", Methods.getPrefix());
-			msg = msg.replaceAll("%prefix%", Methods.getPrefix());
-			msg = msg.replaceAll("%Player%", player.getName());
-			msg = msg.replaceAll("%player%", player.getName());
-			Bukkit.broadcastMessage(msg);
-		}
 		chests.put(player, Ch);
 		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
 			Methods.removeItem(CrateControl.keys.get(player), player);
