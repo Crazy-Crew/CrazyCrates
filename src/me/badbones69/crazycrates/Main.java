@@ -439,7 +439,7 @@ public class Main extends JavaPlugin implements Listener{
 			}
 			if(args[0].equalsIgnoreCase("Give")){// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
 				if(sender instanceof Player)if(!Methods.permCheck((Player)sender, "Admin"))return true;
-				if(args.length==3){
+				if(args.length == 3){
 					String type = args[1];
 					for(Crate crate : CC.getCrates()){
 						if(crate.getName().equalsIgnoreCase(args[2])){
@@ -465,7 +465,7 @@ public class Main extends JavaPlugin implements Listener{
 					sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[2]+" is is not a Crate."));
 					return true;
 				}
-				if(args.length==4){
+				if(args.length == 4){
 					String type = args[1];
 					if(!Methods.isInt(args[3])){
 						sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[3]+" is is not a Number."));
@@ -492,9 +492,8 @@ public class Main extends JavaPlugin implements Listener{
 					sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[2]+" is is not a Crate."));
 					return true;
 				}
-				if(args.length==5){
+				if(args.length == 5){
 					String type = args[1];
-					if(!Methods.isOnline(args[4], sender))return true;
 					if(!Methods.isInt(args[3])){
 						sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[3]+" is is not a Number."));
 						return true;
@@ -512,13 +511,33 @@ public class Main extends JavaPlugin implements Listener{
 								((Player)sender).getInventory().addItem(crate.getKey());
 								return true;
 							}
-							sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+target.getName()+" "+amount+" &7Keys."));
 							if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
-								Methods.addKeys(amount, target, crate, KeyType.VIRTUAL_KEY);
+								if(target != null) {
+									Methods.addKeys(amount, target, crate, KeyType.VIRTUAL_KEY);
+								}else {
+									if(!CC.addOfflineKeys(args[4], crate, amount)) {
+										sender.sendMessage(Methods.getPrefix("&cAn internal error has occurred. Please check the console for the full error."));
+										return true;
+									}else {
+										sender.sendMessage(Methods.getPrefix("&7You have given the offline player " + args[4] + " " + amount + " keys."));
+										return true;
+									}
+								}
 							}
 							if(type.equalsIgnoreCase("Physical")||type.equalsIgnoreCase("P")){
-								Methods.addKeys(amount, target, crate, KeyType.PHYSICAL_KEY);
+								if(target != null) {
+									Methods.addKeys(amount, target, crate, KeyType.PHYSICAL_KEY);
+								}else {
+									if(!CC.addOfflineKeys(args[4], crate, amount)) {
+										sender.sendMessage(Methods.getPrefix("&cAn internal error has occurred. Please check the console for the full error."));
+										return true;
+									}else {
+										sender.sendMessage(Methods.getPrefix("&7You have given the offline player " + args[4] + " " + amount + " keys."));
+										return true;
+									}
+								}
 							}
+							sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+target.getName()+" "+amount+" &7Keys."));
 							return true;
 						}
 					}
@@ -539,8 +558,9 @@ public class Main extends JavaPlugin implements Listener{
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e){
+		Player player = e.getPlayer();
+		CC.loadOfflinePlayersKeys(player);
 		new BukkitRunnable(){
-			Player player = e.getPlayer();
 			@Override
 			public void run() {
 				if(player.getName().equals("BadBones69")){

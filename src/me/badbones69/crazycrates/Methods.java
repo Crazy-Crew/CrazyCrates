@@ -559,14 +559,6 @@ public class Methods{
 	    return true;
 	}
 
-	public static Location getLoc(Player player){
-		return player.getLocation();
-	}
-
-	public static void runCMD(Player player, String CMD){
-		player.performCommand(CMD);
-	}
-
 	public static Player getPlayer(String name){
 		return Bukkit.getServer().getPlayer(name);
 	}
@@ -624,6 +616,7 @@ public class Methods{
 	public static void takeKeys(int Amount, Player player, Crate crate){
 		String uuid = player.getUniqueId().toString();
 		int keys = getKeys(player, crate);
+		Main.settings.getData().set("Players." + uuid + ".Name", player.getName());
 		Main.settings.getData().set("Players." + uuid + "." + crate.getName(), keys - Amount);
 		Main.settings.saveData();
 	}
@@ -632,6 +625,7 @@ public class Methods{
 		if(type == KeyType.VIRTUAL_KEY){
 			String uuid = player.getUniqueId().toString();
 			int keys = getKeys(player, crate);
+			Main.settings.getData().set("Players." + uuid + ".Name", player.getName());
 			Main.settings.getData().set("Players." + uuid + "." + crate.getName(), keys + Amount);
 			Main.settings.saveData();
 		}else if(type == KeyType.PHYSICAL_KEY){
