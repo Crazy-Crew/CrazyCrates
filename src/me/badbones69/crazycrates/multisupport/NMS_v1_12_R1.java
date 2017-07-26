@@ -10,12 +10,18 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import me.badbones69.crazycrates.cratetypes.QCC;
+import me.badbones69.crazycrates.cratetypes.QuickCrate;
 import net.minecraft.server.v1_12_R1.BlockPosition;
 import net.minecraft.server.v1_12_R1.NBTCompressedStreamTools;
 import net.minecraft.server.v1_12_R1.NBTTagCompound;
@@ -23,7 +29,40 @@ import net.minecraft.server.v1_12_R1.TileEntityChest;
 import net.minecraft.server.v1_12_R1.TileEntityEnderChest;
 import net.minecraft.server.v1_12_R1.World;
 
-public class NMS_v1_12_R1 {
+public class NMS_v1_12_R1 implements Listener{
+	
+	@EventHandler
+	public void onItemPickUp(EntityPickupItemEvent e) {
+		Entity item = e.getItem();
+		if(item != null) {
+			if(QuickCrate.Rewards.containsValue(item)){
+				e.setCancelled(true);
+				return;
+			}
+			for(Player p : QCC.Rewards.keySet()){
+				if(QCC.Rewards.get(p).contains(item)){
+					e.setCancelled(true);
+					return;
+				}
+			}
+		}
+	}
+	
+	public static ItemStack addUnbreaking(ItemStack item) {
+		net.minecraft.server.v1_12_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+		NBTTagCompound tag = null;
+		if (!nmsStack.hasTag()) {
+			tag = new NBTTagCompound();
+			nmsStack.setTag(tag);
+		}
+		if (tag == null) {
+			tag = nmsStack.getTag();
+		}
+		tag.setBoolean("Unbreakable", true);
+		tag.setInt("HideFlags", 4);
+		nmsStack.setTag(tag);
+		return CraftItemStack.asCraftMirror(nmsStack);
+	}
 	
 	public static ItemStack addGlow(ItemStack item){
         if(item != null){

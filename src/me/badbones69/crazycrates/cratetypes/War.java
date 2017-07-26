@@ -186,21 +186,25 @@ public class War implements Listener{
 	}
 	
 	private static void setRandomPrizes(Player player, Inventory inv){
-		if(inv.getName().equalsIgnoreCase(Methods.color(GUI.crates.get(player).getFile().getString("Crate.CrateName")))){
-			for(int i = 0; i < 9; i++){
-				inv.setItem(i, Main.CC.pickPrize(player).getDisplayItem());
+		if(GUI.crates.containsKey(player)) {
+			if(inv.getName().equalsIgnoreCase(Methods.color(GUI.crates.get(player).getFile().getString("Crate.CrateName")))){
+				for(int i = 0; i < 9; i++){
+					inv.setItem(i, Main.CC.pickPrize(player).getDisplayItem());
+				}
 			}
 		}
 	}
 	
 	private static void setRandomGlass(Player player, Inventory inv){
-		if(inv.getName().equalsIgnoreCase(Methods.color(GUI.crates.get(player).getFile().getString("Crate.CrateName")))){
-			int color = new Random().nextInt(15);
-			if(color == 8){
-				color = 0;
-			}
-			for(int i = 0; i < 9; i++){
-				inv.setItem(i, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, "&" + getColorCode().get(color) + "&l???"));
+		if(GUI.crates.containsKey(player)) {
+			if(inv.getName().equalsIgnoreCase(Methods.color(GUI.crates.get(player).getFile().getString("Crate.CrateName")))){
+				int color = new Random().nextInt(15);
+				if(color == 8){
+					color = 0;
+				}
+				for(int i = 0; i < 9; i++){
+					inv.setItem(i, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, "&" + getColorCode().get(color) + "&l???"));
+				}
 			}
 		}
 	}

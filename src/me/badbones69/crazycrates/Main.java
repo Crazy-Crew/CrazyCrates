@@ -2,16 +2,16 @@ package me.badbones69.crazycrates;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,14 +39,17 @@ import me.badbones69.crazycrates.cratetypes.War;
 import me.badbones69.crazycrates.cratetypes.Wheel;
 import me.badbones69.crazycrates.cratetypes.Wonder;
 import me.badbones69.crazycrates.multisupport.MVdWPlaceholderAPISupport;
+import me.badbones69.crazycrates.multisupport.NMS_v1_11_R1;
+import me.badbones69.crazycrates.multisupport.NMS_v1_12_R1;
 import me.badbones69.crazycrates.multisupport.PlaceholderAPISupport;
 import me.badbones69.crazycrates.multisupport.Support;
 import me.badbones69.crazycrates.multisupport.Version;
 
 public class Main extends JavaPlugin implements Listener{
 	
-	public static SettingsManager settings = SettingsManager.getInstance();
+	private Boolean updateChecker = false;
 	public static CrazyCrates CC = CrazyCrates.getInstance();
+	public static SettingsManager settings = SettingsManager.getInstance();
 	
 	@Override
 	public void onEnable(){
@@ -58,6 +61,11 @@ public class Main extends JavaPlugin implements Listener{
 		if(!settings.getData().contains("Players")){
 			settings.getData().set("Players.Clear", null);
 			settings.saveData();
+		}
+		if(settings.getConfig().contains("Settings.Update-Checker")){
+			updateChecker = settings.getConfig().getBoolean("Settings.Update-Checker");
+		}else{
+			updateChecker = true;
 		}
 		Methods.hasUpdate();
 		CC.loadCrates();
@@ -75,6 +83,11 @@ public class Main extends JavaPlugin implements Listener{
 		pm.registerEvents(new QuickCrate(), this);
 		pm.registerEvents(new CrateControl(), this);
 		pm.registerEvents(new CrateOnTheGo(), this);
+		if(Version.getVersion().comparedTo(Version.v1_12_R1) >= 0){
+			pm.registerEvents(new NMS_v1_12_R1(), this);
+		}else {
+			pm.registerEvents(new NMS_v1_11_R1(), this);
+		}
 		try{
 			if(Version.getVersion().getVersionInteger() >= Version.v1_11_R1.getVersionInteger()){
 				pm.registerEvents(new FireworkDamageAPI(this), this);
@@ -111,14 +124,13 @@ public class Main extends JavaPlugin implements Listener{
 				QCC.undoBuild(player);
 			}
 		}
-		if(!QuickCrate.Reward.isEmpty()){
-			for(Player player : QuickCrate.Reward.keySet()){
-				QuickCrate.Reward.get(player).remove();
+		if(!QuickCrate.Rewards.isEmpty()){
+			for(Player player : QuickCrate.Rewards.keySet()){
+				QuickCrate.Rewards.get(player).remove();
 			}
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args){
 		if(commandLable.equalsIgnoreCase("CrazyCrates")||commandLable.equalsIgnoreCase("CC")||commandLable.equalsIgnoreCase("Crate")
 				|| commandLable.equalsIgnoreCase("Crates")||commandLable.equalsIgnoreCase("CCrate")||commandLable.equalsIgnoreCase("CrazyCrate")){
@@ -263,7 +275,7 @@ public class Main extends JavaPlugin implements Listener{
 					String c = args[1]; //Crate
 					for(String crate : Methods.getCrates()){
 						if(crate.equalsIgnoreCase(c) || c.equalsIgnoreCase("Menu")){
-							Block block = player.getTargetBlock((HashSet<Byte>)null, 5);
+							Block block = player.getTargetBlock((Set<Material>)null, 5);
 							if(settings.getLocations().contains("Locations")){
 								for(String location : settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
 									World w = Bukkit.getWorld(Main.settings.getLocations().getString("Locations." + location + ".World"));
@@ -296,7 +308,7 @@ public class Main extends JavaPlugin implements Listener{
 							return true;
 						}
 					}
-					sender.sendMessage(Methods.color(Methods.getPrefix()+"&c" + c + " is is not a Crate."));
+					sender.sendMessage(Methods.color(Methods.getPrefix()+"&c" + c + " is not a Crate."));
 					sender.sendMessage(Methods.color(Methods.getPrefix()+"&cThere is no Crates called &6" + c + "&c."));
 					return true;
 				}
@@ -309,7 +321,7 @@ public class Main extends JavaPlugin implements Listener{
 					int amount = 1;
 					if(args.length>=4){
 						if(!Methods.isInt(args[3])){
-							sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[3]+" is is not a Number."));
+							sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[3]+" is not a Number."));
 							return true;
 						}
 						amount = Integer.parseInt(args[3]);
@@ -319,30 +331,28 @@ public class Main extends JavaPlugin implements Listener{
 						sender.sendMessage(Methods.color(Methods.getPrefix()+"&cPlease use Virtual/V or Physical/P for a Key type."));
 						return true;
 					}
-					for(Crate crate : CC.getCrates()){
-						FileConfiguration file = crate.getFile();
-						if(crate.getName().equalsIgnoreCase(args[2])){
-							if(file.getString("Crate.CrateType").equalsIgnoreCase("CrateOnTheGo")){
-								sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given everyone &6"+amount+" &7Crates."));
-							}else{
-								sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given everyone &6"+amount+" &7Keys."));
-							}
-							for(Player p : Bukkit.getServer().getOnlinePlayers()){
-								if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO){
-									p.getInventory().addItem(crate.getKey());
-									return true;
-								}
-								if(type.equalsIgnoreCase("Virtual") || type.equalsIgnoreCase("V")){
-									Methods.addKeys(amount, p, crate, KeyType.VIRTUAL_KEY);
-								}
-								if(type.equalsIgnoreCase("Physical") || type.equalsIgnoreCase("P")){
-									Methods.addKeys(amount, p, crate, KeyType.PHYSICAL_KEY);
-								}
-							}
-							return true;
+					Crate crate = CC.getCrateFromName(args[2]);
+					if(crate != null) {
+						if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO){
+							sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given everyone &6"+amount+" &7Crates."));
+						}else{
+							sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given everyone &6"+amount+" &7Keys."));
 						}
+						for(Player p : Bukkit.getServer().getOnlinePlayers()){
+							if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO){
+								p.getInventory().addItem(crate.getKey());
+								return true;
+							}
+							if(type.equalsIgnoreCase("Virtual") || type.equalsIgnoreCase("V")){
+								Methods.addKeys(amount, p, crate, KeyType.VIRTUAL_KEY);
+							}
+							if(type.equalsIgnoreCase("Physical") || type.equalsIgnoreCase("P")){
+								Methods.addKeys(amount, p, crate, KeyType.PHYSICAL_KEY);
+							}
+						}
+						return true;
 					}
-					sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[1]+" is is not a Crate."));
+					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c" + args[2] + " is not a Crate."));
 					return true;
 					}
 				sender.sendMessage(Methods.color(Methods.getPrefix()+"&c/Crate GiveAll <Physical/Virtual> <Crate> <Amount>"));
@@ -417,7 +427,7 @@ public class Main extends JavaPlugin implements Listener{
 											GUI.crates.put(player, c);
 										}
 									}
-									Methods.Key.put(player, KeyType.FREE);
+									Methods.Key.put(player, KeyType.FREE_KEY);
 									CC.openCrate(player, type, player.getLocation());
 									sender.sendMessage(Methods.color(Methods.getPrefix() + "&7You have just opened the &6" + crate + " &7crate for &6" + player.getName() + "&7."));
 									return true;
@@ -426,12 +436,12 @@ public class Main extends JavaPlugin implements Listener{
 									return true;
 								}
 							}else{
-								sender.sendMessage(Methods.color(Methods.getPrefix() + "&c" + args[1] + " is is not a Crate."));
+								sender.sendMessage(Methods.color(Methods.getPrefix() + "&c" + args[1] + " is not a Crate."));
 								return true;
 							}
 						}
 					}
-					sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[1]+" is is not a Crate."));
+					sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[1]+" is not a Crate."));
 					return true;
 				}
 				sender.sendMessage(Methods.color(Methods.getPrefix()+"&c/Crate Open <Crate> [Player]"));
@@ -439,109 +449,102 @@ public class Main extends JavaPlugin implements Listener{
 			}
 			if(args[0].equalsIgnoreCase("Give")){// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
 				if(sender instanceof Player)if(!Methods.permCheck((Player)sender, "Admin"))return true;
+				KeyType type = KeyType.getFromName(args[1]);
+				if(type == null || type == KeyType.FREE_KEY) {
+					sender.sendMessage(Methods.color(Methods.getPrefix()+"&cPlease use Virtual/V or Physical/P for a Key type."));
+					return true;
+				}
 				if(args.length == 3){
-					String type = args[1];
-					for(Crate crate : CC.getCrates()){
-						if(crate.getName().equalsIgnoreCase(args[2])){
-							if(!(sender instanceof Player)){
-								sender.sendMessage(Methods.color(Methods.getPrefix() + "&cYou must be a player to run this command."));
-								return true;
-							}
-							if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO){
-								sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+ sender.getName()+" "+1+" &7Crates."));
-								((Player)sender).getInventory().addItem(crate.getKey());
-								return true;
-							}
-							sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+ sender.getName()+" "+1+" &7Keys."));
-							if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
-								Methods.addKeys(1, (Player)sender, crate, KeyType.VIRTUAL_KEY);
-							}
-							if(type.equalsIgnoreCase("Physical")||type.equalsIgnoreCase("P")){
-								Methods.addKeys(1, (Player)sender, crate, KeyType.PHYSICAL_KEY);
-							}
+					Crate crate = CC.getCrateFromName(args[2]);
+					if(crate != null) {
+						if(!(sender instanceof Player)){
+							sender.sendMessage(Methods.color(Methods.getPrefix() + "&cYou must be a player to run this command."));
 							return true;
 						}
+						if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO){
+							sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+ sender.getName()+" "+1+" &7Crates."));
+							((Player)sender).getInventory().addItem(crate.getKey());
+							return true;
+						}
+						sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+ sender.getName()+" "+1+" &7Keys."));
+						if(type == KeyType.VIRTUAL_KEY){
+							Methods.addKeys(1, (Player)sender, crate, KeyType.VIRTUAL_KEY);
+						}else if(type == KeyType.PHYSICAL_KEY){
+							Methods.addKeys(1, (Player)sender, crate, KeyType.PHYSICAL_KEY);
+						}
+						return true;
 					}
-					sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[2]+" is is not a Crate."));
+					sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[2]+" is not a Crate."));
 					return true;
 				}
 				if(args.length == 4){
-					String type = args[1];
 					if(!Methods.isInt(args[3])){
-						sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[3]+" is is not a Number."));
+						sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[3]+" is not a Number."));
 						return true;
 					}
 					int amount = Integer.parseInt(args[3]);
-					for(Crate crate : CC.getCrates()){
-						if(crate.getName().equalsIgnoreCase(args[2])){
-							if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO){
-								sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+ sender.getName()+" "+amount+" &7Crates."));
-								((Player)sender).getInventory().addItem(crate.getKey());
-								return true;
-							}
-							sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+ sender.getName()+" "+amount+" &7Keys."));
-							if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
-								Methods.addKeys(amount, (Player)sender, crate, KeyType.VIRTUAL_KEY);
-							}
-							if(type.equalsIgnoreCase("Physical")||type.equalsIgnoreCase("P")){
-								Methods.addKeys(amount, (Player)sender, crate, KeyType.PHYSICAL_KEY);
-							}
+					Crate crate = CC.getCrateFromName(args[2]);
+					if(crate != null) {
+						if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO){
+							sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+ sender.getName()+" "+amount+" &7Crates."));
+							((Player)sender).getInventory().addItem(crate.getKey());
 							return true;
 						}
+						sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+ sender.getName()+" "+amount+" &7Keys."));
+						if(type == KeyType.VIRTUAL_KEY){
+							Methods.addKeys(amount, (Player)sender, crate, KeyType.VIRTUAL_KEY);
+						}else if(type == KeyType.PHYSICAL_KEY){
+							Methods.addKeys(amount, (Player)sender, crate, KeyType.PHYSICAL_KEY);
+						}
+						return true;
 					}
-					sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[2]+" is is not a Crate."));
+					sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[2]+" is not a Crate."));
 					return true;
 				}
 				if(args.length == 5){
-					String type = args[1];
 					if(!Methods.isInt(args[3])){
-						sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[3]+" is is not a Number."));
-						return true;
-					}
-					if(!(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")||type.equalsIgnoreCase("Physical")||type.equalsIgnoreCase("P"))){
-						sender.sendMessage(Methods.color(Methods.getPrefix()+"&cPlease use Virtual/V or Physical/P for a Key type."));
+						sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[3]+" is not a Number."));
 						return true;
 					}
 					int amount = Integer.parseInt(args[3]);
 					Player target = Methods.getPlayer(args[4]);
-					for(Crate crate : CC.getCrates()){
-						if(crate.getName().equalsIgnoreCase(args[2])){
-							if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO){
-								sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+target.getName()+" "+amount+" &7Crates."));
-								((Player)sender).getInventory().addItem(crate.getKey());
-								return true;
-							}
-							if(type.equalsIgnoreCase("Virtual")||type.equalsIgnoreCase("V")){
-								if(target != null) {
-									Methods.addKeys(amount, target, crate, KeyType.VIRTUAL_KEY);
-								}else {
-									if(!CC.addOfflineKeys(args[4], crate, amount)) {
-										sender.sendMessage(Methods.getPrefix("&cAn internal error has occurred. Please check the console for the full error."));
-										return true;
-									}else {
-										sender.sendMessage(Methods.getPrefix("&7You have given the offline player " + args[4] + " " + amount + " keys."));
-										return true;
-									}
-								}
-							}
-							if(type.equalsIgnoreCase("Physical")||type.equalsIgnoreCase("P")){
-								if(target != null) {
-									Methods.addKeys(amount, target, crate, KeyType.PHYSICAL_KEY);
-								}else {
-									if(!CC.addOfflineKeys(args[4], crate, amount)) {
-										sender.sendMessage(Methods.getPrefix("&cAn internal error has occurred. Please check the console for the full error."));
-										return true;
-									}else {
-										sender.sendMessage(Methods.getPrefix("&7You have given the offline player " + args[4] + " " + amount + " keys."));
-										return true;
-									}
-								}
-							}
-							sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+target.getName()+" "+amount+" &7Keys."));
+					Crate crate = CC.getCrateFromName(args[2]);
+					if(crate != null) {
+						if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO){
+							sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+target.getName()+" "+amount+" &7Crates."));
+							((Player)sender).getInventory().addItem(crate.getKey());
 							return true;
 						}
+						
+						if(type == KeyType.VIRTUAL_KEY){
+							if(target != null) {
+								Methods.addKeys(amount, target, crate, KeyType.VIRTUAL_KEY);
+							}else {
+								if(!CC.addOfflineKeys(args[4], crate, amount)) {
+									sender.sendMessage(Methods.getPrefix("&cAn internal error has occurred. Please check the console for the full error."));
+									return true;
+								}else {
+									sender.sendMessage(Methods.getPrefix("&7You have given the offline player " + args[4] + " " + amount + " keys."));
+									return true;
+								}
+							}
+						}else if(type == KeyType.PHYSICAL_KEY){
+							if(target != null) {
+								Methods.addKeys(amount, target, crate, KeyType.PHYSICAL_KEY);
+							}else {
+								if(!CC.addOfflineKeys(args[4], crate, amount)) {
+									sender.sendMessage(Methods.getPrefix("&cAn internal error has occurred. Please check the console for the full error."));
+									return true;
+								}else {
+									sender.sendMessage(Methods.getPrefix("&7You have given the offline player " + args[4] + " " + amount + " keys."));
+									return true;
+								}
+							}
+						}
+						sender.sendMessage(Methods.color(Methods.getPrefix()+"&7You have given &6"+target.getName()+" "+amount+" &7Keys."));
+						return true;
 					}
-					sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[2]+" is is not a Crate."));
+					sender.sendMessage(Methods.color(Methods.getPrefix()+"&c"+args[2]+" is not a Crate."));
 					return true;
 				}
 				sender.sendMessage(Methods.color(Methods.getPrefix()+"&c/Crate Give <Physical/Virtual> <Crate> [Amount] [Player]"));
@@ -567,14 +570,8 @@ public class Main extends JavaPlugin implements Listener{
 					player.sendMessage(Methods.getPrefix()+Methods.color("&7This server is running your Crazy Crates Plugin. "
 						+ "&7It is running version &av"+Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates").getDescription().getVersion()+"&7."));
 				}
-				if(player.isOp()){
-					if(settings.getConfig().contains("Settings.Update-Checker")){
-						if(settings.getConfig().getBoolean("Settings.Update-Checker")){
-							Methods.hasUpdate(player);
-						}
-					}else{
-						Methods.hasUpdate(player);
-					}
+				if(player.isOp() && updateChecker){
+					Methods.hasUpdate(player);
 				}
 			}
 		}.runTaskLaterAsynchronously(this, 40);

@@ -8,7 +8,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -24,7 +24,7 @@ import me.badbones69.crazycrates.api.Prize;
 
 public class QuickCrate implements Listener{
 	
-	public static HashMap<Player, Entity> Reward = new HashMap<>();
+	public static HashMap<Player, Entity> Rewards = new HashMap<>();
 	private static HashMap<Player, BukkitTask> tasks = new HashMap<>();
 	
 	public static void openCrate(final Player player, final Location loc, boolean remove){
@@ -43,7 +43,7 @@ public class QuickCrate implements Listener{
 		reward.setVelocity(new Vector(0,.2,0));
 		reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
 		reward.setCustomNameVisible(true);
-		Reward.put(player, reward);
+		Rewards.put(player, reward);
 		Methods.playChestAction(loc.getBlock(), true);
 		if(prize.toggleFirework()){
 			Methods.fireWork(loc.clone().add(.5, 1, .5));
@@ -56,28 +56,24 @@ public class QuickCrate implements Listener{
 		}.runTaskLater(Main.getPlugin(), 5*20));
 	}
 	
-	@EventHandler
-	public void onItemPickup(PlayerPickupItemEvent e){
-		Entity item = e.getItem();
-		for(Player p : Reward.keySet()){
-			if(Reward.get(p).equals(item)){
-				e.setCancelled(true);
-				return;
-			}
-		}
-	}
-	
 	public static void endQuickCrate(Player player, Location loc){
 		if(tasks.containsKey(player)){
 			tasks.get(player).cancel();
 			tasks.remove(player);
 		}
-		if(Reward.get(player) != null){
-			Reward.get(player).remove();
-			Reward.remove(player);
+		if(Rewards.get(player) != null){
+			Rewards.get(player).remove();
+			Rewards.remove(player);
 			Methods.playChestAction(loc.getBlock(), false);
 			GUI.crates.remove(player);
 			CrateControl.inUse.remove(player);
+		}
+	}
+	
+	@EventHandler
+	public void onHopperPickUp(InventoryPickupItemEvent e) {
+		if(Rewards.containsValue(e.getItem())) {
+			e.setCancelled(true);
 		}
 	}
 	

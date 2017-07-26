@@ -93,7 +93,9 @@ public class CrazyCrates {
 				War.openWarCrate(player);
 				break;
 			case QUAD_CRATE:
-				CrateControl.lastLocation.put(player, player.getLocation());
+				Location last = player.getLocation();
+				last.setPitch(0F);
+				CrateControl.lastLocation.put(player, last);
 				QCC.startBuild(player, loc, Material.CHEST);
 				break;
 			case FIRE_CRACKER:
@@ -134,6 +136,15 @@ public class CrazyCrates {
 	
 	public ArrayList<Crate> getCrates(){
 		return crates;
+	}
+	
+	public Crate getCrateFromName(String name) {
+		for(Crate crate : getCrates()) {
+			if(crate.getName().equalsIgnoreCase(name)) {
+				return crate;
+			}
+		}
+		return null;
 	}
 	
 	public void getReward(Player player, Prize prize){
@@ -222,7 +233,6 @@ public class CrazyCrates {
 			Main.settings.saveData();
 		}
 	}
-	
 	
 	public Prize pickPrize(Player player){
 		Crate crate = CrateControl.crates.get(player);
@@ -315,7 +325,8 @@ public class CrazyCrates {
 			glowing = file.getBoolean(path + "Glowing");
 		}
 		try{
-			if(Methods.makeItem(id, amount, "").getType() == Material.SKULL_ITEM){
+			if(Methods.makeItem(id, amount, "").getType() == Material.SKULL_ITEM &&
+					Methods.makeItem(id, amount, "").getDurability() == 3){
 				return Methods.makePlayerHead(player, amount, name, lore, enchants, glowing);
 			}else{
 				return Methods.makeItem(id, amount, name, lore, enchants, glowing);
@@ -326,53 +337,60 @@ public class CrazyCrates {
 	}
 	
 	private ArrayList<ItemStack> getItems(FileConfiguration file, String prize){
-		ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> items = new ArrayList<>();
 		for(String l : file.getStringList("Crate.Prizes." + prize + ".Items")){
-			ArrayList<String> lore = new ArrayList<String>();
-			HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+			ArrayList<String> lore = new ArrayList<>();
+			HashMap<Enchantment, Integer> enchants = new HashMap<>();
 			String name = "";
 			int amount = 1;
 			String id = "Stone";
 			String player = "";
+			Boolean unbreaking = false;
 			for(String i : l.split(", ")){
 				if(i.contains("Item:")){
-					i = i.replaceAll("Item:", "");
-					id = i;
-				}
-				if(i.contains("Name:")){
-					i = i.replaceAll("Name:", "");
-					i = i.replaceAll("_", " ");
-					name = Methods.color(i);
-				}
-				if(i.contains("Amount:")){
-					i = i.replaceAll("Amount:", "");
-					amount = Integer.parseInt(i);
-				}
-				if(i.contains("Lore:")){
-					i = i.replaceAll("Lore:", "");
-					for(String L : i.split(",")){
+					id = i.replaceAll("Item:", "");
+				}else if(i.contains("Name:")){
+					name = Methods.color(i.replaceAll("Name:", ""));
+				}else if(i.contains("Amount:")){
+					amount = Integer.parseInt(i.replaceAll("Amount:", ""));
+				}else if(i.contains("Lore:")){
+					for(String L : i.replaceAll("Lore:", "").split(",")){
 						L = Methods.color(L);
 						lore.add(L);
 					}
-				}
-				if(i.contains("Player:")){
-					i = i.replaceAll("Player:", "");
-					player = i;
-				}
-				for(Enchantment enc : Enchantment.values()){
-					if(i.toLowerCase().contains(enc.getName().toLowerCase() + ":") || 
-							i.toLowerCase().contains(Methods.getEnchantmentName(enc).toLowerCase() + ":")){
-						String[] breakdown = i.split(":");
-						int lvl = Integer.parseInt(breakdown[1]);
-						enchants.put(enc, lvl);
+				}else if(i.contains("Player:")){
+					player = i.replaceAll("Player:", "");
+				}else if(i.contains("Unbreaking:")){
+					if(i.replaceAll("Unbreaking:", "").equalsIgnoreCase("true")) {
+						unbreaking = true;
+					}
+				}else {
+					for(Enchantment enc : Enchantment.values()){
+						if(enc.getName() != null) {
+							if(i.toLowerCase().contains(enc.getName().toLowerCase() + ":") || 
+									i.toLowerCase().contains(Methods.getEnchantmentName(enc).toLowerCase() + ":")){
+								String[] breakdown = i.split(":");
+								int lvl = Integer.parseInt(breakdown[1]);
+								enchants.put(enc, lvl);
+							}
+						}
 					}
 				}
 			}
 			try{
-				if(Methods.makeItem(id, amount, name).getType() == Material.SKULL_ITEM){
-					items.add(Methods.makePlayerHead(player, amount, name, lore, enchants, false));
+				if(Methods.makeItem(id, amount, "").getType() == Material.SKULL_ITEM &&
+						Methods.makeItem(id, amount, "").getDurability() == 3){
+					if(unbreaking) {
+						items.add(Methods.addUnbreaking(Methods.makePlayerHead(player, amount, name, lore, enchants, false)));
+					}else {
+						items.add(Methods.makePlayerHead(player, amount, name, lore, enchants, false));
+					}
 				}else{
-					items.add(Methods.makeItem(id, amount, name, lore, enchants));
+					if(unbreaking) {
+						items.add(Methods.addUnbreaking(Methods.makeItem(id, amount, name, lore, enchants)));
+					}else {
+						items.add(Methods.makeItem(id, amount, name, lore, enchants));
+					}
 				}
 			}catch(Exception e){
 				items.add(Methods.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize)));

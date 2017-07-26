@@ -18,11 +18,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -44,14 +44,15 @@ import me.badbones69.crazycrates.multisupport.Version;
 
 public class QCC implements Listener{ // Quad Crate Control.
 	
-	public static HashMap<Player, HashMap<Location, BlockState>> crates = new HashMap<Player, HashMap<Location, BlockState>>();
-	public static HashMap<Player, HashMap<Location, BlockState>> All = new HashMap<Player, HashMap<Location, BlockState>>();
-	public static HashMap<Player, HashMap<Location, Boolean>> opened = new HashMap<Player, HashMap<Location, Boolean>>();
-	public static HashMap<Player, ArrayList<Location>> chests = new HashMap<Player, ArrayList<Location>>();
-	public static HashMap<Player, ArrayList<Location>> Rest = new HashMap<Player, ArrayList<Location>>();
-	public static HashMap<Player, ArrayList<Entity>> Rewards = new HashMap<Player, ArrayList<Entity>>();
-	public static HashMap<Player, Integer> P = new HashMap<Player, Integer>();
-	public static HashMap<Player, Integer> timer = new HashMap<Player, Integer>();
+	public static HashMap<Player, HashMap<Location, BlockState>> crates = new HashMap<>();
+	public static HashMap<Player, HashMap<Location, BlockState>> All = new HashMap<>();
+	public static HashMap<Player, HashMap<Location, Boolean>> opened = new HashMap<>();
+	public static HashMap<Player, ArrayList<Location>> chests = new HashMap<>();
+	public static HashMap<Player, ArrayList<Location>> Rest = new HashMap<>();
+	public static HashMap<Player, ArrayList<Entity>> Rewards = new HashMap<>();
+	public static HashMap<Player, Integer> P = new HashMap<>();
+	public static HashMap<Player, Integer> timer = new HashMap<>();
+	public static ArrayList<Player> inBreakDown = new ArrayList<>();
 	
 	/**
 	 * Starts building the Crate Setup.
@@ -339,7 +340,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 	public static void undoBuild(Player player){
 		HashMap<Location, BlockState> locs = All.get(player);
 		for(Location loc : locs.keySet()){
-			if(locs.get(loc)!=null){
+			if(locs.get(loc) != null){
 				loc.getBlock().setTypeIdAndData(locs.get(loc).getTypeId(), locs.get(loc).getRawData(), true);
 			}
 		}
@@ -418,7 +419,11 @@ public class QCC implements Listener{ // Quad Crate Control.
 										trigger = false;
 									}
 								}
+								if(inBreakDown.contains(player)) {
+									trigger = false;
+								}
 								if(trigger){
+									inBreakDown.add(player);
 									Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
 										@SuppressWarnings("deprecation")
 										@Override
@@ -475,6 +480,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 											chests.remove(player);
 											Rest.remove(player);
 											GUI.crates.remove(player);
+											opened.remove(player);
 											if(timer.containsKey(player)){
 												Bukkit.getScheduler().cancelTask(timer.get(player));
 												timer.remove(player);
@@ -483,6 +489,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 												player.teleport(CrateControl.lastLocation.get(player));
 												CrateControl.lastLocation.remove(player);
 											}
+											inBreakDown.remove(player);
 										}
 									}, 6*20);
 								}
@@ -495,17 +502,6 @@ public class QCC implements Listener{ // Quad Crate Control.
 		}
 	}
 	
-	@EventHandler	
-	public void onItemPickup(PlayerPickupItemEvent e){
-		Entity item = e.getItem();
-		for(Player p : Rewards.keySet()){
-			if(Rewards.get(p).contains(item)){
-				e.setCancelled(true);
-				return;
-			}
-		}
-	}
-
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e){
 		Player player = e.getPlayer();
@@ -603,6 +599,15 @@ public class QCC implements Listener{ // Quad Crate Control.
 		Player player = e.getPlayer();
 		if(crates.containsKey(player)){
 			undoBuild(player);
+		}
+	}
+	
+	@EventHandler
+	public void onHopperPickUp(InventoryPickupItemEvent e) {
+		for(Player player : Rewards.keySet()) {
+			if(Rewards.get(player).contains(e.getItem())) {
+				e.setCancelled(true);
+			}
 		}
 	}
 	
