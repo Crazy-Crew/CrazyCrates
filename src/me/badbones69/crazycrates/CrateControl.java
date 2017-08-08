@@ -16,6 +16,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -102,7 +103,7 @@ public class CrateControl implements Listener{ //Crate Control
 				}
 			}
 		}
-		if(e.getAction() == Action.RIGHT_CLICK_BLOCK){
+		if(e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getHand() == EquipmentSlot.HAND) {
 			for(String crate : Main.settings.getAllCratesNames()){
 				if(e.hasItem()){
 					ItemStack key = Methods.getItemInHand(player);
