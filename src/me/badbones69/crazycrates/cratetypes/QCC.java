@@ -1,15 +1,6 @@
 package me.badbones69.crazycrates.cratetypes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -18,29 +9,21 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import me.badbones69.crazycrates.CrateControl;
-import me.badbones69.crazycrates.GUI;
-import me.badbones69.crazycrates.Main;
-import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.ParticleEffect;
+import me.badbones69.crazycrates.*;
 import me.badbones69.crazycrates.ParticleEffect.BlockData;
-import me.badbones69.crazycrates.api.CrateType;
-import me.badbones69.crazycrates.api.KeyType;
-import me.badbones69.crazycrates.api.Messages;
-import me.badbones69.crazycrates.api.PlayerPrizeEvent;
-import me.badbones69.crazycrates.api.Prize;
+import me.badbones69.crazycrates.api.*;
 import me.badbones69.crazycrates.multisupport.Version;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 public class QCC implements Listener{ // Quad Crate Control.
 	
@@ -496,7 +479,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 	}
 	
 	@EventHandler	
-	public void onItemPickup(PlayerPickupItemEvent e){
+	public void onItemPickup(EntityPickupItemEvent e){
 		Entity item = e.getItem();
 		for(Player p : Rewards.keySet()){
 			if(Rewards.get(p).contains(item)){
