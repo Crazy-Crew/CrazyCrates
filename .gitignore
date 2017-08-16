@@ -10,6 +10,7 @@
 *.xml
 
 .idea/.name
+bin/
 
 Notes
 *.launch
