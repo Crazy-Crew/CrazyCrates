@@ -1,10 +1,5 @@
 package me.badbones69.crazycrates;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -23,25 +18,16 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import me.badbones69.crazycrates.api.Crate;
-import me.badbones69.crazycrates.api.CrateType;
-import me.badbones69.crazycrates.api.CrazyCrates;
-import me.badbones69.crazycrates.api.FireworkDamageAPI;
-import me.badbones69.crazycrates.api.KeyType;
-import me.badbones69.crazycrates.api.Messages;
-import me.badbones69.crazycrates.cratetypes.CSGO;
-import me.badbones69.crazycrates.cratetypes.Cosmic;
-import me.badbones69.crazycrates.cratetypes.CrateOnTheGo;
-import me.badbones69.crazycrates.cratetypes.QCC;
-import me.badbones69.crazycrates.cratetypes.QuickCrate;
-import me.badbones69.crazycrates.cratetypes.Roulette;
-import me.badbones69.crazycrates.cratetypes.War;
-import me.badbones69.crazycrates.cratetypes.Wheel;
-import me.badbones69.crazycrates.cratetypes.Wonder;
+import me.badbones69.crazycrates.api.*;
+import me.badbones69.crazycrates.cratetypes.*;
 import me.badbones69.crazycrates.multisupport.MVdWPlaceholderAPISupport;
 import me.badbones69.crazycrates.multisupport.PlaceholderAPISupport;
 import me.badbones69.crazycrates.multisupport.Support;
 import me.badbones69.crazycrates.multisupport.Version;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 public class Main extends JavaPlugin implements Listener{
 	
@@ -118,7 +104,6 @@ public class Main extends JavaPlugin implements Listener{
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args){
 		if(commandLable.equalsIgnoreCase("CrazyCrates")||commandLable.equalsIgnoreCase("CC")||commandLable.equalsIgnoreCase("Crate")
 				|| commandLable.equalsIgnoreCase("Crates")||commandLable.equalsIgnoreCase("CCrate")||commandLable.equalsIgnoreCase("CrazyCrate")){
@@ -263,7 +248,7 @@ public class Main extends JavaPlugin implements Listener{
 					String c = args[1]; //Crate
 					for(String crate : Methods.getCrates()){
 						if(crate.equalsIgnoreCase(c) || c.equalsIgnoreCase("Menu")){
-							Block block = player.getTargetBlock((HashSet<Byte>)null, 5);
+							Block block = player.getTargetBlock(null, 5);
 							if(settings.getLocations().contains("Locations")){
 								for(String location : settings.getLocations().getConfigurationSection("Locations").getKeys(false)){
 									World w = Bukkit.getWorld(Main.settings.getLocations().getString("Locations." + location + ".World"));

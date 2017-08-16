@@ -1,10 +1,6 @@
 package me.badbones69.crazycrates.api;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -325,60 +321,77 @@ public class CrazyCrates {
 		}
 	}
 	
-	private ArrayList<ItemStack> getItems(FileConfiguration file, String prize){
-		ArrayList<ItemStack> items = new ArrayList<ItemStack>();
-		for(String l : file.getStringList("Crate.Prizes." + prize + ".Items")){
-			ArrayList<String> lore = new ArrayList<String>();
-			HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
-			String name = "";
-			int amount = 1;
-			String id = "Stone";
-			String player = "";
-			for(String i : l.split(", ")){
-				if(i.contains("Item:")){
-					i = i.replaceAll("Item:", "");
-					id = i;
-				}
-				if(i.contains("Name:")){
-					i = i.replaceAll("Name:", "");
-					i = i.replaceAll("_", " ");
-					name = Methods.color(i);
-				}
-				if(i.contains("Amount:")){
-					i = i.replaceAll("Amount:", "");
-					amount = Integer.parseInt(i);
-				}
-				if(i.contains("Lore:")){
-					i = i.replaceAll("Lore:", "");
-					for(String L : i.split(",")){
-						L = Methods.color(L);
-						lore.add(L);
-					}
-				}
-				if(i.contains("Player:")){
-					i = i.replaceAll("Player:", "");
-					player = i;
-				}
-				for(Enchantment enc : Enchantment.values()){
-					if(i.toLowerCase().contains(enc.getName().toLowerCase() + ":") || 
-							i.toLowerCase().contains(Methods.getEnchantmentName(enc).toLowerCase() + ":")){
-						String[] breakdown = i.split(":");
-						int lvl = Integer.parseInt(breakdown[1]);
-						enchants.put(enc, lvl);
-					}
-				}
-			}
-			try{
-				if(Methods.makeItem(id, amount, name).getType() == Material.SKULL_ITEM){
-					items.add(Methods.makePlayerHead(player, amount, name, lore, enchants, false));
-				}else{
-					items.add(Methods.makeItem(id, amount, name, lore, enchants));
-				}
-			}catch(Exception e){
-				items.add(Methods.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize)));
-			}
-		}
-		return items;
+	@SuppressWarnings("unchecked")
+    private ArrayList<ItemStack> getItems(FileConfiguration file, String prize) {
+		try {
+		    String path = "Crate.Prizes." + prize + ".Items";
+		    List<?> list = file.getList(path);
+		    if(list == null || list.isEmpty()) return normalGetItems(file, prize);
+		    else {
+		        Object o = list.get(0);
+		        if(o instanceof ItemStack) {
+		            ArrayList<ItemStack> al = new ArrayList<ItemStack>();
+		            al.addAll((Collection<? extends ItemStack>) list);
+		            return al;
+		        } else return normalGetItems(file, prize);
+		    }
+		} catch(Throwable ex) {return normalGetItems(file, prize);}
+	}
+	
+	private ArrayList<ItemStack> normalGetItems(FileConfiguration file, String prize) {
+        ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+        for(String l : file.getStringList("Crate.Prizes." + prize + ".Items")){
+            ArrayList<String> lore = new ArrayList<String>();
+            HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+            String name = "";
+            int amount = 1;
+            String id = "Stone";
+            String player = "";
+            for(String i : l.split(", ")){
+                if(i.contains("Item:")){
+                    i = i.replaceAll("Item:", "");
+                    id = i;
+                }
+                if(i.contains("Name:")){
+                    i = i.replaceAll("Name:", "");
+                    i = i.replaceAll("_", " ");
+                    name = Methods.color(i);
+                }
+                if(i.contains("Amount:")){
+                    i = i.replaceAll("Amount:", "");
+                    amount = Integer.parseInt(i);
+                }
+                if(i.contains("Lore:")){
+                    i = i.replaceAll("Lore:", "");
+                    for(String L : i.split(",")){
+                        L = Methods.color(L);
+                        lore.add(L);
+                    }
+                }
+                if(i.contains("Player:")){
+                    i = i.replaceAll("Player:", "");
+                    player = i;
+                }
+                for(Enchantment enc : Enchantment.values()){
+                    if(i.toLowerCase().contains(enc.getName().toLowerCase() + ":") || 
+                            i.toLowerCase().contains(Methods.getEnchantmentName(enc).toLowerCase() + ":")){
+                        String[] breakdown = i.split(":");
+                        int lvl = Integer.parseInt(breakdown[1]);
+                        enchants.put(enc, lvl);
+                    }
+                }
+            }
+            try{
+                if(Methods.makeItem(id, amount, name).getType() == Material.SKULL_ITEM){
+                    items.add(Methods.makePlayerHead(player, amount, name, lore, enchants, false));
+                }else{
+                    items.add(Methods.makeItem(id, amount, name, lore, enchants));
+                }
+            }catch(Exception e){
+                items.add(Methods.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize)));
+            }
+        }
+        return items;
 	}
 	
 	private Integer pickNumber(int min, int max){

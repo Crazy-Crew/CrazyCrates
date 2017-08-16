@@ -1,14 +1,12 @@
 package me.badbones69.crazycrates.cratetypes;
 
-import java.util.HashMap;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -21,6 +19,8 @@ import me.badbones69.crazycrates.api.CrateType;
 import me.badbones69.crazycrates.api.KeyType;
 import me.badbones69.crazycrates.api.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.Prize;
+
+import java.util.HashMap;
 
 public class QuickCrate implements Listener{
 	
@@ -57,7 +57,7 @@ public class QuickCrate implements Listener{
 	}
 	
 	@EventHandler
-	public void onItemPickup(PlayerPickupItemEvent e){
+	public void onItemPickup(EntityPickupItemEvent e){
 		Entity item = e.getItem();
 		for(Player p : Reward.keySet()){
 			if(Reward.get(p).equals(item)){
