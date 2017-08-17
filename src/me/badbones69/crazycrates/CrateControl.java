@@ -16,6 +16,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -25,6 +26,7 @@ import me.badbones69.crazycrates.api.CrateType;
 import me.badbones69.crazycrates.api.KeyType;
 import me.badbones69.crazycrates.api.Messages;
 import me.badbones69.crazycrates.cratetypes.QuickCrate;
+import me.badbones69.crazycrates.multisupport.Version;
 
 public class CrateControl implements Listener{ //Crate Control
 	
@@ -53,6 +55,11 @@ public class CrateControl implements Listener{ //Crate Control
 	public void onCrateOpen(PlayerInteractEvent e){
 		Player player = e.getPlayer();
 		FileConfiguration config = Main.settings.getConfig();
+		if(Version.getVersion().comparedTo(Version.v1_9_R1) >= 0) {
+			if(e.getHand() == EquipmentSlot.valueOf("OFF_HAND")) {
+				return;
+			}
+		}
 		if(e.getAction() == Action.LEFT_CLICK_BLOCK){
 			Block block = e.getClickedBlock();
 			if(Main.settings.getLocations().getConfigurationSection("Locations") == null){
@@ -203,7 +210,9 @@ public class CrateControl implements Listener{ //Crate Control
 								Methods.Key.put(player, KeyType.PHYSICAL_KEY);
 							}else{
 								Methods.Key.put(player, KeyType.VIRTUAL_KEY);
-								lastLocation.put(player, player.getLocation());
+								Location last = player.getLocation();
+								last.setPitch(0F);
+								lastLocation.put(player, last);
 							}
 							for(Crate c : Main.CC.getCrates()){
 								if(c.getName().equalsIgnoreCase(crate)){

@@ -121,17 +121,21 @@ public class Wheel implements Listener{
 					}
 					if(full >= (timer + 55 + 47)){
 						Prize prize = null;
-						for(Prize p : GUI.crates.get(player).getPrizes()){
-							if(Rewards.get(player).get(slots.get(f)).isSimilar(p.getDisplayItem())){
-								prize = p;
+						if(GUI.crates.get(player) != null) {
+							for(Prize p : GUI.crates.get(player).getPrizes()){
+								if(Rewards.get(player).get(slots.get(f)).isSimilar(p.getDisplayItem())){
+									prize = p;
+								}
 							}
 						}
-						Main.CC.getReward(player, prize);
-						if(prize.toggleFirework()){
-							Methods.fireWork(player.getLocation().add(0, 1, 0));
+						if(prize != null) {
+							Main.CC.getReward(player, prize);
+							if(prize.toggleFirework()){
+								Methods.fireWork(player.getLocation().add(0, 1, 0));
+							}
+							Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WHEEL, CrateControl.crates.get(player).getName(), prize));
+							player.closeInventory();
 						}
-						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WHEEL, CrateControl.crates.get(player).getName(), prize));
-						player.closeInventory();
 						GUI.crates.remove(player);
 						Bukkit.getScheduler().cancelTask(crate.get(player));
 					}

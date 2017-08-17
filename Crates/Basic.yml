@@ -59,12 +59,15 @@ Crate:
 #         - 'UnCommon'
 #         - 'Rare'
 #############################################
-      #Items that the player wins if this prize is picked. (If you wish not to give an Item in the prize just delete the Items Section)
-      #Please use these to make the item.
-      #Item: to decide the kind of item it is.
-      #Amount: the amount of that item they get.
-      #Name: a custom name for that item (ColorCode dose work).
-      #Lore: a custom lore for the item (ColorCode does work) and to make a new line in the lore use a , to split the lines.
+# Items that the player wins if this prize is picked. (If you wish not to give an Item in the prize just delete the Items Section)
+#             Items: Options
+# Item:<ID:MD> - You can choose the item with its id and meta data.
+# Amount:<Number> - Choose how many of the item you get.
+# Name:<Name> - The display name that goes on the item.
+# Lore:<Line 1>,<Line 2>,<Line 3>,<Line 4> - The lore that will go under the enchantments. Split lines with a ','
+# Unbreaking:<True/False> - Will add the Unbreaking NBT tag to the item to allow custom textured items to be gained through the envoys.
+# <Enchantment>:<Level> - Choose the enchantment you want to add to the item. You can use the in-game names of the enchantment if you want. Replace the spaces in the name with "_".
+###################################
       Items:
         - 'Item:2, Amount:32, Name:&7&lBasic Grass'
       #Commands are the commands that are run when this prize is won. (If you wish not to use a CMD in the prize just delete the Commands Section)

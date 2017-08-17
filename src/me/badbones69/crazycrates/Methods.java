@@ -785,10 +785,6 @@ public class Methods{
 
 	public static ItemStack addGlow(ItemStack item) {
 		switch(Version.getVersion()){
-			case TOO_NEW:
-				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. "
-						+ "Please update or remove this plugin to stop further Errors.");
-				break;
 			case v1_12_R1:
 				return NMS_v1_12_R1.addGlow(item);
 			case v1_11_R1:
@@ -805,10 +801,24 @@ public class Methods{
 				return NMS_v1_8_R2.addGlow(item);
 			case v1_8_R1:
 				return NMS_v1_8_R1.addGlow(item);
-			case TOO_OLD:
-				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too far out of date. "
-						+ "Please update or remove this plugin to stop further Errors.");
+			default:
 				break;
+		}
+		return item;
+    }
+	
+	public static ItemStack addUnbreaking(ItemStack item) {
+		switch(Version.getVersion()){
+			case v1_12_R1:
+				return NMS_v1_12_R1.addUnbreaking(item);
+			case v1_11_R1:
+				return NMS_v1_11_R1.addUnbreaking(item);
+			case v1_10_R1:
+				return NMS_v1_10_R1.addUnbreaking(item);
+			case v1_9_R2:
+				return NMS_v1_9_R2.addUnbreaking(item);
+			case v1_9_R1:
+				return NMS_v1_9_R1.addUnbreaking(item);
 			default:
 				break;
 		}

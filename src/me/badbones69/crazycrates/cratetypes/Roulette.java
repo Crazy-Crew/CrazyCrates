@@ -98,8 +98,10 @@ public class Roulette implements Listener{
 						}else{
 							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
 						}
-						Bukkit.getScheduler().cancelTask(roll.get(player));
-						roll.remove(player);
+						if(roll.containsKey(player)) {
+							Bukkit.getScheduler().cancelTask(roll.get(player));
+							roll.remove(player);
+						}
 						Prize prize = null;
 						for(Prize p : GUI.crates.get(player).getPrizes()){
 							if(inv.getItem(13).isSimilar(p.getDisplayItem())){
