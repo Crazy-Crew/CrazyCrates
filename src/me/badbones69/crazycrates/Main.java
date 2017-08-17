@@ -38,9 +38,9 @@ import me.badbones69.crazycrates.cratetypes.Roulette;
 import me.badbones69.crazycrates.cratetypes.War;
 import me.badbones69.crazycrates.cratetypes.Wheel;
 import me.badbones69.crazycrates.cratetypes.Wonder;
+import me.badbones69.crazycrates.multisupport.Events_v1_11_R1_Down;
+import me.badbones69.crazycrates.multisupport.Events_v1_12_R1_Up;
 import me.badbones69.crazycrates.multisupport.MVdWPlaceholderAPISupport;
-import me.badbones69.crazycrates.multisupport.NMS_v1_11_R1;
-import me.badbones69.crazycrates.multisupport.NMS_v1_12_R1;
 import me.badbones69.crazycrates.multisupport.PlaceholderAPISupport;
 import me.badbones69.crazycrates.multisupport.Support;
 import me.badbones69.crazycrates.multisupport.Version;
@@ -84,9 +84,9 @@ public class Main extends JavaPlugin implements Listener{
 		pm.registerEvents(new CrateControl(), this);
 		pm.registerEvents(new CrateOnTheGo(), this);
 		if(Version.getVersion().comparedTo(Version.v1_12_R1) >= 0){
-			pm.registerEvents(new NMS_v1_12_R1(), this);
+			pm.registerEvents(new Events_v1_12_R1_Up(), this);
 		}else {
-			pm.registerEvents(new NMS_v1_11_R1(), this);
+			pm.registerEvents(new Events_v1_11_R1_Down(), this);
 		}
 		try{
 			if(Version.getVersion().getVersionInteger() >= Version.v1_11_R1.getVersionInteger()){
