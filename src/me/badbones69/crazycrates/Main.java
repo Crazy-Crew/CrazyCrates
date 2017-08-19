@@ -158,7 +158,8 @@ public class Main extends JavaPlugin implements Listener{
 					sender.sendMessage(Methods.color("&6/CC Tp <Location> &7- Teleport to a Crate."));
 					sender.sendMessage(Methods.color("&6/CC Give <Physical/Virtual> <Crate> [Amount] [Player] &7- Give a player keys for a Chest."));
 					sender.sendMessage(Methods.color("&6/CC GiveAll <Physical/Virtual> <Crate> [Amount] &7- Gives all online players keys for a Chest."));
-					sender.sendMessage(Methods.color("&6/CC Set <Crate> &7- Set a block as a crate."));
+					sender.sendMessage(Methods.color("&6/CC Set <Crate> &7- Set a block you are looking at as a crate."));
+					sender.sendMessage(Methods.color("&6/CC Set Menu &7- Set the block you are looking at to open the \"/cc\" GUI."));
 					sender.sendMessage(Methods.color("&6/CC Reload &7- Reloads the Config and Data Files."));
 					return true;
 				}
@@ -211,12 +212,18 @@ public class Main extends JavaPlugin implements Listener{
 				if(args[0].equalsIgnoreCase("List")){
 					if(sender instanceof Player)if(!Methods.permCheck((Player) sender, "Admin"))return true;
 					String crates = "";
-					for(String vo : settings.getAllCratesNames()){
-						crates += Methods.color("&a"+vo+"&8, ");
+					String brokecrates = "";
+					for(Crate crate : CC.getCrates()){
+						crates += "&a" + crate.getName() + "&8, ";
 					}
-					crates += Methods.color("&aMenu&8, ");
-					crates = crates.substring(0, crates.length()-2);
-					sender.sendMessage(Methods.color("&e&lCrates:&f "+crates));
+					for(String crate : CC.getBrokeCrates()) {
+						brokecrates += "&c" + crate + ".yml&8, ";
+					}
+					crates += Methods.color("&aMenu");
+					sender.sendMessage(Methods.color("&e&lCrates:&f " + crates));
+					if(brokecrates.length() > 0) {
+						sender.sendMessage(Methods.color("&6&lBroken Crates:&f " + brokecrates.substring(0, brokecrates.length() - 2)));
+					}
 					sender.sendMessage(Methods.color("&e&lAll Crate Locations:"));
 					sender.sendMessage(Methods.color("&c[ID]&8, &c[Crate]&8, &c[World]&8, &c[X]&8, &c[Y]&8, &c[Z]"));
 					int line = 1;
@@ -449,7 +456,10 @@ public class Main extends JavaPlugin implements Listener{
 			}
 			if(args[0].equalsIgnoreCase("Give")){// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
 				if(sender instanceof Player)if(!Methods.permCheck((Player)sender, "Admin"))return true;
-				KeyType type = KeyType.getFromName(args[1]);
+				KeyType type = null;
+				if(args.length >= 2) {
+					type = KeyType.getFromName(args[1]);
+				}
 				if(type == null || type == KeyType.FREE_KEY) {
 					sender.sendMessage(Methods.color(Methods.getPrefix()+"&cPlease use Virtual/V or Physical/P for a Key type."));
 					return true;
