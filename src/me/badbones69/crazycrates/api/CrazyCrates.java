@@ -32,7 +32,8 @@ import me.badbones69.crazycrates.cratetypes.Wonder;
 public class CrazyCrates {
 	
 	private static CrazyCrates instance = new CrazyCrates();
-	private ArrayList<Crate> crates = new ArrayList<Crate>();
+	private ArrayList<Crate> crates = new ArrayList<>();
+	private ArrayList<String> brokecrates = new ArrayList<>();
 	
 	public static CrazyCrates getInstance(){
 		return instance;
@@ -40,6 +41,7 @@ public class CrazyCrates {
 	
 	public void loadCrates(){
 		crates.clear();
+		brokecrates.clear();
 		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading all crate information...");
 		for(String crateName : Main.settings.getAllCratesNames()){
 			Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading " + crateName + ".yml information....");
@@ -62,6 +64,7 @@ public class CrazyCrates {
 				crates.add(new Crate(crateName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file));
 				Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> " + crateName + ".yml has been loaded.");
 			}catch(Exception e){
+				brokecrates.add(crateName);
 				Bukkit.getLogger().log(Level.WARNING, "[Crazy Crates]>> There was an error while loading the " + crateName + ".yml file.");
 				e.printStackTrace();
 			}
@@ -134,6 +137,10 @@ public class CrazyCrates {
 		}
 	}
 	
+	public ArrayList<String> getBrokeCrates(){
+		return brokecrates;
+	}
+	
 	public ArrayList<Crate> getCrates(){
 		return crates;
 	}
@@ -195,16 +202,6 @@ public class CrazyCrates {
 		try {
 			FileConfiguration data = Main.settings.getData();
 			player = player.toLowerCase();
-			for(String uuid : data.getConfigurationSection("Players").getKeys(false)) {
-				if(data.getString("Players." + uuid + ".Name").equalsIgnoreCase(player)) {
-					if(data.contains("Players." + uuid + "." + crate.getName())) {
-						keys += data.getInt("Players." + uuid + "." + crate.getName());
-					}
-					data.set("Players." + uuid + "." + crate.getName(), keys);
-					Main.settings.saveData();	
-					return true;
-				}
-			}
 			if(data.contains("Offline-Players." + player + "." + crate.getName())) {
 				keys += data.getInt("Offline-Players." + player + "." + crate.getName());
 			}
