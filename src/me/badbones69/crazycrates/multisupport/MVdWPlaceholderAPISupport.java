@@ -13,8 +13,8 @@ import me.badbones69.crazycrates.api.Crate;
 
 public class MVdWPlaceholderAPISupport {
 	
-	public static void registerPlaceholders(Plugin plugin){
-		for(final Crate crate : Main.CC.getCrates()){
+	public static void registerPlaceholders(Plugin plugin) {
+		for(final Crate crate : Main.CC.getCrates()) {
 			PlaceholderAPI.registerPlaceholder(plugin, "crazycrates_" + crate, new PlaceholderReplacer() {
 				@Override
 				public String onPlaceholderReplace(PlaceholderReplaceEvent e) {

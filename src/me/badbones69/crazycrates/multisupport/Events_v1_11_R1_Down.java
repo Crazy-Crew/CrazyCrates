@@ -10,18 +10,18 @@ import me.badbones69.crazycrates.cratetypes.QCC;
 import me.badbones69.crazycrates.cratetypes.QuickCrate;
 
 @SuppressWarnings("deprecation")
-public class Events_v1_11_R1_Down implements Listener{
+public class Events_v1_11_R1_Down implements Listener {
 	
 	@EventHandler
 	public void onItemPickUp(PlayerPickupItemEvent e) {
 		Entity item = e.getItem();
 		if(item != null) {
-			if(QuickCrate.Rewards.containsValue(item)){
+			if(QuickCrate.Rewards.containsValue(item)) {
 				e.setCancelled(true);
 				return;
 			}
-			for(Player p : QCC.Rewards.keySet()){
-				if(QCC.Rewards.get(p).contains(item)){
+			for(Player p : QCC.Rewards.keySet()) {
+				if(QCC.Rewards.get(p).contains(item)) {
 					e.setCancelled(true);
 					return;
 				}

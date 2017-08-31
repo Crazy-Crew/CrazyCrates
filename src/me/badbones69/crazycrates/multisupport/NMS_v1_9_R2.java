@@ -24,17 +24,17 @@ import org.bukkit.inventory.ItemStack;
 public class NMS_v1_9_R2 {
 	
 	public static ItemStack addGlow(ItemStack item) {
-		if (item.hasItemMeta()) {
-			if (item.getItemMeta().hasEnchants())
+		if(item.hasItemMeta()) {
+			if(item.getItemMeta().hasEnchants())
 				return item;
 		}
 		net.minecraft.server.v1_9_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
 		NBTTagCompound tag = null;
-		if (!nmsStack.hasTag()) {
+		if(!nmsStack.hasTag()) {
 			tag = new NBTTagCompound();
 			nmsStack.setTag(tag);
 		}
-		if (tag == null)
+		if(tag == null)
 			tag = nmsStack.getTag();
 		NBTTagList ench = new NBTTagList();
 		tag.set("ench", ench);
@@ -45,11 +45,11 @@ public class NMS_v1_9_R2 {
 	public static ItemStack addUnbreaking(ItemStack item) {
 		net.minecraft.server.v1_9_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
 		NBTTagCompound tag = null;
-		if (!nmsStack.hasTag()) {
+		if(!nmsStack.hasTag()) {
 			tag = new NBTTagCompound();
 			nmsStack.setTag(tag);
 		}
-		if (tag == null) {
+		if(tag == null) {
 			tag = nmsStack.getTag();
 		}
 		tag.setBoolean("Unbreakable", true);
@@ -57,23 +57,23 @@ public class NMS_v1_9_R2 {
 		nmsStack.setTag(tag);
 		return CraftItemStack.asCraftMirror(nmsStack);
 	}
-
+	
 	public static ItemStack getInHand(Player player) {
 		return player.getInventory().getItemInMainHand();
 	}
-
+	
 	public static void openChest(Block b, Location location, Boolean open) {
 		World world = ((org.bukkit.craftbukkit.v1_9_R2.CraftWorld) location.getWorld()).getHandle();
 		BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
-		if (b.getType() == Material.ENDER_CHEST) {
+		if(b.getType() == Material.ENDER_CHEST) {
 			TileEntityEnderChest tileChest = (TileEntityEnderChest) world.getTileEntity(position);
 			world.playBlockAction(position, tileChest.getBlock(), 1, open ? 1 : 0);
-		} else {
+		}else {
 			TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
 			world.playBlockAction(position, tileChest.getBlock(), 1, open ? 1 : 0);
 		}
 	}
-
+	
 	// http://stackoverflow.com/questions/24101928/setting-block-data-from-schematic-in-bukkit
 	@SuppressWarnings("deprecation")
 	public static List<Location> pasteSchematic(File f, Location loc) {
@@ -89,9 +89,9 @@ public class NMS_v1_9_R2 {
 			byte[] data = nbt.getByteArray("Data");
 			fis.close();
 			// paste
-			for (int x = 0; x < width; ++x) {
-				for (int y = 0; y < height; ++y) {
-					for (int z = 0; z < length; ++z) {
+			for(int x = 0; x < width; ++x) {
+				for(int y = 0; y < height; ++y) {
+					for(int z = 0; z < length; ++z) {
 						int index = y * width * length + z * width + x;
 						final Location l = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ());
 						int b = blocks[index] & 0xFF;// make the block unsigned, so that blocks with an id over 127,
@@ -106,12 +106,12 @@ public class NMS_v1_9_R2 {
 					}
 				}
 			}
-		} catch (Exception e) {
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return locations;
 	}
-
+	
 	public static List<Location> getLocations(File f, Location loc) {
 		loc = loc.subtract(2, 1, 2);
 		List<Location> locations = new ArrayList<Location>();
@@ -123,26 +123,26 @@ public class NMS_v1_9_R2 {
 			short length = nbt.getShort("Length");
 			fis.close();
 			// paste
-			for (int x = 0; x < width; ++x) {
-				for (int y = 0; y < height; ++y) {
-					for (int z = 0; z < length; ++z) {
+			for(int x = 0; x < width; ++x) {
+				for(int y = 0; y < height; ++y) {
+					for(int z = 0; z < length; ++z) {
 						final Location l = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ());
 						locations.add(l);
 					}
 				}
 			}
-		} catch (Exception e) {
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return locations;
 	}
-
+	
 	@SuppressWarnings("deprecation")
 	public static ItemStack getSpawnEgg(EntityType type, int amount) {
 		ItemStack item = new ItemStack(Material.MONSTER_EGG, amount);
 		net.minecraft.server.v1_9_R2.ItemStack stack = CraftItemStack.asNMSCopy(item);
 		NBTTagCompound tagCompound = stack.getTag();
-		if (tagCompound == null) {
+		if(tagCompound == null) {
 			tagCompound = new NBTTagCompound();
 		}
 		NBTTagCompound id = new NBTTagCompound();

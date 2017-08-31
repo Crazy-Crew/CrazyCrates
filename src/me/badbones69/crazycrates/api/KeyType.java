@@ -8,11 +8,11 @@ public enum KeyType {
 	
 	private String Name;
 	
-	private KeyType(String name){
+	private KeyType(String name) {
 		Name = name;
 	}
 	
-	public String getName(){
+	public String getName() {
 		return Name;
 	}
 	

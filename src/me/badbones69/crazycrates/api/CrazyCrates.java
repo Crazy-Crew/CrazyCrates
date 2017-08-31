@@ -35,35 +35,33 @@ public class CrazyCrates {
 	private ArrayList<Crate> crates = new ArrayList<>();
 	private ArrayList<String> brokecrates = new ArrayList<>();
 	
-	public static CrazyCrates getInstance(){
+	public static CrazyCrates getInstance() {
 		return instance;
 	}
 	
-	public void loadCrates(){
+	public void loadCrates() {
 		crates.clear();
 		brokecrates.clear();
 		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading all crate information...");
-		for(String crateName : Main.settings.getAllCratesNames()){
+		for(String crateName : Main.settings.getAllCratesNames()) {
 			Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> Loading " + crateName + ".yml information....");
-			try{
+			try {
 				FileConfiguration file = Main.settings.getFile(crateName);
 				ArrayList<Prize> prizes = new ArrayList<Prize>();
-				for(String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)){
+				for(String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
 					ArrayList<String> msgs = new ArrayList<String>();
 					ArrayList<String> commands = new ArrayList<String>();
-					for(String msg : file.getStringList("Crate.Prizes." + prize + ".Messages")){
+					for(String msg : file.getStringList("Crate.Prizes." + prize + ".Messages")) {
 						msgs.add(msg);
 					}
-					for(String cmd : file.getStringList("Crate.Prizes." + prize + ".Commands")){
+					for(String cmd : file.getStringList("Crate.Prizes." + prize + ".Commands")) {
 						commands.add(cmd);
 					}
-					prizes.add(new Prize(prize, getDisplayItem(file, prize), msgs, commands,
-							getItems(file, prize), crateName, file.getInt("Crate.Prizes." + prize + ".Chance"),
-							file.getInt("Crate.Prizes." + prize + ".MaxRange"), file.getBoolean("Crate.Prizes." + prize + ".Firework")));
+					prizes.add(new Prize(prize, getDisplayItem(file, prize), msgs, commands, getItems(file, prize), crateName, file.getInt("Crate.Prizes." + prize + ".Chance"), file.getInt("Crate.Prizes." + prize + ".MaxRange"), file.getBoolean("Crate.Prizes." + prize + ".Firework")));
 				}
 				crates.add(new Crate(crateName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file));
 				Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> " + crateName + ".yml has been loaded.");
-			}catch(Exception e){
+			}catch(Exception e) {
 				brokecrates.add(crateName);
 				Bukkit.getLogger().log(Level.WARNING, "[Crazy Crates]>> There was an error while loading the " + crateName + ".yml file.");
 				e.printStackTrace();
@@ -72,8 +70,8 @@ public class CrazyCrates {
 		Bukkit.getLogger().log(Level.INFO, "[Crazy Crates]>> All crate information has been loaded.");
 	}
 	
-	public void openCrate(Player player, CrateType crate, Location loc){
-		switch(crate){
+	public void openCrate(Player player, CrateType crate, Location loc) {
+		switch(crate) {
 			case MENU:
 				GUI.openGUI(player);
 				break;
@@ -102,46 +100,44 @@ public class CrazyCrates {
 				QCC.startBuild(player, loc, Material.CHEST);
 				break;
 			case FIRE_CRACKER:
-				if(CrateControl.inUse.containsValue(loc)){
+				if(CrateControl.inUse.containsValue(loc)) {
 					player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
-				}else{
+				}else {
 					FireCracker.startFireCracker(player, crate.getName(), loc);
 					CrateControl.inUse.put(player, loc);
 				}
 				break;
 			case QUICK_CRATE:
-				if(CrateControl.inUse.containsValue(loc)){
+				if(CrateControl.inUse.containsValue(loc)) {
 					player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
-				}else{
+				}else {
 					QuickCrate.openCrate(player, loc, true);
 					CrateControl.inUse.put(player, loc);
 				}
 				break;
 			case CRATE_ON_THE_GO:
-				if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
+				if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY) {
 					Methods.removeItem(CrateControl.keys.get(player), player);
 				}
 				Prize prize = pickPrize(player);
 				getReward(player, prize);
-				if(prize.toggleFirework()){
+				if(prize.toggleFirework()) {
 					Methods.fireWork(player.getLocation().add(0, 1, 0));
 				}
 				GUI.crates.remove(player);
 				break;
 		}
 		FileConfiguration file = CrateControl.crates.get(player).getFile();
-		if(file.getBoolean("Crate.OpeningBroadCast")){
-			Bukkit.broadcastMessage(Methods.color(file.getString("Crate.BroadCast")
-					.replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix())
-					.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
+		if(file.getBoolean("Crate.OpeningBroadCast")) {
+			Bukkit.broadcastMessage(Methods.color(file.getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
 		}
 	}
 	
-	public ArrayList<String> getBrokeCrates(){
+	public ArrayList<String> getBrokeCrates() {
 		return brokecrates;
 	}
 	
-	public ArrayList<Crate> getCrates(){
+	public ArrayList<Crate> getCrates() {
 		return crates;
 	}
 	
@@ -154,46 +150,43 @@ public class CrazyCrates {
 		return null;
 	}
 	
-	public void getReward(Player player, Prize prize){
-		if(prize != null){
-			for(ItemStack i : prize.getItems()){
-				if(!Methods.isInvFull(player)){
+	public void getReward(Player player, Prize prize) {
+		if(prize != null) {
+			for(ItemStack i : prize.getItems()) {
+				if(!Methods.isInvFull(player)) {
 					player.getInventory().addItem(i);
-				}else{
+				}else {
 					player.getWorld().dropItemNaturally(player.getLocation(), i);
 				}
 			}
-			for(String command : prize.getCommands()){// /give %player% iron %random%:1-64
-				if(command.contains("%random%:")){
+			for(String command : prize.getCommands()) {// /give %player% iron %random%:1-64
+				if(command.contains("%random%:")) {
 					String cmd = command;
 					command = "";
-					for(String word : cmd.split(" ")){
-						if(word.startsWith("%random%:")){
+					for(String word : cmd.split(" ")) {
+						if(word.startsWith("%random%:")) {
 							word = word.replace("%random%:", "");
-							try{
+							try {
 								int min = Integer.parseInt(word.split("-")[0]);
 								int max = Integer.parseInt(word.split("-")[1]);
 								command += pickNumber(min, max) + " ";
-							}catch(Exception e){
+							}catch(Exception e) {
 								command += "1 ";
-								Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> The prize " + prize.getName() + " in the " + prize.getCrate() +
-										" crate has errored when trying to run a command.");
+								Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> The prize " + prize.getName() + " in the " + prize.getCrate() + " crate has errored when trying to run a command.");
 								Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> Command: " + cmd);
 							}
-						}else{
+						}else {
 							command += word + " ";
 						}
 					}
 					command = command.substring(0, command.length() - 1);
 				}
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Methods.color(command
-						.replace("%Player%", player.getName()).replace("%player%", player.getName())));
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Methods.color(command.replace("%Player%", player.getName()).replace("%player%", player.getName())));
 			}
-			for(String msg : prize.getMessages()){
-				player.sendMessage(Methods.color(msg)
-						.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName()));
+			for(String msg : prize.getMessages()) {
+				player.sendMessage(Methods.color(msg).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName()));
 			}
-		}else{
+		}else {
 			Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> No prize was found when giving " + player.getName() + " a prize.");
 		}
 	}
@@ -221,8 +214,7 @@ public class CrazyCrates {
 			for(Crate crate : getCrates()) {
 				if(data.contains("Offline-Players." + name + "." + crate.getName())) {
 					if(data.getInt("Offline-Players." + name + "." + crate.getName()) > 0) {
-						Methods.addKeys(data.getInt("Offline-Players." + name + "." + crate.getName()),
-								player, crate, KeyType.VIRTUAL_KEY);
+						Methods.addKeys(data.getInt("Offline-Players." + name + "." + crate.getName()), player, crate, KeyType.VIRTUAL_KEY);
 					}
 				}
 			}
@@ -231,17 +223,17 @@ public class CrazyCrates {
 		}
 	}
 	
-	public Prize pickPrize(Player player){
+	public Prize pickPrize(Player player) {
 		Crate crate = CrateControl.crates.get(player);
 		ArrayList<Prize> prizes = new ArrayList<Prize>();
-		for(int stop = 0; prizes.size() == 0 && stop <= 2000; stop++){
-			for(Prize prize : crate.getPrizes()){
+		for(int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
+			for(Prize prize : crate.getPrizes()) {
 				int max = prize.getMaxRange();
 				int chance = prize.getChance();
 				int num;
-				for(int counter = 1; counter <= 1; counter++){
+				for(int counter = 1; counter <= 1; counter++) {
 					num = 1 + new Random().nextInt(max);
-					if(num >= 1 && num <= chance){
+					if(num >= 1 && num <= chance) {
 						prizes.add(prize);
 					}
 				}
@@ -250,61 +242,61 @@ public class CrazyCrates {
 		return prizes.get(new Random().nextInt(prizes.size()));
 	}
 	
-	public Prize pickPrize(Player player, Location loc){
+	public Prize pickPrize(Player player, Location loc) {
 		Crate crate = CrateControl.crates.get(player);
 		ArrayList<Prize> prizes = new ArrayList<Prize>();
-		for(int stop = 0; prizes.size() == 0 && stop <= 2000; stop++){
-			for(Prize prize : crate.getPrizes()){
+		for(int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
+			for(Prize prize : crate.getPrizes()) {
 				int max = prize.getMaxRange();
 				int chance = prize.getChance();
 				int num;
-				for(int counter = 1; counter <= 1; counter++){
+				for(int counter = 1; counter <= 1; counter++) {
 					num = 1 + new Random().nextInt(max);
-					if(num >= 1 && num <= chance){
+					if(num >= 1 && num <= chance) {
 						prizes.add(prize);
 					}
 				}
 			}
 		}
 		Prize prize = prizes.get(new Random().nextInt(prizes.size()));
-		if(prize.toggleFirework()){
+		if(prize.toggleFirework()) {
 			Methods.fireWork(loc);
 		}
 		return prize;
 	}
 	
-	private ItemStack getKey(FileConfiguration file){
+	private ItemStack getKey(FileConfiguration file) {
 		String name = file.getString("Crate.PhysicalKey.Name");
 		List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
 		String id = file.getString("Crate.PhysicalKey.Item");
 		Boolean enchanted = false;
-		if(file.contains("Crate.PhysicalKey.Glowing")){
+		if(file.contains("Crate.PhysicalKey.Glowing")) {
 			enchanted = file.getBoolean("Crate.PhysicalKey.Glowing");
 		}
 		return Methods.makeItem(id, 1, name, lore, enchanted);
 	}
 	
-	private ItemStack getDisplayItem(FileConfiguration file, String prize){
+	private ItemStack getDisplayItem(FileConfiguration file, String prize) {
 		String path = "Crate.Prizes." + prize + ".";
 		String id = file.getString(path + "DisplayItem");
 		String name = file.getString(path + "DisplayName");
 		int amount = 1;
-		if(file.contains(path + "DisplayAmount")){
+		if(file.contains(path + "DisplayAmount")) {
 			amount = file.getInt(path + "DisplayAmount");
 		}
 		ArrayList<String> lore = new ArrayList<String>();
-		if(file.contains(path + "Lore")){
-			for(String l : file.getStringList(path + "Lore")){
+		if(file.contains(path + "Lore")) {
+			for(String l : file.getStringList(path + "Lore")) {
 				lore.add(l);
 			}
 		}
 		HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
-		if(file.contains(path + "DisplayEnchantments")){
-			for(String enchant : file.getStringList(path + "DisplayEnchantments")){
-				for(Enchantment enc : Enchantment.values()){
-					if(Methods.getEnchantments().contains(enc.getName())){
+		if(file.contains(path + "DisplayEnchantments")) {
+			for(String enchant : file.getStringList(path + "DisplayEnchantments")) {
+				for(Enchantment enc : Enchantment.values()) {
+					if(Methods.getEnchantments().contains(enc.getName())) {
 						enchant = enchant.toLowerCase();
-						if(enchant.contains(enc.getName().toLowerCase() + ":") || enchant.contains(Methods.getEnchantmentName(enc).toLowerCase() + ":")){
+						if(enchant.contains(enc.getName().toLowerCase() + ":") || enchant.contains(Methods.getEnchantmentName(enc).toLowerCase() + ":")) {
 							String[] breakdown = enchant.split(":");
 							int lvl = Integer.parseInt(breakdown[1]);
 							enchants.put(enc, lvl);
@@ -314,28 +306,27 @@ public class CrazyCrates {
 			}
 		}
 		String player = "";
-		if(file.contains(path + "Player")){
+		if(file.contains(path + "Player")) {
 			player = file.getString(path + "Player");
 		}
 		boolean glowing = false;
-		if(file.contains(path + "Glowing")){
+		if(file.contains(path + "Glowing")) {
 			glowing = file.getBoolean(path + "Glowing");
 		}
-		try{
-			if(Methods.makeItem(id, amount, "").getType() == Material.SKULL_ITEM &&
-					Methods.makeItem(id, amount, "").getDurability() == 3){
+		try {
+			if(Methods.makeItem(id, amount, "").getType() == Material.SKULL_ITEM && Methods.makeItem(id, amount, "").getDurability() == 3) {
 				return Methods.makePlayerHead(player, amount, name, lore, enchants, glowing);
-			}else{
+			}else {
 				return Methods.makeItem(id, amount, name, lore, enchants, glowing);
 			}
-		}catch(Exception e){
+		}catch(Exception e) {
 			return Methods.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
 		}
 	}
 	
-	private ArrayList<ItemStack> getItems(FileConfiguration file, String prize){
+	private ArrayList<ItemStack> getItems(FileConfiguration file, String prize) {
 		ArrayList<ItemStack> items = new ArrayList<>();
-		for(String l : file.getStringList("Crate.Prizes." + prize + ".Items")){
+		for(String l : file.getStringList("Crate.Prizes." + prize + ".Items")) {
 			ArrayList<String> lore = new ArrayList<>();
 			HashMap<Enchantment, Integer> enchants = new HashMap<>();
 			String name = "";
@@ -343,29 +334,28 @@ public class CrazyCrates {
 			String id = "Stone";
 			String player = "";
 			Boolean unbreaking = false;
-			for(String i : l.split(", ")){
-				if(i.contains("Item:")){
+			for(String i : l.split(", ")) {
+				if(i.contains("Item:")) {
 					id = i.replaceAll("Item:", "");
-				}else if(i.contains("Name:")){
+				}else if(i.contains("Name:")) {
 					name = Methods.color(i.replaceAll("Name:", ""));
-				}else if(i.contains("Amount:")){
+				}else if(i.contains("Amount:")) {
 					amount = Integer.parseInt(i.replaceAll("Amount:", ""));
-				}else if(i.contains("Lore:")){
-					for(String L : i.replaceAll("Lore:", "").split(",")){
+				}else if(i.contains("Lore:")) {
+					for(String L : i.replaceAll("Lore:", "").split(",")) {
 						L = Methods.color(L);
 						lore.add(L);
 					}
-				}else if(i.contains("Player:")){
+				}else if(i.contains("Player:")) {
 					player = i.replaceAll("Player:", "");
-				}else if(i.contains("Unbreaking:")){
+				}else if(i.contains("Unbreaking:")) {
 					if(i.replaceAll("Unbreaking:", "").equalsIgnoreCase("true")) {
 						unbreaking = true;
 					}
 				}else {
-					for(Enchantment enc : Enchantment.values()){
+					for(Enchantment enc : Enchantment.values()) {
 						if(enc.getName() != null) {
-							if(i.toLowerCase().contains(enc.getName().toLowerCase() + ":") || 
-									i.toLowerCase().contains(Methods.getEnchantmentName(enc).toLowerCase() + ":")){
+							if(i.toLowerCase().contains(enc.getName().toLowerCase() + ":") || i.toLowerCase().contains(Methods.getEnchantmentName(enc).toLowerCase() + ":")) {
 								String[] breakdown = i.split(":");
 								int lvl = Integer.parseInt(breakdown[1]);
 								enchants.put(enc, lvl);
@@ -374,29 +364,28 @@ public class CrazyCrates {
 					}
 				}
 			}
-			try{
-				if(Methods.makeItem(id, amount, "").getType() == Material.SKULL_ITEM &&
-						Methods.makeItem(id, amount, "").getDurability() == 3){
+			try {
+				if(Methods.makeItem(id, amount, "").getType() == Material.SKULL_ITEM && Methods.makeItem(id, amount, "").getDurability() == 3) {
 					if(unbreaking) {
 						items.add(Methods.addUnbreaking(Methods.makePlayerHead(player, amount, name, lore, enchants, false)));
 					}else {
 						items.add(Methods.makePlayerHead(player, amount, name, lore, enchants, false));
 					}
-				}else{
+				}else {
 					if(unbreaking) {
 						items.add(Methods.addUnbreaking(Methods.makeItem(id, amount, name, lore, enchants)));
 					}else {
 						items.add(Methods.makeItem(id, amount, name, lore, enchants));
 					}
 				}
-			}catch(Exception e){
+			}catch(Exception e) {
 				items.add(Methods.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize)));
 			}
 		}
 		return items;
 	}
 	
-	private Integer pickNumber(int min, int max){
+	private Integer pickNumber(int min, int max) {
 		max++;
 		return min + new Random().nextInt(max - min);
 	}

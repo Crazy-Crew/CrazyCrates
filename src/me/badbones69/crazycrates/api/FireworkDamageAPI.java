@@ -11,12 +11,12 @@ import org.bukkit.event.entity.FireworkExplodeEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class FireworkDamageAPI implements Listener{
+public class FireworkDamageAPI implements Listener {
 	
 	private Plugin plugin;
 	private static ArrayList<Entity> fireworks = new ArrayList<Entity>();
 	
-	public FireworkDamageAPI(Plugin plugin){
+	public FireworkDamageAPI(Plugin plugin) {
 		this.plugin = plugin;
 	}
 	
@@ -24,7 +24,7 @@ public class FireworkDamageAPI implements Listener{
 	 * 
 	 * @return All the active fireworks.
 	 */
-	public static ArrayList<Entity> getFireworks(){
+	public static ArrayList<Entity> getFireworks() {
 		return fireworks;
 	}
 	
@@ -32,7 +32,7 @@ public class FireworkDamageAPI implements Listener{
 	 * 
 	 * @param firework The firework you want to add.
 	 */
-	public static void addFirework(Entity firework){
+	public static void addFirework(Entity firework) {
 		fireworks.add(firework);
 	}
 	
@@ -40,17 +40,17 @@ public class FireworkDamageAPI implements Listener{
 	 * 
 	 * @param firework The firework you are removing.
 	 */
-	public static void removeFirework(Entity firework){
-		if(fireworks.contains(firework)){
+	public static void removeFirework(Entity firework) {
+		if(fireworks.contains(firework)) {
 			fireworks.remove(firework);
 		}
 	}
 	
 	@EventHandler
-	public void onPlayerDamage(EntityDamageEvent e){
-		for(Entity en : e.getEntity().getNearbyEntities(5, 5, 5)){
-			if(en.getType() == EntityType.FIREWORK){
-				if(getFireworks().contains(en)){
+	public void onPlayerDamage(EntityDamageEvent e) {
+		for(Entity en : e.getEntity().getNearbyEntities(5, 5, 5)) {
+			if(en.getType() == EntityType.FIREWORK) {
+				if(getFireworks().contains(en)) {
 					e.setCancelled(true);
 				}
 			}
@@ -58,10 +58,10 @@ public class FireworkDamageAPI implements Listener{
 	}
 	
 	@EventHandler
-	public void onFireworkExplode(FireworkExplodeEvent e){
+	public void onFireworkExplode(FireworkExplodeEvent e) {
 		final Entity firework = e.getEntity();
-		if(getFireworks().contains(firework)){
-			new BukkitRunnable(){
+		if(getFireworks().contains(firework)) {
+			new BukkitRunnable() {
 				@Override
 				public void run() {
 					removeFirework(firework);

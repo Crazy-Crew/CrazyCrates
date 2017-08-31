@@ -26,18 +26,18 @@ public enum Messages {
 	
 	private String path;
 	
-	private Messages(String path){
+	private Messages(String path) {
 		this.path = path;
 	}
 	
-	public String getMessage(){
+	public String getMessage() {
 		return Methods.getPrefix(Main.settings.getConfig().getString("Settings." + path));
 	}
 	
-	public String getMessage(HashMap<String, String> placeholders){
+	public String getMessage(HashMap<String, String> placeholders) {
 		String msg = Methods.getPrefix(Main.settings.getConfig().getString("Settings." + path));
-		for(String ph : placeholders.keySet()){
-			if(msg.contains(ph)){
+		for(String ph : placeholders.keySet()) {
+			if(msg.contains(ph)) {
 				msg = msg.replaceAll(ph, placeholders.get(ph));
 			}
 		}

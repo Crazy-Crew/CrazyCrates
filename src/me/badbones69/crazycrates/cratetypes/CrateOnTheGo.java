@@ -17,17 +17,17 @@ import me.badbones69.crazycrates.api.CrateType;
 import me.badbones69.crazycrates.api.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.Prize;
 
-public class CrateOnTheGo implements Listener{
+public class CrateOnTheGo implements Listener {
 	
 	@EventHandler
-	public void onCrateOpen(PlayerInteractEvent e){
+	public void onCrateOpen(PlayerInteractEvent e) {
 		Player player = e.getPlayer();
-		if(e.getAction() == Action.RIGHT_CLICK_BLOCK){
+		if(e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			ItemStack item = Methods.getItemInHand(player);
-			if(item != null){
-				for(Crate crate : Main.CC.getCrates()){
-					if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO){
-						if(Methods.isSimilar(crate.getKey(), item)){
+			if(item != null) {
+				for(Crate crate : Main.CC.getCrates()) {
+					if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
+						if(Methods.isSimilar(crate.getKey(), item)) {
 							e.setCancelled(true);
 							GUI.crates.put(player, crate);
 							CrateControl.crates.put(player, crate);
@@ -35,7 +35,7 @@ public class CrateOnTheGo implements Listener{
 							Prize prize = Main.CC.pickPrize(player);
 							Main.CC.getReward(player, prize);
 							Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.CRATE_ON_THE_GO, CrateControl.crates.get(player).getName(), prize));
-							if(prize.toggleFirework()){
+							if(prize.toggleFirework()) {
 								Methods.fireWork(player.getLocation().add(0, 1, 0));
 							}
 							GUI.crates.remove(player);

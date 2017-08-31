@@ -21,7 +21,7 @@ public class Crate {
 	 * @param prizes The prizes that can be won.
 	 * @param file The crate file.
 	 */
-	public Crate(String name, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file){
+	public Crate(String name, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file) {
 		this.key = key;
 		this.file = file;
 		this.name = name;
@@ -33,7 +33,7 @@ public class Crate {
 	 * 
 	 * @return name The name of the crate.
 	 */
-	public String getName(){
+	public String getName() {
 		return this.name;
 	}
 	
@@ -41,7 +41,7 @@ public class Crate {
 	 * 
 	 * @return The crate type of the crate.
 	 */
-	public CrateType getCrateType(){
+	public CrateType getCrateType() {
 		return this.crateType;
 	}
 	
@@ -49,7 +49,7 @@ public class Crate {
 	 * 
 	 * @return The key as an item stack.
 	 */
-	public ItemStack getKey(){
+	public ItemStack getKey() {
 		return this.key;
 	}
 	
@@ -57,7 +57,7 @@ public class Crate {
 	 * 
 	 * @return The crates file.
 	 */
-	public FileConfiguration getFile(){
+	public FileConfiguration getFile() {
 		return this.file;
 	}
 	
@@ -65,7 +65,7 @@ public class Crate {
 	 * 
 	 * @return The prizes in the crate.
 	 */
-	public ArrayList<Prize> getPrizes(){
+	public ArrayList<Prize> getPrizes() {
 		return this.prizes;
 	}
 	
@@ -74,9 +74,9 @@ public class Crate {
 	 * @param name Name of the prize you want.
 	 * @return The prize you asked for.
 	 */
-	public Prize getPrize(String name){
-		for(Prize prize : prizes){
-			if(prize.getName().equalsIgnoreCase(name)){
+	public Prize getPrize(String name) {
+		for(Prize prize : prizes) {
+			if(prize.getName().equalsIgnoreCase(name)) {
 				return prize;
 			}
 		}

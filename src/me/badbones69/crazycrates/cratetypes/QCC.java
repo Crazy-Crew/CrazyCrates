@@ -42,7 +42,7 @@ import me.badbones69.crazycrates.api.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.Prize;
 import me.badbones69.crazycrates.multisupport.Version;
 
-public class QCC implements Listener{ // Quad Crate Control.
+public class QCC implements Listener { // Quad Crate Control.
 	
 	public static HashMap<Player, HashMap<Location, BlockState>> crates = new HashMap<>();
 	public static HashMap<Player, HashMap<Location, BlockState>> All = new HashMap<>();
@@ -65,7 +65,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 	 * @param sound Sound the Frame Makes.
 	 * @param Chest Chest Type.
 	 */
-	public static void startBuild(final Player player, final Location loc, Material Chest){
+	public static void startBuild(final Player player, final Location loc, Material Chest) {
 		Location Lo = loc.clone();
 		final ArrayList<Location> Ch = getChests(loc);
 		String schem = Methods.pickRandomSchem();
@@ -73,7 +73,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 		ArrayList<Location> rest = new ArrayList<Location>();
 		rest.add(loc.clone().add(0, -1, 0));
 		HashMap<Location, Boolean> checks = new HashMap<Location, Boolean>();
-		for(Location l : Ch){
+		for(Location l : Ch) {
 			checks.put(l, false);
 		}
 		opened.put(player, checks);
@@ -82,29 +82,29 @@ public class QCC implements Listener{ // Quad Crate Control.
 		BlockList.add(Material.WALL_SIGN);
 		BlockList.add(Material.STONE_BUTTON);
 		BlockList.add(Material.WOOD_BUTTON);
-		for(Location l : Check){
-			if(BlockList.contains(l.getBlock().getType())){
+		for(Location l : Check) {
+			if(BlockList.contains(l.getBlock().getType())) {
 				player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
 				GUI.crates.remove(player);
 				return;
 			}
-			if(l.getBlockY()!=Lo.clone().getBlockY()-1&&l.getBlock().getType()!=Material.AIR){
-				if(!l.equals(Lo.clone())){
+			if(l.getBlockY() != Lo.clone().getBlockY() - 1 && l.getBlock().getType() != Material.AIR) {
+				if(!l.equals(Lo.clone())) {
 					player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
 					GUI.crates.remove(player);
 					return;
 				}
 			}
 		}
-		if(Lo.clone().subtract(0, 1, 0).getBlock().getType()==Material.AIR){
-			player.sendMessage(Methods.color(Methods.getPrefix()+"&cYou must be standing on a block."));
+		if(Lo.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
+			player.sendMessage(Methods.color(Methods.getPrefix() + "&cYou must be standing on a block."));
 			GUI.crates.remove(player);
 			return;
 		}
-		for(Entity en : player.getNearbyEntities(3, 3, 3)){
-			if(en instanceof Player){
+		for(Entity en : player.getNearbyEntities(3, 3, 3)) {
+			if(en instanceof Player) {
 				Player p = (Player) en;
-				if(crates.containsKey(p)){
+				if(crates.containsKey(p)) {
 					HashMap<String, String> placeholders = new HashMap<String, String>();
 					placeholders.put("%Player%", p.getName());
 					placeholders.put("%player%", p.getName());
@@ -114,33 +114,33 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}
 			}
 		}
-		player.teleport(loc.clone().add(.5,0,.5));
-		for(Entity en : player.getNearbyEntities(2, 2, 2)){
-			if(en instanceof Player){
+		player.teleport(loc.clone().add(.5, 0, .5));
+		for(Entity en : player.getNearbyEntities(2, 2, 2)) {
+			if(en instanceof Player) {
 				Player p = (Player) en;
 				Vector v = p.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().setY(1);
 				p.setVelocity(v);
 			}
 		}
 		chests.put(player, Ch);
-		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
+		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY) {
 			Methods.removeItem(CrateControl.keys.get(player), player);
 		}
-		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
+		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY) {
 			Methods.takeKeys(1, player, GUI.crates.get(player));
 		}
 		rest.clear();
 		HashMap<Location, BlockState> locs = new HashMap<Location, BlockState>();
 		HashMap<Location, BlockState> A = new HashMap<Location, BlockState>();
-		for(Location l : Methods.getLocations(schem, Lo.clone())){
+		for(Location l : Methods.getLocations(schem, Lo.clone())) {
 			boolean found = false;
-			for(Location L : chests.get(player)){
-				if(l.getBlockX()==L.getBlockX()&&l.getBlockY()==L.getBlockY()&&l.getBlockZ()==L.getBlockZ()){
-					found=true;
+			for(Location L : chests.get(player)) {
+				if(l.getBlockX() == L.getBlockX() && l.getBlockY() == L.getBlockY() && l.getBlockZ() == L.getBlockZ()) {
+					found = true;
 					break;
 				}
 			}
-			if(!found){
+			if(!found) {
 				locs.put(l, l.getBlock().getState());
 				rest.add(l);
 			}
@@ -155,7 +155,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 		spawnChest(Ch, player, Chest);
 	}
 	
-	private static void spawnChest(final ArrayList<Location> locs, final Player player, final Material Chest){
+	private static void spawnChest(final ArrayList<Location> locs, final Player player, final Material Chest) {
 		ArrayList<ParticleEffect> particles = new ArrayList<ParticleEffect>();
 		particles.add(ParticleEffect.FLAME);
 		particles.add(ParticleEffect.VILLAGER_HAPPY);
@@ -163,13 +163,14 @@ public class QCC implements Listener{ // Quad Crate Control.
 		particles.add(ParticleEffect.REDSTONE);
 		Random r = new Random();
 		final ParticleEffect particle = particles.get(r.nextInt(particles.size()));
-		P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
+		P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 			double r = 0;
 			int i = 0;
 			int e = 0;
 			int f = 0;
 			Location l = new Location(locs.get(0).getWorld(), locs.get(0).getBlockX(), locs.get(0).getBlockY(), locs.get(0).getBlockZ()).add(.5, 3, .5);
 			Location loc = locs.get(0).clone();
+			
 			@SuppressWarnings("deprecation")
 			@Override
 			public void run() {
@@ -177,37 +178,41 @@ public class QCC implements Listener{ // Quad Crate Control.
 				ArrayList<Location> L2 = getCircleReverse(l, r, 10);
 				particle.display(0, 0, 0, 0, 1, L.get(i), 100);
 				particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
-				i++;f++;e++;
+				i++;
+				f++;
+				e++;
 				l.add(0, -.05, 0);
-				if(i==10)i=0;
-				if(e==6){
-					e=0;
-					r=r+.08;
+				if(i == 10)
+					i = 0;
+				if(e == 6) {
+					e = 0;
+					r = r + .08;
 				}
-				if(f==60){
-					ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte)0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
-					if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+				if(f == 60) {
+					ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte) 0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
+					if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
 						player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
-					}else{
+					}else {
 						player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 					}
 					loc.getBlock().setType(Chest);
-					loc.getBlock().setData((byte)4);
+					loc.getBlock().setData((byte) 4);
 					Bukkit.getScheduler().cancelTask(P.get(player));
 					P.remove(player);
 				}
 			}
 		}, 0, 1));
-		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
 			@Override
 			public void run() {
-				P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
+				P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 					double r = 0;
 					int i = 0;
 					int e = 0;
 					int f = 0;
 					Location l = new Location(locs.get(1).getWorld(), locs.get(1).getBlockX(), locs.get(1).getBlockY(), locs.get(1).getBlockZ()).add(.5, 3, .5);
 					Location loc = locs.get(1).clone();
+					
 					@SuppressWarnings("deprecation")
 					@Override
 					public void run() {
@@ -215,22 +220,25 @@ public class QCC implements Listener{ // Quad Crate Control.
 						ArrayList<Location> L2 = getCircleReverse(l, r, 10);
 						particle.display(0, 0, 0, 0, 1, L.get(i), 100);
 						particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
-						i++;f++;e++;
+						i++;
+						f++;
+						e++;
 						l.add(0, -.05, 0);
-						if(i==10)i=0;
-						if(e==6){
-							e=0;
-							r=r+.08;
+						if(i == 10)
+							i = 0;
+						if(e == 6) {
+							e = 0;
+							r = r + .08;
 						}
-						if(f==60){
-							ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte)0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
-							if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+						if(f == 60) {
+							ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte) 0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
+							if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
 								player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
-							}else{
+							}else {
 								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 							}
 							loc.getBlock().setType(Chest);
-							loc.getBlock().setData((byte)2);
+							loc.getBlock().setData((byte) 2);
 							Bukkit.getScheduler().cancelTask(P.get(player));
 							P.remove(player);
 						}
@@ -238,16 +246,17 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}, 0, 1));
 			}
 		}, 61);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
 			@Override
 			public void run() {
-				P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
+				P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 					double r = 0;
 					int i = 0;
 					int e = 0;
 					int f = 0;
 					Location l = new Location(locs.get(2).getWorld(), locs.get(2).getBlockX(), locs.get(2).getBlockY(), locs.get(2).getBlockZ()).add(.5, 3, .5);
 					Location loc = locs.get(2).clone();
+					
 					@SuppressWarnings("deprecation")
 					@Override
 					public void run() {
@@ -255,22 +264,25 @@ public class QCC implements Listener{ // Quad Crate Control.
 						ArrayList<Location> L2 = getCircleReverse(l, r, 10);
 						particle.display(0, 0, 0, 0, 1, L.get(i), 100);
 						particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
-						i++;f++;e++;
+						i++;
+						f++;
+						e++;
 						l.add(0, -.05, 0);
-						if(i==10)i=0;
-						if(e==6){
-							e=0;
-							r=r+.08;
+						if(i == 10)
+							i = 0;
+						if(e == 6) {
+							e = 0;
+							r = r + .08;
 						}
-						if(f==60){
-							ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte)0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);;
-							if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+						if(f == 60) {
+							ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte) 0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);;
+							if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
 								player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
-							}else{
+							}else {
 								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 							}
 							loc.getBlock().setType(Chest);
-							loc.getBlock().setData((byte)5);
+							loc.getBlock().setData((byte) 5);
 							Bukkit.getScheduler().cancelTask(P.get(player));
 							P.remove(player);
 						}
@@ -278,16 +290,17 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}, 0, 1));
 			}
 		}, 121);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
 			@Override
 			public void run() {
-				P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
+				P.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 					double r = 0;
 					int i = 0;
 					int e = 0;
 					int f = 0;
 					Location l = new Location(locs.get(3).getWorld(), locs.get(3).getBlockX(), locs.get(3).getBlockY(), locs.get(3).getBlockZ()).add(.5, 3, .5);
 					Location loc = locs.get(3).clone();
+					
 					@SuppressWarnings("deprecation")
 					@Override
 					public void run() {
@@ -295,22 +308,25 @@ public class QCC implements Listener{ // Quad Crate Control.
 						ArrayList<Location> L2 = getCircleReverse(l, r, 10);
 						particle.display(0, 0, 0, 0, 1, L.get(i), 100);
 						particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
-						i++;f++;e++;
+						i++;
+						f++;
+						e++;
 						l.add(0, -.05, 0);
-						if(i==10)i=0;
-						if(e==6){
-							e=0;
-							r=r+.08;
+						if(i == 10)
+							i = 0;
+						if(e == 6) {
+							e = 0;
+							r = r + .08;
 						}
-						if(f==60){
-							ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte)0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
-							if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+						if(f == 60) {
+							ParticleEffect.BLOCK_DUST.display(new BlockData(Chest, (byte) 0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
+							if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
 								player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
-							}else{
+							}else {
 								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 							}
 							loc.getBlock().setType(Chest);
-							loc.getBlock().setData((byte)3);
+							loc.getBlock().setData((byte) 3);
 							Bukkit.getScheduler().cancelTask(P.get(player));
 							P.remove(player);
 						}
@@ -318,16 +334,16 @@ public class QCC implements Listener{ // Quad Crate Control.
 				}, 0, 1));
 			}
 		}, 181);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
 			@Override
 			public void run() {
-				timer.put(player, Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
+				timer.put(player, Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
 					@Override
 					public void run() {
 						undoBuild(player);
 						player.sendMessage(Messages.OUT_OF_TIME.getMessage());
 					}
-				}, Main.settings.getConfig().getInt("Settings.QuadCrate.Timer")*20));
+				}, Main.settings.getConfig().getInt("Settings.QuadCrate.Timer") * 20));
 			}
 		}, 241);
 	}
@@ -337,26 +353,26 @@ public class QCC implements Listener{ // Quad Crate Control.
 	 * @param player The player that opened the Crate.
 	 */
 	@SuppressWarnings("deprecation")
-	public static void undoBuild(Player player){
+	public static void undoBuild(Player player) {
 		HashMap<Location, BlockState> locs = All.get(player);
-		for(Location loc : locs.keySet()){
-			if(locs.get(loc) != null){
+		for(Location loc : locs.keySet()) {
+			if(locs.get(loc) != null) {
 				loc.getBlock().setTypeIdAndData(locs.get(loc).getTypeId(), locs.get(loc).getRawData(), true);
 			}
 		}
 		crates.remove(player);
 		chests.remove(player);
 		GUI.crates.remove(player);
-		if(P.containsKey(player)){
+		if(P.containsKey(player)) {
 			Bukkit.getScheduler().cancelTask(P.get(player));
 			P.remove(player);
 		}
-		if(timer.containsKey(player)){
+		if(timer.containsKey(player)) {
 			Bukkit.getScheduler().cancelTask(timer.get(player));
 			timer.remove(player);
 		}
-		if(Rewards.containsKey(player)){
-			for(Entity h : Rewards.get(player)){
+		if(Rewards.containsKey(player)) {
+			for(Entity h : Rewards.get(player)) {
 				h.remove();
 			}
 			Rewards.remove(player);
@@ -364,77 +380,77 @@ public class QCC implements Listener{ // Quad Crate Control.
 	}
 	
 	@EventHandler
-	public void onBlockBreak(BlockBreakEvent e){
+	public void onBlockBreak(BlockBreakEvent e) {
 		Location loc = e.getBlock().getLocation();
-		for(Player player : crates.keySet()){
-			for(Location l : crates.get(player).keySet()){
-				if(l.getBlockX()==loc.getBlockX()&&l.getBlockY()==loc.getBlockY()&&l.getBlockZ()==loc.getBlockZ()){
+		for(Player player : crates.keySet()) {
+			for(Location l : crates.get(player).keySet()) {
+				if(l.getBlockX() == loc.getBlockX() && l.getBlockY() == loc.getBlockY() && l.getBlockZ() == loc.getBlockZ()) {
 					e.setCancelled(true);
 					return;
 				}
 			}
 		}
-		if(crates.containsKey(e.getPlayer())){
+		if(crates.containsKey(e.getPlayer())) {
 			e.setCancelled(true);
 		}
 	}
 	
 	@EventHandler
-	public void onChestClick(PlayerInteractEvent e){
-		if(e.getAction()==Action.RIGHT_CLICK_BLOCK||e.getAction()==Action.LEFT_CLICK_BLOCK){
-			if(e.getClickedBlock().getType()==Material.CHEST){
-				for(final Player player : chests.keySet()){
-					for(final Location l : chests.get(player)){
+	public void onChestClick(PlayerInteractEvent e) {
+		if(e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+			if(e.getClickedBlock().getType() == Material.CHEST) {
+				for(final Player player : chests.keySet()) {
+					for(final Location l : chests.get(player)) {
 						Location B = e.getClickedBlock().getLocation();
-						if(l.getBlockX() == B.getBlockX() && l.getBlockY() == B.getBlockY() && l.getBlockZ() == B.getBlockZ()){
+						if(l.getBlockX() == B.getBlockX() && l.getBlockY() == B.getBlockY() && l.getBlockZ() == B.getBlockZ()) {
 							e.setCancelled(true);
-							if(player == e.getPlayer()){
+							if(player == e.getPlayer()) {
 								Methods.playChestAction(e.getClickedBlock(), true);
-								if(!opened.get(player).get(l)){
+								if(!opened.get(player).get(l)) {
 									ArrayList<Entity> rewards = new ArrayList<Entity>();
 									Prize prize = Main.CC.pickPrize(player, B.clone().add(.5, 1.3, .5));
 									Main.CC.getReward(player, prize);
 									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.QUAD_CRATE, CrateControl.crates.get(player).getName(), prize));
 									final Entity reward = player.getWorld().dropItem(B.clone().add(.5, 1, .5), Methods.addLore(prize.getDisplayItem().clone(), new Random().nextInt(Integer.MAX_VALUE) + ""));
-									reward.setVelocity(new Vector(0,.2,0));
+									reward.setVelocity(new Vector(0, .2, 0));
 									reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
 									reward.setCustomNameVisible(true);
-									if(Rewards.containsKey(player)){
-										for(Entity h : Rewards.get(player)){
+									if(Rewards.containsKey(player)) {
+										for(Entity h : Rewards.get(player)) {
 											rewards.add(h);
 										}
 									}
 									rewards.add(reward);
 									Rewards.put(player, rewards);
-									if(prize.toggleFirework()){
+									if(prize.toggleFirework()) {
 										Methods.fireWork(B.clone().add(.5, 1, .5));
 									}
 								}
 								boolean trigger = true;
-								for(Location loc : opened.get(player).keySet()){
-									if(loc.getBlockX()==l.getBlockX()&&loc.getBlockY()==l.getBlockY()&&loc.getBlockZ()==l.getBlockZ()){
+								for(Location loc : opened.get(player).keySet()) {
+									if(loc.getBlockX() == l.getBlockX() && loc.getBlockY() == l.getBlockY() && loc.getBlockZ() == l.getBlockZ()) {
 										opened.get(player).put(loc, true);
 									}
-									if(opened.get(player).get(loc)==false){
+									if(opened.get(player).get(loc) == false) {
 										trigger = false;
 									}
 								}
 								if(inBreakDown.contains(player)) {
 									trigger = false;
 								}
-								if(trigger){
+								if(trigger) {
 									inBreakDown.add(player);
-									Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
+									Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
 										@SuppressWarnings("deprecation")
 										@Override
 										public void run() {
-											if(Rest.get(player)!=null){
-												for(Location loc : Rest.get(player)){ // Rest is all except Chests.
+											if(Rest.get(player) != null) {
+												for(Location loc : Rest.get(player)) { // Rest is all except Chests.
 													HashMap<Location, BlockState> locs = crates.get(player); // Crates holds the Data.
-													if(locs!=null){
-														for(Location loc2 : locs.keySet()){ // Looping though the locations.
-															if(locs.get(loc)!=null){ // Checking to make sure a location isn't null.
-																if(loc.equals(loc2)){
+													if(locs != null) {
+														for(Location loc2 : locs.keySet()) { // Looping though the locations.
+															if(locs.get(loc) != null) { // Checking to make sure a location isn't null.
+																if(loc.equals(loc2)) {
 																	loc2.getBlock().setTypeIdAndData(locs.get(loc2).getTypeId(), locs.get(loc2).getRawData(), true);
 																}
 															}
@@ -442,38 +458,37 @@ public class QCC implements Listener{ // Quad Crate Control.
 													}
 												}
 											}
-											if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+											if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
 												player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
-											}
-											else{
+											}else {
 												player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 											}
 										}
-									}, 3*20);
-									Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable(){
+									}, 3 * 20);
+									Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
 										@Override
 										public void run() {
-											if(Rest.get(player)!=null){
-												for(Location loc : Rest.get(player)){
+											if(Rest.get(player) != null) {
+												for(Location loc : Rest.get(player)) {
 													HashMap<Location, BlockState> locs = crates.get(player);
-													if(chests.get(player)!=null){
-														for(Location loc2 : chests.get(player)){
-															if(locs.get(loc)!=null){
+													if(chests.get(player) != null) {
+														for(Location loc2 : chests.get(player)) {
+															if(locs.get(loc) != null) {
 																loc2.getBlock().setType(Material.AIR);
 															}
 														}
 													}
 												}
 											}
-											if(Rewards.get(player)!=null){
-												for(Entity h : Rewards.get(player)){
+											if(Rewards.get(player) != null) {
+												for(Entity h : Rewards.get(player)) {
 													h.remove();
 												}
 											}
 											Rewards.remove(player);
-											if(Version.getVersion().getVersionInteger()>=Version.v1_9_R1.getVersionInteger()){
+											if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
 												player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
-											}else{
+											}else {
 												player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
 											}
 											crates.remove(player);
@@ -481,17 +496,17 @@ public class QCC implements Listener{ // Quad Crate Control.
 											Rest.remove(player);
 											GUI.crates.remove(player);
 											opened.remove(player);
-											if(timer.containsKey(player)){
+											if(timer.containsKey(player)) {
 												Bukkit.getScheduler().cancelTask(timer.get(player));
 												timer.remove(player);
 											}
-											if(CrateControl.lastLocation.containsKey(player)){
+											if(CrateControl.lastLocation.containsKey(player)) {
 												player.teleport(CrateControl.lastLocation.get(player));
 												CrateControl.lastLocation.remove(player);
 											}
 											inBreakDown.remove(player);
 										}
-									}, 6*20);
+									}, 6 * 20);
 								}
 							}
 							return;
@@ -503,23 +518,23 @@ public class QCC implements Listener{ // Quad Crate Control.
 	}
 	
 	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent e){
+	public void onPlayerMove(PlayerMoveEvent e) {
 		Player player = e.getPlayer();
 		Location from = e.getFrom();
 		Location to = e.getTo();
-		if(crates.containsKey(player)){
-			if(from.getBlockX()!=to.getBlockX()||from.getBlockZ()!=to.getBlockZ()){
+		if(crates.containsKey(player)) {
+			if(from.getBlockX() != to.getBlockX() || from.getBlockZ() != to.getBlockZ()) {
 				e.setCancelled(true);
 				player.teleport(from);
 				return;
 			}
 		}
-		for(Entity en : player.getNearbyEntities(2, 2, 2)){
-			if(en instanceof Player){
+		for(Entity en : player.getNearbyEntities(2, 2, 2)) {
+			if(en instanceof Player) {
 				Player p = (Player) en;
-				if(crates.containsKey(p)){
+				if(crates.containsKey(p)) {
 					Vector v = player.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().setY(1);
-					if(player.isInsideVehicle()){
+					if(player.isInsideVehicle()) {
 						player.getVehicle().setVelocity(v);
 						return;
 					}
@@ -530,14 +545,14 @@ public class QCC implements Listener{ // Quad Crate Control.
 	}
 	
 	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent e){
-		if(crates.containsKey(e.getPlayer())){
+	public void onBlockPlace(BlockPlaceEvent e) {
+		if(crates.containsKey(e.getPlayer())) {
 			e.setCancelled(true);
 		}
-		for(Player p : Rest.keySet()){
-			for(Location l : Rest.get(p)){
+		for(Player p : Rest.keySet()) {
+			for(Location l : Rest.get(p)) {
 				Location P = e.getBlockPlaced().getLocation();
-				if(P.getBlockX()==l.getBlockX()&&P.getBlockY()==l.getBlockY()&&P.getBlockZ()==l.getBlockZ()){
+				if(P.getBlockX() == l.getBlockX() && P.getBlockY() == l.getBlockY() && P.getBlockZ() == l.getBlockZ()) {
 					e.setCancelled(true);
 					return;
 				}
@@ -546,17 +561,17 @@ public class QCC implements Listener{ // Quad Crate Control.
 	}
 	
 	@EventHandler
-	public void onJoin(PlayerJoinEvent e){
-		new BukkitRunnable(){
+	public void onJoin(PlayerJoinEvent e) {
+		new BukkitRunnable() {
 			@Override
 			public void run() {
 				Player player = e.getPlayer();
 				String uuid = player.getUniqueId().toString();
-				if(!Main.settings.getData().contains("Players."+uuid)){
-					Main.settings.getData().set("Players."+uuid+".Name", player.getName());
-					for(String crate : Main.settings.getAllCratesNames()){
+				if(!Main.settings.getData().contains("Players." + uuid)) {
+					Main.settings.getData().set("Players." + uuid + ".Name", player.getName());
+					for(String crate : Main.settings.getAllCratesNames()) {
 						int amount = Main.settings.getFile(crate).getInt("Crate.StartingKeys");
-						Main.settings.getData().set("Players."+uuid+"."+crate, amount);
+						Main.settings.getData().set("Players." + uuid + "." + crate, amount);
 					}
 					Main.settings.saveData();
 				}
@@ -565,10 +580,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 	}
 	
 	@EventHandler
-	public void onCMD(PlayerCommandPreprocessEvent e){
+	public void onCMD(PlayerCommandPreprocessEvent e) {
 		Player player = e.getPlayer();
-		if(crates.containsKey(player)){
-			if(!e.getMessage().toLowerCase().contains("plugman")){
+		if(crates.containsKey(player)) {
+			if(!e.getMessage().toLowerCase().contains("plugman")) {
 				e.setCancelled(true);
 				HashMap<String, String> placeholders = new HashMap<String, String>();
 				placeholders.put("%Player%", player.getName());
@@ -580,10 +595,10 @@ public class QCC implements Listener{ // Quad Crate Control.
 	}
 	
 	@EventHandler
-	public void onTeleport(PlayerTeleportEvent e){
+	public void onTeleport(PlayerTeleportEvent e) {
 		Player player = e.getPlayer();
-		if(crates.containsKey(player)){
-			if(e.getCause()==TeleportCause.ENDER_PEARL){
+		if(crates.containsKey(player)) {
+			if(e.getCause() == TeleportCause.ENDER_PEARL) {
 				e.setCancelled(true);
 				HashMap<String, String> placeholders = new HashMap<String, String>();
 				placeholders.put("%Player%", player.getName());
@@ -595,9 +610,9 @@ public class QCC implements Listener{ // Quad Crate Control.
 	}
 	
 	@EventHandler
-	public void onLeave(PlayerQuitEvent e){
+	public void onLeave(PlayerQuitEvent e) {
 		Player player = e.getPlayer();
-		if(crates.containsKey(player)){
+		if(crates.containsKey(player)) {
 			undoBuild(player);
 		}
 	}
@@ -611,7 +626,7 @@ public class QCC implements Listener{ // Quad Crate Control.
 		}
 	}
 	
-	private static ArrayList<Location> getChests(Location loc){
+	private static ArrayList<Location> getChests(Location loc) {
 		ArrayList<Location> U = new ArrayList<Location>();
 		U.add(loc.clone().add(2, 0, 0));
 		U.add(loc.clone().add(0, 0, 2));
@@ -620,30 +635,30 @@ public class QCC implements Listener{ // Quad Crate Control.
 		return U;
 	}
 	
-	private static ArrayList<Location> getCircle(Location center, double radius, int amount){
-        World world = center.getWorld();
-        double increment = (2 * Math.PI) / amount;
-        ArrayList<Location> locations = new ArrayList<Location>();
-        for(int i = 0;i < amount; i++){
-            double angle = i * increment;
-            double x = center.getX() + (radius * Math.cos(angle));
-            double z = center.getZ() + (radius * Math.sin(angle));
-            locations.add(new Location(world, x, center.getY(), z));
-        }
-        return locations;
-    }
+	private static ArrayList<Location> getCircle(Location center, double radius, int amount) {
+		World world = center.getWorld();
+		double increment = (2 * Math.PI) / amount;
+		ArrayList<Location> locations = new ArrayList<Location>();
+		for(int i = 0; i < amount; i++) {
+			double angle = i * increment;
+			double x = center.getX() + (radius * Math.cos(angle));
+			double z = center.getZ() + (radius * Math.sin(angle));
+			locations.add(new Location(world, x, center.getY(), z));
+		}
+		return locations;
+	}
 	
-	public static ArrayList<Location> getCircleReverse(Location center, double radius, int amount){
-        World world = center.getWorld();
-        double increment = (2 * Math.PI) / amount;
-        ArrayList<Location> locations = new ArrayList<Location>();
-        for(int i = 0;i < amount; i++){
-            double angle = i * increment;
-            double x = center.getX() - (radius * Math.cos(angle));
-            double z = center.getZ() - (radius * Math.sin(angle));
-            locations.add(new Location(world, x, center.getY(), z));
-        }
-        return locations;
-    }
+	public static ArrayList<Location> getCircleReverse(Location center, double radius, int amount) {
+		World world = center.getWorld();
+		double increment = (2 * Math.PI) / amount;
+		ArrayList<Location> locations = new ArrayList<Location>();
+		for(int i = 0; i < amount; i++) {
+			double angle = i * increment;
+			double x = center.getX() - (radius * Math.cos(angle));
+			double z = center.getZ() - (radius * Math.sin(angle));
+			locations.add(new Location(world, x, center.getY(), z));
+		}
+		return locations;
+	}
 	
 }

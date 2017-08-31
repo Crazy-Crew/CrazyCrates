@@ -24,11 +24,11 @@ public class FireCracker {
 	
 	private static HashMap<Player, Integer> F = new HashMap<Player, Integer>();
 	
-	public static void startFireCracker(final Player player, final String crate, final Location C){
-		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
+	public static void startFireCracker(final Player player, final String crate, final Location C) {
+		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY) {
 			Methods.removeItem(CrateControl.keys.get(player), player);
 		}
-		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
+		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY) {
 			Methods.takeKeys(1, player, GUI.crates.get(player));
 		}
 		final ArrayList<Color> colors = new ArrayList<Color>();
@@ -40,17 +40,18 @@ public class FireCracker {
 		colors.add(Color.AQUA);
 		colors.add(Color.MAROON);
 		colors.add(Color.PURPLE);
-		F.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
+		F.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 			Random r = new Random();
 			int color = r.nextInt(colors.size());
 			int l = 0;
 			Location L = C.clone().add(.5, 25, .5);
+			
 			@Override
 			public void run() {
 				L.subtract(0, 1, 0);
 				fireWork(L, colors.get(color));
 				l++;
-				if(l==25){
+				if(l == 25) {
 					Bukkit.getScheduler().cancelTask(F.get(player));
 					F.remove(player);
 					QuickCrate.openCrate(player, C, false);
@@ -62,12 +63,7 @@ public class FireCracker {
 	private static void fireWork(Location loc, Color color) {
 		final Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
 		FireworkMeta fm = fw.getFireworkMeta();
-		fm.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL)
-				.withColor(color)
-				.withColor(color)
-				.trail(false)
-				.flicker(false)
-				.build());
+		fm.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL).withColor(color).withColor(color).trail(false).flicker(false).build());
 		fm.setPower(0);
 		fw.setFireworkMeta(fm);
 		FireworkDamageAPI.addFirework(fw);

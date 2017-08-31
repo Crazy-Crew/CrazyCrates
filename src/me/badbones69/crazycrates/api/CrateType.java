@@ -16,17 +16,17 @@ public enum CrateType {
 	
 	private String Name;
 	
-	private CrateType(String name){
+	private CrateType(String name) {
 		Name = name;
 	}
 	
-	public String getName(){
+	public String getName() {
 		return Name;
 	}
 	
-	public static CrateType getFromName(String name){
-		for(CrateType crate : CrateType.values()){
-			if(crate.getName().equalsIgnoreCase(name)){
+	public static CrateType getFromName(String name) {
+		for(CrateType crate : CrateType.values()) {
+			if(crate.getName().equalsIgnoreCase(name)) {
 				return crate;
 			}
 		}

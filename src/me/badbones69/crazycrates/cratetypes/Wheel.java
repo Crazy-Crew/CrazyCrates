@@ -24,31 +24,31 @@ import me.badbones69.crazycrates.api.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.Prize;
 import me.badbones69.crazycrates.multisupport.Version;
 
-public class Wheel implements Listener{
+public class Wheel implements Listener {
 	
 	public static HashMap<Player, Integer> crate = new HashMap<Player, Integer>();
 	public static HashMap<Player, HashMap<Integer, ItemStack>> Rewards = new HashMap<Player, HashMap<Integer, ItemStack>>();
 	
-	public static void startWheel(final Player player){
+	public static void startWheel(final Player player) {
 		final Inventory inv = Bukkit.createInventory(null, 54, Methods.color(GUI.crates.get(player).getFile().getString("Crate.CrateName")));
-		for(int i=0;i<54;i++){
+		for(int i = 0; i < 54; i++) {
 			inv.setItem(i, Methods.makeItem("160:15", 1, " "));
-		} 
+		}
 		HashMap<Integer, ItemStack> items = new HashMap<Integer, ItemStack>();
-		for(int i : getBorder()){
+		for(int i : getBorder()) {
 			Prize prize = Main.CC.pickPrize(player);
 			inv.setItem(i, prize.getDisplayItem());
 			items.put(i, prize.getDisplayItem());
 		}
 		Rewards.put(player, items);
-		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY){
+		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY) {
 			Methods.removeItem(CrateControl.keys.get(player), player);
 		}
-		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY){
+		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY) {
 			Methods.takeKeys(1, player, GUI.crates.get(player));
 		}
 		player.openInventory(inv);
-		crate.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable(){
+		crate.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 			ArrayList<Integer> slots = getBorder();
 			int i = 0;
 			int f = 17;
@@ -57,80 +57,80 @@ public class Wheel implements Listener{
 			int slower = 0;
 			int open = 0;
 			int slow = 0;
+			
 			@Override
 			public void run() {
-				if(i >= 18){
+				if(i >= 18) {
 					i = 0;
 				}
-				if(f >= 18){
+				if(f >= 18) {
 					f = 0;
 				}
-				if(full < timer){
-					if(Rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()){
-						inv.setItem(slots.get(i), Methods.makeItem("160:5", 1, Rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName(),
-								Rewards.get(player).get(slots.get(i)).getItemMeta().getLore()));
-					}else{
+				if(full < timer) {
+					if(Rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
+						inv.setItem(slots.get(i), Methods.makeItem("160:5", 1, Rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName(), Rewards.get(player).get(slots.get(i)).getItemMeta().getLore()));
+					}else {
 						inv.setItem(slots.get(i), Methods.makeItem("160:5", 1, Rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()));
 					}
 					inv.setItem(slots.get(f), Rewards.get(player).get(slots.get(f)));
-					if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()){
+					if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
 						player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
-					}else{
+					}else {
 						player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
 					}
 					i++;
 					f++;
 				}
-				if(full >= timer){
-					if(slowSpin().contains(slower)){
-						if(Rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()){
-							inv.setItem(slots.get(i), Methods.makeItem("160:5", 1, Rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName(),
-									Rewards.get(player).get(slots.get(i)).getItemMeta().getLore()));
-						}else{
+				if(full >= timer) {
+					if(slowSpin().contains(slower)) {
+						if(Rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
+							inv.setItem(slots.get(i), Methods.makeItem("160:5", 1, Rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName(), Rewards.get(player).get(slots.get(i)).getItemMeta().getLore()));
+						}else {
 							inv.setItem(slots.get(i), Methods.makeItem("160:5", 1, Rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()));
 						}
 						inv.setItem(slots.get(f), Rewards.get(player).get(slots.get(f)));
-						if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()){
+						if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
 							player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
-						}else{
+						}else {
 							player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
 						}
 						i++;
 						f++;
 					}
-					if(full == timer + 47){
-						if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()){
+					if(full == timer + 47) {
+						if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
 							player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
-						}else{
+						}else {
 							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
 						}
 					}
-					if(full >= timer + 47){
+					if(full >= timer + 47) {
 						slow++;
-						if(slow >= 2){
+						if(slow >= 2) {
 							Random r = new Random();
 							int color = r.nextInt(15);
-							if(color == 8)color = 0;
-							for(int slot=0; slot < 54; slot++){
-								if(!getBorder().contains(slot)){
+							if(color == 8)
+								color = 0;
+							for(int slot = 0; slot < 54; slot++) {
+								if(!getBorder().contains(slot)) {
 									inv.setItem(slot, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
 								}
 							}
 							slow = 0;
 						}
 					}
-					if(full >= (timer + 55 + 47)){
+					if(full >= (timer + 55 + 47)) {
 						Prize prize = null;
 						if(GUI.crates.get(player) != null) {
-							for(Prize p : GUI.crates.get(player).getPrizes()){
-								if(Rewards.get(player).get(slots.get(f)).isSimilar(p.getDisplayItem())){
+							for(Prize p : GUI.crates.get(player).getPrizes()) {
+								if(Rewards.get(player).get(slots.get(f)).isSimilar(p.getDisplayItem())) {
 									prize = p;
 								}
 							}
 						}
 						if(prize != null) {
 							Main.CC.getReward(player, prize);
-							if(prize.toggleFirework()){
+							if(prize.toggleFirework()) {
 								Methods.fireWork(player.getLocation().add(0, 1, 0));
 							}
 							Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WHEEL, CrateControl.crates.get(player).getName(), prize));
@@ -143,45 +143,46 @@ public class Wheel implements Listener{
 				}
 				full++;
 				open++;
-				if(open > 5){
+				if(open > 5) {
 					player.openInventory(inv);
 					open = 0;
 				}
 			}
-		}, 1, 1)); 
+		}, 1, 1));
 	}
-
+	
 	@EventHandler
-	public void onInvClick(InventoryClickEvent e){
+	public void onInvClick(InventoryClickEvent e) {
 		Inventory inv = e.getInventory();
 		Player player = (Player) e.getWhoClicked();
-		if(CrateControl.crates.containsKey(player)){
-			if(!CrateControl.crates.get(e.getWhoClicked()).getFile().getString("Crate.CrateType").equalsIgnoreCase("Wheel"))return;
-		}else{
+		if(CrateControl.crates.containsKey(player)) {
+			if(!CrateControl.crates.get(e.getWhoClicked()).getFile().getString("Crate.CrateType").equalsIgnoreCase("Wheel"))
+				return;
+		}else {
 			return;
 		}
-		if(inv != null){
-			if(inv.getName().equals(Methods.color(CrateControl.crates.get(player).getFile().getString("Crate.CrateName")))){
+		if(inv != null) {
+			if(inv.getName().equals(Methods.color(CrateControl.crates.get(player).getFile().getString("Crate.CrateName")))) {
 				e.setCancelled(true);
 			}
 		}
 	}
-
-	private static ArrayList<Integer> slowSpin(){
+	
+	private static ArrayList<Integer> slowSpin() {
 		ArrayList<Integer> slow = new ArrayList<Integer>();
 		int full = 46;
 		int cut = 9;
-		for(int i=46;cut>0;full--){
-			if(full<=i-cut||full>=i-cut){
+		for(int i = 46; cut > 0; full--) {
+			if(full <= i - cut || full >= i - cut) {
 				slow.add(i);
-				i=i-cut;
+				i = i - cut;
 				cut--;
 			}
 		}
 		return slow;
 	}
-
-	private static ArrayList<Integer> getBorder(){
+	
+	private static ArrayList<Integer> getBorder() {
 		ArrayList<Integer> slots = new ArrayList<Integer>();
 		slots.add(13);
 		slots.add(14);
