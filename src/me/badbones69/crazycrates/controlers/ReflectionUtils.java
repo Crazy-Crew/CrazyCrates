@@ -1,4 +1,4 @@
-package me.badbones69.crazycrates;
+package me.badbones69.crazycrates.controlers;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

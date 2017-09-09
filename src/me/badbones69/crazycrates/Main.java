@@ -2,7 +2,6 @@ package me.badbones69.crazycrates;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -23,57 +22,77 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import me.badbones69.crazycrates.api.Crate;
-import me.badbones69.crazycrates.api.CrateType;
 import me.badbones69.crazycrates.api.CrazyCrates;
-import me.badbones69.crazycrates.api.FireworkDamageAPI;
-import me.badbones69.crazycrates.api.KeyType;
-import me.badbones69.crazycrates.api.Messages;
+import me.badbones69.crazycrates.api.enums.CrateType;
+import me.badbones69.crazycrates.api.enums.KeyType;
+import me.badbones69.crazycrates.api.enums.Messages;
+import me.badbones69.crazycrates.api.objects.Crate;
+import me.badbones69.crazycrates.api.objects.CrateLocation;
+import me.badbones69.crazycrates.controlers.CrateControl;
+import me.badbones69.crazycrates.controlers.FileManager;
+import me.badbones69.crazycrates.controlers.FileManager.Files;
+import me.badbones69.crazycrates.controlers.FireworkDamageAPI;
+import me.badbones69.crazycrates.controlers.GUIMenu;
+import me.badbones69.crazycrates.controlers.MCUpdate;
 import me.badbones69.crazycrates.cratetypes.CSGO;
 import me.badbones69.crazycrates.cratetypes.Cosmic;
 import me.badbones69.crazycrates.cratetypes.CrateOnTheGo;
-import me.badbones69.crazycrates.cratetypes.QCC;
+import me.badbones69.crazycrates.cratetypes.QuadCrate;
 import me.badbones69.crazycrates.cratetypes.QuickCrate;
 import me.badbones69.crazycrates.cratetypes.Roulette;
 import me.badbones69.crazycrates.cratetypes.War;
 import me.badbones69.crazycrates.cratetypes.Wheel;
 import me.badbones69.crazycrates.cratetypes.Wonder;
-import me.badbones69.crazycrates.multisupport.Events_v1_11_R1_Down;
-import me.badbones69.crazycrates.multisupport.Events_v1_12_R1_Up;
 import me.badbones69.crazycrates.multisupport.MVdWPlaceholderAPISupport;
 import me.badbones69.crazycrates.multisupport.PlaceholderAPISupport;
 import me.badbones69.crazycrates.multisupport.Support;
 import me.badbones69.crazycrates.multisupport.Version;
+import me.badbones69.crazycrates.multisupport.nms.Events_v1_11_R1_Down;
+import me.badbones69.crazycrates.multisupport.nms.Events_v1_12_R1_Up;
 
 public class Main extends JavaPlugin implements Listener {
 	
 	private Boolean updateChecker = false;
-	public static CrazyCrates CC = CrazyCrates.getInstance();
-	public static SettingsManager settings = SettingsManager.getInstance();
+	private CrazyCrates cc = CrazyCrates.getInstance();
+	private FileManager fileManager = FileManager.getInstance();
 	
 	@Override
 	public void onEnable() {
-		settings.setup(this);
-		if(!settings.getLocations().contains("Locations")) {
-			settings.getLocations().set("Locations.Clear", null);
-			settings.saveLocations();
+		//Crate Files
+		fileManager.logInfo(true)
+		.registerDefaultGenerateFiles("Basic.yml", "/Crates")
+		.registerDefaultGenerateFiles("Classic.yml", "/Crates")
+		.registerDefaultGenerateFiles("Crazy.yml", "/Crates")
+		.registerDefaultGenerateFiles("Galactic.yml", "/Crates")
+		//Schematics
+		.registerDefaultGenerateFiles("Classic.schematic", "/Schematics")
+		.registerDefaultGenerateFiles("Nether.schematic", "/Schematics")
+		.registerDefaultGenerateFiles("OutDoors.schematic", "/Schematics")
+		.registerDefaultGenerateFiles("Sea.schematic", "/Schematics")
+		.registerDefaultGenerateFiles("Soul.schematic", "/Schematics")
+		.registerDefaultGenerateFiles("Wooden.schematic", "/Schematics")
+		//Register all files inside the custom folders.
+		.registerCustomFilesFolder("/Crates")
+		.registerCustomFilesFolder("/Schematics")
+		.setup(this);
+		if(!Files.LOCATIONS.getFile().contains("Locations")) {
+			Files.LOCATIONS.getFile().set("Locations.Clear", null);
+			Files.LOCATIONS.saveFile();
 		}
-		if(!settings.getData().contains("Players")) {
-			settings.getData().set("Players.Clear", null);
-			settings.saveData();
+		if(!Files.DATA.getFile().contains("Players")) {
+			Files.DATA.getFile().set("Players.Clear", null);
+			Files.DATA.saveFile();
 		}
-		if(settings.getConfig().contains("Settings.Update-Checker")) {
-			updateChecker = settings.getConfig().getBoolean("Settings.Update-Checker");
+		if(Files.CONFIG.getFile().contains("Settings.Update-Checker")) {
+			updateChecker = Files.CONFIG.getFile().getBoolean("Settings.Update-Checker");
 		}else {
 			updateChecker = true;
 		}
-		Methods.hasUpdate();
-		CC.loadCrates();
-		GUI.loadPreviews();
+		cc.loadCrates();
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(this, this);
-		pm.registerEvents(new GUI(), this);
-		pm.registerEvents(new QCC(), this);
+		pm.registerEvents(new GUIMenu(), this);
+		pm.registerEvents(new QuadCrate(), this);
 		pm.registerEvents(new War(), this);
 		pm.registerEvents(new CSGO(), this);
 		pm.registerEvents(new Wheel(), this);
@@ -102,26 +121,27 @@ public class Main extends JavaPlugin implements Listener {
 		if(Bukkit.getServer().getOnlinePlayers() != null) {
 			for(Player player : Bukkit.getServer().getOnlinePlayers()) {
 				String uuid = player.getUniqueId().toString();
-				if(!Main.settings.getData().contains("Players." + uuid)) {
-					Main.settings.getData().set("Players." + uuid + ".Name", player.getName());
-					for(String crate : Main.settings.getAllCratesNames()) {
-						int amount = Main.settings.getFile(crate).getInt("Crate.StartingKeys");
-						Main.settings.getData().set("Players." + uuid + "." + crate, amount);
+				if(!Files.DATA.getFile().contains("Players." + uuid)) {
+					Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
+					for(String crate : fileManager.getAllCratesNames()) {
+						int amount = fileManager.getFile(crate).getFile().getInt("Crate.StartingKeys");
+						Files.DATA.getFile().set("Players." + uuid + "." + crate, amount);
 					}
-					Main.settings.saveData();
+					Files.DATA.saveFile();;
 				}
 			}
 		}
 		try {
 			new MCUpdate(this, true);
 		}catch(IOException e) {}
+		Methods.hasUpdate();
 	}
 	
 	@Override
 	public void onDisable() {
-		if(!QCC.crates.isEmpty()) {
-			for(Player player : QCC.crates.keySet()) {
-				QCC.undoBuild(player);
+		if(!QuadCrate.crates.isEmpty()) {
+			for(Player player : QuadCrate.crates.keySet()) {
+				QuadCrate.undoBuild(player);
 			}
 		}
 		if(!QuickCrate.Rewards.isEmpty()) {
@@ -132,102 +152,77 @@ public class Main extends JavaPlugin implements Listener {
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args) {
-		if(commandLable.equalsIgnoreCase("CrazyCrates") || commandLable.equalsIgnoreCase("CC") || commandLable.equalsIgnoreCase("Crate") || commandLable.equalsIgnoreCase("Crates") || commandLable.equalsIgnoreCase("CCrate") || commandLable.equalsIgnoreCase("CrazyCrate")) {
+		if(commandLable.equalsIgnoreCase("crazycrates") ||
+		commandLable.equalsIgnoreCase("cc") ||
+		commandLable.equalsIgnoreCase("crate") ||
+		commandLable.equalsIgnoreCase("crates") ||
+		commandLable.equalsIgnoreCase("ccrate") ||
+		commandLable.equalsIgnoreCase("crazycrate")) {
 			if(args.length == 0) {
 				if(sender instanceof Player) {
 					if(!Methods.permCheck((Player) sender, "Access")) {
 						return true;
 					}
 				}else {
-					sender.sendMessage(Methods.getPrefix() + Methods.color("&cYou must be a player to use this command."));
+					sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
 					return true;
 				}
-				GUI.openGUI((Player) sender);
+				GUIMenu.openGUI((Player) sender);
 				return true;
-			}
-			if(args.length >= 1) {
-				if(args[0].equalsIgnoreCase("Help")) {
-					if(sender instanceof Player)
-						if(!Methods.permCheck((Player) sender, "Access"))
-							return true;
-					sender.sendMessage(Methods.color("&3&lCrazy Crates Help Menu"));
-					sender.sendMessage(Methods.color("&6/CC &7- Opens the GUI."));
-					sender.sendMessage(Methods.color("&6/CC Admin &7- Opens the Admin Keys GUI."));
-					sender.sendMessage(Methods.color("&6/CC List &7- Lists all the Crates."));
-					sender.sendMessage(Methods.color("&6/CC Open <Crate> [Player] &7- Opens a crate for a player."));
-					sender.sendMessage(Methods.color("&6/CC Preview <Crate> [Player] &7- Opens a preview of a crate."));
-					sender.sendMessage(Methods.color("&6/CC Tp <Location> &7- Teleport to a Crate."));
-					sender.sendMessage(Methods.color("&6/CC Give <Physical/Virtual> <Crate> [Amount] [Player] &7- Give a player keys for a Chest."));
-					sender.sendMessage(Methods.color("&6/CC GiveAll <Physical/Virtual> <Crate> [Amount] &7- Gives all online players keys for a Chest."));
-					sender.sendMessage(Methods.color("&6/CC Set <Crate> &7- Set a block you are looking at as a crate."));
-					sender.sendMessage(Methods.color("&6/CC Set Menu &7- Set the block you are looking at to open the \"/cc\" GUI."));
-					sender.sendMessage(Methods.color("&6/CC Reload &7- Reloads the Config and Data Files."));
+			}else if(args.length >= 1) {
+				if(args[0].equalsIgnoreCase("help")) {
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Access")) return true;
+					sender.sendMessage(Messages.HELP.getMessage());
 					return true;
-				}
-				if(args[0].equalsIgnoreCase("Reload")) {
-					if(sender instanceof Player)
-						if(!Methods.permCheck((Player) sender, "Admin"))
-							return true;
-					settings.reloadAll();
-					settings.setup(this);
-					if(!settings.getLocations().contains("Locations")) {
-						settings.getLocations().set("Locations.Clear", null);
-						settings.saveLocations();
+				}else if(args[0].equalsIgnoreCase("reload")) {
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					fileManager.reloadAllFiles();
+					fileManager.setup(this);
+					if(!Files.LOCATIONS.getFile().contains("Locations")) {
+						Files.LOCATIONS.getFile().set("Locations.Clear", null);
+						Files.LOCATIONS.saveFile();
 					}
-					if(!settings.getData().contains("Players")) {
-						settings.getData().set("Players.Clear", null);
-						settings.saveData();
+					if(!Files.DATA.getFile().contains("Players")) {
+						Files.DATA.getFile().set("Players.Clear", null);
+						Files.DATA.saveFile();
 					}
-					CC.loadCrates();
-					GUI.loadPreviews();
+					cc.loadCrates();
 					sender.sendMessage(Messages.RELOAD.getMessage());
 					return true;
-				}
-				if(args[0].equalsIgnoreCase("Admin")) {
-					if(!(sender instanceof Player))
-						return true;
+				}else if(args[0].equalsIgnoreCase("admin")) {
+					if(!(sender instanceof Player)) return true;
 					Player player = (Player) sender;
-					if(!Methods.permCheck(player, "Admin"))
-						return true;
-					int size = Methods.getCrates().size();
+					if(!Methods.permCheck(player, "Admin")) return true;
+					int size = cc.getCrates().size();
 					int slots = 9;
 					for(; size > 9; size -= 9)
 						slots += 9;
 					Inventory inv = Bukkit.createInventory(null, slots, Methods.color("&4&lAdmin Keys"));
 					HashMap<ItemStack, ItemStack> keys = new HashMap<ItemStack, ItemStack>();
-					for(String crate : Methods.getCrates()) {
-						String name = settings.getFile(crate).getString("Crate.PhysicalKey.Name");
-						List<String> lore = settings.getFile(crate).getStringList("Crate.PhysicalKey.Lore");
-						String id = settings.getFile(crate).getString("Crate.PhysicalKey.Item");
-						Boolean enchanted = false;
-						if(settings.getFile(crate).contains("Crate.PhysicalKey.Glowing")) {
-							enchanted = settings.getFile(crate).getBoolean("Crate.PhysicalKey.Glowing");
+					for(Crate crate : cc.getCrates()) {
+						if(crate.getCrateType() != CrateType.MENU) {
+							ItemStack item1 = Methods.addLore(crate.getKey(), "");
+							item1 = Methods.addLore(crate.getKey(), "&7&l(&6&l!&7&l) Left click for Physical Key");
+							item1 = Methods.addLore(crate.getKey(), "&7&l(&6&l!&7&l) Right click for Virtual Key");
+							if(inv.firstEmpty() >= 0) {
+								inv.setItem(inv.firstEmpty(), item1);
+							}
+							keys.put(item1, crate.getKey());
 						}
-						lore.add("");
-						lore.add("&7&l(&6&l!&7&l) Left click for Physical Key");
-						lore.add("&7&l(&6&l!&7&l) Right click for Virtual Key");
-						ItemStack item1 = Methods.makeItem(id, 1, name, lore, enchanted);
-						ItemStack item2 = Methods.makeItem(id, 1, name, settings.getFile(crate).getStringList("Crate.PhysicalKey.Lore"), enchanted);
-						inv.addItem(item1);
-						keys.put(item1, item2);
 					}
 					CrateControl.previewKeys.put(player, keys);
 					player.openInventory(inv);
 					return true;
-				}
-				if(args[0].equalsIgnoreCase("List")) {
-					if(sender instanceof Player)
-						if(!Methods.permCheck((Player) sender, "Admin"))
-							return true;
+				}else if(args[0].equalsIgnoreCase("list")) {
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
 					String crates = "";
 					String brokecrates = "";
-					for(Crate crate : CC.getCrates()) {
+					for(Crate crate : cc.getCrates()) {
 						crates += "&a" + crate.getName() + "&8, ";
 					}
-					for(String crate : CC.getBrokeCrates()) {
+					for(String crate : cc.getBrokeCrates()) {
 						brokecrates += "&c" + crate + ".yml&8, ";
 					}
-					crates += Methods.color("&aMenu");
 					sender.sendMessage(Methods.color("&e&lCrates:&f " + crates));
 					if(brokecrates.length() > 0) {
 						sender.sendMessage(Methods.color("&6&lBroken Crates:&f " + brokecrates.substring(0, brokecrates.length() - 2)));
@@ -235,350 +230,471 @@ public class Main extends JavaPlugin implements Listener {
 					sender.sendMessage(Methods.color("&e&lAll Crate Locations:"));
 					sender.sendMessage(Methods.color("&c[ID]&8, &c[Crate]&8, &c[World]&8, &c[X]&8, &c[Y]&8, &c[Z]"));
 					int line = 1;
-					if(Main.settings.getLocations().getConfigurationSection("Locations") == null) {
-						Main.settings.getLocations().set("Locations.Clear", null);
-						Main.settings.saveLocations();
-					}
-					for(String i : settings.getLocations().getConfigurationSection("Locations").getKeys(false)) {
-						String crate = settings.getLocations().getString("Locations." + i + ".Crate");
-						String W = settings.getLocations().getString("Locations." + i + ".World");
-						String X = settings.getLocations().getString("Locations." + i + ".X");
-						String Y = settings.getLocations().getString("Locations." + i + ".Y");
-						String Z = settings.getLocations().getString("Locations." + i + ".Z");
-						String msg = Methods.color("&8[&b" + line + "&8]: " + "&c" + i + "&8, &c" + crate + "&8, &c" + W + "&8, &c" + X + "&8, &c" + Y + "&8, &c" + Z);
+					for(CrateLocation loc : cc.getCrateLocations()) {
+						Crate crate = loc.getCrate();
+						String world = loc.getLocation().getWorld().getName();
+						int x = loc.getLocation().getBlockX();
+						int y = loc.getLocation().getBlockY();
+						int z = loc.getLocation().getBlockZ();
+						sender.sendMessage(Methods.color("&8[&b" + line + "&8]: " + "&c" + loc.getID() + "&8, &c" + crate.getName() + "&8, &c" + world + "&8, &c" + x + "&8, &c" + y + "&8, &c" + z));
 						line++;
-						sender.sendMessage(msg);
 					}
 					return true;
-				}
-			}
-			if(args[0].equalsIgnoreCase("TP")) {// /CC TP <Location>
-				if(sender instanceof Player)
-					if(!Methods.permCheck((Player) sender, "Admin"))
-						return true;
-				if(args.length == 2) {
-					String Loc = args[1];
-					if(Main.settings.getLocations().getConfigurationSection("Locations") == null) {
-						Main.settings.getLocations().set("Locations.Clear", null);
-						Main.settings.saveLocations();
-					}
-					for(String name : settings.getLocations().getConfigurationSection("Locations").getKeys(false)) {
-						if(name.equalsIgnoreCase(Loc)) {
-							World W = Bukkit.getServer().getWorld(settings.getLocations().getString("Locations." + name + ".World"));
-							int X = settings.getLocations().getInt("Locations." + name + ".X");
-							int Y = settings.getLocations().getInt("Locations." + name + ".Y");
-							int Z = settings.getLocations().getInt("Locations." + name + ".Z");
-							Location loc = new Location(W, X, Y, Z);
-							((Player) sender).teleport(loc.add(.5, 0, .5));
-							sender.sendMessage(Methods.color(Methods.getPrefix() + "&7You have been teleported to &6" + name + "&7."));
-							return true;
+				}else if(args[0].equalsIgnoreCase("tp")) {// /cc TP <Location>
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					if(args.length == 2) {
+						String Loc = args[1];
+						if(!Files.LOCATIONS.getFile().contains("Locations")) {
+							Files.LOCATIONS.getFile().set("Locations.Clear", null);
+							Files.LOCATIONS.saveFile();
 						}
-					}
-					sender.sendMessage(Methods.color(Methods.getPrefix() + "&cThere is no location called &6" + Loc + "&c."));
-					return true;
-				}
-				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/CC TP <Location Name>"));
-				return true;
-			}
-			if(args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("s")) { // /Crate Set <Crate>
-				if(sender instanceof Player)
-					if(!Methods.permCheck((Player) sender, "Admin"))
-						return true;
-				if(args.length == 2) {
-					Player player = (Player) sender;
-					String id = "1"; //Location Name
-					for(int i = 1; settings.getLocations().contains("Locations." + i); i++) {
-						id = (i + 1) + "";
-					}
-					String c = args[1]; //Crate
-					for(String crate : Methods.getCrates()) {
-						if(crate.equalsIgnoreCase(c) || c.equalsIgnoreCase("Menu")) {
-							Block block = player.getTargetBlock((Set<Material>) null, 5);
-							if(settings.getLocations().contains("Locations")) {
-								for(String location : settings.getLocations().getConfigurationSection("Locations").getKeys(false)) {
-									World w = Bukkit.getWorld(Main.settings.getLocations().getString("Locations." + location + ".World"));
-									int x = Main.settings.getLocations().getInt("Locations." + location + ".X");
-									int y = Main.settings.getLocations().getInt("Locations." + location + ".Y");
-									int z = Main.settings.getLocations().getInt("Locations." + location + ".Z");
-									Location loc = new Location(w, x, y, z);
-									if(block.getLocation().equals(loc)) {
-										id = location;
-										break;
-									}
-								}
-							}
-							if(c.equalsIgnoreCase("Menu")) {
-								crate = "Menu";
-							}
-							if(block.isEmpty()) {
-								player.sendMessage(Methods.color(Methods.getPrefix() + "&cYou must be looking at a block."));
+						for(String name : Files.LOCATIONS.getFile().getConfigurationSection("Locations").getKeys(false)) {
+							if(name.equalsIgnoreCase(Loc)) {
+								World W = Bukkit.getServer().getWorld(Files.LOCATIONS.getFile().getString("Locations." + name + ".World"));
+								int X = Files.LOCATIONS.getFile().getInt("Locations." + name + ".X");
+								int Y = Files.LOCATIONS.getFile().getInt("Locations." + name + ".Y");
+								int Z = Files.LOCATIONS.getFile().getInt("Locations." + name + ".Z");
+								Location loc = new Location(W, X, Y, Z);
+								((Player) sender).teleport(loc.add(.5, 0, .5));
+								sender.sendMessage(Methods.color(Methods.getPrefix() + "&7You have been teleported to &6" + name + "&7."));
 								return true;
 							}
-							Location loc = block.getLocation();
-							settings.getLocations().set("Locations." + id + ".Crate", crate);
-							settings.getLocations().set("Locations." + id + ".World", loc.getWorld().getName());
-							settings.getLocations().set("Locations." + id + ".X", loc.getBlockX());
-							settings.getLocations().set("Locations." + id + ".Y", loc.getBlockY());
-							settings.getLocations().set("Locations." + id + ".Z", loc.getBlockZ());
-							settings.saveLocations();
-							player.sendMessage(Methods.color(Methods.getPrefix() + "&7You have just set that block to " + crate + "."));
-							sender.sendMessage(Methods.color(Methods.getPrefix() + "&7To remove the crate shift break in creative to remove."));
-							return true;
 						}
-					}
-					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c" + c + " is not a Crate."));
-					sender.sendMessage(Methods.color(Methods.getPrefix() + "&cThere is no Crates called &6" + c + "&c."));
-					return true;
-				}
-				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/CC Set <Crate>"));
-				return true;
-			}
-			if(args[0].equalsIgnoreCase("GiveAll")) {// /Crate GiveAll <Physical/Virtual> <Crate> <Amount>
-				if(sender instanceof Player)
-					if(!Methods.permCheck((Player) sender, "Admin"))
+						sender.sendMessage(Methods.color(Methods.getPrefix() + "&cThere is no location called &6" + Loc + "&c."));
 						return true;
-				if(args.length >= 3) {
-					int amount = 1;
-					if(args.length >= 4) {
-						if(!Methods.isInt(args[3])) {
-							sender.sendMessage(Methods.color(Methods.getPrefix() + "&c" + args[3] + " is not a Number."));
+					}
+					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/cc TP <Location Name>"));
+					return true;
+				}else if(args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("s")) { // /Crate Set <Crate>
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					if(!(sender instanceof Player)) {
+						sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
+						return true;
+					}
+					if(args.length == 2) {
+						Player player = (Player) sender;
+						String c = args[1]; //Crate
+						for(Crate crate : cc.getCrates()) {
+							if(crate.getName().equalsIgnoreCase(c)) {
+								Block block = player.getTargetBlock((Set<Material>) null, 5);
+								if(block.isEmpty()) {
+									player.sendMessage(Messages.MUST_BE_LOOKING_AT_A_BLOCK.getMessage());
+									return true;
+								}
+								CrazyCrates.getInstance().addCrateLocation(block.getLocation(), crate);
+								HashMap<String, String> placeholders = new HashMap<>();
+								placeholders.put("%crate%", crate.getName());
+								placeholders.put("%prefix%", Methods.getPrefix());
+								player.sendMessage(Messages.CREATED_PHYSICAL_CRATE.getMessage(placeholders));
+								return true;
+							}
+						}
+						HashMap<String, String> placeholders = new HashMap<>();
+						placeholders.put("%crate%", c);
+						sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+						return true;
+					}
+					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/cc Set <Crate>"));
+					return true;
+				}else if(args[0].equalsIgnoreCase("preview")) {// /cc Preview <Crate> [Player]
+					if(sender instanceof Player) {
+						if(!Methods.permCheck((Player) sender, "preview")) {
 							return true;
 						}
-						amount = Integer.parseInt(args[3]);
 					}
-					String type = args[1];
-					if(!(type.equalsIgnoreCase("Virtual") || type.equalsIgnoreCase("V") || type.equalsIgnoreCase("Physical") || type.equalsIgnoreCase("P"))) {
+					if(args.length >= 2) {
+						Crate crate = null;
+						Player player = null;
+						for(Crate c : cc.getCrates()) {
+							if(crate.getCrateType() != CrateType.MENU) {
+								if(c.getName().equalsIgnoreCase(args[1])) {
+									crate = c;
+								}
+							}
+						}
+						if(crate != null) {
+							if(crate.getCrateType() != CrateType.MENU) {
+								if(args.length >= 3) {
+									if(Methods.isOnline(args[2], sender)) {
+										player = Methods.getPlayer(args[2]);
+									}else {
+										return true;
+									}
+								}else {
+									if(!(sender instanceof Player)) {
+										sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
+										return true;
+									}else {
+										player = (Player) sender;
+									}
+								}
+								GUIMenu.openPreview(player, crate);
+							}
+							return true;
+						}
+					}
+					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
+					return true;
+				}else if(args[0].equalsIgnoreCase("open")) {// /cc Open <Crate> [Player]
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					if(args.length >= 2) {
+						for(Crate crate : cc.getCrates()) {
+							if(crate.getName().equalsIgnoreCase(args[1])) {
+								Player player = null;
+								if(args.length >= 3) {
+									if(Methods.isOnline(args[2], sender)) {
+										player = Methods.getPlayer(args[2]);
+									}else {
+										return true;
+									}
+								}else {
+									if(!(sender instanceof Player)) {
+										sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Open <Crate> [Player]"));
+										return true;
+									}else {
+										player = (Player) sender;
+									}
+								}
+								if(crate.getCrateType() == CrateType.MENU) {
+									sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Open <Crate> [Player]"));
+									return true;
+								}
+								if(CrazyCrates.getInstance().isInOpeningList(player)) {
+									sender.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
+									return true;
+								}
+								CrateType type = crate.getCrateType();
+								if(type != null) {
+									if(type != CrateType.CRATE_ON_THE_GO && type != CrateType.QUICK_CRATE && type != CrateType.FIRE_CRACKER) {
+										cc.openCrate(player, crate, KeyType.FREE_KEY, player.getLocation());
+										HashMap<String, String> placeholders = new HashMap<>();
+										placeholders.put("%crate%", crate.getName());
+										placeholders.put("%player%", player.getName());
+										sender.sendMessage(Messages.OPENED_A_CRATE.getMessage(placeholders));
+										return true;
+									}else {
+										sender.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
+										return true;
+									}
+								}else {
+									HashMap<String, String> placeholders = new HashMap<>();
+									placeholders.put("%crate%", args[1]);
+									sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+									return true;
+								}
+							}
+						}
+						HashMap<String, String> placeholders = new HashMap<>();
+						placeholders.put("%crate%", args[1]);
+						sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+						return true;
+					}
+					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Open <Crate> [Player]"));
+					return true;
+				}else if(args[0].equalsIgnoreCase("giveall")) {// /Crate GiveAll <Physical/Virtual> <Crate> <Amount>
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					if(args.length >= 3) {
+						int amount = 1;
+						if(args.length >= 4) {
+							if(!Methods.isInt(args[3])) {
+								HashMap<String, String> placeholders = new HashMap<>();
+								placeholders.put("%number%", args[3]);
+								sender.sendMessage(Messages.NOT_A_NUMBER.getMessage(placeholders));
+								return true;
+							}
+							amount = Integer.parseInt(args[3]);
+						}
+						String type = args[1];
+						if(!(type.equalsIgnoreCase("Virtual") || type.equalsIgnoreCase("V") || type.equalsIgnoreCase("Physical") || type.equalsIgnoreCase("P"))) {
+							sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease use Virtual/V or Physical/P for a Key type."));
+							return true;
+						}
+						Crate crate = cc.getCrateFromName(args[2]);
+						if(crate != null) {
+							if(crate.getCrateType() != CrateType.MENU) {
+								HashMap<String, String> placeholders = new HashMap<>();
+								placeholders.put("%amount%", amount + "");
+								sender.sendMessage(Messages.GIVEN_EVERYONE_KEYS.getMessage(placeholders));
+								for(Player p : Bukkit.getServer().getOnlinePlayers()) {
+									if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
+										p.getInventory().addItem(crate.getKey());
+										return true;
+									}
+									if(type.equalsIgnoreCase("Virtual") || type.equalsIgnoreCase("V")) {
+										CrazyCrates.getInstance().addKeys(amount, p, crate, KeyType.VIRTUAL_KEY);
+									}
+									if(type.equalsIgnoreCase("Physical") || type.equalsIgnoreCase("P")) {
+										CrazyCrates.getInstance().addKeys(amount, p, crate, KeyType.PHYSICAL_KEY);
+									}
+								}
+								return true;
+							}
+						}
+						HashMap<String, String> placeholders = new HashMap<>();
+						placeholders.put("%crate%", args[2]);
+						sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+						return true;
+					}
+					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate GiveAll <Physical/Virtual> <Crate> <Amount>"));
+					return true;
+				}else if(args[0].equalsIgnoreCase("give")) {// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					KeyType type = null;
+					if(args.length >= 2) {
+						type = KeyType.getFromName(args[1]);
+					}
+					if(type == null || type == KeyType.FREE_KEY) {
 						sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease use Virtual/V or Physical/P for a Key type."));
 						return true;
 					}
-					Crate crate = CC.getCrateFromName(args[2]);
-					if(crate != null) {
-						if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
-							sender.sendMessage(Methods.color(Methods.getPrefix() + "&7You have given everyone &6" + amount + " &7Crates."));
-						}else {
-							sender.sendMessage(Methods.color(Methods.getPrefix() + "&7You have given everyone &6" + amount + " &7Keys."));
-						}
-						for(Player p : Bukkit.getServer().getOnlinePlayers()) {
-							if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
-								p.getInventory().addItem(crate.getKey());
-								return true;
-							}
-							if(type.equalsIgnoreCase("Virtual") || type.equalsIgnoreCase("V")) {
-								Methods.addKeys(amount, p, crate, KeyType.VIRTUAL_KEY);
-							}
-							if(type.equalsIgnoreCase("Physical") || type.equalsIgnoreCase("P")) {
-								Methods.addKeys(amount, p, crate, KeyType.PHYSICAL_KEY);
-							}
-						}
-						return true;
-					}
-					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c" + args[2] + " is not a Crate."));
-					return true;
-				}
-				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate GiveAll <Physical/Virtual> <Crate> <Amount>"));
-				return true;
-			}
-			if(args[0].equalsIgnoreCase("Preview")) {// /CC Preview <Crate> [Player]
-				if(sender instanceof Player) {
-					if(!Methods.permCheck((Player) sender, "preview")) {
-						return true;
-					}
-				}
-				if(args.length >= 2) {
-					Crate crate = null;
-					Player player = null;
-					for(Crate c : CC.getCrates()) {
-						if(c.getName().equalsIgnoreCase(args[1])) {
-							crate = c;
-						}
-					}
-					if(crate != null) {
-						if(args.length >= 3) {
-							if(Methods.isOnline(args[2], sender)) {
-								player = Methods.getPlayer(args[2]);
-							}else {
-								return true;
-							}
-						}else {
-							if(!(sender instanceof Player)) {
-								sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
-								return true;
-							}else {
-								player = (Player) sender;
-							}
-						}
-						GUI.openPreview(player, crate);
-						return true;
-					}
-				}
-				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
-				return true;
-			}
-			if(args[0].equalsIgnoreCase("Open")) {// /CC Open <Crate> [Player]
-				if(sender instanceof Player)
-					if(!Methods.permCheck((Player) sender, "Admin"))
-						return true;
-				if(args.length >= 2) {
-					for(String crate : Methods.getCrates()) {
-						if(crate.equalsIgnoreCase(args[1])) {
-							Player player = null;
-							if(args.length >= 3) {
-								if(Methods.isOnline(args[2], sender)) {
-									player = Methods.getPlayer(args[2]);
-								}else {
-									return true;
-								}
-							}else {
+					if(args.length == 3) {
+						Crate crate = cc.getCrateFromName(args[2]);
+						if(crate != null) {
+							if(crate.getCrateType() != CrateType.MENU) {
 								if(!(sender instanceof Player)) {
-									sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Open <Crate> [Player]"));
+									sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
 									return true;
-								}else {
-									player = (Player) sender;
 								}
-							}
-							if(GUI.crates.containsKey(player)) {
-								sender.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
+								HashMap<String, String> placeholders = new HashMap<>();
+								placeholders.put("%amount%", "1");
+								placeholders.put("%player%", sender.getName());
+								sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
+								if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
+									((Player) sender).getInventory().addItem(crate.getKey());
+								}else {
+									if(type == KeyType.VIRTUAL_KEY) {
+										cc.addKeys(1, (Player) sender, crate, KeyType.VIRTUAL_KEY);
+									}else if(type == KeyType.PHYSICAL_KEY) {
+										cc.addKeys(1, (Player) sender, crate, KeyType.PHYSICAL_KEY);
+									}
+								}
 								return true;
 							}
-							CrateType type = CrateType.getFromName(Main.settings.getFile(crate).getString("Crate.CrateType"));
-							if(type != null) {
-								if(type != CrateType.CRATE_ON_THE_GO && type != CrateType.QUICK_CRATE && type != CrateType.FIRE_CRACKER) {
-									for(Crate c : Main.CC.getCrates()) {
-										if(c.getName().equalsIgnoreCase(crate)) {
-											CrateControl.crates.put(player, c);
-											GUI.crates.put(player, c);
+						}
+						HashMap<String, String> placeholders = new HashMap<>();
+						placeholders.put("%crate%", args[2]);
+						sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+						return true;
+					}else if(args.length == 4) {
+						if(!(sender instanceof Player)) {
+							sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
+							return true;
+						}
+						if(!Methods.isInt(args[3])) {
+							HashMap<String, String> placeholders = new HashMap<>();
+							placeholders.put("%number%", args[3]);
+							sender.sendMessage(Messages.NOT_A_NUMBER.getMessage(placeholders));
+							return true;
+						}
+						int amount = Integer.parseInt(args[3]);
+						Crate crate = cc.getCrateFromName(args[2]);
+						if(crate != null) {
+							if(crate.getCrateType() != CrateType.MENU) {
+								HashMap<String, String> placeholders = new HashMap<>();
+								placeholders.put("%amount%", amount + "");
+								placeholders.put("%player%", sender.getName());
+								sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
+								if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
+									((Player) sender).getInventory().addItem(crate.getKey(amount));
+								}else {
+									if(type == KeyType.VIRTUAL_KEY) {
+										cc.addKeys(amount, (Player) sender, crate, KeyType.VIRTUAL_KEY);
+									}else if(type == KeyType.PHYSICAL_KEY) {
+										cc.addKeys(amount, (Player) sender, crate, KeyType.PHYSICAL_KEY);
+									}
+								}
+								return true;
+							}
+						}
+						HashMap<String, String> placeholders = new HashMap<>();
+						placeholders.put("%crate%", args[2]);
+						sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+						return true;
+					}else if(args.length == 5) {
+						if(!Methods.isInt(args[3])) {
+							HashMap<String, String> placeholders = new HashMap<>();
+							placeholders.put("%number%", args[3]);
+							sender.sendMessage(Messages.NOT_A_NUMBER.getMessage(placeholders));
+							return true;
+						}
+						int amount = Integer.parseInt(args[3]);
+						Player target = Methods.getPlayer(args[4]);
+						Crate crate = cc.getCrateFromName(args[2]);
+						if(crate != null) {
+							if(crate.getCrateType() != CrateType.MENU) {
+								if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
+									target.getInventory().addItem(crate.getKey(amount));
+								}else {
+									if(type == KeyType.VIRTUAL_KEY) {
+										if(target != null) {
+											cc.addKeys(amount, target, crate, KeyType.VIRTUAL_KEY);
+										}else {
+											if(!cc.addOfflineKeys(args[4], crate, amount)) {
+												sender.sendMessage(Messages.INTERNAL_ERROR.getMessage());
+												return true;
+											}else {
+												HashMap<String, String> placeholders = new HashMap<>();
+												placeholders.put("%amount%", amount + "");
+												placeholders.put("%player%", args[4]);
+												sender.sendMessage(Messages.GIVEN_OFFLINE_PLAYER_KEYS.getMessage(placeholders));
+												return true;
+											}
+										}
+									}else if(type == KeyType.PHYSICAL_KEY) {
+										if(target != null) {
+											cc.addKeys(amount, target, crate, KeyType.PHYSICAL_KEY);
+										}else {
+											if(!cc.addOfflineKeys(args[4], crate, amount)) {
+												sender.sendMessage(Messages.INTERNAL_ERROR.getMessage());
+												return true;
+											}else {
+												HashMap<String, String> placeholders = new HashMap<>();
+												placeholders.put("%amount%", amount + "");
+												placeholders.put("%player%", args[4]);
+												sender.sendMessage(Messages.GIVEN_OFFLINE_PLAYER_KEYS.getMessage(placeholders));
+												return true;
+											}
 										}
 									}
-									Methods.Key.put(player, KeyType.FREE_KEY);
-									CC.openCrate(player, type, player.getLocation());
-									sender.sendMessage(Methods.color(Methods.getPrefix() + "&7You have just opened the &6" + crate + " &7crate for &6" + player.getName() + "&7."));
-									return true;
-								}else {
-									sender.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
-									return true;
 								}
-							}else {
-								sender.sendMessage(Methods.color(Methods.getPrefix() + "&c" + args[1] + " is not a Crate."));
+								HashMap<String, String> placeholders = new HashMap<>();
+								placeholders.put("%amount%", amount + "");
+								placeholders.put("%player%", target.getName());
+								sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
 								return true;
 							}
 						}
-					}
-					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c" + args[1] + " is not a Crate."));
-					return true;
-				}
-				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Open <Crate> [Player]"));
-				return true;
-			}
-			if(args[0].equalsIgnoreCase("Give")) {// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
-				if(sender instanceof Player)
-					if(!Methods.permCheck((Player) sender, "Admin"))
+						HashMap<String, String> placeholders = new HashMap<>();
+						placeholders.put("%crate%", args[2]);
+						sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
 						return true;
-				KeyType type = null;
-				if(args.length >= 2) {
-					type = KeyType.getFromName(args[1]);
-				}
-				if(type == null || type == KeyType.FREE_KEY) {
-					sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease use Virtual/V or Physical/P for a Key type."));
+					}
+					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Give <Physical/Virtual> <Crate> [Amount] [Player]"));
 					return true;
-				}
-				if(args.length == 3) {
-					Crate crate = CC.getCrateFromName(args[2]);
-					if(crate != null) {
+				}else if(args[0].equalsIgnoreCase("take")) {// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					KeyType type = null;
+					if(args.length >= 2) {
+						type = KeyType.getFromName(args[1]);
+					}
+					if(type == null || type == KeyType.FREE_KEY) {
+						sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease use Virtual/V or Physical/P for a Key type."));
+						return true;
+					}
+					if(args.length == 3) {
+						Crate crate = cc.getCrateFromName(args[2]);
+						if(crate != null) {
+							if(crate.getCrateType() != CrateType.MENU) {
+								if(!(sender instanceof Player)) {
+									sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
+									return true;
+								}
+								HashMap<String, String> placeholders = new HashMap<>();
+								placeholders.put("%amount%", "1");
+								placeholders.put("%player%", sender.getName());
+								sender.sendMessage(Messages.TAKE_A_PLAYER_KEYS.getMessage(placeholders));
+								if(type == KeyType.VIRTUAL_KEY) {
+									cc.takeKeys(1, (Player) sender, crate, KeyType.VIRTUAL_KEY);
+								}else if(type == KeyType.PHYSICAL_KEY) {
+									cc.takeKeys(1, (Player) sender, crate, KeyType.PHYSICAL_KEY);
+								}
+								return true;
+							}
+						}
+						HashMap<String, String> placeholders = new HashMap<>();
+						placeholders.put("%crate%", args[2]);
+						sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+						return true;
+					}else if(args.length == 4) {
 						if(!(sender instanceof Player)) {
-							sender.sendMessage(Methods.color(Methods.getPrefix() + "&cYou must be a player to run this command."));
+							sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
 							return true;
 						}
-						if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
-							sender.sendMessage(Methods.color(Methods.getPrefix() + "&7You have given &6" + sender.getName() + " " + 1 + " &7Crates."));
-							((Player) sender).getInventory().addItem(crate.getKey());
+						if(!Methods.isInt(args[3])) {
+							HashMap<String, String> placeholders = new HashMap<>();
+							placeholders.put("%number%", args[3]);
+							sender.sendMessage(Messages.NOT_A_NUMBER.getMessage(placeholders));
 							return true;
 						}
-						sender.sendMessage(Methods.color(Methods.getPrefix() + "&7You have given &6" + sender.getName() + " " + 1 + " &7Keys."));
-						if(type == KeyType.VIRTUAL_KEY) {
-							Methods.addKeys(1, (Player) sender, crate, KeyType.VIRTUAL_KEY);
-						}else if(type == KeyType.PHYSICAL_KEY) {
-							Methods.addKeys(1, (Player) sender, crate, KeyType.PHYSICAL_KEY);
-						}
-						return true;
-					}
-					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c" + args[2] + " is not a Crate."));
-					return true;
-				}
-				if(args.length == 4) {
-					if(!Methods.isInt(args[3])) {
-						sender.sendMessage(Methods.color(Methods.getPrefix() + "&c" + args[3] + " is not a Number."));
-						return true;
-					}
-					int amount = Integer.parseInt(args[3]);
-					Crate crate = CC.getCrateFromName(args[2]);
-					if(crate != null) {
-						if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
-							sender.sendMessage(Methods.color(Methods.getPrefix() + "&7You have given &6" + sender.getName() + " " + amount + " &7Crates."));
-							((Player) sender).getInventory().addItem(crate.getKey());
-							return true;
-						}
-						sender.sendMessage(Methods.color(Methods.getPrefix() + "&7You have given &6" + sender.getName() + " " + amount + " &7Keys."));
-						if(type == KeyType.VIRTUAL_KEY) {
-							Methods.addKeys(amount, (Player) sender, crate, KeyType.VIRTUAL_KEY);
-						}else if(type == KeyType.PHYSICAL_KEY) {
-							Methods.addKeys(amount, (Player) sender, crate, KeyType.PHYSICAL_KEY);
-						}
-						return true;
-					}
-					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c" + args[2] + " is not a Crate."));
-					return true;
-				}
-				if(args.length == 5) {
-					if(!Methods.isInt(args[3])) {
-						sender.sendMessage(Methods.color(Methods.getPrefix() + "&c" + args[3] + " is not a Number."));
-						return true;
-					}
-					int amount = Integer.parseInt(args[3]);
-					Player target = Methods.getPlayer(args[4]);
-					Crate crate = CC.getCrateFromName(args[2]);
-					if(crate != null) {
-						if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
-							sender.sendMessage(Methods.color(Methods.getPrefix() + "&7You have given &6" + target.getName() + " " + amount + " &7Crates."));
-							((Player) sender).getInventory().addItem(crate.getKey());
-							return true;
-						}
-						
-						if(type == KeyType.VIRTUAL_KEY) {
-							if(target != null) {
-								Methods.addKeys(amount, target, crate, KeyType.VIRTUAL_KEY);
-							}else {
-								if(!CC.addOfflineKeys(args[4], crate, amount)) {
-									sender.sendMessage(Methods.getPrefix("&cAn internal error has occurred. Please check the console for the full error."));
-									return true;
-								}else {
-									sender.sendMessage(Methods.getPrefix("&7You have given the offline player " + args[4] + " " + amount + " keys."));
-									return true;
+						int amount = Integer.parseInt(args[3]);
+						Crate crate = cc.getCrateFromName(args[2]);
+						if(crate != null) {
+							if(crate.getCrateType() != CrateType.MENU) {
+								HashMap<String, String> placeholders = new HashMap<>();
+								placeholders.put("%amount%", amount + "");
+								placeholders.put("%player%", sender.getName());
+								sender.sendMessage(Messages.TAKE_A_PLAYER_KEYS.getMessage(placeholders));
+								if(type == KeyType.VIRTUAL_KEY) {
+									cc.takeKeys(amount, (Player) sender, crate, KeyType.VIRTUAL_KEY);
+								}else if(type == KeyType.PHYSICAL_KEY) {
+									cc.takeKeys(amount, (Player) sender, crate, KeyType.PHYSICAL_KEY);
 								}
-							}
-						}else if(type == KeyType.PHYSICAL_KEY) {
-							if(target != null) {
-								Methods.addKeys(amount, target, crate, KeyType.PHYSICAL_KEY);
-							}else {
-								if(!CC.addOfflineKeys(args[4], crate, amount)) {
-									sender.sendMessage(Methods.getPrefix("&cAn internal error has occurred. Please check the console for the full error."));
-									return true;
-								}else {
-									sender.sendMessage(Methods.getPrefix("&7You have given the offline player " + args[4] + " " + amount + " keys."));
-									return true;
-								}
+								return true;
 							}
 						}
-						sender.sendMessage(Methods.color(Methods.getPrefix() + "&7You have given &6" + target.getName() + " " + amount + " &7Keys."));
+						HashMap<String, String> placeholders = new HashMap<>();
+						placeholders.put("%crate%", args[2]);
+						sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+						return true;
+					}else if(args.length == 5) {
+						if(!Methods.isInt(args[3])) {
+							HashMap<String, String> placeholders = new HashMap<>();
+							placeholders.put("%number%", args[3]);
+							sender.sendMessage(Messages.NOT_A_NUMBER.getMessage(placeholders));
+							return true;
+						}
+						int amount = Integer.parseInt(args[3]);
+						Player target = Methods.getPlayer(args[4]);
+						Crate crate = cc.getCrateFromName(args[2]);
+						if(crate != null) {
+							if(crate.getCrateType() != CrateType.MENU) {
+								if(type == KeyType.VIRTUAL_KEY) {
+									if(target != null) {
+										HashMap<String, String> placeholders = new HashMap<>();
+										placeholders.put("%amount%", amount + "");
+										placeholders.put("%player%", target.getName());
+										sender.sendMessage(Messages.TAKE_A_PLAYER_KEYS.getMessage(placeholders));
+										cc.takeKeys(amount, target, crate, KeyType.VIRTUAL_KEY);
+									}else {
+										if(!cc.takeOfflineKeys(args[4], crate, amount)) {
+											sender.sendMessage(Messages.INTERNAL_ERROR.getMessage());
+											return true;
+										}else {
+											HashMap<String, String> placeholders = new HashMap<>();
+											placeholders.put("%amount%", amount + "");
+											placeholders.put("%player%", args[4]);
+											sender.sendMessage(Messages.TAKE_OFFLINE_PLAYER_KEYS.getMessage(placeholders));
+											return true;
+										}
+									}
+								}else if(type == KeyType.PHYSICAL_KEY) {
+									if(target != null) {
+										HashMap<String, String> placeholders = new HashMap<>();
+										placeholders.put("%amount%", amount + "");
+										placeholders.put("%player%", target.getName());
+										sender.sendMessage(Messages.TAKE_A_PLAYER_KEYS.getMessage(placeholders));
+										cc.takeKeys(amount, target, crate, KeyType.PHYSICAL_KEY);
+									}else {
+										HashMap<String, String> placeholders = new HashMap<>();
+										placeholders.put("%player%", args[4]);
+										sender.sendMessage(Messages.NOT_ONLINE.getMessage(placeholders));
+									}
+								}
+								return true;
+							}
+						}
+						HashMap<String, String> placeholders = new HashMap<>();
+						placeholders.put("%crate%", args[2]);
+						sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
 						return true;
 					}
-					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c" + args[2] + " is not a Crate."));
+					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Take <Physical/Virtual> <Crate> [Amount] [Player]"));
 					return true;
 				}
-				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Give <Physical/Virtual> <Crate> [Amount] [Player]"));
-				return true;
 			}
+			sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease do /cc help for more info."));
+			return true;
 		}
-		sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease do /CC Help for more info."));
 		return false;
 	}
 	
@@ -589,7 +705,7 @@ public class Main extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player player = e.getPlayer();
-		CC.loadOfflinePlayersKeys(player);
+		cc.loadOfflinePlayersKeys(player);
 		new BukkitRunnable() {
 			@Override
 			public void run() {

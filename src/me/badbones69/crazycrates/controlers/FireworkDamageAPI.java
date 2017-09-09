@@ -1,4 +1,4 @@
-package me.badbones69.crazycrates.api;
+package me.badbones69.crazycrates.controlers;
 
 import java.util.ArrayList;
 

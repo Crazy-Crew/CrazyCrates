@@ -7,44 +7,38 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import me.badbones69.crazycrates.CrateControl;
-import me.badbones69.crazycrates.GUI;
 import me.badbones69.crazycrates.Main;
 import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrateType;
-import me.badbones69.crazycrates.api.KeyType;
-import me.badbones69.crazycrates.api.PlayerPrizeEvent;
-import me.badbones69.crazycrates.api.Prize;
+import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.enums.CrateType;
+import me.badbones69.crazycrates.api.enums.KeyType;
+import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
+import me.badbones69.crazycrates.api.objects.Crate;
+import me.badbones69.crazycrates.api.objects.Prize;
 
 public class Wonder implements Listener {
 	
-	private static HashMap<Player, HashMap<ItemStack, String>> Items = new HashMap<Player, HashMap<ItemStack, String>>();
-	private static HashMap<Player, Integer> crate = new HashMap<Player, Integer>();
+	private static CrazyCrates cc = CrazyCrates.getInstance();
+	private static HashMap<Player, HashMap<ItemStack, String>> Items = new HashMap<>();
 	
-	public static void startWonder(final Player player) {
-		final Inventory inv = Bukkit.createInventory(null, 45, Methods.color(GUI.crates.get(player).getFile().getString("Crate.CrateName")));
+	public static void startWonder(final Player player, Crate crate, KeyType key) {
+		final Inventory inv = Bukkit.createInventory(null, 45, Methods.color(crate.getFile().getString("Crate.CrateName")));
 		final HashMap<ItemStack, String> items = new HashMap<ItemStack, String>();
 		final ArrayList<String> slots = new ArrayList<String>();
 		for(int i = 0; i < 45; i++) {
-			Prize prize = Main.CC.pickPrize(player);
+			Prize prize = cc.pickPrize(player, crate);
 			slots.add(i + "");
 			inv.setItem(i, prize.getDisplayItem());
 		}
 		Items.put(player, items);
-		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY) {
-			Methods.removeItem(CrateControl.keys.get(player), player);
-		}
-		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY) {
-			Methods.takeKeys(1, player, GUI.crates.get(player));
-		}
+		cc.takeKeys(1, player, crate, key);
 		player.openInventory(inv);
-		crate.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
+		cc.addCrateTask(player, new BukkitRunnable() {
 			int fulltime = 0;
 			int timer = 0;
 			int slot1 = 0;
@@ -63,7 +57,7 @@ public class Wonder implements Listener {
 					inv.setItem(slot1, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
 					inv.setItem(slot2, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
 					for(String slot : slots) {
-						p = Main.CC.pickPrize(player);
+						p = cc.pickPrize(player, crate);
 						inv.setItem(Integer.parseInt(slot), p.getDisplayItem());
 					}
 					slot1++;
@@ -78,15 +72,14 @@ public class Wonder implements Listener {
 				}
 				player.openInventory(inv);
 				if(fulltime > 100) {
-					Bukkit.getScheduler().cancelTask(crate.get(player));
-					crate.remove(player);
+					cc.endCrate(player);
 					player.closeInventory();
-					Main.CC.getReward(player, p);
+					cc.getReward(player, p);
 					if(p.toggleFirework()) {
 						Methods.fireWork(player.getLocation().add(0, 1, 0));
 					}
-					Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WONDER, CrateControl.crates.get(player).getName(), p));
-					GUI.crates.remove(player);
+					Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WONDER, crate.getName(), p));
+					cc.removePlayerFromOpeningList(player);
 					return;
 				}
 				fulltime++;
@@ -95,24 +88,7 @@ public class Wonder implements Listener {
 					timer = 0;
 				}
 			}
-		}, 0, 2));
-	}
-	
-	@EventHandler
-	public void onInvClick(InventoryClickEvent e) {
-		Inventory inv = e.getInventory();
-		Player player = (Player) e.getWhoClicked();
-		if(CrateControl.crates.containsKey(player)) {
-			if(!CrateControl.crates.get(e.getWhoClicked()).getFile().getString("Crate.CrateType").equalsIgnoreCase("Wonder"))
-				return;
-		}else {
-			return;
-		}
-		if(inv != null) {
-			if(inv.getName().equals(Methods.color(CrateControl.crates.get(player).getFile().getString("Crate.CrateName")))) {
-				e.setCancelled(true);
-			}
-		}
+		}.runTaskTimer(Main.getPlugin(), 0, 2));
 	}
 	
 }

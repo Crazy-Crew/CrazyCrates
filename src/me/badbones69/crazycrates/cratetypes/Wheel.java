@@ -8,47 +8,41 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import me.badbones69.crazycrates.CrateControl;
-import me.badbones69.crazycrates.GUI;
 import me.badbones69.crazycrates.Main;
 import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrateType;
-import me.badbones69.crazycrates.api.KeyType;
-import me.badbones69.crazycrates.api.PlayerPrizeEvent;
-import me.badbones69.crazycrates.api.Prize;
+import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.enums.CrateType;
+import me.badbones69.crazycrates.api.enums.KeyType;
+import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
+import me.badbones69.crazycrates.api.objects.Crate;
+import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.multisupport.Version;
 
 public class Wheel implements Listener {
 	
-	public static HashMap<Player, Integer> crate = new HashMap<Player, Integer>();
-	public static HashMap<Player, HashMap<Integer, ItemStack>> Rewards = new HashMap<Player, HashMap<Integer, ItemStack>>();
+	private static CrazyCrates cc = CrazyCrates.getInstance();
+	public static HashMap<Player, HashMap<Integer, ItemStack>> Rewards = new HashMap<>();
 	
-	public static void startWheel(final Player player) {
-		final Inventory inv = Bukkit.createInventory(null, 54, Methods.color(GUI.crates.get(player).getFile().getString("Crate.CrateName")));
+	public static void startWheel(final Player player, Crate crate, KeyType key) {
+		final Inventory inv = Bukkit.createInventory(null, 54, Methods.color(crate.getFile().getString("Crate.CrateName")));
 		for(int i = 0; i < 54; i++) {
 			inv.setItem(i, Methods.makeItem("160:15", 1, " "));
 		}
 		HashMap<Integer, ItemStack> items = new HashMap<Integer, ItemStack>();
 		for(int i : getBorder()) {
-			Prize prize = Main.CC.pickPrize(player);
+			Prize prize = cc.pickPrize(player, crate);
 			inv.setItem(i, prize.getDisplayItem());
 			items.put(i, prize.getDisplayItem());
 		}
 		Rewards.put(player, items);
-		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY) {
-			Methods.removeItem(CrateControl.keys.get(player), player);
-		}
-		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY) {
-			Methods.takeKeys(1, player, GUI.crates.get(player));
-		}
+		cc.takeKeys(1, player, crate, key);
 		player.openInventory(inv);
-		crate.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
+		cc.addCrateTask(player, new BukkitRunnable() {
 			ArrayList<Integer> slots = getBorder();
 			int i = 0;
 			int f = 17;
@@ -121,23 +115,23 @@ public class Wheel implements Listener {
 					}
 					if(full >= (timer + 55 + 47)) {
 						Prize prize = null;
-						if(GUI.crates.get(player) != null) {
-							for(Prize p : GUI.crates.get(player).getPrizes()) {
+						if(cc.isInOpeningList(player)) {
+							for(Prize p : crate.getPrizes()) {
 								if(Rewards.get(player).get(slots.get(f)).isSimilar(p.getDisplayItem())) {
 									prize = p;
 								}
 							}
 						}
 						if(prize != null) {
-							Main.CC.getReward(player, prize);
+							cc.getReward(player, prize);
 							if(prize.toggleFirework()) {
 								Methods.fireWork(player.getLocation().add(0, 1, 0));
 							}
-							Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WHEEL, CrateControl.crates.get(player).getName(), prize));
+							Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WHEEL, crate.getName(), prize));
 							player.closeInventory();
 						}
-						GUI.crates.remove(player);
-						Bukkit.getScheduler().cancelTask(crate.get(player));
+						cc.removePlayerFromOpeningList(player);
+						cc.endCrate(player);
 					}
 					slower++;
 				}
@@ -148,24 +142,7 @@ public class Wheel implements Listener {
 					open = 0;
 				}
 			}
-		}, 1, 1));
-	}
-	
-	@EventHandler
-	public void onInvClick(InventoryClickEvent e) {
-		Inventory inv = e.getInventory();
-		Player player = (Player) e.getWhoClicked();
-		if(CrateControl.crates.containsKey(player)) {
-			if(!CrateControl.crates.get(e.getWhoClicked()).getFile().getString("Crate.CrateType").equalsIgnoreCase("Wheel"))
-				return;
-		}else {
-			return;
-		}
-		if(inv != null) {
-			if(inv.getName().equals(Methods.color(CrateControl.crates.get(player).getFile().getString("Crate.CrateName")))) {
-				e.setCancelled(true);
-			}
-		}
+		}.runTaskTimer(Main.getPlugin(), 1, 1));
 	}
 	
 	private static ArrayList<Integer> slowSpin() {

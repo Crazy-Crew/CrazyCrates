@@ -36,24 +36,24 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import me.badbones69.crazycrates.api.Crate;
-import me.badbones69.crazycrates.api.FireworkDamageAPI;
-import me.badbones69.crazycrates.api.KeyType;
-import me.badbones69.crazycrates.api.Messages;
-import me.badbones69.crazycrates.multisupport.NMS_v1_10_R1;
-import me.badbones69.crazycrates.multisupport.NMS_v1_11_R1;
-import me.badbones69.crazycrates.multisupport.NMS_v1_12_R1;
-import me.badbones69.crazycrates.multisupport.NMS_v1_8_R1;
-import me.badbones69.crazycrates.multisupport.NMS_v1_8_R2;
-import me.badbones69.crazycrates.multisupport.NMS_v1_8_R3;
-import me.badbones69.crazycrates.multisupport.NMS_v1_9_R1;
-import me.badbones69.crazycrates.multisupport.NMS_v1_9_R2;
+import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.enums.Messages;
+import me.badbones69.crazycrates.controlers.FileManager.Files;
+import me.badbones69.crazycrates.controlers.FireworkDamageAPI;
 import me.badbones69.crazycrates.multisupport.Version;
+import me.badbones69.crazycrates.multisupport.nms.NMS_v1_10_R1;
+import me.badbones69.crazycrates.multisupport.nms.NMS_v1_11_R1;
+import me.badbones69.crazycrates.multisupport.nms.NMS_v1_12_R1;
+import me.badbones69.crazycrates.multisupport.nms.NMS_v1_8_R1;
+import me.badbones69.crazycrates.multisupport.nms.NMS_v1_8_R2;
+import me.badbones69.crazycrates.multisupport.nms.NMS_v1_8_R3;
+import me.badbones69.crazycrates.multisupport.nms.NMS_v1_9_R1;
+import me.badbones69.crazycrates.multisupport.nms.NMS_v1_9_R2;
 
 public class Methods {
 	
+	private static CrazyCrates cc = CrazyCrates.getInstance();
 	public static HashMap<Player, String> path = new HashMap<Player, String>();
-	public static HashMap<Player, KeyType> Key = new HashMap<Player, KeyType>();
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
 	
 	public static String color(String msg) {
@@ -66,7 +66,7 @@ public class Methods {
 	
 	public static HashMap<ItemStack, String> getItems(Player player) {
 		HashMap<ItemStack, String> items = new HashMap<ItemStack, String>();
-		FileConfiguration file = GUI.crates.get(player).getFile();
+		FileConfiguration file = cc.getOpeningCrate(player).getFile();
 		for(String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
 			String id = file.getString("Crate.Prizes." + reward + ".DisplayItem");
 			String name = file.getString("Crate.Prizes." + reward + ".DisplayName");
@@ -81,8 +81,7 @@ public class Methods {
 				int num;
 				for(int counter = 1; counter <= 1; counter++) {
 					num = 1 + number.nextInt(max);
-					if(num >= 1 && num <= chance)
-						items.put(item, "Crate.Prizes." + reward);
+					if(num >= 1 && num <= chance) items.put(item, "Crate.Prizes." + reward);
 				}
 			}catch(Exception e) {
 				continue;
@@ -563,23 +562,49 @@ public class Methods {
 		return Bukkit.getServer().getPlayer(name);
 	}
 	
-	public static boolean isOnline(String name, CommandSender p) {
+	public static boolean isOnline(String name, CommandSender sender) {
 		for(Player player : Bukkit.getServer().getOnlinePlayers()) {
 			if(player.getName().equalsIgnoreCase(name)) {
 				return true;
 			}
 		}
-		p.sendMessage(Messages.NOT_ONLINE.getMessage());
+		HashMap<String, String> placeholders = new HashMap<>();
+		placeholders.put("%player%", name);
+		sender.sendMessage(Messages.NOT_ONLINE.getMessage(placeholders));
 		return false;
 	}
 	
 	public static void removeItem(ItemStack item, Player player) {
-		if(item.getAmount() <= 1) {
-			player.getInventory().removeItem(item);
-		}
-		if(item.getAmount() > 1) {
-			item.setAmount(item.getAmount() - 1);
-		}
+		try {
+			if(item.getAmount() <= 1) {
+				player.getInventory().removeItem(item);
+			}else {
+				item.setAmount(item.getAmount() - 1);
+			}
+		}catch(Exception e) {}
+	}
+	
+	public static void removeItem(ItemStack item, Player player, int amount) {
+		try {
+			int left = amount;
+			for(ItemStack check : player.getInventory().getContents()) {
+				if(isSimilar(item, check)) {
+					int i = check.getAmount();
+					if((left - i) >= 0) {
+						player.getInventory().removeItem(check);
+						left -= i;
+					}else {
+						check.setAmount(check.getAmount() - left);
+						left = 0;
+					}
+					if(left <= 0) {
+						break;
+					}else {
+						continue;
+					}
+				}
+			}
+		}catch(Exception e) {}
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -601,72 +626,19 @@ public class Methods {
 	}
 	
 	public static boolean permCheck(Player player, String perm) {
-		if(!player.hasPermission("CrazyCrates." + perm)) {
+		if(!player.hasPermission("crazycrates." + perm.toLowerCase())) {
 			player.sendMessage(Messages.NO_PERMISSION.getMessage());
 			return false;
 		}
 		return true;
 	}
 	
-	public static int getKeys(Player player, Crate crate) {
-		String uuid = player.getUniqueId().toString();
-		return Main.settings.getData().getInt("Players." + uuid + "." + crate.getName());
-	}
-	
-	public static void takeKeys(int Amount, Player player, Crate crate) {
-		String uuid = player.getUniqueId().toString();
-		int keys = getKeys(player, crate);
-		Main.settings.getData().set("Players." + uuid + ".Name", player.getName());
-		Main.settings.getData().set("Players." + uuid + "." + crate.getName(), keys - Amount);
-		Main.settings.saveData();
-	}
-	
-	public static void addKeys(int Amount, Player player, Crate crate, KeyType type) {
-		if(type == KeyType.VIRTUAL_KEY) {
-			String uuid = player.getUniqueId().toString();
-			int keys = getKeys(player, crate);
-			Main.settings.getData().set("Players." + uuid + ".Name", player.getName());
-			Main.settings.getData().set("Players." + uuid + "." + crate.getName(), keys + Amount);
-			Main.settings.saveData();
-		}else if(type == KeyType.PHYSICAL_KEY) {
-			FileConfiguration file = crate.getFile();
-			String name = color(file.getString("Crate.PhysicalKey.Name"));
-			List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
-			String ID = file.getString("Crate.PhysicalKey.Item");
-			Boolean enchanted = false;
-			if(file.contains("Crate.PhysicalKey.Glowing")) {
-				enchanted = file.getBoolean("Crate.PhysicalKey.Glowing");
-			}
-			player.getInventory().addItem(makeItem(ID, Amount, name, lore, enchanted));
-		}
-	}
-	
-	public static ItemStack getKey(Crate crate) {
-		FileConfiguration file = crate.getFile();
-		String name = color(file.getString("Crate.PhysicalKey.Name"));
-		List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
-		String ID = file.getString("Crate.PhysicalKey.Item");
-		Boolean enchanted = false;
-		if(file.contains("Crate.PhysicalKey.Glowing")) {
-			enchanted = file.getBoolean("Crate.PhysicalKey.Glowing");
-		}
-		return makeItem(ID, 1, name, lore, enchanted);
-	}
-	
-	public static ArrayList<String> getCrates() {
-		ArrayList<String> crates = new ArrayList<String>();
-		for(String crate : Main.settings.getAllCratesNames()) {
-			crates.add(crate);
-		}
-		return crates;
-	}
-	
 	public static String getPrefix() {
-		return color(Main.settings.getConfig().getString("Settings.Prefix"));
+		return color(Files.CONFIG.getFile().getString("Settings.Prefix"));
 	}
 	
 	public static String getPrefix(String msg) {
-		return color(Main.settings.getConfig().getString("Settings.Prefix") + msg);
+		return color(Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
 	}
 	
 	public static void pasteSchem(String schem, Location loc) {
@@ -819,6 +791,26 @@ public class Methods {
 		return item;
 	}
 	
+	public static ItemStack addUnbreaking(ItemStack item, Boolean toggle) {
+		if(toggle) {
+			switch(Version.getVersion()) {
+				case v1_12_R1:
+					return NMS_v1_12_R1.addUnbreaking(item);
+				case v1_11_R1:
+					return NMS_v1_11_R1.addUnbreaking(item);
+				case v1_10_R1:
+					return NMS_v1_10_R1.addUnbreaking(item);
+				case v1_9_R2:
+					return NMS_v1_9_R2.addUnbreaking(item);
+				case v1_9_R1:
+					return NMS_v1_9_R1.addUnbreaking(item);
+				default:
+					break;
+			}
+		}
+		return item;
+	}
+	
 	public static String pickRandomSchem() {
 		File f = new File(plugin.getDataFolder() + "/Schematics/");
 		String[] schems = f.list();
@@ -845,11 +837,28 @@ public class Methods {
 	}
 	
 	public static boolean isSimilar(ItemStack one, ItemStack two) {
-		if(one.getType() == two.getType()) {
-			if(one.hasItemMeta()) {
-				if(one.getItemMeta().hasDisplayName()) {
-					if(one.getItemMeta().getDisplayName().equalsIgnoreCase(two.getItemMeta().getDisplayName())) {
-						if(one.getItemMeta().hasLore()) {
+		if(one != null && two != null) {
+			if(one.getType() == two.getType()) {
+				if(one.hasItemMeta() && two.hasItemMeta()) {
+					if(one.getItemMeta().hasDisplayName() && two.getItemMeta().hasDisplayName()) {
+						if(one.getItemMeta().getDisplayName().equalsIgnoreCase(two.getItemMeta().getDisplayName())) {
+							if(one.getItemMeta().hasLore() && two.getItemMeta().hasLore()) {
+								if(one.getItemMeta().getLore().size() == two.getItemMeta().getLore().size()) {
+									int i = 0;
+									for(String lore : one.getItemMeta().getLore()) {
+										if(!lore.equals(two.getItemMeta().getLore().get(i))) {
+											return false;
+										}
+										i++;
+									}
+									return true;
+								}
+							}else if(!one.getItemMeta().hasLore() && !two.getItemMeta().hasLore()) {
+								return true;
+							}
+						}
+					}else if(!one.getItemMeta().hasDisplayName() && !two.getItemMeta().hasDisplayName()) {
+						if(one.getItemMeta().hasLore() && two.getItemMeta().hasLore()) {
 							if(one.getItemMeta().getLore().size() == two.getItemMeta().getLore().size()) {
 								int i = 0;
 								for(String lore : one.getItemMeta().getLore()) {
@@ -859,9 +868,15 @@ public class Methods {
 									i++;
 								}
 								return true;
+							}else {
+								return false;
 							}
+						}else if(!one.getItemMeta().hasLore() && !two.getItemMeta().hasLore()) {
+							return true;
 						}
 					}
+				}else if(!one.hasItemMeta() && !two.hasItemMeta()) {
+					return true;
 				}
 			}
 		}

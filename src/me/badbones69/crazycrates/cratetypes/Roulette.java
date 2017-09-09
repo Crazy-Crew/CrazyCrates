@@ -1,61 +1,52 @@
 package me.badbones69.crazycrates.cratetypes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import me.badbones69.crazycrates.CrateControl;
-import me.badbones69.crazycrates.GUI;
 import me.badbones69.crazycrates.Main;
 import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrateType;
-import me.badbones69.crazycrates.api.KeyType;
-import me.badbones69.crazycrates.api.PlayerPrizeEvent;
-import me.badbones69.crazycrates.api.Prize;
+import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.enums.CrateType;
+import me.badbones69.crazycrates.api.enums.KeyType;
+import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
+import me.badbones69.crazycrates.api.objects.Crate;
+import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.multisupport.Version;
 
 public class Roulette implements Listener {
 	
-	public static HashMap<Player, Integer> roll = new HashMap<Player, Integer>();
+	private static CrazyCrates cc = CrazyCrates.getInstance();
 	
 	private static void setGlass(Inventory inv) {
 		Random r = new Random();
 		for(int i = 0; i < 27; i++) {
 			if(i != 13) {
 				int color = r.nextInt(15);
-				if(color == 8)
-					color = 1;
+				if(color == 8) color = 1;
 				inv.setItem(i, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, color, " "));
 			}
 		}
 	}
 	
-	public static void openRoulette(Player player) {
-		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(GUI.crates.get(player).getFile().getString("Crate.CrateName")));
+	public static void openRoulette(Player player, Crate crate, KeyType key) {
+		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(crate.getFile().getString("Crate.CrateName")));
 		setGlass(inv);
-		inv.setItem(13, Main.CC.pickPrize(player).getDisplayItem());
+		inv.setItem(13, cc.pickPrize(player, crate).getDisplayItem());
 		player.openInventory(inv);
-		startRoulette(player, inv);
+		cc.takeKeys(1, player, crate, key);
+		startRoulette(player, inv, crate);
 	}
 	
-	private static void startRoulette(final Player player, final Inventory inv) {
-		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY) {
-			Methods.removeItem(CrateControl.keys.get(player), player);
-		}
-		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY) {
-			Methods.takeKeys(1, player, GUI.crates.get(player));
-		}
-		roll.put(player, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
+	private static void startRoulette(final Player player, final Inventory inv, final Crate crate) {
+		cc.addCrateTask(player, new BukkitRunnable() {
 			int time = 1;
 			int even = 0;
 			int full = 0;
@@ -64,7 +55,7 @@ public class Roulette implements Listener {
 			@Override
 			public void run() {
 				if(full <= 15) {
-					inv.setItem(13, Main.CC.pickPrize(player).getDisplayItem());
+					inv.setItem(13, cc.pickPrize(player, crate).getDisplayItem());
 					setGlass(inv);
 					if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
 						player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
@@ -74,7 +65,7 @@ public class Roulette implements Listener {
 					even++;
 					if(even >= 4) {
 						even = 0;
-						inv.setItem(13, Main.CC.pickPrize(player).getDisplayItem());
+						inv.setItem(13, cc.pickPrize(player, crate).getDisplayItem());
 					}
 				}
 				open++;
@@ -86,7 +77,7 @@ public class Roulette implements Listener {
 				if(full > 16) {
 					if(slowSpin().contains(time)) {
 						setGlass(inv);
-						inv.setItem(13, Main.CC.pickPrize(player).getDisplayItem());
+						inv.setItem(13, cc.pickPrize(player, crate).getDisplayItem());
 						if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
 							player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
 						}else {
@@ -100,27 +91,24 @@ public class Roulette implements Listener {
 						}else {
 							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
 						}
-						if(roll.containsKey(player)) {
-							Bukkit.getScheduler().cancelTask(roll.get(player));
-							roll.remove(player);
-						}
+						cc.endCrate(player);
 						Prize prize = null;
-						for(Prize p : GUI.crates.get(player).getPrizes()) {
+						for(Prize p : crate.getPrizes()) {
 							if(inv.getItem(13).isSimilar(p.getDisplayItem())) {
 								prize = p;
 							}
 						}
-						Main.CC.getReward(player, prize);
+						cc.getReward(player, prize);
 						if(prize.toggleFirework()) {
 							Methods.fireWork(player.getLocation().add(0, 1, 0));
 						}
-						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.ROULETTE, CrateControl.crates.get(player).getName(), prize));
-						GUI.crates.remove(player);
+						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.ROULETTE, crate.getName(), prize));
+						cc.removePlayerFromOpeningList(player);
 						return;
 					}
 				}
 			}
-		}, 2, 2));
+		}.runTaskTimer(Main.getPlugin(), 2, 2));
 	}
 	
 	private static ArrayList<Integer> slowSpin() {
@@ -135,35 +123,6 @@ public class Roulette implements Listener {
 			}
 		}
 		return slow;
-	}
-	
-	@EventHandler
-	public void onInvClick(InventoryClickEvent e) {
-		Player player = (Player) e.getWhoClicked();
-		if(CrateControl.crates.containsKey(player)) {
-			if(!CrateControl.crates.get(player).getFile().getString("Crate.CrateType").equalsIgnoreCase("Roulette"))
-				return;
-		}else {
-			return;
-		}
-		Inventory inv = e.getInventory();
-		if(inv != null) {
-			if(inv.getName().equals(Methods.color(CrateControl.crates.get(player).getFile().getString("Crate.CrateName")))) {
-				e.setCancelled(true);
-			}
-		}
-	}
-	
-	@EventHandler
-	public void onLeave(PlayerQuitEvent e) {
-		Player player = e.getPlayer();
-		if(roll.containsKey(player)) {
-			Bukkit.getScheduler().cancelTask(roll.get(player));
-			roll.remove(player);
-		}
-		if(GUI.crates.containsKey(player)) {
-			GUI.crates.remove(player);
-		}
 	}
 	
 }

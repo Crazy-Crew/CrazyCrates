@@ -1,30 +1,30 @@
-package me.badbones69.crazycrates.multisupport;
+package me.badbones69.crazycrates.multisupport.nms;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.server.v1_8_R1.NBTCompressedStreamTools;
-import net.minecraft.server.v1_8_R1.NBTTagCompound;
-import net.minecraft.server.v1_8_R1.NBTTagList;
+import net.minecraft.server.v1_8_R2.NBTTagList;
+import net.minecraft.server.v1_8_R2.NBTCompressedStreamTools;
+import net.minecraft.server.v1_8_R2.NBTTagCompound;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R2.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class NMS_v1_8_R1 {
+public class NMS_v1_8_R2 {
 	
 	public static ItemStack addGlow(ItemStack item) {
 		if(item.hasItemMeta()) {
 			if(item.getItemMeta().hasEnchants())
 				return item;
 		}
-		net.minecraft.server.v1_8_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_8_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
 		NBTTagCompound tag = null;
 		if(!nmsStack.hasTag()) {
 			tag = new NBTTagCompound();
@@ -44,15 +44,15 @@ public class NMS_v1_8_R1 {
 	}
 	
 	public static void openChest(Block b, Location location, Boolean open) {
-		net.minecraft.server.v1_8_R1.World world = ((CraftWorld) location.getWorld()).getHandle();
-		net.minecraft.server.v1_8_R1.BlockPosition position = new net.minecraft.server.v1_8_R1.BlockPosition(location
+		net.minecraft.server.v1_8_R2.World world = ((CraftWorld) location.getWorld()).getHandle();
+		net.minecraft.server.v1_8_R2.BlockPosition position = new net.minecraft.server.v1_8_R2.BlockPosition(location
 				.getX(), location.getY(), location.getZ());
 		if(b.getType() == Material.ENDER_CHEST) {
-			net.minecraft.server.v1_8_R1.TileEntityEnderChest tileChest = (net.minecraft.server.v1_8_R1.TileEntityEnderChest) world
+			net.minecraft.server.v1_8_R2.TileEntityEnderChest tileChest = (net.minecraft.server.v1_8_R2.TileEntityEnderChest) world
 					.getTileEntity(position);
 			world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
 		}else {
-			net.minecraft.server.v1_8_R1.TileEntityChest tileChest = (net.minecraft.server.v1_8_R1.TileEntityChest) world
+			net.minecraft.server.v1_8_R2.TileEntityChest tileChest = (net.minecraft.server.v1_8_R2.TileEntityChest) world
 					.getTileEntity(position);
 			world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
 		}

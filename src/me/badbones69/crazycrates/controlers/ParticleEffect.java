@@ -1,4 +1,4 @@
-package me.badbones69.crazycrates;
+package me.badbones69.crazycrates.controlers;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -16,7 +16,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import me.badbones69.crazycrates.ReflectionUtils.PackageType;
+import me.badbones69.crazycrates.controlers.ReflectionUtils.PackageType;
 
 /**
  * <b>ParticleEffect Library</b>
