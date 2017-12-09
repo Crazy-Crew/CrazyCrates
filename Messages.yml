@@ -21,7 +21,7 @@ Messages:
   Not-A-Number: '&6%number%&c is not a number.'
   Given-A-Player-Keys: '&7You have given &6%player% %amount% &7Keys.'
   Given-Everyone-Keys: '&7You have given everyone &6%amount% &7Keys.'
-  Given-Offline-Player-Keys: '&7You have taken &6%amount% &7key(s) from the offline player &6%player%&7.'
+  Given-Offline-Player-Keys: '&7You have given &6%amount% &7key(s) to the offline player &6%player%&7.'
   Take-A-Player-Keys: '&7You have taken &6%amount% &7key(s) from &6%player%&7.'
   Take-Offline-Player-Keys: '&7You have taken &6%amount% &7key(s) from the offline player &6%player%&7.'
   Opened-A-Crate: '&7You have just opened the &6%crate% &7crate for &6%player%&7.'

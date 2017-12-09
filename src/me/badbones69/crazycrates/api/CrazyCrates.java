@@ -152,6 +152,45 @@ public class CrazyCrates {
 			}
 		}
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "All physical crate locations have been loaded.");
+		cleanDataFile();
+	}
+	
+	/**
+	 * This method is disgned to help clean the data.yml file of any usless info that it may have.
+	 */
+	public void cleanDataFile() {
+		Boolean logging = fileManager.isLogging();
+		if(logging) System.out.println(fileManager.getPrefix() + "Cleaning up the data.yml file.");
+		FileConfiguration data = Files.DATA.getFile();
+		List<String> removePlayers = new ArrayList<>();
+		for(String uuid : data.getConfigurationSection("Players").getKeys(false)) {
+			Boolean hasKeys = false;
+			List<String> noKeys = new ArrayList<>();
+			for(Crate crate : getCrates()) {
+				if(data.getInt("Players." + uuid + "." + crate.getName()) <= 0) {
+					noKeys.add(crate.getName());
+				}else {
+					hasKeys = true;
+				}
+			}
+			if(hasKeys) {
+				for(String crate : noKeys) {
+					data.set("Players." + uuid + "." + crate, null);
+				}
+			}else {
+				removePlayers.add(uuid);
+			}
+		}
+		if(removePlayers.size() > 0) {
+			if(logging) System.out.println(fileManager.getPrefix() + removePlayers.size() + " player's data has been marked to be removed.");
+			for(String uuid : removePlayers) {
+				//				if(logging) System.out.println(fileManager.getPrefix() + "Removed " + data.getString("Players." + uuid + ".Name") + "'s empty data from the data.yml.");
+				data.set("Players." + uuid, null);
+			}
+			if(logging) System.out.println(fileManager.getPrefix() + "All empty player data has been removed.");
+		}
+		if(logging) System.out.println(fileManager.getPrefix() + "The data.yml file has been cleaned.");
+		Files.DATA.saveFile();
 	}
 	
 	/**
@@ -189,7 +228,11 @@ public class CrazyCrates {
 				Location last = player.getLocation();
 				last.setPitch(0F);
 				CrateControl.lastLocation.put(player, last);
-				broadcast = broadcast ? QuadCrate.startBuild(player, loc, crate, key, Material.CHEST) : false;
+				if(broadcast) {
+					broadcast = QuadCrate.startBuild(player, loc, crate, key, Material.CHEST);
+				}else {
+					QuadCrate.startBuild(player, loc, crate, key, Material.CHEST);
+				}
 				break;
 			case FIRE_CRACKER:
 				if(CrateControl.inUse.containsValue(loc)) {

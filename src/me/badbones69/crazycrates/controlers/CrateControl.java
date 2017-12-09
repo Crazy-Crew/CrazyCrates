@@ -56,7 +56,7 @@ public class CrateControl implements Listener { //Crate Control
 	public void onCrateInventoryClick(InventoryClickEvent e) {
 		Inventory inv = e.getInventory();
 		if(inv != null) {
-			for(Crate crate : CrazyCrates.getInstance().getCrates()) {
+			for(Crate crate : cc.getCrates()) {
 				if(inv.getName().equals(crate.getCrateInventoryName())) {
 					e.setCancelled(true);
 				}
@@ -76,7 +76,7 @@ public class CrateControl implements Listener { //Crate Control
 		Block clickedBlock = e.getClickedBlock();
 		if(e.getAction() == Action.LEFT_CLICK_BLOCK) {
 			//Loops through all loaded physical locations.
-			for(CrateLocation loc : CrazyCrates.getInstance().getCrateLocations()) {
+			for(CrateLocation loc : cc.getCrateLocations()) {
 				//Checks to see if the clicked block is the same as a physical crate.
 				if(loc.getLocation().equals(clickedBlock.getLocation())) {
 					//Checks to see if the player is removing a crate location.
@@ -84,7 +84,7 @@ public class CrateControl implements Listener { //Crate Control
 						if(player.isSneaking()) {
 							if(player.hasPermission("crazycrates.admin")) {
 								e.setCancelled(true);
-								CrazyCrates.getInstance().removeCrateLocation(loc.getID());
+								cc.removeCrateLocation(loc.getID());
 								player.sendMessage(Methods.color(Methods.getPrefix() + "&7You have just removed &6" + loc.getID() + "&7."));
 								return;
 							}
@@ -101,7 +101,7 @@ public class CrateControl implements Listener { //Crate Control
 				}
 			}
 		}else if(e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			for(Crate crate : CrazyCrates.getInstance().getCrates()) {
+			for(Crate crate : cc.getCrates()) {
 				if(crate.getCrateType() != CrateType.MENU) {
 					if(Methods.isSimilar(Methods.getItemInHand(player), crate.getKey())) {
 						e.setCancelled(true);
@@ -110,7 +110,7 @@ public class CrateControl implements Listener { //Crate Control
 				}
 			}
 			//Loops through all loaded physical locations.
-			for(CrateLocation loc : CrazyCrates.getInstance().getCrateLocations()) {
+			for(CrateLocation loc : cc.getCrateLocations()) {
 				//Checks to see if the clicked block is the same as a physical crate.
 				if(loc.getLocation().equals(clickedBlock.getLocation())) {
 					Crate crate = loc.getCrate();
@@ -130,13 +130,13 @@ public class CrateControl implements Listener { //Crate Control
 						}
 					}
 					if(config.getBoolean("Settings.Physical-Accepts-Virtual-Keys")) {
-						if(CrazyCrates.getInstance().getVirtualKeys(player, crate) >= 1) {
+						if(cc.getVirtualKeys(player, crate) >= 1) {
 							hasKey = true;
 						}
 					}
 					if(hasKey) {
-						if(CrazyCrates.getInstance().isInOpeningList(player)) {
-							if(CrazyCrates.getInstance().getOpeningCrate(player).getCrateType() == CrateType.QUICK_CRATE) {// Checks if the player uses the quick crate again.
+						if(cc.isInOpeningList(player)) {
+							if(cc.getOpeningCrate(player).getCrateType() == CrateType.QUICK_CRATE) {// Checks if the player uses the quick crate again.
 								if(inUse.containsKey(player)) {
 									if(inUse.get(player).equals(loc.getLocation())) {
 										useQuickCrateAgain = true;
@@ -145,7 +145,7 @@ public class CrateControl implements Listener { //Crate Control
 							}
 						}
 						if(!useQuickCrateAgain) {
-							if(CrazyCrates.getInstance().isInOpeningList(player)) {
+							if(cc.isInOpeningList(player)) {
 								HashMap<String, String> placeholders = new HashMap<String, String>();
 								placeholders.put("%Key%", KeyName);
 								placeholders.put("%key%", KeyName);
@@ -177,8 +177,8 @@ public class CrateControl implements Listener { //Crate Control
 							last.setPitch(0F);
 							lastLocation.put(player, last);
 						}
-						CrazyCrates.getInstance().addPlayerKeyType(player, keyType);
-						CrazyCrates.getInstance().addPlayerToOpeningList(player, crate);
+						cc.addPlayerKeyType(player, keyType);
+						cc.addPlayerToOpeningList(player, crate);
 						cc.openCrate(player, crate, keyType, loc.getLocation());
 						return;
 					}else {
@@ -222,7 +222,7 @@ public class CrateControl implements Listener { //Crate Control
 							if(crate.getCrateType() != CrateType.MENU) {
 								String name = crate.getFile().getString("Crate.PhysicalKey.Name");
 								if(item.getItemMeta().getDisplayName().equals(Methods.color(name))) {
-									CrazyCrates.getInstance().addKeys(1, player, crate, KeyType.VIRTUAL_KEY);
+									cc.addKeys(1, player, crate, KeyType.VIRTUAL_KEY);
 									player.sendMessage(Methods.getPrefix() + Methods.color("&a&l+1 " + name));
 									return;
 								}
@@ -237,14 +237,14 @@ public class CrateControl implements Listener { //Crate Control
 	@EventHandler
 	public void onLeave(PlayerQuitEvent e) {
 		Player player = e.getPlayer();
-		if(CrazyCrates.getInstance().hasCrateTask(player)) {
-			CrazyCrates.getInstance().endCrate(player);
+		if(cc.hasCrateTask(player)) {
+			cc.endCrate(player);
 		}
-		if(CrazyCrates.getInstance().hasQuadCrateTask(player)) {
-			CrazyCrates.getInstance().endQuadCrate(player);
+		if(cc.hasQuadCrateTask(player)) {
+			cc.endQuadCrate(player);
 		}
-		if(CrazyCrates.getInstance().isInOpeningList(player)) {
-			CrazyCrates.getInstance().removePlayerFromOpeningList(player);
+		if(cc.isInOpeningList(player)) {
+			cc.removePlayerFromOpeningList(player);
 		}
 	}
 	
