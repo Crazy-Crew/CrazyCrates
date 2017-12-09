@@ -40,5 +40,5 @@ Messages:
     - '&6/CC GiveAll <Physical/Virtual> <Crate> [Amount] &7- Gives all online players keys for a Chest.'
     - '&6/CC Take <Physical/Virtual> <Crate> [Amount] [Player] &7- Allows you to take keys from a player.'
     - '&6/CC Set <Crate> &7- Set a block you are looking at as a crate.'
-    - '&6/CC Set Menu &7- Set the block you are looking at to open the \"/cc\" GUI.'
+    - '&6/CC Set Menu &7- Set the block you are looking at to open the /cc GUI.'
     - '&6/CC Reload &7- Reloads the Config and Data Files.'
