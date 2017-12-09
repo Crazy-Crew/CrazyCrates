@@ -1,4 +1,4 @@
-package me.badbones69.crazycrates;
+package me.badbones69.crazycrates.controlers;
 
 import java.io.BufferedReader;
 import java.io.IOException;

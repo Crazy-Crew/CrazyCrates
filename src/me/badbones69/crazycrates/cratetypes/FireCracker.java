@@ -1,10 +1,8 @@
 package me.badbones69.crazycrates.cratetypes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -12,25 +10,20 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import me.badbones69.crazycrates.CrateControl;
-import me.badbones69.crazycrates.GUI;
 import me.badbones69.crazycrates.Main;
-import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.FireworkDamageAPI;
-import me.badbones69.crazycrates.api.KeyType;
+import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.enums.KeyType;
+import me.badbones69.crazycrates.api.objects.Crate;
+import me.badbones69.crazycrates.controlers.FireworkDamageAPI;
 
 public class FireCracker {
 	
-	private static HashMap<Player, Integer> F = new HashMap<Player, Integer>();
+	private static CrazyCrates cc = CrazyCrates.getInstance();
 	
-	public static void startFireCracker(final Player player, final String crate, final Location C) {
-		if(Methods.Key.get(player) == KeyType.PHYSICAL_KEY) {
-			Methods.removeItem(CrateControl.keys.get(player), player);
-		}
-		if(Methods.Key.get(player) == KeyType.VIRTUAL_KEY) {
-			Methods.takeKeys(1, player, GUI.crates.get(player));
-		}
+	public static void startFireCracker(final Player player, final Crate crate, KeyType key, final Location loc) {
+		cc.takeKeys(1, player, crate, key);
 		final ArrayList<Color> colors = new ArrayList<Color>();
 		colors.add(Color.RED);
 		colors.add(Color.YELLOW);
@@ -40,11 +33,11 @@ public class FireCracker {
 		colors.add(Color.AQUA);
 		colors.add(Color.MAROON);
 		colors.add(Color.PURPLE);
-		F.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
+		cc.addCrateTask(player, new BukkitRunnable() {
 			Random r = new Random();
 			int color = r.nextInt(colors.size());
 			int l = 0;
-			Location L = C.clone().add(.5, 25, .5);
+			Location L = loc.clone().add(.5, 25, .5);
 			
 			@Override
 			public void run() {
@@ -52,12 +45,12 @@ public class FireCracker {
 				fireWork(L, colors.get(color));
 				l++;
 				if(l == 25) {
-					Bukkit.getScheduler().cancelTask(F.get(player));
-					F.remove(player);
-					QuickCrate.openCrate(player, C, false);
+					cc.endCrate(player);
+					// The key type is set to free because the key has already been taken above.
+					QuickCrate.openCrate(player, loc, crate, KeyType.FREE_KEY, false);
 				}
 			}
-		}, 0, 2));
+		}.runTaskTimer(Main.getPlugin(), 0, 2));
 	}
 	
 	private static void fireWork(Location loc, Color color) {
@@ -67,11 +60,11 @@ public class FireCracker {
 		fm.setPower(0);
 		fw.setFireworkMeta(fm);
 		FireworkDamageAPI.addFirework(fw);
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
+		new BukkitRunnable() {
 			public void run() {
 				fw.detonate();
 			}
-		}, 1);
+		}.runTaskLaterAsynchronously(Main.getPlugin(), 1);
 	}
 	
 }

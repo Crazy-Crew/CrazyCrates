@@ -52,6 +52,7 @@ Crate:
       Firework: false #Firework when it is won.
       Glowing: false #Toggle if the item has a glowing effect but doesn't have an enchantment on it.
       Player: '' #Set the item to 397:3 and then add the players name for this to take effect.
+      Unbreakable: false #Adds the unbreaking NBT tag to the display item to allow it to have custom textures.
 #        For Cosmic Crates Only
 #############################################
 #       Tiers: #The Tiers the rewards can be found in.
@@ -65,7 +66,7 @@ Crate:
 # Amount:<Number> - Choose how many of the item you get.
 # Name:<Name> - The display name that goes on the item.
 # Lore:<Line 1>,<Line 2>,<Line 3>,<Line 4> - The lore that will go under the enchantments. Split lines with a ','
-# Unbreaking:<True/False> - Will add the Unbreaking NBT tag to the item to allow custom textured items to be gained through the envoys.
+# Unbreakable-Item:<True/False> - Will add the Unbreaking NBT tag to the item to allow custom textured items to be gained through the envoys.
 # <Enchantment>:<Level> - Choose the enchantment you want to add to the item. You can use the in-game names of the enchantment if you want. Replace the spaces in the name with "_".
 ###################################
       Items:
@@ -78,6 +79,7 @@ Crate:
       #If you do not wish to have players get messaged that they won this prize then just remove the Messages: option.
       Messages:
         - '&7You just won a &7&lBasic Grass&7.'
+      BlackListed-Permissions: {} #This allows for one time winnable prizes. If a player has one of the permissions then they will not be able to win it.
     2:
       DisplayName: '&b&lCheap Helmet'
       DisplayItem: '314'
@@ -93,8 +95,10 @@ Crate:
       Firework: false
       Glowing: false
       Player: ''
+      Unbreakable: false
       Items:
         - 'Item:314, Amount:1, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
+      BlackListed-Permissions: {}
     3:
       DisplayName: '&e&l$1,000'
       DisplayItem: '175'
@@ -107,7 +111,11 @@ Crate:
       Firework: true
       Glowing: false
       Player: ''
+      Unbreakable: false
       Commands:
         - 'eco give %Player% 1000'
+      # - 'pex user %player% add crazycrates.blacklist.basic.3'
       Messages:
         - '&7You just won &a$1,000&7.'
+      BlackListed-Permissions:
+        - 'crazycrates.blacklist.basic.3'

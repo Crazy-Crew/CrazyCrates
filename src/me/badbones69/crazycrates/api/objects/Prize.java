@@ -1,4 +1,4 @@
-package me.badbones69.crazycrates.api;
+package me.badbones69.crazycrates.api.objects;
 
 import java.util.ArrayList;
 
@@ -15,8 +15,10 @@ public class Prize {
 	private ArrayList<String> messages;
 	private ArrayList<String> commands;
 	private ArrayList<ItemStack> items;
+	private ArrayList<String> blackListPermissions;
 	
-	public Prize(String name, ItemStack displayItem, ArrayList<String> messages, ArrayList<String> commands, ArrayList<ItemStack> items, String crate, int chance, int maxRange, boolean firework) {
+	public Prize(String name, ItemStack displayItem, ArrayList<String> messages, ArrayList<String> commands,
+	ArrayList<ItemStack> items, String crate, int chance, int maxRange, boolean firework, ArrayList<String> blackListPermissions) {
 		this.name = name;
 		this.crate = crate;
 		this.items = items;
@@ -26,6 +28,7 @@ public class Prize {
 		this.messages = messages;
 		this.commands = commands;
 		this.displayItem = displayItem;
+		this.blackListPermissions = blackListPermissions;
 	}
 	
 	public String getName() {
@@ -62,6 +65,10 @@ public class Prize {
 	
 	public boolean toggleFirework() {
 		return this.firework;
+	}
+	
+	public ArrayList<String> getBlackListedPermissions() {
+		return blackListPermissions;
 	}
 	
 }

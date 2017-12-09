@@ -1,8 +1,11 @@
-package me.badbones69.crazycrates.api;
+package me.badbones69.crazycrates.api.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import me.badbones69.crazycrates.api.enums.CrateType;
+import me.badbones69.crazycrates.api.objects.Prize;
 
 public class PlayerPrizeEvent extends Event {
 	

@@ -7,24 +7,9 @@ Settings:
   Update-Checker: true
   Show-Preview: true #Toggle this on and off if you want to show the preview for the crates when left clicked.
   Physical-Accepts-Virtual-Keys: true #If physical crates can accept virtual keys.
-  No-Teleporting-Msg: '&cYou may not teleport away while opening a crate.'
-  NoCMDsWhileCrateOpened: '&cYou are not allowed to use commands while opening Crates.'
-  NoKeyMsg: '&cYou must have a %Key% &cin your hand to use that Crate.'
-  NoVirtualKeyMsg: '&cYou need a key to open that Crate.'
-  AlreadyOpeningCrateMsg: '&cYou are already opening a crate.'
-  QuickCrateInUse: '&cThat crate is already in use. Please wait for crate to open up.'
-  WorldDisabledMsg: '&cI am sorry but crates are disabled in %World%.'
-  Reload: '&3You have just reloaded the Config and Data Files.'
-  Not-Online: '&cThat player is not online at this time.'
-  No-Permission: '&cYou do not have permission to use that command!'
-  Crate-Already-Opened: '&cYou are already opening a crate.'
-  Cant-Be-Virtual-Crate: '&cThat crate type can not be used as a virtual crate.'
-  Inventory-Full: '&cYour inventory is full, please make room before opening a crate.'
+  Virtual-Accepts-Physical-Keys: true #If virtual crates can accept physical keys.
   QuadCrate:
-    ToCloseToAnotherPlayer: '&cYou are to close to a player that is opening their Crate.'
-    NeedsMoreRoom: '&cThere is not enough space to open that here.'
     Timer: 300
-    Out-Of-Time: '&cYou took 5 Minutes to open the crate so it closed.'
   DisabledWorlds:
     - 'world_nether'
   Filler: #This allows you to quickly fill the GUI with one item.
