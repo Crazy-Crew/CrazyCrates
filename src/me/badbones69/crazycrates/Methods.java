@@ -509,7 +509,7 @@ public class Methods {
 		if(item.getItemMeta().hasLore()) {
 			lore.addAll(item.getItemMeta().getLore());
 		}
-		lore.add(i);
+		lore.add(color(i));
 		m.setLore(lore);
 		item.setItemMeta(m);
 		return item;
