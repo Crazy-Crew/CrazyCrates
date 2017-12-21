@@ -52,6 +52,7 @@ import me.badbones69.crazycrates.multisupport.nms.Events_v1_12_R1_Up;
 
 public class Main extends JavaPlugin implements Listener {
 	
+	private MCUpdate mcUpdate;
 	private Boolean updateChecker = false;
 	private CrazyCrates cc = CrazyCrates.getInstance();
 	private FileManager fileManager = FileManager.getInstance();
@@ -132,7 +133,10 @@ public class Main extends JavaPlugin implements Listener {
 			}
 		}
 		try {
-			new MCUpdate(this, true);
+			mcUpdate = new MCUpdate(this, true);
+			if(Files.CONFIG.getFile().contains("Settings.Update-Checker")) {
+				mcUpdate.checkUpdate(Files.CONFIG.getFile().getBoolean("Settings.Update-Checker"));
+			}
 		}catch(IOException e) {}
 		Methods.hasUpdate();
 	}

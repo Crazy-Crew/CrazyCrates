@@ -42,8 +42,8 @@ import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.controlers.CrateControl;
 import me.badbones69.crazycrates.controlers.FileManager;
-import me.badbones69.crazycrates.controlers.ParticleEffect;
 import me.badbones69.crazycrates.controlers.FileManager.Files;
+import me.badbones69.crazycrates.controlers.ParticleEffect;
 import me.badbones69.crazycrates.controlers.ParticleEffect.BlockData;
 import me.badbones69.crazycrates.multisupport.Version;
 

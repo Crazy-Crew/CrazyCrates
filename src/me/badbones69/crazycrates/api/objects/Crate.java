@@ -74,6 +74,7 @@ public class Crate {
 	 * Gets all the preview items.
 	 * @return A list of all the preview items.
 	 */
+	@SuppressWarnings("unchecked")
 	public ArrayList<ItemStack> getPreviewItems() {
 		return (ArrayList<ItemStack>) preview.clone();
 	}

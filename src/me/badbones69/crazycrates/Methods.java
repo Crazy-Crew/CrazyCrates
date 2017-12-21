@@ -477,6 +477,7 @@ public class Methods {
 	 * @param glowing
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	public static ItemStack makePlayerHead(String player, int amount, String name, ArrayList<String> lore, Map<Enchantment, Integer> enchants, boolean glowing) {
 		ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
 		SkullMeta m = (SkullMeta) head.getItemMeta();
@@ -509,7 +510,7 @@ public class Methods {
 		if(item.getItemMeta().hasLore()) {
 			lore.addAll(item.getItemMeta().getLore());
 		}
-		lore.add(i);
+		lore.add(color(i));
 		m.setLore(lore);
 		item.setItemMeta(m);
 		return item;
