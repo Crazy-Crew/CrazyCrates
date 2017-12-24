@@ -16,7 +16,7 @@ public class PlaceholderAPISupport extends EZPlaceholderHook
 
     public PlaceholderAPISupport(Plugin plugin)
     {
-        super(plugin, "me.badbones69.crazycrates");
+        super(plugin, "crazycrates");
     }
 
     @Override

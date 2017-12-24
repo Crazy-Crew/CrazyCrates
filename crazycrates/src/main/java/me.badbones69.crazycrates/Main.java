@@ -175,7 +175,7 @@ public class Main extends JavaPlugin implements Listener
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args)
     {
-        if (commandLable.equalsIgnoreCase("me.badbones69.crazycrates") ||
+        if (commandLable.equalsIgnoreCase("crazycrates") ||
                 commandLable.equalsIgnoreCase("cc") ||
                 commandLable.equalsIgnoreCase("crate") ||
                 commandLable.equalsIgnoreCase("crates") ||

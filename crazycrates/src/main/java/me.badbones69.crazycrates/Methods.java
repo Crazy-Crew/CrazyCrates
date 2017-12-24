@@ -761,7 +761,7 @@ public class Methods
 
     public static boolean permCheck(Player player, String perm)
     {
-        if (!player.hasPermission("me.badbones.me.badbones69.crazycrates." + perm.toLowerCase()))
+        if (!player.hasPermission("crazycrates." + perm.toLowerCase()))
         {
             player.sendMessage(Messages.NO_PERMISSION.getMessage());
             return false;

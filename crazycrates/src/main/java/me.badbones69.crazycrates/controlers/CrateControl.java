@@ -95,7 +95,7 @@ public class CrateControl implements Listener
                     {
                         if (player.isSneaking())
                         {
-                            if (player.hasPermission("me.badbones.me.badbones69.crazycrates.admin"))
+                            if (player.hasPermission("crazycrates.admin"))
                             {
                                 e.setCancelled(true);
                                 cc.removeCrateLocation(loc.getID());
