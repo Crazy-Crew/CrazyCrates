@@ -5,8 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.badbones69</groupId>
-    <artifactId>crazycrates</artifactId>
+    <artifactId>crazycrates-parent</artifactId>
+    <packaging>pom</packaging>
     <version>1.7.4.1-SNAPSHOT</version>
+    <modules>
+        <module>v1_8_R1</module>
+        <module>v1_8_R2</module>
+        <module>v1_8_R3</module>
+        <module>v1_9_R1</module>
+        <module>v1_9_R2</module>
+        <module>v1_10_R1</module>
+        <module>v1_11_R1</module>
+        <module>v1_12_R1</module>
+        <module>crazycrates</module>
+    </modules>
 
     <repositories>
         <repository>
@@ -14,47 +26,20 @@
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
         <repository>
-            <id>mvdw-software</id>
-            <name>MVdW Public Repositories</name>
-            <url>http://repo.mvdw-software.be/content/groups/public/</url>
-        </repository>
-        <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-
     </repositories>
 
-    <dependencies>
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.8.2</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.12.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>be.maximvdw</groupId>
-            <artifactId>MVdWPlaceholderAPI</artifactId>
-            <version>2.3.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-
     <build>
-
+        <defaultGoal>clean install package</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
