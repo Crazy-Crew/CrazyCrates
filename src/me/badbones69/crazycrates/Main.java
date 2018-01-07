@@ -1,7 +1,9 @@
 package me.badbones69.crazycrates;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -28,6 +30,7 @@ import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
+import me.badbones69.crazycrates.controlers.BrokeLocationsControl;
 import me.badbones69.crazycrates.controlers.CrateControl;
 import me.badbones69.crazycrates.controlers.FileManager;
 import me.badbones69.crazycrates.controlers.FileManager.Files;
@@ -89,6 +92,7 @@ public class Main extends JavaPlugin implements Listener {
 		}else {
 			updateChecker = true;
 		}
+		//Messages.addMissingMessages(); #Does work but is disabled for now.
 		cc.loadCrates();
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(this, this);
@@ -103,6 +107,9 @@ public class Main extends JavaPlugin implements Listener {
 		pm.registerEvents(new QuickCrate(), this);
 		pm.registerEvents(new CrateControl(), this);
 		pm.registerEvents(new CrateOnTheGo(), this);
+		if(!cc.getBrokeCrateLocations().isEmpty()) {
+			pm.registerEvents(new BrokeLocationsControl(), this);
+		}
 		if(Version.getVersion().comparedTo(Version.v1_12_R1) >= 0) {
 			pm.registerEvents(new Events_v1_12_R1_Up(), this);
 		}else {
@@ -156,7 +163,72 @@ public class Main extends JavaPlugin implements Listener {
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args) {
-		if(commandLable.equalsIgnoreCase("crazycrates") ||
+		if(commandLable.equalsIgnoreCase("key") || commandLable.equalsIgnoreCase("keys")) {
+			// /key [player]
+			// /key redeem <crate> [amount] << Will be added later.
+			if(args.length == 0) {
+				if(sender instanceof Player) {
+					if(!Methods.permCheck((Player) sender, "Access")) {
+						return true;
+					}
+				}else {
+					sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
+					return true;
+				}
+				Player player = (Player) sender;
+				List<String> message = new ArrayList<>();
+				message.add(Messages.PERSONAL_HEADER.getMessageNoPrefix());
+				HashMap<Crate, Integer> keys = cc.getVirtualKeys(player);
+				Boolean hasKeys = false;
+				for(Crate crate : keys.keySet()) {
+					int amount = keys.get(crate);
+					if(amount > 0) {
+						hasKeys = true;
+						HashMap<String, String> placeholders = new HashMap<>();
+						placeholders.put("%crate%", crate.getFile().getString("Crate.Name"));
+						placeholders.put("%keys%", amount + "");
+						message.add(Messages.PER_CRATE.getMessageNoPrefix(placeholders));
+					}
+				}
+				if(hasKeys) {
+					player.sendMessage(Messages.convertList(message));
+				}else {
+					player.sendMessage(Messages.PERSONAL_NO_VIRTUAL_KEYS.getMessage());
+				}
+				return true;
+			}else if(args.length >= 1) {
+				if(sender instanceof Player) {
+					if(!Methods.permCheck((Player) sender, "admin")) {
+						return true;
+					}
+				}
+				String player = args[0];
+				List<String> message = new ArrayList<>();
+				HashMap<String, String> placeholders = new HashMap<>();
+				placeholders.put("%player%", player);
+				message.add(Messages.OTHER_PLAYER_HEADER.getMessageNoPrefix(placeholders));
+				HashMap<Crate, Integer> keys = cc.getVirtualKeys(player);
+				Boolean hasKeys = false;
+				for(Crate crate : keys.keySet()) {
+					int amount = keys.get(crate);
+					if(amount > 0) {
+						hasKeys = true;
+						placeholders.clear();
+						placeholders.put("%crate%", crate.getFile().getString("Crate.Name"));
+						placeholders.put("%keys%", amount + "");
+						message.add(Messages.PER_CRATE.getMessageNoPrefix(placeholders));
+					}
+				}
+				if(hasKeys) {
+					sender.sendMessage(Messages.convertList(message));
+				}else {
+					placeholders.clear();
+					placeholders.put("%player%", player);
+					sender.sendMessage(Messages.OTHER_PLAYER_NO_VIRTUAL_KEYS.getMessage(placeholders));
+				}
+				return true;
+			}
+		}else if(commandLable.equalsIgnoreCase("crazycrates") ||
 		commandLable.equalsIgnoreCase("cc") ||
 		commandLable.equalsIgnoreCase("crate") ||
 		commandLable.equalsIgnoreCase("crates") ||
