@@ -20,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
 import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.api.enums.BrokeLocation;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
@@ -59,6 +60,10 @@ public class CrazyCrates {
 	 * List of all the broken crates.
 	 */
 	private ArrayList<String> brokecrates = new ArrayList<>();
+	/**
+	 * List of broken physical crate locations.
+	 */
+	private List<BrokeLocation> brokeLocations = new ArrayList<>();
 	/**
 	 * The crate that the player is opening.
 	 */
@@ -136,22 +141,40 @@ public class CrazyCrates {
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "All crate information has been loaded.");
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Loading all the physical crate locations.");
 		FileConfiguration locations = Files.LOCATIONS.getFile();
+		int loadedAmount = 0;
+		int brokeAmount = 0;
 		if(locations.getConfigurationSection("Locations") != null) {
-			for(String location : locations.getConfigurationSection("Locations").getKeys(false)) {
+			for(String locationName : locations.getConfigurationSection("Locations").getKeys(false)) {
 				try {
-					World w = Bukkit.getWorld(locations.getString("Locations." + location + ".World"));
-					int x = locations.getInt("Locations." + location + ".X");
-					int y = locations.getInt("Locations." + location + ".Y");
-					int z = locations.getInt("Locations." + location + ".Z");
-					Location loc = new Location(w, x, y, z);
-					Crate crate = getCrateFromName(locations.getString("Locations." + location + ".Crate"));
-					crateLocations.add(new CrateLocation(location, crate, loc));
+					String worldName = locations.getString("Locations." + locationName + ".World");
+					World world = Bukkit.getWorld(worldName);
+					int x = locations.getInt("Locations." + locationName + ".X");
+					int y = locations.getInt("Locations." + locationName + ".Y");
+					int z = locations.getInt("Locations." + locationName + ".Z");
+					Location location = new Location(world, x, y, z);
+					Crate crate = getCrateFromName(locations.getString("Locations." + locationName + ".Crate"));
+					if(world != null) {
+						crateLocations.add(new CrateLocation(locationName, crate, location));
+						loadedAmount++;
+					}else {
+						brokeLocations.add(new BrokeLocation(locationName, crate, x, y, z, worldName));
+						brokeAmount++;
+					}
 				}catch(Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}
-		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "All physical crate locations have been loaded.");
+		if(fileManager.isLogging()) {
+			if(loadedAmount > 0 || brokeAmount > 0) {
+				if(brokeAmount <= 0) {
+					System.out.println(fileManager.getPrefix() + "All physical crate locations have been loaded.");
+				}else {
+					System.out.println(fileManager.getPrefix() + "Loaded " + loadedAmount + " physical crate locations.");
+					System.out.println(fileManager.getPrefix() + "Failed to load " + brokeAmount + " physical crate locations.");
+				}
+			}
+		}
 		cleanDataFile();
 	}
 	
@@ -364,9 +387,8 @@ public class CrazyCrates {
 	 * A list of all the physical crate locations.
 	 * @return List of locations.
 	 */
-	@SuppressWarnings("unchecked")
 	public ArrayList<CrateLocation> getCrateLocations() {
-		return (ArrayList<CrateLocation>) crateLocations.clone();
+		return crateLocations;
 	}
 	
 	/**
@@ -395,6 +417,14 @@ public class CrazyCrates {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Get a list of all the broke physical crate locations.
+	 * @return List of broken crate locations.
+	 */
+	public List<BrokeLocation> getBrokeCrateLocations() {
+		return brokeLocations;
 	}
 	
 	public void addCrateLocation(Location loc, Crate crate) {
@@ -710,6 +740,27 @@ public class CrazyCrates {
 			}
 		}
 		return null;
+	}
+	
+	public HashMap<Crate, Integer> getVirtualKeys(Player player) {
+		HashMap<Crate, Integer> keys = new HashMap<>();
+		for(Crate crate : getCrates()) {
+			keys.put(crate, getVirtualKeys(player, crate));
+		}
+		return keys;
+	}
+	
+	public HashMap<Crate, Integer> getVirtualKeys(String playerName) {
+		HashMap<Crate, Integer> keys = new HashMap<>();
+		FileConfiguration data = Files.DATA.getFile();
+		for(String uuid : data.getConfigurationSection("Players").getKeys(false)) {
+			if(playerName.equalsIgnoreCase(data.getString("Players." + uuid + ".Name"))) {
+				for(Crate crate : getCrates()) {
+					keys.put(crate, data.getInt("Players." + uuid + "." + crate.getName()));
+				}
+			}
+		}
+		return keys;
 	}
 	
 	public int getVirtualKeys(Player player, Crate crate) {
