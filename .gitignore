@@ -1,18 +1,8 @@
+#Maven
+target
+dependency-reduced-pom.xml
 
-.classpath
-
-.project
-
-*.class
-
-*.prefs
-
-*.xml
-
-.idea/.name
-
-Notes
-
-bin/
-
-.gitattributes
+#IntelliJ
+.idea
+*.iml
+crazycrates/META-INF/
