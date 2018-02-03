@@ -40,12 +40,12 @@ import java.util.List;
 import java.util.Set;
 
 public class Main extends JavaPlugin implements Listener {
-
+	
 	private MCUpdate mcUpdate;
 	private Boolean updateChecker = false;
 	private CrazyCrates cc = CrazyCrates.getInstance();
 	private FileManager fileManager = FileManager.getInstance();
-
+	
 	@Override
 	public void onEnable() {
 		//Crate Files
@@ -136,7 +136,7 @@ public class Main extends JavaPlugin implements Listener {
 		}
 		Methods.hasUpdate();
 	}
-
+	
 	@Override
 	public void onDisable() {
 		if(!QuadCrate.crates.isEmpty()) {
@@ -150,7 +150,7 @@ public class Main extends JavaPlugin implements Listener {
 			}
 		}
 	}
-
+	
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args) {
 		if(commandLable.equalsIgnoreCase("key") || commandLable.equalsIgnoreCase("keys")) {
 			// /key [player]
@@ -762,11 +762,11 @@ public class Main extends JavaPlugin implements Listener {
 		}
 		return false;
 	}
-
+	
 	public static Plugin getPlugin() {
 		return Bukkit.getPluginManager().getPlugin("CrazyCrates");
 	}
-
+	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player player = e.getPlayer();
@@ -783,5 +783,5 @@ public class Main extends JavaPlugin implements Listener {
 			}
 		}.runTaskLaterAsynchronously(this, 40);
 	}
-
+	
 }
