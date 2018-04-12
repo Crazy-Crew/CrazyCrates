@@ -1,16 +1,15 @@
 package me.badbones69.crazycrates.api.events;
 
+import me.badbones69.crazycrates.api.objects.Crate;
+import me.badbones69.crazycrates.api.objects.Prize;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import me.badbones69.crazycrates.api.enums.CrateType;
-import me.badbones69.crazycrates.api.objects.Prize;
-
 public class PlayerPrizeEvent extends Event {
 	
 	private Player player;
-	private CrateType crateType;
+	private Crate crate;
 	private Prize prize;
 	private String crateName;
 	
@@ -24,9 +23,9 @@ public class PlayerPrizeEvent extends Event {
 		return handlers;
 	}
 	
-	public PlayerPrizeEvent(Player player, CrateType crateType, String crateName, Prize prize) {
+	public PlayerPrizeEvent(Player player, Crate crate, String crateName, Prize prize) {
 		this.player = player;
-		this.crateType = crateType;
+		this.crate = crate;
 		this.prize = prize;
 		this.crateName = crateName;
 	}
@@ -35,8 +34,8 @@ public class PlayerPrizeEvent extends Event {
 		return player;
 	}
 	
-	public CrateType getCrateType() {
-		return crateType;
+	public Crate getCrate() {
+		return crate;
 	}
 	
 	public String getCrateName() {

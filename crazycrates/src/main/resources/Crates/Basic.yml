@@ -80,6 +80,11 @@ Crate:
       Messages:
         - '&7You just won a &7&lBasic Grass&7.'
       BlackListed-Permissions: {} #This allows for one time winnable prizes. If a player has one of the permissions then they will not be able to win it.
+      Alternative-Prize: #This allows users who have won the same prize before to get alternative prizes. They must of a BlackListed-Permission to get a alternative prize.
+        Toggle: false #Toggle if the prize will use alternative prizes for the blacklisted permission.
+        Messages: {}
+        Commands: {}
+        Items: {}
     2:
       DisplayName: '&b&lCheap Helmet'
       DisplayItem: '314'
@@ -99,6 +104,11 @@ Crate:
       Items:
         - 'Item:314, Amount:1, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
       BlackListed-Permissions: {}
+      Alternative-Prize:
+        Toggle: false
+        Messages: {}
+        Commands: {}
+        Items: {}
     3:
       DisplayName: '&e&l$1,000'
       DisplayItem: '175'
@@ -114,8 +124,15 @@ Crate:
       Unbreakable: false
       Commands:
         - 'eco give %Player% 1000'
-      # - 'pex user %player% add crazycrates.blacklist.basic.3'
+      # - 'pex user %player% add crazycrates.blacklist.basic.3' #This is the line where you would give the user the permission.
       Messages:
         - '&7You just won &a$1,000&7.'
       BlackListed-Permissions:
         - 'crazycrates.blacklist.basic.3'
+      Alternative-Prize:
+        Toggle: true
+        Messages:
+          - '&8[&bCrazyCrates&8]: &7You have already won that prize, so enjoy some gold nuggets.'
+        Commands:
+          - 'give %player% 371 16'
+        Items: {}

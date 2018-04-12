@@ -7,7 +7,7 @@
     <groupId>me.badbones69</groupId>
     <artifactId>crazycrates-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.7.4.4</version>
+    <version>1.7.4.5</version>
 
     <modules>
         <module>v1_8_R1</module>
@@ -45,10 +45,6 @@
         <repository>
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-        </repository>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
     </repositories>
 

@@ -31,14 +31,13 @@ public class CrateOnTheGo implements Listener {
 							e.setCancelled(true);
 							cc.addPlayerToOpeningList(player, crate);
 							Methods.removeItem(item, player);
-							Prize prize = cc.pickPrize(player, crate);
+							Prize prize = crate.pickPrize(player);
 							cc.getReward(player, prize);
-							Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.CRATE_ON_THE_GO, cc.getOpeningCrate(player).getName(), prize));
-							if(prize.toggleFirework()) {
+							Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, cc.getOpeningCrate(player).getName(), prize));
+							if(prize.useFireworks()) {
 								Methods.fireWork(player.getLocation().add(0, 1, 0));
 							}
 							cc.removePlayerFromOpeningList(player);
-							return;
 						}
 					}
 				}

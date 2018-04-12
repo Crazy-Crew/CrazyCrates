@@ -1,11 +1,13 @@
 package me.badbones69.crazycrates;
 
+import com.massivestats.MassiveStats;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
+import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controlers.*;
 import me.badbones69.crazycrates.controlers.FileManager.Files;
 import me.badbones69.crazycrates.cratetypes.*;
@@ -17,7 +19,6 @@ import me.badbones69.crazycrates.multisupport.nms.Events_v1_11_R1_Down;
 import me.badbones69.crazycrates.multisupport.nms.Events_v1_12_R1_Up;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -33,15 +34,12 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class Main extends JavaPlugin implements Listener {
 	
-	private MCUpdate mcUpdate;
 	private Boolean updateChecker = false;
 	private CrazyCrates cc = CrazyCrates.getInstance();
 	private FileManager fileManager = FileManager.getInstance();
@@ -73,11 +71,7 @@ public class Main extends JavaPlugin implements Listener {
 			Files.DATA.getFile().set("Players.Clear", null);
 			Files.DATA.saveFile();
 		}
-		if(Files.CONFIG.getFile().contains("Settings.Update-Checker")) {
-			updateChecker = Files.CONFIG.getFile().getBoolean("Settings.Update-Checker");
-		}else {
-			updateChecker = true;
-		}
+		updateChecker = !Files.CONFIG.getFile().contains("Settings.Update-Checker") || Files.CONFIG.getFile().getBoolean("Settings.Update-Checker");
 		//Messages.addMissingMessages(); #Does work but is disabled for now.
 		cc.loadCrates();
 		PluginManager pm = Bukkit.getPluginManager();
@@ -96,13 +90,13 @@ public class Main extends JavaPlugin implements Listener {
 		if(!cc.getBrokeCrateLocations().isEmpty()) {
 			pm.registerEvents(new BrokeLocationsControl(), this);
 		}
-		if(Version.getVersion().comparedTo(Version.v1_12_R1) >= 0) {
+		if(Version.getCurrentVersion().comparedTo(Version.v1_12_R1) >= 0) {
 			pm.registerEvents(new Events_v1_12_R1_Up(), this);
 		}else {
 			pm.registerEvents(new Events_v1_11_R1_Down(), this);
 		}
 		try {
-			if(Version.getVersion().getVersionInteger() >= Version.v1_11_R1.getVersionInteger()) {
+			if(Version.getCurrentVersion().getCurrentVersionInteger() >= Version.v1_11_R1.getCurrentVersionInteger()) {
 				pm.registerEvents(new FireworkDamageAPI(this), this);
 			}
 		}catch(Exception e) {
@@ -123,16 +117,15 @@ public class Main extends JavaPlugin implements Listener {
 						Files.DATA.getFile().set("Players." + uuid + "." + crate, amount);
 					}
 					Files.DATA.saveFile();
-					;
 				}
 			}
 		}
 		try {
-			mcUpdate = new MCUpdate(this, true);
+			MassiveStats massiveStats = new MassiveStats(this);
 			if(Files.CONFIG.getFile().contains("Settings.Update-Checker")) {
-				mcUpdate.checkUpdate(Files.CONFIG.getFile().getBoolean("Settings.Update-Checker"));
+				massiveStats.setListenerDisabled(!Files.CONFIG.getFile().getBoolean("Settings.Update-Checker"));
 			}
-		}catch(IOException e) {
+		}catch(Exception e) {
 		}
 		Methods.hasUpdate();
 	}
@@ -144,11 +137,7 @@ public class Main extends JavaPlugin implements Listener {
 				QuadCrate.undoBuild(player);
 			}
 		}
-		if(!QuickCrate.Rewards.isEmpty()) {
-			for(Player player : QuickCrate.Rewards.keySet()) {
-				QuickCrate.Rewards.get(player).remove();
-			}
-		}
+		QuickCrate.removeAllRewards();
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args) {
@@ -185,7 +174,7 @@ public class Main extends JavaPlugin implements Listener {
 					player.sendMessage(Messages.PERSONAL_NO_VIRTUAL_KEYS.getMessage());
 				}
 				return true;
-			}else if(args.length >= 1) {
+			}else {
 				if(sender instanceof Player) {
 					if(!Methods.permCheck((Player) sender, "admin")) {
 						return true;
@@ -225,7 +214,7 @@ public class Main extends JavaPlugin implements Listener {
 		commandLable.equalsIgnoreCase("crazycrate")) {
 			if(args.length == 0) {
 				if(sender instanceof Player) {
-					if(!Methods.permCheck((Player) sender, "Access")) {
+					if(!Methods.permCheck((Player) sender, "menu")) {
 						return true;
 					}
 				}else {
@@ -234,7 +223,7 @@ public class Main extends JavaPlugin implements Listener {
 				}
 				GUIMenu.openGUI((Player) sender);
 				return true;
-			}else if(args.length >= 1) {
+			}else {
 				if(args[0].equalsIgnoreCase("help")) {
 					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Access")) return true;
 					sender.sendMessage(Messages.HELP.getMessage());
@@ -263,16 +252,17 @@ public class Main extends JavaPlugin implements Listener {
 					for(; size > 9; size -= 9)
 						slots += 9;
 					Inventory inv = Bukkit.createInventory(null, slots, Methods.color("&4&lAdmin Keys"));
-					HashMap<ItemStack, ItemStack> keys = new HashMap<ItemStack, ItemStack>();
+					HashMap<ItemStack, ItemStack> keys = new HashMap<>();
 					for(Crate crate : cc.getCrates()) {
 						if(crate.getCrateType() != CrateType.MENU) {
-							ItemStack item1 = Methods.addLore(crate.getKey(), "");
-							item1 = Methods.addLore(crate.getKey(), "&7&l(&6&l!&7&l) Left click for Physical Key");
-							item1 = Methods.addLore(crate.getKey(), "&7&l(&6&l!&7&l) Right click for Virtual Key");
+							ItemBuilder itemBuilder = ItemBuilder.convertItemStack(crate.getKey())
+							.addLore("")
+							.addLore("&7&l(&6&l!&7&l) Left click for Physical Key")
+							.addLore("&7&l(&6&l!&7&l) Right click for Virtual Key");
 							if(inv.firstEmpty() >= 0) {
-								inv.setItem(inv.firstEmpty(), item1);
+								inv.setItem(inv.firstEmpty(), itemBuilder.build());
 							}
-							keys.put(item1, crate.getKey());
+							keys.put(itemBuilder.build(), crate.getKey());
 						}
 					}
 					CrateControl.previewKeys.put(player, keys);
@@ -341,7 +331,7 @@ public class Main extends JavaPlugin implements Listener {
 						String c = args[1]; //Crate
 						for(Crate crate : cc.getCrates()) {
 							if(crate.getName().equalsIgnoreCase(c)) {
-								Block block = player.getTargetBlock((Set<Material>) null, 5);
+								Block block = player.getTargetBlock(null, 5);
 								if(block.isEmpty()) {
 									player.sendMessage(Messages.MUST_BE_LOOKING_AT_A_BLOCK.getMessage());
 									return true;
@@ -369,7 +359,7 @@ public class Main extends JavaPlugin implements Listener {
 					}
 					if(args.length >= 2) {
 						Crate crate = null;
-						Player player = null;
+						Player player;
 						for(Crate c : cc.getCrates()) {
 							if(c.getCrateType() != CrateType.MENU) {
 								if(c.getName().equalsIgnoreCase(args[1])) {
@@ -405,7 +395,7 @@ public class Main extends JavaPlugin implements Listener {
 					if(args.length >= 2) {
 						for(Crate crate : cc.getCrates()) {
 							if(crate.getName().equalsIgnoreCase(args[1])) {
-								Player player = null;
+								Player player;
 								if(args.length >= 3) {
 									if(Methods.isOnline(args[2], sender)) {
 										player = Methods.getPlayer(args[2]);

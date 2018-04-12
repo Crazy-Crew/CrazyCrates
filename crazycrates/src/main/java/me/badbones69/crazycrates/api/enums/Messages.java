@@ -1,13 +1,12 @@
 package me.badbones69.crazycrates.api.enums;
 
+import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.controlers.FileManager.Files;
+import org.bukkit.configuration.file.FileConfiguration;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
-import org.bukkit.configuration.file.FileConfiguration;
-
-import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.controlers.FileManager.Files;
 
 public enum Messages {
 	
@@ -91,7 +90,7 @@ public enum Messages {
 	}
 	
 	public String getMessage(HashMap<String, String> placeholders) {
-		String message = "";
+		String message;
 		if(isList()) {
 			if(exists()) {
 				message = Methods.color(convertList(Files.MESSAGES.getFile().getStringList("Messages." + path), placeholders));
@@ -130,7 +129,7 @@ public enum Messages {
 	}
 	
 	public String getMessageNoPrefix(HashMap<String, String> placeholders) {
-		String message = "";
+		String message;
 		if(isList()) {
 			if(exists()) {
 				message = Methods.color(convertList(Files.MESSAGES.getFile().getStringList("Messages." + path), placeholders));
@@ -191,23 +190,15 @@ public enum Messages {
 	}
 	
 	private Boolean exists() {
-		if(Files.MESSAGES.getFile().contains("Messages." + path)) {
-			return true;
-		}
-		return false;
+		return Files.MESSAGES.getFile().contains("Messages." + path);
 	}
 	
 	private Boolean isList() {
-		if(Files.MESSAGES.getFile().contains("Messages." + path)){
-			if(Files.MESSAGES.getFile().getStringList("Messages." + path).isEmpty()) {
-				return false;
-			}
+		if(Files.MESSAGES.getFile().contains("Messages." + path)) {
+			return !Files.MESSAGES.getFile().getStringList("Messages." + path).isEmpty();
 		}else {
-			if(defaultMessage != null) {
-				return false;
-			}
+			return defaultMessage == null;
 		}
-		return true;
 	}
 	
 	private String getPath() {

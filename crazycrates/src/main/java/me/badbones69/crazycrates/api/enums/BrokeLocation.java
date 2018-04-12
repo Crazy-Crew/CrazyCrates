@@ -1,9 +1,8 @@
 package me.badbones69.crazycrates.api.enums;
 
+import me.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-
-import me.badbones69.crazycrates.api.objects.Crate;
 
 public class BrokeLocation {
 	

@@ -494,7 +494,7 @@ public enum ParticleEffect {
 		if(requiredVersion == -1) {
 			return true;
 		}
-		return ParticlePacket.getVersion() >= requiredVersion;
+		return ParticlePacket.getCurrentVersion() >= requiredVersion;
 	}
 	
 	/**
@@ -1459,7 +1459,7 @@ public enum ParticleEffect {
 		 * 
 		 * @return The version number
 		 */
-		public static int getVersion() {
+		public static int getCurrentVersion() {
 			if(!initialized) {
 				initialize();
 			}

@@ -1,8 +1,10 @@
 package me.badbones69.crazycrates.cratetypes;
 
-import java.util.ArrayList;
-import java.util.Random;
-
+import me.badbones69.crazycrates.Main;
+import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.enums.KeyType;
+import me.badbones69.crazycrates.api.objects.Crate;
+import me.badbones69.crazycrates.controlers.FireworkDamageAPI;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -12,11 +14,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import me.badbones69.crazycrates.Main;
-import me.badbones69.crazycrates.api.CrazyCrates;
-import me.badbones69.crazycrates.api.enums.KeyType;
-import me.badbones69.crazycrates.api.objects.Crate;
-import me.badbones69.crazycrates.controlers.FireworkDamageAPI;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class FireCracker {
 	
@@ -24,7 +23,7 @@ public class FireCracker {
 	
 	public static void startFireCracker(final Player player, final Crate crate, KeyType key, final Location loc) {
 		cc.takeKeys(1, player, crate, key);
-		final ArrayList<Color> colors = new ArrayList<Color>();
+		final ArrayList<Color> colors = new ArrayList<>();
 		colors.add(Color.RED);
 		colors.add(Color.YELLOW);
 		colors.add(Color.GREEN);

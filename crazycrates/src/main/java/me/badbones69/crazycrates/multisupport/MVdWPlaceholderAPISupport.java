@@ -1,8 +1,6 @@
 package me.badbones69.crazycrates.multisupport;
 
 import be.maximvdw.placeholderapi.PlaceholderAPI;
-import be.maximvdw.placeholderapi.PlaceholderReplaceEvent;
-import be.maximvdw.placeholderapi.PlaceholderReplacer;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.objects.Crate;
@@ -17,12 +15,7 @@ public class MVdWPlaceholderAPISupport {
 	public static void registerPlaceholders(Plugin plugin) {
 		for(final Crate crate : cc.getCrates()) {
 			if(crate.getCrateType() != CrateType.MENU) {
-				PlaceholderAPI.registerPlaceholder(plugin, "crazycrates_" + crate, new PlaceholderReplacer() {
-					@Override
-					public String onPlaceholderReplace(PlaceholderReplaceEvent e) {
-						return NumberFormat.getNumberInstance().format(CrazyCrates.getInstance().getVirtualKeys(e.getPlayer(), crate));
-					}
-				});
+				PlaceholderAPI.registerPlaceholder(plugin, "crazycrates_" + crate, e -> NumberFormat.getNumberInstance().format(CrazyCrates.getInstance().getVirtualKeys(e.getPlayer(), crate)));
 			}
 		}
 	}

@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 public enum Version {
 	
 	TOO_OLD(-1),
-	v1_7_R1(171), v1_7_R2(172), v1_7_R3(173), v1_7_R4(174), 
+	v1_7_R1(171), v1_7_R2(172), v1_7_R3(173), v1_7_R4(174),
 	v1_8_R1(181), v1_8_R2(182), v1_8_R3(183),
 	v1_9_R1(191), v1_9_R2(192),
 	v1_10_R1(1101),
@@ -22,21 +22,20 @@ public enum Version {
 	}
 	
 	/**
-	 * 
+	 *
 	 * @return Get the server's Minecraft version.
 	 */
-	public static Version getVersion() {
+	public static Version getCurrentVersion() {
 		if(currentVersion == null) {
 			String ver = Bukkit.getServer().getClass().getPackage().getName();
-			int v = Integer.parseInt(ver.substring(ver.lastIndexOf('.') + 1).replaceAll("_", "").replaceAll("R", "")
-					.replaceAll("v", ""));
+			int v = Integer.parseInt(ver.substring(ver.lastIndexOf('.') + 1).replaceAll("_", "").replaceAll("R", "").replaceAll("v", ""));
 			for(Version version : values()) {
-				if(version.getVersionInteger() == v) {
+				if(version.getCurrentVersionInteger() == v) {
 					currentVersion = version;
 					break;
 				}
 			}
-			if(v > Version.getLatestVersion().getVersionInteger()) {
+			if(v > Version.getLatestVersion().getCurrentVersionInteger()) {
 				currentVersion = Version.getLatestVersion();
 			}
 			if(currentVersion == null) {
@@ -47,10 +46,10 @@ public enum Version {
 	}
 	
 	/**
-	 * 
+	 *
 	 * @return The server's minecraft version as an integer.
 	 */
-	public Integer getVersionInteger() {
+	public Integer getCurrentVersionInteger() {
 		return this.versionInteger;
 	}
 	
@@ -79,8 +78,8 @@ public enum Version {
 	 */
 	public Integer comparedTo(Version version) {
 		int resault = -1;
-		int current = this.getVersionInteger();
-		int check = version.getVersionInteger();
+		int current = this.getCurrentVersionInteger();
+		int check = version.getCurrentVersionInteger();
 		if(current > check || check == -2) {// check is newer then current
 			resault = 1;
 		}else if(current == check) {// check is the same as current
@@ -89,6 +88,33 @@ public enum Version {
 			resault = -1;
 		}
 		return resault;
+	}
+	
+	/**
+	 * Checks to see if the current version is newer then the checked version.
+	 * @param version The version you are checking.
+	 * @return True if newer then the checked version and false if the same or older.
+	 */
+	public Boolean isNewer(Version version) {
+		return this.versionInteger > version.versionInteger || this.versionInteger == -2;
+	}
+	
+	/**
+	 * Checks to see if the current version is the same as the checked version.
+	 * @param version The version you are checking.
+	 * @return True if both the current and checked version is the same and false if otherwise.
+	 */
+	public Boolean isSame(Version version) {
+		return this.versionInteger.equals(version.versionInteger);
+	}
+	
+	/**
+	 * Checks to see if the current version is older then the checked version.
+	 * @param version The version you are checking.
+	 * @return True if older then the checked version and false if the same or newer.
+	 */
+	public Boolean isOlder(Version version) {
+		return this.versionInteger < version.versionInteger || this.versionInteger == -1;
 	}
 	
 }

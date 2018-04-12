@@ -25,11 +25,11 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class War implements Listener {
-
+	
 	private static CrazyCrates cc = CrazyCrates.getInstance();
-	private static HashMap<Player, Boolean> canPick = new HashMap<Player, Boolean>();
-	private static HashMap<Player, Boolean> canClose = new HashMap<Player, Boolean>();
-
+	private static HashMap<Player, Boolean> canPick = new HashMap<>();
+	private static HashMap<Player, Boolean> canClose = new HashMap<>();
+	
 	public static void openWarCrate(Player player, Crate crate, KeyType key) {
 		Inventory inv = Bukkit.createInventory(null, 9, Methods.color(crate.getFile().getString("Crate.CrateName")));
 		setRandomPrizes(player, inv, crate);
@@ -39,7 +39,7 @@ public class War implements Listener {
 		cc.takeKeys(1, player, crate, key);
 		startWar(player, inv, crate);
 	}
-
+	
 	private static void startWar(final Player player, final Inventory inv, final Crate crate) {
 		cc.addCrateTask(player, new BukkitRunnable() {
 			int full = 0;
@@ -48,7 +48,7 @@ public class War implements Listener {
 			public void run() {
 				if(full < 25) {//When Spinning
 					setRandomPrizes(player, inv, crate);
-					if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
+					if(Version.getCurrentVersion().getCurrentVersionInteger() >= Version.v1_9_R1.getCurrentVersionInteger()) {
 						player.playSound(player.getLocation(), Sound.valueOf("BLOCK_LAVA_POP"), 1, 1);
 					}else {
 						player.playSound(player.getLocation(), Sound.valueOf("LAVA_POP"), 1, 1);
@@ -61,19 +61,18 @@ public class War implements Listener {
 				}
 				full++;
 				if(full == 26) {//Finished Rolling
-					if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
+					if(Version.getCurrentVersion().getCurrentVersionInteger() >= Version.v1_9_R1.getCurrentVersionInteger()) {
 						player.playSound(player.getLocation(), Sound.valueOf("BLOCK_LAVA_POP"), 1, 1);
 					}else {
 						player.playSound(player.getLocation(), Sound.valueOf("LAVA_POP"), 1, 1);
 					}
 					setRandomGlass(player, inv);
 					canPick.put(player, true);
-					return;
 				}
 			}
 		}.runTaskTimer(Main.getPlugin(), 1, 3));
 	}
-
+	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
 		final Player player = (Player) e.getWhoClicked();
@@ -95,7 +94,7 @@ public class War implements Listener {
 							if(item != null) {
 								if(item.getType() == Material.STAINED_GLASS_PANE) {
 									final int slot = e.getRawSlot();
-									Prize prize = cc.pickPrize(player, crate);
+									Prize prize = crate.pickPrize(player);
 									inv.setItem(slot, prize.getDisplayItem());
 									if(cc.hasCrateTask(player)) {
 										cc.endCrate(player);
@@ -103,12 +102,12 @@ public class War implements Listener {
 									canPick.remove(player);
 									canClose.put(player, true);
 									cc.getReward(player, prize);
-									if(prize.toggleFirework()) {
+									if(prize.useFireworks()) {
 										Methods.fireWork(player.getLocation().add(0, 1, 0));
 									}
-									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.CSGO, crate.getName(), prize));
+									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 									cc.removePlayerFromOpeningList(player);
-									if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
+									if(Version.getCurrentVersion().getCurrentVersionInteger() >= Version.v1_9_R1.getCurrentVersionInteger()) {
 										player.playSound(player.getLocation(), Sound.valueOf("BLOCK_ANVIL_PLACE"), 1, 1);
 									}else {
 										player.playSound(player.getLocation(), Sound.valueOf("ANVIL_USE"), 1, 1);
@@ -119,7 +118,7 @@ public class War implements Listener {
 										public void run() {
 											for(int i = 0; i < 9; i++) {
 												if(i != slot) {
-													inv.setItem(i, cc.pickPrize(player, crate).getDisplayItem());
+													inv.setItem(i, crate.pickPrize(player).getDisplayItem());
 												}
 											}
 											if(cc.hasCrateTask(player)) {
@@ -159,7 +158,7 @@ public class War implements Listener {
 			}
 		}
 	}
-
+	
 	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent e) {
 		Player player = (Player) e.getPlayer();
@@ -179,17 +178,17 @@ public class War implements Listener {
 			}
 		}
 	}
-
+	
 	private static void setRandomPrizes(Player player, Inventory inv, Crate crate) {
 		if(cc.isInOpeningList(player)) {
 			if(inv.getName().equalsIgnoreCase(Methods.color(cc.getOpeningCrate(player).getFile().getString("Crate.CrateName")))) {
 				for(int i = 0; i < 9; i++) {
-					inv.setItem(i, cc.pickPrize(player, crate).getDisplayItem());
+					inv.setItem(i, crate.pickPrize(player).getDisplayItem());
 				}
 			}
 		}
 	}
-
+	
 	private static void setRandomGlass(Player player, Inventory inv) {
 		if(cc.isInOpeningList(player)) {
 			if(inv.getName().equalsIgnoreCase(Methods.color(cc.getOpeningCrate(player).getFile().getString("Crate.CrateName")))) {
@@ -203,9 +202,9 @@ public class War implements Listener {
 			}
 		}
 	}
-
+	
 	private static HashMap<Integer, String> getColorCode() {
-		HashMap<Integer, String> colorCodes = new HashMap<Integer, String>();
+		HashMap<Integer, String> colorCodes = new HashMap<>();
 		colorCodes.put(0, "f");
 		colorCodes.put(1, "6");
 		colorCodes.put(2, "d");
@@ -224,5 +223,5 @@ public class War implements Listener {
 		colorCodes.put(15, "8");
 		return colorCodes;
 	}
-
+	
 }
