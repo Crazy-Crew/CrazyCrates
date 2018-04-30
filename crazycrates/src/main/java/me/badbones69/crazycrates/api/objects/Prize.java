@@ -145,7 +145,7 @@ public class Prize {
 		return altPrize != null;
 	}
 	
-	public Boolean playerHasBlacklistPermission(Player player) {
+	public Boolean hasBlacklistPermission(Player player) {
 		for(String blackListPermission : blackListPermissions) {
 			if(player.hasPermission(blackListPermission)) {
 				return true;

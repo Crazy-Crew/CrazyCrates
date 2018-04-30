@@ -7,7 +7,7 @@
     <groupId>me.badbones69</groupId>
     <artifactId>crazycrates-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.7.4.5</version>
+    <version>1.7.4.6</version>
 
     <modules>
         <module>v1_8_R1</module>

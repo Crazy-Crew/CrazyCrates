@@ -53,11 +53,12 @@ public class Crate {
 			useablePrizes.addAll(getPrizes());
 		}else {
 			for(Prize prize : getPrizes()) {
-				if(prize.playerHasBlacklistPermission(player)) {
+				if(prize.hasBlacklistPermission(player)) {
 					if(!prize.hasAltPrize()) {
-						useablePrizes.add(prize);
+						continue;
 					}
 				}
+				useablePrizes.add(prize);
 			}
 		}
 		// ================= Chance Check ================= //
@@ -91,13 +92,12 @@ public class Crate {
 			useablePrizes.addAll(getPrizes());
 		}else {
 			for(Prize prize : getPrizes()) {
-				Boolean canWinPrize = !prize.playerHasBlacklistPermission(player);
-				if(!prize.getTiers().contains(tier.toLowerCase())) {
-					canWinPrize = false;
+				if(prize.hasBlacklistPermission(player)) {
+					if(!prize.hasAltPrize()) {
+						continue;
+					}
 				}
-				if(canWinPrize) {
-					useablePrizes.add(prize);
-				}
+				useablePrizes.add(prize);
 			}
 		}
 		// ================= Chance Check ================= //
@@ -131,11 +131,12 @@ public class Crate {
 			useablePrizes.addAll(getPrizes());
 		}else {
 			for(Prize prize : getPrizes()) {
-				if(prize.playerHasBlacklistPermission(player)) {
+				if(prize.hasBlacklistPermission(player)) {
 					if(!prize.hasAltPrize()) {
-						useablePrizes.add(prize);
+						continue;
 					}
 				}
+				useablePrizes.add(prize);
 			}
 		}
 		// ================= Chance Check ================= //
