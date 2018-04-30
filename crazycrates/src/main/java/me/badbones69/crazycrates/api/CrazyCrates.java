@@ -516,7 +516,7 @@ public class CrazyCrates {
 	
 	public void getReward(Player player, Prize prize) {
 		if(prize != null) {
-			prize = prize.playerHasBlacklistPermission(player) ? prize.getAltPrize() : prize;
+			prize = prize.hasBlacklistPermission(player) ? prize.getAltPrize() : prize;
 			for(ItemStack i : prize.getItems()) {
 				if(!Methods.isInvFull(player)) {
 					player.getInventory().addItem(i);
