@@ -37,6 +37,11 @@ Crate:
       Glowing: false
       Items:
         - 'Item:311, Amount:1, Name:&3Rare ChestPlate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3'
+      Alternative-Prize:
+        Toggle: false
+        Messages: {}
+        Commands: {}
+        Items: {}
     2:
       DisplayName: '&b&lCrazy &4&lSword'
       DisplayItem: '283'
@@ -55,6 +60,11 @@ Crate:
         - 'Item:283, Amount:1, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1'
       Messages:
         - '&7You just won a &b&lCrazy &4&lSword&7.'
+      Alternative-Prize:
+        Toggle: false
+        Messages: {}
+        Commands: {}
+        Items: {}
     3:
       DisplayName: '&e&l$1,000,000'
       DisplayItem: '175'
@@ -70,3 +80,8 @@ Crate:
         - 'Eco give %Player% 1000000'
       Messages:
         - '&7You just won &a$1,000,000&7.'
+      Alternative-Prize:
+        Toggle: false
+        Messages: {}
+        Commands: {}
+        Items: {}

@@ -1,7 +1,15 @@
 package me.badbones69.crazycrates.controlers;
 
-import java.util.HashMap;
-
+import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.enums.CrateType;
+import me.badbones69.crazycrates.api.enums.KeyType;
+import me.badbones69.crazycrates.api.enums.Messages;
+import me.badbones69.crazycrates.api.objects.Crate;
+import me.badbones69.crazycrates.api.objects.CrateLocation;
+import me.badbones69.crazycrates.controlers.FileManager.Files;
+import me.badbones69.crazycrates.cratetypes.QuickCrate;
+import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,16 +28,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrazyCrates;
-import me.badbones69.crazycrates.api.enums.CrateType;
-import me.badbones69.crazycrates.api.enums.KeyType;
-import me.badbones69.crazycrates.api.enums.Messages;
-import me.badbones69.crazycrates.api.objects.Crate;
-import me.badbones69.crazycrates.api.objects.CrateLocation;
-import me.badbones69.crazycrates.controlers.FileManager.Files;
-import me.badbones69.crazycrates.cratetypes.QuickCrate;
-import me.badbones69.crazycrates.multisupport.Version;
+import java.util.HashMap;
 
 public class CrateControl implements Listener { //Crate Control
 	
@@ -50,7 +49,6 @@ public class CrateControl implements Listener { //Crate Control
 	
 	/**
 	 * This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
-	 * @param e
 	 */
 	@EventHandler
 	public void onCrateInventoryClick(InventoryClickEvent e) {
@@ -68,7 +66,7 @@ public class CrateControl implements Listener { //Crate Control
 	public void onCrateOpen(PlayerInteractEvent e) {
 		Player player = e.getPlayer();
 		FileConfiguration config = Files.CONFIG.getFile();
-		if(Version.getVersion().comparedTo(Version.v1_9_R1) >= 0) {
+		if(Version.getCurrentVersion().comparedTo(Version.v1_9_R1) >= 0) {
 			if(e.getHand() == EquipmentSlot.valueOf("OFF_HAND")) {
 				return;
 			}
@@ -146,7 +144,7 @@ public class CrateControl implements Listener { //Crate Control
 						}
 						if(!useQuickCrateAgain) {
 							if(cc.isInOpeningList(player)) {
-								HashMap<String, String> placeholders = new HashMap<String, String>();
+								HashMap<String, String> placeholders = new HashMap<>();
 								placeholders.put("%Key%", KeyName);
 								placeholders.put("%key%", KeyName);
 								player.sendMessage(Messages.ALREADY_OPENING_CRATE.getMessage(placeholders));
@@ -158,7 +156,7 @@ public class CrateControl implements Listener { //Crate Control
 							}
 						}
 						if(Methods.isInvFull(player)) {
-							if(config.contains("Settings.Inventory-Full")) {
+							if(Files.MESSAGES.getFile().contains("Messages.Inventory-Full")) {
 								player.sendMessage(Messages.INVENTORY_FULL.getMessage());
 							}else {
 								player.sendMessage(Methods.color(Methods.getPrefix() + "&cYour inventory is full, please make room before opening a crate."));
@@ -168,7 +166,7 @@ public class CrateControl implements Listener { //Crate Control
 						if(useQuickCrateAgain) {
 							QuickCrate.endQuickCrate(player, loc.getLocation());
 						}
-						KeyType keyType = null;
+						KeyType keyType;
 						if(isPhysical) {
 							keyType = KeyType.PHYSICAL_KEY;
 						}else {
@@ -185,7 +183,7 @@ public class CrateControl implements Listener { //Crate Control
 						if(config.getBoolean("Settings.KnockBack")) {
 							knockBack(player, clickedBlock.getLocation());
 						}
-						HashMap<String, String> placeholders = new HashMap<String, String>();
+						HashMap<String, String> placeholders = new HashMap<>();
 						placeholders.put("%Key%", KeyName);
 						placeholders.put("%key%", KeyName);
 						player.sendMessage(Messages.NO_KEY.getMessage(placeholders));

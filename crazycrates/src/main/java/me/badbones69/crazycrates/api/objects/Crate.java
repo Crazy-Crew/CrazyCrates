@@ -1,14 +1,16 @@
 package me.badbones69.crazycrates.api.objects;
 
-import java.util.ArrayList;
-
+import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.api.enums.CrateType;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.enums.CrateType;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Crate {
 	
@@ -21,7 +23,7 @@ public class Crate {
 	private ArrayList<ItemStack> preview;
 	
 	/**
-	 * 
+	 *
 	 * @param name The name of the crate.
 	 * @param crateType The crate type of the crate.
 	 * @param key The key as an item stack.
@@ -39,7 +41,126 @@ public class Crate {
 	}
 	
 	/**
-	 * 
+	 * Picks a random prize based on BlackList Permissions and the Chance System.
+	 * @param player The player that will be winning the prize.
+	 * @return The winning prize.
+	 */
+	public Prize pickPrize(Player player) {
+		ArrayList<Prize> prizes = new ArrayList<>();
+		ArrayList<Prize> useablePrizes = new ArrayList<>();
+		// ================= Blacklist Check ================= //
+		if(player.isOp()) {
+			useablePrizes.addAll(getPrizes());
+		}else {
+			for(Prize prize : getPrizes()) {
+				if(prize.playerHasBlacklistPermission(player)) {
+					if(!prize.hasAltPrize()) {
+						useablePrizes.add(prize);
+					}
+				}
+			}
+		}
+		// ================= Chance Check ================= //
+		for(int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
+			for(Prize prize : useablePrizes) {
+				int max = prize.getMaxRange();
+				int chance = prize.getChance();
+				int num;
+				for(int counter = 1; counter <= 1; counter++) {
+					num = 1 + new Random().nextInt(max);
+					if(num >= 1 && num <= chance) {
+						prizes.add(prize);
+					}
+				}
+			}
+		}
+		return prizes.get(new Random().nextInt(prizes.size()));
+	}
+	
+	/**
+	 * Picks a random prize based on BlackList Permissions and the Chance System. Only used in the Cosmic Crate Type since it is the only one with tiers.
+	 * @param player The player that will be winning the prize.
+	 * @param tier The tier you wish the prize to be from.
+	 * @return The winning prize based on the crate's tiers.
+	 */
+	public Prize pickPrize(Player player, String tier) {
+		ArrayList<Prize> prizes = new ArrayList<>();
+		ArrayList<Prize> useablePrizes = new ArrayList<>();
+		// ================= Blacklist Check ================= //
+		if(player.isOp()) {
+			useablePrizes.addAll(getPrizes());
+		}else {
+			for(Prize prize : getPrizes()) {
+				Boolean canWinPrize = !prize.playerHasBlacklistPermission(player);
+				if(!prize.getTiers().contains(tier.toLowerCase())) {
+					canWinPrize = false;
+				}
+				if(canWinPrize) {
+					useablePrizes.add(prize);
+				}
+			}
+		}
+		// ================= Chance Check ================= //
+		for(int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
+			for(Prize prize : useablePrizes) {
+				int max = prize.getMaxRange();
+				int chance = prize.getChance();
+				int num;
+				for(int counter = 1; counter <= 1; counter++) {
+					num = 1 + new Random().nextInt(max);
+					if(num >= 1 && num <= chance) {
+						prizes.add(prize);
+					}
+				}
+			}
+		}
+		return prizes.get(new Random().nextInt(prizes.size()));
+	}
+	
+	/**
+	 * Picks a random prize based on BlackList Permissions and the Chance System. Spawns the display item at the location.
+	 * @param player The player that will be winning the prize.
+	 * @param location The location the prize will spawn at.
+	 * @return The winning prize.
+	 */
+	public Prize pickPrize(Player player, Location location) {
+		ArrayList<Prize> prizes = new ArrayList<>();
+		ArrayList<Prize> useablePrizes = new ArrayList<>();
+		// ================= Blacklist Check ================= //
+		if(player.isOp()) {
+			useablePrizes.addAll(getPrizes());
+		}else {
+			for(Prize prize : getPrizes()) {
+				if(prize.playerHasBlacklistPermission(player)) {
+					if(!prize.hasAltPrize()) {
+						useablePrizes.add(prize);
+					}
+				}
+			}
+		}
+		// ================= Chance Check ================= //
+		for(int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
+			for(Prize prize : useablePrizes) {
+				int max = prize.getMaxRange();
+				int chance = prize.getChance();
+				int num;
+				for(int counter = 1; counter <= 1; counter++) {
+					num = 1 + new Random().nextInt(max);
+					if(num >= 1 && num <= chance) {
+						prizes.add(prize);
+					}
+				}
+			}
+		}
+		Prize prize = prizes.get(new Random().nextInt(prizes.size()));
+		if(prize.useFireworks()) {
+			Methods.fireWork(location);
+		}
+		return prize;
+	}
+	
+	/**
+	 *
 	 * @return name The name of the crate.
 	 */
 	public String getName() {
@@ -65,7 +186,12 @@ public class Crate {
 		}
 		Inventory inv = Bukkit.createInventory(null, slots, Methods.color(file.getString("Crate.Name")));
 		for(ItemStack item : preview) {
-			inv.setItem(inv.firstEmpty(), item);
+			int nextSlot = inv.firstEmpty();
+			if(nextSlot >= 0) {
+				inv.setItem(nextSlot, item);
+			}else {
+				break;
+			}
 		}
 		return inv;
 	}
@@ -80,7 +206,7 @@ public class Crate {
 	}
 	
 	/**
-	 * 
+	 *
 	 * @return The crate type of the crate.
 	 */
 	public CrateType getCrateType() {
@@ -88,7 +214,7 @@ public class Crate {
 	}
 	
 	/**
-	 * 
+	 *
 	 * @return The key as an item stack.
 	 */
 	public ItemStack getKey() {
@@ -96,7 +222,7 @@ public class Crate {
 	}
 	
 	/**
-	 * 
+	 *
 	 * @param amount The amount of keys you want.
 	 * @return The key as an item stack.
 	 */
@@ -107,7 +233,7 @@ public class Crate {
 	}
 	
 	/**
-	 * 
+	 *
 	 * @return The crates file.
 	 */
 	public FileConfiguration getFile() {
@@ -115,7 +241,7 @@ public class Crate {
 	}
 	
 	/**
-	 * 
+	 *
 	 * @return The prizes in the crate.
 	 */
 	public ArrayList<Prize> getPrizes() {
@@ -123,7 +249,7 @@ public class Crate {
 	}
 	
 	/**
-	 * 
+	 *
 	 * @param name Name of the prize you want.
 	 * @return The prize you asked for.
 	 */

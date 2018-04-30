@@ -6,3 +6,5 @@ dependency-reduced-pom.xml
 .idea
 *.iml
 crazycrates/META-INF/
+
+\.DS_Store

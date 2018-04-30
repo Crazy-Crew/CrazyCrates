@@ -1,8 +1,13 @@
 package me.badbones69.crazycrates.cratetypes;
 
-import java.util.ArrayList;
-import java.util.Random;
-
+import me.badbones69.crazycrates.Main;
+import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.enums.KeyType;
+import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
+import me.badbones69.crazycrates.api.objects.Crate;
+import me.badbones69.crazycrates.api.objects.Prize;
+import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -11,15 +16,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import me.badbones69.crazycrates.Main;
-import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrazyCrates;
-import me.badbones69.crazycrates.api.enums.CrateType;
-import me.badbones69.crazycrates.api.enums.KeyType;
-import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
-import me.badbones69.crazycrates.api.objects.Crate;
-import me.badbones69.crazycrates.api.objects.Prize;
-import me.badbones69.crazycrates.multisupport.Version;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Roulette implements Listener {
 	
@@ -39,7 +37,7 @@ public class Roulette implements Listener {
 	public static void openRoulette(Player player, Crate crate, KeyType key) {
 		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(crate.getFile().getString("Crate.CrateName")));
 		setGlass(inv);
-		inv.setItem(13, cc.pickPrize(player, crate).getDisplayItem());
+		inv.setItem(13, crate.pickPrize(player).getDisplayItem());
 		player.openInventory(inv);
 		cc.takeKeys(1, player, crate, key);
 		startRoulette(player, inv, crate);
@@ -55,9 +53,9 @@ public class Roulette implements Listener {
 			@Override
 			public void run() {
 				if(full <= 15) {
-					inv.setItem(13, cc.pickPrize(player, crate).getDisplayItem());
+					inv.setItem(13, crate.pickPrize(player).getDisplayItem());
 					setGlass(inv);
-					if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
+					if(Version.getCurrentVersion().getCurrentVersionInteger() >= Version.v1_9_R1.getCurrentVersionInteger()) {
 						player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
 					}else {
 						player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
@@ -65,7 +63,7 @@ public class Roulette implements Listener {
 					even++;
 					if(even >= 4) {
 						even = 0;
-						inv.setItem(13, cc.pickPrize(player, crate).getDisplayItem());
+						inv.setItem(13, crate.pickPrize(player).getDisplayItem());
 					}
 				}
 				open++;
@@ -77,8 +75,8 @@ public class Roulette implements Listener {
 				if(full > 16) {
 					if(slowSpin().contains(time)) {
 						setGlass(inv);
-						inv.setItem(13, cc.pickPrize(player, crate).getDisplayItem());
-						if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
+						inv.setItem(13, crate.pickPrize(player).getDisplayItem());
+						if(Version.getCurrentVersion().getCurrentVersionInteger() >= Version.v1_9_R1.getCurrentVersionInteger()) {
 							player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
 						}else {
 							player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
@@ -86,7 +84,7 @@ public class Roulette implements Listener {
 					}
 					time++;
 					if(time >= 23) {
-						if(Version.getVersion().getVersionInteger() >= Version.v1_9_R1.getVersionInteger()) {
+						if(Version.getCurrentVersion().getCurrentVersionInteger() >= Version.v1_9_R1.getCurrentVersionInteger()) {
 							player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
 						}else {
 							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
@@ -99,12 +97,11 @@ public class Roulette implements Listener {
 							}
 						}
 						cc.getReward(player, prize);
-						if(prize.toggleFirework()) {
+						if(prize.useFireworks()) {
 							Methods.fireWork(player.getLocation().add(0, 1, 0));
 						}
-						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.ROULETTE, crate.getName(), prize));
+						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 						cc.removePlayerFromOpeningList(player);
-						return;
 					}
 				}
 			}
@@ -112,7 +109,7 @@ public class Roulette implements Listener {
 	}
 	
 	private static ArrayList<Integer> slowSpin() {
-		ArrayList<Integer> slow = new ArrayList<Integer>();
+		ArrayList<Integer> slow = new ArrayList<>();
 		int full = 46;
 		int cut = 9;
 		for(int i = 46; cut > 0; full--) {

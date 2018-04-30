@@ -38,6 +38,11 @@ Crate:
         - 'Item:304, Amount:1, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
       Messages:
         - '&7You just won a &a&lFancy Pantst&7.'
+      Alternative-Prize:
+        Toggle: false
+        Messages: {}
+        Commands: {}
+        Items: {}
     2:
       DisplayName: '&b&lClassic Sword'
       DisplayItem: '276'
@@ -56,6 +61,11 @@ Crate:
         - 'Item:276, Amount:1, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1'
       Messages:
         - '&7You just won a &b&lClassic Sword&7.'
+      Alternative-Prize:
+        Toggle: false
+        Messages: {}
+        Commands: {}
+        Items: {}
     3:
       DisplayName: '&e&l$100,000'
       DisplayItem: '175'
@@ -71,3 +81,8 @@ Crate:
         - 'Eco give %Player% 100000'
       Messages:
         - '&7You just won &a$100,000&7.'
+      Alternative-Prize:
+        Toggle: false
+        Messages: {}
+        Commands: {}
+        Items: {}

@@ -1,41 +1,34 @@
 package me.badbones69.crazycrates.cratetypes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-
+import me.badbones69.crazycrates.Main;
+import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.enums.KeyType;
+import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
+import me.badbones69.crazycrates.api.objects.Crate;
+import me.badbones69.crazycrates.api.objects.Prize;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import me.badbones69.crazycrates.Main;
-import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrazyCrates;
-import me.badbones69.crazycrates.api.enums.CrateType;
-import me.badbones69.crazycrates.api.enums.KeyType;
-import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
-import me.badbones69.crazycrates.api.objects.Crate;
-import me.badbones69.crazycrates.api.objects.Prize;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Wonder implements Listener {
 	
 	private static CrazyCrates cc = CrazyCrates.getInstance();
-	private static HashMap<Player, HashMap<ItemStack, String>> Items = new HashMap<>();
 	
 	public static void startWonder(final Player player, Crate crate, KeyType key) {
 		final Inventory inv = Bukkit.createInventory(null, 45, Methods.color(crate.getFile().getString("Crate.CrateName")));
-		final HashMap<ItemStack, String> items = new HashMap<ItemStack, String>();
-		final ArrayList<String> slots = new ArrayList<String>();
+		final ArrayList<String> slots = new ArrayList<>();
 		for(int i = 0; i < 45; i++) {
-			Prize prize = cc.pickPrize(player, crate);
+			Prize prize = crate.pickPrize(player);
 			slots.add(i + "");
 			inv.setItem(i, prize.getDisplayItem());
 		}
-		Items.put(player, items);
 		cc.takeKeys(1, player, crate, key);
 		player.openInventory(inv);
 		cc.addCrateTask(player, new BukkitRunnable() {
@@ -44,9 +37,8 @@ public class Wonder implements Listener {
 			int slot1 = 0;
 			int slot2 = 44;
 			Random r = new Random();
-			ArrayList<Integer> Slots = new ArrayList<Integer>();
+			ArrayList<Integer> Slots = new ArrayList<>();
 			Prize p = null;
-			
 			@Override
 			public void run() {
 				if(timer >= 2 && fulltime <= 65) {
@@ -57,7 +49,7 @@ public class Wonder implements Listener {
 					inv.setItem(slot1, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
 					inv.setItem(slot2, Methods.makeItem(Material.STAINED_GLASS_PANE, 1, 15, " "));
 					for(String slot : slots) {
-						p = cc.pickPrize(player, crate);
+						p = crate.pickPrize(player);
 						inv.setItem(Integer.parseInt(slot), p.getDisplayItem());
 					}
 					slot1++;
@@ -75,10 +67,10 @@ public class Wonder implements Listener {
 					cc.endCrate(player);
 					player.closeInventory();
 					cc.getReward(player, p);
-					if(p.toggleFirework()) {
+					if(p.useFireworks()) {
 						Methods.fireWork(player.getLocation().add(0, 1, 0));
 					}
-					Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, CrateType.WONDER, crate.getName(), p));
+					Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), p));
 					cc.removePlayerFromOpeningList(player);
 					return;
 				}

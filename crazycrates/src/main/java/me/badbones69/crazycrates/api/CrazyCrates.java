@@ -1,24 +1,5 @@
 package me.badbones69.crazycrates.api;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import java.util.logging.Level;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitTask;
-
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.enums.BrokeLocation;
 import me.badbones69.crazycrates.api.enums.CrateType;
@@ -31,15 +12,20 @@ import me.badbones69.crazycrates.controlers.CrateControl;
 import me.badbones69.crazycrates.controlers.FileManager;
 import me.badbones69.crazycrates.controlers.FileManager.Files;
 import me.badbones69.crazycrates.controlers.GUIMenu;
-import me.badbones69.crazycrates.cratetypes.CSGO;
-import me.badbones69.crazycrates.cratetypes.Cosmic;
-import me.badbones69.crazycrates.cratetypes.FireCracker;
-import me.badbones69.crazycrates.cratetypes.QuadCrate;
-import me.badbones69.crazycrates.cratetypes.QuickCrate;
-import me.badbones69.crazycrates.cratetypes.Roulette;
-import me.badbones69.crazycrates.cratetypes.War;
-import me.badbones69.crazycrates.cratetypes.Wheel;
-import me.badbones69.crazycrates.cratetypes.Wonder;
+import me.badbones69.crazycrates.cratetypes.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.*;
+import java.util.logging.Level;
 
 public class CrazyCrates {
 	
@@ -111,23 +97,26 @@ public class CrazyCrates {
 				FileConfiguration file = fileManager.getFile(crateName).getFile();
 				ArrayList<Prize> prizes = new ArrayList<>();
 				for(String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
-					ArrayList<String> msgs = new ArrayList<>();
-					ArrayList<String> commands = new ArrayList<>();
-					ArrayList<String> blackList = new ArrayList<>();
-					for(String msg : file.getStringList("Crate.Prizes." + prize + ".Messages")) {
-						msgs.add(msg);
+					Prize altPrize = null;
+					if(file.contains("Crate.Prizes." + prize + ".Alternative-Prize")) {
+						if(file.getBoolean("Crate.Prizes." + prize + ".Alternative-Prize.Toggle")) {
+							altPrize = new Prize("Alternative-Prize",
+							file.getStringList("Crate.Prizes." + prize + ".Alternative-Prize.Messages"),
+							file.getStringList("Crate.Prizes." + prize + ".Alternative-Prize.Commands"),
+							getItems(file, prize + ".Alternative-Prize"));
+						}
 					}
-					for(String cmd : file.getStringList("Crate.Prizes." + prize + ".Commands")) {
-						commands.add(cmd);
-					}
-					for(String blackListPermission : file.getStringList("Crate.Prizes." + prize + ".BlackListed-Permissions")) {
-						blackList.add(blackListPermission.toLowerCase());
-					}
-					prizes.add(new Prize(prize, getDisplayItem(file, prize), msgs, commands, getItems(file, prize), crateName,
+					prizes.add(new Prize(prize, getDisplayItem(file, prize),
+					file.getStringList("Crate.Prizes." + prize + ".Messages"),
+					file.getStringList("Crate.Prizes." + prize + ".Commands"),
+					getItems(file, prize),
+					crateName,
 					file.getInt("Crate.Prizes." + prize + ".Chance"),
 					file.getInt("Crate.Prizes." + prize + ".MaxRange"),
 					file.getBoolean("Crate.Prizes." + prize + ".Firework"),
-					blackList));
+					file.getStringList("Crate.Prizes." + prize + ".BlackListed-Permissions"),
+					file.getStringList("Crate.Prizes." + prize + ".Tiers"),
+					altPrize));
 				}
 				crates.add(new Crate(crateName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file));
 				//				if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "" + crateName + ".yml has been loaded.");
@@ -182,49 +171,55 @@ public class CrazyCrates {
 	 * This method is disgned to help clean the data.yml file of any usless info that it may have.
 	 */
 	public void cleanDataFile() {
-		Boolean logging = fileManager.isLogging();
-		if(logging) System.out.println(fileManager.getPrefix() + "Cleaning up the data.yml file.");
 		FileConfiguration data = Files.DATA.getFile();
-		List<String> removePlayers = new ArrayList<>();
-		for(String uuid : data.getConfigurationSection("Players").getKeys(false)) {
-			Boolean hasKeys = false;
-			List<String> noKeys = new ArrayList<>();
-			for(Crate crate : getCrates()) {
-				if(data.getInt("Players." + uuid + "." + crate.getName()) <= 0) {
-					noKeys.add(crate.getName());
+		if(data.contains("Players")) {
+			Boolean logging = fileManager.isLogging();
+			if(logging) System.out.println(fileManager.getPrefix() + "Cleaning up the data.yml file.");
+			List<String> removePlayers = new ArrayList<>();
+			for(String uuid : data.getConfigurationSection("Players").getKeys(false)) {
+				Boolean hasKeys = false;
+				List<String> noKeys = new ArrayList<>();
+				for(Crate crate : getCrates()) {
+					if(data.getInt("Players." + uuid + "." + crate.getName()) <= 0) {
+						noKeys.add(crate.getName());
+					}else {
+						hasKeys = true;
+					}
+				}
+				if(hasKeys) {
+					for(String crate : noKeys) {
+						data.set("Players." + uuid + "." + crate, null);
+					}
 				}else {
-					hasKeys = true;
+					removePlayers.add(uuid);
 				}
 			}
-			if(hasKeys) {
-				for(String crate : noKeys) {
-					data.set("Players." + uuid + "." + crate, null);
+			if(removePlayers.size() > 0) {
+				if(logging) System.out.println(fileManager.getPrefix() + removePlayers.size() + " player's data has been marked to be removed.");
+				for(String uuid : removePlayers) {
+					//				if(logging) System.out.println(fileManager.getPrefix() + "Removed " + data.getString("Players." + uuid + ".Name") + "'s empty data from the data.yml.");
+					data.set("Players." + uuid, null);
 				}
-			}else {
-				removePlayers.add(uuid);
+				if(logging) System.out.println(fileManager.getPrefix() + "All empty player data has been removed.");
 			}
+			if(logging) System.out.println(fileManager.getPrefix() + "The data.yml file has been cleaned.");
+			Files.DATA.saveFile();
 		}
-		if(removePlayers.size() > 0) {
-			if(logging) System.out.println(fileManager.getPrefix() + removePlayers.size() + " player's data has been marked to be removed.");
-			for(String uuid : removePlayers) {
-				//				if(logging) System.out.println(fileManager.getPrefix() + "Removed " + data.getString("Players." + uuid + ".Name") + "'s empty data from the data.yml.");
-				data.set("Players." + uuid, null);
-			}
-			if(logging) System.out.println(fileManager.getPrefix() + "All empty player data has been removed.");
-		}
-		if(logging) System.out.println(fileManager.getPrefix() + "The data.yml file has been cleaned.");
-		Files.DATA.saveFile();
 	}
 	
 	/**
 	 * Opens a crate for a player.
 	 * @param player The player that is having the crate opened for them.
 	 * @param crate The crate that is being used.
-	 * @param loc The location that may be needed for some crate types.
+	 * @param location The location that may be needed for some crate types.
 	 */
-	public void openCrate(Player player, Crate crate, KeyType key, Location loc) {
+	public void openCrate(Player player, Crate crate, KeyType key, Location location) {
 		addPlayerToOpeningList(player, crate);
-		Boolean broadcast = crate.getFile() != null ? crate.getFile().getBoolean("Crate.OpeningBroadCast") : false;
+		Boolean broadcast = crate.getFile() != null && crate.getFile().getBoolean("Crate.OpeningBroadCast");
+		if(broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {
+			Bukkit.broadcastMessage(Methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
+			broadcast = false;
+		}
 		switch(crate.getCrateType()) {
 			case MENU:
 				GUIMenu.openGUI(player);
@@ -252,13 +247,13 @@ public class CrazyCrates {
 				last.setPitch(0F);
 				CrateControl.lastLocation.put(player, last);
 				if(broadcast) {
-					broadcast = QuadCrate.startBuild(player, loc, crate, key, Material.CHEST);
+					broadcast = QuadCrate.startBuild(player, location, crate, key, Material.CHEST);
 				}else {
-					QuadCrate.startBuild(player, loc, crate, key, Material.CHEST);
+					QuadCrate.startBuild(player, location, crate, key, Material.CHEST);
 				}
 				break;
 			case FIRE_CRACKER:
-				if(CrateControl.inUse.containsValue(loc)) {
+				if(CrateControl.inUse.containsValue(location)) {
 					player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
 					removePlayerFromOpeningList(player);
 					return;
@@ -268,24 +263,24 @@ public class CrazyCrates {
 						removePlayerFromOpeningList(player);
 						return;
 					}else {
-						FireCracker.startFireCracker(player, crate, key, loc);
-						CrateControl.inUse.put(player, loc);
+						FireCracker.startFireCracker(player, crate, key, location);
+						CrateControl.inUse.put(player, location);
 					}
 				}
 				break;
 			case QUICK_CRATE:
-				if(CrateControl.inUse.containsValue(loc)) {
+				if(CrateControl.inUse.containsValue(location)) {
 					player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
 					removePlayerFromOpeningList(player);
 					return;
 				}else {
-					if(key == KeyType.VIRTUAL_KEY && loc.equals(player.getLocation())) {
+					if(key == KeyType.VIRTUAL_KEY && location.equals(player.getLocation())) {
 						player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
 						removePlayerFromOpeningList(player);
 						return;
 					}else {
-						QuickCrate.openCrate(player, loc, crate, key, true);
-						CrateControl.inUse.put(player, loc);
+						QuickCrate.openCrate(player, location, crate, key, true);
+						CrateControl.inUse.put(player, location);
 					}
 				}
 				break;
@@ -296,9 +291,9 @@ public class CrazyCrates {
 					return;
 				}else {
 					takeKeys(1, player, crate, key);
-					Prize prize = pickPrize(player, crate);
+					Prize prize = crate.pickPrize(player);
 					getReward(player, prize);
-					if(prize.toggleFirework()) {
+					if(prize.useFireworks()) {
 						Methods.fireWork(player.getLocation().add(0, 1, 0));
 					}
 					removePlayerFromOpeningList(player);
@@ -343,7 +338,7 @@ public class CrazyCrates {
 		if(currentQuadTasks.containsKey(player.getUniqueId())) {
 			currentQuadTasks.get(player.getUniqueId()).add(task);
 		}else {
-			currentQuadTasks.put(player.getUniqueId(), new ArrayList<BukkitTask>());
+			currentQuadTasks.put(player.getUniqueId(), new ArrayList<>());
 			currentQuadTasks.get(player.getUniqueId()).add(task);
 		}
 	}
@@ -491,7 +486,7 @@ public class CrazyCrates {
 			String id = file.getString("Crate.Prizes." + reward + ".DisplayItem");
 			String name = file.getString("Crate.Prizes." + reward + ".DisplayName");
 			List<String> lore = file.getStringList("Crate.Prizes." + reward + ".Lore");
-			HashMap<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
+			HashMap<Enchantment, Integer> enchantments = new HashMap<>();
 			Boolean glowing = false;
 			int amount = 1;
 			if(file.contains("Crate.Prizes." + reward + ".Glowing")) {
@@ -521,6 +516,7 @@ public class CrazyCrates {
 	
 	public void getReward(Player player, Prize prize) {
 		if(prize != null) {
+			prize = prize.playerHasBlacklistPermission(player) ? prize.getAltPrize() : prize;
 			for(ItemStack i : prize.getItems()) {
 				if(!Methods.isInvFull(player)) {
 					player.getInventory().addItem(i);
@@ -605,80 +601,6 @@ public class CrazyCrates {
 			data.set("Offline-Players." + name, null);
 			Files.DATA.saveFile();
 		}
-	}
-	
-	public Prize pickPrize(Player player, Crate crate) {
-		ArrayList<Prize> prizes = new ArrayList<>();
-		ArrayList<Prize> useablePrizes = new ArrayList<>();
-		if(player.isOp()) {
-			useablePrizes.addAll(crate.getPrizes());
-		}else {
-			for(Prize prize : crate.getPrizes()) {
-				Boolean hasPermission = false;
-				for(String blackListPermisson : prize.getBlackListedPermissions()) {
-					if(player.hasPermission(blackListPermisson)) {
-						hasPermission = true;
-						break;
-					}
-				}
-				if(!hasPermission) {
-					useablePrizes.add(prize);
-				}
-			}
-		}
-		for(int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
-			for(Prize prize : useablePrizes) {
-				int max = prize.getMaxRange();
-				int chance = prize.getChance();
-				int num;
-				for(int counter = 1; counter <= 1; counter++) {
-					num = 1 + new Random().nextInt(max);
-					if(num >= 1 && num <= chance) {
-						prizes.add(prize);
-					}
-				}
-			}
-		}
-		return prizes.get(new Random().nextInt(prizes.size()));
-	}
-	
-	public Prize pickPrize(Player player, Crate crate, Location loc) {
-		ArrayList<Prize> prizes = new ArrayList<Prize>();
-		ArrayList<Prize> useablePrizes = new ArrayList<>();
-		if(player.isOp()) {
-			useablePrizes.addAll(crate.getPrizes());
-		}else {
-			for(Prize prize : crate.getPrizes()) {
-				Boolean hasPermission = false;
-				for(String blackListPermisson : prize.getBlackListedPermissions()) {
-					if(player.hasPermission(blackListPermisson)) {
-						hasPermission = true;
-						break;
-					}
-				}
-				if(!hasPermission) {
-					useablePrizes.add(prize);
-				}
-			}
-		}
-		for(int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
-			for(Prize prize : useablePrizes) {
-				int max = prize.getMaxRange();
-				int chance = prize.getChance();
-				int num;
-				for(int counter = 1; counter <= 1; counter++) {
-					num = 1 + new Random().nextInt(max);
-					if(num >= 1 && num <= chance) {
-						prizes.add(prize);
-					}
-				}
-			}
-		}
-		Prize prize = prizes.get(new Random().nextInt(prizes.size()));
-		if(prize.toggleFirework()) {
-			Methods.fireWork(loc);
-		}
-		return prize;
 	}
 	
 	public void addPlayerToOpeningList(Player player, Crate crate) {
@@ -822,13 +744,11 @@ public class CrazyCrates {
 		if(file.contains(path + "DisplayAmount")) {
 			amount = file.getInt(path + "DisplayAmount");
 		}
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 		if(file.contains(path + "Lore")) {
-			for(String l : file.getStringList(path + "Lore")) {
-				lore.add(l);
-			}
+			lore.addAll(file.getStringList(path + "Lore"));
 		}
-		HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+		HashMap<Enchantment, Integer> enchants = new HashMap<>();
 		if(file.contains(path + "DisplayEnchantments")) {
 			for(String enchant : file.getStringList(path + "DisplayEnchantments")) {
 				for(Enchantment enc : Enchantment.values()) {

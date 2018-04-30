@@ -14,14 +14,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class FireworkDamageAPI implements Listener {
 	
 	private Plugin plugin;
-	private static ArrayList<Entity> fireworks = new ArrayList<Entity>();
+	private static ArrayList<Entity> fireworks = new ArrayList<>();
 	
 	public FireworkDamageAPI(Plugin plugin) {
 		this.plugin = plugin;
 	}
 	
 	/**
-	 * 
+	 *
 	 * @return All the active fireworks.
 	 */
 	public static ArrayList<Entity> getFireworks() {
@@ -29,7 +29,7 @@ public class FireworkDamageAPI implements Listener {
 	}
 	
 	/**
-	 * 
+	 *
 	 * @param firework The firework you want to add.
 	 */
 	public static void addFirework(Entity firework) {
@@ -37,13 +37,11 @@ public class FireworkDamageAPI implements Listener {
 	}
 	
 	/**
-	 * 
+	 *
 	 * @param firework The firework you are removing.
 	 */
 	public static void removeFirework(Entity firework) {
-		if(fireworks.contains(firework)) {
-			fireworks.remove(firework);
-		}
+		fireworks.remove(firework);
 	}
 	
 	@EventHandler

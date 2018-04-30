@@ -1,10 +1,12 @@
 package me.badbones69.crazycrates.controlers;
 
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.enums.CrateType;
+import me.badbones69.crazycrates.api.enums.KeyType;
+import me.badbones69.crazycrates.api.enums.Messages;
+import me.badbones69.crazycrates.api.objects.Crate;
+import me.badbones69.crazycrates.controlers.FileManager.Files;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -15,13 +17,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrazyCrates;
-import me.badbones69.crazycrates.api.enums.CrateType;
-import me.badbones69.crazycrates.api.enums.KeyType;
-import me.badbones69.crazycrates.api.enums.Messages;
-import me.badbones69.crazycrates.api.objects.Crate;
-import me.badbones69.crazycrates.controlers.FileManager.Files;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class GUIMenu implements Listener {
 	
@@ -46,7 +45,7 @@ public class GUIMenu implements Listener {
 				String name = "";
 				String item = "1";
 				int slot = 0;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				String[] b = custom.split(", ");
 				for(String i : b) {
 					if(i.contains("Item:")) {
@@ -96,7 +95,7 @@ public class GUIMenu implements Listener {
 					int slot = file.getInt(path + "Slot");
 					String ma = file.getString(path + "Item");
 					String name = file.getString(path + "Name");
-					ArrayList<String> lore = new ArrayList<String>();
+					ArrayList<String> lore = new ArrayList<>();
 					String keys = NumberFormat.getNumberInstance().format(cc.getVirtualKeys(player, crate));
 					Boolean glowing = false;
 					for(String i : file.getStringList(path + "Lore")) {
@@ -178,7 +177,7 @@ public class GUIMenu implements Listener {
 										}
 										for(String world : getDisabledWorlds()) {
 											if(world.equalsIgnoreCase(player.getWorld().getName())) {
-												HashMap<String, String> placeholders = new HashMap<String, String>();
+												HashMap<String, String> placeholders = new HashMap<>();
 												placeholders.put("%World%", player.getWorld().getName());
 												placeholders.put("%world%", player.getWorld().getName());
 												player.sendMessage(Messages.WORLD_DISABLED.getMessage(placeholders));
@@ -201,11 +200,7 @@ public class GUIMenu implements Listener {
 	}
 	
 	private ArrayList<String> getDisabledWorlds() {
-		ArrayList<String> worlds = new ArrayList<String>();
-		for(String world : Files.CONFIG.getFile().getStringList("Settings.DisabledWorlds")) {
-			worlds.add(world);
-		}
-		return worlds;
+		return new ArrayList<>(Files.CONFIG.getFile().getStringList("Settings.DisabledWorlds"));
 	}
 	
 }
