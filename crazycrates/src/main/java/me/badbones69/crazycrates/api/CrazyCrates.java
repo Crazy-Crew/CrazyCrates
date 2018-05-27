@@ -426,12 +426,10 @@ public class CrazyCrates {
 		for(Crate crate : getCrates()) {
 			if(crate.getCrateType() != CrateType.MENU) {
 				if(Methods.isSimilar(item, crate.getKey())) {
-					System.out.println("Is Key");
 					return true;
 				}
 			}
 		}
-		System.out.println("Is not key");
 		return false;
 	}
 	
