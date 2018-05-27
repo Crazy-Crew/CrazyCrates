@@ -422,6 +422,19 @@ public class CrazyCrates {
 		return brokeLocations;
 	}
 	
+	public Boolean isKey(ItemStack item) {
+		for(Crate crate : getCrates()) {
+			if(crate.getCrateType() != CrateType.MENU) {
+				if(Methods.isSimilar(item, crate.getKey())) {
+					System.out.println("Is Key");
+					return true;
+				}
+			}
+		}
+		System.out.println("Is not key");
+		return false;
+	}
+	
 	public void addCrateLocation(Location loc, Crate crate) {
 		FileConfiguration locations = Files.LOCATIONS.getFile();
 		String id = "1"; //Location ID

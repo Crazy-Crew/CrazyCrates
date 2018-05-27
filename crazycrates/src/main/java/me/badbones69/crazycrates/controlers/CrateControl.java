@@ -68,7 +68,11 @@ public class CrateControl implements Listener { //Crate Control
 		FileConfiguration config = Files.CONFIG.getFile();
 		if(Version.getCurrentVersion().comparedTo(Version.v1_9_R1) >= 0) {
 			if(e.getHand() == EquipmentSlot.valueOf("OFF_HAND")) {
-				return;
+				if(cc.isKey(player.getInventory().getItemInOffHand())) {
+					e.setCancelled(true);
+					player.updateInventory();
+					return;
+				}
 			}
 		}
 		Block clickedBlock = e.getClickedBlock();
@@ -192,6 +196,7 @@ public class CrateControl implements Listener { //Crate Control
 				}
 			}
 		}
+		
 	}
 	
 	@EventHandler
