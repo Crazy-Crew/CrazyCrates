@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NMS_v1_12_R1 {
-
+	
 	public static ItemStack addUnbreaking(ItemStack item) {
 		net.minecraft.server.v1_12_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
 		NBTTagCompound tag = null;
@@ -34,7 +34,7 @@ public class NMS_v1_12_R1 {
 		nmsStack.setTag(tag);
 		return CraftItemStack.asCraftMirror(nmsStack);
 	}
-
+	
 	public static ItemStack addGlow(ItemStack item) {
 		if(item != null) {
 			if(item.hasItemMeta()) {
@@ -49,11 +49,11 @@ public class NMS_v1_12_R1 {
 		}
 		return item;
 	}
-
+	
 	public static ItemStack getInHand(Player player) {
 		return player.getInventory().getItemInMainHand();
 	}
-
+	
 	public static void openChest(Block b, Location location, Boolean open) {
 		World world = ((org.bukkit.craftbukkit.v1_12_R1.CraftWorld) location.getWorld()).getHandle();
 		BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
@@ -65,7 +65,7 @@ public class NMS_v1_12_R1 {
 			world.playBlockAction(position, tileChest.getBlock(), 1, open ? 1 : 0);
 		}
 	}
-
+	
 	// http://stackoverflow.com/questions/24101928/setting-block-data-from-schematic-in-bukkit
 	@SuppressWarnings("deprecation")
 	public static List<Location> pasteSchematic(File f, Location loc) {
@@ -101,7 +101,7 @@ public class NMS_v1_12_R1 {
 		}
 		return locations;
 	}
-
+	
 	public static List<Location> getLocations(File f, Location loc) {
 		loc = loc.subtract(2, 1, 2);
 		List<Location> locations = new ArrayList<Location>();
@@ -126,7 +126,7 @@ public class NMS_v1_12_R1 {
 		}
 		return locations;
 	}
-
+	
 	@SuppressWarnings("deprecation")
 	public static ItemStack getSpawnEgg(EntityType type, int amount) {
 		ItemStack item = new ItemStack(Material.MONSTER_EGG, amount);
@@ -141,5 +141,5 @@ public class NMS_v1_12_R1 {
 		stack.setTag(tagCompound);
 		return CraftItemStack.asBukkitCopy(stack);
 	}
-
+	
 }

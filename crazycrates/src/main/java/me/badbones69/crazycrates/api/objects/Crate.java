@@ -2,6 +2,7 @@ package me.badbones69.crazycrates.api.objects;
 
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.enums.CrateType;
+import me.badbones69.crazycrates.controlers.FileManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,6 +22,7 @@ public class Crate {
 	private ArrayList<Prize> prizes;
 	private String crateInventoryName;
 	private ArrayList<ItemStack> preview;
+	private FileManager fileManager = FileManager.getInstance();
 	
 	/**
 	 *
@@ -261,6 +263,37 @@ public class Crate {
 			}
 		}
 		return null;
+	}
+	
+	public void addEditorItem(String prize, ItemStack item) {
+		ArrayList<ItemStack> items = new ArrayList<>();
+		items.add(item);
+		String path = "Crate.Prizes." + prize;
+		if(file.contains(path + ".Editor-Items")) {
+			for(Object list : file.getList(path + ".Editor-Items")) {
+				items.add((ItemStack) list);
+			}
+		}
+		if(!file.contains(path + ".DisplayName")) file.set(path + ".DisplayName", "&7Auto Generated Prize #&6" + prize);
+		if(!file.contains(path + ".DisplayItem")) file.set(path + ".DisplayItem", "STAINED_GLASS_PANE:14");
+		if(!file.contains(path + ".DisplayAmount")) file.set(path + ".DisplayAmount", 1);
+		if(!file.contains(path + ".Lore")) file.set(path + ".Lore", new ArrayList<>());
+		if(!file.contains(path + ".MaxRange")) file.set(path + ".MaxRange", 100);
+		if(!file.contains(path + ".Chance")) file.set(path + ".Chance", 50);
+		if(!file.contains(path + ".Firework")) file.set(path + ".Firework", false);
+		if(!file.contains(path + ".Glowing")) file.set(path + ".Glowing", false);
+		if(!file.contains(path + ".Player")) file.set(path + ".Player", "");
+		if(!file.contains(path + ".Unbreakable")) file.set(path + ".Unbreakable", false);
+		if(!file.contains(path + ".Items")) file.set(path + ".Items", new ArrayList<>());
+		file.set(path + ".Editor-Items", items);
+		if(!file.contains(path + ".Commands")) file.set(path + ".Commands", new ArrayList<>());
+		if(!file.contains(path + ".Messages")) file.set(path + ".Messages", new ArrayList<>());
+		if(!file.contains(path + ".BlackListed-Permissions")) file.set(path + ".BlackListed-Permissions", new ArrayList<>());
+		if(!file.contains(path + ".Alternative-Prize.Toggle")) file.set(path + ".Alternative-Prize.Toggle", false);
+		if(!file.contains(path + ".Alternative-Prize.Commands")) file.set(path + ".Alternative-Prize.Commands", new ArrayList<>());
+		if(!file.contains(path + ".Alternative-Prize.Items")) file.set(path + ".Alternative-Prize.Items", new ArrayList<>());
+		if(!file.contains(path + ".Alternative-Prize.Messages")) file.set(path + ".Alternative-Prize.Messages", new ArrayList<>());
+		fileManager.saveFile(fileManager.getFile(name));
 	}
 	
 	/**

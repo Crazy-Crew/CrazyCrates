@@ -17,6 +17,7 @@ import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.*;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -373,10 +374,11 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 									Prize prize = cc.getOpeningCrate(player).pickPrize(player, B.clone().add(.5, 1.3, .5));
 									cc.getReward(player, prize);
 									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, cc.getOpeningCrate(player), cc.getOpeningCrate(player).getName(), prize));
-									final Entity reward = player.getWorld().dropItem(B.clone().add(.5, 1, .5), Methods.addLore(prize.getDisplayItem().clone(), new Random().nextInt(Integer.MAX_VALUE) + ""));
+									final Item reward = player.getWorld().dropItem(B.clone().add(.5, 1, .5), Methods.addLore(prize.getDisplayItem().clone(), new Random().nextInt(Integer.MAX_VALUE) + ""));
 									reward.setVelocity(new Vector(0, .2, 0));
 									reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
 									reward.setCustomNameVisible(true);
+									reward.setPickupDelay(Integer.MAX_VALUE);
 									if(Rewards.containsKey(player)) {
 										rewards.addAll(Rewards.get(player));
 									}
