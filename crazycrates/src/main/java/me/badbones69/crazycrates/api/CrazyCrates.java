@@ -98,24 +98,31 @@ public class CrazyCrates {
 				ArrayList<Prize> prizes = new ArrayList<>();
 				for(String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
 					Prize altPrize = null;
-					if(file.contains("Crate.Prizes." + prize + ".Alternative-Prize")) {
-						if(file.getBoolean("Crate.Prizes." + prize + ".Alternative-Prize.Toggle")) {
+					String path = "Crate.Prizes." + prize;
+					if(file.contains(path + ".Alternative-Prize")) {
+						if(file.getBoolean(path + ".Alternative-Prize.Toggle")) {
 							altPrize = new Prize("Alternative-Prize",
-							file.getStringList("Crate.Prizes." + prize + ".Alternative-Prize.Messages"),
-							file.getStringList("Crate.Prizes." + prize + ".Alternative-Prize.Commands"),
+							file.getStringList(path + ".Alternative-Prize.Messages"),
+							file.getStringList(path + ".Alternative-Prize.Commands"),
 							getItems(file, prize + ".Alternative-Prize"));
 						}
 					}
+					ArrayList<ItemStack> itemPrizes = new ArrayList<>(getItems(file, prize));
+					if(file.contains(path + ".Editor-Items")) {
+						for(Object list : file.getList(path + ".Editor-Items")) {
+							itemPrizes.add((ItemStack) list);
+						}
+					}
 					prizes.add(new Prize(prize, getDisplayItem(file, prize),
-					file.getStringList("Crate.Prizes." + prize + ".Messages"),
-					file.getStringList("Crate.Prizes." + prize + ".Commands"),
-					getItems(file, prize),
+					file.getStringList(path + ".Messages"),
+					file.getStringList(path + ".Commands"),
+					itemPrizes,
 					crateName,
-					file.getInt("Crate.Prizes." + prize + ".Chance"),
-					file.getInt("Crate.Prizes." + prize + ".MaxRange"),
-					file.getBoolean("Crate.Prizes." + prize + ".Firework"),
-					file.getStringList("Crate.Prizes." + prize + ".BlackListed-Permissions"),
-					file.getStringList("Crate.Prizes." + prize + ".Tiers"),
+					file.getInt(path + ".Chance"),
+					file.getInt(path + ".MaxRange"),
+					file.getBoolean(path + ".Firework"),
+					file.getStringList(path + ".BlackListed-Permissions"),
+					file.getStringList(path + ".Tiers"),
 					altPrize));
 				}
 				crates.add(new Crate(crateName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file));
@@ -422,17 +429,6 @@ public class CrazyCrates {
 		return brokeLocations;
 	}
 	
-	public Boolean isKey(ItemStack item) {
-		for(Crate crate : getCrates()) {
-			if(crate.getCrateType() != CrateType.MENU) {
-				if(Methods.isSimilar(item, crate.getKey())) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
 	public void addCrateLocation(Location loc, Crate crate) {
 		FileConfiguration locations = Files.LOCATIONS.getFile();
 		String id = "1"; //Location ID
@@ -628,6 +624,28 @@ public class CrazyCrates {
 	
 	public Crate getOpeningCrate(Player player) {
 		return playerOpeningCrates.get(player.getUniqueId());
+	}
+	
+	public Boolean isKey(ItemStack item) {
+		for(Crate crate : getCrates()) {
+			if(crate.getCrateType() != CrateType.MENU) {
+				if(Methods.isSimilar(item, crate.getKey())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public Crate getCrateFromKey(ItemStack item) {
+		for(Crate crate : getCrates()) {
+			if(crate.getCrateType() != CrateType.MENU) {
+				if(Methods.isSimilar(item, crate.getKey())) {
+					return crate;
+				}
+			}
+		}
+		return null;
 	}
 	
 	public void addPlayerKeyType(Player player, KeyType key) {

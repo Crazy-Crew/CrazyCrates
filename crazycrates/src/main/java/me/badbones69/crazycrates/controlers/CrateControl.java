@@ -221,14 +221,18 @@ public class CrateControl implements Listener { //Crate Control
 						}
 					}else if(e.getAction() == InventoryAction.PICKUP_HALF) {
 						ItemStack item = inv.getItem(slot);
-						for(Crate crate : cc.getCrates()) {
-							if(crate.getCrateType() != CrateType.MENU) {
-								String name = crate.getFile().getString("Crate.PhysicalKey.Name");
-								if(item.getItemMeta().getDisplayName().equals(Methods.color(name))) {
-									cc.addKeys(1, player, crate, KeyType.VIRTUAL_KEY);
-									player.sendMessage(Methods.getPrefix() + Methods.color("&a&l+1 " + name));
-									return;
+						if(cc.isKey(previewKeys.get(player).get(item))) {
+							Crate crate = cc.getCrateFromKey(previewKeys.get(player).get(item));
+							if(crate != null) {
+								cc.addKeys(1, player, crate, KeyType.VIRTUAL_KEY);
+								String name = null;
+								ItemStack key = crate.getKey();
+								if(key.hasItemMeta()) {
+									if(key.getItemMeta().hasDisplayName()) {
+										name = key.getItemMeta().getDisplayName();
+									}
 								}
+								player.sendMessage(Methods.getPrefix() + Methods.color("&a&l+1 " + (name != null ? name : crate.getName())));
 							}
 						}
 					}

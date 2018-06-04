@@ -26,6 +26,8 @@ Messages:
   Take-Offline-Player-Keys: '&7You have taken &6%amount% &7key(s) from the offline player &6%player%&7.'
   Opened-A-Crate: '&7You have just opened the &6%crate% &7crate for &6%player%&7.'
   Internal-Error: '&cAn internal error has occurred. Please check the console for the full error.'
+  No-Item-In-Hand: '&cYou need to have an item in your hand to add it to the crate.'
+  Added-Item-With-Editor: '&7The item has been added to the %crate% crate in prize #%prize%.'
   Created-Physical-Crate:
     - '%prefix%&7You have just set that block to %crate%.'
     - '&7To remove the crate shift break in creative to remove.'

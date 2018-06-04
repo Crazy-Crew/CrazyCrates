@@ -19,6 +19,7 @@ import me.badbones69.crazycrates.multisupport.nms.Events_v1_11_R1_Down;
 import me.badbones69.crazycrates.multisupport.nms.Events_v1_12_R1_Up;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -227,6 +228,40 @@ public class Main extends JavaPlugin implements Listener {
 				if(args[0].equalsIgnoreCase("help")) {
 					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Access")) return true;
 					sender.sendMessage(Messages.HELP.getMessage());
+					return true;
+				}else if(args[0].equalsIgnoreCase("additem")) {
+					// /cc additem0 <crate>1 <prize>2
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					Player player = (Player) sender;
+					if(args.length >= 3) {
+						ItemStack item = Methods.getItemInHand(player);
+						if(item != null && item.getType() != Material.AIR) {
+							Crate crate = cc.getCrateFromName(args[1]);
+							if(crate != null) {
+								String prize = args[2];
+								try {
+									crate.addEditorItem(prize, item);
+								}catch(Exception e) {
+									System.out.println(fileManager.getPrefix() + "Failed to add a new prize to the " + crate.getName() + " crate.");
+									e.printStackTrace();
+								}
+								cc.loadCrates();
+								HashMap<String, String> placeholders = new HashMap<>();
+								placeholders.put("%crate%", crate.getName());
+								placeholders.put("%prize%", prize);
+								player.sendMessage(Messages.ADDED_ITEM_WITH_EDITOR.getMessage(placeholders));
+							}else {
+								HashMap<String, String> placeholders = new HashMap<>();
+								placeholders.put("%crate%", args[1]);
+								player.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+								
+							}
+						}else {
+							player.sendMessage(Messages.NO_ITEM_IN_HAND.getMessage());
+						}
+					}else {
+						player.sendMessage(Methods.getPrefix("&c/cc additem <crate> <prize>"));
+					}
 					return true;
 				}else if(args[0].equalsIgnoreCase("reload")) {
 					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;

@@ -37,6 +37,8 @@ public enum Messages {
 	TAKE_OFFLINE_PLAYER_KEYS("Take-Offline-Player-Keys", "&7You have taken &6%amount% &7key(s) from the offline player &6%player%&7."),
 	OPENED_A_CRATE("Opened-A-Crate", "&7You have just opened the &6%crate% &7crate for &6%player%&7."),
 	INTERNAL_ERROR("Internal-Error", "&cAn internal error has occurred. Please check the console for the full error."),
+	NO_ITEM_IN_HAND("No-Item-In-Hand", "&cYou need to have an item in your hand to add it to the crate."),
+	ADDED_ITEM_WITH_EDITOR("Added-Item-With-Editor", "&7The item has been added to the %crate% crate in prize #%prize%."),
 	CREATED_PHYSICAL_CRATE("Created-Physical-Crate", Arrays.asList("%prefix%&7You have just set that block to %crate%.", "&7To remove the crate shift break in creative to remove.")),
 	PERSONAL_NO_VIRTUAL_KEYS("Keys.Personal.No-Virtual-Keys", "&8&l(&4&l!&8&l) &7You currently do not have any virtual keys."),
 	PERSONAL_HEADER("Keys.Personal.Header", Arrays.asList("&8&l(&6&l!&8&l) &7List of your current amount of keys.")),

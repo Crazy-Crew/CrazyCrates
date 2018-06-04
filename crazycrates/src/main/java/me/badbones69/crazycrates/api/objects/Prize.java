@@ -146,9 +146,11 @@ public class Prize {
 	}
 	
 	public Boolean hasBlacklistPermission(Player player) {
-		for(String blackListPermission : blackListPermissions) {
-			if(player.hasPermission(blackListPermission)) {
-				return true;
+		if(!player.isOp()) {
+			for(String blackListPermission : blackListPermissions) {
+				if(player.hasPermission(blackListPermission)) {
+					return true;
+				}
 			}
 		}
 		return false;
