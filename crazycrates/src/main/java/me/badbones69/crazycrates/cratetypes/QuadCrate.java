@@ -8,11 +8,11 @@ import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.Prize;
-import me.badbones69.crazycrates.controlers.CrateControl;
-import me.badbones69.crazycrates.controlers.FileManager;
-import me.badbones69.crazycrates.controlers.FileManager.Files;
-import me.badbones69.crazycrates.controlers.ParticleEffect;
-import me.badbones69.crazycrates.controlers.ParticleEffect.BlockData;
+import me.badbones69.crazycrates.controllers.CrateControl;
+import me.badbones69.crazycrates.controllers.FileManager;
+import me.badbones69.crazycrates.controllers.FileManager.Files;
+import me.badbones69.crazycrates.controllers.ParticleEffect;
+import me.badbones69.crazycrates.controllers.ParticleEffect.BlockData;
 import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.*;
 import org.bukkit.block.BlockState;
@@ -372,7 +372,7 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 								if(!opened.get(player).get(l)) {
 									ArrayList<Entity> rewards = new ArrayList<>();
 									Prize prize = cc.getOpeningCrate(player).pickPrize(player, B.clone().add(.5, 1.3, .5));
-									cc.getReward(player, prize);
+									cc.givePrize(player, prize);
 									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, cc.getOpeningCrate(player), cc.getOpeningCrate(player).getName(), prize));
 									final Item reward = player.getWorld().dropItem(B.clone().add(.5, 1, .5), Methods.addLore(prize.getDisplayItem().clone(), new Random().nextInt(Integer.MAX_VALUE) + ""));
 									reward.setVelocity(new Vector(0, .2, 0));

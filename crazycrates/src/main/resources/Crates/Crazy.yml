@@ -1,6 +1,7 @@
 Crate:
   CrateType: QuadCrate
   CrateName: '&8Crazy Crate'
+  Preview-Name: '&8Crazy Crate Preview'
   StartingKeys: 0
   InGUI: true
   Slot: 25

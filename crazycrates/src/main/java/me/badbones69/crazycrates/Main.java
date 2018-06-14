@@ -8,8 +8,9 @@ import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
-import me.badbones69.crazycrates.controlers.*;
-import me.badbones69.crazycrates.controlers.FileManager.Files;
+import me.badbones69.crazycrates.api.objects.Prize;
+import me.badbones69.crazycrates.controllers.*;
+import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.cratetypes.*;
 import me.badbones69.crazycrates.multisupport.MVdWPlaceholderAPISupport;
 import me.badbones69.crazycrates.multisupport.PlaceholderAPISupport;
@@ -78,6 +79,7 @@ public class Main extends JavaPlugin implements Listener {
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(this, this);
 		pm.registerEvents(new GUIMenu(), this);
+		pm.registerEvents(new Preview(), this);
 		pm.registerEvents(new QuadCrate(), this);
 		pm.registerEvents(new War(), this);
 		pm.registerEvents(new CSGO(), this);
@@ -231,7 +233,7 @@ public class Main extends JavaPlugin implements Listener {
 					return true;
 				}else if(args[0].equalsIgnoreCase("additem")) {
 					// /cc additem0 <crate>1 <prize>2
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
 					Player player = (Player) sender;
 					if(args.length >= 3) {
 						ItemStack item = Methods.getItemInHand(player);
@@ -264,7 +266,7 @@ public class Main extends JavaPlugin implements Listener {
 					}
 					return true;
 				}else if(args[0].equalsIgnoreCase("reload")) {
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
 					fileManager.reloadAllFiles();
 					fileManager.setup(this);
 					if(!Files.LOCATIONS.getFile().contains("Locations")) {
@@ -278,10 +280,28 @@ public class Main extends JavaPlugin implements Listener {
 					cc.loadCrates();
 					sender.sendMessage(Messages.RELOAD.getMessage());
 					return true;
+				}else if(args[0].equalsIgnoreCase("debug")) {
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
+					if(args.length >= 2) {
+						Crate crate = cc.getCrateFromName(args[1]);
+						if(crate != null) {
+							for(Prize prize : crate.getPrizes()) {
+								cc.givePrize((Player) sender, prize);
+							}
+						}else {
+							HashMap<String, String> placeholders = new HashMap<>();
+							placeholders.put("%crate%", args[1]);
+							sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+							return true;
+						}
+						return true;
+					}
+					sender.sendMessage(Methods.getPrefix("&c/cc debug <crate>"));
+					return true;
 				}else if(args[0].equalsIgnoreCase("admin")) {
 					if(!(sender instanceof Player)) return true;
 					Player player = (Player) sender;
-					if(!Methods.permCheck(player, "Admin")) return true;
+					if(!Methods.permCheck(player, "admin")) return true;
 					int size = cc.getCrates().size();
 					int slots = 9;
 					for(; size > 9; size -= 9)
@@ -304,7 +324,7 @@ public class Main extends JavaPlugin implements Listener {
 					player.openInventory(inv);
 					return true;
 				}else if(args[0].equalsIgnoreCase("list")) {
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
 					String crates = "";
 					String brokecrates = "";
 					for(Crate crate : cc.getCrates()) {
@@ -331,7 +351,7 @@ public class Main extends JavaPlugin implements Listener {
 					}
 					return true;
 				}else if(args[0].equalsIgnoreCase("tp")) {// /cc TP <Location>
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
 					if(args.length == 2) {
 						String Loc = args[1];
 						if(!Files.LOCATIONS.getFile().contains("Locations")) {
@@ -356,7 +376,7 @@ public class Main extends JavaPlugin implements Listener {
 					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/cc TP <Location Name>"));
 					return true;
 				}else if(args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("s")) { // /Crate Set <Crate>
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
 					if(!(sender instanceof Player)) {
 						sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
 						return true;
@@ -418,7 +438,8 @@ public class Main extends JavaPlugin implements Listener {
 										player = (Player) sender;
 									}
 								}
-								GUIMenu.openPreview(player, crate);
+								Preview.setPlayerInMenu(player, false);
+								Preview.openNewPreview(player, crate);
 							}
 							return true;
 						}
@@ -426,7 +447,7 @@ public class Main extends JavaPlugin implements Listener {
 					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
 					return true;
 				}else if(args[0].equalsIgnoreCase("open")) {// /cc Open <Crate> [Player]
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
 					if(args.length >= 2) {
 						for(Crate crate : cc.getCrates()) {
 							if(crate.getName().equalsIgnoreCase(args[1])) {
@@ -482,7 +503,7 @@ public class Main extends JavaPlugin implements Listener {
 					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Open <Crate> [Player]"));
 					return true;
 				}else if(args[0].equalsIgnoreCase("giveall")) {// /Crate GiveAll <Physical/Virtual> <Crate> <Amount>
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
 					if(args.length >= 3) {
 						int amount = 1;
 						if(args.length >= 4) {
@@ -528,7 +549,7 @@ public class Main extends JavaPlugin implements Listener {
 					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate GiveAll <Physical/Virtual> <Crate> <Amount>"));
 					return true;
 				}else if(args[0].equalsIgnoreCase("give")) {// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
 					KeyType type = null;
 					if(args.length >= 2) {
 						type = KeyType.getFromName(args[1]);
@@ -662,7 +683,7 @@ public class Main extends JavaPlugin implements Listener {
 					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Give <Physical/Virtual> <Crate> [Amount] [Player]"));
 					return true;
 				}else if(args[0].equalsIgnoreCase("take")) {// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
 					KeyType type = null;
 					if(args.length >= 2) {
 						type = KeyType.getFromName(args[1]);

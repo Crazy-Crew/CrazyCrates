@@ -1,6 +1,7 @@
 Crate:
   CrateType: CSGO #Type of crate (CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War/Cosmic(This requires a additional info to work.)).
   CrateName: '&8Basic Crate' #Name of the Inventory if a GUI crate.
+  Preview-Name: '&8Basic Crate Preview' #The name of the inventory that will be in the preview GUI.
   StartingKeys: 0 #Starting amount of keys when the player 1st joins.
   InGUI: true #If the crate shows in the /cc GUI. (If the crate type is QuickCrate/CrateOnTheGo/FireCracker then the Crate will not work. Quick Crate requires a Physical Crate.)
   Slot: 21 #Slot the item is in the GUI.

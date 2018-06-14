@@ -1,14 +1,13 @@
 package me.badbones69.crazycrates.multisupport;
 
-import java.text.NumberFormat;
-
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.clip.placeholderapi.external.EZPlaceholderHook;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
+import java.text.NumberFormat;
 
 public class PlaceholderAPISupport extends EZPlaceholderHook {
 	

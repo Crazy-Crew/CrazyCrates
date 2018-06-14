@@ -96,7 +96,7 @@ public class Roulette implements Listener {
 								prize = p;
 							}
 						}
-						cc.getReward(player, prize);
+						cc.givePrize(player, prize);
 						if(prize.useFireworks()) {
 							Methods.fireWork(player.getLocation().add(0, 1, 0));
 						}

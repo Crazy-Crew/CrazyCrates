@@ -7,7 +7,7 @@ import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.Prize;
-import me.badbones69.crazycrates.controlers.CrateControl;
+import me.badbones69.crazycrates.controllers.CrateControl;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,7 +37,7 @@ public class QuickCrate implements Listener {
 			cc.takeKeys(1, player, crate, key);
 		}
 		Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
-		cc.getReward(player, prize);
+		cc.givePrize(player, prize);
 		Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 		ItemStack displayItem = prize.getDisplayItem();
 		NBTItem nbtItem = new NBTItem(displayItem);

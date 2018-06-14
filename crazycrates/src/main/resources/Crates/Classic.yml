@@ -1,6 +1,7 @@
 Crate:
   CrateType: QuickCrate
   CrateName: '&8Classic Crate'
+  Preview-Name: '&8Classic Crate Preview'
   StartingKeys: 0
   InGUI: false
   Slot: 14

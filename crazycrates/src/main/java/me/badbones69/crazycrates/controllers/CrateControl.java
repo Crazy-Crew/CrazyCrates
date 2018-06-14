@@ -1,4 +1,4 @@
-package me.badbones69.crazycrates.controlers;
+package me.badbones69.crazycrates.controllers;
 
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
@@ -7,7 +7,7 @@ import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
-import me.badbones69.crazycrates.controlers.FileManager.Files;
+import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.cratetypes.QuickCrate;
 import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.GameMode;
@@ -71,8 +71,8 @@ public class CrateControl implements Listener { //Crate Control
 				if(cc.isKey(player.getInventory().getItemInOffHand())) {
 					e.setCancelled(true);
 					player.updateInventory();
-					return;
 				}
+				return;
 			}
 		}
 		Block clickedBlock = e.getClickedBlock();
@@ -97,7 +97,8 @@ public class CrateControl implements Listener { //Crate Control
 						return;
 					}else {
 						if(config.getBoolean("Settings.Show-Preview")) {
-							GUIMenu.openPreview(player, loc.getCrate());
+							Preview.setPlayerInMenu(player, false);
+							Preview.openNewPreview(player, loc.getCrate());
 						}
 					}
 				}
@@ -206,7 +207,7 @@ public class CrateControl implements Listener { //Crate Control
 		if(inv != null) {
 			if(inv.getName().equals(Methods.color("&4&lAdmin Keys"))) {
 				e.setCancelled(true);
-				if(!Methods.permCheck(player, "Admin")) {
+				if(!Methods.permCheck(player, "admin")) {
 					player.closeInventory();
 					return;
 				}

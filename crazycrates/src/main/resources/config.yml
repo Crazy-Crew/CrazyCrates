@@ -12,6 +12,23 @@ Settings:
     Timer: 300
   DisabledWorlds:
     - 'world_nether'
+  Preview:
+    Buttons:
+      Menu:
+        Item: 'COMPASS'
+        Name: '&7&l>> &c&lMenu &7&l<<'
+        Lore:
+          - '&7Return to the menu.'
+      Next:
+        Item: 'FEATHER'
+        Name: '&6&lNext >>'
+        Lore:
+          - '&7&lPage: &b%page%'
+      Back:
+        Item: 'FEATHER'
+        Name: '&6&l<< Back'
+        Lore:
+          - '&7&lPage: &b%page%'
   Filler: #This allows you to quickly fill the GUI with one item.
     Toggle: false #If it fills the GUI with an item.
     Item: '160:15' #The item you wish to use.

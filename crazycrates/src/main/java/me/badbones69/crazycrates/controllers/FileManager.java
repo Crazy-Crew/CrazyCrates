@@ -1,4 +1,4 @@
-package me.badbones69.crazycrates.controlers;
+package me.badbones69.crazycrates.controllers;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

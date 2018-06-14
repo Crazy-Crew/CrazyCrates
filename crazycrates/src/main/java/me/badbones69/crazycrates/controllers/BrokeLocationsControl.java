@@ -1,19 +1,18 @@
-package me.badbones69.crazycrates.controlers;
+package me.badbones69.crazycrates.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.enums.BrokeLocation;
+import me.badbones69.crazycrates.api.objects.CrateLocation;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 
-import me.badbones69.crazycrates.api.CrazyCrates;
-import me.badbones69.crazycrates.api.enums.BrokeLocation;
-import me.badbones69.crazycrates.api.objects.CrateLocation;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * 
+ *
  * Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
  *
  */
