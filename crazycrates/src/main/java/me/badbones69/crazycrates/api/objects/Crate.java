@@ -2,7 +2,7 @@ package me.badbones69.crazycrates.api.objects;
 
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.enums.CrateType;
-import me.badbones69.crazycrates.controlers.FileManager;
+import me.badbones69.crazycrates.controllers.FileManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;

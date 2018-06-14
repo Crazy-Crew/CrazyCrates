@@ -1,7 +1,7 @@
 package me.badbones69.crazycrates.api.enums;
 
 import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.controlers.FileManager.Files;
+import me.badbones69.crazycrates.controllers.FileManager.Files;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.Arrays;
@@ -45,11 +45,11 @@ public enum Messages {
 	OTHER_PLAYER_NO_VIRTUAL_KEYS("Keys.Other-Player.No-Virtual-Keys", "&8&l(&4&l!&8&l) &7The player %player% does not have any keys.."),
 	OTHER_PLAYER_HEADER("Keys.Other-Player.Header", Arrays.asList("&8&l(&6&l!&8&l) &7List of %player%''s current amount of keys.")),
 	PER_CRATE("Keys.Per-Crate", "%crate% &7&l>&8&l> &6%keys% keys"),
-	HELP(
-	"Help",
+	HELP("Help",
 	Arrays.asList("&3&lCrazy Crates Help Menu",
 	"&6/key [player] &7- Check the amount of keys a player has.",
 	"&6/cc &7- Opens the GUI.",
+	"&6/cc additem <crate> <prize> &7- Add items in-game to a prize in a crate.",
 	"&6/cc admin &7- Opens the Admin Keys GUI.",
 	"&6/cc list &7- Lists all the Crates.",
 	"&6/cc open <Crate> [Player] &7- Opens a crate for a player.",

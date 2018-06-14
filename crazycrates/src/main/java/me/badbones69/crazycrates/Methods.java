@@ -2,8 +2,8 @@ package me.badbones69.crazycrates;
 
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.Messages;
-import me.badbones69.crazycrates.controlers.FileManager.Files;
-import me.badbones69.crazycrates.controlers.FireworkDamageAPI;
+import me.badbones69.crazycrates.controllers.FileManager.Files;
+import me.badbones69.crazycrates.controllers.FireworkDamageAPI;
 import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import me.badbones69.crazycrates.multisupport.nms.*;

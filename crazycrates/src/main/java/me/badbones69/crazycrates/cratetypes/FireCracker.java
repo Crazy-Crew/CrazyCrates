@@ -4,7 +4,7 @@ import me.badbones69.crazycrates.Main;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.objects.Crate;
-import me.badbones69.crazycrates.controlers.FireworkDamageAPI;
+import me.badbones69.crazycrates.controllers.FireworkDamageAPI;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
