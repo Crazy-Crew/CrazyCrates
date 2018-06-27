@@ -1,7 +1,5 @@
 package me.badbones69.crazycrates.controllers;
 
-import java.util.ArrayList;
-
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -10,6 +8,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FireworkExplodeEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
 
 public class FireworkDamageAPI implements Listener {
 	

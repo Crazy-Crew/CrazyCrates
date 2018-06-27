@@ -1,12 +1,13 @@
 Crate:
   CrateType: QuickCrate
   CrateName: '&8Classic Crate'
+  Preview-Name: '&8Classic Crate Preview'
   StartingKeys: 0
   InGUI: false
   Slot: 14
   OpeningBroadCast: true
   BroadCast: '%Prefix%&6&l%Player% &7is opening a &e&lClassic Chest&7.'
-  Item: '54'
+  Item: 'CHEST'
   Glowing: false
   Name: '&e&lClassic Chest'
   Lore:
@@ -18,12 +19,12 @@ Crate:
     Lore:
       - '&7A special Key'
       - '&7For a special Crate.'
-    Item: '131'
+    Item: 'TRIPWIRE_HOOK'
     Glowing: True
   Prizes:
     1:
       DisplayName: '&a&lFancy Pants'
-      DisplayItem: '304'
+      DisplayItem: 'CHAINMAIL_LEGGINGS'
       DisplayAmount: 1
       Lore:
         - '&7Win a fancy pair of pants.'
@@ -35,7 +36,7 @@ Crate:
       Firework: false
       Glowing: false
       Items:
-        - 'Item:304, Amount:1, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
+        - 'Item:CHAINMAIL_LEGGINGS, Amount:1, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
       Messages:
         - '&7You just won a &a&lFancy Pantst&7.'
       Alternative-Prize:
@@ -45,7 +46,7 @@ Crate:
         Items: {}
     2:
       DisplayName: '&b&lClassic Sword'
-      DisplayItem: '276'
+      DisplayItem: 'DIAMOND_SWORD'
       DisplayAmount: 1
       Lore:
         - '&7Win a old classic sword.'
@@ -58,7 +59,7 @@ Crate:
       Firework: false
       Glowing: false
       Items:
-        - 'Item:276, Amount:1, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1'
+        - 'Item:DIAMOND_SWORD, Amount:1, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1'
       Messages:
         - '&7You just won a &b&lClassic Sword&7.'
       Alternative-Prize:
@@ -68,7 +69,7 @@ Crate:
         Items: {}
     3:
       DisplayName: '&e&l$100,000'
-      DisplayItem: '175'
+      DisplayItem: 'DOUBLE_PLANT'
       DisplayAmount: 1
       Lore:
         - '&7Make it rain a lot of Money.'

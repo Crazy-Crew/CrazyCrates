@@ -97,7 +97,8 @@ public class CrateControl implements Listener { //Crate Control
 						return;
 					}else {
 						if(config.getBoolean("Settings.Show-Preview")) {
-							GUIMenu.openPreview(player, loc.getCrate());
+							Preview.setPlayerInMenu(player, false);
+							Preview.openNewPreview(player, loc.getCrate());
 						}
 					}
 				}
@@ -206,7 +207,7 @@ public class CrateControl implements Listener { //Crate Control
 		if(inv != null) {
 			if(inv.getName().equals(Methods.color("&4&lAdmin Keys"))) {
 				e.setCancelled(true);
-				if(!Methods.permCheck(player, "Admin")) {
+				if(!Methods.permCheck(player, "admin")) {
 					player.closeInventory();
 					return;
 				}

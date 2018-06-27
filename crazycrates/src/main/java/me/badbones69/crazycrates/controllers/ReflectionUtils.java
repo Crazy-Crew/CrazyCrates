@@ -1,13 +1,13 @@
 package me.badbones69.crazycrates.controllers;
 
+import org.bukkit.Bukkit;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.bukkit.Bukkit;
 
 /**
  * <b>ReflectionUtils</b>
@@ -21,18 +21,19 @@ import org.bukkit.Bukkit;
  * </ul>
  * <p>
  * <i>It would be nice if you provide credit to me if you use this class in a published project</i>
- * 
+ *
  * @author DarkBlade12
  * @version 1.1
  */
 public final class ReflectionUtils {
+	
 	// Prevent accidental construction
 	private ReflectionUtils() {
 	}
 	
 	/**
 	 * Returns the constructor of a given class with the given parameter types
-	 * 
+	 *
 	 * @param clazz Target class
 	 * @param parameterTypes Parameter types of the desired constructor
 	 * @return The constructor of the target class with the specified parameter types
@@ -54,7 +55,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Returns the constructor of a desired class with the given parameter types
-	 * 
+	 *
 	 * @param className Name of the desired target class
 	 * @param packageType Package where the desired target class is located
 	 * @param parameterTypes Parameter types of the desired constructor
@@ -70,7 +71,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Returns an instance of a class with the given arguments
-	 * 
+	 *
 	 * @param clazz Target class
 	 * @param arguments Arguments which are used to construct an object of the target class
 	 * @return The instance of the target class with the specified arguments
@@ -86,7 +87,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Returns an instance of a desired class with the given arguments
-	 * 
+	 *
 	 * @param className Name of the desired target class
 	 * @param packageType Package where the desired target class is located
 	 * @param arguments Arguments which are used to construct an object of the desired target class
@@ -106,7 +107,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Returns a method of a class with the given parameter types
-	 * 
+	 *
 	 * @param clazz Target class
 	 * @param methodName Name of the desired method
 	 * @param parameterTypes Parameter types of the desired method
@@ -128,7 +129,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Returns a method of a desired class with the given parameter types
-	 * 
+	 *
 	 * @param className Name of the desired target class
 	 * @param packageType Package where the desired target class is located
 	 * @param methodName Name of the desired method
@@ -145,7 +146,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Invokes a method on an object with the given arguments
-	 * 
+	 *
 	 * @param instance Target object
 	 * @param methodName Name of the desired method
 	 * @param arguments Arguments which are used to invoke the desired method
@@ -163,7 +164,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Invokes a method of the target class on an object with the given arguments
-	 * 
+	 *
 	 * @param instance Target object
 	 * @param clazz Target class
 	 * @param methodName Name of the desired method
@@ -182,7 +183,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Invokes a method of a desired class on an object with the given arguments
-	 * 
+	 *
 	 * @param instance Target object
 	 * @param className Name of the desired target class
 	 * @param packageType Package where the desired target class is located
@@ -203,7 +204,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Returns a field of the target class with the given name
-	 * 
+	 *
 	 * @param clazz Target class
 	 * @param declared Whether the desired field is declared or not
 	 * @param fieldName Name of the desired field
@@ -219,7 +220,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Returns a field of a desired class with the given name
-	 * 
+	 *
 	 * @param className Name of the desired target class
 	 * @param packageType Package where the desired target class is located
 	 * @param declared Whether the desired field is declared or not
@@ -236,7 +237,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Returns the value of a field of the given class of an object
-	 * 
+	 *
 	 * @param instance Target object
 	 * @param clazz Target class
 	 * @param declared Whether the desired field is declared or not
@@ -254,7 +255,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Returns the value of a field of a desired class of an object
-	 * 
+	 *
 	 * @param instance Target object
 	 * @param className Name of the desired target class
 	 * @param packageType Package where the desired target class is located
@@ -274,7 +275,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Returns the value of a field with the given name of an object
-	 * 
+	 *
 	 * @param instance Target object
 	 * @param declared Whether the desired field is declared or not
 	 * @param fieldName Name of the desired field
@@ -291,7 +292,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Sets the value of a field of the given class of an object
-	 * 
+	 *
 	 * @param instance Target object
 	 * @param clazz Target class
 	 * @param declared Whether the desired field is declared or not
@@ -309,7 +310,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Sets the value of a field of a desired class of an object
-	 * 
+	 *
 	 * @param instance Target object
 	 * @param className Name of the desired target class
 	 * @param packageType Package where the desired target class is located
@@ -329,7 +330,7 @@ public final class ReflectionUtils {
 	
 	/**
 	 * Sets the value of a field with the given name of an object
-	 * 
+	 *
 	 * @param instance Target object
 	 * @param declared Whether the desired field is declared or not
 	 * @param fieldName Name of the desired field
@@ -348,7 +349,7 @@ public final class ReflectionUtils {
 	 * Represents an enumeration of dynamic packages of NMS and CraftBukkit
 	 * <p>
 	 * This class is part of the <b>ReflectionUtils</b> and follows the same usage conditions
-	 * 
+	 *
 	 * @author DarkBlade12
 	 * @since 1.0
 	 */
@@ -359,7 +360,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Construct a new package type
-		 * 
+		 *
 		 * @param path Path of the package
 		 */
 		private PackageType(String path) {
@@ -368,7 +369,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Construct a new package type
-		 * 
+		 *
 		 * @param parent Parent package of the package
 		 * @param path Path of the package
 		 */
@@ -378,7 +379,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Returns the path of this package type
-		 * 
+		 *
 		 * @return The path
 		 */
 		public String getPath() {
@@ -387,7 +388,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Returns the class with the given name
-		 * 
+		 *
 		 * @param className Name of the desired class
 		 * @return The class with the specified name
 		 * @throws ClassNotFoundException If the desired class with the specified name and package cannot be found
@@ -404,7 +405,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Returns the version of your server
-		 * 
+		 *
 		 * @return The server version
 		 */
 		public static String getServerVersion() {
@@ -416,7 +417,7 @@ public final class ReflectionUtils {
 	 * Represents an enumeration of Java data types with corresponding classes
 	 * <p>
 	 * This class is part of the <b>ReflectionUtils</b> and follows the same usage conditions
-	 * 
+	 *
 	 * @author DarkBlade12
 	 * @since 1.0
 	 */
@@ -437,7 +438,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Construct a new data type
-		 * 
+		 *
 		 * @param primitive Primitive class of this data type
 		 * @param reference Reference class of this data type
 		 */
@@ -448,7 +449,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Returns the primitive class of this data type
-		 * 
+		 *
 		 * @return The primitive class
 		 */
 		public Class<?> getPrimitive() {
@@ -457,7 +458,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Returns the reference class of this data type
-		 * 
+		 *
 		 * @return The reference class
 		 */
 		public Class<?> getReference() {
@@ -466,7 +467,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Returns the data type with the given primitive/reference class
-		 * 
+		 *
 		 * @param clazz Primitive/Reference class of the data type
 		 * @return The data type
 		 */
@@ -476,7 +477,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Returns the primitive class of the data type with the given reference class
-		 * 
+		 *
 		 * @param clazz Reference class of the data type
 		 * @return The primitive class
 		 */
@@ -487,7 +488,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Returns the reference class of the data type with the given primitive class
-		 * 
+		 *
 		 * @param clazz Primitive class of the data type
 		 * @return The reference class
 		 */
@@ -498,7 +499,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Returns the primitive class array of the given class array
-		 * 
+		 *
 		 * @param classes Given class array
 		 * @return The primitive class array
 		 */
@@ -513,7 +514,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Returns the reference class array of the given class array
-		 * 
+		 *
 		 * @param classes Given class array
 		 * @return The reference class array
 		 */
@@ -528,7 +529,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Returns the primitive class array of the given object array
-		 * 
+		 *
 		 * @param object Given object array
 		 * @return The primitive class array
 		 */
@@ -543,7 +544,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Returns the reference class array of the given object array
-		 * 
+		 *
 		 * @param object Given object array
 		 * @return The reference class array
 		 */
@@ -558,7 +559,7 @@ public final class ReflectionUtils {
 		
 		/**
 		 * Compares two class arrays on equivalence
-		 * 
+		 *
 		 * @param primary Primary class array
 		 * @param secondary Class array which is compared to the primary array
 		 * @return Whether these arrays are equal or not

@@ -3,20 +3,26 @@ package me.badbones69.crazycrates.api.objects;
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.controllers.FileManager;
+import me.badbones69.crazycrates.controllers.Preview;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Crate {
 	
 	private String name;
 	private ItemStack key;
+	private Integer maxPage = 1;
+	private String previewName;
 	private CrateType crateType;
 	private FileConfiguration file;
 	private ArrayList<Prize> prizes;
@@ -32,13 +38,15 @@ public class Crate {
 	 * @param prizes The prizes that can be won.
 	 * @param file The crate file.
 	 */
-	public Crate(String name, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file) {
+	public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file) {
 		this.key = key;
 		this.file = file;
 		this.name = name;
 		this.prizes = prizes;
 		this.crateType = crateType;
 		this.preview = loadPreview();
+		this.previewName = Methods.color(previewName);
+		for(int amount = preview.size(); amount > 36; amount -= 45, maxPage++) ;
 		this.crateInventoryName = file != null ? Methods.color(file.getString("Crate.CrateName")) : "";
 	}
 	
@@ -91,7 +99,11 @@ public class Crate {
 		ArrayList<Prize> useablePrizes = new ArrayList<>();
 		// ================= Blacklist Check ================= //
 		if(player.isOp()) {
-			useablePrizes.addAll(getPrizes());
+			for(Prize prize : getPrizes()) {
+				if(prize.getTiers().contains(tier.toLowerCase())) {
+					useablePrizes.add(prize);
+				}
+			}
 		}else {
 			for(Prize prize : getPrizes()) {
 				if(prize.hasBlacklistPermission(player)) {
@@ -99,7 +111,9 @@ public class Crate {
 						continue;
 					}
 				}
-				useablePrizes.add(prize);
+				if(prize.getTiers().contains(tier.toLowerCase())) {
+					useablePrizes.add(prize);
+				}
 			}
 		}
 		// ================= Chance Check ================= //
@@ -171,6 +185,14 @@ public class Crate {
 	}
 	
 	/**
+	 *
+	 * @return The name of the crate's preview page.
+	 */
+	public String getPreviewName() {
+		return previewName;
+	}
+	
+	/**
 	 * Get the name of the inventory the crate will have.
 	 * @return The name of the inventory for GUI based crate types.
 	 */
@@ -182,13 +204,28 @@ public class Crate {
 	 * Gets the inventory of a preview of prizes for the crate.
 	 * @return The preview as an Inventory object.
 	 */
-	public Inventory getPreview() {
-		int slots = 9;
-		for(int size = file.getConfigurationSection("Crate.Prizes").getKeys(false).size(); size > 9 && slots < 54; size -= 9) {
-			slots += 9;
+	public Inventory getPreview(Player player) {
+		Inventory inv = Bukkit.createInventory(null, 54, previewName);
+		setDefaultItems(inv, player);
+		for(ItemStack item : getPageItems(Preview.getPage(player))) {
+			int nextSlot = inv.firstEmpty();
+			if(nextSlot >= 0) {
+				inv.setItem(nextSlot, item);
+			}else {
+				break;
+			}
 		}
-		Inventory inv = Bukkit.createInventory(null, slots, Methods.color(file.getString("Crate.Name")));
-		for(ItemStack item : preview) {
+		return inv;
+	}
+	
+	/**
+	 * Gets the inventory of a preview of prizes for the crate.
+	 * @return The preview as an Inventory object.
+	 */
+	public Inventory getPreview(Player player, int page) {
+		Inventory inv = Bukkit.createInventory(null, 54, previewName);
+		setDefaultItems(inv, player);
+		for(ItemStack item : getPageItems(page)) {
 			int nextSlot = inv.firstEmpty();
 			if(nextSlot >= 0) {
 				inv.setItem(nextSlot, item);
@@ -297,6 +334,14 @@ public class Crate {
 	}
 	
 	/**
+	 *
+	 * @return The max page for the preview.
+	 */
+	public int getMaxPage() {
+		return maxPage;
+	}
+	
+	/**
 	 * Loads all the preview items and puts them into a list.
 	 * @return A list of all the preview items that were created.
 	 */
@@ -306,6 +351,60 @@ public class Crate {
 			items.add(prize.getDisplayItem());
 		}
 		return items;
+	}
+	
+	private List<ItemStack> getPageItems(Integer page) {
+		List<ItemStack> list = preview;
+		List<ItemStack> items = new ArrayList<>();
+		if(page <= 0) page = 1;
+		int max = 36;
+		int index = page * max - max;
+		int endIndex = index >= list.size() ? list.size() - 1 : index + max;
+		for(; index < endIndex; index++) {
+			if(index < list.size()) items.add(list.get(index));
+		}
+		for(; items.size() == 0; page--) {
+			if(page <= 0) break;
+			index = page * max - max;
+			endIndex = index >= list.size() ? list.size() - 1 : index + max;
+			for(; index < endIndex; index++) {
+				if(index < list.size()) items.add(list.get(index));
+			}
+		}
+		return items;
+	}
+	
+	private void setDefaultItems(Inventory inv, Player player) {
+		for(int i : Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 45, 46, 47, 49, 51, 52, 53)) {
+			inv.setItem(i, new ItemBuilder()
+			.setMaterial(Material.STAINED_GLASS_PANE)
+			.setMetaData((short) Preview.getPaneColor(player))
+			.setName(" ")
+			.build());
+		}
+		int page = Preview.getPage(player);
+		int maxPage = getMaxPage();
+		if(Preview.playerInMenu(player)) {
+			inv.setItem(49, Preview.getMenuButton());
+		}
+		if(page == 1) {
+			inv.setItem(48, new ItemBuilder()
+			.setMaterial(Material.STAINED_GLASS_PANE)
+			.setMetaData((short) 7)
+			.setName(" ")
+			.build());
+		}else {
+			inv.setItem(48, Preview.getBackButton(player));
+		}
+		if(page == maxPage) {
+			inv.setItem(50, new ItemBuilder()
+			.setMaterial(Material.STAINED_GLASS_PANE)
+			.setMetaData((short) 7)
+			.setName(" ")
+			.build());
+		}else {
+			inv.setItem(50, Preview.getNextButton(player));
+		}
 	}
 	
 }

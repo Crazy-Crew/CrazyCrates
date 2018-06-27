@@ -37,7 +37,7 @@ public class QuickCrate implements Listener {
 			cc.takeKeys(1, player, crate, key);
 		}
 		Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
-		cc.getReward(player, prize);
+		cc.givePrize(player, prize);
 		Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 		ItemStack displayItem = prize.getDisplayItem();
 		NBTItem nbtItem = new NBTItem(displayItem);

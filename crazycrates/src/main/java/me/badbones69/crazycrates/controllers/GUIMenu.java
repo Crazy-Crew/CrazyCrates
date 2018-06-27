@@ -117,10 +117,6 @@ public class GUIMenu implements Listener {
 		player.openInventory(inv);
 	}
 	
-	public static void openPreview(Player player, Crate crate) {
-		player.openInventory(crate.getPreview());
-	}
-	
 	@EventHandler
 	public void onInvClick(InventoryClickEvent e) {
 		Player player = (Player) e.getWhoClicked();
@@ -130,7 +126,6 @@ public class GUIMenu implements Listener {
 			for(Crate crate : cc.getCrates()) {
 				if(crate.getCrateType() != CrateType.MENU) {
 					if(inv.getName().equals(Methods.color(crate.getFile().getString("Crate.Name")))) {
-						e.setCancelled(true);
 						return;
 					}
 				}
@@ -149,7 +144,8 @@ public class GUIMenu implements Listener {
 										if(e.getAction() == InventoryAction.PICKUP_HALF) {
 											if(config.getBoolean("Settings.Show-Preview")) {
 												player.closeInventory();
-												openPreview(player, crate);
+												Preview.setPlayerInMenu(player, true);
+												Preview.openNewPreview(player, crate);
 											}
 											return;
 										}

@@ -1,12 +1,13 @@
 Crate:
   CrateType: QuadCrate
   CrateName: '&8Crazy Crate'
+  Preview-Name: '&8Crazy Crate Preview'
   StartingKeys: 0
   InGUI: true
   Slot: 25
   OpeningBroadCast: true
   BroadCast: '%Prefix%&6&l%Player% &7is opening a &b&lCrazy Chest&7.'
-  Item: '54'
+  Item: 'CHEST'
   Glowing: false
   Name: '&b&lCrazy Chest'
   Lore:
@@ -18,12 +19,12 @@ Crate:
     Lore:
       - '&7A special Key'
       - '&7For a special Crate.'
-    Item: '131'
+    Item: 'TRIPWIRE_HOOK'
     Glowing: True
   Prizes:
     1:
       DisplayName: '&3&lRare ChestPlate'
-      DisplayItem: '311'
+      DisplayItem: 'DIAMOND_CHESTPLATE'
       DisplayAmount: 1
       Lore:
         - '&7Win a very rare chest plate.'
@@ -36,7 +37,7 @@ Crate:
       Firework: false
       Glowing: false
       Items:
-        - 'Item:311, Amount:1, Name:&3Rare ChestPlate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3'
+        - 'Item:DIAMOND_CHESTPLATE, Amount:1, Name:&3Rare ChestPlate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3'
       Alternative-Prize:
         Toggle: false
         Messages: {}
@@ -44,7 +45,7 @@ Crate:
         Items: {}
     2:
       DisplayName: '&b&lCrazy &4&lSword'
-      DisplayItem: '283'
+      DisplayItem: 'GOLD_SWORD'
       DisplayAmount: 1
       Lore:
         - '&7Win a crazy cool sword.'
@@ -57,7 +58,7 @@ Crate:
       Firework: false
       Glowing: false
       Items:
-        - 'Item:283, Amount:1, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1'
+        - 'Item:GOLD_SWORD, Amount:1, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1'
       Messages:
         - '&7You just won a &b&lCrazy &4&lSword&7.'
       Alternative-Prize:
@@ -67,7 +68,7 @@ Crate:
         Items: {}
     3:
       DisplayName: '&e&l$1,000,000'
-      DisplayItem: '175'
+      DisplayItem: 'DOUBLE_PLANT'
       DisplayAmount: 1
       Lore:
         - '&7Make it rain a butt load of Money.'

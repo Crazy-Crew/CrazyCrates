@@ -96,6 +96,7 @@ public class CrazyCrates {
 			try {
 				FileConfiguration file = fileManager.getFile(crateName).getFile();
 				ArrayList<Prize> prizes = new ArrayList<>();
+				String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
 				for(String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
 					Prize altPrize = null;
 					String path = "Crate.Prizes." + prize;
@@ -125,7 +126,7 @@ public class CrazyCrates {
 					file.getStringList(path + ".Tiers"),
 					altPrize));
 				}
-				crates.add(new Crate(crateName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file));
+				crates.add(new Crate(crateName, previewName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file));
 				//				if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "" + crateName + ".yml has been loaded.");
 			}catch(Exception e) {
 				brokecrates.add(crateName);
@@ -133,7 +134,7 @@ public class CrazyCrates {
 				e.printStackTrace();
 			}
 		}
-		crates.add(new Crate("Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null));
+		crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null));
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "All crate information has been loaded.");
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Loading all the physical crate locations.");
 		FileConfiguration locations = Files.LOCATIONS.getFile();
@@ -232,7 +233,7 @@ public class CrazyCrates {
 				GUIMenu.openGUI(player);
 				break;
 			case COSMIC:
-				Cosmic.openCosmic(player, key);
+				Cosmic.openCosmic(player, crate, key);
 				break;
 			case CSGO:
 				CSGO.openCSGO(player, crate, key);
@@ -299,7 +300,7 @@ public class CrazyCrates {
 				}else {
 					takeKeys(1, player, crate, key);
 					Prize prize = crate.pickPrize(player);
-					getReward(player, prize);
+					givePrize(player, prize);
 					if(prize.useFireworks()) {
 						Methods.fireWork(player.getLocation().add(0, 1, 0));
 					}
@@ -521,7 +522,7 @@ public class CrazyCrates {
 		return inv;
 	}
 	
-	public void getReward(Player player, Prize prize) {
+	public void givePrize(Player player, Prize prize) {
 		if(prize != null) {
 			prize = prize.hasBlacklistPermission(player) ? prize.getAltPrize() : prize;
 			for(ItemStack i : prize.getItems()) {

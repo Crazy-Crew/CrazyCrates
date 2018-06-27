@@ -101,7 +101,7 @@ public class War implements Listener {
 									}
 									canPick.remove(player);
 									canClose.put(player, true);
-									cc.getReward(player, prize);
+									cc.givePrize(player, prize);
 									if(prize.useFireworks()) {
 										Methods.fireWork(player.getLocation().add(0, 1, 0));
 									}

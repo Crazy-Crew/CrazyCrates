@@ -1,12 +1,13 @@
 Crate:
   CrateType: Cosmic #Type of crate.
   CrateName: '&8Galactic Crate' #Name of the Inventory if a GUI crate.
+  Preview-Name: '&8Galactic Crate Preview'
   StartingKeys: 0 #Starting amount of keys when the player 1st joins.
   InGUI: true #If the crate shows in the /cc GUI.
   Slot: 23 #Slot the item is in the GUI.
   OpeningBroadCast: false #Enables/Disables the Broadcasts message when they open a crate.
   BroadCast: '' #Message that is broadcasted when opening the crate.
-  Item: '130' #Item the crate is in the GUI
+  Item: 'ENDER_CHEST' #Item the crate is in the GUI
   Glowing: false #If the crate in the main /cc GUI is glowing or not.
   Name: '&d&lGalactic Chest' #Name of the item in the GUI.
   Lore: #The lore of the item in the GUI.
@@ -19,7 +20,7 @@ Crate:
     Lore:
       - '&7A special Key' #Lore of the Key.
       - '&7For a special Crate.'
-    Item: '131' #The item the key is.
+    Item: 'TRIPWIRE_HOOK' #The item the key is.
     Glowing: true
   Tiers: #The tiers in the Crate
     Basic: #The Config Name for the Crate
@@ -40,7 +41,7 @@ Crate:
   Prizes: #All the prizes that can be gotten in the Crate.
     1:
       DisplayName: '&d&lGalactic Grass' #Name of the item shown by the crate.
-      DisplayItem: '2' #Item that is shown by the crate.
+      DisplayItem: 'GRASS' #Item that is shown by the crate.
       DisplayAmount: 1 #The ammount that is displayed
       Lore: #Lore will be shown in rewards GUI.
         - '&7Win some grass for your fields.'
@@ -60,7 +61,7 @@ Crate:
       #Name: a custom name for that item (ColorCode dose work).
       #Lore: a custom lore for the item (ColorCode does work) and to make a new line in the lore use a , to split the lines.
       Items:
-        - 'Item:2, Amount:32, Name:&d&lGalactic Grass'
+        - 'Item:GRASS, Amount:32, Name:&d&lGalactic Grass'
       #Commands are the commands that are run when this prize is won. (If you wish not to use a CMD in the prize just delete the Commands Section)
       #You can use %Player% to get the player that won the prize.
       Commands:
@@ -72,7 +73,7 @@ Crate:
         Items: {}
     2:
       DisplayName: '&b&lCheap Helmet'
-      DisplayItem: '314'
+      DisplayItem: 'GOLD_HELMET'
       DisplayAmount: 1
       Lore:
         - '&7Win a cheap helmet.'
@@ -89,7 +90,7 @@ Crate:
         - 'UnCommon'
         - 'Rare'
       Items:
-        - 'Item:314, Amount:1, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
+        - 'Item:GOLD_HELMET, Amount:1, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
       Alternative-Prize:
         Toggle: false
         Messages: {}
@@ -97,7 +98,7 @@ Crate:
         Items: {}
     3:
       DisplayName: '&e&l$1,000'
-      DisplayItem: '175'
+      DisplayItem: 'DOUBLE_PLANT:0'
       DisplayAmount: 1
       Lore:
         - '&7Make it rain Money.'
@@ -119,7 +120,7 @@ Crate:
         Items: {}
     4:
       DisplayName: '&b&lCrazy &4&lSword'
-      DisplayItem: '283'
+      DisplayItem: 'GOLD_SWORD'
       DisplayAmount: 1
       Lore:
         - '&7Win a crazy cool sword.'
@@ -134,7 +135,7 @@ Crate:
       Tiers:
         - 'Rare'
       Items:
-        - 'Item:283, Amount:1, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1'
+        - 'Item:GOLD_SWORD, Amount:1, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1'
       Alternative-Prize:
         Toggle: false
         Messages: {}
@@ -142,7 +143,7 @@ Crate:
         Items: {}
     5:
       DisplayName: '&e&l$1,000,000'
-      DisplayItem: '175'
+      DisplayItem: 'DOUBLE_PLANT:0'
       DisplayAmount: 1
       Lore:
         - '&7Make it rain a butt load of Money.'
@@ -162,7 +163,7 @@ Crate:
         Items: {}
     6:
       DisplayName: '&b&lCrazy Crate &6&lKey &7(x2)'
-      DisplayItem: '131'
+      DisplayItem: 'TRIPWIRE_HOOK'
       DisplayAmount: 1
       Lore:
         - '&7A special Key'
