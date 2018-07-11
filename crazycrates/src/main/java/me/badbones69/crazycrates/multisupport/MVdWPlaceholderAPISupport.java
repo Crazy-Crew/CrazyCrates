@@ -15,7 +15,9 @@ public class MVdWPlaceholderAPISupport {
 	public static void registerPlaceholders(Plugin plugin) {
 		for(final Crate crate : cc.getCrates()) {
 			if(crate.getCrateType() != CrateType.MENU) {
-				PlaceholderAPI.registerPlaceholder(plugin, "crazycrates_" + crate, e -> NumberFormat.getNumberInstance().format(CrazyCrates.getInstance().getVirtualKeys(e.getPlayer(), crate)));
+				PlaceholderAPI.registerPlaceholder(plugin, "crazycrates_" + crate, e -> NumberFormat.getNumberInstance().format(cc.getVirtualKeys(e.getPlayer(), crate)));
+				PlaceholderAPI.registerPlaceholder(plugin, "crazycrates_" + crate + "_physical", e -> NumberFormat.getNumberInstance().format(cc.getPhysicalKeys(e.getPlayer(), crate)));
+				PlaceholderAPI.registerPlaceholder(plugin, "crazycrates_" + crate + "_total", e -> NumberFormat.getNumberInstance().format(cc.getTotalKeys(e.getPlayer(), crate)));
 			}
 		}
 	}

@@ -180,6 +180,7 @@ public class Cosmic implements Listener {
 									}catch(Exception e) {
 										cc.addKeys(1, player, crate, keyType);
 										cc.endCrate(player);
+										cancel();
 										player.sendMessage(Methods.getPrefix("&cAn issue has occured and so a key refund was given."));
 										System.out.println(FileManager.getInstance().getPrefix() + "An issue occured when the user " + player.getName() +
 										" was using the " + crate.getName() + " crate and so they were issued a key refund.");

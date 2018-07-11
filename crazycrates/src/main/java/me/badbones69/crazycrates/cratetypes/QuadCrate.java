@@ -9,7 +9,6 @@ import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.controllers.CrateControl;
-import me.badbones69.crazycrates.controllers.FileManager;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.controllers.ParticleEffect;
 import me.badbones69.crazycrates.controllers.ParticleEffect.BlockData;
@@ -514,24 +513,6 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 				}
 			}
 		}
-	}
-	
-	@EventHandler
-	public void onJoin(PlayerJoinEvent e) {
-		new BukkitRunnable() {
-			public void run() {
-				Player player = e.getPlayer();
-				String uuid = player.getUniqueId().toString();
-				if(!Files.DATA.getFile().contains("Players." + uuid)) {
-					Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
-					for(String crate : FileManager.getInstance().getAllCratesNames()) {
-						int amount = FileManager.getInstance().getFile(crate).getFile().getInt("Crate.StartingKeys");
-						Files.DATA.getFile().set("Players." + uuid + "." + crate, amount);
-					}
-					Files.DATA.saveFile();
-				}
-			}
-		}.runTask(Methods.plugin);
 	}
 	
 	@EventHandler

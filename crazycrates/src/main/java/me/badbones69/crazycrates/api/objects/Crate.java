@@ -27,6 +27,8 @@ public class Crate {
 	private FileConfiguration file;
 	private ArrayList<Prize> prizes;
 	private String crateInventoryName;
+	private Boolean giveNewPlayerKeys;
+	private Integer newPlayerKeys;
 	private ArrayList<ItemStack> preview;
 	private FileManager fileManager = FileManager.getInstance();
 	
@@ -38,7 +40,7 @@ public class Crate {
 	 * @param prizes The prizes that can be won.
 	 * @param file The crate file.
 	 */
-	public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file) {
+	public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, Integer newPlayerKeys) {
 		this.key = key;
 		this.file = file;
 		this.name = name;
@@ -46,6 +48,8 @@ public class Crate {
 		this.crateType = crateType;
 		this.preview = loadPreview();
 		this.previewName = Methods.color(previewName);
+		this.newPlayerKeys = newPlayerKeys;
+		this.giveNewPlayerKeys = newPlayerKeys > 0;
 		for(int amount = preview.size(); amount > 36; amount -= 45, maxPage++) ;
 		this.crateInventoryName = file != null ? Methods.color(file.getString("Crate.CrateName")) : "";
 	}
@@ -300,6 +304,22 @@ public class Crate {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 *
+	 * @return True if new players get keys and false if they do not.
+	 */
+	public Boolean doNewPlayersGetKeys() {
+		return giveNewPlayerKeys;
+	}
+	
+	/**
+	 *
+	 * @return The number of keys new players get.
+	 */
+	public Integer getNewPlayerKeys() {
+		return newPlayerKeys;
 	}
 	
 	public void addEditorItem(String prize, ItemStack item) {

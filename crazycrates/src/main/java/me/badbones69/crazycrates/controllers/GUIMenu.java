@@ -56,7 +56,9 @@ public class GUIMenu implements Listener {
 						i = i.replace("Name:", "");
 						for(Crate crate : cc.getCrates()) {
 							if(crate.getCrateType() != CrateType.MENU) {
-								i = i.replaceAll("%" + crate.getName().toLowerCase() + "%", cc.getVirtualKeys(player, crate) + "");
+								i = i.replaceAll("%" + crate.getName().toLowerCase() + "%", cc.getVirtualKeys(player, crate) + "")
+								.replaceAll("%" + crate.getName().toLowerCase() + "_physical%", cc.getPhysicalKeys(player, crate) + "")
+								.replaceAll("%" + crate.getName().toLowerCase() + "_total%", cc.getTotalKeys(player, crate) + "");
 							}
 						}
 						i = i.replaceAll("%player%", player.getName());
@@ -68,7 +70,9 @@ public class GUIMenu implements Listener {
 						for(String l : d) {
 							for(Crate crate : cc.getCrates()) {
 								if(crate.getCrateType() != CrateType.MENU) {
-									i = i.replaceAll("%" + crate.getName().toLowerCase() + "%", cc.getVirtualKeys(player, crate) + "");
+									i = i.replaceAll("%" + crate.getName().toLowerCase() + "%", cc.getVirtualKeys(player, crate) + "")
+									.replaceAll("%" + crate.getName().toLowerCase() + "_physical%", cc.getPhysicalKeys(player, crate) + "")
+									.replaceAll("%" + crate.getName().toLowerCase() + "_total%", cc.getTotalKeys(player, crate) + "");
 								}
 							}
 							i = i.replaceAll("%player%", player.getName());
@@ -96,10 +100,12 @@ public class GUIMenu implements Listener {
 					String ma = file.getString(path + "Item");
 					String name = file.getString(path + "Name");
 					ArrayList<String> lore = new ArrayList<>();
-					String keys = NumberFormat.getNumberInstance().format(cc.getVirtualKeys(player, crate));
 					Boolean glowing = false;
 					for(String i : file.getStringList(path + "Lore")) {
-						lore.add(i.replaceAll("%Keys%", keys).replaceAll("%keys%", keys).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName()));
+						lore.add(i.replaceAll("%Keys%", NumberFormat.getNumberInstance().format(cc.getVirtualKeys(player, crate))).replaceAll("%keys%", NumberFormat.getNumberInstance().format(cc.getVirtualKeys(player, crate)))
+						.replaceAll("%Keys_Physical%", NumberFormat.getNumberInstance().format(cc.getPhysicalKeys(player, crate))).replaceAll("%keys_physical%", NumberFormat.getNumberInstance().format(cc.getPhysicalKeys(player, crate)))
+						.replaceAll("%Keys_Total%", NumberFormat.getNumberInstance().format(cc.getTotalKeys(player, crate))).replaceAll("%keys_total%", NumberFormat.getNumberInstance().format(cc.getTotalKeys(player, crate)))
+						.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName()));
 					}
 					if(file.contains(path + "Glowing")) {
 						if(file.getBoolean(path + "Glowing")) {
@@ -180,7 +186,7 @@ public class GUIMenu implements Listener {
 												return;
 											}
 										}
-										if(Methods.isInvFull(player)) {
+										if(Methods.isInventoryFull(player)) {
 											player.sendMessage(Messages.INVENTORY_FULL.getMessage());
 											return;
 										}

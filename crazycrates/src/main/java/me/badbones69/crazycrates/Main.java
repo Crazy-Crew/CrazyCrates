@@ -110,19 +110,6 @@ public class Main extends JavaPlugin implements Listener {
 		if(Support.hasMVdWPlaceholderAPI()) {
 			MVdWPlaceholderAPISupport.registerPlaceholders(this);
 		}
-		if(Bukkit.getServer().getOnlinePlayers() != null) {
-			for(Player player : Bukkit.getServer().getOnlinePlayers()) {
-				String uuid = player.getUniqueId().toString();
-				if(!Files.DATA.getFile().contains("Players." + uuid)) {
-					Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
-					for(String crate : fileManager.getAllCratesNames()) {
-						int amount = fileManager.getFile(crate).getFile().getInt("Crate.StartingKeys");
-						Files.DATA.getFile().set("Players." + uuid + "." + crate, amount);
-					}
-					Files.DATA.saveFile();
-				}
-			}
-		}
 		try {
 			MassiveStats massiveStats = new MassiveStats(this);
 			if(Files.CONFIG.getFile().contains("Settings.Update-Checker")) {
@@ -816,6 +803,7 @@ public class Main extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player player = e.getPlayer();
+		cc.checkNewPlayer(player);
 		cc.loadOfflinePlayersKeys(player);
 		new BukkitRunnable() {
 			@Override

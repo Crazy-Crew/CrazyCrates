@@ -1,6 +1,5 @@
 package me.badbones69.crazycrates.api.objects;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -14,7 +13,7 @@ public class Prize {
 	private String crate;
 	private int maxRange;
 	private boolean firework;
-	private ItemStack displayItem;
+	private ItemBuilder displayItem;
 	private List<String> tiers;
 	private List<String> messages;
 	private List<String> commands;
@@ -33,13 +32,13 @@ public class Prize {
 		this.tiers.replaceAll(String::toLowerCase);
 		this.messages = messages != null ? messages : new ArrayList<>();
 		this.commands = commands != null ? commands : new ArrayList<>();
-		this.displayItem = displayItem != null ? displayItem : new ItemStack(Material.STONE);
+		this.displayItem = displayItem != null ? displayItem : new ItemBuilder();
 		this.blackListPermissions = blackListPermissions != null ? blackListPermissions : new ArrayList<>();
 		this.blackListPermissions.replaceAll(String::toLowerCase);
 		this.altPrize = null;
 	}
 	
-	public Prize(String name, ItemStack displayItem, List<String> messages, List<String> commands,
+	public Prize(String name, ItemBuilder displayItem, List<String> messages, List<String> commands,
 	ArrayList<ItemStack> items, String crate, int chance, int maxRange, boolean firework, List<String> blackListPermissions,
 	List<String> tiers) {
 		this.name = name != null ? name : "&4No name Found!";
@@ -52,13 +51,13 @@ public class Prize {
 		this.tiers.replaceAll(String::toLowerCase);
 		this.messages = messages != null ? messages : new ArrayList<>();
 		this.commands = commands != null ? commands : new ArrayList<>();
-		this.displayItem = displayItem != null ? displayItem : new ItemStack(Material.STONE);
+		this.displayItem = displayItem != null ? displayItem : new ItemBuilder();
 		this.blackListPermissions = blackListPermissions != null ? blackListPermissions : new ArrayList<>();
 		this.blackListPermissions.replaceAll(String::toLowerCase);
 		this.altPrize = null;
 	}
 	
-	public Prize(String name, ItemStack displayItem, List<String> messages, List<String> commands,
+	public Prize(String name, ItemBuilder displayItem, List<String> messages, List<String> commands,
 	ArrayList<ItemStack> items, String crate, int chance, int maxRange, boolean firework, List<String> blackListPermissions,
 	List<String> tiers, Prize altPrize) {
 		this.name = name != null ? name : "&4No name Found!";
@@ -71,7 +70,7 @@ public class Prize {
 		this.tiers.replaceAll(String::toLowerCase);
 		this.messages = messages != null ? messages : new ArrayList<>();
 		this.commands = commands != null ? commands : new ArrayList<>();
-		this.displayItem = displayItem != null ? displayItem : new ItemStack(Material.STONE);
+		this.displayItem = displayItem != null ? displayItem : new ItemBuilder();
 		this.blackListPermissions = blackListPermissions != null ? blackListPermissions : new ArrayList<>();
 		this.blackListPermissions.replaceAll(String::toLowerCase);
 		this.altPrize = altPrize;
@@ -82,10 +81,14 @@ public class Prize {
 	}
 	
 	public ItemStack getDisplayItem() {
+		return displayItem.build();
+	}
+	
+	public ItemBuilder getDisplayItemBuilder() {
 		return displayItem;
 	}
 	
-	public void setDisplayItem(ItemStack displayItem) {
+	public void setDisplayItem(ItemBuilder displayItem) {
 		this.displayItem = displayItem;
 	}
 	
