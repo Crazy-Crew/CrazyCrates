@@ -519,10 +519,10 @@ public class Main extends JavaPlugin implements Listener {
 										return true;
 									}
 									if(type.equalsIgnoreCase("Virtual") || type.equalsIgnoreCase("V")) {
-										CrazyCrates.getInstance().addKeys(amount, p, crate, KeyType.VIRTUAL_KEY);
+										cc.addKeys(amount, p, crate, KeyType.VIRTUAL_KEY);
 									}
 									if(type.equalsIgnoreCase("Physical") || type.equalsIgnoreCase("P")) {
-										CrazyCrates.getInstance().addKeys(amount, p, crate, KeyType.PHYSICAL_KEY);
+										cc.addKeys(amount, p, crate, KeyType.PHYSICAL_KEY);
 									}
 								}
 								return true;

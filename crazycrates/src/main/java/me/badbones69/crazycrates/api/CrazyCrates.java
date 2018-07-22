@@ -296,8 +296,8 @@ public class CrazyCrates {
 						removePlayerFromOpeningList(player);
 						return;
 					}else {
-						FireCracker.startFireCracker(player, crate, key, location);
 						CrateControl.inUse.put(player, location);
+						FireCracker.startFireCracker(player, crate, key, location);
 					}
 				}
 				break;
@@ -312,8 +312,8 @@ public class CrazyCrates {
 						removePlayerFromOpeningList(player);
 						return;
 					}else {
-						QuickCrate.openCrate(player, location, crate, key, true);
 						CrateControl.inUse.put(player, location);
+						QuickCrate.openCrate(player, location, crate, key, true);
 					}
 				}
 				break;
@@ -790,7 +790,7 @@ public class CrazyCrates {
 	
 	public void addKeys(int amount, Player player, Crate crate, KeyType key) {
 		switch(key) {
-			case VIRTUAL_KEY:
+			case PHYSICAL_KEY:
 				if(Methods.isInventoryFull(player)) {
 					if(giveVirtualKeysWhenInventoryFull) {
 						addKeys(amount, player, crate, KeyType.VIRTUAL_KEY);
@@ -801,7 +801,7 @@ public class CrazyCrates {
 					player.getInventory().addItem(crate.getKey(amount));
 				}
 				break;
-			case PHYSICAL_KEY:
+			case VIRTUAL_KEY:
 				String uuid = player.getUniqueId().toString();
 				int keys = getVirtualKeys(player, crate);
 				Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
