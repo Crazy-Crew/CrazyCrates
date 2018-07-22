@@ -7,6 +7,7 @@ import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
+import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.controllers.CrateControl;
 import me.badbones69.crazycrates.controllers.FileManager;
@@ -66,6 +67,14 @@ public class CrazyCrates {
 	 * A list of tasks being ran by the QuadCrate type.
 	 */
 	private HashMap<UUID, ArrayList<BukkitTask>> currentQuadTasks = new HashMap<>();
+	/**
+	 * If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
+	 */
+	private Boolean giveVirtualKeysWhenInventoryFull;
+	/**
+	 * True if at least one crate gives new players keys and false if none give new players keys.
+	 */
+	private Boolean giveNewPlayersKeys;
 	
 	/**
 	 * Gets the instance of the CrazyCrates class.
@@ -87,9 +96,11 @@ public class CrazyCrates {
 	 * Loads all the information the plugin needs to run.
 	 */
 	public void loadCrates() {
+		giveNewPlayersKeys = false;
 		crates.clear();
 		brokecrates.clear();
 		crateLocations.clear();
+		giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Loading all crate information...");
 		for(String crateName : fileManager.getAllCratesNames()) {
 			//			if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Loading " + crateName + ".yml information....");
@@ -126,7 +137,13 @@ public class CrazyCrates {
 					file.getStringList(path + ".Tiers"),
 					altPrize));
 				}
-				crates.add(new Crate(crateName, previewName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file));
+				Integer newPlayersKeys = file.getInt("Crate.StartingKeys");
+				if(giveNewPlayersKeys = false) {
+					if(newPlayersKeys > 0) {
+						giveNewPlayersKeys = true;
+					}
+				}
+				crates.add(new Crate(crateName, previewName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file, newPlayersKeys));
 				//				if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "" + crateName + ".yml has been loaded.");
 			}catch(Exception e) {
 				brokecrates.add(crateName);
@@ -134,7 +151,7 @@ public class CrazyCrates {
 				e.printStackTrace();
 			}
 		}
-		crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null));
+		crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0));
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "All crate information has been loaded.");
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Loading all the physical crate locations.");
 		FileConfiguration locations = Files.LOCATIONS.getFile();
@@ -173,6 +190,14 @@ public class CrazyCrates {
 			}
 		}
 		cleanDataFile();
+	}
+	
+	/**
+	 * If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
+	 * @return True if the player will get a virtual key and false if it drops on the floor.
+	 */
+	public Boolean getGiveVirtualKeysWhenInventoryFull() {
+		return giveVirtualKeysWhenInventoryFull;
 	}
 	
 	/**
@@ -526,7 +551,7 @@ public class CrazyCrates {
 		if(prize != null) {
 			prize = prize.hasBlacklistPermission(player) ? prize.getAltPrize() : prize;
 			for(ItemStack i : prize.getItems()) {
-				if(!Methods.isInvFull(player)) {
+				if(!Methods.isInventoryFull(player)) {
 					player.getInventory().addItem(i);
 				}else {
 					player.getWorld().dropItemNaturally(player.getLocation(), i);
@@ -557,7 +582,8 @@ public class CrazyCrates {
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Methods.color(command.replace("%Player%", player.getName()).replace("%player%", player.getName())));
 			}
 			for(String msg : prize.getMessages()) {
-				player.sendMessage(Methods.color(msg).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName()));
+				player.sendMessage(Methods.color(msg).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())
+				.replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
 			}
 		}else {
 			Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> No prize was found when giving " + player.getName() + " a prize.");
@@ -715,36 +741,73 @@ public class CrazyCrates {
 		return keys;
 	}
 	
+	/**
+	 * Get the amount of virtual keys a player has.
+	 */
 	public int getVirtualKeys(Player player, Crate crate) {
 		return Files.DATA.getFile().getInt("Players." + player.getUniqueId() + "." + crate.getName());
 	}
 	
-	public void takeKeys(int amount, Player player, Crate crate, KeyType key) {
-		if(key == KeyType.PHYSICAL_KEY) {
-			Methods.removeItem(getPhysicalKey(player, crate), player, amount);
-		}else if(key == KeyType.VIRTUAL_KEY) {
-			String uuid = player.getUniqueId().toString();
-			int keys = getVirtualKeys(player, crate);
-			Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
-			int newAmount = (keys - amount) > 0 ? (keys - amount) : 0;
-			if(newAmount <= 0) {
-				Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), null);
-			}else {
-				Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), ((keys - amount) > 0 ? (keys - amount) : 0));
+	/**
+	 * Get the amount of physical keys a player has.
+	 */
+	public Integer getPhysicalKeys(Player player, Crate crate) {
+		int keys = 0;
+		for(ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
+			if(Methods.isSimilar(item, crate.getKey())) {
+				keys += item.getAmount();
 			}
-			Files.DATA.saveFile();
+		}
+		return keys;
+	}
+	
+	/**
+	 * Get the total amount of keys a player has.
+	 */
+	public Integer getTotalKeys(Player player, Crate crate) {
+		return getVirtualKeys(player, crate) + getPhysicalKeys(player, crate);
+	}
+	
+	public void takeKeys(int amount, Player player, Crate crate, KeyType key) {
+		switch(key) {
+			case PHYSICAL_KEY:
+				Methods.removeItem(getPhysicalKey(player, crate), player, amount);
+				break;
+			case VIRTUAL_KEY:
+				String uuid = player.getUniqueId().toString();
+				int keys = getVirtualKeys(player, crate);
+				Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
+				int newAmount = (keys - amount) > 0 ? (keys - amount) : 0;
+				if(newAmount <= 0) {
+					Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), null);
+				}else {
+					Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), ((keys - amount) > 0 ? (keys - amount) : 0));
+				}
+				Files.DATA.saveFile();
+				break;
 		}
 	}
 	
-	public void addKeys(int amount, Player player, Crate crate, KeyType type) {
-		if(type == KeyType.VIRTUAL_KEY) {
-			String uuid = player.getUniqueId().toString();
-			int keys = getVirtualKeys(player, crate);
-			Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
-			Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), ((keys + amount) >= 0 ? (keys + amount) : 0));
-			Files.DATA.saveFile();
-		}else if(type == KeyType.PHYSICAL_KEY) {
-			player.getInventory().addItem(crate.getKey(amount));
+	public void addKeys(int amount, Player player, Crate crate, KeyType key) {
+		switch(key) {
+			case VIRTUAL_KEY:
+				if(Methods.isInventoryFull(player)) {
+					if(giveVirtualKeysWhenInventoryFull) {
+						addKeys(amount, player, crate, KeyType.VIRTUAL_KEY);
+					}else {
+						player.getWorld().dropItem(player.getLocation(), crate.getKey(amount));
+					}
+				}else {
+					player.getInventory().addItem(crate.getKey(amount));
+				}
+				break;
+			case PHYSICAL_KEY:
+				String uuid = player.getUniqueId().toString();
+				int keys = getVirtualKeys(player, crate);
+				Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
+				Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), ((keys + amount) >= 0 ? (keys + amount) : 0));
+				Files.DATA.saveFile();
+				break;
 		}
 	}
 	
@@ -753,6 +816,20 @@ public class CrazyCrates {
 		Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
 		Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), amount);
 		Files.DATA.saveFile();
+	}
+	
+	public void checkNewPlayer(Player player) {
+		if(giveNewPlayersKeys) {// Checks if any crate gives new players keys and if not then no need to do all this stuff.
+			String uuid = player.getUniqueId().toString();
+			if(player.hasPlayedBefore()) {
+				for(Crate crate : getCrates()) {
+					if(crate.doNewPlayersGetKeys()) {
+						Files.DATA.getFile().set("Players." + uuid + "." + crate, crate.getNewPlayerKeys());
+					}
+				}
+				Files.DATA.saveFile();
+			}
+		}
 	}
 	
 	private ItemStack getKey(FileConfiguration file) {
@@ -766,53 +843,33 @@ public class CrazyCrates {
 		return Methods.makeItem(id, 1, name, lore, enchanted);
 	}
 	
-	private ItemStack getDisplayItem(FileConfiguration file, String prize) {
+	private ItemBuilder getDisplayItem(FileConfiguration file, String prize) {
 		String path = "Crate.Prizes." + prize + ".";
-		String id = file.getString(path + "DisplayItem");
-		String name = file.getString(path + "DisplayName");
-		int amount = 1;
-		if(file.contains(path + "DisplayAmount")) {
-			amount = file.getInt(path + "DisplayAmount");
-		}
-		ArrayList<String> lore = new ArrayList<>();
-		if(file.contains(path + "Lore")) {
-			lore.addAll(file.getStringList(path + "Lore"));
-		}
-		HashMap<Enchantment, Integer> enchants = new HashMap<>();
-		if(file.contains(path + "DisplayEnchantments")) {
-			for(String enchant : file.getStringList(path + "DisplayEnchantments")) {
-				for(Enchantment enc : Enchantment.values()) {
-					if(Methods.getEnchantments().contains(enc.getName())) {
-						enchant = enchant.toLowerCase();
-						if(enchant.startsWith(enc.getName().toLowerCase() + ":") || enchant.startsWith(Methods.getEnchantmentName(enc).toLowerCase() + ":")) {
-							String[] breakdown = enchant.split(":");
-							int lvl = Integer.parseInt(breakdown[1]);
-							enchants.put(enc, lvl);
+		ItemBuilder itemBuilder = new ItemBuilder();
+		try {
+			itemBuilder.setMaterial(file.getString(path + "DisplayItem"))
+			.setAmount(file.contains(path + "DisplayAmount") ? file.getInt(path + "DisplayAmount") : 1)
+			.setName(file.getString(path + "DisplayName"))
+			.setLore(file.getStringList(path + "Lore"))
+			.setGlowing(file.getBoolean(path + "Glowing"))
+			.setUnbreakable(file.getBoolean(path + "Unbreakable"))
+			.setPlayer(file.getString(path + "Player"));
+			HashMap<Enchantment, Integer> enchants = new HashMap<>();
+			if(file.contains(path + "DisplayEnchantments")) {
+				for(String enchant : file.getStringList(path + "DisplayEnchantments")) {
+					for(Enchantment enc : Enchantment.values()) {
+						if(Methods.getEnchantments().contains(enc.getName())) {
+							enchant = enchant.toLowerCase();
+							if(enchant.startsWith(enc.getName().toLowerCase() + ":") || enchant.startsWith(Methods.getEnchantmentName(enc).toLowerCase() + ":")) {
+								itemBuilder.addEnchantments(enc, Integer.parseInt(enchant.split(":")[1]));
+							}
 						}
 					}
 				}
 			}
-		}
-		String player = "";
-		if(file.contains(path + "Player")) {
-			player = file.getString(path + "Player");
-		}
-		boolean glowing = false;
-		if(file.contains(path + "Glowing")) {
-			glowing = file.getBoolean(path + "Glowing");
-		}
-		boolean unbreaking = false;
-		if(file.contains(path + "Unbreakable")) {
-			unbreaking = file.getBoolean(path + "Unbreakable");
-		}
-		try {
-			if(Methods.makeItem(id, amount, "").getType() == Material.SKULL_ITEM && Methods.makeItem(id, amount, "").getDurability() == 3) {
-				return Methods.addUnbreaking(Methods.makePlayerHead(player, amount, name, lore, enchants, glowing), unbreaking);
-			}else {
-				return Methods.addUnbreaking(Methods.makeItem(id, amount, name, lore, enchants, glowing), unbreaking);
-			}
+			return itemBuilder;
 		}catch(Exception e) {
-			return Methods.makeItem(Material.STAINED_CLAY, 1, 14, "&c&lERROR", Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
+			return itemBuilder.setMaterial(Material.STAINED_CLAY).setMetaData(14).setName("&c&lERROR").addLore("&cThere is an error").addLore("&cFor the reward: &c" + prize);
 		}
 	}
 	

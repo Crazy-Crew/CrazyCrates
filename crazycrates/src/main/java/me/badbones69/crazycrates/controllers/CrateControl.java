@@ -160,7 +160,7 @@ public class CrateControl implements Listener { //Crate Control
 								return;
 							}
 						}
-						if(Methods.isInvFull(player)) {
+						if(Methods.isInventoryFull(player)) {
 							if(Files.MESSAGES.getFile().contains("Messages.Inventory-Full")) {
 								player.sendMessage(Messages.INVENTORY_FULL.getMessage());
 							}else {

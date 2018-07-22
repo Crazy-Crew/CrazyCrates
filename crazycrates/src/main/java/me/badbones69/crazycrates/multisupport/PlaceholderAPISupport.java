@@ -12,7 +12,6 @@ import java.text.NumberFormat;
 public class PlaceholderAPISupport extends EZPlaceholderHook {
 	
 	private CrazyCrates cc = CrazyCrates.getInstance();
-	
 	public PlaceholderAPISupport(Plugin plugin) {
 		super(plugin, "crazycrates");
 	}
@@ -22,7 +21,11 @@ public class PlaceholderAPISupport extends EZPlaceholderHook {
 		for(Crate crate : cc.getCrates()) {
 			if(crate.getCrateType() != CrateType.MENU) {
 				if(placeHolder.equalsIgnoreCase(crate.getName())) {
-					return NumberFormat.getNumberInstance().format(CrazyCrates.getInstance().getVirtualKeys(player, crate));
+					return NumberFormat.getNumberInstance().format(cc.getVirtualKeys(player, crate));
+				}else if(placeHolder.equalsIgnoreCase(crate.getName() + "_physical")) {
+					return NumberFormat.getNumberInstance().format(cc.getPhysicalKey(player, crate));
+				}else if(placeHolder.equalsIgnoreCase(crate.getName() + "_total")) {
+					return NumberFormat.getNumberInstance().format(cc.getTotalKeys(player, crate));
 				}
 			}
 		}

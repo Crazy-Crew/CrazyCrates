@@ -793,7 +793,7 @@ public class Methods {
 		return schematics.get(r.nextInt(schematics.size()));
 	}
 	
-	public static boolean isInvFull(Player player) {
+	public static boolean isInventoryFull(Player player) {
 		return player.getInventory().firstEmpty() == -1;
 	}
 	

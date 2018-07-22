@@ -263,17 +263,6 @@ public class FileManager {
 		}
 	}
 	
-	public ArrayList<File> getAllCrates() {
-		ArrayList<File> files = new ArrayList<>();
-		for(String name : new File(plugin.getDataFolder(), "/Crates").list()) {
-			if(!name.endsWith(".yml")) {
-				continue;
-			}
-			files.add(new File(new File("/Crates"), name));
-		}
-		return files;
-	}
-	
 	public ArrayList<String> getAllCratesNames() {
 		ArrayList<String> files = new ArrayList<>();
 		for(String name : new File(plugin.getDataFolder(), "/Crates").list()) {

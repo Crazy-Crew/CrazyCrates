@@ -27,6 +27,7 @@ public class ItemBuilder {
 	private Material material;
 	private Short metaData;
 	private String name;
+	private String player;
 	private List<String> lore;
 	private Integer amount;
 	private HashMap<Enchantment, Integer> enchantments;
@@ -46,6 +47,7 @@ public class ItemBuilder {
 		this.name = "";
 		this.lore = new ArrayList<>();
 		this.amount = 1;
+		this.player = "";
 		this.entityType = EntityType.BAT;
 		this.enchantments = new HashMap<>();
 		this.unbreakable = false;
@@ -410,6 +412,25 @@ public class ItemBuilder {
 	}
 	
 	/**
+	 *
+	 * @return
+	 */
+	public String getPlayer() {
+		return player;
+	}
+	
+	/**
+	 *
+	 * @param player
+	 */
+	public ItemBuilder setPlayer(String player) {
+		if(player != null) {
+			this.player = player;
+		}
+		return this;
+	}
+	
+	/**
 	 * Builder the item from all the information that was given to the builder.
 	 * @return The result of all the info that was given to the builder as an ItemStack.
 	 */
@@ -428,6 +449,11 @@ public class ItemBuilder {
 		}
 		if(material == Material.MONSTER_EGG) {
 			nbt.addCompound("EntityTag").setString("id", "minecraft:" + entityType.name());
+		}
+		if(material == Material.SKULL_ITEM && metaData.equals(3)) {
+			if(!player.equals("")) {
+				nbt.setString("SkullOwner", player);
+			}
 		}
 		return nbt.getItem();
 	}
