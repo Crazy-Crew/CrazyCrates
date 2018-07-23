@@ -32,34 +32,57 @@ public class QuickCrate implements Listener {
 	public static HashMap<Player, Entity> rewards = new HashMap<>();
 	private static HashMap<Player, BukkitTask> tasks = new HashMap<>();
 	
-	public static void openCrate(final Player player, final Location loc, Crate crate, KeyType key, boolean remove) {
-		if(remove) {
-			cc.takeKeys(1, player, crate, key);
-		}
-		Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
-		cc.givePrize(player, prize);
-		Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-		ItemStack displayItem = prize.getDisplayItem();
-		NBTItem nbtItem = new NBTItem(displayItem);
-		nbtItem.setBoolean("crazycrates-item", true);
-		displayItem = nbtItem.getItem();
-		Item reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
-		reward.setVelocity(new Vector(0, .2, 0));
-		reward.setCustomName(displayItem.getItemMeta().getDisplayName());
-		reward.setCustomNameVisible(true);
-		reward.setPickupDelay(Integer.MAX_VALUE);
-		rewards.put(player, reward);
-		allRewards.add(reward);
-		Methods.playChestAction(loc.getBlock(), true);
-		if(prize.useFireworks()) {
-			Methods.fireWork(loc.clone().add(.5, 1, .5));
-		}
-		tasks.put(player, new BukkitRunnable() {
-			@Override
-			public void run() {
+	public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType, boolean remove) {
+		if(player.isSneaking()) {
+			if(keyType == KeyType.PHYSICAL_KEY) {
+				int keys = Methods.getItemInHand(player).getAmount();
+				int keysUsed = 0;
+				for(; keys > 0; keys--) {
+					if(!Methods.isInventoryFull(player)) {
+						Prize prize = crate.pickPrize(player);
+						cc.givePrize(player, prize);
+						if(prize.useFireworks()) {
+							Methods.fireWork(loc.clone().add(.5, 1, .5));
+						}
+						keysUsed++;
+					}else {
+						break;
+					}
+				}
+				cc.takeKeys(keysUsed, player, crate, keyType);
 				endQuickCrate(player, loc);
+			}else if(keyType == KeyType.VIRTUAL_KEY) {
+			
 			}
-		}.runTaskLater(Main.getPlugin(), 5 * 20));
+		}else {
+			if(remove) {
+				cc.takeKeys(1, player, crate, keyType);
+			}
+			Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
+			cc.givePrize(player, prize);
+			Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+			ItemStack displayItem = prize.getDisplayItem();
+			NBTItem nbtItem = new NBTItem(displayItem);
+			nbtItem.setBoolean("crazycrates-item", true);
+			displayItem = nbtItem.getItem();
+			Item reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
+			reward.setVelocity(new Vector(0, .2, 0));
+			reward.setCustomName(displayItem.getItemMeta().getDisplayName());
+			reward.setCustomNameVisible(true);
+			reward.setPickupDelay(Integer.MAX_VALUE);
+			rewards.put(player, reward);
+			allRewards.add(reward);
+			Methods.playChestAction(loc.getBlock(), true);
+			if(prize.useFireworks()) {
+				Methods.fireWork(loc.clone().add(.5, 1, .5));
+			}
+			tasks.put(player, new BukkitRunnable() {
+				@Override
+				public void run() {
+					endQuickCrate(player, loc);
+				}
+			}.runTaskLater(Main.getPlugin(), 5 * 20));
+		}
 	}
 	
 	public static void endQuickCrate(Player player, Location loc) {
@@ -71,10 +94,10 @@ public class QuickCrate implements Listener {
 			allRewards.remove(rewards.get(player));
 			rewards.get(player).remove();
 			rewards.remove(player);
-			Methods.playChestAction(loc.getBlock(), false);
-			CrateControl.inUse.remove(player);
-			cc.removePlayerFromOpeningList(player);
 		}
+		Methods.playChestAction(loc.getBlock(), false);
+		CrateControl.inUse.remove(player);
+		cc.removePlayerFromOpeningList(player);
 	}
 	
 	public static void removeAllRewards() {
