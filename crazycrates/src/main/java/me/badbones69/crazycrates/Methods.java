@@ -7,6 +7,8 @@ import me.badbones69.crazycrates.controllers.FireworkDamageAPI;
 import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import me.badbones69.crazycrates.multisupport.nms.*;
+import me.badbones69.crazycrates.multisupport.nms.v1_13_R2.NMS_v1_13_R1;
+import me.badbones69.crazycrates.multisupport.nms.v1_13_R2.NMS_v1_13_R2;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -33,19 +35,19 @@ import java.util.*;
 import java.util.logging.Level;
 
 public class Methods {
-	
+
 	private static CrazyCrates cc = CrazyCrates.getInstance();
 	public static HashMap<Player, String> path = new HashMap<>();
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
-	
+
 	public static String color(String msg) {
 		return ChatColor.translateAlternateColorCodes('&', msg);
 	}
-	
+
 	public static String removeColor(String msg) {
 		return ChatColor.stripColor(msg);
 	}
-	
+
 	public static HashMap<ItemStack, String> getItems(Player player) {
 		HashMap<ItemStack, String> items = new HashMap<>();
 		FileConfiguration file = cc.getOpeningCrate(player).getFile();
@@ -70,7 +72,7 @@ public class Methods {
 		}
 		return items;
 	}
-	
+
 	public static void fireWork(Location loc) {
 		final Firework fw = loc.getWorld().spawn(loc, Firework.class);
 		FireworkMeta fm = fw.getFireworkMeta();
@@ -80,7 +82,22 @@ public class Methods {
 		FireworkDamageAPI.addFirework(fw);
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, fw::detonate, 2);
 	}
-	
+
+	private static Material fix113Material(String id, Material material) {
+        if(material == null) {
+            // 1.13 hotfix
+            switch (id) {
+                case "160":
+                    material = Material.getMaterial("STAINED_GLASS_PANE");
+                    break;
+            }
+            if(material == null) {
+                throw new IllegalArgumentException("Can't find material with id " + id);
+            }
+        }
+        return material;
+    }
+
 	public static ItemStack makeItem(Material material, int amount, int type, String name) {
 		ItemStack item = new ItemStack(material, amount, (short) type);
 		ItemMeta m = item.getItemMeta();
@@ -88,7 +105,7 @@ public class Methods {
 		item.setItemMeta(m);
 		return item;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(String id, int amount, String name, List<String> lore) {
 		ArrayList<String> l = new ArrayList<>();
@@ -104,12 +121,19 @@ public class Methods {
 			}
 		}
 		Material m = Material.matchMaterial(id);
+        m = fix113Material(id, m);
 		if(m == Material.MOB_SPAWNER) {
 			ty = 0;
 		}
 		ItemStack item = new ItemStack(m, amount, (short) ty);
 		if(m == Material.MONSTER_EGG) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					item = NMS_v1_13_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
+				case v1_13_R1:
+					item = NMS_v1_13_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
 				case v1_12_R1:
 					item = NMS_v1_12_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 					break;
@@ -144,7 +168,7 @@ public class Methods {
 		}
 		return item;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(String id, int amount, String name, List<String> lore, Boolean Enchanted) {
 		ArrayList<String> l = new ArrayList<>();
@@ -160,12 +184,19 @@ public class Methods {
 			}
 		}
 		Material m = Material.matchMaterial(id);
+        m = fix113Material(id, m);
 		if(m == Material.MOB_SPAWNER) {
 			ty = 0;
 		}
 		ItemStack item = new ItemStack(m, amount, (short) ty);
 		if(m == Material.MONSTER_EGG) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					item = NMS_v1_13_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
+				case v1_13_R1:
+					item = NMS_v1_13_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
 				case v1_12_R1:
 					item = NMS_v1_12_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 					break;
@@ -203,7 +234,7 @@ public class Methods {
 		}
 		return item;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(String id, int amount, String name) {
 		int ty = 0;
@@ -218,12 +249,19 @@ public class Methods {
 			}
 		}
 		Material m = Material.matchMaterial(id);
+        m = fix113Material(id, m);
 		if(m == Material.MOB_SPAWNER) {
 			ty = 0;
 		}
 		ItemStack item = new ItemStack(m, amount, (short) ty);
 		if(m == Material.MONSTER_EGG) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					item = NMS_v1_13_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
+				case v1_13_R1:
+					item = NMS_v1_13_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
 				case v1_12_R1:
 					item = NMS_v1_12_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 					break;
@@ -255,7 +293,7 @@ public class Methods {
 		}
 		return item;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(Material material, int amount, int ty, String name, List<String> lore) {
 		ArrayList<String> l = new ArrayList<>();
@@ -263,6 +301,12 @@ public class Methods {
 		ItemMeta m = item.getItemMeta();
 		if(material == Material.MONSTER_EGG) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					item = NMS_v1_13_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
+				case v1_13_R1:
+					item = NMS_v1_13_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
 				case v1_12_R1:
 					item = NMS_v1_12_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 					break;
@@ -289,7 +333,7 @@ public class Methods {
 		item.setItemMeta(m);
 		return item;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(String id, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants) {
 		ArrayList<String> l = new ArrayList<>();
@@ -306,12 +350,19 @@ public class Methods {
 			}
 		}
 		Material material = Material.matchMaterial(type);
+        material = fix113Material(id, material);
 		if(material == Material.MOB_SPAWNER) {
 			ty = 0;
 		}
 		ItemStack item = new ItemStack(material, amount, (short) ty);
 		if(material == Material.MONSTER_EGG) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					item = NMS_v1_13_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
+				case v1_13_R1:
+					item = NMS_v1_13_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
 				case v1_12_R1:
 					item = NMS_v1_12_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 					break;
@@ -347,7 +398,7 @@ public class Methods {
 		}
 		return item;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(String id, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants, Boolean glowing) {
 		ArrayList<String> l = new ArrayList<>();
@@ -364,12 +415,19 @@ public class Methods {
 			}
 		}
 		Material material = Material.matchMaterial(type);
+        material = fix113Material(id, material);
 		if(material == Material.MOB_SPAWNER) {
 			ty = 0;
 		}
 		ItemStack item = new ItemStack(material, amount, (short) ty);
 		if(material == Material.MONSTER_EGG) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					item = NMS_v1_13_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
+				case v1_13_R1:
+					item = NMS_v1_13_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
 				case v1_12_R1:
 					item = NMS_v1_12_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 					break;
@@ -408,13 +466,19 @@ public class Methods {
 		}
 		return item;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public static ItemStack makeItem(Material material, int amount, int ty, String name, List<String> lore, Map<Enchantment, Integer> enchants) {
 		ArrayList<String> l = new ArrayList<>();
 		ItemStack item = new ItemStack(material, amount, (short) ty);
 		if(material == Material.MONSTER_EGG) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					item = NMS_v1_13_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
+				case v1_13_R1:
+					item = NMS_v1_13_R1.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
 				case v1_12_R1:
 					item = NMS_v1_12_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 					break;
@@ -443,7 +507,7 @@ public class Methods {
 		item.addUnsafeEnchantments(enchants);
 		return item;
 	}
-	
+
 	public static ItemStack makePlayerHead(String player, int amount, String name, ArrayList<String> lore, Map<Enchantment, Integer> enchants, boolean glowing) {
 		ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
 		ItemMeta m = head.getItemMeta();
@@ -470,7 +534,7 @@ public class Methods {
 		}
 		return nbtItem.getItem();
 	}
-	
+
 	public static ItemStack addLore(ItemStack item, String i) {
 		ArrayList<String> lore = new ArrayList<>();
 		ItemMeta m = item.getItemMeta();
@@ -482,7 +546,7 @@ public class Methods {
 		item.setItemMeta(m);
 		return item;
 	}
-	
+
 	public static PotionType getPotionType(PotionEffectType type) {
 		PotionType potionType = null;
 		if(type.equals(PotionEffectType.FIRE_RESISTANCE)) {
@@ -516,7 +580,7 @@ public class Methods {
 		}
 		return potionType;
 	}
-	
+
 	public static boolean isInt(String s) {
 		try {
 			Integer.parseInt(s);
@@ -525,11 +589,11 @@ public class Methods {
 		}
 		return true;
 	}
-	
+
 	public static Player getPlayer(String name) {
 		return Bukkit.getServer().getPlayer(name);
 	}
-	
+
 	public static boolean isOnline(String name, CommandSender sender) {
 		for(Player player : Bukkit.getServer().getOnlinePlayers()) {
 			if(player.getName().equalsIgnoreCase(name)) {
@@ -541,7 +605,7 @@ public class Methods {
 		sender.sendMessage(Messages.NOT_ONLINE.getMessage(placeholders));
 		return false;
 	}
-	
+
 	public static void removeItem(ItemStack item, Player player) {
 		try {
 			if(item.getAmount() <= 1) {
@@ -552,7 +616,7 @@ public class Methods {
 		}catch(Exception e) {
 		}
 	}
-	
+
 	public static void removeItem(ItemStack item, Player player, int amount) {
 		try {
 			int left = amount;
@@ -575,7 +639,7 @@ public class Methods {
 		}catch(Exception e) {
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public static ItemStack getItemInHand(Player player) {
 		if(Version.getCurrentVersion().getCurrentVersionInteger() >= Version.v1_9_R1.getCurrentVersionInteger()) {
@@ -584,7 +648,7 @@ public class Methods {
 			return player.getItemInHand();
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public static void setItemInHand(Player player, ItemStack item) {
 		if(Version.getCurrentVersion().getCurrentVersionInteger() >= Version.v1_9_R1.getCurrentVersionInteger()) {
@@ -593,7 +657,7 @@ public class Methods {
 			player.setItemInHand(item);
 		}
 	}
-	
+
 	public static boolean permCheck(Player player, String perm) {
 		if(!player.hasPermission("crazycrates." + perm.toLowerCase())) {
 			player.sendMessage(Messages.NO_PERMISSION.getMessage());
@@ -601,19 +665,25 @@ public class Methods {
 		}
 		return true;
 	}
-	
+
 	public static String getPrefix() {
 		return color(Files.CONFIG.getFile().getString("Settings.Prefix"));
 	}
-	
+
 	public static String getPrefix(String msg) {
 		return color(Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
 	}
-	
+
 	public static void pasteSchem(String schem, Location loc) {
 		switch(Version.getCurrentVersion()) {
 			case TOO_NEW:
 				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. " + "Please update or remove this plugin to stop further Errors.");
+				break;
+			case v1_13_R2:
+				NMS_v1_13_R2.pasteSchematic(new File(plugin.getDataFolder() + "/Schematics/" + schem), loc);
+				break;
+			case v1_13_R1:
+				NMS_v1_13_R1.pasteSchematic(new File(plugin.getDataFolder() + "/Schematics/" + schem), loc);
 				break;
 			case v1_12_R1:
 				NMS_v1_12_R1.pasteSchematic(new File(plugin.getDataFolder() + "/Schematics/" + schem), loc);
@@ -646,12 +716,16 @@ public class Methods {
 				break;
 		}
 	}
-	
+
 	public static List<Location> getLocations(String shem, Location loc) {
 		switch(Version.getCurrentVersion()) {
 			case TOO_NEW:
 				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. " + "Please update or remove this plugin to stop further Errors.");
 				break;
+			case v1_13_R2:
+				return NMS_v1_13_R2.getLocations(new File(plugin.getDataFolder() + "/Schematics/" + shem), loc);
+			case v1_13_R1:
+				return NMS_v1_13_R1.getLocations(new File(plugin.getDataFolder() + "/Schematics/" + shem), loc);
 			case v1_12_R1:
 				return NMS_v1_12_R1.getLocations(new File(plugin.getDataFolder() + "/Schematics/" + shem), loc);
 			case v1_11_R1:
@@ -676,7 +750,7 @@ public class Methods {
 		}
 		return null;
 	}
-	
+
 	public static void playChestAction(Block b, boolean open) {
 		Location location = b.getLocation();
 		Material type = b.getType();
@@ -684,6 +758,12 @@ public class Methods {
 			switch(Version.getCurrentVersion()) {
 				case TOO_NEW:
 					Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. " + "Please update or remove this plugin to stop further Errors.");
+					break;
+				case v1_13_R2:
+					NMS_v1_13_R2.openChest(b, location, open);
+					break;
+				case v1_13_R1:
+					NMS_v1_13_R1.openChest(b, location, open);
 					break;
 				case v1_12_R1:
 					NMS_v1_12_R1.openChest(b, location, open);
@@ -717,9 +797,13 @@ public class Methods {
 			}
 		}
 	}
-	
+
 	public static ItemStack addGlow(ItemStack item) {
 		switch(Version.getCurrentVersion()) {
+			case v1_13_R2:
+				return NMS_v1_13_R2.addGlow(item);
+			case v1_13_R1:
+				return NMS_v1_13_R1.addGlow(item);
 			case v1_12_R1:
 				return NMS_v1_12_R1.addGlow(item);
 			case v1_11_R1:
@@ -741,9 +825,13 @@ public class Methods {
 		}
 		return item;
 	}
-	
+
 	public static ItemStack addUnbreaking(ItemStack item) {
 		switch(Version.getCurrentVersion()) {
+			case v1_13_R2:
+				return NMS_v1_13_R2.addUnbreaking(item);
+			case v1_13_R1:
+				return NMS_v1_13_R1.addUnbreaking(item);
 			case v1_12_R1:
 				return NMS_v1_12_R1.addUnbreaking(item);
 			case v1_11_R1:
@@ -759,10 +847,14 @@ public class Methods {
 		}
 		return item;
 	}
-	
+
 	public static ItemStack addUnbreaking(ItemStack item, Boolean toggle) {
 		if(toggle) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					return NMS_v1_13_R2.addUnbreaking(item);
+				case v1_13_R1:
+					return NMS_v1_13_R1.addUnbreaking(item);
 				case v1_12_R1:
 					return NMS_v1_12_R1.addUnbreaking(item);
 				case v1_11_R1:
@@ -779,7 +871,7 @@ public class Methods {
 		}
 		return item;
 	}
-	
+
 	public static String pickRandomSchem() {
 		File f = new File(plugin.getDataFolder() + "/Schematics/");
 		String[] schems = f.list();
@@ -792,16 +884,16 @@ public class Methods {
 		Random r = new Random();
 		return schematics.get(r.nextInt(schematics.size()));
 	}
-	
+
 	public static boolean isInventoryFull(Player player) {
 		return player.getInventory().firstEmpty() == -1;
 	}
-	
+
 	public static Integer randomNumber(int min, int max) {
 		Random i = new Random();
 		return min + i.nextInt(max - min);
 	}
-	
+
 	public static boolean isSimilar(ItemStack one, ItemStack two) {
 		if(one != null && two != null) {
 			if(one.getType() == two.getType()) {
@@ -842,7 +934,7 @@ public class Methods {
 		}
 		return false;
 	}
-	
+
 	public static void hasUpdate() {
 		try {
 			HttpURLConnection c = (HttpURLConnection) new URL("http://www.spigotmc.org/api/general.php").openConnection();
@@ -857,7 +949,7 @@ public class Methods {
 		}catch(Exception e) {
 		}
 	}
-	
+
 	public static void hasUpdate(Player player) {
 		try {
 			HttpURLConnection c = (HttpURLConnection) new URL("http://www.spigotmc.org/api/general.php").openConnection();
@@ -872,7 +964,7 @@ public class Methods {
 		}catch(Exception e) {
 		}
 	}
-	
+
 	public static Set<String> getEnchantments() {
 		HashMap<String, String> enchants = new HashMap<>();
 		enchants.put("ARROW_DAMAGE", "Power");
@@ -906,7 +998,7 @@ public class Methods {
 		enchants.put("VANISHING_CURSE", "Curse_Of_Vanishing");
 		return enchants.keySet();
 	}
-	
+
 	public static String getEnchantmentName(Enchantment en) {
 		HashMap<String, String> enchants = new HashMap<>();
 		enchants.put("ARROW_DAMAGE", "Power");
@@ -943,5 +1035,5 @@ public class Methods {
 		}
 		return enchants.get(en.getName());
 	}
-	
+
 }
