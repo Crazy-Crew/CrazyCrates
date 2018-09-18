@@ -7,7 +7,8 @@ import me.badbones69.crazycrates.controllers.FireworkDamageAPI;
 import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import me.badbones69.crazycrates.multisupport.nms.*;
-import me.badbones69.crazycrates.multisupport.nms.v1_13_R1.NMS_v1_13_R1;
+import me.badbones69.crazycrates.multisupport.nms.v1_13_R2.NMS_v1_13_R1;
+import me.badbones69.crazycrates.multisupport.nms.v1_13_R2.NMS_v1_13_R2;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -127,6 +128,9 @@ public class Methods {
 		ItemStack item = new ItemStack(m, amount, (short) ty);
 		if(m == Material.MONSTER_EGG) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					item = NMS_v1_13_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
 				case v1_13_R1:
 					item = NMS_v1_13_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 					break;
@@ -187,6 +191,9 @@ public class Methods {
 		ItemStack item = new ItemStack(m, amount, (short) ty);
 		if(m == Material.MONSTER_EGG) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					item = NMS_v1_13_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
 				case v1_13_R1:
 					item = NMS_v1_13_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 					break;
@@ -249,6 +256,9 @@ public class Methods {
 		ItemStack item = new ItemStack(m, amount, (short) ty);
 		if(m == Material.MONSTER_EGG) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					item = NMS_v1_13_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
 				case v1_13_R1:
 					item = NMS_v1_13_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 					break;
@@ -291,6 +301,9 @@ public class Methods {
 		ItemMeta m = item.getItemMeta();
 		if(material == Material.MONSTER_EGG) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					item = NMS_v1_13_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
 				case v1_13_R1:
 					item = NMS_v1_13_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 					break;
@@ -344,6 +357,9 @@ public class Methods {
 		ItemStack item = new ItemStack(material, amount, (short) ty);
 		if(material == Material.MONSTER_EGG) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					item = NMS_v1_13_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
 				case v1_13_R1:
 					item = NMS_v1_13_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 					break;
@@ -406,6 +422,9 @@ public class Methods {
 		ItemStack item = new ItemStack(material, amount, (short) ty);
 		if(material == Material.MONSTER_EGG) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					item = NMS_v1_13_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
 				case v1_13_R1:
 					item = NMS_v1_13_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 					break;
@@ -454,6 +473,9 @@ public class Methods {
 		ItemStack item = new ItemStack(material, amount, (short) ty);
 		if(material == Material.MONSTER_EGG) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					item = NMS_v1_13_R2.getSpawnEgg(EntityType.fromId(ty), amount);
+					break;
 				case v1_13_R1:
 					item = NMS_v1_13_R1.getSpawnEgg(EntityType.fromId(ty), amount);
 					break;
@@ -657,6 +679,9 @@ public class Methods {
 			case TOO_NEW:
 				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. " + "Please update or remove this plugin to stop further Errors.");
 				break;
+			case v1_13_R2:
+				NMS_v1_13_R2.pasteSchematic(new File(plugin.getDataFolder() + "/Schematics/" + schem), loc);
+				break;
 			case v1_13_R1:
 				NMS_v1_13_R1.pasteSchematic(new File(plugin.getDataFolder() + "/Schematics/" + schem), loc);
 				break;
@@ -697,6 +722,8 @@ public class Methods {
 			case TOO_NEW:
 				Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. " + "Please update or remove this plugin to stop further Errors.");
 				break;
+			case v1_13_R2:
+				return NMS_v1_13_R2.getLocations(new File(plugin.getDataFolder() + "/Schematics/" + shem), loc);
 			case v1_13_R1:
 				return NMS_v1_13_R1.getLocations(new File(plugin.getDataFolder() + "/Schematics/" + shem), loc);
 			case v1_12_R1:
@@ -731,6 +758,9 @@ public class Methods {
 			switch(Version.getCurrentVersion()) {
 				case TOO_NEW:
 					Bukkit.getLogger().log(Level.SEVERE, "[Crazy Crates]>> Your server is too new for this plugin. " + "Please update or remove this plugin to stop further Errors.");
+					break;
+				case v1_13_R2:
+					NMS_v1_13_R2.openChest(b, location, open);
 					break;
 				case v1_13_R1:
 					NMS_v1_13_R1.openChest(b, location, open);
@@ -770,6 +800,8 @@ public class Methods {
 
 	public static ItemStack addGlow(ItemStack item) {
 		switch(Version.getCurrentVersion()) {
+			case v1_13_R2:
+				return NMS_v1_13_R2.addGlow(item);
 			case v1_13_R1:
 				return NMS_v1_13_R1.addGlow(item);
 			case v1_12_R1:
@@ -796,6 +828,8 @@ public class Methods {
 
 	public static ItemStack addUnbreaking(ItemStack item) {
 		switch(Version.getCurrentVersion()) {
+			case v1_13_R2:
+				return NMS_v1_13_R2.addUnbreaking(item);
 			case v1_13_R1:
 				return NMS_v1_13_R1.addUnbreaking(item);
 			case v1_12_R1:
@@ -817,8 +851,10 @@ public class Methods {
 	public static ItemStack addUnbreaking(ItemStack item, Boolean toggle) {
 		if(toggle) {
 			switch(Version.getCurrentVersion()) {
+				case v1_13_R2:
+					return NMS_v1_13_R2.addUnbreaking(item);
 				case v1_13_R1:
-					return NMS_v1_12_R1.addUnbreaking(item);
+					return NMS_v1_13_R1.addUnbreaking(item);
 				case v1_12_R1:
 					return NMS_v1_12_R1.addUnbreaking(item);
 				case v1_11_R1:

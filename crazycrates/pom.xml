@@ -94,6 +94,12 @@
             <version>1.8.3</version>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>me.badbones69</groupId>
+            <artifactId>v1_13_R2</artifactId>
+            <version>1.8.3</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
