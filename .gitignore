@@ -8,3 +8,5 @@ dependency-reduced-pom.xml
 crazycrates/META-INF/
 
 \.DS_Store
+
+src/main/lib/
