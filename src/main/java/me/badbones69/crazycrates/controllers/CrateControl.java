@@ -12,6 +12,7 @@ import me.badbones69.crazycrates.cratetypes.QuickCrate;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -184,6 +185,12 @@ public class CrateControl implements Listener { //Crate Control
 					}else {
 						if(config.getBoolean("Settings.KnockBack")) {
 							knockBack(player, clickedBlock.getLocation());
+						}
+						if(config.contains("Settings.Need-Key-Sound")) {
+							Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
+							if(sound != null) {
+								player.playSound(player.getLocation(), sound, 1f, 1f);
+							}
 						}
 						HashMap<String, String> placeholders = new HashMap<>();
 						placeholders.put("%Key%", KeyName);

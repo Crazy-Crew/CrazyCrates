@@ -9,6 +9,7 @@ import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -183,6 +184,12 @@ public class GUIMenu implements Listener {
 											}
 										}
 										if(!hasKey) {
+											if(config.contains("Settings.Need-Key-Sound")) {
+												Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
+												if(sound != null) {
+													player.playSound(player.getLocation(), sound, 1f, 1f);
+												}
+											}
 											player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
 											return;
 										}
