@@ -325,7 +325,7 @@ public class CrazyCrates {
 						return;
 					}else {
 						CrateControl.inUse.put(player, location);
-						QuickCrate.openCrate(player, location, crate, key, true);
+						QuickCrate.openCrate(player, location, crate, key);
 					}
 				}
 				break;
@@ -789,7 +789,7 @@ public class CrazyCrates {
 				if(newAmount <= 0) {
 					Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), null);
 				}else {
-					Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), ((keys - amount) > 0 ? (keys - amount) : 0));
+					Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), newAmount);
 				}
 				Files.DATA.saveFile();
 				break;

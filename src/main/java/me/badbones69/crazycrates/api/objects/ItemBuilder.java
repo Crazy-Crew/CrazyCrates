@@ -92,13 +92,13 @@ public class ItemBuilder {
 	
 	/**
 	 * Set the type of item and its metadata in the builder.
-	 * @param string The string must be in this form: %Material% or %Material%:%MetaData%
+	 * @param material The string must be in this form: %Material% or %Material%:%MetaData%
 	 * @return The ItemBuilder with updated info.
 	 */
-	public ItemBuilder setMaterial(String string) {
-		Material material = Material.getMaterial(string); //Needs to be changed to getMaterial() for 1.13.
-		if(material != null) {
-			this.material = material;
+	public ItemBuilder setMaterial(String material) {
+		Material m = Material.matchMaterial(material);
+		if(m != null) {
+			this.material = m;
 		}
 		return this;
 	}

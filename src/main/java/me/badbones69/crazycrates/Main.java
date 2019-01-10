@@ -1,6 +1,5 @@
 package me.badbones69.crazycrates;
 
-import com.massivestats.MassiveStats;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.enums.KeyType;
@@ -96,13 +95,6 @@ public class Main extends JavaPlugin implements Listener {
 		}
 		if(Support.MVDWPLACEHOLDERAPI.isPluginLoaded()) {
 			MVdWPlaceholderAPISupport.registerPlaceholders(this);
-		}
-		try {
-			MassiveStats massiveStats = new MassiveStats(this);
-			if(Files.CONFIG.getFile().contains("Settings.Update-Checker")) {
-				massiveStats.setListenerDisabled(!Files.CONFIG.getFile().getBoolean("Settings.Update-Checker"));
-			}
-		}catch(Exception e) {
 		}
 		Methods.hasUpdate();
 		getCommand("crazycrates").setTabCompleter(new TabControl());

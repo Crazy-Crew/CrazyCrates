@@ -33,32 +33,31 @@ public class QuickCrate implements Listener {
 	public static HashMap<Player, Entity> rewards = new HashMap<>();
 	private static HashMap<Player, BukkitTask> tasks = new HashMap<>();
 	
-	public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType, boolean remove) {
-		if(player.isSneaking()) {
-			if(keyType == KeyType.PHYSICAL_KEY) {
-				int keys = player.getInventory().getItemInMainHand().getAmount();
-				int keysUsed = 0;
-				for(; keys > 0; keys--) {
-					if(!Methods.isInventoryFull(player)) {
-						Prize prize = crate.pickPrize(player);
-						cc.givePrize(player, prize);
-						if(prize.useFireworks()) {
-							Methods.fireWork(loc.clone().add(.5, 1, .5));
-						}
-						keysUsed++;
-					}else {
-						break;
+	public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
+		int keys = 1;// If the key is free it is set to one.
+		if(keyType == KeyType.PHYSICAL_KEY) {
+			keys = cc.getPhysicalKeys(player, crate);
+		}else if(keyType == KeyType.VIRTUAL_KEY) {
+			keys = cc.getVirtualKeys(player, crate);
+		}
+		if(player.isSneaking() && keys > 1) {
+			int keysUsed = 0;
+			for(; keys > 0; keys--) {
+				if(!Methods.isInventoryFull(player)) {
+					Prize prize = crate.pickPrize(player);
+					cc.givePrize(player, prize);
+					if(prize.useFireworks()) {
+						Methods.fireWork(loc.clone().add(.5, 1, .5));
 					}
+					keysUsed++;
+				}else {
+					break;
 				}
-				cc.takeKeys(keysUsed, player, crate, keyType);
-				endQuickCrate(player, loc);
-			}else if(keyType == KeyType.VIRTUAL_KEY) {
-			
 			}
+			cc.takeKeys(keysUsed, player, crate, keyType);
+			endQuickCrate(player, loc);
 		}else {
-			if(remove) {
-				cc.takeKeys(1, player, crate, keyType);
-			}
+			cc.takeKeys(1, player, crate, keyType);
 			Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
 			cc.givePrize(player, prize);
 			Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));

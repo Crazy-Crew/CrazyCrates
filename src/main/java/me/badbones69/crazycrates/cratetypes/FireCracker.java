@@ -37,7 +37,6 @@ public class FireCracker {
 			int color = r.nextInt(colors.size());
 			int l = 0;
 			Location L = loc.clone().add(.5, 25, .5);
-			
 			@Override
 			public void run() {
 				L.subtract(0, 1, 0);
@@ -46,7 +45,7 @@ public class FireCracker {
 				if(l == 25) {
 					cc.endCrate(player);
 					// The key type is set to free because the key has already been taken above.
-					QuickCrate.openCrate(player, loc, crate, KeyType.FREE_KEY, false);
+					QuickCrate.openCrate(player, loc, crate, KeyType.FREE_KEY);
 				}
 			}
 		}.runTaskTimer(Main.getPlugin(), 0, 2));

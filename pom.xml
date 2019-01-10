@@ -118,8 +118,8 @@
                             <include>me.badbones69:*</include>
                         </includes>
                     </artifactSet>
-                    <finalName>Crazy Crates[v${project.version}]</finalName>
-                    <!--<outputFile>/Users/badbones/Desktop/Stuff/Server/plugins/CrazyCrates[v${project.version}].jar</outputFile>-->
+                    <!--<finalName>Crazy Crates[v${project.version}]</finalName>-->
+                    <outputFile>/Users/badbones/Desktop/Stuff/Server/plugins/Crazy Crates[v${project.version}].jar</outputFile>
                     <!--<outputFile>/Users/badbones/Plugins/Public Plugins/Crazy Crates/CrazyCrates[v${project.version}].jar</outputFile>-->
                 </configuration>
                 <executions>
