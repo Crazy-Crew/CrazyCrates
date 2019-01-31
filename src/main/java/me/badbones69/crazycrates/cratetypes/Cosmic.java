@@ -17,6 +17,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
@@ -78,9 +79,19 @@ public class Cosmic implements Listener {
 			}
 			final FileConfiguration file = crate.getFile();
 			if(inv.getName().equals(Methods.color(file.getString("Crate.CrateName") + " - Shuffling"))) {
+				if (e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT) {
+					e.setCancelled(true);
+					return;
+				}
+
 				e.setCancelled(true);
 			}
 			if(inv.getName().equals(Methods.color(file.getString("Crate.CrateName") + " - Prizes"))) {
+				if (e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT) {
+					e.setCancelled(true);
+					return;
+				}
+
 				e.setCancelled(true);
 				int slot = e.getRawSlot();
 				if(inCosmic(slot)) {
@@ -117,6 +128,11 @@ public class Cosmic implements Listener {
 				}
 			}
 			if(inv.getName().equals(Methods.color(file.getString("Crate.CrateName") + " - Choose"))) {
+				if (e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT) {
+					e.setCancelled(true);
+					return;
+				}
+
 				e.setCancelled(true);
 				int slot = e.getRawSlot();
 				if(inCosmic(slot)) {
