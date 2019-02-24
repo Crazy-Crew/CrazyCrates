@@ -321,6 +321,7 @@ public class Methods {
 		enchants.put("MENDING", "Mending");
 		enchants.put("FROST_WALKER", "Frost_Walker");
 		enchants.put("VANISHING_CURSE", "Curse_Of_Vanishing");
+		enchants.put("SWEEPING_EDGE", "Sweeping_Edge");
 		return enchants.keySet();
 	}
 	
@@ -355,6 +356,7 @@ public class Methods {
 		enchants.put("MENDING", "Mending");
 		enchants.put("FROST_WALKER", "Frost_Walker");
 		enchants.put("VANISHING_CURSE", "Curse_Of_Vanishing");
+		enchants.put("SWEEPING_EDGE", "Sweeping_Edge");
 		if(enchants.get(en.getName()) == null) {
 			return "None Found";
 		}
