@@ -705,18 +705,13 @@ public class CrazyCrates {
 	}
 	
 	/**
-	 * Checks to see if the player has a physical key of the crate.
+	 * Checks to see if the player has a physical key of the crate in their main hand.
 	 * @param player The player being checked.
 	 * @param crate The crate that has the key you are checking.
 	 * @return True if they have the key and false if not.
 	 */
 	public Boolean hasPhysicalKey(Player player, Crate crate) {
-		for(ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
-			if(Methods.isSimilar(item, crate.getKey())) {
-				return true;
-			}
-		}
-		return false;
+		return Methods.isSimilar(player.getInventory().getItemInMainHand(), crate.getKey());
 	}
 	
 	public ItemStack getPhysicalKey(Player player, Crate crate) {
