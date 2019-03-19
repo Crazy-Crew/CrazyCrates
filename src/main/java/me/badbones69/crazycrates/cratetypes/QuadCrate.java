@@ -40,11 +40,11 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 	private static CrazyCrates cc = CrazyCrates.getInstance();
 	
 	public static HashMap<Player, HashMap<Location, BlockState>> crates = new HashMap<>();
-	public static HashMap<Player, HashMap<Location, BlockState>> All = new HashMap<>();
+	public static HashMap<Player, HashMap<Location, BlockState>> all = new HashMap<>();
 	public static HashMap<Player, HashMap<Location, Boolean>> opened = new HashMap<>();
-	public static HashMap<Player, ArrayList<Location>> chests = new HashMap<>();
-	public static HashMap<Player, ArrayList<Location>> Rest = new HashMap<>();
-	public static HashMap<Player, ArrayList<Entity>> Rewards = new HashMap<>();
+	public static HashMap<Player, ArrayList<Location>> chestLocations = new HashMap<>();
+	public static HashMap<Player, ArrayList<Location>> rest = new HashMap<>();
+	public static HashMap<Player, ArrayList<Entity>> rewards = new HashMap<>();
 	public static HashMap<UUID, BukkitTask> timer = new HashMap<>();
 	public static ArrayList<Player> inBreakDown = new ArrayList<>();
 	
@@ -117,14 +117,14 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 				p.setVelocity(v);
 			}
 		}
-		chests.put(player, Ch);
+		chestLocations.put(player, Ch);
 		cc.takeKeys(1, player, crate, key);
 		rest.clear();
 		HashMap<Location, BlockState> locs = new HashMap<>();
 		HashMap<Location, BlockState> A = new HashMap<>();
 		for(Location l : Methods.getLocations(schem, Lo.clone())) {
 			boolean found = false;
-			for(Location L : chests.get(player)) {
+			for(Location L : chestLocations.get(player)) {
 				if(l.getBlockX() == L.getBlockX() && l.getBlockY() == L.getBlockY() && l.getBlockZ() == L.getBlockZ()) {
 					found = true;
 					break;
@@ -138,9 +138,9 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 		}
 		// Disabled till can be fixed.
 		//		pasteSchematic(Lo.clone(), schem);
-		All.put(player, A);
+		all.put(player, A);
 		crates.put(player, locs);
-		Rest.put(player, rest);
+		QuadCrate.rest.put(player, rest);
 		Location L = new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 		player.teleport(L.add(.5, 0, .5));
 		spawnChest(Ch, player, Chest);
@@ -312,14 +312,14 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 	 */
 	@SuppressWarnings("deprecation")
 	public static void undoBuild(Player player) {
-		HashMap<Location, BlockState> locs = All.get(player);
+		HashMap<Location, BlockState> locs = all.get(player);
 		for(Location loc : locs.keySet()) {
 			if(locs.get(loc) != null) {
 				loc.getBlock().setType(locs.get(loc).getBlock().getType(), false);
 			}
 		}
 		crates.remove(player);
-		chests.remove(player);
+		chestLocations.remove(player);
 		cc.removePlayerFromOpeningList(player);
 		cc.endCrate(player);
 		cc.endQuadCrate(player);
@@ -327,11 +327,11 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 			timer.get(player.getUniqueId()).cancel();
 			timer.remove(player.getUniqueId());
 		}
-		if(Rewards.containsKey(player)) {
-			for(Entity h : Rewards.get(player)) {
+		if(rewards.containsKey(player)) {
+			for(Entity h : rewards.get(player)) {
 				h.remove();
 			}
-			Rewards.remove(player);
+			rewards.remove(player);
 		}
 	}
 	
@@ -355,8 +355,8 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 	public void onChestClick(PlayerInteractEvent e) {
 		if(e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.LEFT_CLICK_BLOCK) {
 			if(e.getClickedBlock().getType() == Material.CHEST) {
-				for(final Player player : chests.keySet()) {
-					for(final Location l : chests.get(player)) {
+				for(final Player player : chestLocations.keySet()) {
+					for(final Location l : chestLocations.get(player)) {
 						Location B = e.getClickedBlock().getLocation();
 						if(l.getBlockX() == B.getBlockX() && l.getBlockY() == B.getBlockY() && l.getBlockZ() == B.getBlockZ()) {
 							e.setCancelled(true);
@@ -372,11 +372,11 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 									reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
 									reward.setCustomNameVisible(true);
 									reward.setPickupDelay(Integer.MAX_VALUE);
-									if(Rewards.containsKey(player)) {
-										rewards.addAll(Rewards.get(player));
+									if(QuadCrate.rewards.containsKey(player)) {
+										rewards.addAll(QuadCrate.rewards.get(player));
 									}
 									rewards.add(reward);
-									Rewards.put(player, rewards);
+									QuadCrate.rewards.put(player, rewards);
 									if(prize.useFireworks()) {
 										Methods.fireWork(B.clone().add(.5, 1, .5));
 									}
@@ -397,8 +397,8 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 								if(trigger) {
 									inBreakDown.add(player);
 									Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), () -> {
-										if(Rest.get(player) != null) {
-											for(Location loc : Rest.get(player)) { // Rest is all except Chests.
+										if(rest.get(player) != null) {
+											for(Location loc : rest.get(player)) { // Rest is all except Chests.
 												HashMap<Location, BlockState> locs = crates.get(player); // Crates holds the Data.
 												if(locs != null) {
 													for(Location loc2 : locs.keySet()) { // Looping though the locations.
@@ -414,11 +414,11 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 										player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
 									}, 3 * 20);
 									Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), () -> {
-										if(Rest.get(player) != null) {
-											for(Location loc : Rest.get(player)) {
+										if(rest.get(player) != null) {
+											for(Location loc : rest.get(player)) {
 												HashMap<Location, BlockState> locs = crates.get(player);
-												if(chests.get(player) != null) {
-													for(Location loc2 : chests.get(player)) {
+												if(chestLocations.get(player) != null) {
+													for(Location loc2 : chestLocations.get(player)) {
 														if(locs.get(loc) != null) {
 															loc2.getBlock().setType(Material.AIR, false);
 														}
@@ -426,16 +426,16 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 												}
 											}
 										}
-										if(Rewards.get(player) != null) {
-											for(Entity h : Rewards.get(player)) {
+										if(rewards.get(player) != null) {
+											for(Entity h : rewards.get(player)) {
 												h.remove();
 											}
 										}
-										Rewards.remove(player);
+										rewards.remove(player);
 										player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
 										crates.remove(player);
-										chests.remove(player);
-										Rest.remove(player);
+										chestLocations.remove(player);
+										rest.remove(player);
 										cc.removePlayerFromOpeningList(player);
 										opened.remove(player);
 										if(timer.containsKey(player.getUniqueId())) {
@@ -490,8 +490,8 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 		if(crates.containsKey(e.getPlayer())) {
 			e.setCancelled(true);
 		}
-		for(Player p : Rest.keySet()) {
-			for(Location l : Rest.get(p)) {
+		for(Player p : rest.keySet()) {
+			for(Location l : rest.get(p)) {
 				Location P = e.getBlockPlaced().getLocation();
 				if(P.getBlockX() == l.getBlockX() && P.getBlockY() == l.getBlockY() && P.getBlockZ() == l.getBlockZ()) {
 					e.setCancelled(true);
@@ -539,8 +539,8 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 	
 	@EventHandler
 	public void onHopperPickUp(InventoryPickupItemEvent e) {
-		for(Player player : Rewards.keySet()) {
-			if(Rewards.get(player).contains(e.getItem())) {
+		for(Player player : rewards.keySet()) {
+			if(rewards.get(player).contains(e.getItem())) {
 				e.setCancelled(true);
 			}
 		}
