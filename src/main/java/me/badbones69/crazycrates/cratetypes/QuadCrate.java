@@ -12,8 +12,8 @@ import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.controllers.CrateControl;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.controllers.ParticleEffect;
-import me.badbones69.crazycrates.controllers.ParticleEffect.BlockData;
 import org.bukkit.*;
+import org.bukkit.Particle.DustOptions;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
@@ -148,13 +148,15 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 	}
 	
 	private static void spawnChest(final ArrayList<Location> locs, final Player player, final Material chest) {
-		ArrayList<ParticleEffect> particles = new ArrayList<>();
-		particles.add(ParticleEffect.FLAME);
-		particles.add(ParticleEffect.VILLAGER_HAPPY);
-		particles.add(ParticleEffect.SPELL_WITCH);
-		particles.add(ParticleEffect.REDSTONE);
+		ArrayList<Particle> particles = new ArrayList<>();
+		particles.add(Particle.FLAME);
+		particles.add(Particle.VILLAGER_HAPPY);
+		particles.add(Particle.SPELL_WITCH);
+		particles.add(Particle.REDSTONE);
 		Random r = new Random();
-		final ParticleEffect particle = particles.get(r.nextInt(particles.size()));
+		final Particle particle = particles.get(r.nextInt(particles.size()));
+		boolean isRedStone = particle == Particle.REDSTONE;
+		DustOptions dustOptions = isRedStone ? new DustOptions(Color.RED, 1) : null;
 		cc.addQuadCrateTask(player, new BukkitRunnable() {
 			double r = 0;
 			int i = 0;
@@ -162,12 +164,13 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 			int f = 0;
 			Location l = new Location(locs.get(0).getWorld(), locs.get(0).getBlockX(), locs.get(0).getBlockY(), locs.get(0).getBlockZ()).add(.5, 3, .5);
 			Location loc = locs.get(0).clone();
-			
 			public void run() {
 				ArrayList<Location> L = getCircle(l, r, 10);
 				ArrayList<Location> L2 = getCircleReverse(l, r, 10);
-				particle.display(0, 0, 0, 0, 1, L.get(i), 100);
-				particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
+				l.getWorld().spawnParticle(particle, L.get(i), 0, dustOptions);
+				l.getWorld().spawnParticle(particle, L2.get(i), 0, dustOptions);
+				//				particle.display(0, 0, 0, 0, 1, L.get(i), 100);
+				//				particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
 				i++;
 				f++;
 				e++;
@@ -178,7 +181,7 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 					r = r + .08;
 				}
 				if(f == 60) {
-					ParticleEffect.BLOCK_DUST.display(new BlockData(chest, (byte) 0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
+					l.getWorld().spawnParticle(Particle.BLOCK_DUST, loc.clone().add(.5, .3, .5), 10, .5F, .5F, .5F, loc.getBlock().getBlockData());
 					player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
 					loc.getBlock().setType(chest);
 					turnChest((Chest) loc.getBlock(), BlockFace.WEST);
@@ -195,13 +198,14 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 					int f = 0;
 					Location l = new Location(locs.get(1).getWorld(), locs.get(1).getBlockX(), locs.get(1).getBlockY(), locs.get(1).getBlockZ()).add(.5, 3, .5);
 					Location loc = locs.get(1).clone();
-					
 					@SuppressWarnings("deprecation")
 					public void run() {
 						ArrayList<Location> L = getCircle(l, r, 10);
 						ArrayList<Location> L2 = getCircleReverse(l, r, 10);
-						particle.display(0, 0, 0, 0, 1, L.get(i), 100);
-						particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
+						l.getWorld().spawnParticle(particle, L.get(i), 0, dustOptions);
+						l.getWorld().spawnParticle(particle, L2.get(i), 0, dustOptions);
+						//				particle.display(0, 0, 0, 0, 1, L.get(i), 100);
+						//				particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
 						i++;
 						f++;
 						e++;
@@ -212,7 +216,7 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 							r = r + .08;
 						}
 						if(f == 60) {
-							ParticleEffect.BLOCK_DUST.display(new BlockData(chest, (byte) 0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
+							l.getWorld().spawnParticle(Particle.BLOCK_DUST, loc.clone().add(.5, .3, .5), 10, .5F, .5F, .5F, loc.getBlock().getBlockData());
 							player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
 							loc.getBlock().setType(chest);
 							turnChest((Chest) loc.getBlock(), BlockFace.NORTH);
@@ -231,13 +235,14 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 					int f = 0;
 					Location l = new Location(locs.get(2).getWorld(), locs.get(2).getBlockX(), locs.get(2).getBlockY(), locs.get(2).getBlockZ()).add(.5, 3, .5);
 					Location loc = locs.get(2).clone();
-					
 					@SuppressWarnings("deprecation")
 					public void run() {
 						ArrayList<Location> L = getCircle(l, r, 10);
 						ArrayList<Location> L2 = getCircleReverse(l, r, 10);
-						particle.display(0, 0, 0, 0, 1, L.get(i), 100);
-						particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
+						l.getWorld().spawnParticle(particle, L.get(i), 0, dustOptions);
+						l.getWorld().spawnParticle(particle, L2.get(i), 0, dustOptions);
+						//				particle.display(0, 0, 0, 0, 1, L.get(i), 100);
+						//				particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
 						i++;
 						f++;
 						e++;
@@ -248,7 +253,7 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 							r = r + .08;
 						}
 						if(f == 60) {
-							ParticleEffect.BLOCK_DUST.display(new BlockData(chest, (byte) 0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
+							l.getWorld().spawnParticle(Particle.BLOCK_DUST, loc.clone().add(.5, .3, .5), 10, .5F, .5F, .5F, loc.getBlock().getBlockData());
 							player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
 							loc.getBlock().setType(chest);
 							turnChest((Chest) loc.getBlock(), BlockFace.EAST);
@@ -267,13 +272,14 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 					int f = 0;
 					Location l = new Location(locs.get(3).getWorld(), locs.get(3).getBlockX(), locs.get(3).getBlockY(), locs.get(3).getBlockZ()).add(.5, 3, .5);
 					Location loc = locs.get(3).clone();
-					
 					@SuppressWarnings("deprecation")
 					public void run() {
 						ArrayList<Location> L = getCircle(l, r, 10);
 						ArrayList<Location> L2 = getCircleReverse(l, r, 10);
-						particle.display(0, 0, 0, 0, 1, L.get(i), 100);
-						particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
+						l.getWorld().spawnParticle(particle, L.get(i), 0, dustOptions);
+						l.getWorld().spawnParticle(particle, L2.get(i), 0, dustOptions);
+						//				particle.display(0, 0, 0, 0, 1, L.get(i), 100);
+						//				particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
 						i++;
 						f++;
 						e++;
@@ -284,7 +290,7 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 							r = r + .08;
 						}
 						if(f == 60) {
-							ParticleEffect.BLOCK_DUST.display(new BlockData(chest, (byte) 0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
+							l.getWorld().spawnParticle(Particle.BLOCK_DUST, loc.clone().add(.5, .3, .5), 10, .5F, .5F, .5F, loc.getBlock().getBlockData());
 							player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
 							loc.getBlock().setType(chest);
 							turnChest((Chest) loc.getBlock(), BlockFace.SOUTH);
