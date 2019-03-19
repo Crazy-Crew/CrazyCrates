@@ -137,7 +137,7 @@ public class GUIMenu implements Listener {
 		if(inv != null) {
 			for(Crate crate : cc.getCrates()) {
 				if(crate.getCrateType() != CrateType.MENU) {
-					if(inv.getName().equals(Methods.color(crate.getFile().getString("Crate.Name")))) {
+					if(inv.getName().equals(crate.getCrateInventoryName())) {
 						return;
 					}
 				}
