@@ -11,7 +11,6 @@ import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.controllers.CrateControl;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
-import me.badbones69.crazycrates.controllers.ParticleEffect;
 import org.bukkit.*;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.block.BlockFace;
