@@ -23,6 +23,7 @@ import java.util.List;
 public class ItemBuilder {
 	
 	private Material material;
+	private Short durability;
 	private String name;
 	private List<String> lore;
 	private Integer amount;
@@ -39,6 +40,7 @@ public class ItemBuilder {
 	 */
 	public ItemBuilder() {
 		this.material = Material.STONE;
+		this.durability = 0;
 		this.name = "";
 		this.lore = new ArrayList<>();
 		this.amount = 1;
@@ -60,6 +62,7 @@ public class ItemBuilder {
 		.setReferenceItem(item)
 		.setAmount(item.getAmount())
 		.setMaterial(item.getType())
+		.setDurability(item.getDurability())
 		.setEnchantments(new HashMap<>(item.getEnchantments()));
 		if(item.hasItemMeta()) {
 			itemBuilder.setName(item.getItemMeta().getDisplayName())
@@ -96,10 +99,32 @@ public class ItemBuilder {
 	 * @return The ItemBuilder with updated info.
 	 */
 	public ItemBuilder setMaterial(String material) {
+		if(material.contains(":")) {// Sets the durability.
+			String[] b = material.split(":");
+			material = b[0];
+			this.durability = Short.parseShort(b[1]);
+		}
 		Material m = Material.matchMaterial(material);
-		if(m != null) {
+		if(m != null) {// Sets the material.
 			this.material = m;
 		}
+		return this;
+	}
+	
+	/**
+	 * Get the durability of the item.
+	 * @return The durability of the item as a short.
+	 */
+	public Short getDurability() {
+		return durability;
+	}
+	
+	/**
+	 * Set the items durability.
+	 * @param durability The durability of the item.
+	 */
+	public ItemBuilder setDurability(Short durability) {
+		this.durability = durability;
 		return this;
 	}
 	
@@ -366,7 +391,7 @@ public class ItemBuilder {
 	 * @return The result of all the info that was given to the builder as an ItemStack.
 	 */
 	public ItemStack build() {
-		ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material, amount);
+		ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material, amount, durability);
 		ItemMeta itemMeta = item.getItemMeta();
 		itemMeta.setDisplayName(getUpdatedName());
 		itemMeta.setLore(getUpdatedLore());
