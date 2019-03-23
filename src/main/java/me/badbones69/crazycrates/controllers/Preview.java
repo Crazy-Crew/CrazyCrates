@@ -117,7 +117,7 @@ public class Preview implements Listener {
 		}else {
 			return new ItemBuilder()
 			.setMaterial(Material.COMPASS)
-			.setName("&7&l>> &c&lMenu 77&l<<")
+			.setName("&7&l>> &c&lMenu &7&l<<")
 			.addLore("&7Return to the menu.")
 			.build();
 		}
