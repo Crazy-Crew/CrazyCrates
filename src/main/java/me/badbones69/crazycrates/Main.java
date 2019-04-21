@@ -14,6 +14,7 @@ import me.badbones69.crazycrates.cratetypes.*;
 import me.badbones69.crazycrates.multisupport.MVdWPlaceholderAPISupport;
 import me.badbones69.crazycrates.multisupport.PlaceholderAPISupport;
 import me.badbones69.crazycrates.multisupport.Support;
+import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -41,9 +42,23 @@ public class Main extends JavaPlugin implements Listener {
 	private Boolean updateChecker = false;
 	private CrazyCrates cc = CrazyCrates.getInstance();
 	private FileManager fileManager = FileManager.getInstance();
+	private Boolean isEnabled = true;// If the server is 1.13.2+
 	
 	@Override
 	public void onEnable() {
+		if(Version.getCurrentVersion().isOlder(Version.v1_13_R1)) {// Disables plugin on 1.12.2 and below servers.
+			isEnabled = false;
+			System.out.println("============= Crazy Crates =============");
+			System.out.println(" ");
+			System.out.println("Plugin Disabled: This server is running on 1.12.2 or below and Crazy Crates does not support those versions. "
+			+ "Please check the spigot page for more information about lower Minecraft versions.");
+			System.out.println(" ");
+			System.out.println("Plugin Page: https://www.spigotmc.org/resources/17599/");
+			System.out.println(" ");
+			System.out.println("============= Crazy Crates =============");
+			Bukkit.getPluginManager().disablePlugin(this);
+			return;
+		}
 		//Crate Files
 		fileManager.logInfo(true)
 		.registerDefaultGenerateFiles("Basic.yml", "/Crates")
@@ -103,12 +118,14 @@ public class Main extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onDisable() {
-		if(!QuadCrate.crates.isEmpty()) {
-			for(Player player : QuadCrate.crates.keySet()) {
-				QuadCrate.undoBuild(player);
+		if(isEnabled) {
+			if(!QuadCrate.crates.isEmpty()) {
+				for(Player player : QuadCrate.crates.keySet()) {
+					QuadCrate.undoBuild(player);
+				}
 			}
+			QuickCrate.removeAllRewards();
 		}
-		QuickCrate.removeAllRewards();
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args) {
