@@ -97,6 +97,7 @@ public class Main extends JavaPlugin implements Listener {
 			MVdWPlaceholderAPISupport.registerPlaceholders(this);
 		}
 		Methods.hasUpdate();
+		new Metrics(this); //Starts up bStats
 		getCommand("crazycrates").setTabCompleter(new TabControl());
 	}
 	
