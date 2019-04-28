@@ -137,12 +137,12 @@ public class GUIMenu implements Listener {
 		if(inv != null) {
 			for(Crate crate : cc.getCrates()) {
 				if(crate.getCrateType() != CrateType.MENU) {
-					if(inv.getName().equals(crate.getCrateInventoryName())) {
+					if(e.getView().getTitle().equals(crate.getCrateInventoryName())) {
 						return;
 					}
 				}
 			}
-			if(inv.getName().equals(Methods.color(config.getString("Settings.InventoryName")))) {
+			if(e.getView().getTitle().equals(Methods.color(config.getString("Settings.InventoryName")))) {
 				e.setCancelled(true);
 				if(e.getCurrentItem() != null) {
 					ItemStack item = e.getCurrentItem();
