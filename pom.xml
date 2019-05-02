@@ -6,7 +6,7 @@
 
     <groupId>me.badbones69</groupId>
     <artifactId>crazycrates</artifactId>
-    <version>1.8.6</version>
+    <version>1.8.7</version>
 
     <repositories>
         <repository>
@@ -123,8 +123,8 @@
                         </includes>
                     </artifactSet>
                     <!--<finalName>Crazy Crates[v${project.version}]</finalName>-->
-                    <outputFile>/Users/badbones/Desktop/Stuff/Server/plugins/Crazy Crates[v${project.version}].jar</outputFile>
-                    <!--                    <outputFile>/Users/badbones/Plugins/Public Plugins/Crazy Crates/CrazyCrates[v${project.version}].jar</outputFile>-->
+                    <!--                    <outputFile>/Users/badbones/Desktop/Stuff/Server/plugins/Crazy Crates[v${project.version}].jar</outputFile>-->
+                    <outputFile>/Users/badbones/Plugins/Public Plugins/Crazy Crates/CrazyCrates[v${project.version}].jar</outputFile>
                 </configuration>
                 <executions>
                     <execution>

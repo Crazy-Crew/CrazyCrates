@@ -211,7 +211,7 @@ public class Cosmic implements Listener {
 						if(item.hasItemMeta()) {
 							if(item.getItemMeta().hasDisplayName()) {
 								Tier tier = getTier(crate, item);
-								if(item.getItemMeta().getDisplayName().equals(Methods.color(crate.getFile().getString("Crate.Tiers." + tier + ".Name")))) {
+								if(item.getItemMeta().getDisplayName().equals(Methods.color(crate.getFile().getString("Crate.Tiers." + tier.getName() + ".Name")))) {
 									Prize prize = crate.pickPrize(player, tier);
 									for(int stop = 0; prize == null && stop <= 2000; stop++) {
 										prize = crate.pickPrize(player, tier);
