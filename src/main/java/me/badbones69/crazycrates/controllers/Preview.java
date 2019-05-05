@@ -2,7 +2,6 @@ package me.badbones69.crazycrates.controllers;
 
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
-import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
@@ -31,27 +30,24 @@ public class Preview implements Listener {
 		Player player = (Player) e.getWhoClicked();
 		Inventory inventory = e.getInventory();
 		if(inventory != null) {
-			for(Crate crate : cc.getCrates()) {
-				if(crate.getCrateType() != CrateType.MENU) {
-					if(inventory.getName().equals(crate.getPreviewName()) || inventory.getName().equals(crate.getCrateInventoryName())) {
-						e.setCancelled(true);
-						ItemStack item = e.getCurrentItem();
-						if(item != null) {
-							if(e.getRawSlot() == 49) {// Clicked the menu button.
-								if(playerInMenu(player)) {
-									GUIMenu.openGUI(player);
-								}
-							}else if(e.getRawSlot() == 50) {// Clicked the next button.
-								if(getPage(player) < crate.getMaxPage()) {
-									nextPage(player);
-									openPreview(player, crate);
-								}
-							}else if(e.getRawSlot() == 48) {// Clicked the back button.
-								if(getPage(player) > 1 && getPage(player) <= crate.getMaxPage()) {
-									backPage(player);
-									openPreview(player, crate);
-								}
-							}
+			Crate crate = playerCrate.get(player.getUniqueId());
+			if(inventory.getName().equals(crate.getPreviewName()) || inventory.getName().equals(crate.getCrateInventoryName())) {
+				e.setCancelled(true);
+				ItemStack item = e.getCurrentItem();
+				if(item != null) {
+					if(e.getRawSlot() == 49) {// Clicked the menu button.
+						if(playerInMenu(player)) {
+							GUIMenu.openGUI(player);
+						}
+					}else if(e.getRawSlot() == 50) {// Clicked the next button.
+						if(getPage(player) < crate.getMaxPage()) {
+							nextPage(player);
+							openPreview(player, crate);
+						}
+					}else if(e.getRawSlot() == 48) {// Clicked the back button.
+						if(getPage(player) > 1 && getPage(player) <= crate.getMaxPage()) {
+							backPage(player);
+							openPreview(player, crate);
 						}
 					}
 				}
