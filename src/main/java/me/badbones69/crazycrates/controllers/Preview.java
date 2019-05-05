@@ -30,24 +30,26 @@ public class Preview implements Listener {
 		Player player = (Player) e.getWhoClicked();
 		Inventory inventory = e.getInventory();
 		if(inventory != null) {
-			Crate crate = playerCrate.get(player.getUniqueId());
-			if(inventory.getName().equals(crate.getPreviewName()) || inventory.getName().equals(crate.getCrateInventoryName())) {
-				e.setCancelled(true);
-				ItemStack item = e.getCurrentItem();
-				if(item != null) {
-					if(e.getRawSlot() == 49) {// Clicked the menu button.
-						if(playerInMenu(player)) {
-							GUIMenu.openGUI(player);
-						}
-					}else if(e.getRawSlot() == 50) {// Clicked the next button.
-						if(getPage(player) < crate.getMaxPage()) {
-							nextPage(player);
-							openPreview(player, crate);
-						}
-					}else if(e.getRawSlot() == 48) {// Clicked the back button.
-						if(getPage(player) > 1 && getPage(player) <= crate.getMaxPage()) {
-							backPage(player);
-							openPreview(player, crate);
+			if(playerCrate.get(player.getUniqueId()) != null) {
+				Crate crate = playerCrate.get(player.getUniqueId());
+				if(inventory.getName().equals(crate.getPreviewName()) || inventory.getName().equals(crate.getCrateInventoryName())) {
+					e.setCancelled(true);
+					ItemStack item = e.getCurrentItem();
+					if(item != null) {
+						if(e.getRawSlot() == 49) {// Clicked the menu button.
+							if(playerInMenu(player)) {
+								GUIMenu.openGUI(player);
+							}
+						}else if(e.getRawSlot() == 50) {// Clicked the next button.
+							if(getPage(player) < crate.getMaxPage()) {
+								nextPage(player);
+								openPreview(player, crate);
+							}
+						}else if(e.getRawSlot() == 48) {// Clicked the back button.
+							if(getPage(player) > 1 && getPage(player) <= crate.getMaxPage()) {
+								backPage(player);
+								openPreview(player, crate);
+							}
 						}
 					}
 				}
