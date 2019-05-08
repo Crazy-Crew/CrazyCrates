@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.List;
 public class ItemBuilder {
 	
 	private Material material;
-	private Short durability;
+	private int damage;
 	private String name;
 	private List<String> lore;
 	private Integer amount;
@@ -36,11 +37,11 @@ public class ItemBuilder {
 	private HashMap<String, String> lorePlaceholders;
 	
 	/**
-	 * The inishal starting point for making an item.
+	 * The initial starting point for making an item.
 	 */
 	public ItemBuilder() {
 		this.material = Material.STONE;
-		this.durability = 0;
+		this.damage = 0;
 		this.name = "";
 		this.lore = new ArrayList<>();
 		this.amount = 1;
@@ -62,15 +63,18 @@ public class ItemBuilder {
 		.setReferenceItem(item)
 		.setAmount(item.getAmount())
 		.setMaterial(item.getType())
-		.setDurability(item.getDurability())
 		.setEnchantments(new HashMap<>(item.getEnchantments()));
 		if(item.hasItemMeta()) {
-			itemBuilder.setName(item.getItemMeta().getDisplayName())
-			.setLore(item.getItemMeta().getLore());
+		    ItemMeta itemMeta = item.getItemMeta();
+			itemBuilder.setName(itemMeta.getDisplayName())
+			.setLore(itemMeta.getLore());
 			NBTItem nbt = new NBTItem(item);
 			if(nbt.hasKey("Unbreakable")) {
 				itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
 			}
+			if (itemMeta instanceof Damageable) {
+			    itemBuilder.setDamage(((Damageable)itemMeta).getDamage());
+            }
 		}
 		return itemBuilder;
 	}
@@ -102,7 +106,7 @@ public class ItemBuilder {
 		if(material.contains(":")) {// Sets the durability.
 			String[] b = material.split(":");
 			material = b[0];
-			this.durability = Short.parseShort(b[1]);
+			this.damage = Integer.parseInt(b[1]);
 		}
 		Material m = Material.matchMaterial(material);
 		if(m != null) {// Sets the material.
@@ -112,19 +116,19 @@ public class ItemBuilder {
 	}
 	
 	/**
-	 * Get the durability of the item.
-	 * @return The durability of the item as a short.
+	 * Get the damage of the item.
+	 * @return The damage of the item as an int.
 	 */
-	public Short getDurability() {
-		return durability;
+	public int getDamage() {
+		return damage;
 	}
 	
 	/**
-	 * Set the items durability.
-	 * @param durability The durability of the item.
+	 * Set the items damage value.
+	 * @param damage The damage value of the item.
 	 */
-	public ItemBuilder setDurability(Short durability) {
-		this.durability = durability;
+	public ItemBuilder setDamage(int damage) {
+		this.damage = damage;
 		return this;
 	}
 	
@@ -391,11 +395,14 @@ public class ItemBuilder {
 	 * @return The result of all the info that was given to the builder as an ItemStack.
 	 */
 	public ItemStack build() {
-		ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material, amount, durability);
+		ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material, amount);
 		ItemMeta itemMeta = item.getItemMeta();
 		itemMeta.setDisplayName(getUpdatedName());
 		itemMeta.setLore(getUpdatedLore());
 		itemMeta.setUnbreakable(unbreakable);
+		if (itemMeta instanceof Damageable) {
+            ((Damageable)itemMeta).setDamage(damage);
+        }
 		item.setItemMeta(itemMeta);
 		item.addUnsafeEnchantments(enchantments);
 		addGlow(item, glowing);
