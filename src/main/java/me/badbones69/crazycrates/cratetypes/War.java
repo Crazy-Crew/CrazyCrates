@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -30,23 +31,24 @@ public class War implements Listener {
 	private static HashMap<Player, Boolean> canClose = new HashMap<>();
 	
 	public static void openWarCrate(Player player, Crate crate, KeyType key) {
-		Inventory inv = Bukkit.createInventory(null, 9, Methods.color(crate.getFile().getString("Crate.CrateName")));
-		setRandomPrizes(player, inv, crate);
-		player.openInventory(inv);
+		String crateName = Methods.color(crate.getFile().getString("Crate.CrateName"));
+		Inventory inv = Bukkit.createInventory(null, 9, crateName);
+		setRandomPrizes(player, inv, crate, crateName);
+		InventoryView inventoryView = player.openInventory(inv);
 		canPick.put(player, false);
 		canClose.put(player, false);
 		cc.takeKeys(1, player, crate, key);
-		startWar(player, inv, crate);
+		startWar(player, inv, crate, inventoryView.getTitle());
 	}
 	
-	private static void startWar(final Player player, final Inventory inv, final Crate crate) {
+	private static void startWar(final Player player, final Inventory inv, final Crate crate, final String inventoryTitle) {
 		cc.addCrateTask(player, new BukkitRunnable() {
 			int full = 0;
 			int open = 0;
 			@Override
 			public void run() {
 				if(full < 25) {//When Spinning
-					setRandomPrizes(player, inv, crate);
+					setRandomPrizes(player, inv, crate, inventoryTitle);
 					player.playSound(player.getLocation(), Sound.BLOCK_LAVA_POP, 1, 1);
 				}
 				open++;
@@ -57,7 +59,7 @@ public class War implements Listener {
 				full++;
 				if(full == 26) {//Finished Rolling
 					player.playSound(player.getLocation(), Sound.BLOCK_LAVA_POP, 1, 1);
-					setRandomGlass(player, inv);
+					setRandomGlass(player, inv, inventoryTitle);
 					canPick.put(player, true);
 				}
 			}
@@ -71,7 +73,7 @@ public class War implements Listener {
 		if(inv != null) {
 			for(Crate crate : cc.getCrates()) {
 				if(crate.getCrateType() == CrateType.WAR) {
-					if(inv.getName().equalsIgnoreCase(Methods.color(crate.getFile().getString("Crate.CrateName")))) {
+					if(e.getView().getTitle().equalsIgnoreCase(Methods.color(crate.getFile().getString("Crate.CrateName")))) {
 						e.setCancelled(true);
 					}
 				}
@@ -154,7 +156,7 @@ public class War implements Listener {
 			if(canClose.get(player)) {
 				for(Crate crate : cc.getCrates()) {
 					if(crate.getCrateType() == CrateType.WAR) {
-						if(inv.getName().equalsIgnoreCase(Methods.color(crate.getFile().getString("Crate.CrateName")))) {
+						if(e.getView().getTitle().equalsIgnoreCase(Methods.color(crate.getFile().getString("Crate.CrateName")))) {
 							canClose.remove(player);
 							if(cc.hasCrateTask(player)) {
 								cc.endCrate(player);
@@ -166,9 +168,9 @@ public class War implements Listener {
 		}
 	}
 	
-	private static void setRandomPrizes(Player player, Inventory inv, Crate crate) {
+	private static void setRandomPrizes(Player player, Inventory inv, Crate crate, String inventoryTitle) {
 		if(cc.isInOpeningList(player)) {
-			if(inv.getName().equalsIgnoreCase(Methods.color(cc.getOpeningCrate(player).getFile().getString("Crate.CrateName")))) {
+			if(inventoryTitle.equalsIgnoreCase(Methods.color(cc.getOpeningCrate(player).getFile().getString("Crate.CrateName")))) {
 				for(int i = 0; i < 9; i++) {
 					inv.setItem(i, crate.pickPrize(player).getDisplayItem());
 				}
@@ -176,9 +178,9 @@ public class War implements Listener {
 		}
 	}
 	
-	private static void setRandomGlass(Player player, Inventory inv) {
+	private static void setRandomGlass(Player player, Inventory inv, String inventoryTitle) {
 		if(cc.isInOpeningList(player)) {
-			if(inv.getName().equalsIgnoreCase(Methods.color(cc.getOpeningCrate(player).getFile().getString("Crate.CrateName")))) {
+			if(inventoryTitle.equalsIgnoreCase(Methods.color(cc.getOpeningCrate(player).getFile().getString("Crate.CrateName")))) {
 				Material material = Methods.getRandomPaneColor();
 				for(int i = 0; i < 9; i++) {
 					inv.setItem(i, new ItemBuilder().setMaterial(material).setName("&" + getColorCode().get(material) + "&l???").build());

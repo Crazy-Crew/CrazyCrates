@@ -11,7 +11,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NMS_v1_13_R2 {
+public class NMS_v1_13_R1 {
 	
 	public static void openChest(Block b, Location location, Boolean open) {
 		World world = ((CraftWorld) location.getWorld()).getHandle();

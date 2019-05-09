@@ -66,6 +66,19 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 		}
 		opened.put(player, checks);
 		ArrayList<Material> blockList = new ArrayList<>();
+		// 1.14 blocks
+		//		blockList.add(Material.ACACIA_SIGN);
+		//		blockList.add(Material.BIRCH_SIGN);
+		//		blockList.add(Material.DARK_OAK_SIGN);
+		//		blockList.add(Material.JUNGLE_SIGN);
+		//		blockList.add(Material.OAK_SIGN);
+		//		blockList.add(Material.SPRUCE_SIGN);
+		//		blockList.add(Material.ACACIA_WALL_SIGN);
+		//		blockList.add(Material.BIRCH_WALL_SIGN);
+		//		blockList.add(Material.DARK_OAK_WALL_SIGN);
+		//		blockList.add(Material.JUNGLE_WALL_SIGN);
+		//		blockList.add(Material.OAK_WALL_SIGN);
+		//		blockList.add(Material.SPRUCE_WALL_SIGN);
 		blockList.add(Material.SIGN);
 		blockList.add(Material.WALL_SIGN);
 		blockList.add(Material.STONE_BUTTON);

@@ -32,7 +32,7 @@ public class Preview implements Listener {
 		if(inventory != null) {
 			if(playerCrate.get(player.getUniqueId()) != null) {
 				Crate crate = playerCrate.get(player.getUniqueId());
-				if(inventory.getName().equals(crate.getPreviewName()) || inventory.getName().equals(crate.getCrateInventoryName())) {
+				if(e.getView().getTitle().equals(crate.getPreviewName()) || e.getView().getTitle().equals(crate.getCrateInventoryName())) {
 					e.setCancelled(true);
 					ItemStack item = e.getCurrentItem();
 					if(item != null) {
