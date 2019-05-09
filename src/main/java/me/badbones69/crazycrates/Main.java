@@ -106,7 +106,7 @@ public class Main extends JavaPlugin implements Listener {
 		}
 		pm.registerEvents(new FireworkDamageAPI(this), this);
 		if(Support.PLACEHOLDERAPI.isPluginLoaded()) {
-			new PlaceholderAPISupport(this).hook();
+			new PlaceholderAPISupport(this).register();
 		}
 		if(Support.MVDWPLACEHOLDERAPI.isPluginLoaded()) {
 			MVdWPlaceholderAPISupport.registerPlaceholders(this);
