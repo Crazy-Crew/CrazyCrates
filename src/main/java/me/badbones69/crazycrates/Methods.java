@@ -5,8 +5,7 @@ import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.controllers.FireworkDamageAPI;
-import me.badbones69.crazycrates.multisupport.nms.NMS_v1_14_R1;
-import me.badbones69.crazycrates.multisupport.nms.NMS_v1_14_R1;
+import me.badbones69.crazycrates.multisupport.nms.NMS_v1_13_R1;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -187,14 +186,14 @@ public class Methods {
 	}
 	
 	public static List<Location> getLocations(String shem, Location loc) {
-		return NMS_v1_14_R1.getLocations(new File(plugin.getDataFolder() + "/Schematics/" + shem), loc);
+		return NMS_v1_13_R1.getLocations(new File(plugin.getDataFolder() + "/Schematics/" + shem), loc);
 	}
 	
 	public static void playChestAction(Block b, boolean open) {
 		Location location = b.getLocation();
 		Material type = b.getType();
 		if(type == Material.CHEST || type == Material.TRAPPED_CHEST || type == Material.ENDER_CHEST) {
-			NMS_v1_14_R1.openChest(b, location, open);
+			NMS_v1_13_R1.openChest(b, location, open);
 		}
 	}
 	

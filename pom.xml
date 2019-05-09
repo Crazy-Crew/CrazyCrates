@@ -50,7 +50,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.14-R0.1-SNAPSHOT</version>
+            <version>1.13.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -133,9 +133,9 @@
                             <include>me.badbones69:*</include>
                         </includes>
                     </artifactSet>
-                    <!--<finalName>Crazy Crates[v${project.version}]</finalName>-->
-                    <!--                    <outputFile>/Users/badbones/Desktop/Stuff/Server/plugins/Crazy Crates[v${project.version}].jar</outputFile>-->
-                    <outputFile>/Users/badbones/Plugins/Public Plugins/Crazy Crates/CrazyCrates[v${project.version}].jar</outputFile>
+                    <finalName>CrazyCrates[v${project.version}]</finalName>
+                    <!--                    <outputFile>/Users/badbones/Desktop/Stuff/Server/plugins/CrazyCrates[v${project.version}].jar</outputFile>-->
+                    <!--                    <outputFile>/Users/badbones/Plugins/Public Plugins/Crazy Crates/CrazyCrates[v${project.version}].jar</outputFile>-->
                 </configuration>
                 <executions>
                     <execution>
