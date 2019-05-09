@@ -517,7 +517,7 @@ public class Main extends JavaPlugin implements Listener {
 								sender.sendMessage(Messages.GIVEN_EVERYONE_KEYS.getMessage(placeholders));
 								for(Player p : Bukkit.getServer().getOnlinePlayers()) {
 									if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
-										p.getInventory().addItem(crate.getKey());
+										p.getInventory().addItem(crate.getKey(amount));
 										return true;
 									}
 									if(type.equalsIgnoreCase("Virtual") || type.equalsIgnoreCase("V")) {
