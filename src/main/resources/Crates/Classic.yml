@@ -41,9 +41,9 @@ Crate:
         - '&7You just won a &a&lFancy Pantst&7.'
       Alternative-Prize:
         Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
+        Messages: []
+        Commands: []
+        Items: []
     2:
       DisplayName: '&b&lClassic Sword'
       DisplayItem: 'DIAMOND_SWORD'
@@ -64,9 +64,9 @@ Crate:
         - '&7You just won a &b&lClassic Sword&7.'
       Alternative-Prize:
         Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
+        Messages: []
+        Commands: []
+        Items: []
     3:
       DisplayName: '&e&l$100,000'
       DisplayItem: 'SUNFLOWER'
@@ -84,6 +84,6 @@ Crate:
         - '&7You just won &a$100,000&7.'
       Alternative-Prize:
         Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
+        Messages: []
+        Commands: []
+        Items: []

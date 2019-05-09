@@ -6,12 +6,12 @@ Crate:
   InGUI: true #If the crate shows in the /cc GUI. (If the crate type is QuickCrate/CrateOnTheGo/FireCracker then the Crate will not work. Quick Crate requires a Physical Crate.)
   Slot: 21 #Slot the item is in the GUI.
   OpeningBroadCast: true #Enables/Disables the Broadcasts message when they open a crate.
-  BroadCast: '%Prefix%&6&l%Player% &7is opening a &7&lBasic Chest&7.' #Message that is broadcasted when opening the crate.
+  BroadCast: '%Prefix%&6&l%Player% &7is opening a &7&lBasic Chest&7.' #Message that is broadcast when opening the crate.
   Item: 'CHEST' #Item the crate is in the GUI
   Glowing: false #If the crate in the main /cc GUI is glowing or not.
   Name: '&7&lBasic Chest' #Name of the item in the GUI.
   Lore: #The lore of the item in the GUI.
-    - '&7This crate contains strange objects.' 
+    - '&7This crate contains strange objects.'
     - '&7You have &6%Keys% keys &7to open this crate with.'
     - '&7&l(&e&l!&7&l) Right click to view rewards.'
   PhysicalKey:
@@ -80,12 +80,12 @@ Crate:
       #If you do not wish to have players get messaged that they won this prize then just remove the Messages: option.
       Messages:
         - '&7You just won a &7&lBasic Grass&7.'
-      BlackListed-Permissions: {} #This allows for one time winnable prizes. If a player has one of the permissions then they will not be able to win it.
+      BlackListed-Permissions: [] #This allows for one time winnable prizes. If a player has one of the permissions then they will not be able to win it.
       Alternative-Prize: #This allows users who have won the same prize before to get alternative prizes. They must of a BlackListed-Permission to get a alternative prize.
         Toggle: false #Toggle if the prize will use alternative prizes for the blacklisted permission.
-        Messages: {}
-        Commands: {}
-        Items: {}
+        Messages: []
+        Commands: []
+        Items: []
     2:
       DisplayName: '&b&lCheap Helmet'
       DisplayItem: 'GOLDEN_HELMET'
@@ -104,12 +104,12 @@ Crate:
       Unbreakable: false
       Items:
         - 'Item:GOLDEN_HELMET, Amount:1, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
-      BlackListed-Permissions: {}
+      BlackListed-Permissions: []
       Alternative-Prize:
         Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
+        Messages: []
+        Commands: []
+        Items: []
     3:
       DisplayName: '&e&l$1,000'
       DisplayItem: 'SUNFLOWER'
@@ -136,4 +136,4 @@ Crate:
           - '&8[&bCrazyCrates&8]: &7You have already won that prize, so enjoy some gold nuggets.'
         Commands:
           - 'give %player% 371 16'
-        Items: {}
+        Items: []

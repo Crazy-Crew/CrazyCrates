@@ -6,7 +6,7 @@ Crate:
   InGUI: true #If the crate shows in the /cc GUI.
   Slot: 23 #Slot the item is in the GUI.
   OpeningBroadCast: false #Enables/Disables the Broadcasts message when they open a crate.
-  BroadCast: '' #Message that is broadcasted when opening the crate.
+  BroadCast: '' #Message that is broadcast when opening the crate.
   Item: 'ENDER_CHEST' #Item the crate is in the GUI
   Glowing: false #If the crate in the main /cc GUI is glowing or not.
   Name: '&d&lGalactic Chest' #Name of the item in the GUI.
@@ -68,9 +68,9 @@ Crate:
         - 'broadcast &6&l%Player% &7has just won some Basic Grass.'
       Alternative-Prize:
         Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
+        Messages: []
+        Commands: []
+        Items: []
     2:
       DisplayName: '&b&lCheap Helmet'
       DisplayItem: 'GOLDEN_HELMET'
@@ -93,9 +93,9 @@ Crate:
         - 'Item:GOLDEN_HELMET, Amount:1, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
       Alternative-Prize:
         Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
+        Messages: []
+        Commands: []
+        Items: []
     3:
       DisplayName: '&e&l$1,000'
       DisplayItem: 'SUNFLOWER'
@@ -115,9 +115,9 @@ Crate:
         - 'eco give %Player% 1000'
       Alternative-Prize:
         Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
+        Messages: []
+        Commands: []
+        Items: []
     4:
       DisplayName: '&b&lCrazy &4&lSword'
       DisplayItem: 'GOLDEN_SWORD'
@@ -138,9 +138,9 @@ Crate:
         - 'Item:GOLDEN_SWORD, Amount:1, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1'
       Alternative-Prize:
         Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
+        Messages: []
+        Commands: []
+        Items: []
     5:
       DisplayName: '&e&l$1,000,000'
       DisplayItem: 'SUNFLOWER'
@@ -158,9 +158,9 @@ Crate:
         - 'Eco give %Player% 1000000'
       Alternative-Prize:
         Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
+        Messages: []
+        Commands: []
+        Items: []
     6:
       DisplayName: '&b&lCrazy Crate &6&lKey &7(x2)'
       DisplayItem: 'TRIPWIRE_HOOK'
@@ -180,6 +180,6 @@ Crate:
         - 'cc give physical crazy 2 %Player%'
       Alternative-Prize:
         Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
+        Messages: []
+        Commands: []
+        Items: []

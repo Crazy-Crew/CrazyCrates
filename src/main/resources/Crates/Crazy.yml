@@ -40,9 +40,9 @@ Crate:
         - 'Item:DIAMOND_CHESTPLATE, Amount:1, Name:&3Rare ChestPlate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3'
       Alternative-Prize:
         Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
+        Messages: []
+        Commands: []
+        Items: []
     2:
       DisplayName: '&b&lCrazy &4&lSword'
       DisplayItem: 'GOLDEN_SWORD'
@@ -63,9 +63,9 @@ Crate:
         - '&7You just won a &b&lCrazy &4&lSword&7.'
       Alternative-Prize:
         Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
+        Messages: []
+        Commands: []
+        Items: []
     3:
       DisplayName: '&e&l$1,000,000'
       DisplayItem: 'SUNFLOWER'
@@ -83,6 +83,6 @@ Crate:
         - '&7You just won &a$1,000,000&7.'
       Alternative-Prize:
         Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
+        Messages: []
+        Commands: []
+        Items: []
