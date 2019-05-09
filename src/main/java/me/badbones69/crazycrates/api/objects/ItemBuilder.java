@@ -4,6 +4,7 @@ import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -31,6 +32,7 @@ public class ItemBuilder {
 	private String player;
 	private HashMap<Enchantment, Integer> enchantments;
 	private Boolean unbreakable;
+	private Boolean hideItemFlags;
 	private Boolean glowing;
 	private ItemStack referenceItem;
 	private HashMap<String, String> namePlaceholders;
@@ -48,6 +50,7 @@ public class ItemBuilder {
 		this.player = "";
 		this.enchantments = new HashMap<>();
 		this.unbreakable = false;
+		this.hideItemFlags = false;
 		this.glowing = false;
 		this.namePlaceholders = new HashMap<>();
 		this.lorePlaceholders = new HashMap<>();
@@ -361,16 +364,34 @@ public class ItemBuilder {
 	public Boolean isUnbreakable() {
 		return unbreakable;
 	}
-	
-	/**
-	 * Set if the item in the builder to be unbreakable or not.
-	 * @param unbreakable True will set it to be unbreakable and false will make it able to take damage.
-	 * @return The ItemBuilder with updated info.
-	 */
-	public ItemBuilder setUnbreakable(Boolean unbreakable) {
-		this.unbreakable = unbreakable;
-		return this;
-	}
+    
+    /**
+     * Set if the item in the builder to be unbreakable or not.
+     * @param unbreakable True will set it to be unbreakable and false will make it able to take damage.
+     * @return The ItemBuilder with updated info.
+     */
+    public ItemBuilder setUnbreakable(Boolean unbreakable) {
+        this.unbreakable = unbreakable;
+        return this;
+    }
+    
+    /**
+     * Set if the item should hide item flags or not
+     * @param hideItemFlags true the item will hide item flags. false will show them.
+     * @return The ItemBuilder with updated info.
+     */
+    public ItemBuilder hideItemFlags(Boolean hideItemFlags) {
+        this.hideItemFlags = hideItemFlags;
+        return this;
+    }
+    
+    /**
+     * Check if the item in the builder has hidden item flags.
+     * @return The ItemBuilder with updated info.
+     */
+    public Boolean areItemFlagsHidden() {
+        return hideItemFlags;
+    }
 	
 	/**
 	 * Check if the item in the builder is glowing.
@@ -404,6 +425,7 @@ public class ItemBuilder {
             ((Damageable)itemMeta).setDamage(damage);
         }
 		item.setItemMeta(itemMeta);
+		hideFlags(item, hideItemFlags);
 		item.addUnsafeEnchantments(enchantments);
 		addGlow(item, glowing);
 		NBTItem nbt = new NBTItem(item);
@@ -427,6 +449,18 @@ public class ItemBuilder {
 	
 	private String color(String msg) {
 		return ChatColor.translateAlternateColorCodes('&', msg);
+	}
+	
+	private ItemStack hideFlags(ItemStack item, Boolean toggle) {
+	    if (toggle) {
+	        if(item != null && item.hasItemMeta()) {
+	            ItemMeta itemMeta = item.getItemMeta();
+	            itemMeta.addItemFlags(ItemFlag.values());
+	            item.setItemMeta(itemMeta);
+	            return item;
+	        }
+        }
+	    return item;
 	}
 	
 	private ItemStack addGlow(ItemStack item, boolean toggle) {
