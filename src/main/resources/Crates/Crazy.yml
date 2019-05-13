@@ -32,12 +32,18 @@ Crate:
       DisplayEnchantments:
         - 'PROTECTION_ENVIRONMENTAL:5'
         - 'DURABILITY:3'
+      Messages: []
       MaxRange: 100
       Chance: 40
       Firework: false
       Glowing: false
+      Player: ''
+      Unbreakable: false
+      HideItemFlags: false
       Items:
         - 'Item:DIAMOND_CHESTPLATE, Amount:1, Name:&3Rare ChestPlate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3'
+      Commands: []
+      BlackListed-Permissions: []
       Alternative-Prize:
         Toggle: false
         Messages: []
@@ -57,10 +63,15 @@ Crate:
       Chance: 35
       Firework: false
       Glowing: false
+      Player: ''
+      Unbreakable: false
+      HideItemFlags: false
       Items:
         - 'Item:GOLDEN_SWORD, Amount:1, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1'
+      Commands: []
       Messages:
         - '&7You just won a &b&lCrazy &4&lSword&7.'
+      BlackListed-Permissions: []
       Alternative-Prize:
         Toggle: false
         Messages: []
@@ -77,10 +88,15 @@ Crate:
       Chance: 20
       Firework: true
       Glowing: false
+      Player: ''
+      Unbreakable: false
+      HideItemFlags: false
+      Items: []
       Commands:
         - 'Eco give %Player% 1000000'
       Messages:
         - '&7You just won &a$1,000,000&7.'
+      BlackListed-Permissions: []
       Alternative-Prize:
         Toggle: false
         Messages: []

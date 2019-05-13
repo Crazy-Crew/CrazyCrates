@@ -35,10 +35,15 @@ Crate:
       Chance: 40
       Firework: false
       Glowing: false
+      Player: ''
+      Unbreakable: false
+      HideItemFlags: false
       Items:
         - 'Item:CHAINMAIL_LEGGINGS, Amount:1, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
+      Commands: []
       Messages:
         - '&7You just won a &a&lFancy Pantst&7.'
+      BlackListed-Permissions: []
       Alternative-Prize:
         Toggle: false
         Messages: []
@@ -58,10 +63,15 @@ Crate:
       Chance: 35
       Firework: false
       Glowing: false
+      Player: ''
+      Unbreakable: false
+      HideItemFlags: false
       Items:
         - 'Item:DIAMOND_SWORD, Amount:1, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1'
+      Commands: []
       Messages:
         - '&7You just won a &b&lClassic Sword&7.'
+      BlackListed-Permissions: []
       Alternative-Prize:
         Toggle: false
         Messages: []
@@ -78,10 +88,16 @@ Crate:
       Chance: 20
       Firework: true
       Glowing: false
+      Player: ''
+      Unbreakable: false
+      HideItemFlags: false
+      Items: []
       Commands:
         - 'Eco give %Player% 100000'
+      Commands: []
       Messages:
         - '&7You just won &a$100,000&7.'
+      BlackListed-Permissions: []
       Alternative-Prize:
         Toggle: false
         Messages: []
