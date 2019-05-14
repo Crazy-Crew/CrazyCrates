@@ -46,7 +46,7 @@ public class Main extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onEnable() {
-		if(Version.getCurrentVersion().isOlder(Version.v1_13_R1)) {// Disables plugin on 1.12.2 and below servers.
+		if(Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {// Disables plugin on 1.12.2 and below servers.
 			isEnabled = false;
 			System.out.println("============= Crazy Crates =============");
 			System.out.println(" ");
@@ -54,6 +54,7 @@ public class Main extends JavaPlugin implements Listener {
 			+ "Please check the spigot page for more information about lower Minecraft versions.");
 			System.out.println(" ");
 			System.out.println("Plugin Page: https://www.spigotmc.org/resources/17599/");
+			System.out.println("Version Integer: " + Version.getCurrentVersion().getVersionInteger());
 			System.out.println(" ");
 			System.out.println("============= Crazy Crates =============");
 			Bukkit.getPluginManager().disablePlugin(this);
