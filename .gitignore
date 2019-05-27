@@ -1,11 +1,16 @@
 #Maven
-target
+**/target
 dependency-reduced-pom.xml
 
 #IntelliJ
 .idea
 *.iml
 crazycrates/META-INF/
+
+#Eclipse
+**.settings
+**.classpath
+**.project
 
 \.DS_Store
 

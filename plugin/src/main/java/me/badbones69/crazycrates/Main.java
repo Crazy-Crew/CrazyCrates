@@ -15,6 +15,10 @@ import me.badbones69.crazycrates.multisupport.MVdWPlaceholderAPISupport;
 import me.badbones69.crazycrates.multisupport.PlaceholderAPISupport;
 import me.badbones69.crazycrates.multisupport.Support;
 import me.badbones69.crazycrates.multisupport.Version;
+import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
+import me.badbones69.crazycrates.v1_13_R2.nms.NMS_v1_13_R2;
+import me.badbones69.crazycrates.v1_14_R1.nms.NMS_v1_14_R1;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -42,11 +46,17 @@ public class Main extends JavaPlugin implements Listener {
 	private Boolean updateChecker = false;
 	private CrazyCrates cc = CrazyCrates.getInstance();
 	private FileManager fileManager = FileManager.getInstance();
-	private Boolean isEnabled = true;// If the server is 1.13.2+
+	private Boolean isEnabled = true;// If the server is supported
+	private static NMSSupport nmsSupport = null;
 	
 	@Override
 	public void onEnable() {
-		if(Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {// Disables plugin on 1.12.2 and below servers.
+	    if (Version.getCurrentVersion().isSame(Version.v1_13_R2)) {
+            nmsSupport = new NMS_v1_13_R2();
+        } else if (Version.getCurrentVersion().isSame(Version.v1_14_R1)) {
+            nmsSupport = new NMS_v1_14_R1();
+        }
+		if(nmsSupport == null) {// Disables plugin on unsupported versions
 			isEnabled = false;
 			System.out.println("============= Crazy Crates =============");
 			System.out.println(" ");
@@ -801,6 +811,10 @@ public class Main extends JavaPlugin implements Listener {
 	
 	public static Plugin getPlugin() {
 		return Bukkit.getPluginManager().getPlugin("CrazyCrates");
+	}
+	
+	public static NMSSupport getNMSSupport() {
+	    return nmsSupport;
 	}
 	
 	@EventHandler
