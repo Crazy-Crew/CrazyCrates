@@ -5,7 +5,6 @@ import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.controllers.FireworkDamageAPI;
-
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -193,7 +192,7 @@ public class Methods {
 		Location location = b.getLocation();
 		Material type = b.getType();
 		if(type == Material.CHEST || type == Material.TRAPPED_CHEST || type == Material.ENDER_CHEST) {
-		    Main.getNMSSupport().openChest(b, location, open);
+			Main.getNMSSupport().openChest(b, location, open);
 		}
 	}
 	

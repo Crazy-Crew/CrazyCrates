@@ -68,16 +68,16 @@ public class ItemBuilder {
 		.setMaterial(item.getType())
 		.setEnchantments(new HashMap<>(item.getEnchantments()));
 		if(item.hasItemMeta()) {
-		    ItemMeta itemMeta = item.getItemMeta();
+			ItemMeta itemMeta = item.getItemMeta();
 			itemBuilder.setName(itemMeta.getDisplayName())
 			.setLore(itemMeta.getLore());
 			NBTItem nbt = new NBTItem(item);
 			if(nbt.hasKey("Unbreakable")) {
 				itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
 			}
-			if (itemMeta instanceof Damageable) {
-			    itemBuilder.setDamage(((Damageable)itemMeta).getDamage());
-            }
+			if(itemMeta instanceof Damageable) {
+				itemBuilder.setDamage(((Damageable) itemMeta).getDamage());
+			}
 		}
 		return itemBuilder;
 	}
@@ -364,34 +364,34 @@ public class ItemBuilder {
 	public Boolean isUnbreakable() {
 		return unbreakable;
 	}
-    
-    /**
-     * Set if the item in the builder to be unbreakable or not.
-     * @param unbreakable True will set it to be unbreakable and false will make it able to take damage.
-     * @return The ItemBuilder with updated info.
-     */
-    public ItemBuilder setUnbreakable(Boolean unbreakable) {
-        this.unbreakable = unbreakable;
-        return this;
-    }
-    
-    /**
-     * Set if the item should hide item flags or not
-     * @param hideItemFlags true the item will hide item flags. false will show them.
-     * @return The ItemBuilder with updated info.
-     */
-    public ItemBuilder hideItemFlags(Boolean hideItemFlags) {
-        this.hideItemFlags = hideItemFlags;
-        return this;
-    }
-    
-    /**
-     * Check if the item in the builder has hidden item flags.
-     * @return The ItemBuilder with updated info.
-     */
-    public Boolean areItemFlagsHidden() {
-        return hideItemFlags;
-    }
+	
+	/**
+	 * Set if the item in the builder to be unbreakable or not.
+	 * @param unbreakable True will set it to be unbreakable and false will make it able to take damage.
+	 * @return The ItemBuilder with updated info.
+	 */
+	public ItemBuilder setUnbreakable(Boolean unbreakable) {
+		this.unbreakable = unbreakable;
+		return this;
+	}
+	
+	/**
+	 * Set if the item should hide item flags or not
+	 * @param hideItemFlags true the item will hide item flags. false will show them.
+	 * @return The ItemBuilder with updated info.
+	 */
+	public ItemBuilder hideItemFlags(Boolean hideItemFlags) {
+		this.hideItemFlags = hideItemFlags;
+		return this;
+	}
+	
+	/**
+	 * Check if the item in the builder has hidden item flags.
+	 * @return The ItemBuilder with updated info.
+	 */
+	public Boolean areItemFlagsHidden() {
+		return hideItemFlags;
+	}
 	
 	/**
 	 * Check if the item in the builder is glowing.
@@ -421,9 +421,9 @@ public class ItemBuilder {
 		itemMeta.setDisplayName(getUpdatedName());
 		itemMeta.setLore(getUpdatedLore());
 		itemMeta.setUnbreakable(unbreakable);
-		if (itemMeta instanceof Damageable) {
-            ((Damageable)itemMeta).setDamage(damage);
-        }
+		if(itemMeta instanceof Damageable) {
+			((Damageable) itemMeta).setDamage(damage);
+		}
 		item.setItemMeta(itemMeta);
 		hideFlags(item, hideItemFlags);
 		item.addUnsafeEnchantments(enchantments);
@@ -452,15 +452,15 @@ public class ItemBuilder {
 	}
 	
 	private ItemStack hideFlags(ItemStack item, Boolean toggle) {
-	    if (toggle) {
-	        if(item != null && item.hasItemMeta()) {
-	            ItemMeta itemMeta = item.getItemMeta();
-	            itemMeta.addItemFlags(ItemFlag.values());
-	            item.setItemMeta(itemMeta);
-	            return item;
-	        }
-        }
-	    return item;
+		if(toggle) {
+			if(item != null && item.hasItemMeta()) {
+				ItemMeta itemMeta = item.getItemMeta();
+				itemMeta.addItemFlags(ItemFlag.values());
+				item.setItemMeta(itemMeta);
+				return item;
+			}
+		}
+		return item;
 	}
 	
 	private ItemStack addGlow(ItemStack item, boolean toggle) {

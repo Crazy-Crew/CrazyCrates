@@ -18,7 +18,6 @@ import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
 import me.badbones69.crazycrates.v1_13_R2.nms.NMS_v1_13_R2;
 import me.badbones69.crazycrates.v1_14_R1.nms.NMS_v1_14_R1;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -51,11 +50,11 @@ public class Main extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onEnable() {
-	    if (Version.getCurrentVersion().isSame(Version.v1_13_R2)) {
-            nmsSupport = new NMS_v1_13_R2();
-        } else if (Version.getCurrentVersion().isSame(Version.v1_14_R1)) {
-            nmsSupport = new NMS_v1_14_R1();
-        }
+		if(Version.getCurrentVersion().isSame(Version.v1_13_R2)) {
+			nmsSupport = new NMS_v1_13_R2();
+		}else if(Version.getCurrentVersion().isSame(Version.v1_14_R1)) {
+			nmsSupport = new NMS_v1_14_R1();
+		}
 		if(nmsSupport == null) {// Disables plugin on unsupported versions
 			isEnabled = false;
 			System.out.println("============= Crazy Crates =============");
@@ -814,7 +813,7 @@ public class Main extends JavaPlugin implements Listener {
 	}
 	
 	public static NMSSupport getNMSSupport() {
-	    return nmsSupport;
+		return nmsSupport;
 	}
 	
 	@EventHandler

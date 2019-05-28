@@ -1,12 +1,11 @@
 package me.badbones69.crazycrates.v1_13_R2.nms;
 
+import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
 import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
-
-import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NMS_v1_13_R2 implements NMSSupport {
-
-    @Override
+	
+	@Override
 	public void openChest(Block b, Location location, Boolean open) {
 		World world = ((CraftWorld) location.getWorld()).getHandle();
 		BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
@@ -27,9 +26,9 @@ public class NMS_v1_13_R2 implements NMSSupport {
 			world.playBlockAction(position, tileChest.getBlock().getBlock(), 1, open ? 1 : 0);
 		}
 	}
-
+	
 	//Disabled till can be fixed.
-    //http://stackoverflow.com/questions/24101928/setting-block-data-from-schematic-in-bukkit
+	//http://stackoverflow.com/questions/24101928/setting-block-data-from-schematic-in-bukkit
 	@Override
 	public List<Location> pasteSchematic(File f, Location loc) {
 		loc = loc.subtract(2, 1, 2);
@@ -63,8 +62,8 @@ public class NMS_v1_13_R2 implements NMSSupport {
 		}
 		return locations;
 	}
-
-    @Override
+	
+	@Override
 	public List<Location> getLocations(File f, Location loc) {
 		loc = loc.subtract(2, 1, 2);
 		List<Location> locations = new ArrayList<>();
@@ -89,21 +88,21 @@ public class NMS_v1_13_R2 implements NMSSupport {
 		}
 		return locations;
 	}
-
-    @Override
-    public List<Material> getQuadCreateBlocks() {
-        List<Material> blockList = new ArrayList<>();
-        blockList.add(Material.SIGN);
-        blockList.add(Material.WALL_SIGN);
-        blockList.add(Material.STONE_BUTTON);
-        blockList.add(Material.BIRCH_BUTTON);
-        blockList.add(Material.ACACIA_BUTTON);
-        blockList.add(Material.DARK_OAK_BUTTON);
-        blockList.add(Material.JUNGLE_BUTTON);
-        blockList.add(Material.OAK_BUTTON);
-        blockList.add(Material.SPRUCE_BUTTON);
-        blockList.add(Material.STONE_BUTTON);
-        return null;
-    }
-
+	
+	@Override
+	public List<Material> getQuadCreateBlocks() {
+		List<Material> blockList = new ArrayList<>();
+		blockList.add(Material.SIGN);
+		blockList.add(Material.WALL_SIGN);
+		blockList.add(Material.STONE_BUTTON);
+		blockList.add(Material.BIRCH_BUTTON);
+		blockList.add(Material.ACACIA_BUTTON);
+		blockList.add(Material.DARK_OAK_BUTTON);
+		blockList.add(Material.JUNGLE_BUTTON);
+		blockList.add(Material.OAK_BUTTON);
+		blockList.add(Material.SPRUCE_BUTTON);
+		blockList.add(Material.STONE_BUTTON);
+		return null;
+	}
+	
 }
