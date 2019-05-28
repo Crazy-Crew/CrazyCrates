@@ -15,9 +15,6 @@ import me.badbones69.crazycrates.multisupport.MVdWPlaceholderAPISupport;
 import me.badbones69.crazycrates.multisupport.PlaceholderAPISupport;
 import me.badbones69.crazycrates.multisupport.Support;
 import me.badbones69.crazycrates.multisupport.Version;
-import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
-import me.badbones69.crazycrates.v1_13_R2.nms.NMS_v1_13_R2;
-import me.badbones69.crazycrates.v1_14_R1.nms.NMS_v1_14_R1;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,7 +28,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -46,16 +42,10 @@ public class Main extends JavaPlugin implements Listener {
 	private CrazyCrates cc = CrazyCrates.getInstance();
 	private FileManager fileManager = FileManager.getInstance();
 	private Boolean isEnabled = true;// If the server is supported
-	private static NMSSupport nmsSupport = null;
 	
 	@Override
 	public void onEnable() {
-		if(Version.getCurrentVersion().isSame(Version.v1_13_R2)) {
-			nmsSupport = new NMS_v1_13_R2();
-		}else if(Version.getCurrentVersion().isSame(Version.v1_14_R1)) {
-			nmsSupport = new NMS_v1_14_R1();
-		}
-		if(nmsSupport == null) {// Disables plugin on unsupported versions
+		if(Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {// Disables plugin on unsupported versions
 			isEnabled = false;
 			System.out.println("============= Crazy Crates =============");
 			System.out.println(" ");
@@ -806,14 +796,6 @@ public class Main extends JavaPlugin implements Listener {
 			return true;
 		}
 		return false;
-	}
-	
-	public static Plugin getPlugin() {
-		return Bukkit.getPluginManager().getPlugin("CrazyCrates");
-	}
-	
-	public static NMSSupport getNMSSupport() {
-		return nmsSupport;
 	}
 	
 	@EventHandler

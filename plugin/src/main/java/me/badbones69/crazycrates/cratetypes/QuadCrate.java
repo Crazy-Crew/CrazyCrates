@@ -1,6 +1,5 @@
 package me.badbones69.crazycrates.cratetypes;
 
-import me.badbones69.crazycrates.Main;
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.KeyType;
@@ -65,7 +64,7 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 			checks.put(l, false);
 		}
 		opened.put(player, checks);
-		List<Material> blockList = Main.getNMSSupport().getQuadCreateBlocks();
+		List<Material> blockList = cc.getNMSSupport().getQuadCreateBlocks();
 		for(Location l : Check) {
 			if(blockList.contains(l.getBlock().getType())) {
 				player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
@@ -177,7 +176,7 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 					cc.endCrate(player);
 				}
 			}
-		}.runTaskTimer(Main.getPlugin(), 0, 1));
+		}.runTaskTimer(cc.getPlugin(), 0, 1));
 		cc.addQuadCrateTask(player, new BukkitRunnable() {
 			public void run() {
 				cc.addQuadCrateTask(player, new BukkitRunnable() {
@@ -212,9 +211,9 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 							cc.endCrate(player);
 						}
 					}
-				}.runTaskTimer(Main.getPlugin(), 0, 1));
+				}.runTaskTimer(cc.getPlugin(), 0, 1));
 			}
-		}.runTaskLater(Main.getPlugin(), 61));
+		}.runTaskLater(cc.getPlugin(), 61));
 		cc.addQuadCrateTask(player, new BukkitRunnable() {
 			public void run() {
 				cc.addQuadCrateTask(player, new BukkitRunnable() {
@@ -249,9 +248,9 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 							cc.endCrate(player);
 						}
 					}
-				}.runTaskTimer(Main.getPlugin(), 0, 1));
+				}.runTaskTimer(cc.getPlugin(), 0, 1));
 			}
-		}.runTaskLater(Main.getPlugin(), 121));
+		}.runTaskLater(cc.getPlugin(), 121));
 		cc.addQuadCrateTask(player, new BukkitRunnable() {
 			public void run() {
 				cc.addQuadCrateTask(player, new BukkitRunnable() {
@@ -286,9 +285,9 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 							cc.endCrate(player);
 						}
 					}
-				}.runTaskTimer(Main.getPlugin(), 0, 1));
+				}.runTaskTimer(cc.getPlugin(), 0, 1));
 			}
-		}.runTaskLater(Main.getPlugin(), 181));
+		}.runTaskLater(cc.getPlugin(), 181));
 		cc.addQuadCrateTask(player, new BukkitRunnable() {
 			public void run() {
 				timer.put(player.getUniqueId(), new BukkitRunnable() {
@@ -296,9 +295,9 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 						undoBuild(player);
 						player.sendMessage(Messages.OUT_OF_TIME.getMessage());
 					}
-				}.runTaskLater(Main.getPlugin(), Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20));
+				}.runTaskLater(cc.getPlugin(), Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20));
 			}
-		}.runTaskLater(Main.getPlugin(), 241));
+		}.runTaskLater(cc.getPlugin(), 241));
 	}
 	
 	/**
@@ -391,7 +390,7 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 								}
 								if(trigger) {
 									inBreakDown.add(player);
-									Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), () -> {
+									Bukkit.getScheduler().scheduleSyncDelayedTask(cc.getPlugin(), () -> {
 										if(rest.get(player) != null) {
 											for(Location loc : rest.get(player)) { // Rest is all except Chests.
 												HashMap<Location, BlockState> locs = crates.get(player); // Crates holds the Data.
@@ -408,7 +407,7 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 										}
 										player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
 									}, 3 * 20);
-									Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), () -> {
+									Bukkit.getScheduler().scheduleSyncDelayedTask(cc.getPlugin(), () -> {
 										if(rest.get(player) != null) {
 											for(Location loc : rest.get(player)) {
 												HashMap<Location, BlockState> locs = crates.get(player);

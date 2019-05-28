@@ -1,6 +1,5 @@
 package me.badbones69.crazycrates.cratetypes;
 
-import me.badbones69.crazycrates.Main;
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.KeyType;
@@ -92,7 +91,7 @@ public class Roulette implements Listener {
 					}
 				}
 			}
-		}.runTaskTimer(Main.getPlugin(), 2, 2));
+		}.runTaskTimer(cc.getPlugin(), 2, 2));
 	}
 	
 	private static ArrayList<Integer> slowSpin() {

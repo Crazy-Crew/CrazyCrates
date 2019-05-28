@@ -11,6 +11,10 @@ import me.badbones69.crazycrates.controllers.FileManager;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.controllers.GUIMenu;
 import me.badbones69.crazycrates.cratetypes.*;
+import me.badbones69.crazycrates.multisupport.Version;
+import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
+import me.badbones69.crazycrates.v1_13_R2.nms.NMS_v1_13_R2;
+import me.badbones69.crazycrates.v1_14_R1.nms.NMS_v1_14_R1;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,6 +24,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
@@ -85,6 +90,16 @@ public class CrazyCrates {
 	private Boolean giveNewPlayersKeys;
 	
 	/**
+	 * The NMS version needed to be used.
+	 */
+	private NMSSupport nmsSupport;
+	
+	/**
+	 * The CrazyCrates plugin.
+	 */
+	private Plugin plugin;
+	
+	/**
 	 * Gets the instance of the CrazyCrates class.
 	 * @return Instance of this class.
 	 */
@@ -108,6 +123,12 @@ public class CrazyCrates {
 		crates.clear();
 		brokecrates.clear();
 		crateLocations.clear();
+		if(Version.getCurrentVersion().isSame(Version.v1_13_R2)) {
+			nmsSupport = new NMS_v1_13_R2();
+		}else if(Version.getCurrentVersion().isSame(Version.v1_14_R1)) {
+			nmsSupport = new NMS_v1_14_R1();
+		}
+		plugin = Bukkit.getPluginManager().getPlugin("CrazyCrates");
 		giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Loading all crate information...");
 		for(String crateName : fileManager.getAllCratesNames()) {
@@ -844,6 +865,18 @@ public class CrazyCrates {
 				Files.DATA.saveFile();
 			}
 		}
+	}
+	
+	/**
+	 * Get the NMS version being used.
+	 * @return Version of NMS, returns null if not found.
+	 */
+	public NMSSupport getNMSSupport() {
+		return nmsSupport;
+	}
+	
+	public Plugin getPlugin() {
+		return plugin;
 	}
 	
 	private ItemStack getKey(FileConfiguration file) {

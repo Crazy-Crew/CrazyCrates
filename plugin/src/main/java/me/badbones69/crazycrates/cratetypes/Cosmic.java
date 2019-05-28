@@ -1,6 +1,5 @@
 package me.badbones69.crazycrates.cratetypes;
 
-import me.badbones69.crazycrates.Main;
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.KeyType;
@@ -178,7 +177,7 @@ public class Cosmic implements Listener {
 										player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 1, 1);
 									}
 								}
-							}.runTaskTimer(Main.getPlugin(), 0, 2));
+							}.runTaskTimer(cc.getPlugin(), 0, 2));
 						}
 					}
 				}

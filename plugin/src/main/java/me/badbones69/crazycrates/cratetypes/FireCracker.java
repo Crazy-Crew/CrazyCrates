@@ -1,6 +1,5 @@
 package me.badbones69.crazycrates.cratetypes;
 
-import me.badbones69.crazycrates.Main;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.objects.Crate;
@@ -48,7 +47,7 @@ public class FireCracker {
 					QuickCrate.openCrate(player, loc, crate, KeyType.FREE_KEY);
 				}
 			}
-		}.runTaskTimer(Main.getPlugin(), 0, 2));
+		}.runTaskTimer(cc.getPlugin(), 0, 2));
 	}
 	
 	private static void fireWork(Location loc, Color color) {
@@ -62,7 +61,7 @@ public class FireCracker {
 			public void run() {
 				fw.detonate();
 			}
-		}.runTaskLaterAsynchronously(Main.getPlugin(), 1);
+		}.runTaskLaterAsynchronously(cc.getPlugin(), 1);
 	}
 	
 }

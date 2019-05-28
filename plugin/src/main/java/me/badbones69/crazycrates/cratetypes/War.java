@@ -1,6 +1,5 @@
 package me.badbones69.crazycrates.cratetypes;
 
-import me.badbones69.crazycrates.Main;
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.CrateType;
@@ -63,7 +62,7 @@ public class War implements Listener {
 					canPick.put(player, true);
 				}
 			}
-		}.runTaskTimer(Main.getPlugin(), 1, 3));
+		}.runTaskTimer(cc.getPlugin(), 1, 3));
 	}
 	
 	@EventHandler
@@ -134,11 +133,11 @@ public class War implements Listener {
 															}
 															player.closeInventory();
 														}
-													}.runTaskLater(Main.getPlugin(), 30));
+													}.runTaskLater(cc.getPlugin(), 30));
 												}
-											}.runTaskLater(Main.getPlugin(), 30));
+											}.runTaskLater(cc.getPlugin(), 30));
 										}
-									}.runTaskLater(Main.getPlugin(), 30));
+									}.runTaskLater(cc.getPlugin(), 30));
 								}
 							}
 						}
