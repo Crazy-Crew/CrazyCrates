@@ -1,18 +1,18 @@
-package me.badbones69.crazycrates.v1_13_R2.nms;
+package me.badbones69.crazycrates.multisupport.nms.v1_8_R2;
 
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
-import net.minecraft.server.v1_13_R2.*;
+import net.minecraft.server.v1_8_R2.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R2.CraftWorld;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NMS_v1_13_R2 implements NMSSupport {
+public class NMS_v1_8_R2 implements NMSSupport {
 	
 	@Override
 	public void openChest(Block b, Location location, Boolean open) {
@@ -20,10 +20,10 @@ public class NMS_v1_13_R2 implements NMSSupport {
 		BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
 		if(b.getType() == Material.ENDER_CHEST) {
 			TileEntityEnderChest tileChest = (TileEntityEnderChest) world.getTileEntity(position);
-			world.playBlockAction(position, tileChest.getBlock().getBlock(), 1, open ? 1 : 0);
+			world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
 		}else {
 			TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
-			world.playBlockAction(position, tileChest.getBlock().getBlock(), 1, open ? 1 : 0);
+			world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
 		}
 	}
 	
@@ -95,14 +95,8 @@ public class NMS_v1_13_R2 implements NMSSupport {
 		blockList.add(Material.SIGN);
 		blockList.add(Material.WALL_SIGN);
 		blockList.add(Material.STONE_BUTTON);
-		blockList.add(Material.BIRCH_BUTTON);
-		blockList.add(Material.ACACIA_BUTTON);
-		blockList.add(Material.DARK_OAK_BUTTON);
-		blockList.add(Material.JUNGLE_BUTTON);
-		blockList.add(Material.OAK_BUTTON);
-		blockList.add(Material.SPRUCE_BUTTON);
-		blockList.add(Material.STONE_BUTTON);
-		return null;
+		blockList.add(Material.WOOD_BUTTON);
+		return blockList;
 	}
 	
 }

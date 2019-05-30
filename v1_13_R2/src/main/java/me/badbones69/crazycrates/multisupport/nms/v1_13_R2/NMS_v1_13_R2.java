@@ -1,18 +1,18 @@
-package me.badbones69.crazycrates.v1_14_R1.nms;
+package me.badbones69.crazycrates.multisupport.nms.v1_13_R2;
 
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
-import net.minecraft.server.v1_14_R1.*;
+import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NMS_v1_14_R1 implements NMSSupport {
+public class NMS_v1_13_R2 implements NMSSupport {
 	
 	@Override
 	public void openChest(Block b, Location location, Boolean open) {
@@ -27,8 +27,8 @@ public class NMS_v1_14_R1 implements NMSSupport {
 		}
 	}
 	
-	// Disabled till can be fixed.
-	// http://stackoverflow.com/questions/24101928/setting-block-data-from-schematic-in-bukkit
+	//Disabled till can be fixed.
+	//http://stackoverflow.com/questions/24101928/setting-block-data-from-schematic-in-bukkit
 	@Override
 	public List<Location> pasteSchematic(File f, Location loc) {
 		loc = loc.subtract(2, 1, 2);
@@ -92,18 +92,8 @@ public class NMS_v1_14_R1 implements NMSSupport {
 	@Override
 	public List<Material> getQuadCreateBlocks() {
 		List<Material> blockList = new ArrayList<>();
-		blockList.add(Material.ACACIA_SIGN);
-		blockList.add(Material.BIRCH_SIGN);
-		blockList.add(Material.DARK_OAK_SIGN);
-		blockList.add(Material.JUNGLE_SIGN);
-		blockList.add(Material.OAK_SIGN);
-		blockList.add(Material.SPRUCE_SIGN);
-		blockList.add(Material.ACACIA_WALL_SIGN);
-		blockList.add(Material.BIRCH_WALL_SIGN);
-		blockList.add(Material.DARK_OAK_WALL_SIGN);
-		blockList.add(Material.JUNGLE_WALL_SIGN);
-		blockList.add(Material.OAK_WALL_SIGN);
-		blockList.add(Material.SPRUCE_WALL_SIGN);
+		blockList.add(Material.SIGN);
+		blockList.add(Material.WALL_SIGN);
 		blockList.add(Material.STONE_BUTTON);
 		blockList.add(Material.BIRCH_BUTTON);
 		blockList.add(Material.ACACIA_BUTTON);

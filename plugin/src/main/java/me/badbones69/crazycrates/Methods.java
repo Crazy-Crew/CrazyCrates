@@ -185,14 +185,14 @@ public class Methods {
 	}
 	
 	public static List<Location> getLocations(String shem, Location loc) {
-		return Main.getNMSSupport().getLocations(new File(plugin.getDataFolder() + "/Schematics/" + shem), loc);
+		return cc.getNMSSupport().getLocations(new File(plugin.getDataFolder() + "/Schematics/" + shem), loc);
 	}
 	
 	public static void playChestAction(Block b, boolean open) {
 		Location location = b.getLocation();
 		Material type = b.getType();
 		if(type == Material.CHEST || type == Material.TRAPPED_CHEST || type == Material.ENDER_CHEST) {
-			Main.getNMSSupport().openChest(b, location, open);
+			cc.getNMSSupport().openChest(b, location, open);
 		}
 	}
 	
