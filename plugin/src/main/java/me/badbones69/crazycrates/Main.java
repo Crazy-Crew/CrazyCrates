@@ -92,6 +92,7 @@ public class Main extends JavaPlugin implements Listener {
 		pm.registerEvents(new GUIMenu(), this);
 		pm.registerEvents(new Preview(), this);
 		pm.registerEvents(new QuadCrate(), this);
+		pm.registerEvents(new NewQuadCrate(), this);
 		pm.registerEvents(new War(), this);
 		pm.registerEvents(new CSGO(), this);
 		pm.registerEvents(new Wheel(), this);
@@ -462,10 +463,10 @@ public class Main extends JavaPlugin implements Listener {
 								CrateType type = crate.getCrateType();
 								if(type != null) {
 									if(type != CrateType.CRATE_ON_THE_GO && type != CrateType.QUICK_CRATE && type != CrateType.FIRE_CRACKER) {
-										if(type == CrateType.QUAD_CRATE) {
-											sender.sendMessage(Messages.QUAD_CRATE_DISABLED.getMessage());
-											return true;
-										}
+										//										if(type == CrateType.QUAD_CRATE) {
+										//											sender.sendMessage(Messages.QUAD_CRATE_DISABLED.getMessage());
+										//											return true;
+										//										}
 										cc.openCrate(player, crate, KeyType.FREE_KEY, player.getLocation(), true);
 										HashMap<String, String> placeholders = new HashMap<>();
 										placeholders.put("%crate%", crate.getName());

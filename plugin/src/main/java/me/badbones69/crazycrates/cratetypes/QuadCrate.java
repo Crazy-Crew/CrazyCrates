@@ -10,12 +10,14 @@ import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.controllers.CrateControl;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
+import me.badbones69.crazycrates.controllers.ParticleEffect;
+import me.badbones69.crazycrates.controllers.ParticleEffect.BlockData;
+import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.*;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
-import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -27,10 +29,12 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.material.Directional;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import java.io.File;
 import java.util.*;
 
 public class QuadCrate implements Listener { // Quad Crate Control.
@@ -55,16 +59,15 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 	public static Boolean startBuild(final Player player, final Location loc, Crate crate, KeyType key, Material Chest) {
 		Location Lo = loc.clone();
 		final ArrayList<Location> Ch = getChests(loc);
-		String schem = Methods.pickRandomSchem();
+		String schem = "";
 		List<Location> Check = Methods.getLocations(schem, Lo.clone());
 		ArrayList<Location> rest = new ArrayList<>();
-		rest.add(loc.clone().add(0, -1, 0));
 		HashMap<Location, Boolean> checks = new HashMap<>();
 		for(Location l : Ch) {
 			checks.put(l, false);
 		}
 		opened.put(player, checks);
-		List<Material> blockList = cc.getNMSSupport().getQuadCreateBlocks();
+		List<Material> blockList = cc.getNMSSupport().getQuadCrateBlacklistBlocks();
 		for(Location l : Check) {
 			if(blockList.contains(l.getBlock().getType())) {
 				player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
@@ -107,7 +110,6 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 		}
 		chestLocations.put(player, Ch);
 		cc.takeKeys(1, player, crate, key);
-		rest.clear();
 		HashMap<Location, BlockState> locs = new HashMap<>();
 		HashMap<Location, BlockState> A = new HashMap<>();
 		for(Location l : Methods.getLocations(schem, Lo.clone())) {
@@ -124,8 +126,7 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 			}
 			A.put(l, l.getBlock().getState());
 		}
-		// Disabled till can be fixed.
-		//		pasteSchematic(Lo.clone(), schem);
+		cc.getNMSSupport().pasteSchematic(new File(cc.getPlugin().getDataFolder() + "/Schematics/" + schem), Lo.clone());
 		all.put(player, A);
 		crates.put(player, locs);
 		QuadCrate.rest.put(player, rest);
@@ -136,15 +137,20 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 	}
 	
 	private static void spawnChest(final ArrayList<Location> locs, final Player player, final Material chest) {
-		ArrayList<Particle> particles = new ArrayList<>();
-		particles.add(Particle.FLAME);
-		particles.add(Particle.VILLAGER_HAPPY);
-		particles.add(Particle.SPELL_WITCH);
-		particles.add(Particle.REDSTONE);
-		Random r = new Random();
-		final Particle particle = particles.get(r.nextInt(particles.size()));
-		boolean isRedStone = particle == Particle.REDSTONE;
-		DustOptions dustOptions = isRedStone ? new DustOptions(Color.RED, 1) : null;
+		boolean isOlder = Version.getCurrentVersion().isOlder(Version.v1_9_R1);
+		ArrayList<Particle> newParticles = new ArrayList<>();
+		newParticles.add(Particle.FLAME);
+		newParticles.add(Particle.VILLAGER_HAPPY);
+		newParticles.add(Particle.SPELL_WITCH);
+		newParticles.add(Particle.REDSTONE);
+		ArrayList<ParticleEffect> oldParticles = new ArrayList<>();
+		oldParticles.add(ParticleEffect.FLAME);
+		oldParticles.add(ParticleEffect.VILLAGER_HAPPY);
+		oldParticles.add(ParticleEffect.SPELL_WITCH);
+		oldParticles.add(ParticleEffect.REDSTONE);
+		final Particle newParticle = newParticles.get(new Random().nextInt(newParticles.size()));
+		final ParticleEffect oldParticle = oldParticles.get(new Random().nextInt(oldParticles.size()));
+		boolean isRedStone = newParticle == Particle.REDSTONE;
 		cc.addQuadCrateTask(player, new BukkitRunnable() {
 			double r = 0;
 			int i = 0;
@@ -153,12 +159,20 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 			Location l = new Location(locs.get(0).getWorld(), locs.get(0).getBlockX(), locs.get(0).getBlockY(), locs.get(0).getBlockZ()).add(.5, 3, .5);
 			Location loc = locs.get(0).clone();
 			public void run() {
-				ArrayList<Location> L = getCircle(l, r, 10);
-				ArrayList<Location> L2 = getCircleReverse(l, r, 10);
-				l.getWorld().spawnParticle(particle, L.get(i), 0, dustOptions);
-				l.getWorld().spawnParticle(particle, L2.get(i), 0, dustOptions);
-				//				particle.display(0, 0, 0, 0, 1, L.get(i), 100);
-				//				particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
+				ArrayList<Location> locations = getCircle(l, r, 10);
+				ArrayList<Location> locations2 = getCircleReverse(l, r, 10);
+				if(isOlder) {
+					oldParticle.display(0, 0, 0, 0, 1, locations.get(i), 100);
+					oldParticle.display(0, 0, 0, 0, 1, locations2.get(i), 100);
+				}else {
+					if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+						l.getWorld().spawnParticle(newParticle, locations.get(i), 0, new DustOptions(Color.RED, 1));
+						l.getWorld().spawnParticle(newParticle, locations2.get(i), 0, new DustOptions(Color.RED, 1));
+					}else {
+						l.getWorld().spawnParticle(newParticle, locations.get(i), 0);
+						l.getWorld().spawnParticle(newParticle, locations2.get(i), 0);
+					}
+				}
 				i++;
 				f++;
 				e++;
@@ -169,10 +183,22 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 					r = r + .08;
 				}
 				if(f == 60) {
-					l.getWorld().spawnParticle(Particle.BLOCK_DUST, loc.clone().add(.5, .3, .5), 10, .5F, .5F, .5F, loc.getBlock().getBlockData());
-					player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
+					if(isOlder) {
+						ParticleEffect.BLOCK_DUST.display(new BlockData(chest, (byte) 0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
+					}else {
+						l.getWorld().spawnParticle(Particle.BLOCK_DUST, loc.clone().add(.5, .3, .5), 10, .5F, .5F, .5F, loc.getBlock().getState().getData());
+					}
+					if(isOlder) {
+						player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
+					}else {
+						player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+					}
 					loc.getBlock().setType(chest);
-					turnChest((Chest) loc.getBlock(), BlockFace.WEST);
+					if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+						turnChest((Chest) loc.getBlock(), BlockFace.WEST);
+					}else {
+						cc.getNMSSupport().rotateChest(loc.getBlock(), (byte) 4);
+					}
 					cc.endCrate(player);
 				}
 			}
@@ -188,12 +214,20 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 					Location loc = locs.get(1).clone();
 					@SuppressWarnings("deprecation")
 					public void run() {
-						ArrayList<Location> L = getCircle(l, r, 10);
-						ArrayList<Location> L2 = getCircleReverse(l, r, 10);
-						l.getWorld().spawnParticle(particle, L.get(i), 0, dustOptions);
-						l.getWorld().spawnParticle(particle, L2.get(i), 0, dustOptions);
-						//				particle.display(0, 0, 0, 0, 1, L.get(i), 100);
-						//				particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
+						ArrayList<Location> locations = getCircle(l, r, 10);
+						ArrayList<Location> locations2 = getCircleReverse(l, r, 10);
+						if(isOlder) {
+							oldParticle.display(0, 0, 0, 0, 1, locations.get(i), 100);
+							oldParticle.display(0, 0, 0, 0, 1, locations2.get(i), 100);
+						}else {
+							if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+								l.getWorld().spawnParticle(newParticle, locations.get(i), 0, new DustOptions(Color.RED, 1));
+								l.getWorld().spawnParticle(newParticle, locations2.get(i), 0, new DustOptions(Color.RED, 1));
+							}else {
+								l.getWorld().spawnParticle(newParticle, locations.get(i), 0);
+								l.getWorld().spawnParticle(newParticle, locations2.get(i), 0);
+							}
+						}
 						i++;
 						f++;
 						e++;
@@ -204,10 +238,22 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 							r = r + .08;
 						}
 						if(f == 60) {
-							l.getWorld().spawnParticle(Particle.BLOCK_DUST, loc.clone().add(.5, .3, .5), 10, .5F, .5F, .5F, loc.getBlock().getBlockData());
-							player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
+							if(isOlder) {
+								ParticleEffect.BLOCK_DUST.display(new BlockData(chest, (byte) 0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
+							}else {
+								l.getWorld().spawnParticle(Particle.BLOCK_DUST, loc.clone().add(.5, .3, .5), 10, .5F, .5F, .5F, loc.getBlock().getState().getData());
+							}
+							if(isOlder) {
+								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
+							}else {
+								player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+							}
 							loc.getBlock().setType(chest);
-							turnChest((Chest) loc.getBlock(), BlockFace.NORTH);
+							if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+								turnChest((Chest) loc.getBlock(), BlockFace.WEST);
+							}else {
+								cc.getNMSSupport().rotateChest(loc.getBlock(), (byte) 2);
+							}
 							cc.endCrate(player);
 						}
 					}
@@ -225,12 +271,20 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 					Location loc = locs.get(2).clone();
 					@SuppressWarnings("deprecation")
 					public void run() {
-						ArrayList<Location> L = getCircle(l, r, 10);
-						ArrayList<Location> L2 = getCircleReverse(l, r, 10);
-						l.getWorld().spawnParticle(particle, L.get(i), 0, dustOptions);
-						l.getWorld().spawnParticle(particle, L2.get(i), 0, dustOptions);
-						//				particle.display(0, 0, 0, 0, 1, L.get(i), 100);
-						//				particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
+						ArrayList<Location> locations = getCircle(l, r, 10);
+						ArrayList<Location> locations2 = getCircleReverse(l, r, 10);
+						if(isOlder) {
+							oldParticle.display(0, 0, 0, 0, 1, locations.get(i), 100);
+							oldParticle.display(0, 0, 0, 0, 1, locations2.get(i), 100);
+						}else {
+							if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+								l.getWorld().spawnParticle(newParticle, locations.get(i), 0, new DustOptions(Color.RED, 1));
+								l.getWorld().spawnParticle(newParticle, locations2.get(i), 0, new DustOptions(Color.RED, 1));
+							}else {
+								l.getWorld().spawnParticle(newParticle, locations.get(i), 0);
+								l.getWorld().spawnParticle(newParticle, locations2.get(i), 0);
+							}
+						}
 						i++;
 						f++;
 						e++;
@@ -241,10 +295,22 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 							r = r + .08;
 						}
 						if(f == 60) {
-							l.getWorld().spawnParticle(Particle.BLOCK_DUST, loc.clone().add(.5, .3, .5), 10, .5F, .5F, .5F, loc.getBlock().getBlockData());
-							player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
+							if(isOlder) {
+								ParticleEffect.BLOCK_DUST.display(new BlockData(chest, (byte) 0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
+							}else {
+								l.getWorld().spawnParticle(Particle.BLOCK_DUST, loc.clone().add(.5, .3, .5), 10, .5F, .5F, .5F, loc.getBlock().getState().getData());
+							}
+							if(isOlder) {
+								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
+							}else {
+								player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+							}
 							loc.getBlock().setType(chest);
-							turnChest((Chest) loc.getBlock(), BlockFace.EAST);
+							if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+								turnChest((Chest) loc.getBlock(), BlockFace.WEST);
+							}else {
+								cc.getNMSSupport().rotateChest(loc.getBlock(), (byte) 5);
+							}
 							cc.endCrate(player);
 						}
 					}
@@ -262,12 +328,20 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 					Location loc = locs.get(3).clone();
 					@SuppressWarnings("deprecation")
 					public void run() {
-						ArrayList<Location> L = getCircle(l, r, 10);
-						ArrayList<Location> L2 = getCircleReverse(l, r, 10);
-						l.getWorld().spawnParticle(particle, L.get(i), 0, dustOptions);
-						l.getWorld().spawnParticle(particle, L2.get(i), 0, dustOptions);
-						//				particle.display(0, 0, 0, 0, 1, L.get(i), 100);
-						//				particle.display(0, 0, 0, 0, 1, L2.get(i), 100);
+						ArrayList<Location> locations = getCircle(l, r, 10);
+						ArrayList<Location> locations2 = getCircleReverse(l, r, 10);
+						if(isOlder) {
+							oldParticle.display(0, 0, 0, 0, 1, locations.get(i), 100);
+							oldParticle.display(0, 0, 0, 0, 1, locations2.get(i), 100);
+						}else {
+							if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+								l.getWorld().spawnParticle(newParticle, locations.get(i), 0, new DustOptions(Color.RED, 1));
+								l.getWorld().spawnParticle(newParticle, locations2.get(i), 0, new DustOptions(Color.RED, 1));
+							}else {
+								l.getWorld().spawnParticle(newParticle, locations.get(i), 0);
+								l.getWorld().spawnParticle(newParticle, locations2.get(i), 0);
+							}
+						}
 						i++;
 						f++;
 						e++;
@@ -278,10 +352,22 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 							r = r + .08;
 						}
 						if(f == 60) {
-							l.getWorld().spawnParticle(Particle.BLOCK_DUST, loc.clone().add(.5, .3, .5), 10, .5F, .5F, .5F, loc.getBlock().getBlockData());
-							player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
+							if(isOlder) {
+								ParticleEffect.BLOCK_DUST.display(new BlockData(chest, (byte) 0), .5F, .5F, .5F, 0, 10, loc.clone().add(.5, .3, .5), 100);
+							}else {
+								l.getWorld().spawnParticle(Particle.BLOCK_DUST, loc.clone().add(.5, .3, .5), 10, .5F, .5F, .5F, loc.getBlock().getState().getData());
+							}
+							if(isOlder) {
+								player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
+							}else {
+								player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+							}
 							loc.getBlock().setType(chest);
-							turnChest((Chest) loc.getBlock(), BlockFace.SOUTH);
+							if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+								turnChest((Chest) loc.getBlock(), BlockFace.WEST);
+							}else {
+								cc.getNMSSupport().rotateChest(loc.getBlock(), (byte) 3);
+							}
 							cc.endCrate(player);
 						}
 					}
@@ -405,7 +491,11 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 												}
 											}
 										}
-										player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
+										if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+											player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
+										}else {
+											player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+										}
 									}, 3 * 20);
 									Bukkit.getScheduler().scheduleSyncDelayedTask(cc.getPlugin(), () -> {
 										if(rest.get(player) != null) {
@@ -426,7 +516,11 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 											}
 										}
 										rewards.remove(player);
-										player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
+										if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+											player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
+										}else {
+											player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
+										}
 										crates.remove(player);
 										chestLocations.remove(player);
 										rest.remove(player);
@@ -542,8 +636,7 @@ public class QuadCrate implements Listener { // Quad Crate Control.
 	
 	private static void turnChest(Chest chest, BlockFace blockFace) {
 		Directional directional = (Directional) chest;
-		directional.setFacing(blockFace);
-		chest.setBlockData(directional);
+		directional.setFacingDirection(blockFace);
 	}
 	
 	private static ArrayList<Location> getChests(Location loc) {
