@@ -53,8 +53,8 @@ public class CSGO implements Listener {
 		inv.setItem(2 + 18, glass.get(3));
 		inv.setItem(3, glass.get(5));
 		inv.setItem(3 + 18, glass.get(5));
-		inv.setItem(4, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
-		inv.setItem(4 + 18, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+		inv.setItem(4, new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15")).setName(" ").build());
+		inv.setItem(4 + 18, new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15")).setName(" ").build());
 		inv.setItem(5, glass.get(6));
 		inv.setItem(5 + 18, glass.get(6));
 		inv.setItem(6, glass.get(7));

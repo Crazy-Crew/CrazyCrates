@@ -27,6 +27,11 @@ public class NMS_v1_12_R1 implements NMSSupport {
 		}
 	}
 	
+	@Override
+	public void rotateChest(Block block, Byte direction) {
+		block.setData(direction);
+	}
+	
 	//Disabled till can be fixed.
 	//http://stackoverflow.com/questions/24101928/setting-block-data-from-schematic-in-bukkit
 	@Override
@@ -50,8 +55,8 @@ public class NMS_v1_12_R1 implements NMSSupport {
 						final Location l = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ());
 						int b = blocks[index] & 0xFF;//make the block unsigned, so that blocks with an id over 127, like quartz and emerald, can be pasted
 						final Block block = l.getBlock();
-						//Material m = Material.getMaterial(b);
-						//block.setType(m);
+						Material m = Material.getMaterial(b);
+						block.setType(m);
 						//you can check what type the block is here, like if(m.equals(Material.BEACON)) to check if it's a beacon
 						locations.add(l);
 					}
@@ -90,7 +95,7 @@ public class NMS_v1_12_R1 implements NMSSupport {
 	}
 	
 	@Override
-	public List<Material> getQuadCreateBlocks() {
+	public List<Material> getQuadCrateBlacklistBlocks() {
 		List<Material> blockList = new ArrayList<>();
 		blockList.add(Material.SIGN);
 		blockList.add(Material.WALL_SIGN);

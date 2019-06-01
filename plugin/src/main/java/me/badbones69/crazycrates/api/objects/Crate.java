@@ -1,6 +1,7 @@
 package me.badbones69.crazycrates.api.objects;
 
 import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.controllers.FileManager;
 import me.badbones69.crazycrates.controllers.Preview;
@@ -32,6 +33,7 @@ public class Crate {
 	private ArrayList<ItemStack> preview;
 	private ArrayList<Tier> tiers;
 	private FileManager fileManager = FileManager.getInstance();
+	private CrazyCrates cc = CrazyCrates.getInstance();
 	
 	/**
 	 *
@@ -41,7 +43,7 @@ public class Crate {
 	 * @param prizes The prizes that can be won.
 	 * @param file The crate file.
 	 */
-	public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, Integer newPlayerKeys, ArrayList tiers) {
+	public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, Integer newPlayerKeys, ArrayList<Tier> tiers) {
 		this.key = key;
 		this.file = file;
 		this.name = name;
@@ -418,7 +420,7 @@ public class Crate {
 		}
 		if(page == 1) {
 			inv.setItem(48, new ItemBuilder()
-			.setMaterial(Material.GRAY_STAINED_GLASS_PANE)
+			.setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:7"))
 			.setName(" ")
 			.build());
 		}else {
@@ -426,7 +428,7 @@ public class Crate {
 		}
 		if(page == maxPage) {
 			inv.setItem(50, new ItemBuilder()
-			.setMaterial(Material.GRAY_STAINED_GLASS_PANE)
+			.setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:7"))
 			.setName(" ")
 			.build());
 		}else {

@@ -13,8 +13,16 @@ import me.badbones69.crazycrates.controllers.GUIMenu;
 import me.badbones69.crazycrates.cratetypes.*;
 import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
+import me.badbones69.crazycrates.multisupport.nms.v1_10_R1.NMS_v1_10_R1;
+import me.badbones69.crazycrates.multisupport.nms.v1_11_R1.NMS_v1_11_R1;
+import me.badbones69.crazycrates.multisupport.nms.v1_12_R1.NMS_v1_12_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_13_R2.NMS_v1_13_R2;
 import me.badbones69.crazycrates.multisupport.nms.v1_14_R1.NMS_v1_14_R1;
+import me.badbones69.crazycrates.multisupport.nms.v1_8_R1.NMS_v1_8_R1;
+import me.badbones69.crazycrates.multisupport.nms.v1_8_R2.NMS_v1_8_R2;
+import me.badbones69.crazycrates.multisupport.nms.v1_8_R3.NMS_v1_8_R3;
+import me.badbones69.crazycrates.multisupport.nms.v1_9_R1.NMS_v1_9_R1;
+import me.badbones69.crazycrates.multisupport.nms.v1_9_R2.NMS_v1_9_R2;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,6 +35,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.io.File;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -65,7 +74,7 @@ public class CrazyCrates {
 	private HashMap<UUID, Crate> playerOpeningCrates = new HashMap<>();
 	
 	/**
-	 * Keys that are being used in crates. Only needed in cosmic due to it taking the key after the player picks a pize and not in a start method.
+	 * Keys that are being used in crates. Only needed in cosmic due to it taking the key after the player picks a prize and not in a start method.
 	 */
 	private HashMap<UUID, KeyType> playerKeys = new HashMap<>();
 	
@@ -80,6 +89,11 @@ public class CrazyCrates {
 	private HashMap<UUID, ArrayList<BukkitTask>> currentQuadTasks = new HashMap<>();
 	
 	/**
+	 * A list of current crate schematics for Quad Crate.
+	 */
+	private List<CrateSchematic> crateSchematics = new ArrayList<>();
+	
+	/**
 	 * If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
 	 */
 	private Boolean giveVirtualKeysWhenInventoryFull;
@@ -88,6 +102,11 @@ public class CrazyCrates {
 	 * True if at least one crate gives new players keys and false if none give new players keys.
 	 */
 	private Boolean giveNewPlayersKeys;
+	
+	/**
+	 * True if using 1.13+ material names and false if using lower versions.
+	 */
+	private Boolean useNewMaterial;
 	
 	/**
 	 * The NMS version needed to be used.
@@ -123,10 +142,40 @@ public class CrazyCrates {
 		crates.clear();
 		brokecrates.clear();
 		crateLocations.clear();
-		if(Version.getCurrentVersion().isSame(Version.v1_13_R2)) {
-			nmsSupport = new NMS_v1_13_R2();
-		}else if(Version.getCurrentVersion().isSame(Version.v1_14_R1)) {
-			nmsSupport = new NMS_v1_14_R1();
+		crateSchematics.clear();
+		Version version = Version.getCurrentVersion();
+		useNewMaterial = version.isNewer(Version.v1_12_R1);
+		switch(version) {
+			case v1_8_R1:
+				nmsSupport = new NMS_v1_8_R1();
+				break;
+			case v1_8_R2:
+				nmsSupport = new NMS_v1_8_R2();
+				break;
+			case v1_8_R3:
+				nmsSupport = new NMS_v1_8_R3();
+				break;
+			case v1_9_R1:
+				nmsSupport = new NMS_v1_9_R1();
+				break;
+			case v1_9_R2:
+				nmsSupport = new NMS_v1_9_R2();
+				break;
+			case v1_10_R1:
+				nmsSupport = new NMS_v1_10_R1();
+				break;
+			case v1_11_R1:
+				nmsSupport = new NMS_v1_11_R1();
+				break;
+			case v1_12_R1:
+				nmsSupport = new NMS_v1_12_R1();
+				break;
+			case v1_13_R2:
+				nmsSupport = new NMS_v1_13_R2();
+				break;
+			case v1_14_R1:
+				nmsSupport = new NMS_v1_14_R1();
+				break;
 		}
 		plugin = Bukkit.getPluginManager().getPlugin("CrazyCrates");
 		giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
@@ -223,6 +272,7 @@ public class CrazyCrates {
 				}
 			}
 		}
+		//Checking if all physical locations loaded
 		if(fileManager.isLogging()) {
 			if(loadedAmount > 0 || brokeAmount > 0) {
 				if(brokeAmount <= 0) {
@@ -233,6 +283,17 @@ public class CrazyCrates {
 				}
 			}
 		}
+		//Loading schematic files
+		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Searching for schematics to load.");
+		File f = new File(plugin.getDataFolder() + "/Schematics/");
+		String[] schems = f.list();
+		for(String schematicName : schems) {
+			if(schematicName.endsWith(".schematic")) {
+				crateSchematics.add(new CrateSchematic(schematicName.replace(".schematic", ""), new File(plugin.getDataFolder() + "/Schematics/" + schematicName)));
+				if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + schematicName + " was successfully found and loaded.");
+			}
+		}
+		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "All schematics were found and loaded.");
 		cleanDataFile();
 	}
 	
@@ -245,7 +306,7 @@ public class CrazyCrates {
 	}
 	
 	/**
-	 * This method is disgned to help clean the data.yml file of any usless info that it may have.
+	 * This method is deigned to help clean the data.yml file of any unless info that it may have.
 	 */
 	public void cleanDataFile() {
 		FileConfiguration data = Files.DATA.getFile();
@@ -581,7 +642,7 @@ public class CrazyCrates {
 			try {
 				inv.setItem(inv.firstEmpty(), new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setEnchantments(enchantments).setGlowing(glowing).build());
 			}catch(Exception e) {
-				inv.addItem(new ItemBuilder().setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + reward)).build());
+				inv.addItem(new ItemBuilder().setMaterial(Material.matchMaterial(useNewMaterial ? "RED_TERRACOTTA" : "STAINED_CLAY:14")).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + reward)).build());
 			}
 		}
 		return inv;
@@ -879,6 +940,14 @@ public class CrazyCrates {
 		return plugin;
 	}
 	
+	public Boolean useNewMaterial() {
+		return useNewMaterial;
+	}
+	
+	public List<CrateSchematic> getCrateSchematics() {
+		return crateSchematics;
+	}
+	
 	private ItemStack getKey(FileConfiguration file) {
 		String name = file.getString("Crate.PhysicalKey.Name");
 		List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
@@ -917,7 +986,7 @@ public class CrazyCrates {
 			}
 			return itemBuilder;
 		}catch(Exception e) {
-			return new ItemBuilder().setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
+			return new ItemBuilder().setMaterial(Material.matchMaterial(useNewMaterial ? "RED_TERRACOTTA" : "STAINED_CLAY:14")).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
 		}
 	}
 	
@@ -964,7 +1033,7 @@ public class CrazyCrates {
 			try {
 				items.add(new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setEnchantments(enchantments).setPlayer(player).setUnbreakable(unbreaking).build());
 			}catch(Exception e) {
-				items.add(new ItemBuilder().setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize)).build());
+				items.add(new ItemBuilder().setMaterial(Material.matchMaterial(useNewMaterial ? "RED_TERRACOTTA" : "STAINED_CLAY:14")).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize)).build());
 			}
 		}
 		return items;

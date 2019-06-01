@@ -124,12 +124,12 @@ public class Cosmic implements Listener {
 						if(item.getType() == Material.CHEST) {
 							if(!glass.containsKey(player)) glass.put(player, new ArrayList<>());
 							if(glass.get(player).size() < 4) {
-								e.setCurrentItem(new ItemBuilder().setMaterial(Material.GLASS_PANE).setAmount(slot + 1).setName("&f&l???").setLore(Arrays.asList("&7You have chosen #" + (slot + 1) + ".")).build());
+								e.setCurrentItem(new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "GLASS_PANE" : "THIN_GLASS")).setAmount(slot + 1).setName("&f&l???").setLore(Arrays.asList("&7You have chosen #" + (slot + 1) + ".")).build());
 								glass.get(player).add(slot);
 							}
 							player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 						}
-						if(item.getType() == Material.GLASS_PANE) {
+						if(item.getType() == Material.matchMaterial(cc.useNewMaterial() ? "GLASS_PANE" : "THIN_GLASS")) {
 							if(!glass.containsKey(player)) glass.put(player, new ArrayList<>());
 							e.setCurrentItem(new ItemBuilder().setMaterial(Material.CHEST).setAmount(slot + 1).setName("&f&l???").setLore(Arrays.asList("&7You may choose 4 crates.")).build());
 							ArrayList<Integer> l = new ArrayList<>();

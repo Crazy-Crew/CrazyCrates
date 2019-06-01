@@ -190,22 +190,22 @@ public class War implements Listener {
 	
 	private static HashMap<Material, String> getColorCode() {
 		HashMap<Material, String> colorCodes = new HashMap<>();
-		colorCodes.put(Material.WHITE_STAINED_GLASS_PANE, "f");
-		colorCodes.put(Material.ORANGE_STAINED_GLASS_PANE, "6");
-		colorCodes.put(Material.MAGENTA_STAINED_GLASS_PANE, "d");
-		colorCodes.put(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "3");
-		colorCodes.put(Material.YELLOW_STAINED_GLASS_PANE, "e");
-		colorCodes.put(Material.LIME_STAINED_GLASS_PANE, "a");
-		colorCodes.put(Material.PINK_STAINED_GLASS_PANE, "c");
-		colorCodes.put(Material.GRAY_STAINED_GLASS_PANE, "7");
-		colorCodes.put(Material.LIGHT_GRAY_STAINED_GLASS_PANE, "7");
-		colorCodes.put(Material.CYAN_STAINED_GLASS_PANE, "3");
-		colorCodes.put(Material.PURPLE_STAINED_GLASS_PANE, "5");
-		colorCodes.put(Material.BLUE_STAINED_GLASS_PANE, "9");
-		colorCodes.put(Material.BROWN_STAINED_GLASS_PANE, "6");
-		colorCodes.put(Material.GREEN_STAINED_GLASS_PANE, "2");
-		colorCodes.put(Material.RED_STAINED_GLASS_PANE, "4");
-		colorCodes.put(Material.BLACK_STAINED_GLASS_PANE, "8");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "WHITE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:0"), "f");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "ORANGE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:1"), "6");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "MAGENTA_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:2"), "d");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "LIGHT_BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:3"), "3");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "YELLOW_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:4"), "e");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5"), "a");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "PINK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:6"), "c");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:7"), "7");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "LIGHT_GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:8"), "7");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "CYAN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:9"), "3");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "PURPLE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:10"), "5");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:11"), "9");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "BROWN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:12"), "6");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "GREEN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:13"), "2");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "RED_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:14"), "4");
+		colorCodes.put(Material.matchMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15"), "8");
 		return colorCodes;
 	}
 	

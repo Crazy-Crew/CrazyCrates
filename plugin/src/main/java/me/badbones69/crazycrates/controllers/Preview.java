@@ -19,7 +19,7 @@ import java.util.UUID;
 
 public class Preview implements Listener {
 	
-	private CrazyCrates cc = CrazyCrates.getInstance();
+	private static CrazyCrates cc = CrazyCrates.getInstance();
 	private static HashMap<UUID, Integer> playerPage = new HashMap<>();
 	private static HashMap<UUID, Crate> playerCrate = new HashMap<>();
 	private static HashMap<UUID, Material> playerColor = new HashMap<>();
@@ -188,7 +188,7 @@ public class Preview implements Listener {
 	}
 	
 	public static Material getPaneColor(Player player) {
-		return playerColor.getOrDefault(player.getUniqueId(), Material.WHITE_STAINED_GLASS_PANE);
+		return playerColor.getOrDefault(player.getUniqueId(), Material.matchMaterial(cc.useNewMaterial() ? "WHITE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:0"));
 	}
 	
 	public static void pickNewPaneColor(Player player) {

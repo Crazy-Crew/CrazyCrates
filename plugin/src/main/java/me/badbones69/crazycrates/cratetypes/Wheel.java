@@ -28,7 +28,7 @@ public class Wheel implements Listener {
 	public static void startWheel(final Player player, Crate crate, KeyType key) {
 		final Inventory inv = Bukkit.createInventory(null, 54, Methods.color(crate.getFile().getString("Crate.CrateName")));
 		for(int i = 0; i < 54; i++) {
-			inv.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+			inv.setItem(i, new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15")).setName(" ").build());
 		}
 		HashMap<Integer, ItemStack> items = new HashMap<>();
 		for(int i : getBorder()) {
@@ -59,9 +59,9 @@ public class Wheel implements Listener {
 				}
 				if(full < timer) {
 					if(rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
-						inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
+						inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5")).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
 					}else {
-						inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
+						inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5")).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
 					}
 					inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
 					player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
@@ -71,9 +71,9 @@ public class Wheel implements Listener {
 				if(full >= timer) {
 					if(slowSpin().contains(slower)) {
 						if(rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
-							inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
+							inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5")).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
 						}else {
-							inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
+							inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5")).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
 						}
 						inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
 						player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);

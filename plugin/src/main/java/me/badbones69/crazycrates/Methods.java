@@ -196,19 +196,6 @@ public class Methods {
 		}
 	}
 	
-	public static String pickRandomSchem() {
-		File f = new File(plugin.getDataFolder() + "/Schematics/");
-		String[] schems = f.list();
-		ArrayList<String> schematics = new ArrayList<>();
-		for(String i : schems) {
-			if(!i.equalsIgnoreCase(".DS_Store")) {
-				schematics.add(i);
-			}
-		}
-		Random r = new Random();
-		return schematics.get(r.nextInt(schematics.size()));
-	}
-	
 	public static boolean isInventoryFull(Player player) {
 		return player.getInventory().firstEmpty() == -1;
 	}
@@ -342,22 +329,22 @@ public class Methods {
 	
 	public static Material getRandomPaneColor() {
 		List<Material> colors = Arrays.asList(
-		Material.WHITE_STAINED_GLASS_PANE,// 0
-		Material.ORANGE_STAINED_GLASS_PANE,// 1
-		Material.MAGENTA_STAINED_GLASS_PANE,// 2
-		Material.LIGHT_BLUE_STAINED_GLASS_PANE,// 3
-		Material.YELLOW_STAINED_GLASS_PANE,// 4
-		Material.LIME_STAINED_GLASS_PANE,// 5
-		Material.PINK_STAINED_GLASS_PANE,// 6
-		Material.GRAY_STAINED_GLASS_PANE,// 7
+		Material.matchMaterial(cc.useNewMaterial() ? "WHITE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:0"),// 0
+		Material.matchMaterial(cc.useNewMaterial() ? "ORANGE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:1"),// 1
+		Material.matchMaterial(cc.useNewMaterial() ? "MAGENTA_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:2"),// 2
+		Material.matchMaterial(cc.useNewMaterial() ? "LIGHT_BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:3"),// 3
+		Material.matchMaterial(cc.useNewMaterial() ? "YELLOW_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:4"),// 4
+		Material.matchMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5"),// 5
+		Material.matchMaterial(cc.useNewMaterial() ? "PINK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:6"),// 6
+		Material.matchMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:7"),// 7
 		//Skipped 8 due to it being basicly invisable in a GUI.
-		Material.CYAN_STAINED_GLASS_PANE,// 9
-		Material.PURPLE_STAINED_GLASS_PANE,// 10
-		Material.BLUE_STAINED_GLASS_PANE,// 11
-		Material.BROWN_STAINED_GLASS_PANE,// 12
-		Material.GREEN_STAINED_GLASS_PANE,// 13
-		Material.RED_STAINED_GLASS_PANE,// 14
-		Material.BLACK_STAINED_GLASS_PANE);// 15
+		Material.matchMaterial(cc.useNewMaterial() ? "CYAN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:9"),// 9
+		Material.matchMaterial(cc.useNewMaterial() ? "PURPLE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:10"),// 10
+		Material.matchMaterial(cc.useNewMaterial() ? "BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:11"),// 11
+		Material.matchMaterial(cc.useNewMaterial() ? "BROWN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:12"),// 12
+		Material.matchMaterial(cc.useNewMaterial() ? "GREEN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:13"),// 13
+		Material.matchMaterial(cc.useNewMaterial() ? "RED_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:14"),// 14
+		Material.matchMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15"));// 15
 		return colors.get(new Random().nextInt(colors.size()));
 	}
 	

@@ -12,11 +12,12 @@ public enum Messages {
 	
 	NO_TELEPORTING("No-Teleporting", "&cYou may not teleport away while opening a crate."),
 	NO_COMMANDS_WHILE_CRATE_OPENED("No-Commands-While-In-Crate", "&cYou are not allowed to use commands while opening Crates."),
-	NO_KEY("No-Key", "&cYou must have a %Key% &cin your hand to use that Crate."),
+	NO_KEY("No-Key", "&cYou must have a %key% &cin your hand to use that Crate."),
 	NO_VIRTUAL_KEY("No-Virtual-Key", "&cYou need a key to open that Crate."),
+	NOT_ON_BLOCK("Not-On-Block", "&cYou must be standing on a block to use this crate."),
 	ALREADY_OPENING_CRATE("Already-Opening-Crate", "&cYou are already opening a crate."),
 	QUICK_CRATE_IN_USE("Quick-Crate-In-Use", "&cThat crate is already in use. Please wait for the crate to open up."),
-	WORLD_DISABLED("World-Disabled", "&cI am sorry but crates are disabled in %World%."),
+	WORLD_DISABLED("World-Disabled", "&cI am sorry but crates are disabled in %world%."),
 	RELOAD("Reload", "&3You have just reloaded the Config and Data Files."),
 	NOT_ONLINE("Not-Online", "&cThe player &6%player% &cis not online at this time."),
 	NO_PERMISSION("No-Permission", "&cYou do not have permission to use that command!"),
@@ -178,7 +179,6 @@ public enum Messages {
 		boolean saveFile = false;
 		for(Messages message : values()) {
 			if(!messages.contains("Messages." + message.getPath())) {
-				System.out.println(message.getPath());
 				saveFile = true;
 				if(message.getDefaultMessage() != null) {
 					messages.set("Messages." + message.getPath(), message.getDefaultMessage());

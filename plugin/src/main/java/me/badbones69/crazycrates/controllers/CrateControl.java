@@ -124,10 +124,10 @@ public class CrateControl implements Listener { //Crate Control
 					boolean hasKey = false;
 					boolean isPhysical = false;
 					boolean useQuickCrateAgain = false;
-					if(crate.getCrateType() == CrateType.QUAD_CRATE) {
-						player.sendMessage(Messages.QUAD_CRATE_DISABLED.getMessage());
-						return;
-					}
+					//					if(crate.getCrateType() == CrateType.QUAD_CRATE) {
+					//						player.sendMessage(Messages.QUAD_CRATE_DISABLED.getMessage());
+					//						return;
+					//					}
 					if(crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
 						if(Methods.isSimilar(player.getInventory().getItemInMainHand(), crate.getKey())) {
 							hasKey = true;

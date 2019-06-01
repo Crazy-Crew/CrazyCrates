@@ -14,7 +14,6 @@ import me.badbones69.crazycrates.cratetypes.*;
 import me.badbones69.crazycrates.multisupport.MVdWPlaceholderAPISupport;
 import me.badbones69.crazycrates.multisupport.PlaceholderAPISupport;
 import me.badbones69.crazycrates.multisupport.Support;
-import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,20 +44,20 @@ public class Main extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onEnable() {
-		if(Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {// Disables plugin on unsupported versions
-			isEnabled = false;
-			System.out.println("============= Crazy Crates =============");
-			System.out.println(" ");
-			System.out.println("Plugin Disabled: This server is running on 1.12.2 or below and Crazy Crates does not support those versions. "
-			+ "Please check the spigot page for more information about lower Minecraft versions.");
-			System.out.println(" ");
-			System.out.println("Plugin Page: https://www.spigotmc.org/resources/17599/");
-			System.out.println("Version Integer: " + Version.getCurrentVersion().getVersionInteger());
-			System.out.println(" ");
-			System.out.println("============= Crazy Crates =============");
-			Bukkit.getPluginManager().disablePlugin(this);
-			return;
-		}
+		//		if(Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {// Disables plugin on unsupported versions
+		//			isEnabled = false;
+		//			System.out.println("============= Crazy Crates =============");
+		//			System.out.println(" ");
+		//			System.out.println("Plugin Disabled: This server is running on 1.12.2 or below and Crazy Crates does not support those versions. "
+		//			+ "Please check the spigot page for more information about lower Minecraft versions.");
+		//			System.out.println(" ");
+		//			System.out.println("Plugin Page: https://www.spigotmc.org/resources/17599/");
+		//			System.out.println("Version Integer: " + Version.getCurrentVersion().getVersionInteger());
+		//			System.out.println(" ");
+		//			System.out.println("============= Crazy Crates =============");
+		//			Bukkit.getPluginManager().disablePlugin(this);
+		//			return;
+		//		}
 		//Crate Files
 		fileManager.logInfo(true)
 		.registerDefaultGenerateFiles("Basic.yml", "/Crates")
