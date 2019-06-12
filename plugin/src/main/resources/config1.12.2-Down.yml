@@ -1,0 +1,79 @@
+#List of all the enchantments: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html
+Settings:
+  Prefix: '&8[&bCrazyCrates&8]: '
+  InventoryName: '&b&lCrazy &4&lCrates'
+  InventorySize: 45
+  KnockBack: true
+  Update-Checker: true
+  Physical-Accepts-Virtual-Keys: true #If physical crates can accept virtual keys.
+  Virtual-Accepts-Physical-Keys: true #If virtual crates can accept physical keys.
+  Give-Virtual-Keys-When-Inventory-Full: false #If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
+  QuadCrate:
+    Timer: 300
+  DisabledWorlds:
+    - 'world_nether'
+  Preview:
+    Buttons:
+      Menu:
+        Item: 'COMPASS'
+        Name: '&7&l>> &c&lMenu &7&l<<'
+        Lore:
+          - '&7Return to the menu.'
+      Next:
+        Item: 'FEATHER'
+        Name: '&6&lNext >>'
+        Lore:
+          - '&7&lPage: &b%page%'
+      Back:
+        Item: 'FEATHER'
+        Name: '&6&l<< Back'
+        Lore:
+          - '&7&lPage: &b%page%'
+  Filler: #This allows you to quickly fill the GUI with one item.
+    Toggle: false #If it fills the GUI with an item.
+    Item: 'STAINED_GLASS_PANE:15' #The item you wish to use.
+    Name: ' ' #The name of the item.
+    Lore: {} #The lore of the item.
+  GUI-Customizer: #Place extra items in the GUI. If you wish to not use this, remove all items and set it to GUI-Customizer: {}
+    - 'Slot:1, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:2, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:3, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:4, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:5, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:6, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:7, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:8, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:9, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:10, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:18, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:19, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:27, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:28, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:36, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:37, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:45, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:11, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:12, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:13, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:14, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:15, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:16, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:17, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:20, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:22, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:24, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:26, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:29, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:30, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:31, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:32, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:33, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:34, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:35, Item:STAINED_GLASS_PANE:1, Name: '
+    - 'Slot:38, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:39, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:40, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:41, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:42, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:43, Item:STAINED_GLASS_PANE:15, Name: '
+    - 'Slot:44, Item:STAINED_GLASS_PANE:15, Name: '

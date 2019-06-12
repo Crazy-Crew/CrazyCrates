@@ -15,6 +15,11 @@ Crate:
     - '&7from somewhere beyond this planet.'
     - '&7You have &6%Keys% keys &7to open this crate with.'
     - '&7&l(&e&l!&7&l) Right click to view rewards.'
+  Preview:
+    Toggle: true
+    Glass:
+      Toggle: true
+      Item: 'PURPLE_STAINED_GLASS_PANE'
   PhysicalKey:
     Name: '&d&lGalactic Crate &b&lKey'
     Lore:

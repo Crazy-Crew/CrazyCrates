@@ -15,29 +15,25 @@ import java.util.List;
 public class NMS_v1_10_R1 implements NMSSupport {
 	
 	@Override
-	public void openChest(Block b, Location location, Boolean open) {
-		World world = ((CraftWorld) location.getWorld()).getHandle();
-		BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
-		if(b.getType() == Material.ENDER_CHEST) {
-			TileEntityEnderChest tileChest = (TileEntityEnderChest) world.getTileEntity(position);
-			world.playBlockAction(position, tileChest.getBlock(), 1, open ? 1 : 0);
-		}else {
-			TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
-			world.playBlockAction(position, tileChest.getBlock(), 1, open ? 1 : 0);
+	public void openChest(Block block, Boolean open) {
+		Material type = block.getType();
+		if(type == Material.CHEST || type == Material.TRAPPED_CHEST || type == Material.ENDER_CHEST) {
+			World world = ((CraftWorld) block.getWorld()).getHandle();
+			BlockPosition position = new BlockPosition(block.getX(), block.getY(), block.getZ());
+			if(block.getType() == Material.ENDER_CHEST) {
+				TileEntityEnderChest tileChest = (TileEntityEnderChest) world.getTileEntity(position);
+				world.playBlockAction(position, tileChest.getBlock(), 1, open ? 1 : 0);
+			}else {
+				TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
+				world.playBlockAction(position, tileChest.getBlock(), 1, open ? 1 : 0);
+			}
 		}
 	}
 	
-	@Override
-	public void rotateChest(Block block, Byte direction) {
-		block.setData(direction);
-	}
-	
-	//Disabled till can be fixed.
 	//http://stackoverflow.com/questions/24101928/setting-block-data-from-schematic-in-bukkit
 	@Override
-	public List<Location> pasteSchematic(File f, Location loc) {
+	public void pasteSchematic(File f, Location loc) {
 		loc = loc.subtract(2, 1, 2);
-		List<Location> locations = new ArrayList<>();
 		try {
 			FileInputStream fis = new FileInputStream(f);
 			NBTTagCompound nbt = NBTCompressedStreamTools.a(fis);
@@ -55,17 +51,15 @@ public class NMS_v1_10_R1 implements NMSSupport {
 						final Location l = new Location(loc.getWorld(), x + loc.getX(), y + loc.getY(), z + loc.getZ());
 						int b = blocks[index] & 0xFF;//make the block unsigned, so that blocks with an id over 127, like quartz and emerald, can be pasted
 						final Block block = l.getBlock();
-						//Material m = Material.getMaterial(b);
-						//block.setType(m);
+						block.setType(Material.getMaterial(b));
+						block.setData(data[index]);
 						//you can check what type the block is here, like if(m.equals(Material.BEACON)) to check if it's a beacon
-						locations.add(l);
 					}
 				}
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return locations;
 	}
 	
 	@Override

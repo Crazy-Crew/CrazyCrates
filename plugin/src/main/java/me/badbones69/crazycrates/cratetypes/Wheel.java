@@ -7,8 +7,8 @@ import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
+import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -28,7 +28,7 @@ public class Wheel implements Listener {
 	public static void startWheel(final Player player, Crate crate, KeyType key) {
 		final Inventory inv = Bukkit.createInventory(null, 54, Methods.color(crate.getFile().getString("Crate.CrateName")));
 		for(int i = 0; i < 54; i++) {
-			inv.setItem(i, new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15")).setName(" ").build());
+			inv.setItem(i, new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15").setName(" ").build());
 		}
 		HashMap<Integer, ItemStack> items = new HashMap<>();
 		for(int i : getBorder()) {
@@ -59,38 +59,50 @@ public class Wheel implements Listener {
 				}
 				if(full < timer) {
 					if(rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
-						inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5")).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
+						inv.setItem(slots.get(i), new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5").setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
 					}else {
-						inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5")).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
+						inv.setItem(slots.get(i), new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5").setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
 					}
 					inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
-					player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+					if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+						player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+					}else {
+						player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+					}
 					i++;
 					f++;
 				}
 				if(full >= timer) {
 					if(slowSpin().contains(slower)) {
 						if(rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
-							inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5")).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
+							inv.setItem(slots.get(i), new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5").setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
 						}else {
-							inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5")).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
+							inv.setItem(slots.get(i), new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5").setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
 						}
 						inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
-						player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+						if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+							player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+						}else {
+							player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+						}
 						i++;
 						f++;
 					}
 					if(full == timer + 47) {
-						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+						if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
+						}else {
+							player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
+						}
 					}
 					if(full >= timer + 47) {
 						slow++;
 						if(slow >= 2) {
 							Random r = new Random();
-							Material material = Methods.getRandomPaneColor();
+							ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
 							for(int slot = 0; slot < 54; slot++) {
 								if(!getBorder().contains(slot)) {
-									inv.setItem(slot, new ItemBuilder().setMaterial(material).setName(" ").build());
+									inv.setItem(slot, item);
 								}
 							}
 							slow = 0;

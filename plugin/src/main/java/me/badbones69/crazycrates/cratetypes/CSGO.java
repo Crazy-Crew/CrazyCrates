@@ -7,8 +7,8 @@ import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
+import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -34,9 +34,9 @@ public class CSGO implements Listener {
 		}
 		for(int i : glass.keySet()) {
 			if(inv.getItem(i) == null) {
-				Material material = Methods.getRandomPaneColor();
-				inv.setItem(i, new ItemBuilder().setMaterial(material).setName(" ").build());
-				inv.setItem(i + 18, new ItemBuilder().setMaterial(material).setName(" ").build());
+				ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+				inv.setItem(i, item);
+				inv.setItem(i + 18, item);
 			}
 		}
 		for(int i = 1; i < 10; i++) {
@@ -44,7 +44,7 @@ public class CSGO implements Listener {
 				glass.put(i, inv.getItem(i));
 			}
 		}
-		Material material = Methods.getRandomPaneColor();
+		ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
 		inv.setItem(0, glass.get(1));
 		inv.setItem(18, glass.get(1));
 		inv.setItem(1, glass.get(2));
@@ -53,16 +53,16 @@ public class CSGO implements Listener {
 		inv.setItem(2 + 18, glass.get(3));
 		inv.setItem(3, glass.get(5));
 		inv.setItem(3 + 18, glass.get(5));
-		inv.setItem(4, new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15")).setName(" ").build());
-		inv.setItem(4 + 18, new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15")).setName(" ").build());
+		inv.setItem(4, new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15").setName(" ").build());
+		inv.setItem(4 + 18, new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15").setName(" ").build());
 		inv.setItem(5, glass.get(6));
 		inv.setItem(5 + 18, glass.get(6));
 		inv.setItem(6, glass.get(7));
 		inv.setItem(6 + 18, glass.get(7));
 		inv.setItem(7, glass.get(8));
 		inv.setItem(7 + 18, glass.get(8));
-		inv.setItem(8, new ItemBuilder().setMaterial(material).setName(" ").build());
-		inv.setItem(8 + 18, new ItemBuilder().setMaterial(material).setName(" ").build());
+		inv.setItem(8, item);
+		inv.setItem(8 + 18, item);
 	}
 	
 	public static void openCSGO(Player player, Crate crate, KeyType key) {
@@ -86,7 +86,11 @@ public class CSGO implements Listener {
 				if(full <= 50) {//When Spinning
 					moveItems(inv, player, crate);
 					setGlass(inv);
-					player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+					if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+						player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+					}else {
+						player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+					}
 				}
 				open++;
 				if(open >= 5) {
@@ -98,11 +102,19 @@ public class CSGO implements Listener {
 					if(slowSpin().contains(time)) {//When Slowing Down
 						moveItems(inv, player, crate);
 						setGlass(inv);
-						player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+						if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+							player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+						}else {
+							player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+						}
 					}
 					time++;
 					if(time >= 60) {// When done
-						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+						if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
+						}else {
+							player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
+						}
 						cc.endCrate(player);
 						Prize prize = null;
 						for(Prize p : crate.getPrizes()) {

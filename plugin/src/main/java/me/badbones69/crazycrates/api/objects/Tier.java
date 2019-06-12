@@ -1,20 +1,19 @@
 package me.badbones69.crazycrates.api.objects;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class Tier {
 	
 	private String name;
 	private String coloredName;
-	private Material colorGlass;
+	private ItemBuilder colorGlass;
 	private Integer chance;
 	private Integer maxRange;
 	
-	public Tier(String name, String coloredName, Material colorGlass, Integer chance, Integer maxRange) {
+	public Tier(String name, String coloredName, ItemBuilder colorGlass, Integer chance, Integer maxRange) {
 		this.name = name;
 		this.coloredName = coloredName;
-		this.colorGlass = colorGlass;
+		this.colorGlass = colorGlass.setName(coloredName);
 		this.chance = chance;
 		this.maxRange = maxRange;
 	}
@@ -22,7 +21,7 @@ public class Tier {
 	public Tier(String name, String coloredName, String colorGlass, Integer chance, Integer maxRange) {
 		this.name = name;
 		this.coloredName = coloredName;
-		this.colorGlass = new ItemBuilder().setMaterial(colorGlass).getMaterial();
+		this.colorGlass = new ItemBuilder().setMaterial(colorGlass).setName(coloredName);
 		this.chance = chance;
 		this.maxRange = maxRange;
 	}
@@ -47,7 +46,7 @@ public class Tier {
 	 *
 	 * @return The colored glass pane.
 	 */
-	public Material getColorGlass() {
+	public ItemBuilder getColorGlass() {
 		return colorGlass;
 	}
 	
@@ -61,14 +60,14 @@ public class Tier {
 	
 	/**
 	 *
-	 * @return The range of max possable chances.
+	 * @return The range of max possible\ chances.
 	 */
 	public Integer getMaxRange() {
 		return maxRange;
 	}
 	
 	public ItemStack getTierPane() {
-		return new ItemBuilder().setMaterial(colorGlass).setName(coloredName).build();
+		return colorGlass.build();
 	}
 	
 }

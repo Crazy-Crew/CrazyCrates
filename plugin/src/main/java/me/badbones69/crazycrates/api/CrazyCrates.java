@@ -12,14 +12,13 @@ import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.controllers.GUIMenu;
 import me.badbones69.crazycrates.cratetypes.*;
 import me.badbones69.crazycrates.multisupport.Version;
+import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
 import me.badbones69.crazycrates.multisupport.nms.v1_10_R1.NMS_v1_10_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_11_R1.NMS_v1_11_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_12_R1.NMS_v1_12_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_13_R2.NMS_v1_13_R2;
 import me.badbones69.crazycrates.multisupport.nms.v1_14_R1.NMS_v1_14_R1;
-import me.badbones69.crazycrates.multisupport.nms.v1_8_R1.NMS_v1_8_R1;
-import me.badbones69.crazycrates.multisupport.nms.v1_8_R2.NMS_v1_8_R2;
 import me.badbones69.crazycrates.multisupport.nms.v1_8_R3.NMS_v1_8_R3;
 import me.badbones69.crazycrates.multisupport.nms.v1_9_R1.NMS_v1_9_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_9_R2.NMS_v1_9_R2;
@@ -29,6 +28,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -89,6 +90,11 @@ public class CrazyCrates {
 	private HashMap<UUID, ArrayList<BukkitTask>> currentQuadTasks = new HashMap<>();
 	
 	/**
+	 * The time in seconds a quadcrate can go until afk kicks them from it.
+	 */
+	private Integer quadCrateTimer;
+	
+	/**
 	 * A list of current crate schematics for Quad Crate.
 	 */
 	private List<CrateSchematic> crateSchematics = new ArrayList<>();
@@ -146,12 +152,6 @@ public class CrazyCrates {
 		Version version = Version.getCurrentVersion();
 		useNewMaterial = version.isNewer(Version.v1_12_R1);
 		switch(version) {
-			case v1_8_R1:
-				nmsSupport = new NMS_v1_8_R1();
-				break;
-			case v1_8_R2:
-				nmsSupport = new NMS_v1_8_R2();
-				break;
 			case v1_8_R3:
 				nmsSupport = new NMS_v1_8_R3();
 				break;
@@ -178,6 +178,7 @@ public class CrazyCrates {
 				break;
 		}
 		plugin = Bukkit.getPluginManager().getPlugin("CrazyCrates");
+		quadCrateTimer = Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
 		giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Loading all crate information...");
 		for(String crateName : fileManager.getAllCratesNames()) {
@@ -285,12 +286,19 @@ public class CrazyCrates {
 		}
 		//Loading schematic files
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Searching for schematics to load.");
-		File f = new File(plugin.getDataFolder() + "/Schematics/");
-		String[] schems = f.list();
+		String[] schems = new File(plugin.getDataFolder() + "/Schematics/").list();
+		boolean isNewer = Version.getCurrentVersion().isNewer(Version.v1_12_R1);
 		for(String schematicName : schems) {
-			if(schematicName.endsWith(".schematic")) {
-				crateSchematics.add(new CrateSchematic(schematicName.replace(".schematic", ""), new File(plugin.getDataFolder() + "/Schematics/" + schematicName)));
-				if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + schematicName + " was successfully found and loaded.");
+			if(isNewer) {
+				if(schematicName.endsWith(".nbt")) {
+					crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(plugin.getDataFolder() + "/Schematics/" + schematicName)));
+					if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + schematicName + " was successfully found and loaded.");
+				}
+			}else {
+				if(schematicName.endsWith(".schematic")) {
+					crateSchematics.add(new CrateSchematic(schematicName.replace(".schematic", ""), new File(plugin.getDataFolder() + "/Schematics/" + schematicName)));
+					if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + schematicName + " was successfully found and loaded.");
+				}
 			}
 		}
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "All schematics were found and loaded.");
@@ -355,7 +363,9 @@ public class CrazyCrates {
 		addPlayerToOpeningList(player, crate);
 		boolean broadcast = crate.getFile() != null && crate.getFile().getBoolean("Crate.OpeningBroadCast");
 		if(broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {
-			Bukkit.broadcastMessage(Methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
+			if(!crate.getFile().getString("Crate.BroadCast").isEmpty()) {
+				Bukkit.broadcastMessage(Methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
+			}
 			broadcast = false;
 		}
 		switch(crate.getCrateType()) {
@@ -383,12 +393,8 @@ public class CrazyCrates {
 			case QUAD_CRATE:
 				Location last = player.getLocation();
 				last.setPitch(0F);
-				CrateControl.lastLocation.put(player, last);
-				if(broadcast) {
-					broadcast = QuadCrate.startBuild(player, location, crate, key, Material.CHEST);
-				}else {
-					QuadCrate.startBuild(player, location, crate, key, Material.CHEST);
-				}
+				QuadCrateSession session = new QuadCrateSession(player, crate, location, last);
+				broadcast = session.startCrate();
 				break;
 			case FIRE_CRACKER:
 				if(CrateControl.inUse.containsValue(location)) {
@@ -439,12 +445,14 @@ public class CrazyCrates {
 				break;
 		}
 		if(broadcast) {
-			Bukkit.broadcastMessage(Methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
+			if(!crate.getFile().getString("Crate.BroadCast").isEmpty()) {
+				Bukkit.broadcastMessage(Methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
+			}
 		}
 	}
 	
 	/**
-	 * This forces a crate to end and will not give out a pirze. This is ment for people who leave the server to stop any errors or lag from happening.
+	 * This forces a crate to end and will not give out a prize. This is meant for people who leave the server to stop any errors or lag from happening.
 	 * @param player The player that the crate is being ended for.
 	 */
 	public void endCrate(Player player) {
@@ -483,7 +491,7 @@ public class CrazyCrates {
 	
 	/**
 	 * Checks to see if the player has a quad crate task going on.
-	 * @param player The player that is being chacked.
+	 * @param player The player that is being checked.
 	 * @return True if they do have a task and false if not.
 	 */
 	public Boolean hasQuadCrateTask(Player player) {
@@ -500,7 +508,7 @@ public class CrazyCrates {
 	}
 	
 	/**
-	 * Renove a task from the list of current tasks.
+	 * Remove a task from the list of current tasks.
 	 * @param player The player using the crate.
 	 */
 	public void removeCrateTask(Player player) {
@@ -509,7 +517,7 @@ public class CrazyCrates {
 	
 	/**
 	 * Checks to see if the player has a crate task going on.
-	 * @param player The player that is being chacked.
+	 * @param player The player that is being checked.
 	 * @return True if they do have a task and false if not.
 	 */
 	public Boolean hasCrateTask(Player player) {
@@ -611,6 +619,14 @@ public class CrazyCrates {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * The time in seconds a quadcrate will last before kicking the player.
+	 * @return The time in seconds till kick.
+	 */
+	public Integer getQuadCrateTimer() {
+		return quadCrateTimer;
 	}
 	
 	public Inventory loadPreview(Crate crate) {
@@ -804,7 +820,7 @@ public class CrazyCrates {
 	 * @return True if they have the key and false if not.
 	 */
 	public Boolean hasPhysicalKey(Player player, Crate crate) {
-		return Methods.isSimilar(player.getInventory().getItemInMainHand(), crate.getKey());
+		return Methods.isSimilar(player, crate.getKey());
 	}
 	
 	public ItemStack getPhysicalKey(Player player, Crate crate) {
@@ -946,6 +962,19 @@ public class CrazyCrates {
 	
 	public List<CrateSchematic> getCrateSchematics() {
 		return crateSchematics;
+	}
+	
+	/**
+	 * Check if an entity is a display reward for a crate.
+	 * @param entity Entity you wish to check.
+	 * @return True if it is a display reward item and false if not.
+	 */
+	public Boolean isDisplayReward(Entity entity) {
+		if(entity instanceof Item) {
+			NBTItem item = new NBTItem(((Item) entity).getItemStack());
+			return item.hasKey("crazycrates-item");
+		}
+		return false;
 	}
 	
 	private ItemStack getKey(FileConfiguration file) {

@@ -14,6 +14,11 @@ Crate:
     - '&7This crate contains Crazy things.'
     - '&7You have &6%Keys% keys &7to open this crate with.'
     - '&7&l(&e&l!&7&l) Right click to view rewards.'
+  Preview:
+    Toggle: true
+    Glass:
+      Toggle: true
+      Item: 'BLACK_STAINED_GLASS_PANE'
   PhysicalKey:
     Name: '&b&lCrazy Crate &6&lKey'
     Lore:

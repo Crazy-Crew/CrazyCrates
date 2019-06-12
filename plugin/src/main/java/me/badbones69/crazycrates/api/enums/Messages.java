@@ -47,6 +47,7 @@ public enum Messages {
 	OTHER_PLAYER_HEADER("Keys.Other-Player.Header", Arrays.asList("&8&l(&6&l!&8&l) &7List of %player%''s current amount of keys.")),
 	PER_CRATE("Keys.Per-Crate", "%crate% &7&l>&8&l> &6%keys% keys"),
 	QUAD_CRATE_DISABLED("Quad-Crate-Disabled", "&cQuad crate type is currently disabled in this build of Crazy Crates due to 1.13+ changing code."),
+	PREVIEW_DISABLED("Preview-Disabled", "&cThe preview for that crate is currently disabled."),
 	HELP("Help",
 	Arrays.asList("&3&lCrazy Crates Help Menu",
 	"&6/key [player] &7- Check the amount of keys a player has.",

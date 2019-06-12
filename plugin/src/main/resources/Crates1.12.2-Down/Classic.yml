@@ -14,6 +14,11 @@ Crate:
     - '&7This crate contains classic items.'
     - '&7You have &6%Keys% keys &7to open this crate with.'
     - '&7&l(&e&l!&7&l) Right click to view rewards.'
+  Preview:
+    Toggle: true
+    Glass:
+      Toggle: true
+      Item: 'STAINED_GLASS_PANE:4'
   PhysicalKey:
     Name: '&e&lClassic Crate &c&lKey'
     Lore:
@@ -35,20 +40,15 @@ Crate:
       Chance: 40
       Firework: false
       Glowing: false
-      Player: ''
-      Unbreakable: false
-      HideItemFlags: false
       Items:
         - 'Item:CHAINMAIL_LEGGINGS, Amount:1, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
-      Commands: []
       Messages:
         - '&7You just won a &a&lFancy Pantst&7.'
-      BlackListed-Permissions: []
       Alternative-Prize:
         Toggle: false
-        Messages: []
-        Commands: []
-        Items: []
+        Messages: {}
+        Commands: {}
+        Items: {}
     2:
       DisplayName: '&b&lClassic Sword'
       DisplayItem: 'DIAMOND_SWORD'
@@ -63,23 +63,18 @@ Crate:
       Chance: 35
       Firework: false
       Glowing: false
-      Player: ''
-      Unbreakable: false
-      HideItemFlags: false
       Items:
         - 'Item:DIAMOND_SWORD, Amount:1, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1'
-      Commands: []
       Messages:
         - '&7You just won a &b&lClassic Sword&7.'
-      BlackListed-Permissions: []
       Alternative-Prize:
         Toggle: false
-        Messages: []
-        Commands: []
-        Items: []
+        Messages: {}
+        Commands: {}
+        Items: {}
     3:
       DisplayName: '&e&l$100,000'
-      DisplayItem: 'SUNFLOWER'
+      DisplayItem: 'DOUBLE_PLANT'
       DisplayAmount: 1
       Lore:
         - '&7Make it rain a lot of Money.'
@@ -88,18 +83,12 @@ Crate:
       Chance: 20
       Firework: true
       Glowing: false
-      Player: ''
-      Unbreakable: false
-      HideItemFlags: false
-      Items: []
       Commands:
         - 'Eco give %Player% 100000'
-      Commands: []
       Messages:
         - '&7You just won &a$100,000&7.'
-      BlackListed-Permissions: []
       Alternative-Prize:
         Toggle: false
-        Messages: []
-        Commands: []
-        Items: []
+        Messages: {}
+        Commands: {}
+        Items: {}

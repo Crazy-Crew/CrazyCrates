@@ -426,7 +426,9 @@ public class ItemBuilder {
 		ItemMeta itemMeta = item.getItemMeta();
 		itemMeta.setDisplayName(getUpdatedName());
 		itemMeta.setLore(getUpdatedLore());
-		itemMeta.setUnbreakable(unbreakable);
+		if(Version.getCurrentVersion().isNewer(Version.v1_10_R1)) {
+			itemMeta.setUnbreakable(unbreakable);
+		}
 		if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
 			if(itemMeta instanceof org.bukkit.inventory.meta.Damageable) {
 				((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(damage);
@@ -442,6 +444,12 @@ public class ItemBuilder {
 		if(material == Material.matchMaterial(cc.useNewMaterial() ? "PLAYER_HEAD" : "SKULL:3")) {
 			if(!player.equals("")) {
 				nbt.setString("SkullOwner", player);
+			}
+		}
+		if(Version.getCurrentVersion().isOlder(Version.v1_11_R1)) {
+			if(unbreakable) {
+				nbt.setBoolean("Unbreakable", true);
+				nbt.setInteger("HideFlags", 4);
 			}
 		}
 		return nbt.getItem();

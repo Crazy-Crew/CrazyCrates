@@ -26,6 +26,14 @@ Crate:
     - '&7This crate contains strange objects.'
     - '&7You have &6%Keys% keys &7to open this crate with.'
     - '&7&l(&e&l!&7&l) Right click to view rewards.'
+  Preview:
+    #Turn on and off the preview for this crate.
+    Toggle: true
+    Glass:
+      #Turn the glass boarder in the preview on and off.
+      Toggle: true
+      #The item that shows in the boarder. Can be glass or any other item.
+      Item: 'GRAY_STAINED_GLASS_PANE'
   PhysicalKey:
     #Name of the Key.
     Name: '&7&lBasic Crate &b&lKey'

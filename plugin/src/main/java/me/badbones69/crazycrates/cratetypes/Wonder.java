@@ -8,10 +8,10 @@ import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -46,8 +46,8 @@ public class Wonder implements Listener {
 					slots.remove(slot2 + "");
 					Slots.add(slot1);
 					Slots.add(slot2);
-					inv.setItem(slot1, new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15")).setName(" ").build());
-					inv.setItem(slot2, new ItemBuilder().setMaterial(Material.matchMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15")).setName(" ").build());
+					inv.setItem(slot1, new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15").setName(" ").build());
+					inv.setItem(slot2, new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15").setName(" ").build());
 					for(String slot : slots) {
 						p = crate.pickPrize(player);
 						inv.setItem(Integer.parseInt(slot), p.getDisplayItem());
@@ -56,10 +56,9 @@ public class Wonder implements Listener {
 					slot2--;
 				}
 				if(fulltime > 67) {
-					Material material = Methods.getRandomPaneColor();
+					ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
 					for(int slot : Slots) {
-						inv.setItem(slot, new ItemBuilder().setMaterial(material).setName(" ").build());
-						inv.setItem(slot, new ItemBuilder().setMaterial(material).setName(" ").build());
+						inv.setItem(slot, item);
 					}
 				}
 				player.openInventory(inv);

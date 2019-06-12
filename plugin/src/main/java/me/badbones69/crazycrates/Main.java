@@ -4,16 +4,12 @@ import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
-import me.badbones69.crazycrates.api.objects.Crate;
-import me.badbones69.crazycrates.api.objects.CrateLocation;
-import me.badbones69.crazycrates.api.objects.ItemBuilder;
-import me.badbones69.crazycrates.api.objects.Prize;
+import me.badbones69.crazycrates.api.objects.*;
 import me.badbones69.crazycrates.controllers.*;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.cratetypes.*;
-import me.badbones69.crazycrates.multisupport.MVdWPlaceholderAPISupport;
-import me.badbones69.crazycrates.multisupport.PlaceholderAPISupport;
-import me.badbones69.crazycrates.multisupport.Support;
+import me.badbones69.crazycrates.multisupport.*;
+import me.badbones69.crazycrates.multisupport.nms.v1_14_R1.StructureService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,6 +27,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,36 +39,41 @@ public class Main extends JavaPlugin implements Listener {
 	private CrazyCrates cc = CrazyCrates.getInstance();
 	private FileManager fileManager = FileManager.getInstance();
 	private Boolean isEnabled = true;// If the server is supported
+	private Location location1;
+	private Location location2;
 	
 	@Override
 	public void onEnable() {
-		//		if(Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {// Disables plugin on unsupported versions
-		//			isEnabled = false;
-		//			System.out.println("============= Crazy Crates =============");
-		//			System.out.println(" ");
-		//			System.out.println("Plugin Disabled: This server is running on 1.12.2 or below and Crazy Crates does not support those versions. "
-		//			+ "Please check the spigot page for more information about lower Minecraft versions.");
-		//			System.out.println(" ");
-		//			System.out.println("Plugin Page: https://www.spigotmc.org/resources/17599/");
-		//			System.out.println("Version Integer: " + Version.getCurrentVersion().getVersionInteger());
-		//			System.out.println(" ");
-		//			System.out.println("============= Crazy Crates =============");
-		//			Bukkit.getPluginManager().disablePlugin(this);
-		//			return;
-		//		}
+		if(Version.getCurrentVersion().isOlder(Version.v1_8_R3)) {// Disables plugin on unsupported versions
+			isEnabled = false;
+			System.out.println("============= Crazy Crates =============");
+			System.out.println(" ");
+			System.out.println("Plugin Disabled: This server is running on 1.8.3 or below and Crazy Crates does not support those versions. "
+			+ "Please check the spigot page for more information about lower Minecraft versions.");
+			System.out.println(" ");
+			System.out.println("Plugin Page: https://www.spigotmc.org/resources/17599/");
+			System.out.println("Version Integer: " + Version.getCurrentVersion().getVersionInteger());
+			System.out.println(" ");
+			System.out.println("============= Crazy Crates =============");
+			Bukkit.getPluginManager().disablePlugin(this);
+			return;
+		}
 		//Crate Files
+		String extention = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "nbt" : "schematic";
+		String cratesFolder = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "/Crates1.13-Up" : "/Crates1.12.2-Down";
+		String schemFolder = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "/Schematics1.13-Up" : "/Schematics1.12.2-Down";
 		fileManager.logInfo(true)
-		.registerDefaultGenerateFiles("Basic.yml", "/Crates")
-		.registerDefaultGenerateFiles("Classic.yml", "/Crates")
-		.registerDefaultGenerateFiles("Crazy.yml", "/Crates")
-		.registerDefaultGenerateFiles("Galactic.yml", "/Crates")
+		.registerDefaultGenerateFiles("Basic.yml", "/Crates", cratesFolder)
+		.registerDefaultGenerateFiles("Classic.yml", "/Crates", cratesFolder)
+		.registerDefaultGenerateFiles("Crazy.yml", "/Crates", cratesFolder)
+		.registerDefaultGenerateFiles("Galactic.yml", "/Crates", cratesFolder)
 		//Schematics
-		.registerDefaultGenerateFiles("Classic.schematic", "/Schematics")
-		.registerDefaultGenerateFiles("Nether.schematic", "/Schematics")
-		.registerDefaultGenerateFiles("OutDoors.schematic", "/Schematics")
-		.registerDefaultGenerateFiles("Sea.schematic", "/Schematics")
-		.registerDefaultGenerateFiles("Soul.schematic", "/Schematics")
-		.registerDefaultGenerateFiles("Wooden.schematic", "/Schematics")
+		.registerDefaultGenerateFiles("classic." + extention, "/Schematics", schemFolder)
+		.registerDefaultGenerateFiles("nether." + extention, "/Schematics", schemFolder)
+		.registerDefaultGenerateFiles("outdoors." + extention, "/Schematics", schemFolder)
+		.registerDefaultGenerateFiles("sea." + extention, "/Schematics", schemFolder)
+		.registerDefaultGenerateFiles("soul." + extention, "/Schematics", schemFolder)
+		.registerDefaultGenerateFiles("wooden." + extention, "/Schematics", schemFolder)
 		//Register all files inside the custom folders.
 		.registerCustomFilesFolder("/Crates")
 		.registerCustomFilesFolder("/Schematics")
@@ -91,7 +94,6 @@ public class Main extends JavaPlugin implements Listener {
 		pm.registerEvents(new GUIMenu(), this);
 		pm.registerEvents(new Preview(), this);
 		pm.registerEvents(new QuadCrate(), this);
-		pm.registerEvents(new NewQuadCrate(), this);
 		pm.registerEvents(new War(), this);
 		pm.registerEvents(new CSGO(), this);
 		pm.registerEvents(new Wheel(), this);
@@ -101,6 +103,11 @@ public class Main extends JavaPlugin implements Listener {
 		pm.registerEvents(new QuickCrate(), this);
 		pm.registerEvents(new CrateControl(), this);
 		pm.registerEvents(new CrateOnTheGo(), this);
+		if(Version.getCurrentVersion().isNewer(Version.v1_11_R1)) {
+			pm.registerEvents(new Events_v1_12_R1_Up(), this);
+		}else {
+			pm.registerEvents(new Events_v1_11_R1_Down(), this);
+		}
 		if(!cc.getBrokeCrateLocations().isEmpty()) {
 			pm.registerEvents(new BrokeLocationsControl(), this);
 		}
@@ -119,11 +126,7 @@ public class Main extends JavaPlugin implements Listener {
 	@Override
 	public void onDisable() {
 		if(isEnabled) {
-			if(!QuadCrate.crates.isEmpty()) {
-				for(Player player : QuadCrate.crates.keySet()) {
-					QuadCrate.undoBuild(player);
-				}
-			}
+			QuadCrateSession.endAllCrates();
 			QuickCrate.removeAllRewards();
 		}
 	}
@@ -215,6 +218,42 @@ public class Main extends JavaPlugin implements Listener {
 				if(args[0].equalsIgnoreCase("help")) {
 					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Access")) return true;
 					sender.sendMessage(Messages.HELP.getMessage());
+					return true;
+				}else if(args[0].equalsIgnoreCase("set1")) {
+					location1 = ((Player) sender).getTargetBlockExact(10).getLocation();
+					sender.sendMessage("Set #1");
+					return true;
+				}else if(args[0].equalsIgnoreCase("set2")) {
+					location2 = ((Player) sender).getTargetBlockExact(10).getLocation();
+					sender.sendMessage("Set #2");
+					return true;
+				}else if(args[0].equalsIgnoreCase("save")) {// /cc save <Name>
+					Location[] locations = {location1, location2};
+					try {
+						StructureService.createAndSaveAny(locations, sender.getName(), new File(getDataFolder() + "/Schematics/" + args[1]));
+					}catch(IOException e) {
+						sender.sendMessage("Failed to save file");
+						e.printStackTrace();
+						return true;
+					}
+					sender.sendMessage("Saved file");
+					return true;
+				}else if(args[0].equalsIgnoreCase("blocks")) {
+					List<Location> locations = cc.getNMSSupport().getLocations(new File(getDataFolder() + "/schem"), ((Player) sender).getLocation());
+					sender.sendMessage("Amount: " + locations.size());
+					System.out.println(locations);
+					return true;
+				}else if(args[0].equalsIgnoreCase("paste")) {
+					cc.getNMSSupport().pasteSchematic(new File(getDataFolder() + "/schem"), ((Player) sender).getLocation());
+					sender.sendMessage("Pasted schem");
+					return true;
+				}else if(args[0].equalsIgnoreCase("pasteall")) {
+					Location location = ((Player) sender).getLocation().subtract(0, 1, 0);
+					for(CrateSchematic schematic : cc.getCrateSchematics()) {
+						cc.getNMSSupport().pasteSchematic(schematic.getSchematicFile(), location);
+						location.add(0, 0, 6);
+					}
+					sender.sendMessage("Pasted all schems");
 					return true;
 				}else if(args[0].equalsIgnoreCase("additem")) {
 					// /cc additem0 <crate>1 <prize>2
@@ -408,25 +447,30 @@ public class Main extends JavaPlugin implements Listener {
 							}
 						}
 						if(crate != null) {
-							if(crate.getCrateType() != CrateType.MENU) {
-								if(args.length >= 3) {
-									if(Methods.isOnline(args[2], sender)) {
-										player = Methods.getPlayer(args[2]);
+							if(crate.isPreviewEnabled()) {
+								if(crate.getCrateType() != CrateType.MENU) {
+									if(args.length >= 3) {
+										if(Methods.isOnline(args[2], sender)) {
+											player = Methods.getPlayer(args[2]);
+										}else {
+											return true;
+										}
 									}else {
-										return true;
+										if(!(sender instanceof Player)) {
+											sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
+											return true;
+										}else {
+											player = (Player) sender;
+										}
 									}
-								}else {
-									if(!(sender instanceof Player)) {
-										sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
-										return true;
-									}else {
-										player = (Player) sender;
-									}
+									Preview.setPlayerInMenu(player, false);
+									Preview.openNewPreview(player, crate);
 								}
-								Preview.setPlayerInMenu(player, false);
-								Preview.openNewPreview(player, crate);
+								return true;
+							}else {
+								sender.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
+								return true;
 							}
-							return true;
 						}
 					}
 					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
