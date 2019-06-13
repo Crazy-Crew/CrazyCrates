@@ -11,6 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,15 @@ public class NMS_v1_13_R2 implements NMSSupport {
 				TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
 				world.playBlockAction(position, tileChest.getBlock().getBlock(), 1, open ? 1 : 0);
 			}
+		}
+	}
+	
+	@Override
+	public void saveSchematic(Location[] locations, String owner, File file) {
+		try {
+			StructureService.createAndSaveAny(locations, owner, file);
+		}catch(IOException e) {
+			e.printStackTrace();
 		}
 	}
 	

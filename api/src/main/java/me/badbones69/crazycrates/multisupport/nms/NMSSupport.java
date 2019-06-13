@@ -11,9 +11,11 @@ public interface NMSSupport {
 	
 	void openChest(Block block, Boolean open);
 	
-	void pasteSchematic(File f, Location loc);
+	void pasteSchematic(File file, Location loc);
 	
-	List<Location> getLocations(File f, Location loc);
+	void saveSchematic(Location[] locations, String owner, File file);
+	
+	List<Location> getLocations(File file, Location loc);
 	
 	List<Material> getQuadCrateBlacklistBlocks();
 	
