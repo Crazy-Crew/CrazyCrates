@@ -213,7 +213,7 @@ public class StructureService {
 	 */
 	public static void insertSingleStructure(DefinedStructure structure, Location startEdge, EnumBlockRotation rotation) {
 		WorldServer world = ((CraftWorld) startEdge.getWorld()).getHandle();
-		DefinedStructureInfo structInfo = new DefinedStructureInfo().a(EnumBlockMirror.NONE).a(rotation).a(false).a((ChunkCoordIntPair) null).a((BlockPosition) null).c(false).a().a(new Random());
+		DefinedStructureInfo structInfo = new DefinedStructureInfo().a(EnumBlockMirror.NONE).a(rotation).a(false).a((ChunkCoordIntPair) null).c(false).a(new Random());
 		BlockPosition blockPosition = new BlockPosition(startEdge.getBlockX(), startEdge.getBlockY(), startEdge.getBlockZ());
 		structure.a(world, blockPosition, structInfo);
 	}
@@ -312,7 +312,7 @@ public class StructureService {
 		for(int x = 0; x < areas[0]; x++) {
 			for(int y = 0; y < areas[1]; y++) {
 				for(int z = 0; z < areas[2]; z++) {
-					DefinedStructureInfo structInfo = new DefinedStructureInfo().a(EnumBlockMirror.NONE).a(rotation).a(false).a((ChunkCoordIntPair) null).a((BlockPosition) null).c(false).a().a(new Random());
+					DefinedStructureInfo structInfo = new DefinedStructureInfo().a(EnumBlockMirror.NONE).a(rotation).a(false).a((ChunkCoordIntPair) null).c(false).a(new Random());
 					structures[StructureService.getYzxIndex(x, y, z, areas[0], areas[2])].a(world, new BlockPosition((x * 32) + startEdge.getBlockX(), (y * 32) + startEdge.getBlockY(), (z * 32) + startEdge.getBlockZ()), structInfo);
 				}
 			}
