@@ -93,9 +93,11 @@ public class CrateControl implements Listener { //Crate Control
 					if(loc.getCrateType() == CrateType.MENU) {
 						return;
 					}else {
-						if(config.getBoolean("Settings.Show-Preview")) {
+						if(loc.getCrate().isPreviewEnabled()) {
 							Preview.setPlayerInMenu(player, false);
 							Preview.openNewPreview(player, loc.getCrate());
+						}else {
+							player.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
 						}
 					}
 				}
