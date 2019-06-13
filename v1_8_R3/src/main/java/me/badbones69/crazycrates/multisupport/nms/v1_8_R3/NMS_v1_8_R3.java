@@ -33,7 +33,7 @@ public class NMS_v1_8_R3 implements NMSSupport {
 	//http://stackoverflow.com/questions/24101928/setting-block-data-from-schematic-in-bukkit
 	@Override
 	public void pasteSchematic(File f, Location loc) {
-		//		loc = loc.subtract(2, 1, 2);
+		loc = loc.subtract(2, 1, 2);
 		try {
 			FileInputStream fis = new FileInputStream(f);
 			NBTTagCompound nbt = NBTCompressedStreamTools.a(fis);
