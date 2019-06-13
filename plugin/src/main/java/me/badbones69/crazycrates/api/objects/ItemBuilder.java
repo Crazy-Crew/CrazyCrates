@@ -423,36 +423,40 @@ public class ItemBuilder {
 	 */
 	public ItemStack build() {
 		ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material, amount);
-		ItemMeta itemMeta = item.getItemMeta();
-		itemMeta.setDisplayName(getUpdatedName());
-		itemMeta.setLore(getUpdatedLore());
-		if(Version.getCurrentVersion().isNewer(Version.v1_10_R1)) {
-			itemMeta.setUnbreakable(unbreakable);
-		}
-		if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
-			if(itemMeta instanceof org.bukkit.inventory.meta.Damageable) {
-				((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(damage);
+		if(item.getType() != Material.AIR) {
+			ItemMeta itemMeta = item.getItemMeta();
+			itemMeta.setDisplayName(getUpdatedName());
+			itemMeta.setLore(getUpdatedLore());
+			if(Version.getCurrentVersion().isNewer(Version.v1_10_R1)) {
+				itemMeta.setUnbreakable(unbreakable);
 			}
+			if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+				if(itemMeta instanceof org.bukkit.inventory.meta.Damageable) {
+					((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(damage);
+				}
+			}else {
+				item.setDurability((short) damage);
+			}
+			item.setItemMeta(itemMeta);
+			hideFlags(item, hideItemFlags);
+			item.addUnsafeEnchantments(enchantments);
+			addGlow(item, glowing);
+			NBTItem nbt = new NBTItem(item);
+			if(material == Material.matchMaterial(cc.useNewMaterial() ? "PLAYER_HEAD" : "SKULL:3")) {
+				if(!player.equals("")) {
+					nbt.setString("SkullOwner", player);
+				}
+			}
+			if(Version.getCurrentVersion().isOlder(Version.v1_11_R1)) {
+				if(unbreakable) {
+					nbt.setBoolean("Unbreakable", true);
+					nbt.setInteger("HideFlags", 4);
+				}
+			}
+			return nbt.getItem();
 		}else {
-			item.setDurability((short) damage);
+			return item;
 		}
-		item.setItemMeta(itemMeta);
-		hideFlags(item, hideItemFlags);
-		item.addUnsafeEnchantments(enchantments);
-		addGlow(item, glowing);
-		NBTItem nbt = new NBTItem(item);
-		if(material == Material.matchMaterial(cc.useNewMaterial() ? "PLAYER_HEAD" : "SKULL:3")) {
-			if(!player.equals("")) {
-				nbt.setString("SkullOwner", player);
-			}
-		}
-		if(Version.getCurrentVersion().isOlder(Version.v1_11_R1)) {
-			if(unbreakable) {
-				nbt.setBoolean("Unbreakable", true);
-				nbt.setInteger("HideFlags", 4);
-			}
-		}
-		return nbt.getItem();
 	}
 	
 	/**
