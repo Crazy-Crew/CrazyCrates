@@ -960,6 +960,23 @@ public class CrazyCrates {
 		return useNewMaterial;
 	}
 	
+	public void loadSchematics() {
+		crateSchematics.clear();
+		String[] schems = new File(plugin.getDataFolder() + "/Schematics/").list();
+		boolean isNewer = Version.getCurrentVersion().isNewer(Version.v1_12_R1);
+		for(String schematicName : schems) {
+			if(isNewer) {
+				if(schematicName.endsWith(".nbt")) {
+					crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(plugin.getDataFolder() + "/Schematics/" + schematicName)));
+				}
+			}else {
+				if(schematicName.endsWith(".schematic")) {
+					crateSchematics.add(new CrateSchematic(schematicName.replace(".schematic", ""), new File(plugin.getDataFolder() + "/Schematics/" + schematicName)));
+				}
+			}
+		}
+	}
+	
 	public List<CrateSchematic> getCrateSchematics() {
 		return crateSchematics;
 	}

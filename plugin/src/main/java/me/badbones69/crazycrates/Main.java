@@ -9,7 +9,6 @@ import me.badbones69.crazycrates.controllers.*;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.cratetypes.*;
 import me.badbones69.crazycrates.multisupport.*;
-import me.badbones69.crazycrates.multisupport.nms.v1_14_R1.StructureService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,10 +27,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class Main extends JavaPlugin implements Listener {
 	
@@ -39,8 +38,7 @@ public class Main extends JavaPlugin implements Listener {
 	private CrazyCrates cc = CrazyCrates.getInstance();
 	private FileManager fileManager = FileManager.getInstance();
 	private Boolean isEnabled = true;// If the server is supported
-	private Location location1;
-	private Location location2;
+	private HashMap<UUID, Location[]> schemLocations = new HashMap<>();
 	
 	@Override
 	public void onEnable() {
@@ -219,42 +217,43 @@ public class Main extends JavaPlugin implements Listener {
 					if(sender instanceof Player) if(!Methods.permCheck(sender, "access")) return true;
 					sender.sendMessage(Messages.HELP.getMessage());
 					return true;
-				}else if(args[0].equalsIgnoreCase("set1")) {
-					location1 = ((Player) sender).getTargetBlockExact(10).getLocation();
-					sender.sendMessage("Set #1");
-					return true;
-				}else if(args[0].equalsIgnoreCase("set2")) {
-					location2 = ((Player) sender).getTargetBlockExact(10).getLocation();
-					sender.sendMessage("Set #2");
-					return true;
-				}else if(args[0].equalsIgnoreCase("save")) {// /cc save <Name>
-					Location[] locations = {location1, location2};
-					try {
-						StructureService.createAndSaveAny(locations, sender.getName(), new File(getDataFolder() + "/Schematics/" + args[1]));
-					}catch(IOException e) {
-						sender.sendMessage("Failed to save file");
-						e.printStackTrace();
+				}else if(args[0].equalsIgnoreCase("set1") || args[0].equalsIgnoreCase("set2")) {
+					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
+					if(Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {
+						sender.sendMessage(Methods.getPrefix("&cThis command only works on 1.13+. If you wish to make schematics for 1.12.2- use World Edit to do so."));
 						return true;
 					}
-					sender.sendMessage("Saved file");
-					return true;
-				}else if(args[0].equalsIgnoreCase("blocks")) {
-					List<Location> locations = cc.getNMSSupport().getLocations(new File(getDataFolder() + "/schem"), ((Player) sender).getLocation());
-					sender.sendMessage("Amount: " + locations.size());
-					System.out.println(locations);
-					return true;
-				}else if(args[0].equalsIgnoreCase("paste")) {
-					cc.getNMSSupport().pasteSchematic(new File(getDataFolder() + "/schem"), ((Player) sender).getLocation());
-					sender.sendMessage("Pasted schem");
-					return true;
-				}else if(args[0].equalsIgnoreCase("pasteall")) {
-					Location location = ((Player) sender).getLocation().subtract(0, 1, 0);
-					for(CrateSchematic schematic : cc.getCrateSchematics()) {
-						cc.getNMSSupport().pasteSchematic(schematic.getSchematicFile(), location);
-						location.add(0, 0, 6);
+					int set = args[0].equalsIgnoreCase("set1") ? 1 : 2;
+					Location location = ((Player) sender).getTargetBlockExact(10).getLocation();
+					if(schemLocations.containsKey(((Player) sender).getUniqueId())) {
+						schemLocations.put(((Player) sender).getUniqueId(), new Location[] {set == 1 ? location : schemLocations.getOrDefault(((Player) sender).getUniqueId(), null)[0], set == 2 ? location : schemLocations.getOrDefault(((Player) sender).getUniqueId(), null)[1]});
+					}else {
+						schemLocations.put(((Player) sender).getUniqueId(), new Location[] {set == 1 ? location : null, set == 2 ? location : null});
 					}
-					sender.sendMessage("Pasted all schems");
+					sender.sendMessage(Methods.getPrefix("&7You have set location #" + set + "."));
 					return true;
+				}else if(args[0].equalsIgnoreCase("save")) {// /cc save <file name>
+					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
+					if(Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {
+						sender.sendMessage(Methods.getPrefix("&cThis command only works on 1.13+. If you wish to make schematics for 1.12.2- use World Edit to do so."));
+						return true;
+					}
+					Location[] locations = schemLocations.get(((Player) sender).getUniqueId());
+					if(locations != null && locations[0] != null && locations[1] != null) {
+						if(args.length >= 2) {
+							File file = new File(getDataFolder() + "/Schematics/" + args[1]);
+							cc.getNMSSupport().saveSchematic(locations, sender.getName(), file);
+							sender.sendMessage(Methods.getPrefix("&7Saved the " + args[1] + ".nbt into the Schematics folder."));
+							cc.loadSchematics();
+							return true;
+						}else {
+							sender.sendMessage(Methods.getPrefix("&cYou need to specify a schematic file name."));
+							return true;
+						}
+					}else {
+						sender.sendMessage(Methods.getPrefix("&cYou need to use /cc set1/set2 to set the connors of your schematic."));
+						return true;
+					}
 				}else if(args[0].equalsIgnoreCase("additem")) {
 					// /cc additem0 <crate>1 <prize>2
 					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
@@ -506,10 +505,10 @@ public class Main extends JavaPlugin implements Listener {
 								CrateType type = crate.getCrateType();
 								if(type != null) {
 									if(type != CrateType.CRATE_ON_THE_GO && type != CrateType.QUICK_CRATE && type != CrateType.FIRE_CRACKER) {
-										//										if(type == CrateType.QUAD_CRATE) {
-										//											sender.sendMessage(Messages.QUAD_CRATE_DISABLED.getMessage());
-										//											return true;
-										//										}
+										//if(type == CrateType.QUAD_CRATE) {
+										//	sender.sendMessage(Messages.QUAD_CRATE_DISABLED.getMessage());
+										//	return true;
+										//}
 										cc.openCrate(player, crate, KeyType.FREE_KEY, player.getLocation(), true);
 										HashMap<String, String> placeholders = new HashMap<>();
 										placeholders.put("%crate%", crate.getName());

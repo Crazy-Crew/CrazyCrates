@@ -58,3 +58,5 @@ Messages:
     - '&6/cc set <Crate> &7- Set a block you are looking at as a crate.'
     - '&6/cc set Menu &7- Set the block you are looking at to open the /cc GUI.'
     - '&6/cc reload &7- Reloads the Config and Data Files.'
+    - '&6/cc set1/set2 &7- Set position #1 or #2 for when making a new schematic for quadcrates. &c1.13+ only'
+    - '&6/cc save <schematic file name> &7- Save the new schematic file to the schematics folder. &c1.13+ only'
