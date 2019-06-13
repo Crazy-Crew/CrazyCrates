@@ -63,6 +63,10 @@ public class QuadCrateSession {
 			crateSessions.remove(instance);
 			return false;
 		}
+		if(cc.getCrateSchematics().isEmpty()) {
+			player.sendMessage(Messages.NO_SCHEMATICS_FOUND.getMessage()));
+			return false;
+		}
 		crateSchematic = cc.getCrateSchematics().get(new Random().nextInt(cc.getCrateSchematics().size()));
 		schematicLocations = nms.getLocations(crateSchematic.getSchematicFile(), spawnLocation.clone());
 		//Check if the locations are all able to be changed

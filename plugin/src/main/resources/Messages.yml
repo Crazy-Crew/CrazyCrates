@@ -30,6 +30,7 @@ Messages:
   No-Item-In-Hand: '&cYou need to have an item in your hand to add it to the crate.'
   Added-Item-With-Editor: '&7The item has been added to the %crate% crate in prize #%prize%.'
   Preview-Disabled: '&cThe preview for that crate is currently disabled.'
+  No-Schematics-Found: '&cNo schematic were found, if using 1.13+ make sure the schematics folder has the new .nbt schematics, if not regenerate the folder.'
   Created-Physical-Crate:
     - '%prefix%&7You have just set that block to %crate%.'
     - '&7To remove the crate shift break in creative to remove.'
