@@ -29,25 +29,25 @@ Crate:
       - '&7For a special Crate.'
     Item: 'TRIPWIRE_HOOK' #The item the key is.
     Glowing: True #Makes the key look enchanted.
-#         For Cosmic Crates Only
-#############################################
-#  Tiers: #The tiers in the Crate
-#    Basic: #The Config Name for the Crate
-#      Name: '&8Basic Prize' #The in-game name of the Crate
-#      Color: 7 #Use the MetaData for the color of the glass
-#      Chance: 80 #Chance of that item getting picked. It would be 80/100 chance because MaxRange is 100.
-#      MaxRange: 100 #The max range that the chance will go though.
-#    UnCommon:
-#      Name: '&aUnCommon Prize'
-#      Color: 5
-#      Chance: 55
-#      MaxRange: 100
-#    Rare:
-#      Name: '&4Rare Prize'
-#      Color: 14
-#      Chance: 20
-#      MaxRange: 100
-#############################################
+  #         For Cosmic Crates Only
+  #############################################
+  #  Tiers: #The tiers in the Crate
+  #    Basic: #The Config Name for the Crate
+  #      Name: '&8Basic Prize' #The in-game name of the Crate
+  #      Color: 7 #Use the MetaData for the color of the glass
+  #      Chance: 80 #Chance of that item getting picked. It would be 80/100 chance because MaxRange is 100.
+  #      MaxRange: 100 #The max range that the chance will go though.
+  #    UnCommon:
+  #      Name: '&aUnCommon Prize'
+  #      Color: 5
+  #      Chance: 55
+  #      MaxRange: 100
+  #    Rare:
+  #      Name: '&4Rare Prize'
+  #      Color: 14
+  #      Chance: 20
+  #      MaxRange: 100
+  #############################################
   Prizes: #All the prizes that can be gotten in the Crate.
     1:
       DisplayName: '&7&lBasic Grass' #Name of the item shown by the crate.
@@ -62,22 +62,22 @@ Crate:
       Glowing: false #Toggle if the item has a glowing effect but doesn't have an enchantment on it.
       Player: '' #Set the item to 397:3 and then add the players name for this to take effect.
       Unbreakable: false #Adds the unbreaking NBT tag to the display item to allow it to have custom textures.
-#        For Cosmic Crates Only
-#############################################
-#       Tiers: #The Tiers the rewards can be found in.
-#         - 'Basic'
-#         - 'UnCommon'
-#         - 'Rare'
-#############################################
-# Items that the player wins if this prize is picked. (If you wish not to give an Item in the prize just delete the Items Section)
-#             Items: Options
-# Item:<ID:MD> - You can choose the item with its id and meta data.
-# Amount:<Number> - Choose how many of the item you get.
-# Name:<Name> - The display name that goes on the item.
-# Lore:<Line 1>,<Line 2>,<Line 3>,<Line 4> - The lore that will go under the enchantments. Split lines with a ','
-# Unbreakable-Item:<True/False> - Will add the Unbreaking NBT tag to the item to allow custom textured items to be gained through the envoys.
-# <Enchantment>:<Level> - Choose the enchantment you want to add to the item. You can use the in-game names of the enchantment if you want. Replace the spaces in the name with "_".
-###################################
+      #        For Cosmic Crates Only
+      #############################################
+      #       Tiers: #The Tiers the rewards can be found in.
+      #         - 'Basic'
+      #         - 'UnCommon'
+      #         - 'Rare'
+      #############################################
+      # Items that the player wins if this prize is picked. (If you wish not to give an Item in the prize just delete the Items Section)
+      #             Items: Options
+      # Item:<ID:MD> - You can choose the item with its id and meta data.
+      # Amount:<Number> - Choose how many of the item you get.
+      # Name:<Name> - The display name that goes on the item.
+      # Lore:<Line 1>,<Line 2>,<Line 3>,<Line 4> - The lore that will go under the enchantments. Split lines with a ','
+      # Unbreakable-Item:<True/False> - Will add the Unbreaking NBT tag to the item to allow custom textured items to be gained through the envoys.
+      # <Enchantment>:<Level> - Choose the enchantment you want to add to the item. You can use the in-game names of the enchantment if you want. Replace the spaces in the name with "_".
+      ###################################
       Items:
         - 'Item:GRASS, Amount:32, Name:&7&lBasic Grass'
       #Commands are the commands that are run when this prize is won. (If you wish not to use a CMD in the prize just delete the Commands Section)
