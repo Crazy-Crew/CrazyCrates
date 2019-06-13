@@ -128,6 +128,7 @@ public class CSGO implements Listener {
 						}
 						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 						cc.removePlayerFromOpeningList(player);
+						cancel();
 					}
 				}
 			}
