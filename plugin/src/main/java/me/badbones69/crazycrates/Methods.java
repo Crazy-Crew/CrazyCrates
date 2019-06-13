@@ -176,6 +176,10 @@ public class Methods {
 		}
 	}
 	
+	public static boolean permCheck(CommandSender sender, String perm) {
+		return permCheck((Player) sender, perm);
+	}
+	
 	public static boolean permCheck(Player player, String perm) {
 		if(!player.hasPermission("crazycrates." + perm.toLowerCase())) {
 			player.sendMessage(Messages.NO_PERMISSION.getMessage());
