@@ -54,7 +54,7 @@ public class Crate {
 		this.prizes = prizes;
 		this.crateType = crateType;
 		this.preview = loadPreview();
-		this.previewToggle = file != null && file.getBoolean("Crate.Preview.Toggle");
+		this.previewToggle = file != null && (!file.contains("Crate.Preview.Toggle") || file.getBoolean("Crate.Preview.Toggle"));
 		this.boarderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle");
 		this.previewName = Methods.color(previewName);
 		this.newPlayerKeys = newPlayerKeys;
