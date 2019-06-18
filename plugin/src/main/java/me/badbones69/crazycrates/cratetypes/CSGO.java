@@ -109,7 +109,7 @@ public class CSGO implements Listener {
 						}
 					}
 					time++;
-					if(time >= 60) {// When done
+					if(time == 60) {// When done
 						if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
 							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
 						}else {
@@ -128,6 +128,8 @@ public class CSGO implements Listener {
 						}
 						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 						cc.removePlayerFromOpeningList(player);
+						cancel();
+					}else if(time > 60) {//Added this due reports of the prizes spamming when low tps.
 						cancel();
 					}
 				}
