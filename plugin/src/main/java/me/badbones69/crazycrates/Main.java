@@ -232,6 +232,32 @@ public class Main extends JavaPlugin implements Listener {
 					}
 					sender.sendMessage(Methods.getPrefix("&7You have set location #" + set + "."));
 					return true;
+					//Commented code is for debugging schematic files if there is an issue with them.
+					//				}else if(args[0].equalsIgnoreCase("pasteall")) {// /cc pasteall
+					//					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
+					//					Location location = ((Player) sender).getLocation().subtract(0, 1, 0);
+					//					for(CrateSchematic schematic : cc.getCrateSchematics()) {
+					//						cc.getNMSSupport().pasteSchematic(schematic.getSchematicFile(), location);
+					//						location.add(0, 0, 6);
+					//					}
+					//					sender.sendMessage(Methods.getPrefix("&7Pasted all of the schematics."));
+					//					return true;
+					//				}else if(args[0].equalsIgnoreCase("paste")) {// /cc paste <schematic file name>
+					//					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
+					//					if(args.length >= 2) {
+					//						String name = args[1];
+					//						Location location = ((Player) sender).getLocation().subtract(0, 1, 0);
+					//						CrateSchematic schematic = cc.getCrateSchematic(name);
+					//						if(schematic != null) {
+					//							cc.getNMSSupport().pasteSchematic(schematic.getSchematicFile(), location);
+					//							sender.sendMessage("Pasted the " + schematic.getSchematicName() + " schematic.");
+					//						}else {
+					//							sender.sendMessage(Methods.getPrefix("&cNo schematics by the name of " + name + " where found."));
+					//						}
+					//					}else {
+					//						sender.sendMessage(Methods.getPrefix("&c/cc paste <schematic file name>"));
+					//					}
+					//					return true;
 				}else if(args[0].equalsIgnoreCase("save")) {// /cc save <file name>
 					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
 					if(Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {

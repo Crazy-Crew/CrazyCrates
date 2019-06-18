@@ -981,6 +981,15 @@ public class CrazyCrates {
 		return crateSchematics;
 	}
 	
+	public CrateSchematic getCrateSchematic(String name) {
+		for(CrateSchematic schematic : crateSchematics) {
+			if(schematic.getSchematicName().equalsIgnoreCase(name)) {
+				return schematic;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * Check if an entity is a display reward for a crate.
 	 * @param entity Entity you wish to check.
