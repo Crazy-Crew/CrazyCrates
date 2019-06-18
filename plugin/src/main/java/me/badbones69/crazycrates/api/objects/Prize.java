@@ -28,12 +28,11 @@ public class Prize {
 		this.chance = 0;
 		this.firework = false;
 		this.maxRange = 100;
-		this.tiers = tiers != null ? tiers : new ArrayList<>();
-		this.messages = messages != null ? messages : new ArrayList<>();
-		this.commands = commands != null ? commands : new ArrayList<>();
-		this.displayItem = displayItem != null ? displayItem : new ItemBuilder();
-		this.blackListPermissions = blackListPermissions != null ? blackListPermissions : new ArrayList<>();
-		this.blackListPermissions.replaceAll(String::toLowerCase);
+		this.tiers = new ArrayList<>();
+		this.messages = new ArrayList<>();
+		this.commands = new ArrayList<>();
+		this.displayItem = new ItemBuilder();
+		this.blackListPermissions = new ArrayList<>();
 		this.altPrize = null;
 	}
 	

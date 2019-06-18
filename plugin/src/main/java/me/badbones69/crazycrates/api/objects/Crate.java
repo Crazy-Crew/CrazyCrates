@@ -1,6 +1,7 @@
 package me.badbones69.crazycrates.api.objects;
 
 import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.controllers.FileManager;
 import me.badbones69.crazycrates.controllers.Preview;
@@ -23,6 +24,9 @@ public class Crate {
 	private ItemStack key;
 	private Integer maxPage = 1;
 	private String previewName;
+	private Boolean previewToggle;
+	private Boolean boarderToggle;
+	private ItemBuilder boarderItem;
 	private CrateType crateType;
 	private FileConfiguration file;
 	private ArrayList<Prize> prizes;
@@ -32,6 +36,7 @@ public class Crate {
 	private ArrayList<ItemStack> preview;
 	private ArrayList<Tier> tiers;
 	private FileManager fileManager = FileManager.getInstance();
+	private CrazyCrates cc = CrazyCrates.getInstance();
 	
 	/**
 	 *
@@ -41,7 +46,7 @@ public class Crate {
 	 * @param prizes The prizes that can be won.
 	 * @param file The crate file.
 	 */
-	public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, Integer newPlayerKeys, ArrayList tiers) {
+	public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, Integer newPlayerKeys, ArrayList<Tier> tiers) {
 		this.key = key;
 		this.file = file;
 		this.name = name;
@@ -49,11 +54,14 @@ public class Crate {
 		this.prizes = prizes;
 		this.crateType = crateType;
 		this.preview = loadPreview();
+		this.previewToggle = file != null && (!file.contains("Crate.Preview.Toggle") || file.getBoolean("Crate.Preview.Toggle"));
+		this.boarderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle");
 		this.previewName = Methods.color(previewName);
 		this.newPlayerKeys = newPlayerKeys;
 		this.giveNewPlayerKeys = newPlayerKeys > 0;
 		for(int amount = preview.size(); amount > 36; amount -= 45, maxPage++) ;
 		this.crateInventoryName = file != null ? Methods.color(file.getString("Crate.CrateName")) : "";
+		this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
 	}
 	
 	/**
@@ -142,7 +150,7 @@ public class Crate {
 	/**
 	 * Picks a random prize based on BlackList Permissions and the Chance System. Spawns the display item at the location.
 	 * @param player The player that will be winning the prize.
-	 * @param location The location the prize will spawn at.
+	 * @param location The location the firework will spawn at.
 	 * @return The winning prize.
 	 */
 	public Prize pickPrize(Player player, Location location) {
@@ -196,6 +204,30 @@ public class Crate {
 	 */
 	public String getPreviewName() {
 		return previewName;
+	}
+	
+	/**
+	 * Get if the preview is toggled on.
+	 * @return True if preview is on and false if not.
+	 */
+	public Boolean isPreviewEnabled() {
+		return previewToggle;
+	}
+	
+	/**
+	 * Get if the preview has an item boarder.
+	 * @return True if it does and false if not.
+	 */
+	public Boolean isItemBoarderEnabled() {
+		return boarderToggle;
+	}
+	
+	/**
+	 * Get the item that shows as the preview boarder if enabled.
+	 * @return The ItemBuilder for the boarder item.
+	 */
+	public ItemBuilder getBoarderItem() {
+		return boarderItem;
 	}
 	
 	/**
@@ -405,11 +437,13 @@ public class Crate {
 	}
 	
 	private void setDefaultItems(Inventory inv, Player player) {
-		for(int i : Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 45, 46, 47, 49, 51, 52, 53)) {
-			inv.setItem(i, new ItemBuilder()
-			.setMaterial(Preview.getPaneColor(player))
-			.setName(" ")
-			.build());
+		if(boarderToggle) {
+			for(int i : Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8)) {//Top Boarder slots
+				inv.setItem(i, boarderItem.build());
+			}
+		}
+		for(int i : Arrays.asList(45, 46, 47, 49, 51, 52, 53)) {//Bottom Boarder slots
+			inv.setItem(i, boarderItem.build());
 		}
 		int page = Preview.getPage(player);
 		int maxPage = getMaxPage();
@@ -418,7 +452,8 @@ public class Crate {
 		}
 		if(page == 1) {
 			inv.setItem(48, new ItemBuilder()
-			.setMaterial(Material.GRAY_STAINED_GLASS_PANE)
+			.setMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE")
+			.setDamage(cc.useNewMaterial() ? 0 : 7)
 			.setName(" ")
 			.build());
 		}else {
@@ -426,7 +461,8 @@ public class Crate {
 		}
 		if(page == maxPage) {
 			inv.setItem(50, new ItemBuilder()
-			.setMaterial(Material.GRAY_STAINED_GLASS_PANE)
+			.setMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE")
+			.setDamage(cc.useNewMaterial() ? 0 : 7)
 			.setName(" ")
 			.build());
 		}else {

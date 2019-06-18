@@ -113,10 +113,8 @@ public class GUIMenu implements Listener {
 						.replaceAll("%Keys_Total%", NumberFormat.getNumberInstance().format(cc.getTotalKeys(player, crate))).replaceAll("%keys_total%", NumberFormat.getNumberInstance().format(cc.getTotalKeys(player, crate)))
 						.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName()));
 					}
-					if(file.contains(path + "Glowing")) {
-						if(file.getBoolean(path + "Glowing")) {
-							glowing = true;
-						}
+					if(file.getBoolean(path + "Glowing")) {
+						glowing = true;
 					}
 					if(slot > size) {
 						continue;
@@ -153,18 +151,22 @@ public class GUIMenu implements Listener {
 									FileConfiguration file = crate.getFile();
 									String path = "Crate.";
 									if(item.getItemMeta().getDisplayName().equals(Methods.color(file.getString(path + "Name")))) {
-										if(e.getAction() == InventoryAction.PICKUP_HALF) {
-											if(config.getBoolean("Settings.Show-Preview")) {
+										if(e.getAction() == InventoryAction.PICKUP_HALF) {//Right clicked the item
+											if(crate.isPreviewEnabled()) {
 												player.closeInventory();
 												Preview.setPlayerInMenu(player, true);
 												Preview.openNewPreview(player, crate);
+											}else {
+												player.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
 											}
 											return;
 										}
-										if(crate.getCrateType() == CrateType.QUAD_CRATE) {
-											player.sendMessage(Messages.QUAD_CRATE_DISABLED.getMessage());
-											return;
-										}
+										//if(crate.getCrateType() == CrateType.QUAD_CRATE) {
+										//	if(Version.getCurrentVersion().isNewer(Version.v1_14_R1)) {
+										//		player.sendMessage(Messages.QUAD_CRATE_DISABLED.getMessage());
+										//		return;
+										//	}
+										//}
 										if(cc.isInOpeningList(player)) {
 											player.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
 											return;

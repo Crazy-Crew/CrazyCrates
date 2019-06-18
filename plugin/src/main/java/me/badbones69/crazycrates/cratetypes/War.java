@@ -8,6 +8,7 @@ import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
+import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -26,6 +27,7 @@ import java.util.HashMap;
 public class War implements Listener {
 	
 	private static CrazyCrates cc = CrazyCrates.getInstance();
+	private static HashMap<ItemStack, String> colorCodes;
 	private static HashMap<Player, Boolean> canPick = new HashMap<>();
 	private static HashMap<Player, Boolean> canClose = new HashMap<>();
 	
@@ -48,7 +50,11 @@ public class War implements Listener {
 			public void run() {
 				if(full < 25) {//When Spinning
 					setRandomPrizes(player, inv, crate, inventoryTitle);
-					player.playSound(player.getLocation(), Sound.BLOCK_LAVA_POP, 1, 1);
+					if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+						player.playSound(player.getLocation(), Sound.valueOf("LAVA_POP"), 1, 1);
+					}else {
+						player.playSound(player.getLocation(), Sound.valueOf("BLOCK_LAVA_POP"), 1, 1);
+					}
 				}
 				open++;
 				if(open >= 3) {
@@ -57,7 +63,11 @@ public class War implements Listener {
 				}
 				full++;
 				if(full == 26) {//Finished Rolling
-					player.playSound(player.getLocation(), Sound.BLOCK_LAVA_POP, 1, 1);
+					if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+						player.playSound(player.getLocation(), Sound.valueOf("LAVA_POP"), 1, 1);
+					}else {
+						player.playSound(player.getLocation(), Sound.valueOf("BLOCK_LAVA_POP"), 1, 1);
+					}
 					setRandomGlass(player, inv, inventoryTitle);
 					canPick.put(player, true);
 				}
@@ -70,13 +80,6 @@ public class War implements Listener {
 		final Player player = (Player) e.getWhoClicked();
 		final Inventory inv = e.getInventory();
 		if(inv != null) {
-			for(Crate crate : cc.getCrates()) {
-				if(crate.getCrateType() == CrateType.WAR) {
-					if(e.getView().getTitle().equalsIgnoreCase(Methods.color(crate.getFile().getString("Crate.CrateName")))) {
-						e.setCancelled(true);
-					}
-				}
-			}
 			if(canPick.containsKey(player)) {
 				if(cc.isInOpeningList(player)) {
 					Crate crate = cc.getOpeningCrate(player);
@@ -99,7 +102,11 @@ public class War implements Listener {
 									}
 									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 									cc.removePlayerFromOpeningList(player);
-									player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1, 1);
+									if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+										player.playSound(player.getLocation(), Sound.valueOf("ANVIL_LAND"), 1, 1);
+									}else {
+										player.playSound(player.getLocation(), Sound.valueOf("BLOCK_ANVIL_PLACE"), 1, 1);
+									}
 									//Sets all other non picked prizes to show what they could have been.
 									cc.addCrateTask(player, new BukkitRunnable() {
 										@Override
@@ -180,32 +187,37 @@ public class War implements Listener {
 	private static void setRandomGlass(Player player, Inventory inv, String inventoryTitle) {
 		if(cc.isInOpeningList(player)) {
 			if(inventoryTitle.equalsIgnoreCase(Methods.color(cc.getOpeningCrate(player).getFile().getString("Crate.CrateName")))) {
-				Material material = Methods.getRandomPaneColor();
+				if(colorCodes == null) {
+					colorCodes = getColorCode();
+				}
+				ItemBuilder itemBuilder = Methods.getRandomPaneColor();
+				itemBuilder.setName("&" + colorCodes.get(itemBuilder.build()) + "&l???");
+				ItemStack item = itemBuilder.build();
 				for(int i = 0; i < 9; i++) {
-					inv.setItem(i, new ItemBuilder().setMaterial(material).setName("&" + getColorCode().get(material) + "&l???").build());
+					inv.setItem(i, item);
 				}
 			}
 		}
 	}
 	
-	private static HashMap<Material, String> getColorCode() {
-		HashMap<Material, String> colorCodes = new HashMap<>();
-		colorCodes.put(Material.WHITE_STAINED_GLASS_PANE, "f");
-		colorCodes.put(Material.ORANGE_STAINED_GLASS_PANE, "6");
-		colorCodes.put(Material.MAGENTA_STAINED_GLASS_PANE, "d");
-		colorCodes.put(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "3");
-		colorCodes.put(Material.YELLOW_STAINED_GLASS_PANE, "e");
-		colorCodes.put(Material.LIME_STAINED_GLASS_PANE, "a");
-		colorCodes.put(Material.PINK_STAINED_GLASS_PANE, "c");
-		colorCodes.put(Material.GRAY_STAINED_GLASS_PANE, "7");
-		colorCodes.put(Material.LIGHT_GRAY_STAINED_GLASS_PANE, "7");
-		colorCodes.put(Material.CYAN_STAINED_GLASS_PANE, "3");
-		colorCodes.put(Material.PURPLE_STAINED_GLASS_PANE, "5");
-		colorCodes.put(Material.BLUE_STAINED_GLASS_PANE, "9");
-		colorCodes.put(Material.BROWN_STAINED_GLASS_PANE, "6");
-		colorCodes.put(Material.GREEN_STAINED_GLASS_PANE, "2");
-		colorCodes.put(Material.RED_STAINED_GLASS_PANE, "4");
-		colorCodes.put(Material.BLACK_STAINED_GLASS_PANE, "8");
+	private static HashMap<ItemStack, String> getColorCode() {
+		HashMap<ItemStack, String> colorCodes = new HashMap<>();
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "WHITE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:0").build(), "f");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "ORANGE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:1").build(), "6");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "MAGENTA_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:2").build(), "d");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIGHT_BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:3").build(), "3");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "YELLOW_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:4").build(), "e");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5").build(), "a");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "PINK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:6").build(), "c");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:7").build(), "7");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIGHT_GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:8").build(), "7");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "CYAN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:9").build(), "3");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "PURPLE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:10").build(), "5");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:11").build(), "9");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BROWN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:12").build(), "6");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "GREEN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:13").build(), "2");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "RED_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:14").build(), "4");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15").build(), "8");
 		return colorCodes;
 	}
 	

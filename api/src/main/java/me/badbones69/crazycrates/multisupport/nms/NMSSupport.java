@@ -9,12 +9,14 @@ import java.util.List;
 
 public interface NMSSupport {
 	
-	public void openChest(Block b, Location location, Boolean open);
+	void openChest(Block block, Boolean open);
 	
-	public List<Location> pasteSchematic(File f, Location loc);
+	void pasteSchematic(File file, Location loc);
 	
-	public List<Location> getLocations(File f, Location loc);
+	void saveSchematic(Location[] locations, String owner, File file);
 	
-	public List<Material> getQuadCreateBlocks();
+	List<Location> getLocations(File file, Location loc);
+	
+	List<Material> getQuadCrateBlacklistBlocks();
 	
 }

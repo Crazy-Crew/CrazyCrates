@@ -1,6 +1,5 @@
 package me.badbones69.crazycrates.controllers;
 
-import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
@@ -19,10 +18,9 @@ import java.util.UUID;
 
 public class Preview implements Listener {
 	
-	private CrazyCrates cc = CrazyCrates.getInstance();
+	private static CrazyCrates cc = CrazyCrates.getInstance();
 	private static HashMap<UUID, Integer> playerPage = new HashMap<>();
 	private static HashMap<UUID, Crate> playerCrate = new HashMap<>();
-	private static HashMap<UUID, Material> playerColor = new HashMap<>();
 	private static HashMap<UUID, Boolean> playerInMenu = new HashMap<>();
 	
 	@EventHandler
@@ -59,7 +57,6 @@ public class Preview implements Listener {
 	
 	public static void openNewPreview(Player player, Crate crate) {
 		playerCrate.put(player.getUniqueId(), crate);
-		pickNewPaneColor(player);
 		setPage(player, 1);
 		player.openInventory(crate.getPreview(player));
 	}
@@ -185,14 +182,6 @@ public class Preview implements Listener {
 			.addLorePlaceholder("%Page%", (getPage(player) - 1) + "")
 			.build();
 		}
-	}
-	
-	public static Material getPaneColor(Player player) {
-		return playerColor.getOrDefault(player.getUniqueId(), Material.WHITE_STAINED_GLASS_PANE);
-	}
-	
-	public static void pickNewPaneColor(Player player) {
-		playerColor.put(player.getUniqueId(), Methods.getRandomPaneColor());
 	}
 	
 	public static Boolean playerInMenu(Player player) {

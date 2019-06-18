@@ -5,8 +5,8 @@ import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.controllers.FireworkDamageAPI;
+import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -38,6 +38,14 @@ public class Methods {
 	
 	public static String removeColor(String msg) {
 		return ChatColor.stripColor(msg);
+	}
+	
+	public static ItemStack getItemInHand(Player player) {
+		if(Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+			return player.getInventory().getItemInMainHand();
+		}else {
+			return player.getItemInHand();
+		}
 	}
 	
 	public static HashMap<ItemStack, String> getItems(Player player) {
@@ -87,8 +95,8 @@ public class Methods {
 			potionType = PotionType.INVISIBILITY;
 		}else if(type.equals(PotionEffectType.JUMP)) {
 			potionType = PotionType.JUMP;
-		}else if(type.equals(PotionEffectType.LUCK)) {
-			potionType = PotionType.LUCK;
+		}else if(type.equals(PotionEffectType.getByName("LUCK"))) {
+			potionType = PotionType.valueOf("LUCK");
 		}else if(type.equals(PotionEffectType.NIGHT_VISION)) {
 			potionType = PotionType.NIGHT_VISION;
 		}else if(type.equals(PotionEffectType.POISON)) {
@@ -168,6 +176,10 @@ public class Methods {
 		}
 	}
 	
+	public static boolean permCheck(CommandSender sender, String perm) {
+		return permCheck((Player) sender, perm);
+	}
+	
 	public static boolean permCheck(Player player, String perm) {
 		if(!player.hasPermission("crazycrates." + perm.toLowerCase())) {
 			player.sendMessage(Messages.NO_PERMISSION.getMessage());
@@ -185,28 +197,7 @@ public class Methods {
 	}
 	
 	public static List<Location> getLocations(String shem, Location loc) {
-		return Main.getNMSSupport().getLocations(new File(plugin.getDataFolder() + "/Schematics/" + shem), loc);
-	}
-	
-	public static void playChestAction(Block b, boolean open) {
-		Location location = b.getLocation();
-		Material type = b.getType();
-		if(type == Material.CHEST || type == Material.TRAPPED_CHEST || type == Material.ENDER_CHEST) {
-			Main.getNMSSupport().openChest(b, location, open);
-		}
-	}
-	
-	public static String pickRandomSchem() {
-		File f = new File(plugin.getDataFolder() + "/Schematics/");
-		String[] schems = f.list();
-		ArrayList<String> schematics = new ArrayList<>();
-		for(String i : schems) {
-			if(!i.equalsIgnoreCase(".DS_Store")) {
-				schematics.add(i);
-			}
-		}
-		Random r = new Random();
-		return schematics.get(r.nextInt(schematics.size()));
+		return cc.getNMSSupport().getLocations(new File(plugin.getDataFolder() + "/Schematics/" + shem), loc);
 	}
 	
 	public static boolean isInventoryFull(Player player) {
@@ -216,6 +207,10 @@ public class Methods {
 	public static Integer randomNumber(int min, int max) {
 		Random i = new Random();
 		return min + i.nextInt(max - min);
+	}
+	
+	public static boolean isSimilar(Player player, ItemStack two) {
+		return isSimilar(getItemInHand(player), two);
 	}
 	
 	public static boolean isSimilar(ItemStack one, ItemStack two) {
@@ -340,25 +335,26 @@ public class Methods {
 		return enchants;
 	}
 	
-	public static Material getRandomPaneColor() {
-		List<Material> colors = Arrays.asList(
-		Material.WHITE_STAINED_GLASS_PANE,// 0
-		Material.ORANGE_STAINED_GLASS_PANE,// 1
-		Material.MAGENTA_STAINED_GLASS_PANE,// 2
-		Material.LIGHT_BLUE_STAINED_GLASS_PANE,// 3
-		Material.YELLOW_STAINED_GLASS_PANE,// 4
-		Material.LIME_STAINED_GLASS_PANE,// 5
-		Material.PINK_STAINED_GLASS_PANE,// 6
-		Material.GRAY_STAINED_GLASS_PANE,// 7
-		//Skipped 8 due to it being basicly invisable in a GUI.
-		Material.CYAN_STAINED_GLASS_PANE,// 9
-		Material.PURPLE_STAINED_GLASS_PANE,// 10
-		Material.BLUE_STAINED_GLASS_PANE,// 11
-		Material.BROWN_STAINED_GLASS_PANE,// 12
-		Material.GREEN_STAINED_GLASS_PANE,// 13
-		Material.RED_STAINED_GLASS_PANE,// 14
-		Material.BLACK_STAINED_GLASS_PANE);// 15
-		return colors.get(new Random().nextInt(colors.size()));
+	public static ItemBuilder getRandomPaneColor() {
+		Boolean newMaterial = cc.useNewMaterial();
+		List<String> colors = Arrays.asList(
+		newMaterial ? "WHITE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:0",// 0
+		newMaterial ? "ORANGE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:1",// 1
+		newMaterial ? "MAGENTA_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:2",// 2
+		newMaterial ? "LIGHT_BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:3",// 3
+		newMaterial ? "YELLOW_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:4",// 4
+		newMaterial ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5",// 5
+		newMaterial ? "PINK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:6",// 6
+		newMaterial ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:7",// 7
+		//Skipped 8 due to it being basically invisible in a GUI.
+		newMaterial ? "CYAN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:9",// 9
+		newMaterial ? "PURPLE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:10",// 10
+		newMaterial ? "BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:11",// 11
+		newMaterial ? "BROWN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:12",// 12
+		newMaterial ? "GREEN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:13",// 13
+		newMaterial ? "RED_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:14",// 14
+		newMaterial ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15");// 15
+		return new ItemBuilder().setMaterial(colors.get(new Random().nextInt(colors.size())));
 	}
 	
 }

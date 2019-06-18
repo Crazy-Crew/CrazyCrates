@@ -12,11 +12,12 @@ public enum Messages {
 	
 	NO_TELEPORTING("No-Teleporting", "&cYou may not teleport away while opening a crate."),
 	NO_COMMANDS_WHILE_CRATE_OPENED("No-Commands-While-In-Crate", "&cYou are not allowed to use commands while opening Crates."),
-	NO_KEY("No-Key", "&cYou must have a %Key% &cin your hand to use that Crate."),
+	NO_KEY("No-Key", "&cYou must have a %key% &cin your hand to use that Crate."),
 	NO_VIRTUAL_KEY("No-Virtual-Key", "&cYou need a key to open that Crate."),
+	NOT_ON_BLOCK("Not-On-Block", "&cYou must be standing on a block to use this crate."),
 	ALREADY_OPENING_CRATE("Already-Opening-Crate", "&cYou are already opening a crate."),
 	QUICK_CRATE_IN_USE("Quick-Crate-In-Use", "&cThat crate is already in use. Please wait for the crate to open up."),
-	WORLD_DISABLED("World-Disabled", "&cI am sorry but crates are disabled in %World%."),
+	WORLD_DISABLED("World-Disabled", "&cI am sorry but crates are disabled in %world%."),
 	RELOAD("Reload", "&3You have just reloaded the Config and Data Files."),
 	NOT_ONLINE("Not-Online", "&cThe player &6%player% &cis not online at this time."),
 	NO_PERMISSION("No-Permission", "&cYou do not have permission to use that command!"),
@@ -46,6 +47,8 @@ public enum Messages {
 	OTHER_PLAYER_HEADER("Keys.Other-Player.Header", Arrays.asList("&8&l(&6&l!&8&l) &7List of %player%''s current amount of keys.")),
 	PER_CRATE("Keys.Per-Crate", "%crate% &7&l>&8&l> &6%keys% keys"),
 	QUAD_CRATE_DISABLED("Quad-Crate-Disabled", "&cQuad crate type is currently disabled in this build of Crazy Crates due to 1.13+ changing code."),
+	PREVIEW_DISABLED("Preview-Disabled", "&cThe preview for that crate is currently disabled."),
+	NO_SCHEMATICS_FOUND("No-Schematics-Found", "&cNo schematic were found, if using 1.13+ make sure the schematics folder has the new .nbt schematics, if not regenerate the folder."),
 	HELP("Help",
 	Arrays.asList("&3&lCrazy Crates Help Menu",
 	"&6/key [player] &7- Check the amount of keys a player has.",
@@ -60,7 +63,9 @@ public enum Messages {
 	"&6/cc take <Physical/Virtual> <Crate> [Amount] [Player] &7- Allows you to take keys from a player.",
 	"&6/cc set <Crate> &7- Set a block you are looking at as a crate.",
 	"&6/cc set Menu &7- Set the block you are looking at to open the /cc GUI.",
-	"&6/cc reload &7- Reloads the Config and Data Files."));
+	"&6/cc reload &7- Reloads the Config and Data Files.",
+	"&6/cc set1/set2 &7- Set position #1 or #2 for when making a new schematic for quadcrates. &c1.13+ only",
+	"&6/cc save <schematic file name> &7- Save the new schematic file to the schematics folder. &c1.13+ only"));
 	
 	private String path;
 	private String defaultMessage;
@@ -178,7 +183,6 @@ public enum Messages {
 		boolean saveFile = false;
 		for(Messages message : values()) {
 			if(!messages.contains("Messages." + message.getPath())) {
-				System.out.println(message.getPath());
 				saveFile = true;
 				if(message.getDefaultMessage() != null) {
 					messages.set("Messages." + message.getPath(), message.getDefaultMessage());

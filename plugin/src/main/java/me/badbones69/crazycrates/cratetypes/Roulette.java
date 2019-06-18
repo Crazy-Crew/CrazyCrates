@@ -5,14 +5,14 @@ import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
-import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
+import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -26,8 +26,8 @@ public class Roulette implements Listener {
 		Random r = new Random();
 		for(int i = 0; i < 27; i++) {
 			if(i != 13) {
-				Material material = Methods.getRandomPaneColor();
-				inv.setItem(i, new ItemBuilder().setMaterial(material).setName(" ").build());
+				ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+				inv.setItem(i, item);
 			}
 		}
 	}
@@ -47,13 +47,16 @@ public class Roulette implements Listener {
 			int even = 0;
 			int full = 0;
 			int open = 0;
-			
 			@Override
 			public void run() {
 				if(full <= 15) {
 					inv.setItem(13, crate.pickPrize(player).getDisplayItem());
 					setGlass(inv);
-					player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+					if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+						player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+					}else {
+						player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+					}
 					even++;
 					if(even >= 4) {
 						even = 0;
@@ -70,11 +73,19 @@ public class Roulette implements Listener {
 					if(slowSpin().contains(time)) {
 						setGlass(inv);
 						inv.setItem(13, crate.pickPrize(player).getDisplayItem());
-						player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+						if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+							player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+						}else {
+							player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+						}
 					}
 					time++;
 					if(time >= 23) {
-						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+						if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
+						}else {
+							player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
+						}
 						cc.endCrate(player);
 						Prize prize = null;
 						for(Prize p : crate.getPrizes()) {

@@ -15,7 +15,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -71,7 +70,7 @@ public class QuickCrate implements Listener {
 			reward.setPickupDelay(Integer.MAX_VALUE);
 			rewards.put(player, reward);
 			allRewards.add(reward);
-			Methods.playChestAction(loc.getBlock(), true);
+			cc.getNMSSupport().openChest(loc.getBlock(), true);
 			if(prize.useFireworks()) {
 				Methods.fireWork(loc.clone().add(.5, 1, .5));
 			}
@@ -94,7 +93,7 @@ public class QuickCrate implements Listener {
 			rewards.get(player).remove();
 			rewards.remove(player);
 		}
-		Methods.playChestAction(loc.getBlock(), false);
+		cc.getNMSSupport().openChest(loc.getBlock(), false);
 		CrateControl.inUse.remove(player);
 		cc.removePlayerFromOpeningList(player);
 	}
@@ -109,24 +108,9 @@ public class QuickCrate implements Listener {
 	
 	@EventHandler
 	public void onHopperPickUp(InventoryPickupItemEvent e) {
-		if(isReward(e.getItem())) {
+		if(cc.isDisplayReward(e.getItem())) {
 			e.setCancelled(true);
 		}
-	}
-	
-	@EventHandler
-	public void onItemPickUp(EntityPickupItemEvent e) {
-		if(QuickCrate.isReward(e.getItem())) {
-			e.setCancelled(true);
-		}
-	}
-	
-	public static Boolean isReward(Entity entity) {
-		if(entity instanceof Item) {
-			NBTItem item = new NBTItem(((Item) entity).getItemStack());
-			return item.hasKey("crazycrates-item");
-		}
-		return false;
 	}
 	
 }

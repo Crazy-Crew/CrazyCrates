@@ -1,12 +1,13 @@
 package me.badbones69.crazycrates.api.objects;
 
+import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class ItemBuilder {
 	private ItemStack referenceItem;
 	private HashMap<String, String> namePlaceholders;
 	private HashMap<String, String> lorePlaceholders;
+	private CrazyCrates cc = CrazyCrates.getInstance();
 	
 	/**
 	 * The initial starting point for making an item.
@@ -75,8 +77,12 @@ public class ItemBuilder {
 			if(nbt.hasKey("Unbreakable")) {
 				itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
 			}
-			if(itemMeta instanceof Damageable) {
-				itemBuilder.setDamage(((Damageable) itemMeta).getDamage());
+			if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+				if(itemMeta instanceof org.bukkit.inventory.meta.Damageable) {
+					itemBuilder.setDamage(((org.bukkit.inventory.meta.Damageable) itemMeta).getDamage());
+				}
+			}else {
+				itemBuilder.setDamage(item.getDurability());
 			}
 		}
 		return itemBuilder;
@@ -157,7 +163,7 @@ public class ItemBuilder {
 	
 	/**
 	 * Set the placeholders for the name of the item.
-	 * @param placeholders The palceholders that will be used.
+	 * @param placeholders The placeholders that will be used.
 	 * @return The ItemBuilder with updated info.
 	 */
 	public ItemBuilder setNamePlaceholders(HashMap<String, String> placeholders) {
@@ -246,7 +252,7 @@ public class ItemBuilder {
 	/**
 	 * Add a placeholder to the lore of the item.
 	 * @param placeholder The placeholder you wish to replace.
-	 * @param argument The arument that will replace the placeholder.
+	 * @param argument The argument that will replace the placeholder.
 	 * @return The ItemBuilder with updated info.
 	 */
 	public ItemBuilder addLorePlaceholder(String placeholder, String argument) {
@@ -256,7 +262,7 @@ public class ItemBuilder {
 	
 	/**
 	 * Remove a placeholder from the lore.
-	 * @param placeholder The palceholder you wish to remove.
+	 * @param placeholder The placeholder you wish to remove.
 	 * @return The ItemBuilder with updated info.
 	 */
 	public ItemBuilder removeLorePlaceholder(String placeholder) {
@@ -417,24 +423,40 @@ public class ItemBuilder {
 	 */
 	public ItemStack build() {
 		ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material, amount);
-		ItemMeta itemMeta = item.getItemMeta();
-		itemMeta.setDisplayName(getUpdatedName());
-		itemMeta.setLore(getUpdatedLore());
-		itemMeta.setUnbreakable(unbreakable);
-		if(itemMeta instanceof Damageable) {
-			((Damageable) itemMeta).setDamage(damage);
-		}
-		item.setItemMeta(itemMeta);
-		hideFlags(item, hideItemFlags);
-		item.addUnsafeEnchantments(enchantments);
-		addGlow(item, glowing);
-		NBTItem nbt = new NBTItem(item);
-		if(material == Material.PLAYER_HEAD) {
-			if(!player.equals("")) {
-				nbt.setString("SkullOwner", player);
+		if(item.getType() != Material.AIR) {
+			ItemMeta itemMeta = item.getItemMeta();
+			itemMeta.setDisplayName(getUpdatedName());
+			itemMeta.setLore(getUpdatedLore());
+			if(Version.getCurrentVersion().isNewer(Version.v1_10_R1)) {
+				itemMeta.setUnbreakable(unbreakable);
 			}
+			if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+				if(itemMeta instanceof org.bukkit.inventory.meta.Damageable) {
+					((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(damage);
+				}
+			}else {
+				item.setDurability((short) damage);
+			}
+			item.setItemMeta(itemMeta);
+			hideFlags(item, hideItemFlags);
+			item.addUnsafeEnchantments(enchantments);
+			addGlow(item, glowing);
+			NBTItem nbt = new NBTItem(item);
+			if(material == Material.matchMaterial(cc.useNewMaterial() ? "PLAYER_HEAD" : "SKULL:3")) {
+				if(!player.equals("")) {
+					nbt.setString("SkullOwner", player);
+				}
+			}
+			if(Version.getCurrentVersion().isOlder(Version.v1_11_R1)) {
+				if(unbreakable) {
+					nbt.setBoolean("Unbreakable", true);
+					nbt.setInteger("HideFlags", 4);
+				}
+			}
+			return nbt.getItem();
+		}else {
+			return item;
 		}
-		return nbt.getItem();
 	}
 	
 	/**

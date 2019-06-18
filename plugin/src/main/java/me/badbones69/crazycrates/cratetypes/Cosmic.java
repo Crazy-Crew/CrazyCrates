@@ -9,6 +9,7 @@ import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.api.objects.Tier;
 import me.badbones69.crazycrates.controllers.FileManager;
+import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -45,7 +46,11 @@ public class Cosmic implements Listener {
 		for(int i = 0; i < 27; i++) {
 			inv.setItem(i, pickTier(player).getTierPane());
 		}
-		player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+		if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+			player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+		}else {
+			player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+		}
 		player.openInventory(inv);
 	}
 	
@@ -88,28 +93,24 @@ public class Cosmic implements Listener {
 							ItemStack item = e.getCurrentItem();
 							Tier tier = getTier(crate, item);
 							if(item != null && tier != null) {
-								if(item.getType().toString().contains("STAINED_GLASS_PANE") && tier != null) {
-									if(item.hasItemMeta()) {
-										if(item.getItemMeta().hasDisplayName()) {
-											if(item.getItemMeta().getDisplayName().equals(Methods.color(file.getString("Crate.Tiers." + tier.getName() + ".Name")))) {
-												Prize prize = crate.pickPrize(player, tier);
-												for(int stop = 0; prize == null && stop <= 2000; stop++) {
-													prize = crate.pickPrize(player, tier);
-												}
-												if(prize != null) {
-													cc.givePrize(player, prize);
-													Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, cc.getOpeningCrate(player).getName(), prize));
-													e.setCurrentItem(prize.getDisplayItem());
-													player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-													if(prize.useFireworks()) {
-														Methods.fireWork(player.getLocation().add(0, 1, 0));
-													}
-												}
-												return;
-											}
-										}
+								Prize prize = crate.pickPrize(player, tier);
+								for(int stop = 0; prize == null && stop <= 2000; stop++) {
+									prize = crate.pickPrize(player, tier);
+								}
+								if(prize != null) {
+									cc.givePrize(player, prize);
+									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, cc.getOpeningCrate(player).getName(), prize));
+									e.setCurrentItem(prize.getDisplayItem());
+									if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+										player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
+									}else {
+										player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
+									}
+									if(prize.useFireworks()) {
+										Methods.fireWork(player.getLocation().add(0, 1, 0));
 									}
 								}
+								return;
 							}
 						}
 					}
@@ -124,19 +125,27 @@ public class Cosmic implements Listener {
 						if(item.getType() == Material.CHEST) {
 							if(!glass.containsKey(player)) glass.put(player, new ArrayList<>());
 							if(glass.get(player).size() < 4) {
-								e.setCurrentItem(new ItemBuilder().setMaterial(Material.GLASS_PANE).setAmount(slot + 1).setName("&f&l???").setLore(Arrays.asList("&7You have chosen #" + (slot + 1) + ".")).build());
+								e.setCurrentItem(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "GLASS_PANE" : "THIN_GLASS").setAmount(slot + 1).setName("&f&l???").setLore(Arrays.asList("&7You have chosen #" + (slot + 1) + ".")).build());
 								glass.get(player).add(slot);
 							}
-							player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+							if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+								player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+							}else {
+								player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+							}
 						}
-						if(item.getType() == Material.GLASS_PANE) {
+						if(item.getType() == Material.matchMaterial(cc.useNewMaterial() ? "GLASS_PANE" : "THIN_GLASS")) {
 							if(!glass.containsKey(player)) glass.put(player, new ArrayList<>());
 							e.setCurrentItem(new ItemBuilder().setMaterial(Material.CHEST).setAmount(slot + 1).setName("&f&l???").setLore(Arrays.asList("&7You may choose 4 crates.")).build());
 							ArrayList<Integer> l = new ArrayList<>();
 							for(int i : glass.get(player))
 								if(i != slot) l.add(i);
 							glass.put(player, l);
-							player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+							if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+								player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+							}else {
+								player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+							}
 						}
 						if(glass.get(player).size() >= 4) {
 							KeyType keyType = cc.getPlayerKeyType(player);
@@ -164,8 +173,8 @@ public class Cosmic implements Listener {
 										cc.addKeys(1, player, crate, keyType);
 										cc.endCrate(player);
 										cancel();
-										player.sendMessage(Methods.getPrefix("&cAn issue has occured and so a key refund was given."));
-										System.out.println(FileManager.getInstance().getPrefix() + "An issue occured when the user " + player.getName() +
+										player.sendMessage(Methods.getPrefix("&cAn issue has occurred and so a key refund was given."));
+										System.out.println(FileManager.getInstance().getPrefix() + "An issue occurred when the user " + player.getName() +
 										" was using the " + crate.getName() + " crate and so they were issued a key refund.");
 										e.printStackTrace();
 										return;
@@ -174,7 +183,11 @@ public class Cosmic implements Listener {
 									if(time == 40) {
 										cc.endCrate(player);
 										showRewards(player, crate);
-										player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 1, 1);
+										if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+											player.playSound(player.getLocation(), Sound.valueOf("ANVIL_LAND"), 1, 1);
+										}else {
+											player.playSound(player.getLocation(), Sound.valueOf("BLOCK_ANVIL_PLACE"), 1, 1);
+										}
 									}
 								}
 							}.runTaskTimer(cc.getPlugin(), 0, 2));
@@ -205,26 +218,23 @@ public class Cosmic implements Listener {
 			boolean playSound = false;
 			for(int i : picks.get(player)) {
 				if(inv.getItem(i) != null) {
-					if(inv.getItem(i).getType().toString().contains("STAINED_GLASS_PANE")) {
-						ItemStack item = inv.getItem(i);
-						if(item.hasItemMeta()) {
-							if(item.getItemMeta().hasDisplayName()) {
-								Tier tier = getTier(crate, item);
-								if(item.getItemMeta().getDisplayName().equals(Methods.color(crate.getFile().getString("Crate.Tiers." + tier.getName() + ".Name")))) {
-									Prize prize = crate.pickPrize(player, tier);
-									for(int stop = 0; prize == null && stop <= 2000; stop++) {
-										prize = crate.pickPrize(player, tier);
-									}
-									cc.givePrize(player, prize);
-									playSound = true;
-								}
-							}
+					Tier tier = getTier(crate, inv.getItem(i));
+					if(tier != null) {
+						Prize prize = crate.pickPrize(player, tier);
+						for(int stop = 0; prize == null && stop <= 2000; stop++) {
+							prize = crate.pickPrize(player, tier);
 						}
+						cc.givePrize(player, prize);
+						playSound = true;
 					}
 				}
 			}
 			if(playSound) {
-				player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+				if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+					player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
+				}else {
+					player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
+				}
 			}
 			if(cc.isInOpeningList(player)) {
 				cc.removePlayerFromOpeningList(player);
@@ -273,7 +283,7 @@ public class Cosmic implements Listener {
 	}
 	
 	private boolean inCosmic(int slot) {
-		//The last slot in comsic crate is 27
+		//The last slot in cosmic crate is 27
 		return slot < 27;
 	}
 	

@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>me.badbones69</groupId>
         <artifactId>crazycrates-parent</artifactId>
-        <version>1.8.11</version>
+        <version>1.9</version>
     </parent>
+
     <artifactId>crazycrates-plugin</artifactId>
-    <repositories>
-        <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/content/groups/public</url>
-        </repository>
-    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_14_R1</artifactId>
-            <version>1.8.11</version>
+            <version>1.9</version>
             <type>jar</type>
             <scope>compile</scope>
             <optional>true</optional>
@@ -25,7 +22,55 @@
         <dependency>
             <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_13_R2</artifactId>
-            <version>1.8.11</version>
+            <version>1.9</version>
+            <type>jar</type>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>me.badbones69</groupId>
+            <artifactId>crazycrates-v1_12_R1</artifactId>
+            <version>1.9</version>
+            <type>jar</type>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>me.badbones69</groupId>
+            <artifactId>crazycrates-v1_11_R1</artifactId>
+            <version>1.9</version>
+            <type>jar</type>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>me.badbones69</groupId>
+            <artifactId>crazycrates-v1_10_R1</artifactId>
+            <version>1.9</version>
+            <type>jar</type>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>me.badbones69</groupId>
+            <artifactId>crazycrates-v1_9_R2</artifactId>
+            <version>1.9</version>
+            <type>jar</type>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>me.badbones69</groupId>
+            <artifactId>crazycrates-v1_9_R1</artifactId>
+            <version>1.9</version>
+            <type>jar</type>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>me.badbones69</groupId>
+            <artifactId>crazycrates-v1_8_R3</artifactId>
+            <version>1.9</version>
             <type>jar</type>
             <scope>compile</scope>
             <optional>true</optional>
@@ -33,17 +78,16 @@
         <dependency>
             <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-api</artifactId>
-            <version>1.8.11</version>
+            <version>1.9</version>
             <type>jar</type>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.14.1-R0.1-SNAPSHOT</version>
+            <artifactId>spigot-api</artifactId>
+            <version>1.13.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
@@ -96,6 +140,7 @@
             </exclusions>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>${project.parent.name}[v${project.version}]</finalName>
         <defaultGoal>clean install package</defaultGoal>
@@ -120,6 +165,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.1</version>
+                <configuration>
+                    <outputFile>/Users/badbones/Desktop/Minecraft/Server/plugins/CrazyCrates[v${project.version}].jar</outputFile>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -131,4 +179,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

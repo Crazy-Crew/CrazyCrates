@@ -4,17 +4,11 @@ import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
-import me.badbones69.crazycrates.api.objects.Crate;
-import me.badbones69.crazycrates.api.objects.CrateLocation;
-import me.badbones69.crazycrates.api.objects.ItemBuilder;
-import me.badbones69.crazycrates.api.objects.Prize;
+import me.badbones69.crazycrates.api.objects.*;
 import me.badbones69.crazycrates.controllers.*;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.cratetypes.*;
-import me.badbones69.crazycrates.multisupport.MVdWPlaceholderAPISupport;
-import me.badbones69.crazycrates.multisupport.PlaceholderAPISupport;
-import me.badbones69.crazycrates.multisupport.Support;
-import me.badbones69.crazycrates.multisupport.Version;
+import me.badbones69.crazycrates.multisupport.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,9 +26,11 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class Main extends JavaPlugin implements Listener {
 	
@@ -42,14 +38,15 @@ public class Main extends JavaPlugin implements Listener {
 	private CrazyCrates cc = CrazyCrates.getInstance();
 	private FileManager fileManager = FileManager.getInstance();
 	private Boolean isEnabled = true;// If the server is supported
+	private HashMap<UUID, Location[]> schemLocations = new HashMap<>();
 	
 	@Override
 	public void onEnable() {
-		if(Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {// Disables plugin on unsupported versions
+		if(Version.getCurrentVersion().isOlder(Version.v1_8_R3)) {// Disables plugin on unsupported versions
 			isEnabled = false;
 			System.out.println("============= Crazy Crates =============");
 			System.out.println(" ");
-			System.out.println("Plugin Disabled: This server is running on 1.12.2 or below and Crazy Crates does not support those versions. "
+			System.out.println("Plugin Disabled: This server is running on 1.8.3 or below and Crazy Crates does not support those versions. "
 			+ "Please check the spigot page for more information about lower Minecraft versions.");
 			System.out.println(" ");
 			System.out.println("Plugin Page: https://www.spigotmc.org/resources/17599/");
@@ -60,18 +57,21 @@ public class Main extends JavaPlugin implements Listener {
 			return;
 		}
 		//Crate Files
+		String extention = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "nbt" : "schematic";
+		String cratesFolder = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "/Crates1.13-Up" : "/Crates1.12.2-Down";
+		String schemFolder = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "/Schematics1.13-Up" : "/Schematics1.12.2-Down";
 		fileManager.logInfo(true)
-		.registerDefaultGenerateFiles("Basic.yml", "/Crates")
-		.registerDefaultGenerateFiles("Classic.yml", "/Crates")
-		.registerDefaultGenerateFiles("Crazy.yml", "/Crates")
-		.registerDefaultGenerateFiles("Galactic.yml", "/Crates")
+		.registerDefaultGenerateFiles("Basic.yml", "/Crates", cratesFolder)
+		.registerDefaultGenerateFiles("Classic.yml", "/Crates", cratesFolder)
+		.registerDefaultGenerateFiles("Crazy.yml", "/Crates", cratesFolder)
+		.registerDefaultGenerateFiles("Galactic.yml", "/Crates", cratesFolder)
 		//Schematics
-		.registerDefaultGenerateFiles("Classic.schematic", "/Schematics")
-		.registerDefaultGenerateFiles("Nether.schematic", "/Schematics")
-		.registerDefaultGenerateFiles("OutDoors.schematic", "/Schematics")
-		.registerDefaultGenerateFiles("Sea.schematic", "/Schematics")
-		.registerDefaultGenerateFiles("Soul.schematic", "/Schematics")
-		.registerDefaultGenerateFiles("Wooden.schematic", "/Schematics")
+		.registerDefaultGenerateFiles("classic." + extention, "/Schematics", schemFolder)
+		.registerDefaultGenerateFiles("nether." + extention, "/Schematics", schemFolder)
+		.registerDefaultGenerateFiles("outdoors." + extention, "/Schematics", schemFolder)
+		.registerDefaultGenerateFiles("sea." + extention, "/Schematics", schemFolder)
+		.registerDefaultGenerateFiles("soul." + extention, "/Schematics", schemFolder)
+		.registerDefaultGenerateFiles("wooden." + extention, "/Schematics", schemFolder)
 		//Register all files inside the custom folders.
 		.registerCustomFilesFolder("/Crates")
 		.registerCustomFilesFolder("/Schematics")
@@ -101,6 +101,11 @@ public class Main extends JavaPlugin implements Listener {
 		pm.registerEvents(new QuickCrate(), this);
 		pm.registerEvents(new CrateControl(), this);
 		pm.registerEvents(new CrateOnTheGo(), this);
+		if(Version.getCurrentVersion().isNewer(Version.v1_11_R1)) {
+			pm.registerEvents(new Events_v1_12_R1_Up(), this);
+		}else {
+			pm.registerEvents(new Events_v1_11_R1_Down(), this);
+		}
 		if(!cc.getBrokeCrateLocations().isEmpty()) {
 			pm.registerEvents(new BrokeLocationsControl(), this);
 		}
@@ -119,11 +124,7 @@ public class Main extends JavaPlugin implements Listener {
 	@Override
 	public void onDisable() {
 		if(isEnabled) {
-			if(!QuadCrate.crates.isEmpty()) {
-				for(Player player : QuadCrate.crates.keySet()) {
-					QuadCrate.undoBuild(player);
-				}
-			}
+			QuadCrateSession.endAllCrates();
 			QuickCrate.removeAllRewards();
 		}
 	}
@@ -134,7 +135,7 @@ public class Main extends JavaPlugin implements Listener {
 			// /key redeem <crate> [amount] << Will be added later.
 			if(args.length == 0) {
 				if(sender instanceof Player) {
-					if(!Methods.permCheck((Player) sender, "Access")) {
+					if(!Methods.permCheck(sender, "access")) {
 						return true;
 					}
 				}else {
@@ -164,7 +165,7 @@ public class Main extends JavaPlugin implements Listener {
 				return true;
 			}else {
 				if(sender instanceof Player) {
-					if(!Methods.permCheck((Player) sender, "admin")) {
+					if(!Methods.permCheck(sender, "admin")) {
 						return true;
 					}
 				}
@@ -202,7 +203,7 @@ public class Main extends JavaPlugin implements Listener {
 		commandLable.equalsIgnoreCase("crazycrate")) {
 			if(args.length == 0) {
 				if(sender instanceof Player) {
-					if(!Methods.permCheck((Player) sender, "menu")) {
+					if(!Methods.permCheck(sender, "menu")) {
 						return true;
 					}
 				}else {
@@ -213,12 +214,49 @@ public class Main extends JavaPlugin implements Listener {
 				return true;
 			}else {
 				if(args[0].equalsIgnoreCase("help")) {
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "Access")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck(sender, "access")) return true;
 					sender.sendMessage(Messages.HELP.getMessage());
 					return true;
+				}else if(args[0].equalsIgnoreCase("set1") || args[0].equalsIgnoreCase("set2")) {
+					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
+					if(Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {
+						sender.sendMessage(Methods.getPrefix("&cThis command only works on 1.13+. If you wish to make schematics for 1.12.2- use World Edit to do so."));
+						return true;
+					}
+					int set = args[0].equalsIgnoreCase("set1") ? 1 : 2;
+					Location location = ((Player) sender).getTargetBlockExact(10).getLocation();
+					if(schemLocations.containsKey(((Player) sender).getUniqueId())) {
+						schemLocations.put(((Player) sender).getUniqueId(), new Location[] {set == 1 ? location : schemLocations.getOrDefault(((Player) sender).getUniqueId(), null)[0], set == 2 ? location : schemLocations.getOrDefault(((Player) sender).getUniqueId(), null)[1]});
+					}else {
+						schemLocations.put(((Player) sender).getUniqueId(), new Location[] {set == 1 ? location : null, set == 2 ? location : null});
+					}
+					sender.sendMessage(Methods.getPrefix("&7You have set location #" + set + "."));
+					return true;
+				}else if(args[0].equalsIgnoreCase("save")) {// /cc save <file name>
+					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
+					if(Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {
+						sender.sendMessage(Methods.getPrefix("&cThis command only works on 1.13+. If you wish to make schematics for 1.12.2- use World Edit to do so."));
+						return true;
+					}
+					Location[] locations = schemLocations.get(((Player) sender).getUniqueId());
+					if(locations != null && locations[0] != null && locations[1] != null) {
+						if(args.length >= 2) {
+							File file = new File(getDataFolder() + "/Schematics/" + args[1]);
+							cc.getNMSSupport().saveSchematic(locations, sender.getName(), file);
+							sender.sendMessage(Methods.getPrefix("&7Saved the " + args[1] + ".nbt into the Schematics folder."));
+							cc.loadSchematics();
+							return true;
+						}else {
+							sender.sendMessage(Methods.getPrefix("&cYou need to specify a schematic file name."));
+							return true;
+						}
+					}else {
+						sender.sendMessage(Methods.getPrefix("&cYou need to use /cc set1/set2 to set the connors of your schematic."));
+						return true;
+					}
 				}else if(args[0].equalsIgnoreCase("additem")) {
 					// /cc additem0 <crate>1 <prize>2
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
 					Player player = (Player) sender;
 					if(args.length >= 3) {
 						ItemStack item = player.getInventory().getItemInMainHand();
@@ -251,7 +289,7 @@ public class Main extends JavaPlugin implements Listener {
 					}
 					return true;
 				}else if(args[0].equalsIgnoreCase("reload")) {
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
 					fileManager.reloadAllFiles();
 					fileManager.setup(this);
 					if(!Files.LOCATIONS.getFile().contains("Locations")) {
@@ -266,7 +304,7 @@ public class Main extends JavaPlugin implements Listener {
 					sender.sendMessage(Messages.RELOAD.getMessage());
 					return true;
 				}else if(args[0].equalsIgnoreCase("debug")) {
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
 					if(args.length >= 2) {
 						Crate crate = cc.getCrateFromName(args[1]);
 						if(crate != null) {
@@ -309,7 +347,7 @@ public class Main extends JavaPlugin implements Listener {
 					player.openInventory(inv);
 					return true;
 				}else if(args[0].equalsIgnoreCase("list")) {
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
 					String crates = "";
 					String brokecrates = "";
 					for(Crate crate : cc.getCrates()) {
@@ -336,7 +374,7 @@ public class Main extends JavaPlugin implements Listener {
 					}
 					return true;
 				}else if(args[0].equalsIgnoreCase("tp")) {// /cc TP <Location>
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
 					if(args.length == 2) {
 						String Loc = args[1];
 						if(!Files.LOCATIONS.getFile().contains("Locations")) {
@@ -361,7 +399,7 @@ public class Main extends JavaPlugin implements Listener {
 					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/cc TP <Location Name>"));
 					return true;
 				}else if(args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("s")) { // /Crate Set <Crate>
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
 					if(!(sender instanceof Player)) {
 						sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
 						return true;
@@ -393,7 +431,7 @@ public class Main extends JavaPlugin implements Listener {
 					return true;
 				}else if(args[0].equalsIgnoreCase("preview")) {// /cc Preview <Crate> [Player]
 					if(sender instanceof Player) {
-						if(!Methods.permCheck((Player) sender, "preview")) {
+						if(!Methods.permCheck(sender, "preview")) {
 							return true;
 						}
 					}
@@ -408,31 +446,36 @@ public class Main extends JavaPlugin implements Listener {
 							}
 						}
 						if(crate != null) {
-							if(crate.getCrateType() != CrateType.MENU) {
-								if(args.length >= 3) {
-									if(Methods.isOnline(args[2], sender)) {
-										player = Methods.getPlayer(args[2]);
+							if(crate.isPreviewEnabled()) {
+								if(crate.getCrateType() != CrateType.MENU) {
+									if(args.length >= 3) {
+										if(Methods.isOnline(args[2], sender)) {
+											player = Methods.getPlayer(args[2]);
+										}else {
+											return true;
+										}
 									}else {
-										return true;
+										if(!(sender instanceof Player)) {
+											sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
+											return true;
+										}else {
+											player = (Player) sender;
+										}
 									}
-								}else {
-									if(!(sender instanceof Player)) {
-										sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
-										return true;
-									}else {
-										player = (Player) sender;
-									}
+									Preview.setPlayerInMenu(player, false);
+									Preview.openNewPreview(player, crate);
 								}
-								Preview.setPlayerInMenu(player, false);
-								Preview.openNewPreview(player, crate);
+								return true;
+							}else {
+								sender.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
+								return true;
 							}
-							return true;
 						}
 					}
 					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
 					return true;
 				}else if(args[0].equalsIgnoreCase("open")) {// /cc Open <Crate> [Player]
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
 					if(args.length >= 2) {
 						for(Crate crate : cc.getCrates()) {
 							if(crate.getName().equalsIgnoreCase(args[1])) {
@@ -462,10 +505,10 @@ public class Main extends JavaPlugin implements Listener {
 								CrateType type = crate.getCrateType();
 								if(type != null) {
 									if(type != CrateType.CRATE_ON_THE_GO && type != CrateType.QUICK_CRATE && type != CrateType.FIRE_CRACKER) {
-										if(type == CrateType.QUAD_CRATE) {
-											sender.sendMessage(Messages.QUAD_CRATE_DISABLED.getMessage());
-											return true;
-										}
+										//if(type == CrateType.QUAD_CRATE) {
+										//	sender.sendMessage(Messages.QUAD_CRATE_DISABLED.getMessage());
+										//	return true;
+										//}
 										cc.openCrate(player, crate, KeyType.FREE_KEY, player.getLocation(), true);
 										HashMap<String, String> placeholders = new HashMap<>();
 										placeholders.put("%crate%", crate.getName());
@@ -492,7 +535,7 @@ public class Main extends JavaPlugin implements Listener {
 					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Open <Crate> [Player]"));
 					return true;
 				}else if(args[0].equalsIgnoreCase("giveall")) {// /Crate GiveAll <Physical/Virtual> <Crate> <Amount>
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
 					if(args.length >= 3) {
 						int amount = 1;
 						if(args.length >= 4) {
@@ -538,7 +581,7 @@ public class Main extends JavaPlugin implements Listener {
 					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate GiveAll <Physical/Virtual> <Crate> <Amount>"));
 					return true;
 				}else if(args[0].equalsIgnoreCase("give")) {// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
 					KeyType type = null;
 					if(args.length >= 2) {
 						type = KeyType.getFromName(args[1]);
@@ -672,7 +715,7 @@ public class Main extends JavaPlugin implements Listener {
 					sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Give <Physical/Virtual> <Crate> [Amount] [Player]"));
 					return true;
 				}else if(args[0].equalsIgnoreCase("take")) {// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
-					if(sender instanceof Player) if(!Methods.permCheck((Player) sender, "admin")) return true;
+					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
 					KeyType type = null;
 					if(args.length >= 2) {
 						type = KeyType.getFromName(args[1]);

@@ -14,7 +14,8 @@ public class TabControl implements TabCompleter {
 	
 	private static String[] COMMANDS = {"additem", "admin", "list", "open", "tp", "give", "giveall", "take", "set", "reload"};
 	
-	@Override public List<String> onTabComplete(CommandSender commandSender, Command command, String alias, String[] args) {
+	@Override
+	public List<String> onTabComplete(CommandSender commandSender, Command command, String alias, String[] args) {
 		List<String> completions = new ArrayList<>();
 		List<String> commands = new ArrayList<>(Arrays.asList(COMMANDS));
 		if(args.length == 1) {

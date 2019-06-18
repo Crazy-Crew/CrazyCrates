@@ -1,0 +1,226 @@
+Crate:
+  CrateType: Cosmic
+  CrateName: '&8Galactic Crate'
+  Preview-Name: '&8Galactic Crate Preview'
+  StartingKeys: 0
+  InGUI: true
+  Slot: 23
+  OpeningBroadCast: false
+  BroadCast: ''
+  Item: 'ENDER_CHEST'
+  Glowing: false
+  Name: '&d&lGalactic Chest'
+  Lore:
+    - '&7This crate contains strange objects,'
+    - '&7from somewhere beyond this planet.'
+    - '&7You have &6%Keys% keys &7to open this crate with.'
+    - '&7&l(&e&l!&7&l) Right click to view rewards.'
+  Preview:
+    Toggle: true
+    Glass:
+      Toggle: true
+      Item: 'PURPLE_STAINED_GLASS_PANE'
+  PhysicalKey:
+    Name: '&d&lGalactic Crate &b&lKey'
+    Lore:
+      - '&7A special Key'
+      - '&7For a special Crate.'
+    Item: 'TRIPWIRE_HOOK'
+    Glowing: true
+  # Tiers are available in Cosmic crates only
+  #The tiers in the Crate
+  Tiers:
+    #The Config Name for the Crate
+    Basic:
+      #The in-game name of the Crate
+      Name: '&8Basic Prize'
+      #Use the MetaData for the color of the glass
+      Color: 'GRAY_STAINED_GLASS_PANE'
+      #Chance of that item getting picked. It would be 80/100 chance because MaxRange is 100.
+      Chance: 80
+      #The max range that the chance will go though.
+      MaxRange: 100
+    UnCommon:
+      Name: '&aUnCommon Prize'
+      Color: 'LIME_STAINED_GLASS_PANE'
+      Chance: 55
+      MaxRange: 100
+    Rare:
+      Name: '&4Rare Prize'
+      Color: 'RED_STAINED_GLASS_PANE'
+      Chance: 20
+      MaxRange: 100
+  Prizes:
+    1:
+      DisplayName: '&d&lGalactic Grass'
+      DisplayItem: 'GRASS_BLOCK'
+      DisplayAmount: 1
+      Lore:
+        - '&7Win some grass for your fields.'
+        - '&6&lChance: &c&l40%'
+      MaxRange: 100
+      Chance: 40
+      Firework: false
+      Glowing: false
+      Player: ''
+      Unbreakable: false
+      HideItemFlags: false
+      # Tiers are available in Cosmic crates only
+      #The Tiers the rewards can be found in.
+      Tiers:
+        - 'Basic'
+        - 'UnCommon'
+        - 'Rare'
+      Items:
+        - 'Item:GRASS_BLOCK, Amount:32, Name:&d&lGalactic Grass'
+      Commands:
+        - 'broadcast &6&l%Player% &7has just won some Basic Grass.'
+      Messages: []
+      BlackListed-Permissions: []
+      Alternative-Prize:
+        Toggle: false
+        Messages: []
+        Commands: []
+        Items: []
+    2:
+      DisplayName: '&b&lCheap Helmet'
+      DisplayItem: 'GOLDEN_HELMET'
+      DisplayAmount: 1
+      Lore:
+        - '&7Win a cheap helmet.'
+        - '&6&lChance: &c&l60%'
+      DisplayEnchantments:
+        - 'PROTECTION_ENVIRONMENTAL:1'
+        - 'OXYGEN:1'
+      MaxRange: 100
+      Chance: 60
+      Firework: false
+      Glowing: false
+      Player: ''
+      Unbreakable: false
+      HideItemFlags: false
+      Tiers:
+        - 'Basic'
+        - 'UnCommon'
+        - 'Rare'
+      Items:
+        - 'Item:GOLDEN_HELMET, Amount:1, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
+      Commands: []
+      Messages: []
+      BlackListed-Permissions: []
+      Alternative-Prize:
+        Toggle: false
+        Messages: []
+        Commands: []
+        Items: []
+    3:
+      DisplayName: '&e&l$1,000'
+      DisplayItem: 'SUNFLOWER'
+      DisplayAmount: 1
+      Lore:
+        - '&7Make it rain Money.'
+        - '&6&lChance: &c&l20%'
+      MaxRange: 100
+      Chance: 20
+      Firework: true
+      Glowing: false
+      Player: ''
+      Unbreakable: false
+      HideItemFlags: false
+      Tiers:
+        - 'Basic'
+        - 'UnCommon'
+        - 'Rare'
+      Items: []
+      Commands:
+        - 'eco give %Player% 1000'
+      Messages: []
+      BlackListed-Permissions: []
+      Alternative-Prize:
+        Toggle: false
+        Messages: []
+        Commands: []
+        Items: []
+    4:
+      DisplayName: '&b&lCrazy &4&lSword'
+      DisplayItem: 'GOLDEN_SWORD'
+      DisplayAmount: 1
+      Lore:
+        - '&7Win a crazy cool sword.'
+        - '&6&lChance: &c&l10%'
+      DisplayEnchantments:
+        - 'DAMAGE_ALL:5'
+        - 'FIRE_ASPECT:1'
+      MaxRange: 100
+      Chance: 10
+      Firework: false
+      Glowing: false
+      Player: ''
+      Unbreakable: false
+      HideItemFlags: false
+      Tiers:
+        - 'Rare'
+      Items:
+        - 'Item:GOLDEN_SWORD, Amount:1, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1'
+      Commands: []
+      Messages: []
+      BlackListed-Permissions: []
+      Alternative-Prize:
+        Toggle: false
+        Messages: []
+        Commands: []
+        Items: []
+    5:
+      DisplayName: '&e&l$1,000,000'
+      DisplayItem: 'SUNFLOWER'
+      DisplayAmount: 1
+      Lore:
+        - '&7Make it rain a butt load of Money.'
+        - '&6&lChance: &c&l20%'
+      MaxRange: 100
+      Chance: 20
+      Firework: true
+      Glowing: false
+      Player: ''
+      Unbreakable: false
+      HideItemFlags: false
+      Tiers:
+        - 'Rare'
+      Items: []
+      Commands:
+        - 'Eco give %Player% 1000000'
+      Messages: []
+      BlackListed-Permissions: []
+      Alternative-Prize:
+        Toggle: false
+        Messages: []
+        Commands: []
+        Items: []
+    6:
+      DisplayName: '&b&lCrazy Crate &6&lKey &7(x2)'
+      DisplayItem: 'TRIPWIRE_HOOK'
+      DisplayAmount: 1
+      Lore:
+        - '&7A special Key'
+        - '&7For a special Crate.'
+        - '&6&lChance: &c&l10%'
+      MaxRange: 100
+      Chance: 10
+      Firework: true
+      Glowing: true
+      Player: ''
+      Unbreakable: false
+      HideItemFlags: false
+      Tiers:
+        - 'UnCommon'
+        - 'Rare'
+      Items: []
+      Commands:
+        - 'cc give physical crazy 2 %Player%'
+      Messages: []
+      BlackListed-Permissions: []
+      Alternative-Prize:
+        Toggle: false
+        Messages: []
+        Commands: []
+        Items: []

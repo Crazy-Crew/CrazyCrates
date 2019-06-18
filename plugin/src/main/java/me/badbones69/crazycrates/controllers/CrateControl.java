@@ -9,6 +9,7 @@ import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.cratetypes.QuickCrate;
+import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -37,10 +38,6 @@ public class CrateControl implements Listener { //Crate Control
 	 */
 	public static HashMap<Player, HashMap<ItemStack, ItemStack>> previewKeys = new HashMap<>();
 	/**
-	 * The last location for the quad crate to teleport players back.
-	 */
-	public static HashMap<Player, Location> lastLocation = new HashMap<>();
-	/**
 	 * A list of crate locations that are in use.
 	 */
 	public static HashMap<Player, Location> inUse = new HashMap<>();
@@ -66,12 +63,14 @@ public class CrateControl implements Listener { //Crate Control
 	public void onCrateOpen(PlayerInteractEvent e) {
 		Player player = e.getPlayer();
 		FileConfiguration config = Files.CONFIG.getFile();
-		if(e.getHand() == EquipmentSlot.OFF_HAND) {
-			if(cc.isKey(player.getInventory().getItemInOffHand())) {
-				e.setCancelled(true);
-				player.updateInventory();
+		if(Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+			if(e.getHand() == EquipmentSlot.OFF_HAND) {
+				if(cc.isKey(player.getInventory().getItemInOffHand())) {
+					e.setCancelled(true);
+					player.updateInventory();
+				}
+				return;
 			}
-			return;
 		}
 		Block clickedBlock = e.getClickedBlock();
 		if(e.getAction() == Action.LEFT_CLICK_BLOCK) {
@@ -94,9 +93,11 @@ public class CrateControl implements Listener { //Crate Control
 					if(loc.getCrateType() == CrateType.MENU) {
 						return;
 					}else {
-						if(config.getBoolean("Settings.Show-Preview")) {
+						if(loc.getCrate().isPreviewEnabled()) {
 							Preview.setPlayerInMenu(player, false);
 							Preview.openNewPreview(player, loc.getCrate());
+						}else {
+							player.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
 						}
 					}
 				}
@@ -104,7 +105,7 @@ public class CrateControl implements Listener { //Crate Control
 		}else if(e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			for(Crate crate : cc.getCrates()) {
 				if(crate.getCrateType() != CrateType.MENU) {
-					if(Methods.isSimilar(player.getInventory().getItemInMainHand(), crate.getKey())) {
+					if(Methods.isSimilar(player, crate.getKey())) {
 						e.setCancelled(true);
 						player.updateInventory();
 					}
@@ -124,12 +125,12 @@ public class CrateControl implements Listener { //Crate Control
 					boolean hasKey = false;
 					boolean isPhysical = false;
 					boolean useQuickCrateAgain = false;
-					if(crate.getCrateType() == CrateType.QUAD_CRATE) {
-						player.sendMessage(Messages.QUAD_CRATE_DISABLED.getMessage());
-						return;
-					}
+					//					if(crate.getCrateType() == CrateType.QUAD_CRATE) {
+					//						player.sendMessage(Messages.QUAD_CRATE_DISABLED.getMessage());
+					//						return;
+					//					}
 					if(crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
-						if(Methods.isSimilar(player.getInventory().getItemInMainHand(), crate.getKey())) {
+						if(Methods.isSimilar(player, crate.getKey())) {
 							hasKey = true;
 							isPhysical = true;
 						}
@@ -174,9 +175,6 @@ public class CrateControl implements Listener { //Crate Control
 							keyType = KeyType.PHYSICAL_KEY;
 						}else {
 							keyType = KeyType.VIRTUAL_KEY;
-							Location last = player.getLocation();
-							last.setPitch(0F);
-							lastLocation.put(player, last);
 						}
 						cc.addPlayerKeyType(player, keyType);
 						cc.addPlayerToOpeningList(player, crate);
