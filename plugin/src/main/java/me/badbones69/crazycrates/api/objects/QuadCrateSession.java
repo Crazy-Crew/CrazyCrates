@@ -122,7 +122,7 @@ public class QuadCrateSession {
 			int tickTillSpawn = 0; //At tick 60 the crate will spawn and then reset the tick
 			Location particleLocation = chestLocations.get(crateNumber).clone().add(.5, 3, .5);
 			List<Location> spiralLocationsClockwise = getSpiralLocationsClockwise(particleLocation);
-			List<Location> spiralLocationsCounterClockwise = getSpiralLocationsClockwise(particleLocation);
+			List<Location> spiralLocationsCounterClockwise = getSpiralLocationsCounterClockwise(particleLocation);
 			@Override
 			public void run() {
 				if(tickTillSpawn < 60) {
