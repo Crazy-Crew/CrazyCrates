@@ -166,7 +166,7 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
-                    <outputFile>/Users/badbones/Desktop/Minecraft/Server/plugins/CrazyCrates[v${project.version}].jar</outputFile>
+                    <!--                    <outputFile>/Users/badbones/Desktop/Minecraft/Server/plugins/CrazyCrates[v${project.version}].jar</outputFile>-->
                 </configuration>
                 <executions>
                     <execution>

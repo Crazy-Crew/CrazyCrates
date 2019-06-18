@@ -39,12 +39,12 @@ Crate:
     Name: '&7&lBasic Crate &b&lKey'
     #Lore of the Key.
     Lore:
-      - '&7A special Key' #Lore of the Key.
+      - '&7A special Key'
       - '&7For a special Crate.'
     #The item the key is.
     Item: 'TRIPWIRE_HOOK'
     #Makes the key look enchanted.
-    Glowing: True
+    Glowing: true
   #All the prizes that can be gotten in the Crate.
   Prizes:
     1:
@@ -78,7 +78,7 @@ Crate:
       HideItemFlags: false
       # Items that the player wins if this prize is picked. (If you wish not to give an Item in the prize just delete the Items Section) 
       # Items: Options
-      # Item:<ID:MD> - You can choose the item with its id and meta data.
+      # Item:<Item Name> - The item you wish to give.
       # Amount:<Number> - Choose how many of the item you get.
       # Name:<Name> - The display name that goes on the item.
       # Lore:<Line 1>,<Line 2>,<Line 3>,<Line 4> - The lore that will go under the enchantments. Split lines with a ','
@@ -110,24 +110,10 @@ Crate:
       Lore:
         - '&7Win a cheap helmet.'
         - '&6&lChance: &c&l60%'
-      DisplayEnchantments: []
       MaxRange: 100
       Chance: 60
-      Firework: false
-      Glowing: false
-      Player: ''
-      Unbreakable: false
-      HideItemFlags: false
       Items:
         - 'Item:GOLDEN_HELMET, Amount:1, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
-      Commands: []
-      Messages: []
-      BlackListed-Permissions: []
-      Alternative-Prize:
-        Toggle: false
-        Messages: []
-        Commands: []
-        Items: []
     3:
       DisplayName: '&e&l$1,000'
       DisplayItem: 'SUNFLOWER'
@@ -138,11 +124,6 @@ Crate:
       MaxRange: 100
       Chance: 20
       Firework: true
-      Glowing: false
-      Player: ''
-      Unbreakable: false
-      HideItemFlags: false
-      Items: []
       Commands:
         - 'eco give %Player% 1000'
       # - 'pex user %player% add crazycrates.blacklist.basic.3' #This is the line where you would give the user the permission.
@@ -156,4 +137,3 @@ Crate:
           - '&8[&bCrazyCrates&8]: &7You have already won that prize, so enjoy some gold nuggets.'
         Commands:
           - 'give %player% 371 16'
-        Items: []

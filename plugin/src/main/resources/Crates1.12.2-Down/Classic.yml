@@ -38,17 +38,10 @@ Crate:
         - 'PROTECTION_ENVIRONMENTAL:2'
       MaxRange: 100
       Chance: 40
-      Firework: false
-      Glowing: false
       Items:
         - 'Item:CHAINMAIL_LEGGINGS, Amount:1, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
       Messages:
-        - '&7You just won a &a&lFancy Pantst&7.'
-      Alternative-Prize:
-        Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
+        - '&7You just won a &a&lFancy Pants&7.'
     2:
       DisplayName: '&b&lClassic Sword'
       DisplayItem: 'DIAMOND_SWORD'
@@ -61,17 +54,10 @@ Crate:
         - 'FIRE_ASPECT:1'
       MaxRange: 100
       Chance: 35
-      Firework: false
-      Glowing: false
       Items:
         - 'Item:DIAMOND_SWORD, Amount:1, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1'
       Messages:
         - '&7You just won a &b&lClassic Sword&7.'
-      Alternative-Prize:
-        Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
     3:
       DisplayName: '&e&l$100,000'
       DisplayItem: 'DOUBLE_PLANT'
@@ -82,13 +68,7 @@ Crate:
       MaxRange: 100
       Chance: 20
       Firework: true
-      Glowing: false
       Commands:
         - 'Eco give %Player% 100000'
       Messages:
         - '&7You just won &a$100,000&7.'
-      Alternative-Prize:
-        Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}

@@ -1,16 +1,28 @@
 Crate:
-  CrateType: CSGO #Type of crate (CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War/Cosmic(This requires a additional info to work.)).
-  CrateName: '&8Basic Crate' #Name of the Inventory if a GUI crate.
-  Preview-Name: '&8Basic Crate Preview' #The name of the inventory that will be in the preview GUI.
-  StartingKeys: 0 #Starting amount of keys when the player 1st joins.
-  InGUI: true #If the crate shows in the /cc GUI. (If the crate type is QuickCrate/CrateOnTheGo/FireCracker then the Crate will not work. Quick Crate requires a Physical Crate.)
-  Slot: 21 #Slot the item is in the GUI.
-  OpeningBroadCast: true #Enables/Disables the Broadcasts message when they open a crate.
-  BroadCast: '%Prefix%&6&l%Player% &7is opening a &7&lBasic Chest&7.' #Message that is broadcast when opening the crate.
-  Item: 'CHEST' #Item the crate is in the GUI
-  Glowing: false #If the crate in the main /cc GUI is glowing or not.
-  Name: '&7&lBasic Chest' #Name of the item in the GUI.
-  Lore: #The lore of the item in the GUI.
+  #Type of crate (CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War/Cosmic(This requires a additional info to work.)).
+  CrateType: CSGO
+  #Name of the Inventory if a GUI crate.
+  CrateName: '&8Basic Crate'
+  #The name of the inventory that will be in the preview GUI.
+  Preview-Name: '&8Basic Crate Preview'
+  #Starting amount of keys when the player 1st joins.
+  StartingKeys: 0
+  #If the crate shows in the /cc GUI. (If the crate type is QuickCrate/CrateOnTheGo/FireCracker then the Crate will not work. Quick Crate requires a Physical Crate.)
+  InGUI: true
+  #Slot the item is in the GUI.
+  Slot: 21
+  #Enables/Disables the Broadcasts message when they open a crate.
+  OpeningBroadCast: true
+  #Message that is broadcast when opening the crate.
+  BroadCast: '%Prefix%&6&l%Player% &7is opening a &7&lBasic Chest&7.'
+  #Item the crate is in the GUI
+  Item: 'CHEST'
+  #If the crate in the main /cc GUI is glowing or not.
+  Glowing: false
+  #Name of the item in the GUI.
+  Name: '&7&lBasic Chest'
+  #The lore of the item in the GUI.
+  Lore:
     - '&7This crate contains strange objects.'
     - '&7You have &6%Keys% keys &7to open this crate with.'
     - '&7&l(&e&l!&7&l) Right click to view rewards.'
@@ -23,61 +35,55 @@ Crate:
       #The item that shows in the boarder. Can be glass or any other item.
       Item: 'STAINED_GLASS_PANE:7'
   PhysicalKey:
-    Name: '&7&lBasic Crate &b&lKey' #Name of the Key.
+    #Name of the Key.
+    Name: '&7&lBasic Crate &b&lKey'
+    #Lore of the Key.
     Lore:
-      - '&7A special Key' #Lore of the Key.
+      - '&7A special Key'
       - '&7For a special Crate.'
-    Item: 'TRIPWIRE_HOOK' #The item the key is.
-    Glowing: True #Makes the key look enchanted.
-  #         For Cosmic Crates Only
-  #############################################
-  #  Tiers: #The tiers in the Crate
-  #    Basic: #The Config Name for the Crate
-  #      Name: '&8Basic Prize' #The in-game name of the Crate
-  #      Color: 7 #Use the MetaData for the color of the glass
-  #      Chance: 80 #Chance of that item getting picked. It would be 80/100 chance because MaxRange is 100.
-  #      MaxRange: 100 #The max range that the chance will go though.
-  #    UnCommon:
-  #      Name: '&aUnCommon Prize'
-  #      Color: 5
-  #      Chance: 55
-  #      MaxRange: 100
-  #    Rare:
-  #      Name: '&4Rare Prize'
-  #      Color: 14
-  #      Chance: 20
-  #      MaxRange: 100
-  #############################################
-  Prizes: #All the prizes that can be gotten in the Crate.
+    #The item the key is.
+    Item: 'TRIPWIRE_HOOK'
+    #Makes the key look enchanted.
+    Glowing: true
+  #All the prizes that can be gotten in the Crate.
+  Prizes:
     1:
-      DisplayName: '&7&lBasic Grass' #Name of the item shown by the crate.
-      DisplayItem: 'GRASS' #Item that is shown by the crate.
-      DisplayAmount: 1 #The amount that is displayed.
-      Lore: #Lore will be shown in rewards GUI.
+      #Name of the item shown by the crate.
+      DisplayName: '&7&lBasic Grass'
+      #Item that is shown by the crate.
+      DisplayItem: 'GRASS'
+      #The amount that is displayed.
+      DisplayAmount: 1
+      #Lore will be shown in rewards GUI.
+      Lore:
         - '&7Win some grass for your fields.'
         - '&6&lChance: &c&l40%'
-      MaxRange: 100 #The max range that the chance will go though.
-      Chance: 40 #Chance of that item getting picked. It would be 40/100 chance because MaxRange is 100.
-      Firework: false #Firework when it is won.
-      Glowing: false #Toggle if the item has a glowing effect but doesn't have an enchantment on it.
-      Player: '' #Set the item to 397:3 and then add the players name for this to take effect.
-      Unbreakable: false #Adds the unbreaking NBT tag to the display item to allow it to have custom textures.
-      #        For Cosmic Crates Only
-      #############################################
-      #       Tiers: #The Tiers the rewards can be found in.
-      #         - 'Basic'
-      #         - 'UnCommon'
-      #         - 'Rare'
-      #############################################
+      #Adds enchantments to the display item.
+      DisplayEnchantments:
+        - 'PROTECTION_ENVIRONMENTAL:1'
+        - 'OXYGEN:1'
+      #The max range that the chance will go though.
+      MaxRange: 100
+      #Chance of that item getting picked. It would be 40/100 chance because MaxRange is 100.
+      Chance: 40
+      #Firework when it is won.
+      Firework: false
+      #Toggle if the item has a glowing effect but doesn't have an enchantment on it.
+      Glowing: false
+      #Set the item to 397:3 and then add the players name for this to take effect.
+      Player: ''
+      #Adds the unbreaking NBT tag to the display item to allow it to have custom textures.
+      Unbreakable: false
+      #When set to true, tags like Armor, Unbreakable and other tags are hidden and not visible to the user.
+      HideItemFlags: false
       # Items that the player wins if this prize is picked. (If you wish not to give an Item in the prize just delete the Items Section)
-      #             Items: Options
+      # Items: Options
       # Item:<ID:MD> - You can choose the item with its id and meta data.
       # Amount:<Number> - Choose how many of the item you get.
       # Name:<Name> - The display name that goes on the item.
       # Lore:<Line 1>,<Line 2>,<Line 3>,<Line 4> - The lore that will go under the enchantments. Split lines with a ','
       # Unbreakable-Item:<True/False> - Will add the Unbreaking NBT tag to the item to allow custom textured items to be gained through the envoys.
       # <Enchantment>:<Level> - Choose the enchantment you want to add to the item. You can use the in-game names of the enchantment if you want. Replace the spaces in the name with "_".
-      ###################################
       Items:
         - 'Item:GRASS, Amount:32, Name:&7&lBasic Grass'
       #Commands are the commands that are run when this prize is won. (If you wish not to use a CMD in the prize just delete the Commands Section)
@@ -88,12 +94,15 @@ Crate:
       #If you do not wish to have players get messaged that they won this prize then just remove the Messages: option.
       Messages:
         - '&7You just won a &7&lBasic Grass&7.'
-      BlackListed-Permissions: {} #This allows for one time winnable prizes. If a player has one of the permissions then they will not be able to win it.
-      Alternative-Prize: #This allows users who have won the same prize before to get alternative prizes. They must of a BlackListed-Permission to get a alternative prize.
-        Toggle: false #Toggle if the prize will use alternative prizes for the blacklisted permission.
-        Messages: {}
-        Commands: {}
-        Items: {}
+      #This allows for one time winnable prizes. If a player has one of the permissions then they will not be able to win it.
+      BlackListed-Permissions: []
+      #This allows users who have won the same prize before to get alternative prizes. They must of a BlackListed-Permission to get a alternative prize.
+      Alternative-Prize:
+        #Toggle if the prize will use alternative prizes for the blacklisted permission.
+        Toggle: false
+        Messages: []
+        Commands: []
+        Items: []
     2:
       DisplayName: '&b&lCheap Helmet'
       DisplayItem: 'GOLD_HELMET'
@@ -101,23 +110,10 @@ Crate:
       Lore:
         - '&7Win a cheap helmet.'
         - '&6&lChance: &c&l60%'
-      DisplayEnchantments: #Adds enchantments to the display item.
-        - 'PROTECTION_ENVIRONMENTAL:1'
-        - 'OXYGEN:1'
       MaxRange: 100
       Chance: 60
-      Firework: false
-      Glowing: false
-      Player: ''
-      Unbreakable: false
       Items:
-        - 'Item:GOLD_HELMET, Amount:1, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
-      BlackListed-Permissions: {}
-      Alternative-Prize:
-        Toggle: false
-        Messages: {}
-        Commands: {}
-        Items: {}
+        - 'Item:GOLDEN_HELMET, Amount:1, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
     3:
       DisplayName: '&e&l$1,000'
       DisplayItem: 'DOUBLE_PLANT:0'
@@ -128,9 +124,6 @@ Crate:
       MaxRange: 100
       Chance: 20
       Firework: true
-      Glowing: false
-      Player: ''
-      Unbreakable: false
       Commands:
         - 'eco give %Player% 1000'
       # - 'pex user %player% add crazycrates.blacklist.basic.3' #This is the line where you would give the user the permission.
@@ -144,4 +137,3 @@ Crate:
           - '&8[&bCrazyCrates&8]: &7You have already won that prize, so enjoy some gold nuggets.'
         Commands:
           - 'give %player% 371 16'
-        Items: {}
