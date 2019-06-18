@@ -65,6 +65,7 @@ public class QuadCrate implements Listener {
 						ItemStack item = itemBuilder.build();
 						NBTItem nbtItem = new NBTItem(item);
 						nbtItem.setBoolean("crazycrates-item", true);
+						nbtItem.setBoolean("betterdrops_ignore", true);//Support for BetterDrops plugin
 						item = nbtItem.getItem();
 						Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), item);
 						reward.setVelocity(new Vector(0, .2, 0));

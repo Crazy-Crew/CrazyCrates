@@ -62,6 +62,7 @@ public class QuickCrate implements Listener {
 			ItemStack displayItem = prize.getDisplayItem();
 			NBTItem nbtItem = new NBTItem(displayItem);
 			nbtItem.setBoolean("crazycrates-item", true);
+			nbtItem.setBoolean("betterdrops_ignore", true);//Support for BetterDrops plugin
 			displayItem = nbtItem.getItem();
 			Item reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
 			reward.setVelocity(new Vector(0, .2, 0));
