@@ -17,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -62,9 +63,9 @@ public class QuickCrate implements Listener {
 			ItemStack displayItem = prize.getDisplayItem();
 			NBTItem nbtItem = new NBTItem(displayItem);
 			nbtItem.setBoolean("crazycrates-item", true);
-			nbtItem.setBoolean("betterdrops_ignore", true);//Support for BetterDrops plugin
 			displayItem = nbtItem.getItem();
 			Item reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
+			reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(cc.getPlugin(), true));
 			reward.setVelocity(new Vector(0, .2, 0));
 			reward.setCustomName(displayItem.getItemMeta().getDisplayName());
 			reward.setCustomNameVisible(true);

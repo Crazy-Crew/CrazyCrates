@@ -23,6 +23,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -65,9 +66,9 @@ public class QuadCrate implements Listener {
 						ItemStack item = itemBuilder.build();
 						NBTItem nbtItem = new NBTItem(item);
 						nbtItem.setBoolean("crazycrates-item", true);
-						nbtItem.setBoolean("betterdrops_ignore", true);//Support for BetterDrops plugin
 						item = nbtItem.getItem();
 						Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), item);
+						reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(cc.getPlugin(), true));
 						reward.setVelocity(new Vector(0, .2, 0));
 						reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
 						reward.setCustomNameVisible(true);
