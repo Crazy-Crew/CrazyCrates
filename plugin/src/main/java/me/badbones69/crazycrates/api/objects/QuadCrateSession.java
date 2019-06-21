@@ -1,6 +1,7 @@
 package me.badbones69.crazycrates.api.objects;
 
 import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.enums.QuadCrateParticles;
 import me.badbones69.crazycrates.controllers.ParticleEffect;
@@ -28,6 +29,7 @@ public class QuadCrateSession {
 	private QuadCrateSession instance;
 	private Crate crate;
 	private Player player;
+	private KeyType keyType;
 	private Location lastLocation;
 	private Location spawnLocation;
 	private Color particleColor;
@@ -40,10 +42,11 @@ public class QuadCrateSession {
 	private List<BukkitRunnable> ongoingTasks = new ArrayList<>();
 	private HashMap<Location, BlockState> oldBlocks = new HashMap<>();
 	
-	public QuadCrateSession(Player player, Crate crate, Location spawnLocation, Location lastLocation) {
+	public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation) {
 		this.instance = this;
 		this.crate = crate;
 		this.player = player;
+		this.keyType = keyType;
 		this.lastLocation = lastLocation;
 		this.spawnLocation = spawnLocation.getBlock().getLocation();
 		List<QuadCrateParticles> particles = Arrays.asList(QuadCrateParticles.values());
@@ -97,6 +100,7 @@ public class QuadCrateSession {
 			}
 		}
 		player.teleport(spawnLocation.clone().add(.5, 0, .5));
+		cc.takeKeys(1, player, crate, keyType);
 		//Shove other players away from the player
 		for(Entity entity : shovePlayers) {
 			entity.setVelocity(entity.getLocation().toVector().subtract(spawnLocation.clone().toVector()).normalize().setY(1));

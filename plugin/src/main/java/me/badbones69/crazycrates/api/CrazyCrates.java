@@ -393,7 +393,7 @@ public class CrazyCrates {
 			case QUAD_CRATE:
 				Location last = player.getLocation();
 				last.setPitch(0F);
-				QuadCrateSession session = new QuadCrateSession(player, crate, location, last);
+				QuadCrateSession session = new QuadCrateSession(player, crate, key, location, last);
 				broadcast = session.startCrate();
 				break;
 			case FIRE_CRACKER:
