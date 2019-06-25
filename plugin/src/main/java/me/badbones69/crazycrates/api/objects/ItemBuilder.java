@@ -1,6 +1,7 @@
 package me.badbones69.crazycrates.api.objects;
 
 import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.multisupport.SkullCreator;
 import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.ChatColor;
@@ -31,6 +32,9 @@ public class ItemBuilder {
 	private List<String> lore;
 	private Integer amount;
 	private String player;
+	private Boolean isHash;
+	private Boolean isURL;
+	private Boolean isHead;
 	private HashMap<Enchantment, Integer> enchantments;
 	private Boolean unbreakable;
 	private Boolean hideItemFlags;
@@ -50,6 +54,9 @@ public class ItemBuilder {
 		this.lore = new ArrayList<>();
 		this.amount = 1;
 		this.player = "";
+		this.isHash = false;
+		this.isURL = false;
+		this.isHead = false;
 		this.enchantments = new HashMap<>();
 		this.unbreakable = false;
 		this.hideItemFlags = false;
@@ -103,6 +110,7 @@ public class ItemBuilder {
 	 */
 	public ItemBuilder setMaterial(Material material) {
 		this.material = material;
+		this.isHead = material == (cc.useNewMaterial() ? Material.matchMaterial("PLAYER_HEAD") : Material.matchMaterial("SKULL_ITEM"));
 		return this;
 	}
 	
@@ -121,6 +129,7 @@ public class ItemBuilder {
 		if(m != null) {// Sets the material.
 			this.material = m;
 		}
+		this.isHead = this.material == (cc.useNewMaterial() ? Material.matchMaterial("PLAYER_HEAD") : Material.matchMaterial("SKULL_ITEM"));
 		return this;
 	}
 	
@@ -318,7 +327,35 @@ public class ItemBuilder {
 	 */
 	public ItemBuilder setPlayer(String player) {
 		this.player = player;
+		if(player != null && player.length() > 16) {
+			this.isHash = true;
+			this.isURL = player.startsWith("http");
+		}
 		return this;
+	}
+	
+	/**
+	 * Check if the item is a player heads.
+	 * @return True if it is a player head and false if not.
+	 */
+	public Boolean isHead() {
+		return isHead;
+	}
+	
+	/**
+	 * Check if the player name is a Base64.
+	 * @return True if it is a Base64 and false if not.
+	 */
+	public Boolean isHash() {
+		return isHash;
+	}
+	
+	/**
+	 * Check if the hash is a url or a Base64.
+	 * @return True if it is a url and false if it is a Base64.
+	 */
+	public Boolean isURL() {
+		return isURL;
 	}
 	
 	/**
@@ -424,6 +461,15 @@ public class ItemBuilder {
 	public ItemStack build() {
 		ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material, amount);
 		if(item.getType() != Material.AIR) {
+			if(isHead) {//Has to go 1st due to it removing all data when finished.
+				if(isHash) {//Sauce: https://github.com/deanveloper/SkullCreator
+					if(isURL) {
+						SkullCreator.itemWithUrl(item, player);
+					}else {
+						SkullCreator.itemWithBase64(item, player);
+					}
+				}
+			}
 			ItemMeta itemMeta = item.getItemMeta();
 			itemMeta.setDisplayName(getUpdatedName());
 			itemMeta.setLore(getUpdatedLore());
@@ -438,12 +484,12 @@ public class ItemBuilder {
 				item.setDurability((short) damage);
 			}
 			item.setItemMeta(itemMeta);
-			hideFlags(item, hideItemFlags);
+			hideFlags(item);
 			item.addUnsafeEnchantments(enchantments);
-			addGlow(item, glowing);
+			addGlow(item);
 			NBTItem nbt = new NBTItem(item);
-			if(material == Material.matchMaterial(cc.useNewMaterial() ? "PLAYER_HEAD" : "SKULL:3")) {
-				if(!player.equals("")) {
+			if(isHead) {
+				if(!isHash && player != null && !player.equals("")) {
 					nbt.setString("SkullOwner", player);
 				}
 			}
@@ -473,8 +519,8 @@ public class ItemBuilder {
 		return ChatColor.translateAlternateColorCodes('&', msg);
 	}
 	
-	private ItemStack hideFlags(ItemStack item, Boolean toggle) {
-		if(toggle) {
+	private ItemStack hideFlags(ItemStack item) {
+		if(hideItemFlags) {
 			if(item != null && item.hasItemMeta()) {
 				ItemMeta itemMeta = item.getItemMeta();
 				itemMeta.addItemFlags(ItemFlag.values());
@@ -485,8 +531,8 @@ public class ItemBuilder {
 		return item;
 	}
 	
-	private ItemStack addGlow(ItemStack item, boolean toggle) {
-		if(toggle) {
+	private ItemStack addGlow(ItemStack item) {
+		if(glowing) {
 			try {
 				if(item != null) {
 					if(item.hasItemMeta()) {
