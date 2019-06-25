@@ -662,7 +662,7 @@ public class CrazyCrates {
 			try {
 				inv.setItem(inv.firstEmpty(), new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setEnchantments(enchantments).setGlowing(glowing).setPlayer(player).build());
 			}catch(Exception e) {
-				inv.addItem(new ItemBuilder().setMaterial(Material.matchMaterial(useNewMaterial ? "RED_TERRACOTTA" : "STAINED_CLAY:14")).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + reward)).build());
+				inv.addItem(new ItemBuilder().setMaterial(useNewMaterial ? "RED_TERRACOTTA" : "STAINED_CLAY:14").setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + reward)).build());
 			}
 		}
 		return inv;
@@ -1045,7 +1045,7 @@ public class CrazyCrates {
 			}
 			return itemBuilder;
 		}catch(Exception e) {
-			return new ItemBuilder().setMaterial(Material.matchMaterial(useNewMaterial ? "RED_TERRACOTTA" : "STAINED_CLAY:14")).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
+			return new ItemBuilder().setMaterial(useNewMaterial ? "RED_TERRACOTTA" : "STAINED_CLAY:14").setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
 		}
 	}
 	
@@ -1092,7 +1092,7 @@ public class CrazyCrates {
 			try {
 				items.add(new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setEnchantments(enchantments).setPlayer(player).setUnbreakable(unbreaking).build());
 			}catch(Exception e) {
-				items.add(new ItemBuilder().setMaterial(Material.matchMaterial(useNewMaterial ? "RED_TERRACOTTA" : "STAINED_CLAY:14")).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize)).build());
+				items.add(new ItemBuilder().setMaterial(useNewMaterial ? "RED_TERRACOTTA" : "STAINED_CLAY:14").setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize)).build());
 			}
 		}
 		return items;
