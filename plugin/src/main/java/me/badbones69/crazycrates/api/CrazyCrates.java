@@ -643,8 +643,12 @@ public class CrazyCrates {
 			HashMap<Enchantment, Integer> enchantments = new HashMap<>();
 			boolean glowing = false;
 			int amount = 1;
+			String player = "";
 			if(file.contains("Crate.Prizes." + reward + ".Glowing")) {
 				glowing = file.getBoolean("Crate.Prizes." + reward + ".Glowing");
+			}
+			if(file.contains("Crate.Prizes." + reward + ".Player")) {
+				player = file.getString("Crate.Prizes." + reward + ".Player");
 			}
 			if(file.contains("Crate.Prizes." + reward + ".DisplayAmount")) {
 				amount = file.getInt("Crate.Prizes." + reward + ".DisplayAmount");
@@ -656,7 +660,7 @@ public class CrazyCrates {
 				}
 			}
 			try {
-				inv.setItem(inv.firstEmpty(), new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setEnchantments(enchantments).setGlowing(glowing).build());
+				inv.setItem(inv.firstEmpty(), new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setEnchantments(enchantments).setGlowing(glowing).setPlayer(player).build());
 			}catch(Exception e) {
 				inv.addItem(new ItemBuilder().setMaterial(Material.matchMaterial(useNewMaterial ? "RED_TERRACOTTA" : "STAINED_CLAY:14")).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + reward)).build());
 			}
