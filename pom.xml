@@ -4,7 +4,7 @@
 
     <groupId>me.badbones69</groupId>
     <artifactId>crazycrates-parent</artifactId>
-    <version>1.9.2</version>
+    <version>1.9.3</version>
     <packaging>pom</packaging>
     <name>CrazyCrates</name>
 
@@ -38,6 +38,10 @@
         <repository>
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/com/sk89q/worldedit/worldedit-bukkit/</url>
+        </repository>
+        <repository>
+            <id>filoghost-repo</id>
+            <url>https://ci.filoghost.me/plugin/repository/everything/</url>
         </repository>
     </repositories>
 
