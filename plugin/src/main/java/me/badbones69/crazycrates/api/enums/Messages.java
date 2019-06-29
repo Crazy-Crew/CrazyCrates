@@ -32,6 +32,7 @@ public enum Messages {
 	NOT_A_CRATE("Not-A-Crate", "&cThere is no crate called &6%crate%&c."),
 	NOT_A_NUMBER("Not-A-Number", "&6%number%&c is not a number."),
 	GIVEN_A_PLAYER_KEYS("Given-A-Player-Keys", "&7You have given &6%player% %amount% &7Keys."),
+	OBTAINING_KEYS("Obtaining-Keys", "&7You have been given &6%amount% %key% &7Keys."),
 	GIVEN_EVERYONE_KEYS("Given-Everyone-Keys", "&7You have given everyone &6%amount% &7Keys."),
 	GIVEN_OFFLINE_PLAYER_KEYS("Given-Offline-Player-Keys", "&7You have given &6%amount% &7key(s) to the offline player &6%player%&7."),
 	TAKE_A_PLAYER_KEYS("Take-A-Player-Keys", "&7You have taken &6%amount% &7key(s) from &6%player%&7."),

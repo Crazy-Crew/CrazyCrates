@@ -583,17 +583,19 @@ public class Main extends JavaPlugin implements Listener {
 							if(crate.getCrateType() != CrateType.MENU) {
 								HashMap<String, String> placeholders = new HashMap<>();
 								placeholders.put("%amount%", amount + "");
+								placeholders.put("%key%", crate.getKey().getItemMeta().getDisplayName());
 								sender.sendMessage(Messages.GIVEN_EVERYONE_KEYS.getMessage(placeholders));
-								for(Player p : Bukkit.getServer().getOnlinePlayers()) {
+								for(Player player : Bukkit.getServer().getOnlinePlayers()) {
+									player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
 									if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
-										p.getInventory().addItem(crate.getKey(amount));
+										player.getInventory().addItem(crate.getKey(amount));
 										return true;
 									}
 									if(type.equalsIgnoreCase("Virtual") || type.equalsIgnoreCase("V")) {
-										cc.addKeys(amount, p, crate, KeyType.VIRTUAL_KEY);
+										cc.addKeys(amount, player, crate, KeyType.VIRTUAL_KEY);
 									}
 									if(type.equalsIgnoreCase("Physical") || type.equalsIgnoreCase("P")) {
-										cc.addKeys(amount, p, crate, KeyType.PHYSICAL_KEY);
+										cc.addKeys(amount, player, crate, KeyType.PHYSICAL_KEY);
 									}
 								}
 								return true;
@@ -729,7 +731,11 @@ public class Main extends JavaPlugin implements Listener {
 								HashMap<String, String> placeholders = new HashMap<>();
 								placeholders.put("%amount%", amount + "");
 								placeholders.put("%player%", target.getName());
+								placeholders.put("%key%", crate.getKey().getItemMeta().getDisplayName());
 								sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
+								if(target != null) {
+									target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
+								}
 								return true;
 							}
 						}
