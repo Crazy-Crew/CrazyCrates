@@ -17,6 +17,7 @@ Crate:
     - '&7&l(&e&l!&7&l) Right click to view rewards.'
   Preview:
     Toggle: true
+    ChestLines: 6
     Glass:
       Toggle: true
       Item: 'STAINED_GLASS_PANE:10'

@@ -632,7 +632,7 @@ public class CrazyCrates {
 	public Inventory loadPreview(Crate crate) {
 		FileConfiguration file = crate.getFile();
 		int slots = 9;
-		for(int size = file.getConfigurationSection("Crate.Prizes").getKeys(false).size(); size > 9 && slots < 54; size -= 9) {
+		for(int size = file.getConfigurationSection("Crate.Prizes").getKeys(false).size(); size > 9 && slots < crate.getMaxSlots(); size -= 9) {
 			slots += 9;
 		}
 		Inventory inv = Bukkit.createInventory(null, slots, Methods.color(file.getString("Crate.Name")));
