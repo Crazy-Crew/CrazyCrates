@@ -34,16 +34,16 @@ public class Preview implements Listener {
 					e.setCancelled(true);
 					ItemStack item = e.getCurrentItem();
 					if(item != null) {
-						if(e.getRawSlot() == 49) {// Clicked the menu button.
+						if(e.getRawSlot() == crate.getAbsoluteItemPosition(4)) {// Clicked the menu button.
 							if(playerInMenu(player)) {
 								GUIMenu.openGUI(player);
 							}
-						}else if(e.getRawSlot() == 50) {// Clicked the next button.
+						}else if(e.getRawSlot() == crate.getAbsoluteItemPosition(5)) {// Clicked the next button.
 							if(getPage(player) < crate.getMaxPage()) {
 								nextPage(player);
 								openPreview(player, crate);
 							}
-						}else if(e.getRawSlot() == 48) {// Clicked the back button.
+						}else if(e.getRawSlot() == crate.getAbsoluteItemPosition(3)) {// Clicked the back button.
 							if(getPage(player) > 1 && getPage(player) <= crate.getMaxPage()) {
 								backPage(player);
 								openPreview(player, crate);

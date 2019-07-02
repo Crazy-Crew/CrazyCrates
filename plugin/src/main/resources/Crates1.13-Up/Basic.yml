@@ -29,6 +29,8 @@ Crate:
   Preview:
     #Turn on and off the preview for this crate.
     Toggle: true
+    #How many lines the previewChest should have. Including Header and Bottom (Between 3 and 6)
+    ChestLines: 6
     Glass:
       #Turn the glass boarder in the preview on and off.
       Toggle: true
