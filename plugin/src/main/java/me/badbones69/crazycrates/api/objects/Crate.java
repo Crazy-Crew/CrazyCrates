@@ -61,7 +61,7 @@ public class Crate {
 		this.previewName = Methods.color(previewName);
 		this.newPlayerKeys = newPlayerKeys;
 		this.giveNewPlayerKeys = newPlayerKeys > 0;
-		for(int amount = preview.size(); amount > getMaxSlots() - 18; amount -= getMaxSlots() - 9, maxPage++) ;
+		for(int amount = preview.size(); amount > getMaxSlots() - (boarderToggle ? 18 : 9); amount -= getMaxSlots() - (boarderToggle ? 18 : 9), maxPage++) ;
 		this.crateInventoryName = file != null ? Methods.color(file.getString("Crate.CrateName")) : "";
 		this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
 	}
