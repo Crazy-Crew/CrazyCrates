@@ -67,23 +67,23 @@ public class Crate {
 	}
 	
 	public void setPreviewChestlines(int amount) {
-	    int finalAmount;
-	    if (amount < 3) {
-            finalAmount = 3;
-        } else if (amount > 6) {
-            finalAmount = 6;
-        } else {
-            finalAmount = amount;
-        }
-	    this.previewChestlines = finalAmount;
+		int finalAmount;
+		if(amount < 3) {
+			finalAmount = 3;
+		}else if(amount > 6) {
+			finalAmount = 6;
+		}else {
+			finalAmount = amount;
+		}
+		this.previewChestlines = finalAmount;
 	}
 	
 	public int getPreviewChestLines() {
-	    return this.previewChestlines;
+		return this.previewChestlines;
 	}
 	
 	public int getMaxSlots() {
-	    return this.previewChestlines * 9;
+		return this.previewChestlines * 9;
 	}
 	
 	/**
@@ -459,21 +459,21 @@ public class Crate {
 	}
 	
 	public int getAbsoluteItemPosition(int baseSlot) {
-	    return baseSlot + (previewChestlines - 1) * 9;
+		return baseSlot + (previewChestlines - 1) * 9;
 	}
 	
 	private void setDefaultItems(Inventory inv, Player player) {
 		if(boarderToggle) {
-		    List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
+			List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
 			for(int i : borderItems) {//Top Boarder slots
 				inv.setItem(i, boarderItem.build());
 			}
-			for (int i = 0; i < borderItems.size(); i++) {
-	            borderItems.set(i, getAbsoluteItemPosition(borderItems.get(i)));
-	        }
-	        for(int i : borderItems) {//Bottom Boarder slots
-	            inv.setItem(i, boarderItem.build());
-	        }
+			for(int i = 0; i < borderItems.size(); i++) {
+				borderItems.set(i, getAbsoluteItemPosition(borderItems.get(i)));
+			}
+			for(int i : borderItems) {//Bottom Boarder slots
+				inv.setItem(i, boarderItem.build());
+			}
 		}
 		int page = Preview.getPage(player);
 		if(Preview.playerInMenu(player)) {
