@@ -5,7 +5,6 @@ import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.controllers.FireworkDamageAPI;
-import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -31,6 +30,7 @@ public class Methods {
 	private static CrazyCrates cc = CrazyCrates.getInstance();
 	public static HashMap<Player, String> path = new HashMap<>();
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
+	private static Random random = new Random(); 
 	
 	public static String color(String msg) {
 		return ChatColor.translateAlternateColorCodes('&', msg);
@@ -38,14 +38,6 @@ public class Methods {
 	
 	public static String removeColor(String msg) {
 		return ChatColor.stripColor(msg);
-	}
-	
-	public static ItemStack getItemInHand(Player player) {
-		if(Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
-			return player.getInventory().getItemInMainHand();
-		}else {
-			return player.getItemInHand();
-		}
 	}
 	
 	public static HashMap<ItemStack, String> getItems(Player player) {
@@ -61,10 +53,9 @@ public class Methods {
 			}
 			try {
 				ItemStack item = new ItemBuilder().setMaterial(id).setName(name).build();
-				Random number = new Random();
 				int num;
 				for(int counter = 1; counter <= 1; counter++) {
-					num = 1 + number.nextInt(max);
+					num = 1 + random.nextInt(max);
 					if(num >= 1 && num <= chance) items.put(item, "Crate.Prizes." + reward);
 				}
 			}catch(Exception e) {
@@ -205,12 +196,11 @@ public class Methods {
 	}
 	
 	public static Integer randomNumber(int min, int max) {
-		Random i = new Random();
-		return min + i.nextInt(max - min);
+		return min + random.nextInt(max - min);
 	}
 	
 	public static boolean isSimilar(Player player, ItemStack two) {
-		return isSimilar(getItemInHand(player), two);
+		return isSimilar(cc.getNMSSupport().getItemInMainHand(player), two);
 	}
 	
 	public static boolean isSimilar(ItemStack one, ItemStack two) {
@@ -354,7 +344,7 @@ public class Methods {
 		newMaterial ? "GREEN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:13",// 13
 		newMaterial ? "RED_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:14",// 14
 		newMaterial ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15");// 15
-		return new ItemBuilder().setMaterial(colors.get(new Random().nextInt(colors.size())));
+		return new ItemBuilder().setMaterial(colors.get(random.nextInt(colors.size())));
 	}
 	
 }

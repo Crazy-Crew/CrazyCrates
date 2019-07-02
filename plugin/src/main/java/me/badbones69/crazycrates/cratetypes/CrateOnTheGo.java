@@ -22,7 +22,7 @@ public class CrateOnTheGo implements Listener {
 	public void onCrateOpen(PlayerInteractEvent e) {
 		Player player = e.getPlayer();
 		if(e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			ItemStack item = Methods.getItemInHand(player);
+			ItemStack item = cc.getNMSSupport().getItemInMainHand(player);
 			if(item != null) {
 				for(Crate crate : cc.getCrates()) {
 					if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {

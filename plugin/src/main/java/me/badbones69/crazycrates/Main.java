@@ -285,7 +285,7 @@ public class Main extends JavaPlugin implements Listener {
 					if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;
 					Player player = (Player) sender;
 					if(args.length >= 3) {
-						ItemStack item = player.getInventory().getItemInMainHand();
+						ItemStack item = cc.getNMSSupport().getItemInMainHand(player);
 						if(item != null && item.getType() != Material.AIR) {
 							Crate crate = cc.getCrateFromName(args[1]);
 							if(crate != null) {
