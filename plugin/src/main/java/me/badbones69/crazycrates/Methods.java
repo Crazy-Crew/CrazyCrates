@@ -30,7 +30,7 @@ public class Methods {
 	private static CrazyCrates cc = CrazyCrates.getInstance();
 	public static HashMap<Player, String> path = new HashMap<>();
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
-	private static Random random = new Random(); 
+	private static Random random = new Random();
 	
 	public static String color(String msg) {
 		return ChatColor.translateAlternateColorCodes('&', msg);

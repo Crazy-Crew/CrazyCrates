@@ -106,8 +106,8 @@ public class NMS_v1_9_R2 implements NMSSupport {
 	}
 	
 	@Override
-    public ItemStack getItemInMainHand(Player player) {
-        return player.getInventory().getItemInMainHand();
-    }
+	public ItemStack getItemInMainHand(Player player) {
+		return player.getInventory().getItemInMainHand();
+	}
 	
 }

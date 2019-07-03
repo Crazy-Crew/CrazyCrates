@@ -104,10 +104,10 @@ public class NMS_v1_10_R1 implements NMSSupport {
 		blockList.add(Material.WOOD_BUTTON);
 		return blockList;
 	}
-
-    @Override
-    public ItemStack getItemInMainHand(Player player) {
-        return player.getInventory().getItemInMainHand();
-    }
+	
+	@Override
+	public ItemStack getItemInMainHand(Player player) {
+		return player.getInventory().getItemInMainHand();
+	}
 	
 }

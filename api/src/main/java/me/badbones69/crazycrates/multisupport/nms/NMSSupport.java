@@ -20,7 +20,7 @@ public interface NMSSupport {
 	List<Location> getLocations(File file, Location loc);
 	
 	List<Material> getQuadCrateBlacklistBlocks();
-
+	
 	ItemStack getItemInMainHand(Player player);
 	
 }
