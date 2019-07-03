@@ -9,6 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
@@ -91,6 +93,11 @@ public class NMS_v1_14_R1 implements NMSSupport {
 		blockList.add(Material.SPRUCE_BUTTON);
 		blockList.add(Material.STONE_BUTTON);
 		return blockList;
+	}
+	
+	@Override
+	public ItemStack getItemInMainHand(Player player) {
+		return player.getInventory().getItemInMainHand();
 	}
 	
 }

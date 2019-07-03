@@ -6,6 +6,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -101,6 +103,11 @@ public class NMS_v1_8_R3 implements NMSSupport {
 		blockList.add(Material.STONE_BUTTON);
 		blockList.add(Material.WOOD_BUTTON);
 		return blockList;
+	}
+	
+	@Override
+	public ItemStack getItemInMainHand(Player player) {
+		return player.getItemInHand();
 	}
 	
 }
