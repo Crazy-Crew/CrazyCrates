@@ -29,8 +29,8 @@ public class Prize {
 		this.firework = false;
 		this.maxRange = 100;
 		this.tiers = new ArrayList<>();
-		this.messages = new ArrayList<>();
-		this.commands = new ArrayList<>();
+		this.messages = messages != null ? messages : new ArrayList<>();
+		this.commands = commands != null ? commands : new ArrayList<>();
 		this.displayItem = new ItemBuilder();
 		this.blackListPermissions = new ArrayList<>();
 		this.altPrize = null;
