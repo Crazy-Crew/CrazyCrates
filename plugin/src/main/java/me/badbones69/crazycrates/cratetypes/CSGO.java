@@ -120,6 +120,7 @@ public class CSGO implements Listener {
 						for(Prize p : crate.getPrizes()) {
 							if(inv.getItem(13).isSimilar(p.getDisplayItem())) {
 								prize = p;
+								break;
 							}
 						}
 						cc.givePrize(player, prize);

@@ -7,6 +7,7 @@ import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -30,7 +31,7 @@ public class ItemBuilder {
 	private int damage;
 	private String name;
 	private List<String> lore;
-	private Integer amount;
+	private int amount;
 	private String player;
 	private Boolean isHash;
 	private Boolean isURL;
@@ -40,6 +41,8 @@ public class ItemBuilder {
 	private Boolean hideItemFlags;
 	private Boolean glowing;
 	private ItemStack referenceItem;
+	private boolean isMobEgg;
+	private EntityType entityType;
 	private HashMap<String, String> namePlaceholders;
 	private HashMap<String, String> lorePlaceholders;
 	private CrazyCrates cc = CrazyCrates.getInstance();
@@ -61,6 +64,8 @@ public class ItemBuilder {
 		this.unbreakable = false;
 		this.hideItemFlags = false;
 		this.glowing = false;
+		this.entityType = EntityType.BAT;
+		this.isMobEgg = false;
 		this.namePlaceholders = new HashMap<>();
 		this.lorePlaceholders = new HashMap<>();
 	}
@@ -128,6 +133,13 @@ public class ItemBuilder {
 		Material m = Material.matchMaterial(material);
 		if(m != null) {// Sets the material.
 			this.material = m;
+			if(Version.getCurrentVersion().isNewer(Version.v1_8_R3) && Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {
+				if(m == Material.matchMaterial("MONSTER_EGG")) {
+					this.entityType = EntityType.fromId(damage);
+					this.damage = 0;
+					this.isMobEgg = true;
+				}
+			}
 		}
 		this.isHead = this.material == (cc.useNewMaterial() ? Material.matchMaterial("PLAYER_HEAD") : Material.matchMaterial("SKULL_ITEM"));
 		return this;
@@ -292,6 +304,32 @@ public class ItemBuilder {
 			newLore.add(i);
 		}
 		return newLore;
+	}
+	
+	/**
+	 * Sets the type of mob egg.
+	 * @param entityType The entity type the mob egg will be.
+	 * @return The ItemBuilder with updated info.
+	 */
+	public ItemBuilder setEntityType(EntityType entityType) {
+		this.entityType = entityType;
+		return this;
+	}
+	
+	/**
+	 * Get the entity type of the mob egg.
+	 * @return The EntityType of the mob egg.
+	 */
+	public EntityType getEntityType() {
+		return entityType;
+	}
+	
+	/**
+	 * Check if the current item is a mob egg.
+	 * @return True if it is and false if not.
+	 */
+	public boolean isMobEgg() {
+		return isMobEgg;
 	}
 	
 	/**
@@ -492,6 +530,9 @@ public class ItemBuilder {
 				if(!isHash && player != null && !player.equals("")) {
 					nbt.setString("SkullOwner", player);
 				}
+			}
+			if(isMobEgg) {
+				nbt.addCompound("EntityTag").setString("id", "minecraft:" + entityType.name());
 			}
 			if(Version.getCurrentVersion().isOlder(Version.v1_11_R1)) {
 				if(unbreakable) {
