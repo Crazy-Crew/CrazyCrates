@@ -8,7 +8,7 @@ Messages:
   Quick-Crate-In-Use: '&cThat crate is already in use. Please wait for the crate to open up.'
   World-Disabled: '&cI am sorry but crates are disabled in %world%.'
   Reload: '&3You have just reloaded the Config and Data Files.'
-  Not-Online: '&cThe player &6%player% &cis not online at this time.'
+  Not-Online: '&cThe player &6%player% &cis not online.'
   No-Permission: '&cYou do not have permission to use that command!'
   Crate-Already-Opened: '&cYou are already opening a crate.'
   Cant-Be-A-Virtual-Crate: '&cThat crate type cannot be used as a virtual crate.'
