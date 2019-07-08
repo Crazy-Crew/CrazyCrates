@@ -64,7 +64,15 @@ public class QuickCrate implements Listener {
 			NBTItem nbtItem = new NBTItem(displayItem);
 			nbtItem.setBoolean("crazycrates-item", true);
 			displayItem = nbtItem.getItem();
-			Item reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
+			Item reward;
+			try {
+				reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
+			}catch(IllegalArgumentException e) {
+				System.out.println("[CrazyCrates] An prize could not be given due to an invalid display item for this prize. ");
+				System.out.println("[CrazyCrates] Crate: " + prize.getCrate() + " Prize: " + prize.getName());
+				e.printStackTrace();
+				return;
+			}
 			reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(cc.getPlugin(), true));
 			reward.setVelocity(new Vector(0, .2, 0));
 			reward.setCustomName(displayItem.getItemMeta().getDisplayName());

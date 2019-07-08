@@ -1023,7 +1023,7 @@ public class CrazyCrates {
 		ItemBuilder itemBuilder = new ItemBuilder();
 		try {
 			itemBuilder.setMaterial(file.getString(path + "DisplayItem"))
-			.setAmount(file.contains(path + "DisplayAmount") ? file.getInt(path + "DisplayAmount") : 1)
+			.setAmount(file.getInt(path + "DisplayAmount", 1))
 			.setName(file.getString(path + "DisplayName"))
 			.setLore(file.getStringList(path + "Lore"))
 			.setGlowing(file.getBoolean(path + "Glowing"))
