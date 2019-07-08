@@ -1,8 +1,6 @@
 package me.badbones69.crazycrates.multisupport.itemnbtapi;
 
-import me.badbones69.crazycrates.multisupport.itemnbtapi.utils.MethodNames;
-
-import java.lang.reflect.Method;
+import me.badbones69.crazycrates.multisupport.itemnbtapi.utils.MinecraftVersion;
 
 public class NBTList {
 	
@@ -31,9 +29,12 @@ public class NBTList {
 			return null;
 		}
 		try {
-			Method method = listObject.getClass().getMethod("add", NBTReflectionUtil.getNBTBase());
-			Object compound = NBTReflectionUtil.getNBTTagCompound().newInstance();
-			method.invoke(listObject, compound);
+			Object compound = ClassWrapper.NMS_NBTTAGCOMPOUND.getClazz().newInstance();
+			if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_14_R1.getVersionId()) {
+				ReflectionMethod.LIST_ADD.run(listObject, 0, compound);
+			}else {
+				ReflectionMethod.LEGACY_LIST_ADD.run(listObject, compound);
+			}
 			return new NBTListCompound(this, compound);
 		}catch(Exception ex) {
 			ex.printStackTrace();
@@ -47,8 +48,7 @@ public class NBTList {
 			return null;
 		}
 		try {
-			Method method = listObject.getClass().getMethod("get", int.class);
-			Object compound = method.invoke(listObject, id);
+			Object compound = ReflectionMethod.LIST_GET.run(listObject, id);
 			return new NBTListCompound(this, compound);
 		}catch(Exception ex) {
 			ex.printStackTrace();
@@ -62,38 +62,40 @@ public class NBTList {
 			return null;
 		}
 		try {
-			Method method = listObject.getClass().getMethod("getString", int.class);
-			return (String) method.invoke(listObject, i);
+			return (String) ReflectionMethod.LIST_GET_STRING.run(listObject, i);
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
 		return null;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void addString(String s) {
 		if(type != NBTType.NBTTagString) {
 			new Throwable("Using String method on a non String list!").printStackTrace();
 			return;
 		}
 		try {
-			Method method = listObject.getClass().getMethod("add", NBTReflectionUtil.getNBTBase());
-			method.invoke(listObject, NBTReflectionUtil.getNBTTagString().getConstructor(String.class).newInstance(s));
+			if(MinecraftVersion.getVersion().getVersionId() >= MinecraftVersion.MC1_14_R1.getVersionId()) {
+				ReflectionMethod.LIST_ADD.run(listObject, 0,
+				ClassWrapper.NMS_NBTTAGSTRING.getClazz().getConstructor(String.class).newInstance(s));
+			}else {
+				ReflectionMethod.LEGACY_LIST_ADD.run(listObject,
+				ClassWrapper.NMS_NBTTAGSTRING.getClazz().getConstructor(String.class).newInstance(s));
+			}
 			save();
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void setString(int i, String s) {
 		if(type != NBTType.NBTTagString) {
 			new Throwable("Using String method on a non String list!").printStackTrace();
 			return;
 		}
 		try {
-			Method method = listObject.getClass().getMethod("a", int.class, NBTReflectionUtil.getNBTBase());
-			method.invoke(listObject, i, NBTReflectionUtil.getNBTTagString().getConstructor(String.class).newInstance(s));
+			ReflectionMethod.LIST_SET.run(listObject, i,
+			ClassWrapper.NMS_NBTTAGSTRING.getClazz().getConstructor(String.class).newInstance(s));
 			save();
 		}catch(Exception ex) {
 			ex.printStackTrace();
@@ -102,8 +104,7 @@ public class NBTList {
 	
 	public void remove(int i) {
 		try {
-			Method method = listObject.getClass().getMethod(MethodNames.getRemoveMethodName(), int.class);
-			method.invoke(listObject, i);
+			ReflectionMethod.LIST_REMOVE_KEY.run(listObject, i);
 			save();
 		}catch(Exception ex) {
 			ex.printStackTrace();
@@ -112,8 +113,7 @@ public class NBTList {
 	
 	public int size() {
 		try {
-			Method method = listObject.getClass().getMethod("size");
-			return (int) method.invoke(listObject);
+			return (int) ReflectionMethod.LIST_SIZE.run(listObject);
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
