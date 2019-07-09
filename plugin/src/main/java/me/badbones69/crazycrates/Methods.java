@@ -118,7 +118,7 @@ public class Methods {
 	}
 	
 	public static Player getPlayer(String name) {
-		return Bukkit.getServer().getPlayer(name);
+		return Bukkit.getPlayerExact(name);
 	}
 	
 	public static boolean isOnline(String name, CommandSender sender) {
