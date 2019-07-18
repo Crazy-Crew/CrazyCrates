@@ -188,7 +188,7 @@ public class CrazyCrates {
 				ArrayList<Prize> prizes = new ArrayList<>();
 				String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
 				ArrayList<Tier> tiers = new ArrayList<>();
-				if(file.contains("Crate.Tiers")) {
+				if(file.contains("Crate.Tiers") && file.getConfigurationSection("Crate.Tiers") != null) {
 					for(String tier : file.getConfigurationSection("Crate.Tiers").getKeys(false)) {
 						String path = "Crate.Tiers." + tier;
 						tiers.add(new Tier(tier, file.getString(path + ".Name"), file.getString(path + ".Color"), file.getInt(path + ".Chance"), file.getInt(path + ".MaxRange")));
