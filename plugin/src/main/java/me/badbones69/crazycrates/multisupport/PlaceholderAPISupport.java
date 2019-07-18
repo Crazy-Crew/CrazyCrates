@@ -28,7 +28,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 					if(identifier.equalsIgnoreCase(crate.getName())) {
 						return NumberFormat.getNumberInstance().format(cc.getVirtualKeys(playerOnline, crate));
 					}else if(identifier.equalsIgnoreCase(crate.getName() + "_physical")) {
-						return NumberFormat.getNumberInstance().format(cc.getPhysicalKey(playerOnline, crate));
+						return NumberFormat.getNumberInstance().format(cc.getPhysicalKeys(playerOnline, crate));
 					}else if(identifier.equalsIgnoreCase(crate.getName() + "_total")) {
 						return NumberFormat.getNumberInstance().format(cc.getTotalKeys(playerOnline, crate));
 					}

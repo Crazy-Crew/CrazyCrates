@@ -867,7 +867,7 @@ public class CrazyCrates {
 	/**
 	 * Get the amount of physical keys a player has.
 	 */
-	public Integer getPhysicalKeys(Player player, Crate crate) {
+	public int getPhysicalKeys(Player player, Crate crate) {
 		int keys = 0;
 		for(ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
 			if(Methods.isSimilar(item, crate.getKey())) {
