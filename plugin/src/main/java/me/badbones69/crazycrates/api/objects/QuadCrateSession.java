@@ -127,6 +127,7 @@ public class QuadCrateSession {
 			Location particleLocation = chestLocations.get(crateNumber).clone().add(.5, 3, .5);
 			List<Location> spiralLocationsClockwise = getSpiralLocationsClockwise(particleLocation);
 			List<Location> spiralLocationsCounterClockwise = getSpiralLocationsCounterClockwise(particleLocation);
+			
 			@Override
 			public void run() {
 				if(tickTillSpawn < 60) {

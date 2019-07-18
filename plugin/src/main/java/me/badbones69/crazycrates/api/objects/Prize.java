@@ -50,7 +50,7 @@ public class Prize {
 		this.commands = commands != null ? commands : new ArrayList<>();
 		this.displayItem = displayItem != null ? displayItem : new ItemBuilder();
 		this.blackListPermissions = blackListPermissions != null ? blackListPermissions : new ArrayList<>();
-		this.blackListPermissions.replaceAll(String::toLowerCase);
+		this.blackListPermissions.replaceAll(String :: toLowerCase);
 		this.altPrize = null;
 	}
 	
@@ -68,7 +68,7 @@ public class Prize {
 		this.commands = commands != null ? commands : new ArrayList<>();
 		this.displayItem = displayItem != null ? displayItem : new ItemBuilder();
 		this.blackListPermissions = blackListPermissions != null ? blackListPermissions : new ArrayList<>();
-		this.blackListPermissions.replaceAll(String::toLowerCase);
+		this.blackListPermissions.replaceAll(String :: toLowerCase);
 		this.altPrize = altPrize;
 	}
 	

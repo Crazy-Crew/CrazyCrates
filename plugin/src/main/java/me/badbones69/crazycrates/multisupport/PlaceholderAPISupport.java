@@ -47,12 +47,15 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 	public String getIdentifier() {
 		return "crazycrates";
 	}
+	
 	@Override
 	public String getAuthor() {
 		return "BadBones69";
 	}
+	
 	@Override
 	public String getVersion() {
 		return plugin.getDescription().getVersion();
 	}
+	
 }

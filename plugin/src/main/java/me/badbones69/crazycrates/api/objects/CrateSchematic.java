@@ -19,4 +19,5 @@ public class CrateSchematic {
 	public File getSchematicFile() {
 		return schematicFile;
 	}
+	
 }

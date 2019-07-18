@@ -118,10 +118,12 @@ public enum ReflectionMethod {
 		
 		public final MinecraftVersion version;
 		public final String name;
+
 		public Since(MinecraftVersion version, String name) {
 			this.version = version;
 			this.name = name;
 		}
+
 	}
 	
 }

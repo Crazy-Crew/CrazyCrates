@@ -46,6 +46,7 @@ public class War implements Listener {
 		cc.addCrateTask(player, new BukkitRunnable() {
 			int full = 0;
 			int open = 0;
+			
 			@Override
 			public void run() {
 				if(full < 25) {//When Spinning

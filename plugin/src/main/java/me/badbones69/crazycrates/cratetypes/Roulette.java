@@ -47,6 +47,7 @@ public class Roulette implements Listener {
 			int even = 0;
 			int full = 0;
 			int open = 0;
+			
 			@Override
 			public void run() {
 				if(full <= 15) {

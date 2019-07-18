@@ -81,6 +81,7 @@ public class CSGO implements Listener {
 			int time = 1;
 			int full = 0;
 			int open = 0;
+			
 			@Override
 			public void run() {
 				if(full <= 50) {//When Spinning

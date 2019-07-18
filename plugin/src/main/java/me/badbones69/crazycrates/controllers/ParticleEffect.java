@@ -1028,6 +1028,7 @@ public enum ParticleEffect {
 		public String getPacketDataString() {
 			return "_" + packetData[0] + "_" + packetData[1];
 		}
+		
 	}
 	
 	/**
@@ -1050,6 +1051,7 @@ public enum ParticleEffect {
 		public ItemData(Material material, byte data) {
 			super(material, data);
 		}
+		
 	}
 	
 	/**
@@ -1076,6 +1078,7 @@ public enum ParticleEffect {
 				throw new IllegalArgumentException("The material is not a block");
 			}
 		}
+		
 	}
 	
 	/**
@@ -1108,6 +1111,7 @@ public enum ParticleEffect {
 		 * @return The offsetZ value
 		 */
 		public abstract float getValueZ();
+		
 	}
 	
 	/**
@@ -1221,6 +1225,7 @@ public enum ParticleEffect {
 		public float getValueZ() {
 			return (float) blue / 255F;
 		}
+		
 	}
 	
 	/**
@@ -1303,6 +1308,7 @@ public enum ParticleEffect {
 		public ParticleDataException(String message) {
 			super(message);
 		}
+		
 	}
 	
 	/**
@@ -1325,6 +1331,7 @@ public enum ParticleEffect {
 		public ParticleColorException(String message) {
 			super(message);
 		}
+		
 	}
 	
 	/**
@@ -1347,6 +1354,7 @@ public enum ParticleEffect {
 		public ParticleVersionException(String message) {
 			super(message);
 		}
+		
 	}
 	
 	/**
@@ -1606,6 +1614,7 @@ public enum ParticleEffect {
 			public VersionIncompatibleException(String message, Throwable cause) {
 				super(message, cause);
 			}
+			
 		}
 		
 		/**
@@ -1629,6 +1638,7 @@ public enum ParticleEffect {
 			public PacketInstantiationException(String message, Throwable cause) {
 				super(message, cause);
 			}
+			
 		}
 		
 		/**
@@ -1652,6 +1662,8 @@ public enum ParticleEffect {
 			public PacketSendingException(String message, Throwable cause) {
 				super(message, cause);
 			}
+			
 		}
+		
 	}
 }

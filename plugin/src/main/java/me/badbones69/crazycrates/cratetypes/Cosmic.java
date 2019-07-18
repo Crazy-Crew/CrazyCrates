@@ -165,6 +165,7 @@ public class Cosmic implements Listener {
 							}
 							cc.addCrateTask(player, new BukkitRunnable() {
 								int time = 0;
+								
 								@Override
 								public void run() {
 									try {

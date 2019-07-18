@@ -36,6 +36,7 @@ public class FireCracker {
 			int color = r.nextInt(colors.size());
 			int l = 0;
 			Location L = loc.clone().add(.5, 25, .5);
+			
 			@Override
 			public void run() {
 				L.subtract(0, 1, 0);

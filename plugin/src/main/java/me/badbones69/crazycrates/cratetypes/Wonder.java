@@ -39,6 +39,7 @@ public class Wonder implements Listener {
 			Random r = new Random();
 			ArrayList<Integer> Slots = new ArrayList<>();
 			Prize p = null;
+			
 			@Override
 			public void run() {
 				if(timer >= 2 && fulltime <= 65) {
