@@ -24,10 +24,6 @@ public enum MinecraftVersion {
 		this.versionId = versionId;
 	}
 	
-	public int getVersionId() {
-		return versionId;
-	}
-	
 	public static MinecraftVersion getVersion() {
 		if(version != null) {
 			return version;
@@ -58,6 +54,10 @@ public enum MinecraftVersion {
 			hasGsonSupport = false;
 		}
 		return hasGsonSupport;
+	}
+	
+	public int getVersionId() {
+		return versionId;
 	}
 	
 }

@@ -80,12 +80,12 @@ public class Prize {
 		return displayItem.build();
 	}
 	
-	public ItemBuilder getDisplayItemBuilder() {
-		return displayItem;
-	}
-	
 	public void setDisplayItem(ItemBuilder displayItem) {
 		this.displayItem = displayItem;
+	}
+	
+	public ItemBuilder getDisplayItemBuilder() {
+		return displayItem;
 	}
 	
 	public List<Tier> getTiers() {

@@ -55,6 +55,47 @@ public class QuadCrateSession {
 		crateSessions.add(instance);
 	}
 	
+	public static void endAllCrates() {
+		for(QuadCrateSession session : crateSessions) {
+			for(Location location : session.getOldBlocks().keySet()) {
+				BlockState oldState = session.getOldBlocks().get(location);
+				location.getBlock().setType(oldState.getType(), false);
+				oldState.update(true);
+			}
+			for(Location location : session.getChestLocations()) {
+				location.getBlock().setType(Material.AIR);
+			}
+			for(Entity entity : session.getDisplayedRewards()) {
+				entity.remove();
+			}
+			session.getPlayer().teleport(session.getLastLocation());
+			cc.removePlayerFromOpeningList(session.getPlayer());
+		}
+		crateSessions.clear();
+	}
+	
+	public static List<QuadCrateSession> getCrateSessions() {
+		return crateSessions;
+	}
+	
+	public static Boolean inSession(Player player) {
+		for(QuadCrateSession session : crateSessions) {
+			if(session.getPlayer() == player) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static QuadCrateSession getSession(Player player) {
+		for(QuadCrateSession session : crateSessions) {
+			if(session.getPlayer() == player) {
+				return session;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * @return True if the crate started successfully and false if it could not start.
 	 */
@@ -205,25 +246,6 @@ public class QuadCrateSession {
 		crateSessions.remove(instance);
 	}
 	
-	public static void endAllCrates() {
-		for(QuadCrateSession session : crateSessions) {
-			for(Location location : session.getOldBlocks().keySet()) {
-				BlockState oldState = session.getOldBlocks().get(location);
-				location.getBlock().setType(oldState.getType(), false);
-				oldState.update(true);
-			}
-			for(Location location : session.getChestLocations()) {
-				location.getBlock().setType(Material.AIR);
-			}
-			for(Entity entity : session.getDisplayedRewards()) {
-				entity.remove();
-			}
-			session.getPlayer().teleport(session.getLastLocation());
-			cc.removePlayerFromOpeningList(session.getPlayer());
-		}
-		crateSessions.clear();
-	}
-	
 	public Crate getCrate() {
 		return crate;
 	}
@@ -288,28 +310,6 @@ public class QuadCrateSession {
 	
 	public HashMap<Location, BlockState> getOldBlocks() {
 		return oldBlocks;
-	}
-	
-	public static List<QuadCrateSession> getCrateSessions() {
-		return crateSessions;
-	}
-	
-	public static Boolean inSession(Player player) {
-		for(QuadCrateSession session : crateSessions) {
-			if(session.getPlayer() == player) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public static QuadCrateSession getSession(Player player) {
-		for(QuadCrateSession session : crateSessions) {
-			if(session.getPlayer() == player) {
-				return session;
-			}
-		}
-		return null;
 	}
 	
 	private ArrayList<Location> getSpiralLocationsClockwise(Location center) {

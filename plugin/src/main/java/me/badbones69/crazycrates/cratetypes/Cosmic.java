@@ -69,6 +69,22 @@ public class Cosmic implements Listener {
 		player.openInventory(inv);
 	}
 	
+	private static Tier pickTier(Player player) {
+		Crate crate = cc.getOpeningCrate(player);
+		if(!crate.getTiers().isEmpty()) {
+			for(int stopLoop = 0; stopLoop <= 100; stopLoop++) {
+				for(Tier tier : crate.getTiers()) {
+					int chance = tier.getChance();
+					int num = new Random().nextInt(tier.getMaxRange());
+					if(num >= 1 && num <= chance) {
+						return tier;
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
 	@EventHandler
 	public void onInvClick(InventoryClickEvent e) {
 		final Inventory inv = e.getInventory();
@@ -256,22 +272,6 @@ public class Cosmic implements Listener {
 				}
 			}
 		}
-	}
-	
-	private static Tier pickTier(Player player) {
-		Crate crate = cc.getOpeningCrate(player);
-		if(!crate.getTiers().isEmpty()) {
-			for(int stopLoop = 0; stopLoop <= 100; stopLoop++) {
-				for(Tier tier : crate.getTiers()) {
-					int chance = tier.getChance();
-					int num = new Random().nextInt(tier.getMaxRange());
-					if(num >= 1 && num <= chance) {
-						return tier;
-					}
-				}
-			}
-		}
-		return null;
 	}
 	
 	private Tier getTier(Crate crate, ItemStack item) {

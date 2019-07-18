@@ -34,7 +34,7 @@ public class NMS_v1_8_R3 implements NMSSupport {
 	
 	@Override
 	public void saveSchematic(Location[] locations, String owner, File file) {
-
+	
 	}
 	
 	//http://stackoverflow.com/questions/24101928/setting-block-data-from-schematic-in-bukkit

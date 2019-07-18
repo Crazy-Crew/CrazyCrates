@@ -22,8 +22,8 @@ import java.util.Random;
 
 public class Wheel implements Listener {
 	
-	private static CrazyCrates cc = CrazyCrates.getInstance();
 	public static HashMap<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
+	private static CrazyCrates cc = CrazyCrates.getInstance();
 	
 	public static void startWheel(final Player player, Crate crate, KeyType key) {
 		final Inventory inv = Bukkit.createInventory(null, 54, Methods.color(crate.getFile().getString("Crate.CrateName")));

@@ -27,9 +27,9 @@ import java.util.*;
 
 public class Methods {
 	
-	private static CrazyCrates cc = CrazyCrates.getInstance();
 	public static HashMap<Player, String> path = new HashMap<>();
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
+	private static CrazyCrates cc = CrazyCrates.getInstance();
 	private static Random random = new Random();
 	
 	public static String color(String msg) {

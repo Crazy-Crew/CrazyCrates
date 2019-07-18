@@ -23,38 +23,6 @@ public class Preview implements Listener {
 	private static HashMap<UUID, Crate> playerCrate = new HashMap<>();
 	private static HashMap<UUID, Boolean> playerInMenu = new HashMap<>();
 	
-	@EventHandler
-	public void onPlayerClick(InventoryClickEvent e) {
-		Player player = (Player) e.getWhoClicked();
-		Inventory inventory = e.getInventory();
-		if(inventory != null) {
-			if(playerCrate.get(player.getUniqueId()) != null) {
-				Crate crate = playerCrate.get(player.getUniqueId());
-				if(e.getView().getTitle().equals(crate.getPreviewName()) || e.getView().getTitle().equals(crate.getCrateInventoryName())) {
-					e.setCancelled(true);
-					ItemStack item = e.getCurrentItem();
-					if(item != null) {
-						if(e.getRawSlot() == crate.getAbsoluteItemPosition(4)) {// Clicked the menu button.
-							if(playerInMenu(player)) {
-								GUIMenu.openGUI(player);
-							}
-						}else if(e.getRawSlot() == crate.getAbsoluteItemPosition(5)) {// Clicked the next button.
-							if(getPage(player) < crate.getMaxPage()) {
-								nextPage(player);
-								openPreview(player, crate);
-							}
-						}else if(e.getRawSlot() == crate.getAbsoluteItemPosition(3)) {// Clicked the back button.
-							if(getPage(player) > 1 && getPage(player) <= crate.getMaxPage()) {
-								backPage(player);
-								openPreview(player, crate);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	
 	public static void openNewPreview(Player player, Crate crate) {
 		playerCrate.put(player.getUniqueId(), crate);
 		setPage(player, 1);
@@ -90,14 +58,6 @@ public class Preview implements Listener {
 			pageNumber = max;
 		}
 		playerPage.put(player.getUniqueId(), pageNumber);
-	}
-	
-	public void nextPage(Player player) {
-		setPage(player, getPage(player) + 1);
-	}
-	
-	public void backPage(Player player) {
-		setPage(player, getPage(player) - 1);
 	}
 	
 	public static ItemStack getMenuButton() {
@@ -193,6 +153,46 @@ public class Preview implements Listener {
 	
 	public static void setPlayerInMenu(Player player, Boolean inMenu) {
 		playerInMenu.put(player.getUniqueId(), inMenu);
+	}
+	
+	@EventHandler
+	public void onPlayerClick(InventoryClickEvent e) {
+		Player player = (Player) e.getWhoClicked();
+		Inventory inventory = e.getInventory();
+		if(inventory != null) {
+			if(playerCrate.get(player.getUniqueId()) != null) {
+				Crate crate = playerCrate.get(player.getUniqueId());
+				if(e.getView().getTitle().equals(crate.getPreviewName()) || e.getView().getTitle().equals(crate.getCrateInventoryName())) {
+					e.setCancelled(true);
+					ItemStack item = e.getCurrentItem();
+					if(item != null) {
+						if(e.getRawSlot() == crate.getAbsoluteItemPosition(4)) {// Clicked the menu button.
+							if(playerInMenu(player)) {
+								GUIMenu.openGUI(player);
+							}
+						}else if(e.getRawSlot() == crate.getAbsoluteItemPosition(5)) {// Clicked the next button.
+							if(getPage(player) < crate.getMaxPage()) {
+								nextPage(player);
+								openPreview(player, crate);
+							}
+						}else if(e.getRawSlot() == crate.getAbsoluteItemPosition(3)) {// Clicked the back button.
+							if(getPage(player) > 1 && getPage(player) <= crate.getMaxPage()) {
+								backPage(player);
+								openPreview(player, crate);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void nextPage(Player player) {
+		setPage(player, getPage(player) + 1);
+	}
+	
+	public void backPage(Player player) {
+		setPage(player, getPage(player) - 1);
 	}
 	
 }

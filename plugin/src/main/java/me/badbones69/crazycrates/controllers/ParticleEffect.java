@@ -421,10 +421,6 @@ public enum ParticleEffect {
 	SWEEP_ATTACK("sweepAttack", 45, 9);
 	private static final Map<String, ParticleEffect> NAME_MAP = new HashMap<String, ParticleEffect>();
 	private static final Map<Integer, ParticleEffect> ID_MAP = new HashMap<Integer, ParticleEffect>();
-	private final String name;
-	private final int id;
-	private final int requiredVersion;
-	private final List<ParticleProperty> properties;
 	private static CrazyCrates cc = CrazyCrates.getInstance();
 	
 	// Initialize map for quick name and id lookup
@@ -434,6 +430,11 @@ public enum ParticleEffect {
 			ID_MAP.put(effect.id, effect);
 		}
 	}
+	
+	private final String name;
+	private final int id;
+	private final int requiredVersion;
+	private final List<ParticleProperty> properties;
 	
 	/**
 	 * Construct a new particle effect
@@ -448,54 +449,6 @@ public enum ParticleEffect {
 		this.id = id;
 		this.requiredVersion = requiredVersion;
 		this.properties = Arrays.asList(properties);
-	}
-	
-	/**
-	 * Returns the name of this particle effect
-	 *
-	 * @return The name
-	 */
-	public String getName() {
-		return name;
-	}
-	
-	/**
-	 * Returns the id of this particle effect
-	 *
-	 * @return The id
-	 */
-	public int getId() {
-		return id;
-	}
-	
-	/**
-	 * Returns the required version for this particle effect (1.x)
-	 *
-	 * @return The required version
-	 */
-	public int getRequiredVersion() {
-		return requiredVersion;
-	}
-	
-	/**
-	 * Determine if this particle effect has a specific property
-	 *
-	 * @return Whether it has the property or not
-	 */
-	public boolean hasProperty(ParticleProperty property) {
-		return properties.contains(property);
-	}
-	
-	/**
-	 * Determine if this particle effect is supported by your current server version
-	 *
-	 * @return Whether the particle effect is supported or not
-	 */
-	public boolean isSupported() {
-		if(requiredVersion == -1) {
-			return true;
-		}
-		return ParticlePacket.getCurrentVersion() >= requiredVersion;
 	}
 	
 	/**
@@ -579,6 +532,54 @@ public enum ParticleEffect {
 	 */
 	private static boolean isColorCorrect(ParticleEffect effect, ParticleColor color) {
 		return ((effect == SPELL_MOB || effect == SPELL_MOB_AMBIENT || effect == REDSTONE) && color instanceof OrdinaryColor) || (effect == NOTE && color instanceof NoteColor);
+	}
+	
+	/**
+	 * Returns the name of this particle effect
+	 *
+	 * @return The name
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * Returns the id of this particle effect
+	 *
+	 * @return The id
+	 */
+	public int getId() {
+		return id;
+	}
+	
+	/**
+	 * Returns the required version for this particle effect (1.x)
+	 *
+	 * @return The required version
+	 */
+	public int getRequiredVersion() {
+		return requiredVersion;
+	}
+	
+	/**
+	 * Determine if this particle effect has a specific property
+	 *
+	 * @return Whether it has the property or not
+	 */
+	public boolean hasProperty(ParticleProperty property) {
+		return properties.contains(property);
+	}
+	
+	/**
+	 * Determine if this particle effect is supported by your current server version
+	 *
+	 * @return Whether the particle effect is supported or not
+	 */
+	public boolean isSupported() {
+		if(requiredVersion == -1) {
+			return true;
+		}
+		return ParticlePacket.getCurrentVersion() >= requiredVersion;
 	}
 	
 	/**
@@ -1375,13 +1376,13 @@ public enum ParticleEffect {
 		private static Method sendPacket;
 		private static boolean initialized;
 		private final ParticleEffect effect;
-		private float offsetX;
 		private final float offsetY;
 		private final float offsetZ;
 		private final float speed;
 		private final int amount;
 		private final boolean longDistance;
 		private final ParticleData data;
+		private float offsetX;
 		private Object packet;
 		
 		/**

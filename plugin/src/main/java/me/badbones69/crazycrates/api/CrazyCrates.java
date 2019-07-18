@@ -43,22 +43,18 @@ import java.util.logging.Level;
 public class CrazyCrates {
 	
 	private static FileManager fileManager = FileManager.getInstance();
-	
-	/**
-	 * All the crates that have been loaded.
-	 */
-	private ArrayList<Crate> crates = new ArrayList<>();
-	
-	/**
-	 * A list of all the physical crate locations.
-	 */
-	private ArrayList<CrateLocation> crateLocations = new ArrayList<>();
-	
 	/**
 	 * The instance of this class.
 	 */
 	private static CrazyCrates instance = new CrazyCrates();
-	
+	/**
+	 * All the crates that have been loaded.
+	 */
+	private ArrayList<Crate> crates = new ArrayList<>();
+	/**
+	 * A list of all the physical crate locations.
+	 */
+	private ArrayList<CrateLocation> crateLocations = new ArrayList<>();
 	/**
 	 * List of all the broken crates.
 	 */

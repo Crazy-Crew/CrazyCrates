@@ -307,6 +307,14 @@ public class ItemBuilder {
 	}
 	
 	/**
+	 * Get the entity type of the mob egg.
+	 * @return The EntityType of the mob egg.
+	 */
+	public EntityType getEntityType() {
+		return entityType;
+	}
+	
+	/**
 	 * Sets the type of mob egg.
 	 * @param entityType The entity type the mob egg will be.
 	 * @return The ItemBuilder with updated info.
@@ -314,14 +322,6 @@ public class ItemBuilder {
 	public ItemBuilder setEntityType(EntityType entityType) {
 		this.entityType = entityType;
 		return this;
-	}
-	
-	/**
-	 * Get the entity type of the mob egg.
-	 * @return The EntityType of the mob egg.
-	 */
-	public EntityType getEntityType() {
-		return entityType;
 	}
 	
 	/**
@@ -405,6 +405,19 @@ public class ItemBuilder {
 	}
 	
 	/**
+	 * Set a list of enchantments that will go onto the item in the builder. These can have unsafe levels.
+	 * It will also override any enchantments used in the "ItemBuilder#addEnchantment()" method.
+	 * @param enchantments A list of enchantments that will go onto the item in the builder.
+	 * @return The ItemBuilder with updated info.
+	 */
+	public ItemBuilder setEnchantments(HashMap<Enchantment, Integer> enchantments) {
+		if(enchantments != null) {
+			this.enchantments = enchantments;
+		}
+		return this;
+	}
+	
+	/**
 	 * Add an enchantment to the item in the builder.
 	 * @param enchantment The enchantment you wish to add.
 	 * @param level The level of the enchantment. This can be unsafe levels.
@@ -422,19 +435,6 @@ public class ItemBuilder {
 	 */
 	public ItemBuilder removeEnchantments(Enchantment enchantment) {
 		this.enchantments.remove(enchantment);
-		return this;
-	}
-	
-	/**
-	 * Set a list of enchantments that will go onto the item in the builder. These can have unsafe levels.
-	 * It will also override any enchantments used in the "ItemBuilder#addEnchantment()" method.
-	 * @param enchantments A list of enchantments that will go onto the item in the builder.
-	 * @return The ItemBuilder with updated info.
-	 */
-	public ItemBuilder setEnchantments(HashMap<Enchantment, Integer> enchantments) {
-		if(enchantments != null) {
-			this.enchantments = enchantments;
-		}
 		return this;
 	}
 	

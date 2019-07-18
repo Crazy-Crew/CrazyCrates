@@ -14,6 +14,14 @@ public class NBTItem extends NBTCompound {
 		bukkitItem = item.clone();
 	}
 	
+	public static NBTContainer convertItemtoNBT(ItemStack item) {
+		return NBTReflectionUtil.convertNMSItemtoNBTCompound(ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, item));
+	}
+	
+	public static ItemStack convertNBTtoItem(NBTCompound comp) {
+		return (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run(null, NBTReflectionUtil.convertNBTCompoundtoNMSItem(comp));
+	}
+	
 	protected Object getCompound() {
 		return NBTReflectionUtil.getItemRootNBTTagCompound(ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, bukkitItem));
 	}
@@ -39,14 +47,6 @@ public class NBTItem extends NBTCompound {
 	 */
 	public boolean hasNBTData() {
 		return getCompound() != null;
-	}
-	
-	public static NBTContainer convertItemtoNBT(ItemStack item) {
-		return NBTReflectionUtil.convertNMSItemtoNBTCompound(ReflectionMethod.ITEMSTACK_NMSCOPY.run(null, item));
-	}
-	
-	public static ItemStack convertNBTtoItem(NBTCompound comp) {
-		return (ItemStack) ReflectionMethod.ITEMSTACK_BUKKITMIRROR.run(null, NBTReflectionUtil.convertNBTCompoundtoNMSItem(comp));
 	}
 	
 }
