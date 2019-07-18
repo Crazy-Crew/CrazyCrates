@@ -120,6 +120,11 @@ public class CrazyCrates {
 	private NMSSupport nmsSupport;
 	
 	/**
+	 * Schematic locations for 1.13+
+	 */
+	private HashMap<UUID, Location[]> schemLocations = new HashMap<>();
+	
+	/**
 	 * The CrazyCrates plugin.
 	 */
 	private Plugin plugin;
@@ -855,6 +860,10 @@ public class CrazyCrates {
 			}
 		}
 		return keys;
+	}
+	
+	public HashMap<UUID, Location[]> getSchematicLocations() {
+		return schemLocations;
 	}
 	
 	/**
