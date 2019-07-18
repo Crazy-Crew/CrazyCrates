@@ -95,7 +95,7 @@ public class Main extends JavaPlugin implements Listener {
 		if(!cc.getBrokeCrateLocations().isEmpty()) {
 			pm.registerEvents(new BrokeLocationsControl(), this);
 		}
-		pm.registerEvents(new FireworkDamageAPI(this), this);
+		pm.registerEvents(new FireworkDamageEvent(this), this);
 		if(Support.PLACEHOLDERAPI.isPluginLoaded()) {
 			new PlaceholderAPISupport(this).register();
 		}

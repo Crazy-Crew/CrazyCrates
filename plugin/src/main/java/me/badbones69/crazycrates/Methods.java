@@ -4,7 +4,7 @@ import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
-import me.badbones69.crazycrates.controllers.FireworkDamageAPI;
+import me.badbones69.crazycrates.controllers.FireworkDamageEvent;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -70,7 +70,7 @@ public class Methods {
 		fm.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.RED).withColor(Color.AQUA).withColor(Color.ORANGE).withColor(Color.YELLOW).trail(false).flicker(false).build());
 		fm.setPower(0);
 		fw.setFireworkMeta(fm);
-		FireworkDamageAPI.addFirework(fw);
+		FireworkDamageEvent.addFirework(fw);
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, fw :: detonate, 2);
 	}
 	

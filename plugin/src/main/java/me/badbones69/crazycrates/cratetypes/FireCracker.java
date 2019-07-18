@@ -3,7 +3,7 @@ package me.badbones69.crazycrates.cratetypes;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.objects.Crate;
-import me.badbones69.crazycrates.controllers.FireworkDamageAPI;
+import me.badbones69.crazycrates.controllers.FireworkDamageEvent;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -57,7 +57,7 @@ public class FireCracker {
 		fm.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL).withColor(color).withColor(color).trail(false).flicker(false).build());
 		fm.setPower(0);
 		fw.setFireworkMeta(fm);
-		FireworkDamageAPI.addFirework(fw);
+		FireworkDamageEvent.addFirework(fw);
 		new BukkitRunnable() {
 			public void run() {
 				fw.detonate();
