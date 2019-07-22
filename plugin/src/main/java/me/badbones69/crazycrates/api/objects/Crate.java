@@ -121,7 +121,12 @@ public class Crate {
 				}
 			}
 		}
-		return prizes.get(new Random().nextInt(prizes.size()));
+		try {
+			return prizes.get(new Random().nextInt(prizes.size()));
+		}catch(IllegalArgumentException e) {
+			System.out.println("[CrazyCrates] failed to find prize from the " + name + " crate for player " + player.getName() + ".");
+			return null;
+		}
 	}
 	
 	/**
