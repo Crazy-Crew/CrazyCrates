@@ -99,24 +99,21 @@ public class GUIMenu implements Listener {
 				if(file.getBoolean("Crate.InGUI")) {
 					String path = "Crate.";
 					int slot = file.getInt(path + "Slot");
-					String item = file.getString(path + "Item");
-					String name = file.getString(path + "Name");
-					ArrayList<String> lore = new ArrayList<>();
-					boolean glowing = false;
-					for(String i : file.getStringList(path + "Lore")) {
-						lore.add(i.replaceAll("%Keys%", NumberFormat.getNumberInstance().format(cc.getVirtualKeys(player, crate))).replaceAll("%keys%", NumberFormat.getNumberInstance().format(cc.getVirtualKeys(player, crate)))
-						.replaceAll("%Keys_Physical%", NumberFormat.getNumberInstance().format(cc.getPhysicalKeys(player, crate))).replaceAll("%keys_physical%", NumberFormat.getNumberInstance().format(cc.getPhysicalKeys(player, crate)))
-						.replaceAll("%Keys_Total%", NumberFormat.getNumberInstance().format(cc.getTotalKeys(player, crate))).replaceAll("%keys_total%", NumberFormat.getNumberInstance().format(cc.getTotalKeys(player, crate)))
-						.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName()));
-					}
-					if(file.getBoolean(path + "Glowing")) {
-						glowing = true;
-					}
 					if(slot > size) {
 						continue;
 					}
 					slot--;
-					inv.setItem(slot, new ItemBuilder().setMaterial(item).setName(name).setLore(lore).setGlowing(glowing).build());
+					inv.setItem(slot, new ItemBuilder()
+					.setMaterial(file.getString(path + "Item"))
+					.setName(file.getString(path + "Name"))
+					.setLore(file.getStringList(path + "Lore"))
+					.setPlayer(file.getString(path + "Player"))
+					.setGlowing(file.getBoolean(path + "Glowing"))
+					.addLorePlaceholder("%Keys%", NumberFormat.getNumberInstance().format(cc.getVirtualKeys(player, crate)))
+					.addLorePlaceholder("%Keys_Physical%", NumberFormat.getNumberInstance().format(cc.getPhysicalKeys(player, crate)))
+					.addLorePlaceholder("%Keys_Total%", NumberFormat.getNumberInstance().format(cc.getTotalKeys(player, crate)))
+					.addLorePlaceholder("%Player%", player.getName())
+					.build());
 				}
 			}
 		}

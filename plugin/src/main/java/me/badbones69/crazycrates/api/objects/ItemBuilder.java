@@ -299,7 +299,7 @@ public class ItemBuilder {
 		List<String> newLore = new ArrayList<>();
 		for(String i : lore) {
 			for(String placeholder : lorePlaceholders.keySet()) {
-				i = i.replace(placeholder, lorePlaceholders.get(placeholder));
+				i = i.replace(placeholder, lorePlaceholders.get(placeholder)).replace(placeholder.toLowerCase(), lorePlaceholders.get(placeholder));
 			}
 			newLore.add(i);
 		}
