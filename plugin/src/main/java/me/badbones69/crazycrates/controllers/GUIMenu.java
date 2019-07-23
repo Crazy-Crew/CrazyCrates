@@ -44,16 +44,12 @@ public class GUIMenu implements Listener {
 		}
 		if(Files.CONFIG.getFile().contains("Settings.GUI-Customizer")) {
 			for(String custom : Files.CONFIG.getFile().getStringList("Settings.GUI-Customizer")) {
-				String name = "";
-				String item = "1";
-				boolean glowing = false;
 				int slot = 0;
-				ArrayList<String> lore = new ArrayList<>();
+				ItemBuilder item = new ItemBuilder();
 				String[] b = custom.split(", ");
 				for(String i : b) {
 					if(i.contains("Item:")) {
-						i = i.replace("Item:", "");
-						item = i;
+						item.setMaterial(i.replace("Item:", ""));
 					}
 					if(i.contains("Name:")) {
 						i = i.replace("Name:", "");
@@ -64,8 +60,7 @@ public class GUIMenu implements Listener {
 								.replaceAll("%" + crate.getName().toLowerCase() + "_total%", cc.getTotalKeys(player, crate) + "");
 							}
 						}
-						i = i.replaceAll("%player%", player.getName());
-						name = i;
+						item.setName(i.replaceAll("%player%", player.getName()));
 					}
 					if(i.contains("Lore:")) {
 						i = i.replace("Lore:", "");
@@ -78,23 +73,24 @@ public class GUIMenu implements Listener {
 									.replaceAll("%" + crate.getName().toLowerCase() + "_total%", cc.getTotalKeys(player, crate) + "");
 								}
 							}
-							i = i.replaceAll("%player%", player.getName());
-							lore.add(l);
+							item.addLore(i.replaceAll("%player%", player.getName()));
 						}
 					}
 					if(i.contains("Glowing:")) {
-						glowing = Boolean.parseBoolean(i.replace("Glowing:", ""));
+						item.setGlowing(Boolean.parseBoolean(i.replace("Glowing:", "")));
+					}
+					if(i.contains("Player:")) {
+						item.setPlayer(i.replaceAll("%player%", player.getName()));
 					}
 					if(i.contains("Slot:")) {
-						i = i.replace("Slot:", "");
-						slot = Integer.parseInt(i);
+						slot = Integer.parseInt(i.replace("Slot:", ""));
 					}
 				}
 				if(slot > size) {
 					continue;
 				}
 				slot--;
-				inv.setItem(slot, new ItemBuilder().setMaterial(item).setName(name).setLore(lore).setGlowing(glowing).build());
+				inv.setItem(slot, item.build());
 			}
 		}
 		for(Crate crate : cc.getCrates()) {
