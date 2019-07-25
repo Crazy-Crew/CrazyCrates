@@ -170,31 +170,28 @@ public class CrateControl implements Listener { //Crate Control
 						if(useQuickCrateAgain) {
 							QuickCrate.endQuickCrate(player, loc.getLocation());
 						}
-						KeyType keyType;
-						if(isPhysical) {
-							keyType = KeyType.PHYSICAL_KEY;
-						}else {
-							keyType = KeyType.VIRTUAL_KEY;
-						}
+						KeyType keyType = isPhysical ? KeyType.PHYSICAL_KEY : KeyType.VIRTUAL_KEY;
 						cc.addPlayerKeyType(player, keyType);
 						cc.addPlayerToOpeningList(player, crate);
 						cc.openCrate(player, crate, keyType, loc.getLocation(), false);
 						return;
 					}else {
-						if(config.getBoolean("Settings.KnockBack")) {
-							knockBack(player, clickedBlock.getLocation());
-						}
-						if(config.contains("Settings.Need-Key-Sound")) {
-							Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
-							if(sound != null) {
-								player.playSound(player.getLocation(), sound, 1f, 1f);
+						if(crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
+							if(config.getBoolean("Settings.KnockBack")) {
+								knockBack(player, clickedBlock.getLocation());
 							}
+							if(config.contains("Settings.Need-Key-Sound")) {
+								Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
+								if(sound != null) {
+									player.playSound(player.getLocation(), sound, 1f, 1f);
+								}
+							}
+							HashMap<String, String> placeholders = new HashMap<>();
+							placeholders.put("%Key%", KeyName);
+							placeholders.put("%key%", KeyName);
+							player.sendMessage(Messages.NO_KEY.getMessage(placeholders));
+							return;
 						}
-						HashMap<String, String> placeholders = new HashMap<>();
-						placeholders.put("%Key%", KeyName);
-						placeholders.put("%key%", KeyName);
-						player.sendMessage(Messages.NO_KEY.getMessage(placeholders));
-						return;
 					}
 				}
 			}
