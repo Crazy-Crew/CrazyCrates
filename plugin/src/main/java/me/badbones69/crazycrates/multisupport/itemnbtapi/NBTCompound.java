@@ -110,7 +110,7 @@ public class NBTCompound {
 		return (int[]) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_INTARRAY, key);
 	}
 	
-	public void setBoolean(String key, Boolean value) {
+	public void setBoolean(String key, boolean value) {
 		NBTReflectionUtil.setData(this, ReflectionMethod.COMPOUND_SET_BOOLEAN, key, value);
 	}
 	
@@ -118,7 +118,7 @@ public class NBTCompound {
 		NBTReflectionUtil.set(this, key, val);
 	}
 	
-	public Boolean getBoolean(String key) {
+	public boolean getBoolean(String key) {
 		return (Boolean) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_GET_BOOLEAN, key);
 	}
 	
@@ -130,7 +130,7 @@ public class NBTCompound {
 		return NBTReflectionUtil.getObject(this, key, type);
 	}
 	
-	public Boolean hasKey(String key) {
+	public boolean hasKey(String key) {
 		Boolean b = (Boolean) NBTReflectionUtil.getData(this, ReflectionMethod.COMPOUND_HAS_KEY, key);
 		if(b == null) return false;
 		return b;

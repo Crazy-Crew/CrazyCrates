@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface NMSSupport {
 	
-	void openChest(Block block, Boolean open);
+	void openChest(Block block, boolean open);
 	
 	void pasteSchematic(File file, Location loc);
 	

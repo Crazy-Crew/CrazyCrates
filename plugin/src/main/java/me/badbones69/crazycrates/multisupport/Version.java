@@ -97,7 +97,7 @@ public enum Version {
 	 * @param version The version you are checking.
 	 * @return True if newer then the checked version and false if the same or older.
 	 */
-	public Boolean isNewer(Version version) {
+	public boolean isNewer(Version version) {
 		return this.versionInteger > version.versionInteger || this.versionInteger == -2;
 	}
 	
@@ -106,7 +106,7 @@ public enum Version {
 	 * @param version The version you are checking.
 	 * @return True if both the current and checked version is the same and false if otherwise.
 	 */
-	public Boolean isSame(Version version) {
+	public boolean isSame(Version version) {
 		return this.versionInteger.equals(version.versionInteger);
 	}
 	
@@ -115,7 +115,7 @@ public enum Version {
 	 * @param version The version you are checking.
 	 * @return True if older then the checked version and false if the same or newer.
 	 */
-	public Boolean isOlder(Version version) {
+	public boolean isOlder(Version version) {
 		return this.versionInteger < version.versionInteger || this.versionInteger == -1;
 	}
 	

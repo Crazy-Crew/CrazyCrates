@@ -17,7 +17,7 @@ public class FileManager {
 	private static FileManager instance = new FileManager();
 	private Plugin plugin;
 	private String prefix = "";
-	private Boolean log = false;
+	private boolean log = false;
 	private HashMap<Files, File> files = new HashMap<>();
 	private ArrayList<String> homeFolders = new ArrayList<>();
 	private ArrayList<CustomFile> customFiles = new ArrayList<>();
@@ -122,7 +122,7 @@ public class FileManager {
 	 * Turn on the logger system for the FileManager.
 	 * @param log True to turn it on and false for it to be off.
 	 */
-	public FileManager logInfo(Boolean log) {
+	public FileManager logInfo(boolean log) {
 		this.log = log;
 		return this;
 	}
@@ -131,7 +131,7 @@ public class FileManager {
 	 * Check if the logger is logging in console.
 	 * @return True if it is and false if it isn't.
 	 */
-	public Boolean isLogging() {
+	public boolean isLogging() {
 		return log;
 	}
 	

@@ -98,17 +98,17 @@ public class CrazyCrates {
 	/**
 	 * If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
 	 */
-	private Boolean giveVirtualKeysWhenInventoryFull;
+	private boolean giveVirtualKeysWhenInventoryFull;
 	
 	/**
 	 * True if at least one crate gives new players keys and false if none give new players keys.
 	 */
-	private Boolean giveNewPlayersKeys;
+	private boolean giveNewPlayersKeys;
 	
 	/**
 	 * True if using 1.13+ material names and false if using lower versions.
 	 */
-	private Boolean useNewMaterial;
+	private boolean useNewMaterial;
 	
 	/**
 	 * The NMS version needed to be used.
@@ -310,7 +310,7 @@ public class CrazyCrates {
 	 * If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
 	 * @return True if the player will get a virtual key and false if it drops on the floor.
 	 */
-	public Boolean getGiveVirtualKeysWhenInventoryFull() {
+	public boolean getGiveVirtualKeysWhenInventoryFull() {
 		return giveVirtualKeysWhenInventoryFull;
 	}
 	
@@ -320,7 +320,7 @@ public class CrazyCrates {
 	public void cleanDataFile() {
 		FileConfiguration data = Files.DATA.getFile();
 		if(data.contains("Players")) {
-			Boolean logging = fileManager.isLogging();
+			boolean logging = fileManager.isLogging();
 			if(logging) System.out.println(fileManager.getPrefix() + "Cleaning up the data.yml file.");
 			List<String> removePlayers = new ArrayList<>();
 			for(String uuid : data.getConfigurationSection("Players").getKeys(false)) {
@@ -360,7 +360,7 @@ public class CrazyCrates {
 	 * @param crate The crate that is being used.
 	 * @param location The location that may be needed for some crate types.
 	 */
-	public void openCrate(Player player, Crate crate, KeyType key, Location location, Boolean virtualCrate) {
+	public void openCrate(Player player, Crate crate, KeyType key, Location location, boolean virtualCrate) {
 		addPlayerToOpeningList(player, crate);
 		boolean broadcast = crate.getFile() != null && crate.getFile().getBoolean("Crate.OpeningBroadCast");
 		if(broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {
@@ -495,7 +495,7 @@ public class CrazyCrates {
 	 * @param player The player that is being checked.
 	 * @return True if they do have a task and false if not.
 	 */
-	public Boolean hasQuadCrateTask(Player player) {
+	public boolean hasQuadCrateTask(Player player) {
 		return currentQuadTasks.containsKey(player.getUniqueId());
 	}
 	
@@ -521,7 +521,7 @@ public class CrazyCrates {
 	 * @param player The player that is being checked.
 	 * @return True if they do have a task and false if not.
 	 */
-	public Boolean hasCrateTask(Player player) {
+	public boolean hasCrateTask(Player player) {
 		return currentTasks.containsKey(player.getUniqueId());
 	}
 	
@@ -538,7 +538,7 @@ public class CrazyCrates {
 	 * @param loc The location you are checking.
 	 * @return True if it is a physical crate and false if not.
 	 */
-	public Boolean isCrateLocation(Location loc) {
+	public boolean isCrateLocation(Location loc) {
 		for(CrateLocation crateLocation : getCrateLocations()) {
 			if(crateLocation.getLocation().equals(loc)) {
 				return true;
@@ -712,7 +712,7 @@ public class CrazyCrates {
 		}
 	}
 	
-	public Boolean addOfflineKeys(String player, Crate crate, int keys) {
+	public boolean addOfflineKeys(String player, Crate crate, int keys) {
 		try {
 			FileConfiguration data = Files.DATA.getFile();
 			player = player.toLowerCase();
@@ -728,7 +728,7 @@ public class CrazyCrates {
 		}
 	}
 	
-	public Boolean takeOfflineKeys(String player, Crate crate, int keys) {
+	public boolean takeOfflineKeys(String player, Crate crate, int keys) {
 		try {
 			FileConfiguration data = Files.DATA.getFile();
 			player = player.toLowerCase();
@@ -767,7 +767,7 @@ public class CrazyCrates {
 		playerOpeningCrates.remove(player.getUniqueId());
 	}
 	
-	public Boolean isInOpeningList(Player player) {
+	public boolean isInOpeningList(Player player) {
 		return playerOpeningCrates.containsKey(player.getUniqueId());
 	}
 	
@@ -805,7 +805,7 @@ public class CrazyCrates {
 		playerKeys.remove(player.getUniqueId());
 	}
 	
-	public Boolean hasPlayerKeyType(Player player) {
+	public boolean hasPlayerKeyType(Player player) {
 		return playerKeys.containsKey(player.getUniqueId());
 	}
 	
@@ -824,7 +824,7 @@ public class CrazyCrates {
 	 * @param crate The crate that has the key you are checking.
 	 * @return True if they have the key and false if not.
 	 */
-	public Boolean hasPhysicalKey(Player player, Crate crate) {
+	public boolean hasPhysicalKey(Player player, Crate crate) {
 		return Methods.isSimilar(player, crate.getKey());
 	}
 	
@@ -898,7 +898,7 @@ public class CrazyCrates {
 				String uuid = player.getUniqueId().toString();
 				int keys = getVirtualKeys(player, crate);
 				Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
-				int newAmount = (keys - amount) > 0 ? (keys - amount) : 0;
+				int newAmount = Math.max((keys - amount), 0);
 				if(newAmount <= 0) {
 					Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), null);
 				}else {
@@ -926,7 +926,7 @@ public class CrazyCrates {
 				String uuid = player.getUniqueId().toString();
 				int keys = getVirtualKeys(player, crate);
 				Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
-				Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), ((keys + amount) >= 0 ? (keys + amount) : 0));
+				Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), (Math.max((keys + amount), 0)));
 				Files.DATA.saveFile();
 				break;
 		}
@@ -965,7 +965,7 @@ public class CrazyCrates {
 		return plugin;
 	}
 	
-	public Boolean useNewMaterial() {
+	public boolean useNewMaterial() {
 		return useNewMaterial;
 	}
 	
@@ -1004,7 +1004,7 @@ public class CrazyCrates {
 	 * @param entity Entity you wish to check.
 	 * @return True if it is a display reward item and false if not.
 	 */
-	public Boolean isDisplayReward(Entity entity) {
+	public boolean isDisplayReward(Entity entity) {
 		if(entity instanceof Item) {
 			NBTItem item = new NBTItem(((Item) entity).getItemStack());
 			return item.hasKey("crazycrates-item");

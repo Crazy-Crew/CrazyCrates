@@ -144,14 +144,14 @@ public class Preview implements Listener {
 		}
 	}
 	
-	public static Boolean playerInMenu(Player player) {
+	public static boolean playerInMenu(Player player) {
 		if(playerInMenu.containsKey(player.getUniqueId())) {
 			return playerInMenu.get(player.getUniqueId());
 		}
 		return false;
 	}
 	
-	public static void setPlayerInMenu(Player player, Boolean inMenu) {
+	public static void setPlayerInMenu(Player player, boolean inMenu) {
 		playerInMenu.put(player.getUniqueId(), inMenu);
 	}
 	

@@ -17,7 +17,7 @@ public enum Support {
 		return name;
 	}
 	
-	public Boolean isPluginLoaded() {
+	public boolean isPluginLoaded() {
 		return Bukkit.getServer().getPluginManager().getPlugin(name) != null;
 	}
 	

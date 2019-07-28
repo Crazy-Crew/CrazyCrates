@@ -24,14 +24,14 @@ public class Crate {
 	private ItemStack key;
 	private Integer maxPage = 1;
 	private String previewName;
-	private Boolean previewToggle;
-	private Boolean boarderToggle;
+	private boolean previewToggle;
+	private boolean boarderToggle;
 	private ItemBuilder boarderItem;
 	private CrateType crateType;
 	private FileConfiguration file;
 	private ArrayList<Prize> prizes;
 	private String crateInventoryName;
-	private Boolean giveNewPlayerKeys;
+	private boolean giveNewPlayerKeys;
 	private int previewChestlines;
 	private Integer newPlayerKeys;
 	private ArrayList<ItemStack> preview;
@@ -237,7 +237,7 @@ public class Crate {
 	 * Get if the preview is toggled on.
 	 * @return True if preview is on and false if not.
 	 */
-	public Boolean isPreviewEnabled() {
+	public boolean isPreviewEnabled() {
 		return previewToggle;
 	}
 	
@@ -245,7 +245,7 @@ public class Crate {
 	 * Get if the preview has an item boarder.
 	 * @return True if it does and false if not.
 	 */
-	public Boolean isItemBoarderEnabled() {
+	public boolean isItemBoarderEnabled() {
 		return boarderToggle;
 	}
 	
@@ -371,7 +371,7 @@ public class Crate {
 	 *
 	 * @return True if new players get keys and false if they do not.
 	 */
-	public Boolean doNewPlayersGetKeys() {
+	public boolean doNewPlayersGetKeys() {
 		return giveNewPlayerKeys;
 	}
 	

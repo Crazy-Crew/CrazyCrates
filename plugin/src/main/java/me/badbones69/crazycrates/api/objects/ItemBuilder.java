@@ -33,13 +33,13 @@ public class ItemBuilder {
 	private List<String> lore;
 	private int amount;
 	private String player;
-	private Boolean isHash;
-	private Boolean isURL;
-	private Boolean isHead;
+	private boolean isHash;
+	private boolean isURL;
+	private boolean isHead;
 	private HashMap<Enchantment, Integer> enchantments;
-	private Boolean unbreakable;
-	private Boolean hideItemFlags;
-	private Boolean glowing;
+	private boolean unbreakable;
+	private boolean hideItemFlags;
+	private boolean glowing;
 	private ItemStack referenceItem;
 	private boolean isMobEgg;
 	private EntityType entityType;
@@ -376,7 +376,7 @@ public class ItemBuilder {
 	 * Check if the item is a player heads.
 	 * @return True if it is a player head and false if not.
 	 */
-	public Boolean isHead() {
+	public boolean isHead() {
 		return isHead;
 	}
 	
@@ -384,7 +384,7 @@ public class ItemBuilder {
 	 * Check if the player name is a Base64.
 	 * @return True if it is a Base64 and false if not.
 	 */
-	public Boolean isHash() {
+	public boolean isHash() {
 		return isHash;
 	}
 	
@@ -392,7 +392,7 @@ public class ItemBuilder {
 	 * Check if the hash is a url or a Base64.
 	 * @return True if it is a url and false if it is a Base64.
 	 */
-	public Boolean isURL() {
+	public boolean isURL() {
 		return isURL;
 	}
 	
@@ -442,7 +442,7 @@ public class ItemBuilder {
 	 * Check if the item in the builder is unbreakable.
 	 * @return The ItemBuilder with updated info.
 	 */
-	public Boolean isUnbreakable() {
+	public boolean isUnbreakable() {
 		return unbreakable;
 	}
 	
@@ -451,7 +451,7 @@ public class ItemBuilder {
 	 * @param unbreakable True will set it to be unbreakable and false will make it able to take damage.
 	 * @return The ItemBuilder with updated info.
 	 */
-	public ItemBuilder setUnbreakable(Boolean unbreakable) {
+	public ItemBuilder setUnbreakable(boolean unbreakable) {
 		this.unbreakable = unbreakable;
 		return this;
 	}
@@ -461,7 +461,7 @@ public class ItemBuilder {
 	 * @param hideItemFlags true the item will hide item flags. false will show them.
 	 * @return The ItemBuilder with updated info.
 	 */
-	public ItemBuilder hideItemFlags(Boolean hideItemFlags) {
+	public ItemBuilder hideItemFlags(boolean hideItemFlags) {
 		this.hideItemFlags = hideItemFlags;
 		return this;
 	}
@@ -470,7 +470,7 @@ public class ItemBuilder {
 	 * Check if the item in the builder has hidden item flags.
 	 * @return The ItemBuilder with updated info.
 	 */
-	public Boolean areItemFlagsHidden() {
+	public boolean areItemFlagsHidden() {
 		return hideItemFlags;
 	}
 	
@@ -478,7 +478,7 @@ public class ItemBuilder {
 	 * Check if the item in the builder is glowing.
 	 * @return The ItemBuilder with updated info.
 	 */
-	public Boolean isGlowing() {
+	public boolean isGlowing() {
 		return glowing;
 	}
 	
@@ -487,7 +487,7 @@ public class ItemBuilder {
 	 * @param glowing True will set the item to have a glowing effect.
 	 * @return The ItemBuilder with updated info.
 	 */
-	public ItemBuilder setGlowing(Boolean glowing) {
+	public ItemBuilder setGlowing(boolean glowing) {
 		this.glowing = glowing;
 		return this;
 	}

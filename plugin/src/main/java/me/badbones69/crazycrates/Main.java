@@ -21,10 +21,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class Main extends JavaPlugin implements Listener {
 	
-	private Boolean updateChecker = false;
+	private boolean updateChecker = false;
 	private CrazyCrates cc = CrazyCrates.getInstance();
 	private FileManager fileManager = FileManager.getInstance();
-	private Boolean isEnabled = true;// If the server is supported
+	private boolean isEnabled = true;// If the server is supported
 	
 	@Override
 	public void onEnable() {

@@ -181,7 +181,7 @@ public class NBTReflectionUtil {
 		return;
 	}
 	
-	public static Boolean valideCompound(NBTCompound comp) {
+	public static boolean valideCompound(NBTCompound comp) {
 		Object root = comp.getCompound();
 		if(root == null) {
 			root = ObjectCreator.NMS_NBTTAGCOMPOUND.getInstance();

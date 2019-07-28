@@ -140,11 +140,11 @@ public class Prize {
 		return altPrize;
 	}
 	
-	public Boolean hasAltPrize() {
+	public boolean hasAltPrize() {
 		return altPrize != null;
 	}
 	
-	public Boolean hasBlacklistPermission(Player player) {
+	public boolean hasBlacklistPermission(Player player) {
 		if(!player.isOp()) {
 			for(String blackListPermission : blackListPermissions) {
 				if(player.hasPermission(blackListPermission)) {

@@ -326,7 +326,7 @@ public class Methods {
 	}
 	
 	public static ItemBuilder getRandomPaneColor() {
-		Boolean newMaterial = cc.useNewMaterial();
+		boolean newMaterial = cc.useNewMaterial();
 		List<String> colors = Arrays.asList(
 		newMaterial ? "WHITE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:0",// 0
 		newMaterial ? "ORANGE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:1",// 1
