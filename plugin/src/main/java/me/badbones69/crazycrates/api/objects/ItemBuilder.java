@@ -32,6 +32,7 @@ public class ItemBuilder {
 	private String name;
 	private List<String> lore;
 	private int amount;
+	private String crateName;
 	private String player;
 	private boolean isHash;
 	private boolean isURL;
@@ -54,6 +55,7 @@ public class ItemBuilder {
 		this.material = Material.STONE;
 		this.damage = 0;
 		this.name = "";
+		this.crateName = "";
 		this.lore = new ArrayList<>();
 		this.amount = 1;
 		this.player = "";
@@ -396,6 +398,15 @@ public class ItemBuilder {
 		return isURL;
 	}
 	
+	public ItemBuilder setCrateName(String crateName) {
+		this.crateName = crateName;
+		return this;
+	}
+	
+	public String getCrateName() {
+		return crateName;
+	}
+	
 	/**
 	 * Get the enchantments that are on the item in the builder.
 	 * @return The enchantments that are on the item in the builder.
@@ -539,6 +550,9 @@ public class ItemBuilder {
 					nbt.setBoolean("Unbreakable", true);
 					nbt.setInteger("HideFlags", 4);
 				}
+			}
+			if(!crateName.isEmpty()) {
+				nbt.setString("CrazyCrates-Crate", crateName);
 			}
 			return nbt.getItem();
 		}else {

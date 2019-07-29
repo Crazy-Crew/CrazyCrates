@@ -12,7 +12,6 @@ import me.badbones69.crazycrates.cratetypes.QuickCrate;
 import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -33,10 +32,6 @@ import java.util.HashMap;
 
 public class CrateControl implements Listener { //Crate Control
 	
-	/**
-	 * The keys for the /CE Admin menu.
-	 */
-	public static HashMap<Player, HashMap<ItemStack, ItemStack>> previewKeys = new HashMap<>();
 	/**
 	 * A list of crate locations that are in use.
 	 */
@@ -103,100 +98,90 @@ public class CrateControl implements Listener { //Crate Control
 				}
 			}
 		}else if(e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			for(Crate crate : cc.getCrates()) {
-				if(crate.getCrateType() != CrateType.MENU) {
-					if(Methods.isSimilar(player, crate.getKey())) {
-						e.setCancelled(true);
-						player.updateInventory();
-					}
-				}
+			Crate keyCrate = cc.getCrateFromKey(cc.getNMSSupport().getItemInMainHand(player));
+			if(keyCrate != null) {
+				e.setCancelled(true);
+				player.updateInventory();
 			}
-			//Loops through all loaded physical locations.
-			for(CrateLocation loc : cc.getCrateLocations()) {
-				//Checks to see if the clicked block is the same as a physical crate.
-				if(loc.getLocation().equals(clickedBlock.getLocation())) {
-					Crate crate = loc.getCrate();
-					e.setCancelled(true);
-					if(crate.getCrateType() == CrateType.MENU) {
-						GUIMenu.openGUI(player);
-						return;
-					}
-					String KeyName = Methods.color(crate.getFile().getString("Crate.PhysicalKey.Name"));
-					boolean hasKey = false;
-					boolean isPhysical = false;
-					boolean useQuickCrateAgain = false;
-					//					if(crate.getCrateType() == CrateType.QUAD_CRATE) {
-					//						player.sendMessage(Messages.QUAD_CRATE_DISABLED.getMessage());
-					//						return;
-					//					}
-					if(crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
-						if(Methods.isSimilar(player, crate.getKey())) {
+			//Checks to see if the clicked block is a physical crate.
+			CrateLocation crateLocation = cc.getCrateLocation(clickedBlock.getLocation());
+			if(crateLocation != null) {
+				Crate crate = crateLocation.getCrate();
+				e.setCancelled(true);
+				if(crate.getCrateType() == CrateType.MENU) {
+					GUIMenu.openGUI(player);
+					return;
+				}
+				boolean hasKey = false;
+				boolean isPhysical = false;
+				boolean useQuickCrateAgain = false;
+				String keyName = crate.getKey().getItemMeta().getDisplayName();
+				if(crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
+					if(keyCrate != null) {
+						if(keyCrate.getName().equals(crateLocation.getCrate().getName())) {
 							hasKey = true;
 							isPhysical = true;
 						}
 					}
-					if(config.getBoolean("Settings.Physical-Accepts-Virtual-Keys")) {
-						if(cc.getVirtualKeys(player, crate) >= 1) {
-							hasKey = true;
+				}
+				if(config.getBoolean("Settings.Physical-Accepts-Virtual-Keys")) {
+					if(cc.getVirtualKeys(player, crate) >= 1) {
+						hasKey = true;
+					}
+				}
+				if(hasKey) {
+					if(cc.isInOpeningList(player)) {
+						if(cc.getOpeningCrate(player).getCrateType() == CrateType.QUICK_CRATE) {// Checks if the player uses the quick crate again.
+							if(inUse.containsKey(player)) {
+								if(inUse.get(player).equals(crateLocation.getLocation())) {
+									useQuickCrateAgain = true;
+								}
+							}
 						}
 					}
-					if(hasKey) {
+					if(!useQuickCrateAgain) {
 						if(cc.isInOpeningList(player)) {
-							if(cc.getOpeningCrate(player).getCrateType() == CrateType.QUICK_CRATE) {// Checks if the player uses the quick crate again.
-								if(inUse.containsKey(player)) {
-									if(inUse.get(player).equals(loc.getLocation())) {
-										useQuickCrateAgain = true;
-									}
-								}
-							}
-						}
-						if(!useQuickCrateAgain) {
-							if(cc.isInOpeningList(player)) {
-								HashMap<String, String> placeholders = new HashMap<>();
-								placeholders.put("%Key%", KeyName);
-								placeholders.put("%key%", KeyName);
-								player.sendMessage(Messages.ALREADY_OPENING_CRATE.getMessage(placeholders));
-								return;
-							}
-							if(inUse.containsValue(loc.getLocation())) {
-								player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
-								return;
-							}
-						}
-						if(Methods.isInventoryFull(player)) {
-							player.sendMessage(Messages.INVENTORY_FULL.getMessage());
-							return;
-						}
-						if(useQuickCrateAgain) {
-							QuickCrate.endQuickCrate(player, loc.getLocation());
-						}
-						KeyType keyType = isPhysical ? KeyType.PHYSICAL_KEY : KeyType.VIRTUAL_KEY;
-						cc.addPlayerKeyType(player, keyType);
-						cc.addPlayerToOpeningList(player, crate);
-						cc.openCrate(player, crate, keyType, loc.getLocation(), false);
-						return;
-					}else {
-						if(crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
-							if(config.getBoolean("Settings.KnockBack")) {
-								knockBack(player, clickedBlock.getLocation());
-							}
-							if(config.contains("Settings.Need-Key-Sound")) {
-								Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
-								if(sound != null) {
-									player.playSound(player.getLocation(), sound, 1f, 1f);
-								}
-							}
 							HashMap<String, String> placeholders = new HashMap<>();
-							placeholders.put("%Key%", KeyName);
-							placeholders.put("%key%", KeyName);
-							player.sendMessage(Messages.NO_KEY.getMessage(placeholders));
+							placeholders.put("%Key%", keyName);
+							placeholders.put("%key%", keyName);
+							player.sendMessage(Messages.ALREADY_OPENING_CRATE.getMessage(placeholders));
 							return;
 						}
+						if(inUse.containsValue(crateLocation.getLocation())) {
+							player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
+							return;
+						}
+					}
+					if(Methods.isInventoryFull(player)) {
+						player.sendMessage(Messages.INVENTORY_FULL.getMessage());
+						return;
+					}
+					if(useQuickCrateAgain) {
+						QuickCrate.endQuickCrate(player, crateLocation.getLocation());
+					}
+					KeyType keyType = isPhysical ? KeyType.PHYSICAL_KEY : KeyType.VIRTUAL_KEY;
+					cc.addPlayerKeyType(player, keyType);
+					cc.addPlayerToOpeningList(player, crate);
+					cc.openCrate(player, crate, keyType, crateLocation.getLocation(), false);
+				}else {
+					if(crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
+						if(config.getBoolean("Settings.KnockBack")) {
+							knockBack(player, clickedBlock.getLocation());
+						}
+						if(config.contains("Settings.Need-Key-Sound")) {
+							Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
+							if(sound != null) {
+								player.playSound(player.getLocation(), sound, 1f, 1f);
+							}
+						}
+						HashMap<String, String> placeholders = new HashMap<>();
+						placeholders.put("%Key%", keyName);
+						placeholders.put("%key%", keyName);
+						player.sendMessage(Messages.NO_KEY.getMessage(placeholders));
 					}
 				}
 			}
 		}
-		
 	}
 	
 	@EventHandler
@@ -210,30 +195,22 @@ public class CrateControl implements Listener { //Crate Control
 					player.closeInventory();
 					return;
 				}
-				int slot = e.getRawSlot();
-				if(slot < inv.getSize()) {
-					if(e.getAction() == InventoryAction.PICKUP_ALL) {
-						ItemStack item = inv.getItem(slot);
-						if(item != null) {
-							if(item.getType() != Material.AIR) {
-								player.getInventory().addItem(previewKeys.get(player).get(item));
-							}
-						}
-					}else if(e.getAction() == InventoryAction.PICKUP_HALF) {
-						ItemStack item = inv.getItem(slot);
-						if(cc.isKey(previewKeys.get(player).get(item))) {
-							Crate crate = cc.getCrateFromKey(previewKeys.get(player).get(item));
-							if(crate != null) {
-								cc.addKeys(1, player, crate, KeyType.VIRTUAL_KEY);
-								String name = null;
-								ItemStack key = crate.getKey();
-								if(key.hasItemMeta()) {
-									if(key.getItemMeta().hasDisplayName()) {
-										name = key.getItemMeta().getDisplayName();
-									}
+				if(e.getRawSlot() < inv.getSize()) {//Clicked in the admin menu.
+					ItemStack item = inv.getItem(e.getRawSlot());
+					if(cc.isKey(item)) {
+						Crate crate = cc.getCrateFromKey(item);
+						if(e.getAction() == InventoryAction.PICKUP_ALL) {
+							player.getInventory().addItem(crate.getKey());
+						}else if(e.getAction() == InventoryAction.PICKUP_HALF) {
+							cc.addKeys(1, player, crate, KeyType.VIRTUAL_KEY);
+							String name = null;
+							ItemStack key = crate.getKey();
+							if(key.hasItemMeta()) {
+								if(key.getItemMeta().hasDisplayName()) {
+									name = key.getItemMeta().getDisplayName();
 								}
-								player.sendMessage(Methods.getPrefix() + Methods.color("&a&l+1 " + (name != null ? name : crate.getName())));
 							}
+							player.sendMessage(Methods.getPrefix() + Methods.color("&a&l+1 " + (name != null ? name : crate.getName())));
 						}
 					}
 				}

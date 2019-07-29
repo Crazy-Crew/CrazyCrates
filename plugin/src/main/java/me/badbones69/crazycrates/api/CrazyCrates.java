@@ -775,23 +775,22 @@ public class CrazyCrates {
 		return playerOpeningCrates.get(player.getUniqueId());
 	}
 	
-	public Boolean isKey(ItemStack item) {
-		for(Crate crate : getCrates()) {
-			if(crate.getCrateType() != CrateType.MENU) {
-				if(Methods.isSimilar(item, crate.getKey())) {
-					return true;
-				}
-			}
-		}
-		return false;
+	public boolean isKey(ItemStack item) {
+		return getCrateFromKey(item) != null;
 	}
 	
 	public Crate getCrateFromKey(ItemStack item) {
-		for(Crate crate : getCrates()) {
-			if(crate.getCrateType() != CrateType.MENU) {
-				if(Methods.isSimilar(item, crate.getKey())) {
-					return crate;
+		if(item != null) {
+			for(Crate crate : getCrates()) {
+				if(crate.getCrateType() != CrateType.MENU) {
+					if(Methods.isSimilar(item, crate.getKey()) || Methods.isSimilar(item, crate.getAdminKey())) {
+						return crate;
+					}
 				}
+			}
+			NBTItem nbtItem = new NBTItem(item);
+			if(nbtItem.hasKey("CrazyCrates-Crate")) {
+				return getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
 			}
 		}
 		return null;
@@ -875,8 +874,17 @@ public class CrazyCrates {
 	public int getPhysicalKeys(Player player, Crate crate) {
 		int keys = 0;
 		for(ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
-			if(Methods.isSimilar(item, crate.getKey())) {
-				keys += item.getAmount();
+			if(item != null) {
+				if(Methods.isSimilar(item, crate.getKey())) {
+					keys += item.getAmount();
+				}else {
+					NBTItem nbtItem = new NBTItem(item);
+					if(nbtItem.hasKey("CrazyCrates-Crate")) {
+						if(crate.getName().equals(nbtItem.getString("CrazyCrates-Crate"))) {
+							keys += item.getAmount();
+						}
+					}
+				}
 			}
 		}
 		return keys;
@@ -892,7 +900,7 @@ public class CrazyCrates {
 	public void takeKeys(int amount, Player player, Crate crate, KeyType key) {
 		switch(key) {
 			case PHYSICAL_KEY:
-				Methods.removeItem(getPhysicalKey(player, crate), player, amount);
+				Methods.removeItem(crate, player, amount);
 				break;
 			case VIRTUAL_KEY:
 				String uuid = player.getUniqueId().toString();

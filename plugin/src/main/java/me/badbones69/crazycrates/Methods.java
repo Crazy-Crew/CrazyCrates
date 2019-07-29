@@ -2,9 +2,11 @@ package me.badbones69.crazycrates;
 
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.Messages;
+import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.controllers.FireworkDamageEvent;
+import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -144,17 +146,19 @@ public class Methods {
 		}
 	}
 	
-	public static void removeItem(ItemStack item, Player player, int amount) {
+	public static void removeItem(Crate crate, Player player, int amount) {
 		try {
 			int left = amount;
-			for(ItemStack check : player.getInventory().getContents()) {
-				if(isSimilar(item, check)) {
-					int i = check.getAmount();
+			for(ItemStack checkedItem : player.getInventory().getContents()) {
+				NBTItem nbtItem = new NBTItem(checkedItem);
+				if(isSimilar(crate.getKey(), checkedItem) ||
+				(nbtItem.hasKey("CrazyCrates-Crate") && nbtItem.getString("CrazyCrates-Crate").equals(crate.getName()))) {
+					int i = checkedItem.getAmount();
 					if((left - i) >= 0) {
-						player.getInventory().removeItem(check);
+						player.getInventory().removeItem(checkedItem);
 						left -= i;
 					}else {
-						check.setAmount(check.getAmount() - left);
+						checkedItem.setAmount(checkedItem.getAmount() - left);
 						left = 0;
 					}
 					if(left <= 0) {

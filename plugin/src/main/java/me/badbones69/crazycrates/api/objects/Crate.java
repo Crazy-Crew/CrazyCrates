@@ -22,6 +22,7 @@ public class Crate {
 	
 	private String name;
 	private ItemStack key;
+	private ItemStack adminKey;
 	private Integer maxPage = 1;
 	private String previewName;
 	private boolean previewToggle;
@@ -48,7 +49,12 @@ public class Crate {
 	 * @param file The crate file.
 	 */
 	public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, Integer newPlayerKeys, ArrayList<Tier> tiers) {
-		this.key = key;
+		this.key = ItemBuilder.convertItemStack(key).setCrateName(name).build();
+		this.adminKey = ItemBuilder.convertItemStack(key)
+		.addLore("")
+		.addLore("&7&l(&6&l!&7&l) Left click for Physical Key")
+		.addLore("&7&l(&6&l!&7&l) Right click for Virtual Key")
+		.setCrateName(name).build();
 		this.file = file;
 		this.name = name;
 		this.tiers = tiers != null ? tiers : new ArrayList<>();
@@ -70,11 +76,7 @@ public class Crate {
 		int finalAmount;
 		if(amount < 3) {
 			finalAmount = 3;
-		}else if(amount > 6) {
-			finalAmount = 6;
-		}else {
-			finalAmount = amount;
-		}
+		}else finalAmount = Math.min(amount, 6);
 		this.previewChestlines = finalAmount;
 	}
 	
@@ -335,6 +337,14 @@ public class Crate {
 		ItemStack key = this.key.clone();
 		key.setAmount(amount);
 		return key;
+	}
+	
+	/**
+	 * Get the key that shows in the /cc admin menu.
+	 * @return The itemstack of the key shown in the /cc admin menu.
+	 */
+	public ItemStack getAdminKey() {
+		return adminKey;
 	}
 	
 	/**

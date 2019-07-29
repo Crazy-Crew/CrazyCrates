@@ -7,9 +7,7 @@ import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
-import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
-import me.badbones69.crazycrates.controllers.CrateControl;
 import me.badbones69.crazycrates.controllers.FileManager;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.controllers.GUIMenu;
@@ -197,20 +195,13 @@ public class CCCommand implements CommandExecutor {
 				for(; size > 9; size -= 9)
 					slots += 9;
 				Inventory inv = Bukkit.createInventory(null, slots, Methods.color("&4&lAdmin Keys"));
-				HashMap<ItemStack, ItemStack> keys = new HashMap<>();
 				for(Crate crate : cc.getCrates()) {
 					if(crate.getCrateType() != CrateType.MENU) {
-						ItemBuilder itemBuilder = ItemBuilder.convertItemStack(crate.getKey())
-						.addLore("")
-						.addLore("&7&l(&6&l!&7&l) Left click for Physical Key")
-						.addLore("&7&l(&6&l!&7&l) Right click for Virtual Key");
 						if(inv.firstEmpty() >= 0) {
-							inv.setItem(inv.firstEmpty(), itemBuilder.build());
+							inv.setItem(inv.firstEmpty(), crate.getAdminKey());
 						}
-						keys.put(itemBuilder.build(), crate.getKey());
 					}
 				}
-				CrateControl.previewKeys.put(player, keys);
 				player.openInventory(inv);
 				return true;
 			}else if(args[0].equalsIgnoreCase("list")) {
