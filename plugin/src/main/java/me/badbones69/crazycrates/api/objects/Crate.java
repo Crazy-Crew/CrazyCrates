@@ -22,6 +22,7 @@ public class Crate {
 	
 	private String name;
 	private ItemStack key;
+	private ItemStack keyNoNBT;
 	private ItemStack adminKey;
 	private Integer maxPage = 1;
 	private String previewName;
@@ -49,8 +50,10 @@ public class Crate {
 	 * @param file The crate file.
 	 */
 	public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, Integer newPlayerKeys, ArrayList<Tier> tiers) {
-		this.key = ItemBuilder.convertItemStack(key).setCrateName(name).build();
-		this.adminKey = ItemBuilder.convertItemStack(key)
+		ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
+		this.keyNoNBT = itemBuilder.build();
+		this.key = itemBuilder.setCrateName(name).build();
+		this.adminKey = itemBuilder
 		.addLore("")
 		.addLore("&7&l(&6&l!&7&l) Left click for Physical Key")
 		.addLore("&7&l(&6&l!&7&l) Right click for Virtual Key")
@@ -335,6 +338,25 @@ public class Crate {
 	 */
 	public ItemStack getKey(int amount) {
 		ItemStack key = this.key.clone();
+		key.setAmount(amount);
+		return key;
+	}
+	
+	/**
+	 *
+	 * @return The key as an item stack with no nbt tags.
+	 */
+	public ItemStack getKeyNoNBT() {
+		return this.keyNoNBT.clone();
+	}
+	
+	/**
+	 *
+	 * @param amount The amount of keys you want.
+	 * @return The key as an item stack with no nbt tags.
+	 */
+	public ItemStack getKeyNoNBT(int amount) {
+		ItemStack key = this.keyNoNBT.clone();
 		key.setAmount(amount);
 		return key;
 	}

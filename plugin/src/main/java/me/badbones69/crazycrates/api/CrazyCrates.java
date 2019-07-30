@@ -783,7 +783,7 @@ public class CrazyCrates {
 		if(item != null && item.getType() != Material.AIR) {
 			for(Crate crate : getCrates()) {
 				if(crate.getCrateType() != CrateType.MENU) {
-					if(Methods.isSimilar(item, crate.getKey()) || Methods.isSimilar(item, crate.getAdminKey())) {
+					if(Methods.isSimilar(item, crate)) {
 						return crate;
 					}
 				}
@@ -827,12 +827,12 @@ public class CrazyCrates {
 	 * @return True if they have the key and false if not.
 	 */
 	public boolean hasPhysicalKey(Player player, Crate crate) {
-		return Methods.isSimilar(player, crate.getKey());
+		return Methods.isSimilar(player, crate);
 	}
 	
 	public ItemStack getPhysicalKey(Player player, Crate crate) {
 		for(ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
-			if(Methods.isSimilar(item, crate.getKey())) {
+			if(Methods.isSimilar(item, crate)) {
 				return item;
 			}
 		}
@@ -878,7 +878,7 @@ public class CrazyCrates {
 		int keys = 0;
 		for(ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
 			if(item != null) {
-				if(Methods.isSimilar(item, crate.getKey())) {
+				if(Methods.isSimilar(item, crate)) {
 					keys += item.getAmount();
 				}else {
 					NBTItem nbtItem = new NBTItem(item);
@@ -903,7 +903,33 @@ public class CrazyCrates {
 	public void takeKeys(int amount, Player player, Crate crate, KeyType key) {
 		switch(key) {
 			case PHYSICAL_KEY:
-				Methods.removeItem(crate, player, amount);
+				try {
+					int left = amount;
+					for(ItemStack checkedItem : player.getInventory().getContents()) {
+						if(checkedItem != null) {
+							NBTItem nbtItem = new NBTItem(checkedItem);
+							if(Methods.isSimilar(checkedItem, crate) ||
+							(nbtItem.hasKey("CrazyCrates-Crate") && nbtItem.getString("CrazyCrates-Crate").equals(crate.getName()))) {
+								int i = checkedItem.getAmount();
+								if((left - i) >= 0) {
+									player.getInventory().removeItem(checkedItem);
+									left -= i;
+								}else {
+									checkedItem.setAmount(checkedItem.getAmount() - left);
+									left = 0;
+								}
+								if(left <= 0) {
+									break;
+								}
+							}
+						}
+					}
+				}catch(Exception e) {
+					System.out.println("[CrazyCrates] An error has occurred while trying to take a physical key from a player");
+					System.out.println("Player: " + player.getName());
+					System.out.println("Crate: " + crate.getName());
+					e.printStackTrace();
+				}
 				break;
 			case VIRTUAL_KEY:
 				String uuid = player.getUniqueId().toString();

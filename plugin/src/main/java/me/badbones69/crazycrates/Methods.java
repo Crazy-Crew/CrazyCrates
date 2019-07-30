@@ -6,7 +6,6 @@ import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.controllers.FireworkDamageEvent;
-import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -146,31 +145,6 @@ public class Methods {
 		}
 	}
 	
-	public static void removeItem(Crate crate, Player player, int amount) {
-		try {
-			int left = amount;
-			for(ItemStack checkedItem : player.getInventory().getContents()) {
-				NBTItem nbtItem = new NBTItem(checkedItem);
-				if(isSimilar(crate.getKey(), checkedItem) ||
-				(nbtItem.hasKey("CrazyCrates-Crate") && nbtItem.getString("CrazyCrates-Crate").equals(crate.getName()))) {
-					int i = checkedItem.getAmount();
-					if((left - i) >= 0) {
-						player.getInventory().removeItem(checkedItem);
-						left -= i;
-					}else {
-						checkedItem.setAmount(checkedItem.getAmount() - left);
-						left = 0;
-					}
-					if(left <= 0) {
-						break;
-					}else {
-					}
-				}
-			}
-		}catch(Exception e) {
-		}
-	}
-	
 	public static boolean permCheck(CommandSender sender, String perm) {
 		return permCheck((Player) sender, perm);
 	}
@@ -203,49 +177,12 @@ public class Methods {
 		return min + random.nextInt(max - min);
 	}
 	
-	public static boolean isSimilar(Player player, ItemStack two) {
-		return isSimilar(cc.getNMSSupport().getItemInMainHand(player), two);
+	public static boolean isSimilar(Player player, Crate crate) {
+		return isSimilar(cc.getNMSSupport().getItemInMainHand(player), crate);
 	}
 	
-	public static boolean isSimilar(ItemStack one, ItemStack two) {
-		if(one != null && two != null) {
-			if(one.getType() == two.getType()) {
-				if(one.hasItemMeta() && two.hasItemMeta()) {
-					if(one.getItemMeta().hasDisplayName() && two.getItemMeta().hasDisplayName()) {
-						if(one.getItemMeta().getDisplayName().equalsIgnoreCase(two.getItemMeta().getDisplayName())) {
-							if(one.getItemMeta().hasLore() && two.getItemMeta().hasLore()) {
-								if(one.getItemMeta().getLore().size() == two.getItemMeta().getLore().size()) {
-									int i = 0;
-									for(String lore : one.getItemMeta().getLore()) {
-										if(!lore.equals(two.getItemMeta().getLore().get(i))) {
-											return false;
-										}
-										i++;
-									}
-									return true;
-								}
-							}else return !one.getItemMeta().hasLore() && !two.getItemMeta().hasLore();
-						}
-					}else if(!one.getItemMeta().hasDisplayName() && !two.getItemMeta().hasDisplayName()) {
-						if(one.getItemMeta().hasLore() && two.getItemMeta().hasLore()) {
-							if(one.getItemMeta().getLore().size() == two.getItemMeta().getLore().size()) {
-								int i = 0;
-								for(String lore : one.getItemMeta().getLore()) {
-									if(!lore.equals(two.getItemMeta().getLore().get(i))) {
-										return false;
-									}
-									i++;
-								}
-								return true;
-							}else {
-								return false;
-							}
-						}else return !one.getItemMeta().hasLore() && !two.getItemMeta().hasLore();
-					}
-				}else return !one.hasItemMeta() && !two.hasItemMeta();
-			}
-		}
-		return false;
+	public static boolean isSimilar(ItemStack itemStack, Crate crate) {
+		return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) || itemStack.isSimilar(crate.getAdminKey());
 	}
 	
 	public static void hasUpdate() {
