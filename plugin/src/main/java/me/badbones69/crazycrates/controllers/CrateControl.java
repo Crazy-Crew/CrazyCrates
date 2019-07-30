@@ -195,7 +195,8 @@ public class CrateControl implements Listener { //Crate Control
 					player.closeInventory();
 					return;
 				}
-				if(e.getRawSlot() < inv.getSize()) {//Clicked in the admin menu.
+				//Added the >= due to an error about a raw slot set at -999.
+				if(e.getRawSlot() < inv.getSize() && e.getRawSlot() >= 0) {//Clicked in the admin menu.
 					ItemStack item = inv.getItem(e.getRawSlot());
 					if(cc.isKey(item)) {
 						Crate crate = cc.getCrateFromKey(item);
