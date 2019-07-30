@@ -780,7 +780,7 @@ public class CrazyCrates {
 	}
 	
 	public Crate getCrateFromKey(ItemStack item) {
-		if(item != null) {
+		if(item != null && item.getType() != Material.AIR) {
 			for(Crate crate : getCrates()) {
 				if(crate.getCrateType() != CrateType.MENU) {
 					if(Methods.isSimilar(item, crate.getKey()) || Methods.isSimilar(item, crate.getAdminKey())) {
