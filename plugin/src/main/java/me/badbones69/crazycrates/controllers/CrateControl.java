@@ -116,6 +116,7 @@ public class CrateControl implements Listener { //Crate Control
 				boolean isPhysical = false;
 				boolean useQuickCrateAgain = false;
 				String keyName = crate.getKey().getItemMeta().getDisplayName();
+				keyName = keyName != null ? keyName : crate.getKey().getType().toString();
 				if(crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
 					if(keyCrate != null) {
 						if(keyCrate.getName().equals(crateLocation.getCrate().getName())) {
