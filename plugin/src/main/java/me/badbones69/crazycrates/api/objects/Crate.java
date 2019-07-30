@@ -495,20 +495,24 @@ public class Crate {
 			inv.setItem(getAbsoluteItemPosition(4), Preview.getMenuButton());
 		}
 		if(page == 1) {
-			inv.setItem(getAbsoluteItemPosition(3), new ItemBuilder()
-			.setMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE")
-			.setDamage(cc.useNewMaterial() ? 0 : 7)
-			.setName(" ")
-			.build());
+			if(boarderToggle) {
+				inv.setItem(getAbsoluteItemPosition(3), new ItemBuilder()
+				.setMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE")
+				.setDamage(cc.useNewMaterial() ? 0 : 7)
+				.setName(" ")
+				.build());
+			}
 		}else {
 			inv.setItem(getAbsoluteItemPosition(3), Preview.getBackButton(player));
 		}
-		if(page == getMaxPage()) {
-			inv.setItem(getAbsoluteItemPosition(5), new ItemBuilder()
-			.setMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE")
-			.setDamage(cc.useNewMaterial() ? 0 : 7)
-			.setName(" ")
-			.build());
+		if(page == maxPage) {
+			if(boarderToggle) {
+				inv.setItem(getAbsoluteItemPosition(5), new ItemBuilder()
+				.setMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE")
+				.setDamage(cc.useNewMaterial() ? 0 : 7)
+				.setName(" ")
+				.build());
+			}
 		}else {
 			inv.setItem(getAbsoluteItemPosition(5), Preview.getNextButton(player));
 		}
