@@ -790,7 +790,10 @@ public class CrazyCrates {
 			}
 			NBTItem nbtItem = new NBTItem(item);
 			if(nbtItem.hasKey("CrazyCrates-Crate")) {
-				return getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
+				Crate crate = getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
+				if(crate.getKey().getType() == item.getType()) {
+					return crate;
+				}
 			}
 		}
 		return null;
