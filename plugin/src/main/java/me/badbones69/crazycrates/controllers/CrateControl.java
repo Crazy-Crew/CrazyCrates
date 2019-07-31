@@ -98,8 +98,9 @@ public class CrateControl implements Listener { //Crate Control
 				}
 			}
 		}else if(e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			Crate keyCrate = cc.getCrateFromKey(cc.getNMSSupport().getItemInMainHand(player));
-			if(keyCrate != null) {
+			//Checks if the item in their hand is a key and if so it stops them from right clicking with it.
+			ItemStack key = cc.getNMSSupport().getItemInMainHand(player);
+			if(cc.getCrateFromKey(key) != null) {
 				e.setCancelled(true);
 				player.updateInventory();
 			}
@@ -118,11 +119,9 @@ public class CrateControl implements Listener { //Crate Control
 				String keyName = crate.getKey().getItemMeta().getDisplayName();
 				keyName = keyName != null ? keyName : crate.getKey().getType().toString();
 				if(crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
-					if(keyCrate != null) {
-						if(keyCrate.getName().equals(crateLocation.getCrate().getName())) {
-							hasKey = true;
-							isPhysical = true;
-						}
+					if(cc.isKeyFromCrate(key, crate)) {
+						hasKey = true;
+						isPhysical = true;
 					}
 				}
 				if(config.getBoolean("Settings.Physical-Accepts-Virtual-Keys")) {
@@ -183,6 +182,7 @@ public class CrateControl implements Listener { //Crate Control
 				}
 			}
 		}
+		
 	}
 	
 	@EventHandler

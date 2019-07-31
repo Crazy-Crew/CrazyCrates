@@ -1,5 +1,6 @@
 package me.badbones69.crazycrates.api.objects;
 
+import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
@@ -140,8 +141,11 @@ public class QuadCrateSession {
 				shovePlayers.add(entity);
 			}
 		}
+		if(!cc.takeKeys(1, player, crate, keyType)) {
+			Methods.failedToTakeKey(player, crate);
+			return false;
+		}
 		player.teleport(spawnLocation.clone().add(.5, 0, .5));
-		cc.takeKeys(1, player, crate, keyType);
 		//Shove other players away from the player
 		for(Entity entity : shovePlayers) {
 			entity.setVelocity(entity.getLocation().toVector().subtract(spawnLocation.clone().toVector()).normalize().setY(1));

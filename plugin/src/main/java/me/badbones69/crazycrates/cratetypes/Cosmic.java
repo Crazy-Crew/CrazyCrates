@@ -62,10 +62,10 @@ public class Cosmic implements Listener {
 		}
 	}
 	
-	public static void openCosmic(Player player, Crate crate, KeyType key) {
+	public static void openCosmic(Player player, Crate crate, KeyType keyType) {
 		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(crate.getFile().getString("Crate.CrateName") + " - Choose"));
 		setChests(inv);
-		cc.addPlayerKeyType(player, key);
+		cc.addPlayerKeyType(player, keyType);
 		player.openInventory(inv);
 	}
 	
@@ -177,7 +177,10 @@ public class Cosmic implements Listener {
 								}
 							}
 							if(cc.hasPlayerKeyType(player)) {
-								cc.takeKeys(1, player, crate, keyType);
+								if(!cc.takeKeys(1, player, crate, keyType)) {
+									Methods.failedToTakeKey(player, crate);
+									return;
+								}
 							}
 							cc.addCrateTask(player, new BukkitRunnable() {
 								int time = 0;

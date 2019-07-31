@@ -1,5 +1,6 @@
 package me.badbones69.crazycrates.cratetypes;
 
+import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.objects.Crate;
@@ -20,8 +21,11 @@ public class FireCracker {
 	
 	private static CrazyCrates cc = CrazyCrates.getInstance();
 	
-	public static void startFireCracker(final Player player, final Crate crate, KeyType key, final Location loc) {
-		cc.takeKeys(1, player, crate, key);
+	public static void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc) {
+		if(!cc.takeKeys(1, player, crate, keyType)) {
+			Methods.failedToTakeKey(player, crate);
+			return;
+		}
 		final ArrayList<Color> colors = new ArrayList<>();
 		colors.add(Color.RED);
 		colors.add(Color.YELLOW);

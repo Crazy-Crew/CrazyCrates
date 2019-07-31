@@ -53,10 +53,16 @@ public class QuickCrate implements Listener {
 					break;
 				}
 			}
-			cc.takeKeys(keysUsed, player, crate, keyType);
+			if(!cc.takeKeys(keysUsed, player, crate, keyType)) {
+				Methods.failedToTakeKey(player, crate);
+				return;
+			}
 			endQuickCrate(player, loc);
 		}else {
-			cc.takeKeys(1, player, crate, keyType);
+			if(!cc.takeKeys(1, player, crate, keyType)) {
+				Methods.failedToTakeKey(player, crate);
+				return;
+			}
 			Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
 			cc.givePrize(player, prize);
 			Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));

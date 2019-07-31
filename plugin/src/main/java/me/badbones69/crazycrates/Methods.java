@@ -6,6 +6,7 @@ import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.controllers.FireworkDamageEvent;
+import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -182,7 +183,14 @@ public class Methods {
 	}
 	
 	public static boolean isSimilar(ItemStack itemStack, Crate crate) {
-		return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) || itemStack.isSimilar(crate.getAdminKey());
+		return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
+		itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(stripNBT(crate.getKeyNoNBT()));
+	}
+	
+	private static ItemStack stripNBT(ItemStack item) {
+		NBTItem nbtItem = new NBTItem(item.clone());
+		nbtItem.getKeys().forEach(nbtItem :: removeKey);
+		return nbtItem.getItem();
 	}
 	
 	public static void hasUpdate() {
@@ -286,6 +294,20 @@ public class Methods {
 		newMaterial ? "RED_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:14",// 14
 		newMaterial ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15");// 15
 		return new ItemBuilder().setMaterial(colors.get(random.nextInt(colors.size())));
+	}
+	
+	public static void failedToTakeKey(Player player, Crate crate) {
+		failedToTakeKey(player, crate, null);
+	}
+	
+	public static void failedToTakeKey(Player player, Crate crate, Exception e) {
+		System.out.println("[CrazyCrates] An error has occurred while trying to take a physical key from a player");
+		System.out.println("Player: " + player.getName());
+		System.out.println("Crate: " + crate.getName());
+		player.sendMessage(Methods.getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));
+		if(e != null) {
+			e.printStackTrace();
+		}
 	}
 	
 }

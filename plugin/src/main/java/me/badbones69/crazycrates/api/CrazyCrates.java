@@ -360,7 +360,7 @@ public class CrazyCrates {
 	 * @param crate The crate that is being used.
 	 * @param location The location that may be needed for some crate types.
 	 */
-	public void openCrate(Player player, Crate crate, KeyType key, Location location, boolean virtualCrate) {
+	public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate) {
 		addPlayerToOpeningList(player, crate);
 		boolean broadcast = crate.getFile() != null && crate.getFile().getBoolean("Crate.OpeningBroadCast");
 		if(broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {
@@ -374,27 +374,27 @@ public class CrazyCrates {
 				GUIMenu.openGUI(player);
 				break;
 			case COSMIC:
-				Cosmic.openCosmic(player, crate, key);
+				Cosmic.openCosmic(player, crate, keyType);
 				break;
 			case CSGO:
-				CSGO.openCSGO(player, crate, key);
+				CSGO.openCSGO(player, crate, keyType);
 				break;
 			case ROULETTE:
-				Roulette.openRoulette(player, crate, key);
+				Roulette.openRoulette(player, crate, keyType);
 				break;
 			case WHEEL:
-				Wheel.startWheel(player, crate, key);
+				Wheel.startWheel(player, crate, keyType);
 				break;
 			case WONDER:
-				Wonder.startWonder(player, crate, key);
+				Wonder.startWonder(player, crate, keyType);
 				break;
 			case WAR:
-				War.openWarCrate(player, crate, key);
+				War.openWarCrate(player, crate, keyType);
 				break;
 			case QUAD_CRATE:
 				Location last = player.getLocation();
 				last.setPitch(0F);
-				QuadCrateSession session = new QuadCrateSession(player, crate, key, location, last);
+				QuadCrateSession session = new QuadCrateSession(player, crate, keyType, location, last);
 				broadcast = session.startCrate();
 				break;
 			case FIRE_CRACKER:
@@ -409,7 +409,7 @@ public class CrazyCrates {
 						return;
 					}else {
 						CrateControl.inUse.put(player, location);
-						FireCracker.startFireCracker(player, crate, key, location);
+						FireCracker.startFireCracker(player, crate, keyType, location);
 					}
 				}
 				break;
@@ -425,7 +425,7 @@ public class CrazyCrates {
 						return;
 					}else {
 						CrateControl.inUse.put(player, location);
-						QuickCrate.openCrate(player, location, crate, key);
+						QuickCrate.openCrate(player, location, crate, keyType);
 					}
 				}
 				break;
@@ -435,13 +435,16 @@ public class CrazyCrates {
 					removePlayerFromOpeningList(player);
 					return;
 				}else {
-					takeKeys(1, player, crate, key);
-					Prize prize = crate.pickPrize(player);
-					givePrize(player, prize);
-					if(prize.useFireworks()) {
-						Methods.fireWork(player.getLocation().add(0, 1, 0));
+					if(takeKeys(1, player, crate, keyType)) {
+						Prize prize = crate.pickPrize(player);
+						givePrize(player, prize);
+						if(prize.useFireworks()) {
+							Methods.fireWork(player.getLocation().add(0, 1, 0));
+						}
+						removePlayerFromOpeningList(player);
+					}else {
+						Methods.failedToTakeKey(player, crate);
 					}
-					removePlayerFromOpeningList(player);
 				}
 				break;
 		}
@@ -783,24 +786,31 @@ public class CrazyCrates {
 		if(item != null && item.getType() != Material.AIR) {
 			for(Crate crate : getCrates()) {
 				if(crate.getCrateType() != CrateType.MENU) {
-					if(Methods.isSimilar(item, crate)) {
+					if(isKeyFromCrate(item, crate)) {
 						return crate;
 					}
-				}
-			}
-			NBTItem nbtItem = new NBTItem(item);
-			if(nbtItem.hasKey("CrazyCrates-Crate")) {
-				Crate crate = getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
-				if(crate.getKey().getType() == item.getType()) {
-					return crate;
 				}
 			}
 		}
 		return null;
 	}
 	
-	public void addPlayerKeyType(Player player, KeyType key) {
-		playerKeys.put(player.getUniqueId(), key);
+	public boolean isKeyFromCrate(ItemStack item, Crate crate) {
+		if(crate.getCrateType() != CrateType.MENU) {
+			if(Methods.isSimilar(item, crate)) {
+				return true;
+			}
+		}
+		NBTItem nbtItem = new NBTItem(item);
+		if(nbtItem.hasKey("CrazyCrates-Crate")) {
+			Crate keyCrate = getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
+			return keyCrate.getKey().getType() == item.getType();
+		}
+		return false;
+	}
+	
+	public void addPlayerKeyType(Player player, KeyType keyType) {
+		playerKeys.put(player.getUniqueId(), keyType);
 	}
 	
 	public void removePlayerKeyType(Player player) {
@@ -900,35 +910,42 @@ public class CrazyCrates {
 		return getVirtualKeys(player, crate) + getPhysicalKeys(player, crate);
 	}
 	
-	public void takeKeys(int amount, Player player, Crate crate, KeyType key) {
-		switch(key) {
+	/**
+	 * Take a key from a player.
+	 * @param amount The amount of keys you wish to take.
+	 * @param player The player you wish to take keys from.
+	 * @param crate The crate key you are taking.
+	 * @param keyType The type of key you are taking from the player.
+	 * @return Returns true if successfully taken keys and false if not.
+	 */
+	public boolean takeKeys(int amount, Player player, Crate crate, KeyType keyType) {
+		switch(keyType) {
 			case PHYSICAL_KEY:
+				int left = amount;
 				try {
-					int left = amount;
-					for(ItemStack checkedItem : player.getInventory().getContents()) {
-						if(checkedItem != null) {
-							NBTItem nbtItem = new NBTItem(checkedItem);
-							if(Methods.isSimilar(checkedItem, crate) ||
-							(nbtItem.hasKey("CrazyCrates-Crate") && nbtItem.getString("CrazyCrates-Crate").equals(crate.getName()))) {
-								int i = checkedItem.getAmount();
-								if((left - i) >= 0) {
-									player.getInventory().removeItem(checkedItem);
-									left -= i;
-								}else {
-									checkedItem.setAmount(checkedItem.getAmount() - left);
-									left = 0;
-								}
-								if(left <= 0) {
-									break;
-								}
+					ItemStack item = nmsSupport.getItemInMainHand(player);
+					if(item != null) {
+						if(isKeyFromCrate(item, crate)) {
+							int i = item.getAmount();
+							if((left - i) >= 0) {
+								player.getInventory().removeItem(item);
+								left -= i;
+							}else {
+								item.setAmount(item.getAmount() - left);
+								left = 0;
+							}
+							if(left <= 0) {
+								return true;
 							}
 						}
 					}
 				}catch(Exception e) {
-					System.out.println("[CrazyCrates] An error has occurred while trying to take a physical key from a player");
-					System.out.println("Player: " + player.getName());
-					System.out.println("Crate: " + crate.getName());
-					e.printStackTrace();
+					Methods.failedToTakeKey(player, crate, e);
+					return false;
+				}
+				//Returns true because it was able to take some keys.
+				if(left < amount) {
+					return true;
 				}
 				break;
 			case VIRTUAL_KEY:
@@ -942,12 +959,13 @@ public class CrazyCrates {
 					Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), newAmount);
 				}
 				Files.DATA.saveFile();
-				break;
+				return true;
 		}
+		return false;
 	}
 	
-	public void addKeys(int amount, Player player, Crate crate, KeyType key) {
-		switch(key) {
+	public void addKeys(int amount, Player player, Crate crate, KeyType keyType) {
+		switch(keyType) {
 			case PHYSICAL_KEY:
 				if(Methods.isInventoryFull(player)) {
 					if(giveVirtualKeysWhenInventoryFull) {
