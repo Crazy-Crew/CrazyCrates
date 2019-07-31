@@ -88,7 +88,7 @@ public class FileManager {
 							homeFolder = autoGenerateFiles.get(fileName);
 							try {
 								File serverFile = new File(plugin.getDataFolder(), homeFolder + "/" + fileName);
-								InputStream jarFile = getClass().getResourceAsStream(homeFolder + "/" + fileName);
+								InputStream jarFile = getClass().getResourceAsStream((jarHomeFolders.getOrDefault(fileName, homeFolder)) + "/" + fileName);
 								copyFile(jarFile, serverFile);
 								if(fileName.toLowerCase().endsWith(".yml")) {
 									customFiles.add(new CustomFile(fileName, homeFolder, plugin));
@@ -311,7 +311,7 @@ public class FileManager {
 		
 		//ENUM_NAME("fileName.yml", "fileLocation.yml"),
 		//ENUM_NAME("fileName.yml", "newFileLocation.yml", "oldFileLocation.yml"),
-		CONFIG("config.yml", "config1.13-Up.yml", "config1.12.2-Down.yml"),
+		CONFIG("config.yml", "config.yml", "config1.13-Up.yml", "config1.12.2-Down.yml"),
 		MESSAGES("Messages.yml", "Messages.yml"),
 		LOCATIONS("Locations.yml", "Locations.yml"),
 		DATA("data.yml", "data.yml");
