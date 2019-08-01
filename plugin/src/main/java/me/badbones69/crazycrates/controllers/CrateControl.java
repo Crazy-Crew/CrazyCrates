@@ -106,7 +106,7 @@ public class CrateControl implements Listener { //Crate Control
 			}
 			//Checks to see if the clicked block is a physical crate.
 			CrateLocation crateLocation = cc.getCrateLocation(clickedBlock.getLocation());
-			if(crateLocation != null) {
+			if(crateLocation != null && crateLocation.getCrate() != null) {
 				Crate crate = crateLocation.getCrate();
 				e.setCancelled(true);
 				if(crate.getCrateType() == CrateType.MENU) {
