@@ -1,9 +1,9 @@
 package me.badbones69.crazycrates.controllers;
 
 import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
-import me.badbones69.crazycrates.controllers.FileManager.Files;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;

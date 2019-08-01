@@ -2,13 +2,13 @@ package me.badbones69.crazycrates.cratetypes;
 
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.FileManager;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.api.objects.Tier;
-import me.badbones69.crazycrates.controllers.FileManager;
 import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

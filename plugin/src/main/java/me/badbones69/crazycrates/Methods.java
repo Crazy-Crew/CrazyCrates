@@ -1,10 +1,10 @@
 package me.badbones69.crazycrates;
 
 import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
-import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.controllers.FireworkDamageEvent;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.*;

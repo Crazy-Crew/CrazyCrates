@@ -1,14 +1,13 @@
 package me.badbones69.crazycrates.api;
 
 import me.badbones69.crazycrates.Methods;
+import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.enums.BrokeLocation;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.*;
 import me.badbones69.crazycrates.controllers.CrateControl;
-import me.badbones69.crazycrates.controllers.FileManager;
-import me.badbones69.crazycrates.controllers.FileManager.Files;
 import me.badbones69.crazycrates.controllers.GUIMenu;
 import me.badbones69.crazycrates.cratetypes.*;
 import me.badbones69.crazycrates.multisupport.Version;
