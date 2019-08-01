@@ -55,12 +55,16 @@ public class QuickCrate implements Listener {
 			}
 			if(!cc.takeKeys(keysUsed, player, crate, keyType)) {
 				Methods.failedToTakeKey(player, crate);
+				CrateControl.inUse.remove(player);
+				cc.removePlayerFromOpeningList(player);
 				return;
 			}
 			endQuickCrate(player, loc);
 		}else {
 			if(!cc.takeKeys(1, player, crate, keyType)) {
 				Methods.failedToTakeKey(player, crate);
+				CrateControl.inUse.remove(player);
+				cc.removePlayerFromOpeningList(player);
 				return;
 			}
 			Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));

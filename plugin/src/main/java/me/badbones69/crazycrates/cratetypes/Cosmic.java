@@ -179,6 +179,8 @@ public class Cosmic implements Listener {
 							if(cc.hasPlayerKeyType(player)) {
 								if(!cc.takeKeys(1, player, crate, keyType)) {
 									Methods.failedToTakeKey(player, crate);
+									cc.removePlayerFromOpeningList(player);
+									glass.remove(player);
 									return;
 								}
 							}

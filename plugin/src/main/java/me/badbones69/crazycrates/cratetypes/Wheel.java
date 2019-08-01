@@ -28,6 +28,7 @@ public class Wheel implements Listener {
 	public static void startWheel(final Player player, Crate crate, KeyType keyType) {
 		if(!cc.takeKeys(1, player, crate, keyType)) {
 			Methods.failedToTakeKey(player, crate);
+			cc.removePlayerFromOpeningList(player);
 			return;
 		}
 		final Inventory inv = Bukkit.createInventory(null, 54, Methods.color(crate.getFile().getString("Crate.CrateName")));

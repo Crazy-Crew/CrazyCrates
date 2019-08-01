@@ -76,6 +76,7 @@ public class CSGO implements Listener {
 			startCSGO(player, inv, crate);
 		}else {
 			Methods.failedToTakeKey(player, crate);
+			cc.removePlayerFromOpeningList(player);
 		}
 	}
 	

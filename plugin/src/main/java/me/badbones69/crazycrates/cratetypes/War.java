@@ -40,6 +40,9 @@ public class War implements Listener {
 		canClose.put(player, false);
 		if(!cc.takeKeys(1, player, crate, keyType)) {
 			Methods.failedToTakeKey(player, crate);
+			cc.removePlayerFromOpeningList(player);
+			canClose.remove(player);
+			canPick.remove(player);
 			return;
 		}
 		startWar(player, inv, crate, inventoryView.getTitle());

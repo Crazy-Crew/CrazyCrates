@@ -39,6 +39,7 @@ public class Roulette implements Listener {
 		player.openInventory(inv);
 		if(!cc.takeKeys(1, player, crate, keyType)) {
 			Methods.failedToTakeKey(player, crate);
+			cc.removePlayerFromOpeningList(player);
 			return;
 		}
 		startRoulette(player, inv, crate);

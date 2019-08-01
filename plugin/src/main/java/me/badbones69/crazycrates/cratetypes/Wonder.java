@@ -24,6 +24,7 @@ public class Wonder implements Listener {
 	public static void startWonder(final Player player, Crate crate, KeyType keyType) {
 		if(!cc.takeKeys(1, player, crate, keyType)) {
 			Methods.failedToTakeKey(player, crate);
+			cc.removePlayerFromOpeningList(player);
 			return;
 		}
 		final Inventory inv = Bukkit.createInventory(null, 45, crate.getCrateInventoryName());

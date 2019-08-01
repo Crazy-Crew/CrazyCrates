@@ -24,6 +24,7 @@ public class FireCracker {
 	public static void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc) {
 		if(!cc.takeKeys(1, player, crate, keyType)) {
 			Methods.failedToTakeKey(player, crate);
+			cc.removePlayerFromOpeningList(player);
 			return;
 		}
 		final ArrayList<Color> colors = new ArrayList<>();

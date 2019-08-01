@@ -143,6 +143,8 @@ public class QuadCrateSession {
 		}
 		if(!cc.takeKeys(1, player, crate, keyType)) {
 			Methods.failedToTakeKey(player, crate);
+			cc.removePlayerFromOpeningList(player);
+			crateSessions.remove(instance);
 			return false;
 		}
 		player.teleport(spawnLocation.clone().add(.5, 0, .5));
