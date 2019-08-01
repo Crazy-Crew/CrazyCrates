@@ -1077,6 +1077,8 @@ public class CrazyCrates {
 				}
 				Files.DATA.saveFile();
 				return true;
+			case FREE_KEY://Returns true because its FREE WOOWOOWOWOOWOWOWOOWOWO
+				return true;
 		}
 		return false;
 	}
