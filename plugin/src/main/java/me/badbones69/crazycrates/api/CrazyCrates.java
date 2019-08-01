@@ -885,7 +885,9 @@ public class CrazyCrates {
 	 */
 	public boolean isKeyFromCrate(ItemStack item, Crate crate) {
 		if(crate.getCrateType() != CrateType.MENU) {
-			return Methods.isSimilar(item, crate);
+			if(item != null && item.getType() != Material.AIR) {
+				return Methods.isSimilar(item, crate);
+			}
 		}
 		return false;
 	}
