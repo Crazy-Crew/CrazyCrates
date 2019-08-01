@@ -75,6 +75,10 @@ public class Crate {
 		this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
 	}
 	
+	/**
+	 * Set the preview lines for a Crate.
+	 * @param amount The amount of lines the preview has.
+	 */
 	public void setPreviewChestlines(int amount) {
 		int finalAmount;
 		if(amount < 3) {
@@ -83,10 +87,18 @@ public class Crate {
 		this.previewChestlines = finalAmount;
 	}
 	
+	/**
+	 * Get the amount of lines the preview will show.
+	 * @return The amount of lines it is set to show.
+	 */
 	public int getPreviewChestLines() {
 		return this.previewChestlines;
 	}
 	
+	/**
+	 * Get the max amount of slots in the preview.
+	 * @return The max number of slots in the preview.
+	 */
 	public int getMaxSlots() {
 		return this.previewChestlines * 9;
 	}
@@ -415,6 +427,11 @@ public class Crate {
 		return newPlayerKeys;
 	}
 	
+	/**
+	 * Add a new editor item to a prize in the Crate.
+	 * @param prize The prize the item is being added to.
+	 * @param item The ItemStack that is being added.
+	 */
 	public void addEditorItem(String prize, ItemStack item) {
 		ArrayList<ItemStack> items = new ArrayList<>();
 		items.add(item);
