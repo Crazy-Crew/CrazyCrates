@@ -115,7 +115,7 @@ public enum Messages {
 	public String getMessage(String placeholder, String replacement) {
 		HashMap<String, String> placeholders = new HashMap<>();
 		placeholders.put(placeholder, replacement);
-		return getMessage(placeholders);
+		return getMessage(placeholders, true);
 	}
 	
 	public String getMessage(HashMap<String, String> placeholders) {
@@ -129,7 +129,7 @@ public enum Messages {
 	public String getMessageNoPrefix(String placeholder, String replacement) {
 		HashMap<String, String> placeholders = new HashMap<>();
 		placeholders.put(placeholder, replacement);
-		return getMessageNoPrefix(placeholders);
+		return getMessage(placeholders, false);
 	}
 	
 	public String getMessageNoPrefix(HashMap<String, String> placeholders) {
