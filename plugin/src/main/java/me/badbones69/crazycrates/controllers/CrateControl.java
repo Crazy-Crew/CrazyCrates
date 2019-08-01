@@ -157,7 +157,9 @@ public class CrateControl implements Listener { //Crate Control
 						QuickCrate.endQuickCrate(player, crateLocation.getLocation());
 					}
 					KeyType keyType = isPhysical ? KeyType.PHYSICAL_KEY : KeyType.VIRTUAL_KEY;
-					cc.addPlayerKeyType(player, keyType);
+					if(crate.getCrateType() == CrateType.COSMIC) {//Only cosmic crate type uses this method.
+						cc.addPlayerKeyType(player, keyType);
+					}
 					cc.addPlayerToOpeningList(player, crate);
 					cc.openCrate(player, crate, keyType, crateLocation.getLocation(), false);
 				}else {

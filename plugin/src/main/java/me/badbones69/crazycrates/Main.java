@@ -122,7 +122,7 @@ public class Main extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player player = e.getPlayer();
-		cc.checkNewPlayer(player);
+		cc.setNewPlayerKeys(player);
 		cc.loadOfflinePlayersKeys(player);
 		new BukkitRunnable() {
 			@Override

@@ -171,6 +171,7 @@ public class Cosmic implements Listener {
 									player.sendMessage(Methods.getPrefix() + Methods.color("&cNo key was found."));
 									if(cc.isInOpeningList(player)) {
 										cc.removePlayerFromOpeningList(player);
+										cc.removePlayerKeyType(player);
 									}
 									glass.remove(player);
 									return;
@@ -180,6 +181,7 @@ public class Cosmic implements Listener {
 								if(!cc.takeKeys(1, player, crate, keyType)) {
 									Methods.failedToTakeKey(player, crate);
 									cc.removePlayerFromOpeningList(player);
+									cc.removePlayerKeyType(player);
 									glass.remove(player);
 									return;
 								}
@@ -258,9 +260,8 @@ public class Cosmic implements Listener {
 					player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
 				}
 			}
-			if(cc.isInOpeningList(player)) {
-				cc.removePlayerFromOpeningList(player);
-			}
+			cc.removePlayerFromOpeningList(player);
+			cc.removePlayerKeyType(player);
 			if(glass.containsKey(player)) {
 				picks.put(player, glass.get(player));
 				glass.remove(player);
@@ -270,6 +271,7 @@ public class Cosmic implements Listener {
 			if(e.getView().getTitle().equals(Methods.color(crate.getFile().getString("Crate.CrateName") + " - Choose"))) {
 				if(!glass.containsKey(player) || glass.get(player).size() < 4) {
 					cc.removePlayerFromOpeningList(player);
+					cc.removePlayerKeyType(player);
 				}
 				if(glass.containsKey(player)) {
 					picks.put(player, glass.get(player));
