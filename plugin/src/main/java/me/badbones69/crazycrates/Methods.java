@@ -184,12 +184,12 @@ public class Methods {
 	
 	public static boolean isSimilar(ItemStack itemStack, Crate crate) {
 		return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
-		itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(stripNBT(crate.getKeyNoNBT()));
+		itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT());
 	}
 	
 	private static ItemStack stripNBT(ItemStack item) {
 		NBTItem nbtItem = new NBTItem(item.clone());
-		nbtItem.getKeys().forEach(nbtItem :: removeKey);
+		nbtItem.removeKey("CrazyCrates-Crate");
 		return nbtItem.getItem();
 	}
 	

@@ -797,14 +797,7 @@ public class CrazyCrates {
 	
 	public boolean isKeyFromCrate(ItemStack item, Crate crate) {
 		if(crate.getCrateType() != CrateType.MENU) {
-			if(Methods.isSimilar(item, crate)) {
-				return true;
-			}
-		}
-		NBTItem nbtItem = new NBTItem(item);
-		if(nbtItem.hasKey("CrazyCrates-Crate")) {
-			Crate keyCrate = getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
-			return keyCrate.getKey().getType() == item.getType();
+			return Methods.isSimilar(item, crate);
 		}
 		return false;
 	}
