@@ -41,6 +41,9 @@ import java.util.logging.Level;
 
 public class CrazyCrates {
 	
+	/**
+	 * FileManager object.
+	 */
 	private static FileManager fileManager = FileManager.getInstance();
 	/**
 	 * The instance of this class.
@@ -571,6 +574,11 @@ public class CrazyCrates {
 		return brokeLocations;
 	}
 	
+	/**
+	 * Add a new physical crate location.
+	 * @param loc The location you wish to add.
+	 * @param crate The crate which you would like to set it to.
+	 */
 	public void addCrateLocation(Location loc, Crate crate) {
 		FileConfiguration locations = Files.LOCATIONS.getFile();
 		String id = "1"; //Location ID
@@ -583,6 +591,7 @@ public class CrazyCrates {
 				break;
 			}
 		}
+		
 		locations.set("Locations." + id + ".Crate", crate.getName());
 		locations.set("Locations." + id + ".World", loc.getWorld().getName());
 		locations.set("Locations." + id + ".X", loc.getBlockX());
@@ -592,6 +601,10 @@ public class CrazyCrates {
 		crateLocations.add(new CrateLocation(id, crate, loc));
 	}
 	
+	/**
+	 * Remove a physical crate location.
+	 * @param id The id of the location.
+	 */
 	public void removeCrateLocation(String id) {
 		Files.LOCATIONS.getFile().set("Locations." + id, null);
 		Files.LOCATIONS.saveFile();
@@ -607,14 +620,27 @@ public class CrazyCrates {
 		}
 	}
 	
+	/**
+	 * Get a list of broken crates.
+	 * @return An ArrayList of all the broken crates.
+	 */
 	public ArrayList<String> getBrokeCrates() {
 		return brokecrates;
 	}
 	
+	/**
+	 * Get a list of all the crates loaded into the plugin.
+	 * @return An ArrayList of all the loaded crates.
+	 */
 	public ArrayList<Crate> getCrates() {
 		return crates;
 	}
 	
+	/**
+	 * Get a crate by its name.
+	 * @param name The name of the crate you wish to grab.
+	 * @return Returns a Crate object of the crate it found and if none are found it returns null.
+	 */
 	public Crate getCrateFromName(String name) {
 		for(Crate crate : getCrates()) {
 			if(crate.getName().equalsIgnoreCase(name)) {
@@ -632,6 +658,11 @@ public class CrazyCrates {
 		return quadCrateTimer;
 	}
 	
+	/**
+	 * Load the crate preview of a crate.
+	 * @param crate The crate you wish to load the preview of.
+	 * @return An Inventory object of the preview.
+	 */
 	public Inventory loadPreview(Crate crate) {
 		FileConfiguration file = crate.getFile();
 		int slots = 9;
@@ -671,6 +702,11 @@ public class CrazyCrates {
 		return inv;
 	}
 	
+	/**
+	 * Give a player a prize they have won.
+	 * @param player The player you wish to give the prize to.
+	 * @param prize The prize the player has won.
+	 */
 	public void givePrize(Player player, Prize prize) {
 		if(prize != null) {
 			prize = prize.hasBlacklistPermission(player) ? prize.getAltPrize() : prize;
@@ -714,6 +750,13 @@ public class CrazyCrates {
 		}
 	}
 	
+	/**
+	 * Give keys to an offline player.
+	 * @param player The offline player you wish to give keys to.
+	 * @param crate The Crate of which key you are giving to the player.
+	 * @param keys The amount of keys you wish to give to the player.
+	 * @return Returns true if it successfully gave the offline player a key and false if there was an error.
+	 */
 	public boolean addOfflineKeys(String player, Crate crate, int keys) {
 		try {
 			FileConfiguration data = Files.DATA.getFile();
@@ -730,6 +773,13 @@ public class CrazyCrates {
 		}
 	}
 	
+	/**
+	 * Take keys from an offline player.
+	 * @param player The player which you are taking keys from.
+	 * @param crate The Crate of which key you are taking from the player.
+	 * @param keys The amount of keys you wish to take.
+	 * @return Returns true if it took the keys and false if an error occurred.
+	 */
 	public boolean takeOfflineKeys(String player, Crate crate, int keys) {
 		try {
 			FileConfiguration data = Files.DATA.getFile();
@@ -747,6 +797,10 @@ public class CrazyCrates {
 		}
 	}
 	
+	/**
+	 * Load the offline keys of a player who has came online.
+	 * @param player The player which you would like to load the offline keys for.
+	 */
 	public void loadOfflinePlayersKeys(Player player) {
 		FileConfiguration data = Files.DATA.getFile();
 		String name = player.getName().toLowerCase();
@@ -761,26 +815,55 @@ public class CrazyCrates {
 		}
 	}
 	
+	/**
+	 * Add a player to the list of players that are currently opening crates.
+	 * @param player The player that is opening a crate.
+	 * @param crate The crate the player is opening.
+	 */
 	public void addPlayerToOpeningList(Player player, Crate crate) {
 		playerOpeningCrates.put(player.getUniqueId(), crate);
 	}
 	
+	/**
+	 * Remove a player from the list of players that are opening crates.
+	 * @param player The player that has finished opening a crate.
+	 */
 	public void removePlayerFromOpeningList(Player player) {
 		playerOpeningCrates.remove(player.getUniqueId());
 	}
 	
+	/**
+	 * Check if a player is opening a crate.
+	 * @param player The player you are checking.
+	 * @return True if they are opening a crate and false if they are not.
+	 */
 	public boolean isInOpeningList(Player player) {
 		return playerOpeningCrates.containsKey(player.getUniqueId());
 	}
 	
+	/**
+	 * Get the crate the player is currently opening.
+	 * @param player The player you want to check.
+	 * @return The Crate of which the player is opening. May return null if no crate found.
+	 */
 	public Crate getOpeningCrate(Player player) {
 		return playerOpeningCrates.get(player.getUniqueId());
 	}
 	
+	/**
+	 * Check if an item is a key for a crate.
+	 * @param item The item you are checking.
+	 * @return True if the item is a key and false if it is not.
+	 */
 	public boolean isKey(ItemStack item) {
 		return getCrateFromKey(item) != null;
 	}
 	
+	/**
+	 * Get a Crate from a key ItemStack the player.
+	 * @param item The key ItemStack you are checking.
+	 * @return Returns a Crate if is a key from a crate otherwise null if it is not.
+	 */
 	public Crate getCrateFromKey(ItemStack item) {
 		if(item != null && item.getType() != Material.AIR) {
 			for(Crate crate : getCrates()) {
@@ -794,6 +877,12 @@ public class CrazyCrates {
 		return null;
 	}
 	
+	/**
+	 * Check if a key is from a specific Crate.
+	 * @param item The key ItemStack you are checking.
+	 * @param crate The Crate you are checking.
+	 * @return Returns true if it belongs to that Crate and false if it does not.
+	 */
 	public boolean isKeyFromCrate(ItemStack item, Crate crate) {
 		if(crate.getCrateType() != CrateType.MENU) {
 			return Methods.isSimilar(item, crate);
@@ -801,14 +890,30 @@ public class CrazyCrates {
 		return false;
 	}
 	
+	/**
+	 * Set the type of key the player is opening a crate for.
+	 * This is only used in the Cosmic CrateType currently.
+	 * @param player The player that is opening the crate.
+	 * @param keyType The KeyType that they are using.
+	 */
 	public void addPlayerKeyType(Player player, KeyType keyType) {
 		playerKeys.put(player.getUniqueId(), keyType);
 	}
 	
+	/**
+	 * Remove the player from the list as they have finished the crate.
+	 * Currently only used in the Cosmic CrateType.
+	 * @param player The player you are removing.
+	 */
 	public void removePlayerKeyType(Player player) {
 		playerKeys.remove(player.getUniqueId());
 	}
 	
+	/**
+	 * Check if the player is in the list.
+	 * @param player The player you are checking.
+	 * @return True if they are in the list and false if not.
+	 */
 	public boolean hasPlayerKeyType(Player player) {
 		return playerKeys.containsKey(player.getUniqueId());
 	}
@@ -832,6 +937,12 @@ public class CrazyCrates {
 		return Methods.isSimilar(player, crate);
 	}
 	
+	/**
+	 * Get a physical key from a players inventory.
+	 * @param player The player you are checking.
+	 * @param crate The Crate of who's key you are getting.
+	 * @return The ItemStack in the player's inventory. This will return null if not found.
+	 */
 	public ItemStack getPhysicalKey(Player player, Crate crate) {
 		for(ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
 			if(Methods.isSimilar(item, crate)) {
@@ -841,6 +952,11 @@ public class CrazyCrates {
 		return null;
 	}
 	
+	/**
+	 * Get the amount of virtual keys a player has.
+	 * @param player The player you are checking.
+	 * @return The amount of virtual keys they own.
+	 */
 	public HashMap<Crate, Integer> getVirtualKeys(Player player) {
 		HashMap<Crate, Integer> keys = new HashMap<>();
 		for(Crate crate : getCrates()) {
@@ -849,6 +965,11 @@ public class CrazyCrates {
 		return keys;
 	}
 	
+	/**
+	 * Get the amount of virtual keys a player has based on their name.
+	 * @param playerName The name of the player you are checking.
+	 * @return The amount of virtual keys the player by that name has.
+	 */
 	public HashMap<Crate, Integer> getVirtualKeys(String playerName) {
 		HashMap<Crate, Integer> keys = new HashMap<>();
 		FileConfiguration data = Files.DATA.getFile();
@@ -862,6 +983,10 @@ public class CrazyCrates {
 		return keys;
 	}
 	
+	/**
+	 * Get the locations a player sets for when creating a new schematic.
+	 * @return The list of locations set by players.
+	 */
 	public HashMap<UUID, Location[]> getSchematicLocations() {
 		return schemLocations;
 	}
@@ -956,6 +1081,13 @@ public class CrazyCrates {
 		return false;
 	}
 	
+	/**
+	 * Give a player keys to a Crate.
+	 * @param amount The amount of keys you are giving them.
+	 * @param player The player you want to give the keys to.
+	 * @param crate The Crate of who's keys you are giving.
+	 * @param keyType The type of key you are giving to the player.
+	 */
 	public void addKeys(int amount, Player player, Crate crate, KeyType keyType) {
 		switch(keyType) {
 			case PHYSICAL_KEY:
@@ -979,6 +1111,12 @@ public class CrazyCrates {
 		}
 	}
 	
+	/**
+	 * Set the amount of virtual keys a player has.
+	 * @param amount The amount the player will have.
+	 * @param player The player you are setting the keys to.
+	 * @param crate The Crate of who's keys are being set.
+	 */
 	public void setKeys(int amount, Player player, Crate crate) {
 		String uuid = player.getUniqueId().toString();
 		Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
@@ -986,7 +1124,11 @@ public class CrazyCrates {
 		Files.DATA.saveFile();
 	}
 	
-	public void checkNewPlayer(Player player) {
+	/**
+	 * Set a new player's default amount of keys.
+	 * @param player The player that has just joined.
+	 */
+	public void setNewPlayerKeys(Player player) {
 		if(giveNewPlayersKeys) {// Checks if any crate gives new players keys and if not then no need to do all this stuff.
 			String uuid = player.getUniqueId().toString();
 			if(player.hasPlayedBefore()) {
@@ -1008,14 +1150,25 @@ public class CrazyCrates {
 		return nmsSupport;
 	}
 	
+	/**
+	 * Get the CrazyCrates Plugin.
+	 * @return The CrazyCrates Plugin object.
+	 */
 	public Plugin getPlugin() {
 		return plugin;
 	}
 	
+	/**
+	 * Check if the server uses new 1.13+ material names.
+	 * @return True if the server is 1.13+ and false if it is 1.12.2-.
+	 */
 	public boolean useNewMaterial() {
 		return useNewMaterial;
 	}
 	
+	/**
+	 * Load all the schematics inside the Schematics folder.
+	 */
 	public void loadSchematics() {
 		crateSchematics.clear();
 		String[] schems = new File(plugin.getDataFolder() + "/Schematics/").list();
@@ -1033,10 +1186,19 @@ public class CrazyCrates {
 		}
 	}
 	
+	/**
+	 * Get the list of all the schematics currently loaded onto the server.
+	 * @return The list of all loaded schematics.
+	 */
 	public List<CrateSchematic> getCrateSchematics() {
 		return crateSchematics;
 	}
 	
+	/**
+	 * Get a schematic based on its name.
+	 * @param name The name of the schematic.
+	 * @return Returns the CrateSchematic otherwise returns null if not found.
+	 */
 	public CrateSchematic getCrateSchematic(String name) {
 		for(CrateSchematic schematic : crateSchematics) {
 			if(schematic.getSchematicName().equalsIgnoreCase(name)) {
