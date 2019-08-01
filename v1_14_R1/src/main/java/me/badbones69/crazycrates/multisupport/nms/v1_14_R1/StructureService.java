@@ -20,23 +20,6 @@ import java.util.Random;
 public class StructureService {
 	
 	/**
-	 * Used as rotation interface to NMS
-	 * @author Michel_0
-	 */
-	public enum Rotation {
-		DEG_0(EnumBlockRotation.NONE), DEG_90(EnumBlockRotation.CLOCKWISE_90), DEG_180(EnumBlockRotation.CLOCKWISE_180), DEG_270(EnumBlockRotation.COUNTERCLOCKWISE_90);
-		private EnumBlockRotation rotNMS;
-		
-		Rotation(EnumBlockRotation rotNMS) {
-			this.rotNMS = rotNMS;
-		}
-		
-		public EnumBlockRotation getNMSRot() {
-			return this.rotNMS;
-		}
-	}
-	
-	/**
 	 * A comfort method for all lazy guys. Automatically switches to structure arrays, when using an area larger than 32x32x32
 	 * @param corners - 2 opposite edges (order doesn't matter)
 	 * @param destination - The destination file (for single structure) or the destination folder (for structure array)
@@ -455,6 +438,23 @@ public class StructureService {
 	public static int getStructureArrayIndex(int[] dimension, int x, int y, int z) {
 		int[] sections = StructureService.getAreaSections(dimension);
 		return StructureService.getYzxIndex(x / 32, y / 32, z / 32, sections[0], sections[2]);
+	}
+	
+	/**
+	 * Used as rotation interface to NMS
+	 * @author Michel_0
+	 */
+	public enum Rotation {
+		DEG_0(EnumBlockRotation.NONE), DEG_90(EnumBlockRotation.CLOCKWISE_90), DEG_180(EnumBlockRotation.CLOCKWISE_180), DEG_270(EnumBlockRotation.COUNTERCLOCKWISE_90);
+		private EnumBlockRotation rotNMS;
+		
+		Rotation(EnumBlockRotation rotNMS) {
+			this.rotNMS = rotNMS;
+		}
+		
+		public EnumBlockRotation getNMSRot() {
+			return this.rotNMS;
+		}
 	}
 	
 }

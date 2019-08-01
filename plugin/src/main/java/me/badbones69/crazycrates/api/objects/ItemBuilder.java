@@ -398,13 +398,13 @@ public class ItemBuilder {
 		return isURL;
 	}
 	
+	public String getCrateName() {
+		return crateName;
+	}
+	
 	public ItemBuilder setCrateName(String crateName) {
 		this.crateName = crateName;
 		return this;
-	}
-	
-	public String getCrateName() {
-		return crateName;
 	}
 	
 	/**
