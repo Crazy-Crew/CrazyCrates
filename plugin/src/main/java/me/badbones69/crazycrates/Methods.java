@@ -129,9 +129,7 @@ public class Methods {
 				return true;
 			}
 		}
-		HashMap<String, String> placeholders = new HashMap<>();
-		placeholders.put("%player%", name);
-		sender.sendMessage(Messages.NOT_ONLINE.getMessage(placeholders));
+		sender.sendMessage(Messages.NOT_ONLINE.getMessage("%Player%", name));
 		return false;
 	}
 	

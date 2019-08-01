@@ -129,10 +129,7 @@ public class QuadCrateSession {
 			if(entity instanceof Player) {
 				for(QuadCrateSession ongoingCrate : crateSessions) {
 					if(entity.getUniqueId() == ongoingCrate.getPlayer().getUniqueId()) {
-						HashMap<String, String> placeholders = new HashMap<>();
-						placeholders.put("%Player%", entity.getName());
-						placeholders.put("%player%", entity.getName());
-						player.sendMessage(Messages.TO_CLOSE_TO_ANOTHER_PLAYER.getMessage(placeholders));
+						player.sendMessage(Messages.TO_CLOSE_TO_ANOTHER_PLAYER.getMessage("%Player%", entity.getName()));
 						cc.removePlayerFromOpeningList(player);
 						crateSessions.remove(instance);
 						return false;

@@ -40,8 +40,8 @@ public class KeyCommand implements CommandExecutor {
 				if(amount > 0) {
 					hasKeys = true;
 					HashMap<String, String> placeholders = new HashMap<>();
-					placeholders.put("%crate%", crate.getFile().getString("Crate.Name"));
-					placeholders.put("%keys%", amount + "");
+					placeholders.put("%Crate%", crate.getFile().getString("Crate.Name"));
+					placeholders.put("%Keys%", amount + "");
 					message.add(Messages.PER_CRATE.getMessageNoPrefix(placeholders));
 				}
 			}
@@ -59,27 +59,23 @@ public class KeyCommand implements CommandExecutor {
 			}
 			String player = args[0];
 			List<String> message = new ArrayList<>();
-			HashMap<String, String> placeholders = new HashMap<>();
-			placeholders.put("%player%", player);
-			message.add(Messages.OTHER_PLAYER_HEADER.getMessageNoPrefix(placeholders));
+			message.add(Messages.OTHER_PLAYER_HEADER.getMessageNoPrefix("%Player%", player));
 			HashMap<Crate, Integer> keys = cc.getVirtualKeys(player);
 			boolean hasKeys = false;
 			for(Crate crate : keys.keySet()) {
 				int amount = keys.get(crate);
 				if(amount > 0) {
 					hasKeys = true;
-					placeholders.clear();
-					placeholders.put("%crate%", crate.getFile().getString("Crate.Name"));
-					placeholders.put("%keys%", amount + "");
+					HashMap<String, String> placeholders = new HashMap<>();
+					placeholders.put("%Crate%", crate.getFile().getString("Crate.Name"));
+					placeholders.put("%Keys%", amount + "");
 					message.add(Messages.PER_CRATE.getMessageNoPrefix(placeholders));
 				}
 			}
 			if(hasKeys) {
 				sender.sendMessage(Messages.convertList(message));
 			}else {
-				placeholders.clear();
-				placeholders.put("%player%", player);
-				sender.sendMessage(Messages.OTHER_PLAYER_NO_VIRTUAL_KEYS.getMessage(placeholders));
+				sender.sendMessage(Messages.OTHER_PLAYER_NO_VIRTUAL_KEYS.getMessage("%Player%", player));
 			}
 		}
 		return true;

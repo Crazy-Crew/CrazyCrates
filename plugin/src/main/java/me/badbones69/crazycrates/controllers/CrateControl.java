@@ -141,10 +141,7 @@ public class CrateControl implements Listener { //Crate Control
 					}
 					if(!useQuickCrateAgain) {
 						if(cc.isInOpeningList(player)) {
-							HashMap<String, String> placeholders = new HashMap<>();
-							placeholders.put("%Key%", keyName);
-							placeholders.put("%key%", keyName);
-							player.sendMessage(Messages.ALREADY_OPENING_CRATE.getMessage(placeholders));
+							player.sendMessage(Messages.ALREADY_OPENING_CRATE.getMessage("%Key%", keyName));
 							return;
 						}
 						if(inUse.containsValue(crateLocation.getLocation())) {
@@ -174,10 +171,7 @@ public class CrateControl implements Listener { //Crate Control
 								player.playSound(player.getLocation(), sound, 1f, 1f);
 							}
 						}
-						HashMap<String, String> placeholders = new HashMap<>();
-						placeholders.put("%Key%", keyName);
-						placeholders.put("%key%", keyName);
-						player.sendMessage(Messages.NO_KEY.getMessage(placeholders));
+						player.sendMessage(Messages.NO_KEY.getMessage("%Key%", keyName));
 					}
 				}
 			}

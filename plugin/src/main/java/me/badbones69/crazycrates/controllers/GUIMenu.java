@@ -21,7 +21,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class GUIMenu implements Listener {
@@ -190,10 +189,7 @@ public class GUIMenu implements Listener {
 										}
 										for(String world : getDisabledWorlds()) {
 											if(world.equalsIgnoreCase(player.getWorld().getName())) {
-												HashMap<String, String> placeholders = new HashMap<>();
-												placeholders.put("%World%", player.getWorld().getName());
-												placeholders.put("%world%", player.getWorld().getName());
-												player.sendMessage(Messages.WORLD_DISABLED.getMessage(placeholders));
+												player.sendMessage(Messages.WORLD_DISABLED.getMessage("%World%", player.getWorld().getName()));
 												return;
 											}
 										}

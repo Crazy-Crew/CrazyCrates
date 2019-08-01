@@ -137,13 +137,11 @@ public class CCCommand implements CommandExecutor {
 							}
 							cc.loadCrates();
 							HashMap<String, String> placeholders = new HashMap<>();
-							placeholders.put("%crate%", crate.getName());
-							placeholders.put("%prize%", prize);
+							placeholders.put("%Crate%", crate.getName());
+							placeholders.put("%Prize%", prize);
 							player.sendMessage(Messages.ADDED_ITEM_WITH_EDITOR.getMessage(placeholders));
 						}else {
-							HashMap<String, String> placeholders = new HashMap<>();
-							placeholders.put("%crate%", args[1]);
-							player.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+							player.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[1]));
 							
 						}
 					}else {
@@ -177,9 +175,7 @@ public class CCCommand implements CommandExecutor {
 							cc.givePrize((Player) sender, prize);
 						}
 					}else {
-						HashMap<String, String> placeholders = new HashMap<>();
-						placeholders.put("%crate%", args[1]);
-						sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+						sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[1]));
 						return true;
 					}
 					return true;
@@ -274,15 +270,13 @@ public class CCCommand implements CommandExecutor {
 							}
 							CrazyCrates.getInstance().addCrateLocation(block.getLocation(), crate);
 							HashMap<String, String> placeholders = new HashMap<>();
-							placeholders.put("%crate%", crate.getName());
-							placeholders.put("%prefix%", Methods.getPrefix());
+							placeholders.put("%Crate%", crate.getName());
+							placeholders.put("%Prefix%", Methods.getPrefix());
 							player.sendMessage(Messages.CREATED_PHYSICAL_CRATE.getMessage(placeholders));
 							return true;
 						}
 					}
-					HashMap<String, String> placeholders = new HashMap<>();
-					placeholders.put("%crate%", c);
-					sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+					sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", c));
 					return true;
 				}
 				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/cc Set <Crate>"));
@@ -365,8 +359,8 @@ public class CCCommand implements CommandExecutor {
 								if(type != CrateType.CRATE_ON_THE_GO && type != CrateType.QUICK_CRATE && type != CrateType.FIRE_CRACKER) {
 									cc.openCrate(player, crate, KeyType.FREE_KEY, player.getLocation(), true);
 									HashMap<String, String> placeholders = new HashMap<>();
-									placeholders.put("%crate%", crate.getName());
-									placeholders.put("%player%", player.getName());
+									placeholders.put("%Crate%", crate.getName());
+									placeholders.put("%Player%", player.getName());
 									sender.sendMessage(Messages.OPENED_A_CRATE.getMessage(placeholders));
 									return true;
 								}else {
@@ -374,16 +368,12 @@ public class CCCommand implements CommandExecutor {
 									return true;
 								}
 							}else {
-								HashMap<String, String> placeholders = new HashMap<>();
-								placeholders.put("%crate%", args[1]);
-								sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+								sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[1]));
 								return true;
 							}
 						}
 					}
-					HashMap<String, String> placeholders = new HashMap<>();
-					placeholders.put("%crate%", args[1]);
-					sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+					sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[1]));
 					return true;
 				}
 				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Open <Crate> [Player]"));
@@ -394,9 +384,7 @@ public class CCCommand implements CommandExecutor {
 					int amount = 1;
 					if(args.length >= 4) {
 						if(!Methods.isInt(args[3])) {
-							HashMap<String, String> placeholders = new HashMap<>();
-							placeholders.put("%number%", args[3]);
-							sender.sendMessage(Messages.NOT_A_NUMBER.getMessage(placeholders));
+							sender.sendMessage(Messages.NOT_A_NUMBER.getMessage("%Number%", args[3]));
 							return true;
 						}
 						amount = Integer.parseInt(args[3]);
@@ -410,8 +398,8 @@ public class CCCommand implements CommandExecutor {
 					if(crate != null) {
 						if(crate.getCrateType() != CrateType.MENU) {
 							HashMap<String, String> placeholders = new HashMap<>();
-							placeholders.put("%amount%", amount + "");
-							placeholders.put("%key%", crate.getKey().getItemMeta().getDisplayName());
+							placeholders.put("%Amount%", amount + "");
+							placeholders.put("%Key%", crate.getKey().getItemMeta().getDisplayName());
 							sender.sendMessage(Messages.GIVEN_EVERYONE_KEYS.getMessage(placeholders));
 							for(Player player : Bukkit.getServer().getOnlinePlayers()) {
 								player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
@@ -430,8 +418,7 @@ public class CCCommand implements CommandExecutor {
 						}
 					}
 					HashMap<String, String> placeholders = new HashMap<>();
-					placeholders.put("%crate%", args[2]);
-					sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+					sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[2]));
 					return true;
 				}
 				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate GiveAll <Physical/Virtual> <Crate> <Amount>"));
@@ -455,8 +442,8 @@ public class CCCommand implements CommandExecutor {
 								return true;
 							}
 							HashMap<String, String> placeholders = new HashMap<>();
-							placeholders.put("%amount%", "1");
-							placeholders.put("%player%", sender.getName());
+							placeholders.put("%Amount%", "1");
+							placeholders.put("%Player%", sender.getName());
 							sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
 							if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
 								((Player) sender).getInventory().addItem(crate.getKey());
@@ -470,9 +457,7 @@ public class CCCommand implements CommandExecutor {
 							return true;
 						}
 					}
-					HashMap<String, String> placeholders = new HashMap<>();
-					placeholders.put("%crate%", args[2]);
-					sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+					sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[2]));
 					return true;
 				}else if(args.length == 4) {
 					if(!(sender instanceof Player)) {
@@ -480,9 +465,7 @@ public class CCCommand implements CommandExecutor {
 						return true;
 					}
 					if(!Methods.isInt(args[3])) {
-						HashMap<String, String> placeholders = new HashMap<>();
-						placeholders.put("%number%", args[3]);
-						sender.sendMessage(Messages.NOT_A_NUMBER.getMessage(placeholders));
+						sender.sendMessage(Messages.NOT_A_NUMBER.getMessage("%Number%", args[3]));
 						return true;
 					}
 					int amount = Integer.parseInt(args[3]);
@@ -490,8 +473,8 @@ public class CCCommand implements CommandExecutor {
 					if(crate != null) {
 						if(crate.getCrateType() != CrateType.MENU) {
 							HashMap<String, String> placeholders = new HashMap<>();
-							placeholders.put("%amount%", amount + "");
-							placeholders.put("%player%", sender.getName());
+							placeholders.put("%Amount%", amount + "");
+							placeholders.put("%Player%", sender.getName());
 							sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
 							if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
 								((Player) sender).getInventory().addItem(crate.getKey(amount));
@@ -505,15 +488,11 @@ public class CCCommand implements CommandExecutor {
 							return true;
 						}
 					}
-					HashMap<String, String> placeholders = new HashMap<>();
-					placeholders.put("%crate%", args[2]);
-					sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+					sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[2]));
 					return true;
 				}else if(args.length == 5) {
 					if(!Methods.isInt(args[3])) {
-						HashMap<String, String> placeholders = new HashMap<>();
-						placeholders.put("%number%", args[3]);
-						sender.sendMessage(Messages.NOT_A_NUMBER.getMessage(placeholders));
+						sender.sendMessage(Messages.NOT_A_NUMBER.getMessage("%Number%", args[3]));
 						return true;
 					}
 					int amount = Integer.parseInt(args[3]);
@@ -533,8 +512,8 @@ public class CCCommand implements CommandExecutor {
 											return true;
 										}else {
 											HashMap<String, String> placeholders = new HashMap<>();
-											placeholders.put("%amount%", amount + "");
-											placeholders.put("%player%", args[4]);
+											placeholders.put("%Amount%", amount + "");
+											placeholders.put("%Player%", args[4]);
 											sender.sendMessage(Messages.GIVEN_OFFLINE_PLAYER_KEYS.getMessage(placeholders));
 											return true;
 										}
@@ -548,8 +527,8 @@ public class CCCommand implements CommandExecutor {
 											return true;
 										}else {
 											HashMap<String, String> placeholders = new HashMap<>();
-											placeholders.put("%amount%", amount + "");
-											placeholders.put("%player%", args[4]);
+											placeholders.put("%Amount%", amount + "");
+											placeholders.put("%Player%", args[4]);
 											sender.sendMessage(Messages.GIVEN_OFFLINE_PLAYER_KEYS.getMessage(placeholders));
 											return true;
 										}
@@ -557,9 +536,9 @@ public class CCCommand implements CommandExecutor {
 								}
 							}
 							HashMap<String, String> placeholders = new HashMap<>();
-							placeholders.put("%amount%", amount + "");
-							placeholders.put("%player%", target.getName());
-							placeholders.put("%key%", crate.getKey().getItemMeta().getDisplayName());
+							placeholders.put("%Amount%", amount + "");
+							placeholders.put("%Player%", target.getName());
+							placeholders.put("%Key%", crate.getKey().getItemMeta().getDisplayName());
 							sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
 							if(target != null) {
 								target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
@@ -567,9 +546,7 @@ public class CCCommand implements CommandExecutor {
 							return true;
 						}
 					}
-					HashMap<String, String> placeholders = new HashMap<>();
-					placeholders.put("%crate%", args[2]);
-					sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+					sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[2]));
 					return true;
 				}
 				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Give <Physical/Virtual> <Crate> [Amount] [Player]"));
@@ -593,8 +570,8 @@ public class CCCommand implements CommandExecutor {
 								return true;
 							}
 							HashMap<String, String> placeholders = new HashMap<>();
-							placeholders.put("%amount%", "1");
-							placeholders.put("%player%", sender.getName());
+							placeholders.put("%Amount%", "1");
+							placeholders.put("%Player%", sender.getName());
 							sender.sendMessage(Messages.TAKE_A_PLAYER_KEYS.getMessage(placeholders));
 							if(!cc.takeKeys(1, (Player) sender, crate, keyType)) {
 								Methods.failedToTakeKey((Player) sender, crate);
@@ -602,9 +579,7 @@ public class CCCommand implements CommandExecutor {
 							return true;
 						}
 					}
-					HashMap<String, String> placeholders = new HashMap<>();
-					placeholders.put("%crate%", args[2]);
-					sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+					sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[2]));
 					return true;
 				}else if(args.length == 4) {
 					if(!(sender instanceof Player)) {
@@ -612,9 +587,7 @@ public class CCCommand implements CommandExecutor {
 						return true;
 					}
 					if(!Methods.isInt(args[3])) {
-						HashMap<String, String> placeholders = new HashMap<>();
-						placeholders.put("%number%", args[3]);
-						sender.sendMessage(Messages.NOT_A_NUMBER.getMessage(placeholders));
+						sender.sendMessage(Messages.NOT_A_NUMBER.getMessage("%Number%", args[3]));
 						return true;
 					}
 					int amount = Integer.parseInt(args[3]);
@@ -622,8 +595,8 @@ public class CCCommand implements CommandExecutor {
 					if(crate != null) {
 						if(crate.getCrateType() != CrateType.MENU) {
 							HashMap<String, String> placeholders = new HashMap<>();
-							placeholders.put("%amount%", amount + "");
-							placeholders.put("%player%", sender.getName());
+							placeholders.put("%Amount%", amount + "");
+							placeholders.put("%Player%", sender.getName());
 							sender.sendMessage(Messages.TAKE_A_PLAYER_KEYS.getMessage(placeholders));
 							if(!cc.takeKeys(amount, (Player) sender, crate, keyType)) {
 								Methods.failedToTakeKey((Player) sender, crate);
@@ -631,15 +604,11 @@ public class CCCommand implements CommandExecutor {
 							return true;
 						}
 					}
-					HashMap<String, String> placeholders = new HashMap<>();
-					placeholders.put("%crate%", args[2]);
-					sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+					sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[2]));
 					return true;
 				}else if(args.length == 5) {
 					if(!Methods.isInt(args[3])) {
-						HashMap<String, String> placeholders = new HashMap<>();
-						placeholders.put("%number%", args[3]);
-						sender.sendMessage(Messages.NOT_A_NUMBER.getMessage(placeholders));
+						sender.sendMessage(Messages.NOT_A_NUMBER.getMessage("%Number%", args[3]));
 						return true;
 					}
 					int amount = Integer.parseInt(args[3]);
@@ -650,8 +619,8 @@ public class CCCommand implements CommandExecutor {
 							if(keyType == KeyType.VIRTUAL_KEY) {
 								if(target != null) {
 									HashMap<String, String> placeholders = new HashMap<>();
-									placeholders.put("%amount%", amount + "");
-									placeholders.put("%player%", target.getName());
+									placeholders.put("%Amount%", amount + "");
+									placeholders.put("%Player%", target.getName());
 									sender.sendMessage(Messages.TAKE_A_PLAYER_KEYS.getMessage(placeholders));
 									if(!cc.takeKeys(amount, target, crate, KeyType.VIRTUAL_KEY)) {
 										Methods.failedToTakeKey((Player) sender, crate);
@@ -662,8 +631,8 @@ public class CCCommand implements CommandExecutor {
 										return true;
 									}else {
 										HashMap<String, String> placeholders = new HashMap<>();
-										placeholders.put("%amount%", amount + "");
-										placeholders.put("%player%", args[4]);
+										placeholders.put("%Amount%", amount + "");
+										placeholders.put("%Player%", args[4]);
 										sender.sendMessage(Messages.TAKE_OFFLINE_PLAYER_KEYS.getMessage(placeholders));
 										return true;
 									}
@@ -671,24 +640,20 @@ public class CCCommand implements CommandExecutor {
 							}else if(keyType == KeyType.PHYSICAL_KEY) {
 								if(target != null) {
 									HashMap<String, String> placeholders = new HashMap<>();
-									placeholders.put("%amount%", amount + "");
-									placeholders.put("%player%", target.getName());
+									placeholders.put("%Amount%", amount + "");
+									placeholders.put("%Player%", target.getName());
 									sender.sendMessage(Messages.TAKE_A_PLAYER_KEYS.getMessage(placeholders));
 									if(!cc.takeKeys(amount, target, crate, KeyType.PHYSICAL_KEY)) {
 										Methods.failedToTakeKey((Player) sender, crate);
 									}
 								}else {
-									HashMap<String, String> placeholders = new HashMap<>();
-									placeholders.put("%player%", args[4]);
-									sender.sendMessage(Messages.NOT_ONLINE.getMessage(placeholders));
+									sender.sendMessage(Messages.NOT_ONLINE.getMessage("%Player%", args[4]));
 								}
 							}
 							return true;
 						}
 					}
-					HashMap<String, String> placeholders = new HashMap<>();
-					placeholders.put("%crate%", args[2]);
-					sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
+					sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[2]));
 					return true;
 				}
 				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Take <Physical/Virtual> <Crate> [Amount] [Player]"));
