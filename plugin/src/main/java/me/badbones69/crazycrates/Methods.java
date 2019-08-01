@@ -189,7 +189,11 @@ public class Methods {
 	
 	private static ItemStack stripNBT(ItemStack item) {
 		NBTItem nbtItem = new NBTItem(item.clone());
-		nbtItem.removeKey("CrazyCrates-Crate");
+		if(nbtItem.hasNBTData()) {
+			if(nbtItem.hasKey("CrazyCrates-Crate")) {
+				nbtItem.removeKey("CrazyCrates-Crate");
+			}
+		}
 		return nbtItem.getItem();
 	}
 	
