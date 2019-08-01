@@ -4,7 +4,7 @@
 
     <groupId>me.badbones69</groupId>
     <artifactId>crazycrates-parent</artifactId>
-    <version>1.9.8</version>
+    <version>1.9.9-Dev-Build-v1</version>
     <packaging>pom</packaging>
     <name>CrazyCrates</name>
 
