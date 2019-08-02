@@ -182,7 +182,49 @@ public class Methods {
 	
 	public static boolean isSimilar(ItemStack itemStack, Crate crate) {
 		return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
-		itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT());
+		itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
+		isSimilarCustom(crate.getKeyNoNBT(), itemStack);
+	}
+	
+	private static boolean isSimilarCustom(ItemStack one, ItemStack two) {
+		if(one != null && two != null) {
+			if(one.getType() == two.getType()) {
+				if(one.hasItemMeta() && two.hasItemMeta()) {
+					if(one.getItemMeta().hasDisplayName() && two.getItemMeta().hasDisplayName()) {
+						if(one.getItemMeta().getDisplayName().equalsIgnoreCase(two.getItemMeta().getDisplayName())) {
+							if(one.getItemMeta().hasLore() && two.getItemMeta().hasLore()) {
+								if(one.getItemMeta().getLore().size() == two.getItemMeta().getLore().size()) {
+									int i = 0;
+									for(String lore : one.getItemMeta().getLore()) {
+										if(!lore.equals(two.getItemMeta().getLore().get(i))) {
+											return false;
+										}
+										i++;
+									}
+									return true;
+								}
+							}else return !one.getItemMeta().hasLore() && !two.getItemMeta().hasLore();
+						}
+					}else if(!one.getItemMeta().hasDisplayName() && !two.getItemMeta().hasDisplayName()) {
+						if(one.getItemMeta().hasLore() && two.getItemMeta().hasLore()) {
+							if(one.getItemMeta().getLore().size() == two.getItemMeta().getLore().size()) {
+								int i = 0;
+								for(String lore : one.getItemMeta().getLore()) {
+									if(!lore.equals(two.getItemMeta().getLore().get(i))) {
+										return false;
+									}
+									i++;
+								}
+								return true;
+							}else {
+								return false;
+							}
+						}else return !one.getItemMeta().hasLore() && !two.getItemMeta().hasLore();
+					}
+				}else return !one.hasItemMeta() && !two.hasItemMeta();
+			}
+		}
+		return false;
 	}
 	
 	private static ItemStack stripNBT(ItemStack item) {
