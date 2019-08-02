@@ -33,6 +33,7 @@ public class Cosmic implements Listener {
 	private static CrazyCrates cc = CrazyCrates.getInstance();
 	private static HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();
 	private static HashMap<Player, ArrayList<Integer>> picks = new HashMap<>();
+	private static HashMap<Player, Boolean> checkHands = new HashMap<>();
 	
 	private static void showRewards(Player player, Crate crate) {
 		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(crate.getFile().getString("Crate.CrateName") + " - Prizes"));
@@ -62,10 +63,11 @@ public class Cosmic implements Listener {
 		}
 	}
 	
-	public static void openCosmic(Player player, Crate crate, KeyType keyType) {
+	public static void openCosmic(Player player, Crate crate, KeyType keyType, boolean checkHand) {
 		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(crate.getFile().getString("Crate.CrateName") + " - Choose"));
 		setChests(inv);
 		cc.addPlayerKeyType(player, keyType);
+		checkHands.put(player, checkHand);
 		player.openInventory(inv);
 	}
 	
@@ -166,22 +168,24 @@ public class Cosmic implements Listener {
 						if(glass.get(player).size() >= 4) {
 							KeyType keyType = cc.getPlayerKeyType(player);
 							if(keyType == KeyType.PHYSICAL_KEY) {
-								if(!cc.hasPhysicalKey(player, crate)) {
+								if(!cc.hasPhysicalKey(player, crate, checkHands.get(player))) {
 									player.closeInventory();
 									player.sendMessage(Methods.getPrefix() + Methods.color("&cNo key was found."));
 									if(cc.isInOpeningList(player)) {
 										cc.removePlayerFromOpeningList(player);
 										cc.removePlayerKeyType(player);
 									}
+									checkHands.remove(player);
 									glass.remove(player);
 									return;
 								}
 							}
 							if(cc.hasPlayerKeyType(player)) {
-								if(!cc.takeKeys(1, player, crate, keyType)) {
+								if(!cc.takeKeys(1, player, crate, keyType, checkHands.get(player))) {
 									Methods.failedToTakeKey(player, crate);
 									cc.removePlayerFromOpeningList(player);
 									cc.removePlayerKeyType(player);
+									checkHands.remove(player);
 									glass.remove(player);
 									return;
 								}
@@ -266,6 +270,7 @@ public class Cosmic implements Listener {
 				picks.put(player, glass.get(player));
 				glass.remove(player);
 			}
+			checkHands.remove(player);
 		}
 		if(cc.isInOpeningList(player)) {
 			if(e.getView().getTitle().equals(Methods.color(crate.getFile().getString("Crate.CrateName") + " - Choose"))) {
@@ -277,6 +282,7 @@ public class Cosmic implements Listener {
 					picks.put(player, glass.get(player));
 					glass.remove(player);
 				}
+				checkHands.remove(player);
 			}
 		}
 	}

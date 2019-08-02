@@ -357,7 +357,7 @@ public class CCCommand implements CommandExecutor {
 							CrateType type = crate.getCrateType();
 							if(type != null) {
 								if(type != CrateType.CRATE_ON_THE_GO && type != CrateType.QUICK_CRATE && type != CrateType.FIRE_CRACKER) {
-									cc.openCrate(player, crate, KeyType.FREE_KEY, player.getLocation(), true);
+									cc.openCrate(player, crate, KeyType.FREE_KEY, player.getLocation(), true, false);
 									HashMap<String, String> placeholders = new HashMap<>();
 									placeholders.put("%Crate%", crate.getName());
 									placeholders.put("%Player%", player.getName());
@@ -573,7 +573,7 @@ public class CCCommand implements CommandExecutor {
 							placeholders.put("%Amount%", "1");
 							placeholders.put("%Player%", sender.getName());
 							sender.sendMessage(Messages.TAKE_A_PLAYER_KEYS.getMessage(placeholders));
-							if(!cc.takeKeys(1, (Player) sender, crate, keyType)) {
+							if(!cc.takeKeys(1, (Player) sender, crate, keyType, false)) {
 								Methods.failedToTakeKey((Player) sender, crate);
 							}
 							return true;
@@ -598,7 +598,7 @@ public class CCCommand implements CommandExecutor {
 							placeholders.put("%Amount%", amount + "");
 							placeholders.put("%Player%", sender.getName());
 							sender.sendMessage(Messages.TAKE_A_PLAYER_KEYS.getMessage(placeholders));
-							if(!cc.takeKeys(amount, (Player) sender, crate, keyType)) {
+							if(!cc.takeKeys(amount, (Player) sender, crate, keyType, false)) {
 								Methods.failedToTakeKey((Player) sender, crate);
 							}
 							return true;
@@ -622,7 +622,7 @@ public class CCCommand implements CommandExecutor {
 									placeholders.put("%Amount%", amount + "");
 									placeholders.put("%Player%", target.getName());
 									sender.sendMessage(Messages.TAKE_A_PLAYER_KEYS.getMessage(placeholders));
-									if(!cc.takeKeys(amount, target, crate, KeyType.VIRTUAL_KEY)) {
+									if(!cc.takeKeys(amount, target, crate, KeyType.VIRTUAL_KEY, false)) {
 										Methods.failedToTakeKey((Player) sender, crate);
 									}
 								}else {
@@ -643,7 +643,7 @@ public class CCCommand implements CommandExecutor {
 									placeholders.put("%Amount%", amount + "");
 									placeholders.put("%Player%", target.getName());
 									sender.sendMessage(Messages.TAKE_A_PLAYER_KEYS.getMessage(placeholders));
-									if(!cc.takeKeys(amount, target, crate, KeyType.PHYSICAL_KEY)) {
+									if(!cc.takeKeys(amount, target, crate, KeyType.PHYSICAL_KEY, false)) {
 										Methods.failedToTakeKey((Player) sender, crate);
 									}
 								}else {

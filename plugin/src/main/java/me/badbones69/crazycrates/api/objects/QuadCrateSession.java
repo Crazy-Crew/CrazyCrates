@@ -35,6 +35,7 @@ public class QuadCrateSession {
 	private Location spawnLocation;
 	private Color particleColor;
 	private QuadCrateParticles particle;
+	private boolean checkHand;
 	private List<Location> chestLocations = new ArrayList<>();
 	private HashMap<Location, Boolean> chestsOpened = new HashMap<>();
 	private List<Entity> displayedRewards = new ArrayList<>();
@@ -43,10 +44,11 @@ public class QuadCrateSession {
 	private List<BukkitRunnable> ongoingTasks = new ArrayList<>();
 	private HashMap<Location, BlockState> oldBlocks = new HashMap<>();
 	
-	public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation) {
+	public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean checkHand) {
 		this.instance = this;
 		this.crate = crate;
 		this.player = player;
+		this.checkHand = checkHand;
 		this.keyType = keyType;
 		this.lastLocation = lastLocation;
 		this.spawnLocation = spawnLocation.getBlock().getLocation();
@@ -138,7 +140,7 @@ public class QuadCrateSession {
 				shovePlayers.add(entity);
 			}
 		}
-		if(!cc.takeKeys(1, player, crate, keyType)) {
+		if(!cc.takeKeys(1, player, crate, keyType, checkHand)) {
 			Methods.failedToTakeKey(player, crate);
 			cc.removePlayerFromOpeningList(player);
 			crateSessions.remove(instance);

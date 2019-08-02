@@ -53,7 +53,7 @@ public class QuickCrate implements Listener {
 					break;
 				}
 			}
-			if(!cc.takeKeys(keysUsed, player, crate, keyType)) {
+			if(!cc.takeKeys(keysUsed, player, crate, keyType, true)) {
 				Methods.failedToTakeKey(player, crate);
 				CrateControl.inUse.remove(player);
 				cc.removePlayerFromOpeningList(player);
@@ -61,7 +61,7 @@ public class QuickCrate implements Listener {
 			}
 			endQuickCrate(player, loc);
 		}else {
-			if(!cc.takeKeys(1, player, crate, keyType)) {
+			if(!cc.takeKeys(1, player, crate, keyType, true)) {
 				Methods.failedToTakeKey(player, crate);
 				CrateControl.inUse.remove(player);
 				cc.removePlayerFromOpeningList(player);

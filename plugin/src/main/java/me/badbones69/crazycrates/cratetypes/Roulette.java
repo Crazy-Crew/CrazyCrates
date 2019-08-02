@@ -32,12 +32,12 @@ public class Roulette implements Listener {
 		}
 	}
 	
-	public static void openRoulette(Player player, Crate crate, KeyType keyType) {
+	public static void openRoulette(Player player, Crate crate, KeyType keyType, boolean checkHand) {
 		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(crate.getFile().getString("Crate.CrateName")));
 		setGlass(inv);
 		inv.setItem(13, crate.pickPrize(player).getDisplayItem());
 		player.openInventory(inv);
-		if(!cc.takeKeys(1, player, crate, keyType)) {
+		if(!cc.takeKeys(1, player, crate, keyType, checkHand)) {
 			Methods.failedToTakeKey(player, crate);
 			cc.removePlayerFromOpeningList(player);
 			return;

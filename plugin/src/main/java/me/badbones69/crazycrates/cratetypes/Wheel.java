@@ -25,8 +25,8 @@ public class Wheel implements Listener {
 	public static HashMap<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
 	private static CrazyCrates cc = CrazyCrates.getInstance();
 	
-	public static void startWheel(final Player player, Crate crate, KeyType keyType) {
-		if(!cc.takeKeys(1, player, crate, keyType)) {
+	public static void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
+		if(!cc.takeKeys(1, player, crate, keyType, checkHand)) {
 			Methods.failedToTakeKey(player, crate);
 			cc.removePlayerFromOpeningList(player);
 			return;

@@ -65,14 +65,14 @@ public class CSGO implements Listener {
 		inv.setItem(8 + 18, item);
 	}
 	
-	public static void openCSGO(Player player, Crate crate, KeyType keyType) {
+	public static void openCSGO(Player player, Crate crate, KeyType keyType, boolean checkHand) {
 		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(crate.getFile().getString("Crate.CrateName")));
 		setGlass(inv);
 		for(int i = 9; i > 8 && i < 18; i++) {
 			inv.setItem(i, crate.pickPrize(player).getDisplayItem());
 		}
 		player.openInventory(inv);
-		if(cc.takeKeys(1, player, crate, keyType)) {
+		if(cc.takeKeys(1, player, crate, keyType, checkHand)) {
 			startCSGO(player, inv, crate);
 		}else {
 			Methods.failedToTakeKey(player, crate);

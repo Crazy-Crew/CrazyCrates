@@ -22,7 +22,7 @@ public class FireCracker {
 	private static CrazyCrates cc = CrazyCrates.getInstance();
 	
 	public static void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc) {
-		if(!cc.takeKeys(1, player, crate, keyType)) {
+		if(!cc.takeKeys(1, player, crate, keyType, true)) {
 			Methods.failedToTakeKey(player, crate);
 			cc.removePlayerFromOpeningList(player);
 			return;

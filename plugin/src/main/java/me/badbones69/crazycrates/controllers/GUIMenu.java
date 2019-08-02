@@ -153,12 +153,6 @@ public class GUIMenu implements Listener {
 											}
 											return;
 										}
-										//if(crate.getCrateType() == CrateType.QUAD_CRATE) {
-										//	if(Version.getCurrentVersion().isNewer(Version.v1_14_R1)) {
-										//		player.sendMessage(Messages.QUAD_CRATE_DISABLED.getMessage());
-										//		return;
-										//	}
-										//}
 										if(cc.isInOpeningList(player)) {
 											player.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
 											return;
@@ -170,7 +164,7 @@ public class GUIMenu implements Listener {
 										}else {
 											if(Files.CONFIG.getFile().contains("Settings.Virtual-Accepts-Physical-Keys")) {
 												if(Files.CONFIG.getFile().getBoolean("Settings.Virtual-Accepts-Physical-Keys")) {
-													if(cc.hasPhysicalKey(player, crate)) {
+													if(cc.hasPhysicalKey(player, crate, false)) {
 														hasKey = true;
 														keyType = KeyType.PHYSICAL_KEY;
 													}
@@ -197,7 +191,7 @@ public class GUIMenu implements Listener {
 											player.sendMessage(Messages.INVENTORY_FULL.getMessage());
 											return;
 										}
-										cc.openCrate(player, crate, keyType, player.getLocation(), true);
+										cc.openCrate(player, crate, keyType, player.getLocation(), true, false);
 									}
 								}
 							}

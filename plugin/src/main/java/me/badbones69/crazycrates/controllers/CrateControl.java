@@ -161,7 +161,7 @@ public class CrateControl implements Listener { //Crate Control
 						cc.addPlayerKeyType(player, keyType);
 					}
 					cc.addPlayerToOpeningList(player, crate);
-					cc.openCrate(player, crate, keyType, crateLocation.getLocation(), false);
+					cc.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true);
 				}else {
 					if(crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
 						if(config.getBoolean("Settings.KnockBack")) {

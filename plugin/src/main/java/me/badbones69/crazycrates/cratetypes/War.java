@@ -31,14 +31,14 @@ public class War implements Listener {
 	private static HashMap<Player, Boolean> canPick = new HashMap<>();
 	private static HashMap<Player, Boolean> canClose = new HashMap<>();
 	
-	public static void openWarCrate(Player player, Crate crate, KeyType keyType) {
+	public static void openWarCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
 		String crateName = Methods.color(crate.getFile().getString("Crate.CrateName"));
 		Inventory inv = Bukkit.createInventory(null, 9, crateName);
 		setRandomPrizes(player, inv, crate, crateName);
 		InventoryView inventoryView = player.openInventory(inv);
 		canPick.put(player, false);
 		canClose.put(player, false);
-		if(!cc.takeKeys(1, player, crate, keyType)) {
+		if(!cc.takeKeys(1, player, crate, keyType, checkHand)) {
 			Methods.failedToTakeKey(player, crate);
 			cc.removePlayerFromOpeningList(player);
 			canClose.remove(player);

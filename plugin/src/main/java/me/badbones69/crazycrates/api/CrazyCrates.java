@@ -361,8 +361,9 @@ public class CrazyCrates {
 	 * @param player The player that is having the crate opened for them.
 	 * @param crate The crate that is being used.
 	 * @param location The location that may be needed for some crate types.
+	 * @param checkHand If it just checks the players hand or if it checks their inventory.
 	 */
-	public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate) {
+	public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
 		addPlayerToOpeningList(player, crate);
 		boolean broadcast = crate.getFile() != null && crate.getFile().getBoolean("Crate.OpeningBroadCast");
 		if(broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {
@@ -378,27 +379,27 @@ public class CrazyCrates {
 				GUIMenu.openGUI(player);
 				break;
 			case COSMIC:
-				Cosmic.openCosmic(player, crate, keyType);
+				Cosmic.openCosmic(player, crate, keyType, checkHand);
 				break;
 			case CSGO:
-				CSGO.openCSGO(player, crate, keyType);
+				CSGO.openCSGO(player, crate, keyType, checkHand);
 				break;
 			case ROULETTE:
-				Roulette.openRoulette(player, crate, keyType);
+				Roulette.openRoulette(player, crate, keyType, checkHand);
 				break;
 			case WHEEL:
-				Wheel.startWheel(player, crate, keyType);
+				Wheel.startWheel(player, crate, keyType, checkHand);
 				break;
 			case WONDER:
-				Wonder.startWonder(player, crate, keyType);
+				Wonder.startWonder(player, crate, keyType, checkHand);
 				break;
 			case WAR:
-				War.openWarCrate(player, crate, keyType);
+				War.openWarCrate(player, crate, keyType, checkHand);
 				break;
 			case QUAD_CRATE:
 				Location last = player.getLocation();
 				last.setPitch(0F);
-				QuadCrateSession session = new QuadCrateSession(player, crate, keyType, location, last);
+				QuadCrateSession session = new QuadCrateSession(player, crate, keyType, location, last, checkHand);
 				broadcast = session.startCrate();
 				break;
 			case FIRE_CRACKER:
@@ -439,7 +440,7 @@ public class CrazyCrates {
 					removePlayerFromOpeningList(player);
 					return;
 				}else {
-					if(takeKeys(1, player, crate, keyType)) {
+					if(takeKeys(1, player, crate, keyType, true)) {
 						Prize prize = crate.pickPrize(player);
 						givePrize(player, prize);
 						if(prize.useFireworks()) {
@@ -932,13 +933,22 @@ public class CrazyCrates {
 	}
 	
 	/**
-	 * Checks to see if the player has a physical key of the crate in their main hand.
+	 * Checks to see if the player has a physical key of the crate in their main hand or inventory.
 	 * @param player The player being checked.
 	 * @param crate The crate that has the key you are checking.
+	 * @param checkHand If it just checks the players hand or if it checks their inventory.
 	 * @return True if they have the key and false if not.
 	 */
-	public boolean hasPhysicalKey(Player player, Crate crate) {
-		return Methods.isSimilar(player, crate);
+	public boolean hasPhysicalKey(Player player, Crate crate, boolean checkHand) {
+		List<ItemStack> items = checkHand ? Arrays.asList(nmsSupport.getItemInMainHand(player)) : Arrays.asList(player.getInventory().getContents());
+		for(ItemStack item : items) {
+			if(item != null) {
+				if(isKeyFromCrate(item, crate)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -1037,26 +1047,30 @@ public class CrazyCrates {
 	 * @param player The player you wish to take keys from.
 	 * @param crate The crate key you are taking.
 	 * @param keyType The type of key you are taking from the player.
+	 * @param checkHand If it just checks the players hand or if it checks their inventory.
 	 * @return Returns true if successfully taken keys and false if not.
 	 */
-	public boolean takeKeys(int amount, Player player, Crate crate, KeyType keyType) {
+	public boolean takeKeys(int amount, Player player, Crate crate, KeyType keyType, boolean checkHand) {
 		switch(keyType) {
 			case PHYSICAL_KEY:
 				int left = amount;
 				try {
-					ItemStack item = nmsSupport.getItemInMainHand(player);
-					if(item != null) {
-						if(isKeyFromCrate(item, crate)) {
-							int i = item.getAmount();
-							if((left - i) >= 0) {
-								player.getInventory().removeItem(item);
-								left -= i;
-							}else {
-								item.setAmount(item.getAmount() - left);
-								left = 0;
-							}
-							if(left <= 0) {
-								return true;
+					System.out.println(checkHand);
+					List<ItemStack> items = checkHand ? Arrays.asList(nmsSupport.getItemInMainHand(player)) : Arrays.asList(player.getInventory().getContents());
+					for(ItemStack item : items) {
+						if(item != null) {
+							if(isKeyFromCrate(item, crate)) {
+								int i = item.getAmount();
+								if((left - i) >= 0) {
+									player.getInventory().removeItem(item);
+									left -= i;
+								}else {
+									item.setAmount(item.getAmount() - left);
+									left = 0;
+								}
+								if(left <= 0) {
+									return true;
+								}
 							}
 						}
 					}
