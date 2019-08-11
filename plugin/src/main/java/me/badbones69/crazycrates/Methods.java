@@ -6,6 +6,7 @@ import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FireworkDamageEvent;
+import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -177,7 +178,13 @@ public class Methods {
 	}
 	
 	public static boolean isSimilar(Player player, Crate crate) {
-		return isSimilar(cc.getNMSSupport().getItemInMainHand(player), crate);
+		boolean check = isSimilar(cc.getNMSSupport().getItemInMainHand(player), crate);
+		if(!check) {
+			if(Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+				check = isSimilar(player.getEquipment().getItemInOffHand(), crate);
+			}
+		}
+		return check;
 	}
 	
 	public static boolean isSimilar(ItemStack itemStack, Crate crate) {
