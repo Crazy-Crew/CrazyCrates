@@ -940,7 +940,15 @@ public class CrazyCrates {
 	 * @return True if they have the key and false if not.
 	 */
 	public boolean hasPhysicalKey(Player player, Crate crate, boolean checkHand) {
-		List<ItemStack> items = checkHand ? Arrays.asList(nmsSupport.getItemInMainHand(player)) : Arrays.asList(player.getInventory().getContents());
+		List<ItemStack> items = new ArrayList<>();
+		if(checkHand) {
+			items.add(nmsSupport.getItemInMainHand(player));
+			if(Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+				items.add(player.getEquipment().getItemInOffHand());
+			}
+		}else {
+			items.addAll(Arrays.asList(player.getInventory().getContents()));
+		}
 		for(ItemStack item : items) {
 			if(item != null) {
 				if(isKeyFromCrate(item, crate)) {
@@ -1055,8 +1063,15 @@ public class CrazyCrates {
 			case PHYSICAL_KEY:
 				int left = amount;
 				try {
-					System.out.println(checkHand);
-					List<ItemStack> items = checkHand ? Arrays.asList(nmsSupport.getItemInMainHand(player)) : Arrays.asList(player.getInventory().getContents());
+					List<ItemStack> items = new ArrayList<>();
+					if(checkHand) {
+						items.add(nmsSupport.getItemInMainHand(player));
+						if(Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+							items.add(player.getEquipment().getItemInOffHand());
+						}
+					}else {
+						items.addAll(Arrays.asList(player.getInventory().getContents()));
+					}
 					for(ItemStack item : items) {
 						if(item != null) {
 							if(isKeyFromCrate(item, crate)) {
