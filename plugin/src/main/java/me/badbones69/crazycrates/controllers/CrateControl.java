@@ -238,7 +238,7 @@ public class CrateControl implements Listener { //Crate Control
 	@EventHandler
 	public void onPickup(EntityPickupItemEvent e) {
 		if (e.getEntity() instanceof Player) {
-			final Player player = ((OfflinePlayer) e).getPlayer();
+			Player player = ((OfflinePlayer) e).getPlayer();
 			if(cc.isInOpeningList(player)) {
 				e.setCancelled(true);
 			}
