@@ -1,27 +1,5 @@
 package me.badbones69.crazycrates.controllers;
 
-import java.util.HashMap;
-
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Sound;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
-
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.FileManager.Files;
@@ -32,35 +10,54 @@ import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
 import me.badbones69.crazycrates.cratetypes.QuickCrate;
 import me.badbones69.crazycrates.multisupport.Version;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
+
+import java.util.HashMap;
 
 public class CrateControl implements Listener { //Crate Control
-
+	
 	/**
 	 * A list of crate locations that are in use.
 	 */
 	public static HashMap<Player, Location> inUse = new HashMap<>();
-
-	private final CrazyCrates cc = CrazyCrates.getInstance();
-
+	
+	private CrazyCrates cc = CrazyCrates.getInstance();
+	
 	/**
 	 * This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
 	 */
 	@EventHandler
 	public void onCrateInventoryClick(InventoryClickEvent e) {
-		final Inventory inv = e.getInventory();
+		Inventory inv = e.getInventory();
 		if(inv != null) {
-			for(final Crate crate : cc.getCrates()) {
+			for(Crate crate : cc.getCrates()) {
 				if(e.getView().getTitle().equals(crate.getCrateInventoryName())) {
 					e.setCancelled(true);
 				}
 			}
 		}
 	}
-
+	
 	@EventHandler
 	public void onCrateOpen(PlayerInteractEvent e) {
-		final Player player = e.getPlayer();
-		final FileConfiguration config = Files.CONFIG.getFile();
+		Player player = e.getPlayer();
+		FileConfiguration config = Files.CONFIG.getFile();
 		if(Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
 			if(e.getHand() == EquipmentSlot.OFF_HAND) {
 				if(cc.isKey(player.getInventory().getItemInOffHand())) {
@@ -70,10 +67,10 @@ public class CrateControl implements Listener { //Crate Control
 				return;
 			}
 		}
-		final Block clickedBlock = e.getClickedBlock();
+		Block clickedBlock = e.getClickedBlock();
 		if(e.getAction() == Action.LEFT_CLICK_BLOCK) {
 			//Loops through all loaded physical locations.
-			for(final CrateLocation loc : cc.getCrateLocations()) {
+			for(CrateLocation loc : cc.getCrateLocations()) {
 				//Checks to see if the clicked block is the same as a physical crate.
 				if(loc.getLocation().equals(clickedBlock.getLocation())) {
 					//Checks to see if the player is removing a crate location.
@@ -113,9 +110,9 @@ public class CrateControl implements Listener { //Crate Control
 				player.updateInventory();
 			}
 			//Checks to see if the clicked block is a physical crate.
-			final CrateLocation crateLocation = cc.getCrateLocation(clickedBlock.getLocation());
+			CrateLocation crateLocation = cc.getCrateLocation(clickedBlock.getLocation());
 			if(crateLocation != null && crateLocation.getCrate() != null) {
-				final Crate crate = crateLocation.getCrate();
+				Crate crate = crateLocation.getCrate();
 				e.setCancelled(true);
 				if(crate.getCrateType() == CrateType.MENU) {
 					GUIMenu.openGUI(player);
@@ -164,7 +161,7 @@ public class CrateControl implements Listener { //Crate Control
 					if(useQuickCrateAgain) {
 						QuickCrate.endQuickCrate(player, crateLocation.getLocation());
 					}
-					final KeyType keyType = isPhysical ? KeyType.PHYSICAL_KEY : KeyType.VIRTUAL_KEY;
+					KeyType keyType = isPhysical ? KeyType.PHYSICAL_KEY : KeyType.VIRTUAL_KEY;
 					if(crate.getCrateType() == CrateType.COSMIC) {//Only cosmic crate type uses this method.
 						cc.addPlayerKeyType(player, keyType);
 					}
@@ -176,7 +173,7 @@ public class CrateControl implements Listener { //Crate Control
 							knockBack(player, clickedBlock.getLocation());
 						}
 						if(config.contains("Settings.Need-Key-Sound")) {
-							final Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
+							Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
 							if(sound != null) {
 								player.playSound(player.getLocation(), sound, 1f, 1f);
 							}
@@ -186,13 +183,13 @@ public class CrateControl implements Listener { //Crate Control
 				}
 			}
 		}
-
+		
 	}
-
+	
 	@EventHandler
 	public void onAdminMenuClick(InventoryClickEvent e) {
-		final Inventory inv = e.getInventory();
-		final Player player = (Player) e.getWhoClicked();
+		Inventory inv = e.getInventory();
+		Player player = (Player) e.getWhoClicked();
 		if(inv != null) {
 			if(e.getView().getTitle().equals(Methods.color("&4&lAdmin Keys"))) {
 				e.setCancelled(true);
@@ -202,15 +199,15 @@ public class CrateControl implements Listener { //Crate Control
 				}
 				//Added the >= due to an error about a raw slot set at -999.
 				if(e.getRawSlot() < inv.getSize() && e.getRawSlot() >= 0) {//Clicked in the admin menu.
-					final ItemStack item = inv.getItem(e.getRawSlot());
+					ItemStack item = inv.getItem(e.getRawSlot());
 					if(cc.isKey(item)) {
-						final Crate crate = cc.getCrateFromKey(item);
+						Crate crate = cc.getCrateFromKey(item);
 						if(e.getAction() == InventoryAction.PICKUP_ALL) {
 							player.getInventory().addItem(crate.getKey());
 						}else if(e.getAction() == InventoryAction.PICKUP_HALF) {
 							cc.addKeys(1, player, crate, KeyType.VIRTUAL_KEY);
 							String name = null;
-							final ItemStack key = crate.getKey();
+							ItemStack key = crate.getKey();
 							if(key.hasItemMeta()) {
 								if(key.getItemMeta().hasDisplayName()) {
 									name = key.getItemMeta().getDisplayName();
@@ -223,10 +220,10 @@ public class CrateControl implements Listener { //Crate Control
 			}
 		}
 	}
-
+	
 	@EventHandler
 	public void onLeave(PlayerQuitEvent e) {
-		final Player player = e.getPlayer();
+		Player player = e.getPlayer();
 		if(cc.hasCrateTask(player)) {
 			cc.endCrate(player);
 		}
@@ -247,14 +244,14 @@ public class CrateControl implements Listener { //Crate Control
 			}
 		}
 	}
-
+	
 	private void knockBack(Player player, Location loc) {
-		final Vector v = player.getLocation().toVector().subtract(loc.toVector()).normalize().multiply(1).setY(.1);
+		Vector v = player.getLocation().toVector().subtract(loc.toVector()).normalize().multiply(1).setY(.1);
 		if(player.isInsideVehicle()) {
 			player.getVehicle().setVelocity(v);
 			return;
 		}
 		player.setVelocity(v);
 	}
-
+	
 }
