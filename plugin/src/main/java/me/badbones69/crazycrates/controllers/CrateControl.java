@@ -12,7 +12,6 @@ import me.badbones69.crazycrates.cratetypes.QuickCrate;
 import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -243,7 +242,7 @@ public class CrateControl implements Listener { //Crate Control
 	@EventHandler
 	public void onPickup(EntityPickupItemEvent e) {
 		if(e.getEntity() instanceof Player) {
-			Player player = ((OfflinePlayer) e).getPlayer();
+			Player player = (Player) e.getEntity();
 			if(cc.isInOpeningList(player)) {
 				e.setCancelled(true);
 			}
