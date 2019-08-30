@@ -11,6 +11,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +47,8 @@ public class ItemBuilder {
 	private EntityType entityType;
 	private HashMap<String, String> namePlaceholders;
 	private HashMap<String, String> lorePlaceholders;
-	private CrazyCrates cc = CrazyCrates.getInstance();
+	private static CrazyCrates cc = CrazyCrates.getInstance();
+	private static Version version = Version.getCurrentVersion();
 	
 	/**
 	 * The initial starting point for making an item.
@@ -91,7 +93,7 @@ public class ItemBuilder {
 			if(nbt.hasKey("Unbreakable")) {
 				itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
 			}
-			if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+			if(version.isNewer(Version.v1_12_R1)) {
 				if(itemMeta instanceof org.bukkit.inventory.meta.Damageable) {
 					itemBuilder.setDamage(((org.bukkit.inventory.meta.Damageable) itemMeta).getDamage());
 				}
@@ -135,7 +137,7 @@ public class ItemBuilder {
 		Material m = Material.matchMaterial(material);
 		if(m != null) {// Sets the material.
 			this.material = m;
-			if(Version.getCurrentVersion().isNewer(Version.v1_8_R3) && Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {
+			if(version.isNewer(Version.v1_8_R3) && version.isOlder(Version.v1_13_R2)) {
 				if(m == Material.matchMaterial("MONSTER_EGG")) {
 					this.entityType = EntityType.fromId(damage);
 					this.damage = 0;
@@ -522,10 +524,16 @@ public class ItemBuilder {
 			ItemMeta itemMeta = item.getItemMeta();
 			itemMeta.setDisplayName(getUpdatedName());
 			itemMeta.setLore(getUpdatedLore());
-			if(Version.getCurrentVersion().isNewer(Version.v1_10_R1)) {
+			if(version.isSame(Version.v1_8_R3)) {
+				if(isHead && !isHash && player != null && !player.equals("")) {
+					SkullMeta skullMeta = (SkullMeta) itemMeta;
+					skullMeta.setOwner(player);
+				}
+			}
+			if(version.isNewer(Version.v1_10_R1)) {
 				itemMeta.setUnbreakable(unbreakable);
 			}
-			if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+			if(version.isNewer(Version.v1_12_R1)) {
 				if(itemMeta instanceof org.bukkit.inventory.meta.Damageable) {
 					((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(damage);
 				}
@@ -538,14 +546,14 @@ public class ItemBuilder {
 			addGlow(item);
 			NBTItem nbt = new NBTItem(item);
 			if(isHead) {
-				if(!isHash && player != null && !player.equals("")) {
+				if(!isHash && player != null && !player.equals("") && version.isNewer(Version.v1_8_R3)) {
 					nbt.setString("SkullOwner", player);
 				}
 			}
 			if(isMobEgg) {
 				nbt.addCompound("EntityTag").setString("id", "minecraft:" + entityType.name());
 			}
-			if(Version.getCurrentVersion().isOlder(Version.v1_11_R1)) {
+			if(version.isOlder(Version.v1_11_R1)) {
 				if(unbreakable) {
 					nbt.setBoolean("Unbreakable", true);
 					nbt.setInteger("HideFlags", 4);
