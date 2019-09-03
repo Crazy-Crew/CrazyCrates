@@ -674,26 +674,17 @@ public class CrazyCrates {
 		}
 		Inventory inv = Bukkit.createInventory(null, slots, Methods.color(file.getString("Crate.Name")));
 		for(String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
-			String id = file.getString("Crate.Prizes." + reward + ".DisplayItem");
-			String name = file.getString("Crate.Prizes." + reward + ".DisplayName");
+			String id = file.getString("Crate.Prizes." + reward + ".DisplayItem", "Stone");
+			String name = file.getString("Crate.Prizes." + reward + ".DisplayName", "");
 			List<String> lore = file.getStringList("Crate.Prizes." + reward + ".Lore");
 			HashMap<Enchantment, Integer> enchantments = new HashMap<>();
-			boolean glowing = false;
-			int amount = 1;
-			String player = "";
-			if(file.contains("Crate.Prizes." + reward + ".Glowing")) {
-				glowing = file.getBoolean("Crate.Prizes." + reward + ".Glowing");
-			}
-			if(file.contains("Crate.Prizes." + reward + ".Player")) {
-				player = file.getString("Crate.Prizes." + reward + ".Player");
-			}
-			if(file.contains("Crate.Prizes." + reward + ".DisplayAmount")) {
-				amount = file.getInt("Crate.Prizes." + reward + ".DisplayAmount");
-			}
-			if(file.contains("Crate.Prizes." + reward + ".DisplayEnchantments")) {
-				for(String enchant : file.getStringList("Crate.Prizes." + reward + ".DisplayEnchantments")) {
-					String[] b = enchant.split(":");
-					enchantments.put(Enchantment.getByName(b[0]), Integer.parseInt(b[1]));
+			String player = file.getString("Crate.Prizes." + reward + ".Player", "");
+			boolean glowing = file.getBoolean("Crate.Prizes." + reward + ".Glowing");
+			int amount = file.getInt("Crate.Prizes." + reward + ".DisplayAmount", 1);
+			for(String enchantmentName : file.getStringList("Crate.Prizes." + reward + ".DisplayEnchantments")) {
+				Enchantment enchantment = Methods.getEnchantment(enchantmentName.split(":")[0]);
+				if(enchantment != null) {
+					enchantments.put(enchantment, Integer.parseInt(enchantmentName.split(":")[1]));
 				}
 			}
 			try {
