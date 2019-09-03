@@ -1281,14 +1281,10 @@ public class CrazyCrates {
 			.setPlayer(file.getString(path + "Player"));
 			HashMap<Enchantment, Integer> enchants = new HashMap<>();
 			if(file.contains(path + "DisplayEnchantments")) {
-				for(String enchant : file.getStringList(path + "DisplayEnchantments")) {
-					for(Enchantment enc : Enchantment.values()) {
-						if(Methods.getEnchantments().contains(enc.getName())) {
-							enchant = enchant.toLowerCase();
-							if(enchant.startsWith(enc.getName().toLowerCase() + ":") || enchant.startsWith(Methods.getEnchantmentName(enc).toLowerCase() + ":")) {
-								itemBuilder.addEnchantments(enc, Integer.parseInt(enchant.split(":")[1]));
-							}
-						}
+				for(String enchantmentName : file.getStringList(path + "DisplayEnchantments")) {
+					Enchantment enchantment = Methods.getEnchantment(enchantmentName.split(":")[0]);
+					if(enchantment != null) {
+						itemBuilder.addEnchantments(enchantment, Integer.parseInt(enchantmentName.split(":")[1]));
 					}
 				}
 			}

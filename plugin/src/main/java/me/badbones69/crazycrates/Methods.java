@@ -278,6 +278,29 @@ public class Methods {
 		return getEnchantmentList().keySet();
 	}
 	
+	public static Enchantment getEnchantment(String enchantmentName) {
+		HashMap<String, String> enchantments = getEnchantmentList();
+		enchantmentName = enchantmentName.replace("-", "").replace("_", "").replace(" ", "");
+		for(Enchantment enchantment : Enchantment.values()) {
+			try {
+				if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+					//MC 1.13+ has the correct names.
+					if(enchantment.getKey().getKey().replace("-", "").replace("_", "").replace(" ", "").equalsIgnoreCase(enchantmentName)) {
+						return enchantment;
+					}
+				}else {
+					if(enchantment.getName().replace("-", "").replace("_", "").replace(" ", "").equalsIgnoreCase(enchantmentName) ||
+					(enchantments.get(enchantment.getName()) != null &&
+					enchantments.get(enchantment.getName()).replace("-", "").replace("_", "").replace(" ", "").equalsIgnoreCase(enchantmentName))) {
+						return enchantment;
+					}
+				}
+			}catch(Exception ignore) {//If any null enchantments are found they may cause errors.
+			}
+		}
+		return null;
+	}
+	
 	public static String getEnchantmentName(Enchantment en) {
 		HashMap<String, String> enchants = getEnchantmentList();
 		if(enchants.get(en.getName()) == null) {
