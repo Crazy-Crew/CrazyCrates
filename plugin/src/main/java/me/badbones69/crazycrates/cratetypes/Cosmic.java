@@ -73,7 +73,7 @@ public class Cosmic implements Listener {
 	
 	private static Tier pickTier(Player player) {
 		Crate crate = cc.getOpeningCrate(player);
-		if(!crate.getTiers().isEmpty()) {
+		if(crate.getTiers() != null && !crate.getTiers().isEmpty()) {
 			for(int stopLoop = 0; stopLoop <= 100; stopLoop++) {
 				for(Tier tier : crate.getTiers()) {
 					int chance = tier.getChance();
