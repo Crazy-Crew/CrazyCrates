@@ -19,7 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -86,9 +85,7 @@ public class CrateControl implements Listener { //Crate Control
 						}
 					}
 					e.setCancelled(true);
-					if(loc.getCrateType() == CrateType.MENU) {
-						return;
-					}else {
+					if(loc.getCrateType() != CrateType.MENU) {
 						if(loc.getCrate().isPreviewEnabled()) {
 							Preview.setPlayerInMenu(player, false);
 							Preview.openNewPreview(player, loc.getCrate());
@@ -236,16 +233,6 @@ public class CrateControl implements Listener { //Crate Control
 		}
 		if(cc.isInOpeningList(player)) {
 			cc.removePlayerFromOpeningList(player);
-		}
-	}
-	
-	@EventHandler
-	public void onPickup(EntityPickupItemEvent e) {
-		if(e.getEntity() instanceof Player) {
-			Player player = (Player) e.getEntity();
-			if(cc.isInOpeningList(player)) {
-				e.setCancelled(true);
-			}
 		}
 	}
 	
