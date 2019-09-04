@@ -10,6 +10,7 @@ import me.badbones69.crazycrates.api.objects.*;
 import me.badbones69.crazycrates.controllers.CrateControl;
 import me.badbones69.crazycrates.controllers.GUIMenu;
 import me.badbones69.crazycrates.cratetypes.*;
+import me.badbones69.crazycrates.multisupport.Support;
 import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
@@ -21,6 +22,7 @@ import me.badbones69.crazycrates.multisupport.nms.v1_14_R1.NMS_v1_14_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_8_R3.NMS_v1_8_R3;
 import me.badbones69.crazycrates.multisupport.nms.v1_9_R1.NMS_v1_9_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_9_R2.NMS_v1_9_R2;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -213,19 +215,21 @@ public class CrazyCrates {
 							altPrize = new Prize("Alternative-Prize",
 							file.getStringList(path + ".Alternative-Prize.Messages"),
 							file.getStringList(path + ".Alternative-Prize.Commands"),
+							null,//No editor items
 							getItems(file, prize + ".Alternative-Prize"));
 						}
 					}
-					ArrayList<ItemStack> itemPrizes = new ArrayList<>(getItems(file, prize));
+					ArrayList<ItemStack> editorItems = new ArrayList<>();
 					if(file.contains(path + ".Editor-Items")) {
 						for(Object list : file.getList(path + ".Editor-Items")) {
-							itemPrizes.add((ItemStack) list);
+							editorItems.add((ItemStack) list);
 						}
 					}
 					prizes.add(new Prize(prize, getDisplayItem(file, prize),
 					file.getStringList(path + ".Messages"),
 					file.getStringList(path + ".Commands"),
-					itemPrizes,
+					editorItems,
+					getItems(file, prize),
 					crateName,
 					file.getInt(path + ".Chance", 100),
 					file.getInt(path + ".MaxRange", 100),
@@ -704,11 +708,22 @@ public class CrazyCrates {
 	public void givePrize(Player player, Prize prize) {
 		if(prize != null) {
 			prize = prize.hasBlacklistPermission(player) ? prize.getAltPrize() : prize;
-			for(ItemStack i : prize.getItems()) {
+			for(ItemStack item : prize.getItems()) {
 				if(!Methods.isInventoryFull(player)) {
-					player.getInventory().addItem(i);
+					player.getInventory().addItem(item);
 				}else {
-					player.getWorld().dropItemNaturally(player.getLocation(), i);
+					player.getWorld().dropItemNaturally(player.getLocation(), item);
+				}
+			}
+			for(ItemBuilder item : prize.getItemBuilders()) {
+				if(Support.PLACEHOLDERAPI.isPluginLoaded()) {
+					item.setName(PlaceholderAPI.setPlaceholders(player, item.getName()));
+					item.setLore(PlaceholderAPI.setPlaceholders(player, item.getLore()));
+				}
+				if(!Methods.isInventoryFull(player)) {
+					player.getInventory().addItem(item.build());
+				}else {
+					player.getWorld().dropItemNaturally(player.getLocation(), item.build());
 				}
 			}
 			for(String command : prize.getCommands()) {// /give %player% iron %random%:1-64
@@ -724,7 +739,7 @@ public class CrazyCrates {
 								command += pickNumber(min, max) + " ";
 							}catch(Exception e) {
 								command += "1 ";
-								Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> The prize " + prize.getName() + " in the " + prize.getCrate() + " crate has errored when trying to run a command.");
+								Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> The prize " + prize.getName() + " in the " + prize.getCrate() + " crate has caused an error when trying to run a command.");
 								Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> Command: " + cmd);
 							}
 						}else {
@@ -733,10 +748,16 @@ public class CrazyCrates {
 					}
 					command = command.substring(0, command.length() - 1);
 				}
+				if(Support.PLACEHOLDERAPI.isPluginLoaded()) {
+					command = PlaceholderAPI.setPlaceholders(player, command);
+				}
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Methods.color(command.replace("%Player%", player.getName()).replace("%player%", player.getName())));
 			}
-			for(String msg : prize.getMessages()) {
-				player.sendMessage(Methods.color(msg).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())
+			for(String message : prize.getMessages()) {
+				if(Support.PLACEHOLDERAPI.isPluginLoaded()) {
+					message = PlaceholderAPI.setPlaceholders(player, message);
+				}
+				player.sendMessage(Methods.color(message).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())
 				.replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
 			}
 		}else {
@@ -1285,8 +1306,8 @@ public class CrazyCrates {
 		}
 	}
 	
-	private ArrayList<ItemStack> getItems(FileConfiguration file, String prize) {
-		ArrayList<ItemStack> items = new ArrayList<>();
+	private ArrayList<ItemBuilder> getItems(FileConfiguration file, String prize) {
+		ArrayList<ItemBuilder> items = new ArrayList<>();
 		for(String l : file.getStringList("Crate.Prizes." + prize + ".Items")) {
 			ArrayList<String> lore = new ArrayList<>();
 			HashMap<Enchantment, Integer> enchantments = new HashMap<>();
@@ -1326,9 +1347,9 @@ public class CrazyCrates {
 				}
 			}
 			try {
-				items.add(new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setEnchantments(enchantments).setPlayer(player).setUnbreakable(unbreaking).build());
+				items.add(new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setEnchantments(enchantments).setPlayer(player).setUnbreakable(unbreaking));
 			}catch(Exception e) {
-				items.add(new ItemBuilder().setMaterial(useNewMaterial ? "RED_TERRACOTTA" : "STAINED_CLAY:14").setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize)).build());
+				items.add(new ItemBuilder().setMaterial(useNewMaterial ? "RED_TERRACOTTA" : "STAINED_CLAY:14").setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize)));
 			}
 		}
 		return items;

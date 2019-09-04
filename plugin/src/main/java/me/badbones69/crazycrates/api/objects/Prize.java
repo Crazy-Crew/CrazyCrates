@@ -18,6 +18,7 @@ public class Prize {
 	private List<String> messages;
 	private List<String> commands;
 	private ArrayList<ItemStack> items;
+	private ArrayList<ItemBuilder> itemBuilders;
 	private Prize altPrize;
 	private List<String> blackListPermissions;
 	
@@ -29,10 +30,11 @@ public class Prize {
 	 * @param commands The commands that run when the prize is won.
 	 * @param items The ItemStacks that are given to the player that wins.
 	 */
-	public Prize(String name, List<String> messages, List<String> commands, ArrayList<ItemStack> items) {
+	public Prize(String name, List<String> messages, List<String> commands, ArrayList<ItemStack> items, ArrayList<ItemBuilder> itemBuilders) {
 		this.name = name != null ? name : "&4No name Found!";
 		this.crate = "";
 		this.items = items != null ? items : new ArrayList<>();
+		this.itemBuilders = itemBuilders != null ? itemBuilders : new ArrayList<>();
 		this.chance = 0;
 		this.firework = false;
 		this.maxRange = 100;
@@ -60,11 +62,12 @@ public class Prize {
 	 * @param altPrize The alternative prize that is won if the player has a blacklist permission.
 	 */
 	public Prize(String name, ItemBuilder displayItem, List<String> messages, List<String> commands,
-	ArrayList<ItemStack> items, String crate, int chance, int maxRange, boolean firework, List<String> blackListPermissions,
+	ArrayList<ItemStack> items, ArrayList<ItemBuilder> itemBuilders, String crate, int chance, int maxRange, boolean firework, List<String> blackListPermissions,
 	List<Tier> tiers, Prize altPrize) {
 		this.name = name != null ? name : "&4No name Found!";
 		this.crate = crate;
 		this.items = items != null ? items : new ArrayList<>();
+		this.itemBuilders = itemBuilders != null ? itemBuilders : new ArrayList<>();
 		this.chance = chance;
 		this.firework = firework;
 		this.maxRange = maxRange;
@@ -120,10 +123,17 @@ public class Prize {
 	}
 	
 	/**
-	 * @return Returns the ItemStacks that are given to the player that wins.
+	 * @return Returns the Editor ItemStacks that are given to the player that wins.
 	 */
 	public ArrayList<ItemStack> getItems() {
 		return items;
+	}
+	
+	/**
+	 * @return Returns the ItemBuilders for all the custom items made from the Items: option.
+	 */
+	public ArrayList<ItemBuilder> getItemBuilders() {
+		return itemBuilders;
 	}
 	
 	/**
