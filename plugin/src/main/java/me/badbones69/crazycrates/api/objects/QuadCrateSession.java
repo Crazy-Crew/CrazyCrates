@@ -43,6 +43,7 @@ public class QuadCrateSession {
 	private List<Location> schematicLocations = new ArrayList<>();
 	private List<BukkitRunnable> ongoingTasks = new ArrayList<>();
 	private HashMap<Location, BlockState> oldBlocks = new HashMap<>();
+	private HashMap<Location, BlockState> oldChestBlocks = new HashMap<>();
 	
 	public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean checkHand) {
 		this.instance = this;
@@ -59,21 +60,7 @@ public class QuadCrateSession {
 	}
 	
 	public static void endAllCrates() {
-		for(QuadCrateSession session : crateSessions) {
-			for(Location location : session.getOldBlocks().keySet()) {
-				BlockState oldState = session.getOldBlocks().get(location);
-				location.getBlock().setType(oldState.getType(), false);
-				oldState.update(true);
-			}
-			for(Location location : session.getChestLocations()) {
-				location.getBlock().setType(Material.AIR);
-			}
-			for(Entity entity : session.getDisplayedRewards()) {
-				entity.remove();
-			}
-			session.getPlayer().teleport(session.getLastLocation());
-			cc.removePlayerFromOpeningList(session.getPlayer());
-		}
+		crateSessions.forEach(session -> session.endCrateForce(false));
 		crateSessions.clear();
 	}
 	
@@ -148,20 +135,18 @@ public class QuadCrateSession {
 		}
 		player.teleport(spawnLocation.clone().add(.5, 0, .5));
 		//Shove other players away from the player
-		for(Entity entity : shovePlayers) {
-			entity.setVelocity(entity.getLocation().toVector().subtract(spawnLocation.clone().toVector()).normalize().setY(1));
-		}
+		shovePlayers.forEach(entity -> entity.getLocation().toVector().subtract(spawnLocation.clone().toVector()).normalize().setY(1));
 		//Add the chestLocations
 		chestLocations.add(spawnLocation.clone().add(2, 0, 0));//East
 		chestLocations.add(spawnLocation.clone().add(0, 0, 2));//South
 		chestLocations.add(spawnLocation.clone().add(-2, 0, 0));//West
 		chestLocations.add(spawnLocation.clone().add(0, 0, -2));//North
-		for(Location location : chestLocations) {
-			chestsOpened.put(location, false);
-		}
+		chestLocations.forEach(location -> chestsOpened.put(location, false));
 		//Save the oldBlock states
 		for(Location loc : schematicLocations) {
-			if(!chestLocations.contains(loc)) {
+			if(chestLocations.contains(loc)) {
+				oldChestBlocks.put(loc.clone(), loc.getBlock().getState());
+			}else {
 				oldBlocks.put(loc.clone(), loc.getBlock().getState());
 			}
 		}
@@ -204,7 +189,7 @@ public class QuadCrateSession {
 		cc.addCrateTask(player, new BukkitRunnable() {
 			@Override
 			public void run() {
-				endCrateForce();
+				endCrateForce(true);
 				player.sendMessage(Messages.OUT_OF_TIME.getMessage());
 			}
 		}.runTaskLater(cc.getPlugin(), cc.getQuadCrateTimer()));
@@ -212,20 +197,12 @@ public class QuadCrateSession {
 	}
 	
 	public void endCrate() {
-		for(Location location : oldBlocks.keySet()) {
-			BlockState oldState = oldBlocks.get(location);
-			location.getBlock().setType(oldState.getType(), false);
-			oldState.update(true);
-		}
+		oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				for(Location location : chestLocations) {
-					location.getBlock().setType(Material.AIR);
-				}
-				for(Entity entity : displayedRewards) {
-					entity.remove();
-				}
+				chestLocations.forEach(location -> oldChestBlocks.get(location).update(true, false));
+				displayedRewards.forEach(Entity :: remove);
 				player.teleport(lastLocation);
 				cc.endCrate(player);
 				cc.removePlayerFromOpeningList(player);
@@ -234,21 +211,15 @@ public class QuadCrateSession {
 		}.runTaskLater(cc.getPlugin(), 3 * 20);
 	}
 	
-	public void endCrateForce() {
-		for(Location location : oldBlocks.keySet()) {
-			BlockState oldState = oldBlocks.get(location);
-			location.getBlock().setType(oldState.getType(), false);
-			oldState.update(true);
-		}
-		for(Location location : chestLocations) {
-			location.getBlock().setType(Material.AIR);
-		}
-		for(Entity entity : displayedRewards) {
-			entity.remove();
-		}
+	public void endCrateForce(boolean removeFromSessions) {
+		oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
+		chestLocations.forEach(location -> oldChestBlocks.get(location).update(true, false));
+		displayedRewards.forEach(Entity :: remove);
 		player.teleport(lastLocation);
 		cc.removePlayerFromOpeningList(player);
-		crateSessions.remove(instance);
+		if(removeFromSessions) {
+			crateSessions.remove(instance);
+		}
 	}
 	
 	public Crate getCrate() {
@@ -315,6 +286,10 @@ public class QuadCrateSession {
 	
 	public HashMap<Location, BlockState> getOldBlocks() {
 		return oldBlocks;
+	}
+	
+	public HashMap<Location, BlockState> getOldChestBlocks() {
+		return oldChestBlocks;
 	}
 	
 	private ArrayList<Location> getSpiralLocationsClockwise(Location center) {
