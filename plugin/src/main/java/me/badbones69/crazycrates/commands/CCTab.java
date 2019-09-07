@@ -39,9 +39,11 @@ public class CCTab implements TabCompleter {
 			switch(args[0].toLowerCase()) {
 				case "additem":
 				case "open":
-				case "set":
 					cc.getCrates().forEach(crate -> completions.add(crate.getName()));
 					completions.remove("Menu");//Takes out a crate that doesn't exist as a file.
+					break;
+				case "set":
+					cc.getCrates().forEach(crate -> completions.add(crate.getName()));
 					break;
 				case "tp":
 					cc.getCrateLocations().forEach(location -> completions.add(location.getID()));
