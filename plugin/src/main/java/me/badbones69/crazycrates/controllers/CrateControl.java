@@ -114,7 +114,10 @@ public class CrateControl implements Listener { //Crate Control
 				Crate crate = crateLocation.getCrate();
 				e.setCancelled(true);
 				if(crate.getCrateType() == CrateType.MENU) {
-					GUIMenu.openGUI(player);
+					//This is to stop players in QuadCrate to not be able to try and open a crate set to menu.
+					if(!cc.isInOpeningList(player)) {
+						GUIMenu.openGUI(player);
+					}
 					return;
 				}
 				boolean hasKey = false;
@@ -184,7 +187,6 @@ public class CrateControl implements Listener { //Crate Control
 				}
 			}
 		}
-		
 	}
 	
 	@EventHandler
