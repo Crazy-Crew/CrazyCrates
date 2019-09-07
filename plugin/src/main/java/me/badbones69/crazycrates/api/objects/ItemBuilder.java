@@ -1,17 +1,24 @@
 package me.badbones69.crazycrates.api.objects;
 
+import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.multisupport.SkullCreator;
 import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +52,8 @@ public class ItemBuilder {
 	private ItemStack referenceItem;
 	private boolean isMobEgg;
 	private EntityType entityType;
+	private PotionType potionType;
+	private Color armorColor;
 	private HashMap<String, String> namePlaceholders;
 	private HashMap<String, String> lorePlaceholders;
 	private static CrazyCrates cc = CrazyCrates.getInstance();
@@ -69,6 +78,8 @@ public class ItemBuilder {
 		this.hideItemFlags = false;
 		this.glowing = false;
 		this.entityType = EntityType.BAT;
+		this.potionType = null;
+		this.armorColor = null;
 		this.isMobEgg = false;
 		this.namePlaceholders = new HashMap<>();
 		this.lorePlaceholders = new HashMap<>();
@@ -129,10 +140,15 @@ public class ItemBuilder {
 	 * @return The ItemBuilder with updated info.
 	 */
 	public ItemBuilder setMaterial(String material) {
-		if(material.contains(":")) {// Sets the durability.
+		if(material.contains(":")) {// Sets the durability or another value option.
 			String[] b = material.split(":");
 			material = b[0];
-			this.damage = Integer.parseInt(b[1]);
+			if(Methods.isInt(b[1])) {//Value is durability.
+				this.damage = Integer.parseInt(b[1]);
+			}else {//Value is something else.
+				this.potionType = getPotionType(PotionEffectType.getByName(b[1]));
+				this.armorColor = getColor(b[1]);
+			}
 		}
 		Material m = Material.matchMaterial(material);
 		if(m != null) {// Sets the material.
@@ -326,6 +342,38 @@ public class ItemBuilder {
 	public ItemBuilder setEntityType(EntityType entityType) {
 		this.entityType = entityType;
 		return this;
+	}
+	
+	/**
+	 * Get the type of potion effect on the item. Only works on Tipped Arrows.
+	 * @return The PotionType set to the item.
+	 */
+	public PotionType getPotionType() {
+		return potionType;
+	}
+	
+	/**
+	 * Set the PotionType on the item.
+	 * @param potionType The PotionType added to the item.
+	 */
+	public void setPotionType(PotionType potionType) {
+		this.potionType = potionType;
+	}
+	
+	/**
+	 * Get the color leather armor is set to.
+	 * @return The Color the armor is set to.
+	 */
+	public Color getArmorColor() {
+		return armorColor;
+	}
+	
+	/**
+	 * Set the color the Leather Armor is going to be.
+	 * @param armorColor The color of the leather armor.
+	 */
+	public void setArmorColor(Color armorColor) {
+		this.armorColor = armorColor;
 	}
 	
 	/**
@@ -540,6 +588,14 @@ public class ItemBuilder {
 			}else {
 				item.setDurability((short) damage);
 			}
+			if(potionType != null) {
+				PotionMeta potionMeta = (PotionMeta) itemMeta;
+				potionMeta.setBasePotionData(new PotionData(potionType));
+			}
+			if(armorColor != null) {
+				LeatherArmorMeta leatherMeta = (LeatherArmorMeta) itemMeta;
+				leatherMeta.setColor(armorColor);
+			}
 			item.setItemMeta(itemMeta);
 			hideFlags(item);
 			item.addUnsafeEnchantments(enchantments);
@@ -614,6 +670,88 @@ public class ItemBuilder {
 			}
 		}
 		return item;
+	}
+	
+	private PotionType getPotionType(PotionEffectType type) {
+		if(type != null) {
+			if(type.equals(PotionEffectType.FIRE_RESISTANCE)) {
+				return PotionType.FIRE_RESISTANCE;
+			}else if(type.equals(PotionEffectType.HARM)) {
+				return PotionType.INSTANT_DAMAGE;
+			}else if(type.equals(PotionEffectType.HEAL)) {
+				return PotionType.INSTANT_HEAL;
+			}else if(type.equals(PotionEffectType.INVISIBILITY)) {
+				return PotionType.INVISIBILITY;
+			}else if(type.equals(PotionEffectType.JUMP)) {
+				return PotionType.JUMP;
+			}else if(type.equals(PotionEffectType.getByName("LUCK"))) {
+				return PotionType.valueOf("LUCK");
+			}else if(type.equals(PotionEffectType.NIGHT_VISION)) {
+				return PotionType.NIGHT_VISION;
+			}else if(type.equals(PotionEffectType.POISON)) {
+				return PotionType.POISON;
+			}else if(type.equals(PotionEffectType.REGENERATION)) {
+				return PotionType.REGEN;
+			}else if(type.equals(PotionEffectType.SLOW)) {
+				return PotionType.SLOWNESS;
+			}else if(type.equals(PotionEffectType.SPEED)) {
+				return PotionType.SPEED;
+			}else if(type.equals(PotionEffectType.INCREASE_DAMAGE)) {
+				return PotionType.STRENGTH;
+			}else if(type.equals(PotionEffectType.WATER_BREATHING)) {
+				return PotionType.WATER_BREATHING;
+			}else if(type.equals(PotionEffectType.WEAKNESS)) {
+				return PotionType.WEAKNESS;
+			}
+		}
+		return null;
+	}
+	
+	private Color getColor(String color) {
+		if(color != null) {
+			switch(color.toUpperCase()) {
+				case "AQUA":
+					return Color.AQUA;
+				case "BLACK":
+					return Color.BLACK;
+				case "BLUE":
+					return Color.BLUE;
+				case "FUCHSIA":
+					return Color.FUCHSIA;
+				case "GRAY":
+					return Color.GRAY;
+				case "GREEN":
+					return Color.GREEN;
+				case "LIME":
+					return Color.LIME;
+				case "MAROON":
+					return Color.MAROON;
+				case "NAVY":
+					return Color.NAVY;
+				case "OLIVE":
+					return Color.OLIVE;
+				case "ORANGE":
+					return Color.ORANGE;
+				case "PURPLE":
+					return Color.PURPLE;
+				case "RED":
+					return Color.RED;
+				case "SILVER":
+					return Color.SILVER;
+				case "TEAL":
+					return Color.TEAL;
+				case "WHITE":
+					return Color.WHITE;
+				case "YELLOW":
+					return Color.YELLOW;
+			}
+			try {
+				String[] rgb = color.split(",");
+				return Color.fromRGB(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2]));
+			}catch(Exception ignore) {
+			}
+		}
+		return null;
 	}
 	
 }

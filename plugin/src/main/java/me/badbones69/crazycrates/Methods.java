@@ -17,8 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -75,40 +73,6 @@ public class Methods {
 		fw.setFireworkMeta(fm);
 		FireworkDamageEvent.addFirework(fw);
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, fw :: detonate, 2);
-	}
-	
-	public static PotionType getPotionType(PotionEffectType type) {
-		PotionType potionType = null;
-		if(type.equals(PotionEffectType.FIRE_RESISTANCE)) {
-			potionType = PotionType.FIRE_RESISTANCE;
-		}else if(type.equals(PotionEffectType.HARM)) {
-			potionType = PotionType.INSTANT_DAMAGE;
-		}else if(type.equals(PotionEffectType.HEAL)) {
-			potionType = PotionType.INSTANT_HEAL;
-		}else if(type.equals(PotionEffectType.INVISIBILITY)) {
-			potionType = PotionType.INVISIBILITY;
-		}else if(type.equals(PotionEffectType.JUMP)) {
-			potionType = PotionType.JUMP;
-		}else if(type.equals(PotionEffectType.getByName("LUCK"))) {
-			potionType = PotionType.valueOf("LUCK");
-		}else if(type.equals(PotionEffectType.NIGHT_VISION)) {
-			potionType = PotionType.NIGHT_VISION;
-		}else if(type.equals(PotionEffectType.POISON)) {
-			potionType = PotionType.POISON;
-		}else if(type.equals(PotionEffectType.REGENERATION)) {
-			potionType = PotionType.REGEN;
-		}else if(type.equals(PotionEffectType.SLOW)) {
-			potionType = PotionType.SLOWNESS;
-		}else if(type.equals(PotionEffectType.SPEED)) {
-			potionType = PotionType.SPEED;
-		}else if(type.equals(PotionEffectType.INCREASE_DAMAGE)) {
-			potionType = PotionType.STRENGTH;
-		}else if(type.equals(PotionEffectType.WATER_BREATHING)) {
-			potionType = PotionType.WATER_BREATHING;
-		}else if(type.equals(PotionEffectType.WEAKNESS)) {
-			potionType = PotionType.WEAKNESS;
-		}
-		return potionType;
 	}
 	
 	public static boolean isInt(String s) {
