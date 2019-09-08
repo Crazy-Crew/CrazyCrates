@@ -54,6 +54,8 @@ public class ItemBuilder {
 	private EntityType entityType;
 	private PotionType potionType;
 	private Color armorColor;
+	private int customModelData;
+	private boolean useCustomModelData;
 	private HashMap<String, String> namePlaceholders;
 	private HashMap<String, String> lorePlaceholders;
 	private static CrazyCrates cc = CrazyCrates.getInstance();
@@ -80,6 +82,8 @@ public class ItemBuilder {
 		this.entityType = EntityType.BAT;
 		this.potionType = null;
 		this.armorColor = null;
+		this.customModelData = 0;
+		this.useCustomModelData = false;
 		this.isMobEgg = false;
 		this.namePlaceholders = new HashMap<>();
 		this.lorePlaceholders = new HashMap<>();
@@ -143,11 +147,27 @@ public class ItemBuilder {
 		if(material.contains(":")) {// Sets the durability or another value option.
 			String[] b = material.split(":");
 			material = b[0];
-			if(Methods.isInt(b[1])) {//Value is durability.
-				this.damage = Integer.parseInt(b[1]);
+			String value = b[1];
+			if(value.contains("#")) {// <ID>:<Durability>#<CustomModelData>
+				String modelData = value.split("#")[1];
+				if(Methods.isInt(modelData)) {//Value is a number.
+					this.useCustomModelData = true;
+					this.customModelData = Integer.parseInt(modelData);
+				}
+			}
+			value = value.replace("#" + customModelData, "");
+			if(Methods.isInt(value)) {//Value is durability.
+				this.damage = Integer.parseInt(value);
 			}else {//Value is something else.
-				this.potionType = getPotionType(PotionEffectType.getByName(b[1]));
-				this.armorColor = getColor(b[1]);
+				this.potionType = getPotionType(PotionEffectType.getByName(value));
+				this.armorColor = getColor(value);
+			}
+		}else if(material.contains("#")) {
+			String[] b = material.split("#");
+			material = b[0];
+			if(Methods.isInt(b[1])) {//Value is a number.
+				this.useCustomModelData = true;
+				this.customModelData = Integer.parseInt(b[1]);
 			}
 		}
 		Material m = Material.matchMaterial(material);
@@ -595,6 +615,9 @@ public class ItemBuilder {
 			if(armorColor != null) {
 				LeatherArmorMeta leatherMeta = (LeatherArmorMeta) itemMeta;
 				leatherMeta.setColor(armorColor);
+			}
+			if(useCustomModelData) {
+				itemMeta.setCustomModelData(customModelData);
 			}
 			item.setItemMeta(itemMeta);
 			hideFlags(item);
