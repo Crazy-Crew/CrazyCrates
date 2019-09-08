@@ -50,6 +50,7 @@ public enum Messages {
 	QUAD_CRATE_DISABLED("Quad-Crate-Disabled", "&cQuad crate type is currently disabled in this build of Crazy Crates due to 1.13+ changing code."),
 	PREVIEW_DISABLED("Preview-Disabled", "&cThe preview for that crate is currently disabled."),
 	NO_SCHEMATICS_FOUND("No-Schematics-Found", "&cNo schematic were found, if using 1.13+ make sure the schematics folder has the new .nbt schematics, if not regenerate the folder."),
+	NO_PRIZES_FOUND("No-Prizes-Found", "&cThis crate contains no prizes that you can win."),
 	HELP("Help",
 	Arrays.asList("&3&lCrazy Crates Help Menu",
 	"&6/key [player] &7- Check the amount of keys a player has.",

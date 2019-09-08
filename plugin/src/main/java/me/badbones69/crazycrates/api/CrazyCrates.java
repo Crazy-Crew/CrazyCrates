@@ -368,6 +368,14 @@ public class CrazyCrates {
 	 * @param checkHand If it just checks the players hand or if it checks their inventory.
 	 */
 	public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
+		if(crate.getCrateType() != CrateType.MENU) {
+			if(!crate.canWinPrizes(player)) {
+				player.sendMessage(Messages.NO_PRIZES_FOUND.getMessage());
+				removePlayerFromOpeningList(player);
+				removePlayerKeyType(player);
+				return;
+			}
+		}
 		addPlayerToOpeningList(player, crate);
 		boolean broadcast = crate.getFile() != null && crate.getFile().getBoolean("Crate.OpeningBroadCast");
 		if(broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {

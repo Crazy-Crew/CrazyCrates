@@ -104,6 +104,15 @@ public class Crate {
 	}
 	
 	/**
+	 * Check to see if a player can win a prize from a crate.
+	 * @param player The player you are checking.
+	 * @return True if they can win at least 1 prize and false if they can't win any.
+	 */
+	public boolean canWinPrizes(Player player) {
+		return pickPrize(player) != null;
+	}
+	
+	/**
 	 * Picks a random prize based on BlackList Permissions and the Chance System.
 	 * @param player The player that will be winning the prize.
 	 * @return The winning prize.
@@ -198,36 +207,7 @@ public class Crate {
 	 * @return The winning prize.
 	 */
 	public Prize pickPrize(Player player, Location location) {
-		ArrayList<Prize> prizes = new ArrayList<>();
-		ArrayList<Prize> useablePrizes = new ArrayList<>();
-		// ================= Blacklist Check ================= //
-		if(player.isOp()) {
-			useablePrizes.addAll(getPrizes());
-		}else {
-			for(Prize prize : getPrizes()) {
-				if(prize.hasBlacklistPermission(player)) {
-					if(!prize.hasAltPrize()) {
-						continue;
-					}
-				}
-				useablePrizes.add(prize);
-			}
-		}
-		// ================= Chance Check ================= //
-		for(int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
-			for(Prize prize : useablePrizes) {
-				int max = prize.getMaxRange();
-				int chance = prize.getChance();
-				int num;
-				for(int counter = 1; counter <= 1; counter++) {
-					num = 1 + new Random().nextInt(max);
-					if(num >= 1 && num <= chance) {
-						prizes.add(prize);
-					}
-				}
-			}
-		}
-		Prize prize = prizes.get(new Random().nextInt(prizes.size()));
+		Prize prize = pickPrize(player);
 		if(prize.useFireworks()) {
 			Methods.fireWork(location);
 		}
