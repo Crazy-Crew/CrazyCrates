@@ -263,12 +263,12 @@ public class Methods {
 		return null;
 	}
 	
-	public static String getEnchantmentName(Enchantment en) {
-		HashMap<String, String> enchants = getEnchantmentList();
-		if(enchants.get(en.getName()) == null) {
+	public static String getEnchantmentName(Enchantment enchantment) {
+		HashMap<String, String> enchantments = getEnchantmentList();
+		if(enchantments.get(enchantment.getName()) == null) {
 			return "None Found";
 		}
-		return enchants.get(en.getName());
+		return enchantments.get(enchantment.getName());
 	}
 	
 	private static String stripEnchantmentName(String enchantmentName) {
@@ -276,42 +276,42 @@ public class Methods {
 	}
 	
 	private static HashMap<String, String> getEnchantmentList() {
-		HashMap<String, String> enchants = new HashMap<>();
-		enchants.put("ARROW_DAMAGE", "Power");
-		enchants.put("ARROW_FIRE", "Flame");
-		enchants.put("ARROW_INFINITE", "Infinity");
-		enchants.put("ARROW_KNOCKBACK", "Punch");
-		enchants.put("DAMAGE_ALL", "Sharpness");
-		enchants.put("DAMAGE_ARTHROPODS", "Bane_Of_Arthropods");
-		enchants.put("DAMAGE_UNDEAD", "Smite");
-		enchants.put("DEPTH_STRIDER", "Depth_Strider");
-		enchants.put("DIG_SPEED", "Efficiency");
-		enchants.put("DURABILITY", "Unbreaking");
-		enchants.put("FIRE_ASPECT", "Fire_Aspect");
-		enchants.put("KNOCKBACK", "KnockBack");
-		enchants.put("LOOT_BONUS_BLOCKS", "Fortune");
-		enchants.put("LOOT_BONUS_MOBS", "Looting");
-		enchants.put("LUCK", "Luck_Of_The_Sea");
-		enchants.put("LURE", "Lure");
-		enchants.put("OXYGEN", "Respiration");
-		enchants.put("PROTECTION_ENVIRONMENTAL", "Protection");
-		enchants.put("PROTECTION_EXPLOSIONS", "Blast_Protection");
-		enchants.put("PROTECTION_FALL", "Feather_Falling");
-		enchants.put("PROTECTION_FIRE", "Fire_Protection");
-		enchants.put("PROTECTION_PROJECTILE", "Projectile_Protection");
-		enchants.put("SILK_TOUCH", "Silk_Touch");
-		enchants.put("THORNS", "Thorns");
-		enchants.put("WATER_WORKER", "Aqua_Affinity");
-		enchants.put("BINDING_CURSE", "Curse_Of_Binding");
-		enchants.put("MENDING", "Mending");
-		enchants.put("FROST_WALKER", "Frost_Walker");
-		enchants.put("VANISHING_CURSE", "Curse_Of_Vanishing");
-		enchants.put("SWEEPING_EDGE", "Sweeping_Edge");
-		enchants.put("RIPTIDE", "Riptide");
-		enchants.put("CHANNELING", "Channeling");
-		enchants.put("IMPALING", "Impaling");
-		enchants.put("LOYALTY", "Loyalty");
-		return enchants;
+		HashMap<String, String> enchantments = new HashMap<>();
+		enchantments.put("ARROW_DAMAGE", "Power");
+		enchantments.put("ARROW_FIRE", "Flame");
+		enchantments.put("ARROW_INFINITE", "Infinity");
+		enchantments.put("ARROW_KNOCKBACK", "Punch");
+		enchantments.put("DAMAGE_ALL", "Sharpness");
+		enchantments.put("DAMAGE_ARTHROPODS", "Bane_Of_Arthropods");
+		enchantments.put("DAMAGE_UNDEAD", "Smite");
+		enchantments.put("DEPTH_STRIDER", "Depth_Strider");
+		enchantments.put("DIG_SPEED", "Efficiency");
+		enchantments.put("DURABILITY", "Unbreaking");
+		enchantments.put("FIRE_ASPECT", "Fire_Aspect");
+		enchantments.put("KNOCKBACK", "KnockBack");
+		enchantments.put("LOOT_BONUS_BLOCKS", "Fortune");
+		enchantments.put("LOOT_BONUS_MOBS", "Looting");
+		enchantments.put("LUCK", "Luck_Of_The_Sea");
+		enchantments.put("LURE", "Lure");
+		enchantments.put("OXYGEN", "Respiration");
+		enchantments.put("PROTECTION_ENVIRONMENTAL", "Protection");
+		enchantments.put("PROTECTION_EXPLOSIONS", "Blast_Protection");
+		enchantments.put("PROTECTION_FALL", "Feather_Falling");
+		enchantments.put("PROTECTION_FIRE", "Fire_Protection");
+		enchantments.put("PROTECTION_PROJECTILE", "Projectile_Protection");
+		enchantments.put("SILK_TOUCH", "Silk_Touch");
+		enchantments.put("THORNS", "Thorns");
+		enchantments.put("WATER_WORKER", "Aqua_Affinity");
+		enchantments.put("BINDING_CURSE", "Curse_Of_Binding");
+		enchantments.put("MENDING", "Mending");
+		enchantments.put("FROST_WALKER", "Frost_Walker");
+		enchantments.put("VANISHING_CURSE", "Curse_Of_Vanishing");
+		enchantments.put("SWEEPING_EDGE", "Sweeping_Edge");
+		enchantments.put("RIPTIDE", "Riptide");
+		enchantments.put("CHANNELING", "Channeling");
+		enchantments.put("IMPALING", "Impaling");
+		enchantments.put("LOYALTY", "Loyalty");
+		return enchantments;
 	}
 	
 	public static ItemBuilder getRandomPaneColor() {
