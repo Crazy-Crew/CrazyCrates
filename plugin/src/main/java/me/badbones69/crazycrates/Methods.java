@@ -244,20 +244,18 @@ public class Methods {
 	
 	public static Enchantment getEnchantment(String enchantmentName) {
 		HashMap<String, String> enchantments = getEnchantmentList();
-		enchantmentName = enchantmentName.replace("-", "").replace("_", "").replace(" ", "");
+		enchantmentName = stripEnchantmentName(enchantmentName);
 		for(Enchantment enchantment : Enchantment.values()) {
 			try {
+				//MC 1.13+ has the correct names.
 				if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
-					//MC 1.13+ has the correct names.
-					if(enchantment.getKey().getKey().replace("-", "").replace("_", "").replace(" ", "").equalsIgnoreCase(enchantmentName)) {
+					if(stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
 						return enchantment;
 					}
-				}else {
-					if(enchantment.getName().replace("-", "").replace("_", "").replace(" ", "").equalsIgnoreCase(enchantmentName) ||
-					(enchantments.get(enchantment.getName()) != null &&
-					enchantments.get(enchantment.getName()).replace("-", "").replace("_", "").replace(" ", "").equalsIgnoreCase(enchantmentName))) {
-						return enchantment;
-					}
+				}
+				if(stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null &&
+				stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
+					return enchantment;
 				}
 			}catch(Exception ignore) {//If any null enchantments are found they may cause errors.
 			}
@@ -271,6 +269,10 @@ public class Methods {
 			return "None Found";
 		}
 		return enchants.get(en.getName());
+	}
+	
+	private static String stripEnchantmentName(String enchantmentName) {
+		return enchantmentName != null ? enchantmentName.replace("-", "").replace("_", "").replace(" ", "") : null;
 	}
 	
 	private static HashMap<String, String> getEnchantmentList() {
