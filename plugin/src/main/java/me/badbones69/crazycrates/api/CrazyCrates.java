@@ -268,7 +268,7 @@ public class CrazyCrates {
 					int z = locations.getInt("Locations." + locationName + ".Z");
 					Location location = new Location(world, x, y, z);
 					Crate crate = getCrateFromName(locations.getString("Locations." + locationName + ".Crate"));
-					if(world != null) {
+					if(world != null && crate != null) {
 						crateLocations.add(new CrateLocation(locationName, crate, location));
 						loadedAmount++;
 					}else {
