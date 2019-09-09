@@ -6,10 +6,12 @@ import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
+import me.badbones69.crazycrates.api.events.PhysicalCrateKeyCheckEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
 import me.badbones69.crazycrates.cratetypes.QuickCrate;
 import me.badbones69.crazycrates.multisupport.Version;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -120,69 +122,73 @@ public class CrateControl implements Listener { //Crate Control
 					}
 					return;
 				}
-				boolean hasKey = false;
-				boolean isPhysical = false;
-				boolean useQuickCrateAgain = false;
-				String keyName = crate.getKey().getItemMeta().getDisplayName();
-				keyName = keyName != null ? keyName : crate.getKey().getType().toString();
-				if(crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
-					if(keyInHand) {
-						if(cc.isKeyFromCrate(key, crate)) {
-							hasKey = true;
-							isPhysical = true;
+				PhysicalCrateKeyCheckEvent event = new PhysicalCrateKeyCheckEvent(player, crateLocation);
+				Bukkit.getPluginManager().callEvent(event);
+				if(!event.isCancelled()) {
+					boolean hasKey = false;
+					boolean isPhysical = false;
+					boolean useQuickCrateAgain = false;
+					String keyName = crate.getKey().getItemMeta().getDisplayName();
+					keyName = keyName != null ? keyName : crate.getKey().getType().toString();
+					if(crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
+						if(keyInHand) {
+							if(cc.isKeyFromCrate(key, crate)) {
+								hasKey = true;
+								isPhysical = true;
+							}
 						}
 					}
-				}
-				if(config.getBoolean("Settings.Physical-Accepts-Virtual-Keys")) {
-					if(cc.getVirtualKeys(player, crate) >= 1) {
-						hasKey = true;
+					if(config.getBoolean("Settings.Physical-Accepts-Virtual-Keys")) {
+						if(cc.getVirtualKeys(player, crate) >= 1) {
+							hasKey = true;
+						}
 					}
-				}
-				if(hasKey) {
-					if(cc.isInOpeningList(player)) {
-						if(cc.getOpeningCrate(player).getCrateType() == CrateType.QUICK_CRATE) {// Checks if the player uses the quick crate again.
-							if(inUse.containsKey(player)) {
-								if(inUse.get(player).equals(crateLocation.getLocation())) {
-									useQuickCrateAgain = true;
+					if(hasKey) {
+						if(cc.isInOpeningList(player)) {
+							if(cc.getOpeningCrate(player).getCrateType() == CrateType.QUICK_CRATE) {// Checks if the player uses the quick crate again.
+								if(inUse.containsKey(player)) {
+									if(inUse.get(player).equals(crateLocation.getLocation())) {
+										useQuickCrateAgain = true;
+									}
 								}
 							}
 						}
-					}
-					if(!useQuickCrateAgain) {
-						if(cc.isInOpeningList(player)) {
-							player.sendMessage(Messages.ALREADY_OPENING_CRATE.getMessage("%Key%", keyName));
-							return;
-						}
-						if(inUse.containsValue(crateLocation.getLocation())) {
-							player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
-							return;
-						}
-					}
-					if(Methods.isInventoryFull(player)) {
-						player.sendMessage(Messages.INVENTORY_FULL.getMessage());
-						return;
-					}
-					if(useQuickCrateAgain) {
-						QuickCrate.endQuickCrate(player, crateLocation.getLocation());
-					}
-					KeyType keyType = isPhysical ? KeyType.PHYSICAL_KEY : KeyType.VIRTUAL_KEY;
-					if(crate.getCrateType() == CrateType.COSMIC) {//Only cosmic crate type uses this method.
-						cc.addPlayerKeyType(player, keyType);
-					}
-					cc.addPlayerToOpeningList(player, crate);
-					cc.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true);
-				}else {
-					if(crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
-						if(config.getBoolean("Settings.KnockBack")) {
-							knockBack(player, clickedBlock.getLocation());
-						}
-						if(config.contains("Settings.Need-Key-Sound")) {
-							Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
-							if(sound != null) {
-								player.playSound(player.getLocation(), sound, 1f, 1f);
+						if(!useQuickCrateAgain) {
+							if(cc.isInOpeningList(player)) {
+								player.sendMessage(Messages.ALREADY_OPENING_CRATE.getMessage("%Key%", keyName));
+								return;
+							}
+							if(inUse.containsValue(crateLocation.getLocation())) {
+								player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
+								return;
 							}
 						}
-						player.sendMessage(Messages.NO_KEY.getMessage("%Key%", keyName));
+						if(Methods.isInventoryFull(player)) {
+							player.sendMessage(Messages.INVENTORY_FULL.getMessage());
+							return;
+						}
+						if(useQuickCrateAgain) {
+							QuickCrate.endQuickCrate(player, crateLocation.getLocation());
+						}
+						KeyType keyType = isPhysical ? KeyType.PHYSICAL_KEY : KeyType.VIRTUAL_KEY;
+						if(crate.getCrateType() == CrateType.COSMIC) {//Only cosmic crate type uses this method.
+							cc.addPlayerKeyType(player, keyType);
+						}
+						cc.addPlayerToOpeningList(player, crate);
+						cc.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true);
+					}else {
+						if(crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
+							if(config.getBoolean("Settings.KnockBack")) {
+								knockBack(player, clickedBlock.getLocation());
+							}
+							if(config.contains("Settings.Need-Key-Sound")) {
+								Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
+								if(sound != null) {
+									player.playSound(player.getLocation(), sound, 1f, 1f);
+								}
+							}
+							player.sendMessage(Messages.NO_KEY.getMessage("%Key%", keyName));
+						}
 					}
 				}
 			}
