@@ -199,13 +199,17 @@ public class Methods {
 	}
 	
 	private static ItemStack stripNBT(ItemStack item) {
-		NBTItem nbtItem = new NBTItem(item.clone());
-		if(nbtItem.hasNBTData()) {
-			if(nbtItem.hasKey("CrazyCrates-Crate")) {
-				nbtItem.removeKey("CrazyCrates-Crate");
+		try {
+			NBTItem nbtItem = new NBTItem(item.clone());
+			if(nbtItem.hasNBTData()) {
+				if(nbtItem.hasKey("CrazyCrates-Crate")) {
+					nbtItem.removeKey("CrazyCrates-Crate");
+				}
 			}
+			return nbtItem.getItem();
+		}catch(Exception e) {
+			return item;
 		}
-		return nbtItem.getItem();
 	}
 	
 	public static void hasUpdate() {
