@@ -92,6 +92,11 @@ public class Roulette implements Listener {
 							player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
 						}
 						cc.endCrate(player);
+						Bukkit.getScheduler().runTaskLater(cc.getPlugin(), () -> {
+						    if (player.getOpenInventory().getTopInventory().equals(inv)) {
+							player.closeInventory();
+						    }
+						}, 40);
 						Prize prize = null;
 						for(Prize p : crate.getPrizes()) {
 							if(inv.getItem(13).isSimilar(p.getDisplayItem())) {
