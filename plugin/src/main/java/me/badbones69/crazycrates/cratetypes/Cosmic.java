@@ -210,6 +210,11 @@ public class Cosmic implements Listener {
 									time++;
 									if(time == 40) {
 										cc.endCrate(player);
+										Bukkit.getScheduler().runTaskLater(cc.getPlugin(), () -> {
+										    if (player.getOpenInventory().getTopInventory().equals(inv)) {
+											player.closeInventory();
+										    }
+										}, 40);
 										showRewards(player, crate);
 										if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
 											player.playSound(player.getLocation(), Sound.valueOf("ANVIL_LAND"), 1, 1);
