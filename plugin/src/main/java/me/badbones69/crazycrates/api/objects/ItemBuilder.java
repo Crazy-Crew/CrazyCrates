@@ -173,6 +173,7 @@ public class ItemBuilder {
 		Material m = Material.matchMaterial(material);
 		if(m != null) {// Sets the material.
 			this.material = m;
+			//1.9-1.12.2
 			if(version.isNewer(Version.v1_8_R3) && version.isOlder(Version.v1_13_R2)) {
 				if(m == Material.matchMaterial("MONSTER_EGG")) {
 					this.entityType = EntityType.fromId(damage);
@@ -630,7 +631,9 @@ public class ItemBuilder {
 				}
 			}
 			if(isMobEgg) {
-				nbt.addCompound("EntityTag").setString("id", "minecraft:" + entityType.name());
+				if(entityType != null) {
+					nbt.addCompound("EntityTag").setString("id", "minecraft:" + entityType.name());
+				}
 			}
 			if(version.isOlder(Version.v1_11_R1)) {
 				if(unbreakable) {
