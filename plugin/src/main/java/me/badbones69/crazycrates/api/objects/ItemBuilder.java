@@ -35,6 +35,8 @@ import java.util.List;
  */
 public class ItemBuilder {
 	
+	private static CrazyCrates cc = CrazyCrates.getInstance();
+	private static Version version = Version.getCurrentVersion();
 	private Material material;
 	private int damage;
 	private String name;
@@ -58,8 +60,6 @@ public class ItemBuilder {
 	private boolean useCustomModelData;
 	private HashMap<String, String> namePlaceholders;
 	private HashMap<String, String> lorePlaceholders;
-	private static CrazyCrates cc = CrazyCrates.getInstance();
-	private static Version version = Version.getCurrentVersion();
 	
 	/**
 	 * The initial starting point for making an item.

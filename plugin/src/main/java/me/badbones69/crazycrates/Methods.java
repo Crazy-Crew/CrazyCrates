@@ -114,11 +114,12 @@ public class Methods {
 	}
 	
 	public static boolean permCheck(Player player, String perm) {
-		if(!player.hasPermission("crazycrates." + perm.toLowerCase())) {
+		if(player.hasPermission("crazycrates." + perm.toLowerCase()) || player.hasPermission("crazycrates.admin")) {
+			return true;
+		}else {
 			player.sendMessage(Messages.NO_PERMISSION.getMessage());
 			return false;
 		}
-		return true;
 	}
 	
 	public static String getPrefix() {
