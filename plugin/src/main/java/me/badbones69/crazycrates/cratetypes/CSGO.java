@@ -135,6 +135,11 @@ public class CSGO implements Listener {
 						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 						cc.removePlayerFromOpeningList(player);
 						cancel();
+						Bukkit.getScheduler().runTaskLater(cc.getPlugin(), () -> {
+						    if (player.getOpenInventory().getTopInventory().equals(inv)) {
+							player.closeInventory();
+						    }
+						}, 40);
 					}else if(time > 60) {//Added this due reports of the prizes spamming when low tps.
 						cancel();
 					}
