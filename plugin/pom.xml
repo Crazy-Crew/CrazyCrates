@@ -115,6 +115,10 @@
                     <groupId>be.maximvdw</groupId>
                     <artifactId>MVdWUpdater</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+                    <artifactId>holographicdisplays-api</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
     </dependencies>
