@@ -31,14 +31,20 @@ public class War implements Listener {
 	private static HashMap<Player, Boolean> canPick = new HashMap<>();
 	private static HashMap<Player, Boolean> canClose = new HashMap<>();
 	
-	public static void openWarCrate(Player player, Crate crate, KeyType key) {
+	public static void openWarCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
 		String crateName = Methods.color(crate.getFile().getString("Crate.CrateName"));
 		Inventory inv = Bukkit.createInventory(null, 9, crateName);
 		setRandomPrizes(player, inv, crate, crateName);
 		InventoryView inventoryView = player.openInventory(inv);
 		canPick.put(player, false);
 		canClose.put(player, false);
-		cc.takeKeys(1, player, crate, key);
+		if(!cc.takeKeys(1, player, crate, keyType, checkHand)) {
+			Methods.failedToTakeKey(player, crate);
+			cc.removePlayerFromOpeningList(player);
+			canClose.remove(player);
+			canPick.remove(player);
+			return;
+		}
 		startWar(player, inv, crate, inventoryView.getTitle());
 	}
 	
@@ -46,6 +52,7 @@ public class War implements Listener {
 		cc.addCrateTask(player, new BukkitRunnable() {
 			int full = 0;
 			int open = 0;
+			
 			@Override
 			public void run() {
 				if(full < 25) {//When Spinning
@@ -73,6 +80,53 @@ public class War implements Listener {
 				}
 			}
 		}.runTaskTimer(cc.getPlugin(), 1, 3));
+	}
+	
+	private static void setRandomPrizes(Player player, Inventory inv, Crate crate, String inventoryTitle) {
+		if(cc.isInOpeningList(player)) {
+			if(inventoryTitle.equalsIgnoreCase(Methods.color(cc.getOpeningCrate(player).getFile().getString("Crate.CrateName")))) {
+				for(int i = 0; i < 9; i++) {
+					inv.setItem(i, crate.pickPrize(player).getDisplayItem());
+				}
+			}
+		}
+	}
+	
+	private static void setRandomGlass(Player player, Inventory inv, String inventoryTitle) {
+		if(cc.isInOpeningList(player)) {
+			if(inventoryTitle.equalsIgnoreCase(Methods.color(cc.getOpeningCrate(player).getFile().getString("Crate.CrateName")))) {
+				if(colorCodes == null) {
+					colorCodes = getColorCode();
+				}
+				ItemBuilder itemBuilder = Methods.getRandomPaneColor();
+				itemBuilder.setName("&" + colorCodes.get(itemBuilder.build()) + "&l???");
+				ItemStack item = itemBuilder.build();
+				for(int i = 0; i < 9; i++) {
+					inv.setItem(i, item);
+				}
+			}
+		}
+	}
+	
+	private static HashMap<ItemStack, String> getColorCode() {
+		HashMap<ItemStack, String> colorCodes = new HashMap<>();
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "WHITE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:0").build(), "f");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "ORANGE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:1").build(), "6");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "MAGENTA_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:2").build(), "d");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIGHT_BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:3").build(), "3");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "YELLOW_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:4").build(), "e");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5").build(), "a");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "PINK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:6").build(), "c");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:7").build(), "7");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIGHT_GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:8").build(), "7");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "CYAN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:9").build(), "3");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "PURPLE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:10").build(), "5");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:11").build(), "9");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BROWN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:12").build(), "6");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "GREEN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:13").build(), "2");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "RED_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:14").build(), "4");
+		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15").build(), "8");
+		return colorCodes;
 	}
 	
 	@EventHandler
@@ -172,53 +226,6 @@ public class War implements Listener {
 				}
 			}
 		}
-	}
-	
-	private static void setRandomPrizes(Player player, Inventory inv, Crate crate, String inventoryTitle) {
-		if(cc.isInOpeningList(player)) {
-			if(inventoryTitle.equalsIgnoreCase(Methods.color(cc.getOpeningCrate(player).getFile().getString("Crate.CrateName")))) {
-				for(int i = 0; i < 9; i++) {
-					inv.setItem(i, crate.pickPrize(player).getDisplayItem());
-				}
-			}
-		}
-	}
-	
-	private static void setRandomGlass(Player player, Inventory inv, String inventoryTitle) {
-		if(cc.isInOpeningList(player)) {
-			if(inventoryTitle.equalsIgnoreCase(Methods.color(cc.getOpeningCrate(player).getFile().getString("Crate.CrateName")))) {
-				if(colorCodes == null) {
-					colorCodes = getColorCode();
-				}
-				ItemBuilder itemBuilder = Methods.getRandomPaneColor();
-				itemBuilder.setName("&" + colorCodes.get(itemBuilder.build()) + "&l???");
-				ItemStack item = itemBuilder.build();
-				for(int i = 0; i < 9; i++) {
-					inv.setItem(i, item);
-				}
-			}
-		}
-	}
-	
-	private static HashMap<ItemStack, String> getColorCode() {
-		HashMap<ItemStack, String> colorCodes = new HashMap<>();
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "WHITE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:0").build(), "f");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "ORANGE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:1").build(), "6");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "MAGENTA_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:2").build(), "d");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIGHT_BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:3").build(), "3");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "YELLOW_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:4").build(), "e");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5").build(), "a");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "PINK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:6").build(), "c");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:7").build(), "7");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIGHT_GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:8").build(), "7");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "CYAN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:9").build(), "3");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "PURPLE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:10").build(), "5");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:11").build(), "9");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BROWN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:12").build(), "6");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "GREEN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:13").build(), "2");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "RED_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:14").build(), "4");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15").build(), "8");
-		return colorCodes;
 	}
 	
 }

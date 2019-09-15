@@ -27,7 +27,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -135,10 +134,7 @@ public class QuadCrate implements Listener {
 		if(QuadCrateSession.inSession(player)) {
 			if(!player.hasPermission("crazycrates.admin")) {
 				e.setCancelled(true);
-				HashMap<String, String> placeholders = new HashMap<>();
-				placeholders.put("%Player%", player.getName());
-				placeholders.put("%player%", player.getName());
-				player.sendMessage(Messages.NO_COMMANDS_WHILE_CRATE_OPENED.getMessage(placeholders));
+				player.sendMessage(Messages.NO_COMMANDS_WHILE_CRATE_OPENED.getMessage("%Player%", player.getName()));
 			}
 		}
 	}
@@ -149,10 +145,7 @@ public class QuadCrate implements Listener {
 		if(QuadCrateSession.inSession(player)) {
 			if(e.getCause() == TeleportCause.ENDER_PEARL) {
 				e.setCancelled(true);
-				HashMap<String, String> placeholders = new HashMap<>();
-				placeholders.put("%Player%", player.getName());
-				placeholders.put("%player%", player.getName());
-				player.sendMessage(Messages.NO_TELEPORTING.getMessage(placeholders));
+				player.sendMessage(Messages.NO_TELEPORTING.getMessage("%Player%", player.getName()));
 			}
 		}
 	}

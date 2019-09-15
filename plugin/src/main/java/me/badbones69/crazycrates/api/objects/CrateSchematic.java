@@ -12,11 +12,18 @@ public class CrateSchematic {
 		this.schematicFile = schematicFile;
 	}
 	
+	/**
+	 * @return Returns the name of the schematic.
+	 */
 	public String getSchematicName() {
 		return schematicName;
 	}
 	
+	/**
+	 * @return Returns the file where the schematic is located.
+	 */
 	public File getSchematicFile() {
 		return schematicFile;
 	}
+	
 }

@@ -254,6 +254,7 @@ public class SkullCreator {
 		String toEncode = "{\"textures\":{\"SKIN\":{\"url\":\"" + actualUrl.toString() + "\"}}}";
 		return Base64.getEncoder().encodeToString(toEncode.getBytes());
 	}
+	
 }
 
 /* Format for skull

@@ -20,10 +20,6 @@ public enum CrateType {
 		Name = name;
 	}
 	
-	public String getName() {
-		return Name;
-	}
-	
 	public static CrateType getFromName(String name) {
 		for(CrateType crate : CrateType.values()) {
 			if(crate.getName().equalsIgnoreCase(name)) {
@@ -31,6 +27,10 @@ public enum CrateType {
 			}
 		}
 		return null;
+	}
+	
+	public String getName() {
+		return Name;
 	}
 	
 }

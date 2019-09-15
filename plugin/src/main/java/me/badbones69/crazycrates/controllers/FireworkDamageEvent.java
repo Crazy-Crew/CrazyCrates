@@ -1,22 +1,21 @@
 package me.badbones69.crazycrates.controllers;
 
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FireworkExplodeEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 
-public class FireworkDamageAPI implements Listener {
+public class FireworkDamageEvent implements Listener {
 	
-	private Plugin plugin;
 	private static ArrayList<Entity> fireworks = new ArrayList<>();
+	private Plugin plugin;
 	
-	public FireworkDamageAPI(Plugin plugin) {
+	public FireworkDamageEvent(Plugin plugin) {
 		this.plugin = plugin;
 	}
 	
@@ -45,13 +44,9 @@ public class FireworkDamageAPI implements Listener {
 	}
 	
 	@EventHandler
-	public void onPlayerDamage(EntityDamageEvent e) {
-		for(Entity en : e.getEntity().getNearbyEntities(5, 5, 5)) {
-			if(en.getType() == EntityType.FIREWORK) {
-				if(getFireworks().contains(en)) {
-					e.setCancelled(true);
-				}
-			}
+	public void onFireworkDamage(EntityDamageByEntityEvent e) {
+		if(fireworks.contains(e.getDamager())) {
+			e.setCancelled(true);
 		}
 	}
 	
@@ -62,7 +57,7 @@ public class FireworkDamageAPI implements Listener {
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					removeFirework(firework);
+					fireworks.remove(firework);
 				}
 			}.runTaskLater(plugin, 5);
 		}

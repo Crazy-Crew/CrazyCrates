@@ -22,10 +22,15 @@ import java.util.Random;
 
 public class Wheel implements Listener {
 	
-	private static CrazyCrates cc = CrazyCrates.getInstance();
 	public static HashMap<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
+	private static CrazyCrates cc = CrazyCrates.getInstance();
 	
-	public static void startWheel(final Player player, Crate crate, KeyType key) {
+	public static void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
+		if(!cc.takeKeys(1, player, crate, keyType, checkHand)) {
+			Methods.failedToTakeKey(player, crate);
+			cc.removePlayerFromOpeningList(player);
+			return;
+		}
 		final Inventory inv = Bukkit.createInventory(null, 54, Methods.color(crate.getFile().getString("Crate.CrateName")));
 		for(int i = 0; i < 54; i++) {
 			inv.setItem(i, new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15").setName(" ").build());
@@ -37,7 +42,6 @@ public class Wheel implements Listener {
 			items.put(i, prize.getDisplayItem());
 		}
 		rewards.put(player, items);
-		cc.takeKeys(1, player, crate, key);
 		player.openInventory(inv);
 		cc.addCrateTask(player, new BukkitRunnable() {
 			ArrayList<Integer> slots = getBorder();
@@ -176,4 +180,5 @@ public class Wheel implements Listener {
 		slots.add(12);
 		return slots;
 	}
+	
 }

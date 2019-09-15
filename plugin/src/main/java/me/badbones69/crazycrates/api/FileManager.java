@@ -1,4 +1,4 @@
-package me.badbones69.crazycrates.controllers;
+package me.badbones69.crazycrates.api;
 
 import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,17 +14,16 @@ import java.util.HashMap;
 
 public class FileManager {
 	
+	private static FileManager instance = new FileManager();
 	private Plugin plugin;
 	private String prefix = "";
-	private Boolean log = false;
+	private boolean log = false;
 	private HashMap<Files, File> files = new HashMap<>();
 	private ArrayList<String> homeFolders = new ArrayList<>();
 	private ArrayList<CustomFile> customFiles = new ArrayList<>();
 	private HashMap<String, String> jarHomeFolders = new HashMap<>();
 	private HashMap<String, String> autoGenerateFiles = new HashMap<>();
 	private HashMap<Files, FileConfiguration> configurations = new HashMap<>();
-	
-	private static FileManager instance = new FileManager();
 	
 	public static FileManager getInstance() {
 		return instance;
@@ -34,7 +33,7 @@ public class FileManager {
 	 * Sets up the plugin and loads all necessary files.
 	 * @param plugin The plugin this is getting loading for.
 	 */
-	public void setup(Plugin plugin) {
+	public FileManager setup(Plugin plugin) {
 		prefix = "[" + plugin.getName() + "] ";
 		this.plugin = plugin;
 		if(!plugin.getDataFolder().exists()) {
@@ -49,16 +48,8 @@ public class FileManager {
 			if(log) System.out.println(prefix + "Loading the " + file.getFileName());
 			if(!newFile.exists()) {
 				try {
-					String fileLocation = file.getFileLocation();
-					if(file == Files.CONFIG) {
-						if(Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {
-							fileLocation = "config1.12.2-Down.yml";
-						}else {
-							fileLocation = "config1.13-Up.yml";
-						}
-					}
 					File serverFile = new File(plugin.getDataFolder(), "/" + file.getFileLocation());
-					InputStream jarFile = getClass().getResourceAsStream("/" + fileLocation);
+					InputStream jarFile = getClass().getResourceAsStream("/" + file.getFileJar());
 					copyFile(jarFile, serverFile);
 				}catch(Exception e) {
 					if(log) System.out.println(prefix + "Failed to load file: " + file.getFileName());
@@ -74,23 +65,23 @@ public class FileManager {
 		if(homeFolders.size() > 0) {
 			if(log) System.out.println(prefix + "Loading custom files.");
 			for(String homeFolder : homeFolders) {
-				if(new File(plugin.getDataFolder(), "/" + homeFolder).exists()) {
-					for(String fileName : new File(plugin.getDataFolder(), "/" + homeFolder).list()) {
-						if(fileName.endsWith(".yml")) {
-							try {
-								CustomFile file = new CustomFile(fileName, homeFolder, plugin);
+				File homeFile = new File(plugin.getDataFolder(), "/" + homeFolder);
+				if(homeFile.exists()) {
+					String[] list = homeFile.list();
+					if(list != null) {
+						for(String name : list) {
+							if(name.endsWith(".yml")) {
+								CustomFile file = new CustomFile(name, homeFolder, plugin);
 								if(file.exists()) {
 									customFiles.add(file);
-									if(log) System.out.println(prefix + "Loaded custom file: " + homeFolder + "/" + fileName + ".");
+									if(log) System.out.println(prefix + "Loaded new custom file: " + homeFolder + "/" + name + ".");
 								}
-							}catch(Exception e) {
-								if(log) System.out.println(prefix + "Failed to load file: " + homeFolder + "/" + fileName + "!");
-								e.printStackTrace();
 							}
 						}
 					}
+					
 				}else {
-					new File(plugin.getDataFolder(), "/" + homeFolder).mkdir();
+					homeFile.mkdir();
 					if(log) System.out.println(prefix + "The folder " + homeFolder + "/ was not found so it was created.");
 					for(String fileName : autoGenerateFiles.keySet()) {
 						if(autoGenerateFiles.get(fileName).equalsIgnoreCase(homeFolder)) {
@@ -113,6 +104,7 @@ public class FileManager {
 			}
 			if(log) System.out.println(prefix + "Finished loading custom files.");
 		}
+		return this;
 	}
 	
 	public String getPrefix() {
@@ -123,7 +115,7 @@ public class FileManager {
 	 * Turn on the logger system for the FileManager.
 	 * @param log True to turn it on and false for it to be off.
 	 */
-	public FileManager logInfo(Boolean log) {
+	public FileManager logInfo(boolean log) {
 		this.log = log;
 		return this;
 	}
@@ -132,7 +124,7 @@ public class FileManager {
 	 * Check if the logger is logging in console.
 	 * @return True if it is and false if it isn't.
 	 */
-	public Boolean isLogging() {
+	public boolean isLogging() {
 		return log;
 	}
 	
@@ -317,23 +309,47 @@ public class FileManager {
 	
 	public enum Files {
 		
-		//ENUM_NAME("FileName.yml", "FilePath.yml"),
-		CONFIG("config.yml", "config.yml"),
+		//ENUM_NAME("fileName.yml", "fileLocation.yml"),
+		//ENUM_NAME("fileName.yml", "newFileLocation.yml", "oldFileLocation.yml"),
+		CONFIG("config.yml", "config.yml", "config1.13-Up.yml", "config1.12.2-Down.yml"),
 		MESSAGES("Messages.yml", "Messages.yml"),
 		LOCATIONS("Locations.yml", "Locations.yml"),
 		DATA("data.yml", "data.yml");
 		
 		private String fileName;
+		private String fileJar;
 		private String fileLocation;
 		
 		/**
 		 * The files that the server will try and load.
 		 * @param fileName The file name that will be in the plugin's folder.
-		 * @param fileLocation The location the file is in while in the Jar.
+		 * @param fileLocation The location the file in the plugin's folder.
 		 */
 		private Files(String fileName, String fileLocation) {
+			this(fileName, fileLocation, fileLocation);
+		}
+		
+		/**
+		 * The files that the server will try and load.
+		 * @param fileName The file name that will be in the plugin's folder.
+		 * @param fileLocation The location of the file will be in the plugin's folder.
+		 * @param fileJar The location of the file in the jar.
+		 */
+		private Files(String fileName, String fileLocation, String fileJar) {
 			this.fileName = fileName;
 			this.fileLocation = fileLocation;
+			this.fileJar = fileJar;
+		}
+		
+		/**
+		 * The files that the server will try and load.
+		 * @param fileName The file name that will be in the plugin's folder.
+		 * @param fileLocation The location of the file will be in the plugin's folder.
+		 * @param newFileJar The location of the 1.13+ file version in the jar.
+		 * @param oldFileJar The location of the 1.12.2- file version in the jar.
+		 */
+		private Files(String fileName, String fileLocation, String newFileJar, String oldFileJar) {
+			this(fileName, fileLocation, Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? newFileJar : oldFileJar);
 		}
 		
 		/**
@@ -350,6 +366,14 @@ public class FileManager {
 		 */
 		public String getFileLocation() {
 			return fileLocation;
+		}
+		
+		/**
+		 * Get the location of the file in the jar.
+		 * @return The location of the file in the jar.
+		 */
+		public String getFileJar() {
+			return fileJar;
 		}
 		
 		/**

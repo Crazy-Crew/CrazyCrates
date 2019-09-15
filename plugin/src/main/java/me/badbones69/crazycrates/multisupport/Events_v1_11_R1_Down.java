@@ -14,6 +14,9 @@ public class Events_v1_11_R1_Down implements Listener {
 		if(cc.isDisplayReward(e.getItem())) {
 			e.setCancelled(true);
 		}
+		if(cc.isInOpeningList(e.getPlayer())) {
+			e.setCancelled(true);
+		}
 	}
 	
 }

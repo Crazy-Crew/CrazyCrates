@@ -1,15 +1,24 @@
 package me.badbones69.crazycrates.api.objects;
 
+import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.multisupport.SkullCreator;
 import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,23 +35,31 @@ import java.util.List;
  */
 public class ItemBuilder {
 	
+	private static CrazyCrates cc = CrazyCrates.getInstance();
+	private static Version version = Version.getCurrentVersion();
 	private Material material;
 	private int damage;
 	private String name;
 	private List<String> lore;
-	private Integer amount;
+	private int amount;
+	private String crateName;
 	private String player;
-	private Boolean isHash;
-	private Boolean isURL;
-	private Boolean isHead;
+	private boolean isHash;
+	private boolean isURL;
+	private boolean isHead;
 	private HashMap<Enchantment, Integer> enchantments;
-	private Boolean unbreakable;
-	private Boolean hideItemFlags;
-	private Boolean glowing;
+	private boolean unbreakable;
+	private boolean hideItemFlags;
+	private boolean glowing;
 	private ItemStack referenceItem;
+	private boolean isMobEgg;
+	private EntityType entityType;
+	private PotionType potionType;
+	private Color armorColor;
+	private int customModelData;
+	private boolean useCustomModelData;
 	private HashMap<String, String> namePlaceholders;
 	private HashMap<String, String> lorePlaceholders;
-	private CrazyCrates cc = CrazyCrates.getInstance();
 	
 	/**
 	 * The initial starting point for making an item.
@@ -51,6 +68,7 @@ public class ItemBuilder {
 		this.material = Material.STONE;
 		this.damage = 0;
 		this.name = "";
+		this.crateName = "";
 		this.lore = new ArrayList<>();
 		this.amount = 1;
 		this.player = "";
@@ -61,6 +79,12 @@ public class ItemBuilder {
 		this.unbreakable = false;
 		this.hideItemFlags = false;
 		this.glowing = false;
+		this.entityType = EntityType.BAT;
+		this.potionType = null;
+		this.armorColor = null;
+		this.customModelData = 0;
+		this.useCustomModelData = false;
+		this.isMobEgg = false;
 		this.namePlaceholders = new HashMap<>();
 		this.lorePlaceholders = new HashMap<>();
 	}
@@ -84,7 +108,7 @@ public class ItemBuilder {
 			if(nbt.hasKey("Unbreakable")) {
 				itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
 			}
-			if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+			if(version.isNewer(Version.v1_12_R1)) {
 				if(itemMeta instanceof org.bukkit.inventory.meta.Damageable) {
 					itemBuilder.setDamage(((org.bukkit.inventory.meta.Damageable) itemMeta).getDamage());
 				}
@@ -120,14 +144,43 @@ public class ItemBuilder {
 	 * @return The ItemBuilder with updated info.
 	 */
 	public ItemBuilder setMaterial(String material) {
-		if(material.contains(":")) {// Sets the durability.
+		if(material.contains(":")) {// Sets the durability or another value option.
 			String[] b = material.split(":");
 			material = b[0];
-			this.damage = Integer.parseInt(b[1]);
+			String value = b[1];
+			if(value.contains("#")) {// <ID>:<Durability>#<CustomModelData>
+				String modelData = value.split("#")[1];
+				if(Methods.isInt(modelData)) {//Value is a number.
+					this.useCustomModelData = true;
+					this.customModelData = Integer.parseInt(modelData);
+				}
+			}
+			value = value.replace("#" + customModelData, "");
+			if(Methods.isInt(value)) {//Value is durability.
+				this.damage = Integer.parseInt(value);
+			}else {//Value is something else.
+				this.potionType = getPotionType(PotionEffectType.getByName(value));
+				this.armorColor = getColor(value);
+			}
+		}else if(material.contains("#")) {
+			String[] b = material.split("#");
+			material = b[0];
+			if(Methods.isInt(b[1])) {//Value is a number.
+				this.useCustomModelData = true;
+				this.customModelData = Integer.parseInt(b[1]);
+			}
 		}
 		Material m = Material.matchMaterial(material);
 		if(m != null) {// Sets the material.
 			this.material = m;
+			//1.9-1.12.2
+			if(version.isNewer(Version.v1_8_R3) && version.isOlder(Version.v1_13_R2)) {
+				if(m == Material.matchMaterial("MONSTER_EGG")) {
+					this.entityType = EntityType.fromId(damage);
+					this.damage = 0;
+					this.isMobEgg = true;
+				}
+			}
 		}
 		this.isHead = this.material == (cc.useNewMaterial() ? Material.matchMaterial("PLAYER_HEAD") : Material.matchMaterial("SKULL_ITEM"));
 		return this;
@@ -207,8 +260,8 @@ public class ItemBuilder {
 	 */
 	public String getUpdatedName() {
 		String newName = name;
-		for(String placeholder : lorePlaceholders.keySet()) {
-			newName = newName.replace(placeholder, lorePlaceholders.get(placeholder));
+		for(String placeholder : namePlaceholders.keySet()) {
+			newName = newName.replace(placeholder, namePlaceholders.get(placeholder));
 		}
 		return newName;
 	}
@@ -287,11 +340,69 @@ public class ItemBuilder {
 		List<String> newLore = new ArrayList<>();
 		for(String i : lore) {
 			for(String placeholder : lorePlaceholders.keySet()) {
-				i = i.replace(placeholder, lorePlaceholders.get(placeholder));
+				i = i.replace(placeholder, lorePlaceholders.get(placeholder)).replace(placeholder.toLowerCase(), lorePlaceholders.get(placeholder));
 			}
 			newLore.add(i);
 		}
 		return newLore;
+	}
+	
+	/**
+	 * Get the entity type of the mob egg.
+	 * @return The EntityType of the mob egg.
+	 */
+	public EntityType getEntityType() {
+		return entityType;
+	}
+	
+	/**
+	 * Sets the type of mob egg.
+	 * @param entityType The entity type the mob egg will be.
+	 * @return The ItemBuilder with updated info.
+	 */
+	public ItemBuilder setEntityType(EntityType entityType) {
+		this.entityType = entityType;
+		return this;
+	}
+	
+	/**
+	 * Get the type of potion effect on the item. Only works on Tipped Arrows.
+	 * @return The PotionType set to the item.
+	 */
+	public PotionType getPotionType() {
+		return potionType;
+	}
+	
+	/**
+	 * Set the PotionType on the item.
+	 * @param potionType The PotionType added to the item.
+	 */
+	public void setPotionType(PotionType potionType) {
+		this.potionType = potionType;
+	}
+	
+	/**
+	 * Get the color leather armor is set to.
+	 * @return The Color the armor is set to.
+	 */
+	public Color getArmorColor() {
+		return armorColor;
+	}
+	
+	/**
+	 * Set the color the Leather Armor is going to be.
+	 * @param armorColor The color of the leather armor.
+	 */
+	public void setArmorColor(Color armorColor) {
+		this.armorColor = armorColor;
+	}
+	
+	/**
+	 * Check if the current item is a mob egg.
+	 * @return True if it is and false if not.
+	 */
+	public boolean isMobEgg() {
+		return isMobEgg;
 	}
 	
 	/**
@@ -338,7 +449,7 @@ public class ItemBuilder {
 	 * Check if the item is a player heads.
 	 * @return True if it is a player head and false if not.
 	 */
-	public Boolean isHead() {
+	public boolean isHead() {
 		return isHead;
 	}
 	
@@ -346,7 +457,7 @@ public class ItemBuilder {
 	 * Check if the player name is a Base64.
 	 * @return True if it is a Base64 and false if not.
 	 */
-	public Boolean isHash() {
+	public boolean isHash() {
 		return isHash;
 	}
 	
@@ -354,8 +465,17 @@ public class ItemBuilder {
 	 * Check if the hash is a url or a Base64.
 	 * @return True if it is a url and false if it is a Base64.
 	 */
-	public Boolean isURL() {
+	public boolean isURL() {
 		return isURL;
+	}
+	
+	public String getCrateName() {
+		return crateName;
+	}
+	
+	public ItemBuilder setCrateName(String crateName) {
+		this.crateName = crateName;
+		return this;
 	}
 	
 	/**
@@ -364,6 +484,19 @@ public class ItemBuilder {
 	 */
 	public HashMap<Enchantment, Integer> getEnchantments() {
 		return enchantments;
+	}
+	
+	/**
+	 * Set a list of enchantments that will go onto the item in the builder. These can have unsafe levels.
+	 * It will also override any enchantments used in the "ItemBuilder#addEnchantment()" method.
+	 * @param enchantments A list of enchantments that will go onto the item in the builder.
+	 * @return The ItemBuilder with updated info.
+	 */
+	public ItemBuilder setEnchantments(HashMap<Enchantment, Integer> enchantments) {
+		if(enchantments != null) {
+			this.enchantments = enchantments;
+		}
+		return this;
 	}
 	
 	/**
@@ -388,23 +521,10 @@ public class ItemBuilder {
 	}
 	
 	/**
-	 * Set a list of enchantments that will go onto the item in the builder. These can have unsafe levels.
-	 * It will also override any enchantments used in the "ItemBuilder#addEnchantment()" method.
-	 * @param enchantments A list of enchantments that will go onto the item in the builder.
-	 * @return The ItemBuilder with updated info.
-	 */
-	public ItemBuilder setEnchantments(HashMap<Enchantment, Integer> enchantments) {
-		if(enchantments != null) {
-			this.enchantments = enchantments;
-		}
-		return this;
-	}
-	
-	/**
 	 * Check if the item in the builder is unbreakable.
 	 * @return The ItemBuilder with updated info.
 	 */
-	public Boolean isUnbreakable() {
+	public boolean isUnbreakable() {
 		return unbreakable;
 	}
 	
@@ -413,7 +533,7 @@ public class ItemBuilder {
 	 * @param unbreakable True will set it to be unbreakable and false will make it able to take damage.
 	 * @return The ItemBuilder with updated info.
 	 */
-	public ItemBuilder setUnbreakable(Boolean unbreakable) {
+	public ItemBuilder setUnbreakable(boolean unbreakable) {
 		this.unbreakable = unbreakable;
 		return this;
 	}
@@ -423,7 +543,7 @@ public class ItemBuilder {
 	 * @param hideItemFlags true the item will hide item flags. false will show them.
 	 * @return The ItemBuilder with updated info.
 	 */
-	public ItemBuilder hideItemFlags(Boolean hideItemFlags) {
+	public ItemBuilder hideItemFlags(boolean hideItemFlags) {
 		this.hideItemFlags = hideItemFlags;
 		return this;
 	}
@@ -432,7 +552,7 @@ public class ItemBuilder {
 	 * Check if the item in the builder has hidden item flags.
 	 * @return The ItemBuilder with updated info.
 	 */
-	public Boolean areItemFlagsHidden() {
+	public boolean areItemFlagsHidden() {
 		return hideItemFlags;
 	}
 	
@@ -440,7 +560,7 @@ public class ItemBuilder {
 	 * Check if the item in the builder is glowing.
 	 * @return The ItemBuilder with updated info.
 	 */
-	public Boolean isGlowing() {
+	public boolean isGlowing() {
 		return glowing;
 	}
 	
@@ -449,7 +569,7 @@ public class ItemBuilder {
 	 * @param glowing True will set the item to have a glowing effect.
 	 * @return The ItemBuilder with updated info.
 	 */
-	public ItemBuilder setGlowing(Boolean glowing) {
+	public ItemBuilder setGlowing(boolean glowing) {
 		this.glowing = glowing;
 		return this;
 	}
@@ -473,15 +593,32 @@ public class ItemBuilder {
 			ItemMeta itemMeta = item.getItemMeta();
 			itemMeta.setDisplayName(getUpdatedName());
 			itemMeta.setLore(getUpdatedLore());
-			if(Version.getCurrentVersion().isNewer(Version.v1_10_R1)) {
+			if(version.isSame(Version.v1_8_R3)) {
+				if(isHead && !isHash && player != null && !player.equals("")) {
+					SkullMeta skullMeta = (SkullMeta) itemMeta;
+					skullMeta.setOwner(player);
+				}
+			}
+			if(version.isNewer(Version.v1_10_R1)) {
 				itemMeta.setUnbreakable(unbreakable);
 			}
-			if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+			if(version.isNewer(Version.v1_12_R1)) {
 				if(itemMeta instanceof org.bukkit.inventory.meta.Damageable) {
 					((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(damage);
 				}
 			}else {
 				item.setDurability((short) damage);
+			}
+			if(potionType != null) {
+				PotionMeta potionMeta = (PotionMeta) itemMeta;
+				potionMeta.setBasePotionData(new PotionData(potionType));
+			}
+			if(armorColor != null) {
+				LeatherArmorMeta leatherMeta = (LeatherArmorMeta) itemMeta;
+				leatherMeta.setColor(armorColor);
+			}
+			if(useCustomModelData) {
+				itemMeta.setCustomModelData(customModelData);
 			}
 			item.setItemMeta(itemMeta);
 			hideFlags(item);
@@ -489,15 +626,23 @@ public class ItemBuilder {
 			addGlow(item);
 			NBTItem nbt = new NBTItem(item);
 			if(isHead) {
-				if(!isHash && player != null && !player.equals("")) {
+				if(!isHash && player != null && !player.equals("") && version.isNewer(Version.v1_8_R3)) {
 					nbt.setString("SkullOwner", player);
 				}
 			}
-			if(Version.getCurrentVersion().isOlder(Version.v1_11_R1)) {
+			if(isMobEgg) {
+				if(entityType != null) {
+					nbt.addCompound("EntityTag").setString("id", "minecraft:" + entityType.name());
+				}
+			}
+			if(version.isOlder(Version.v1_11_R1)) {
 				if(unbreakable) {
 					nbt.setBoolean("Unbreakable", true);
 					nbt.setInteger("HideFlags", 4);
 				}
+			}
+			if(!crateName.isEmpty()) {
+				nbt.setString("CrazyCrates-Crate", crateName);
 			}
 			return nbt.getItem();
 		}else {
@@ -551,6 +696,88 @@ public class ItemBuilder {
 			}
 		}
 		return item;
+	}
+	
+	private PotionType getPotionType(PotionEffectType type) {
+		if(type != null) {
+			if(type.equals(PotionEffectType.FIRE_RESISTANCE)) {
+				return PotionType.FIRE_RESISTANCE;
+			}else if(type.equals(PotionEffectType.HARM)) {
+				return PotionType.INSTANT_DAMAGE;
+			}else if(type.equals(PotionEffectType.HEAL)) {
+				return PotionType.INSTANT_HEAL;
+			}else if(type.equals(PotionEffectType.INVISIBILITY)) {
+				return PotionType.INVISIBILITY;
+			}else if(type.equals(PotionEffectType.JUMP)) {
+				return PotionType.JUMP;
+			}else if(type.equals(PotionEffectType.getByName("LUCK"))) {
+				return PotionType.valueOf("LUCK");
+			}else if(type.equals(PotionEffectType.NIGHT_VISION)) {
+				return PotionType.NIGHT_VISION;
+			}else if(type.equals(PotionEffectType.POISON)) {
+				return PotionType.POISON;
+			}else if(type.equals(PotionEffectType.REGENERATION)) {
+				return PotionType.REGEN;
+			}else if(type.equals(PotionEffectType.SLOW)) {
+				return PotionType.SLOWNESS;
+			}else if(type.equals(PotionEffectType.SPEED)) {
+				return PotionType.SPEED;
+			}else if(type.equals(PotionEffectType.INCREASE_DAMAGE)) {
+				return PotionType.STRENGTH;
+			}else if(type.equals(PotionEffectType.WATER_BREATHING)) {
+				return PotionType.WATER_BREATHING;
+			}else if(type.equals(PotionEffectType.WEAKNESS)) {
+				return PotionType.WEAKNESS;
+			}
+		}
+		return null;
+	}
+	
+	private Color getColor(String color) {
+		if(color != null) {
+			switch(color.toUpperCase()) {
+				case "AQUA":
+					return Color.AQUA;
+				case "BLACK":
+					return Color.BLACK;
+				case "BLUE":
+					return Color.BLUE;
+				case "FUCHSIA":
+					return Color.FUCHSIA;
+				case "GRAY":
+					return Color.GRAY;
+				case "GREEN":
+					return Color.GREEN;
+				case "LIME":
+					return Color.LIME;
+				case "MAROON":
+					return Color.MAROON;
+				case "NAVY":
+					return Color.NAVY;
+				case "OLIVE":
+					return Color.OLIVE;
+				case "ORANGE":
+					return Color.ORANGE;
+				case "PURPLE":
+					return Color.PURPLE;
+				case "RED":
+					return Color.RED;
+				case "SILVER":
+					return Color.SILVER;
+				case "TEAL":
+					return Color.TEAL;
+				case "WHITE":
+					return Color.WHITE;
+				case "YELLOW":
+					return Color.YELLOW;
+			}
+			try {
+				String[] rgb = color.split(",");
+				return Color.fromRGB(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2]));
+			}catch(Exception ignore) {
+			}
+		}
+		return null;
 	}
 	
 }

@@ -12,10 +12,6 @@ public enum KeyType {
 		Name = name;
 	}
 	
-	public String getName() {
-		return Name;
-	}
-	
 	public static KeyType getFromName(String type) {
 		if(type.equalsIgnoreCase("virtual") || type.equalsIgnoreCase("v")) {
 			return KeyType.VIRTUAL_KEY;
@@ -25,6 +21,10 @@ public enum KeyType {
 			return KeyType.FREE_KEY;
 		}
 		return null;
+	}
+	
+	public String getName() {
+		return Name;
 	}
 	
 }

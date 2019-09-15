@@ -1,6 +1,7 @@
 package me.badbones69.crazycrates.controllers;
 
 import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.FileManager;
 import me.badbones69.crazycrates.api.enums.BrokeLocation;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
 import org.bukkit.Location;

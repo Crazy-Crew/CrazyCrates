@@ -26,7 +26,7 @@ public class CrateOnTheGo implements Listener {
 			if(item != null) {
 				for(Crate crate : cc.getCrates()) {
 					if(crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
-						if(Methods.isSimilar(crate.getKey(), item)) {
+						if(Methods.isSimilar(item, crate)) {
 							e.setCancelled(true);
 							cc.addPlayerToOpeningList(player, crate);
 							Methods.removeItem(item, player);

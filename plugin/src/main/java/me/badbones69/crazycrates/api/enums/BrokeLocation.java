@@ -23,44 +23,44 @@ public class BrokeLocation {
 		return locationName;
 	}
 	
-	public void setX(int x) {
-		this.x = x;
-	}
-	
 	public int getX() {
 		return x;
 	}
 	
-	public void setY(int y) {
-		this.y = y;
+	public void setX(int x) {
+		this.x = x;
 	}
 	
 	public int getY() {
 		return y;
 	}
 	
-	public void setZ(int z) {
-		this.z = z;
+	public void setY(int y) {
+		this.y = y;
 	}
 	
 	public int getZ() {
 		return z;
 	}
 	
-	public void setWorld(String world) {
-		this.world = world;
+	public void setZ(int z) {
+		this.z = z;
 	}
 	
 	public String getWorld() {
 		return world;
 	}
 	
-	public void setCrate(Crate crate) {
-		this.crate = crate;
+	public void setWorld(String world) {
+		this.world = world;
 	}
 	
 	public Crate getCrate() {
 		return crate;
+	}
+	
+	public void setCrate(Crate crate) {
+		this.crate = crate;
 	}
 	
 	public Location getLocation() {

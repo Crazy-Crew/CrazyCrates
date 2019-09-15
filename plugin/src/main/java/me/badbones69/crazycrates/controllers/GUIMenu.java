@@ -2,12 +2,12 @@ package me.badbones69.crazycrates.controllers;
 
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
-import me.badbones69.crazycrates.controllers.FileManager.Files;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,7 +21,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class GUIMenu implements Listener {
@@ -44,16 +43,12 @@ public class GUIMenu implements Listener {
 		}
 		if(Files.CONFIG.getFile().contains("Settings.GUI-Customizer")) {
 			for(String custom : Files.CONFIG.getFile().getStringList("Settings.GUI-Customizer")) {
-				String name = "";
-				String item = "1";
-				boolean glowing = false;
 				int slot = 0;
-				ArrayList<String> lore = new ArrayList<>();
+				ItemBuilder item = new ItemBuilder();
 				String[] b = custom.split(", ");
 				for(String i : b) {
 					if(i.contains("Item:")) {
-						i = i.replace("Item:", "");
-						item = i;
+						item.setMaterial(i.replace("Item:", ""));
 					}
 					if(i.contains("Name:")) {
 						i = i.replace("Name:", "");
@@ -64,8 +59,7 @@ public class GUIMenu implements Listener {
 								.replaceAll("%" + crate.getName().toLowerCase() + "_total%", cc.getTotalKeys(player, crate) + "");
 							}
 						}
-						i = i.replaceAll("%player%", player.getName());
-						name = i;
+						item.setName(i.replaceAll("%player%", player.getName()));
 					}
 					if(i.contains("Lore:")) {
 						i = i.replace("Lore:", "");
@@ -78,23 +72,24 @@ public class GUIMenu implements Listener {
 									.replaceAll("%" + crate.getName().toLowerCase() + "_total%", cc.getTotalKeys(player, crate) + "");
 								}
 							}
-							i = i.replaceAll("%player%", player.getName());
-							lore.add(l);
+							item.addLore(i.replaceAll("%player%", player.getName()));
 						}
 					}
 					if(i.contains("Glowing:")) {
-						glowing = Boolean.parseBoolean(i.replace("Glowing:", ""));
+						item.setGlowing(Boolean.parseBoolean(i.replace("Glowing:", "")));
+					}
+					if(i.contains("Player:")) {
+						item.setPlayer(i.replaceAll("%player%", player.getName()));
 					}
 					if(i.contains("Slot:")) {
-						i = i.replace("Slot:", "");
-						slot = Integer.parseInt(i);
+						slot = Integer.parseInt(i.replace("Slot:", ""));
 					}
 				}
 				if(slot > size) {
 					continue;
 				}
 				slot--;
-				inv.setItem(slot, new ItemBuilder().setMaterial(item).setName(name).setLore(lore).setGlowing(glowing).build());
+				inv.setItem(slot, item.build());
 			}
 		}
 		for(Crate crate : cc.getCrates()) {
@@ -103,24 +98,21 @@ public class GUIMenu implements Listener {
 				if(file.getBoolean("Crate.InGUI")) {
 					String path = "Crate.";
 					int slot = file.getInt(path + "Slot");
-					String item = file.getString(path + "Item");
-					String name = file.getString(path + "Name");
-					ArrayList<String> lore = new ArrayList<>();
-					boolean glowing = false;
-					for(String i : file.getStringList(path + "Lore")) {
-						lore.add(i.replaceAll("%Keys%", NumberFormat.getNumberInstance().format(cc.getVirtualKeys(player, crate))).replaceAll("%keys%", NumberFormat.getNumberInstance().format(cc.getVirtualKeys(player, crate)))
-						.replaceAll("%Keys_Physical%", NumberFormat.getNumberInstance().format(cc.getPhysicalKeys(player, crate))).replaceAll("%keys_physical%", NumberFormat.getNumberInstance().format(cc.getPhysicalKeys(player, crate)))
-						.replaceAll("%Keys_Total%", NumberFormat.getNumberInstance().format(cc.getTotalKeys(player, crate))).replaceAll("%keys_total%", NumberFormat.getNumberInstance().format(cc.getTotalKeys(player, crate)))
-						.replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName()));
-					}
-					if(file.getBoolean(path + "Glowing")) {
-						glowing = true;
-					}
 					if(slot > size) {
 						continue;
 					}
 					slot--;
-					inv.setItem(slot, new ItemBuilder().setMaterial(item).setName(name).setLore(lore).setGlowing(glowing).build());
+					inv.setItem(slot, new ItemBuilder()
+					.setMaterial(file.getString(path + "Item"))
+					.setName(file.getString(path + "Name"))
+					.setLore(file.getStringList(path + "Lore"))
+					.setPlayer(file.getString(path + "Player"))
+					.setGlowing(file.getBoolean(path + "Glowing"))
+					.addLorePlaceholder("%Keys%", NumberFormat.getNumberInstance().format(cc.getVirtualKeys(player, crate)))
+					.addLorePlaceholder("%Keys_Physical%", NumberFormat.getNumberInstance().format(cc.getPhysicalKeys(player, crate)))
+					.addLorePlaceholder("%Keys_Total%", NumberFormat.getNumberInstance().format(cc.getTotalKeys(player, crate)))
+					.addLorePlaceholder("%Player%", player.getName())
+					.build());
 				}
 			}
 		}
@@ -161,12 +153,6 @@ public class GUIMenu implements Listener {
 											}
 											return;
 										}
-										//if(crate.getCrateType() == CrateType.QUAD_CRATE) {
-										//	if(Version.getCurrentVersion().isNewer(Version.v1_14_R1)) {
-										//		player.sendMessage(Messages.QUAD_CRATE_DISABLED.getMessage());
-										//		return;
-										//	}
-										//}
 										if(cc.isInOpeningList(player)) {
 											player.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
 											return;
@@ -178,7 +164,7 @@ public class GUIMenu implements Listener {
 										}else {
 											if(Files.CONFIG.getFile().contains("Settings.Virtual-Accepts-Physical-Keys")) {
 												if(Files.CONFIG.getFile().getBoolean("Settings.Virtual-Accepts-Physical-Keys")) {
-													if(cc.hasPhysicalKey(player, crate)) {
+													if(cc.hasPhysicalKey(player, crate, false)) {
 														hasKey = true;
 														keyType = KeyType.PHYSICAL_KEY;
 													}
@@ -197,10 +183,7 @@ public class GUIMenu implements Listener {
 										}
 										for(String world : getDisabledWorlds()) {
 											if(world.equalsIgnoreCase(player.getWorld().getName())) {
-												HashMap<String, String> placeholders = new HashMap<>();
-												placeholders.put("%World%", player.getWorld().getName());
-												placeholders.put("%world%", player.getWorld().getName());
-												player.sendMessage(Messages.WORLD_DISABLED.getMessage(placeholders));
+												player.sendMessage(Messages.WORLD_DISABLED.getMessage("%World%", player.getWorld().getName()));
 												return;
 											}
 										}
@@ -208,7 +191,7 @@ public class GUIMenu implements Listener {
 											player.sendMessage(Messages.INVENTORY_FULL.getMessage());
 											return;
 										}
-										cc.openCrate(player, crate, keyType, player.getLocation(), true);
+										cc.openCrate(player, crate, keyType, player.getLocation(), true, false);
 									}
 								}
 							}

@@ -17,7 +17,7 @@ import java.util.List;
 public class NMS_v1_12_R1 implements NMSSupport {
 	
 	@Override
-	public void openChest(Block block, Boolean open) {
+	public void openChest(Block block, boolean open) {
 		Material type = block.getType();
 		if(type == Material.CHEST || type == Material.TRAPPED_CHEST || type == Material.ENDER_CHEST) {
 			World world = ((CraftWorld) block.getWorld()).getHandle();

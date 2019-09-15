@@ -2,8 +2,8 @@ package me.badbones69.crazycrates.api.objects;
 
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.FileManager;
 import me.badbones69.crazycrates.api.enums.CrateType;
-import me.badbones69.crazycrates.controllers.FileManager;
 import me.badbones69.crazycrates.controllers.Preview;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,16 +22,18 @@ public class Crate {
 	
 	private String name;
 	private ItemStack key;
+	private ItemStack keyNoNBT;
+	private ItemStack adminKey;
 	private Integer maxPage = 1;
 	private String previewName;
-	private Boolean previewToggle;
-	private Boolean boarderToggle;
+	private boolean previewToggle;
+	private boolean boarderToggle;
 	private ItemBuilder boarderItem;
 	private CrateType crateType;
 	private FileConfiguration file;
 	private ArrayList<Prize> prizes;
 	private String crateInventoryName;
-	private Boolean giveNewPlayerKeys;
+	private boolean giveNewPlayerKeys;
 	private int previewChestlines;
 	private Integer newPlayerKeys;
 	private ArrayList<ItemStack> preview;
@@ -48,7 +50,14 @@ public class Crate {
 	 * @param file The crate file.
 	 */
 	public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, Integer newPlayerKeys, ArrayList<Tier> tiers) {
-		this.key = key;
+		ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
+		this.keyNoNBT = itemBuilder.build();
+		this.key = itemBuilder.setCrateName(name).build();
+		this.adminKey = itemBuilder
+		.addLore("")
+		.addLore("&7&l(&6&l!&7&l) Left click for Physical Key")
+		.addLore("&7&l(&6&l!&7&l) Right click for Virtual Key")
+		.setCrateName(name).build();
 		this.file = file;
 		this.name = name;
 		this.tiers = tiers != null ? tiers : new ArrayList<>();
@@ -66,24 +75,41 @@ public class Crate {
 		this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
 	}
 	
+	/**
+	 * Set the preview lines for a Crate.
+	 * @param amount The amount of lines the preview has.
+	 */
 	public void setPreviewChestlines(int amount) {
 		int finalAmount;
 		if(amount < 3) {
 			finalAmount = 3;
-		}else if(amount > 6) {
-			finalAmount = 6;
-		}else {
-			finalAmount = amount;
-		}
+		}else finalAmount = Math.min(amount, 6);
 		this.previewChestlines = finalAmount;
 	}
 	
+	/**
+	 * Get the amount of lines the preview will show.
+	 * @return The amount of lines it is set to show.
+	 */
 	public int getPreviewChestLines() {
 		return this.previewChestlines;
 	}
 	
+	/**
+	 * Get the max amount of slots in the preview.
+	 * @return The max number of slots in the preview.
+	 */
 	public int getMaxSlots() {
 		return this.previewChestlines * 9;
+	}
+	
+	/**
+	 * Check to see if a player can win a prize from a crate.
+	 * @param player The player you are checking.
+	 * @return True if they can win at least 1 prize and false if they can't win any.
+	 */
+	public boolean canWinPrizes(Player player) {
+		return pickPrize(player) != null;
 	}
 	
 	/**
@@ -121,7 +147,12 @@ public class Crate {
 				}
 			}
 		}
-		return prizes.get(new Random().nextInt(prizes.size()));
+		try {
+			return prizes.get(new Random().nextInt(prizes.size()));
+		}catch(IllegalArgumentException e) {
+			System.out.println("[CrazyCrates] failed to find prize from the " + name + " crate for player " + player.getName() + ".");
+			return null;
+		}
 	}
 	
 	/**
@@ -176,36 +207,7 @@ public class Crate {
 	 * @return The winning prize.
 	 */
 	public Prize pickPrize(Player player, Location location) {
-		ArrayList<Prize> prizes = new ArrayList<>();
-		ArrayList<Prize> useablePrizes = new ArrayList<>();
-		// ================= Blacklist Check ================= //
-		if(player.isOp()) {
-			useablePrizes.addAll(getPrizes());
-		}else {
-			for(Prize prize : getPrizes()) {
-				if(prize.hasBlacklistPermission(player)) {
-					if(!prize.hasAltPrize()) {
-						continue;
-					}
-				}
-				useablePrizes.add(prize);
-			}
-		}
-		// ================= Chance Check ================= //
-		for(int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
-			for(Prize prize : useablePrizes) {
-				int max = prize.getMaxRange();
-				int chance = prize.getChance();
-				int num;
-				for(int counter = 1; counter <= 1; counter++) {
-					num = 1 + new Random().nextInt(max);
-					if(num >= 1 && num <= chance) {
-						prizes.add(prize);
-					}
-				}
-			}
-		}
-		Prize prize = prizes.get(new Random().nextInt(prizes.size()));
+		Prize prize = pickPrize(player);
 		if(prize.useFireworks()) {
 			Methods.fireWork(location);
 		}
@@ -232,7 +234,7 @@ public class Crate {
 	 * Get if the preview is toggled on.
 	 * @return True if preview is on and false if not.
 	 */
-	public Boolean isPreviewEnabled() {
+	public boolean isPreviewEnabled() {
 		return previewToggle;
 	}
 	
@@ -240,7 +242,7 @@ public class Crate {
 	 * Get if the preview has an item boarder.
 	 * @return True if it does and false if not.
 	 */
-	public Boolean isItemBoarderEnabled() {
+	public boolean isItemBoarderEnabled() {
 		return boarderToggle;
 	}
 	
@@ -334,6 +336,33 @@ public class Crate {
 	
 	/**
 	 *
+	 * @return The key as an item stack with no nbt tags.
+	 */
+	public ItemStack getKeyNoNBT() {
+		return this.keyNoNBT.clone();
+	}
+	
+	/**
+	 *
+	 * @param amount The amount of keys you want.
+	 * @return The key as an item stack with no nbt tags.
+	 */
+	public ItemStack getKeyNoNBT(int amount) {
+		ItemStack key = this.keyNoNBT.clone();
+		key.setAmount(amount);
+		return key;
+	}
+	
+	/**
+	 * Get the key that shows in the /cc admin menu.
+	 * @return The itemstack of the key shown in the /cc admin menu.
+	 */
+	public ItemStack getAdminKey() {
+		return adminKey;
+	}
+	
+	/**
+	 *
 	 * @return The crates file.
 	 */
 	public FileConfiguration getFile() {
@@ -366,7 +395,7 @@ public class Crate {
 	 *
 	 * @return True if new players get keys and false if they do not.
 	 */
-	public Boolean doNewPlayersGetKeys() {
+	public boolean doNewPlayersGetKeys() {
 		return giveNewPlayerKeys;
 	}
 	
@@ -378,6 +407,11 @@ public class Crate {
 		return newPlayerKeys;
 	}
 	
+	/**
+	 * Add a new editor item to a prize in the Crate.
+	 * @param prize The prize the item is being added to.
+	 * @param item The ItemStack that is being added.
+	 */
 	public void addEditorItem(String prize, ItemStack item) {
 		ArrayList<ItemStack> items = new ArrayList<>();
 		items.add(item);
@@ -480,20 +514,16 @@ public class Crate {
 			inv.setItem(getAbsoluteItemPosition(4), Preview.getMenuButton());
 		}
 		if(page == 1) {
-			inv.setItem(getAbsoluteItemPosition(3), new ItemBuilder()
-			.setMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE")
-			.setDamage(cc.useNewMaterial() ? 0 : 7)
-			.setName(" ")
-			.build());
+			if(boarderToggle) {
+				inv.setItem(getAbsoluteItemPosition(3), boarderItem.build());
+			}
 		}else {
 			inv.setItem(getAbsoluteItemPosition(3), Preview.getBackButton(player));
 		}
-		if(page == getMaxPage()) {
-			inv.setItem(getAbsoluteItemPosition(5), new ItemBuilder()
-			.setMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE")
-			.setDamage(cc.useNewMaterial() ? 0 : 7)
-			.setName(" ")
-			.build());
+		if(page == maxPage) {
+			if(boarderToggle) {
+				inv.setItem(getAbsoluteItemPosition(5), boarderItem.build());
+			}
 		}else {
 			inv.setItem(getAbsoluteItemPosition(5), Preview.getNextButton(player));
 		}

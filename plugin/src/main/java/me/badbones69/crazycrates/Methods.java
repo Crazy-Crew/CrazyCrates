@@ -1,10 +1,13 @@
 package me.badbones69.crazycrates;
 
 import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.enums.Messages;
+import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
-import me.badbones69.crazycrates.controllers.FileManager.Files;
-import me.badbones69.crazycrates.controllers.FireworkDamageAPI;
+import me.badbones69.crazycrates.controllers.FireworkDamageEvent;
+import me.badbones69.crazycrates.multisupport.Version;
+import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,8 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,9 +28,9 @@ import java.util.*;
 
 public class Methods {
 	
-	private static CrazyCrates cc = CrazyCrates.getInstance();
 	public static HashMap<Player, String> path = new HashMap<>();
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
+	private static CrazyCrates cc = CrazyCrates.getInstance();
 	private static Random random = new Random();
 	
 	public static String color(String msg) {
@@ -70,42 +71,8 @@ public class Methods {
 		fm.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.RED).withColor(Color.AQUA).withColor(Color.ORANGE).withColor(Color.YELLOW).trail(false).flicker(false).build());
 		fm.setPower(0);
 		fw.setFireworkMeta(fm);
-		FireworkDamageAPI.addFirework(fw);
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, fw::detonate, 2);
-	}
-	
-	public static PotionType getPotionType(PotionEffectType type) {
-		PotionType potionType = null;
-		if(type.equals(PotionEffectType.FIRE_RESISTANCE)) {
-			potionType = PotionType.FIRE_RESISTANCE;
-		}else if(type.equals(PotionEffectType.HARM)) {
-			potionType = PotionType.INSTANT_DAMAGE;
-		}else if(type.equals(PotionEffectType.HEAL)) {
-			potionType = PotionType.INSTANT_HEAL;
-		}else if(type.equals(PotionEffectType.INVISIBILITY)) {
-			potionType = PotionType.INVISIBILITY;
-		}else if(type.equals(PotionEffectType.JUMP)) {
-			potionType = PotionType.JUMP;
-		}else if(type.equals(PotionEffectType.getByName("LUCK"))) {
-			potionType = PotionType.valueOf("LUCK");
-		}else if(type.equals(PotionEffectType.NIGHT_VISION)) {
-			potionType = PotionType.NIGHT_VISION;
-		}else if(type.equals(PotionEffectType.POISON)) {
-			potionType = PotionType.POISON;
-		}else if(type.equals(PotionEffectType.REGENERATION)) {
-			potionType = PotionType.REGEN;
-		}else if(type.equals(PotionEffectType.SLOW)) {
-			potionType = PotionType.SLOWNESS;
-		}else if(type.equals(PotionEffectType.SPEED)) {
-			potionType = PotionType.SPEED;
-		}else if(type.equals(PotionEffectType.INCREASE_DAMAGE)) {
-			potionType = PotionType.STRENGTH;
-		}else if(type.equals(PotionEffectType.WATER_BREATHING)) {
-			potionType = PotionType.WATER_BREATHING;
-		}else if(type.equals(PotionEffectType.WEAKNESS)) {
-			potionType = PotionType.WEAKNESS;
-		}
-		return potionType;
+		FireworkDamageEvent.addFirework(fw);
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, fw :: detonate, 2);
 	}
 	
 	public static boolean isInt(String s) {
@@ -118,7 +85,7 @@ public class Methods {
 	}
 	
 	public static Player getPlayer(String name) {
-		return Bukkit.getServer().getPlayer(name);
+		return Bukkit.getPlayerExact(name);
 	}
 	
 	public static boolean isOnline(String name, CommandSender sender) {
@@ -127,9 +94,7 @@ public class Methods {
 				return true;
 			}
 		}
-		HashMap<String, String> placeholders = new HashMap<>();
-		placeholders.put("%player%", name);
-		sender.sendMessage(Messages.NOT_ONLINE.getMessage(placeholders));
+		sender.sendMessage(Messages.NOT_ONLINE.getMessage("%Player%", name));
 		return false;
 	}
 	
@@ -144,39 +109,17 @@ public class Methods {
 		}
 	}
 	
-	public static void removeItem(ItemStack item, Player player, int amount) {
-		try {
-			int left = amount;
-			for(ItemStack check : player.getInventory().getContents()) {
-				if(isSimilar(item, check)) {
-					int i = check.getAmount();
-					if((left - i) >= 0) {
-						player.getInventory().removeItem(check);
-						left -= i;
-					}else {
-						check.setAmount(check.getAmount() - left);
-						left = 0;
-					}
-					if(left <= 0) {
-						break;
-					}else {
-					}
-				}
-			}
-		}catch(Exception e) {
-		}
-	}
-	
 	public static boolean permCheck(CommandSender sender, String perm) {
 		return permCheck((Player) sender, perm);
 	}
 	
 	public static boolean permCheck(Player player, String perm) {
-		if(!player.hasPermission("crazycrates." + perm.toLowerCase())) {
+		if(player.hasPermission("crazycrates." + perm.toLowerCase()) || player.hasPermission("crazycrates.admin")) {
+			return true;
+		}else {
 			player.sendMessage(Messages.NO_PERMISSION.getMessage());
 			return false;
 		}
-		return true;
 	}
 	
 	public static String getPrefix() {
@@ -199,11 +142,23 @@ public class Methods {
 		return min + random.nextInt(max - min);
 	}
 	
-	public static boolean isSimilar(Player player, ItemStack two) {
-		return isSimilar(cc.getNMSSupport().getItemInMainHand(player), two);
+	public static boolean isSimilar(Player player, Crate crate) {
+		boolean check = isSimilar(cc.getNMSSupport().getItemInMainHand(player), crate);
+		if(!check) {
+			if(Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+				check = isSimilar(player.getEquipment().getItemInOffHand(), crate);
+			}
+		}
+		return check;
 	}
 	
-	public static boolean isSimilar(ItemStack one, ItemStack two) {
+	public static boolean isSimilar(ItemStack itemStack, Crate crate) {
+		return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
+		itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
+		isSimilarCustom(crate.getKeyNoNBT(), itemStack);
+	}
+	
+	private static boolean isSimilarCustom(ItemStack one, ItemStack two) {
 		if(one != null && two != null) {
 			if(one.getType() == two.getType()) {
 				if(one.hasItemMeta() && two.hasItemMeta()) {
@@ -244,6 +199,20 @@ public class Methods {
 		return false;
 	}
 	
+	private static ItemStack stripNBT(ItemStack item) {
+		try {
+			NBTItem nbtItem = new NBTItem(item.clone());
+			if(nbtItem.hasNBTData()) {
+				if(nbtItem.hasKey("CrazyCrates-Crate")) {
+					nbtItem.removeKey("CrazyCrates-Crate");
+				}
+			}
+			return nbtItem.getItem();
+		}catch(Exception e) {
+			return item;
+		}
+	}
+	
 	public static void hasUpdate() {
 		try {
 			HttpURLConnection c = (HttpURLConnection) new URL("http://www.spigotmc.org/api/general.php").openConnection();
@@ -278,55 +247,80 @@ public class Methods {
 		return getEnchantmentList().keySet();
 	}
 	
-	public static String getEnchantmentName(Enchantment en) {
-		HashMap<String, String> enchants = getEnchantmentList();
-		if(enchants.get(en.getName()) == null) {
+	public static Enchantment getEnchantment(String enchantmentName) {
+		HashMap<String, String> enchantments = getEnchantmentList();
+		enchantmentName = stripEnchantmentName(enchantmentName);
+		for(Enchantment enchantment : Enchantment.values()) {
+			try {
+				//MC 1.13+ has the correct names.
+				if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+					if(stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
+						return enchantment;
+					}
+				}
+				if(stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null &&
+				stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
+					return enchantment;
+				}
+			}catch(Exception ignore) {//If any null enchantments are found they may cause errors.
+			}
+		}
+		return null;
+	}
+	
+	public static String getEnchantmentName(Enchantment enchantment) {
+		HashMap<String, String> enchantments = getEnchantmentList();
+		if(enchantments.get(enchantment.getName()) == null) {
 			return "None Found";
 		}
-		return enchants.get(en.getName());
+		return enchantments.get(enchantment.getName());
+	}
+	
+	private static String stripEnchantmentName(String enchantmentName) {
+		return enchantmentName != null ? enchantmentName.replace("-", "").replace("_", "").replace(" ", "") : null;
 	}
 	
 	private static HashMap<String, String> getEnchantmentList() {
-		HashMap<String, String> enchants = new HashMap<>();
-		enchants.put("ARROW_DAMAGE", "Power");
-		enchants.put("ARROW_FIRE", "Flame");
-		enchants.put("ARROW_INFINITE", "Infinity");
-		enchants.put("ARROW_KNOCKBACK", "Punch");
-		enchants.put("DAMAGE_ALL", "Sharpness");
-		enchants.put("DAMAGE_ARTHROPODS", "Bane_Of_Arthropods");
-		enchants.put("DAMAGE_UNDEAD", "Smite");
-		enchants.put("DEPTH_STRIDER", "Depth_Strider");
-		enchants.put("DIG_SPEED", "Efficiency");
-		enchants.put("DURABILITY", "Unbreaking");
-		enchants.put("FIRE_ASPECT", "Fire_Aspect");
-		enchants.put("KNOCKBACK", "KnockBack");
-		enchants.put("LOOT_BONUS_BLOCKS", "Fortune");
-		enchants.put("LOOT_BONUS_MOBS", "Looting");
-		enchants.put("LUCK", "Luck_Of_The_Sea");
-		enchants.put("LURE", "Lure");
-		enchants.put("OXYGEN", "Respiration");
-		enchants.put("PROTECTION_ENVIRONMENTAL", "Protection");
-		enchants.put("PROTECTION_EXPLOSIONS", "Blast_Protection");
-		enchants.put("PROTECTION_FALL", "Feather_Falling");
-		enchants.put("PROTECTION_FIRE", "Fire_Protection");
-		enchants.put("PROTECTION_PROJECTILE", "Projectile_Protection");
-		enchants.put("SILK_TOUCH", "Silk_Touch");
-		enchants.put("THORNS", "Thorns");
-		enchants.put("WATER_WORKER", "Aqua_Affinity");
-		enchants.put("BINDING_CURSE", "Curse_Of_Binding");
-		enchants.put("MENDING", "Mending");
-		enchants.put("FROST_WALKER", "Frost_Walker");
-		enchants.put("VANISHING_CURSE", "Curse_Of_Vanishing");
-		enchants.put("SWEEPING_EDGE", "Sweeping_Edge");
-		enchants.put("RIPTIDE", "Riptide");
-		enchants.put("CHANNELING", "Channeling");
-		enchants.put("IMPALING", "Impaling");
-		enchants.put("LOYALTY", "Loyalty");
-		return enchants;
+		HashMap<String, String> enchantments = new HashMap<>();
+		enchantments.put("ARROW_DAMAGE", "Power");
+		enchantments.put("ARROW_FIRE", "Flame");
+		enchantments.put("ARROW_INFINITE", "Infinity");
+		enchantments.put("ARROW_KNOCKBACK", "Punch");
+		enchantments.put("DAMAGE_ALL", "Sharpness");
+		enchantments.put("DAMAGE_ARTHROPODS", "Bane_Of_Arthropods");
+		enchantments.put("DAMAGE_UNDEAD", "Smite");
+		enchantments.put("DEPTH_STRIDER", "Depth_Strider");
+		enchantments.put("DIG_SPEED", "Efficiency");
+		enchantments.put("DURABILITY", "Unbreaking");
+		enchantments.put("FIRE_ASPECT", "Fire_Aspect");
+		enchantments.put("KNOCKBACK", "KnockBack");
+		enchantments.put("LOOT_BONUS_BLOCKS", "Fortune");
+		enchantments.put("LOOT_BONUS_MOBS", "Looting");
+		enchantments.put("LUCK", "Luck_Of_The_Sea");
+		enchantments.put("LURE", "Lure");
+		enchantments.put("OXYGEN", "Respiration");
+		enchantments.put("PROTECTION_ENVIRONMENTAL", "Protection");
+		enchantments.put("PROTECTION_EXPLOSIONS", "Blast_Protection");
+		enchantments.put("PROTECTION_FALL", "Feather_Falling");
+		enchantments.put("PROTECTION_FIRE", "Fire_Protection");
+		enchantments.put("PROTECTION_PROJECTILE", "Projectile_Protection");
+		enchantments.put("SILK_TOUCH", "Silk_Touch");
+		enchantments.put("THORNS", "Thorns");
+		enchantments.put("WATER_WORKER", "Aqua_Affinity");
+		enchantments.put("BINDING_CURSE", "Curse_Of_Binding");
+		enchantments.put("MENDING", "Mending");
+		enchantments.put("FROST_WALKER", "Frost_Walker");
+		enchantments.put("VANISHING_CURSE", "Curse_Of_Vanishing");
+		enchantments.put("SWEEPING_EDGE", "Sweeping_Edge");
+		enchantments.put("RIPTIDE", "Riptide");
+		enchantments.put("CHANNELING", "Channeling");
+		enchantments.put("IMPALING", "Impaling");
+		enchantments.put("LOYALTY", "Loyalty");
+		return enchantments;
 	}
 	
 	public static ItemBuilder getRandomPaneColor() {
-		Boolean newMaterial = cc.useNewMaterial();
+		boolean newMaterial = cc.useNewMaterial();
 		List<String> colors = Arrays.asList(
 		newMaterial ? "WHITE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:0",// 0
 		newMaterial ? "ORANGE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:1",// 1
@@ -345,6 +339,20 @@ public class Methods {
 		newMaterial ? "RED_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:14",// 14
 		newMaterial ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15");// 15
 		return new ItemBuilder().setMaterial(colors.get(random.nextInt(colors.size())));
+	}
+	
+	public static void failedToTakeKey(Player player, Crate crate) {
+		failedToTakeKey(player, crate, null);
+	}
+	
+	public static void failedToTakeKey(Player player, Crate crate, Exception e) {
+		System.out.println("[CrazyCrates] An error has occurred while trying to take a physical key from a player");
+		System.out.println("Player: " + player.getName());
+		System.out.println("Crate: " + crate.getName());
+		player.sendMessage(Methods.getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));
+		if(e != null) {
+			e.printStackTrace();
+		}
 	}
 	
 }

@@ -27,9 +27,9 @@ import java.util.HashMap;
 
 public class QuickCrate implements Listener {
 	
-	private static CrazyCrates cc = CrazyCrates.getInstance();
 	public static ArrayList<Entity> allRewards = new ArrayList<>();
 	public static HashMap<Player, Entity> rewards = new HashMap<>();
+	private static CrazyCrates cc = CrazyCrates.getInstance();
 	private static HashMap<Player, BukkitTask> tasks = new HashMap<>();
 	
 	public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
@@ -53,10 +53,20 @@ public class QuickCrate implements Listener {
 					break;
 				}
 			}
-			cc.takeKeys(keysUsed, player, crate, keyType);
+			if(!cc.takeKeys(keysUsed, player, crate, keyType, false)) {
+				Methods.failedToTakeKey(player, crate);
+				CrateControl.inUse.remove(player);
+				cc.removePlayerFromOpeningList(player);
+				return;
+			}
 			endQuickCrate(player, loc);
 		}else {
-			cc.takeKeys(1, player, crate, keyType);
+			if(!cc.takeKeys(1, player, crate, keyType, true)) {
+				Methods.failedToTakeKey(player, crate);
+				CrateControl.inUse.remove(player);
+				cc.removePlayerFromOpeningList(player);
+				return;
+			}
 			Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
 			cc.givePrize(player, prize);
 			Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
@@ -64,7 +74,15 @@ public class QuickCrate implements Listener {
 			NBTItem nbtItem = new NBTItem(displayItem);
 			nbtItem.setBoolean("crazycrates-item", true);
 			displayItem = nbtItem.getItem();
-			Item reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
+			Item reward;
+			try {
+				reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
+			}catch(IllegalArgumentException e) {
+				System.out.println("[CrazyCrates] An prize could not be given due to an invalid display item for this prize. ");
+				System.out.println("[CrazyCrates] Crate: " + prize.getCrate() + " Prize: " + prize.getName());
+				e.printStackTrace();
+				return;
+			}
 			reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(cc.getPlugin(), true));
 			reward.setVelocity(new Vector(0, .2, 0));
 			reward.setCustomName(displayItem.getItemMeta().getDisplayName());

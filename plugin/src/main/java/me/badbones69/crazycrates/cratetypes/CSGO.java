@@ -65,15 +65,19 @@ public class CSGO implements Listener {
 		inv.setItem(8 + 18, item);
 	}
 	
-	public static void openCSGO(Player player, Crate crate, KeyType key) {
+	public static void openCSGO(Player player, Crate crate, KeyType keyType, boolean checkHand) {
 		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(crate.getFile().getString("Crate.CrateName")));
 		setGlass(inv);
 		for(int i = 9; i > 8 && i < 18; i++) {
 			inv.setItem(i, crate.pickPrize(player).getDisplayItem());
 		}
 		player.openInventory(inv);
-		cc.takeKeys(1, player, crate, key);
-		startCSGO(player, inv, crate);
+		if(cc.takeKeys(1, player, crate, keyType, checkHand)) {
+			startCSGO(player, inv, crate);
+		}else {
+			Methods.failedToTakeKey(player, crate);
+			cc.removePlayerFromOpeningList(player);
+		}
 	}
 	
 	private static void startCSGO(final Player player, final Inventory inv, Crate crate) {
@@ -81,6 +85,7 @@ public class CSGO implements Listener {
 			int time = 1;
 			int full = 0;
 			int open = 0;
+			
 			@Override
 			public void run() {
 				if(full <= 50) {//When Spinning
@@ -120,6 +125,7 @@ public class CSGO implements Listener {
 						for(Prize p : crate.getPrizes()) {
 							if(inv.getItem(13).isSimilar(p.getDisplayItem())) {
 								prize = p;
+								break;
 							}
 						}
 						cc.givePrize(player, prize);
