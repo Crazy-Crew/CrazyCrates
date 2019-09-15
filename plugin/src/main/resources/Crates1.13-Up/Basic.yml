@@ -138,4 +138,4 @@ Crate:
         Messages:
           - '&8[&bCrazyCrates&8]: &7You have already won that prize, so enjoy some gold nuggets.'
         Commands:
-          - 'give %player% 371 16'
+          - 'give %player% gold_nugget 16'
