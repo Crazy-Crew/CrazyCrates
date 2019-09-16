@@ -210,6 +210,12 @@ public class Cosmic implements Listener {
 									time++;
 									if(time == 40) {
 										cc.endCrate(player);
+										showRewards(player, crate);
+										if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
+											player.playSound(player.getLocation(), Sound.valueOf("ANVIL_LAND"), 1, 1);
+										}else {
+											player.playSound(player.getLocation(), Sound.valueOf("BLOCK_ANVIL_PLACE"), 1, 1);
+										}
 										new BukkitRunnable() {
 											@Override
 											public void run() {
@@ -218,12 +224,6 @@ public class Cosmic implements Listener {
 												}
 											}
 										}.runTaskLater(cc.getPlugin(), 40);
-										showRewards(player, crate);
-										if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-											player.playSound(player.getLocation(), Sound.valueOf("ANVIL_LAND"), 1, 1);
-										}else {
-											player.playSound(player.getLocation(), Sound.valueOf("BLOCK_ANVIL_PLACE"), 1, 1);
-										}
 									}
 								}
 							}.runTaskTimer(cc.getPlugin(), 0, 2));
