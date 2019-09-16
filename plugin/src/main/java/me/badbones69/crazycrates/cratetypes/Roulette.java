@@ -104,6 +104,14 @@ public class Roulette implements Listener {
 						}
 						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 						cc.removePlayerFromOpeningList(player);
+						new BukkitRunnable() {
+							@Override
+							public void run() {
+								if(player.getOpenInventory().getTopInventory().equals(inv)) {
+									player.closeInventory();
+								}
+							}
+						}.runTaskLater(cc.getPlugin(), 40);
 					}
 				}
 			}

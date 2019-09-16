@@ -216,6 +216,14 @@ public class Cosmic implements Listener {
 										}else {
 											player.playSound(player.getLocation(), Sound.valueOf("BLOCK_ANVIL_PLACE"), 1, 1);
 										}
+										new BukkitRunnable() {
+											@Override
+											public void run() {
+												if(player.getOpenInventory().getTopInventory().equals(inv)) {
+													player.closeInventory();
+												}
+											}
+										}.runTaskLater(cc.getPlugin(), 40);
 									}
 								}
 							}.runTaskTimer(cc.getPlugin(), 0, 2));
