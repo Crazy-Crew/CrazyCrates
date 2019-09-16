@@ -4,7 +4,7 @@
     <parent>
         <artifactId>crazycrates-parent</artifactId>
         <groupId>me.badbones69</groupId>
-        <version>1.9.11-Dev-Build</version>
+        <version>1.9.11</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -15,7 +15,7 @@
         <dependency>
             <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-api</artifactId>
-            <version>1.9.11-Dev-Build</version>
+            <version>1.9.11</version>
             <type>jar</type>
             <scope>compile</scope>
             <optional>true</optional>
