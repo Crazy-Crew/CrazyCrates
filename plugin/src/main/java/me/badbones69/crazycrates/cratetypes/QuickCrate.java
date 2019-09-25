@@ -33,11 +33,17 @@ public class QuickCrate implements Listener {
 	private static HashMap<Player, BukkitTask> tasks = new HashMap<>();
 	
 	public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
-		int keys = 1;// If the key is free it is set to one.
-		if(keyType == KeyType.PHYSICAL_KEY) {
-			keys = cc.getPhysicalKeys(player, crate);
-		}else if(keyType == KeyType.VIRTUAL_KEY) {
-			keys = cc.getVirtualKeys(player, crate);
+		int keys;// If the key is free it is set to one.
+		switch(keyType) {
+			case VIRTUAL_KEY:
+				keys = cc.getVirtualKeys(player, crate);
+				break;
+			case PHYSICAL_KEY:
+				keys = cc.getPhysicalKeys(player, crate);
+				break;
+			default:
+				keys = 1;
+				break;
 		}
 		if(player.isSneaking() && keys > 1) {
 			int keysUsed = 0;

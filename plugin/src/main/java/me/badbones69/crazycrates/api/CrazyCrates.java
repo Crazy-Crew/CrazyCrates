@@ -1081,29 +1081,52 @@ public class CrazyCrates {
 	public boolean takeKeys(int amount, Player player, Crate crate, KeyType keyType, boolean checkHand) {
 		switch(keyType) {
 			case PHYSICAL_KEY:
-				int left = amount;
+				int takeAmount = amount;
+				boolean hasOffhand = Version.getCurrentVersion().isNewer(Version.v1_8_R3);
 				try {
 					List<ItemStack> items = new ArrayList<>();
 					if(checkHand) {
 						items.add(nmsSupport.getItemInMainHand(player));
-						if(Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+						if(hasOffhand) {
 							items.add(player.getEquipment().getItemInOffHand());
 						}
 					}else {
 						items.addAll(Arrays.asList(player.getInventory().getContents()));
+						if(hasOffhand) {//Offhand needs to be removed due to it not being removed in the list.
+							items.remove(player.getEquipment().getItemInOffHand());
+						}
 					}
 					for(ItemStack item : items) {
 						if(item != null) {
 							if(isKeyFromCrate(item, crate)) {
-								int i = item.getAmount();
-								if((left - i) >= 0) {
+								int keyAmount = item.getAmount();
+								if((takeAmount - keyAmount) >= 0) {
 									player.getInventory().removeItem(item);
-									left -= i;
+									takeAmount -= keyAmount;
 								}else {
-									item.setAmount(item.getAmount() - left);
-									left = 0;
+									item.setAmount(keyAmount - takeAmount);
+									takeAmount = 0;
 								}
-								if(left <= 0) {
+								if(takeAmount <= 0) {
+									return true;
+								}
+							}
+						}
+					}
+					//This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the off hand.
+					if(takeAmount > 0 && hasOffhand) {
+						ItemStack item = player.getEquipment().getItemInOffHand();
+						if(item != null) {
+							if(isKeyFromCrate(item, crate)) {
+								int keyAmount = item.getAmount();
+								if((takeAmount - keyAmount) >= 0) {
+									player.getEquipment().setItemInOffHand(new ItemStack(Material.AIR, 1));
+									takeAmount -= keyAmount;
+								}else {
+									item.setAmount(keyAmount - takeAmount);
+									takeAmount = 0;
+								}
+								if(takeAmount <= 0) {
 									return true;
 								}
 							}
@@ -1114,7 +1137,7 @@ public class CrazyCrates {
 					return false;
 				}
 				//Returns true because it was able to take some keys.
-				if(left < amount) {
+				if(takeAmount < amount) {
 					return true;
 				}
 				break;
