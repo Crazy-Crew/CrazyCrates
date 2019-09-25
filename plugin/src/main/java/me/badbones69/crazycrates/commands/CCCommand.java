@@ -13,6 +13,7 @@ import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.controllers.GUIMenu;
 import me.badbones69.crazycrates.controllers.Preview;
 import me.badbones69.crazycrates.multisupport.Version;
+import me.badbones69.crazycrates.multisupport.converters.CratesPlusConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -50,6 +51,10 @@ public class CCCommand implements CommandExecutor {
 			if(args[0].equalsIgnoreCase("help")) {
 				if(sender instanceof Player) if(!Methods.permCheck(sender, "access")) return true;
 				sender.sendMessage(Messages.HELP.getMessage());
+				return true;
+			}else if(args[0].equalsIgnoreCase("convert")) {
+				CratesPlusConverter.convert();
+				sender.sendMessage(Methods.getPrefix("&7Converting has finished."));
 				return true;
 			}else if(args[0].equalsIgnoreCase("set1") || args[0].equalsIgnoreCase("set2")) {
 				if(sender instanceof Player) if(!Methods.permCheck(sender, "admin")) return true;

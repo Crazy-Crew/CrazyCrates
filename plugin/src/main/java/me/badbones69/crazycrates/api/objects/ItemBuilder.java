@@ -144,23 +144,24 @@ public class ItemBuilder {
 	 * @return The ItemBuilder with updated info.
 	 */
 	public ItemBuilder setMaterial(String material) {
+		String metaData = "";
 		if(material.contains(":")) {// Sets the durability or another value option.
 			String[] b = material.split(":");
 			material = b[0];
-			String value = b[1];
-			if(value.contains("#")) {// <ID>:<Durability>#<CustomModelData>
-				String modelData = value.split("#")[1];
+			metaData = b[1];
+			if(metaData.contains("#")) {// <ID>:<Durability>#<CustomModelData>
+				String modelData = metaData.split("#")[1];
 				if(Methods.isInt(modelData)) {//Value is a number.
 					this.useCustomModelData = true;
 					this.customModelData = Integer.parseInt(modelData);
 				}
 			}
-			value = value.replace("#" + customModelData, "");
-			if(Methods.isInt(value)) {//Value is durability.
-				this.damage = Integer.parseInt(value);
+			metaData = metaData.replace("#" + customModelData, "");
+			if(Methods.isInt(metaData)) {//Value is durability.
+				this.damage = Integer.parseInt(metaData);
 			}else {//Value is something else.
-				this.potionType = getPotionType(PotionEffectType.getByName(value));
-				this.armorColor = getColor(value);
+				this.potionType = getPotionType(PotionEffectType.getByName(metaData));
+				this.armorColor = getColor(metaData);
 			}
 		}else if(material.contains("#")) {
 			String[] b = material.split("#");
@@ -176,7 +177,7 @@ public class ItemBuilder {
 			//1.9-1.12.2
 			if(version.isNewer(Version.v1_8_R3) && version.isOlder(Version.v1_13_R2)) {
 				if(m == Material.matchMaterial("MONSTER_EGG")) {
-					this.entityType = EntityType.fromId(damage);
+					this.entityType = EntityType.fromId(damage) != null ? EntityType.fromId(damage) : EntityType.valueOf(metaData);
 					this.damage = 0;
 					this.isMobEgg = true;
 				}
