@@ -33,6 +33,12 @@ Messages:
   Preview-Disabled: '&cThe preview for that crate is currently disabled.'
   No-Schematics-Found: '&cNo schematic were found, if using 1.13+ make sure the schematics folder has the new .nbt schematics, if not regenerate the folder.'
   No-Prizes-Found: '&cThis crate contains no prizes that you can win.'
+  Files-Converted:
+    Crates-Plus:
+      - '%prefix%&7Successfully converted CratesPlus config.yml into crate files with no errors.'
+      - '&7Please do &6/cc reload &7to register the new crates.'
+    No-Files-To-Convert: '&cNo plugins that can be converted were found.'
+    Error-Converting-Files: '&cThere was an error while trying to convert files. Please check console for the error log.'
   Created-Physical-Crate:
     - '%prefix%&7You have just set that block to %crate%.'
     - '&7To remove the crate shift break in creative to remove.'
