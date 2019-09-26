@@ -177,7 +177,10 @@ public class ItemBuilder {
 			//1.9-1.12.2
 			if(version.isNewer(Version.v1_8_R3) && version.isOlder(Version.v1_13_R2)) {
 				if(m == Material.matchMaterial("MONSTER_EGG")) {
-					this.entityType = EntityType.fromId(damage) != null ? EntityType.fromId(damage) : EntityType.valueOf(metaData);
+					try {
+						this.entityType = EntityType.fromId(damage) != null ? EntityType.fromId(damage) : EntityType.valueOf(metaData);
+					}catch(Exception ignore) {
+					}
 					this.damage = 0;
 					this.isMobEgg = true;
 				}
