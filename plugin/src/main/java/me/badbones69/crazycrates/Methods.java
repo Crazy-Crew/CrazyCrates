@@ -110,7 +110,11 @@ public class Methods {
 	}
 	
 	public static boolean permCheck(CommandSender sender, String perm) {
-		return permCheck((Player) sender, perm);
+		if(sender instanceof Player) {
+			return permCheck((Player) sender, perm);
+		}else {
+			return true;
+		}
 	}
 	
 	public static boolean permCheck(Player player, String perm) {

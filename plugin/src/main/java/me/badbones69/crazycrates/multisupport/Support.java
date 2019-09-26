@@ -5,7 +5,8 @@ import org.bukkit.Bukkit;
 public enum Support {
 	
 	PLACEHOLDERAPI("PlaceholderAPI"),
-	MVDWPLACEHOLDERAPI("MVdWPlaceholderAPI");
+	MVDWPLACEHOLDERAPI("MVdWPlaceholderAPI"),
+	CRATESPLUS("CratesPlus");
 	
 	private String name;
 	

@@ -23,6 +23,7 @@ public class CCTab implements TabCompleter {
 			if(hasPermission(sender, "access")) completions.add("help");
 			if(hasPermission(sender, "additem")) completions.add("additem");
 			if(hasPermission(sender, "admin")) completions.add("admin");
+			if(hasPermission(sender, "convert")) completions.add("convert");
 			if(hasPermission(sender, "list")) completions.add("list");
 			if(hasPermission(sender, "open")) completions.add("open");
 			if(hasPermission(sender, "tp")) completions.add("tp");
