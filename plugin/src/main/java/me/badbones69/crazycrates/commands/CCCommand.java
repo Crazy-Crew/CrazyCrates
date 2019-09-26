@@ -10,19 +10,18 @@ import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
 import me.badbones69.crazycrates.api.objects.Prize;
+import me.badbones69.crazycrates.controllers.CrateControl;
 import me.badbones69.crazycrates.controllers.GUIMenu;
 import me.badbones69.crazycrates.controllers.Preview;
 import me.badbones69.crazycrates.multisupport.Support;
 import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.converters.CratesPlusConverter;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -344,12 +343,13 @@ public class CCCommand implements CommandExecutor {
 				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
 				return true;
 			}else if(args[0].equalsIgnoreCase("open")) {// /cc Open <Crate> [Player]
-				if(!Methods.permCheck(sender, "admin")) return true;
+				if(!Methods.permCheck(sender, "open")) return true;
 				if(args.length >= 2) {
 					for(Crate crate : cc.getCrates()) {
 						if(crate.getName().equalsIgnoreCase(args[1])) {
 							Player player;
 							if(args.length >= 3) {
+								if(!Methods.permCheck(sender, "open.other")) return true;
 								if(Methods.isOnline(args[2], sender)) {
 									player = Methods.getPlayer(args[2]);
 								}else {
@@ -357,15 +357,11 @@ public class CCCommand implements CommandExecutor {
 								}
 							}else {
 								if(!(sender instanceof Player)) {
-									sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Open <Crate> [Player]"));
+									sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate open <Crate> [Player]"));
 									return true;
 								}else {
 									player = (Player) sender;
 								}
-							}
-							if(crate.getCrateType() == CrateType.MENU) {
-								sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Open <Crate> [Player]"));
-								return true;
 							}
 							if(CrazyCrates.getInstance().isInOpeningList(player)) {
 								sender.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
@@ -373,8 +369,36 @@ public class CCCommand implements CommandExecutor {
 							}
 							CrateType type = crate.getCrateType();
 							if(type != null) {
-								if(type != CrateType.CRATE_ON_THE_GO && type != CrateType.QUICK_CRATE && type != CrateType.FIRE_CRACKER) {
-									cc.openCrate(player, crate, KeyType.FREE_KEY, player.getLocation(), true, false);
+								FileConfiguration config = Files.CONFIG.getFile();
+								boolean hasKey = false;
+								KeyType keyType = KeyType.VIRTUAL_KEY;
+								if(cc.getVirtualKeys(player, crate) >= 1) {
+									hasKey = true;
+								}else {
+									if(config.getBoolean("Settings.Virtual-Accepts-Physical-Keys")) {
+										if(cc.hasPhysicalKey(player, crate, false)) {
+											hasKey = true;
+											keyType = KeyType.PHYSICAL_KEY;
+										}
+									}
+								}
+								if(!hasKey) {
+									if(config.contains("Settings.Need-Key-Sound")) {
+										Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
+										if(sound != null) {
+											player.playSound(player.getLocation(), sound, 1f, 1f);
+										}
+									}
+									player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
+									CrateControl.knockBack(player, player.getTargetBlock(null, 1).getLocation().add(.5, 0, .5));
+									return true;
+								}
+								if(Methods.isInventoryFull(player)) {
+									player.sendMessage(Messages.INVENTORY_FULL.getMessage());
+									return true;
+								}
+								if(type != CrateType.CRATE_ON_THE_GO && type != CrateType.QUICK_CRATE && type != CrateType.FIRE_CRACKER && type != CrateType.QUAD_CRATE) {
+									cc.openCrate(player, crate, keyType, player.getLocation(), true, false);
 									HashMap<String, String> placeholders = new HashMap<>();
 									placeholders.put("%Crate%", crate.getName());
 									placeholders.put("%Player%", player.getName());
@@ -390,10 +414,58 @@ public class CCCommand implements CommandExecutor {
 							}
 						}
 					}
+				}
+				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate open <Crate> [Player]"));
+				return true;
+			}else if(args[0].equalsIgnoreCase("forceopen") || args[0].equalsIgnoreCase("fo") || args[0].equalsIgnoreCase("fopen")) {// /cc ForceOpen <Crate> [Player]
+				if(!Methods.permCheck(sender, "forceopen")) return true;
+				if(args.length >= 2) {
+					for(Crate crate : cc.getCrates()) {
+						if(crate.getCrateType() != CrateType.MENU) {
+							if(crate.getName().equalsIgnoreCase(args[1])) {
+								Player player;
+								if(args.length >= 3) {
+									if(Methods.isOnline(args[2], sender)) {
+										player = Methods.getPlayer(args[2]);
+									}else {
+										return true;
+									}
+								}else {
+									if(!(sender instanceof Player)) {
+										sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate forceopen <Crate> [Player]"));
+										return true;
+									}else {
+										player = (Player) sender;
+									}
+								}
+								if(CrazyCrates.getInstance().isInOpeningList(player)) {
+									sender.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
+									return true;
+								}
+								CrateType type = crate.getCrateType();
+								if(type != null) {
+									if(type != CrateType.CRATE_ON_THE_GO && type != CrateType.QUICK_CRATE && type != CrateType.FIRE_CRACKER) {
+										cc.openCrate(player, crate, KeyType.FREE_KEY, player.getLocation(), true, false);
+										HashMap<String, String> placeholders = new HashMap<>();
+										placeholders.put("%Crate%", crate.getName());
+										placeholders.put("%Player%", player.getName());
+										sender.sendMessage(Messages.OPENED_A_CRATE.getMessage(placeholders));
+										return true;
+									}else {
+										sender.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
+										return true;
+									}
+								}else {
+									sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[1]));
+									return true;
+								}
+							}
+						}
+					}
 					sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[1]));
 					return true;
 				}
-				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Open <Crate> [Player]"));
+				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate forceopen <Crate> [Player]"));
 				return true;
 			}else if(args[0].equalsIgnoreCase("giveall")) {// /Crate GiveAll <Physical/Virtual> <Crate> <Amount>
 				if(!Methods.permCheck(sender, "admin")) return true;

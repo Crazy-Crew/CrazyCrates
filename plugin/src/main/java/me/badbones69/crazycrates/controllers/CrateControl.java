@@ -244,13 +244,13 @@ public class CrateControl implements Listener { //Crate Control
 		}
 	}
 	
-	private void knockBack(Player player, Location loc) {
-		Vector v = player.getLocation().toVector().subtract(loc.toVector()).normalize().multiply(1).setY(.1);
+	public static void knockBack(Player player, Location location) {
+		Vector vector = player.getLocation().toVector().subtract(location.toVector()).normalize().multiply(1).setY(.1);
 		if(player.isInsideVehicle()) {
-			player.getVehicle().setVelocity(v);
+			player.getVehicle().setVelocity(vector);
 			return;
 		}
-		player.setVelocity(v);
+		player.setVelocity(vector);
 	}
 	
 }
