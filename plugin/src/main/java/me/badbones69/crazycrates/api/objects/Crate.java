@@ -38,6 +38,7 @@ public class Crate {
 	private Integer newPlayerKeys;
 	private ArrayList<ItemStack> preview;
 	private ArrayList<Tier> tiers;
+	private CrateHologram hologram;
 	private FileManager fileManager = FileManager.getInstance();
 	private CrazyCrates cc = CrazyCrates.getInstance();
 	
@@ -49,7 +50,7 @@ public class Crate {
 	 * @param prizes The prizes that can be won.
 	 * @param file The crate file.
 	 */
-	public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, Integer newPlayerKeys, ArrayList<Tier> tiers) {
+	public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, Integer newPlayerKeys, ArrayList<Tier> tiers, CrateHologram hologram) {
 		ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
 		this.keyNoNBT = itemBuilder.build();
 		this.key = itemBuilder.setCrateName(name).build();
@@ -73,6 +74,7 @@ public class Crate {
 		for(int amount = preview.size(); amount > getMaxSlots() - (boarderToggle ? 18 : 9); amount -= getMaxSlots() - (boarderToggle ? 18 : 9), maxPage++) ;
 		this.crateInventoryName = file != null ? Methods.color(file.getString("Crate.CrateName")) : "";
 		this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
+		this.hologram = hologram != null ? hologram : new CrateHologram();
 	}
 	
 	/**
@@ -457,6 +459,14 @@ public class Crate {
 	 */
 	public ArrayList<Tier> getTiers() {
 		return tiers;
+	}
+	
+	/**
+	 *
+	 * @return A CrateHologram which contains all the info about the hologram the crate uses.
+	 */
+	public CrateHologram getHologram() {
+		return hologram;
 	}
 	
 	/**

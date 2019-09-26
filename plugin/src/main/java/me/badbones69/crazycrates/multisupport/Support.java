@@ -6,7 +6,9 @@ public enum Support {
 	
 	PLACEHOLDERAPI("PlaceholderAPI"),
 	MVDWPLACEHOLDERAPI("MVdWPlaceholderAPI"),
-	CRATESPLUS("CratesPlus");
+	CRATESPLUS("CratesPlus"),
+	HOLOGRAPHIC_DISPLAYS("HolographicDisplays"),
+	HOLOGRAMS("Holograms");
 	
 	private String name;
 	

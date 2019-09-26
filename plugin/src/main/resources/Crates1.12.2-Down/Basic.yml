@@ -47,6 +47,14 @@ Crate:
     Item: 'TRIPWIRE_HOOK'
     #Makes the key look enchanted.
     Glowing: true
+  Hologram:
+    #Toggle on and off the holograms for the crates.
+    Toggle: true
+    #The height of the hologram above the crate.
+    Height: 1.5
+    #The message that will be displayed.
+    Message:
+      - '&7&lBasic Chest'
   #All the prizes that can be gotten in the Crate.
   Prizes:
     1:

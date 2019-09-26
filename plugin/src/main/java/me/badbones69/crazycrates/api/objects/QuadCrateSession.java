@@ -133,6 +133,9 @@ public class QuadCrateSession {
 			crateSessions.remove(instance);
 			return false;
 		}
+		if(cc.getHologramController() != null) {
+			cc.getHologramController().removeHologram(spawnLocation.getBlock());
+		}
 		player.teleport(spawnLocation.clone().add(.5, 0, .5));
 		//Shove other players away from the player
 		shovePlayers.forEach(entity -> entity.getLocation().toVector().subtract(spawnLocation.clone().toVector()).normalize().setY(1));
@@ -150,7 +153,7 @@ public class QuadCrateSession {
 				oldBlocks.put(loc.clone(), loc.getBlock().getState());
 			}
 		}
-		nms.pasteSchematic(crateSchematic.getSchematicFile(), spawnLocation);
+		nms.pasteSchematic(crateSchematic.getSchematicFile(), spawnLocation.clone());
 		cc.addQuadCrateTask(player, new BukkitRunnable() {
 			double radius = 0.0;//Radius of the particle spiral
 			int crateNumber = 0; //The crate number that spawns next
@@ -204,6 +207,9 @@ public class QuadCrateSession {
 				chestLocations.forEach(location -> oldChestBlocks.get(location).update(true, false));
 				displayedRewards.forEach(Entity :: remove);
 				player.teleport(lastLocation);
+				if(cc.getHologramController() != null) {
+					cc.getHologramController().createHologram(spawnLocation.getBlock(), crate);
+				}
 				cc.endCrate(player);
 				cc.removePlayerFromOpeningList(player);
 				crateSessions.remove(instance);

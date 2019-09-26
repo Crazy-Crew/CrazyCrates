@@ -27,6 +27,11 @@ Crate:
       - '&7For a special Crate.'
     Item: 'TRIPWIRE_HOOK'
     Glowing: True
+  Hologram:
+    Toggle: true
+    Height: 1.5
+    Message:
+      - '&e&lClassic Chest'
   Prizes:
     1:
       DisplayName: '&a&lFancy Pants'

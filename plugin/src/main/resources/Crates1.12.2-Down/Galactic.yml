@@ -28,6 +28,11 @@ Crate:
       - '&7For a special Crate.'
     Item: 'TRIPWIRE_HOOK'
     Glowing: true
+  Hologram:
+    Toggle: true
+    Height: 1.5
+    Message:
+      - '&d&lGalactic Chest'
     #The tiers in the Crate
   Tiers:
     #The Config Name for the Crate

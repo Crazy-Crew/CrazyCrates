@@ -6,10 +6,13 @@ import me.badbones69.crazycrates.api.enums.BrokeLocation;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
+import me.badbones69.crazycrates.api.interfaces.HologramController;
 import me.badbones69.crazycrates.api.objects.*;
 import me.badbones69.crazycrates.controllers.CrateControl;
 import me.badbones69.crazycrates.controllers.GUIMenu;
 import me.badbones69.crazycrates.cratetypes.*;
+import me.badbones69.crazycrates.multisupport.HologramsSupport;
+import me.badbones69.crazycrates.multisupport.HolographicSupport;
 import me.badbones69.crazycrates.multisupport.Support;
 import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
@@ -120,6 +123,11 @@ public class CrazyCrates {
 	private NMSSupport nmsSupport;
 	
 	/**
+	 * The hologram api that is being hooked into.
+	 */
+	private HologramController hologramController;
+	
+	/**
 	 * Schematic locations for 1.13+
 	 */
 	private HashMap<UUID, Location[]> schemLocations = new HashMap<>();
@@ -185,6 +193,15 @@ public class CrazyCrates {
 		plugin = Bukkit.getPluginManager().getPlugin("CrazyCrates");
 		quadCrateTimer = Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
 		giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
+		if(Support.HOLOGRAPHIC_DISPLAYS.isPluginLoaded()) {
+			hologramController = new HolographicSupport();
+		}else if(Support.HOLOGRAMS.isPluginLoaded()) {
+			hologramController = new HologramsSupport();
+		}
+		//Removes all holograms so that they can be replaced.
+		if(hologramController != null) {
+			hologramController.removeAllHolograms();
+		}
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Loading all crate information...");
 		for(String crateName : fileManager.getAllCratesNames()) {
 			//			if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Loading " + crateName + ".yml information....");
@@ -244,7 +261,8 @@ public class CrazyCrates {
 						giveNewPlayersKeys = true;
 					}
 				}
-				crates.add(new Crate(crateName, previewName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file, newPlayersKeys, tiers));
+				crates.add(new Crate(crateName, previewName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file, newPlayersKeys, tiers,
+				new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"))));
 				//				if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "" + crateName + ".yml has been loaded.");
 			}catch(Exception e) {
 				brokecrates.add(crateName);
@@ -252,7 +270,7 @@ public class CrazyCrates {
 				e.printStackTrace();
 			}
 		}
-		crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null));
+		crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null));
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "All crate information has been loaded.");
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Loading all the physical crate locations.");
 		FileConfiguration locations = Files.LOCATIONS.getFile();
@@ -270,6 +288,9 @@ public class CrazyCrates {
 					Crate crate = getCrateFromName(locations.getString("Locations." + locationName + ".Crate"));
 					if(world != null && crate != null) {
 						crateLocations.add(new CrateLocation(locationName, crate, location));
+						if(hologramController != null) {
+							hologramController.createHologram(location.getBlock(), crate);
+						}
 						loadedAmount++;
 					}else {
 						brokeLocations.add(new BrokeLocation(locationName, crate, x, y, z, worldName));
@@ -591,29 +612,32 @@ public class CrazyCrates {
 	
 	/**
 	 * Add a new physical crate location.
-	 * @param loc The location you wish to add.
+	 * @param location The location you wish to add.
 	 * @param crate The crate which you would like to set it to.
 	 */
-	public void addCrateLocation(Location loc, Crate crate) {
+	public void addCrateLocation(Location location, Crate crate) {
 		FileConfiguration locations = Files.LOCATIONS.getFile();
 		String id = "1"; //Location ID
 		for(int i = 1; locations.contains("Locations." + i); i++) {
 			id = (i + 1) + "";
 		}
 		for(CrateLocation crateLocation : getCrateLocations()) {
-			if(crateLocation.getLocation().equals(loc)) {
+			if(crateLocation.getLocation().equals(location)) {
 				id = crateLocation.getID();
 				break;
 			}
 		}
 		
 		locations.set("Locations." + id + ".Crate", crate.getName());
-		locations.set("Locations." + id + ".World", loc.getWorld().getName());
-		locations.set("Locations." + id + ".X", loc.getBlockX());
-		locations.set("Locations." + id + ".Y", loc.getBlockY());
-		locations.set("Locations." + id + ".Z", loc.getBlockZ());
+		locations.set("Locations." + id + ".World", location.getWorld().getName());
+		locations.set("Locations." + id + ".X", location.getBlockX());
+		locations.set("Locations." + id + ".Y", location.getBlockY());
+		locations.set("Locations." + id + ".Z", location.getBlockZ());
 		Files.LOCATIONS.saveFile();
-		crateLocations.add(new CrateLocation(id, crate, loc));
+		crateLocations.add(new CrateLocation(id, crate, location));
+		if(hologramController != null) {
+			hologramController.createHologram(location.getBlock(), crate);
+		}
 	}
 	
 	/**
@@ -623,15 +647,18 @@ public class CrazyCrates {
 	public void removeCrateLocation(String id) {
 		Files.LOCATIONS.getFile().set("Locations." + id, null);
 		Files.LOCATIONS.saveFile();
-		CrateLocation loc = null;
+		CrateLocation location = null;
 		for(CrateLocation crateLocation : getCrateLocations()) {
 			if(crateLocation.getID().equalsIgnoreCase(id)) {
-				loc = crateLocation;
+				location = crateLocation;
 				break;
 			}
 		}
-		if(loc != null) {
-			crateLocations.remove(loc);
+		if(location != null) {
+			crateLocations.remove(location);
+			if(hologramController != null) {
+				hologramController.removeHologram(location.getLocation().getBlock());
+			}
 		}
 	}
 	
@@ -1226,6 +1253,14 @@ public class CrazyCrates {
 	 */
 	public NMSSupport getNMSSupport() {
 		return nmsSupport;
+	}
+	
+	/**
+	 * Get the hologram plugin settings that is being used.
+	 * @return The hologram controller for the holograms.
+	 */
+	public HologramController getHologramController() {
+		return hologramController;
 	}
 	
 	/**

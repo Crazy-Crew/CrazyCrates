@@ -116,6 +116,7 @@ public class Main extends JavaPlugin implements Listener {
 		if(isEnabled) {
 			QuadCrateSession.endAllCrates();
 			QuickCrate.removeAllRewards();
+			cc.getHologramController().removeAllHolograms();
 		}
 	}
 	
