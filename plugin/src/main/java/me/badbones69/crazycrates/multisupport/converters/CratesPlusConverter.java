@@ -95,11 +95,17 @@ public class CratesPlusConverter {
 				crateFile.set(prizePath + "DisplayItem", displayItem);
 				crateFile.set(prizePath + "DisplayAmount", prize.getDisplayItem().getAmount());
 				crateFile.set(prizePath + "Lore", prize.getDisplayItem().getLore());
-				crateFile.set(prizePath + "DisplayEnchantments", prize.getDisplayEnchantments());
+				if(!prize.getDisplayEnchantments().isEmpty()) {
+					crateFile.set(prizePath + "DisplayEnchantments", prize.getDisplayEnchantments());
+				}
 				crateFile.set(prizePath + "MaxRange", prize.getMaxRange());
 				crateFile.set(prizePath + "Chance", prize.getChance());
-				crateFile.set(prizePath + "Firework", prize.isFirework());
-				crateFile.set(prizePath + "Glowing", prize.getDisplayItem().isGlowing());
+				if(prize.isFirework()) {
+					crateFile.set(prizePath + "Firework", true);
+				}
+				if(prize.getDisplayItem().isGlowing()) {
+					crateFile.set(prizePath + "Glowing", true);
+				}
 				if(!prize.getItems().isEmpty()) {
 					crateFile.set(prizePath + "Items", prize.getItems());
 				}
