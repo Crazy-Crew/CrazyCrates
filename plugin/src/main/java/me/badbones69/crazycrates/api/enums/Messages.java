@@ -55,24 +55,27 @@ public enum Messages {
 	NO_FILES_TO_CONVERT("Files-Converted.No-Files-To-Convert", "&cNo plugins that can be converted were found."),
 	ERROR_CONVERTING_FILES("Files-Converted.Error-Converting-Files", "&cThere was an error while trying to convert files. Please check console for the error log."),
 	HELP("Help",
-	Arrays.asList("&3&lCrazy Crates Help Menu",
-	"&6/key [player] &7- Check the amount of keys a player has.",
+	Arrays.asList(
+	"&3&lCrazy Crates Help Menu",
+	"&6/key [player] &7- Check the number of keys a player has.",
 	"&6/cc &7- Opens the GUI.",
 	"&6/cc additem <crate> <prize> &7- Add items in-game to a prize in a crate.",
 	"&6/cc admin &7- Opens the Admin Keys GUI.",
+	"&6/cc preview <crate> [player] &7- Opens the preview of a crate for a player.",
 	"&6/cc list &7- Lists all the Crates.",
-	"&6/cc open <Crate> [Player] &7- Tries to open a crate for a player if they have a key.",
-	"&6/cc forceopen <Crate> [Player] &7- Opens a crate for a player for free.",
-	"&6/cc tp <Location> &7- Teleport to a Crate.",
-	"&6/cc give <Physical/Virtual> <Crate> [Amount] [Player] &7- Give a player keys for a Chest.",
-	"&6/cc giveall <Physical/Virtual> <Crate> [Amount] &7- Gives all online players keys for a Chest.",
-	"&6/cc take <Physical/Virtual> <Crate> [Amount] [Player] &7- Allows you to take keys from a player.",
-	"&6/cc set <Crate> &7- Set a block you are looking at as a crate.",
+	"&6/cc open <crate> [player] &7- Tries to open a crate for a player if they have a key.",
+	"&6/cc forceopen <crate> [player] &7- Opens a crate for a player for free.",
+	"&6/cc tp <location> &7- Teleport to a Crate.",
+	"&6/cc give <physical/virtual> <crate> [amount] [player] &7- Give a player keys for a Chest.",
+	"&6/cc giveall <physical/virtual> <crate> [amount] &7- Gives all online players keys for a Chest.",
+	"&6/cc take <physical/virtual> <crate> [amount] [player] &7- Allows you to take keys from a player.",
+	"&6/cc set <crate> &7- Set a block you are looking at as a crate.",
 	"&6/cc set Menu &7- Set the block you are looking at to open the /cc GUI.",
 	"&6/cc reload &7- Reloads the Config and Data Files.",
 	"&6/cc convert &7- Tries to convert supported plugin's crate files into crazy crate's crate files.",
 	"&6/cc set1/set2 &7- Set position #1 or #2 for when making a new schematic for quadcrates. &c1.13+ only",
-	"&6/cc save <schematic file name> &7- Save the new schematic file to the schematics folder. &c1.13+ only"));
+	"&6/cc save <schematic file name> &7- Save the new schematic file to the schematics folder. &c1.13+ only",
+	"&7List of permissions can be found here: &bhttps://github.com/badbones69/Crazy-Crates/wiki/Commands-and-Permissions"));
 	
 	private String path;
 	private String defaultMessage;
