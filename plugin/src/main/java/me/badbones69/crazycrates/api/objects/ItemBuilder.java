@@ -7,15 +7,16 @@ import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.block.Banner;
+import org.bukkit.block.banner.Pattern;
+import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
@@ -61,6 +62,9 @@ public class ItemBuilder {
 	private boolean isPotion;
 	private Color armorColor;
 	private boolean isLeatherArmor;
+	private List<Pattern> patterns;
+	private boolean isBanner;
+	private boolean isShield;
 	private int customModelData;
 	private boolean useCustomModelData;
 	private HashMap<String, String> namePlaceholders;
@@ -91,6 +95,9 @@ public class ItemBuilder {
 		this.isPotion = false;
 		this.armorColor = null;
 		this.isLeatherArmor = false;
+		this.patterns = new ArrayList<>();
+		this.isBanner = false;
+		this.isShield = false;
 		this.customModelData = 0;
 		this.useCustomModelData = false;
 		this.isMobEgg = false;
@@ -136,6 +143,7 @@ public class ItemBuilder {
 	public static ItemBuilder convertString(String itemString, String placeHolder) {
 		ItemBuilder itemBuilder = new ItemBuilder();
 		try {
+			options:
 			for(String option : itemString.split(", ")) {
 				if(option.startsWith("Item:")) {
 					itemBuilder.setMaterial(option.replaceAll("Item:", ""));
@@ -170,8 +178,20 @@ public class ItemBuilder {
 					for(ItemFlag itemFlag : ItemFlag.values()) {
 						if(itemFlag.name().equalsIgnoreCase(option)) {
 							itemBuilder.addItemFlag(itemFlag);
-							break;
+							continue options;
 						}
+					}
+					try {
+						for(PatternType pattern : PatternType.values()) {
+							if(argument1.equalsIgnoreCase(pattern.name()) || argument1.equalsIgnoreCase(pattern.getIdentifier())) {
+								DyeColor color = getDyeColor(split[1]);
+								if(color != null) {
+									itemBuilder.addPattern(new Pattern(color, pattern));
+								}
+								break;
+							}
+						}
+					}catch(Exception e) {
 					}
 				}
 			}
@@ -282,6 +302,16 @@ public class ItemBuilder {
 			case "LEATHER_BOOTS":
 				this.isLeatherArmor = true;
 				break;
+			case "BANNER":
+				this.isBanner = true;
+				break;
+			case "SHIELD":
+				this.isShield = true;
+				break;
+		}
+		//1.13+ added different banner names and so this is quicker then listing every banner color.
+		if(this.material.name().contains("BANNER")) {
+			this.isBanner = true;
 		}
 		return this;
 	}
@@ -511,6 +541,50 @@ public class ItemBuilder {
 	
 	public boolean isLeatherArmor() {
 		return isLeatherArmor;
+	}
+	
+	public List<Pattern> getPatterns() {
+		return patterns;
+	}
+	
+	public ItemBuilder addPattern(String stringPattern) {
+		try {
+			String[] split = stringPattern.split(":");
+			for(PatternType pattern : PatternType.values()) {
+				if(split[0].equalsIgnoreCase(pattern.name()) || split[0].equalsIgnoreCase(pattern.getIdentifier())) {
+					DyeColor color = getDyeColor(split[1]);
+					if(color != null) {
+						addPattern(new Pattern(color, pattern));
+					}
+					break;
+				}
+			}
+		}catch(Exception e) {
+		}
+		return this;
+	}
+	
+	public ItemBuilder addPatterns(List<String> stringList) {
+		stringList.forEach(this :: addPattern);
+		return this;
+	}
+	
+	public ItemBuilder addPattern(Pattern pattern) {
+		patterns.add(pattern);
+		return this;
+	}
+	
+	public ItemBuilder setPatterns(List<Pattern> patterns) {
+		this.patterns = patterns;
+		return this;
+	}
+	
+	public boolean isBanner() {
+		return isBanner;
+	}
+	
+	public boolean isShield() {
+		return isShield;
 	}
 	
 	/**
@@ -775,6 +849,17 @@ public class ItemBuilder {
 				LeatherArmorMeta leatherMeta = (LeatherArmorMeta) itemMeta;
 				leatherMeta.setColor(armorColor);
 			}
+			if(isBanner && !patterns.isEmpty()) {
+				BannerMeta bannerMeta = (BannerMeta) itemMeta;
+				bannerMeta.setPatterns(patterns);
+			}
+			if(isShield && !patterns.isEmpty()) {
+				BlockStateMeta shieldMeta = (BlockStateMeta) itemMeta;
+				Banner banner = (Banner) shieldMeta.getBlockState();
+				banner.setPatterns(patterns);
+				banner.update();
+				shieldMeta.setBlockState(banner);
+			}
 			if(useCustomModelData) {
 				itemMeta.setCustomModelData(customModelData);
 			}
@@ -892,7 +977,7 @@ public class ItemBuilder {
 		return null;
 	}
 	
-	private Color getColor(String color) {
+	private static Color getColor(String color) {
 		if(color != null) {
 			switch(color.toUpperCase()) {
 				case "AQUA":
@@ -934,6 +1019,21 @@ public class ItemBuilder {
 				String[] rgb = color.split(",");
 				return Color.fromRGB(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2]));
 			}catch(Exception ignore) {
+			}
+		}
+		return null;
+	}
+	
+	private static DyeColor getDyeColor(String color) {
+		if(color != null) {
+			try {
+				return DyeColor.valueOf(color.toUpperCase());
+			}catch(Exception e) {
+				try {
+					String[] rgb = color.split(",");
+					return DyeColor.getByColor(Color.fromRGB(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2])));
+				}catch(Exception ignore) {
+				}
 			}
 		}
 		return null;

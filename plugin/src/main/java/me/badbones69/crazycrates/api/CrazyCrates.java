@@ -1357,6 +1357,7 @@ public class CrazyCrates {
 			.setUnbreakable(file.getBoolean(path + "Unbreakable"))
 			.hideItemFlags(file.getBoolean(path + "HideItemFlags"))
 			.addItemFlags(file.getStringList(path + "Flags"))
+			.addPatterns(file.getStringList(path + "Patterns"))
 			.setPlayer(file.getString(path + "Player"));
 			if(file.contains(path + "DisplayEnchantments")) {
 				for(String enchantmentName : file.getStringList(path + "DisplayEnchantments")) {
