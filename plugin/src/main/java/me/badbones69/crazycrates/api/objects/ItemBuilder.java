@@ -57,7 +57,10 @@ public class ItemBuilder {
 	private boolean isMobEgg;
 	private EntityType entityType;
 	private PotionType potionType;
+	private Color potionColor;
+	private boolean isPotion;
 	private Color armorColor;
+	private boolean isLeatherArmor;
 	private int customModelData;
 	private boolean useCustomModelData;
 	private HashMap<String, String> namePlaceholders;
@@ -84,7 +87,10 @@ public class ItemBuilder {
 		this.glowing = false;
 		this.entityType = EntityType.BAT;
 		this.potionType = null;
+		this.potionColor = null;
+		this.isPotion = false;
 		this.armorColor = null;
+		this.isLeatherArmor = false;
 		this.customModelData = 0;
 		this.useCustomModelData = false;
 		this.isMobEgg = false;
@@ -236,6 +242,7 @@ public class ItemBuilder {
 				this.damage = Integer.parseInt(metaData);
 			}else {//Value is something else.
 				this.potionType = getPotionType(PotionEffectType.getByName(metaData));
+				this.potionColor = getColor(metaData);
 				this.armorColor = getColor(metaData);
 			}
 		}else if(material.contains("#")) {
@@ -261,7 +268,21 @@ public class ItemBuilder {
 				}
 			}
 		}
-		this.isHead = this.material == (cc.useNewMaterial() ? Material.matchMaterial("PLAYER_HEAD") : Material.matchMaterial("SKULL_ITEM"));
+		switch(this.material.name()) {
+			case "PLAYER_HEAD":
+			case "SKULL_ITEM":
+				this.isHead = true;
+				break;
+			case "POTION":
+				this.isPotion = true;
+				break;
+			case "LEATHER":
+			case "LEATHER_CHESTPLATE":
+			case "LEATHER_LEGGINGS":
+			case "LEATHER_BOOTS":
+				this.isLeatherArmor = true;
+				break;
+		}
 		return this;
 	}
 	
@@ -460,6 +481,18 @@ public class ItemBuilder {
 		this.potionType = potionType;
 	}
 	
+	public Color getPotionColor() {
+		return potionColor;
+	}
+	
+	public void setPotionColor(Color potionColor) {
+		this.potionColor = potionColor;
+	}
+	
+	public boolean isPotion() {
+		return isPotion;
+	}
+	
 	/**
 	 * Get the color leather armor is set to.
 	 * @return The Color the armor is set to.
@@ -474,6 +507,10 @@ public class ItemBuilder {
 	 */
 	public void setArmorColor(Color armorColor) {
 		this.armorColor = armorColor;
+	}
+	
+	public boolean isLeatherArmor() {
+		return isLeatherArmor;
 	}
 	
 	/**
@@ -658,15 +695,21 @@ public class ItemBuilder {
 	}
 	
 	public ItemBuilder addItemFlag(String flagString) {
-		addItemFlag(ItemFlag.valueOf(flagString));
+		try {
+			addItemFlag(ItemFlag.valueOf(flagString.toUpperCase()));
+		}catch(Exception e) {
+		}
 		return this;
 	}
 	
 	public ItemBuilder addItemFlags(List<String> flagStrings) {
 		for(String flagString : flagStrings) {
-			ItemFlag itemFlag = ItemFlag.valueOf(flagString);
-			if(itemFlag != null) {
-				addItemFlag(itemFlag);
+			try {
+				ItemFlag itemFlag = ItemFlag.valueOf(flagString.toUpperCase());
+				if(itemFlag != null) {
+					addItemFlag(itemFlag);
+				}
+			}catch(Exception e) {
 			}
 		}
 		return this;
@@ -719,11 +762,16 @@ public class ItemBuilder {
 			}else {
 				item.setDurability((short) damage);
 			}
-			if(potionType != null) {
+			if(isPotion && (potionType != null || potionColor != null)) {
 				PotionMeta potionMeta = (PotionMeta) itemMeta;
-				potionMeta.setBasePotionData(new PotionData(potionType));
+				if(potionType != null) {
+					potionMeta.setBasePotionData(new PotionData(potionType));
+				}
+				if(potionColor != null) {
+					potionMeta.setColor(potionColor);
+				}
 			}
-			if(armorColor != null) {
+			if(isLeatherArmor && armorColor != null) {
 				LeatherArmorMeta leatherMeta = (LeatherArmorMeta) itemMeta;
 				leatherMeta.setColor(armorColor);
 			}
@@ -896,7 +944,7 @@ public class ItemBuilder {
 		for(Enchantment enchantment : Enchantment.values()) {
 			try {
 				//MC 1.13+ has the correct names.
-				if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+				if(version.isNewer(Version.v1_12_R1)) {
 					if(stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
 						return enchantment;
 					}
