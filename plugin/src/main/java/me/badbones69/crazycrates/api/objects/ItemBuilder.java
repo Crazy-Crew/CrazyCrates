@@ -21,8 +21,10 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -60,6 +62,7 @@ public class ItemBuilder {
 	private boolean useCustomModelData;
 	private HashMap<String, String> namePlaceholders;
 	private HashMap<String, String> lorePlaceholders;
+	private List<ItemFlag> itemFlags;
 	
 	/**
 	 * The initial starting point for making an item.
@@ -87,6 +90,7 @@ public class ItemBuilder {
 		this.isMobEgg = false;
 		this.namePlaceholders = new HashMap<>();
 		this.lorePlaceholders = new HashMap<>();
+		this.itemFlags = new ArrayList<>();
 	}
 	
 	/**
@@ -119,12 +123,83 @@ public class ItemBuilder {
 		return itemBuilder;
 	}
 	
+	public static ItemBuilder convertString(String itemString) {
+		return convertString(itemString, null);
+	}
+	
+	public static ItemBuilder convertString(String itemString, String placeHolder) {
+		ItemBuilder itemBuilder = new ItemBuilder();
+		try {
+			for(String option : itemString.split(", ")) {
+				if(option.startsWith("Item:")) {
+					itemBuilder.setMaterial(option.replaceAll("Item:", ""));
+				}else if(option.startsWith("Name:")) {
+					itemBuilder.setName(option.replaceAll("Name:", ""));
+				}else if(option.startsWith("Amount:")) {
+					try {
+						itemBuilder.setAmount(Integer.parseInt(option.replaceAll("Amount:", "")));
+					}catch(NumberFormatException e) {
+						itemBuilder.setAmount(1);
+					}
+				}else if(option.startsWith("Lore:")) {
+					itemBuilder.setLore(Arrays.asList(option.replaceAll("Lore:", "").split(",")));
+				}else if(option.startsWith("Player:")) {
+					itemBuilder.setPlayer(option.replaceAll("Player:", ""));
+				}else if(option.startsWith("Unbreakable-Item:")) {
+					if(option.replaceAll("Unbreakable-Item:", "").equalsIgnoreCase("true")) {
+						itemBuilder.setUnbreakable(true);
+					}
+				}else {
+					String[] split = option.split(":");
+					String argument1 = split[0];
+					Enchantment enchantment = getEnchantment(argument1);
+					if(enchantment != null && enchantment.getName() != null) {
+						try {
+							itemBuilder.addEnchantments(enchantment, Integer.parseInt(split[1]));
+						}catch(Exception e) {
+							itemBuilder.addEnchantments(enchantment, 1);
+						}
+						continue;
+					}
+					for(ItemFlag itemFlag : ItemFlag.values()) {
+						if(itemFlag.name().equalsIgnoreCase(option)) {
+							itemBuilder.addItemFlag(itemFlag);
+							break;
+						}
+					}
+				}
+			}
+		}catch(Exception e) {
+			itemBuilder.setMaterial("RED_TERRACOTTA", "STAINED_CLAY:14").setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + (placeHolder != null ? placeHolder : "")));
+			e.printStackTrace();
+		}
+		return itemBuilder;
+	}
+	
+	public static List<ItemBuilder> convertStringList(List<String> itemStrings) {
+		return convertStringList(itemStrings, null);
+	}
+	
+	public static List<ItemBuilder> convertStringList(List<String> itemStrings, String placeholder) {
+		return itemStrings.stream().map(itemString -> convertString(itemString, placeholder)).collect(Collectors.toList());
+	}
+	
 	/**
 	 * Get the type of item as a Material the builder is set to.
 	 * @return The type of material the builder is set to.
 	 */
 	public Material getMaterial() {
 		return material;
+	}
+	
+	/**
+	 * Set the type of item and its metadata in the builder.
+	 * @param newMaterial The 1.13+ string must be in this form: %Material% or %Material%:%MetaData%
+	 * @param oldMaterial The 1.12.2- string must be in this form: %Material% or %Material%:%MetaData%
+	 * @return The ItemBuilder with updated info.
+	 */
+	public ItemBuilder setMaterial(String newMaterial, String oldMaterial) {
+		return setMaterial(cc.useNewMaterial() ? newMaterial : oldMaterial);
 	}
 	
 	/**
@@ -578,6 +653,37 @@ public class ItemBuilder {
 		return this;
 	}
 	
+	public List<ItemFlag> getItemFlags() {
+		return itemFlags;
+	}
+	
+	public ItemBuilder addItemFlag(String flagString) {
+		addItemFlag(ItemFlag.valueOf(flagString));
+		return this;
+	}
+	
+	public ItemBuilder addItemFlags(List<String> flagStrings) {
+		for(String flagString : flagStrings) {
+			ItemFlag itemFlag = ItemFlag.valueOf(flagString);
+			if(itemFlag != null) {
+				addItemFlag(itemFlag);
+			}
+		}
+		return this;
+	}
+	
+	public ItemBuilder addItemFlag(ItemFlag itemFlag) {
+		if(itemFlag != null) {
+			itemFlags.add(itemFlag);
+		}
+		return this;
+	}
+	
+	public ItemBuilder setItemFlags(List<ItemFlag> itemFlags) {
+		this.itemFlags = itemFlags;
+		return this;
+	}
+	
 	/**
 	 * Builder the item from all the information that was given to the builder.
 	 * @return The result of all the info that was given to the builder as an ItemStack.
@@ -624,6 +730,7 @@ public class ItemBuilder {
 			if(useCustomModelData) {
 				itemMeta.setCustomModelData(customModelData);
 			}
+			itemFlags.forEach(itemMeta :: addItemFlags);
 			item.setItemMeta(itemMeta);
 			hideFlags(item);
 			item.addUnsafeEnchantments(enchantments);
@@ -782,6 +889,70 @@ public class ItemBuilder {
 			}
 		}
 		return null;
+	}
+	
+	private static Enchantment getEnchantment(String enchantmentName) {
+		enchantmentName = stripEnchantmentName(enchantmentName);
+		for(Enchantment enchantment : Enchantment.values()) {
+			try {
+				//MC 1.13+ has the correct names.
+				if(Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+					if(stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
+						return enchantment;
+					}
+				}
+				HashMap<String, String> enchantments = getEnchantmentList();
+				if(stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null &&
+				stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
+					return enchantment;
+				}
+			}catch(Exception ignore) {//If any null enchantments are found they may cause errors.
+			}
+		}
+		return null;
+	}
+	
+	private static String stripEnchantmentName(String enchantmentName) {
+		return enchantmentName != null ? enchantmentName.replace("-", "").replace("_", "").replace(" ", "") : null;
+	}
+	
+	private static HashMap<String, String> getEnchantmentList() {
+		HashMap<String, String> enchantments = new HashMap<>();
+		enchantments.put("ARROW_DAMAGE", "Power");
+		enchantments.put("ARROW_FIRE", "Flame");
+		enchantments.put("ARROW_INFINITE", "Infinity");
+		enchantments.put("ARROW_KNOCKBACK", "Punch");
+		enchantments.put("DAMAGE_ALL", "Sharpness");
+		enchantments.put("DAMAGE_ARTHROPODS", "Bane_Of_Arthropods");
+		enchantments.put("DAMAGE_UNDEAD", "Smite");
+		enchantments.put("DEPTH_STRIDER", "Depth_Strider");
+		enchantments.put("DIG_SPEED", "Efficiency");
+		enchantments.put("DURABILITY", "Unbreaking");
+		enchantments.put("FIRE_ASPECT", "Fire_Aspect");
+		enchantments.put("KNOCKBACK", "KnockBack");
+		enchantments.put("LOOT_BONUS_BLOCKS", "Fortune");
+		enchantments.put("LOOT_BONUS_MOBS", "Looting");
+		enchantments.put("LUCK", "Luck_Of_The_Sea");
+		enchantments.put("LURE", "Lure");
+		enchantments.put("OXYGEN", "Respiration");
+		enchantments.put("PROTECTION_ENVIRONMENTAL", "Protection");
+		enchantments.put("PROTECTION_EXPLOSIONS", "Blast_Protection");
+		enchantments.put("PROTECTION_FALL", "Feather_Falling");
+		enchantments.put("PROTECTION_FIRE", "Fire_Protection");
+		enchantments.put("PROTECTION_PROJECTILE", "Projectile_Protection");
+		enchantments.put("SILK_TOUCH", "Silk_Touch");
+		enchantments.put("THORNS", "Thorns");
+		enchantments.put("WATER_WORKER", "Aqua_Affinity");
+		enchantments.put("BINDING_CURSE", "Curse_Of_Binding");
+		enchantments.put("MENDING", "Mending");
+		enchantments.put("FROST_WALKER", "Frost_Walker");
+		enchantments.put("VANISHING_CURSE", "Curse_Of_Vanishing");
+		enchantments.put("SWEEPING_EDGE", "Sweeping_Edge");
+		enchantments.put("RIPTIDE", "Riptide");
+		enchantments.put("CHANNELING", "Channeling");
+		enchantments.put("IMPALING", "Impaling");
+		enchantments.put("LOYALTY", "Loyalty");
+		return enchantments;
 	}
 	
 }

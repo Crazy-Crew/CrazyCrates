@@ -1356,6 +1356,7 @@ public class CrazyCrates {
 			.setGlowing(file.getBoolean(path + "Glowing"))
 			.setUnbreakable(file.getBoolean(path + "Unbreakable"))
 			.hideItemFlags(file.getBoolean(path + "HideItemFlags"))
+			.addItemFlags(file.getStringList(path + "Flags"))
 			.setPlayer(file.getString(path + "Player"));
 			if(file.contains(path + "DisplayEnchantments")) {
 				for(String enchantmentName : file.getStringList(path + "DisplayEnchantments")) {
@@ -1371,53 +1372,8 @@ public class CrazyCrates {
 		}
 	}
 	
-	private ArrayList<ItemBuilder> getItems(FileConfiguration file, String prize) {
-		ArrayList<ItemBuilder> items = new ArrayList<>();
-		for(String l : file.getStringList("Crate.Prizes." + prize + ".Items")) {
-			ArrayList<String> lore = new ArrayList<>();
-			HashMap<Enchantment, Integer> enchantments = new HashMap<>();
-			String name = "";
-			int amount = 1;
-			String id = "Stone";
-			String player = "";
-			boolean unbreaking = false;
-			for(String i : l.split(", ")) {
-				if(i.startsWith("Item:")) {
-					id = i.replaceAll("Item:", "");
-				}else if(i.startsWith("Name:")) {
-					name = Methods.color(i.replaceAll("Name:", ""));
-				}else if(i.startsWith("Amount:")) {
-					amount = Integer.parseInt(i.replaceAll("Amount:", ""));
-				}else if(i.startsWith("Lore:")) {
-					for(String L : i.replaceAll("Lore:", "").split(",")) {
-						L = Methods.color(L);
-						lore.add(L);
-					}
-				}else if(i.startsWith("Player:")) {
-					player = i.replaceAll("Player:", "");
-				}else if(i.startsWith("Unbreakable-Item:")) {
-					if(i.replaceAll("Unbreakable-Item:", "").equalsIgnoreCase("true")) {
-						unbreaking = true;
-					}
-				}else {
-					for(Enchantment enc : Enchantment.values()) {
-						if(enc.getName() != null) {
-							if(i.toLowerCase().startsWith(enc.getName().toLowerCase() + ":") || i.toLowerCase().startsWith(Methods.getEnchantmentName(enc).toLowerCase() + ":")) {
-								String[] breakdown = i.split(":");
-								int lvl = Integer.parseInt(breakdown[1]);
-								enchantments.put(enc, lvl);
-							}
-						}
-					}
-				}
-			}
-			try {
-				items.add(new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setEnchantments(enchantments).setPlayer(player).setUnbreakable(unbreaking));
-			}catch(Exception e) {
-				items.add(new ItemBuilder().setMaterial(useNewMaterial ? "RED_TERRACOTTA" : "STAINED_CLAY:14").setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize)));
-			}
-		}
-		return items;
+	private List<ItemBuilder> getItems(FileConfiguration file, String prize) {
+		return ItemBuilder.convertStringList(file.getStringList("Crate.Prizes." + prize + ".Items"), prize);
 	}
 	
 	private Integer pickNumber(int min, int max) {
