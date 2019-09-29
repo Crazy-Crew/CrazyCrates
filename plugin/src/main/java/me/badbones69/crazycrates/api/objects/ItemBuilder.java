@@ -296,7 +296,7 @@ public class ItemBuilder {
 			case "POTION":
 				this.isPotion = true;
 				break;
-			case "LEATHER":
+			case "LEATHER_HELMET":
 			case "LEATHER_CHESTPLATE":
 			case "LEATHER_LEGGINGS":
 			case "LEATHER_BOOTS":
