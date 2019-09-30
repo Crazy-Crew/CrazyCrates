@@ -57,11 +57,7 @@ public class Roulette implements Listener {
 				if(full <= 15) {
 					inv.setItem(13, crate.pickPrize(player).getDisplayItem());
 					setGlass(inv);
-					if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-						player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
-					}else {
-						player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
-					}
+					player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
 					even++;
 					if(even >= 4) {
 						even = 0;
@@ -78,19 +74,11 @@ public class Roulette implements Listener {
 					if(slowSpin().contains(time)) {
 						setGlass(inv);
 						inv.setItem(13, crate.pickPrize(player).getDisplayItem());
-						if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-							player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
-						}else {
-							player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
-						}
+						player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
 					}
 					time++;
 					if(time >= 23) {
-						if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
-						}else {
-							player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
-						}
+						player.playSound(player.getLocation(), cc.getSound("ENTITY_PLAYER_LEVELUP", "LEVEL_UP"), 1, 1);
 						cc.endCrate(player);
 						Prize prize = crate.getPrize(inv.getItem(13));
 						if(prize != null) {

@@ -47,11 +47,7 @@ public class Cosmic implements Listener {
 		for(int i = 0; i < 27; i++) {
 			inv.setItem(i, pickTier(player).getTierPane());
 		}
-		if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-			player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
-		}else {
-			player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
-		}
+		player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
 		player.openInventory(inv);
 	}
 	
@@ -119,11 +115,7 @@ public class Cosmic implements Listener {
 									cc.givePrize(player, prize);
 									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, cc.getOpeningCrate(player).getName(), prize));
 									e.setCurrentItem(prize.getDisplayItem());
-									if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-										player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
-									}else {
-										player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
-									}
+									player.playSound(player.getLocation(), cc.getSound("ENTITY_PLAYER_LEVELUP", "LEVEL_UP"), 1, 1);
 									if(prize.useFireworks()) {
 										Methods.fireWork(player.getLocation().add(0, 1, 0));
 									}
@@ -146,11 +138,7 @@ public class Cosmic implements Listener {
 								e.setCurrentItem(new ItemBuilder().setMaterial("GLASS_PANE", "THIN_GLASS").setAmount(slot + 1).setName("&f&l???").setLore(Arrays.asList("&7You have chosen #" + (slot + 1) + ".")).build());
 								glass.get(player).add(slot);
 							}
-							if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-								player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
-							}else {
-								player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
-							}
+							player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
 						}
 						if(item.getType() == Material.matchMaterial(cc.useNewMaterial() ? "GLASS_PANE" : "THIN_GLASS")) {
 							if(!glass.containsKey(player)) glass.put(player, new ArrayList<>());
@@ -159,11 +147,7 @@ public class Cosmic implements Listener {
 							for(int i : glass.get(player))
 								if(i != slot) l.add(i);
 							glass.put(player, l);
-							if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-								player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
-							}else {
-								player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
-							}
+							player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
 						}
 						if(glass.get(player).size() >= 4) {
 							KeyType keyType = cc.getPlayerKeyType(player);
@@ -211,11 +195,7 @@ public class Cosmic implements Listener {
 									if(time == 40) {
 										cc.endCrate(player);
 										showRewards(player, crate);
-										if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-											player.playSound(player.getLocation(), Sound.valueOf("ANVIL_LAND"), 1, 1);
-										}else {
-											player.playSound(player.getLocation(), Sound.valueOf("BLOCK_ANVIL_PLACE"), 1, 1);
-										}
+										player.playSound(player.getLocation(), cc.getSound("BLOCK_ANVIL_PLACE", "ANVIL_LAND"), 1, 1);
 										new BukkitRunnable() {
 											@Override
 											public void run() {
@@ -266,11 +246,7 @@ public class Cosmic implements Listener {
 				}
 			}
 			if(playSound) {
-				if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-					player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
-				}else {
-					player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
-				}
+				player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
 			}
 			cc.removePlayerFromOpeningList(player);
 			cc.removePlayerKeyType(player);

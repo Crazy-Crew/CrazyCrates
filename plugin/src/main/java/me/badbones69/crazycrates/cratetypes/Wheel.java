@@ -7,9 +7,7 @@ import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
-import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
@@ -68,11 +66,7 @@ public class Wheel implements Listener {
 						inv.setItem(slots.get(i), new ItemBuilder().setMaterial("LIME_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:5").setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
 					}
 					inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
-					if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-						player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
-					}else {
-						player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
-					}
+					player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
 					i++;
 					f++;
 				}
@@ -84,20 +78,12 @@ public class Wheel implements Listener {
 							inv.setItem(slots.get(i), new ItemBuilder().setMaterial("LIME_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:5").setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
 						}
 						inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
-						if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-							player.playSound(player.getLocation(), Sound.valueOf("CLICK"), 1, 1);
-						}else {
-							player.playSound(player.getLocation(), Sound.valueOf("UI_BUTTON_CLICK"), 1, 1);
-						}
+						player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
 						i++;
 						f++;
 					}
 					if(full == timer + 47) {
-						if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-							player.playSound(player.getLocation(), Sound.valueOf("LEVEL_UP"), 1, 1);
-						}else {
-							player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
-						}
+						player.playSound(player.getLocation(), cc.getSound("ENTITY_PLAYER_LEVELUP", "LEVEL_UP"), 1, 1);
 					}
 					if(full >= timer + 47) {
 						slow++;

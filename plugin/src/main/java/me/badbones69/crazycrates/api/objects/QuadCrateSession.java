@@ -168,11 +168,7 @@ public class QuadCrateSession {
 					spawnParticles(particle, particleColor, spiralLocationsClockwise.get(tickTillSpawn), spiralLocationsCounterClockwise.get(tickTillSpawn));
 					tickTillSpawn++;
 				}else {
-					if(Version.getCurrentVersion().isNewer(Version.v1_9_R1)) {
-						player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
-					}else {
-						player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
-					}
+					player.playSound(player.getLocation(), cc.getSound("BLOCK_STONE_STEP", "STEP_STONE"), 1, 1);
 					Block chest = chestLocations.get(crateNumber).getBlock();
 					chest.setType(Material.CHEST);
 					rotateChest(chest, crateNumber);

@@ -79,11 +79,7 @@ public class QuadCrate implements Listener {
 								@Override
 								public void run() {
 									session.endCrate();
-									if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-										player.playSound(player.getLocation(), Sound.valueOf("STEP_STONE"), 1, 1);
-									}else {
-										player.playSound(player.getLocation(), Sound.valueOf("BLOCK_STONE_STEP"), 1, 1);
-									}
+									player.playSound(player.getLocation(), cc.getSound("BLOCK_STONE_STEP", "STEP_STONE"), 1, 1);
 								}
 							}.runTaskLater(cc.getPlugin(), 60);
 						}

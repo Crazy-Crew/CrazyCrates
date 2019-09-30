@@ -57,11 +57,7 @@ public class War implements Listener {
 			public void run() {
 				if(full < 25) {//When Spinning
 					setRandomPrizes(player, inv, crate, inventoryTitle);
-					if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-						player.playSound(player.getLocation(), Sound.valueOf("LAVA_POP"), 1, 1);
-					}else {
-						player.playSound(player.getLocation(), Sound.valueOf("BLOCK_LAVA_POP"), 1, 1);
-					}
+					player.playSound(player.getLocation(), cc.getSound("BLOCK_LAVA_POP", "LAVA_POP"), 1, 1);
 				}
 				open++;
 				if(open >= 3) {
@@ -70,11 +66,7 @@ public class War implements Listener {
 				}
 				full++;
 				if(full == 26) {//Finished Rolling
-					if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-						player.playSound(player.getLocation(), Sound.valueOf("LAVA_POP"), 1, 1);
-					}else {
-						player.playSound(player.getLocation(), Sound.valueOf("BLOCK_LAVA_POP"), 1, 1);
-					}
+					player.playSound(player.getLocation(), cc.getSound("BLOCK_LAVA_POP", "LAVA_POP"), 1, 1);
 					setRandomGlass(player, inv, inventoryTitle);
 					canPick.put(player, true);
 				}
@@ -156,11 +148,7 @@ public class War implements Listener {
 									}
 									Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 									cc.removePlayerFromOpeningList(player);
-									if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {
-										player.playSound(player.getLocation(), Sound.valueOf("ANVIL_LAND"), 1, 1);
-									}else {
-										player.playSound(player.getLocation(), Sound.valueOf("BLOCK_ANVIL_PLACE"), 1, 1);
-									}
+									player.playSound(player.getLocation(), cc.getSound("BLOCK_ANVIL_PLACE", "ANVIL_LAND"), 1, 1);
 									//Sets all other non picked prizes to show what they could have been.
 									cc.addCrateTask(player, new BukkitRunnable() {
 										@Override

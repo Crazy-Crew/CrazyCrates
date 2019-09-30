@@ -26,10 +26,7 @@ import me.badbones69.crazycrates.multisupport.nms.v1_8_R3.NMS_v1_8_R3;
 import me.badbones69.crazycrates.multisupport.nms.v1_9_R1.NMS_v1_9_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_9_R2.NMS_v1_9_R2;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -117,6 +114,8 @@ public class CrazyCrates {
 	 */
 	private boolean useNewMaterial;
 	
+	private boolean useNewSounds;
+	
 	/**
 	 * The NMS version needed to be used.
 	 */
@@ -164,6 +163,7 @@ public class CrazyCrates {
 		crateSchematics.clear();
 		Version version = Version.getCurrentVersion();
 		useNewMaterial = version.isNewer(Version.v1_12_R1);
+		useNewSounds = version.isNewer(Version.v1_8_R3);
 		switch(version) {
 			case v1_8_R3:
 				nmsSupport = new NMS_v1_8_R3();
@@ -1277,6 +1277,16 @@ public class CrazyCrates {
 	 */
 	public boolean useNewMaterial() {
 		return useNewMaterial;
+	}
+	
+	/**
+	 * Get the correct sound for the version of minecraft.
+	 * @param newSound The sound from 1.9+
+	 * @param oldSound The sound from 1.8.8-
+	 * @return The Sound object of the current minecraft version.
+	 */
+	public Sound getSound(String newSound, String oldSound) {
+		return Sound.valueOf(useNewSounds ? newSound : oldSound);
 	}
 	
 	/**
