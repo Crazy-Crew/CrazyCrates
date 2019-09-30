@@ -41,7 +41,7 @@ public class CratesPlusConverter {
 				.setSlot(slot)
 				.setPreviewLines(6)
 				.setBoarderEnabled(true)
-				.setBoarderItem(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:7"))
+				.setBoarderItem(new ItemBuilder().setMaterial("GRAY_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:7"))
 				.setPhysicalKey(new ItemBuilder()
 				.setMaterial(config.getString(path + "Key.Item", "TRIPWIRE_HOOK"))
 				.setName(config.getString(path + "Key.Name", crateName).replace("%type%", crateName))

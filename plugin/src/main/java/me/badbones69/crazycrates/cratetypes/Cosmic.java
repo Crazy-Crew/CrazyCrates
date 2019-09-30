@@ -143,7 +143,7 @@ public class Cosmic implements Listener {
 						if(item.getType() == Material.CHEST) {
 							if(!glass.containsKey(player)) glass.put(player, new ArrayList<>());
 							if(glass.get(player).size() < 4) {
-								e.setCurrentItem(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "GLASS_PANE" : "THIN_GLASS").setAmount(slot + 1).setName("&f&l???").setLore(Arrays.asList("&7You have chosen #" + (slot + 1) + ".")).build());
+								e.setCurrentItem(new ItemBuilder().setMaterial("GLASS_PANE", "THIN_GLASS").setAmount(slot + 1).setName("&f&l???").setLore(Arrays.asList("&7You have chosen #" + (slot + 1) + ".")).build());
 								glass.get(player).add(slot);
 							}
 							if(Version.getCurrentVersion().isOlder(Version.v1_9_R1)) {

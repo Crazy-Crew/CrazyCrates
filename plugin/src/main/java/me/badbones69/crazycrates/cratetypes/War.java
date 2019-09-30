@@ -110,22 +110,22 @@ public class War implements Listener {
 	
 	private static HashMap<ItemStack, String> getColorCode() {
 		HashMap<ItemStack, String> colorCodes = new HashMap<>();
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "WHITE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:0").build(), "f");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "ORANGE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:1").build(), "6");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "MAGENTA_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:2").build(), "d");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIGHT_BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:3").build(), "3");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "YELLOW_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:4").build(), "e");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5").build(), "a");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "PINK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:6").build(), "c");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:7").build(), "7");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "LIGHT_GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:8").build(), "7");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "CYAN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:9").build(), "3");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "PURPLE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:10").build(), "5");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:11").build(), "9");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BROWN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:12").build(), "6");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "GREEN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:13").build(), "2");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "RED_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:14").build(), "4");
-		colorCodes.put(new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15").build(), "8");
+		colorCodes.put(new ItemBuilder().setMaterial("WHITE_STAINED_GLASS_PANE, STAINED_GLASS_PANE:0").build(), "f");
+		colorCodes.put(new ItemBuilder().setMaterial("ORANGE_STAINED_GLASS_PANE, STAINED_GLASS_PANE:1").build(), "6");
+		colorCodes.put(new ItemBuilder().setMaterial("MAGENTA_STAINED_GLASS_PANE, STAINED_GLASS_PANE:2").build(), "d");
+		colorCodes.put(new ItemBuilder().setMaterial("LIGHT_BLUE_STAINED_GLASS_PANE, STAINED_GLASS_PANE:3").build(), "3");
+		colorCodes.put(new ItemBuilder().setMaterial("YELLOW_STAINED_GLASS_PANE, STAINED_GLASS_PANE:4").build(), "e");
+		colorCodes.put(new ItemBuilder().setMaterial("LIME_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:5").build(), "a");
+		colorCodes.put(new ItemBuilder().setMaterial("PINK_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:6").build(), "c");
+		colorCodes.put(new ItemBuilder().setMaterial("GRAY_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:7").build(), "7");
+		colorCodes.put(new ItemBuilder().setMaterial("LIGHT_GRAY_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:8").build(), "7");
+		colorCodes.put(new ItemBuilder().setMaterial("CYAN_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:9").build(), "3");
+		colorCodes.put(new ItemBuilder().setMaterial("PURPLE_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:10").build(), "5");
+		colorCodes.put(new ItemBuilder().setMaterial("BLUE_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:11").build(), "9");
+		colorCodes.put(new ItemBuilder().setMaterial("BROWN_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:12").build(), "6");
+		colorCodes.put(new ItemBuilder().setMaterial("GREEN_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:13").build(), "2");
+		colorCodes.put(new ItemBuilder().setMaterial("RED_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:14").build(), "4");
+		colorCodes.put(new ItemBuilder().setMaterial("BLACK_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:15").build(), "8");
 		return colorCodes;
 	}
 	
