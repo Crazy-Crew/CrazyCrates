@@ -5,6 +5,7 @@ import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.FileManager;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.controllers.Preview;
+import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -387,6 +388,22 @@ public class Crate {
 	public Prize getPrize(String name) {
 		for(Prize prize : prizes) {
 			if(prize.getName().equalsIgnoreCase(name)) {
+				return prize;
+			}
+		}
+		return null;
+	}
+	
+	public Prize getPrize(ItemStack item) {
+		try {
+			NBTItem nbt = new NBTItem(item);
+			if(nbt.hasKey("crazycrate-prize")) {
+				return getPrize(nbt.getString("crazycrate-prize"));
+			}
+		}catch(Exception e) {
+		}
+		for(Prize prize : prizes) {
+			if(item.isSimilar(prize.getDisplayItem())) {
 				return prize;
 			}
 		}

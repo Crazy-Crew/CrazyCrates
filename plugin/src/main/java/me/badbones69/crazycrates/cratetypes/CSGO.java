@@ -121,18 +121,16 @@ public class CSGO implements Listener {
 							player.playSound(player.getLocation(), Sound.valueOf("ENTITY_PLAYER_LEVELUP"), 1, 1);
 						}
 						cc.endCrate(player);
-						Prize prize = null;
-						for(Prize p : crate.getPrizes()) {
-							if(inv.getItem(13).isSimilar(p.getDisplayItem())) {
-								prize = p;
-								break;
+						Prize prize = crate.getPrize(inv.getItem(13));
+						if(prize != null) {
+							cc.givePrize(player, prize);
+							if(prize.useFireworks()) {
+								Methods.fireWork(player.getLocation().add(0, 1, 0));
 							}
+							Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+						}else {
+							player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
 						}
-						cc.givePrize(player, prize);
-						if(prize.useFireworks()) {
-							Methods.fireWork(player.getLocation().add(0, 1, 0));
-						}
-						Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 						cc.removePlayerFromOpeningList(player);
 						cancel();
 						new BukkitRunnable() {

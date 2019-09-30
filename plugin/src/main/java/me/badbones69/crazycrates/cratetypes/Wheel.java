@@ -115,11 +115,7 @@ public class Wheel implements Listener {
 					if(full >= (timer + 55 + 47)) {
 						Prize prize = null;
 						if(cc.isInOpeningList(player)) {
-							for(Prize p : crate.getPrizes()) {
-								if(rewards.get(player).get(slots.get(f)).isSimilar(p.getDisplayItem())) {
-									prize = p;
-								}
-							}
+							prize = crate.getPrize(rewards.get(player).get(slots.get(f)));
 						}
 						if(prize != null) {
 							cc.givePrize(player, prize);
@@ -127,8 +123,10 @@ public class Wheel implements Listener {
 								Methods.fireWork(player.getLocation().add(0, 1, 0));
 							}
 							Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-							player.closeInventory();
+						}else {
+							player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
 						}
+						player.closeInventory();
 						cc.removePlayerFromOpeningList(player);
 						cc.endCrate(player);
 					}

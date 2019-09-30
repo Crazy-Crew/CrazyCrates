@@ -1,5 +1,6 @@
 package me.badbones69.crazycrates.api.objects;
 
+import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -13,6 +14,7 @@ public class Prize {
 	private String crate;
 	private int maxRange;
 	private boolean firework;
+	private ItemStack displayItemStack;
 	private ItemBuilder displayItem;
 	private List<Tier> tiers;
 	private List<String> messages;
@@ -91,7 +93,13 @@ public class Prize {
 	 * @return Returns the display item that is shown for the preview and the winning prize.
 	 */
 	public ItemStack getDisplayItem() {
-		return displayItem.build();
+		if(displayItemStack == null) {
+			displayItemStack = displayItem.build();
+			NBTItem nbt = new NBTItem(displayItemStack);
+			nbt.setString("crazycrate-prize", name);
+			displayItemStack = nbt.getItem();
+		}
+		return displayItemStack.clone();
 	}
 	
 	/**

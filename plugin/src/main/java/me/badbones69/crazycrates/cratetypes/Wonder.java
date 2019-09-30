@@ -42,7 +42,7 @@ public class Wonder implements Listener {
 			int slot2 = 44;
 			Random r = new Random();
 			ArrayList<Integer> Slots = new ArrayList<>();
-			Prize p = null;
+			Prize prize = null;
 			
 			@Override
 			public void run() {
@@ -51,11 +51,11 @@ public class Wonder implements Listener {
 					slots.remove(slot2 + "");
 					Slots.add(slot1);
 					Slots.add(slot2);
-					inv.setItem(slot1, new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15").setName(" ").build());
-					inv.setItem(slot2, new ItemBuilder().setMaterial(cc.useNewMaterial() ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15").setName(" ").build());
+					inv.setItem(slot1, new ItemBuilder().setMaterial("BLACK_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:15").setName(" ").build());
+					inv.setItem(slot2, new ItemBuilder().setMaterial("BLACK_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:15").setName(" ").build());
 					for(String slot : slots) {
-						p = crate.pickPrize(player);
-						inv.setItem(Integer.parseInt(slot), p.getDisplayItem());
+						prize = crate.pickPrize(player);
+						inv.setItem(Integer.parseInt(slot), prize.getDisplayItem());
 					}
 					slot1++;
 					slot2--;
@@ -70,11 +70,11 @@ public class Wonder implements Listener {
 				if(fulltime > 100) {
 					cc.endCrate(player);
 					player.closeInventory();
-					cc.givePrize(player, p);
-					if(p.useFireworks()) {
+					cc.givePrize(player, prize);
+					if(prize.useFireworks()) {
 						Methods.fireWork(player.getLocation().add(0, 1, 0));
 					}
-					Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), p));
+					Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 					cc.removePlayerFromOpeningList(player);
 					return;
 				}
