@@ -931,7 +931,7 @@ public class ItemBuilder {
 					}
 					item.addUnsafeEnchantment(Enchantment.LUCK, 1);
 					ItemMeta meta = item.getItemMeta();
-					meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
+					meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 					item.setItemMeta(meta);
 				}
 				return item;
