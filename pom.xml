@@ -21,6 +21,11 @@
         <module>api</module>
     </modules>
 
+    <properties>
+        <!--This is used to show the build number for jenkins.-->
+        <build.number/>
+    </properties>
+
     <repositories>
         <repository>
             <id>spigot-repo</id>
