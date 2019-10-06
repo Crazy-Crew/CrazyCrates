@@ -5,7 +5,7 @@
     <parent>
         <groupId>me.badbones69</groupId>
         <artifactId>crazycrates-parent</artifactId>
-        <version>1.9.11</version>
+        <version>1.9.12</version>
     </parent>
 
     <artifactId>crazycrates-plugin</artifactId>
@@ -14,7 +14,7 @@
         <dependency>
             <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_14_R1</artifactId>
-            <version>1.9.11</version>
+            <version>1.9.12</version>
             <type>jar</type>
             <scope>compile</scope>
             <optional>true</optional>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_13_R2</artifactId>
-            <version>1.9.11</version>
+            <version>1.9.12</version>
             <type>jar</type>
             <scope>compile</scope>
             <optional>true</optional>
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_12_R1</artifactId>
-            <version>1.9.11</version>
+            <version>1.9.12</version>
             <type>jar</type>
             <scope>compile</scope>
             <optional>true</optional>
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_11_R1</artifactId>
-            <version>1.9.11</version>
+            <version>1.9.12</version>
             <type>jar</type>
             <scope>compile</scope>
             <optional>true</optional>
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_10_R1</artifactId>
-            <version>1.9.11</version>
+            <version>1.9.12</version>
             <type>jar</type>
             <scope>compile</scope>
             <optional>true</optional>
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_9_R2</artifactId>
-            <version>1.9.11</version>
+            <version>1.9.12</version>
             <type>jar</type>
             <scope>compile</scope>
             <optional>true</optional>
@@ -62,7 +62,7 @@
         <dependency>
             <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_9_R1</artifactId>
-            <version>1.9.11</version>
+            <version>1.9.12</version>
             <type>jar</type>
             <scope>compile</scope>
             <optional>true</optional>
@@ -70,7 +70,7 @@
         <dependency>
             <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_8_R3</artifactId>
-            <version>1.9.11</version>
+            <version>1.9.12</version>
             <type>jar</type>
             <scope>compile</scope>
             <optional>true</optional>
@@ -78,7 +78,7 @@
         <dependency>
             <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-api</artifactId>
-            <version>1.9.11</version>
+            <version>1.9.12</version>
             <type>jar</type>
             <scope>compile</scope>
             <optional>true</optional>
