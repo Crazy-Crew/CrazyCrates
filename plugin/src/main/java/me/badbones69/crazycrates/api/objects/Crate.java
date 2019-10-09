@@ -25,7 +25,8 @@ public class Crate {
 	private ItemStack key;
 	private ItemStack keyNoNBT;
 	private ItemStack adminKey;
-	private Integer maxPage = 1;
+	private int maxPage = 1;
+	private int maxSlots;
 	private String previewName;
 	private boolean previewToggle;
 	private boolean boarderToggle;
@@ -36,7 +37,7 @@ public class Crate {
 	private String crateInventoryName;
 	private boolean giveNewPlayerKeys;
 	private int previewChestlines;
-	private Integer newPlayerKeys;
+	private int newPlayerKeys;
 	private ArrayList<ItemStack> preview;
 	private ArrayList<Tier> tiers;
 	private CrateHologram hologram;
@@ -51,7 +52,7 @@ public class Crate {
 	 * @param prizes The prizes that can be won.
 	 * @param file The crate file.
 	 */
-	public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, Integer newPlayerKeys, ArrayList<Tier> tiers, CrateHologram hologram) {
+	public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, CrateHologram hologram) {
 		ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
 		this.keyNoNBT = itemBuilder.build();
 		this.key = itemBuilder.setCrateName(name).build();
@@ -66,13 +67,14 @@ public class Crate {
 		this.prizes = prizes;
 		this.crateType = crateType;
 		this.preview = loadPreview();
-		setPreviewChestlines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
 		this.previewToggle = file != null && (!file.contains("Crate.Preview.Toggle") || file.getBoolean("Crate.Preview.Toggle"));
 		this.boarderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle");
+		setPreviewChestlines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
 		this.previewName = Methods.color(previewName);
 		this.newPlayerKeys = newPlayerKeys;
 		this.giveNewPlayerKeys = newPlayerKeys > 0;
-		for(int amount = preview.size(); amount > getMaxSlots() - (boarderToggle ? 18 : 9); amount -= getMaxSlots() - (boarderToggle ? 18 : 9), maxPage++) ;
+		this.maxSlots = previewChestlines * 9;
+		for(int amount = preview.size(); amount > maxSlots - (boarderToggle ? 18 : maxSlots != 9 ? 9 : 0); amount -= maxSlots - (boarderToggle ? 18 : maxSlots != 9 ? 9 : 0), maxPage++) ;
 		this.crateInventoryName = file != null ? Methods.color(file.getString("Crate.CrateName")) : "";
 		this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
 		this.hologram = hologram != null ? hologram : new CrateHologram();
@@ -84,7 +86,7 @@ public class Crate {
 	 */
 	public void setPreviewChestlines(int amount) {
 		int finalAmount;
-		if(amount < 3) {
+		if(amount < 3 && boarderToggle) {
 			finalAmount = 3;
 		}else finalAmount = Math.min(amount, 6);
 		this.previewChestlines = finalAmount;
@@ -103,7 +105,7 @@ public class Crate {
 	 * @return The max number of slots in the preview.
 	 */
 	public int getMaxSlots() {
-		return this.previewChestlines * 9;
+		return maxSlots;
 	}
 	
 	/**
@@ -270,17 +272,7 @@ public class Crate {
 	 * @return The preview as an Inventory object.
 	 */
 	public Inventory getPreview(Player player) {
-		Inventory inv = Bukkit.createInventory(null, getMaxSlots(), previewName);
-		setDefaultItems(inv, player);
-		for(ItemStack item : getPageItems(Preview.getPage(player))) {
-			int nextSlot = inv.firstEmpty();
-			if(nextSlot >= 0) {
-				inv.setItem(nextSlot, item);
-			}else {
-				break;
-			}
-		}
-		return inv;
+		return getPreview(player, Preview.getPage(player));
 	}
 	
 	/**
@@ -288,17 +280,17 @@ public class Crate {
 	 * @return The preview as an Inventory object.
 	 */
 	public Inventory getPreview(Player player, int page) {
-		Inventory inv = Bukkit.createInventory(null, getMaxSlots(), previewName);
-		setDefaultItems(inv, player);
+		Inventory inventory = Bukkit.createInventory(null, !boarderToggle && (Preview.playerInMenu(player) || maxPage > 1) && maxSlots == 9 ? maxSlots + 9 : maxSlots, previewName);
+		setDefaultItems(inventory, player);
 		for(ItemStack item : getPageItems(page)) {
-			int nextSlot = inv.firstEmpty();
+			int nextSlot = inventory.firstEmpty();
 			if(nextSlot >= 0) {
-				inv.setItem(nextSlot, item);
+				inventory.setItem(nextSlot, item);
 			}else {
 				break;
 			}
 		}
-		return inv;
+		return inventory;
 	}
 	
 	/**
@@ -422,7 +414,7 @@ public class Crate {
 	 *
 	 * @return The number of keys new players get.
 	 */
-	public Integer getNewPlayerKeys() {
+	public int getNewPlayerKeys() {
 		return newPlayerKeys;
 	}
 	
@@ -498,11 +490,11 @@ public class Crate {
 		return items;
 	}
 	
-	private List<ItemStack> getPageItems(Integer page) {
+	private List<ItemStack> getPageItems(int page) {
 		List<ItemStack> list = preview;
 		List<ItemStack> items = new ArrayList<>();
 		if(page <= 0) page = 1;
-		int max = boarderToggle ? getMaxSlots() - 18 : getMaxSlots() - 9;
+		int max = maxSlots - (boarderToggle ? 18 : maxSlots != 9 ? 9 : 0);
 		int index = page * max - max;
 		int endIndex = index >= list.size() ? list.size() - 1 : index + max;
 		for(; index < endIndex; index++) {
@@ -520,39 +512,39 @@ public class Crate {
 	}
 	
 	public int getAbsoluteItemPosition(int baseSlot) {
-		return baseSlot + (previewChestlines - 1) * 9;
+		return baseSlot + (previewChestlines > 1 ? previewChestlines - 1 : 1) * 9;
 	}
 	
-	private void setDefaultItems(Inventory inv, Player player) {
+	private void setDefaultItems(Inventory inventory, Player player) {
 		if(boarderToggle) {
 			List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
 			for(int i : borderItems) {//Top Boarder slots
-				inv.setItem(i, boarderItem.build());
+				inventory.setItem(i, boarderItem.build());
 			}
 			for(int i = 0; i < borderItems.size(); i++) {
 				borderItems.set(i, getAbsoluteItemPosition(borderItems.get(i)));
 			}
 			for(int i : borderItems) {//Bottom Boarder slots
-				inv.setItem(i, boarderItem.build());
+				inventory.setItem(i, boarderItem.build());
 			}
 		}
 		int page = Preview.getPage(player);
 		if(Preview.playerInMenu(player)) {
-			inv.setItem(getAbsoluteItemPosition(4), Preview.getMenuButton());
+			inventory.setItem(getAbsoluteItemPosition(4), Preview.getMenuButton());
 		}
 		if(page == 1) {
 			if(boarderToggle) {
-				inv.setItem(getAbsoluteItemPosition(3), boarderItem.build());
+				inventory.setItem(getAbsoluteItemPosition(3), boarderItem.build());
 			}
 		}else {
-			inv.setItem(getAbsoluteItemPosition(3), Preview.getBackButton(player));
+			inventory.setItem(getAbsoluteItemPosition(3), Preview.getBackButton(player));
 		}
 		if(page == maxPage) {
 			if(boarderToggle) {
-				inv.setItem(getAbsoluteItemPosition(5), boarderItem.build());
+				inventory.setItem(getAbsoluteItemPosition(5), boarderItem.build());
 			}
 		}else {
-			inv.setItem(getAbsoluteItemPosition(5), Preview.getNextButton(player));
+			inventory.setItem(getAbsoluteItemPosition(5), Preview.getNextButton(player));
 		}
 	}
 	
