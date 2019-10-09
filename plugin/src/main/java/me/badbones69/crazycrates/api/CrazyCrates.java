@@ -10,6 +10,7 @@ import me.badbones69.crazycrates.api.interfaces.HologramController;
 import me.badbones69.crazycrates.api.objects.*;
 import me.badbones69.crazycrates.controllers.CrateControl;
 import me.badbones69.crazycrates.controllers.GUIMenu;
+import me.badbones69.crazycrates.controllers.Preview;
 import me.badbones69.crazycrates.cratetypes.*;
 import me.badbones69.crazycrates.multisupport.HologramsSupport;
 import me.badbones69.crazycrates.multisupport.HolographicSupport;
@@ -331,6 +332,7 @@ public class CrazyCrates {
 		}
 		if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "All schematics were found and loaded.");
 		cleanDataFile();
+		Preview.loadButtons();
 	}
 	
 	/**

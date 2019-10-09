@@ -4,15 +4,14 @@ import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -22,6 +21,27 @@ public class Preview implements Listener {
 	private static HashMap<UUID, Integer> playerPage = new HashMap<>();
 	private static HashMap<UUID, Crate> playerCrate = new HashMap<>();
 	private static HashMap<UUID, Boolean> playerInMenu = new HashMap<>();
+	private static ItemStack menuButton;
+	private static ItemBuilder nextButton;
+	private static ItemBuilder backButton;
+	
+	public static void loadButtons() {
+		FileConfiguration config = Files.CONFIG.getFile();
+		String path = "Settings.Preview.Buttons.";
+		menuButton = new ItemBuilder()
+		.setMaterial(config.getString(path + "Menu.Item", "COMPASS"))
+		.setName(config.getString(path + "Menu.Name", "&7&l>> &c&lMenu &7&l<<"))
+		.setLore(config.contains(path + "Menu.Lore") ? config.getStringList(path + "Menu.Lore") : Arrays.asList("&7Return to the menu."))
+		.build();
+		nextButton = new ItemBuilder()
+		.setMaterial(config.getString(path + "Next.Item", "FEATHER"))
+		.setName(config.getString(path + "Next.Name", "&6&lNext >>"))
+		.setLore(config.contains(path + "Next.Lore") ? config.getStringList(path + "Next.Lore") : Arrays.asList("&7&lPage: &b%page%"));
+		backButton = new ItemBuilder()
+		.setMaterial(config.getString(path + "Back.Item", "FEATHER"))
+		.setName(config.getString(path + "Back.Name", "&6&l<< Back"))
+		.setLore(config.contains(path + "Back.Lore") ? config.getStringList(path + "Back.Lore") : Arrays.asList("&7&lPage: &b%page%"));
+	}
 	
 	public static void openNewPreview(Player player, Crate crate) {
 		playerCrate.put(player.getUniqueId(), crate);
@@ -44,10 +64,7 @@ public class Preview implements Listener {
 	}
 	
 	public static int getPage(Player player) {
-		if(playerPage.containsKey(player.getUniqueId())) {
-			return playerPage.get(player.getUniqueId());
-		}
-		return 1;
+		return playerPage.getOrDefault(player.getUniqueId(), 1);
 	}
 	
 	public static void setPage(Player player, int pageNumber) {
@@ -61,94 +78,35 @@ public class Preview implements Listener {
 	}
 	
 	public static ItemStack getMenuButton() {
-		FileConfiguration config = Files.CONFIG.getFile();
-		String path = "Settings.Preview.Buttons.Menu";
-		if(config.contains(path)) {
-			return new ItemBuilder()
-			.setMaterial(config.getString(path + ".Item"))
-			.setName(config.getString(path + ".Name"))
-			.setLore(config.getStringList(path + ".Lore"))
-			.build();
-		}else {
-			return new ItemBuilder()
-			.setMaterial(Material.COMPASS)
-			.setName("&7&l>> &c&lMenu &7&l<<")
-			.addLore("&7Return to the menu.")
-			.build();
-		}
+		return menuButton;
 	}
 	
 	public static ItemStack getNextButton() {
-		FileConfiguration config = Files.CONFIG.getFile();
-		String path = "Settings.Preview.Buttons.Next";
-		if(config.contains(path)) {
-			return new ItemBuilder()
-			.setMaterial(config.getString(path + ".Item"))
-			.setName(config.getString(path + ".Name"))
-			.setLore(config.getStringList(path + ".Lore"))
-			.addLorePlaceholder("%page%", "2")
-			.addLorePlaceholder("%Page%", "2")
-			.build();
-		}else {
-			return new ItemBuilder()
-			.setMaterial(Material.FEATHER)
-			.setName("&6&lNext >>")
-			.addLore("&7&lPage: &b%page%")
-			.addLorePlaceholder("%page%", "2")
-			.addLorePlaceholder("%Page%", "2")
-			.build();
-		}
+		return getNextButton(null);
 	}
 	
 	public static ItemStack getNextButton(Player player) {
-		FileConfiguration config = Files.CONFIG.getFile();
-		String path = "Settings.Preview.Buttons.Next";
-		if(config.contains(path)) {
-			return new ItemBuilder()
-			.setMaterial(config.getString(path + ".Item"))
-			.setName(config.getString(path + ".Name"))
-			.setLore(config.getStringList(path + ".Lore"))
-			.addLorePlaceholder("%page%", (getPage(player) + 1) + "")
-			.addLorePlaceholder("%Page%", (getPage(player) + 1) + "")
-			.build();
-		}else {
-			return new ItemBuilder()
-			.setMaterial(Material.FEATHER)
-			.setName("&6&lNext >>")
-			.addLore("&7&lPage: &b%page%")
-			.addLorePlaceholder("%page%", (getPage(player) + 1) + "")
-			.addLorePlaceholder("%Page%", (getPage(player) + 1) + "")
-			.build();
+		ItemBuilder button = nextButton.clone();
+		if(player != null) {
+			button.addLorePlaceholder("%Page%", (getPage(player) + 1) + "");
 		}
+		return button.build();
+	}
+	
+	public static ItemStack getBackButton() {
+		return getBackButton(null);
 	}
 	
 	public static ItemStack getBackButton(Player player) {
-		FileConfiguration config = Files.CONFIG.getFile();
-		String path = "Settings.Preview.Buttons.Back";
-		if(config.contains(path)) {
-			return new ItemBuilder()
-			.setMaterial(config.getString(path + ".Item"))
-			.setName(config.getString(path + ".Name"))
-			.setLore(config.getStringList(path + ".Lore"))
-			.addLorePlaceholder("%page%", (getPage(player) - 1) + "")
-			.addLorePlaceholder("%Page%", (getPage(player) - 1) + "")
-			.build();
-		}else {
-			return new ItemBuilder()
-			.setMaterial(Material.FEATHER)
-			.setName("&6&l<< Back")
-			.addLore("&7&lPage: &b%page%")
-			.addLorePlaceholder("%page%", (getPage(player) - 1) + "")
-			.addLorePlaceholder("%Page%", (getPage(player) - 1) + "")
-			.build();
+		ItemBuilder button = backButton.clone();
+		if(player != null) {
+			button.addLorePlaceholder("%Page%", (getPage(player) - 1) + "");
 		}
+		return button.build();
 	}
 	
 	public static boolean playerInMenu(Player player) {
-		if(playerInMenu.containsKey(player.getUniqueId())) {
-			return playerInMenu.get(player.getUniqueId());
-		}
-		return false;
+		return playerInMenu.getOrDefault(player.getUniqueId(), false);
 	}
 	
 	public static void setPlayerInMenu(Player player, boolean inMenu) {
@@ -158,14 +116,12 @@ public class Preview implements Listener {
 	@EventHandler
 	public void onPlayerClick(InventoryClickEvent e) {
 		Player player = (Player) e.getWhoClicked();
-		Inventory inventory = e.getInventory();
-		if(inventory != null) {
+		if(e.getInventory() != null) {
 			if(playerCrate.get(player.getUniqueId()) != null) {
 				Crate crate = playerCrate.get(player.getUniqueId());
 				if(e.getView().getTitle().equals(crate.getPreviewName()) || e.getView().getTitle().equals(crate.getCrateInventoryName())) {
 					e.setCancelled(true);
-					ItemStack item = e.getCurrentItem();
-					if(item != null) {
+					if(e.getCurrentItem() != null) {
 						if(e.getRawSlot() == crate.getAbsoluteItemPosition(4)) {// Clicked the menu button.
 							if(playerInMenu(player)) {
 								GUIMenu.openGUI(player);
