@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  * @author BadBones69
  *
  */
-public class ItemBuilder {
+public class ItemBuilder implements Cloneable {
 	
 	private static CrazyCrates cc = CrazyCrates.getInstance();
 	private static Version version = Version.getCurrentVersion();
@@ -892,6 +892,19 @@ public class ItemBuilder {
 		}else {
 			return item;
 		}
+	}
+	
+	/**
+	 * Get a clone of the object.
+	 * @return a new cloned object.
+	 */
+	public ItemBuilder clone() {
+		try {
+			return (ItemBuilder) super.clone();
+		}catch(CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return new ItemBuilder();
 	}
 	
 	/**
