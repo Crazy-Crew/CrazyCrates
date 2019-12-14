@@ -260,7 +260,7 @@ public class CrazyCrates {
 					prizeTiers,
 					altPrize));
 				}
-				Integer newPlayersKeys = file.getInt("Crate.StartingKeys");
+				int newPlayersKeys = file.getInt("Crate.StartingKeys");
 				if(giveNewPlayersKeys = false) {
 					if(newPlayersKeys > 0) {
 						giveNewPlayersKeys = true;
@@ -529,12 +529,10 @@ public class CrazyCrates {
 	 * @param task The task of the quad crate.
 	 */
 	public void addQuadCrateTask(Player player, BukkitTask task) {
-		if(currentQuadTasks.containsKey(player.getUniqueId())) {
-			currentQuadTasks.get(player.getUniqueId()).add(task);
-		}else {
+		if(!currentQuadTasks.containsKey(player.getUniqueId())) {
 			currentQuadTasks.put(player.getUniqueId(), new ArrayList<>());
-			currentQuadTasks.get(player.getUniqueId()).add(task);
 		}
+		currentQuadTasks.get(player.getUniqueId()).add(task);
 	}
 	
 	/**
