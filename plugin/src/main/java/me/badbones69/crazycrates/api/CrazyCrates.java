@@ -37,6 +37,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
+import v1_15_R1.NMS_v1_15_R1;
 
 import java.io.File;
 import java.util.*;
@@ -189,6 +190,9 @@ public class CrazyCrates {
 				break;
 			case v1_14_R1:
 				nmsSupport = new NMS_v1_14_R1();
+				break;
+			case v1_15_R1:
+				nmsSupport = new NMS_v1_15_R1();
 				break;
 		}
 		plugin = Bukkit.getPluginManager().getPlugin("CrazyCrates");
