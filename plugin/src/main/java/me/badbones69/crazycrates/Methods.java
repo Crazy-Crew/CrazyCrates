@@ -8,6 +8,7 @@ import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FireworkDamageEvent;
 import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,20 +28,20 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Methods {
-	
+
 	public static HashMap<Player, String> path = new HashMap<>();
 	public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
 	private static CrazyCrates cc = CrazyCrates.getInstance();
 	private static Random random = new Random();
-	
+
 	public static String color(String msg) {
-		return ChatColor.translateAlternateColorCodes('&', msg);
+		return sanitizeFormat(ChatColor.translateAlternateColorCodes('&', msg));
 	}
-	
+
 	public static String removeColor(String msg) {
 		return ChatColor.stripColor(msg);
 	}
-	
+
 	public static HashMap<ItemStack, String> getItems(Player player) {
 		HashMap<ItemStack, String> items = new HashMap<>();
 		FileConfiguration file = cc.getOpeningCrate(player).getFile();
@@ -64,7 +65,7 @@ public class Methods {
 		}
 		return items;
 	}
-	
+
 	public static void fireWork(Location loc) {
 		final Firework fw = loc.getWorld().spawn(loc, Firework.class);
 		FireworkMeta fm = fw.getFireworkMeta();
@@ -74,7 +75,7 @@ public class Methods {
 		FireworkDamageEvent.addFirework(fw);
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, fw :: detonate, 2);
 	}
-	
+
 	public static boolean isInt(String s) {
 		try {
 			Integer.parseInt(s);
@@ -83,11 +84,11 @@ public class Methods {
 		}
 		return true;
 	}
-	
+
 	public static Player getPlayer(String name) {
 		return Bukkit.getPlayerExact(name);
 	}
-	
+
 	public static boolean isOnline(String name, CommandSender sender) {
 		for(Player player : Bukkit.getServer().getOnlinePlayers()) {
 			if(player.getName().equalsIgnoreCase(name)) {
@@ -97,7 +98,7 @@ public class Methods {
 		sender.sendMessage(Messages.NOT_ONLINE.getMessage("%Player%", name));
 		return false;
 	}
-	
+
 	public static void removeItem(ItemStack item, Player player) {
 		try {
 			if(item.getAmount() <= 1) {
@@ -108,7 +109,7 @@ public class Methods {
 		}catch(Exception e) {
 		}
 	}
-	
+
 	public static boolean permCheck(CommandSender sender, String perm) {
 		if(sender instanceof Player) {
 			return permCheck((Player) sender, perm);
@@ -116,7 +117,7 @@ public class Methods {
 			return true;
 		}
 	}
-	
+
 	public static boolean permCheck(Player player, String perm) {
 		if(player.hasPermission("crazycrates." + perm.toLowerCase()) || player.hasPermission("crazycrates.admin")) {
 			return true;
@@ -125,27 +126,27 @@ public class Methods {
 			return false;
 		}
 	}
-	
+
 	public static String getPrefix() {
 		return color(Files.CONFIG.getFile().getString("Settings.Prefix"));
 	}
-	
+
 	public static String getPrefix(String msg) {
 		return color(Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
 	}
-	
+
 	public static List<Location> getLocations(String shem, Location loc) {
 		return cc.getNMSSupport().getLocations(new File(plugin.getDataFolder() + "/Schematics/" + shem), loc);
 	}
-	
+
 	public static boolean isInventoryFull(Player player) {
 		return player.getInventory().firstEmpty() == -1;
 	}
-	
+
 	public static Integer randomNumber(int min, int max) {
 		return min + random.nextInt(max - min);
 	}
-	
+
 	public static boolean isSimilar(Player player, Crate crate) {
 		boolean check = isSimilar(cc.getNMSSupport().getItemInMainHand(player), crate);
 		if(!check) {
@@ -155,13 +156,13 @@ public class Methods {
 		}
 		return check;
 	}
-	
+
 	public static boolean isSimilar(ItemStack itemStack, Crate crate) {
 		return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
 		itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
 		isSimilarCustom(crate.getKeyNoNBT(), itemStack);
 	}
-	
+
 	private static boolean isSimilarCustom(ItemStack one, ItemStack two) {
 		if(one != null && two != null) {
 			if(one.getType() == two.getType()) {
@@ -202,7 +203,7 @@ public class Methods {
 		}
 		return false;
 	}
-	
+
 	private static ItemStack stripNBT(ItemStack item) {
 		try {
 			NBTItem nbtItem = new NBTItem(item.clone());
@@ -216,7 +217,7 @@ public class Methods {
 			return item;
 		}
 	}
-	
+
 	public static void hasUpdate() {
 		try {
 			HttpURLConnection c = (HttpURLConnection) new URL("http://www.spigotmc.org/api/general.php").openConnection();
@@ -231,7 +232,7 @@ public class Methods {
 		}catch(Exception e) {
 		}
 	}
-	
+
 	public static void hasUpdate(Player player) {
 		try {
 			HttpURLConnection c = (HttpURLConnection) new URL("http://www.spigotmc.org/api/general.php").openConnection();
@@ -246,11 +247,11 @@ public class Methods {
 		}catch(Exception e) {
 		}
 	}
-	
+
 	public static Set<String> getEnchantments() {
 		return getEnchantmentList().keySet();
 	}
-	
+
 	public static Enchantment getEnchantment(String enchantmentName) {
 		HashMap<String, String> enchantments = getEnchantmentList();
 		enchantmentName = stripEnchantmentName(enchantmentName);
@@ -271,7 +272,7 @@ public class Methods {
 		}
 		return null;
 	}
-	
+
 	public static String getEnchantmentName(Enchantment enchantment) {
 		HashMap<String, String> enchantments = getEnchantmentList();
 		if(enchantments.get(enchantment.getName()) == null) {
@@ -279,11 +280,11 @@ public class Methods {
 		}
 		return enchantments.get(enchantment.getName());
 	}
-	
+
 	private static String stripEnchantmentName(String enchantmentName) {
 		return enchantmentName != null ? enchantmentName.replace("-", "").replace("_", "").replace(" ", "") : null;
 	}
-	
+
 	private static HashMap<String, String> getEnchantmentList() {
 		HashMap<String, String> enchantments = new HashMap<>();
 		enchantments.put("ARROW_DAMAGE", "Power");
@@ -322,7 +323,7 @@ public class Methods {
 		enchantments.put("LOYALTY", "Loyalty");
 		return enchantments;
 	}
-	
+
 	public static ItemBuilder getRandomPaneColor() {
 		boolean newMaterial = cc.useNewMaterial();
 		List<String> colors = Arrays.asList(
@@ -344,11 +345,11 @@ public class Methods {
 		newMaterial ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15");// 15
 		return new ItemBuilder().setMaterial(colors.get(random.nextInt(colors.size())));
 	}
-	
+
 	public static void failedToTakeKey(Player player, Crate crate) {
 		failedToTakeKey(player, crate, null);
 	}
-	
+
 	public static void failedToTakeKey(Player player, Crate crate, Exception e) {
 		System.out.println("[CrazyCrates] An error has occurred while trying to take a physical key from a player");
 		System.out.println("Player: " + player.getName());
@@ -358,5 +359,9 @@ public class Methods {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public static String sanitizeFormat(String string) {
+		return TextComponent.toLegacyText(TextComponent.fromLegacyText(string, net.md_5.bungee.api.ChatColor.BLACK));
+	}
+
 }
