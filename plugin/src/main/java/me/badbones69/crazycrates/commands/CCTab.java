@@ -27,6 +27,7 @@ public class CCTab implements TabCompleter {
 			if(hasPermission(sender, "list")) completions.add("list");
 			if(hasPermission(sender, "open")) completions.add("open");
 			if(hasPermission(sender, "tp")) completions.add("tp");
+			if(hasPermission(sender, "transfer")) completions.add("transfer");
 			if(hasPermission(sender, "give")) completions.add("give");
 			if(hasPermission(sender, "giveall")) completions.add("giveall");
 			if(hasPermission(sender, "take")) completions.add("take");
@@ -40,6 +41,7 @@ public class CCTab implements TabCompleter {
 			switch(args[0].toLowerCase()) {
 				case "additem":
 				case "open":
+				case "transfer":
 					cc.getCrates().forEach(crate -> completions.add(crate.getName()));
 					completions.remove("Menu");//Takes out a crate that doesn't exist as a file.
 					break;
@@ -72,6 +74,7 @@ public class CCTab implements TabCompleter {
 					}
 					break;
 				case "open":
+				case "transfer":
 					Bukkit.getOnlinePlayers().forEach(player -> completions.add(player.getName()));
 					break;
 				case "give":
@@ -87,6 +90,7 @@ public class CCTab implements TabCompleter {
 				case "give":
 				case "giveall":
 				case "take":
+				case "transfer":
 					for(int i = 1; i <= 100; i++) completions.add(i + "");
 					break;
 			}
