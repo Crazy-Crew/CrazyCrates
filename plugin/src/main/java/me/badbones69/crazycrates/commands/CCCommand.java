@@ -126,15 +126,13 @@ public class CCCommand implements CommandExecutor {
 						cc.getNMSSupport().saveSchematic(locations, sender.getName(), file);
 						sender.sendMessage(Methods.getPrefix("&7Saved the " + args[1] + ".nbt into the Schematics folder."));
 						cc.loadSchematics();
-						return true;
 					}else {
 						sender.sendMessage(Methods.getPrefix("&cYou need to specify a schematic file name."));
-						return true;
 					}
 				}else {
 					sender.sendMessage(Methods.getPrefix("&cYou need to use /cc set1/set2 to set the connors of your schematic."));
-					return true;
 				}
+				return true;
 			}else if(args[0].equalsIgnoreCase("additem")) {
 				// /cc additem0 <crate>1 <prize>2
 				if(!Methods.permCheck(sender, "admin")) return true;
@@ -333,11 +331,10 @@ public class CCCommand implements CommandExecutor {
 								Preview.setPlayerInMenu(player, false);
 								Preview.openNewPreview(player, crate);
 							}
-							return true;
 						}else {
 							sender.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
-							return true;
 						}
+						return true;
 					}
 				}
 				sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
@@ -403,15 +400,13 @@ public class CCCommand implements CommandExecutor {
 									placeholders.put("%Crate%", crate.getName());
 									placeholders.put("%Player%", player.getName());
 									sender.sendMessage(Messages.OPENED_A_CRATE.getMessage(placeholders));
-									return true;
 								}else {
 									sender.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
-									return true;
 								}
 							}else {
 								sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[1]));
-								return true;
 							}
+							return true;
 						}
 					}
 				}
@@ -450,18 +445,16 @@ public class CCCommand implements CommandExecutor {
 										placeholders.put("%Crate%", crate.getName());
 										placeholders.put("%Player%", player.getName());
 										sender.sendMessage(Messages.OPENED_A_CRATE.getMessage(placeholders));
-										return true;
 									}else {
 										sender.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
-										return true;
 									}
 								}else {
 									sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[1]));
+								}
 									return true;
 								}
 							}
 						}
-					}
 					sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[1]));
 					return true;
 				}
@@ -506,7 +499,6 @@ public class CCCommand implements CommandExecutor {
 							return true;
 						}
 					}
-					HashMap<String, String> placeholders = new HashMap<>();
 					sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[2]));
 					return true;
 				}
@@ -598,14 +590,13 @@ public class CCCommand implements CommandExecutor {
 									}else {
 										if(!cc.addOfflineKeys(args[4], crate, amount)) {
 											sender.sendMessage(Messages.INTERNAL_ERROR.getMessage());
-											return true;
 										}else {
 											HashMap<String, String> placeholders = new HashMap<>();
 											placeholders.put("%Amount%", amount + "");
 											placeholders.put("%Player%", args[4]);
 											sender.sendMessage(Messages.GIVEN_OFFLINE_PLAYER_KEYS.getMessage(placeholders));
-											return true;
 										}
+										return true;
 									}
 								}else if(type == KeyType.PHYSICAL_KEY) {
 									if(target != null) {
@@ -613,14 +604,13 @@ public class CCCommand implements CommandExecutor {
 									}else {
 										if(!cc.addOfflineKeys(args[4], crate, amount)) {
 											sender.sendMessage(Messages.INTERNAL_ERROR.getMessage());
-											return true;
 										}else {
 											HashMap<String, String> placeholders = new HashMap<>();
 											placeholders.put("%Amount%", amount + "");
 											placeholders.put("%Player%", args[4]);
 											sender.sendMessage(Messages.GIVEN_OFFLINE_PLAYER_KEYS.getMessage(placeholders));
-											return true;
 										}
+										return true;
 									}
 								}
 							}
@@ -717,14 +707,13 @@ public class CCCommand implements CommandExecutor {
 								}else {
 									if(!cc.takeOfflineKeys(args[4], crate, amount)) {
 										sender.sendMessage(Messages.INTERNAL_ERROR.getMessage());
-										return true;
 									}else {
 										HashMap<String, String> placeholders = new HashMap<>();
 										placeholders.put("%Amount%", amount + "");
 										placeholders.put("%Player%", args[4]);
 										sender.sendMessage(Messages.TAKE_OFFLINE_PLAYER_KEYS.getMessage(placeholders));
-										return true;
 									}
+									return true;
 								}
 							}else if(keyType == KeyType.PHYSICAL_KEY) {
 								if(target != null) {
