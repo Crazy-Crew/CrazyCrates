@@ -34,14 +34,14 @@ public class Cosmic implements Listener {
 	private static HashMap<Player, Boolean> checkHands = new HashMap<>();
 	
 	private static void showRewards(Player player, Crate crate) {
-		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(crate.getFile().getString("Crate.CrateName") + " - Prizes"));
+		Inventory inv = Bukkit.createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"));
 		for(int i : picks.get(player))
 			inv.setItem(i, pickTier(player).getTierPane());
 		player.openInventory(inv);
 	}
 	
 	private static void startRoll(Player player, Crate crate) {
-		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(crate.getFile().getString("Crate.CrateName") + " - Shuffling"));
+		Inventory inv = Bukkit.createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Shuffling"));
 		for(int i = 0; i < 27; i++) {
 			inv.setItem(i, pickTier(player).getTierPane());
 		}
@@ -58,7 +58,7 @@ public class Cosmic implements Listener {
 	}
 	
 	public static void openCosmic(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(crate.getFile().getString("Crate.CrateName") + " - Choose"));
+		Inventory inv = Bukkit.createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"));
 		setChests(inv);
 		cc.addPlayerKeyType(player, keyType);
 		checkHands.put(player, checkHand);
@@ -93,10 +93,10 @@ public class Cosmic implements Listener {
 				return;
 			}
 			final FileConfiguration file = crate.getFile();
-			if(e.getView().getTitle().equals(Methods.color(file.getString("Crate.CrateName") + " - Shuffling"))) {
+			if(e.getView().getTitle().equals(Methods.sanitizeColor(file.getString("Crate.CrateName") + " - Shuffling"))) {
 				e.setCancelled(true);
 			}
-			if(e.getView().getTitle().equals(Methods.color(file.getString("Crate.CrateName") + " - Prizes"))) {
+			if(e.getView().getTitle().equals(Methods.sanitizeColor(file.getString("Crate.CrateName") + " - Prizes"))) {
 				e.setCancelled(true);
 				int slot = e.getRawSlot();
 				if(inCosmic(slot)) {
@@ -124,7 +124,7 @@ public class Cosmic implements Listener {
 					}
 				}
 			}
-			if(e.getView().getTitle().equals(Methods.color(file.getString("Crate.CrateName") + " - Choose"))) {
+			if(e.getView().getTitle().equals(Methods.sanitizeColor(file.getString("Crate.CrateName") + " - Choose"))) {
 				e.setCancelled(true);
 				int slot = e.getRawSlot();
 				if(inCosmic(slot)) {
@@ -228,7 +228,7 @@ public class Cosmic implements Listener {
 		}else {
 			return;
 		}
-		if(e.getView().getTitle().equals(Methods.color(crate.getFile().getString("Crate.CrateName") + " - Prizes"))) {
+		if(e.getView().getTitle().equals(Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"))) {
 			boolean playSound = false;
 			for(int i : picks.get(player)) {
 				if(inv.getItem(i) != null) {
@@ -255,7 +255,7 @@ public class Cosmic implements Listener {
 			checkHands.remove(player);
 		}
 		if(cc.isInOpeningList(player)) {
-			if(e.getView().getTitle().equals(Methods.color(crate.getFile().getString("Crate.CrateName") + " - Choose"))) {
+			if(e.getView().getTitle().equals(Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"))) {
 				if(!glass.containsKey(player) || glass.get(player).size() < 4) {
 					cc.removePlayerFromOpeningList(player);
 					cc.removePlayerKeyType(player);

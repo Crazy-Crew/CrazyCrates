@@ -206,7 +206,7 @@ public class CCCommand implements CommandExecutor {
 				int slots = 9;
 				for(; size > 9; size -= 9)
 					slots += 9;
-				Inventory inv = Bukkit.createInventory(null, slots, Methods.color("&4&lAdmin Keys"));
+				Inventory inv = Bukkit.createInventory(null, slots, Methods.sanitizeColor("&4&lAdmin Keys"));
 				for(Crate crate : cc.getCrates()) {
 					if(crate.getCrateType() != CrateType.MENU) {
 						if(inv.firstEmpty() >= 0) {

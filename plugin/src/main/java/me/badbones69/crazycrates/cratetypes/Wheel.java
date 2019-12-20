@@ -29,7 +29,7 @@ public class Wheel implements Listener {
 			cc.removePlayerFromOpeningList(player);
 			return;
 		}
-		final Inventory inv = Bukkit.createInventory(null, 54, Methods.color(crate.getFile().getString("Crate.CrateName")));
+		final Inventory inv = Bukkit.createInventory(null, 54, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
 		for(int i = 0; i < 54; i++) {
 			inv.setItem(i, new ItemBuilder().setMaterial("BLACK_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:15").setName(" ").build());
 		}

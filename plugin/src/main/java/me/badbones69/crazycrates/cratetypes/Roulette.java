@@ -31,7 +31,7 @@ public class Roulette implements Listener {
 	}
 	
 	public static void openRoulette(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(crate.getFile().getString("Crate.CrateName")));
+		Inventory inv = Bukkit.createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
 		setGlass(inv);
 		inv.setItem(13, crate.pickPrize(player).getDisplayItem());
 		player.openInventory(inv);

@@ -35,7 +35,11 @@ public class Methods {
 	private static Random random = new Random();
 
 	public static String color(String msg) {
-		return sanitizeFormat(ChatColor.translateAlternateColorCodes('&', msg));
+		return ChatColor.translateAlternateColorCodes('&', msg);
+	}
+
+	public static String sanitizeColor(String msg) {
+		return sanitizeFormat(color(msg));
 	}
 
 	public static String removeColor(String msg) {
@@ -361,7 +365,7 @@ public class Methods {
 	}
 
 	public static String sanitizeFormat(String string) {
-		return TextComponent.toLegacyText(TextComponent.fromLegacyText(string, net.md_5.bungee.api.ChatColor.BLACK));
+		return TextComponent.toLegacyText(TextComponent.fromLegacyText(string));
 	}
 
 }

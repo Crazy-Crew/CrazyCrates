@@ -64,7 +64,7 @@ public class CSGO implements Listener {
 	}
 	
 	public static void openCSGO(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-		Inventory inv = Bukkit.createInventory(null, 27, Methods.color(crate.getFile().getString("Crate.CrateName")));
+		Inventory inv = Bukkit.createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
 		setGlass(inv);
 		for(int i = 9; i > 8 && i < 18; i++) {
 			inv.setItem(i, crate.pickPrize(player).getDisplayItem());

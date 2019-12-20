@@ -30,7 +30,7 @@ public class War implements Listener {
 	private static HashMap<Player, Boolean> canClose = new HashMap<>();
 	
 	public static void openWarCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-		String crateName = Methods.color(crate.getFile().getString("Crate.CrateName"));
+		String crateName = Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName"));
 		Inventory inv = Bukkit.createInventory(null, 9, crateName);
 		setRandomPrizes(player, inv, crate, crateName);
 		InventoryView inventoryView = player.openInventory(inv);
@@ -74,7 +74,7 @@ public class War implements Listener {
 	
 	private static void setRandomPrizes(Player player, Inventory inv, Crate crate, String inventoryTitle) {
 		if(cc.isInOpeningList(player)) {
-			if(inventoryTitle.equalsIgnoreCase(Methods.color(cc.getOpeningCrate(player).getFile().getString("Crate.CrateName")))) {
+			if(inventoryTitle.equalsIgnoreCase(Methods.sanitizeColor(cc.getOpeningCrate(player).getFile().getString("Crate.CrateName")))) {
 				for(int i = 0; i < 9; i++) {
 					inv.setItem(i, crate.pickPrize(player).getDisplayItem());
 				}
@@ -84,7 +84,7 @@ public class War implements Listener {
 	
 	private static void setRandomGlass(Player player, Inventory inv, String inventoryTitle) {
 		if(cc.isInOpeningList(player)) {
-			if(inventoryTitle.equalsIgnoreCase(Methods.color(cc.getOpeningCrate(player).getFile().getString("Crate.CrateName")))) {
+			if(inventoryTitle.equalsIgnoreCase(Methods.sanitizeColor(cc.getOpeningCrate(player).getFile().getString("Crate.CrateName")))) {
 				if(colorCodes == null) {
 					colorCodes = getColorCode();
 				}
@@ -202,7 +202,7 @@ public class War implements Listener {
 			if(canClose.get(player)) {
 				for(Crate crate : cc.getCrates()) {
 					if(crate.getCrateType() == CrateType.WAR) {
-						if(e.getView().getTitle().equalsIgnoreCase(Methods.color(crate.getFile().getString("Crate.CrateName")))) {
+						if(e.getView().getTitle().equalsIgnoreCase(Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")))) {
 							canClose.remove(player);
 							if(cc.hasCrateTask(player)) {
 								cc.endCrate(player);

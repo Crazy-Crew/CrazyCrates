@@ -70,12 +70,12 @@ public class Crate {
 		this.previewToggle = file != null && (!file.contains("Crate.Preview.Toggle") || file.getBoolean("Crate.Preview.Toggle"));
 		this.boarderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle");
 		setPreviewChestlines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
-		this.previewName = Methods.color(previewName);
+		this.previewName = Methods.sanitizeColor(previewName);
 		this.newPlayerKeys = newPlayerKeys;
 		this.giveNewPlayerKeys = newPlayerKeys > 0;
 		this.maxSlots = previewChestlines * 9;
 		for(int amount = preview.size(); amount > maxSlots - (boarderToggle ? 18 : maxSlots != 9 ? 9 : 0); amount -= maxSlots - (boarderToggle ? 18 : maxSlots != 9 ? 9 : 0), maxPage++) ;
-		this.crateInventoryName = file != null ? Methods.color(file.getString("Crate.CrateName")) : "";
+		this.crateInventoryName = file != null ? Methods.sanitizeColor(file.getString("Crate.CrateName")) : "";
 		this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
 		this.hologram = hologram != null ? hologram : new CrateHologram();
 	}

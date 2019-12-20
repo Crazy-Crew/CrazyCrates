@@ -715,7 +715,7 @@ public class CrazyCrates {
 		for(int size = file.getConfigurationSection("Crate.Prizes").getKeys(false).size(); size > 9 && slots < crate.getMaxSlots(); size -= 9) {
 			slots += 9;
 		}
-		Inventory inv = Bukkit.createInventory(null, slots, Methods.color(file.getString("Crate.Name")));
+		Inventory inv = Bukkit.createInventory(null, slots, Methods.sanitizeColor(file.getString("Crate.Name")));
 		for(String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
 			String id = file.getString("Crate.Prizes." + reward + ".DisplayItem", "Stone");
 			String name = file.getString("Crate.Prizes." + reward + ".DisplayName", "");

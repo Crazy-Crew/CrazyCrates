@@ -29,7 +29,7 @@ public class GUIMenu implements Listener {
 	
 	public static void openGUI(Player player) {
 		int size = Files.CONFIG.getFile().getInt("Settings.InventorySize");
-		Inventory inv = Bukkit.createInventory(null, size, Methods.color(Files.CONFIG.getFile().getString("Settings.InventoryName")));
+		Inventory inv = Bukkit.createInventory(null, size, Methods.sanitizeColor(Files.CONFIG.getFile().getString("Settings.InventoryName")));
 		if(Files.CONFIG.getFile().contains("Settings.Filler.Toggle")) {
 			if(Files.CONFIG.getFile().getBoolean("Settings.Filler.Toggle")) {
 				String id = Files.CONFIG.getFile().getString("Settings.Filler.Item");
@@ -132,7 +132,7 @@ public class GUIMenu implements Listener {
 					}
 				}
 			}
-			if(e.getView().getTitle().equals(Methods.color(config.getString("Settings.InventoryName")))) {
+			if(e.getView().getTitle().equals(Methods.sanitizeColor(config.getString("Settings.InventoryName")))) {
 				e.setCancelled(true);
 				if(e.getCurrentItem() != null) {
 					ItemStack item = e.getCurrentItem();
@@ -142,7 +142,7 @@ public class GUIMenu implements Listener {
 								if(crate.getCrateType() != CrateType.MENU) {
 									FileConfiguration file = crate.getFile();
 									String path = "Crate.";
-									if(item.getItemMeta().getDisplayName().equals(Methods.color(file.getString(path + "Name")))) {
+									if(item.getItemMeta().getDisplayName().equals(Methods.sanitizeColor(file.getString(path + "Name")))) {
 										if(e.getAction() == InventoryAction.PICKUP_HALF) {//Right clicked the item
 											if(crate.isPreviewEnabled()) {
 												player.closeInventory();

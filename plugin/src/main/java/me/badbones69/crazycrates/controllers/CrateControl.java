@@ -200,7 +200,7 @@ public class CrateControl implements Listener { //Crate Control
 		Inventory inv = e.getInventory();
 		Player player = (Player) e.getWhoClicked();
 		if(inv != null) {
-			if(e.getView().getTitle().equals(Methods.color("&4&lAdmin Keys"))) {
+			if(e.getView().getTitle().equals(Methods.sanitizeColor("&4&lAdmin Keys"))) {
 				e.setCancelled(true);
 				if(!Methods.permCheck(player, "admin")) {
 					player.closeInventory();
