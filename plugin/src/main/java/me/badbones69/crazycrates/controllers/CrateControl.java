@@ -182,9 +182,12 @@ public class CrateControl implements Listener { //Crate Control
 								knockBack(player, clickedBlock.getLocation());
 							}
 							if(config.contains("Settings.Need-Key-Sound")) {
-								Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
-								if(sound != null) {
-									player.playSound(player.getLocation(), sound, 1f, 1f);
+								try {
+									Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
+									if(sound != null) {
+										player.playSound(player.getLocation(), sound, 1f, 1f);
+									}
+								}catch(Exception ex) {
 								}
 							}
 							player.sendMessage(Messages.NO_KEY.getMessage("%Key%", keyName));
