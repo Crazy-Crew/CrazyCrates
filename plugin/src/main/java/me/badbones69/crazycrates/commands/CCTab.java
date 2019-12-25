@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CCTab implements TabCompleter {
-	
+
 	private CrazyCrates cc = CrazyCrates.getInstance();
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String commandLable, String[] args) {
 		List<String> completions = new ArrayList<>();
@@ -26,6 +26,7 @@ public class CCTab implements TabCompleter {
 			if(hasPermission(sender, "convert")) completions.add("convert");
 			if(hasPermission(sender, "list")) completions.add("list");
 			if(hasPermission(sender, "open")) completions.add("open");
+			if(hasPermission(sender, "forceopen")) completions.add("forceopen");
 			if(hasPermission(sender, "tp")) completions.add("tp");
 			if(hasPermission(sender, "transfer")) completions.add("transfer");
 			if(hasPermission(sender, "give")) completions.add("give");
@@ -41,6 +42,7 @@ public class CCTab implements TabCompleter {
 			switch(args[0].toLowerCase()) {
 				case "additem":
 				case "open":
+				case "forceopen":
 				case "transfer":
 					cc.getCrates().forEach(crate -> completions.add(crate.getName()));
 					completions.remove("Menu");//Takes out a crate that doesn't exist as a file.
@@ -62,7 +64,6 @@ public class CCTab implements TabCompleter {
 				case "save":
 					completions.add("<Schematic Name>");
 					break;
-				
 			}
 			return StringUtil.copyPartialMatches(args[1], completions, new ArrayList<>());
 		}else if(args.length == 3) {// /cc arg0 arg1
@@ -74,6 +75,7 @@ public class CCTab implements TabCompleter {
 					}
 					break;
 				case "open":
+				case "forceopen":
 				case "transfer":
 					Bukkit.getOnlinePlayers().forEach(player -> completions.add(player.getName()));
 					break;
@@ -107,9 +109,9 @@ public class CCTab implements TabCompleter {
 		}
 		return new ArrayList<>();
 	}
-	
+
 	private boolean hasPermission(CommandSender sender, String node) {
 		return sender.hasPermission("crazycrates." + node) || sender.hasPermission("crazycrates.admin");
 	}
-	
+
 }
