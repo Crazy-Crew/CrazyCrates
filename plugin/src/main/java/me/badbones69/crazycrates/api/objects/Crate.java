@@ -74,7 +74,7 @@ public class Crate {
 		this.newPlayerKeys = newPlayerKeys;
 		this.giveNewPlayerKeys = newPlayerKeys > 0;
 		this.maxSlots = previewChestlines * 9;
-		for(int amount = preview.size(); amount > maxSlots - (boarderToggle ? 18 : maxSlots != 9 ? 9 : 0); amount -= maxSlots - (boarderToggle ? 18 : maxSlots != 9 ? 9 : 0), maxPage++) ;
+		for(int amount = preview.size(); amount > maxSlots - (boarderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0); amount -= maxSlots - (boarderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0), maxPage++) ;
 		this.crateInventoryName = file != null ? Methods.color(file.getString("Crate.CrateName")) : "";
 		this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
 		this.hologram = hologram != null ? hologram : new CrateHologram();
@@ -494,7 +494,7 @@ public class Crate {
 		List<ItemStack> list = preview;
 		List<ItemStack> items = new ArrayList<>();
 		if(page <= 0) page = 1;
-		int max = maxSlots - (boarderToggle ? 18 : maxSlots != 9 ? 9 : 0);
+		int max = maxSlots - (boarderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0);
 		int index = page * max - max;
 		int endIndex = index >= list.size() ? list.size() - 1 : index + max;
 		for(; index < endIndex; index++) {
