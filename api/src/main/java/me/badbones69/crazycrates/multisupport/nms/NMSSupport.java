@@ -10,17 +10,17 @@ import java.io.File;
 import java.util.List;
 
 public interface NMSSupport {
-	
-	void openChest(Block block, boolean open);
-	
-	void pasteSchematic(File file, Location loc);
-	
-	void saveSchematic(Location[] locations, String owner, File file);
-	
-	List<Location> getLocations(File file, Location loc);
-	
-	List<Material> getQuadCrateBlacklistBlocks();
-	
-	ItemStack getItemInMainHand(Player player);
-	
+    
+    void openChest(Block block, boolean open);
+    
+    void pasteSchematic(File file, Location loc);
+    
+    void saveSchematic(Location[] locations, String owner, File file);
+    
+    List<Location> getLocations(File file, Location loc);
+    
+    List<Material> getQuadCrateBlacklistBlocks();
+    
+    ItemStack getItemInMainHand(Player player);
+    
 }

@@ -18,31 +18,31 @@ import java.util.List;
  *
  */
 public class BrokeLocationsControl implements Listener {
-	
-	private CrazyCrates cc = CrazyCrates.getInstance();
-	private FileManager fileManager = FileManager.getInstance();
-	
-	@EventHandler
-	public void onWorldLoad(WorldLoadEvent e) {
-		if(!cc.getBrokeCrateLocations().isEmpty()) {
-			int fixedAmount = 0;
-			List<BrokeLocation> fixedWorlds = new ArrayList<>();
-			for(BrokeLocation brokeLocation : cc.getBrokeCrateLocations()) {
-				Location location = brokeLocation.getLocation();
-				if(location.getWorld() != null) {
-					cc.getCrateLocations().add(new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location));
-					fixedWorlds.add(brokeLocation);
-					fixedAmount++;
-				}
-			}
-			cc.getBrokeCrateLocations().removeAll(fixedWorlds);
-			if(fileManager.isLogging()) {
-				System.out.println(fileManager.getPrefix() + "Fixed " + fixedAmount + " broken crate locations.");
-				if(cc.getBrokeCrateLocations().isEmpty()) {
-					System.out.println(fileManager.getPrefix() + "All broken crate locations have been fixed.");
-				}
-			}
-		}
-	}
-	
+    
+    private CrazyCrates cc = CrazyCrates.getInstance();
+    private FileManager fileManager = FileManager.getInstance();
+    
+    @EventHandler
+    public void onWorldLoad(WorldLoadEvent e) {
+        if (!cc.getBrokeCrateLocations().isEmpty()) {
+            int fixedAmount = 0;
+            List<BrokeLocation> fixedWorlds = new ArrayList<>();
+            for (BrokeLocation brokeLocation : cc.getBrokeCrateLocations()) {
+                Location location = brokeLocation.getLocation();
+                if (location.getWorld() != null) {
+                    cc.getCrateLocations().add(new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location));
+                    fixedWorlds.add(brokeLocation);
+                    fixedAmount++;
+                }
+            }
+            cc.getBrokeCrateLocations().removeAll(fixedWorlds);
+            if (fileManager.isLogging()) {
+                System.out.println(fileManager.getPrefix() + "Fixed " + fixedAmount + " broken crate locations.");
+                if (cc.getBrokeCrateLocations().isEmpty()) {
+                    System.out.println(fileManager.getPrefix() + "All broken crate locations have been fixed.");
+                }
+            }
+        }
+    }
+    
 }

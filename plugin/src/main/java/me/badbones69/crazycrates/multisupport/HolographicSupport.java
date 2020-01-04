@@ -12,35 +12,35 @@ import org.bukkit.block.Block;
 import java.util.HashMap;
 
 public class HolographicSupport implements HologramController {
-	
-	private static CrazyCrates cc = CrazyCrates.getInstance();
-	private static HashMap<Block, Hologram> holograms = new HashMap<>();
-	
-	public void createHologram(Block block, Crate crate) {
-		CrateHologram crateHologram = crate.getHologram();
-		if(crateHologram.isEnabled()) {
-			double hight = crateHologram.getHeight();
-			Hologram hologram = HologramsAPI.createHologram(cc.getPlugin(), block.getLocation().add(.5, hight, .5));
-			for(String line : crateHologram.getMessages()) {
-				hologram.appendTextLine(Methods.color(line));
-			}
-			holograms.put(block, hologram);
-		}
-	}
-	
-	public void removeHologram(Block block) {
-		if(holograms.containsKey(block)) {
-			Hologram hologram = holograms.get(block);
-			holograms.remove(block);
-			hologram.delete();
-		}
-	}
-	
-	public void removeAllHolograms() {
-		for(Block block : holograms.keySet()) {
-			holograms.get(block).delete();
-		}
-		holograms.clear();
-	}
-	
+    
+    private static CrazyCrates cc = CrazyCrates.getInstance();
+    private static HashMap<Block, Hologram> holograms = new HashMap<>();
+    
+    public void createHologram(Block block, Crate crate) {
+        CrateHologram crateHologram = crate.getHologram();
+        if (crateHologram.isEnabled()) {
+            double hight = crateHologram.getHeight();
+            Hologram hologram = HologramsAPI.createHologram(cc.getPlugin(), block.getLocation().add(.5, hight, .5));
+            for (String line : crateHologram.getMessages()) {
+                hologram.appendTextLine(Methods.color(line));
+            }
+            holograms.put(block, hologram);
+        }
+    }
+    
+    public void removeHologram(Block block) {
+        if (holograms.containsKey(block)) {
+            Hologram hologram = holograms.get(block);
+            holograms.remove(block);
+            hologram.delete();
+        }
+    }
+    
+    public void removeAllHolograms() {
+        for (Block block : holograms.keySet()) {
+            holograms.get(block).delete();
+        }
+        holograms.clear();
+    }
+    
 }

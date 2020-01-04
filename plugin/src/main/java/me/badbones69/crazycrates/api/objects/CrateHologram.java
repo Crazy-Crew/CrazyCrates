@@ -4,33 +4,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CrateHologram {
-	
-	private boolean enabled;
-	private double height;
-	private List<String> messages;
-	
-	public CrateHologram() {
-		this.enabled = false;
-		this.height = 0.0;
-		this.messages = new ArrayList<>();
-	}
-	
-	public CrateHologram(boolean enabled, double height, List<String> messages) {
-		this.enabled = enabled;
-		this.height = height;
-		this.messages = messages;
-	}
-	
-	public boolean isEnabled() {
-		return enabled;
-	}
-	
-	public double getHeight() {
-		return height;
-	}
-	
-	public List<String> getMessages() {
-		return messages;
-	}
-	
+    
+    private boolean enabled;
+    private double height;
+    private List<String> messages;
+    
+    public CrateHologram() {
+        this.enabled = false;
+        this.height = 0.0;
+        this.messages = new ArrayList<>();
+    }
+    
+    public CrateHologram(boolean enabled, double height, List<String> messages) {
+        this.enabled = enabled;
+        this.height = height;
+        this.messages = messages;
+    }
+    
+    public boolean isEnabled() {
+        return enabled;
+    }
+    
+    public double getHeight() {
+        return height;
+    }
+    
+    public List<String> getMessages() {
+        return messages;
+    }
+    
 }
