@@ -5,12 +5,12 @@ import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.FileManager;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
+import me.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import me.badbones69.crazycrates.api.objects.Crate;
-import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.api.objects.Tier;
+import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +22,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -49,17 +48,18 @@ public class Cosmic implements Listener {
         player.openInventory(inv);
     }
     
-    private static void setChests(Inventory inv) {
+    private static void setChests(Inventory inv, Crate crate) {
+        CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
         int amount = 1;
         for (int i = 0; i < 27; i++) {
-            inv.setItem(i, new ItemBuilder().setMaterial(Material.CHEST).setAmount(amount).setName("&f&l???").setLore(Arrays.asList("&7You may choose 4 crates.")).build());
+            inv.setItem(i, manager.getMysteryCrate().setAmount(amount).build());
             amount++;
         }
     }
     
     public static void openCosmic(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         Inventory inv = Bukkit.createInventory(null, 27, Methods.color(crate.getFile().getString("Crate.CrateName") + " - Choose"));
-        setChests(inv);
+        setChests(inv, crate);
         cc.addPlayerKeyType(player, keyType);
         checkHands.put(player, checkHand);
         player.openInventory(inv);
@@ -130,22 +130,26 @@ public class Cosmic implements Listener {
                 if (inCosmic(slot)) {
                     ItemStack item = e.getCurrentItem();
                     if (item != null) {
-                        if (item.getType() == Material.CHEST) {
-                            if (!glass.containsKey(player)) glass.put(player, new ArrayList<>());
-                            if (glass.get(player).size() < 4) {
-                                e.setCurrentItem(new ItemBuilder().setMaterial("GLASS_PANE", "THIN_GLASS").setAmount(slot + 1).setName("&f&l???").setLore(Arrays.asList("&7You have chosen #" + (slot + 1) + ".")).build());
-                                glass.get(player).add(slot);
+                        CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
+                        int pickedSlot = slot + 1;
+                        NBTItem nbtItem = new NBTItem(item);
+                        if (nbtItem.hasNBTData()) {
+                            if (nbtItem.hasKey("Cosmic-Mystery-Crate")) {
+                                if (!glass.containsKey(player)) glass.put(player, new ArrayList<>());
+                                if (glass.get(player).size() < 4) {
+                                    e.setCurrentItem(manager.getPickedCrate().setAmount(pickedSlot).addLorePlaceholder("%Slot%", pickedSlot + "").build());
+                                    glass.get(player).add(slot);
+                                }
+                                player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
+                            } else if (nbtItem.hasKey("Cosmic-Picked-Crate")) {
+                                if (!glass.containsKey(player)) glass.put(player, new ArrayList<>());
+                                e.setCurrentItem(manager.getMysteryCrate().setAmount(pickedSlot).build());
+                                ArrayList<Integer> l = new ArrayList<>();
+                                for (int i : glass.get(player))
+                                    if (i != slot) l.add(i);
+                                glass.put(player, l);
+                                player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
                             }
-                            player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
-                        }
-                        if (item.getType() == Material.matchMaterial(cc.useNewMaterial() ? "GLASS_PANE" : "THIN_GLASS")) {
-                            if (!glass.containsKey(player)) glass.put(player, new ArrayList<>());
-                            e.setCurrentItem(new ItemBuilder().setMaterial(Material.CHEST).setAmount(slot + 1).setName("&f&l???").setLore(Arrays.asList("&7You may choose 4 crates.")).build());
-                            ArrayList<Integer> l = new ArrayList<>();
-                            for (int i : glass.get(player))
-                                if (i != slot) l.add(i);
-                            glass.put(player, l);
-                            player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
                         }
                         if (glass.get(player).size() >= 4) {
                             KeyType keyType = cc.getPlayerKeyType(player);

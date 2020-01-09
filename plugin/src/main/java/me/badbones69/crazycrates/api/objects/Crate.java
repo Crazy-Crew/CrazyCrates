@@ -82,6 +82,13 @@ public class Crate {
         this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
         this.hologram = hologram != null ? hologram : new CrateHologram();
         //TODO Add more managers for editing other crate types.
+        switch (crateType) {
+            case COSMIC:
+                this.manager = new CosmicCrateManager(file);
+                break;
+            default:
+                break;
+        }
     }
     
     /**
