@@ -6,10 +6,10 @@ public enum KeyType {
     VIRTUAL_KEY("Virtual_Key"),
     FREE_KEY("Free_Key");
     
-    private String Name;
+    private String name;
     
     private KeyType(String name) {
-        Name = name;
+        this.name = name;
     }
     
     public static KeyType getFromName(String type) {
@@ -24,7 +24,7 @@ public enum KeyType {
     }
     
     public String getName() {
-        return Name;
+        return name;
     }
     
 }

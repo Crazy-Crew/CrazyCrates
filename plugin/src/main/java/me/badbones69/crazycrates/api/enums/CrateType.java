@@ -14,10 +14,10 @@ public enum CrateType {
     WONDER("Wonder"),
     WAR("War");
     
-    private String Name;
+    private String name;
     
     private CrateType(String name) {
-        Name = name;
+        this.name = name;
     }
     
     public static CrateType getFromName(String name) {
@@ -30,7 +30,7 @@ public enum CrateType {
     }
     
     public String getName() {
-        return Name;
+        return name;
     }
     
 }
