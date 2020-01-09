@@ -9,6 +9,7 @@ import java.util.Arrays;
 public class CosmicCrateManager extends CrateManager {
     
     private FileConfiguration file;
+    private int totalPrizes;
     private ItemBuilder mysteryCrate;
     private ItemBuilder pickedCrate;
     
@@ -16,6 +17,7 @@ public class CosmicCrateManager extends CrateManager {
         this.file = file;
         CrazyCrates cc = CrazyCrates.getInstance();
         String path = "Crate.Crate-Type-Settings.";
+        totalPrizes = file.getInt(path + "Total-Prize-Amount", 4);
         mysteryCrate = new ItemBuilder()
         .setMaterial(file.getString(path + "Mystery-Crate.Item", "CHEST"))
         .setName(file.getString(path + "Mystery-Crate.Name", "&f&l???"))
@@ -30,6 +32,10 @@ public class CosmicCrateManager extends CrateManager {
     
     public FileConfiguration getFile() {
         return file;
+    }
+    
+    public int getTotalPrizes() {
+        return totalPrizes;
     }
     
     public ItemBuilder getMysteryCrate() {

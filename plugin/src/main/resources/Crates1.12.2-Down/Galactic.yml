@@ -22,6 +22,7 @@ Crate:
       Toggle: true
       Item: 'STAINED_GLASS_PANE:10'
   Crate-Type-Settings:
+    Total-Prize-Amount: 4
     Mystery-Crate:
       Item: 'CHEST'
       Name: '&f&l???'

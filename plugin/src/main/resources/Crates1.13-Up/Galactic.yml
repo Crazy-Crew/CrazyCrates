@@ -22,6 +22,7 @@ Crate:
       Toggle: true
       Item: 'PURPLE_STAINED_GLASS_PANE'
   Crate-Type-Settings:
+    Total-Prize-Amount: 4
     Mystery-Crate:
       Item: 'CHEST'
       Name: '&f&l???'

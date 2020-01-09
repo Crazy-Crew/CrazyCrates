@@ -131,12 +131,13 @@ public class Cosmic implements Listener {
                     ItemStack item = e.getCurrentItem();
                     if (item != null) {
                         CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
+                        int totalPrizes = manager.getTotalPrizes();
                         int pickedSlot = slot + 1;
                         NBTItem nbtItem = new NBTItem(item);
                         if (nbtItem.hasNBTData()) {
                             if (nbtItem.hasKey("Cosmic-Mystery-Crate")) {
                                 if (!glass.containsKey(player)) glass.put(player, new ArrayList<>());
-                                if (glass.get(player).size() < 4) {
+                                if (glass.get(player).size() < totalPrizes) {
                                     e.setCurrentItem(manager.getPickedCrate().setAmount(pickedSlot).addLorePlaceholder("%Slot%", pickedSlot + "").build());
                                     glass.get(player).add(slot);
                                 }
@@ -151,7 +152,7 @@ public class Cosmic implements Listener {
                                 player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
                             }
                         }
-                        if (glass.get(player).size() >= 4) {
+                        if (glass.get(player).size() >= totalPrizes) {
                             KeyType keyType = cc.getPlayerKeyType(player);
                             if (keyType == KeyType.PHYSICAL_KEY) {
                                 if (!cc.hasPhysicalKey(player, crate, checkHands.get(player))) {
@@ -260,7 +261,7 @@ public class Cosmic implements Listener {
         }
         if (cc.isInOpeningList(player)) {
             if (e.getView().getTitle().equals(Methods.color(crate.getFile().getString("Crate.CrateName") + " - Choose"))) {
-                if (!glass.containsKey(player) || glass.get(player).size() < 4) {
+                if (!glass.containsKey(player) || glass.get(player).size() < ((CosmicCrateManager) crate.getManager()).getTotalPrizes()) {
                     cc.removePlayerFromOpeningList(player);
                     cc.removePlayerKeyType(player);
                 }
