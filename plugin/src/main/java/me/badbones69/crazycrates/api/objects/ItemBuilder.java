@@ -40,6 +40,7 @@ public class ItemBuilder implements Cloneable {
     
     private static CrazyCrates cc = CrazyCrates.getInstance();
     private static Version version = Version.getCurrentVersion();
+    private NBTItem nbtItem;
     private Material material;
     private int damage;
     private String name;
@@ -765,6 +766,11 @@ public class ItemBuilder implements Cloneable {
         return this;
     }
     
+    public NBTItem getNBTItem() {
+        nbtItem = new NBTItem(build());
+        return nbtItem;
+    }
+    
     public List<ItemFlag> getItemFlags() {
         return itemFlags;
     }
@@ -807,7 +813,10 @@ public class ItemBuilder implements Cloneable {
      * @return The result of all the info that was given to the builder as an ItemStack.
      */
     public ItemStack build() {
-        ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material, amount);
+        if (nbtItem != null) {
+            referenceItem = nbtItem.getItem();
+        }
+        ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material);
         if (item.getType() != Material.AIR) {
             if (isHead) {//Has to go 1st due to it removing all data when finished.
                 if (isHash) {//Sauce: https://github.com/deanveloper/SkullCreator
@@ -818,6 +827,7 @@ public class ItemBuilder implements Cloneable {
                     }
                 }
             }
+            item.setAmount(amount);
             ItemMeta itemMeta = item.getItemMeta();
             itemMeta.setDisplayName(getUpdatedName());
             itemMeta.setLore(getUpdatedLore());

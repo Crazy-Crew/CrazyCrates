@@ -4,6 +4,8 @@ import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.FileManager;
 import me.badbones69.crazycrates.api.enums.CrateType;
+import me.badbones69.crazycrates.api.managers.CosmicCrateManager;
+import me.badbones69.crazycrates.api.managers.CrateManager;
 import me.badbones69.crazycrates.controllers.Preview;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.Bukkit;
@@ -21,6 +23,7 @@ import java.util.Random;
 
 public class Crate {
     
+    private CrateManager manager;
     private String name;
     private ItemStack key;
     private ItemStack keyNoNBT;
@@ -78,6 +81,21 @@ public class Crate {
         this.crateInventoryName = file != null ? Methods.sanitizeColor(file.getString("Crate.CrateName")) : "";
         this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
         this.hologram = hologram != null ? hologram : new CrateHologram();
+        //TODO Add more managers for editing other crate types.
+        switch (crateType) {
+            case COSMIC:
+                this.manager = new CosmicCrateManager(file);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    /**
+     * Get the crate manager which contains all the settings for that crate type.
+     */
+    public CrateManager getManager() {
+        return manager;
     }
     
     /**

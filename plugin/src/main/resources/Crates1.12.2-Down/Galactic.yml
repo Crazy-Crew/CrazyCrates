@@ -21,6 +21,18 @@ Crate:
     Glass:
       Toggle: true
       Item: 'STAINED_GLASS_PANE:10'
+  Crate-Type-Settings:
+    Total-Prize-Amount: 4
+    Mystery-Crate:
+      Item: 'CHEST'
+      Name: '&f&l???'
+      Lore:
+        - '&7You may choose 4 crates.'
+    Picked-Crate:
+      Item: 'THIN_GLASS'
+      Name: '&f&l???'
+      Lore:
+        - '&7You have chosen #%slot%.'
   PhysicalKey:
     Name: '&d&lGalactic Crate &b&lKey'
     Lore:
