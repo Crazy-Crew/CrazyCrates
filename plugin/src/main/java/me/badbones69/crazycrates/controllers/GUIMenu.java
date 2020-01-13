@@ -8,6 +8,7 @@ import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
+import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -106,6 +107,7 @@ public class GUIMenu implements Listener {
                     .setMaterial(file.getString(path + "Item"))
                     .setName(file.getString(path + "Name"))
                     .setLore(file.getStringList(path + "Lore"))
+                    .setCrateName(crate.getName())
                     .setPlayer(file.getString(path + "Player"))
                     .setGlowing(file.getBoolean(path + "Glowing"))
                     .addLorePlaceholder("%Keys%", NumberFormat.getNumberInstance().format(cc.getVirtualKeys(player, crate)))
@@ -136,63 +138,61 @@ public class GUIMenu implements Listener {
                 e.setCancelled(true);
                 if (e.getCurrentItem() != null) {
                     ItemStack item = e.getCurrentItem();
-                    if (item.hasItemMeta()) {
-                        if (item.getItemMeta().hasDisplayName()) {
-                            for (Crate crate : cc.getCrates()) {
-                                if (crate.getCrateType() != CrateType.MENU) {
-                                    FileConfiguration file = crate.getFile();
-                                    String path = "Crate.";
-                                    if (item.getItemMeta().getDisplayName().equals(Methods.sanitizeColor(file.getString(path + "Name")))) {
-                                        if (e.getAction() == InventoryAction.PICKUP_HALF) {//Right clicked the item
-                                            if (crate.isPreviewEnabled()) {
-                                                player.closeInventory();
-                                                Preview.setPlayerInMenu(player, true);
-                                                Preview.openNewPreview(player, crate);
-                                            } else {
-                                                player.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
-                                            }
-                                            return;
-                                        }
-                                        if (cc.isInOpeningList(player)) {
-                                            player.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
-                                            return;
-                                        }
-                                        boolean hasKey = false;
-                                        KeyType keyType = KeyType.VIRTUAL_KEY;
-                                        if (cc.getVirtualKeys(player, crate) >= 1) {
-                                            hasKey = true;
+                    if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
+                        NBTItem nbtItem = new NBTItem(item);
+                        if (nbtItem.hasNBTData()) {
+                            if (nbtItem.hasKey("CrazyCrates-Crate")) {
+                                Crate crate = cc.getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
+                                if (crate != null) {
+                                    if (e.getAction() == InventoryAction.PICKUP_HALF) {//Right clicked the item
+                                        if (crate.isPreviewEnabled()) {
+                                            player.closeInventory();
+                                            Preview.setPlayerInMenu(player, true);
+                                            Preview.openNewPreview(player, crate);
                                         } else {
-                                            if (Files.CONFIG.getFile().contains("Settings.Virtual-Accepts-Physical-Keys")) {
-                                                if (Files.CONFIG.getFile().getBoolean("Settings.Virtual-Accepts-Physical-Keys")) {
-                                                    if (cc.hasPhysicalKey(player, crate, false)) {
-                                                        hasKey = true;
-                                                        keyType = KeyType.PHYSICAL_KEY;
-                                                    }
-                                                }
-                                            }
+                                            player.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
                                         }
-                                        if (!hasKey) {
-                                            if (config.contains("Settings.Need-Key-Sound")) {
-                                                Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
-                                                if (sound != null) {
-                                                    player.playSound(player.getLocation(), sound, 1f, 1f);
-                                                }
-                                            }
-                                            player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
-                                            return;
-                                        }
-                                        for (String world : getDisabledWorlds()) {
-                                            if (world.equalsIgnoreCase(player.getWorld().getName())) {
-                                                player.sendMessage(Messages.WORLD_DISABLED.getMessage("%World%", player.getWorld().getName()));
-                                                return;
-                                            }
-                                        }
-                                        if (Methods.isInventoryFull(player)) {
-                                            player.sendMessage(Messages.INVENTORY_FULL.getMessage());
-                                            return;
-                                        }
-                                        cc.openCrate(player, crate, keyType, player.getLocation(), true, false);
+                                        return;
                                     }
+                                    if (cc.isInOpeningList(player)) {
+                                        player.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
+                                        return;
+                                    }
+                                    boolean hasKey = false;
+                                    KeyType keyType = KeyType.VIRTUAL_KEY;
+                                    if (cc.getVirtualKeys(player, crate) >= 1) {
+                                        hasKey = true;
+                                    } else {
+                                        if (Files.CONFIG.getFile().contains("Settings.Virtual-Accepts-Physical-Keys")) {
+                                            if (Files.CONFIG.getFile().getBoolean("Settings.Virtual-Accepts-Physical-Keys")) {
+                                                if (cc.hasPhysicalKey(player, crate, false)) {
+                                                    hasKey = true;
+                                                    keyType = KeyType.PHYSICAL_KEY;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (!hasKey) {
+                                        if (config.contains("Settings.Need-Key-Sound")) {
+                                            Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
+                                            if (sound != null) {
+                                                player.playSound(player.getLocation(), sound, 1f, 1f);
+                                            }
+                                        }
+                                        player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
+                                        return;
+                                    }
+                                    for (String world : getDisabledWorlds()) {
+                                        if (world.equalsIgnoreCase(player.getWorld().getName())) {
+                                            player.sendMessage(Messages.WORLD_DISABLED.getMessage("%World%", player.getWorld().getName()));
+                                            return;
+                                        }
+                                    }
+                                    if (Methods.isInventoryFull(player)) {
+                                        player.sendMessage(Messages.INVENTORY_FULL.getMessage());
+                                        return;
+                                    }
+                                    cc.openCrate(player, crate, keyType, player.getLocation(), true, false);
                                 }
                             }
                         }
