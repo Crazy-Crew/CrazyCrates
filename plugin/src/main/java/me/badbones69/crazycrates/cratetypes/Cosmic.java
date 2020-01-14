@@ -60,7 +60,7 @@ public class Cosmic implements Listener {
     
     public static void openCosmic(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         Inventory inv = Bukkit.createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"));
-        setChests(inv);
+        setChests(inv, crate);
         cc.addPlayerKeyType(player, keyType);
         checkHands.put(player, checkHand);
         player.openInventory(inv);
