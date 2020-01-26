@@ -456,8 +456,9 @@ public class Crate {
             file.set(path + ".MaxRange", 100);
             file.set(path + ".Chance", 50);
         } else {
-            for (Object list : file.getList(path + ".Editor-Items")) {
-                items.add((ItemStack) list);
+            //Must be checked as getList will return null if nothing is found.
+            if (file.contains(path + ".Editor-Items")) {
+                file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
             }
         }
         file.set(path + ".Editor-Items", items);
