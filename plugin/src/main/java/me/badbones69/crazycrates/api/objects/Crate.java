@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -441,7 +442,6 @@ public class Crate {
      * @param prize The prize the item is being added to.
      * @param item The ItemStack that is being added.
      */
-    //TODO add support for player heads, enchantments, and unbreakable.
     public void addEditorItem(String prize, ItemStack item) {
         ArrayList<ItemStack> items = new ArrayList<>();
         items.add(item);
@@ -450,6 +450,19 @@ public class Crate {
             if (item.hasItemMeta()) {
                 if (item.getItemMeta().hasDisplayName()) file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
                 if (item.getItemMeta().hasLore()) file.set(path + ".Lore", item.getItemMeta().getLore());
+            }
+            NBTItem nbtItem = new NBTItem(item);
+            if (nbtItem.hasNBTData()) {
+                if (nbtItem.hasKey("Unbreakable") && nbtItem.getBoolean("Unbreakable")) {
+                    file.set(path + ".Unbreakable", true);
+                }
+            }
+            List<String> enchantments = new ArrayList<>();
+            for (Enchantment enchantment : item.getEnchantments().keySet()) {
+                enchantments.add((cc.useNewMaterial() ? enchantment.getKey().getKey() : enchantment.getName()) + ":" + item.getEnchantments().get(enchantment));
+            }
+            if (!enchantments.isEmpty()) {
+                file.set(path + ".DisplayEnchantments", enchantments);
             }
             file.set(path + ".DisplayItem", cc.useNewMaterial() ? item.getType().name() : item.getType().name() + ":" + item.getDurability());
             file.set(path + ".DisplayAmount", item.getAmount());
