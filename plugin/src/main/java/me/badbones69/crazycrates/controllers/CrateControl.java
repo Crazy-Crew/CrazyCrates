@@ -49,7 +49,7 @@ public class CrateControl implements Listener { //Crate Control
         Inventory inv = e.getInventory();
         if (inv != null) {
             for (Crate crate : cc.getCrates()) {
-                if (e.getView().getTitle().equals(crate.getCrateInventoryName())) {
+                if (crate.isCrateMenu(e.getView())) {
                     e.setCancelled(true);
                 }
             }

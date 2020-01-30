@@ -15,6 +15,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -255,6 +256,24 @@ public class Crate {
     }
     
     /**
+     * Check if the inventory the player is in is the preview menu.
+     * @param view The inventory view of the inventory.
+     * @return True if it is the preview menu and false if not.
+     */
+    public boolean isPreview(InventoryView view) {
+        return view != null && isPreview(view.getTitle());
+    }
+    
+    /**
+     * Check if the inventory the player is in is the preview menu.
+     * @param inventoryName The name of the inventory.
+     * @return True if it is the preview menu and false if not.
+     */
+    public boolean isPreview(String inventoryName) {
+        return inventoryName != null && (isInventoryNameSimilar(inventoryName, previewName) || isInventoryNameSimilar(inventoryName, crateInventoryName));
+    }
+    
+    /**
      * Get if the preview is toggled on.
      * @return True if preview is on and false if not.
      */
@@ -283,7 +302,25 @@ public class Crate {
      * @return The name of the inventory for GUI based crate types.
      */
     public String getCrateInventoryName() {
-        return this.crateInventoryName;
+        return crateInventoryName;
+    }
+    
+    /**
+     * Check if the inventory the player is in is the crate menu.
+     * @param view The inventory view of the inventory.
+     * @return True if it is the crate menu and false if not.
+     */
+    public boolean isCrateMenu(InventoryView view) {
+        return view != null && isCrateMenu(view.getTitle());
+    }
+    
+    /**
+     * Check if the inventory the player is in is the crate menu.
+     * @param inventoryName The name of the inventory.
+     * @return True if it is the crate menu and false if not.
+     */
+    public boolean isCrateMenu(String inventoryName) {
+        return inventoryName != null && (isInventoryNameSimilar(inventoryName, crateInventoryName));
     }
     
     /**
@@ -502,6 +539,14 @@ public class Crate {
         return hologram;
     }
     
+    public int getAbsoluteItemPosition(int baseSlot) {
+        return baseSlot + (previewChestlines > 1 ? previewChestlines - 1 : 1) * 9;
+    }
+    
+    private boolean isInventoryNameSimilar(String inventory1, String inventory2) {
+        return Methods.removeColor(inventory1).equalsIgnoreCase(Methods.removeColor(inventory2));
+    }
+    
     /**
      * Loads all the preview items and puts them into a list.
      * @return A list of all the preview items that were created.
@@ -533,10 +578,6 @@ public class Crate {
             }
         }
         return items;
-    }
-    
-    public int getAbsoluteItemPosition(int baseSlot) {
-        return baseSlot + (previewChestlines > 1 ? previewChestlines - 1 : 1) * 9;
     }
     
     private void setDefaultItems(Inventory inventory, Player player) {

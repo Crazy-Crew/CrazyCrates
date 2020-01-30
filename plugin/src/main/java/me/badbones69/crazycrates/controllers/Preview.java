@@ -119,7 +119,7 @@ public class Preview implements Listener {
         if (e.getInventory() != null) {
             if (playerCrate.get(player.getUniqueId()) != null) {
                 Crate crate = playerCrate.get(player.getUniqueId());
-                if (e.getView().getTitle().equals(crate.getPreviewName()) || e.getView().getTitle().equals(crate.getCrateInventoryName())) {
+                if (crate.isPreview(e.getView())) {
                     e.setCancelled(true);
                     if (e.getCurrentItem() != null) {
                         if (e.getRawSlot() == crate.getAbsoluteItemPosition(4)) {// Clicked the menu button.
