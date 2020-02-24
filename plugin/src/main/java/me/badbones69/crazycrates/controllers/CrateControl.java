@@ -46,9 +46,8 @@ public class CrateControl implements Listener { //Crate Control
      */
     @EventHandler
     public void onCrateInventoryClick(InventoryClickEvent e) {
-        Inventory inv = e.getInventory();
-        if (inv != null) {
-            for (Crate crate : cc.getCrates()) {
+        for (Crate crate : cc.getCrates()) {
+            if (crate.getCrateType() != CrateType.MENU) {
                 if (crate.isCrateMenu(e.getView())) {
                     e.setCancelled(true);
                 }

@@ -320,7 +320,7 @@ public class Crate {
      * @return True if it is the crate menu and false if not.
      */
     public boolean isCrateMenu(String inventoryName) {
-        return inventoryName != null && (isInventoryNameSimilar(inventoryName, crateInventoryName));
+        return inventoryName != null && isInventoryNameSimilar(inventoryName, crateInventoryName);
     }
     
     /**
