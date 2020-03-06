@@ -86,7 +86,7 @@ public class Preview implements Listener {
     }
     
     public static ItemStack getNextButton(Player player) {
-        ItemBuilder button = nextButton.clone();
+        ItemBuilder button = new ItemBuilder(nextButton);
         if (player != null) {
             button.addLorePlaceholder("%Page%", (getPage(player) + 1) + "");
         }
@@ -98,7 +98,7 @@ public class Preview implements Listener {
     }
     
     public static ItemStack getBackButton(Player player) {
-        ItemBuilder button = backButton.clone();
+        ItemBuilder button = new ItemBuilder(backButton);
         if (player != null) {
             button.addLorePlaceholder("%Page%", (getPage(player) - 1) + "");
         }

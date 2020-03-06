@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  * @author BadBones69
  *
  */
-public class ItemBuilder implements Cloneable {
+public class ItemBuilder {
     
     private static CrazyCrates cc = CrazyCrates.getInstance();
     private static Version version = Version.getCurrentVersion();
@@ -76,6 +76,7 @@ public class ItemBuilder implements Cloneable {
      * The initial starting point for making an item.
      */
     public ItemBuilder() {
+        this.nbtItem = null;
         this.material = Material.STONE;
         this.damage = 0;
         this.name = "";
@@ -90,6 +91,7 @@ public class ItemBuilder implements Cloneable {
         this.unbreakable = false;
         this.hideItemFlags = false;
         this.glowing = false;
+        this.referenceItem = null;
         this.entityType = EntityType.BAT;
         this.potionType = null;
         this.potionColor = null;
@@ -105,6 +107,40 @@ public class ItemBuilder implements Cloneable {
         this.namePlaceholders = new HashMap<>();
         this.lorePlaceholders = new HashMap<>();
         this.itemFlags = new ArrayList<>();
+    }
+    
+    public ItemBuilder(ItemBuilder itemBuilder) {
+        this.nbtItem = itemBuilder.nbtItem;
+        this.material = itemBuilder.material;
+        this.damage = itemBuilder.damage;
+        this.name = itemBuilder.name;
+        this.crateName = itemBuilder.crateName;
+        this.lore = new ArrayList<>(itemBuilder.lore);
+        this.amount = itemBuilder.amount;
+        this.player = itemBuilder.player;
+        this.isHash = itemBuilder.isHash;
+        this.isURL = itemBuilder.isURL;
+        this.isHead = itemBuilder.isHead;
+        this.enchantments = new HashMap<>(itemBuilder.enchantments);
+        this.unbreakable = itemBuilder.unbreakable;
+        this.hideItemFlags = itemBuilder.hideItemFlags;
+        this.glowing = itemBuilder.glowing;
+        this.referenceItem = itemBuilder.referenceItem;
+        this.entityType = itemBuilder.entityType;
+        this.potionType = itemBuilder.potionType;
+        this.potionColor = itemBuilder.potionColor;
+        this.isPotion = itemBuilder.isPotion;
+        this.armorColor = itemBuilder.armorColor;
+        this.isLeatherArmor = itemBuilder.isLeatherArmor;
+        this.patterns = new ArrayList<>(itemBuilder.patterns);
+        this.isBanner = itemBuilder.isBanner;
+        this.isShield = itemBuilder.isShield;
+        this.customModelData = itemBuilder.customModelData;
+        this.useCustomModelData = itemBuilder.useCustomModelData;
+        this.isMobEgg = itemBuilder.isMobEgg;
+        this.namePlaceholders = new HashMap<>(itemBuilder.namePlaceholders);
+        this.lorePlaceholders = new HashMap<>(itemBuilder.lorePlaceholders);
+        this.itemFlags = new ArrayList<>(itemBuilder.itemFlags);
     }
     
     /**
@@ -903,19 +939,6 @@ public class ItemBuilder implements Cloneable {
         } else {
             return item;
         }
-    }
-    
-    /**
-     * Get a clone of the object.
-     * @return a new cloned object.
-     */
-    public ItemBuilder clone() {
-        try {
-            return (ItemBuilder) super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return new ItemBuilder();
     }
     
     /**

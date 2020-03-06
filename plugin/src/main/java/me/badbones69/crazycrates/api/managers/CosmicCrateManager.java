@@ -39,7 +39,7 @@ public class CosmicCrateManager extends CrateManager {
     }
     
     public ItemBuilder getMysteryCrate() {
-        return mysteryCrate.clone();
+        return new ItemBuilder(mysteryCrate);
     }
     
     public ItemBuilder getPickedCrate() {

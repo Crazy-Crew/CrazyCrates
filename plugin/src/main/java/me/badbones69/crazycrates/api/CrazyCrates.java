@@ -755,14 +755,15 @@ public class CrazyCrates {
                 }
             }
             for (ItemBuilder item : prize.getItemBuilders()) {
+                ItemBuilder clone = new ItemBuilder(item);
                 if (Support.PLACEHOLDERAPI.isPluginLoaded()) {
-                    item.setName(PlaceholderAPI.setPlaceholders(player, item.getName()));
-                    item.setLore(PlaceholderAPI.setPlaceholders(player, item.getLore()));
+                    clone.setName(PlaceholderAPI.setPlaceholders(player, clone.getName()));
+                    clone.setLore(PlaceholderAPI.setPlaceholders(player, clone.getLore()));
                 }
                 if (!Methods.isInventoryFull(player)) {
-                    player.getInventory().addItem(item.build());
+                    player.getInventory().addItem(clone.build());
                 } else {
-                    player.getWorld().dropItemNaturally(player.getLocation(), item.build());
+                    player.getWorld().dropItemNaturally(player.getLocation(), clone.build());
                 }
             }
             for (String command : prize.getCommands()) {// /give %player% iron %random%:1-64
