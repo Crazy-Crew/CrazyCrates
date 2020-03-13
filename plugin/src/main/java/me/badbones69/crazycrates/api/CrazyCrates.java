@@ -43,6 +43,7 @@ import v1_15_R1.NMS_v1_15_R1;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
 public class CrazyCrates {
@@ -776,8 +777,8 @@ public class CrazyCrates {
                         if (word.startsWith("%random%:")) {
                             word = word.replace("%random%:", "");
                             try {
-                                int min = Integer.parseInt(word.split("-")[0]);
-                                int max = Integer.parseInt(word.split("-")[1]);
+                                long min = Long.parseLong(word.split("-")[0]);
+                                long max = Long.parseLong(word.split("-")[1]);
                                 command += pickNumber(min, max) + " ";
                             } catch (Exception e) {
                                 command += "1 ";
@@ -1398,9 +1399,14 @@ public class CrazyCrates {
         return ItemBuilder.convertStringList(file.getStringList("Crate.Prizes." + prize + ".Items"), prize);
     }
     
-    private Integer pickNumber(int min, int max) {
+    private long pickNumber(long min, long max) {
         max++;
-        return min + new Random().nextInt(max - min);
+        try {
+            // new Random() does not have a nextLong(long bound) method.
+            return ThreadLocalRandom.current().nextLong(max - min);
+        } catch (IllegalArgumentException e) {
+            return min;
+        }
     }
     
 }
