@@ -6,6 +6,8 @@ import me.badbones69.crazycrates.api.FileManager;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
+import me.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
+import me.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent.KeyReciveReason;
 import me.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.Prize;
@@ -186,13 +188,17 @@ public class Cosmic implements Listener {
                                     try {
                                         startRoll(player, crate);
                                     } catch (Exception e) {
-                                        cc.addKeys(1, player, crate, keyType);
-                                        cc.endCrate(player);
-                                        cancel();
-                                        player.sendMessage(Methods.getPrefix("&cAn issue has occurred and so a key refund was given."));
-                                        System.out.println(FileManager.getInstance().getPrefix() + "An issue occurred when the user " + player.getName() +
-                                        " was using the " + crate.getName() + " crate and so they were issued a key refund.");
-                                        e.printStackTrace();
+                                        PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.REFUND);
+                                        Bukkit.getPluginManager().callEvent(event);
+                                        if (!event.isCancelled()) {
+                                            cc.addKeys(1, player, crate, keyType);
+                                            cc.endCrate(player);
+                                            cancel();
+                                            player.sendMessage(Methods.getPrefix("&cAn issue has occurred and so a key refund was given."));
+                                            System.out.println(FileManager.getInstance().getPrefix() + "An issue occurred when the user " + player.getName() +
+                                            " was using the " + crate.getName() + " crate and so they were issued a key refund.");
+                                            e.printStackTrace();
+                                        }
                                         return;
                                     }
                                     time++;

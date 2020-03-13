@@ -7,6 +7,8 @@ import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
+import me.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
+import me.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent.KeyReciveReason;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
 import me.badbones69.crazycrates.api.objects.Prize;
@@ -487,15 +489,19 @@ public class CCCommand implements CommandExecutor {
                                     amount = Integer.parseInt(args[3]);
                                 }
                                 if (cc.getVirtualKeys(player, crate) >= amount) {
-                                    cc.takeKeys(amount, player, crate, KeyType.VIRTUAL_KEY, false);
-                                    cc.addKeys(amount, target, crate, KeyType.VIRTUAL_KEY);
-                                    HashMap<String, String> placeholders = new HashMap<>();
+                                    PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.TRANSFER);
+                                    Bukkit.getPluginManager().callEvent(event);
+                                    if (!event.isCancelled()) {
+                                        cc.takeKeys(amount, player, crate, KeyType.VIRTUAL_KEY, false);
+                                        cc.addKeys(amount, target, crate, KeyType.VIRTUAL_KEY);
+                                        HashMap<String, String> placeholders = new HashMap<>();
                                     placeholders.put("%Crate%", crate.getName());
                                     placeholders.put("%Amount%", amount + "");
                                     placeholders.put("%Player%", target.getName());
-                                    player.sendMessage(Messages.TRANSFERRED_KEYS.getMessage(placeholders));
-                                    placeholders.put("%Player%", player.getName());
-                                    target.sendMessage(Messages.RECEIVED_TRANSFERRED_KEYS.getMessage(placeholders));
+                                        player.sendMessage(Messages.TRANSFERRED_KEYS.getMessage(placeholders));
+                                        placeholders.put("%Player%", player.getName());
+                                        target.sendMessage(Messages.RECEIVED_TRANSFERRED_KEYS.getMessage(placeholders));
+                                    }
                                 } else {
                                     sender.sendMessage(Messages.NOT_ENOUGH_KEYS.getMessage("%Crate%", crate.getName()));
                                 }
@@ -534,6 +540,8 @@ public class CCCommand implements CommandExecutor {
                             placeholders.put("%Key%", crate.getKey().getItemMeta().getDisplayName());
                             sender.sendMessage(Messages.GIVEN_EVERYONE_KEYS.getMessage(placeholders));
                             for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+                                PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.GIVE_ALL_COMMAND);
+                                Bukkit.getPluginManager().callEvent(event);
                                 player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
                                 if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
                                     player.getInventory().addItem(crate.getKey(amount));
@@ -631,6 +639,9 @@ public class CCCommand implements CommandExecutor {
                     Crate crate = cc.getCrateFromName(args[2]);
                     if (crate != null) {
                         if (crate.getCrateType() != CrateType.MENU) {
+                        PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(target, crate, KeyReciveReason.GIVE_COMMAND);
+                        Bukkit.getPluginManager().callEvent(event);
+                        if (!event.isCancelled()) {
                             if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
                                 target.getInventory().addItem(crate.getKey(amount));
                             } else {
@@ -672,6 +683,7 @@ public class CCCommand implements CommandExecutor {
                             if (target != null) {
                                 target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
                             }
+                        }
                             return true;
                         }
                     }

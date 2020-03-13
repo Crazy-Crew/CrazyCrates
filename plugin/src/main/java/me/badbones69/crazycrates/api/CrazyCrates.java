@@ -6,6 +6,8 @@ import me.badbones69.crazycrates.api.enums.BrokeLocation;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
+import me.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
+import me.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent.KeyReciveReason;
 import me.badbones69.crazycrates.api.interfaces.HologramController;
 import me.badbones69.crazycrates.api.objects.*;
 import me.badbones69.crazycrates.controllers.CrateControl;
@@ -862,7 +864,11 @@ public class CrazyCrates {
         if (data.contains("Offline-Players." + name)) {
             for (Crate crate : getCrates()) {
                 if (data.contains("Offline-Players." + name + "." + crate.getName())) {
-                    addKeys(data.getInt("Offline-Players." + name + "." + crate.getName()), player, crate, KeyType.VIRTUAL_KEY);
+                    PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.OFFLINE_PLAYER);
+                    Bukkit.getPluginManager().callEvent(event);
+                    if (!event.isCancelled()) {
+                        addKeys(data.getInt("Offline-Players." + name + "." + crate.getName()), player, crate, KeyType.VIRTUAL_KEY);
+                    }
                 }
             }
             data.set("Offline-Players." + name, null);
