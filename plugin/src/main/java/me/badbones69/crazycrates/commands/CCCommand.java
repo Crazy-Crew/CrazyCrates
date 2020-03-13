@@ -495,9 +495,9 @@ public class CCCommand implements CommandExecutor {
                                         cc.takeKeys(amount, player, crate, KeyType.VIRTUAL_KEY, false);
                                         cc.addKeys(amount, target, crate, KeyType.VIRTUAL_KEY);
                                         HashMap<String, String> placeholders = new HashMap<>();
-                                    placeholders.put("%Crate%", crate.getName());
-                                    placeholders.put("%Amount%", amount + "");
-                                    placeholders.put("%Player%", target.getName());
+                                        placeholders.put("%Crate%", crate.getName());
+                                        placeholders.put("%Amount%", amount + "");
+                                        placeholders.put("%Player%", target.getName());
                                         player.sendMessage(Messages.TRANSFERRED_KEYS.getMessage(placeholders));
                                         placeholders.put("%Player%", player.getName());
                                         target.sendMessage(Messages.RECEIVED_TRANSFERRED_KEYS.getMessage(placeholders));
@@ -527,8 +527,8 @@ public class CCCommand implements CommandExecutor {
                         }
                         amount = Integer.parseInt(args[3]);
                     }
-                    String type = args[1];
-                    if (!(type.equalsIgnoreCase("Virtual") || type.equalsIgnoreCase("V") || type.equalsIgnoreCase("Physical") || type.equalsIgnoreCase("P"))) {
+                    KeyType type = KeyType.getFromName(args[1]);
+                    if (type == null || type == KeyType.FREE_KEY) {
                         sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease use Virtual/V or Physical/P for a Key type."));
                         return true;
                     }
@@ -542,16 +542,13 @@ public class CCCommand implements CommandExecutor {
                             for (Player player : Bukkit.getServer().getOnlinePlayers()) {
                                 PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.GIVE_ALL_COMMAND);
                                 Bukkit.getPluginManager().callEvent(event);
-                                player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
-                                if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
-                                    player.getInventory().addItem(crate.getKey(amount));
-                                    return true;
-                                }
-                                if (type.equalsIgnoreCase("Virtual") || type.equalsIgnoreCase("V")) {
-                                    cc.addKeys(amount, player, crate, KeyType.VIRTUAL_KEY);
-                                }
-                                if (type.equalsIgnoreCase("Physical") || type.equalsIgnoreCase("P")) {
-                                    cc.addKeys(amount, player, crate, KeyType.PHYSICAL_KEY);
+                                if (!event.isCancelled()) {
+                                    player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
+                                    if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
+                                        player.getInventory().addItem(crate.getKey(amount));
+                                        return true;
+                                    }
+                                    cc.addKeys(amount, player, crate, type);
                                 }
                             }
                             return true;
@@ -564,115 +561,54 @@ public class CCCommand implements CommandExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("give")) {// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
                 if (!Methods.permCheck(sender, "admin")) return true;
-                KeyType type = null;
+                Player target = null;
+                KeyType type = KeyType.PHYSICAL_KEY;
+                Crate crate = null;
+                int amount = 1;
                 if (args.length >= 2) {
                     type = KeyType.getFromName(args[1]);
-                }
-                if (type == null || type == KeyType.FREE_KEY) {
-                    sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease use Virtual/V or Physical/P for a Key type."));
-                    return true;
-                }
-                if (args.length == 3) {
-                    Crate crate = cc.getCrateFromName(args[2]);
-                    if (crate != null) {
-                        if (crate.getCrateType() != CrateType.MENU) {
-                            if (!(sender instanceof Player)) {
-                                sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
-                                return true;
-                            }
-                            HashMap<String, String> placeholders = new HashMap<>();
-                            placeholders.put("%Amount%", "1");
-                            placeholders.put("%Player%", sender.getName());
-                            sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
-                            if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
-                                ((Player) sender).getInventory().addItem(crate.getKey());
-                            } else {
-                                if (type == KeyType.VIRTUAL_KEY) {
-                                    cc.addKeys(1, (Player) sender, crate, KeyType.VIRTUAL_KEY);
-                                } else if (type == KeyType.PHYSICAL_KEY) {
-                                    cc.addKeys(1, (Player) sender, crate, KeyType.PHYSICAL_KEY);
-                                }
-                            }
-                            return true;
-                        }
-                    }
-                    sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[2]));
-                    return true;
-                } else if (args.length == 4) {
-                    if (!(sender instanceof Player)) {
-                        sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
+                    if (type == null || type == KeyType.FREE_KEY) {
+                        sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease use Virtual/V or Physical/P for a Key type."));
                         return true;
                     }
+                }
+                if (args.length >= 3) {
+                    crate = cc.getCrateFromName(args[2]);
+                    if (crate == null) {
+                        sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[2]));
+                        return true;
+                    }
+                }
+                if (args.length >= 4) {
                     if (!Methods.isInt(args[3])) {
                         sender.sendMessage(Messages.NOT_A_NUMBER.getMessage("%Number%", args[3]));
                         return true;
                     }
-                    int amount = Integer.parseInt(args[3]);
-                    Crate crate = cc.getCrateFromName(args[2]);
-                    if (crate != null) {
-                        if (crate.getCrateType() != CrateType.MENU) {
-                            HashMap<String, String> placeholders = new HashMap<>();
-                            placeholders.put("%Amount%", amount + "");
-                            placeholders.put("%Player%", sender.getName());
-                            sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
-                            if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
-                                ((Player) sender).getInventory().addItem(crate.getKey(amount));
-                            } else {
-                                if (type == KeyType.VIRTUAL_KEY) {
-                                    cc.addKeys(amount, (Player) sender, crate, KeyType.VIRTUAL_KEY);
-                                } else if (type == KeyType.PHYSICAL_KEY) {
-                                    cc.addKeys(amount, (Player) sender, crate, KeyType.PHYSICAL_KEY);
-                                }
-                            }
-                            return true;
-                        }
-                    }
-                    sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[2]));
-                    return true;
-                } else if (args.length == 5) {
-                    if (!Methods.isInt(args[3])) {
-                        sender.sendMessage(Messages.NOT_A_NUMBER.getMessage("%Number%", args[3]));
-                        return true;
-                    }
-                    int amount = Integer.parseInt(args[3]);
-                    Player target = Methods.getPlayer(args[4]);
-                    Crate crate = cc.getCrateFromName(args[2]);
-                    if (crate != null) {
-                        if (crate.getCrateType() != CrateType.MENU) {
+                    amount = Integer.parseInt(args[3]);
+                }
+                if (args.length >= 5) {
+                    target = Methods.getPlayer(args[4]);
+                }
+                if (args.length >= 3) {
+                    if (crate.getCrateType() != CrateType.MENU) {
                         PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(target, crate, KeyReciveReason.GIVE_COMMAND);
                         Bukkit.getPluginManager().callEvent(event);
                         if (!event.isCancelled()) {
                             if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
                                 target.getInventory().addItem(crate.getKey(amount));
                             } else {
-                                if (type == KeyType.VIRTUAL_KEY) {
-                                    if (target != null) {
-                                        cc.addKeys(amount, target, crate, KeyType.VIRTUAL_KEY);
+                                if (target != null) {
+                                    cc.addKeys(amount, target, crate, type);
+                                } else {
+                                    if (!cc.addOfflineKeys(args[4], crate, amount)) {
+                                        sender.sendMessage(Messages.INTERNAL_ERROR.getMessage());
                                     } else {
-                                        if (!cc.addOfflineKeys(args[4], crate, amount)) {
-                                            sender.sendMessage(Messages.INTERNAL_ERROR.getMessage());
-                                        } else {
-                                            HashMap<String, String> placeholders = new HashMap<>();
-                                            placeholders.put("%Amount%", amount + "");
-                                            placeholders.put("%Player%", args[4]);
-                                            sender.sendMessage(Messages.GIVEN_OFFLINE_PLAYER_KEYS.getMessage(placeholders));
-                                        }
-                                        return true;
+                                        HashMap<String, String> placeholders = new HashMap<>();
+                                        placeholders.put("%Amount%", amount + "");
+                                        placeholders.put("%Player%", args[4]);
+                                        sender.sendMessage(Messages.GIVEN_OFFLINE_PLAYER_KEYS.getMessage(placeholders));
                                     }
-                                } else if (type == KeyType.PHYSICAL_KEY) {
-                                    if (target != null) {
-                                        cc.addKeys(amount, target, crate, KeyType.PHYSICAL_KEY);
-                                    } else {
-                                        if (!cc.addOfflineKeys(args[4], crate, amount)) {
-                                            sender.sendMessage(Messages.INTERNAL_ERROR.getMessage());
-                                        } else {
-                                            HashMap<String, String> placeholders = new HashMap<>();
-                                            placeholders.put("%Amount%", amount + "");
-                                            placeholders.put("%Player%", args[4]);
-                                            sender.sendMessage(Messages.GIVEN_OFFLINE_PLAYER_KEYS.getMessage(placeholders));
-                                        }
-                                        return true;
-                                    }
+                                    return true;
                                 }
                             }
                             HashMap<String, String> placeholders = new HashMap<>();
@@ -684,8 +620,7 @@ public class CCCommand implements CommandExecutor {
                                 target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
                             }
                         }
-                            return true;
-                        }
+                        return true;
                     }
                     sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[2]));
                     return true;
