@@ -27,6 +27,7 @@ public class HologramsSupport implements HologramController {
                 hologram.addLine(new TextLine(hologram, line));
             }
             hologramManager.addActiveHologram(hologram);
+            hologram.spawn();
             holograms.put(block, hologram);
         }
     }
@@ -34,6 +35,7 @@ public class HologramsSupport implements HologramController {
     public void removeHologram(Block block) {
         if (holograms.containsKey(block)) {
             Hologram hologram = holograms.get(block);
+            hologram.despawn();
             hologramManager.deleteHologram(hologram);
             holograms.remove(block);
         }
