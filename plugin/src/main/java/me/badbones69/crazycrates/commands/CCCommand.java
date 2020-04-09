@@ -23,6 +23,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -588,6 +589,13 @@ public class CCCommand implements CommandExecutor {
                 }
                 if (args.length >= 5) {
                     target = Methods.getPlayer(args[4]);
+                } else {
+                    if (sender instanceof ConsoleCommandSender) {
+                        sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
+                        return true;
+                    } else {
+                        target = (Player) sender;
+                    }
                 }
                 if (args.length >= 3) {
                     if (crate.getCrateType() != CrateType.MENU) {
