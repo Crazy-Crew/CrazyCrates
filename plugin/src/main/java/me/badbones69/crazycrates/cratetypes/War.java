@@ -91,17 +91,17 @@ public class War implements Listener {
             ItemStack item = itemBuilder.build();
             for (int i = 0; i < 9; i++) {
                 inv.setItem(i, item);
-                }
             }
         }
+    }
     
     private static HashMap<ItemStack, String> getColorCode() {
         HashMap<ItemStack, String> colorCodes = new HashMap<>();
-        colorCodes.put(new ItemBuilder().setMaterial("WHITE_STAINED_GLASS_PANE, STAINED_GLASS_PANE:0").build(), "f");
-        colorCodes.put(new ItemBuilder().setMaterial("ORANGE_STAINED_GLASS_PANE, STAINED_GLASS_PANE:1").build(), "6");
-        colorCodes.put(new ItemBuilder().setMaterial("MAGENTA_STAINED_GLASS_PANE, STAINED_GLASS_PANE:2").build(), "d");
-        colorCodes.put(new ItemBuilder().setMaterial("LIGHT_BLUE_STAINED_GLASS_PANE, STAINED_GLASS_PANE:3").build(), "3");
-        colorCodes.put(new ItemBuilder().setMaterial("YELLOW_STAINED_GLASS_PANE, STAINED_GLASS_PANE:4").build(), "e");
+        colorCodes.put(new ItemBuilder().setMaterial("WHITE_STAINED_GLASS_PANE", " STAINED_GLASS_PANE:0").build(), "f");
+        colorCodes.put(new ItemBuilder().setMaterial("ORANGE_STAINED_GLASS_PANE", " STAINED_GLASS_PANE:1").build(), "6");
+        colorCodes.put(new ItemBuilder().setMaterial("MAGENTA_STAINED_GLASS_PANE", " STAINED_GLASS_PANE:2").build(), "d");
+        colorCodes.put(new ItemBuilder().setMaterial("LIGHT_BLUE_STAINED_GLASS_PANE", " STAINED_GLASS_PANE:3").build(), "3");
+        colorCodes.put(new ItemBuilder().setMaterial("YELLOW_STAINED_GLASS_PANE", " STAINED_GLASS_PANE:4").build(), "e");
         colorCodes.put(new ItemBuilder().setMaterial("LIME_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:5").build(), "a");
         colorCodes.put(new ItemBuilder().setMaterial("PINK_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:6").build(), "c");
         colorCodes.put(new ItemBuilder().setMaterial("GRAY_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:7").build(), "7");
