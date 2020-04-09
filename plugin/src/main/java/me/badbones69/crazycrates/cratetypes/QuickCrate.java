@@ -24,6 +24,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class QuickCrate implements Listener {
     
@@ -125,11 +126,7 @@ public class QuickCrate implements Listener {
     }
     
     public static void removeAllRewards() {
-        for (Entity entity : allRewards) {
-            if (entity != null) {
-                entity.remove();
-            }
-        }
+        allRewards.stream().filter(Objects :: nonNull).forEach(Entity :: remove);
     }
     
     @EventHandler

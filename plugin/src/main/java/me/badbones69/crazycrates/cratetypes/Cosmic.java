@@ -37,8 +37,7 @@ public class Cosmic implements Listener {
     
     private static void showRewards(Player player, Crate crate) {
         Inventory inv = Bukkit.createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"));
-        for (int i : picks.get(player))
-            inv.setItem(i, pickTier(player).getTierPane());
+        picks.get(player).forEach(i -> inv.setItem(i, pickTier(player).getTierPane()));
         player.openInventory(inv);
     }
     
@@ -157,28 +156,24 @@ public class Cosmic implements Listener {
                         }
                         if (glass.get(player).size() >= totalPrizes) {
                             KeyType keyType = cc.getPlayerKeyType(player);
-                            if (keyType == KeyType.PHYSICAL_KEY) {
-                                if (!cc.hasPhysicalKey(player, crate, checkHands.get(player))) {
-                                    player.closeInventory();
-                                    player.sendMessage(Messages.NO_KEY.getMessage());
-                                    if (cc.isInOpeningList(player)) {
-                                        cc.removePlayerFromOpeningList(player);
-                                        cc.removePlayerKeyType(player);
-                                    }
-                                    checkHands.remove(player);
-                                    glass.remove(player);
-                                    return;
-                                }
-                            }
-                            if (cc.hasPlayerKeyType(player)) {
-                                if (!cc.takeKeys(1, player, crate, keyType, checkHands.get(player))) {
-                                    Methods.failedToTakeKey(player, crate);
+                            if (keyType == KeyType.PHYSICAL_KEY && !cc.hasPhysicalKey(player, crate, checkHands.get(player))) {
+                                player.closeInventory();
+                                player.sendMessage(Messages.NO_KEY.getMessage());
+                                if (cc.isInOpeningList(player)) {
                                     cc.removePlayerFromOpeningList(player);
                                     cc.removePlayerKeyType(player);
-                                    checkHands.remove(player);
-                                    glass.remove(player);
-                                    return;
                                 }
+                                checkHands.remove(player);
+                                glass.remove(player);
+                                return;
+                            }
+                            if (cc.hasPlayerKeyType(player) && !cc.takeKeys(1, player, crate, keyType, checkHands.get(player))) {
+                                Methods.failedToTakeKey(player, crate);
+                                cc.removePlayerFromOpeningList(player);
+                                cc.removePlayerKeyType(player);
+                                checkHands.remove(player);
+                                glass.remove(player);
+                                return;
                             }
                             cc.addCrateTask(player, new BukkitRunnable() {
                                 int time = 0;
@@ -266,18 +261,16 @@ public class Cosmic implements Listener {
             }
             checkHands.remove(player);
         }
-        if (cc.isInOpeningList(player)) {
-            if (e.getView().getTitle().equals(Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"))) {
-                if (!glass.containsKey(player) || glass.get(player).size() < 4) {
-                    cc.removePlayerFromOpeningList(player);
-                    cc.removePlayerKeyType(player);
-                }
-                if (glass.containsKey(player)) {
-                    picks.put(player, glass.get(player));
-                    glass.remove(player);
-                }
-                checkHands.remove(player);
+        if (cc.isInOpeningList(player) && e.getView().getTitle().equals(Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"))) {
+            if (!glass.containsKey(player) || glass.get(player).size() < 4) {
+                cc.removePlayerFromOpeningList(player);
+                cc.removePlayerKeyType(player);
             }
+            if (glass.containsKey(player)) {
+                picks.put(player, glass.get(player));
+                glass.remove(player);
+            }
+            checkHands.remove(player);
         }
     }
     

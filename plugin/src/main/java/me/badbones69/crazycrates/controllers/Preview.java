@@ -116,26 +116,24 @@ public class Preview implements Listener {
     @EventHandler
     public void onPlayerClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
-        if (e.getInventory() != null) {
-            if (playerCrate.get(player.getUniqueId()) != null) {
-                Crate crate = playerCrate.get(player.getUniqueId());
-                if (crate.isPreview(e.getView())) {
-                    e.setCancelled(true);
-                    if (e.getCurrentItem() != null) {
-                        if (e.getRawSlot() == crate.getAbsoluteItemPosition(4)) {// Clicked the menu button.
-                            if (playerInMenu(player)) {
-                                GUIMenu.openGUI(player);
-                            }
-                        } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(5)) {// Clicked the next button.
-                            if (getPage(player) < crate.getMaxPage()) {
-                                nextPage(player);
-                                openPreview(player, crate);
-                            }
-                        } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(3)) {// Clicked the back button.
-                            if (getPage(player) > 1 && getPage(player) <= crate.getMaxPage()) {
-                                backPage(player);
-                                openPreview(player, crate);
-                            }
+        if (e.getInventory() != null && playerCrate.get(player.getUniqueId()) != null) {
+            Crate crate = playerCrate.get(player.getUniqueId());
+            if (crate.isPreview(e.getView())) {
+                e.setCancelled(true);
+                if (e.getCurrentItem() != null) {
+                    if (e.getRawSlot() == crate.getAbsoluteItemPosition(4)) {// Clicked the menu button.
+                        if (playerInMenu(player)) {
+                            GUIMenu.openGUI(player);
+                        }
+                    } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(5)) {// Clicked the next button.
+                        if (getPage(player) < crate.getMaxPage()) {
+                            nextPage(player);
+                            openPreview(player, crate);
+                        }
+                    } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(3)) {// Clicked the back button.
+                        if (getPage(player) > 1 && getPage(player) <= crate.getMaxPage()) {
+                            backPage(player);
+                            openPreview(player, crate);
                         }
                     }
                 }

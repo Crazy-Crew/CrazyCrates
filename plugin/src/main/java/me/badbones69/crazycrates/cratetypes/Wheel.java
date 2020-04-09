@@ -16,11 +16,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
+import java.util.Map;
 
 public class Wheel implements Listener {
     
-    public static HashMap<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
+    public static Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
     private static CrazyCrates cc = CrazyCrates.getInstance();
     
     public static void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
@@ -88,7 +88,6 @@ public class Wheel implements Listener {
                     if (full >= timer + 47) {
                         slow++;
                         if (slow >= 2) {
-                            Random r = new Random();
                             ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
                             for (int slot = 0; slot < 54; slot++) {
                                 if (!getBorder().contains(slot)) {
@@ -135,7 +134,7 @@ public class Wheel implements Listener {
         for (int i = 46; cut > 0; full--) {
             if (full <= i - cut || full >= i - cut) {
                 slow.add(i);
-                i = i - cut;
+                i -= cut;
                 cut--;
             }
         }

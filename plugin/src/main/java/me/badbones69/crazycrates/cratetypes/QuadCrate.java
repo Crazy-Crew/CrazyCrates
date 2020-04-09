@@ -106,9 +106,9 @@ public class QuadCrate implements Listener {
                     Vector v = player.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().setY(1);
                     if (player.isInsideVehicle()) {
                         player.getVehicle().setVelocity(v);
-                        break;
+                    } else {
+                        player.setVelocity(v);
                     }
-                    player.setVelocity(v);
                     break;
                 }
             }
@@ -125,22 +125,18 @@ public class QuadCrate implements Listener {
     @EventHandler
     public void onCMD(PlayerCommandPreprocessEvent e) {
         Player player = e.getPlayer();
-        if (QuadCrateSession.inSession(player)) {
-            if (!player.hasPermission("crazycrates.admin")) {
-                e.setCancelled(true);
-                player.sendMessage(Messages.NO_COMMANDS_WHILE_CRATE_OPENED.getMessage("%Player%", player.getName()));
-            }
+        if (QuadCrateSession.inSession(player) && !player.hasPermission("crazycrates.admin")) {
+            e.setCancelled(true);
+            player.sendMessage(Messages.NO_COMMANDS_WHILE_CRATE_OPENED.getMessage("%Player%", player.getName()));
         }
     }
     
     @EventHandler
     public void onTeleport(PlayerTeleportEvent e) {
         Player player = e.getPlayer();
-        if (QuadCrateSession.inSession(player)) {
-            if (e.getCause() == TeleportCause.ENDER_PEARL) {
-                e.setCancelled(true);
-                player.sendMessage(Messages.NO_TELEPORTING.getMessage("%Player%", player.getName()));
-            }
+        if (QuadCrateSession.inSession(player) && e.getCause() == TeleportCause.ENDER_PEARL) {
+            e.setCancelled(true);
+            player.sendMessage(Messages.NO_TELEPORTING.getMessage("%Player%", player.getName()));
         }
     }
     

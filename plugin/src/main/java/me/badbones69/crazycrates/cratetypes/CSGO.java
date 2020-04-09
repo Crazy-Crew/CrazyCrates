@@ -16,14 +16,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 public class CSGO implements Listener {
     
     private static CrazyCrates cc = CrazyCrates.getInstance();
     
     private static void setGlass(Inventory inv) {
-        Random r = new Random();
         HashMap<Integer, ItemStack> glass = new HashMap<>();
         for (int i = 0; i < 10; i++) {
             if (i < 9 && i != 3) {
@@ -143,7 +141,7 @@ public class CSGO implements Listener {
         for (int i = 120; cut > 0; full--) {
             if (full <= i - cut || full >= i - cut) {
                 slow.add(i);
-                i = i - cut;
+                i -= cut;
                 cut--;
             }
         }

@@ -25,19 +25,17 @@ public class CrateOnTheGo implements Listener {
             ItemStack item = cc.getNMSSupport().getItemInMainHand(player);
             if (item != null) {
                 for (Crate crate : cc.getCrates()) {
-                    if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
-                        if (Methods.isSimilar(item, crate)) {
-                            e.setCancelled(true);
-                            cc.addPlayerToOpeningList(player, crate);
-                            Methods.removeItem(item, player);
-                            Prize prize = crate.pickPrize(player);
-                            cc.givePrize(player, prize);
-                            Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, cc.getOpeningCrate(player).getName(), prize));
-                            if (prize.useFireworks()) {
-                                Methods.fireWork(player.getLocation().add(0, 1, 0));
-                            }
-                            cc.removePlayerFromOpeningList(player);
+                    if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO && Methods.isSimilar(item, crate)) {
+                        e.setCancelled(true);
+                        cc.addPlayerToOpeningList(player, crate);
+                        Methods.removeItem(item, player);
+                        Prize prize = crate.pickPrize(player);
+                        cc.givePrize(player, prize);
+                        Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, cc.getOpeningCrate(player).getName(), prize));
+                        if (prize.useFireworks()) {
+                            Methods.fireWork(player.getLocation().add(0, 1, 0));
                         }
+                        cc.removePlayerFromOpeningList(player);
                     }
                 }
             }

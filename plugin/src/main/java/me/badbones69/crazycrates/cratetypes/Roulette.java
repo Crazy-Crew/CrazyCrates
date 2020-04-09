@@ -14,14 +14,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Roulette implements Listener {
     
     private static CrazyCrates cc = CrazyCrates.getInstance();
     
     private static void setGlass(Inventory inv) {
-        Random r = new Random();
         for (int i = 0; i < 27; i++) {
             if (i != 13) {
                 ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
@@ -110,7 +108,7 @@ public class Roulette implements Listener {
         for (int i = 46; cut > 0; full--) {
             if (full <= i - cut || full >= i - cut) {
                 slow.add(i);
-                i = i - cut;
+                i -= cut;
                 cut--;
             }
         }
