@@ -4,9 +4,8 @@ import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.FileManager.Files;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.Map.Entry;
 
 public enum Messages {
     
@@ -121,17 +120,48 @@ public enum Messages {
         }
     }
     
+    public static String replacePlaceholders(String placeholder, String replacement, String message) {
+        HashMap<String, String> placeholders = new HashMap<>();
+        placeholders.put(placeholder, replacement);
+        return replacePlaceholders(placeholders, message);
+    }
+    
+    public static String replacePlaceholders(Map<String, String> placeholders, String message) {
+        for (Entry<String, String> placeholder : placeholders.entrySet()) {
+            message = message.replace(placeholder.getKey(), placeholder.getValue())
+            .replace(placeholder.getKey().toLowerCase(), placeholder.getValue());
+        }
+        return message;
+    }
+    
+    public static List<String> replacePlaceholders(String placeholder, String replacement, List<String> messageList) {
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put(placeholder, replacement);
+        return replacePlaceholders(placeholders, messageList);
+    }
+    
+    public static List<String> replacePlaceholders(Map<String, String> placeholders, List<String> messageList) {
+        List<String> newMessageList = new ArrayList<>();
+        for (String message : messageList) {
+            for (Entry<String, String> placeholder : placeholders.entrySet()) {
+                message = message.replace(placeholder.getKey(), placeholder.getValue())
+                .replace(placeholder.getKey().toLowerCase(), placeholder.getValue());
+            }
+        }
+        return newMessageList;
+    }
+    
     public String getMessage() {
         return getMessage(true);
     }
     
     public String getMessage(String placeholder, String replacement) {
-        HashMap<String, String> placeholders = new HashMap<>();
+        Map<String, String> placeholders = new HashMap<>();
         placeholders.put(placeholder, replacement);
         return getMessage(placeholders, true);
     }
     
-    public String getMessage(HashMap<String, String> placeholders) {
+    public String getMessage(Map<String, String> placeholders) {
         return getMessage(placeholders, true);
     }
     
@@ -140,12 +170,12 @@ public enum Messages {
     }
     
     public String getMessageNoPrefix(String placeholder, String replacement) {
-        HashMap<String, String> placeholders = new HashMap<>();
+        Map<String, String> placeholders = new HashMap<>();
         placeholders.put(placeholder, replacement);
         return getMessage(placeholders, false);
     }
     
-    public String getMessageNoPrefix(HashMap<String, String> placeholders) {
+    public String getMessageNoPrefix(Map<String, String> placeholders) {
         return getMessage(placeholders, false);
     }
     
@@ -153,7 +183,7 @@ public enum Messages {
         return getMessage(new HashMap<>(), prefix);
     }
     
-    private String getMessage(HashMap<String, String> placeholders, boolean prefix) {
+    private String getMessage(Map<String, String> placeholders, boolean prefix) {
         String message;
         boolean isList = isList();
         boolean exists = exists();
@@ -170,9 +200,9 @@ public enum Messages {
                 message = Methods.color(getDefaultMessage());
             }
         }
-        for (String placeholder : placeholders.keySet()) {
-            message = message.replaceAll(placeholder, placeholders.get(placeholder))
-            .replaceAll(placeholder.toLowerCase(), placeholders.get(placeholder));
+        for (Entry<String, String> placeholder : placeholders.entrySet()) {
+            message = message.replace(placeholder.getKey(), placeholder.getValue())
+            .replace(placeholder.getKey().toLowerCase(), placeholder.getValue());
         }
         if (isList) {//Don't want to add a prefix to a list of messages.
             return Methods.color(message);
