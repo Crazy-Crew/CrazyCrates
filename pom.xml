@@ -25,6 +25,7 @@
     <properties>
         <!--This is used to show the build number for jenkins.-->
         <build.number/>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <distributionManagement>
