@@ -4,7 +4,7 @@
 
     <groupId>me.badbones69</groupId>
     <artifactId>crazycrates-parent</artifactId>
-    <version>1.10.1</version>
+    <version>1.10.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>CrazyCrates</name>
 
@@ -26,6 +26,19 @@
         <!--This is used to show the build number for jenkins.-->
         <build.number/>
     </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <name>nexus releases</name>
+            <url>https://nexus.badbones69.com/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus</id>
+            <name>nexus snapshots</name>
+            <url>https://nexus.badbones69.com/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <build>
         <defaultGoal>clean package install</defaultGoal>
