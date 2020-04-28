@@ -19,6 +19,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryAction;
@@ -52,7 +53,10 @@ public class CrateControl implements Listener { //Crate Control
         }
     }
     
-    @EventHandler
+    //This must run as highest so it doesn't cause other plugins to check
+    //the items that were added to the players inventory and replaced the item in the player's hand.
+    //This is only an issue with QuickCrate
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         FileConfiguration config = Files.CONFIG.getFile();
