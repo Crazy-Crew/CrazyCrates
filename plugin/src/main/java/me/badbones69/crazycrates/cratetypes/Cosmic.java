@@ -52,10 +52,10 @@ public class Cosmic implements Listener {
     
     private static void setChests(Inventory inv, Crate crate) {
         CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
-        int amount = 1;
+        int slot = 1;
         for (int i = 0; i < 27; i++) {
-            inv.setItem(i, manager.getMysteryCrate().setAmount(amount).build());
-            amount++;
+            inv.setItem(i, manager.getMysteryCrate().setAmount(slot).addNamePlaceholder("%Slot%", slot + "").addLorePlaceholder("%Slot%", slot + "").build());
+            slot++;
         }
     }
     
