@@ -77,7 +77,7 @@ public class CrateControl implements Listener { //Crate Control
                     if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) {
                         e.setCancelled(true);
                         cc.removeCrateLocation(loc.getID());
-                        player.sendMessage(Methods.color(Methods.getPrefix() + "&7You have just removed &6" + loc.getID() + "&7."));
+                        player.sendMessage(Messages.REMOVED_PHYSICAL_CRATE.getMessage("%ID%", loc.getID()));
                         return;
                     }
                     e.setCancelled(true);

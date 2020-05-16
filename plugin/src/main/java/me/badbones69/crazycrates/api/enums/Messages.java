@@ -41,6 +41,7 @@ public enum Messages {
     NO_ITEM_IN_HAND("No-Item-In-Hand", "&cYou need to have an item in your hand to add it to the crate."),
     ADDED_ITEM_WITH_EDITOR("Added-Item-With-Editor", "&7The item has been added to the %crate% crate in prize #%prize%."),
     CREATED_PHYSICAL_CRATE("Created-Physical-Crate", Arrays.asList("%prefix%&7You have just set that block to %crate%.", "&7To remove the crate shift break in creative to remove.")),
+    REMOVED_PHYSICAL_CRATE("Removed-Physical-Crate", "%prefix% &7You have just removed &6%id%&7."),
     PERSONAL_NO_VIRTUAL_KEYS("Keys.Personal.No-Virtual-Keys", "&8&l(&4&l!&8&l) &7You currently do not have any virtual keys."),
     PERSONAL_HEADER("Keys.Personal.Header", Arrays.asList("&8&l(&6&l!&8&l) &7List of your current amount of keys.")),
     OTHER_PLAYER_NO_VIRTUAL_KEYS("Keys.Other-Player.No-Virtual-Keys", "&8&l(&4&l!&8&l) &7The player %player% does not have any keys.."),

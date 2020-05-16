@@ -47,6 +47,7 @@ Messages:
   Created-Physical-Crate:
     - '%prefix%&7You have just set that block to %crate%.'
     - '&7To remove the crate shift break in creative to remove.'
+  Removed-Physical-Crate: '&7You have just removed &6%id%&7.'
   Keys:
     Personal:
       No-Virtual-Keys: '&8&l(&4&l!&8&l) &7You currently do not have any virtual keys.'
