@@ -8,6 +8,8 @@ import me.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import me.badbones69.crazycrates.api.managers.CrateManager;
 import me.badbones69.crazycrates.controllers.Preview;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
+import sun.misc.Regexp;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -173,7 +175,11 @@ public class Crate {
             }
         }
         try {
-            return prizes.get(new Random().nextInt(prizes.size()));
+            Prize prize = prizes.get(new Random().nextInt(prizes.size()));
+            if (!prize.hasAllowMultiple() && CrazyCrates.getInstance().getPermission() != null) {
+                CrazyCrates.getInstance().getPermission().playerAdd(player, "crazycrates.blacklist." + prize.getName());
+            }
+            return prize;
         } catch (IllegalArgumentException e) {
             System.out.println("[CrazyCrates] failed to find prize from the " + name + " crate for player " + player.getName() + ".");
             return null;

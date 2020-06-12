@@ -39,6 +39,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
+
+import net.milkbowl.vault.permission.Permission;
 import v1_15_R1.NMS_v1_15_R1;
 
 import java.io.File;
@@ -56,6 +58,10 @@ public class CrazyCrates {
      * The instance of this class.
      */
     private static CrazyCrates instance = new CrazyCrates();
+    /**
+     * The permission bridge supplied by Vault
+     */
+    private Permission permission = null;
     /**
      * All the crates that have been loaded.
      */
@@ -250,6 +256,7 @@ public class CrazyCrates {
                             editorItems.add((ItemStack) list);
                         }
                     }
+                    boolean allowMultiple = file.getBoolean(path + ".AllowMultiple", true);
                     prizes.add(new Prize(prize, getDisplayItem(file, prize),
                     file.getStringList(path + ".Messages"),
                     file.getStringList(path + ".Commands"),
@@ -261,7 +268,8 @@ public class CrazyCrates {
                     file.getBoolean(path + ".Firework"),
                     file.getStringList(path + ".BlackListed-Permissions"),
                     prizeTiers,
-                    altPrize));
+                    altPrize,
+                    allowMultiple));
                 }
                 int newPlayersKeys = file.getInt("Crate.StartingKeys");
                 if (giveNewPlayersKeys = false) {
@@ -341,7 +349,22 @@ public class CrazyCrates {
         cleanDataFile();
         Preview.loadButtons();
     }
-    
+
+    /**
+     * Gets the Vault Permission bridge
+     * @return Permission bridge provided by Vault
+     */
+    public Permission getPermission() {
+        return permission;
+    }
+
+    /**
+     * Sets the Vault permission bridge
+     * @param permission The Vault permission bridge
+     */
+    public void setPermission(Permission permission) {
+        this.permission = permission;
+    }
     /**
      * If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
      * @return True if the player will get a virtual key and false if it drops on the floor.
@@ -802,6 +825,9 @@ public class CrazyCrates {
                 }
                 player.sendMessage(Methods.color(message).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())
                 .replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
+            }
+            if (!prize.hasAllowMultiple()) {
+                // TODO add permission
             }
         } else {
             Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> No prize was found when giving " + player.getName() + " a prize.");
