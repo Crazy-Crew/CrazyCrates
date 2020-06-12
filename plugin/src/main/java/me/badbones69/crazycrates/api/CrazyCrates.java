@@ -1007,6 +1007,7 @@ public class CrazyCrates {
             }
         } else {
             items.addAll(Arrays.asList(player.getInventory().getContents()));
+            items.removeAll(Arrays.asList(player.getInventory().getArmorContents()));
         }
         for (ItemStack item : items) {
             if (item != null) {
