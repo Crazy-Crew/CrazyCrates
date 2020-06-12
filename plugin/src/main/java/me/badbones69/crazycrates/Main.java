@@ -1,5 +1,7 @@
 package me.badbones69.crazycrates;
 
+import java.util.logging.Level;
+
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.FileManager;
 import me.badbones69.crazycrates.api.FileManager.Files;
@@ -11,12 +13,15 @@ import me.badbones69.crazycrates.commands.KeyTab;
 import me.badbones69.crazycrates.controllers.*;
 import me.badbones69.crazycrates.cratetypes.*;
 import me.badbones69.crazycrates.multisupport.*;
+import net.milkbowl.vault.permission.Permission;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -109,6 +114,17 @@ public class Main extends JavaPlugin implements Listener {
         getCommand("key").setTabCompleter(new KeyTab());
         getCommand("crazycrates").setExecutor(new CCCommand());
         getCommand("crazycrates").setTabCompleter(new CCTab());
+        setupPermissions();
+    }
+
+    private void setupPermissions() {
+        RegisteredServiceProvider<Permission> permissionProvider =
+                getServer().getServicesManager().getRegistration(Permission.class);
+        if (permissionProvider != null) {
+            cc.setPermission(permissionProvider.getProvider());
+            getLogger().log(Level.INFO, "{0} has connected with permission plugin: {1}",
+                    new String[]{ getName(), cc.getPermission().getName() });
+        }
     }
     
     @Override

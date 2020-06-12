@@ -59,6 +59,7 @@ Crate:
   #All the prizes that can be gotten in the Crate.
   Prizes:
     1:
+      AllowMultiple: false
       #Name of the item shown by the crate.
       DisplayName: '&7&lBasic Grass'
       #Item that is shown by the crate.

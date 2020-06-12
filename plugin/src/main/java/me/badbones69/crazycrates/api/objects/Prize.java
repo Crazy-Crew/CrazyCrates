@@ -1,5 +1,6 @@
 package me.badbones69.crazycrates.api.objects;
 
+import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,6 +16,7 @@ public class Prize {
     private int maxRange;
     private boolean firework;
     private ItemStack displayItemStack;
+    private boolean allowMultiple;
     private ItemBuilder displayItem;
     private List<Tier> tiers;
     private List<String> messages;
@@ -45,7 +47,11 @@ public class Prize {
         this.commands = commands != null ? commands : new ArrayList<>();
         this.displayItem = new ItemBuilder();
         this.blackListPermissions = new ArrayList<>();
+        if (name != null) {
+            this.blackListPermissions.add("crazycrates.blacklist." + name);
+        }
         this.altPrize = null;
+        this.allowMultiple = true;
     }
     
     /**
@@ -65,7 +71,7 @@ public class Prize {
      */
     public Prize(String name, ItemBuilder displayItem, List<String> messages, List<String> commands,
     List<ItemStack> items, List<ItemBuilder> itemBuilders, String crate, int chance, int maxRange, boolean firework, List<String> blackListPermissions,
-    List<Tier> tiers, Prize altPrize) {
+    List<Tier> tiers, Prize altPrize, boolean allowMultiple) {
         this.name = name != null ? name : "&4No name Found!";
         this.crate = crate;
         this.items = items != null ? items : new ArrayList<>();
@@ -79,7 +85,11 @@ public class Prize {
         this.displayItem = displayItem != null ? displayItem : new ItemBuilder();
         this.blackListPermissions = blackListPermissions != null ? blackListPermissions : new ArrayList<>();
         this.blackListPermissions.replaceAll(String :: toLowerCase);
+        if (name != null) {
+            this.blackListPermissions.add("crazycrates.blacklist." + name);
+        }
         this.altPrize = altPrize;
+        this.allowMultiple = allowMultiple;
     }
     
     /**
@@ -164,6 +174,13 @@ public class Prize {
     public int getMaxRange() {
         return maxRange;
     }
+
+    /**
+     * @return Returns the whether or not a player can get multiples of this prize.
+     */
+    public boolean hasAllowMultiple() {
+        return allowMultiple;
+    }
     
     /**
      * @return Returns true if a firework explosion is played and false if not.
@@ -199,12 +216,24 @@ public class Prize {
     public boolean hasBlacklistPermission(Player player) {
         if (!player.isOp()) {
             for (String blackListPermission : blackListPermissions) {
-                if (player.hasPermission(blackListPermission)) {
+                if ((CrazyCrates.getInstance().getPermission() != null &&
+                        CrazyCrates.getInstance().getPermission().has(player, blackListPermission)) ||
+                        player.hasPermission(blackListPermission)) {
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    /**
+     * If the prize does not allow multiple, then give them the default blacklist permission
+     * @param player Player receiving the prize
+     */
+    public void giveBlacklistPermissionIfNotAllowMultiple(Player player) {
+        if (!allowMultiple && CrazyCrates.getInstance().getPermission() != null) {
+            CrazyCrates.getInstance().getPermission().playerAdd(player, "crazycrates.blacklist." + name);
+        }
     }
     
 }

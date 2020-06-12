@@ -32,6 +32,10 @@
             <id>codemc-nms</id>
             <url>https://repo.codemc.io/repository/nms/</url>
         </repository>
+        <repository>
+            <id>ender-zone</id> <!-- Vault Repo -->
+            <url>https://ci.ender.zone/plugin/repository/everything</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -160,6 +164,12 @@
                     <artifactId>MVdWUpdater</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
