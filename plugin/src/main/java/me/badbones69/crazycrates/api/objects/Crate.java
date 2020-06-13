@@ -175,7 +175,11 @@ public class Crate {
             }
         }
         try {
-            return prizes.get(new Random().nextInt(prizes.size()));
+            Prize prize = prizes.get(new Random().nextInt(prizes.size()));
+            if (!prize.hasAllowMultiple() && CrazyCrates.getInstance().getPermission() != null) {
+                CrazyCrates.getInstance().getPermission().playerAdd(player, "crazycrates.blacklist." + prize.getName());
+            }
+            return prize;
         } catch (IllegalArgumentException e) {
             System.out.println("[CrazyCrates] failed to find prize from the " + name + " crate for player " + player.getName() + ".");
             return null;
