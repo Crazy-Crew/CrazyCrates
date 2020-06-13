@@ -827,9 +827,6 @@ public class CrazyCrates {
                 player.sendMessage(Methods.color(message).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())
                 .replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
             }
-            if (!prize.hasAllowMultiple()) {
-                // TODO add permission
-            }
         } else {
             Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> No prize was found when giving " + player.getName() + " a prize.");
         }
