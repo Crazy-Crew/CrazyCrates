@@ -35,6 +35,14 @@
     </repositories>
 
     <dependencies>
+         <dependency>
+            <groupId>me.badbones69</groupId>
+            <artifactId>crazycrates-v1_16_R1</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_15_R1</artifactId>
