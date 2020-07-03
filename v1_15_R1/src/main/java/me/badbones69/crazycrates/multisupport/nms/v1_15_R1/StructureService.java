@@ -1,4 +1,4 @@
-package v1_15_R1;
+package me.badbones69.crazycrates.multisupport.nms.v1_15_R1;
 
 import net.minecraft.server.v1_15_R1.*;
 import org.bukkit.Location;

@@ -1,14 +1,14 @@
-package v1_15_R1;
+package me.badbones69.crazycrates.multisupport.nms.v1_16_R1;
 
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
-import net.minecraft.server.v1_15_R1.BlockPosition;
-import net.minecraft.server.v1_15_R1.TileEntityChest;
-import net.minecraft.server.v1_15_R1.TileEntityEnderChest;
-import net.minecraft.server.v1_15_R1.World;
+import net.minecraft.server.v1_16_R1.BlockPosition;
+import net.minecraft.server.v1_16_R1.TileEntityChest;
+import net.minecraft.server.v1_16_R1.TileEntityEnderChest;
+import net.minecraft.server.v1_16_R1.World;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R1.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NMS_v1_15_R1 implements NMSSupport {
+public class NMS_v1_16_R1 implements NMSSupport {
     
     @Override
     public void openChest(Block block, boolean open) {

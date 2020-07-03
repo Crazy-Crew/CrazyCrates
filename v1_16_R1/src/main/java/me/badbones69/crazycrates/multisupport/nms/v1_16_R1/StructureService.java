@@ -1,4 +1,4 @@
-package v1_16_R1;
+package me.badbones69.crazycrates.multisupport.nms.v1_16_R1;
 
 import net.minecraft.server.v1_16_R1.*;
 import org.bukkit.Location;
@@ -18,7 +18,9 @@ import java.util.Random;
  * @version 2.4
  */
 public class StructureService {
+    
     public static Random random = new Random();
+    
     /**
      * A comfort method for all lazy guys. Automatically switches to structure arrays, when using an area larger than 32x32x32
      * @param corners - 2 opposite edges (order doesn't matter)

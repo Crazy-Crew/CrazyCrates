@@ -25,6 +25,8 @@ import me.badbones69.crazycrates.multisupport.nms.v1_11_R1.NMS_v1_11_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_12_R1.NMS_v1_12_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_13_R2.NMS_v1_13_R2;
 import me.badbones69.crazycrates.multisupport.nms.v1_14_R1.NMS_v1_14_R1;
+import me.badbones69.crazycrates.multisupport.nms.v1_15_R1.NMS_v1_15_R1;
+import me.badbones69.crazycrates.multisupport.nms.v1_16_R1.NMS_v1_16_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_8_R3.NMS_v1_8_R3;
 import me.badbones69.crazycrates.multisupport.nms.v1_9_R1.NMS_v1_9_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_9_R2.NMS_v1_9_R2;
@@ -39,8 +41,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
-import v1_15_R1.NMS_v1_15_R1;
-import v1_16_R1.NMS_v1_16_R1;
 
 import java.io.File;
 import java.util.*;
