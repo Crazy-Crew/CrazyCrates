@@ -1,5 +1,6 @@
 package me.badbones69.crazycrates.api;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.enums.BrokeLocation;
@@ -18,7 +19,6 @@ import me.badbones69.crazycrates.multisupport.HologramsSupport;
 import me.badbones69.crazycrates.multisupport.HolographicSupport;
 import me.badbones69.crazycrates.multisupport.Support;
 import me.badbones69.crazycrates.multisupport.Version;
-import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
 import me.badbones69.crazycrates.multisupport.nms.v1_10_R1.NMS_v1_10_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_11_R1.NMS_v1_11_R1;
