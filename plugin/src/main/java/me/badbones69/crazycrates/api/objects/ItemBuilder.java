@@ -1,10 +1,10 @@
 package me.badbones69.crazycrates.api.objects;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.multisupport.SkullCreator;
 import me.badbones69.crazycrates.multisupport.Version;
-import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;

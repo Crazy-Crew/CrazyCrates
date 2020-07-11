@@ -37,6 +37,14 @@
     <dependencies>
         <dependency>
             <groupId>me.badbones69</groupId>
+            <artifactId>crazycrates-v1_16_R1</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_15_R1</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
@@ -118,8 +126,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.tr7zw</groupId>
+            <artifactId>item-nbt-api</artifactId>
+            <version>2.4.1</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
@@ -189,6 +203,12 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>de.tr7zw.changeme.nbtapi</pattern>
+                            <shadedPattern>me.badbones69.crazycrates.nbtapi</shadedPattern>
+                        </relocation>
+                    </relocations>
                     <!--                    <outputFile>/Users/badbones/Desktop/Minecraft/Server/plugins/CrazyCrates[v${project.version}].jar</outputFile>-->
                 </configuration>
                 <executions>

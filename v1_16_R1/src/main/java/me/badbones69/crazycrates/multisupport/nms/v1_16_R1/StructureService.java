@@ -1,9 +1,9 @@
-package v1_15_R1;
+package me.badbones69.crazycrates.multisupport.nms.v1_16_R1;
 
-import net.minecraft.server.v1_15_R1.*;
+import net.minecraft.server.v1_16_R1.*;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R1.CraftWorld;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -18,6 +18,8 @@ import java.util.Random;
  * @version 2.4
  */
 public class StructureService {
+    
+    public static Random random = new Random();
     
     /**
      * A comfort method for all lazy guys. Automatically switches to structure arrays, when using an area larger than 32x32x32
@@ -180,7 +182,7 @@ public class StructureService {
         Method parseAndConvert = DefinedStructureManager.class.getDeclaredMethod("a", InputStream.class);
         parseAndConvert.setAccessible(true);
         // 1.13 WorldServer#C, 1.13.1 WorldServer#D
-        return (DefinedStructure) parseAndConvert.invoke(((CraftWorld) world).getHandle().r(), new FileInputStream(source));
+        return (DefinedStructure) parseAndConvert.invoke(((CraftWorld) world).getHandle().r_(), new FileInputStream(source));
     }
     
     /**
@@ -214,7 +216,7 @@ public class StructureService {
         WorldServer world = ((CraftWorld) startEdge.getWorld()).getHandle();
         DefinedStructureInfo structInfo = new DefinedStructureInfo().a(EnumBlockMirror.NONE).a(rotation).a(false).a((ChunkCoordIntPair) null).c(false).a(new Random());
         BlockPosition blockPosition = new BlockPosition(startEdge.getBlockX(), startEdge.getBlockY(), startEdge.getBlockZ());
-        structure.a(world, blockPosition, structInfo);
+        structure.a(world, blockPosition, structInfo, random);
     }
     
     public static List<Location> getSingleStructureLocations(File source, Location startEdge) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, IOException {
@@ -264,7 +266,7 @@ public class StructureService {
                 Method parseAndConvert = DefinedStructureManager.class.getDeclaredMethod("a", InputStream.class);
                 parseAndConvert.setAccessible(true);
                 // 1.13 WorldServer#C, 1.13.1 WorldServer#D
-                DefinedStructure structure = (DefinedStructure) parseAndConvert.invoke(((CraftWorld) world).getHandle().r(), new FileInputStream(file));
+                DefinedStructure structure = (DefinedStructure) parseAndConvert.invoke(((CraftWorld) world).getHandle().r_(), new FileInputStream(file));
                 String suffix = file.getName().split("_")[file.getName().split("_").length - 1];
                 suffix = suffix.substring(0, suffix.length() - 4);
                 structures[Integer.parseInt(suffix)] = structure;
@@ -318,7 +320,7 @@ public class StructureService {
             for (int y = 0; y < areas[1]; y++) {
                 for (int z = 0; z < areas[2]; z++) {
                     DefinedStructureInfo structInfo = new DefinedStructureInfo().a(EnumBlockMirror.NONE).a(rotation).a(false).a((ChunkCoordIntPair) null).c(false).a(new Random());
-                    structures[StructureService.getYzxIndex(x, y, z, areas[0], areas[2])].a(world, new BlockPosition((x * 32) + startEdge.getBlockX(), (y * 32) + startEdge.getBlockY(), (z * 32) + startEdge.getBlockZ()), structInfo);
+                    structures[StructureService.getYzxIndex(x, y, z, areas[0], areas[2])].a(world, new BlockPosition((x * 32) + startEdge.getBlockX(), (y * 32) + startEdge.getBlockY(), (z * 32) + startEdge.getBlockZ()), structInfo, random);
                 }
             }
         }

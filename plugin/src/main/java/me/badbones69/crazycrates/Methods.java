@@ -1,5 +1,6 @@
 package me.badbones69.crazycrates;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.enums.Messages;
@@ -7,7 +8,6 @@ import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FireworkDamageEvent;
 import me.badbones69.crazycrates.multisupport.Version;
-import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
