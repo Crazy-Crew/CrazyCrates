@@ -1,7 +1,7 @@
 package me.badbones69.crazycrates.api.objects;
 
 import me.badbones69.crazycrates.api.CrazyCrates;
-import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -181,7 +181,7 @@ public class Prize {
     public boolean hasAllowMultiple() {
         return allowMultiple;
     }
-    
+
     /**
      * @return Returns true if a firework explosion is played and false if not.
      */
@@ -235,5 +235,5 @@ public class Prize {
             CrazyCrates.getInstance().getPermission().playerAdd(player, "crazycrates.blacklist." + name);
         }
     }
-    
+
 }

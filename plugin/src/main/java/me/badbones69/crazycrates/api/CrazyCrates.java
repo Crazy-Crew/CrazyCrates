@@ -1,5 +1,6 @@
 package me.badbones69.crazycrates.api;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.enums.BrokeLocation;
@@ -18,13 +19,14 @@ import me.badbones69.crazycrates.multisupport.HologramsSupport;
 import me.badbones69.crazycrates.multisupport.HolographicSupport;
 import me.badbones69.crazycrates.multisupport.Support;
 import me.badbones69.crazycrates.multisupport.Version;
-import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
 import me.badbones69.crazycrates.multisupport.nms.v1_10_R1.NMS_v1_10_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_11_R1.NMS_v1_11_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_12_R1.NMS_v1_12_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_13_R2.NMS_v1_13_R2;
 import me.badbones69.crazycrates.multisupport.nms.v1_14_R1.NMS_v1_14_R1;
+import me.badbones69.crazycrates.multisupport.nms.v1_15_R1.NMS_v1_15_R1;
+import me.badbones69.crazycrates.multisupport.nms.v1_16_R1.NMS_v1_16_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_8_R3.NMS_v1_8_R3;
 import me.badbones69.crazycrates.multisupport.nms.v1_9_R1.NMS_v1_9_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_9_R2.NMS_v1_9_R2;
@@ -41,7 +43,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import net.milkbowl.vault.permission.Permission;
-import v1_15_R1.NMS_v1_15_R1;
 
 import java.io.File;
 import java.util.*;
@@ -202,6 +203,9 @@ public class CrazyCrates {
                 break;
             case v1_15_R1:
                 nmsSupport = new NMS_v1_15_R1();
+                break;
+            case v1_16_R1:
+                nmsSupport = new NMS_v1_16_R1();
                 break;
         }
         plugin = Bukkit.getPluginManager().getPlugin("CrazyCrates");

@@ -1,5 +1,6 @@
 package me.badbones69.crazycrates.api.objects;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.FileManager;
@@ -7,8 +8,6 @@ import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import me.badbones69.crazycrates.api.managers.CrateManager;
 import me.badbones69.crazycrates.controllers.Preview;
-import me.badbones69.crazycrates.multisupport.itemnbtapi.NBTItem;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
