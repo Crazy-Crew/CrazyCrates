@@ -73,7 +73,7 @@ public class Roulette implements Listener {
                         player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
                     }
                     time++;
-                    if (time >= 23) {
+                    if (time >= 17) {
                         player.playSound(player.getLocation(), cc.getSound("ENTITY_PLAYER_LEVELUP", "LEVEL_UP"), 1, 1);
                         cc.endCrate(player);
                         Prize prize = crate.getPrize(inv.getItem(13));
