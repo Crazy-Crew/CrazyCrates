@@ -132,7 +132,7 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
-            <version>2.4.2-SNAPSHOT</version>
+            <version>2.4.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -203,6 +203,12 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>de.tr7zw.changeme.nbtapi</pattern>
+                            <shadedPattern>me.badbones69.crazycrates.nbtapi</shadedPattern>
+                        </relocation>
+                    </relocations>
                     <!--                    <outputFile>/Users/badbones/Desktop/Minecraft/Server/plugins/CrazyCrates[v${project.version}].jar</outputFile>-->
                 </configuration>
                 <executions>

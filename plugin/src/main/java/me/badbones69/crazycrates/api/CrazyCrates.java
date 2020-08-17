@@ -1355,8 +1355,10 @@ public class CrazyCrates {
      */
     public boolean isDisplayReward(Entity entity) {
         if (entity instanceof Item) {
-            NBTItem item = new NBTItem(((Item) entity).getItemStack());
-            return item.hasKey("crazycrates-item");
+            ItemStack item = ((Item) entity).getItemStack();
+            if (item.getType() != Material.AIR) {
+                return new NBTItem(item).hasKey("crazycrates-item");
+            }
         }
         return false;
     }
