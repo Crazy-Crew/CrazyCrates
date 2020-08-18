@@ -1256,7 +1256,7 @@ public class CrazyCrates {
             return;
         }
         String uuid = player.getUniqueId().toString();
-        if (player.hasPlayedBefore()) {
+        if (!player.hasPlayedBefore()) {
             crates.stream()
                 .filter(Crate::doNewPlayersGetKeys)
                 .forEach(crate -> FileManager.Files.DATA.getFile().set("Players." + uuid + "." + crate, crate.getNewPlayerKeys()));
