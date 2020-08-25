@@ -21,6 +21,7 @@
         <module>v1_16_R1</module>
         <module>plugin</module>
         <module>api</module>
+        <module>v1_16_R2</module>
     </modules>
 
     <properties>
