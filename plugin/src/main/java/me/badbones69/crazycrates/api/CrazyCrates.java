@@ -1257,13 +1257,10 @@ public class CrazyCrates {
     public void setNewPlayerKeys(Player player) {
         if (giveNewPlayersKeys) {// Checks if any crate gives new players keys and if not then no need to do all this stuff.
             String uuid = player.getUniqueId().toString();
-            if (player.hasPlayedBefore()) {
-                for (Crate crate : getCrates()) {
-                    if (crate.doNewPlayersGetKeys()) {
-                        Files.DATA.getFile().set("Players." + uuid + "." + crate, crate.getNewPlayerKeys());
-                    }
-                }
-                Files.DATA.saveFile();
+            if (!player.hasPlayedBefore()) {
+                crates.stream()
+                        .filter(Crate::doNewPlayersGetKeys)
+                        .forEach(crate -> Files.DATA.getFile().set("Player." + uuid + "." + crate, crate.getNewPlayerKeys()));
             }
         }
     }
@@ -1414,7 +1411,7 @@ public class CrazyCrates {
         max++;
         try {
             // new Random() does not have a nextLong(long bound) method.
-            return ThreadLocalRandom.current().nextLong(max - min);
+            return min + ThreadLocalRandom.current().nextLong(max - min);
         } catch (IllegalArgumentException e) {
             return min;
         }
