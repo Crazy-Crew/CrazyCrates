@@ -53,58 +53,58 @@ public class CrazyCrates {
     /**
      * FileManager object.
      */
-    private static FileManager fileManager = FileManager.getInstance();
+    private static final FileManager fileManager = FileManager.getInstance();
     /**
      * The instance of this class.
      */
-    private static CrazyCrates instance = new CrazyCrates();
+    private static final CrazyCrates instance = new CrazyCrates();
     /**
      * All the crates that have been loaded.
      */
-    private ArrayList<Crate> crates = new ArrayList<>();
+    private final ArrayList<Crate> crates = new ArrayList<>();
     /**
      * A list of all the physical crate locations.
      */
-    private ArrayList<CrateLocation> crateLocations = new ArrayList<>();
+    private final ArrayList<CrateLocation> crateLocations = new ArrayList<>();
     /**
      * List of all the broken crates.
      */
-    private ArrayList<String> brokecrates = new ArrayList<>();
-    
+    private final ArrayList<String> brokecrates = new ArrayList<>();
+
     /**
      * List of broken physical crate locations.
      */
-    private List<BrokeLocation> brokeLocations = new ArrayList<>();
-    
+    private final List<BrokeLocation> brokeLocations = new ArrayList<>();
+
     /**
      * The crate that the player is opening.
      */
-    private HashMap<UUID, Crate> playerOpeningCrates = new HashMap<>();
-    
+    private final HashMap<UUID, Crate> playerOpeningCrates = new HashMap<>();
+
     /**
      * Keys that are being used in crates. Only needed in cosmic due to it taking the key after the player picks a prize and not in a start method.
      */
-    private HashMap<UUID, KeyType> playerKeys = new HashMap<>();
-    
+    private final HashMap<UUID, KeyType> playerKeys = new HashMap<>();
+
     /**
      * A list of all current crate tasks that are running that a time. Used to force stop any crates it needs to.
      */
-    private HashMap<UUID, BukkitTask> currentTasks = new HashMap<>();
-    
+    private final HashMap<UUID, BukkitTask> currentTasks = new HashMap<>();
+
     /**
      * A list of tasks being ran by the QuadCrate type.
      */
-    private HashMap<UUID, ArrayList<BukkitTask>> currentQuadTasks = new HashMap<>();
+    private final HashMap<UUID, ArrayList<BukkitTask>> currentQuadTasks = new HashMap<>();
     
     /**
      * The time in seconds a quadcrate can go until afk kicks them from it.
      */
     private Integer quadCrateTimer;
-    
+
     /**
      * A list of current crate schematics for Quad Crate.
      */
-    private List<CrateSchematic> crateSchematics = new ArrayList<>();
+    private final List<CrateSchematic> crateSchematics = new ArrayList<>();
     
     /**
      * If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
@@ -132,11 +132,11 @@ public class CrazyCrates {
      * The hologram api that is being hooked into.
      */
     private HologramController hologramController;
-    
+
     /**
      * Schematic locations for 1.13+
      */
-    private HashMap<UUID, Location[]> schemLocations = new HashMap<>();
+    private final HashMap<UUID, Location[]> schemLocations = new HashMap<>();
     
     /**
      * The CrazyCrates plugin.
