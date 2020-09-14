@@ -219,10 +219,10 @@ public class CCCommand implements CommandExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("list")) {
                 if (!Methods.permCheck(sender, "admin")) return true;
-                String crates = "";
+                StringBuilder crates = new StringBuilder();
                 String brokecrates;
                 for (Crate crate : cc.getCrates()) {
-                    crates += "&a" + crate.getName() + "&8, ";
+                    crates.append("&a").append(crate.getName()).append("&8, ");
                 }
                 StringBuilder brokecratesBuilder = new StringBuilder();
                 for (String crate : cc.getBrokeCrates()) {

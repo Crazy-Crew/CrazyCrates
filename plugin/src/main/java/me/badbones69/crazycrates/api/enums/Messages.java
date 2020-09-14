@@ -96,11 +96,11 @@ public enum Messages {
     }
     
     public static String convertList(List<String> list) {
-        String message = "";
+        StringBuilder message = new StringBuilder();
         for (String line : list) {
-            message += Methods.color(line) + "\n";
+            message.append(Methods.color(line)).append("\n");
         }
-        return message;
+        return message.toString();
     }
     
     public static void addMissingMessages() {
