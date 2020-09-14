@@ -11,13 +11,14 @@ import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class HologramsSupport implements HologramController {
-    
-    private static HashMap<Block, Hologram> holograms = new HashMap<>();
-    private static HologramManager hologramManager = JavaPlugin.getPlugin(HologramPlugin.class).getHologramManager();
-    
+
+    private static final HashMap<Block, Hologram> holograms = new HashMap<>();
+    private static final HologramManager hologramManager = JavaPlugin.getPlugin(HologramPlugin.class).getHologramManager();
+
     public void createHologram(Block block, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();
         if (crateHologram.isEnabled()) {
@@ -42,8 +43,8 @@ public class HologramsSupport implements HologramController {
     }
     
     public void removeAllHolograms() {
-        for (Block location : holograms.keySet()) {
-            Hologram hologram = holograms.get(location);
+        for (Map.Entry<Block, Hologram> location : holograms.entrySet()) {
+            Hologram hologram = location.getValue();
             hologramManager.deleteHologram(hologram);
         }
         holograms.clear();
