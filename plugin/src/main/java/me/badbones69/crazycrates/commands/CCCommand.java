@@ -33,10 +33,10 @@ import java.io.File;
 import java.util.HashMap;
 
 public class CCCommand implements CommandExecutor {
-    
-    private FileManager fileManager = FileManager.getInstance();
-    private CrazyCrates cc = CrazyCrates.getInstance();
-    
+
+    private final FileManager fileManager = FileManager.getInstance();
+    private final CrazyCrates cc = CrazyCrates.getInstance();
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args) {
         if (args.length == 0) {
@@ -220,13 +220,15 @@ public class CCCommand implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("list")) {
                 if (!Methods.permCheck(sender, "admin")) return true;
                 String crates = "";
-                String brokecrates = "";
+                String brokecrates;
                 for (Crate crate : cc.getCrates()) {
                     crates += "&a" + crate.getName() + "&8, ";
                 }
+                StringBuilder brokecratesBuilder = new StringBuilder();
                 for (String crate : cc.getBrokeCrates()) {
-                    brokecrates += "&c" + crate + ".yml&8, ";
+                    brokecratesBuilder.append("&c").append(crate).append(".yml&8, ");
                 }
+                brokecrates = brokecratesBuilder.toString();
                 sender.sendMessage(Methods.color("&e&lCrates:&f " + crates));
                 if (brokecrates.length() > 0) {
                     sender.sendMessage(Methods.color("&6&lBroken Crates:&f " + brokecrates.substring(0, brokecrates.length() - 2)));

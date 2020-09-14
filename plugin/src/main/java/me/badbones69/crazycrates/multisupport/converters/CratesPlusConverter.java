@@ -161,16 +161,20 @@ public class CratesPlusConverter {
                 (displayItem.getName().isEmpty() || displayItem.getName().equalsIgnoreCase("none") ? "" : "Name:" + displayItem.getName() + ", ");
                 if (!displayItem.getLore().isEmpty()) {
                     item += "Lore:";
+                    StringBuilder itemBuilder = new StringBuilder(item);
                     for (String lore : displayItem.getLore()) {
-                        item += lore + ",";
+                        itemBuilder.append(lore).append(",");
                     }
+                    item = itemBuilder.toString();
                     item = item.substring(0, item.length() - 1) + ", ";
                     
                 }
                 if (!convertedPrize.getDisplayEnchantments().isEmpty()) {
+                    StringBuilder itemBuilder = new StringBuilder(item);
                     for (String enchantment : convertedPrize.getDisplayEnchantments()) {
-                        item += enchantment + ", ";
+                        itemBuilder.append(enchantment).append(", ");
                     }
+                    item = itemBuilder.toString();
                 }
                 item = item.substring(0, item.length() - 2);
                 convertedPrize.addItem(item);

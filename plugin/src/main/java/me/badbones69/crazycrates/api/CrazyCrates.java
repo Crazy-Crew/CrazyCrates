@@ -780,23 +780,24 @@ public class CrazyCrates {
             for (String command : prize.getCommands()) {// /give %player% iron %random%:1-64
                 if (command.contains("%random%:")) {
                     String cmd = command;
-                    command = "";
+                    StringBuilder commandBuilder = new StringBuilder();
                     for (String word : cmd.split(" ")) {
                         if (word.startsWith("%random%:")) {
                             word = word.replace("%random%:", "");
                             try {
                                 long min = Long.parseLong(word.split("-")[0]);
                                 long max = Long.parseLong(word.split("-")[1]);
-                                command += pickNumber(min, max) + " ";
+                                commandBuilder.append(pickNumber(min, max)).append(" ");
                             } catch (Exception e) {
-                                command += "1 ";
+                                commandBuilder.append("1 ");
                                 Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> The prize " + prize.getName() + " in the " + prize.getCrate() + " crate has caused an error when trying to run a command.");
                                 Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> Command: " + cmd);
                             }
                         } else {
-                            command += word + " ";
+                            commandBuilder.append(word).append(" ");
                         }
                     }
+                    command = commandBuilder.toString();
                     command = command.substring(0, command.length() - 1);
                 }
                 if (Support.PLACEHOLDERAPI.isPluginLoaded()) {
