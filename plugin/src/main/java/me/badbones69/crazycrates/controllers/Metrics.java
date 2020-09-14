@@ -61,7 +61,7 @@ public class Metrics {
     // A list with all custom charts
     private final List<CustomChart> charts = new ArrayList<>();
     // Is bStats enabled on this server?
-    private boolean enabled;
+    private final boolean enabled;
     
     /**
      * Class constructor.
@@ -147,7 +147,7 @@ public class Metrics {
         if (Bukkit.isPrimaryThread()) {
             throw new IllegalAccessException("This method must not be called from the main thread!");
         }
-        if (logSentData) {
+        if (logSentData && plugin.getLogger().getLevel() == Level.INFO) {
             plugin.getLogger().info("Sending data to bStats: " + data.toString());
         }
         HttpsURLConnection connection = (HttpsURLConnection) new URL(URL).openConnection();
@@ -180,7 +180,7 @@ public class Metrics {
             builder.append(line);
         }
         bufferedReader.close();
-        if (logResponseStatusText) {
+        if (logResponseStatusText && plugin.getLogger().getLevel() == Level.INFO) {
             plugin.getLogger().info("Sent data to bStats and received response: " + builder.toString());
         }
     }
