@@ -85,6 +85,12 @@ public class GUIMenu implements Listener {
                     if (i.contains("Slot:")) {
                         slot = Integer.parseInt(i.replace("Slot:", ""));
                     }
+                    if(i.contains("Unbreakable-Item")) {
+                        item.setUnbreakable(Boolean.parseBoolean(i.replace("Unbreakable-Item:", "")));
+                    }
+                    if(i.contains("Hide-Item-Flags")) {
+                        item.hideItemFlags(Boolean.parseBoolean(i.replace("Hide-Item-Flags:", "")));
+                    }
                 }
                 if (slot > size) {
                     continue;
