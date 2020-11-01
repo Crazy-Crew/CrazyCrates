@@ -735,10 +735,8 @@ public class CrazyCrates {
             String player = file.getString("Crate.Prizes." + reward + ".Player", "");
             boolean glowing = file.getBoolean("Crate.Prizes." + reward + ".Glowing");
             int amount = file.getInt("Crate.Prizes." + reward + ".DisplayAmount", 1);
-            
             boolean unbreakable = file.getBoolean("Crate.Prizes." + reward + ".Unbreakable", false);
             boolean hideItemFlags = file.getBoolean("Crate.Prizes." + reward + ".HideItemsFlags", false);
-            
             for (String enchantmentName : file.getStringList("Crate.Prizes." + reward + ".DisplayEnchantments")) {
                 Enchantment enchantment = Methods.getEnchantment(enchantmentName.split(":")[0]);
                 if (enchantment != null) {

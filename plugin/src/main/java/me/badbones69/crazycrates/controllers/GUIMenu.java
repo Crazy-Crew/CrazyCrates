@@ -46,50 +46,50 @@ public class GUIMenu implements Listener {
             for (String custom : Files.CONFIG.getFile().getStringList("Settings.GUI-Customizer")) {
                 int slot = 0;
                 ItemBuilder item = new ItemBuilder();
-                String[] b = custom.split(", ");
-                for (String i : b) {
-                    if (i.contains("Item:")) {
-                        item.setMaterial(i.replace("Item:", ""));
+                String[] split = custom.split(", ");
+                for (String option : split) {
+                    if (option.contains("Item:")) {
+                        item.setMaterial(option.replace("Item:", ""));
                     }
-                    if (i.contains("Name:")) {
-                        i = i.replace("Name:", "");
+                    if (option.contains("Name:")) {
+                        option = option.replace("Name:", "");
                         for (Crate crate : cc.getCrates()) {
                             if (crate.getCrateType() != CrateType.MENU) {
-                                i = i.replaceAll("%" + crate.getName().toLowerCase() + "%", cc.getVirtualKeys(player, crate) + "")
+                                option = option.replaceAll("%" + crate.getName().toLowerCase() + "%", cc.getVirtualKeys(player, crate) + "")
                                 .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", cc.getPhysicalKeys(player, crate) + "")
                                 .replaceAll("%" + crate.getName().toLowerCase() + "_total%", cc.getTotalKeys(player, crate) + "");
                             }
                         }
-                        item.setName(i.replaceAll("%player%", player.getName()));
+                        item.setName(option.replaceAll("%player%", player.getName()));
                     }
-                    if (i.contains("Lore:")) {
-                        i = i.replace("Lore:", "");
-                        String[] d = i.split(",");
+                    if (option.contains("Lore:")) {
+                        option = option.replace("Lore:", "");
+                        String[] d = option.split(",");
                         for (String l : d) {
                             for (Crate crate : cc.getCrates()) {
                                 if (crate.getCrateType() != CrateType.MENU) {
-                                    i = i.replaceAll("%" + crate.getName().toLowerCase() + "%", cc.getVirtualKeys(player, crate) + "")
+                                    option = option.replaceAll("%" + crate.getName().toLowerCase() + "%", cc.getVirtualKeys(player, crate) + "")
                                     .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", cc.getPhysicalKeys(player, crate) + "")
                                     .replaceAll("%" + crate.getName().toLowerCase() + "_total%", cc.getTotalKeys(player, crate) + "");
                                 }
                             }
-                            item.addLore(i.replaceAll("%player%", player.getName()));
+                            item.addLore(option.replaceAll("%player%", player.getName()));
                         }
                     }
-                    if (i.contains("Glowing:")) {
-                        item.setGlowing(Boolean.parseBoolean(i.replace("Glowing:", "")));
+                    if (option.contains("Glowing:")) {
+                        item.setGlowing(Boolean.parseBoolean(option.replace("Glowing:", "")));
                     }
-                    if (i.contains("Player:")) {
-                        item.setPlayer(i.replaceAll("%player%", player.getName()));
+                    if (option.contains("Player:")) {
+                        item.setPlayer(option.replaceAll("%player%", player.getName()));
                     }
-                    if (i.contains("Slot:")) {
-                        slot = Integer.parseInt(i.replace("Slot:", ""));
+                    if (option.contains("Slot:")) {
+                        slot = Integer.parseInt(option.replace("Slot:", ""));
                     }
-                    if(i.contains("Unbreakable-Item")) {
-                        item.setUnbreakable(Boolean.parseBoolean(i.replace("Unbreakable-Item:", "")));
+                    if (option.contains("Unbreakable-Item")) {
+                        item.setUnbreakable(Boolean.parseBoolean(option.replace("Unbreakable-Item:", "")));
                     }
-                    if(i.contains("Hide-Item-Flags")) {
-                        item.hideItemFlags(Boolean.parseBoolean(i.replace("Hide-Item-Flags:", "")));
+                    if (option.contains("Hide-Item-Flags")) {
+                        item.hideItemFlags(Boolean.parseBoolean(option.replace("Hide-Item-Flags:", "")));
                     }
                 }
                 if (slot > size) {
