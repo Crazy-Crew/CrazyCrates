@@ -9,6 +9,8 @@
     <name>CrazyCrates</name>
 
     <modules>
+        <module>plugin</module>
+        <module>api</module>
         <module>v1_8_R3</module>
         <module>v1_9_R1</module>
         <module>v1_9_R2</module>
@@ -19,8 +21,6 @@
         <module>v1_14_R1</module>
         <module>v1_15_R1</module>
         <module>v1_16_R1</module>
-        <module>plugin</module>
-        <module>api</module>
         <module>v1_16_R2</module>
     </modules>
 
