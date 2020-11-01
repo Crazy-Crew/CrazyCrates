@@ -735,6 +735,10 @@ public class CrazyCrates {
             String player = file.getString("Crate.Prizes." + reward + ".Player", "");
             boolean glowing = file.getBoolean("Crate.Prizes." + reward + ".Glowing");
             int amount = file.getInt("Crate.Prizes." + reward + ".DisplayAmount", 1);
+            
+            boolean unbreakable = file.getBoolean("Crate.Prizes." + reward + ".Unbreakable", false);
+            boolean hideItemFlags = file.getBoolean("Crate.Prizes." + reward + ".HideItemsFlags", false);
+            
             for (String enchantmentName : file.getStringList("Crate.Prizes." + reward + ".DisplayEnchantments")) {
                 Enchantment enchantment = Methods.getEnchantment(enchantmentName.split(":")[0]);
                 if (enchantment != null) {
@@ -742,7 +746,7 @@ public class CrazyCrates {
                 }
             }
             try {
-                inv.setItem(inv.firstEmpty(), new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setEnchantments(enchantments).setGlowing(glowing).setPlayer(player).build());
+                inv.setItem(inv.firstEmpty(), new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setUnbreakable(unbreakable).hideItemFlags(hideItemFlags).setEnchantments(enchantments).setGlowing(glowing).setPlayer(player).build());
             } catch (Exception e) {
                 inv.addItem(new ItemBuilder().setMaterial("RED_TERRACOTTA", "STAINED_CLAY:14").setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + reward)).build());
             }
