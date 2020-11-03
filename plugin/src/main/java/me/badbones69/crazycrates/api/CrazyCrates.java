@@ -28,6 +28,7 @@ import me.badbones69.crazycrates.multisupport.nms.v1_14_R1.NMS_v1_14_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_15_R1.NMS_v1_15_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_16_R1.NMS_v1_16_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_16_R2.NMS_v1_16_R2;
+import me.badbones69.crazycrates.multisupport.nms.v1_16_R3.NMS_v1_16_R3;
 import me.badbones69.crazycrates.multisupport.nms.v1_8_R3.NMS_v1_8_R3;
 import me.badbones69.crazycrates.multisupport.nms.v1_9_R1.NMS_v1_9_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_9_R2.NMS_v1_9_R2;
@@ -204,6 +205,9 @@ public class CrazyCrates {
                 break;
             case v1_16_R2:
                 nmsSupport = new NMS_v1_16_R2();
+                break;
+            case v1_16_R3:
+                nmsSupport = new NMS_v1_16_R3();
                 break;
         }
         plugin = Bukkit.getPluginManager().getPlugin("CrazyCrates");
