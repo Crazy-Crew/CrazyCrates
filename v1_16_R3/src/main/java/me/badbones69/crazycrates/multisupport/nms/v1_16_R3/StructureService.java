@@ -1,22 +1,9 @@
 package me.badbones69.crazycrates.multisupport.nms.v1_16_R3;
 
-
+import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
-
-import net.minecraft.server.v1_16_R3.BlockPosition;
-import net.minecraft.server.v1_16_R3.Blocks;
-import net.minecraft.server.v1_16_R3.ChunkCoordIntPair;
-import net.minecraft.server.v1_16_R3.DefinedStructure;
-import net.minecraft.server.v1_16_R3.DefinedStructureInfo;
-import net.minecraft.server.v1_16_R3.DefinedStructureManager;
-import net.minecraft.server.v1_16_R3.EnumBlockMirror;
-import net.minecraft.server.v1_16_R3.EnumBlockRotation;
-import net.minecraft.server.v1_16_R3.NBTCompressedStreamTools;
-import net.minecraft.server.v1_16_R3.NBTTagCompound;
-import net.minecraft.server.v1_16_R3.NBTTagList;
-import net.minecraft.server.v1_16_R3.WorldServer;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
