@@ -227,6 +227,7 @@ public class CrazyCrates {
             //			if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Loading " + crateName + ".yml information....");
             try {
                 FileConfiguration file = fileManager.getFile(crateName).getFile();
+                CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));
                 ArrayList<Prize> prizes = new ArrayList<>();
                 String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
                 ArrayList<Tier> tiers = new ArrayList<>();
@@ -235,6 +236,11 @@ public class CrazyCrates {
                         String path = "Crate.Tiers." + tier;
                         tiers.add(new Tier(tier, file.getString(path + ".Name"), file.getString(path + ".Color"), file.getInt(path + ".Chance"), file.getInt(path + ".MaxRange")));
                     }
+                }
+                if (crateType == CrateType.COSMIC && tiers.isEmpty()) {
+                    brokecrates.add(crateName);
+                    Bukkit.getLogger().log(Level.WARNING, fileManager.getPrefix() + "No tiers were found for this cosmic crate " + crateName + ".yml file.");
+                    continue;
                 }
                 for (String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
                     Prize altPrize = null;
@@ -281,7 +287,7 @@ public class CrazyCrates {
                         giveNewPlayersKeys = true;
                     }
                 }
-                crates.add(new Crate(crateName, previewName, CrateType.getFromName(file.getString("Crate.CrateType")), getKey(file), prizes, file, newPlayersKeys, tiers,
+                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers,
                 new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"))));
                 //				if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "" + crateName + ".yml has been loaded.");
             } catch (Exception e) {
