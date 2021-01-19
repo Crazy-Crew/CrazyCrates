@@ -41,15 +41,13 @@ public class NMS_v1_10_R1 implements NMSSupport {
     @Override
     public void pasteSchematic(File f, Location loc) {
         loc = loc.subtract(2, 1, 2);
-        try {
-            FileInputStream fis = new FileInputStream(f);
+        try (FileInputStream fis = new FileInputStream(f)) {
             NBTTagCompound nbt = NBTCompressedStreamTools.a(fis);
             short width = nbt.getShort("Width");
             short height = nbt.getShort("Height");
             short length = nbt.getShort("Length");
             byte[] blocks = nbt.getByteArray("Blocks");
             byte[] data = nbt.getByteArray("Data");
-            fis.close();
             //paste
             for (int x = 0; x < width; ++x) {
                 for (int y = 0; y < height; ++y) {
@@ -73,13 +71,11 @@ public class NMS_v1_10_R1 implements NMSSupport {
     public List<Location> getLocations(File f, Location loc) {
         loc = loc.subtract(2, 1, 2);
         List<Location> locations = new ArrayList<>();
-        try {
-            FileInputStream fis = new FileInputStream(f);
+        try (FileInputStream fis = new FileInputStream(f)) {
             NBTTagCompound nbt = NBTCompressedStreamTools.a(fis);
             short width = nbt.getShort("Width");
             short height = nbt.getShort("Height");
             short length = nbt.getShort("Length");
-            fis.close();
             //paste
             for (int x = 0; x < width; ++x) {
                 for (int y = 0; y < height; ++y) {

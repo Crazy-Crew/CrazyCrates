@@ -61,7 +61,7 @@ public class Metrics {
     // A list with all custom charts
     private final List<CustomChart> charts = new ArrayList<>();
     // Is bStats enabled on this server?
-    private boolean enabled;
+    private final boolean enabled;
     
     /**
      * Class constructor.
@@ -147,7 +147,7 @@ public class Metrics {
         if (Bukkit.isPrimaryThread()) {
             throw new IllegalAccessException("This method must not be called from the main thread!");
         }
-        if (logSentData) {
+        if (logSentData && plugin.getLogger().getLevel() == Level.INFO) {
             plugin.getLogger().info("Sending data to bStats: " + data.toString());
         }
         HttpsURLConnection connection = (HttpsURLConnection) new URL(URL).openConnection();
@@ -180,7 +180,7 @@ public class Metrics {
             builder.append(line);
         }
         bufferedReader.close();
-        if (logResponseStatusText) {
+        if (logResponseStatusText && plugin.getLogger().getLevel() == Level.INFO) {
             plugin.getLogger().info("Sent data to bStats and received response: " + builder.toString());
         }
     }
@@ -362,21 +362,18 @@ public class Metrics {
             } catch (NoSuchFieldException ignored) {
             }
         }
-        
+
         data.add("plugins", pluginData);
-        
+
         // Create a new thread for the connection to the bStats server
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // Send the data
-                    sendData(plugin, data);
-                } catch (Exception e) {
-                    // Something went wrong! :(
-                    if (logFailedRequests) {
-                        plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + plugin.getName(), e);
-                    }
+        new Thread(() -> {
+            try {
+                // Send the data
+                sendData(plugin, data);
+            } catch (Exception e) {
+                // Something went wrong! :(
+                if (logFailedRequests) {
+                    plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + plugin.getName(), e);
                 }
             }
         }).start();

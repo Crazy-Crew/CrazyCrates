@@ -43,9 +43,9 @@ public enum Messages {
     CREATED_PHYSICAL_CRATE("Created-Physical-Crate", Arrays.asList("%prefix%&7You have just set that block to %crate%.", "&7To remove the crate shift break in creative to remove.")),
     REMOVED_PHYSICAL_CRATE("Removed-Physical-Crate", "%prefix% &7You have just removed &6%id%&7."),
     PERSONAL_NO_VIRTUAL_KEYS("Keys.Personal.No-Virtual-Keys", "&8&l(&4&l!&8&l) &7You currently do not have any virtual keys."),
-    PERSONAL_HEADER("Keys.Personal.Header", Arrays.asList("&8&l(&6&l!&8&l) &7List of your current amount of keys.")),
+    PERSONAL_HEADER("Keys.Personal.Header", Collections.singletonList("&8&l(&6&l!&8&l) &7List of your current amount of keys.")),
     OTHER_PLAYER_NO_VIRTUAL_KEYS("Keys.Other-Player.No-Virtual-Keys", "&8&l(&4&l!&8&l) &7The player %player% does not have any keys.."),
-    OTHER_PLAYER_HEADER("Keys.Other-Player.Header", Arrays.asList("&8&l(&6&l!&8&l) &7List of %player%''s current amount of keys.")),
+    OTHER_PLAYER_HEADER("Keys.Other-Player.Header", Collections.singletonList("&8&l(&6&l!&8&l) &7List of %player%''s current amount of keys.")),
     PER_CRATE("Keys.Per-Crate", "%crate% &7&l>&8&l> &6%keys% keys"),
     QUAD_CRATE_DISABLED("Quad-Crate-Disabled", "&cQuad crate type is currently disabled in this build of Crazy Crates due to 1.13+ changing code."),
     PREVIEW_DISABLED("Preview-Disabled", "&cThe preview for that crate is currently disabled."),
@@ -80,27 +80,27 @@ public enum Messages {
     "&6/cc set1/set2 &7- Set position #1 or #2 for when making a new schematic for quadcrates. &c1.13+ only",
     "&6/cc save <schematic file name> &7- Save the new schematic file to the schematics folder. &c1.13+ only",
     "&7List of permissions can be found here: &bhttps://github.com/badbones69/Crazy-Crates/wiki/Commands-and-Permissions"));
-    
-    private String path;
+
+    private final String path;
     private String defaultMessage;
     private List<String> defaultListMessage;
-    
-    private Messages(String path, String defaultMessage) {
+
+    Messages(String path, String defaultMessage) {
         this.path = path;
         this.defaultMessage = defaultMessage;
     }
-    
-    private Messages(String path, List<String> defaultListMessage) {
+
+    Messages(String path, List<String> defaultListMessage) {
         this.path = path;
         this.defaultListMessage = defaultListMessage;
     }
     
     public static String convertList(List<String> list) {
-        String message = "";
+        StringBuilder message = new StringBuilder();
         for (String line : list) {
-            message += Methods.color(line) + "\n";
+            message.append(Methods.color(line)).append("\n");
         }
-        return message;
+        return message.toString();
     }
     
     public static void addMissingMessages() {

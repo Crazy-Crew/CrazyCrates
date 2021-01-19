@@ -21,30 +21,30 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class QuadCrateSession {
-    
-    private static CrazyCrates cc = CrazyCrates.getInstance();
-    private static NMSSupport nms = cc.getNMSSupport();
-    private static List<QuadCrateSession> crateSessions = new ArrayList<>();
-    private static List<Material> blacklistBlocks = nms.getQuadCrateBlacklistBlocks();
-    
-    private QuadCrateSession instance;
-    private Crate crate;
-    private Player player;
-    private KeyType keyType;
-    private Location lastLocation;
-    private Location spawnLocation;
-    private Color particleColor;
-    private QuadCrateParticles particle;
-    private boolean checkHand;
-    private List<Location> chestLocations = new ArrayList<>();
-    private HashMap<Location, Boolean> chestsOpened = new HashMap<>();
-    private List<Entity> displayedRewards = new ArrayList<>();
+
+    private static final CrazyCrates cc = CrazyCrates.getInstance();
+    private static final NMSSupport nms = cc.getNMSSupport();
+    private static final List<QuadCrateSession> crateSessions = new ArrayList<>();
+    private static final List<Material> blacklistBlocks = nms.getQuadCrateBlacklistBlocks();
+
+    private final QuadCrateSession instance;
+    private final Crate crate;
+    private final Player player;
+    private final KeyType keyType;
+    private final Location lastLocation;
+    private final Location spawnLocation;
+    private final Color particleColor;
+    private final QuadCrateParticles particle;
+    private final boolean checkHand;
+    private final List<Location> chestLocations = new ArrayList<>();
+    private final HashMap<Location, Boolean> chestsOpened = new HashMap<>();
+    private final List<Entity> displayedRewards = new ArrayList<>();
     private CrateSchematic crateSchematic;
     private List<Location> schematicLocations = new ArrayList<>();
-    private List<BukkitRunnable> ongoingTasks = new ArrayList<>();
-    private HashMap<Location, BlockState> oldBlocks = new HashMap<>();
-    private HashMap<Location, BlockState> oldChestBlocks = new HashMap<>();
-    
+    private final List<BukkitRunnable> ongoingTasks = new ArrayList<>();
+    private final HashMap<Location, BlockState> oldBlocks = new HashMap<>();
+    private final HashMap<Location, BlockState> oldChestBlocks = new HashMap<>();
+
     public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean checkHand) {
         this.instance = this;
         this.crate = crate;
@@ -254,7 +254,7 @@ public class QuadCrateSession {
     
     public Boolean hasChestBeenOpened(Location location) {
         //If null it returns true just in case to make sure random blocks can't spawn prizes
-        return chestsOpened.get(location) == null ? true : chestsOpened.get(location);
+        return chestsOpened.get(location) == null || chestsOpened.get(location);
     }
     
     public void setChestOpened(Location location, Boolean toggle) {
@@ -262,8 +262,8 @@ public class QuadCrateSession {
     }
     
     public Boolean allChestsOpened() {
-        for (Location location : chestsOpened.keySet()) {
-            if (!chestsOpened.get(location)) {
+        for (Map.Entry<Location, Boolean> location : chestsOpened.entrySet()) {
+            if (!location.getValue()) {
                 return false;
             }
         }
