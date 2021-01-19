@@ -52,6 +52,7 @@ public class QuickCrate implements Listener {
                 if (!Methods.isInventoryFull(player)) {
                     Prize prize = crate.pickPrize(player);
                     cc.givePrize(player, prize);
+                    Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                     if (prize.useFireworks()) {
                         Methods.fireWork(loc.clone().add(.5, 1, .5));
                     }
