@@ -9,6 +9,7 @@ import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import me.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent.KeyReciveReason;
+import me.badbones69.crazycrates.api.events.PreCrateOpenEvent;
 import me.badbones69.crazycrates.api.interfaces.HologramController;
 import me.badbones69.crazycrates.api.objects.*;
 import me.badbones69.crazycrates.controllers.CrateControl;
@@ -416,6 +417,14 @@ public class CrazyCrates {
      * @param checkHand If it just checks the players hand or if it checks their inventory.
      */
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
+
+        PreCrateOpenEvent event = new PreCrateOpenEvent(player,crate,keyType);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()){
+            removePlayerFromOpeningList(player);
+            removePlayerKeyType(player);
+            return;
+        }
         if (crate.getCrateType() != CrateType.MENU) {
             if (!crate.canWinPrizes(player)) {
                 player.sendMessage(Messages.NO_PRIZES_FOUND.getMessage());
