@@ -20,6 +20,8 @@ Crate:
     Glass:
       Toggle: true
       Item: 'YELLOW_STAINED_GLASS_PANE'
+  Crate-Type-Settings:
+    Max-Keys-With-Shift: -1
   PhysicalKey:
     Name: '&e&lClassic Crate &c&lKey'
     Lore:

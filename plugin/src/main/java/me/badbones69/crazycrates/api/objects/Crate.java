@@ -7,6 +7,7 @@ import me.badbones69.crazycrates.api.FileManager;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import me.badbones69.crazycrates.api.managers.CrateManager;
+import me.badbones69.crazycrates.api.managers.QuickCrateManager;
 import me.badbones69.crazycrates.controllers.Preview;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -87,6 +88,9 @@ public class Crate {
         switch (crateType) {
             case COSMIC:
                 this.manager = new CosmicCrateManager(file);
+                break;
+            case QUICK_CRATE:
+                this.manager = new QuickCrateManager(file);
                 break;
             default:
                 break;

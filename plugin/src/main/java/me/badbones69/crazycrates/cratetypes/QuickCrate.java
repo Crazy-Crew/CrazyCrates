@@ -5,6 +5,7 @@ import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
+import me.badbones69.crazycrates.api.managers.QuickCrateManager;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.controllers.CrateControl;
@@ -45,6 +46,10 @@ public class QuickCrate implements Listener {
             default:
                 keys = 1;
                 break;
+        }
+        if (((QuickCrateManager)crate.getManager()).getMaxShiftOpen() != -1 && keys > ((QuickCrateManager)crate.getManager()).getMaxShiftOpen()){
+            if (((QuickCrateManager)crate.getManager()).getMaxShiftOpen() == 0) keys = 1;
+            else keys = ((QuickCrateManager)crate.getManager()).getMaxShiftOpen();
         }
         if (player.isSneaking() && keys > 1) {
             int keysUsed = 0;
