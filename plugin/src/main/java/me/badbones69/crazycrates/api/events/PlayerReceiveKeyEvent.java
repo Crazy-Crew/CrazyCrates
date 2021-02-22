@@ -48,6 +48,11 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
         return handlers;
     }
     
+    @Override
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+    
     public enum KeyReciveReason {
         /**
          * Received a key from the /cc give command.
