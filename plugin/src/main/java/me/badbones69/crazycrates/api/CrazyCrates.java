@@ -886,7 +886,7 @@ public class CrazyCrates {
         if (data.contains("Offline-Players." + name)) {
             for (Crate crate : getCrates()) {
                 if (data.contains("Offline-Players." + name + "." + crate.getName())) {
-                    PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.OFFLINE_PLAYER);
+                    PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.OFFLINE_PLAYER,1);
                     Bukkit.getPluginManager().callEvent(event);
                     if (!event.isCancelled()) {
                         addKeys(data.getInt("Offline-Players." + name + "." + crate.getName()), player, crate, KeyType.VIRTUAL_KEY);
