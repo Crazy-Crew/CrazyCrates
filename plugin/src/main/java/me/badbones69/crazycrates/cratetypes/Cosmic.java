@@ -183,7 +183,7 @@ public class Cosmic implements Listener {
                                     try {
                                         startRoll(player, crate);
                                     } catch (Exception e) {
-                                        PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.REFUND);
+                                        PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.REFUND,1);
                                         Bukkit.getPluginManager().callEvent(event);
                                         if (!event.isCancelled()) {
                                             cc.addKeys(1, player, crate, keyType);
