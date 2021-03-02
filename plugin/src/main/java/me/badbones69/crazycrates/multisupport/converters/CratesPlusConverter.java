@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CratesPlusConverter {
-
+    
     private static final CrazyCrates cc = CrazyCrates.getInstance();
     private static final CratesPlus cratesPlus = CratesPlus.getOpenHandler().getCratesPlus();
     private static final List<CrateConvertInfo> convertedCrates = new ArrayList<>();
-
+    
     public static void convert() {
         int slot = 1;
         FileConfiguration config = cratesPlus.getConfig();
@@ -26,7 +26,7 @@ public class CratesPlusConverter {
             String path = "Crates." + crateName + ".";
             if (config.contains(path + "Winnings")) {
                 convertedCrates.add(new CrateConvertInfo()
-                        .setCrateName(crateName)
+                .setCrateName(crateName)
                 .setGUIName(config.getString(path + "GUI Title", "&7" + crateName))
                 .setInGUI(true)
                 .setOpeningBrodcastEnabled(crate.isBroadcast())

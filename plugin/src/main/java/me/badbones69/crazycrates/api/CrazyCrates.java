@@ -71,27 +71,27 @@ public class CrazyCrates {
      * List of all the broken crates.
      */
     private final ArrayList<String> brokecrates = new ArrayList<>();
-
+    
     /**
      * List of broken physical crate locations.
      */
     private final List<BrokeLocation> brokeLocations = new ArrayList<>();
-
+    
     /**
      * The crate that the player is opening.
      */
     private final HashMap<UUID, Crate> playerOpeningCrates = new HashMap<>();
-
+    
     /**
      * Keys that are being used in crates. Only needed in cosmic due to it taking the key after the player picks a prize and not in a start method.
      */
     private final HashMap<UUID, KeyType> playerKeys = new HashMap<>();
-
+    
     /**
      * A list of all current crate tasks that are running that a time. Used to force stop any crates it needs to.
      */
     private final HashMap<UUID, BukkitTask> currentTasks = new HashMap<>();
-
+    
     /**
      * A list of tasks being ran by the QuadCrate type.
      */
@@ -101,7 +101,7 @@ public class CrazyCrates {
      * The time in seconds a quadcrate can go until afk kicks them from it.
      */
     private Integer quadCrateTimer;
-
+    
     /**
      * A list of current crate schematics for Quad Crate.
      */
@@ -133,7 +133,7 @@ public class CrazyCrates {
      * The hologram api that is being hooked into.
      */
     private HologramController hologramController;
-
+    
     /**
      * Schematic locations for 1.13+
      */
@@ -886,7 +886,7 @@ public class CrazyCrates {
         if (data.contains("Offline-Players." + name)) {
             for (Crate crate : getCrates()) {
                 if (data.contains("Offline-Players." + name + "." + crate.getName())) {
-                    PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.OFFLINE_PLAYER,1);
+                    PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.OFFLINE_PLAYER, 1);
                     Bukkit.getPluginManager().callEvent(event);
                     if (!event.isCancelled()) {
                         addKeys(data.getInt("Offline-Players." + name + "." + crate.getName()), player, crate, KeyType.VIRTUAL_KEY);
@@ -1272,8 +1272,8 @@ public class CrazyCrates {
             String uuid = player.getUniqueId().toString();
             if (!player.hasPlayedBefore()) {
                 crates.stream()
-                        .filter(Crate::doNewPlayersGetKeys)
-                        .forEach(crate -> Files.DATA.getFile().set("Player." + uuid + "." + crate, crate.getNewPlayerKeys()));
+                .filter(Crate :: doNewPlayersGetKeys)
+                .forEach(crate -> Files.DATA.getFile().set("Player." + uuid + "." + crate, crate.getNewPlayerKeys()));
             }
         }
     }

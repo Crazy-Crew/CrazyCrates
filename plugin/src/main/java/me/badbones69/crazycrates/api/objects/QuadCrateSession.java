@@ -21,12 +21,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class QuadCrateSession {
-
+    
     private static final CrazyCrates cc = CrazyCrates.getInstance();
     private static final NMSSupport nms = cc.getNMSSupport();
     private static final List<QuadCrateSession> crateSessions = new ArrayList<>();
     private static final List<Material> blacklistBlocks = nms.getQuadCrateBlacklistBlocks();
-
+    
     private final QuadCrateSession instance;
     private final Crate crate;
     private final Player player;
@@ -44,7 +44,7 @@ public class QuadCrateSession {
     private final List<BukkitRunnable> ongoingTasks = new ArrayList<>();
     private final HashMap<Location, BlockState> oldBlocks = new HashMap<>();
     private final HashMap<Location, BlockState> oldChestBlocks = new HashMap<>();
-
+    
     public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean checkHand) {
         this.instance = this;
         this.crate = crate;

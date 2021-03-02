@@ -13,10 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HolographicSupport implements HologramController {
-
+    
     private static final CrazyCrates cc = CrazyCrates.getInstance();
     private static final HashMap<Block, Hologram> holograms = new HashMap<>();
-
+    
     public void createHologram(Block block, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();
         if (crateHologram.isEnabled()) {

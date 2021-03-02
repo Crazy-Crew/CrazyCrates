@@ -105,14 +105,14 @@ Crate:
       Messages:
         - '&7You just won a &7&lBasic Grass&7.'
       #This allows for one time winnable prizes. If a player has one of the permissions then they will not be able to win it.
-      BlackListed-Permissions: []
+      BlackListed-Permissions: [ ]
       #This allows users who have won the same prize before to get alternative prizes. They must of a BlackListed-Permission to get a alternative prize.
       Alternative-Prize:
         #Toggle if the prize will use alternative prizes for the blacklisted permission.
         Toggle: false
-        Messages: []
-        Commands: []
-        Items: []
+        Messages: [ ]
+        Commands: [ ]
+        Items: [ ]
     2:
       DisplayName: '&b&lCheap Helmet'
       DisplayItem: 'GOLD_HELMET'

@@ -33,10 +33,10 @@ import java.io.File;
 import java.util.HashMap;
 
 public class CCCommand implements CommandExecutor {
-
+    
     private final FileManager fileManager = FileManager.getInstance();
     private final CrazyCrates cc = CrazyCrates.getInstance();
-
+    
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args) {
         if (args.length == 0) {
@@ -492,7 +492,7 @@ public class CCCommand implements CommandExecutor {
                                     amount = Integer.parseInt(args[3]);
                                 }
                                 if (cc.getVirtualKeys(player, crate) >= amount) {
-                                    PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.TRANSFER,amount);
+                                    PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.TRANSFER, amount);
                                     Bukkit.getPluginManager().callEvent(event);
                                     if (!event.isCancelled()) {
                                         cc.takeKeys(amount, player, crate, KeyType.VIRTUAL_KEY, false);
@@ -543,7 +543,7 @@ public class CCCommand implements CommandExecutor {
                             placeholders.put("%Key%", crate.getKey().getItemMeta().getDisplayName());
                             sender.sendMessage(Messages.GIVEN_EVERYONE_KEYS.getMessage(placeholders));
                             for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-                                PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.GIVE_ALL_COMMAND,amount);
+                                PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.GIVE_ALL_COMMAND, amount);
                                 Bukkit.getPluginManager().callEvent(event);
                                 if (!event.isCancelled()) {
                                     player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
@@ -601,7 +601,7 @@ public class CCCommand implements CommandExecutor {
                 }
                 if (args.length >= 3) {
                     if (crate.getCrateType() != CrateType.MENU) {
-                        PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(target, crate, KeyReciveReason.GIVE_COMMAND,amount);
+                        PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(target, crate, KeyReciveReason.GIVE_COMMAND, amount);
                         Bukkit.getPluginManager().callEvent(event);
                         if (!event.isCancelled()) {
                             if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {

@@ -80,16 +80,16 @@ public enum Messages {
     "&6/cc set1/set2 &7- Set position #1 or #2 for when making a new schematic for quadcrates. &c1.13+ only",
     "&6/cc save <schematic file name> &7- Save the new schematic file to the schematics folder. &c1.13+ only",
     "&7List of permissions can be found here: &bhttps://github.com/badbones69/Crazy-Crates/wiki/Commands-and-Permissions"));
-
+    
     private final String path;
     private String defaultMessage;
     private List<String> defaultListMessage;
-
+    
     Messages(String path, String defaultMessage) {
         this.path = path;
         this.defaultMessage = defaultMessage;
     }
-
+    
     Messages(String path, List<String> defaultListMessage) {
         this.path = path;
         this.defaultListMessage = defaultListMessage;

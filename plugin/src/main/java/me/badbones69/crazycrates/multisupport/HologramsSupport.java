@@ -15,10 +15,10 @@ import java.util.Map;
 import java.util.Random;
 
 public class HologramsSupport implements HologramController {
-
+    
     private static final HashMap<Block, Hologram> holograms = new HashMap<>();
     private static final HologramManager hologramManager = JavaPlugin.getPlugin(HologramPlugin.class).getHologramManager();
-
+    
     public void createHologram(Block block, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();
         if (crateHologram.isEnabled()) {
