@@ -12,7 +12,7 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
     private Crate crate;
     private KeyReciveReason reason;
     private boolean isCancelled;
-    private HandlerList handlers = new HandlerList();
+    private static HandlerList handlers = new HandlerList();
     
     public PlayerReceiveKeyEvent(Player player, Crate crate, KeyReciveReason reason) {
         this.player = player;
