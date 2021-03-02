@@ -43,12 +43,10 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
         isCancelled = cancel;
     }
     
-    @Override
     public HandlerList getHandlers() {
         return handlers;
     }
     
-    @Override
     public static HandlerList getHandlerList() {
         return handlers;
     }
