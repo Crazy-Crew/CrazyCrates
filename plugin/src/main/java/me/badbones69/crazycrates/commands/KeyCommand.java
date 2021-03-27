@@ -40,7 +40,7 @@ public class KeyCommand implements CommandExecutor {
                 if (amount > 0) {
                     hasKeys = true;
                     HashMap<String, String> placeholders = new HashMap<>();
-                    placeholders.put("%Crate%", crate.getFile().getString("Crate.Name"));
+                    placeholders.put("%Crate%", crate.getFile().getString("Crate.Name", ""));
                     placeholders.put("%Keys%", amount + "");
                     message.add(Messages.PER_CRATE.getMessageNoPrefix(placeholders));
                 }
