@@ -31,6 +31,9 @@ public class BrokeLocationsControl implements Listener {
                 Location location = brokeLocation.getLocation();
                 if (location.getWorld() != null) {
                     cc.getCrateLocations().add(new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location));
+                    if (cc.getHologramController() != null) {
+                        cc.getHologramController().createHologram(location.getBlock(), brokeLocation.getCrate());
+                    }
                     fixedWorlds.add(brokeLocation);
                     fixedAmount++;
                 }
