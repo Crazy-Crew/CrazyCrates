@@ -231,11 +231,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.2.4</version>
                 <configuration>
                     <relocations>
                         <relocation>
-                            <pattern>de.tr7zw.changeme.nbtapi</pattern>
+                            <pattern>de.tr7zw</pattern>
                             <shadedPattern>me.badbones69.crazycrates.nbtapi</shadedPattern>
                         </relocation>
                     </relocations>
