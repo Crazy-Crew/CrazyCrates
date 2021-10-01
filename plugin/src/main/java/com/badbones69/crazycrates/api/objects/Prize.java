@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api.objects;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import me.badbones69.crazycrates.multisupport.OraxenSupport;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -93,8 +94,20 @@ public class Prize {
      * @return Returns the display item that is shown for the preview and the winning prize.
      */
     public ItemStack getDisplayItem() {
+        if (OraxenSupport.isLoaded()) {
+            ItemStack item = OraxenSupport.getItem(this.displayItem.getName());
+            if(item != null) {
+                NBTItem nbt = new NBTItem(item);
+                nbt.setString("crazycrate-prize", name);
+                displayItemStack = nbt.getItem();
+                return item;
+            }
+        }
+        
         if (displayItemStack == null) {
+            
             displayItemStack = displayItem.build();
+            
             NBTItem nbt = new NBTItem(displayItemStack);
             nbt.setString("crazycrate-prize", name);
             displayItemStack = nbt.getItem();

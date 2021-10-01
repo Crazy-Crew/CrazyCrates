@@ -10,6 +10,7 @@ Settings:
   Virtual-Accepts-Physical-Keys: true #If virtual crates can accept physical keys.
   Give-Virtual-Keys-When-Inventory-Full: false #If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
   Need-Key-Sound: 'ENTITY_VILLAGER_NO' #This sound plays when a player tries to open a crate with no key.
+  UseOraxen: false
   QuadCrate:
     Timer: 300
   DisabledWorlds:
