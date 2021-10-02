@@ -73,6 +73,9 @@ public class Main extends JavaPlugin implements Listener {
         }
         updateChecker = !Files.CONFIG.getFile().contains("Settings.Update-Checker") || Files.CONFIG.getFile().getBoolean("Settings.Update-Checker");
         //Messages.addMissingMessages(); #Does work but is disabled for now.
+        if(Support.ORAXEN.isPluginLoaded() && Files.CONFIG.getFile().getBoolean("Settings.UseOraxen")) {
+            OraxenSupport.load();
+        }
         cc.loadCrates();
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(this, this);
@@ -103,9 +106,7 @@ public class Main extends JavaPlugin implements Listener {
         if (Support.MVDWPLACEHOLDERAPI.isPluginLoaded()) {
             MVdWPlaceholderAPISupport.registerPlaceholders(this);
         }
-        if(Support.ORAXEN.isPluginLoaded() && Files.CONFIG.getFile().getBoolean("Settings.UseOraxen")) {
-            OraxenSupport.load();
-        }
+        
         Methods.hasUpdate();
         new Metrics(this); //Starts up bStats
         getCommand("key").setExecutor(new KeyCommand());
