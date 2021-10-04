@@ -1,4 +1,4 @@
-package me.badbones69.crazycrates.multisupport;
+package com.badbones69.crazycrates.support.libs;
 
 import io.th0rgal.oraxen.items.OraxenItems;
 import org.bukkit.inventory.ItemStack;

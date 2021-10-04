@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api.objects;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import me.badbones69.crazycrates.multisupport.OraxenSupport;
+import com.badbones69.crazycrates.support.libs.OraxenSupport;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

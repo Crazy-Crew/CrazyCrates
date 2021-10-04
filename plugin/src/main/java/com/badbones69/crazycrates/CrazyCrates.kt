@@ -13,6 +13,7 @@ import com.badbones69.crazycrates.cratetypes.*
 import com.badbones69.crazycrates.func.enums.registerPermissions
 import com.badbones69.crazycrates.func.listeners.BasicListener
 import com.badbones69.crazycrates.func.registerListener
+import com.badbones69.crazycrates.support.libs.OraxenSupport
 import com.badbones69.crazycrates.support.libs.Support
 import com.badbones69.crazycrates.support.libs.Version
 import com.badbones69.crazycrates.support.placeholders.MVdWPlaceholderAPISupport
@@ -43,6 +44,10 @@ class CrazyCrates : JavaPlugin() {
 
     override fun onEnable() {
         super.onEnable()
+
+        // This should load dependencies that were not loaded before this plugin.
+        // Soft-depend sometimes does not work!!
+        Support.enableLoaded(pluginLoader)
 
         //updateFiles("Locations.yml", "locations.yml")
         //updateFiles("Data.yml", "data.yml")
@@ -77,6 +82,14 @@ class CrazyCrates : JavaPlugin() {
         if (!Files.DATA.file.contains("Players")) {
             Files.DATA.file.set("Players.Clear", null)
             Files.DATA.saveFile()
+        }
+
+        // This must be done before loading crates
+        //Messages.addMissingMessages(); #Does work but is disabled for now.
+
+        // This must be done before loading crates
+        if (Support.ORAXEN.isPluginEnabled && Files.CONFIG.file.getBoolean("Settings.UseOraxen")) {
+            OraxenSupport.load()
         }
 
         CrazyManager.getInstance().loadCrates()
