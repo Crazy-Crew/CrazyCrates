@@ -278,7 +278,7 @@ public class FileManager {
     
     public void reloadAllFiles() {
         for (Files file : Files.values()) {
-            file.relaodFile();
+            file.reloadFile();
         }
         for (CustomFile file : customFiles) {
             file.reloadFile();
