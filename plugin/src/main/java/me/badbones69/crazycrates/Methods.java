@@ -26,6 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -367,9 +368,9 @@ public class Methods {
     }
     
     public static void failedToTakeKey(Player player, Crate crate, Exception e) {
-        System.out.println("[CrazyCrates] An error has occurred while trying to take a physical key from a player");
-        System.out.println("Player: " + player.getName());
-        System.out.println("Crate: " + crate.getName());
+        Bukkit.getServer().getLogger().warning("[CrazyCrates] An error has occurred while trying to take a physical key from a player");
+        Bukkit.getServer().getLogger().warning("Player: " + player.getName());
+        Bukkit.getServer().getLogger().warning("Crate: " + crate.getName());
         player.sendMessage(Methods.getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));
         if (e != null) {
             e.printStackTrace();

@@ -4,6 +4,7 @@ import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.FileManager;
 import me.badbones69.crazycrates.api.enums.BrokeLocation;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +12,7 @@ import org.bukkit.event.world.WorldLoadEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  *
@@ -40,9 +42,9 @@ public class BrokeLocationsControl implements Listener {
             }
             cc.getBrokeCrateLocations().removeAll(fixedWorlds);
             if (fileManager.isLogging()) {
-                System.out.println(fileManager.getPrefix() + "Fixed " + fixedAmount + " broken crate locations.");
+                Bukkit.getLogger().warning(fileManager.getPrefix() + "Fixed " + fixedAmount + " broken crate locations.");
                 if (cc.getBrokeCrateLocations().isEmpty()) {
-                    System.out.println(fileManager.getPrefix() + "All broken crate locations have been fixed.");
+                    Bukkit.getLogger().warning(fileManager.getPrefix() + "All broken crate locations have been fixed.");
                 }
             }
         }

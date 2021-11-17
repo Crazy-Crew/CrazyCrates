@@ -20,6 +20,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.logging.Level;
+
 public class Main extends JavaPlugin implements Listener {
     
     private boolean updateChecker = false;
@@ -31,20 +33,20 @@ public class Main extends JavaPlugin implements Listener {
     public void onEnable() {
         if (Version.getCurrentVersion().isOlder(Version.v1_8_R3)) {// Disables plugin on unsupported versions
             isEnabled = false;
-            System.out.println("============= Crazy Crates =============");
-            System.out.println(" ");
-            System.out.println("Plugin Disabled: This server is running on 1.8.3 or below and Crazy Crates does not support those versions. "
+            getLogger().warning("============= Crazy Crates =============");
+            getLogger().info(" ");
+            getLogger().warning("Plugin Disabled: This server is running on 1.8.3 or below and Crazy Crates does not support those versions. "
             + "Please check the spigot page for more information about lower Minecraft versions.");
-            System.out.println(" ");
-            System.out.println("Plugin Page: https://www.spigotmc.org/resources/17599/");
-            System.out.println("Version Integer: " + Version.getCurrentVersion().getVersionInteger());
-            System.out.println(" ");
-            System.out.println("============= Crazy Crates =============");
+            getLogger().info(" ");
+            getLogger().warning("Plugin Page: https://www.spigotmc.org/resources/17599/");
+            getLogger().warning("Version Integer: " + Version.getCurrentVersion().getVersionInteger());
+            getLogger().info(" ");
+            getLogger().warning("============= Crazy Crates =============");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
         //Crate Files
-        String extention = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "nbt" : "schematic";
+        String extension = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "nbt" : "schematic";
         String cratesFolder = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "/Crates1.13-Up" : "/Crates1.12.2-Down";
         String schemFolder = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "/Schematics1.13-Up" : "/Schematics1.12.2-Down";
         fileManager.logInfo(true)
@@ -53,12 +55,12 @@ public class Main extends JavaPlugin implements Listener {
         .registerDefaultGenerateFiles("Crazy.yml", "/Crates", cratesFolder)
         .registerDefaultGenerateFiles("Galactic.yml", "/Crates", cratesFolder)
         //Schematics
-        .registerDefaultGenerateFiles("classic." + extention, "/Schematics", schemFolder)
-        .registerDefaultGenerateFiles("nether." + extention, "/Schematics", schemFolder)
-        .registerDefaultGenerateFiles("outdoors." + extention, "/Schematics", schemFolder)
-        .registerDefaultGenerateFiles("sea." + extention, "/Schematics", schemFolder)
-        .registerDefaultGenerateFiles("soul." + extention, "/Schematics", schemFolder)
-        .registerDefaultGenerateFiles("wooden." + extention, "/Schematics", schemFolder)
+        .registerDefaultGenerateFiles("classic." + extension, "/Schematics", schemFolder)
+        .registerDefaultGenerateFiles("nether." + extension, "/Schematics", schemFolder)
+        .registerDefaultGenerateFiles("outdoors." + extension, "/Schematics", schemFolder)
+        .registerDefaultGenerateFiles("sea." + extension, "/Schematics", schemFolder)
+        .registerDefaultGenerateFiles("soul." + extension, "/Schematics", schemFolder)
+        .registerDefaultGenerateFiles("wooden." + extension, "/Schematics", schemFolder)
         //Register all files inside the custom folders.
         .registerCustomFilesFolder("/Crates")
         .registerCustomFilesFolder("/Schematics")
@@ -130,14 +132,10 @@ public class Main extends JavaPlugin implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (player.getName().equals("BadBones69")) {
-                    player.sendMessage(Methods.getPrefix() + Methods.color("&7This server is running your Crazy Crates Plugin. " + "&7It is running version &av" + Methods.plugin.getDescription().getVersion() + "&7."));
-                }
                 if (player.isOp() && updateChecker) {
                     Methods.hasUpdate(player);
                 }
             }
         }.runTaskLaterAsynchronously(this, 40);
     }
-    
 }

@@ -31,6 +31,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 public class CCCommand implements CommandExecutor {
     
@@ -63,7 +64,7 @@ public class CCCommand implements CommandExecutor {
                         sender.sendMessage(Messages.CONVERT_CRATES_PLUS.getMessage("%Prefix%", Methods.getPrefix()));
                     } catch (Exception e) {
                         sender.sendMessage(Messages.ERROR_CONVERTING_FILES.getMessage());
-                        System.out.println("Error while trying to convert files with Crazy Crates v" + cc.getPlugin().getDescription().getVersion());
+                        Bukkit.getLogger().warning("Error while trying to convert files with Crazy Crates v" + cc.getPlugin().getDescription().getVersion());
                         e.printStackTrace();
                     }
                 } else {
@@ -149,7 +150,7 @@ public class CCCommand implements CommandExecutor {
                             try {
                                 crate.addEditorItem(prize, item);
                             } catch (Exception e) {
-                                System.out.println(fileManager.getPrefix() + "Failed to add a new prize to the " + crate.getName() + " crate.");
+                                Bukkit.getLogger().warning(fileManager.getPrefix() + "Failed to add a new prize to the " + crate.getName() + " crate.");
                                 e.printStackTrace();
                             }
                             cc.loadCrates();

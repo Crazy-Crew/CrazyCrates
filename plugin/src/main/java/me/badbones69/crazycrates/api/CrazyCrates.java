@@ -226,9 +226,9 @@ public class CrazyCrates {
         if (hologramController != null) {
             hologramController.removeAllHolograms();
         }
-        if (fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Loading all crate information...");
+        if (fileManager.isLogging()) Bukkit.getLogger().info(fileManager.getPrefix() + "Loading all crate information...");
         for (String crateName : fileManager.getAllCratesNames()) {
-            //			if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Loading " + crateName + ".yml information....");
+            //			if(fileManager.isLogging()) plugin.getLogger().info(fileManager.getPrefix() + "Loading " + crateName + ".yml information....");
             try {
                 FileConfiguration file = fileManager.getFile(crateName).getFile();
                 CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));
@@ -293,7 +293,6 @@ public class CrazyCrates {
                 }
                 crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers,
                 new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"))));
-                //				if(fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "" + crateName + ".yml has been loaded.");
             } catch (Exception e) {
                 brokecrates.add(crateName);
                 Bukkit.getLogger().log(Level.WARNING, fileManager.getPrefix() + "There was an error while loading the " + crateName + ".yml file.");
@@ -301,8 +300,8 @@ public class CrazyCrates {
             }
         }
         crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null));
-        if (fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "All crate information has been loaded.");
-        if (fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Loading all the physical crate locations.");
+        if (fileManager.isLogging()) Bukkit.getLogger().info(fileManager.getPrefix() + "All crate information has been loaded.");
+        if (fileManager.isLogging()) Bukkit.getLogger().info(fileManager.getPrefix() + "Loading all the physical crate locations.");
         FileConfiguration locations = Files.LOCATIONS.getFile();
         int loadedAmount = 0;
         int brokeAmount = 0;
@@ -335,31 +334,31 @@ public class CrazyCrates {
         if (fileManager.isLogging()) {
             if (loadedAmount > 0 || brokeAmount > 0) {
                 if (brokeAmount <= 0) {
-                    System.out.println(fileManager.getPrefix() + "All physical crate locations have been loaded.");
+                    Bukkit.getLogger().info(fileManager.getPrefix() + "All physical crate locations have been loaded.");
                 } else {
-                    System.out.println(fileManager.getPrefix() + "Loaded " + loadedAmount + " physical crate locations.");
-                    System.out.println(fileManager.getPrefix() + "Failed to load " + brokeAmount + " physical crate locations.");
+                    Bukkit.getLogger().info(fileManager.getPrefix() + "Loaded " + loadedAmount + " physical crate locations.");
+                    Bukkit.getLogger().info(fileManager.getPrefix() + "Failed to load " + brokeAmount + " physical crate locations.");
                 }
             }
         }
         //Loading schematic files
-        if (fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "Searching for schematics to load.");
+        if (fileManager.isLogging()) Bukkit.getLogger().info(fileManager.getPrefix() + "Searching for schematics to load.");
         String[] schems = new File(plugin.getDataFolder() + "/Schematics/").list();
         boolean isNewer = Version.getCurrentVersion().isNewer(Version.v1_12_R1);
         for (String schematicName : schems) {
             if (isNewer) {
                 if (schematicName.endsWith(".nbt")) {
                     crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(plugin.getDataFolder() + "/Schematics/" + schematicName)));
-                    if (fileManager.isLogging()) System.out.println(fileManager.getPrefix() + schematicName + " was successfully found and loaded.");
+                    if (fileManager.isLogging()) Bukkit.getLogger().info(fileManager.getPrefix() + schematicName + " was successfully found and loaded.");
                 }
             } else {
                 if (schematicName.endsWith(".schematic")) {
                     crateSchematics.add(new CrateSchematic(schematicName.replace(".schematic", ""), new File(plugin.getDataFolder() + "/Schematics/" + schematicName)));
-                    if (fileManager.isLogging()) System.out.println(fileManager.getPrefix() + schematicName + " was successfully found and loaded.");
+                    if (fileManager.isLogging()) Bukkit.getLogger().info(fileManager.getPrefix() + schematicName + " was successfully found and loaded.");
                 }
             }
         }
-        if (fileManager.isLogging()) System.out.println(fileManager.getPrefix() + "All schematics were found and loaded.");
+        if (fileManager.isLogging()) Bukkit.getLogger().info(fileManager.getPrefix() + "All schematics were found and loaded.");
         cleanDataFile();
         Preview.loadButtons();
     }
@@ -379,7 +378,7 @@ public class CrazyCrates {
         FileConfiguration data = Files.DATA.getFile();
         if (data.contains("Players")) {
             boolean logging = fileManager.isLogging();
-            if (logging) System.out.println(fileManager.getPrefix() + "Cleaning up the data.yml file.");
+            if (logging) Bukkit.getLogger().info(fileManager.getPrefix() + "Cleaning up the data.yml file.");
             List<String> removePlayers = new ArrayList<>();
             for (String uuid : data.getConfigurationSection("Players").getKeys(false)) {
                 boolean hasKeys = false;
@@ -400,14 +399,13 @@ public class CrazyCrates {
                 }
             }
             if (removePlayers.size() > 0) {
-                if (logging) System.out.println(fileManager.getPrefix() + removePlayers.size() + " player's data has been marked to be removed.");
+                if (logging) Bukkit.getLogger().info(fileManager.getPrefix() + removePlayers.size() + " player's data has been marked to be removed.");
                 for (String uuid : removePlayers) {
-                    //				if(logging) System.out.println(fileManager.getPrefix() + "Removed " + data.getString("Players." + uuid + ".Name") + "'s empty data from the data.yml.");
                     data.set("Players." + uuid, null);
                 }
-                if (logging) System.out.println(fileManager.getPrefix() + "All empty player data has been removed.");
+                if (logging) Bukkit.getLogger().info(fileManager.getPrefix() + "All empty player data has been removed.");
             }
-            if (logging) System.out.println(fileManager.getPrefix() + "The data.yml file has been cleaned.");
+            if (logging) Bukkit.getLogger().info(fileManager.getPrefix() + "The data.yml file has been cleaned.");
             Files.DATA.saveFile();
         }
     }
@@ -806,8 +804,8 @@ public class CrazyCrates {
                                 commandBuilder.append(pickNumber(min, max)).append(" ");
                             } catch (Exception e) {
                                 commandBuilder.append("1 ");
-                                Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> The prize " + prize.getName() + " in the " + prize.getCrate() + " crate has caused an error when trying to run a command.");
-                                Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> Command: " + cmd);
+                                Bukkit.getLogger().warning("[CrazyCrates]>> The prize " + prize.getName() + " in the " + prize.getCrate() + " crate has caused an error when trying to run a command.");
+                                Bukkit.getLogger().warning("[CrazyCrates]>> Command: " + cmd);
                             }
                         } else {
                             commandBuilder.append(word).append(" ");
@@ -829,7 +827,7 @@ public class CrazyCrates {
                 .replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
             }
         } else {
-            Bukkit.getLogger().log(Level.WARNING, "[CrazyCrates]>> No prize was found when giving " + player.getName() + " a prize.");
+            plugin.getLogger().warning("[CrazyCrates]>> No prize was found when giving " + player.getName() + " a prize.");
         }
     }
     
