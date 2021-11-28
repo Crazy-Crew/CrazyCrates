@@ -392,8 +392,10 @@ public class CCCommand implements CommandExecutor {
                                             player.playSound(player.getLocation(), sound, 1f, 1f);
                                         }
                                     }
+									if (config.contains("Settings.KnockBack")) {
+										CrateControl.knockBack(player, player.getTargetBlock(null, 1).getLocation().add(.5, 0, .5));
+									}
                                     player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
-                                    CrateControl.knockBack(player, player.getTargetBlock(null, 1).getLocation().add(.5, 0, .5));
                                     return true;
                                 }
                                 if (Methods.isInventoryFull(player)) {
