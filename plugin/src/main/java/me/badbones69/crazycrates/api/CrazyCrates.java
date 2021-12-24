@@ -1104,13 +1104,6 @@ public class CrazyCrates {
             if (item != null) {
                 if (Methods.isSimilar(item, crate)) {
                     keys += item.getAmount();
-                } else {
-                    NBTItem nbtItem = new NBTItem(item);
-                    if (nbtItem.hasKey("CrazyCrates-Crate")) {
-                        if (crate.getName().equals(nbtItem.getString("CrazyCrates-Crate"))) {
-                            keys += item.getAmount();
-                        }
-                    }
                 }
             }
         }
