@@ -1042,6 +1042,7 @@ public class CrazyCrates {
      */
     public ItemStack getPhysicalKey(Player player, Crate crate) {
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
+            if(item == null || item.getType() == Material.AIR) continue;
             if (Methods.isSimilar(item, crate)) {
                 return item;
             }
@@ -1101,10 +1102,9 @@ public class CrazyCrates {
     public int getPhysicalKeys(Player player, Crate crate) {
         int keys = 0;
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
-            if (item != null) {
-                if (Methods.isSimilar(item, crate)) {
-                    keys += item.getAmount();
-                }
+            if (item == null || item.getType() == Material.AIR) continue;
+            if (Methods.isSimilar(item, crate)) {
+                keys += item.getAmount();
             }
         }
         return keys;
