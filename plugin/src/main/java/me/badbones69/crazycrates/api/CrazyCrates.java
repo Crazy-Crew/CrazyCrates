@@ -1225,7 +1225,7 @@ public class CrazyCrates {
         switch (keyType) {
             case PHYSICAL_KEY:
                 if (Methods.isInventoryFull(player)) {
-                    if (giveVirtualKeysWhenInventoryFull) {
+                    if (giveVirtualKeysWhenInventoryFull && crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
                         addKeys(amount, player, crate, KeyType.VIRTUAL_KEY);
                     } else {
                         player.getWorld().dropItem(player.getLocation(), crate.getKey(amount));

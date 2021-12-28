@@ -548,10 +548,12 @@ public class CCCommand implements CommandExecutor {
                                 Bukkit.getPluginManager().callEvent(event);
                                 if (!event.isCancelled()) {
                                     player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
+
                                     if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
-                                        player.getInventory().addItem(crate.getKey(amount));
+                                        cc.addKeys(amount, player, crate, KeyType.PHYSICAL_KEY);
                                         return true;
                                     }
+
                                     cc.addKeys(amount, player, crate, type);
                                 }
                             }
