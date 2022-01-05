@@ -5,7 +5,7 @@
     <parent>
         <groupId>me.badbones69</groupId>
         <artifactId>crazycrates-parent</artifactId>
-        <version>1.10.1</version>
+        <version>1.10.2</version>
     </parent>
 
     <properties>
@@ -33,10 +33,6 @@
         <repository>
             <id>codemc-repo</id>
             <url>https://repo.codemc.io/repository/maven-public/</url>
-        </repository>
-        <repository>
-            <id>codemc-nms</id>
-            <url>https://repo.codemc.io/repository/nms/</url>
         </repository>
     </repositories>
 
@@ -67,55 +63,7 @@
         </dependency>
         <dependency>
             <groupId>me.badbones69</groupId>
-            <artifactId>crazycrates-v1_15_R1</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>me.badbones69</groupId>
-            <artifactId>crazycrates-v1_14_R1</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>me.badbones69</groupId>
-            <artifactId>crazycrates-v1_13_R2</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_12_R1</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>me.badbones69</groupId>
-            <artifactId>crazycrates-v1_11_R1</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>me.badbones69</groupId>
-            <artifactId>crazycrates-v1_10_R1</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>me.badbones69</groupId>
-            <artifactId>crazycrates-v1_9_R2</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
@@ -137,9 +85,11 @@
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
+
+        <!-- Misc -->
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
+            <artifactId>spigot</artifactId>
             <version>1.18-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
@@ -149,28 +99,35 @@
             <version>2.9.0</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- Holograms -->
+        <dependency>
+            <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+            <artifactId>holographicdisplays-api</artifactId>
+            <version>2.4.9</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--<dependency>
+            <groupId>dev.geco</groupId>
+            <artifactId>GHolo</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>dev.geco</groupId>
+            <artifactId>GHolo</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/GHolo-1.0.0.jar</systemPath>
+        </dependency>-->
+
+        <!-- Placeholder Support -->
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.11.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>plus.crates</groupId>
-            <artifactId>CratesPlus</artifactId>
-            <version>5.0-SNAPSHOT-8</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.gmail.filoghost.holographicdisplays</groupId>
-            <artifactId>holographicdisplays-api</artifactId>
-            <version>2.3.3-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.sainttx.holograms</groupId>
-            <artifactId>holograms</artifactId>
-            <version>2.12</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -189,6 +146,14 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.2.0</version>
+            <type>maven-plugin</type>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -201,7 +166,7 @@
             </resource>
         </resources>
         <plugins>
-            <!-- This disables the filtering in file extentions that can be corupted by it -->
+            <!-- This disables the filtering in file extensions that can be corrupted by it -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -233,6 +198,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>14</source>
+                    <target>14</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>
