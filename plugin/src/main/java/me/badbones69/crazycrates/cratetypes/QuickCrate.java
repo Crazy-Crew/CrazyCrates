@@ -34,7 +34,7 @@ public class QuickCrate implements Listener {
     private static HashMap<Player, BukkitTask> tasks = new HashMap<>();
     
     public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
-        int keys;// If the key is free it is set to one.
+        int keys; // If the key is free it is set to one.
         switch (keyType) {
             case VIRTUAL_KEY:
                 keys = cc.getVirtualKeys(player, crate);
@@ -46,21 +46,24 @@ public class QuickCrate implements Listener {
                 keys = 1;
                 break;
         }
+
         if (player.isSneaking() && keys > 1) {
             int keysUsed = 0;
-            for (; keys > 0; keys--) {
-                if (!Methods.isInventoryFull(player)) {
-                    Prize prize = crate.pickPrize(player);
-                    cc.givePrize(player, prize);
-                    Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-                    if (prize.useFireworks()) {
-                        Methods.fireWork(loc.clone().add(.5, 1, .5));
-                    }
-                    keysUsed++;
-                } else {
-                    break;
+
+            // give the player the prizes
+            for(; keys > 0; keys--) {
+                if(Methods.isInventoryFull(player)) break;
+
+                Prize prize = crate.pickPrize(player);
+                cc.givePrize(player, prize);
+                Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+                if (prize.useFireworks()) {
+                    Methods.fireWork(loc.clone().add(.5, 1, .5));
                 }
+
+                keysUsed++;
             }
+
             if (!cc.takeKeys(keysUsed, player, crate, keyType, false)) {
                 Methods.failedToTakeKey(player, crate);
                 CrateControl.inUse.remove(player);
