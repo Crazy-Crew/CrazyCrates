@@ -10,8 +10,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
-        <java.release>1.8</java.release>
+        <java.version>17</java.version>
+        <java.release>17</java.release>
+        <kotlin.version>1.6.10</kotlin.version>
     </properties>
 
     <artifactId>crazycrates-plugin</artifactId>
@@ -40,38 +41,6 @@
         <dependency>
             <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_18_R1</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>me.badbones69</groupId>
-            <artifactId>crazycrates-v1_17_R1</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>me.badbones69</groupId>
-            <artifactId>crazycrates-v1_16_R3</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>me.badbones69</groupId>
-            <artifactId>crazycrates-v1_12_R1</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>me.badbones69</groupId>
-            <artifactId>crazycrates-v1_8_R3</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
@@ -108,21 +77,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!--<dependency>
-            <groupId>dev.geco</groupId>
-            <artifactId>GHolo</artifactId>
-            <version>1.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>dev.geco</groupId>
-            <artifactId>GHolo</artifactId>
-            <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/GHolo-1.0.0.jar</systemPath>
-        </dependency>-->
-
         <!-- Placeholder Support -->
         <dependency>
             <groupId>me.clip</groupId>
@@ -152,6 +106,13 @@
             <artifactId>maven-resources-plugin</artifactId>
             <version>3.2.0</version>
             <type>maven-plugin</type>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -209,5 +170,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

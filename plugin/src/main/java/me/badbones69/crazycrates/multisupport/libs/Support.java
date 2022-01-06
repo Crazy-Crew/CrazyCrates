@@ -1,4 +1,4 @@
-package me.badbones69.crazycrates.multisupport;
+package me.badbones69.crazycrates.multisupport.libs;
 
 import org.bukkit.Bukkit;
 
@@ -6,9 +6,7 @@ public enum Support {
     
     PLACEHOLDERAPI("PlaceholderAPI"),
     MVDWPLACEHOLDERAPI("MVdWPlaceholderAPI"),
-    CRATESPLUS("CratesPlus"),
-    HOLOGRAPHIC_DISPLAYS("HolographicDisplays"),
-    HOLOGRAMS("Holograms");
+    HOLOGRAPHIC_DISPLAYS("HolographicDisplays");
     
     private String name;
     
