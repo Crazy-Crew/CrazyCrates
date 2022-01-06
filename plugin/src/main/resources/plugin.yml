@@ -1,5 +1,5 @@
 name: CrazyCrates
-main: me.badbones69.crazycrates.Main
+main: me.badbones69.crazycrates.CrazyCrates
 author: BadBones69
 version: ${project.version}${build.number}
 api-version: 1.13
@@ -12,3 +12,5 @@ commands:
   key:
     description: Views the amount of keys you/others have.
     aliases: [ keys ]
+libraries:
+  - org.jetbrains.kotlin:kotlin-stdlib:1.6.10
