@@ -35,7 +35,7 @@ class CrazyCrates : JavaPlugin() {
             logger.warning("You can check the Spigot Page or Jenkins to find jars for older versions.")
             logger.info(" ")
             logger.warning("Plugin Page: https://www.spigotmc.org/resources/17599/")
-            logger.warning("Jenkins Page: https://jenkins.badbones69.com/job/Crazy-Crates/")
+            logger.warning("Jenkins Page: https://jenkins.badbones69.com/job/Crazy-Crates-Dev/")
             logger.warning("Version Integer: " + Version.getCurrentVersion().versionInteger)
             logger.info(" ")
             logger.warning("============= Crazy Crates =============")
