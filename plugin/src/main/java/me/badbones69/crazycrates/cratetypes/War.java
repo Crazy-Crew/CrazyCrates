@@ -10,6 +10,7 @@ import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -56,7 +57,7 @@ public class War implements Listener {
             public void run() {
                 if (full < 25) {
                     setRandomPrizes(player, inv, crate, inventoryTitle);
-                    player.playSound(player.getLocation(), XSound.BLOCK_LAVA_POP.parseSound(), 1, 1);
+                    player.playSound(player.getLocation(), Sound.BLOCK_LAVA_POP, 1, 1);
                 }
                 open++;
                 if (open >= 3) {
@@ -65,7 +66,7 @@ public class War implements Listener {
                 }
                 full++;
                 if (full == 26) {//Finished Rolling
-                    player.playSound(player.getLocation(), XSound.BLOCK_LAVA_POP.parseSound(), 1, 1);
+                    player.playSound(player.getLocation(), Sound.BLOCK_LAVA_POP, 1, 1);
                     setRandomGlass(player, inv, inventoryTitle);
                     canPick.put(player, true);
                 }
@@ -97,22 +98,22 @@ public class War implements Listener {
 
     private static HashMap<ItemStack, String> getColorCode() {
         HashMap<ItemStack, String> colorCodes = new HashMap<>();
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.WHITE_STAINED_GLASS_PANE.parseMaterial()).build(), "f");
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.ORANGE_STAINED_GLASS_PANE.parseMaterial()).build(), "6");
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.MAGENTA_STAINED_GLASS_PANE.parseMaterial()).build(), "d");
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE.parseMaterial()).build(), "3");
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.YELLOW_STAINED_GLASS_PANE.parseMaterial()).build(), "e");
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial()).build(), "a");
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.PINK_STAINED_GLASS_PANE.parseMaterial()).build(), "c");
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.GRAY_STAINED_GLASS_PANE.parseMaterial()).build(), "7");
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.LIGHT_GRAY_STAINED_GLASS_PANE.parseMaterial()).build(), "7");
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.CYAN_STAINED_GLASS_PANE.parseMaterial()).build(), "3");
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.PURPLE_STAINED_GLASS_PANE.parseMaterial()).build(), "5");
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.BLUE_STAINED_GLASS_PANE.parseMaterial()).build(), "9");
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.BROWN_STAINED_GLASS_PANE.parseMaterial()).build(), "6");
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.GREEN_STAINED_GLASS_PANE.parseMaterial()).build(), "2");
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.RED_STAINED_GLASS_PANE.parseMaterial()).build(), "4");
-        colorCodes.put(new ItemBuilder().setMaterial(XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()).build(), "8");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.WHITE_STAINED_GLASS_PANE).build(), "f");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.ORANGE_STAINED_GLASS_PANE).build(), "6");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.MAGENTA_STAINED_GLASS_PANE).build(), "d");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.LIGHT_BLUE_STAINED_GLASS_PANE).build(), "3");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.YELLOW_STAINED_GLASS_PANE).build(), "e");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).build(), "a");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.PINK_STAINED_GLASS_PANE).build(), "c");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.GRAY_STAINED_GLASS_PANE).build(), "7");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.LIGHT_GRAY_STAINED_GLASS_PANE).build(), "7");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.CYAN_STAINED_GLASS_PANE).build(), "3");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.PURPLE_STAINED_GLASS_PANE).build(), "5");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.BLUE_STAINED_GLASS_PANE).build(), "9");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.BROWN_STAINED_GLASS_PANE).build(), "6");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.GREEN_STAINED_GLASS_PANE).build(), "2");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.RED_STAINED_GLASS_PANE).build(), "4");
+        colorCodes.put(new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).build(), "8");
         return colorCodes;
     }
 
@@ -124,7 +125,7 @@ public class War implements Listener {
             Crate crate = cc.getOpeningCrate(player);
             if (crate.getCrateType() == CrateType.WAR && canPick.get(player)) {
                 ItemStack item = e.getCurrentItem();
-                if (item != null && item.getType().toString().contains(XMaterial.matchXMaterial("STAINED_GLASS_PANE").toString())) {
+                if (item != null && item.getType().toString().contains(Material.matchMaterial("STAINED_GLASS_PANE").toString())) {
                     final int slot = e.getRawSlot();
                     Prize prize = crate.pickPrize(player);
                     inv.setItem(slot, prize.getDisplayItem());
@@ -139,7 +140,7 @@ public class War implements Listener {
                     }
                     Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                     cc.removePlayerFromOpeningList(player);
-                    player.playSound(player.getLocation(), XSound.BLOCK_ANVIL_LAND.parseSound(), 1, 1);
+                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 1, 1);
                     //Sets all other non picked prizes to show what they could have been.
                     cc.addCrateTask(player, new BukkitRunnable() {
                         @Override

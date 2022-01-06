@@ -7,6 +7,8 @@ import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
@@ -48,8 +50,8 @@ public class CSGO implements Listener {
         inv.setItem(2 + 18, glass.get(3));
         inv.setItem(3, glass.get(5));
         inv.setItem(3 + 18, glass.get(5));
-        inv.setItem(4, new ItemBuilder().setMaterial(XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()).setName(" ").build());
-        inv.setItem(4 + 18, new ItemBuilder().setMaterial(XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()).setName(" ").build());
+        inv.setItem(4, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+        inv.setItem(4 + 18, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
         inv.setItem(5, glass.get(6));
         inv.setItem(5 + 18, glass.get(6));
         inv.setItem(6, glass.get(7));
@@ -86,7 +88,7 @@ public class CSGO implements Listener {
                 if (full <= 50) {//When Spinning
                     moveItems(inv, player, crate);
                     setGlass(inv);
-                    player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.parseSound(), 1, 1);
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                 }
                 open++;
                 if (open >= 5) {
@@ -98,11 +100,11 @@ public class CSGO implements Listener {
                     if (slowSpin().contains(time)) {//When Slowing Down
                         moveItems(inv, player, crate);
                         setGlass(inv);
-                        player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.parseSound(), 1, 1);
+                        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                     }
                     time++;
                     if (time == 60) {// When done
-                        player.playSound(player.getLocation(), XSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1, 1);
+                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                         cc.endCrate(player);
                         Prize prize = crate.getPrize(inv.getItem(13));
                         if (prize != null) {

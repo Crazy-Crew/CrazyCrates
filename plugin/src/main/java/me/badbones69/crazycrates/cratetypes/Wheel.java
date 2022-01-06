@@ -7,6 +7,8 @@ import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
@@ -30,7 +32,7 @@ public class Wheel implements Listener {
         }
         final Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 54, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
         for (int i = 0; i < 54; i++) {
-            inv.setItem(i, new ItemBuilder().setMaterial(XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()).setName(" ").build());
+            inv.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
         }
         HashMap<Integer, ItemStack> items = new HashMap<>();
         for (int i : getBorder()) {
@@ -60,29 +62,29 @@ public class Wheel implements Listener {
                 }
                 if (full < timer) {
                     if (rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
-                        inv.setItem(slots.get(i), new ItemBuilder().setMaterial(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial()).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
+                        inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
                     } else {
-                        inv.setItem(slots.get(i), new ItemBuilder().setMaterial(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial()).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
+                        inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
                     }
                     inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
-                    player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.parseSound(), 1, 1);
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                     i++;
                     f++;
                 }
                 if (full >= timer) {
                     if (slowSpin().contains(slower)) {
                         if (rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
-                            inv.setItem(slots.get(i), new ItemBuilder().setMaterial(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial()).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
+                            inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
                         } else {
-                            inv.setItem(slots.get(i), new ItemBuilder().setMaterial(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial()).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
+                            inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
                         }
                         inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
-                        player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.parseSound(), 1, 1);
+                        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                         i++;
                         f++;
                     }
                     if (full == timer + 47) {
-                        player.playSound(player.getLocation(), XSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1, 1);
+                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                     }
                     if (full >= timer + 47) {
                         slow++;

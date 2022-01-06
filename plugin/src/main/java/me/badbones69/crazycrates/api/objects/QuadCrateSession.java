@@ -168,7 +168,7 @@ public class QuadCrateSession {
                     spawnParticles(particle, particleColor, spiralLocationsClockwise.get(tickTillSpawn), spiralLocationsCounterClockwise.get(tickTillSpawn));
                     tickTillSpawn++;
                 } else {
-                    player.playSound(player.getLocation(), XSound.BLOCK_STONE_STEP.parseSound(), 1, 1);
+                    player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
                     Block chest = chestLocations.get(crateNumber).getBlock();
                     chest.setType(Material.CHEST);
                     rotateChest(chest, crateNumber);
@@ -363,75 +363,35 @@ public class QuadCrateSession {
     }
     
     private void spawnParticles(QuadCrateParticles quadCrateParticle, Color particleColor, Location location1, Location location2) {
-        if (Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
-            Particle particle;
-            switch (quadCrateParticle) {
-                case FLAME:
-                    particle = Particle.FLAME;
-                    break;
-                case VILLAGER_HAPPY:
-                    particle = Particle.VILLAGER_HAPPY;
-                    break;
-                case SPELL_WITCH:
-                    particle = Particle.SPELL_WITCH;
-                    break;
-                default:
-                    particle = Particle.REDSTONE;
-            }
-            if (Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
-                if (particle == Particle.REDSTONE) {
-                    location1.getWorld().spawnParticle(particle, location1, 0, new DustOptions(particleColor, 1));
-                    location2.getWorld().spawnParticle(particle, location2, 0, new DustOptions(particleColor, 1));
-                } else {
-                    location1.getWorld().spawnParticle(particle, location1, 0);
-                    location2.getWorld().spawnParticle(particle, location2, 0);
-                }
-            } else {
-                location1.getWorld().spawnParticle(particle, location1, 0);
-                location2.getWorld().spawnParticle(particle, location2, 0);
-            }
+        Particle particle = switch (quadCrateParticle) {
+            case FLAME -> Particle.FLAME;
+            case VILLAGER_HAPPY -> Particle.VILLAGER_HAPPY;
+            case SPELL_WITCH -> Particle.SPELL_WITCH;
+            default -> Particle.REDSTONE;
+        };
+        if (particle == Particle.REDSTONE) {
+            location1.getWorld().spawnParticle(particle, location1, 0, new DustOptions(particleColor, 1));
+            location2.getWorld().spawnParticle(particle, location2, 0, new DustOptions(particleColor, 1));
         } else {
-            ParticleEffect particleEffect;
-            switch (quadCrateParticle) {
-                case FLAME:
-                    particleEffect = ParticleEffect.FLAME;
-                    break;
-                case VILLAGER_HAPPY:
-                    particleEffect = ParticleEffect.VILLAGER_HAPPY;
-                    break;
-                case SPELL_WITCH:
-                    particleEffect = ParticleEffect.SPELL_WITCH;
-                    break;
-                default:
-                    particleEffect = ParticleEffect.REDSTONE;
-            }
-            particleEffect.display(0, 0, 0, 0, 1, location1, 100);
-            particleEffect.display(0, 0, 0, 0, 1, location2, 100);
+            location1.getWorld().spawnParticle(particle, location1, 0);
+            location2.getWorld().spawnParticle(particle, location2, 0);
         }
     }
     
     private void rotateChest(Block chest, Integer direction) {
-        BlockFace blockFace;
-        switch (direction) {
-            case 0://East
-                blockFace = BlockFace.WEST;
-                break;
-            case 1://South
-                blockFace = BlockFace.NORTH;
-                break;
-            case 2://West
-                blockFace = BlockFace.EAST;
-                break;
-            case 3://North
-                blockFace = BlockFace.SOUTH;
-                break;
-            default:
-                blockFace = BlockFace.DOWN;
-                break;
-        }
+        BlockFace blockFace = switch (direction) {
+            case 0 ->//East
+                    BlockFace.WEST;
+            case 1 ->//South
+                    BlockFace.NORTH;
+            case 2 ->//West
+                    BlockFace.EAST;
+            case 3 ->//North
+                    BlockFace.SOUTH;
+            default -> BlockFace.DOWN;
+        };
         BlockState state = chest.getState();
         state.setData(new Chest(blockFace));
         state.update();
     }
-    
 }

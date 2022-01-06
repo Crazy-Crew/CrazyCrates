@@ -7,6 +7,7 @@ import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
@@ -48,8 +49,8 @@ public class Wonder implements Listener {
                     slots.remove(slot2 + "");
                     Slots.add(slot1);
                     Slots.add(slot2);
-                    inv.setItem(slot1, new ItemBuilder().setMaterial(XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()).setName(" ").build());
-                    inv.setItem(slot2, new ItemBuilder().setMaterial(XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()).setName(" ").build());
+                    inv.setItem(slot1, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+                    inv.setItem(slot2, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
                     for (String slot : slots) {
                         prize = crate.pickPrize(player);
                         inv.setItem(Integer.parseInt(slot), prize.getDisplayItem());

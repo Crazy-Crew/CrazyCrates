@@ -6,6 +6,7 @@ import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.Prize;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
@@ -52,7 +53,7 @@ public class Roulette implements Listener {
                 if (full <= 15) {
                     inv.setItem(13, crate.pickPrize(player).getDisplayItem());
                     setGlass(inv);
-                    player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.parseSound(), 1, 1);
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                     even++;
                     if (even >= 4) {
                         even = 0;
@@ -69,11 +70,11 @@ public class Roulette implements Listener {
                     if (slowSpin().contains(time)) {
                         setGlass(inv);
                         inv.setItem(13, crate.pickPrize(player).getDisplayItem());
-                        player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.parseSound(), 1, 1);
+                        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                     }
                     time++;
                     if (time >= 23) {
-                        player.playSound(player.getLocation(), XSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1, 1);
+                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                         cc.endCrate(player);
                         Prize prize = crate.getPrize(inv.getItem(13));
                         if (prize != null) {

@@ -9,6 +9,7 @@ import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.api.objects.QuadCrateSession;
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -77,7 +78,7 @@ public class QuadCrate implements Listener {
                                 @Override
                                 public void run() {
                                     session.endCrate();
-                                    player.playSound(player.getLocation(), XSound.BLOCK_STONE_STEP.parseSound(), 1, 1);
+                                    player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
                                 }
                             }.runTaskLater(CrazyManager.getJavaPlugin(), 60);
                         }

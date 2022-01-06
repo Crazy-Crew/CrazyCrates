@@ -13,6 +13,7 @@ import me.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.api.objects.Tier;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -45,7 +46,7 @@ public class Cosmic implements Listener {
         for (int i = 0; i < 27; i++) {
             inv.setItem(i, pickTier(player).getTierPane());
         }
-        player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.parseSound(), 1, 1);
+        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
         player.openInventory(inv);
     }
     
@@ -114,7 +115,7 @@ public class Cosmic implements Listener {
                                     cc.givePrize(player, prize);
                                     CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, cc.getOpeningCrate(player).getName(), prize));
                                     e.setCurrentItem(prize.getDisplayItem());
-                                    player.playSound(player.getLocation(), XSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1, 1);
+                                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                                     if (prize.useFireworks()) {
                                         Methods.fireWork(player.getLocation().add(0, 1, 0));
                                     }
@@ -142,7 +143,7 @@ public class Cosmic implements Listener {
                                     e.setCurrentItem(manager.getPickedCrate().setAmount(pickedSlot).addNamePlaceholder("%Slot%", pickedSlot + "").addLorePlaceholder("%Slot%", pickedSlot + "").build());
                                     glass.get(player).add(slot);
                                 }
-                                player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.parseSound(), 1, 1);
+                                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                             } else if (nbtItem.hasKey("Cosmic-Picked-Crate")) {
                                 if (!glass.containsKey(player)) glass.put(player, new ArrayList<>());
                                 e.setCurrentItem(manager.getMysteryCrate().setAmount(pickedSlot).addNamePlaceholder("%Slot%", pickedSlot + "").addLorePlaceholder("%Slot%", pickedSlot + "").build());
@@ -150,7 +151,7 @@ public class Cosmic implements Listener {
                                 for (int i : glass.get(player))
                                     if (i != slot) l.add(i);
                                 glass.put(player, l);
-                                player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.parseSound(), 1, 1);
+                                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                             }
                         }
                         if (glass.get(player).size() >= totalPrizes) {
@@ -199,7 +200,7 @@ public class Cosmic implements Listener {
                                     if (time == 40) {
                                         cc.endCrate(player);
                                         showRewards(player, crate);
-                                        player.playSound(player.getLocation(), XSound.BLOCK_ANVIL_PLACE.parseSound(), 1, 1);
+                                        player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1, 1);
                                         new BukkitRunnable() {
                                             @Override
                                             public void run() {
@@ -250,7 +251,7 @@ public class Cosmic implements Listener {
                 }
             }
             if (playSound) {
-                player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.parseSound(), 1, 1);
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
             }
             cc.removePlayerFromOpeningList(player);
             cc.removePlayerKeyType(player);

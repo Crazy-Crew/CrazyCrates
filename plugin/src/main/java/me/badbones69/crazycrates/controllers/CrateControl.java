@@ -33,6 +33,8 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 
+import static me.badbones69.crazycrates.func.ConstantsKt.color;
+
 public class CrateControl implements Listener { //Crate Control
     
     /**
@@ -60,7 +62,7 @@ public class CrateControl implements Listener { //Crate Control
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         FileConfiguration config = Files.CONFIG.getFile();
-        if (Version.getCurrentVersion().isNewer(Version.v1_8_R3) && e.getHand() == EquipmentSlot.OFF_HAND) {
+        if (e.getHand() == EquipmentSlot.OFF_HAND) {
             if (cc.isKey(player.getInventory().getItemInOffHand())) {
                 e.setCancelled(true);
                 player.updateInventory();
@@ -95,7 +97,7 @@ public class CrateControl implements Listener { //Crate Control
             //Checks if the item in their hand is a key and if so it stops them from right clicking with it.
             ItemStack key = cc.getNMSSupport().getItemInMainHand(player);
             boolean keyInHand = cc.isKey(key);
-            if (!keyInHand && Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+            if (!keyInHand) {
                 keyInHand = cc.isKey(player.getEquipment().getItemInOffHand());
             }
             if (keyInHand) {
@@ -200,7 +202,7 @@ public class CrateControl implements Listener { //Crate Control
                         if (key.hasItemMeta() && key.getItemMeta().hasDisplayName()) {
                             name = key.getItemMeta().getDisplayName();
                         }
-                        player.sendMessage(Methods.getPrefix() + Methods.color("&a&l+1 " + (name != null ? name : crate.getName())));
+                        player.sendMessage(Methods.getPrefix() + color("&a&l+1 " + (name != null ? name : crate.getName())));
                     }
                 }
             }

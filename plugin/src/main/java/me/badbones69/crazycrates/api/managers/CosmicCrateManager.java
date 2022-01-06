@@ -1,6 +1,7 @@
 package me.badbones69.crazycrates.api.managers;
 
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.Collections;
@@ -22,7 +23,7 @@ public class CosmicCrateManager extends CrateManager {
         .setLore(file.contains(path + "Mystery-Crate.Lore") ? file.getStringList(path + "Mystery-Crate.Lore") : Collections.singletonList("&7You may choose 4 crates."));
         mysteryCrate.getNBTItem().setString("Cosmic-Mystery-Crate", "Mystery Crate");
         pickedCrate = new ItemBuilder()
-        .setMaterial(file.getString(path + "Picked-Crate.Item", XMaterial.matchXMaterial("GLASS_PANE").toString()))
+        .setMaterial(file.getString(path + "Picked-Crate.Item", Material.GLASS_PANE.toString()))
         .setName(file.getString(path + "Picked-Crate.Name", "&f&l???"))
         .setLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("&7You have chosen #%slot%."));
         pickedCrate.getNBTItem().setString("Cosmic-Picked-Crate", "Picked Crate");
