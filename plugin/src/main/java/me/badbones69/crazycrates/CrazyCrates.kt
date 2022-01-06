@@ -1,5 +1,6 @@
 package me.badbones69.crazycrates;
 
+import io.papermc.lib.PaperLib
 import me.badbones69.crazycrates.api.CrazyManager
 import me.badbones69.crazycrates.api.FileManager
 import me.badbones69.crazycrates.api.FileManager.Files
@@ -26,18 +27,19 @@ class CrazyCrates : JavaPlugin() {
     private var serverEnabled = true
 
     override fun onLoad() {
-        if (Version.isOlder(Version.TOO_OLD)) {// Disables plugin on unsupported versions
-            serverEnabled = false;
+        if (Version.isOlder(Version.TOO_OLD)) {
             logger.warning("============= Crazy Crates =============");
-            logger.info(" ");
-            logger.warning("Plugin Disabled: This server is running on 1.17.1 or below and Crazy Crates does not support those versions. "
-                    + "Please check the spigot page for more information about lower Minecraft versions.");
-            logger.info(" ");
-            logger.warning("Plugin Page: https://www.spigotmc.org/resources/17599/");
-            logger.warning("Version Integer: " + Version.getCurrentVersion().getVersionInteger());
-            logger.info(" ");
-            logger.warning("============= Crazy Crates =============");
-            server.pluginManager.disablePlugin(this);
+            logger.info(" ")
+            logger.warning("You are running Crazy Crates on a version that is not 1.18.X, QuadCrates will not work")
+            logger.warning("Crazy Crates will function back to 1.13 except for QuadCrates.")
+            logger.warning("You can check the Spigot Page or Jenkins to find jars for older versions.")
+            logger.info(" ")
+            logger.warning("Plugin Page: https://www.spigotmc.org/resources/17599/")
+            logger.warning("Jenkins Page: https://jenkins.badbones69.com/job/Crazy-Crates/")
+            logger.warning("Version Integer: " + Version.getCurrentVersion().versionInteger)
+            logger.info(" ")
+            logger.warning("============= Crazy Crates =============")
+            //server.pluginManager.disablePlugin(this);
             return;
         }
     }
