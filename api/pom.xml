@@ -3,19 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>me.badbones69</groupId>
+        <groupId>com.badbones69</groupId>
         <artifactId>crazycrates-parent</artifactId>
         <version>1.10.2</version>
     </parent>
 
     <artifactId>crazycrates-api</artifactId>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.18-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
 </project>

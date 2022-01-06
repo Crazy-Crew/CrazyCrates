@@ -1,5 +1,5 @@
 name: CrazyCrates
-main: me.badbones69.crazycrates.CrazyCrates
+main: com.badbones69.crazycrates.CrazyCrates
 author: BadBones69
 version: ${project.version}${build.number}
 api-version: 1.13

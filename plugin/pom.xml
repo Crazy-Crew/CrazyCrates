@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>me.badbones69</groupId>
+        <groupId>com.badbones69</groupId>
         <artifactId>crazycrates-parent</artifactId>
         <version>1.10.2</version>
     </parent>
@@ -43,7 +43,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>me.badbones69</groupId>
+            <groupId>com.badbones69</groupId>
             <artifactId>crazycrates-api</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
@@ -150,7 +150,11 @@
                     <relocations>
                         <relocation>
                             <pattern>de.tr7zw</pattern>
-                            <shadedPattern>me.badbones69.crazycrates.nbtapi</shadedPattern>
+                            <shadedPattern>com.badbones69.crazycrates.libs.nbtapi</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>io.papermc</pattern>
+                            <shadedPattern>com.badbones69.crazycrates.libs.paperlib</shadedPattern>
                         </relocation>
                     </relocations>
                     <!--                    <outputFile>/Users/badbones/Desktop/Minecraft/Server/plugins/CrazyCrates[v${project.version}].jar</outputFile>-->
