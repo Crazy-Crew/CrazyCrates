@@ -48,13 +48,13 @@
             <scope>compile</scope>
         </dependency>
 
-        <!--<dependency>
+        <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-resources-plugin</artifactId>
             <version>3.2.0</version>
             <type>maven-plugin</type>
             <scope>provided</scope>
-        </dependency> -->
+        </dependency>
     </dependencies>
 
     <build>
@@ -67,7 +67,7 @@
             </resource>
         </resources>
         <plugins>
-            <!-- This disables the filtering in file extensions that can be corrupted by it
+            <!-- This disables the filtering in file extensions that can be corrupted by it-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -76,7 +76,7 @@
                         <nonFilteredFileExtension>nbt</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
                 </configuration>
-            </plugin> -->
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -92,7 +92,7 @@
                             <shadedPattern>com.badbones69.crazycrates.libs.paperlib</shadedPattern>
                         </relocation>
                     </relocations>
-                    <outputFile>H:\Development\CrazyCrew\..server\spigot\plugins\CrazyCrates[v${project.version}].jar</outputFile>
+                    <!--<outputFile>H:\Development\CrazyCrew\..server\spigot\plugins\CrazyCrates[v${project.version}].jar</outputFile>-->
                 </configuration>
                 <executions>
                     <execution>
