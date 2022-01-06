@@ -10,6 +10,8 @@ import me.badbones69.crazycrates.api.objects.CrateHologram;
 import org.bukkit.block.Block;
 import java.util.HashMap;
 
+import static me.badbones69.crazycrates.func.ConstantsKt.color;
+
 public class HolographicSupport implements HologramController {
 
     private static final HashMap<Block, Hologram> holograms = new HashMap<>();
@@ -20,7 +22,7 @@ public class HolographicSupport implements HologramController {
         double height = crateHologram.getHeight();
         Hologram hologram = HologramsAPI.createHologram(CrazyManager.getJavaPlugin(), block.getLocation().add(.5, height, .5));
         crateHologram.getMessages().forEach(line -> {
-            hologram.appendTextLine(Methods.color(line));
+            hologram.appendTextLine(color(line));
         });
         holograms.put(block, hologram);
     }

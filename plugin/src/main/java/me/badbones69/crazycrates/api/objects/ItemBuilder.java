@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static me.badbones69.crazycrates.func.ConstantsKt.color;
+
 /**
  *
  * The ItemBuilder is designed to make creating items easier by creating an easy to use Builder.
@@ -37,8 +39,6 @@ import java.util.stream.Collectors;
  */
 public class ItemBuilder {
 
-    private static CrazyManager cc = CrazyManager.getInstance();
-    private static Version version = Version.getCurrentVersion();
     private NBTItem nbtItem;
     private Material material;
     private int damage;
@@ -355,7 +355,7 @@ public class ItemBuilder {
      */
     public ItemBuilder setName(String name) {
         if (name != null) {
-            this.name = Methods.color(name);
+            this.name = color(name);
         }
         return this;
     }
@@ -420,7 +420,7 @@ public class ItemBuilder {
         if (lore != null) {
             this.lore.clear();
             for (String i : lore) {
-                this.lore.add(Methods.color(i));
+                this.lore.add(color(i));
             }
         }
         return this;
@@ -433,7 +433,7 @@ public class ItemBuilder {
      */
     public ItemBuilder addLore(String lore) {
         if (lore != null) {
-            this.lore.add(Methods.color(lore));
+            this.lore.add(color(lore));
         }
         return this;
     }

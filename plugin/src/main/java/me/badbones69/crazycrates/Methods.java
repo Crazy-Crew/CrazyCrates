@@ -24,32 +24,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static me.badbones69.crazycrates.func.ConstantsKt.color;
 
 public class Methods {
 
     private static CrazyManager cc = CrazyManager.getInstance();
     private static Random random = new Random();
     
-    public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
-    
-    public static String color(String message) {
-        if (Version.isNewer(Version.v1_15_R1)) {
-            Matcher matcher = HEX_PATTERN.matcher(message);
-            StringBuffer buffer = new StringBuffer();
-            while (matcher.find()) {
-                matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group()).toString());
-            }
-            return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
-        }
-        return ChatColor.translateAlternateColorCodes('&', message);
-    }
-    
     public static String sanitizeColor(String msg) {
         return sanitizeFormat(color(msg));
     }
-    
+
     public static String removeColor(String msg) {
         return ChatColor.stripColor(msg);
     }
@@ -161,11 +147,7 @@ public class Methods {
     
     public static boolean isSimilar(Player player, Crate crate) {
         boolean check = isSimilar(cc.getNMSSupport().getItemInMainHand(player), crate);
-        if (!check) {
-            if (Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
-                check = isSimilar(player.getEquipment().getItemInOffHand(), crate);
-            }
-        }
+        if (!check) check = isSimilar(player.getEquipment().getItemInOffHand(), crate);
         return check;
     }
     
@@ -269,14 +251,11 @@ public class Methods {
         enchantmentName = stripEnchantmentName(enchantmentName);
         for (Enchantment enchantment : Enchantment.values()) {
             try {
-                //MC 1.13+ has the correct names.
-                if (Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
-                    if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
-                        return enchantment;
-                    }
+                if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
+                    return enchantment;
                 }
                 if (stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null &&
-                stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
+                        stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
                     return enchantment;
                 }
             } catch (Exception ignore) {//If any null enchantments are found they may cause errors.
@@ -338,22 +317,22 @@ public class Methods {
 
     public static ItemBuilder getRandomPaneColor() {
         List<String> colors = Arrays.asList(
-                XMaterial.WHITE_STAINED_GLASS_PANE.toString(),
-                XMaterial.ORANGE_STAINED_GLASS_PANE.toString(),
-                XMaterial.MAGENTA_STAINED_GLASS_PANE.toString(),
-                XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE.toString(),
-                XMaterial.YELLOW_STAINED_GLASS_PANE.toString(),
-                XMaterial.LIME_STAINED_GLASS_PANE.toString(),
-                XMaterial.PINK_STAINED_GLASS_PANE.toString(),
-                XMaterial.GRAY_STAINED_GLASS_PANE.toString(),
-                XMaterial.CYAN_STAINED_GLASS_PANE.toString(),
-                XMaterial.PURPLE_STAINED_GLASS_PANE.toString(),
-                XMaterial.BLUE_STAINED_GLASS_PANE.toString(),
-                XMaterial.BROWN_STAINED_GLASS_PANE.toString(),
-                XMaterial.GREEN_STAINED_GLASS_PANE.toString(),
-                XMaterial.RED_STAINED_GLASS_PANE.toString(),
-                XMaterial.BLACK_STAINED_GLASS_PANE.toString(),
-                XMaterial.LIGHT_GRAY_STAINED_GLASS_PANE.toString());
+                Material.WHITE_STAINED_GLASS_PANE.toString(),
+                Material.ORANGE_STAINED_GLASS_PANE.toString(),
+                Material.MAGENTA_STAINED_GLASS_PANE.toString(),
+                Material.LIGHT_BLUE_STAINED_GLASS_PANE.toString(),
+                Material.YELLOW_STAINED_GLASS_PANE.toString(),
+                Material.LIME_STAINED_GLASS_PANE.toString(),
+                Material.PINK_STAINED_GLASS_PANE.toString(),
+                Material.GRAY_STAINED_GLASS_PANE.toString(),
+                Material.CYAN_STAINED_GLASS_PANE.toString(),
+                Material.PURPLE_STAINED_GLASS_PANE.toString(),
+                Material.BLUE_STAINED_GLASS_PANE.toString(),
+                Material.BROWN_STAINED_GLASS_PANE.toString(),
+                Material.GREEN_STAINED_GLASS_PANE.toString(),
+                Material.RED_STAINED_GLASS_PANE.toString(),
+                Material.BLACK_STAINED_GLASS_PANE.toString(),
+                Material.LIGHT_GRAY_STAINED_GLASS_PANE.toString());
         return new ItemBuilder().setMaterial(colors.get(random.nextInt(colors.size())));
     }
     

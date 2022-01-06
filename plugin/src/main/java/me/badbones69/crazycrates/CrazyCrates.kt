@@ -46,19 +46,19 @@ class CrazyCrates : JavaPlugin() {
         super.onEnable()
 
         FileManager.getInstance().logInfo(true)
-            .registerDefaultGenerateFiles("basic.yml", "/crates", "/crates")
-            .registerDefaultGenerateFiles("classic.yml", "/crates", "/crates")
-            .registerDefaultGenerateFiles("crazy.yml", "/crates", "/crates")
-            .registerDefaultGenerateFiles("galactic.yml", "/crates", "/crates")
-            .registerDefaultGenerateFiles("classic." + "nbt", "/schematics", "/schematics")
-            .registerDefaultGenerateFiles("nether." + "nbt", "/schematics", "/schematics")
-            .registerDefaultGenerateFiles("outdoors." + "nbt", "/schematics", "/schematics")
-            .registerDefaultGenerateFiles("sea." + "nbt", "/schematics", "/schematics")
-            .registerDefaultGenerateFiles("soul." + "nbt", "/schematics", "/schematics")
-            .registerDefaultGenerateFiles("wooden." + "nbt", "/schematics", "/schematics")
+            .registerDefaultGenerateFiles("Basic.yml", "/crates", "/crates")
+            .registerDefaultGenerateFiles("Classic.yml", "/crates", "/crates")
+            .registerDefaultGenerateFiles("Crazy.yml", "/crates", "/crates")
+            .registerDefaultGenerateFiles("Galactic.yml", "/crates", "/crates")
+            .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
+            .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
+            .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
+            .registerDefaultGenerateFiles("sea.nbt", "/schematics", "/schematics")
+            .registerDefaultGenerateFiles("soul.nbt", "/schematics", "/schematics")
+            .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
             .registerCustomFilesFolder("/crates")
             .registerCustomFilesFolder("/schematics")
-            .setup();
+            .setup()
 
         if (!Files.LOCATIONS.file.contains("locations")) {
             Files.LOCATIONS.file.set("locations.clear", null);
