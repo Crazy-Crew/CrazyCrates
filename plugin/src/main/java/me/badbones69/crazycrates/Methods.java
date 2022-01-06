@@ -1,13 +1,13 @@
 package me.badbones69.crazycrates;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FireworkDamageEvent;
-import me.badbones69.crazycrates.multisupport.Version;
+import me.badbones69.crazycrates.multisupport.libs.Version;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -17,8 +17,6 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.plugin.Plugin;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -26,15 +24,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Methods {
-    
-    public static HashMap<Player, String> path = new HashMap<>();
-    public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
-    private static CrazyCrates cc = CrazyCrates.getInstance();
+
+    private static CrazyManager cc = CrazyManager.getInstance();
     private static Random random = new Random();
     
     public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
@@ -90,7 +85,7 @@ public class Methods {
         fm.setPower(0);
         fw.setFireworkMeta(fm);
         FireworkDamageEvent.addFirework(fw);
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, fw :: detonate, 2);
+        CrazyManager.getJavaPlugin().getServer().getScheduler().scheduleSyncDelayedTask(CrazyManager.getJavaPlugin(), fw :: detonate, 2);
     }
     
     public static boolean isInt(String s) {
@@ -103,11 +98,11 @@ public class Methods {
     }
     
     public static Player getPlayer(String name) {
-        return Bukkit.getPlayerExact(name);
+        return CrazyManager.getJavaPlugin().getServer().getPlayerExact(name);
     }
     
     public static boolean isOnline(String name, CommandSender sender) {
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+        for (Player player : CrazyManager.getJavaPlugin().getServer().getOnlinePlayers()) {
             if (player.getName().equalsIgnoreCase(name)) {
                 return true;
             }
@@ -153,7 +148,7 @@ public class Methods {
     }
     
     public static List<Location> getLocations(String shem, Location loc) {
-        return cc.getNMSSupport().getLocations(new File(plugin.getDataFolder() + "/Schematics/" + shem), loc);
+        return cc.getNMSSupport().getLocations(new File(CrazyManager.getJavaPlugin().getDataFolder() + "/Schematics/" + shem), loc);
     }
     
     public static boolean isInventoryFull(Player player) {
@@ -243,13 +238,12 @@ public class Methods {
             c.setDoOutput(true);
             c.setRequestMethod("POST");
             c.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=17599").getBytes(StandardCharsets.UTF_8));
-            String oldVersion = plugin.getDescription().getVersion();
+            String oldVersion = CrazyManager.getJavaPlugin().getDescription().getVersion();
             String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine().replaceAll("[a-zA-Z ]", "");
             if (!newVersion.equals(oldVersion)) {
                 Bukkit.getConsoleSender().sendMessage(getPrefix() + color("&cYour server is running &7v" + oldVersion + "&c and the newest is &7v" + newVersion + "&c."));
             }
-        } catch (Exception e) {
-        }
+        } catch (Exception ignored) {}
     }
     
     public static void hasUpdate(Player player) {
@@ -258,13 +252,12 @@ public class Methods {
             c.setDoOutput(true);
             c.setRequestMethod("POST");
             c.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=17599").getBytes(StandardCharsets.UTF_8));
-            String oldVersion = plugin.getDescription().getVersion();
+            String oldVersion = CrazyManager.getJavaPlugin().getDescription().getVersion();
             String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine().replaceAll("[a-zA-Z ]", "");
             if (!newVersion.equals(oldVersion)) {
                 player.sendMessage(getPrefix() + color("&cYour server is running &7v" + oldVersion + "&c and the newest is &7v" + newVersion + "&c."));
             }
-        } catch (Exception e) {
-        }
+        } catch (Exception ignored) {}
     }
     
     public static Set<String> getEnchantments() {
@@ -342,26 +335,25 @@ public class Methods {
         enchantments.put("LOYALTY", "Loyalty");
         return enchantments;
     }
-    
+
     public static ItemBuilder getRandomPaneColor() {
-        boolean newMaterial = cc.useNewMaterial();
         List<String> colors = Arrays.asList(
-        newMaterial ? "WHITE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:0",// 0
-        newMaterial ? "ORANGE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:1",// 1
-        newMaterial ? "MAGENTA_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:2",// 2
-        newMaterial ? "LIGHT_BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:3",// 3
-        newMaterial ? "YELLOW_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:4",// 4
-        newMaterial ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5",// 5
-        newMaterial ? "PINK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:6",// 6
-        newMaterial ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:7",// 7
-        //Skipped 8 due to it being basically invisible in a GUI.
-        newMaterial ? "CYAN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:9",// 9
-        newMaterial ? "PURPLE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:10",// 10
-        newMaterial ? "BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:11",// 11
-        newMaterial ? "BROWN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:12",// 12
-        newMaterial ? "GREEN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:13",// 13
-        newMaterial ? "RED_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:14",// 14
-        newMaterial ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15");// 15
+                XMaterial.WHITE_STAINED_GLASS_PANE.toString(),
+                XMaterial.ORANGE_STAINED_GLASS_PANE.toString(),
+                XMaterial.MAGENTA_STAINED_GLASS_PANE.toString(),
+                XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE.toString(),
+                XMaterial.YELLOW_STAINED_GLASS_PANE.toString(),
+                XMaterial.LIME_STAINED_GLASS_PANE.toString(),
+                XMaterial.PINK_STAINED_GLASS_PANE.toString(),
+                XMaterial.GRAY_STAINED_GLASS_PANE.toString(),
+                XMaterial.CYAN_STAINED_GLASS_PANE.toString(),
+                XMaterial.PURPLE_STAINED_GLASS_PANE.toString(),
+                XMaterial.BLUE_STAINED_GLASS_PANE.toString(),
+                XMaterial.BROWN_STAINED_GLASS_PANE.toString(),
+                XMaterial.GREEN_STAINED_GLASS_PANE.toString(),
+                XMaterial.RED_STAINED_GLASS_PANE.toString(),
+                XMaterial.BLACK_STAINED_GLASS_PANE.toString(),
+                XMaterial.LIGHT_GRAY_STAINED_GLASS_PANE.toString());
         return new ItemBuilder().setMaterial(colors.get(random.nextInt(colors.size())));
     }
     
@@ -370,9 +362,9 @@ public class Methods {
     }
     
     public static void failedToTakeKey(Player player, Crate crate, Exception e) {
-        Bukkit.getServer().getLogger().warning("[CrazyCrates] An error has occurred while trying to take a physical key from a player");
-        Bukkit.getServer().getLogger().warning("Player: " + player.getName());
-        Bukkit.getServer().getLogger().warning("Crate: " + crate.getName());
+        CrazyManager.getJavaPlugin().getServer().getLogger().warning("[CrazyCrates] An error has occurred while trying to take a physical key from a player");
+        CrazyManager.getJavaPlugin().getServer().getLogger().warning("Player: " + player.getName());
+        CrazyManager.getJavaPlugin().getServer().getLogger().warning("Crate: " + crate.getName());
         player.sendMessage(Methods.getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));
         if (e != null) {
             e.printStackTrace();
@@ -382,5 +374,4 @@ public class Methods {
     public static String sanitizeFormat(String string) {
         return TextComponent.toLegacyText(TextComponent.fromLegacyText(string));
     }
-    
 }
