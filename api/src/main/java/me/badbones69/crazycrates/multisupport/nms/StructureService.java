@@ -1,4 +1,4 @@
-package me.badbones69.crazycrates.multisupport.nms.v1_18_R1;
+package me.badbones69.crazycrates.multisupport.nms;
 
 import net.minecraft.core.BlockPosition;
 import net.minecraft.nbt.NBTCompressedStreamTools;

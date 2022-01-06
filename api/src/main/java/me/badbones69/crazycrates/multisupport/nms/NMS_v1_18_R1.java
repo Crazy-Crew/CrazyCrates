@@ -1,6 +1,5 @@
-package me.badbones69.crazycrates.multisupport.nms.v1_18_R1;
+package me.badbones69.crazycrates.multisupport.nms;
 
-import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
 import net.minecraft.core.BlockPosition;
 import net.minecraft.world.level.World;
 import net.minecraft.world.level.block.entity.TileEntityChest;

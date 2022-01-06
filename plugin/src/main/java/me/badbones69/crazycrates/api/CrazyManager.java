@@ -19,7 +19,7 @@ import me.badbones69.crazycrates.cratetypes.*;
 import me.badbones69.crazycrates.multisupport.holograms.HolographicSupport;
 import me.badbones69.crazycrates.multisupport.libs.Support;
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
-import me.badbones69.crazycrates.multisupport.nms.v1_18_R1.NMS_v1_18_R1;
+import me.badbones69.crazycrates.multisupport.nms.NMS_v1_18_R1;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.Material;
