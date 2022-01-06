@@ -1,5 +1,6 @@
 package me.badbones69.crazycrates.multisupport;
 
+import me.badbones69.crazycrates.api.CrazyManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -51,7 +52,7 @@ public class SkullCreator {
         notNull(item, "item");
         notNull(name, "name");
         
-        return Bukkit.getUnsafe().modifyItemStack(item,
+        return CrazyManager.getJavaPlugin().getServer().getUnsafe().modifyItemStack(item,
         "{SkullOwner:\"" + name + "\"}"
         );
     }
@@ -80,7 +81,7 @@ public class SkullCreator {
         notNull(id, "id");
         
         SkullMeta meta = (SkullMeta) item.getItemMeta();
-        meta.setOwningPlayer(Bukkit.getOfflinePlayer(id));
+        meta.setOwningPlayer(CrazyManager.getJavaPlugin().getServer().getOfflinePlayer(id));
         item.setItemMeta(meta);
         
         return item;
@@ -135,7 +136,7 @@ public class SkullCreator {
         notNull(base64, "base64");
         
         UUID hashAsId = new UUID(base64.hashCode(), base64.hashCode());
-        return Bukkit.getUnsafe().modifyItemStack(item,
+        return CrazyManager.getJavaPlugin().getServer().getUnsafe().modifyItemStack(item,
         "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
         );
     }
@@ -205,9 +206,9 @@ public class SkullCreator {
         );
         
         if (newerApi()) {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "data merge block " + args);
+            CrazyManager.getJavaPlugin().getServer().dispatchCommand(CrazyManager.getJavaPlugin().getServer().getConsoleSender(), "data merge block " + args);
         } else {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "blockdata " + args);
+            CrazyManager.getJavaPlugin().getServer().dispatchCommand(CrazyManager.getJavaPlugin().getServer().getConsoleSender(), "blockdata " + args);
         }
     }
     
@@ -216,7 +217,7 @@ public class SkullCreator {
             Material.valueOf("PLAYER_HEAD");
             return true;
             
-        } catch (IllegalArgumentException e) { // If PLAYER_HEAD doesn't exist
+        } catch (IllegalArgumentException e) {
             return false;
         }
     }
@@ -251,10 +252,9 @@ public class SkullCreator {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        String toEncode = "{\"textures\":{\"SKIN\":{\"url\":\"" + actualUrl.toString() + "\"}}}";
+        String toEncode = "{\"textures\":{\"SKIN\":{\"url\":\"" + actualUrl + "\"}}}";
         return Base64.getEncoder().encodeToString(toEncode.getBytes());
     }
-    
 }
 
 /* Format for skull
