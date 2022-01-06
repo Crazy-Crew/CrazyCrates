@@ -12,36 +12,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
         <java.release>17</java.release>
-        <kotlin.version>1.6.10</kotlin.version>
     </properties>
 
     <artifactId>crazycrates-plugin</artifactId>
 
     <repositories>
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>paper-repo</id>
+            <id>papermc</id>
             <url>https://papermc.io/repo/repository/maven-public/</url>
-        </repository>
-        <repository>
-            <id>placeholderapi</id>
-            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-        </repository>
-        <repository>
-            <id>mvdw-software</id>
-            <name>MVdW Public Repositories</name>
-            <url>https://repo.mvdw-software.com/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>codemc-repo</id>
-            <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
     </repositories>
 
     <dependencies>
+
         <dependency>
             <groupId>com.badbones69</groupId>
             <artifactId>crazycrates-api</artifactId>
@@ -49,14 +32,6 @@
             <type>jar</type>
             <scope>compile</scope>
             <optional>true</optional>
-        </dependency>
-
-        <!-- Misc -->
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.18-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -73,52 +48,13 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- Holograms -->
-        <dependency>
-            <groupId>com.gmail.filoghost.holographicdisplays</groupId>
-            <artifactId>holographicdisplays-api</artifactId>
-            <version>2.4.9</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Placeholder Support -->
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.11.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>be.maximvdw</groupId>
-            <artifactId>MVdWPlaceholderAPI</artifactId>
-            <version>3.1.1-SNAPSHOT</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.spigotmc</groupId>
-                    <artifactId>spigot</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>be.maximvdw</groupId>
-                    <artifactId>MVdWUpdater</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-resources-plugin</artifactId>
             <version>3.2.0</version>
             <type>maven-plugin</type>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib</artifactId>
-            <version>${kotlin.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        </dependency> -->
     </dependencies>
 
     <build>
@@ -131,17 +67,16 @@
             </resource>
         </resources>
         <plugins>
-            <!-- This disables the filtering in file extensions that can be corrupted by it -->
+            <!-- This disables the filtering in file extensions that can be corrupted by it
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <configuration>
                     <nonFilteredFileExtensions>
-                        <nonFilteredFileExtension>schematic</nonFilteredFileExtension>
                         <nonFilteredFileExtension>nbt</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
                 </configuration>
-            </plugin>
+            </plugin> -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -157,7 +92,7 @@
                             <shadedPattern>com.badbones69.crazycrates.libs.paperlib</shadedPattern>
                         </relocation>
                     </relocations>
-                    <!--                    <outputFile>/Users/badbones/Desktop/Minecraft/Server/plugins/CrazyCrates[v${project.version}].jar</outputFile>-->
+                    <outputFile>H:\Development\CrazyCrew\..server\spigot\plugins\CrazyCrates[v${project.version}].jar</outputFile>
                 </configuration>
                 <executions>
                     <execution>

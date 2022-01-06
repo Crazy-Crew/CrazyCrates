@@ -1,23 +1,23 @@
-package me.badbones69.crazycrates;
+package com.badbones69.crazycrates;
 
 import io.papermc.lib.PaperLib
-import me.badbones69.crazycrates.api.CrazyManager
-import me.badbones69.crazycrates.api.FileManager
-import me.badbones69.crazycrates.api.FileManager.Files
-import me.badbones69.crazycrates.api.objects.QuadCrateSession
-import me.badbones69.crazycrates.commands.CCCommand
-import me.badbones69.crazycrates.commands.CCTab
-import me.badbones69.crazycrates.commands.KeyCommand
-import me.badbones69.crazycrates.commands.KeyTab
-import me.badbones69.crazycrates.controllers.*
-import me.badbones69.crazycrates.cratetypes.*
-import me.badbones69.crazycrates.func.enums.registerPermissions
-import me.badbones69.crazycrates.func.listeners.BasicListener
-import me.badbones69.crazycrates.func.registerListener
-import me.badbones69.crazycrates.multisupport.MVdWPlaceholderAPISupport
-import me.badbones69.crazycrates.multisupport.PlaceholderAPISupport
-import me.badbones69.crazycrates.multisupport.libs.Support
-import me.badbones69.crazycrates.multisupport.libs.Version
+import com.badbones69.crazycrates.api.CrazyManager
+import com.badbones69.crazycrates.api.FileManager
+import com.badbones69.crazycrates.api.FileManager.Files
+import com.badbones69.crazycrates.api.objects.QuadCrateSession
+import com.badbones69.crazycrates.commands.CCCommand
+import com.badbones69.crazycrates.commands.CCTab
+import com.badbones69.crazycrates.commands.KeyCommand
+import com.badbones69.crazycrates.commands.KeyTab
+import com.badbones69.crazycrates.controllers.*
+import com.badbones69.crazycrates.cratetypes.*
+import com.badbones69.crazycrates.func.enums.registerPermissions
+import com.badbones69.crazycrates.func.listeners.BasicListener
+import com.badbones69.crazycrates.func.registerListener
+import com.badbones69.crazycrates.support.libs.Support
+import com.badbones69.crazycrates.support.libs.Version
+import com.badbones69.crazycrates.support.placeholders.MVdWPlaceholderAPISupport
+import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
@@ -39,15 +39,13 @@ class CrazyCrates : JavaPlugin() {
             logger.warning("Version Integer: " + Version.getCurrentVersion().versionInteger)
             logger.info(" ")
             logger.warning("============= Crazy Crates =============")
-            //server.pluginManager.disablePlugin(this);
-            return;
         }
     }
 
     override fun onEnable() {
         super.onEnable()
 
-        PaperLib.suggestPaper(this)
+        if (PaperLib.isSpigot()) PaperLib.suggestPaper(this)
 
         FileManager.getInstance().logInfo(true)
             .registerDefaultGenerateFiles("Basic.yml", "/crates", "/crates")
