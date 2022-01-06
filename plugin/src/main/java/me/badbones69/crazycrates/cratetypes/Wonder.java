@@ -1,13 +1,12 @@
 package me.badbones69.crazycrates.cratetypes;
 
 import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.api.objects.Prize;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
@@ -15,11 +14,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Wonder implements Listener {
     
-    private static CrazyCrates cc = CrazyCrates.getInstance();
+    private static CrazyManager cc = CrazyManager.getInstance();
     
     public static void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!cc.takeKeys(1, player, crate, keyType, checkHand)) {
@@ -27,7 +25,7 @@ public class Wonder implements Listener {
             cc.removePlayerFromOpeningList(player);
             return;
         }
-        final Inventory inv = Bukkit.createInventory(null, 45, crate.getCrateInventoryName());
+        final Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 45, crate.getCrateInventoryName());
         final ArrayList<String> slots = new ArrayList<>();
         for (int i = 0; i < 45; i++) {
             Prize prize = crate.pickPrize(player);
@@ -40,7 +38,6 @@ public class Wonder implements Listener {
             int timer = 0;
             int slot1 = 0;
             int slot2 = 44;
-            Random r = new Random();
             ArrayList<Integer> Slots = new ArrayList<>();
             Prize prize = null;
             
@@ -51,8 +48,8 @@ public class Wonder implements Listener {
                     slots.remove(slot2 + "");
                     Slots.add(slot1);
                     Slots.add(slot2);
-                    inv.setItem(slot1, new ItemBuilder().setMaterial("BLACK_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:15").setName(" ").build());
-                    inv.setItem(slot2, new ItemBuilder().setMaterial("BLACK_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:15").setName(" ").build());
+                    inv.setItem(slot1, new ItemBuilder().setMaterial(XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()).setName(" ").build());
+                    inv.setItem(slot2, new ItemBuilder().setMaterial(XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial()).setName(" ").build());
                     for (String slot : slots) {
                         prize = crate.pickPrize(player);
                         inv.setItem(Integer.parseInt(slot), prize.getDisplayItem());
@@ -74,7 +71,7 @@ public class Wonder implements Listener {
                     if (prize.useFireworks()) {
                         Methods.fireWork(player.getLocation().add(0, 1, 0));
                     }
-                    Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+                    CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                     cc.removePlayerFromOpeningList(player);
                     return;
                 }
@@ -84,7 +81,6 @@ public class Wonder implements Listener {
                     timer = 0;
                 }
             }
-        }.runTaskTimer(cc.getPlugin(), 0, 2));
+        }.runTaskTimer(CrazyManager.getJavaPlugin(), 0, 2));
     }
-    
 }

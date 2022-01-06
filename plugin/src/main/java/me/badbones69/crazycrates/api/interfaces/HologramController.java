@@ -5,9 +5,9 @@ import org.bukkit.block.Block;
 
 public interface HologramController {
     
-    void createHologram(Block location, Crate crate);
+    void createHologram(Block block, Crate crate);
     
-    void removeHologram(Block location);
+    void removeHologram(Block block);
     
     void removeAllHolograms();
     

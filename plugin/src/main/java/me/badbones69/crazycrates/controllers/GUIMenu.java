@@ -2,14 +2,13 @@ package me.badbones69.crazycrates.controllers;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -26,11 +25,11 @@ import java.util.List;
 
 public class GUIMenu implements Listener {
     
-    private static CrazyCrates cc = CrazyCrates.getInstance();
+    private static CrazyManager cc = CrazyManager.getInstance();
     
     public static void openGUI(Player player) {
         int size = Files.CONFIG.getFile().getInt("Settings.InventorySize");
-        Inventory inv = Bukkit.createInventory(null, size, Methods.sanitizeColor(Files.CONFIG.getFile().getString("Settings.InventoryName")));
+        Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, size, Methods.sanitizeColor(Files.CONFIG.getFile().getString("Settings.InventoryName")));
         if (Files.CONFIG.getFile().contains("Settings.Filler.Toggle")) {
             if (Files.CONFIG.getFile().getBoolean("Settings.Filler.Toggle")) {
                 String id = Files.CONFIG.getFile().getString("Settings.Filler.Item");

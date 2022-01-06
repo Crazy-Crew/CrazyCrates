@@ -1,12 +1,12 @@
 package me.badbones69.crazycrates.api.objects;
 
 import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.enums.QuadCrateParticles;
 import me.badbones69.crazycrates.controllers.ParticleEffect;
-import me.badbones69.crazycrates.multisupport.Version;
+import me.badbones69.crazycrates.multisupport.libs.Version;
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
 import org.bukkit.*;
 import org.bukkit.Particle.DustOptions;
@@ -22,7 +22,7 @@ import java.util.*;
 
 public class QuadCrateSession {
     
-    private static final CrazyCrates cc = CrazyCrates.getInstance();
+    private static final CrazyManager cc = CrazyManager.getInstance();
     private static final NMSSupport nms = cc.getNMSSupport();
     private static final List<QuadCrateSession> crateSessions = new ArrayList<>();
     private static final List<Material> blacklistBlocks = nms.getQuadCrateBlacklistBlocks();
@@ -168,7 +168,7 @@ public class QuadCrateSession {
                     spawnParticles(particle, particleColor, spiralLocationsClockwise.get(tickTillSpawn), spiralLocationsCounterClockwise.get(tickTillSpawn));
                     tickTillSpawn++;
                 } else {
-                    player.playSound(player.getLocation(), cc.getSound("BLOCK_STONE_STEP", "STEP_STONE"), 1, 1);
+                    player.playSound(player.getLocation(), XSound.BLOCK_STONE_STEP.parseSound(), 1, 1);
                     Block chest = chestLocations.get(crateNumber).getBlock();
                     chest.setType(Material.CHEST);
                     rotateChest(chest, crateNumber);
@@ -184,14 +184,14 @@ public class QuadCrateSession {
                     }
                 }//154 - 33
             }
-        }.runTaskTimer(cc.getPlugin(), 0, 1));
+        }.runTaskTimer(CrazyManager.getJavaPlugin(), 0, 1));
         cc.addCrateTask(player, new BukkitRunnable() {
             @Override
             public void run() {
                 endCrateForce(true);
                 player.sendMessage(Messages.OUT_OF_TIME.getMessage());
             }
-        }.runTaskLater(cc.getPlugin(), cc.getQuadCrateTimer()));
+        }.runTaskLater(CrazyManager.getJavaPlugin(), cc.getQuadCrateTimer()));
         return true;
     }
     
@@ -210,7 +210,7 @@ public class QuadCrateSession {
                 cc.removePlayerFromOpeningList(player);
                 crateSessions.remove(instance);
             }
-        }.runTaskLater(cc.getPlugin(), 3 * 20);
+        }.runTaskLater(CrazyManager.getJavaPlugin(), 3 * 20);
     }
     
     public void endCrateForce(boolean removeFromSessions) {

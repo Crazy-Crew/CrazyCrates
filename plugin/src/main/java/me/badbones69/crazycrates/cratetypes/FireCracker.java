@@ -1,7 +1,7 @@
 package me.badbones69.crazycrates.cratetypes;
 
 import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.controllers.FireworkDamageEvent;
@@ -19,7 +19,7 @@ import java.util.Random;
 
 public class FireCracker {
     
-    private static CrazyCrates cc = CrazyCrates.getInstance();
+    private static CrazyManager cc = CrazyManager.getInstance();
     
     public static void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc) {
         if (!cc.takeKeys(1, player, crate, keyType, true)) {
@@ -53,7 +53,7 @@ public class FireCracker {
                     QuickCrate.openCrate(player, loc, crate, KeyType.FREE_KEY);
                 }
             }
-        }.runTaskTimer(cc.getPlugin(), 0, 2));
+        }.runTaskTimer(CrazyManager.getJavaPlugin(), 0, 2));
     }
     
     private static void fireWork(Location loc, Color color) {
@@ -67,7 +67,6 @@ public class FireCracker {
             public void run() {
                 fw.detonate();
             }
-        }.runTaskLaterAsynchronously(cc.getPlugin(), 1);
+        }.runTaskLaterAsynchronously(CrazyManager.getJavaPlugin(), 1);
     }
-    
 }

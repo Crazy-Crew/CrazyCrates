@@ -1,7 +1,7 @@
 package me.badbones69.crazycrates.controllers;
 
 import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.enums.KeyType;
@@ -10,7 +10,7 @@ import me.badbones69.crazycrates.api.events.PhysicalCrateKeyCheckEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
 import me.badbones69.crazycrates.cratetypes.QuickCrate;
-import me.badbones69.crazycrates.multisupport.Version;
+import me.badbones69.crazycrates.multisupport.libs.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -39,7 +39,7 @@ public class CrateControl implements Listener { //Crate Control
      * A list of crate locations that are in use.
      */
     public static HashMap<Player, Location> inUse = new HashMap<>();
-    private CrazyCrates cc = CrazyCrates.getInstance();
+    private CrazyManager cc = CrazyManager.getInstance();
     
     /**
      * This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
@@ -115,7 +115,7 @@ public class CrateControl implements Listener { //Crate Control
                     return;
                 }
                 PhysicalCrateKeyCheckEvent event = new PhysicalCrateKeyCheckEvent(player, crateLocation);
-                Bukkit.getPluginManager().callEvent(event);
+                CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(event);
                 if (!event.isCancelled()) {
                     boolean hasKey = false;
                     boolean isPhysical = false;

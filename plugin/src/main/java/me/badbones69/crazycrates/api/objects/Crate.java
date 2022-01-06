@@ -2,7 +2,7 @@ package me.badbones69.crazycrates.api.objects;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.FileManager;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.managers.CosmicCrateManager;
@@ -10,7 +10,6 @@ import me.badbones69.crazycrates.api.managers.CrateManager;
 import me.badbones69.crazycrates.controllers.Preview;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
 
 public class Crate {
     
@@ -48,7 +46,7 @@ public class Crate {
     private ArrayList<Tier> tiers;
     private CrateHologram hologram;
     private FileManager fileManager = FileManager.getInstance();
-    private CrazyCrates cc = CrazyCrates.getInstance();
+    private CrazyManager cc = CrazyManager.getInstance();
     
     /**
      *
@@ -82,7 +80,7 @@ public class Crate {
         this.maxSlots = previewChestlines * 9;
         for (int amount = preview.size(); amount > maxSlots - (boarderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0); amount -= maxSlots - (boarderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0), maxPage++) ;
         this.crateInventoryName = file != null ? Methods.sanitizeColor(file.getString("Crate.CrateName")) : "";
-        this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
+        this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(XMaterial.AIR.parseMaterial());
         this.hologram = hologram != null ? hologram : new CrateHologram();
         //TODO Add more managers for editing other crate types.
         switch (crateType) {
@@ -176,7 +174,7 @@ public class Crate {
         try {
             return prizes.get(new Random().nextInt(prizes.size()));
         } catch (IllegalArgumentException e) {
-            Bukkit.getLogger().warning("[CrazyCrates] Failed to find prize from the " + name + " crate for player " + player.getName() + ".");
+            CrazyManager.getJavaPlugin().getLogger().warning("[CrazyCrates] Failed to find prize from the " + name + " crate for player " + player.getName() + ".");
             return null;
         }
     }
@@ -449,8 +447,8 @@ public class Crate {
             if (nbt.hasKey("crazycrate-prize")) {
                 return getPrize(nbt.getString("crazycrate-prize"));
             }
-        } catch (Exception e) {
-        }
+        } catch (Exception ignored) {}
+
         for (Prize prize : prizes) {
             if (item.isSimilar(prize.getDisplayItem())) {
                 return prize;

@@ -3,6 +3,7 @@ package me.badbones69.crazycrates.controllers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import me.badbones69.crazycrates.api.CrazyManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -55,9 +56,7 @@ public class Metrics {
             }
         }
     }
-    
-    // The plugin
-    private final Plugin plugin;
+
     // A list with all custom charts
     private final List<CustomChart> charts = new ArrayList<>();
     // Is bStats enabled on this server?
@@ -66,16 +65,10 @@ public class Metrics {
     /**
      * Class constructor.
      *
-     * @param plugin The plugin which stats should be submitted.
      */
-    public Metrics(Plugin plugin) {
-        if (plugin == null) {
-            throw new IllegalArgumentException("Plugin cannot be null!");
-        }
-        this.plugin = plugin;
-        
+    public Metrics() {
         // Get the config file
-        File bStatsFolder = new File(plugin.getDataFolder().getParentFile(), "bStats");
+        File bStatsFolder = new File(CrazyManager.getJavaPlugin().getDataFolder().getParentFile(), "bStats");
         File configFile = new File(bStatsFolder, "config.yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
         
@@ -86,7 +79,7 @@ public class Metrics {
             config.addDefault("enabled", true);
             // Every server gets it's unique random id.
             config.addDefault("serverUuid", UUID.randomUUID().toString());
-            // Should failed request be logged?
+            // Should fail request be logged?
             config.addDefault("logFailedRequests", false);
             // Should the sent data be logged?
             config.addDefault("logSentData", false);
@@ -102,8 +95,7 @@ public class Metrics {
             ).copyDefaults(true);
             try {
                 config.save(configFile);
-            } catch (IOException ignored) {
-            }
+            } catch (IOException ignored) {}
         }
         
         // Load the data
@@ -121,11 +113,10 @@ public class Metrics {
                     service.getField("B_STATS_VERSION"); // Our identifier :)
                     found = true; // We aren't the first
                     break;
-                } catch (NoSuchFieldException ignored) {
-                }
+                } catch (NoSuchFieldException ignored) {}
             }
             // Register our service
-            Bukkit.getServicesManager().register(Metrics.class, this, plugin, ServicePriority.Normal);
+            Bukkit.getServicesManager().register(Metrics.class, this, CrazyManager.getJavaPlugin(), ServicePriority.Normal);
             if (!found) {
                 // We are the first!
                 startSubmitting();
@@ -136,19 +127,18 @@ public class Metrics {
     /**
      * Sends the data to the bStats server.
      *
-     * @param plugin Any plugin. It's just used to get a logger instance.
      * @param data The data to send.
      * @throws Exception If the request failed.
      */
-    private static void sendData(Plugin plugin, JsonObject data) throws Exception {
+    private static void sendData(JsonObject data) throws Exception {
         if (data == null) {
             throw new IllegalArgumentException("Data cannot be null!");
         }
-        if (Bukkit.isPrimaryThread()) {
+        if (CrazyManager.getJavaPlugin().getServer().isPrimaryThread()) {
             throw new IllegalAccessException("This method must not be called from the main thread!");
         }
-        if (logSentData && plugin.getLogger().getLevel() == Level.INFO) {
-            plugin.getLogger().info("Sending data to bStats: " + data);
+        if (logSentData && CrazyManager.getJavaPlugin().getLogger().getLevel() == Level.INFO) {
+            CrazyManager.getJavaPlugin().getLogger().info("Sending data to bStats: " + data);
         }
         HttpsURLConnection connection = (HttpsURLConnection) new URL(URL).openConnection();
         
@@ -180,13 +170,13 @@ public class Metrics {
             builder.append(line);
         }
         bufferedReader.close();
-        if (logResponseStatusText && plugin.getLogger().getLevel() == Level.INFO) {
-            plugin.getLogger().info("Sent data to bStats and received response: " + builder.toString());
+        if (logResponseStatusText && CrazyManager.getJavaPlugin().getLogger().getLevel() == Level.INFO) {
+            CrazyManager.getJavaPlugin().getLogger().info("Sent data to bStats and received response: " + builder.toString());
         }
     }
     
     /**
-     * Gzips the given String.
+     * Gzip the given String.
      *
      * @param str The string to gzip.
      * @return The gzipped String.
@@ -232,13 +222,13 @@ public class Metrics {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (!plugin.isEnabled()) { // Plugin was disabled
+                if (!CrazyManager.getJavaPlugin().isEnabled()) { // Plugin was disabled
                     timer.cancel();
                     return;
                 }
-                // Nevertheless we want our code to run in the Bukkit main thread, so we have to use the Bukkit scheduler
-                // Don't be afraid! The connection to the bStats server is still async, only the stats collection is sync ;)
-                Bukkit.getScheduler().runTask(plugin, () -> submitData());
+                // Nevertheless, we want our code to run in the Bukkit main thread, so we have to use the Bukkit scheduler
+                // Don't be afraid! The connection to the bStats server is still async, only the stats' collection is sync ;)
+                Bukkit.getScheduler().runTask(CrazyManager.getJavaPlugin(), () -> submitData());
             }
         }, 1000 * 60 * 5, 1000 * 60 * 30);
         // Submit the data every 30 minutes, first time after 5 minutes to give other plugins enough time to start
@@ -255,8 +245,8 @@ public class Metrics {
     public JsonObject getPluginData() {
         JsonObject data = new JsonObject();
         
-        String pluginName = plugin.getDescription().getName();
-        String pluginVersion = plugin.getDescription().getVersion();
+        String pluginName = CrazyManager.getJavaPlugin().getDescription().getName();
+        String pluginVersion = CrazyManager.getJavaPlugin().getDescription().getVersion();
         
         data.addProperty("pluginName", pluginName); // Append the name of the plugin
         data.addProperty("pluginVersion", pluginVersion); // Append the version of the plugin
@@ -287,14 +277,14 @@ public class Metrics {
             // This fixes java.lang.NoSuchMethodError: org.bukkit.Bukkit.getOnlinePlayers()Ljava/util/Collection;
             Method onlinePlayersMethod = Class.forName("org.bukkit.Server").getMethod("getOnlinePlayers");
             playerAmount = onlinePlayersMethod.getReturnType().equals(Collection.class)
-            ? ((Collection<?>) onlinePlayersMethod.invoke(Bukkit.getServer())).size()
-            : ((Player[]) onlinePlayersMethod.invoke(Bukkit.getServer())).length;
+            ? ((Collection<?>) onlinePlayersMethod.invoke(CrazyManager.getJavaPlugin().getServer())).size()
+            : ((Player[]) onlinePlayersMethod.invoke(CrazyManager.getJavaPlugin().getServer())).length;
         } catch (Exception e) {
-            playerAmount = Bukkit.getOnlinePlayers().size(); // Just use the new method if the Reflection failed
+            playerAmount = CrazyManager.getJavaPlugin().getServer().getOnlinePlayers().size(); // Just use the new method if the Reflection failed
         }
-        int onlineMode = Bukkit.getOnlineMode() ? 1 : 0;
-        String bukkitVersion = Bukkit.getVersion();
-        String bukkitName = Bukkit.getName();
+        int onlineMode = CrazyManager.getJavaPlugin().getServer().getOnlineMode() ? 1 : 0;
+        String bukkitVersion = CrazyManager.getJavaPlugin().getServer().getVersion();
+        String bukkitName = CrazyManager.getJavaPlugin().getServer().getName();
         
         // OS/Java specific data
         String javaVersion = System.getProperty("java.version");
@@ -329,7 +319,7 @@ public class Metrics {
         
         JsonArray pluginData = new JsonArray();
         // Search for all other bStats Metrics classes to get their plugin data
-        for (Class<?> service : Bukkit.getServicesManager().getKnownServices()) {
+        for (Class<?> service : CrazyManager.getJavaPlugin().getServer().getServicesManager().getKnownServices()) {
             try {
                 service.getField("B_STATS_VERSION"); // Our identifier :)
                 
@@ -351,7 +341,7 @@ public class Metrics {
                             } catch (ClassNotFoundException e) {
                                 // minecraft version 1.14+
                                 if (logFailedRequests) {
-                                    this.plugin.getLogger().log(Level.SEVERE, "Encountered unexpected exception", e);
+                                    CrazyManager.getJavaPlugin().getLogger().log(Level.SEVERE, "Encountered unexpected exception", e);
                                 }
                                 continue; // continue looping since we cannot do any other thing.
                             }
@@ -369,11 +359,11 @@ public class Metrics {
         new Thread(() -> {
             try {
                 // Send the data
-                sendData(plugin, data);
+                sendData(data);
             } catch (Exception e) {
                 // Something went wrong! :(
                 if (logFailedRequests) {
-                    plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + plugin.getName(), e);
+                    CrazyManager.getJavaPlugin().getLogger().log(Level.WARNING, "Could not submit plugin stats of " + CrazyManager.getJavaPlugin().getName(), e);
                 }
             }
         }).start();
@@ -411,7 +401,7 @@ public class Metrics {
                 chart.add("data", data);
             } catch (Throwable t) {
                 if (logFailedRequests) {
-                    Bukkit.getLogger().log(Level.WARNING, "Failed to get data for custom chart with id " + chartId, t);
+                    CrazyManager.getJavaPlugin().getLogger().log(Level.WARNING, "Failed to get data for custom chart with id " + chartId, t);
                 }
                 return null;
             }

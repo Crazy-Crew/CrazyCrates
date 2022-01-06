@@ -28,8 +28,7 @@ import java.util.Map;
 public final class ReflectionUtils {
     
     // Prevent accidental construction
-    private ReflectionUtils() {
-    }
+    private ReflectionUtils() {}
     
     /**
      * Returns the constructor of a given class with the given parameter types

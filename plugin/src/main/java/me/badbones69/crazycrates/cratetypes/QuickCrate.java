@@ -2,13 +2,12 @@ package me.badbones69.crazycrates.cratetypes;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.controllers.CrateControl;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -30,7 +29,7 @@ public class QuickCrate implements Listener {
     
     public static ArrayList<Entity> allRewards = new ArrayList<>();
     public static HashMap<Player, Entity> rewards = new HashMap<>();
-    private static CrazyCrates cc = CrazyCrates.getInstance();
+    private static CrazyManager cc = CrazyManager.getInstance();
     private static HashMap<Player, BukkitTask> tasks = new HashMap<>();
     
     public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
@@ -56,7 +55,7 @@ public class QuickCrate implements Listener {
 
                 Prize prize = crate.pickPrize(player);
                 cc.givePrize(player, prize);
-                Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+                CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                 if (prize.useFireworks()) {
                     Methods.fireWork(loc.clone().add(.5, 1, .5));
                 }
@@ -80,7 +79,7 @@ public class QuickCrate implements Listener {
             }
             Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
             cc.givePrize(player, prize);
-            Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+            CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
             ItemStack displayItem = prize.getDisplayItem();
             NBTItem nbtItem = new NBTItem(displayItem);
             nbtItem.setBoolean("crazycrates-item", true);
@@ -89,12 +88,12 @@ public class QuickCrate implements Listener {
             try {
                 reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
             } catch (IllegalArgumentException e) {
-                Bukkit.getServer().getLogger().warning("[CrazyCrates] An prize could not be given due to an invalid display item for this prize. ");
-                Bukkit.getServer().getLogger().warning("[CrazyCrates] Crate: " + prize.getCrate() + " Prize: " + prize.getName());
+                CrazyManager.getJavaPlugin().getServer().getLogger().warning("[CrazyCrates] An prize could not be given due to an invalid display item for this prize. ");
+                CrazyManager.getJavaPlugin().getServer().getLogger().warning("[CrazyCrates] Crate: " + prize.getCrate() + " Prize: " + prize.getName());
                 e.printStackTrace();
                 return;
             }
-            reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(cc.getPlugin(), true));
+            reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(CrazyManager.getJavaPlugin(), true));
             reward.setVelocity(new Vector(0, .2, 0));
             reward.setCustomName(displayItem.getItemMeta().getDisplayName());
             reward.setCustomNameVisible(true);
@@ -110,7 +109,7 @@ public class QuickCrate implements Listener {
                 public void run() {
                     endQuickCrate(player, loc);
                 }
-            }.runTaskLater(cc.getPlugin(), 5 * 20));
+            }.runTaskLater(CrazyManager.getJavaPlugin(), 5 * 20));
         }
     }
     
@@ -139,5 +138,4 @@ public class QuickCrate implements Listener {
             e.setCancelled(true);
         }
     }
-    
 }

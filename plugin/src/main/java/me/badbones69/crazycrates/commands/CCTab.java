@@ -1,6 +1,6 @@
 package me.badbones69.crazycrates.commands;
 
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.Bukkit;
@@ -14,10 +14,10 @@ import java.util.List;
 
 public class CCTab implements TabCompleter {
     
-    private CrazyCrates cc = CrazyCrates.getInstance();
+    private CrazyManager cc = CrazyManager.getInstance();
     
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String commandLable, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String commandLabel, String[] args) {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {// /cc
             if (hasPermission(sender, "access")) completions.add("help");
@@ -77,7 +77,7 @@ public class CCTab implements TabCompleter {
                 case "open":
                 case "forceopen":
                 case "transfer":
-                    Bukkit.getOnlinePlayers().forEach(player -> completions.add(player.getName()));
+                    CrazyManager.getJavaPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
                     break;
                 case "give":
                 case "giveall":
@@ -102,7 +102,7 @@ public class CCTab implements TabCompleter {
                 case "give":
                 case "giveall":
                 case "take":
-                    Bukkit.getOnlinePlayers().forEach(player -> completions.add(player.getName()));
+                    CrazyManager.getJavaPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
                     break;
             }
             return StringUtil.copyPartialMatches(args[4], completions, new ArrayList<>());

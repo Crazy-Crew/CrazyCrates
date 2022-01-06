@@ -1,7 +1,7 @@
 package me.badbones69.crazycrates.cratetypes;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
@@ -34,7 +34,7 @@ import java.util.Random;
  */
 public class QuadCrate implements Listener {
     
-    private CrazyCrates cc = CrazyCrates.getInstance();
+    private CrazyManager cc = CrazyManager.getInstance();
     private NMSSupport nms = cc.getNMSSupport();
     
     @EventHandler
@@ -65,7 +65,7 @@ public class QuadCrate implements Listener {
                         nbtItem.setBoolean("crazycrates-item", true);
                         item = nbtItem.getItem();
                         Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), item);
-                        reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(cc.getPlugin(), true));
+                        reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(CrazyManager.getJavaPlugin(), true));
                         reward.setVelocity(new Vector(0, .2, 0));
                         reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
                         reward.setCustomNameVisible(true);
@@ -77,9 +77,9 @@ public class QuadCrate implements Listener {
                                 @Override
                                 public void run() {
                                     session.endCrate();
-                                    player.playSound(player.getLocation(), cc.getSound("BLOCK_STONE_STEP", "STEP_STONE"), 1, 1);
+                                    player.playSound(player.getLocation(), XSound.BLOCK_STONE_STEP.parseSound(), 1, 1);
                                 }
-                            }.runTaskLater(cc.getPlugin(), 60);
+                            }.runTaskLater(CrazyManager.getJavaPlugin(), 60);
                         }
                     }
                 }
@@ -147,5 +147,4 @@ public class QuadCrate implements Listener {
             QuadCrateSession.getSession(player).endCrate();
         }
     }
-    
 }

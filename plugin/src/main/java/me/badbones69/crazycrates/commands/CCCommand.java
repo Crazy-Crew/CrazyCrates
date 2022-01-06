@@ -1,7 +1,7 @@
 package me.badbones69.crazycrates.commands;
 
 import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.FileManager;
 import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.enums.CrateType;
@@ -15,9 +15,7 @@ import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.controllers.CrateControl;
 import me.badbones69.crazycrates.controllers.GUIMenu;
 import me.badbones69.crazycrates.controllers.Preview;
-import me.badbones69.crazycrates.multisupport.Support;
-import me.badbones69.crazycrates.multisupport.Version;
-import me.badbones69.crazycrates.multisupport.converters.CratesPlusConverter;
+import me.badbones69.crazycrates.multisupport.libs.Version;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -31,12 +29,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.logging.Level;
 
 public class CCCommand implements CommandExecutor {
     
     private final FileManager fileManager = FileManager.getInstance();
-    private final CrazyCrates cc = CrazyCrates.getInstance();
+    private final CrazyManager cc = CrazyManager.getInstance();
     
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args) {
@@ -55,21 +52,6 @@ public class CCCommand implements CommandExecutor {
             if (args[0].equalsIgnoreCase("help")) {
                 if (!Methods.permCheck(sender, "access")) return true;
                 sender.sendMessage(Messages.HELP.getMessage());
-                return true;
-            } else if (args[0].equalsIgnoreCase("convert")) {
-                if (!Methods.permCheck(sender, "admin")) return true;
-                if (Support.CRATESPLUS.isPluginLoaded()) {
-                    try {
-                        CratesPlusConverter.convert();
-                        sender.sendMessage(Messages.CONVERT_CRATES_PLUS.getMessage("%Prefix%", Methods.getPrefix()));
-                    } catch (Exception e) {
-                        sender.sendMessage(Messages.ERROR_CONVERTING_FILES.getMessage());
-                        Bukkit.getLogger().warning("Error while trying to convert files with Crazy Crates v" + cc.getPlugin().getDescription().getVersion());
-                        e.printStackTrace();
-                    }
-                } else {
-                    sender.sendMessage(Messages.NO_FILES_TO_CONVERT.getMessage());
-                }
                 return true;
             } else if (args[0].equalsIgnoreCase("set1") || args[0].equalsIgnoreCase("set2")) {
                 if (!Methods.permCheck(sender, "admin")) return true;
@@ -126,7 +108,7 @@ public class CCCommand implements CommandExecutor {
                 Location[] locations = cc.getSchematicLocations().get(((Player) sender).getUniqueId());
                 if (locations != null && locations[0] != null && locations[1] != null) {
                     if (args.length >= 2) {
-                        File file = new File(cc.getPlugin().getDataFolder() + "/Schematics/" + args[1]);
+                        File file = new File(CrazyManager.getJavaPlugin().getDataFolder() + "/Schematics/" + args[1]);
                         cc.getNMSSupport().saveSchematic(locations, sender.getName(), file);
                         sender.sendMessage(Methods.getPrefix("&7Saved the " + args[1] + ".nbt into the Schematics folder."));
                         cc.loadSchematics();
@@ -150,7 +132,7 @@ public class CCCommand implements CommandExecutor {
                             try {
                                 crate.addEditorItem(prize, item);
                             } catch (Exception e) {
-                                Bukkit.getLogger().warning(fileManager.getPrefix() + "Failed to add a new prize to the " + crate.getName() + " crate.");
+                                CrazyManager.getJavaPlugin().getLogger().warning(fileManager.getPrefix() + "Failed to add a new prize to the " + crate.getName() + " crate.");
                                 e.printStackTrace();
                             }
                             cc.loadCrates();
@@ -172,7 +154,8 @@ public class CCCommand implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("reload")) {
                 if (!Methods.permCheck(sender, "admin")) return true;
                 fileManager.reloadAllFiles();
-                fileManager.setup(cc.getPlugin());
+                fileManager.setup();
+
                 if (!Files.LOCATIONS.getFile().contains("Locations")) {
                     Files.LOCATIONS.getFile().set("Locations.Clear", null);
                     Files.LOCATIONS.saveFile();
@@ -208,7 +191,7 @@ public class CCCommand implements CommandExecutor {
                 int slots = 9;
                 for (; size > 9; size -= 9)
                     slots += 9;
-                Inventory inv = Bukkit.createInventory(null, slots, Methods.color("&4&lAdmin Keys"));
+                Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, slots, Methods.color("&4&lAdmin Keys"));
                 for (Crate crate : cc.getCrates()) {
                     if (crate.getCrateType() != CrateType.MENU) {
                         if (inv.firstEmpty() >= 0) {
@@ -257,7 +240,7 @@ public class CCCommand implements CommandExecutor {
                     }
                     for (String name : Files.LOCATIONS.getFile().getConfigurationSection("Locations").getKeys(false)) {
                         if (name.equalsIgnoreCase(Loc)) {
-                            World W = Bukkit.getServer().getWorld(Files.LOCATIONS.getFile().getString("Locations." + name + ".World"));
+                            World W = CrazyManager.getJavaPlugin().getServer().getWorld(Files.LOCATIONS.getFile().getString("Locations." + name + ".World"));
                             int X = Files.LOCATIONS.getFile().getInt("Locations." + name + ".X");
                             int Y = Files.LOCATIONS.getFile().getInt("Locations." + name + ".Y");
                             int Z = Files.LOCATIONS.getFile().getInt("Locations." + name + ".Z");
@@ -288,7 +271,7 @@ public class CCCommand implements CommandExecutor {
                                 player.sendMessage(Messages.MUST_BE_LOOKING_AT_A_BLOCK.getMessage());
                                 return true;
                             }
-                            CrazyCrates.getInstance().addCrateLocation(block.getLocation(), crate);
+                            CrazyManager.getInstance().addCrateLocation(block.getLocation(), crate);
                             HashMap<String, String> placeholders = new HashMap<>();
                             placeholders.put("%Crate%", crate.getName());
                             placeholders.put("%Prefix%", Methods.getPrefix());
@@ -366,7 +349,7 @@ public class CCCommand implements CommandExecutor {
                                     player = (Player) sender;
                                 }
                             }
-                            if (CrazyCrates.getInstance().isInOpeningList(player)) {
+                            if (CrazyManager.getInstance().isInOpeningList(player)) {
                                 sender.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
                                 return true;
                             }
@@ -439,7 +422,7 @@ public class CCCommand implements CommandExecutor {
                                         player = (Player) sender;
                                     }
                                 }
-                                if (CrazyCrates.getInstance().isInOpeningList(player)) {
+                                if (CrazyManager.getInstance().isInOpeningList(player)) {
                                     sender.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
                                     return true;
                                 }
@@ -494,7 +477,7 @@ public class CCCommand implements CommandExecutor {
                                 }
                                 if (cc.getVirtualKeys(player, crate) >= amount) {
                                     PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.TRANSFER, amount);
-                                    Bukkit.getPluginManager().callEvent(event);
+                                    CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(event);
                                     if (!event.isCancelled()) {
                                         cc.takeKeys(amount, player, crate, KeyType.VIRTUAL_KEY, false);
                                         cc.addKeys(amount, target, crate, KeyType.VIRTUAL_KEY);
@@ -543,9 +526,9 @@ public class CCCommand implements CommandExecutor {
                             placeholders.put("%Amount%", amount + "");
                             placeholders.put("%Key%", crate.getKey().getItemMeta().getDisplayName());
                             sender.sendMessage(Messages.GIVEN_EVERYONE_KEYS.getMessage(placeholders));
-                            for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+                            for (Player player : CrazyManager.getJavaPlugin().getServer().getOnlinePlayers()) {
                                 PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.GIVE_ALL_COMMAND, amount);
-                                Bukkit.getPluginManager().callEvent(event);
+                                CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(event);
                                 if (!event.isCancelled()) {
                                     player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
                                     if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
@@ -603,7 +586,7 @@ public class CCCommand implements CommandExecutor {
                 if (args.length >= 3) {
                     if (crate.getCrateType() != CrateType.MENU) {
                         PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(target, crate, KeyReciveReason.GIVE_COMMAND, amount);
-                        Bukkit.getPluginManager().callEvent(event);
+                        CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(event);
                         if (!event.isCancelled()) {
                             if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
                                 target.getInventory().addItem(crate.getKey(amount));

@@ -1,6 +1,6 @@
 package me.badbones69.crazycrates.controllers;
 
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.controllers.ReflectionUtils.PackageType;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -421,7 +421,7 @@ public enum ParticleEffect {
     SWEEP_ATTACK("sweepAttack", 45, 9);
     private static final Map<String, ParticleEffect> NAME_MAP = new HashMap<String, ParticleEffect>();
     private static final Map<Integer, ParticleEffect> ID_MAP = new HashMap<Integer, ParticleEffect>();
-    private static CrazyCrates cc = CrazyCrates.getInstance();
+    private static CrazyManager cc = CrazyManager.getInstance();
     
     // Initialize map for quick name and id lookup
     static {
@@ -440,7 +440,7 @@ public enum ParticleEffect {
      * Construct a new particle effect
      *
      * @param name Name of this particle effect
-     * @param id Id of this particle effect
+     * @param id ID of this particle effect
      * @param requiredVersion Version which is required (1.x)
      * @param properties Properties of this particle effect
      */
@@ -491,7 +491,7 @@ public enum ParticleEffect {
      */
     private static boolean isWater(Location location) {
         Material material = location.getBlock().getType();
-        return material == Material.WATER || material == Material.matchMaterial(cc.useNewMaterial() ? "WATER" : "STATIONARY_WATER");
+        return material == Material.WATER || material == XMaterial.WATER.parseMaterial();
     }
     
     /**

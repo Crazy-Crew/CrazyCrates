@@ -1,5 +1,6 @@
 package me.badbones69.crazycrates.commands;
 
+import me.badbones69.crazycrates.api.CrazyManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,11 +13,11 @@ import java.util.List;
 public class KeyTab implements TabCompleter {
     
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String commandLable, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String commandLabel, String[] args) {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {// /key
             if (hasPermission(sender, "key")) {
-                Bukkit.getOnlinePlayers().forEach(player -> completions.add(player.getName()));
+                CrazyManager.getJavaPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
             }
             return StringUtil.copyPartialMatches(args[0], completions, new ArrayList<>());
         }

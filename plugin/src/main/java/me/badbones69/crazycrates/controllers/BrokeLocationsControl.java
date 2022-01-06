@@ -1,10 +1,9 @@
 package me.badbones69.crazycrates.controllers;
 
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.FileManager;
 import me.badbones69.crazycrates.api.enums.BrokeLocation;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,7 +11,6 @@ import org.bukkit.event.world.WorldLoadEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  *
@@ -21,7 +19,7 @@ import java.util.logging.Level;
  */
 public class BrokeLocationsControl implements Listener {
     
-    private CrazyCrates cc = CrazyCrates.getInstance();
+    private CrazyManager cc = CrazyManager.getInstance();
     private FileManager fileManager = FileManager.getInstance();
     
     @EventHandler
@@ -42,12 +40,11 @@ public class BrokeLocationsControl implements Listener {
             }
             cc.getBrokeCrateLocations().removeAll(fixedWorlds);
             if (fileManager.isLogging()) {
-                Bukkit.getLogger().warning(fileManager.getPrefix() + "Fixed " + fixedAmount + " broken crate locations.");
+                CrazyManager.getJavaPlugin().getLogger().warning(fileManager.getPrefix() + "Fixed " + fixedAmount + " broken crate locations.");
                 if (cc.getBrokeCrateLocations().isEmpty()) {
-                    Bukkit.getLogger().warning(fileManager.getPrefix() + "All broken crate locations have been fixed.");
+                    CrazyManager.getJavaPlugin().getLogger().warning(fileManager.getPrefix() + "All broken crate locations have been fixed.");
                 }
             }
         }
     }
-    
 }

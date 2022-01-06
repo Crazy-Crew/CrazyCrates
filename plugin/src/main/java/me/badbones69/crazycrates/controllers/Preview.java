@@ -1,6 +1,5 @@
 package me.badbones69.crazycrates.controllers;
 
-import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.api.FileManager.Files;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
@@ -16,8 +15,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class Preview implements Listener {
-    
-    private static final CrazyCrates cc = CrazyCrates.getInstance();
+
     private static final HashMap<UUID, Integer> playerPage = new HashMap<>();
     private static final HashMap<UUID, Crate> playerCrate = new HashMap<>();
     private static final HashMap<UUID, Boolean> playerInMenu = new HashMap<>();

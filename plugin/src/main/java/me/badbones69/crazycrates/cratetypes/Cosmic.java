@@ -2,7 +2,7 @@ package me.badbones69.crazycrates.cratetypes;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.FileManager;
 import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
@@ -13,7 +13,6 @@ import me.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.api.objects.Tier;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,23 +29,23 @@ import java.util.Random;
 
 public class Cosmic implements Listener {
     
-    private static CrazyCrates cc = CrazyCrates.getInstance();
+    private static CrazyManager cc = CrazyManager.getInstance();
     private static HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();
     private static HashMap<Player, ArrayList<Integer>> picks = new HashMap<>();
     private static HashMap<Player, Boolean> checkHands = new HashMap<>();
     
     private static void showRewards(Player player, Crate crate) {
-        Inventory inv = Bukkit.createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"));
+        Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"));
         picks.get(player).forEach(i -> inv.setItem(i, pickTier(player).getTierPane()));
         player.openInventory(inv);
     }
     
     private static void startRoll(Player player, Crate crate) {
-        Inventory inv = Bukkit.createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Shuffling"));
+        Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Shuffling"));
         for (int i = 0; i < 27; i++) {
             inv.setItem(i, pickTier(player).getTierPane());
         }
-        player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
+        player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.parseSound(), 1, 1);
         player.openInventory(inv);
     }
     
@@ -60,7 +59,7 @@ public class Cosmic implements Listener {
     }
     
     public static void openCosmic(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = Bukkit.createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"));
+        Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"));
         setChests(inv, crate);
         cc.addPlayerKeyType(player, keyType);
         checkHands.put(player, checkHand);
@@ -113,9 +112,9 @@ public class Cosmic implements Listener {
                                 }
                                 if (prize != null) {
                                     cc.givePrize(player, prize);
-                                    Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, cc.getOpeningCrate(player).getName(), prize));
+                                    CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, cc.getOpeningCrate(player).getName(), prize));
                                     e.setCurrentItem(prize.getDisplayItem());
-                                    player.playSound(player.getLocation(), cc.getSound("ENTITY_PLAYER_LEVELUP", "LEVEL_UP"), 1, 1);
+                                    player.playSound(player.getLocation(), XSound.ENTITY_PLAYER_LEVELUP.parseSound(), 1, 1);
                                     if (prize.useFireworks()) {
                                         Methods.fireWork(player.getLocation().add(0, 1, 0));
                                     }
@@ -143,7 +142,7 @@ public class Cosmic implements Listener {
                                     e.setCurrentItem(manager.getPickedCrate().setAmount(pickedSlot).addNamePlaceholder("%Slot%", pickedSlot + "").addLorePlaceholder("%Slot%", pickedSlot + "").build());
                                     glass.get(player).add(slot);
                                 }
-                                player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
+                                player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.parseSound(), 1, 1);
                             } else if (nbtItem.hasKey("Cosmic-Picked-Crate")) {
                                 if (!glass.containsKey(player)) glass.put(player, new ArrayList<>());
                                 e.setCurrentItem(manager.getMysteryCrate().setAmount(pickedSlot).addNamePlaceholder("%Slot%", pickedSlot + "").addLorePlaceholder("%Slot%", pickedSlot + "").build());
@@ -151,7 +150,7 @@ public class Cosmic implements Listener {
                                 for (int i : glass.get(player))
                                     if (i != slot) l.add(i);
                                 glass.put(player, l);
-                                player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
+                                player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.parseSound(), 1, 1);
                             }
                         }
                         if (glass.get(player).size() >= totalPrizes) {
@@ -184,13 +183,13 @@ public class Cosmic implements Listener {
                                         startRoll(player, crate);
                                     } catch (Exception e) {
                                         PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.REFUND, 1);
-                                        Bukkit.getPluginManager().callEvent(event);
+                                        CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(event);
                                         if (!event.isCancelled()) {
                                             cc.addKeys(1, player, crate, keyType);
                                             cc.endCrate(player);
                                             cancel();
                                             player.sendMessage(Methods.getPrefix("&cAn issue has occurred and so a key refund was given."));
-                                            Bukkit.getServer().getLogger().warning(FileManager.getInstance().getPrefix() + "An issue occurred when the user " + player.getName() +
+                                            CrazyManager.getJavaPlugin().getServer().getLogger().warning(FileManager.getInstance().getPrefix() + "An issue occurred when the user " + player.getName() +
                                             " was using the " + crate.getName() + " crate and so they were issued a key refund.");
                                             e.printStackTrace();
                                         }
@@ -200,7 +199,7 @@ public class Cosmic implements Listener {
                                     if (time == 40) {
                                         cc.endCrate(player);
                                         showRewards(player, crate);
-                                        player.playSound(player.getLocation(), cc.getSound("BLOCK_ANVIL_PLACE", "ANVIL_LAND"), 1, 1);
+                                        player.playSound(player.getLocation(), XSound.BLOCK_ANVIL_PLACE.parseSound(), 1, 1);
                                         new BukkitRunnable() {
                                             @Override
                                             public void run() {
@@ -208,10 +207,10 @@ public class Cosmic implements Listener {
                                                     player.closeInventory();
                                                 }
                                             }
-                                        }.runTaskLater(cc.getPlugin(), 40);
+                                        }.runTaskLater(CrazyManager.getJavaPlugin(), 40);
                                     }
                                 }
-                            }.runTaskTimer(cc.getPlugin(), 0, 2));
+                            }.runTaskTimer(CrazyManager.getJavaPlugin(), 0, 2));
                         }
                     }
                 }
@@ -251,7 +250,7 @@ public class Cosmic implements Listener {
                 }
             }
             if (playSound) {
-                player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
+                player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.parseSound(), 1, 1);
             }
             cc.removePlayerFromOpeningList(player);
             cc.removePlayerKeyType(player);
@@ -287,5 +286,4 @@ public class Cosmic implements Listener {
         //The last slot in cosmic crate is 27
         return slot < 27;
     }
-    
 }

@@ -2,10 +2,9 @@ package me.badbones69.crazycrates.api.objects;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.multisupport.SkullCreator;
-import me.badbones69.crazycrates.multisupport.Version;
-import org.bukkit.ChatColor;
+import me.badbones69.crazycrates.multisupport.libs.Version;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -25,21 +24,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 /**
  *
  * The ItemBuilder is designed to make creating items easier by creating an easy to use Builder.
- * This will allow you to covert an existing ItemStack into an ItemBuilder to allow you to edit 
+ * This will allow you to covert an existing ItemStack into an ItemBuilder to allow you to edit
  * an existing ItemStack or make a new ItemStack from scratch.
  *
  * @author BadBones69
  *
  */
 public class ItemBuilder {
-    
-    private static CrazyCrates cc = CrazyCrates.getInstance();
+
+    private static CrazyManager cc = CrazyManager.getInstance();
     private static Version version = Version.getCurrentVersion();
     private NBTItem nbtItem;
     private Material material;
@@ -72,7 +70,7 @@ public class ItemBuilder {
     private HashMap<String, String> namePlaceholders;
     private HashMap<String, String> lorePlaceholders;
     private List<ItemFlag> itemFlags;
-    
+
     /**
      * The initial starting point for making an item.
      */
@@ -109,7 +107,7 @@ public class ItemBuilder {
         this.lorePlaceholders = new HashMap<>();
         this.itemFlags = new ArrayList<>();
     }
-    
+
     public ItemBuilder(ItemBuilder itemBuilder) {
         this.nbtItem = itemBuilder.nbtItem;
         this.material = itemBuilder.material;
@@ -143,41 +141,28 @@ public class ItemBuilder {
         this.lorePlaceholders = new HashMap<>(itemBuilder.lorePlaceholders);
         this.itemFlags = new ArrayList<>(itemBuilder.itemFlags);
     }
-    
+
     /**
      * Convert an ItemStack to an ItemBuilder to allow easier editing of the ItemStack.
      * @param item The ItemStack you wish to convert into an ItemBuilder.
      * @return The ItemStack as an ItemBuilder with all the info from the item.
      */
     public static ItemBuilder convertItemStack(ItemStack item) {
-        ItemBuilder itemBuilder = new ItemBuilder()
-        .setReferenceItem(item)
-        .setAmount(item.getAmount())
-        .setMaterial(item.getType())
-        .setEnchantments(new HashMap<>(item.getEnchantments()));
+        ItemBuilder itemBuilder = new ItemBuilder().setReferenceItem(item).setAmount(item.getAmount()).setMaterial(item.getType()).setEnchantments(new HashMap<>(item.getEnchantments()));
         if (item.hasItemMeta()) {
             ItemMeta itemMeta = item.getItemMeta();
-            itemBuilder.setName(itemMeta.getDisplayName())
-            .setLore(itemMeta.getLore());
+            itemBuilder.setName(itemMeta.getDisplayName()).setLore(itemMeta.getLore());
             NBTItem nbt = new NBTItem(item);
-            if (nbt.hasKey("Unbreakable")) {
-                itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
-            }
-            if (version.isNewer(Version.v1_12_R1)) {
-                if (itemMeta instanceof org.bukkit.inventory.meta.Damageable) {
-                    itemBuilder.setDamage(((org.bukkit.inventory.meta.Damageable) itemMeta).getDamage());
-                }
-            } else {
-                itemBuilder.setDamage(item.getDurability());
-            }
+            if (nbt.hasKey("Unbreakable")) itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
+            if (itemMeta instanceof org.bukkit.inventory.meta.Damageable) itemBuilder.setDamage(((org.bukkit.inventory.meta.Damageable) itemMeta).getDamage());
         }
         return itemBuilder;
     }
-    
+
     public static ItemBuilder convertString(String itemString) {
         return convertString(itemString, null);
     }
-    
+
     public static ItemBuilder convertString(String itemString, String placeHolder) {
         ItemBuilder itemBuilder = new ItemBuilder();
         try {
@@ -241,20 +226,20 @@ public class ItemBuilder {
                 }
             }
         } catch (Exception e) {
-            itemBuilder.setMaterial("RED_TERRACOTTA", "STAINED_CLAY:14").setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor : &c" + (placeHolder != null ? placeHolder : "")));
+            itemBuilder.setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor : &c" + (placeHolder != null ? placeHolder : "")));
             e.printStackTrace();
         }
         return itemBuilder;
     }
-    
+
     public static List<ItemBuilder> convertStringList(List<String> itemStrings) {
         return convertStringList(itemStrings, null);
     }
-    
+
     public static List<ItemBuilder> convertStringList(List<String> itemStrings, String placeholder) {
         return itemStrings.stream().map(itemString -> convertString(itemString, placeholder)).collect(Collectors.toList());
     }
-    
+
     /**
      * Get the type of item as a Material the builder is set to.
      * @return The type of material the builder is set to.
@@ -262,17 +247,7 @@ public class ItemBuilder {
     public Material getMaterial() {
         return material;
     }
-    
-    /**
-     * Set the type of item and its metadata in the builder.
-     * @param newMaterial The 1.13+ string must be in this form: %Material% or %Material%:%MetaData%
-     * @param oldMaterial The 1.12.2- string must be in this form: %Material% or %Material%:%MetaData%
-     * @return The ItemBuilder with updated info.
-     */
-    public ItemBuilder setMaterial(String newMaterial, String oldMaterial) {
-        return setMaterial(cc.useNewMaterial() ? newMaterial : oldMaterial);
-    }
-    
+
     /**
      * Set the type of item the builder is set to.
      * @param material The material you wish to set.
@@ -280,10 +255,10 @@ public class ItemBuilder {
      */
     public ItemBuilder setMaterial(Material material) {
         this.material = material;
-        this.isHead = material == (cc.useNewMaterial() ? Material.matchMaterial("PLAYER_HEAD") : Material.matchMaterial("SKULL_ITEM"));
+        this.isHead = material == Material.PLAYER_HEAD;
         return this;
     }
-    
+
     /**
      * Set the type of item and its metadata in the builder.
      * @param material The string must be in this form: %Material% or %Material%:%MetaData%
@@ -319,20 +294,7 @@ public class ItemBuilder {
             }
         }
         Material m = Material.matchMaterial(material);
-        if (m != null) {// Sets the material.
-            this.material = m;
-            //1.9-1.12.2
-            if (version.isNewer(Version.v1_8_R3) && version.isOlder(Version.v1_13_R2)) {
-                if (m == Material.matchMaterial("MONSTER_EGG")) {
-                    try {
-                        this.entityType = EntityType.fromId(damage) != null ? EntityType.fromId(damage) : EntityType.valueOf(metaData);
-                    } catch (Exception ignore) {
-                    }
-                    this.damage = 0;
-                    this.isMobEgg = true;
-                }
-            }
-        }
+        if (m != null) this.material = m;
         switch (this.material.name()) {
             case "PLAYER_HEAD":
             case "SKULL_ITEM":
@@ -355,21 +317,20 @@ public class ItemBuilder {
                 this.isShield = true;
                 break;
         }
-        //1.13+ added different banner names and so this is quicker then listing every banner color.
-        if (this.material.name().contains("BANNER")) {
-            this.isBanner = true;
-        }
+        //1.13+ added different banner names and so this is quicker than listing every banner color.
+
+        if (this.material.name().contains("BANNER")) this.isBanner = true;
         return this;
     }
-    
+
     /**
-     * Get the damage of the item.
-     * @return The damage of the item as an int.
+     * Get the damage to the item.
+     * @return The damage to the item as an int.
      */
     public int getDamage() {
         return damage;
     }
-    
+
     /**
      * Set the items damage value.
      * @param damage The damage value of the item.
@@ -378,7 +339,7 @@ public class ItemBuilder {
         this.damage = damage;
         return this;
     }
-    
+
     /**
      * Get the name the of the item in the builder.
      * @return The name as a string that is already been color converted.
@@ -386,7 +347,7 @@ public class ItemBuilder {
     public String getName() {
         return name;
     }
-    
+
     /**
      * Set the name of the item in the builder. This will auto force color the name if it contains color code. (&a, &c, &7, etc...)
      * @param name The name of the item in the builder.
@@ -394,11 +355,11 @@ public class ItemBuilder {
      */
     public ItemBuilder setName(String name) {
         if (name != null) {
-            this.name = color(name);
+            this.name = Methods.color(name);
         }
         return this;
     }
-    
+
     /**
      * Set the placeholders for the name of the item.
      * @param placeholders The placeholders that will be used.
@@ -408,7 +369,7 @@ public class ItemBuilder {
         this.namePlaceholders = placeholders;
         return this;
     }
-    
+
     /**
      * Add a placeholder to the name of the item.
      * @param placeholder The placeholder that will be replaced.
@@ -419,7 +380,7 @@ public class ItemBuilder {
         this.namePlaceholders.put(placeholder, argument);
         return this;
     }
-    
+
     /**
      * Remove a placeholder from the list.
      * @param placeholder The placeholder you wish to remove.
@@ -429,7 +390,7 @@ public class ItemBuilder {
         this.namePlaceholders.remove(placeholder);
         return this;
     }
-    
+
     /**
      * Get the item's name with all the placeholders added to it.
      * @return The name with all the placeholders in it.
@@ -441,7 +402,7 @@ public class ItemBuilder {
         }
         return newName;
     }
-    
+
     /**
      * Get the lore of the item in the builder.
      * @return The lore of the item in the builder. This will already be color coded.
@@ -449,7 +410,7 @@ public class ItemBuilder {
     public List<String> getLore() {
         return lore;
     }
-    
+
     /**
      * Set the lore of the item in the builder. This will auto force color in all the lores that contains color code. (&a, &c, &7, etc...)
      * @param lore The lore of the item in the builder.
@@ -459,12 +420,12 @@ public class ItemBuilder {
         if (lore != null) {
             this.lore.clear();
             for (String i : lore) {
-                this.lore.add(color(i));
+                this.lore.add(Methods.color(i));
             }
         }
         return this;
     }
-    
+
     /**
      * Add a line to the current lore of the item. This will auto force color in the lore that contains color code. (&a, &c, &7, etc...)
      * @param lore The new line you wish to add.
@@ -472,11 +433,11 @@ public class ItemBuilder {
      */
     public ItemBuilder addLore(String lore) {
         if (lore != null) {
-            this.lore.add(color(lore));
+            this.lore.add(Methods.color(lore));
         }
         return this;
     }
-    
+
     /**
      * Set the placeholders that are in the lore of the item.
      * @param placeholders The placeholders that you wish to use.
@@ -486,7 +447,7 @@ public class ItemBuilder {
         this.lorePlaceholders = placeholders;
         return this;
     }
-    
+
     /**
      * Add a placeholder to the lore of the item.
      * @param placeholder The placeholder you wish to replace.
@@ -497,7 +458,7 @@ public class ItemBuilder {
         this.lorePlaceholders.put(placeholder, argument);
         return this;
     }
-    
+
     /**
      * Remove a placeholder from the lore.
      * @param placeholder The placeholder you wish to remove.
@@ -507,7 +468,7 @@ public class ItemBuilder {
         this.lorePlaceholders.remove(placeholder);
         return this;
     }
-    
+
     /**
      * Get the lore with all the placeholders added to it.
      * @return The lore with all placeholders in it.
@@ -522,7 +483,7 @@ public class ItemBuilder {
         }
         return newLore;
     }
-    
+
     /**
      * Get the entity type of the mob egg.
      * @return The EntityType of the mob egg.
@@ -530,7 +491,7 @@ public class ItemBuilder {
     public EntityType getEntityType() {
         return entityType;
     }
-    
+
     /**
      * Sets the type of mob egg.
      * @param entityType The entity type the mob egg will be.
@@ -540,7 +501,7 @@ public class ItemBuilder {
         this.entityType = entityType;
         return this;
     }
-    
+
     /**
      * Get the type of potion effect on the item. Only works on Tipped Arrows.
      * @return The PotionType set to the item.
@@ -548,7 +509,7 @@ public class ItemBuilder {
     public PotionType getPotionType() {
         return potionType;
     }
-    
+
     /**
      * Set the PotionType on the item.
      * @param potionType The PotionType added to the item.
@@ -556,19 +517,19 @@ public class ItemBuilder {
     public void setPotionType(PotionType potionType) {
         this.potionType = potionType;
     }
-    
+
     public Color getPotionColor() {
         return potionColor;
     }
-    
+
     public void setPotionColor(Color potionColor) {
         this.potionColor = potionColor;
     }
-    
+
     public boolean isPotion() {
         return isPotion;
     }
-    
+
     /**
      * Get the color leather armor is set to.
      * @return The Color the armor is set to.
@@ -576,7 +537,7 @@ public class ItemBuilder {
     public Color getArmorColor() {
         return armorColor;
     }
-    
+
     /**
      * Set the color the Leather Armor is going to be.
      * @param armorColor The color of the leather armor.
@@ -584,15 +545,15 @@ public class ItemBuilder {
     public void setArmorColor(Color armorColor) {
         this.armorColor = armorColor;
     }
-    
+
     public boolean isLeatherArmor() {
         return isLeatherArmor;
     }
-    
+
     public List<Pattern> getPatterns() {
         return patterns;
     }
-    
+
     public ItemBuilder addPattern(String stringPattern) {
         try {
             String[] split = stringPattern.split(":");
@@ -609,30 +570,30 @@ public class ItemBuilder {
         }
         return this;
     }
-    
+
     public ItemBuilder addPatterns(List<String> stringList) {
         stringList.forEach(this :: addPattern);
         return this;
     }
-    
+
     public ItemBuilder addPattern(Pattern pattern) {
         patterns.add(pattern);
         return this;
     }
-    
+
     public ItemBuilder setPatterns(List<Pattern> patterns) {
         this.patterns = patterns;
         return this;
     }
-    
+
     public boolean isBanner() {
         return isBanner;
     }
-    
+
     public boolean isShield() {
         return isShield;
     }
-    
+
     /**
      * Check if the current item is a mob egg.
      * @return True if it is and false if not.
@@ -640,7 +601,7 @@ public class ItemBuilder {
     public boolean isMobEgg() {
         return isMobEgg;
     }
-    
+
     /**
      * The amount of the item stack in the builder.
      * @return The amount that is set in the builder.
@@ -648,7 +609,7 @@ public class ItemBuilder {
     public Integer getAmount() {
         return amount;
     }
-    
+
     /**
      * Get the amount of the item stack in the builder.
      * @param amount The amount that is in the item stack.
@@ -658,7 +619,7 @@ public class ItemBuilder {
         this.amount = amount;
         return this;
     }
-    
+
     /**
      * Get the name of the player being used as a head.
      * @return The name of the player being used on the head.
@@ -666,7 +627,7 @@ public class ItemBuilder {
     public String getPlayer() {
         return player;
     }
-    
+
     /**
      * Set the player that will be displayed on the head.
      * @param player The player being displayed on the head.
@@ -680,7 +641,7 @@ public class ItemBuilder {
         }
         return this;
     }
-    
+
     /**
      * Check if the item is a player heads.
      * @return True if it is a player head and false if not.
@@ -688,7 +649,7 @@ public class ItemBuilder {
     public boolean isHead() {
         return isHead;
     }
-    
+
     /**
      * Check if the player name is a Base64.
      * @return True if it is a Base64 and false if not.
@@ -696,7 +657,7 @@ public class ItemBuilder {
     public boolean isHash() {
         return isHash;
     }
-    
+
     /**
      * Check if the hash is a url or a Base64.
      * @return True if it is a url and false if it is a Base64.
@@ -704,16 +665,16 @@ public class ItemBuilder {
     public boolean isURL() {
         return isURL;
     }
-    
+
     public String getCrateName() {
         return crateName;
     }
-    
+
     public ItemBuilder setCrateName(String crateName) {
         this.crateName = crateName;
         return this;
     }
-    
+
     /**
      * Get the enchantments that are on the item in the builder.
      * @return The enchantments that are on the item in the builder.
@@ -721,7 +682,7 @@ public class ItemBuilder {
     public HashMap<Enchantment, Integer> getEnchantments() {
         return enchantments;
     }
-    
+
     /**
      * Set a list of enchantments that will go onto the item in the builder. These can have unsafe levels.
      * It will also override any enchantments used in the "ItemBuilder#addEnchantment()" method.
@@ -734,7 +695,7 @@ public class ItemBuilder {
         }
         return this;
     }
-    
+
     /**
      * Add an enchantment to the item in the builder.
      * @param enchantment The enchantment you wish to add.
@@ -745,7 +706,7 @@ public class ItemBuilder {
         this.enchantments.put(enchantment, level);
         return this;
     }
-    
+
     /**
      * Remove an enchantment from the item in the builder.
      * @param enchantment The enchantment you wish to remove.
@@ -755,7 +716,7 @@ public class ItemBuilder {
         this.enchantments.remove(enchantment);
         return this;
     }
-    
+
     /**
      * Check if the item in the builder is unbreakable.
      * @return The ItemBuilder with updated info.
@@ -763,7 +724,7 @@ public class ItemBuilder {
     public boolean isUnbreakable() {
         return unbreakable;
     }
-    
+
     /**
      * Set if the item in the builder to be unbreakable or not.
      * @param unbreakable True will set it to be unbreakable and false will make it able to take damage.
@@ -773,7 +734,7 @@ public class ItemBuilder {
         this.unbreakable = unbreakable;
         return this;
     }
-    
+
     /**
      * Set if the item should hide item flags or not
      * @param hideItemFlags true the item will hide item flags. false will show them.
@@ -783,7 +744,7 @@ public class ItemBuilder {
         this.hideItemFlags = hideItemFlags;
         return this;
     }
-    
+
     /**
      * Check if the item in the builder has hidden item flags.
      * @return The ItemBuilder with updated info.
@@ -791,7 +752,7 @@ public class ItemBuilder {
     public boolean areItemFlagsHidden() {
         return hideItemFlags;
     }
-    
+
     /**
      * Check if the item in the builder is glowing.
      * @return The ItemBuilder with updated info.
@@ -799,7 +760,7 @@ public class ItemBuilder {
     public boolean isGlowing() {
         return glowing;
     }
-    
+
     /**
      * Set if the item in the builder to be glowing or not.
      * @param glowing True will set the item to have a glowing effect.
@@ -809,16 +770,16 @@ public class ItemBuilder {
         this.glowing = glowing;
         return this;
     }
-    
+
     public NBTItem getNBTItem() {
         nbtItem = new NBTItem(build());
         return nbtItem;
     }
-    
+
     public List<ItemFlag> getItemFlags() {
         return itemFlags;
     }
-    
+
     public ItemBuilder addItemFlag(String flagString) {
         try {
             addItemFlag(ItemFlag.valueOf(flagString.toUpperCase()));
@@ -826,7 +787,7 @@ public class ItemBuilder {
         }
         return this;
     }
-    
+
     public ItemBuilder addItemFlags(List<String> flagStrings) {
         for (String flagString : flagStrings) {
             try {
@@ -839,19 +800,19 @@ public class ItemBuilder {
         }
         return this;
     }
-    
+
     public ItemBuilder addItemFlag(ItemFlag itemFlag) {
         if (itemFlag != null) {
             itemFlags.add(itemFlag);
         }
         return this;
     }
-    
+
     public ItemBuilder setItemFlags(List<ItemFlag> itemFlags) {
         this.itemFlags = itemFlags;
         return this;
     }
-    
+
     /**
      * Builder the item from all the information that was given to the builder.
      * @return The result of all the info that was given to the builder as an ItemStack.
@@ -875,22 +836,7 @@ public class ItemBuilder {
             ItemMeta itemMeta = item.getItemMeta();
             itemMeta.setDisplayName(getUpdatedName());
             itemMeta.setLore(getUpdatedLore());
-            if (version.isSame(Version.v1_8_R3)) {
-                if (isHead && !isHash && player != null && !player.equals("")) {
-                    SkullMeta skullMeta = (SkullMeta) itemMeta;
-                    skullMeta.setOwner(player);
-                }
-            }
-            if (version.isNewer(Version.v1_10_R1)) {
-                itemMeta.setUnbreakable(unbreakable);
-            }
-            if (version.isNewer(Version.v1_12_R1)) {
-                if (itemMeta instanceof org.bukkit.inventory.meta.Damageable) {
-                    ((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(damage);
-                }
-            } else {
-                item.setDurability((short) damage);
-            }
+            if (itemMeta instanceof org.bukkit.inventory.meta.Damageable) ((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(damage);
             if (isPotion && (potionType != null || potionColor != null)) {
                 PotionMeta potionMeta = (PotionMeta) itemMeta;
                 if (potionType != null) {
@@ -924,22 +870,13 @@ public class ItemBuilder {
             item.addUnsafeEnchantments(enchantments);
             addGlow(item);
             NBTItem nbt = new NBTItem(item);
-            if (isHead) {
-                if (!isHash && player != null && !player.equals("") && version.isNewer(Version.v1_8_R3)) {
-                    nbt.setString("SkullOwner", player);
-                }
-            }
+            if (isHead) {nbt.setString("SkullOwner", player);}
             if (isMobEgg) {
                 if (entityType != null) {
                     nbt.addCompound("EntityTag").setString("id", "minecraft:" + entityType.name());
                 }
             }
-            if (version.isOlder(Version.v1_11_R1)) {
-                if (unbreakable) {
-                    nbt.setBoolean("Unbreakable", true);
-                    nbt.setInteger("HideFlags", 4);
-                }
-            }
+
             if (!crateName.isEmpty()) {
                 nbt.setString("CrazyCrates-Crate", crateName);
             }
@@ -948,7 +885,7 @@ public class ItemBuilder {
             return item;
         }
     }
-    
+
     /**
      * Sets the converted item as a reference to try and save NBT tags and stuff.
      * @param referenceItem The item that is being referenced.
@@ -958,21 +895,9 @@ public class ItemBuilder {
         this.referenceItem = referenceItem;
         return this;
     }
-    
+
     private final java.util.regex.Pattern HEX_PATTERN = java.util.regex.Pattern.compile("#[a-fA-F0-9]{6}");
-    
-    private String color(String message) {
-        if (Version.isNewer(Version.v1_15_R1)) {
-            Matcher matcher = HEX_PATTERN.matcher(message);
-            StringBuffer buffer = new StringBuffer();
-            while (matcher.find()) {
-                matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group()).toString());
-            }
-            return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
-        }
-        return ChatColor.translateAlternateColorCodes('&', message);
-    }
-    
+
     private ItemStack hideFlags(ItemStack item) {
         if (hideItemFlags) {
             if (item != null && item.hasItemMeta()) {
@@ -984,7 +909,7 @@ public class ItemBuilder {
         }
         return item;
     }
-    
+
     private ItemStack addGlow(ItemStack item) {
         if (glowing) {
             try {
@@ -1006,7 +931,7 @@ public class ItemBuilder {
         }
         return item;
     }
-    
+
     private PotionType getPotionType(PotionEffectType type) {
         if (type != null) {
             if (type.equals(PotionEffectType.FIRE_RESISTANCE)) {
@@ -1041,7 +966,7 @@ public class ItemBuilder {
         }
         return null;
     }
-    
+
     private static Color getColor(String color) {
         if (color != null) {
             switch (color.toUpperCase()) {
@@ -1088,7 +1013,7 @@ public class ItemBuilder {
         }
         return null;
     }
-    
+
     private static DyeColor getDyeColor(String color) {
         if (color != null) {
             try {
@@ -1103,32 +1028,28 @@ public class ItemBuilder {
         }
         return null;
     }
-    
+
     private static Enchantment getEnchantment(String enchantmentName) {
         enchantmentName = stripEnchantmentName(enchantmentName);
         for (Enchantment enchantment : Enchantment.values()) {
             try {
-                //MC 1.13+ has the correct names.
-                if (version.isNewer(Version.v1_12_R1)) {
-                    if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
-                        return enchantment;
-                    }
-                }
-                HashMap<String, String> enchantments = getEnchantmentList();
-                if (stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null &&
-                stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
+                if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
                     return enchantment;
                 }
-            } catch (Exception ignore) {//If any null enchantments are found they may cause errors.
-            }
+                //HashMap<String, String> enchantments = getEnchantmentList();
+                //if (stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null &&
+                //        stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
+                //   return enchantment;
+                //}
+            } catch (Exception ignore) {}
         }
         return null;
     }
-    
+
     private static String stripEnchantmentName(String enchantmentName) {
         return enchantmentName != null ? enchantmentName.replace("-", "").replace("_", "").replace(" ", "") : null;
     }
-    
+
     private static HashMap<String, String> getEnchantmentList() {
         HashMap<String, String> enchantments = new HashMap<>();
         enchantments.put("ARROW_DAMAGE", "Power");
@@ -1167,5 +1088,4 @@ public class ItemBuilder {
         enchantments.put("LOYALTY", "Loyalty");
         return enchantments;
     }
-    
 }

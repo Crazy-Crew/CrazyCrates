@@ -1,7 +1,7 @@
 package me.badbones69.crazycrates.commands;
 
 import me.badbones69.crazycrates.Methods;
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.command.Command;
@@ -15,10 +15,10 @@ import java.util.List;
 
 public class KeyCommand implements CommandExecutor {
     
-    private CrazyCrates cc = CrazyCrates.getInstance();
+    private CrazyManager cc = CrazyManager.getInstance();
     
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         // /key [player]
         // /key redeem <crate> [amount] << Will be added later.
         if (args.length == 0) {

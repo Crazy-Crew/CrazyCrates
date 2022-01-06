@@ -1,5 +1,6 @@
 package me.badbones69.crazycrates.api.enums;
 
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -64,7 +65,6 @@ public class BrokeLocation {
     }
     
     public Location getLocation() {
-        return new Location(Bukkit.getWorld(world), x, y, z);
+        return new Location(CrazyManager.getJavaPlugin().getServer().getWorld(world), x, y, z);
     }
-    
 }
