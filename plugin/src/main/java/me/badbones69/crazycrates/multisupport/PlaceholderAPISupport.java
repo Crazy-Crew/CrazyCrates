@@ -1,23 +1,17 @@
 package me.badbones69.crazycrates.multisupport;
 
-import me.badbones69.crazycrates.api.CrazyCrates;
+import me.badbones69.crazycrates.api.CrazyManager;
 import me.badbones69.crazycrates.api.enums.CrateType;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.text.NumberFormat;
 
 public class PlaceholderAPISupport extends PlaceholderExpansion {
     
-    private CrazyCrates cc = CrazyCrates.getInstance();
-    private Plugin plugin;
-    
-    public PlaceholderAPISupport(Plugin plugin) {
-        this.plugin = plugin;
-    }
+    private CrazyManager cc = CrazyManager.getInstance();
     
     @Override
     public String onRequest(OfflinePlayer player, String identifier) {
@@ -55,7 +49,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
     
     @Override
     public String getVersion() {
-        return plugin.getDescription().getVersion();
+        return CrazyManager.getJavaPlugin().getDescription().getVersion();
     }
     
 }
