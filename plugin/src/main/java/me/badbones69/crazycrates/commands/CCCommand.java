@@ -17,7 +17,6 @@ import me.badbones69.crazycrates.controllers.GUIMenu;
 import me.badbones69.crazycrates.controllers.Preview;
 import me.badbones69.crazycrates.multisupport.Support;
 import me.badbones69.crazycrates.multisupport.Version;
-import me.badbones69.crazycrates.multisupport.converters.CratesPlusConverter;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -31,7 +30,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.logging.Level;
 
 public class CCCommand implements CommandExecutor {
     
@@ -55,21 +53,6 @@ public class CCCommand implements CommandExecutor {
             if (args[0].equalsIgnoreCase("help")) {
                 if (!Methods.permCheck(sender, "access")) return true;
                 sender.sendMessage(Messages.HELP.getMessage());
-                return true;
-            } else if (args[0].equalsIgnoreCase("convert")) {
-                if (!Methods.permCheck(sender, "admin")) return true;
-                if (Support.CRATESPLUS.isPluginLoaded()) {
-                    try {
-                        CratesPlusConverter.convert();
-                        sender.sendMessage(Messages.CONVERT_CRATES_PLUS.getMessage("%Prefix%", Methods.getPrefix()));
-                    } catch (Exception e) {
-                        sender.sendMessage(Messages.ERROR_CONVERTING_FILES.getMessage());
-                        Bukkit.getLogger().warning("Error while trying to convert files with Crazy Crates v" + cc.getPlugin().getDescription().getVersion());
-                        e.printStackTrace();
-                    }
-                } else {
-                    sender.sendMessage(Messages.NO_FILES_TO_CONVERT.getMessage());
-                }
                 return true;
             } else if (args[0].equalsIgnoreCase("set1") || args[0].equalsIgnoreCase("set2")) {
                 if (!Methods.permCheck(sender, "admin")) return true;
