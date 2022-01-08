@@ -166,10 +166,10 @@ public class StructureService {
      */
     public static void loadAndInsertAny(File source, Location startEdge, Rotation rotation) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         if (source.isDirectory()) {
-            DefinedStructure[] structures = StructureService.loadLegacyStructuresArray(source, startEdge.getWorld());
+            DefinedStructure[] structures = StructureService.loadStructuresArray(source);
             StructureService.insertStructuresArray(structures, StructureService.loadAreaDimFile(source), startEdge, rotation.getNMSRot());
         } else {
-            DefinedStructure structure = StructureService.loadLegacySingleStructure(source, startEdge.getWorld());
+            DefinedStructure structure = StructureService.loadSingleStructure(source);
             StructureService.insertSingleStructure(structure, startEdge, rotation.getNMSRot());
         }
     }
