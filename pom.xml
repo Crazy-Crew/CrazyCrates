@@ -4,7 +4,7 @@
 
     <groupId>me.badbones69</groupId>
     <artifactId>crazycrates-parent</artifactId>
-    <version>1.10.1</version>
+    <version>1.10.2</version>
     <packaging>pom</packaging>
     <name>CrazyCrates</name>
 
@@ -21,7 +21,6 @@
         <module>v1_15_R1</module>
         <module>v1_16_R3</module>
         <module>v1_17_R1</module>
-        <module>v1_18_R1</module>
     </modules>
 
     <properties>
