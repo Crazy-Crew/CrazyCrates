@@ -152,6 +152,7 @@ public class QuadCrateSession {
             }
         }
         nms.pasteSchematic(crateSchematic.getSchematicFile(), spawnLocation.clone());
+        schematicLocations.forEach(location -> location.getBlock().getState().update());
         cc.addQuadCrateTask(player, new BukkitRunnable() {
             double radius = 0.0;//Radius of the particle spiral
             int crateNumber = 0; //The crate number that spawns next
