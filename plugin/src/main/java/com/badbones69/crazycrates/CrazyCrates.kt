@@ -62,12 +62,13 @@ class CrazyCrates : JavaPlugin() {
             .registerCustomFilesFolder("/schematics")
             .setup()
 
-        if (!Files.LOCATIONS.file.contains("locations")) {
-            Files.LOCATIONS.file.set("locations.clear", null);
+        if (!Files.LOCATIONS.file.contains("Locations")) {
+            Files.LOCATIONS.file.set("Locations.Clear", null);
             Files.LOCATIONS.saveFile();
         }
-        if (!Files.DATA.file.contains("players")) {
-            Files.DATA.file.set("players.clear", null);
+
+        if (!Files.DATA.file.contains("Players")) {
+            Files.DATA.file.set("Players.Clear", null);
             Files.DATA.saveFile();
         }
 
