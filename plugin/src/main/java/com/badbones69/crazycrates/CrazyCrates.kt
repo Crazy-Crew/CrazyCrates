@@ -52,7 +52,8 @@ class CrazyCrates : JavaPlugin() {
         convertFiles("locations.yml", "Locations.yml")
         convertFiles("messages.yml", "Messages.yml")
 
-        convertCrates()
+        convertDirs("Crates", "crates")
+        convertDirs("Schematics", "schematics")
 
         if (PaperLib.isSpigot()) PaperLib.suggestPaper(this)
 
@@ -137,14 +138,17 @@ class CrazyCrates : JavaPlugin() {
         CrazyManager.getInstance().loadOfflinePlayersKeys(player)
     }
 
-    private fun convertCrates() {
-        val oldPath = File(dataFolder, "Crates")
+    private fun convertDirs(oldDirName: String, newDirName: String) {
+        val oldPath = File(dataFolder, oldDirName)
         if (!oldPath.exists()) return
 
+        logger.warning("$oldDirName directory has been found.")
+        logger.warning("Converting $oldDirName directory to $newDirName.")
+
         runCatching {
-            val newDir = File("crates")
+            val newDir = File(dataFolder,newDirName)
             oldPath.renameTo(newDir)
-        }
+        }.onSuccess { oldPath.delete() }
     }
 
     private fun convertFiles(newFileName: String, oldFileName: String) {
