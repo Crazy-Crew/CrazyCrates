@@ -21,6 +21,10 @@ import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
+import java.io.File
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 
 class CrazyCrates : JavaPlugin() {
 
@@ -44,6 +48,11 @@ class CrazyCrates : JavaPlugin() {
 
     override fun onEnable() {
         super.onEnable()
+
+        convertFiles("locations.yml", "Locations.yml")
+        convertFiles("messages.yml", "Messages.yml")
+
+        convertCrates()
 
         if (PaperLib.isSpigot()) PaperLib.suggestPaper(this)
 
@@ -126,5 +135,29 @@ class CrazyCrates : JavaPlugin() {
     fun onPlayerJoin(e: PlayerJoinEvent): Unit = with(e) {
         CrazyManager.getInstance().setNewPlayerKeys(player)
         CrazyManager.getInstance().loadOfflinePlayersKeys(player)
+    }
+
+    private fun convertCrates() {
+        val oldPath = File(dataFolder, "Crates")
+        if (!oldPath.exists()) return
+
+        runCatching {
+            val newDir = File("crates")
+            oldPath.renameTo(newDir)
+        }
+    }
+
+    private fun convertFiles(newFileName: String, oldFileName: String) {
+        val oldFile = File(dataFolder, oldFileName)
+        if (!oldFile.exists()) return
+
+        logger.warning("$oldFileName has been found.")
+        logger.warning("Converting to $newFileName")
+
+        val newFile = File(dataFolder, newFileName).toPath()
+
+        runCatching {
+            java.nio.file.Files.copy(oldFile.toPath(), newFile, StandardCopyOption.REPLACE_EXISTING)
+        }.onSuccess { oldFile.delete() }
     }
 }
