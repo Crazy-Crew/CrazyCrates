@@ -1145,7 +1145,7 @@ public class CrazyCrates {
                             if (isKeyFromCrate(item, crate)) {
                                 int keyAmount = item.getAmount();
                                 if ((takeAmount - keyAmount) >= 0) {
-                                    player.getInventory().removeItem(item);
+                                    final HashMap<Integer, ItemStack> integerItemStackHashMap = Methods.removeItemAnySlot(player.getInventory(), item);
                                     takeAmount -= keyAmount;
                                 } else {
                                     item.setAmount(keyAmount - takeAmount);
