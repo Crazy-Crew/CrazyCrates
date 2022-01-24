@@ -21,10 +21,6 @@ import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
-import java.io.File
-import java.nio.file.Path
-import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
 
 class CrazyCrates : JavaPlugin() {
 
@@ -35,10 +31,8 @@ class CrazyCrates : JavaPlugin() {
             logger.warning("============= Crazy Crates =============");
             logger.info(" ")
             logger.warning("You are running Crazy Crates on a version that is not 1.18.X, QuadCrates will not work")
-            logger.warning("Crazy Crates will function back to 1.13 except for QuadCrates.")
-            logger.warning("You can check the Spigot Page or Jenkins to find jars for older versions.")
+            logger.warning("Crazy Crates will function back to 1.13 and has no guarantee it will function any further.")
             logger.info(" ")
-            logger.warning("Plugin Page: https://www.spigotmc.org/resources/17599/")
             logger.warning("Jenkins Page: https://jenkins.badbones69.com/job/Crazy-Crates-Dev/")
             logger.warning("Version Integer: " + Version.getCurrentVersion().versionInteger)
             logger.info(" ")
@@ -48,12 +42,6 @@ class CrazyCrates : JavaPlugin() {
 
     override fun onEnable() {
         super.onEnable()
-
-        convertFiles("locations.yml", "Locations.yml")
-        convertFiles("messages.yml", "Messages.yml")
-
-        convertDirs("Crates", "crates")
-        convertDirs("Schematics", "schematics")
 
         if (PaperLib.isSpigot()) PaperLib.suggestPaper(this)
 
@@ -136,32 +124,5 @@ class CrazyCrates : JavaPlugin() {
     fun onPlayerJoin(e: PlayerJoinEvent): Unit = with(e) {
         CrazyManager.getInstance().setNewPlayerKeys(player)
         CrazyManager.getInstance().loadOfflinePlayersKeys(player)
-    }
-
-    private fun convertDirs(oldDirName: String, newDirName: String) {
-        val oldPath = File(dataFolder, oldDirName)
-        if (!oldPath.exists()) return
-
-        logger.warning("$oldDirName directory has been found.")
-        logger.warning("Converting $oldDirName directory to $newDirName.")
-
-        runCatching {
-            val newDir = File(dataFolder,newDirName)
-            oldPath.renameTo(newDir)
-        }.onSuccess { oldPath.delete() }
-    }
-
-    private fun convertFiles(newFileName: String, oldFileName: String) {
-        val oldFile = File(dataFolder, oldFileName)
-        if (!oldFile.exists()) return
-
-        logger.warning("$oldFileName has been found.")
-        logger.warning("Converting to $newFileName")
-
-        val newFile = File(dataFolder, newFileName).toPath()
-
-        runCatching {
-            java.nio.file.Files.copy(oldFile.toPath(), newFile, StandardCopyOption.REPLACE_EXISTING)
-        }.onSuccess { oldFile.delete() }
     }
 }
