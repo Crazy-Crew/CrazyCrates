@@ -8,12 +8,14 @@ import com.badbones69.crazycrates.controllers.FireworkDamageEvent;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import com.badbones69.crazycrates.api.objects.Crate;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.commons.lang.Validate;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import java.io.BufferedReader;
@@ -123,6 +125,8 @@ public class Methods {
             return false;
         }
     }
+
+
     
     public static String getPrefix() {
         return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix"));
@@ -351,5 +355,67 @@ public class Methods {
     
     public static String sanitizeFormat(String string) {
         return TextComponent.toLegacyText(TextComponent.fromLegacyText(string));
+    }
+
+    // Thanks ElectronicBoy
+    public static HashMap<Integer, ItemStack> removeItemAnySlot(Inventory inventory, ItemStack... items) {
+        Validate.notNull(items, "Items cannot be null");
+        HashMap<Integer, ItemStack> leftover = new HashMap<Integer, ItemStack>();
+
+        // TODO: optimization
+
+        for (int i = 0; i < items.length; i++) {
+            ItemStack item = items[i];
+            int toDelete = item.getAmount();
+
+            while (true) {
+                // Paper start - Allow searching entire contents
+                ItemStack[] toSearch = inventory.getContents();
+                int first = firstFromInventory(item, false, toSearch);
+                // Paper end
+
+                // Drat! we don't have this type in the inventory
+                if (first == -1) {
+                    item.setAmount(toDelete);
+                    leftover.put(i, item);
+                    break;
+                } else {
+                    ItemStack itemStack = inventory.getItem(first);
+                    int amount = itemStack.getAmount();
+
+                    if (amount <= toDelete) {
+                        toDelete -= amount;
+                        // clear the slot, all used up
+                        inventory.clear(first);
+                    } else {
+                        // split the stack and store
+                        itemStack.setAmount(amount - toDelete);
+                        inventory.setItem(first, itemStack);
+                        toDelete = 0;
+                    }
+                }
+
+                // Bail when done
+                if (toDelete <= 0) {
+                    break;
+                }
+            }
+        }
+        return leftover;
+    }
+
+    private static int firstFromInventory(ItemStack item, boolean withAmount, ItemStack[] inventory) {
+        if (item == null) {
+            return -1;
+        }
+
+        for (int i = 0; i < inventory.length; i++) {
+            if (inventory[i] == null) continue;
+
+            if (withAmount ? item.equals(inventory[i]) : item.isSimilar(inventory[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
