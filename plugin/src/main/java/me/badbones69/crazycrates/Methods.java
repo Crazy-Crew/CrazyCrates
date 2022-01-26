@@ -8,9 +8,13 @@ import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FireworkDamageEvent;
 import me.badbones69.crazycrates.multisupport.Version;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.Validate;
 import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -20,7 +24,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.plugin.Plugin;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -38,16 +41,18 @@ public class Methods {
     private static CrazyCrates cc = CrazyCrates.getInstance();
     private static Random random = new Random();
     
-    public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
-    
     public static String color(String message) {
+        final Pattern hexPattern = Pattern.compile("<#([A-Fa-f0-9]){6}>");
         if (Version.isNewer(Version.v1_15_R1)) {
-            Matcher matcher = HEX_PATTERN.matcher(message);
-            StringBuffer buffer = new StringBuffer();
+            Matcher matcher = hexPattern.matcher(message);
             while (matcher.find()) {
-                matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group()).toString());
+                final ChatColor hexColor = ChatColor.of(matcher.group().substring(1, matcher.group().length() - 1));
+                final String before = message.substring(0, matcher.start());
+                final String after = message.substring(matcher.end());
+                message = before + hexColor + after;
+                matcher = hexPattern.matcher(message);
             }
-            return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
+            return ChatColor.translateAlternateColorCodes('&', message);
         }
         return ChatColor.translateAlternateColorCodes('&', message);
     }
@@ -78,8 +83,7 @@ public class Methods {
                     num = 1 + random.nextInt(max);
                     if (num >= 1 && num <= chance) items.put(item, "Crate.Prizes." + reward);
                 }
-            } catch (Exception e) {
-            }
+            } catch (Exception e) {}
         }
         return items;
     }
