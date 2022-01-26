@@ -5,21 +5,18 @@ import net.md_5.bungee.api.ChatColor
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
+import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-private val hexPattern = Pattern.compile("<#([A-Fa-f0-9]){6}>")
-
-fun color(message: String): String? {
-    var message = message
-    var matcher = hexPattern.matcher(message)
+fun color(message: String): String {
+    if (message.startsWith("tellraw")) return org.bukkit.ChatColor.translateAlternateColorCodes('&', message)
+    val hexPattern = Pattern.compile("#([A-Fa-f0-9]){6}")
+    val matcher: Matcher = hexPattern.matcher(message)
+    val buffer = StringBuffer()
     while (matcher.find()) {
-        val hexColor = ChatColor.of(matcher.group().substring(1, matcher.group().length - 1))
-        val before = message.substring(0, matcher.start())
-        val after = message.substring(matcher.end())
-        message = before + hexColor + after
-        matcher = hexPattern.matcher(message)
+        matcher.appendReplacement(buffer, ChatColor.of(matcher.group()).toString())
     }
-    return ChatColor.translateAlternateColorCodes('&', message)
+    return org.bukkit.ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString())
 }
 
 fun getFile(plugin: JavaPlugin, name: String): File {
