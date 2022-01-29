@@ -47,6 +47,14 @@
     <dependencies>
         <dependency>
             <groupId>me.badbones69</groupId>
+            <artifactId>crazycrates-v1_18_R1</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_17_R1</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
@@ -186,7 +194,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.17.1-R0.1-SNAPSHOT</version>
+            <version>1.18.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
