@@ -8,7 +8,7 @@ Source Code for Crazy Crates
 [![Latest Version](https://img.shields.io/badge/Latest%20Version-1.10-blue)](https://github.com/badbones69/Crazy-Crates/releases/latest)
 
 ## Jenkins: 
-https://jenkins.badbones69.com/job/Crazy-Crates-1.18/
+https://jenkins.badbones69.com/job/Crazy-Crates/
 
 ## Nexus:
 https://nexus.badbones69.com/#browse/browse:maven-releases:me%2Fbadbones69%2Fcrazycrates-plugin
