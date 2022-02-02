@@ -31,20 +31,11 @@ public class Main extends JavaPlugin implements Listener {
     
     @Override
     public void onEnable() {
-        if (Version.getCurrentVersion().isOlder(Version.v1_8_R3)) {// Disables plugin on unsupported versions
-            isEnabled = false;
-            getLogger().warning("============= Crazy Crates =============");
-            getLogger().info(" ");
-            getLogger().warning("Plugin Disabled: This server is running on 1.8.3 or below and Crazy Crates does not support those versions. "
-            + "Please check the spigot page for more information about lower Minecraft versions.");
-            getLogger().info(" ");
-            getLogger().warning("Plugin Page: https://www.spigotmc.org/resources/17599/");
-            getLogger().warning("Version Integer: " + Version.getCurrentVersion().getVersionInteger());
-            getLogger().info(" ");
-            getLogger().warning("============= Crazy Crates =============");
-            Bukkit.getPluginManager().disablePlugin(this);
+        if (Version.getCurrentVersion().isOlder(Version.v1_8_R3) || Version.getCurrentVersion().isNewer(Version.v1_17_R1)) {
+            checkVersion();
             return;
         }
+
         //Crate Files
         String extension = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "nbt" : "schematic";
         String cratesFolder = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "/Crates1.13-Up" : "/Crates1.12.2-Down";
@@ -112,7 +103,21 @@ public class Main extends JavaPlugin implements Listener {
         getCommand("crazycrates").setExecutor(new CCCommand());
         getCommand("crazycrates").setTabCompleter(new CCTab());
     }
-    
+
+    private void checkVersion() {
+        isEnabled = false;
+        getLogger().warning("============= Crazy Crates =============");
+        getLogger().info(" ");
+        getLogger().warning("Plugin Disabled: This server is running on an unsupported version and Crazy Crates does not support those versions. "
+                + "Please check the spigot page for more information about lower Minecraft versions.");
+        getLogger().info(" ");
+        getLogger().warning("Support Discord: https://discord.com/invite/MCuz8JG/");
+        getLogger().warning("Version Integer: " + Version.getCurrentVersion().getVersionInteger());
+        getLogger().info(" ");
+        getLogger().warning("============= Crazy Crates =============");
+        Bukkit.getPluginManager().disablePlugin(this);
+    }
+
     @Override
     public void onDisable() {
         if (isEnabled) {
