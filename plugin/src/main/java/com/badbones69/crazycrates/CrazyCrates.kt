@@ -47,13 +47,13 @@ class CrazyCrates : JavaPlugin() {
     override fun onEnable() {
         super.onEnable()
 
-        updateFiles("Locations.yml", "locations.yml")
-        updateFiles("Data.yml", "data.yml")
-        updateFiles("Config.yml", "config.yml")
-        updateFiles("Messages.yml", "messages.yml")
+        //updateFiles("Locations.yml", "locations.yml")
+        //updateFiles("Data.yml", "data.yml")
+        //updateFiles("Config.yml", "config.yml")
+        //updateFiles("Messages.yml", "messages.yml")
 
-        updateDirectory("Crates", "crates")
-        updateDirectory("Schematics", "schematics")
+        //updateDirectory("Crates", "crates")
+        //updateDirectory("Schematics", "schematics")
 
         if (PaperLib.isSpigot()) PaperLib.suggestPaper(this)
 
@@ -138,7 +138,7 @@ class CrazyCrates : JavaPlugin() {
         CrazyManager.getInstance().loadOfflinePlayersKeys(player)
     }
 
-    private fun updateFiles(oldFileName: String, newFileName: String) {
+    /**private fun updateFiles(oldFileName: String, newFileName: String) {
         val oldPath = Path.of("$dataFolder/$oldFileName")
         if (java.nio.file.Files.exists(oldPath)) {
             logger.warning("$oldFileName has been found.")
@@ -151,9 +151,9 @@ class CrazyCrates : JavaPlugin() {
                 e.printStackTrace()
             }
         }
-    }
+    }*/
 
-    private fun updateDirectory(oldDirectory: String, newDirectory: String) {
+    /**private fun updateDirectory(oldDirectory: String, newDirectory: String) {
         val oldPath = Path.of("$dataFolder/$oldDirectory")
         if (java.nio.file.Files.exists(oldPath)) {
             logger.warning("$oldDirectory directory has been found.")
@@ -166,5 +166,5 @@ class CrazyCrates : JavaPlugin() {
                 e.printStackTrace()
             }
         }
-    }
+    }*/
 }
