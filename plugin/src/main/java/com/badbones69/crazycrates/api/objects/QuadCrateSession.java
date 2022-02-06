@@ -380,17 +380,18 @@ public class QuadCrateSession {
     private void rotateChest(Block chest, Integer direction) {
         BlockFace blockFace = switch (direction) {
             case 0 ->//East
-                    BlockFace.WEST;
+            BlockFace.WEST;
             case 1 ->//South
-                    BlockFace.NORTH;
+            BlockFace.NORTH;
             case 2 ->//West
-                    BlockFace.EAST;
+            BlockFace.EAST;
             case 3 ->//North
-                    BlockFace.SOUTH;
+            BlockFace.SOUTH;
             default -> BlockFace.DOWN;
         };
         BlockState state = chest.getState();
         state.setData(new Chest(blockFace));
         state.update();
     }
+    
 }

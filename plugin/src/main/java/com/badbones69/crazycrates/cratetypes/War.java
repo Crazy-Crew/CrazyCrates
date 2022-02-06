@@ -23,13 +23,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashMap;
 
 public class War implements Listener {
-
+    
     private static String crateNameString = "Crate.CrateName";
     private static CrazyManager cc = CrazyManager.getInstance();
     private static HashMap<ItemStack, String> colorCodes;
     private static HashMap<Player, Boolean> canPick = new HashMap<>();
     private static HashMap<Player, Boolean> canClose = new HashMap<>();
-
+    
     public static void openWarCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         String crateName = Methods.sanitizeColor(crate.getFile().getString(crateNameString));
         Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 9, crateName);
@@ -46,12 +46,12 @@ public class War implements Listener {
         }
         startWar(player, inv, crate, inventoryView.getTitle());
     }
-
+    
     private static void startWar(final Player player, final Inventory inv, final Crate crate, final String inventoryTitle) {
         cc.addCrateTask(player, new BukkitRunnable() {
             int full = 0;
             int open = 0;
-
+            
             @Override
             public void run() {
                 if (full < 25) {
@@ -72,7 +72,7 @@ public class War implements Listener {
             }
         }.runTaskTimer(CrazyManager.getJavaPlugin(), 1, 3));
     }
-
+    
     private static void setRandomPrizes(Player player, Inventory inv, Crate crate, String inventoryTitle) {
         if (cc.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(Methods.sanitizeColor(cc.getOpeningCrate(player).getFile().getString(crateNameString)))) {
             for (int i = 0; i < 9; i++) {
@@ -80,7 +80,7 @@ public class War implements Listener {
             }
         }
     }
-
+    
     private static void setRandomGlass(Player player, Inventory inv, String inventoryTitle) {
         if (cc.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(Methods.sanitizeColor(cc.getOpeningCrate(player).getFile().getString(crateNameString)))) {
             if (colorCodes == null) {
@@ -94,7 +94,7 @@ public class War implements Listener {
             }
         }
     }
-
+    
     private static HashMap<ItemStack, String> getColorCode() {
         HashMap<ItemStack, String> colorCodes = new HashMap<>();
         colorCodes.put(new ItemBuilder().setMaterial(Material.WHITE_STAINED_GLASS_PANE).build(), "f");
@@ -115,7 +115,7 @@ public class War implements Listener {
         colorCodes.put(new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).build(), "8");
         return colorCodes;
     }
-
+    
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         final Player player = (Player) e.getWhoClicked();
@@ -182,7 +182,7 @@ public class War implements Listener {
             }
         }
     }
-
+    
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
         Player player = (Player) e.getPlayer();
@@ -197,5 +197,5 @@ public class War implements Listener {
             }
         }
     }
-
+    
 }

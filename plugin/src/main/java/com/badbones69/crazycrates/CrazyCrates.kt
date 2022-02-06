@@ -21,10 +21,6 @@ import io.papermc.lib.PaperLib
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
-import java.io.File
-import java.io.IOException
-import java.nio.file.Path
-import java.nio.file.StandardCopyOption
 
 class CrazyCrates : JavaPlugin() {
 
@@ -139,32 +135,32 @@ class CrazyCrates : JavaPlugin() {
     }
 
     /**private fun updateFiles(oldFileName: String, newFileName: String) {
-        val oldPath = Path.of("$dataFolder/$oldFileName")
-        if (java.nio.file.Files.exists(oldPath)) {
-            logger.warning("$oldFileName has been found.")
-            logger.warning("Converting to $newFileName")
-            val newFile = File(dataFolder, newFileName)
-            try {
-                java.nio.file.Files.copy(oldPath, newFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
-                java.nio.file.Files.deleteIfExists(oldPath)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
+    val oldPath = Path.of("$dataFolder/$oldFileName")
+    if (java.nio.file.Files.exists(oldPath)) {
+    logger.warning("$oldFileName has been found.")
+    logger.warning("Converting to $newFileName")
+    val newFile = File(dataFolder, newFileName)
+    try {
+    java.nio.file.Files.copy(oldPath, newFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+    java.nio.file.Files.deleteIfExists(oldPath)
+    } catch (e: IOException) {
+    e.printStackTrace()
+    }
+    }
     }*/
 
     /**private fun updateDirectory(oldDirectory: String, newDirectory: String) {
-        val oldPath = Path.of("$dataFolder/$oldDirectory")
-        if (java.nio.file.Files.exists(oldPath)) {
-            logger.warning("$oldDirectory directory has been found.")
-            logger.warning("Converting $oldDirectory directory to $newDirectory")
-            val newDir = File(dataFolder, newDirectory)
-            try {
-                java.nio.file.Files.move(oldPath, newDir.toPath(), StandardCopyOption.REPLACE_EXISTING)
-                java.nio.file.Files.deleteIfExists(oldPath)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
+    val oldPath = Path.of("$dataFolder/$oldDirectory")
+    if (java.nio.file.Files.exists(oldPath)) {
+    logger.warning("$oldDirectory directory has been found.")
+    logger.warning("Converting $oldDirectory directory to $newDirectory")
+    val newDir = File(dataFolder, newDirectory)
+    try {
+    java.nio.file.Files.move(oldPath, newDir.toPath(), StandardCopyOption.REPLACE_EXISTING)
+    java.nio.file.Files.deleteIfExists(oldPath)
+    } catch (e: IOException) {
+    e.printStackTrace()
+    }
+    }
     }*/
 }

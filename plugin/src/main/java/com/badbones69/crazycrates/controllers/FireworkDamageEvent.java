@@ -57,4 +57,5 @@ public class FireworkDamageEvent implements Listener {
             }.runTaskLater(CrazyManager.getJavaPlugin(), 5);
         }
     }
+    
 }

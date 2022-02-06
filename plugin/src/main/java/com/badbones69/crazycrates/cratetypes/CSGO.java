@@ -158,4 +158,5 @@ public class CSGO implements Listener {
             inv.setItem(i + 10, items.get(i));
         }
     }
+    
 }

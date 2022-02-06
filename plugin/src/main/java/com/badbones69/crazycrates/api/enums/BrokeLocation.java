@@ -66,4 +66,5 @@ public class BrokeLocation {
     public Location getLocation() {
         return new Location(CrazyManager.getJavaPlugin().getServer().getWorld(world), x, y, z);
     }
+    
 }

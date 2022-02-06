@@ -69,4 +69,5 @@ public class FireCracker {
             }
         }.runTaskLaterAsynchronously(CrazyManager.getJavaPlugin(), 1);
     }
+    
 }

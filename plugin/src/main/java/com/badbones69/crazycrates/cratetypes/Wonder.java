@@ -84,4 +84,5 @@ public class Wonder implements Listener {
             }
         }.runTaskTimer(CrazyManager.getJavaPlugin(), 0, 2));
     }
+    
 }

@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.controllers;
 
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class Preview implements Listener {
-
+    
     private static final HashMap<UUID, Integer> playerPage = new HashMap<>();
     private static final HashMap<UUID, Crate> playerCrate = new HashMap<>();
     private static final HashMap<UUID, Boolean> playerInMenu = new HashMap<>();

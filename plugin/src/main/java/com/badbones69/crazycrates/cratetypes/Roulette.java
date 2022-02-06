@@ -114,4 +114,5 @@ public class Roulette implements Listener {
         }
         return slow;
     }
+    
 }
