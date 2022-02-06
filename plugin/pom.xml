@@ -24,7 +24,6 @@
     </repositories>
 
     <dependencies>
-
         <dependency>
             <groupId>com.badbones69</groupId>
             <artifactId>crazycrates-api</artifactId>
@@ -54,6 +53,14 @@
             <version>3.2.0</version>
             <type>maven-plugin</type>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- bStats -->
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.0.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -90,6 +97,10 @@
                         <relocation>
                             <pattern>io.papermc</pattern>
                             <shadedPattern>com.badbones69.crazycrates.libs.paperlib</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>com.badbones69.libs.bstats</shadedPattern>
                         </relocation>
                     </relocations>
                     <!--<outputFile>H:\Development\CrazyCrew\..server\spigot\plugins\CrazyCrates[v${project.version}].jar</outputFile>-->

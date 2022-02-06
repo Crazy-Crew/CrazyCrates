@@ -18,6 +18,7 @@ import com.badbones69.crazycrates.support.libs.Version
 import com.badbones69.crazycrates.support.placeholders.MVdWPlaceholderAPISupport
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport
 import io.papermc.lib.PaperLib
+import org.bstats.bukkit.Metrics
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
@@ -107,7 +108,7 @@ class CrazyCrates : JavaPlugin() {
         if (Support.PLACEHOLDERAPI.isPluginLoaded) PlaceholderAPISupport().register()
         if (Support.MVDWPLACEHOLDERAPI.isPluginLoaded) MVdWPlaceholderAPISupport.registerPlaceholders()
 
-        Metrics()
+        Metrics(this, 4514)
 
         Methods.hasUpdate()
 
