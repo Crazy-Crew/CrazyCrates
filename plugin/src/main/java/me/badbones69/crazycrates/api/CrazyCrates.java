@@ -209,6 +209,8 @@ public class CrazyCrates {
             hologramController = new HolographicSupport();
         } else if (Support.HOLOGRAMS.isPluginLoaded()) {
             hologramController = new HologramsSupport();
+        } else if (Support.DECENT_HOLOGRAMS.isPluginLoaded()) {
+            hologramController = new DecentHolograms();
         }
         //Removes all holograms so that they can be replaced.
         if (hologramController != null) {

@@ -3,12 +3,12 @@ main: me.badbones69.crazycrates.Main
 author: BadBones69
 version: ${project.version}${build.number}
 api-version: 1.13
-softdepend: [ HolographicDisplays, Holograms, MVdWPlaceholderAPI, PlaceholderAPI, CratesPlus ]
+softdepend: [HolographicDisplays, Holograms, DecentHolograms, MVdWPlaceholderAPI, PlaceholderAPI, CratesPlus]
 description: Want some good quality crates without paying money for them? Then check this crate plugin out.
 commands:
   crazycrates:
     description: Opens the GUI.
-    aliases: [ cc, ccrate, crazycrate, crate, crates ]
+    aliases: [cc, ccrate, crazycrate, crate, crates]
   key:
     description: Views the amount of keys you/others have.
-    aliases: [ keys ]
+    aliases: [keys]

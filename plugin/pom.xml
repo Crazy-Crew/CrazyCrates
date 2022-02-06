@@ -42,6 +42,10 @@
             <id>papermc</id>
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -157,6 +161,14 @@
             <groupId>com.sainttx.holograms</groupId>
             <artifactId>holograms</artifactId>
             <version>2.12</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- DecentHolograms -->
+        <dependency>
+            <groupId>com.github.decentsoftware-eu</groupId>
+            <artifactId>decentholograms</artifactId>
+            <version>2.2.5</version>
             <scope>provided</scope>
         </dependency>
 
