@@ -6,7 +6,8 @@ public enum Support {
     
     PLACEHOLDERAPI("PlaceholderAPI"),
     MVDWPLACEHOLDERAPI("MVdWPlaceholderAPI"),
-    HOLOGRAPHIC_DISPLAYS("HolographicDisplays");
+    HOLOGRAPHIC_DISPLAYS("HolographicDisplays"),
+    DECENT_HOLOGRAMS("DecentHolograms");
     
     private final String name;
     

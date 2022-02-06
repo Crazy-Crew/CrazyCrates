@@ -17,6 +17,7 @@ import com.badbones69.crazycrates.controllers.Preview;
 import com.badbones69.crazycrates.cratetypes.*;
 import com.badbones69.crazycrates.nms.NMSSupport;
 import com.badbones69.crazycrates.nms.NMS_v1_18_R1;
+import com.badbones69.crazycrates.support.holograms.DecentHolograms;
 import com.badbones69.crazycrates.support.holograms.HolographicSupport;
 import com.badbones69.crazycrates.support.libs.Support;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -167,6 +168,8 @@ public class CrazyManager {
         giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
         if (Support.HOLOGRAPHIC_DISPLAYS.isPluginLoaded()) {
             hologramController = new HolographicSupport();
+        } else if (Support.DECENT_HOLOGRAMS.isPluginLoaded()) {
+            hologramController = new DecentHolograms();
         }
         //Removes all holograms so that they can be replaced.
         if (hologramController != null) {
