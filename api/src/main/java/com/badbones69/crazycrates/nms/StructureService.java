@@ -28,9 +28,9 @@ import java.util.Random;
  * @version 2.4
  */
 public class StructureService {
-
+    
     public static Random random = new Random();
-
+    
     /**
      * A comfort method for all lazy guys. Automatically switches to structure arrays, when using an area larger than 32x32x32
      * @param corners - 2 opposite edges (order doesn't matter)
@@ -39,7 +39,7 @@ public class StructureService {
     public static void createAndSaveAny(Location[] corners, File destination) throws IOException {
         createAndSaveAny(corners, "?", destination);
     }
-
+    
     /**
      * A comfort method for all lazy guys. Automatically switches to structure arrays, when using an area larger than 32x32x32
      * @param corners - 2 opposite edges (order doesn't matter)
@@ -58,7 +58,7 @@ public class StructureService {
             saveSingleStructure(structure, destination);
         }
     }
-
+    
     /**
      * Creates a single structure of maximum 32x32x32 blocks. If you need a larger area, use {@link #createStructuresArray(Location[], String)}
      * @param corners - The edges of the area (order doesn't matter)
@@ -67,7 +67,7 @@ public class StructureService {
     public static DefinedStructure createSingleStructure(Location[] corners) {
         return createSingleStructure(corners, "?");
     }
-
+    
     /**
      * Creates a single structure of maximum 32x32x32 blocks. If you need a larger area, use {@link #createStructuresArray(Location[], String)}
      * @param corners - The edges of the area (order doesn't matter)
@@ -85,7 +85,7 @@ public class StructureService {
         structure.a(author);
         return structure;
     }
-
+    
     /**
      * Saves a structure NBT file to a given destination file
      * @param structure - The structure to be saved
@@ -95,9 +95,9 @@ public class StructureService {
         NBTTagCompound fileTag = new NBTTagCompound();
         fileTag = structure.a(fileTag);
         if (structure.b() != null && !structure.b().equals("?")) fileTag.a("author", structure.b());
-        NBTCompressedStreamTools.a(fileTag, new FileOutputStream(new File(destination + ".nbt")));
+        NBTCompressedStreamTools.a(fileTag, new FileOutputStream(destination + ".nbt"));
     }
-
+    
     /**
      * Splits up an area in 32x32x32 structures, creates those and fills an array with them
      * @param corners - 2 Edges of the area (order doesn't matter)
@@ -106,7 +106,7 @@ public class StructureService {
     public static DefinedStructure[] createStructuresArray(Location[] corners) {
         return createStructuresArray(corners, "?");
     }
-
+    
     /**
      * Splits up an area in 32x32x32 structures, creates those and fills an array with them
      * @param corners - 2 Edges of the area (order doesn't matter)
@@ -139,7 +139,7 @@ public class StructureService {
         }
         return structures;
     }
-
+    
     /**
      * Saves a one dimensional array of structures to files within a given folder. For importing, the file structure is important, don't change it.
      * @param structures - The structures array
@@ -154,14 +154,14 @@ public class StructureService {
             NBTCompressedStreamTools.a(fileTag, new FileOutputStream(new File(folder, folder.getName() + "_" + i + ".nbt")));
         }
     }
-
+    
     /**
      * A comfort method for all lazy guys. Automatically switches to structure arrays, when the source is a folder, no file
      * @param source - The structure array folder or the structure NBT file
      * @param startEdge - The starting corner for pasting (lowest x, y, z coordinates)
      * @param rotation - You may rotate the structure by 90 degrees steps
      */
-    public static void loadAndInsertAny(File source, Location startEdge, Rotation rotation) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static void loadAndInsertAny(File source, Location startEdge, Rotation rotation) throws IOException, SecurityException, IllegalArgumentException {
         if (source.isDirectory()) {
             DefinedStructure[] structures = loadStructuresArray(source);
             insertStructuresArray(structures, loadAreaDimFile(source), startEdge, rotation.getNMSRot());
@@ -170,16 +170,16 @@ public class StructureService {
             insertSingleStructure(structure, startEdge, rotation.getNMSRot());
         }
     }
-
+    
     /**
      * A comfort method for all lazy guys. Automatically switches to structure arrays, when the source is a folder, no file
      * @param source - The structure array folder or the structure NBT file
      * @param startEdge - The starting corner for pasting (lowest x, y, z coordinates)
      */
-    public static void loadAndInsertAny(File source, Location startEdge) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static void loadAndInsertAny(File source, Location startEdge) throws IOException, SecurityException, IllegalArgumentException {
         loadAndInsertAny(source, startEdge, Rotation.DEG_0);
     }
-
+    
     /*
      * Loads a single structure NBT file and creates a new structure object instance. Also converts pre1.13 versions.
      * param source - The structure file
@@ -188,12 +188,12 @@ public class StructureService {
      * deprecated Only for pre1.13, uses the NMS 1.13 DataFixer to convert stuff
      *
      */
-     public static DefinedStructure loadLegacySingleStructure(File source, World world) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static DefinedStructure loadLegacySingleStructure(File source, World world) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Method parseAndConvert = DefinedStructureManager.class.getDeclaredMethod("a", InputStream.class);
         parseAndConvert.setAccessible(true);
         return (DefinedStructure) parseAndConvert.invoke(((CraftWorld) world).getHandle().r(), new FileInputStream(source));
     }
-
+    
     /**
      * Loads a single structure NBT file and creates a new structure object instance. Works only for structures created with 1.13 or later!
      * @param source - The structure file
@@ -204,7 +204,7 @@ public class StructureService {
         structure.b(NBTCompressedStreamTools.a(new FileInputStream(source)));
         return structure;
     }
-
+    
     /**
      * Pastes a single structure into the world
      * @param structure - The structure to be pasted
@@ -214,7 +214,7 @@ public class StructureService {
     public static void insertSingleStructure(Object structure, Location startEdge, Rotation rotation) {
         insertSingleStructure((DefinedStructure) structure, startEdge, rotation.getNMSRot());
     }
-
+    
     /**
      * Pastes a single structure into the world
      * @param structure - The structure to be pasted
@@ -227,7 +227,7 @@ public class StructureService {
         BlockPosition blockPosition = new BlockPosition(startEdge.getBlockX(), startEdge.getBlockY(), startEdge.getBlockZ());
         structure.a(world, blockPosition, blockPosition, structInfo, random, 0);
     }
-
+    
     public static List<Location> getSingleStructureLocations(File source, Location startEdge) throws IOException {
         DefinedStructure structure = loadSingleStructure(source);
         List<Location> locations = new ArrayList<>();
@@ -250,7 +250,7 @@ public class StructureService {
         }
         return locations;
     }
-
+    
     public static Location getOtherEdge(File source, Location startEdge) throws IOException {
         DefinedStructure structure = loadSingleStructure(source);
         NBTTagCompound fileTag = new NBTTagCompound();
@@ -258,7 +258,7 @@ public class StructureService {
         NBTTagList list = (NBTTagList) fileTag.c("size");
         return startEdge.clone().add(Integer.parseInt(list.get(0).toString()) - 1, Integer.parseInt(list.get(1).toString()) - 1, Integer.parseInt(list.get(2).toString()) - 1);
     }
-
+    
     /**
      * Loads all structure segments back into one array. The folder file contents are important, don't change it after saving. Also converts pre1.13 versions.
      * @param folder - The folder containing an NBT file by the same name with dimensions and NBT files of structures with a counter added
@@ -266,7 +266,7 @@ public class StructureService {
      * @return DefinedStructure[] - A one dimensional array, just like the folder
      * deprecated Only for pre 1.13, uses the NMS 1.13 DataFixer to convert stuff
      **/
-
+    
     @Deprecated
     public static DefinedStructure[] loadLegacyStructuresArray(File folder, World world) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         if (!new File(folder, folder.getName() + ".nbt").exists()) throw new IllegalArgumentException("This is not a valid structure area export folder!");
@@ -284,7 +284,7 @@ public class StructureService {
         }
         return structures;
     }
-
+    
     /**
      * Loads all structure segments back into one array. The folder file contents are important, don't change it after saving. Works only for structures created with 1.13 or later!
      * @param folder - The folder containing an NBT file by the same name with dimensions and NBT files of structures with an counter added
@@ -304,7 +304,7 @@ public class StructureService {
         }
         return structures;
     }
-
+    
     /**
      * Pastes an array of structures into the world
      * @param structures - A one dimensional array of structures, sorted by y, z, x (iterates along x, then z, then y)
@@ -315,7 +315,7 @@ public class StructureService {
     public static void insertStructuresArray(Object[] structures, int[] dimensions, Location startEdge, Rotation rotation) {
         insertStructuresArray((DefinedStructure[]) structures, dimensions, startEdge, rotation.getNMSRot());
     }
-
+    
     /**
      * Pastes an array of structures into the world
      * @param structures - A one dimensional array of structures, sorted by y, z, x (iterates along x, then z, then y)
@@ -336,7 +336,7 @@ public class StructureService {
             }
         }
     }
-
+    
     /**
      * Saves a simple NBT file (same name as folder name), containing an integer array with the given dimensions
      * @param dimension - The integer array
@@ -347,7 +347,7 @@ public class StructureService {
         fileTag.a("dimensions", dimension);
         NBTCompressedStreamTools.a(fileTag, new FileOutputStream(new File(folder, folder.getName() + ".nbt")));
     }
-
+    
     /**
      * Loads a simple NBT file (same name as folder name), containing an integer array with dimensions
      * @param folder - The parent folder
@@ -356,7 +356,7 @@ public class StructureService {
     public static int[] loadAreaDimFile(File folder) throws IOException {
         return NBTCompressedStreamTools.a(new FileInputStream(new File(folder, folder.getName() + ".nbt"))).n("dimensions");
     }
-
+    
     /**
      * Get the amount of blocks along x axis (width), y axis (height), z axis (length)
      * @param corners - The 2 opposite edges, in best case the first has the lowest coordinates in x, y, z
@@ -366,7 +366,7 @@ public class StructureService {
         if (corners.length != 2) throw new IllegalArgumentException("An area needs to be set up by exactly 2 opposite edges!");
         return new int[] {corners[1].getBlockX() - corners[0].getBlockX() + 1, corners[1].getBlockY() - corners[0].getBlockY() + 1, corners[1].getBlockZ() - corners[0].getBlockZ() + 1};
     }
-
+    
     /**
      * Calculates how many 32x32x32 sections are needed to fill an area
      * @param dimensions - The area size
@@ -383,7 +383,7 @@ public class StructureService {
         if (dimensions[2] % 32 != 0) length = length + 1;
         return new int[] {width, height, length};
     }
-
+    
     /**
      * Swaps the edge corners if necessary, so the first edge will be at the lowest coordinates and the highest will be at the edge with the highest coordinates
      * @param startBlock - Any corner
@@ -415,7 +415,7 @@ public class StructureService {
         }
         return new Location[] {new Location(startBlock.getWorld(), xMin, yMin, zMin), new Location(startBlock.getWorld(), xMax, yMax, zMax)};
     }
-
+    
     /**
      * Calculates the index within a linear array, interpreting it as 3D area, Y Z X (Sorted by height, then length, then width )
      * @param x - The X position within the area
@@ -428,7 +428,7 @@ public class StructureService {
     public static int getYzxIndex(int x, int y, int z, int width, int length) {
         return width * length * y + StructureService.getZxIndex(x, z, width);
     }
-
+    
     /**
      * Calculates the index within a linear array, interpreting it as 2D area, Z X (Sorted by length, then width )
      * @param x - The X position within the area
@@ -439,7 +439,7 @@ public class StructureService {
     public static int getZxIndex(int x, int z, int width) {
         return z * width + x;
     }
-
+    
     /**
      * Find out, which structure in an array of structure is the one you need at a specific position
      * @param dimension - The width, height, length of the whole structure array
@@ -452,7 +452,7 @@ public class StructureService {
         int[] sections = getAreaSections(dimension);
         return getYzxIndex(x / 32, y / 32, z / 32, sections[0], sections[2]);
     }
-
+    
     /**
      * Used as rotation interface to NMS
      * @author Michel_0
@@ -460,13 +460,14 @@ public class StructureService {
     public enum Rotation {
         DEG_0(EnumBlockRotation.a), DEG_90(EnumBlockRotation.b), DEG_180(EnumBlockRotation.c), DEG_270(EnumBlockRotation.d);
         private final EnumBlockRotation rotNMS;
-
+        
         Rotation(EnumBlockRotation rotNMS) {
             this.rotNMS = rotNMS;
         }
-
+        
         public EnumBlockRotation getNMSRot() {
             return this.rotNMS;
         }
     }
+    
 }

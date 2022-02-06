@@ -14,7 +14,7 @@ public enum CrateType {
     WONDER("Wonder"),
     WAR("War");
     
-    private String name;
+    private final String name;
     
     private CrateType(String name) {
         this.name = name;

@@ -22,7 +22,7 @@ public class KeyCommand implements CommandExecutor {
         // /key [player]
         // /key redeem <crate> [amount] << Will be added later.
         if (args.length == 0) {
-            if (sender instanceof Player) {
+            if (sender instanceof Player player) {
                 if (!Methods.permCheck(sender, "access")) {
                     return true;
                 }
@@ -30,7 +30,6 @@ public class KeyCommand implements CommandExecutor {
                 sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
                 return true;
             }
-            Player player = (Player) sender;
             List<String> message = new ArrayList<>();
             message.add(Messages.PERSONAL_HEADER.getMessageNoPrefix());
             HashMap<Crate, Integer> keys = cc.getVirtualKeys(player);

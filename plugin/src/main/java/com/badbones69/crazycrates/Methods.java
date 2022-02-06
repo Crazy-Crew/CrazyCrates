@@ -3,10 +3,10 @@ package com.badbones69.crazycrates;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.Messages;
+import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.controllers.FireworkDamageEvent;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import com.badbones69.crazycrates.api.objects.Crate;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.Validate;
 import org.bukkit.*;
@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -29,14 +30,14 @@ import java.util.*;
 import static com.badbones69.crazycrates.func.ConstantsKt.color;
 
 public class Methods {
-
+    
     private static CrazyManager cc = CrazyManager.getInstance();
     private static Random random = new Random();
     
     public static String sanitizeColor(String msg) {
         return sanitizeFormat(color(msg));
     }
-
+    
     public static String removeColor(String msg) {
         return ChatColor.stripColor(msg);
     }
@@ -125,8 +126,6 @@ public class Methods {
             return false;
         }
     }
-
-
     
     public static String getPrefix() {
         return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix"));
@@ -156,7 +155,7 @@ public class Methods {
     
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
         NBTItem nbtItem = new NBTItem(itemStack);
-
+        
         return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
         itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
         isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
@@ -228,7 +227,8 @@ public class Methods {
             if (!newVersion.equals(oldVersion)) {
                 Bukkit.getConsoleSender().sendMessage(getPrefix() + color("&cYour server is running &7v" + oldVersion + "&c and the newest is &7v" + newVersion + "&c."));
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
     
     public static void hasUpdate(Player player) {
@@ -242,7 +242,8 @@ public class Methods {
             if (!newVersion.equals(oldVersion)) {
                 player.sendMessage(getPrefix() + color("&cYour server is running &7v" + oldVersion + "&c and the newest is &7v" + newVersion + "&c."));
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
     
     public static Set<String> getEnchantments() {
@@ -258,7 +259,7 @@ public class Methods {
                     return enchantment;
                 }
                 if (stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null &&
-                        stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
+                stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
                     return enchantment;
                 }
             } catch (Exception ignore) {//If any null enchantments are found they may cause errors.
@@ -317,25 +318,25 @@ public class Methods {
         enchantments.put("LOYALTY", "Loyalty");
         return enchantments;
     }
-
+    
     public static ItemBuilder getRandomPaneColor() {
         List<String> colors = Arrays.asList(
-                Material.WHITE_STAINED_GLASS_PANE.toString(),
-                Material.ORANGE_STAINED_GLASS_PANE.toString(),
-                Material.MAGENTA_STAINED_GLASS_PANE.toString(),
-                Material.LIGHT_BLUE_STAINED_GLASS_PANE.toString(),
-                Material.YELLOW_STAINED_GLASS_PANE.toString(),
-                Material.LIME_STAINED_GLASS_PANE.toString(),
-                Material.PINK_STAINED_GLASS_PANE.toString(),
-                Material.GRAY_STAINED_GLASS_PANE.toString(),
-                Material.CYAN_STAINED_GLASS_PANE.toString(),
-                Material.PURPLE_STAINED_GLASS_PANE.toString(),
-                Material.BLUE_STAINED_GLASS_PANE.toString(),
-                Material.BROWN_STAINED_GLASS_PANE.toString(),
-                Material.GREEN_STAINED_GLASS_PANE.toString(),
-                Material.RED_STAINED_GLASS_PANE.toString(),
-                Material.BLACK_STAINED_GLASS_PANE.toString(),
-                Material.LIGHT_GRAY_STAINED_GLASS_PANE.toString());
+        Material.WHITE_STAINED_GLASS_PANE.toString(),
+        Material.ORANGE_STAINED_GLASS_PANE.toString(),
+        Material.MAGENTA_STAINED_GLASS_PANE.toString(),
+        Material.LIGHT_BLUE_STAINED_GLASS_PANE.toString(),
+        Material.YELLOW_STAINED_GLASS_PANE.toString(),
+        Material.LIME_STAINED_GLASS_PANE.toString(),
+        Material.PINK_STAINED_GLASS_PANE.toString(),
+        Material.GRAY_STAINED_GLASS_PANE.toString(),
+        Material.CYAN_STAINED_GLASS_PANE.toString(),
+        Material.PURPLE_STAINED_GLASS_PANE.toString(),
+        Material.BLUE_STAINED_GLASS_PANE.toString(),
+        Material.BROWN_STAINED_GLASS_PANE.toString(),
+        Material.GREEN_STAINED_GLASS_PANE.toString(),
+        Material.RED_STAINED_GLASS_PANE.toString(),
+        Material.BLACK_STAINED_GLASS_PANE.toString(),
+        Material.LIGHT_GRAY_STAINED_GLASS_PANE.toString());
         return new ItemBuilder().setMaterial(colors.get(random.nextInt(colors.size())));
     }
     
@@ -356,24 +357,24 @@ public class Methods {
     public static String sanitizeFormat(String string) {
         return TextComponent.toLegacyText(TextComponent.fromLegacyText(string));
     }
-
+    
     // Thanks ElectronicBoy
     public static HashMap<Integer, ItemStack> removeItemAnySlot(Inventory inventory, ItemStack... items) {
         Validate.notNull(items, "Items cannot be null");
-        HashMap<Integer, ItemStack> leftover = new HashMap<Integer, ItemStack>();
-
+        HashMap<Integer, ItemStack> leftover = new HashMap<>();
+        
         // TODO: optimization
-
+        
         for (int i = 0; i < items.length; i++) {
             ItemStack item = items[i];
             int toDelete = item.getAmount();
-
+            
             while (true) {
                 // Paper start - Allow searching entire contents
                 ItemStack[] toSearch = inventory.getContents();
                 int first = firstFromInventory(item, false, toSearch);
                 // Paper end
-
+                
                 // Drat! we don't have this type in the inventory
                 if (first == -1) {
                     item.setAmount(toDelete);
@@ -382,7 +383,7 @@ public class Methods {
                 } else {
                     ItemStack itemStack = inventory.getItem(first);
                     int amount = itemStack.getAmount();
-
+                    
                     if (amount <= toDelete) {
                         toDelete -= amount;
                         // clear the slot, all used up
@@ -394,7 +395,7 @@ public class Methods {
                         toDelete = 0;
                     }
                 }
-
+                
                 // Bail when done
                 if (toDelete <= 0) {
                     break;
@@ -403,19 +404,20 @@ public class Methods {
         }
         return leftover;
     }
-
+    
     private static int firstFromInventory(ItemStack item, boolean withAmount, ItemStack[] inventory) {
         if (item == null) {
             return -1;
         }
-
+        
         for (int i = 0; i < inventory.length; i++) {
             if (inventory[i] == null) continue;
-
+            
             if (withAmount ? item.equals(inventory[i]) : item.isSimilar(inventory[i])) {
                 return i;
             }
         }
         return -1;
     }
+    
 }

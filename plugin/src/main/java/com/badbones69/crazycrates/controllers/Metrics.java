@@ -55,7 +55,7 @@ public class Metrics {
             }
         }
     }
-
+    
     // A list with all custom charts
     private final List<CustomChart> charts = new ArrayList<>();
     // Is bStats enabled on this server?
@@ -94,7 +94,8 @@ public class Metrics {
             ).copyDefaults(true);
             try {
                 config.save(configFile);
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
         }
         
         // Load the data
@@ -112,7 +113,8 @@ public class Metrics {
                     service.getField("B_STATS_VERSION"); // Our identifier :)
                     found = true; // We aren't the first
                     break;
-                } catch (NoSuchFieldException ignored) {}
+                } catch (NoSuchFieldException ignored) {
+                }
             }
             // Register our service
             Bukkit.getServicesManager().register(Metrics.class, this, CrazyManager.getJavaPlugin(), ServicePriority.Normal);

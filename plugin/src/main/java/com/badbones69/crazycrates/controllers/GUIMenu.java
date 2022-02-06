@@ -1,14 +1,14 @@
 package com.badbones69.crazycrates.controllers;
 
-import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import com.badbones69.crazycrates.Methods;
+import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -146,7 +146,7 @@ public class GUIMenu implements Listener {
                         if (nbtItem.hasNBTData() && nbtItem.hasKey("CrazyCrates-Crate")) {
                             Crate crate = cc.getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
                             if (crate != null) {
-                                if (e.getAction() == InventoryAction.PICKUP_HALF) {//Right clicked the item
+                                if (e.getAction() == InventoryAction.PICKUP_HALF) {//Right-clicked the item
                                     if (crate.isPreviewEnabled()) {
                                         player.closeInventory();
                                         Preview.setPlayerInMenu(player, true);

@@ -1,19 +1,22 @@
 package com.badbones69.crazycrates.commands;
 
+import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
+import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
+import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.controllers.CrateControl;
 import com.badbones69.crazycrates.controllers.GUIMenu;
 import com.badbones69.crazycrates.controllers.Preview;
-import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.api.enums.CrateType;
-import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.api.objects.Crate;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -146,7 +149,7 @@ public class CCCommand implements CommandExecutor {
                 if (!Methods.permCheck(sender, "admin")) return true;
                 fileManager.reloadAllFiles();
                 fileManager.setup();
-
+                
                 if (!FileManager.Files.LOCATIONS.getFile().contains("Locations")) {
                     FileManager.Files.LOCATIONS.getFile().set("Locations.Clear", null);
                     FileManager.Files.LOCATIONS.saveFile();
@@ -175,8 +178,7 @@ public class CCCommand implements CommandExecutor {
                 sender.sendMessage(Methods.getPrefix("&c/cc debug <crate>"));
                 return true;
             } else if (args[0].equalsIgnoreCase("admin")) {
-                if (!(sender instanceof Player)) return true;
-                Player player = (Player) sender;
+                if (!(sender instanceof Player player)) return true;
                 if (!Methods.permCheck(player, "admin")) return true;
                 int size = cc.getCrates().size();
                 int slots = 9;
@@ -539,7 +541,7 @@ public class CCCommand implements CommandExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("give")) {// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
                 if (!Methods.permCheck(sender, "admin")) return true;
-                Player target = null;
+                Player target;
                 KeyType type = KeyType.PHYSICAL_KEY;
                 Crate crate = null;
                 int amount = 1;

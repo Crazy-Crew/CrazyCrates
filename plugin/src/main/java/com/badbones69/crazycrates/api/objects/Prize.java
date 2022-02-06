@@ -124,7 +124,7 @@ public class Prize {
     }
     
     /**
-     * @return Returns the commands that are ran when the player wins.
+     * @return Returns the commands that are run when the player wins.
      */
     public List<String> getCommands() {
         return commands;

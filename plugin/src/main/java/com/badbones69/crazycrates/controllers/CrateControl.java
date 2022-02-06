@@ -1,12 +1,12 @@
 package com.badbones69.crazycrates.controllers;
 
-import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.Methods;
+import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.Messages;
+import com.badbones69.crazycrates.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.cratetypes.QuickCrate;
@@ -53,7 +53,7 @@ public class CrateControl implements Listener { //Crate Control
         }
     }
     
-    //This must run as highest so it doesn't cause other plugins to check
+    //This must run as highest, so it doesn't cause other plugins to check
     //the items that were added to the players inventory and replaced the item in the player's hand.
     //This is only an issue with QuickCrate
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -92,7 +92,7 @@ public class CrateControl implements Listener { //Crate Control
                 }
             }
         } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            //Checks if the item in their hand is a key and if so it stops them from right clicking with it.
+            //Checks if the item in their hand is a key and if so it stops them from right-clicking with it.
             ItemStack key = cc.getNMSSupport().getItemInMainHand(player);
             boolean keyInHand = cc.isKey(key);
             if (!keyInHand) {

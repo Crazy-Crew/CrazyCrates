@@ -310,9 +310,9 @@ public class FileManager {
         LOCATIONS("locations.yml", "locations.yml"),
         DATA("data.yml", "data.yml");
         
-        private String fileName;
-        private String fileJar;
-        private String fileLocation;
+        private final String fileName;
+        private final String fileJar;
+        private final String fileLocation;
         
         /**
          * The files that the server will try and load.
@@ -492,5 +492,7 @@ public class FileManager {
             }
             return false;
         }
+        
     }
+    
 }

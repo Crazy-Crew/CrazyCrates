@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates;
+package com.badbones69.crazycrates
 
 import com.badbones69.crazycrates.api.CrazyManager
 import com.badbones69.crazycrates.api.FileManager
@@ -32,7 +32,7 @@ class CrazyCrates : JavaPlugin() {
 
     override fun onLoad() {
         if (Version.isOlder(Version.TOO_OLD)) {
-            logger.warning("============= Crazy Crates =============");
+            logger.warning("============= Crazy Crates =============")
             logger.info(" ")
             logger.warning("You are running Crazy Crates on a version that is not 1.18.X.")
             logger.warning("No guarantee that it will run perfectly, You have been warned.")
@@ -73,13 +73,13 @@ class CrazyCrates : JavaPlugin() {
             .setup()
 
         if (!Files.LOCATIONS.file.contains("Locations")) {
-            Files.LOCATIONS.file.set("Locations.Clear", null);
-            Files.LOCATIONS.saveFile();
+            Files.LOCATIONS.file.set("Locations.Clear", null)
+            Files.LOCATIONS.saveFile()
         }
 
         if (!Files.DATA.file.contains("Players")) {
-            Files.DATA.file.set("Players.Clear", null);
-            Files.DATA.saveFile();
+            Files.DATA.file.set("Players.Clear", null)
+            Files.DATA.saveFile()
         }
 
         CrazyManager.getInstance().loadCrates()
@@ -103,7 +103,7 @@ class CrazyCrates : JavaPlugin() {
 
         if (PaperLib.isPaper()) {
             logger.info("Utilizing Paper Functions...")
-            // Do paper specific shit here.
+            // Do paper specific stuff here.
         }
 
         if (CrazyManager.getInstance().brokeCrateLocations.isNotEmpty()) registerListener(BrokeLocationsControl())
@@ -117,10 +117,10 @@ class CrazyCrates : JavaPlugin() {
 
         registerPermissions(server.pluginManager)
 
-        getCommand("key")?.setExecutor(KeyCommand());
-        getCommand("key")?.tabCompleter = KeyTab();
-        getCommand("crazycrates")?.setExecutor(CCCommand());
-        getCommand("crazycrates")?.tabCompleter = CCTab();
+        getCommand("key")?.setExecutor(KeyCommand())
+        getCommand("key")?.tabCompleter = KeyTab()
+        getCommand("crazycrates")?.setExecutor(CCCommand())
+        getCommand("crazycrates")?.tabCompleter = CCTab()
         serverEnabled = true
     }
 

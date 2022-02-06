@@ -1,12 +1,6 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.nms.NMSSupport;
-import com.badbones69.crazycrates.nms.NMS_v1_18_R1;
-import com.badbones69.crazycrates.api.objects.*;
-import com.badbones69.crazycrates.cratetypes.*;
-import com.badbones69.crazycrates.support.holograms.HolographicSupport;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.enums.BrokeLocation;
@@ -16,10 +10,16 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent.KeyReciveReason;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
+import com.badbones69.crazycrates.api.objects.*;
 import com.badbones69.crazycrates.controllers.CrateControl;
 import com.badbones69.crazycrates.controllers.GUIMenu;
 import com.badbones69.crazycrates.controllers.Preview;
+import com.badbones69.crazycrates.cratetypes.*;
+import com.badbones69.crazycrates.nms.NMSSupport;
+import com.badbones69.crazycrates.nms.NMS_v1_18_R1;
+import com.badbones69.crazycrates.support.holograms.HolographicSupport;
 import com.badbones69.crazycrates.support.libs.Support;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -42,7 +42,7 @@ import java.util.logging.Level;
 import static com.badbones69.crazycrates.func.ConstantsKt.color;
 
 public class CrazyManager {
-
+    
     public static JavaPlugin getJavaPlugin() {
         return JavaPlugin.getPlugin(CrazyCrates.class);
     }
@@ -112,12 +112,12 @@ public class CrazyManager {
      * True if at least one crate gives new players keys and false if none give new players keys.
      */
     private boolean giveNewPlayersKeys;
-
+    
     /**
      * True if using 1.13+ material names and false if using lower versions.
      */
     private boolean useNewMaterial;
-
+    
     private boolean useNewSounds;
     
     /**
@@ -160,9 +160,9 @@ public class CrazyManager {
         brokecrates.clear();
         crateLocations.clear();
         crateSchematics.clear();
-
+        
         nmsSupport = new NMS_v1_18_R1();
-
+        
         quadCrateTimer = Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
         giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
         if (Support.HOLOGRAPHIC_DISPLAYS.isPluginLoaded()) {
@@ -232,7 +232,7 @@ public class CrazyManager {
                     altPrize));
                 }
                 int newPlayersKeys = file.getInt("Crate.StartingKeys");
-                if (giveNewPlayersKeys = false) {
+                if (!giveNewPlayersKeys) {
                     if (newPlayersKeys > 0) {
                         giveNewPlayersKeys = true;
                     }
@@ -365,7 +365,7 @@ public class CrazyManager {
                 return;
             }
         }
-
+        
         addPlayerToOpeningList(player, crate);
         boolean broadcast = crate.getFile() != null && crate.getFile().getBoolean("Crate.OpeningBroadCast");
         if (broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {
@@ -542,7 +542,7 @@ public class CrazyManager {
     }
     
     /**
-     * Checks to see if the a location is a physical crate.
+     * Checks to see if the location is a physical crate.
      * @param loc The location you are checking.
      * @return True if it is a physical crate and false if not.
      */
@@ -819,7 +819,7 @@ public class CrazyManager {
     }
     
     /**
-     * Load the offline keys of a player who has came online.
+     * Load the offline keys of a player who has come online.
      * @param player The player which you would like to load the offline keys for.
      */
     public void loadOfflinePlayersKeys(Player player) {
@@ -983,12 +983,12 @@ public class CrazyManager {
     /**
      * Get a physical key from a players inventory.
      * @param player The player you are checking.
-     * @param crate The Crate of who's key you are getting.
+     * @param crate The Crate of whose key you are getting.
      * @return The ItemStack in the player's inventory. This will return null if not found.
      */
     public ItemStack getPhysicalKey(Player player, Crate crate) {
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
-            if(item == null || item.getType() == Material.AIR) continue;
+            if (item == null || item.getType() == Material.AIR) continue;
             if (Methods.isSimilar(item, crate)) {
                 return item;
             }
@@ -1102,7 +1102,7 @@ public class CrazyManager {
                             }
                         }
                     }
-                    //This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the off hand.
+                    //This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the offhand.
                     if (takeAmount > 0) {
                         ItemStack item = player.getEquipment().getItemInOffHand();
                         if (item != null) {
@@ -1221,7 +1221,7 @@ public class CrazyManager {
     public HologramController getHologramController() {
         return hologramController;
     }
-
+    
     /**
      * Check if the server uses new 1.13+ material names.
      * @return True if the server is 1.13+ and false if it is 1.12.2-.
@@ -1332,4 +1332,5 @@ public class CrazyManager {
             return min;
         }
     }
+    
 }

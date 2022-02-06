@@ -286,4 +286,5 @@ public class Cosmic implements Listener {
         //The last slot in cosmic crate is 27
         return slot < 27;
     }
+    
 }

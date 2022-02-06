@@ -1,13 +1,13 @@
 package com.badbones69.crazycrates.cratetypes;
 
-import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
-import com.badbones69.crazycrates.controllers.CrateControl;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import com.badbones69.crazycrates.Methods;
+import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
+import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.controllers.CrateControl;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -38,24 +38,24 @@ public class QuickCrate implements Listener {
             case PHYSICAL_KEY -> cc.getPhysicalKeys(player, crate);
             default -> 1;
         }; // If the key is free it is set to one.
-
+        
         if (player.isSneaking() && keys > 1) {
             int keysUsed = 0;
-
+            
             // give the player the prizes
-            for(; keys > 0; keys--) {
-                if(Methods.isInventoryFull(player)) break;
-
+            for (; keys > 0; keys--) {
+                if (Methods.isInventoryFull(player)) break;
+                
                 Prize prize = crate.pickPrize(player);
                 cc.givePrize(player, prize);
                 CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                 if (prize.useFireworks()) {
                     Methods.fireWork(loc.clone().add(.5, 1, .5));
                 }
-
+                
                 keysUsed++;
             }
-
+            
             if (!cc.takeKeys(keysUsed, player, crate, keyType, false)) {
                 Methods.failedToTakeKey(player, crate);
                 CrateControl.inUse.remove(player);
@@ -131,4 +131,5 @@ public class QuickCrate implements Listener {
             e.setCancelled(true);
         }
     }
+    
 }

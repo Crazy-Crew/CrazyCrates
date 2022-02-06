@@ -60,7 +60,7 @@ public final class ReflectionUtils {
      * @param parameterTypes Parameter types of the desired constructor
      * @return The constructor of the desired target class with the specified parameter types
      * @throws NoSuchMethodException If the desired constructor with the specified parameter types cannot be found
-     * @throws ClassNotFoundException ClassNotFoundException If the desired target class with the specified name and package cannot be found
+     * @throws ClassNotFoundException If the desired target class with the specified name and package cannot be found
      * @see #getConstructor(Class, Class...)
      */
     public static Constructor<?> getConstructor(String className, PackageType packageType, Class<?>... parameterTypes) throws NoSuchMethodException, ClassNotFoundException {
@@ -419,7 +419,7 @@ public final class ReflectionUtils {
     public enum DataType {
         BYTE(byte.class, Byte.class), SHORT(short.class, Short.class), INTEGER(int.class, Integer.class), LONG(long.class, Long.class), CHARACTER(char.class, Character.class), FLOAT(float.class, Float.class), DOUBLE(double.class, Double.class), BOOLEAN(boolean.class, Boolean.class);
         
-        private static final Map<Class<?>, DataType> CLASS_MAP = new HashMap<Class<?>, DataType>();
+        private static final Map<Class<?>, DataType> CLASS_MAP = new HashMap<>();
         
         // Initialize map for quick class lookup
         static {

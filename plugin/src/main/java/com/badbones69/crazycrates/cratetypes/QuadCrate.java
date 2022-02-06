@@ -1,13 +1,13 @@
 package com.badbones69.crazycrates.cratetypes;
 
-import com.badbones69.crazycrates.api.objects.QuadCrateSession;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.objects.QuadCrateSession;
 import com.badbones69.crazycrates.nms.NMSSupport;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -101,8 +101,7 @@ public class QuadCrate implements Listener {
             }
         }
         for (Entity en : player.getNearbyEntities(2, 2, 2)) {//Someone tries to enter the crate area
-            if (en instanceof Player) {
-                Player p = (Player) en;
+            if (en instanceof Player p) {
                 if (QuadCrateSession.inSession(p)) {
                     Vector v = player.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().setY(1);
                     if (player.isInsideVehicle()) {
@@ -148,4 +147,5 @@ public class QuadCrate implements Listener {
             QuadCrateSession.getSession(player).endCrate();
         }
     }
+    
 }

@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.io.Serial;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -35,7 +36,7 @@ import java.util.Map.Entry;
  * <li>@ShadyPotato (1.8 names, ids and packet parameters)
  * <li>@RingOfStorms (particle behavior)
  * <li>@Cybermaxke (particle behavior)
- * <li>@JamieSinn (hosting a jenkins server and documentation for particleeffect)
+ * <li>@JamieSinn (hosting a jenkins server and documentation for particle-effect)
  * </ul>
  * <p>
  * <i>It would be nice if you provide credit to me if you use this class in a published project</i>
@@ -419,9 +420,9 @@ public enum ParticleEffect {
      * </ul>
      */
     SWEEP_ATTACK("sweepAttack", 45, 9);
-    private static final Map<String, ParticleEffect> NAME_MAP = new HashMap<String, ParticleEffect>();
-    private static final Map<Integer, ParticleEffect> ID_MAP = new HashMap<Integer, ParticleEffect>();
-    private static CrazyManager cc = CrazyManager.getInstance();
+    private static final Map<String, ParticleEffect> NAME_MAP = new HashMap<>();
+    private static final Map<Integer, ParticleEffect> ID_MAP = new HashMap<>();
+    private static final CrazyManager cc = CrazyManager.getInstance();
     
     // Initialize map for quick name and id lookup
     static {
@@ -964,7 +965,7 @@ public enum ParticleEffect {
         /**
          * The particle effect uses the offsets as color values
          */
-        COLORABLE;
+        COLORABLE
     }
     
     /**
@@ -1299,7 +1300,7 @@ public enum ParticleEffect {
      */
     private static final class ParticleDataException extends RuntimeException {
         
-        private static final long serialVersionUID = 3203085387160737484L;
+        @Serial private static final long serialVersionUID = 3203085387160737484L;
         
         /**
          * Construct a new particle data exception
@@ -1322,7 +1323,7 @@ public enum ParticleEffect {
      */
     private static final class ParticleColorException extends RuntimeException {
         
-        private static final long serialVersionUID = 3203085387160737484L;
+        @Serial private static final long serialVersionUID = 3203085387160737484L;
         
         /**
          * Construct a new particle color exception
@@ -1345,7 +1346,7 @@ public enum ParticleEffect {
      */
     private static final class ParticleVersionException extends RuntimeException {
         
-        private static final long serialVersionUID = 3203085387160737484L;
+        @Serial private static final long serialVersionUID = 3203085387160737484L;
         
         /**
          * Construct a new particle version exception
@@ -1604,7 +1605,7 @@ public enum ParticleEffect {
          */
         private static final class VersionIncompatibleException extends RuntimeException {
             
-            private static final long serialVersionUID = 3203085387160737484L;
+            @Serial private static final long serialVersionUID = 3203085387160737484L;
             
             /**
              * Construct a new version incompatible exception
@@ -1628,7 +1629,7 @@ public enum ParticleEffect {
          */
         private static final class PacketInstantiationException extends RuntimeException {
             
-            private static final long serialVersionUID = 3203085387160737484L;
+            @Serial private static final long serialVersionUID = 3203085387160737484L;
             
             /**
              * Construct a new packet instantiation exception
@@ -1652,7 +1653,7 @@ public enum ParticleEffect {
          */
         private static final class PacketSendingException extends RuntimeException {
             
-            private static final long serialVersionUID = 3203085387160737484L;
+            @Serial private static final long serialVersionUID = 3203085387160737484L;
             
             /**
              * Construct a new packet sending exception

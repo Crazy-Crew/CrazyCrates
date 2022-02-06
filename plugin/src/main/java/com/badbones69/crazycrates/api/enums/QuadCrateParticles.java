@@ -7,7 +7,7 @@ public enum QuadCrateParticles {
     SPELL_WITCH("Spell Witch"),
     REDSTONE("Redstone");
     
-    private String name;
+    private final String name;
     
     private QuadCrateParticles(String name) {
         this.name = name;

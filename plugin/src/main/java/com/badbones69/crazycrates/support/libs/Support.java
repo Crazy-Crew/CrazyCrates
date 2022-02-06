@@ -8,7 +8,7 @@ public enum Support {
     MVDWPLACEHOLDERAPI("MVdWPlaceholderAPI"),
     HOLOGRAPHIC_DISPLAYS("HolographicDisplays");
     
-    private String name;
+    private final String name;
     
     private Support(String name) {
         this.name = name;
