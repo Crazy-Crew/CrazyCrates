@@ -94,8 +94,6 @@ class CrazyCrates : JavaPlugin() {
 
         Methods.hasUpdate()
 
-        registerPermissions(server.pluginManager)
-
         getCommand("key")?.setExecutor(KeyCommand())
         getCommand("key")?.tabCompleter = KeyTab()
         getCommand("crazycrates")?.setExecutor(CCCommand())
