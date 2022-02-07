@@ -25,7 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin
 
 class CrazyCrates : JavaPlugin() {
 
-    private var serverEnabled = true
+    private val plugin = this // Avoid using "this"
 
     override fun onLoad() {
         if (Version.isOlder(Version.TOO_OLD)) {
@@ -108,12 +108,10 @@ class CrazyCrates : JavaPlugin() {
         getCommand("key")?.tabCompleter = KeyTab()
         getCommand("crazycrates")?.setExecutor(CCCommand())
         getCommand("crazycrates")?.tabCompleter = CCTab()
-        serverEnabled = true
     }
 
     override fun onDisable() {
         runCatching {
-        if (!serverEnabled) return
         QuadCrateSession.endAllCrates()
         QuickCrate.removeAllRewards()
         if (CrazyManager.getInstance().hologramController != null) CrazyManager.getInstance().hologramController.removeAllHolograms()
