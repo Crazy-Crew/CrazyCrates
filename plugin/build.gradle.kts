@@ -3,6 +3,9 @@ plugins {
 }
 
 repositories {
+
+    maven("https://repo.triumphteam.dev/snapshots")
+
     maven {
         url = uri("https://repo.codemc.org/repository/maven-public/")
         content {
@@ -59,6 +62,8 @@ dependencies {
 
     implementation("org.bstats:bstats-bukkit:3.0.0")
 
+    implementation("dev.triumphteam:triumph-cmd-bukkit:2.0.0-SNAPSHOT")
+
     // Api Module
     implementation(project(":api"))
 }
@@ -70,5 +75,6 @@ tasks {
         relocate("de.tr7zw", "com.badbones69.crazycrates.libs")
         relocate("io.papermc.lib", "com.badbones69.crazycrates.libs")
         relocate("org.bstats", "com.badbones69.crazycrates.libs")
+        relocate("dev.triumphteam", "com.badbones69.crazycrates.libs")
     }
 }
