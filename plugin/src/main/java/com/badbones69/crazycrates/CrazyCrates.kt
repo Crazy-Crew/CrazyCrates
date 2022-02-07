@@ -42,8 +42,6 @@ class CrazyCrates : JavaPlugin() {
     }
 
     override fun onEnable() {
-        if (PaperLib.isSpigot()) PaperLib.suggestPaper(this)
-
         FileManager.getInstance().logInfo(true)
             .registerDefaultGenerateFiles("Basic.yml", "/crates", "/crates")
             .registerDefaultGenerateFiles("Classic.yml", "/crates", "/crates")
@@ -87,6 +85,8 @@ class CrazyCrates : JavaPlugin() {
             BasicListener(),
             FireworkDamageEvent()
         )
+
+        PaperLib.suggestPaper(plugin)
 
         if (PaperLib.isPaper()) {
             logger.info("Utilizing Paper Functions...")
