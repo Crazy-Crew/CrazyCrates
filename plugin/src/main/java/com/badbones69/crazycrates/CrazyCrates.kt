@@ -42,16 +42,6 @@ class CrazyCrates : JavaPlugin() {
     }
 
     override fun onEnable() {
-        super.onEnable()
-
-        //updateFiles("Locations.yml", "locations.yml")
-        //updateFiles("Data.yml", "data.yml")
-        //updateFiles("Config.yml", "config.yml")
-        //updateFiles("Messages.yml", "messages.yml")
-
-        //updateDirectory("Crates", "crates")
-        //updateDirectory("Schematics", "schematics")
-
         if (PaperLib.isSpigot()) PaperLib.suggestPaper(this)
 
         FileManager.getInstance().logInfo(true)
@@ -134,34 +124,4 @@ class CrazyCrates : JavaPlugin() {
         CrazyManager.getInstance().setNewPlayerKeys(player)
         CrazyManager.getInstance().loadOfflinePlayersKeys(player)
     }
-
-    /**private fun updateFiles(oldFileName: String, newFileName: String) {
-    val oldPath = Path.of("$dataFolder/$oldFileName")
-    if (java.nio.file.Files.exists(oldPath)) {
-    logger.warning("$oldFileName has been found.")
-    logger.warning("Converting to $newFileName")
-    val newFile = File(dataFolder, newFileName)
-    try {
-    java.nio.file.Files.copy(oldPath, newFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
-    java.nio.file.Files.deleteIfExists(oldPath)
-    } catch (e: IOException) {
-    e.printStackTrace()
-    }
-    }
-    }*/
-
-    /**private fun updateDirectory(oldDirectory: String, newDirectory: String) {
-    val oldPath = Path.of("$dataFolder/$oldDirectory")
-    if (java.nio.file.Files.exists(oldPath)) {
-    logger.warning("$oldDirectory directory has been found.")
-    logger.warning("Converting $oldDirectory directory to $newDirectory")
-    val newDir = File(dataFolder, newDirectory)
-    try {
-    java.nio.file.Files.move(oldPath, newDir.toPath(), StandardCopyOption.REPLACE_EXISTING)
-    java.nio.file.Files.deleteIfExists(oldPath)
-    } catch (e: IOException) {
-    e.printStackTrace()
-    }
-    }
-    }*/
 }
