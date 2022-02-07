@@ -52,8 +52,11 @@ public class CCCommand implements CommandExecutor {
             return true;
         } else {
             if (args[0].equalsIgnoreCase("help")) {
-                if (!Methods.permCheck(sender, "access")) return true;
-                sender.sendMessage(Messages.HELP.getMessage());
+                if (Methods.permCheck(sender, "admin")) {
+                    sender.sendMessage(Messages.ADMIN_HELP.getMessage());
+                } else if (Methods.permCheck(sender, "access")) {
+                    sender.sendMessage(Messages.HELP.getMessage());
+                }
                 return true;
             } else if (args[0].equalsIgnoreCase("set1") || args[0].equalsIgnoreCase("set2")) {
                 if (!Methods.permCheck(sender, "admin")) return true;
