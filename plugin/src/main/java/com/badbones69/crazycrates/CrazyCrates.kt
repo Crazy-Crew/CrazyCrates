@@ -83,6 +83,8 @@ class CrazyCrates : JavaPlugin() {
             // Do paper specific stuff here.
         }
 
+        // Add missing messages
+        Messages.addMissingMessages()
         if (CrazyManager.getInstance().brokeCrateLocations.isNotEmpty()) registerListener(BrokeLocationsControl())
 
         if (Support.PLACEHOLDERAPI.isPluginLoaded) PlaceholderAPISupport().register()
