@@ -112,9 +112,10 @@ class CrazyCrates : JavaPlugin() {
 
     override fun onDisable() {
         runCatching {
-        QuadCrateSession.endAllCrates()
-        QuickCrate.removeAllRewards()
-        if (CrazyManager.getInstance().hologramController != null) CrazyManager.getInstance().hologramController.removeAllHolograms()
+            QuadCrateSession.endAllCrates()
+            QuickCrate.removeAllRewards()
+            if (CrazyManager.getInstance().hologramController != null) CrazyManager.getInstance().hologramController.removeAllHolograms()
+        }.onFailure { logger.severe("The plugin did not start up correctly. Grab your logs file and join discord.badbones69.com") }
     }
 
     @EventHandler
