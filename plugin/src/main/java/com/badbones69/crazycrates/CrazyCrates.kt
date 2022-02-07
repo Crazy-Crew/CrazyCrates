@@ -57,16 +57,6 @@ class CrazyCrates : JavaPlugin() {
             .registerCustomFilesFolder("/schematics")
             .setup()
 
-        if (!Files.LOCATIONS.file.contains("Locations")) {
-            Files.LOCATIONS.file.set("Locations.Clear", null)
-            Files.LOCATIONS.saveFile()
-        }
-
-        if (!Files.DATA.file.contains("Players")) {
-            Files.DATA.file.set("Players.Clear", null)
-            Files.DATA.saveFile()
-        }
-
         CrazyManager.getInstance().loadCrates()
 
         registerListener(
@@ -122,5 +112,17 @@ class CrazyCrates : JavaPlugin() {
     fun onPlayerJoin(e: PlayerJoinEvent): Unit = with(e) {
         CrazyManager.getInstance().setNewPlayerKeys(player)
         CrazyManager.getInstance().loadOfflinePlayersKeys(player)
+    }
+}
+
+fun cleanData() {
+    if (!Files.LOCATIONS.file.contains("Locations")) {
+        Files.LOCATIONS.file.set("Locations.Clear", null)
+        Files.LOCATIONS.saveFile()
+    }
+
+    if (!Files.DATA.file.contains("Players")) {
+        Files.DATA.file.set("Players.Clear", null)
+        Files.DATA.saveFile()
     }
 }
