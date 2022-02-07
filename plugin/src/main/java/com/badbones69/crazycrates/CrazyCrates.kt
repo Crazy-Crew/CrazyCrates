@@ -112,7 +112,7 @@ class CrazyCrates : JavaPlugin() {
     }
 
     override fun onDisable() {
-        super.onDisable()
+        runCatching {
         if (!serverEnabled) return
         QuadCrateSession.endAllCrates()
         QuickCrate.removeAllRewards()
