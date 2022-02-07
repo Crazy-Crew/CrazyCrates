@@ -72,9 +72,10 @@ tasks {
     shadowJar {
         archiveFileName.set("Crazy-Crates-[v${rootProject.version}].jar")
 
-        relocate("de.tr7zw", "com.badbones69.crazycrates.libs")
-        relocate("io.papermc.lib", "com.badbones69.crazycrates.libs")
-        relocate("org.bstats", "com.badbones69.crazycrates.libs")
-        //relocate("dev.triumphteam", "com.badbones69.crazycrates.libs")
+        val path = "com.badbones69.crazycrates.libs"
+
+        relocate("de.tr7zw", path)
+        relocate("io.papermc.lib", path)
+        relocate("org.bstats", path)
     }
 }
