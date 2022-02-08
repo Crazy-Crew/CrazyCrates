@@ -11,6 +11,13 @@
 
     <artifactId>crazycrates-v1_12_R1</artifactId>
 
+    <repositories>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>me.badbones69</groupId>
