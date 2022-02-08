@@ -175,7 +175,7 @@ public class CrazyManager {
         if (hologramController != null) {
             hologramController.removeAllHolograms();
         }
-        if (fileManager.isLogging()) getJavaPlugin().getLogger().info(fileManager.getPrefix() + "Loading all crate information...");
+        if (fileManager.isLogging()) getJavaPlugin().getLogger().info("Loading all crate information...");
         for (String crateName : fileManager.getAllCratesNames()) {
             //			if(fileManager.isLogging()) plugin.getLogger().info(fileManager.getPrefix() + "Loading " + crateName + ".yml information....");
             try {
@@ -192,7 +192,7 @@ public class CrazyManager {
                 }
                 if (crateType == CrateType.COSMIC && tiers.isEmpty()) {
                     brokecrates.add(crateName);
-                    getJavaPlugin().getLogger().log(Level.WARNING, fileManager.getPrefix() + "No tiers were found for this cosmic crate " + crateName + ".yml file.");
+                    getJavaPlugin().getLogger().warning("No tiers were found for this cosmic crate " + crateName + ".yml file.");
                     continue;
                 }
                 for (String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
@@ -244,13 +244,13 @@ public class CrazyManager {
                 new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"))));
             } catch (Exception e) {
                 brokecrates.add(crateName);
-                getJavaPlugin().getLogger().log(Level.WARNING, fileManager.getPrefix() + "There was an error while loading the " + crateName + ".yml file.");
+                getJavaPlugin().getLogger().warning("There was an error while loading the " + crateName + ".yml file.");
                 e.printStackTrace();
             }
         }
         crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null));
-        if (fileManager.isLogging()) getJavaPlugin().getLogger().info(fileManager.getPrefix() + "All crate information has been loaded.");
-        if (fileManager.isLogging()) getJavaPlugin().getLogger().info(fileManager.getPrefix() + "Loading all the physical crate locations.");
+        if (fileManager.isLogging()) getJavaPlugin().getLogger().info("All crate information has been loaded.");
+        if (fileManager.isLogging()) getJavaPlugin().getLogger().info("Loading all the physical crate locations.");
         FileConfiguration locations = Files.LOCATIONS.getFile();
         int loadedAmount = 0;
         int brokeAmount = 0;
@@ -283,24 +283,24 @@ public class CrazyManager {
         if (fileManager.isLogging()) {
             if (loadedAmount > 0 || brokeAmount > 0) {
                 if (brokeAmount <= 0) {
-                    getJavaPlugin().getLogger().info(fileManager.getPrefix() + "All physical crate locations have been loaded.");
+                    getJavaPlugin().getLogger().info("All physical crate locations have been loaded.");
                 } else {
-                    getJavaPlugin().getLogger().info(fileManager.getPrefix() + "Loaded " + loadedAmount + " physical crate locations.");
-                    getJavaPlugin().getLogger().info(fileManager.getPrefix() + "Failed to load " + brokeAmount + " physical crate locations.");
+                    getJavaPlugin().getLogger().info("Loaded " + loadedAmount + " physical crate locations.");
+                    getJavaPlugin().getLogger().info("Failed to load " + brokeAmount + " physical crate locations.");
                 }
             }
         }
         //Loading schematic files
-        if (fileManager.isLogging()) getJavaPlugin().getLogger().info(fileManager.getPrefix() + "Searching for schematics to load.");
+        if (fileManager.isLogging()) getJavaPlugin().getLogger().info("Searching for schematics to load.");
         String[] schems = new File(getJavaPlugin().getDataFolder() + "/schematics/").list();
         for (String schematicName : schems) {
             if (schematicName.endsWith(".nbt")) {
                 crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(getJavaPlugin().getDataFolder() + "/schematics/" + schematicName)));
                 if (fileManager.isLogging())
-                    getJavaPlugin().getLogger().info(fileManager.getPrefix() + schematicName + " was successfully found and loaded.");
+                    getJavaPlugin().getLogger().info(schematicName + " was successfully found and loaded.");
             }
         }
-        if (fileManager.isLogging()) getJavaPlugin().getLogger().info(fileManager.getPrefix() + "All schematics were found and loaded.");
+        if (fileManager.isLogging()) getJavaPlugin().getLogger().info("All schematics were found and loaded.");
         cleanDataFile();
         Preview.loadButtons();
     }
@@ -320,7 +320,7 @@ public class CrazyManager {
         FileConfiguration data = Files.DATA.getFile();
         if (data.contains("Players")) {
             boolean logging = fileManager.isLogging();
-            if (logging) getJavaPlugin().getLogger().info(fileManager.getPrefix() + "Cleaning up the data.yml file.");
+            if (logging) getJavaPlugin().getLogger().info("Cleaning up the data.yml file.");
             List<String> removePlayers = new ArrayList<>();
             for (String uuid : data.getConfigurationSection("Players").getKeys(false)) {
                 boolean hasKeys = false;
@@ -341,13 +341,13 @@ public class CrazyManager {
                 }
             }
             if (removePlayers.size() > 0) {
-                if (logging) getJavaPlugin().getLogger().info(fileManager.getPrefix() + removePlayers.size() + " player's data has been marked to be removed.");
+                if (logging) getJavaPlugin().getLogger().info(removePlayers.size() + " player's data has been marked to be removed.");
                 for (String uuid : removePlayers) {
                     data.set("Players." + uuid, null);
                 }
-                if (logging) getJavaPlugin().getLogger().info(fileManager.getPrefix() + "All empty player data has been removed.");
+                if (logging) getJavaPlugin().getLogger().info("All empty player data has been removed.");
             }
-            if (logging) getJavaPlugin().getLogger().info(fileManager.getPrefix() + "The data.yml file has been cleaned.");
+            if (logging) getJavaPlugin().getLogger().info("The data.yml file has been cleaned.");
             Files.DATA.saveFile();
         }
     }

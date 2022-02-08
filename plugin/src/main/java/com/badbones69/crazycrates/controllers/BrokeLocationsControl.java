@@ -40,9 +40,9 @@ public class BrokeLocationsControl implements Listener {
             }
             cc.getBrokeCrateLocations().removeAll(fixedWorlds);
             if (fileManager.isLogging()) {
-                CrazyManager.getJavaPlugin().getLogger().warning(fileManager.getPrefix() + "Fixed " + fixedAmount + " broken crate locations.");
+                CrazyManager.getJavaPlugin().getLogger().warning("Fixed " + fixedAmount + " broken crate locations.");
                 if (cc.getBrokeCrateLocations().isEmpty()) {
-                    CrazyManager.getJavaPlugin().getLogger().warning(fileManager.getPrefix() + "All broken crate locations have been fixed.");
+                    CrazyManager.getJavaPlugin().getLogger().warning("All broken crate locations have been fixed.");
                 }
             }
         }

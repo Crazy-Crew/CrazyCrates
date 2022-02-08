@@ -129,7 +129,7 @@ public class CCCommand implements CommandExecutor {
                             try {
                                 crate.addEditorItem(prize, item);
                             } catch (Exception e) {
-                                CrazyManager.getJavaPlugin().getLogger().warning(fileManager.getPrefix() + "Failed to add a new prize to the " + crate.getName() + " crate.");
+                                CrazyManager.getJavaPlugin().getLogger().warning("Failed to add a new prize to the " + crate.getName() + " crate.");
                                 e.printStackTrace();
                             }
                             cc.loadCrates();

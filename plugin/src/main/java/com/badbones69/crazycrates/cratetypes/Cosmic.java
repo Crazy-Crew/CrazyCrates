@@ -189,7 +189,7 @@ public class Cosmic implements Listener {
                                             cc.endCrate(player);
                                             cancel();
                                             player.sendMessage(Methods.getPrefix("&cAn issue has occurred and so a key refund was given."));
-                                            CrazyManager.getJavaPlugin().getServer().getLogger().warning(FileManager.getInstance().getPrefix() + "An issue occurred when the user " + player.getName() +
+                                            CrazyManager.getJavaPlugin().getServer().getLogger().warning("An issue occurred when the user " + player.getName() +
                                             " was using the " + crate.getName() + " crate and so they were issued a key refund.");
                                             e.printStackTrace();
                                         }
