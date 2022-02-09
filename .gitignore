@@ -23,3 +23,4 @@ plugin/build
 .gradle
 
 plugin/src/main/java/com/badbones69/crazycrates/func/v2/data
+build
