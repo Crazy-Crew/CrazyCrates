@@ -6,6 +6,8 @@ repositories {
 
     maven("https://repo.triumphteam.dev/snapshots")
 
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+
     maven {
         url = uri("https://repo.codemc.org/repository/maven-public/")
         content {
@@ -44,6 +46,9 @@ repositories {
 }
 
 dependencies {
+
+    compileOnly("org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT")
+
     compileOnly("me.clip:placeholderapi:2.11.1") {
         exclude(group = "org.spigotmc", module = "spigot")
     }
