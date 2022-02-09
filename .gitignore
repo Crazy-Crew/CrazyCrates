@@ -24,3 +24,5 @@ build
 buildSrc
 
 .gradle
+gradle
+gradlew
