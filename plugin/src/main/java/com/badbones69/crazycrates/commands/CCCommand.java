@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.commands;
 
+import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.CrazyCratesKt;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
@@ -152,15 +154,9 @@ public class CCCommand implements CommandExecutor {
                 if (!Methods.permCheck(sender, "admin")) return true;
                 fileManager.reloadAllFiles();
                 fileManager.setup();
-                
-                if (!FileManager.Files.LOCATIONS.getFile().contains("Locations")) {
-                    FileManager.Files.LOCATIONS.getFile().set("Locations.Clear", null);
-                    FileManager.Files.LOCATIONS.saveFile();
-                }
-                if (!FileManager.Files.DATA.getFile().contains("Players")) {
-                    FileManager.Files.DATA.getFile().set("Players.Clear", null);
-                    FileManager.Files.DATA.saveFile();
-                }
+
+                CrazyCratesKt.cleanData();
+
                 cc.loadCrates();
                 sender.sendMessage(Messages.RELOAD.getMessage());
                 return true;

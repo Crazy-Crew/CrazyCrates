@@ -57,6 +57,8 @@ class CrazyCrates : JavaPlugin() {
             .registerCustomFilesFolder("/schematics")
             .setup()
 
+        cleanData()
+
         CrazyManager.getInstance().loadCrates()
 
         registerListener(
