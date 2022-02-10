@@ -34,7 +34,7 @@ class CrazyCrates : JavaPlugin() {
             logger.warning("You are running Crazy Crates on a version that is not 1.18.X.")
             logger.warning("No guarantee that it will run perfectly, You have been warned.")
             logger.info(" ")
-            logger.warning("Jenkins Page: https://jenkins.badbones69.com/job/Crazy-Crates-Dev/")
+            logger.warning("Jenkins Page: https://jenkins.badbones69.com/job/Crazy-Crates/")
             logger.warning("Version Integer: " + Version.getCurrentVersion().versionInteger)
             logger.info(" ")
             logger.warning("============= Crazy Crates =============")
