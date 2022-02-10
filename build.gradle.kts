@@ -5,7 +5,7 @@ plugins {
 rootProject.group = "com.badbones69"
 rootProject.version = "1.10.3"
 
-allprojects {
+subprojects {
 
     apply(plugin = "java")
     apply(plugin = "kotlin")
