@@ -18,12 +18,10 @@ allprojects {
     }
 
     dependencies {
-
         compileOnly(kotlin("stdlib", "1.6.0"))
     }
 
     java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-
     }
 }
