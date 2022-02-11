@@ -83,4 +83,12 @@ tasks {
         relocate("io.papermc.lib", path)
         relocate("org.bstats", path)
     }
+
+    processResources {
+        filesMatching("plugin.yml") {
+            expand(
+                "version" to rootProject.version
+            )
+        }
+    }
 }
