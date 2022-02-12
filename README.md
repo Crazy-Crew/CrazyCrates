@@ -1,7 +1,7 @@
 # Crazy Crates
 Source Code for Crazy Crates
 
-##Notice:
+## Notice:
 1.18.1 Builds & up can be found @ https://jenkins.badbones69.com/job/Crazy-Crates/
 
 1.17.1 Builds & below can be found @ https://jenkins.badbones69.com/job/Crazy-Crates-Legacy/
