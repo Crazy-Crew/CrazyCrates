@@ -6,6 +6,11 @@ Source Code for Crazy Crates
 
 1.17.1 Builds & below can be found @ https://jenkins.badbones69.com/job/Crazy-Crates-Legacy/
 
+## Support:
+https://guilded.gg/badbones
+
+https://discord.com/invite/MCuz8JG/
+
 ## Build Status:
 [![Build Status](https://jenkins.badbones69.com/job/Crazy-Crates/badge/icon)](https://jenkins.badbones69.com/job/Crazy-Crates/)
 
