@@ -6,6 +6,7 @@ public enum Version {
     
     TOO_OLD(-1),
     v1_18_R1(1181),
+    v1_18_R2(1182),
     TOO_NEW(-2);
     
     private static Version currentVersion;
