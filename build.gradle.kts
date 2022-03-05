@@ -12,9 +12,6 @@ subprojects {
 
     repositories {
         mavenCentral()
-
-        //maven("https://nexus.badbones69.com/repository/maven-snapshots/")
-        //maven("https://nexus.badbones69.com/repository/maven-releases/")
     }
 
     dependencies {

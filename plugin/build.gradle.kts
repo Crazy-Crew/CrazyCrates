@@ -4,8 +4,6 @@ plugins {
 
 repositories {
 
-    maven("https://repo.triumphteam.dev/snapshots")
-
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
 
     maven {
@@ -47,7 +45,7 @@ repositories {
 
 dependencies {
 
-    compileOnly("org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
 
     compileOnly("me.clip:placeholderapi:2.11.1") {
         exclude(group = "org.spigotmc", module = "spigot")
@@ -62,12 +60,10 @@ dependencies {
 
     compileOnly("com.github.decentsoftware-eu:decentholograms:2.2.5")
 
-    implementation("de.tr7zw:item-nbt-api:2.9.1")
+    implementation("de.tr7zw:item-nbt-api:2.9.2")
     implementation("io.papermc:paperlib:1.0.7")
 
     implementation("org.bstats:bstats-bukkit:3.0.0")
-
-    //implementation("dev.triumphteam:triumph-cmd-bukkit:2.0.0-SNAPSHOT")
 
     // Api Module
     implementation(project(":api"))
