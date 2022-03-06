@@ -140,10 +140,10 @@ public class Crate {
      */
     public Prize pickPrize(Player player) {
         ArrayList<Prize> prizes = new ArrayList<>();
-        ArrayList<Prize> useablePrizes = new ArrayList<>();
+        ArrayList<Prize> usablePrizes = new ArrayList<>();
         // ================= Blacklist Check ================= //
         if (player.isOp()) {
-            useablePrizes.addAll(getPrizes());
+            usablePrizes.addAll(getPrizes());
         } else {
             for (Prize prize : getPrizes()) {
                 if (prize.hasBlacklistPermission(player)) {
@@ -151,12 +151,12 @@ public class Crate {
                         continue;
                     }
                 }
-                useablePrizes.add(prize);
+                usablePrizes.add(prize);
             }
         }
         // ================= Chance Check ================= //
         for (int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
-            for (Prize prize : useablePrizes) {
+            for (Prize prize : usablePrizes) {
                 int max = prize.getMaxRange();
                 int chance = prize.getChance();
                 int num;
@@ -184,12 +184,12 @@ public class Crate {
      */
     public Prize pickPrize(Player player, Tier tier) {
         ArrayList<Prize> prizes = new ArrayList<>();
-        ArrayList<Prize> useablePrizes = new ArrayList<>();
+        ArrayList<Prize> usablePrizes = new ArrayList<>();
         // ================= Blacklist Check ================= //
         if (player.isOp()) {
             for (Prize prize : getPrizes()) {
                 if (prize.getTiers().contains(tier)) {
-                    useablePrizes.add(prize);
+                    usablePrizes.add(prize);
                 }
             }
         } else {
@@ -200,13 +200,13 @@ public class Crate {
                     }
                 }
                 if (prize.getTiers().contains(tier)) {
-                    useablePrizes.add(prize);
+                    usablePrizes.add(prize);
                 }
             }
         }
         // ================= Chance Check ================= //
         for (int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
-            for (Prize prize : useablePrizes) {
+            for (Prize prize : usablePrizes) {
                 int max = prize.getMaxRange();
                 int chance = prize.getChance();
                 int num;

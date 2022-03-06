@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.commands;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.CrazyCratesKt;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
@@ -468,7 +467,7 @@ public class CCCommand implements CommandExecutor {
                                     amount = Integer.parseInt(args[3]);
                                 }
                                 if (cc.getVirtualKeys(player, crate) >= amount) {
-                                    PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReciveReason.TRANSFER, amount);
+                                    PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.TRANSFER, amount);
                                     CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(event);
                                     if (!event.isCancelled()) {
                                         cc.takeKeys(amount, player, crate, KeyType.VIRTUAL_KEY, false);
@@ -519,7 +518,7 @@ public class CCCommand implements CommandExecutor {
                             placeholders.put("%Key%", crate.getKey().getItemMeta().getDisplayName());
                             sender.sendMessage(Messages.GIVEN_EVERYONE_KEYS.getMessage(placeholders));
                             for (Player player : CrazyManager.getJavaPlugin().getServer().getOnlinePlayers()) {
-                                PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReciveReason.GIVE_ALL_COMMAND, amount);
+                                PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_ALL_COMMAND, amount);
                                 CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(event);
                                 if (!event.isCancelled()) {
                                     player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
@@ -577,7 +576,7 @@ public class CCCommand implements CommandExecutor {
                 }
                 if (args.length >= 3) {
                     if (crate.getCrateType() != CrateType.MENU) {
-                        PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(target, crate, PlayerReceiveKeyEvent.KeyReciveReason.GIVE_COMMAND, amount);
+                        PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(target, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
                         CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(event);
                         if (!event.isCancelled()) {
                             if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {

@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.cratetypes;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
@@ -182,7 +181,7 @@ public class Cosmic implements Listener {
                                     try {
                                         startRoll(player, crate);
                                     } catch (Exception e) {
-                                        PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReciveReason.REFUND, 1);
+                                        PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.REFUND, 1);
                                         CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(event);
                                         if (!event.isCancelled()) {
                                             cc.addKeys(1, player, crate, keyType);

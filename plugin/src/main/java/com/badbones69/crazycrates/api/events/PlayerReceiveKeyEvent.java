@@ -12,11 +12,11 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
     
     private Player player;
     private Crate crate;
-    private KeyReciveReason reason;
+    private KeyReceiveReason reason;
     private int amount;
     private boolean isCancelled;
     
-    public PlayerReceiveKeyEvent(Player player, Crate crate, KeyReciveReason reason, int amount) {
+    public PlayerReceiveKeyEvent(Player player, Crate crate, KeyReceiveReason reason, int amount) {
         this.player = player;
         this.crate = crate;
         this.reason = reason;
@@ -36,7 +36,7 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
         return crate;
     }
     
-    public KeyReciveReason getReason() {
+    public KeyReceiveReason getReason() {
         return reason;
     }
     
@@ -58,7 +58,7 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
         return amount;
     }
     
-    public enum KeyReciveReason {
+    public enum KeyReceiveReason {
         /**
          * Received a key from the /cc give command.
          */
