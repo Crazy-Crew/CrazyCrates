@@ -7,7 +7,7 @@ https://discord.com/invite/MCuz8JG/
 ## Build Status:
 [![Build Status](https://jenkins.badbones69.com/job/Crazy-Crates/badge/icon)](https://jenkins.badbones69.com/job/Crazy-Crates/)
 
-## Latest Legacy Version:
+## Latest 1.17.X & below Version:
 https://jenkins.badbones69.com/job/Crazy-Crates-Legacy/
 
 ## Latest 1.18.X Version: 
