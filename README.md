@@ -2,6 +2,8 @@
 Source Code for Crazy Crates
 
 ## Support:
+https://guilded.gg/badbones
+
 https://discord.com/invite/MCuz8JG/
 
 ## Build Status:
