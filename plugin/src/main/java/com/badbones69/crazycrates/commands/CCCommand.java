@@ -153,9 +153,9 @@ public class CCCommand implements CommandExecutor {
                 if (!Methods.permCheck(sender, "admin")) return true;
                 fileManager.reloadAllFiles();
                 fileManager.setup();
-
+                
                 CrazyCratesKt.cleanData();
-
+                
                 cc.loadCrates();
                 sender.sendMessage(Messages.RELOAD.getMessage());
                 return true;

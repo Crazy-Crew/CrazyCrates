@@ -6,8 +6,10 @@ import com.badbones69.crazycrates.api.objects.CrateHologram;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.block.Block;
+
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
+
 import static com.badbones69.crazycrates.func.ConstantsKt.color;
 
 public class DecentHolograms implements HologramController {
