@@ -16,7 +16,7 @@ import com.badbones69.crazycrates.controllers.GUIMenu;
 import com.badbones69.crazycrates.controllers.Preview;
 import com.badbones69.crazycrates.cratetypes.*;
 import com.badbones69.crazycrates.nms.NMSSupport;
-import com.badbones69.crazycrates.nms.NMS_v1_18_R1;
+import com.badbones69.crazycrates.nms.NMS_Support;
 import com.badbones69.crazycrates.support.holograms.DecentHolograms;
 import com.badbones69.crazycrates.support.holograms.HolographicSupport;
 import com.badbones69.crazycrates.support.libs.Support;
@@ -161,7 +161,7 @@ public class CrazyManager {
         crateLocations.clear();
         crateSchematics.clear();
         
-        nmsSupport = new NMS_v1_18_R1();
+        nmsSupport = new NMS_Support();
         
         quadCrateTimer = Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
         giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
