@@ -3,7 +3,7 @@ plugins {
 }
 
 rootProject.group = "com.badbones69"
-rootProject.version = "1.10.3"
+rootProject.version = "1.10.4"
 
 subprojects {
 

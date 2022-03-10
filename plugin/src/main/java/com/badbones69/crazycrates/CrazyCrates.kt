@@ -20,10 +20,11 @@ import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport
 import io.papermc.lib.PaperLib
 import org.bstats.bukkit.Metrics
 import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
 
-class CrazyCrates : JavaPlugin() {
+class CrazyCrates : JavaPlugin(), Listener {
 
     private val plugin = this // Avoid using "this"
 
@@ -75,7 +76,8 @@ class CrazyCrates : JavaPlugin() {
             CrateControl(),
             CrateOnTheGo(),
             BasicListener(),
-            FireworkDamageEvent()
+            FireworkDamageEvent(),
+            this
         )
 
         PaperLib.suggestPaper(plugin)
