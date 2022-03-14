@@ -364,7 +364,6 @@ public class CrazyCrates {
         if (data.contains("Players")) {
             boolean logging = fileManager.isLogging();
             if (logging) Bukkit.getLogger().info(fileManager.getPrefix() + "Cleaning up the data.yml file.");
-            List<String> removePlayers = new ArrayList<>();
             for (String uuid : data.getConfigurationSection("Players").getKeys(false)) {
                 boolean hasKeys = false;
                 List<String> noKeys = new ArrayList<>();
@@ -379,16 +378,7 @@ public class CrazyCrates {
                     for (String crate : noKeys) {
                         data.set("Players." + uuid + "." + crate, null);
                     }
-                } else {
-                    removePlayers.add(uuid);
                 }
-            }
-            if (removePlayers.size() > 0) {
-                if (logging) Bukkit.getLogger().info(fileManager.getPrefix() + removePlayers.size() + " player's data has been marked to be removed.");
-                for (String uuid : removePlayers) {
-                    data.set("Players." + uuid, null);
-                }
-                if (logging) Bukkit.getLogger().info(fileManager.getPrefix() + "All empty player data has been removed.");
             }
             if (logging) Bukkit.getLogger().info(fileManager.getPrefix() + "The data.yml file has been cleaned.");
             Files.DATA.saveFile();

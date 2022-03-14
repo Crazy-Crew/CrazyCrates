@@ -50,6 +50,20 @@ public class CCCommand implements CommandExecutor {
             GUIMenu.openGUI((Player) sender);
             return true;
         } else {
+            if (args[0].equalsIgnoreCase("togglecratereceive") && sender instanceof Player) {
+                Player player = (Player) sender;
+
+                String path = "Players." + player.getUniqueId() + ".crateMessages";
+
+                boolean messagesOn = !Files.DATA.getFile().contains(path)
+                        || Files.DATA.getFile().getBoolean(path);
+                String msg = messagesOn ? "off" : "on";
+                player.sendMessage(Methods.getPrefix() + "§aMessages have been turned " + msg + ".");
+                Files.DATA.getFile().set(path, !messagesOn);
+                Files.DATA.saveFile();
+
+                return true;
+            }
             if (args[0].equalsIgnoreCase("help")) {
                 if (!Methods.permCheck(sender, "access")) return true;
                 sender.sendMessage(Messages.HELP.getMessage());
@@ -530,7 +544,10 @@ public class CCCommand implements CommandExecutor {
                                 PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.GIVE_ALL_COMMAND, amount);
                                 Bukkit.getPluginManager().callEvent(event);
                                 if (!event.isCancelled()) {
-                                    player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
+                                    if (Files.DATA.getFile().getBoolean("Players." + player.getUniqueId() + ".crateMessages")
+                                        || !Files.DATA.getFile().contains("Players." + player.getUniqueId() + ".crateMessages")) {
+                                        player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
+                                    }
                                     if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
                                         player.getInventory().addItem(crate.getKey(amount));
                                         return true;
@@ -610,7 +627,8 @@ public class CCCommand implements CommandExecutor {
                             placeholders.put("%Player%", target.getName());
                             placeholders.put("%Key%", crate.getKey().getItemMeta().getDisplayName());
                             sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
-                            if (target != null) {
+                            if (Files.DATA.getFile().getBoolean("Players." + target.getUniqueId() + ".crateMessages")
+                                    || !Files.DATA.getFile().contains("Players." + target.getUniqueId() + ".crateMessages")) {
                                 target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
                             }
                         }
