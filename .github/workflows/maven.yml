@@ -31,37 +31,37 @@ jobs:
     - name: Spigot 1.10
       run: |
         wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
-        java -jar BuildTools.jar --rev 1.10.2 --compile Spigot
+        java -jar BuildTools.jar --rev 1.10.2
         
     - name: Spigot 1.11
       run: |
         wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
-        java -jar BuildTools.jar --rev 1.11.2 --compile Spigot
+        java -jar BuildTools.jar --rev 1.11.2
         
     - name: Spigot 1.12
       run: |
         wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
-        java -jar BuildTools.jar --rev 1.12.2 --compile Spigot
+        java -jar BuildTools.jar --rev 1.12.2
         
     - name: Spigot 1.13
       run: |
         wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
-        java -jar BuildTools.jar --rev 1.13.2 --compile Spigot
+        java -jar BuildTools.jar --rev 1.13.2
         
     - name: Spigot 1.14
       run: |
         wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
-        java -jar BuildTools.jar --rev 1.14.4 --compile Spigot
+        java -jar BuildTools.jar --rev 1.14.4
                 
     - name: Spigot 1.15
       run: |
         wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
-        java -jar BuildTools.jar --rev 1.15.2 --compile Spigot
+        java -jar BuildTools.jar --rev 1.15.2
                         
     - name: Spigot 1.16
       run: |
         wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
-        java -jar BuildTools.jar --rev 1.16.5 --compile Spigot
+        java -jar BuildTools.jar --rev 1.16.5
                       
     - uses: actions/setup-java@v2
       with:
@@ -72,7 +72,7 @@ jobs:
     - name: Spigot 1.17
       run: |
         wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
-        java -jar BuildTools.jar --rev 1.17.1 --compile Spigot
+        java -jar BuildTools.jar --rev 1.17.1
                               
     - uses: actions/setup-java@v2
       with:
