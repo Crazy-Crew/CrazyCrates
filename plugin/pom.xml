@@ -115,14 +115,6 @@
         </dependency>
         <dependency>
             <groupId>me.badbones69</groupId>
-            <artifactId>crazycrates-v1_9_R2</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>me.badbones69</groupId>
             <artifactId>crazycrates-v1_8_R3</artifactId>
             <version>${project.version}</version>
             <type>jar</type>

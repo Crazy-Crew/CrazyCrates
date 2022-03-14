@@ -26,7 +26,6 @@ import me.badbones69.crazycrates.multisupport.nms.v1_15_R1.NMS_v1_15_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_16_R3.NMS_v1_16_R3;
 import me.badbones69.crazycrates.multisupport.nms.v1_17_R1.NMS_v1_17_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_8_R3.NMS_v1_8_R3;
-import me.badbones69.crazycrates.multisupport.nms.v1_9_R2.NMS_v1_9_R2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -170,9 +169,6 @@ public class CrazyCrates {
         switch (version) {
             case v1_8_R3:
                 nmsSupport = new NMS_v1_8_R3();
-                break;
-            case v1_9_R2:
-                nmsSupport = new NMS_v1_9_R2();
                 break;
             case v1_10_R1:
                 nmsSupport = new NMS_v1_10_R1();
