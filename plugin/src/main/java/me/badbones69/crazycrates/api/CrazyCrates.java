@@ -36,6 +36,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
@@ -75,6 +76,7 @@ public class CrazyCrates {
      * The crate that the player is opening.
      */
     private final HashMap<UUID, Crate> playerOpeningCrates = new HashMap<>();
+    private final List<Player> cooldowns = new ArrayList<>();
     
     /**
      * Keys that are being used in crates. Only needed in cosmic due to it taking the key after the player picks a prize and not in a start method.
@@ -401,6 +403,11 @@ public class CrazyCrates {
      * @param checkHand If it just checks the players hand or if it checks their inventory.
      */
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
+        if (cooldowns.contains(player)) {
+            removePlayerFromOpeningList(player);
+            return;
+        }
+
         if (crate.getCrateType() != CrateType.MENU) {
             if (!crate.canWinPrizes(player)) {
                 player.sendMessage(Messages.NO_PRIZES_FOUND.getMessage());
@@ -419,6 +426,16 @@ public class CrazyCrates {
             }
             broadcast = false;
         }
+
+        //Set player cooldown for 5 ticks
+        cooldowns.add(player);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                cooldowns.remove(player);
+            }
+        }.runTaskLater(plugin, 5L);
+
         switch (crate.getCrateType()) {
             case MENU:
                 GUIMenu.openGUI(player);
