@@ -22,25 +22,63 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
         cache: maven
-    - name: Compile Minecraft Spigot or Paper (BuildTools)
-      # You may pin to the exact commit or the version.
-      # uses: SpraxDev/Action-SpigotMC@9081abb382a80baf5ed6dc736591d56088cb1e83
-      uses: SpraxDev/Action-SpigotMC@v4.0.0
+    
+    - name: Spigot 1.8
+      run: |
+        wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
+        java -jar BuildTools.jar --rev 1.8.8
+        
+    - name: Spigot 1.10
+      run: |
+        wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
+        java -jar BuildTools.jar --rev 1.10.2 --compile Spigot
+        
+    - name: Spigot 1.11
+      run: |
+        wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
+        java -jar BuildTools.jar --rev 1.11.2 --compile Spigot
+        
+    - name: Spigot 1.12
+      run: |
+        wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
+        java -jar BuildTools.jar --rev 1.12.2 --compile Spigot
+        
+    - name: Spigot 1.13
+      run: |
+        wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
+        java -jar BuildTools.jar --rev 1.13.2 --compile Spigot
+        
+    - name: Spigot 1.14
+      run: |
+        wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
+        java -jar BuildTools.jar --rev 1.14.4 --compile Spigot
+                
+    - name: Spigot 1.15
+      run: |
+        wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
+        java -jar BuildTools.jar --rev 1.15.2 --compile Spigot
+                        
+    - name: Spigot 1.16
+      run: |
+        wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
+        java -jar BuildTools.jar --rev 1.16.5 --compile Spigot
+                      
+    - uses: actions/setup-java@v2
       with:
-        # Versions to build (sperate multiple with ',')
-        versions: '1.8.8,1.11.2,1.10.2,1.17.1,1.16.5,1.15.2,1.14.4,1.13.2,1.12.2'
-    - name: Set up JDK 16
-      uses: actions/setup-java@v2
+        # This version should probably match the ones from the 'run'-job
+        java-version: 17
+        distribution: temurin
+                                
+    - name: Spigot 1.17
+      run: |
+        wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar
+        java -jar BuildTools.jar --rev 1.17.1 --compile Spigot
+                              
+    - uses: actions/setup-java@v2
       with:
-        java-version: '16'
-        distribution: 'temurin'
-        cache: maven
-    - name: Compile Minecraft Spigot or Paper (BuildTools)
-      # You may pin to the exact commit or the version.
-      # uses: SpraxDev/Action-SpigotMC@9081abb382a80baf5ed6dc736591d56088cb1e83
-      uses: SpraxDev/Action-SpigotMC@v4.0.0
-      with:
-        # Versions to build (sperate multiple with ',')
-        versions: '1.17.1'
+        # This version should probably match the ones from the 'run'-job
+        java-version: 8
+        distribution: temurin
+        
     - name: Build with Maven
       run: mvn -B package --file pom.xml
