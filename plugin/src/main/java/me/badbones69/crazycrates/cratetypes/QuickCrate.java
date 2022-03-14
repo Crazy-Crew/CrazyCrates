@@ -51,7 +51,7 @@ public class QuickCrate implements Listener {
             int keysUsed = 0;
 
             // give the player the prizes
-            for(; keys > 0; keys--) {
+            for(; keys > 0 && keysUsed < 64; keys--) {
                 if(Methods.isInventoryFull(player)) break;
 
                 Prize prize = crate.pickPrize(player);
