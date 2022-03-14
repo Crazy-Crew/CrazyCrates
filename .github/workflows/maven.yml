@@ -28,6 +28,6 @@ jobs:
       uses: SpraxDev/Action-SpigotMC@v4.0.0
       with:
         # Versions to build (sperate multiple with ',')
-        versions: '1.8.8,1.10.2'  # optional, default is latest
+        versions: '1.8.8,1.11.2'  # optional, default is latest
     - name: Build with Maven
       run: mvn -B package --file pom.xml
