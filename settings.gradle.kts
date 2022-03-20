@@ -1,4 +1,17 @@
-rootProject.name = "Crazy-Crates"
+dependencyResolutionManagement {
+    includeBuild("build-logic")
+    repositories.gradlePluginPortal()
+}
 
-include("plugin")
-include("api")
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven("https://papermc.io/repo/repository/maven-public/")
+    }
+}
+
+rootProject.name = "crazy-crates"
+
+include("plugin", "api")
+
+enableFeaturePreview("VERSION_CATALOGS")
