@@ -1,14 +1,14 @@
 plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    //id("io.papermc.paperweight.userdev")   version "1.3.5"
 
     `java-library`
 }
 
 dependencies {
-    //paperDevBundle("1.18.2-R0.1-SNAPSHOT")
 
-    compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
+    //compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
+
+    compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
 
     // Placeholders
 
