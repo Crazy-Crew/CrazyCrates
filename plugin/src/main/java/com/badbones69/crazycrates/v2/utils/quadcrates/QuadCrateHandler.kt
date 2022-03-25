@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack
 
 class QuadCrateHandler : QuadCrate {
 
-    override fun openChest(block: Block, update: Boolean) {
+    override fun openChest(block: Block, forceUpdate: Boolean) {
         if (block.type != Material.CHEST || block.type != Material.TRAPPED_CHEST || block.type != Material.ENDER_CHEST) return
 
         // val blockLocation = block.location
@@ -20,17 +20,17 @@ class QuadCrateHandler : QuadCrate {
             Material.ENDER_CHEST -> {
                 val enderChest = blockState as EnderChest
                 if (!enderChest.isOpen) enderChest.open()
-                blockState.update(update)
+                blockState.update(forceUpdate)
             }
             else -> {
                 val chest = blockState as Chest
                 if (!chest.isOpen) chest.open()
-                blockState.update(update)
+                blockState.update(forceUpdate)
             }
         }
     }
 
-    override fun closeChest(block: Block, update: Boolean) {
+    override fun closeChest(block: Block, forceUpdate: Boolean) {
         if (block.type != Material.CHEST || block.type != Material.TRAPPED_CHEST || block.type != Material.ENDER_CHEST) return
 
         // val blockLocation = block.location
@@ -40,12 +40,12 @@ class QuadCrateHandler : QuadCrate {
             Material.ENDER_CHEST -> {
                 val enderChest = blockState as EnderChest
                 if (enderChest.isOpen) enderChest.close()
-                blockState.update(update)
+                blockState.update(forceUpdate)
             }
             else -> {
                 val chest = blockState as Chest
                 if (chest.isOpen) chest.close()
-                blockState.update(update)
+                blockState.update(forceUpdate)
             }
         }
     }
