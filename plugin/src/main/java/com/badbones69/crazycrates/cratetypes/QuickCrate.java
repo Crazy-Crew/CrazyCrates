@@ -93,7 +93,7 @@ public class QuickCrate implements Listener {
             reward.setPickupDelay(Integer.MAX_VALUE);
             rewards.put(player, reward);
             allRewards.add(reward);
-            cc.getNMSSupport().openChest(loc.getBlock(), true);
+            //cc.getNMSSupport().openChest(loc.getBlock());
             if (prize.useFireworks()) {
                 Methods.fireWork(loc.clone().add(.5, 1, .5));
             }
@@ -116,7 +116,7 @@ public class QuickCrate implements Listener {
             rewards.get(player).remove();
             rewards.remove(player);
         }
-        cc.getNMSSupport().openChest(loc.getBlock(), false);
+        //cc.getNMSSupport().openChest(loc.getBlock());
         CrateControl.inUse.remove(player);
         cc.removePlayerFromOpeningList(player);
     }

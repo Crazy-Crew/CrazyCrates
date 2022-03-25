@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.QuadCrateParticles;
-import com.badbones69.crazycrates.nms.NMSSupport;
 import org.bukkit.*;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.block.Block;
@@ -21,9 +20,9 @@ import java.util.*;
 public class QuadCrateSession {
     
     private static final CrazyManager cc = CrazyManager.getInstance();
-    private static final NMSSupport nms = cc.getNMSSupport();
+    //private static final NMSSupport nms = cc.getNMSSupport();
     private static final List<QuadCrateSession> crateSessions = new ArrayList<>();
-    private static final List<Material> blacklistBlocks = nms.getQuadCrateBlacklistBlocks();
+    //private static final List<Material> blacklistBlocks = nms.getQuadCrateBlacklistBlocks();
     
     private final QuadCrateSession instance;
     private final Crate crate;
@@ -100,16 +99,16 @@ public class QuadCrateSession {
             return false;
         }
         crateSchematic = cc.getCrateSchematics().get(new Random().nextInt(cc.getCrateSchematics().size()));
-        schematicLocations = nms.getLocations(crateSchematic.getSchematicFile(), spawnLocation.clone());
+        //schematicLocations = nms.getLocations(crateSchematic.getSchematicFile(), spawnLocation.clone());
         //Check if the locations are all able to be changed
-        for (Location loc : schematicLocations) {
-            if (blacklistBlocks.contains(loc.getBlock())) {
-                player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
-                cc.removePlayerFromOpeningList(player);
-                crateSessions.remove(instance);
-                return false;
-            }
-        }
+        //for (Location loc : schematicLocations) {
+            //if (blacklistBlocks.contains(loc.getBlock())) {
+            //    player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
+            //    cc.removePlayerFromOpeningList(player);
+            //    crateSessions.remove(instance);
+            //    return false;
+            //}
+        //}
         //Checking if players nearby are opening a quadcrate.
         List<Entity> shovePlayers = new ArrayList<>();
         for (Entity entity : player.getNearbyEntities(3, 3, 3)) {
@@ -151,7 +150,7 @@ public class QuadCrateSession {
                 oldBlocks.put(loc.clone(), loc.getBlock().getState());
             }
         }
-        nms.pasteSchematic(crateSchematic.getSchematicFile(), spawnLocation.clone());
+        //nms.pasteSchematic(crateSchematic.getSchematicFile(), spawnLocation.clone());
         schematicLocations.forEach(location -> location.getBlock().getState().update());
         cc.addQuadCrateTask(player, new BukkitRunnable() {
             double radius = 0.0;//Radius of the particle spiral

@@ -93,15 +93,15 @@ public class CrateControl implements Listener { //Crate Control
             }
         } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             //Checks if the item in their hand is a key and if so it stops them from right-clicking with it.
-            ItemStack key = cc.getNMSSupport().getItemInMainHand(player);
-            boolean keyInHand = cc.isKey(key);
-            if (!keyInHand) {
-                keyInHand = cc.isKey(player.getEquipment().getItemInOffHand());
-            }
-            if (keyInHand) {
-                e.setCancelled(true);
-                player.updateInventory();
-            }
+            //ItemStack key = cc.getNMSSupport().getItemInMainHand(player);
+            //boolean keyInHand = cc.isKey(key);
+            //if (!keyInHand) {
+            //    keyInHand = cc.isKey(player.getEquipment().getItemInOffHand());
+            //}
+            //if (keyInHand) {
+            //    e.setCancelled(true);
+            //    player.updateInventory();
+            //}
             //Checks to see if the clicked block is a physical crate.
             CrateLocation crateLocation = cc.getCrateLocation(clickedBlock.getLocation());
             if (crateLocation != null && crateLocation.getCrate() != null) {
@@ -122,10 +122,10 @@ public class CrateControl implements Listener { //Crate Control
                     boolean useQuickCrateAgain = false;
                     String keyName = crate.getKey().getItemMeta().getDisplayName();
                     keyName = keyName != null ? keyName : crate.getKey().getType().toString();
-                    if (crate.getCrateType() != CrateType.CRATE_ON_THE_GO && keyInHand && cc.isKeyFromCrate(key, crate)) {
-                        hasKey = true;
-                        isPhysical = true;
-                    }
+                    //if (crate.getCrateType() != CrateType.CRATE_ON_THE_GO && keyInHand && cc.isKeyFromCrate(key, crate)) {
+                    //    hasKey = true;
+                    //    isPhysical = true;
+                    //}
                     if (config.getBoolean("Settings.Physical-Accepts-Virtual-Keys") && cc.getVirtualKeys(player, crate) >= 1) {
                         hasKey = true;
                     }

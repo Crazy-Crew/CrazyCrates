@@ -1,8 +1,3 @@
-dependencyResolutionManagement {
-    includeBuild("build-logic")
-    repositories.gradlePluginPortal()
-}
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -10,8 +5,6 @@ pluginManagement {
     }
 }
 
-rootProject.name = "crazy-crates"
+rootProject.name = "Crazy-Crates"
 
-include("plugin", "api")
-
-enableFeaturePreview("VERSION_CATALOGS")
+include("plugin")

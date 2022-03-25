@@ -75,39 +75,13 @@ public class CCCommand implements CommandExecutor {
                 }
                 player.sendMessage(Methods.getPrefix("&7You have set location #" + set + "."));
                 return true;
-                //Commented code is for debugging schematic files if there is an issue with them.
-                //				}else if(args[0].equalsIgnoreCase("pasteall")) {// /cc pasteall
-                //					if(!Methods.permCheck(sender, "admin")) return true;
-                //					Location location = ((Player) sender).getLocation().subtract(0, 1, 0);
-                //					for(CrateSchematic schematic : cc.getCrateSchematics()) {
-                //						cc.getNMSSupport().pasteSchematic(schematic.getSchematicFile(), location);
-                //						location.add(0, 0, 6);
-                //					}
-                //					sender.sendMessage(Methods.getPrefix("&7Pasted all of the schematics."));
-                //					return true;
-                //				}else if(args[0].equalsIgnoreCase("paste")) {// /cc paste <schematic file name>
-                //					if(!Methods.permCheck(sender, "admin")) return true;
-                //					if(args.length >= 2) {
-                //						String name = args[1];
-                //						Location location = ((Player) sender).getLocation().subtract(0, 1, 0);
-                //						CrateSchematic schematic = cc.getCrateSchematic(name);
-                //						if(schematic != null) {
-                //							cc.getNMSSupport().pasteSchematic(schematic.getSchematicFile(), location);
-                //							sender.sendMessage("Pasted the " + schematic.getSchematicName() + " schematic.");
-                //						}else {
-                //							sender.sendMessage(Methods.getPrefix("&cNo schematics by the name of " + name + " where found."));
-                //						}
-                //					}else {
-                //						sender.sendMessage(Methods.getPrefix("&c/cc paste <schematic file name>"));
-                //					}
-                //					return true;
             } else if (args[0].equalsIgnoreCase("save")) {// /cc save <file name>
                 if (!Methods.permCheck(sender, "admin")) return true;
                 Location[] locations = cc.getSchematicLocations().get(((Player) sender).getUniqueId());
                 if (locations != null && locations[0] != null && locations[1] != null) {
                     if (args.length >= 2) {
                         File file = new File(CrazyManager.getJavaPlugin().getDataFolder() + "/Schematics/" + args[1]);
-                        cc.getNMSSupport().saveSchematic(locations, sender.getName(), file);
+                        //cc.getNMSSupport().saveSchematic(locations, sender.getName(), file);
                         sender.sendMessage(Methods.getPrefix("&7Saved the " + args[1] + ".nbt into the Schematics folder."));
                         cc.loadSchematics();
                     } else {
@@ -122,7 +96,8 @@ public class CCCommand implements CommandExecutor {
                 if (!Methods.permCheck(sender, "admin")) return true;
                 Player player = (Player) sender;
                 if (args.length >= 3) {
-                    ItemStack item = cc.getNMSSupport().getItemInMainHand(player);
+                    // TODO() -> The item stack is invalid.
+                    ItemStack item = player.getInventory().getItemInMainHand();
                     if (item != null && item.getType() != Material.AIR) {
                         Crate crate = cc.getCrateFromName(args[1]);
                         if (crate != null) {

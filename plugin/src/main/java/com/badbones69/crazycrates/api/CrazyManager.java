@@ -15,8 +15,6 @@ import com.badbones69.crazycrates.controllers.CrateControl;
 import com.badbones69.crazycrates.controllers.GUIMenu;
 import com.badbones69.crazycrates.controllers.Preview;
 import com.badbones69.crazycrates.cratetypes.*;
-import com.badbones69.crazycrates.nms.NMSSupport;
-import com.badbones69.crazycrates.nms.NMS_Support;
 import com.badbones69.crazycrates.support.holograms.DecentHolograms;
 import com.badbones69.crazycrates.support.holograms.HolographicSupport;
 import com.badbones69.crazycrates.support.libs.Support;
@@ -123,7 +121,7 @@ public class CrazyManager {
     /**
      * The NMS version needed to be used.
      */
-    private NMSSupport nmsSupport;
+    //private NMSSupport nmsSupport;
     
     /**
      * The hologram api that is being hooked into.
@@ -161,7 +159,7 @@ public class CrazyManager {
         crateLocations.clear();
         crateSchematics.clear();
         
-        nmsSupport = new NMS_Support();
+        //nmsSupport = new NMS_Support();
         
         quadCrateTimer = Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
         giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
@@ -966,7 +964,7 @@ public class CrazyManager {
     public boolean hasPhysicalKey(Player player, Crate crate, boolean checkHand) {
         List<ItemStack> items = new ArrayList<>();
         if (checkHand) {
-            items.add(nmsSupport.getItemInMainHand(player));
+            //items.add(nmsSupport.getItemInMainHand(player));
             items.add(player.getEquipment().getItemInOffHand());
         } else {
             items.addAll(Arrays.asList(player.getInventory().getContents()));
@@ -1081,7 +1079,7 @@ public class CrazyManager {
                 try {
                     List<ItemStack> items = new ArrayList<>();
                     if (checkHand) {
-                        items.add(nmsSupport.getItemInMainHand(player));
+                        //items.add(nmsSupport.getItemInMainHand(player));
                         items.add(player.getEquipment().getItemInOffHand());
                     } else {
                         items.addAll(Arrays.asList(player.getInventory().getContents()));
@@ -1212,9 +1210,9 @@ public class CrazyManager {
      * Get the NMS version being used.
      * @return Version of NMS, returns null if not found.
      */
-    public NMSSupport getNMSSupport() {
-        return nmsSupport;
-    }
+    //public NMSSupport getNMSSupport() {
+        //return nmsSupport;
+    //}
     
     /**
      * Get the hologram plugin settings that is being used.

@@ -1,19 +1,14 @@
 plugins {
-    id("crates.base-conventions")
-    id("crates.nms-conventions")
-
-    id("me.mattstudios.triumph") version "0.2.7"
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("xyz.jpenilla.run-paper") version "1.0.6"
+    //id("io.papermc.paperweight.userdev")   version "1.3.5"
+
+    `java-library`
 }
 
 dependencies {
-    // Module
+    //paperDevBundle("1.18.2-R0.1-SNAPSHOT")
 
-    implementation(project(":api"))
-
-    // Paper
-    paperDevBundle("1.18.2-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
 
     // Placeholders
 
@@ -35,20 +30,46 @@ dependencies {
     implementation("org.bstats:bstats-bukkit:3.0.0")
 
     implementation("de.tr7zw:item-nbt-api:2.9.2")
+
+    implementation("dev.triumphteam:triumph-cmd-bukkit:2.0.0-SNAPSHOT")
 }
 
 tasks {
-    runServer {
-        minecraftVersion("1.18.2")
-    }
-}
 
-bukkit {
-    name = "CrazyCrates"
-    apiVersion = "1.18"
-    authors = listOf(
-        "Ryder",
-        "Badbones69"
-    )
-    version = "${project.version}"
+    //assemble {
+    //    dependsOn(reobfJar)
+    //}
+
+    shadowJar {
+        destinationDirectory.set(project.file("F:/Crazy Crew/..Test Server/plugins"))
+
+        archiveBaseName.set("${rootProject.name}-${rootProject.version}").toString().removeSuffix("-all")
+
+        relocate("dev.triumphteam.cmd", "com.badbones69.libs.cmd")
+        relocate("org.bstats", "com.badbones69.libs.bstats")
+        relocate("de.tr7zw", "com.badbones69.libs.nbt")
+    }
+
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release.set(17)
+    }
+
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "17"
+        }
+    }
+
+    processResources {
+        filesMatching("plugin.yml") {
+            expand (
+                "name" to rootProject.name,
+                "group" to rootProject.group,
+                "version" to rootProject.version,
+                "description" to rootProject.description,
+                "apiVersion" to "1.18"
+            )
+        }
+    }
 }

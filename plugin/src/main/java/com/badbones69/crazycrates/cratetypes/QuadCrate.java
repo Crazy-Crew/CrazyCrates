@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.QuadCrateSession;
-import com.badbones69.crazycrates.nms.NMSSupport;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -36,7 +35,7 @@ import java.util.Random;
 public class QuadCrate implements Listener {
     
     private CrazyManager cc = CrazyManager.getInstance();
-    private NMSSupport nms = cc.getNMSSupport();
+    //private NMSSupport nms = cc.getNMSSupport();
     
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
@@ -55,7 +54,7 @@ public class QuadCrate implements Listener {
                 if (session.getChestLocations().contains(block.getLocation())) {
                     e.setCancelled(true);
                     if (!session.hasChestBeenOpened(block.getLocation())) {
-                        nms.openChest(block, true);
+                        //nms.openChest(block);
                         Crate crate = session.getCrate();
                         Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
                         cc.givePrize(player, prize);
