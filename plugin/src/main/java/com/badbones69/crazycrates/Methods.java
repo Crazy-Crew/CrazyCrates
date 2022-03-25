@@ -146,19 +146,17 @@ public class Methods {
     public static Integer randomNumber(int min, int max) {
         return min + random.nextInt(max - min);
     }
-    
+
     //public static boolean isSimilar(Player player, Crate crate) {
-        //boolean check = isSimilar(cc.getNMSSupport().getItemInMainHand(player), crate);
-        //if (!check) check = isSimilar(player.getEquipment().getItemInOffHand(), crate);
-        //return check;
+    //    boolean check = isSimilar(cc.getNMSSupport().getItemInMainHand(player), crate);
+    //    if (!check) check = isSimilar(player.getEquipment().getItemInOffHand(), crate);
+    //    return check;
     //}
-    
+
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
         NBTItem nbtItem = new NBTItem(itemStack);
-        
-        return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
-        itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
-        isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
+
+        return nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate"));
     }
     
     private static boolean isSimilarCustom(ItemStack one, ItemStack two) {
