@@ -16,8 +16,16 @@ class StructuresHandler(structureName: String, val location: Location) : Structu
     override fun pasteStructure() {
         runCatching {
             structureManager.place(location, false, StructureRotation.NONE, Mirror.NONE, 0, 1F, Random())
-            println(structureManager.size)
-            structureManager.size.toLocation(location.world).block
+
+            //for (x in 0 until structureManager.size.x.toInt()) {
+            //    for (y in 0 until structureManager.size.y.toInt()) {
+            //        for (z in 0 until structureManager.size.z.toInt()) {
+            //            val block = location.block.getRelative(x, y, z)
+            //            println(block.x)
+            //            println(block.z)
+            //        }
+            //    }
+            //}
         }.onFailure { getPlugin().logger.warning(it.message) }
     }
 
