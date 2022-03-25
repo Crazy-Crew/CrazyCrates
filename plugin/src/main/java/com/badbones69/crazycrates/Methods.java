@@ -156,9 +156,7 @@ public class Methods {
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
         NBTItem nbtItem = new NBTItem(itemStack);
         
-        return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
-        itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
-        isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
+        return nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate"));
     }
     
     private static boolean isSimilarCustom(ItemStack one, ItemStack two) {
