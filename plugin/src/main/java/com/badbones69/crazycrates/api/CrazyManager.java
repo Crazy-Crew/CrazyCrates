@@ -777,7 +777,7 @@ public class CrazyManager {
             }
 
         } else {
-            getJavaPlugin().getLogger().warning("[CrazyCrates]>> No prize was found when giving " + player.getName() + " a prize.");
+            getJavaPlugin().getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
         }
     }
     
