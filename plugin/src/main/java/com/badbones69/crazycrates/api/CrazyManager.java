@@ -1333,5 +1333,4 @@ public class CrazyManager {
             return min;
         }
     }
-    
 }
