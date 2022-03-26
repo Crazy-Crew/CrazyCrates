@@ -162,7 +162,6 @@ public class CrazyManager {
         }
         if (fileManager.isLogging()) getJavaPlugin().getLogger().info("Loading all crate information...");
         for (String crateName : fileManager.getAllCratesNames()) {
-            //			if(fileManager.isLogging()) plugin.getLogger().info(fileManager.getPrefix() + "Loading " + crateName + ".yml information....");
             try {
                 FileConfiguration file = fileManager.getFile(crateName).getFile();
                 CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));
