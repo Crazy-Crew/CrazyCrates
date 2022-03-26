@@ -11,8 +11,6 @@ public class DebugCommand extends BaseCommand {
 
     @Default
     public void executor(Player player, String structureName) {
-        new QuadCrateSession(player, player.getLocation()).startCrate(structureName);
-
-        //player.sendMessage(Component.text("You have pasted the Structure in."));
+        //new QuadCrateSession(player, player.getLocation(), structureName).startCrate();
     }
 }
