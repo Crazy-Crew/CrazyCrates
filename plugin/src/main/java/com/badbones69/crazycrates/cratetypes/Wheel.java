@@ -170,5 +170,4 @@ public class Wheel implements Listener {
         slots.add(12);
         return slots;
     }
-    
 }
