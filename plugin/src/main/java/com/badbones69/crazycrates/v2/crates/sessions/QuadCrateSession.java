@@ -16,7 +16,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.*;
 
 public class QuadCrateSession {
@@ -90,7 +89,7 @@ public class QuadCrateSession {
 
     private CrateSchematic crateSchematic;
 
-    public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand) {
+    public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, CrateSchematic crateSchematic) {
         this.instance = this;
         this.player = player;
         this.crate = crate;
@@ -100,6 +99,8 @@ public class QuadCrateSession {
         this.spawnLocation = spawnLocation;
         this.lastLocation = lastLocation;
 
+        this.crateSchematic = crateSchematic;
+
         List<QuadCrateParticles> particles = Arrays.asList(QuadCrateParticles.values());
         this.particle = particles.get(new Random().nextInt(particles.size()));
         this.particleColor = getColors().get(new Random().nextInt(getColors().size()));
@@ -107,7 +108,7 @@ public class QuadCrateSession {
         crateSessions.add(instance);
     }
 
-    private final StructuresHandler handler = new StructuresHandler(crateSchematic.getSchematicFile());
+    StructuresHandler handler = new StructuresHandler(crateSchematic.getSchematicFile());
 
     public boolean startCrate() {
 
@@ -318,14 +319,17 @@ public class QuadCrateSession {
         return cratesOpened;
     }
 
+    // Get the crate
     public Crate getCrate() {
         return crate;
     }
 
+    // Get display rewards
     public List<Entity> getDisplayedRewards() {
         return displayedRewards;
     }
 
+    // Check if all crates are opened.
     public Boolean allCratesOpened() {
         for (Map.Entry<Location, Boolean> location : cratesOpened.entrySet()) {
             if (!location.getValue()) return false;
@@ -333,7 +337,13 @@ public class QuadCrateSession {
         return true;
     }
 
+    // Fetch the handler
     public QuadCrateHandler quadCrateHandler() {
         return quadCrateHandler;
+    }
+
+    // Fetch the schematic
+    public CrateSchematic getCrateSchematic() {
+        return crateSchematic;
     }
 }

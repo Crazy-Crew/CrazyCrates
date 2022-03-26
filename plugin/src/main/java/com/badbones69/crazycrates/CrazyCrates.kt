@@ -16,7 +16,6 @@ import com.badbones69.crazycrates.support.libs.Support
 import com.badbones69.crazycrates.support.placeholders.MVdWPlaceholderAPISupport
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport
 import com.badbones69.crazycrates.v2.commands.DebugCommand
-import com.badbones69.crazycrates.v2.crates.sessions.QuadCrateSession
 import com.badbones69.crazycrates.v2.utils.quadcrates.sessions.SessionManager
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager
 import org.bstats.bukkit.Metrics
@@ -25,7 +24,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
-
 
 class CrazyCrates : JavaPlugin(), Listener {
 
@@ -87,8 +85,6 @@ class CrazyCrates : JavaPlugin(), Listener {
         getCommand("key")?.tabCompleter = KeyTab()
         getCommand("crazycrates")?.setExecutor(CCCommand())
         getCommand("crazycrates")?.tabCompleter = CCTab()
-
-        manager.registerCommand(DebugCommand())
     }
 
     override fun onDisable() {

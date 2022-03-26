@@ -1,7 +1,5 @@
 package com.badbones69.crazycrates.v2.utils.quadcrates
 
-import com.badbones69.crazycrates.api.CrazyManager
-import com.badbones69.crazycrates.api.objects.CrateSchematic
 import com.badbones69.crazycrates.getPlugin
 import com.badbones69.crazycrates.v2.utils.interfaces.Structures
 import org.bukkit.Location
