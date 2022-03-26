@@ -39,7 +39,7 @@ public class Wonder implements Listener {
 
         player.openInventory(inv);
         cc.addCrateTask(player, new BukkitRunnable() {
-            int fulltime = 0;
+            int fullTime = 0;
             int timer = 0;
             int slot1 = 0;
             int slot2 = 44;
@@ -48,7 +48,7 @@ public class Wonder implements Listener {
             
             @Override
             public void run() {
-                if (timer >= 2 && fulltime <= 65) {
+                if (timer >= 2 && fullTime <= 65) {
                     slots.remove(slot1 + "");
                     slots.remove(slot2 + "");
                     Slots.add(slot1);
@@ -62,14 +62,14 @@ public class Wonder implements Listener {
                     slot1++;
                     slot2--;
                 }
-                if (fulltime > 67) {
+                if (fullTime > 67) {
                     ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
                     for (int slot : Slots) {
                         inv.setItem(slot, item);
                     }
                 }
                 player.openInventory(inv);
-                if (fulltime > 100) {
+                if (fullTime > 100) {
                     cc.endCrate(player);
                     player.closeInventory();
                     cc.givePrize(player, prize);
@@ -80,7 +80,7 @@ public class Wonder implements Listener {
                     cc.removePlayerFromOpeningList(player);
                     return;
                 }
-                fulltime++;
+                fullTime++;
                 timer++;
                 if (timer > 2) {
                     timer = 0;
