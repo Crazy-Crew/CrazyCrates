@@ -34,10 +34,6 @@ dependencies {
 
 tasks {
 
-    //assemble {
-    //    dependsOn(reobfJar)
-    //}
-
     shadowJar {
         destinationDirectory.set(project.file("F:/Crazy Crew/..Test Server/plugins"))
 
