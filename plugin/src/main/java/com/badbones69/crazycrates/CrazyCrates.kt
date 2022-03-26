@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.api.CrazyManager
 import com.badbones69.crazycrates.api.FileManager
 import com.badbones69.crazycrates.api.FileManager.Files
 import com.badbones69.crazycrates.api.enums.Messages
-import com.badbones69.crazycrates.api.objects.QuadCrateSession
 import com.badbones69.crazycrates.commands.CCCommand
 import com.badbones69.crazycrates.commands.CCTab
 import com.badbones69.crazycrates.commands.KeyCommand
@@ -17,6 +16,8 @@ import com.badbones69.crazycrates.support.libs.Support
 import com.badbones69.crazycrates.support.placeholders.MVdWPlaceholderAPISupport
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport
 import com.badbones69.crazycrates.v2.commands.DebugCommand
+import com.badbones69.crazycrates.v2.crates.sessions.QuadCrateSession
+import com.badbones69.crazycrates.v2.utils.quadcrates.sessions.SessionManager
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager
 import org.bstats.bukkit.Metrics
 import org.bukkit.command.CommandSender
@@ -92,7 +93,7 @@ class CrazyCrates : JavaPlugin(), Listener {
 
     override fun onDisable() {
         runCatching {
-            QuadCrateSession.endAllCrates()
+            SessionManager.endAllCrates()
             QuickCrate.removeAllRewards()
             if (CrazyManager.getInstance().hologramController != null) CrazyManager.getInstance().hologramController.removeAllHolograms()
         }.onFailure { logger.severe("The plugin did not start up correctly. Grab your logs file and join discord.badbones69.com") }

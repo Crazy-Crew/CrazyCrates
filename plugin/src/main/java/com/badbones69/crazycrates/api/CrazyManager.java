@@ -18,6 +18,8 @@ import com.badbones69.crazycrates.cratetypes.*;
 import com.badbones69.crazycrates.support.holograms.DecentHolograms;
 import com.badbones69.crazycrates.support.holograms.HolographicSupport;
 import com.badbones69.crazycrates.support.libs.Support;
+import com.badbones69.crazycrates.v2.crates.sessions.QuadCrateSession;
+import com.badbones69.crazycrates.v2.utils.interfaces.QuadCrate;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
@@ -401,9 +403,9 @@ public class CrazyManager {
                 War.openWarCrate(player, crate, keyType, checkHand);
                 break;
             case QUAD_CRATE:
-                Location last = player.getLocation();
-                last.setPitch(0F);
-                QuadCrateSession session = new QuadCrateSession(player, crate, keyType, location, last, checkHand);
+                Location lastLocation = player.getLocation();
+                lastLocation.setPitch(0F);
+                QuadCrateSession session = new QuadCrateSession(player, crate, keyType, location, lastLocation, checkHand);
                 broadcast = session.startCrate();
                 break;
             case FIRE_CRACKER:
