@@ -21,18 +21,22 @@ public class Wonder implements Listener {
     private static CrazyManager cc = CrazyManager.getInstance();
     
     public static void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
+
         if (!cc.takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
             cc.removePlayerFromOpeningList(player);
             return;
         }
+
         final Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 45, crate.getCrateInventoryName());
         final ArrayList<String> slots = new ArrayList<>();
+
         for (int i = 0; i < 45; i++) {
             Prize prize = crate.pickPrize(player);
             slots.add(i + "");
             inv.setItem(i, prize.getDisplayItem());
         }
+
         player.openInventory(inv);
         cc.addCrateTask(player, new BukkitRunnable() {
             int fulltime = 0;

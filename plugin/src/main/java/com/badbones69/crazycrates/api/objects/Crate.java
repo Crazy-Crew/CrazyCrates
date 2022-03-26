@@ -481,20 +481,26 @@ public class Crate {
         items.add(item);
         String path = "Crate.Prizes." + prize;
         if (!file.contains(path)) {
+
             if (item.hasItemMeta()) {
                 if (item.getItemMeta().hasDisplayName()) file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
                 if (item.getItemMeta().hasLore()) file.set(path + ".Lore", item.getItemMeta().getLore());
             }
+
             NBTItem nbtItem = new NBTItem(item);
+
             if (nbtItem.hasNBTData()) {
                 if (nbtItem.hasKey("Unbreakable") && nbtItem.getBoolean("Unbreakable")) {
                     file.set(path + ".Unbreakable", true);
                 }
             }
+
             List<String> enchantments = new ArrayList<>();
+
             for (Enchantment enchantment : item.getEnchantments().keySet()) {
                 enchantments.add((enchantment.getKey().getKey()));
             }
+
             if (!enchantments.isEmpty()) {
                 file.set(path + ".DisplayEnchantments", enchantments);
             }
