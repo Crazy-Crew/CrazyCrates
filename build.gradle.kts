@@ -3,7 +3,7 @@ plugins {
 }
 
 rootProject.group = "com.badbones69"
-rootProject.version = "1.0.0"
+rootProject.version = "1.10.4"
 rootProject.description = "A plugin to fit all your crate plugin needs."
 
 subprojects {
