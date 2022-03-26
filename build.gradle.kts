@@ -12,7 +12,6 @@ subprojects {
 
         repositories {
 
-            maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
             maven("https://papermc.io/repo/repository/maven-public/")
             maven("https://repo.triumphteam.dev/snapshots")
 
