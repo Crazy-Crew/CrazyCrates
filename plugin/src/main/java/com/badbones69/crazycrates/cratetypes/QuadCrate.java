@@ -35,7 +35,7 @@ import java.util.Random;
 public class QuadCrate implements Listener {
     
     private CrazyManager cc = CrazyManager.getInstance();
-    //private NMSSupport nms = cc.getNMSSupport();
+    private final SessionManager sessionManager = SessionManager.INSTANCE;
     
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
@@ -53,8 +53,10 @@ public class QuadCrate implements Listener {
                 Block block = e.getClickedBlock();
                 if (session.getChestLocations().contains(block.getLocation())) {
                     e.setCancelled(true);
-                    if (!session.hasChestBeenOpened(block.getLocation())) {
-                        //nms.openChest(block);
+                    if (!session.getCratesOpened().get(block.getLocation())) {
+
+                        session.quadCrateHandler().openChest(block, true);
+
                         Crate crate = session.getCrate();
                         Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
                         cc.givePrize(player, prize);

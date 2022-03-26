@@ -112,24 +112,12 @@ public class CrazyManager {
     private boolean giveNewPlayersKeys;
     
     /**
-     * True if using 1.13+ material names and false if using lower versions.
-     */
-    private boolean useNewMaterial;
-    
-    private boolean useNewSounds;
-    
-    /**
-     * The NMS version needed to be used.
-     */
-    //private NMSSupport nmsSupport;
-    
-    /**
      * The hologram api that is being hooked into.
      */
     private HologramController hologramController;
     
     /**
-     * Schematic locations for 1.13+
+     * Schematic locations
      */
     private final HashMap<UUID, Location[]> schemLocations = new HashMap<>();
     
@@ -964,8 +952,7 @@ public class CrazyManager {
     public boolean hasPhysicalKey(Player player, Crate crate, boolean checkHand) {
         List<ItemStack> items = new ArrayList<>();
         if (checkHand) {
-            //items.add(nmsSupport.getItemInMainHand(player));
-            items.add(player.getEquipment().getItemInOffHand());
+            items.add(player.getEquipment().getItemInMainHand());
         } else {
             items.addAll(Arrays.asList(player.getInventory().getContents()));
             items.removeAll(Arrays.asList(player.getInventory().getArmorContents()));
@@ -1079,8 +1066,7 @@ public class CrazyManager {
                 try {
                     List<ItemStack> items = new ArrayList<>();
                     if (checkHand) {
-                        //items.add(nmsSupport.getItemInMainHand(player));
-                        items.add(player.getEquipment().getItemInOffHand());
+                        items.add(player.getEquipment().getItemInMainHand());
                     } else {
                         items.addAll(Arrays.asList(player.getInventory().getContents()));
                         items.remove(player.getEquipment().getItemInOffHand());
@@ -1207,27 +1193,11 @@ public class CrazyManager {
     }
     
     /**
-     * Get the NMS version being used.
-     * @return Version of NMS, returns null if not found.
-     */
-    //public NMSSupport getNMSSupport() {
-        //return nmsSupport;
-    //}
-    
-    /**
      * Get the hologram plugin settings that is being used.
      * @return The hologram controller for the holograms.
      */
     public HologramController getHologramController() {
         return hologramController;
-    }
-    
-    /**
-     * Check if the server uses new 1.13+ material names.
-     * @return True if the server is 1.13+ and false if it is 1.12.2-.
-     */
-    public boolean useNewMaterial() {
-        return useNewMaterial;
     }
     
     /**

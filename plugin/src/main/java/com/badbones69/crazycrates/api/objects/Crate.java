@@ -493,12 +493,13 @@ public class Crate {
             }
             List<String> enchantments = new ArrayList<>();
             for (Enchantment enchantment : item.getEnchantments().keySet()) {
-                enchantments.add((cc.useNewMaterial() ? enchantment.getKey().getKey() : enchantment.getName()) + ":" + item.getEnchantments().get(enchantment));
+                enchantments.add((enchantment.getKey().getKey()));
             }
             if (!enchantments.isEmpty()) {
                 file.set(path + ".DisplayEnchantments", enchantments);
             }
-            file.set(path + ".DisplayItem", cc.useNewMaterial() ? item.getType().name() : item.getType().name() + ":" + item.getDurability());
+
+            file.set(path + ".DisplayItem", item.getType().name());
             file.set(path + ".DisplayAmount", item.getAmount());
             file.set(path + ".MaxRange", 100);
             file.set(path + ".Chance", 50);
