@@ -290,8 +290,7 @@ public class CrazyManager {
         for (String schematicName : schems) {
             if (schematicName.endsWith(".nbt")) {
                 crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(getJavaPlugin().getDataFolder() + "/schematics/" + schematicName)));
-                if (fileManager.isLogging())
-                    getJavaPlugin().getLogger().info(schematicName + " was successfully found and loaded.");
+                if (fileManager.isLogging()) getJavaPlugin().getLogger().info(schematicName + " was successfully found and loaded.");
             }
         }
 
