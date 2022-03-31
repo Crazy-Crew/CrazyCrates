@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CCTab implements TabCompleter {
     
-    private CrazyCrates cc = CrazyCrates.getInstance();
+    private final CrazyCrates cc = CrazyCrates.getInstance();
     
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String commandLable, String[] args) {

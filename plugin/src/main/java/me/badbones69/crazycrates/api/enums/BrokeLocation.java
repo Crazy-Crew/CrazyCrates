@@ -7,7 +7,8 @@ import org.bukkit.Location;
 public class BrokeLocation {
     
     private int x, y, z;
-    private String world, locationName;
+    private String world;
+    private final String locationName;
     private Crate crate;
     
     public BrokeLocation(String locationName, Crate crate, int x, int y, int z, String world) {

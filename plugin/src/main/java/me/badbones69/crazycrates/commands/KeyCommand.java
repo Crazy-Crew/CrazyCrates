@@ -15,7 +15,7 @@ import java.util.List;
 
 public class KeyCommand implements CommandExecutor {
     
-    private CrazyCrates cc = CrazyCrates.getInstance();
+    private final CrazyCrates cc = CrazyCrates.getInstance();
     
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args) {

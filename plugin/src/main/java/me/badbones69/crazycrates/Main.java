@@ -20,26 +20,24 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.logging.Level;
-
 public class Main extends JavaPlugin implements Listener {
     
     private boolean updateChecker = false;
-    private CrazyCrates cc = CrazyCrates.getInstance();
-    private FileManager fileManager = FileManager.getInstance();
+    private final CrazyCrates cc = CrazyCrates.getInstance();
+    private final FileManager fileManager = FileManager.getInstance();
     private boolean isEnabled = true;// If the server is supported
     
     @Override
     public void onEnable() {
-        if (Version.getCurrentVersion().isOlder(Version.v1_8_R3) || Version.getCurrentVersion().isNewer(Version.v1_17_R1)) {
+        if (Version.isOlder(Version.v1_8_R3) || Version.isNewer(Version.v1_17_R1)) {
             checkVersion();
             return;
         }
 
         //Crate Files
-        String extension = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "nbt" : "schematic";
-        String cratesFolder = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "/Crates1.13-Up" : "/Crates1.12.2-Down";
-        String schemFolder = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "/Schematics1.13-Up" : "/Schematics1.12.2-Down";
+        String extension = Version.isNewer(Version.v1_12_R1) ? "nbt" : "schematic";
+        String cratesFolder = Version.isNewer(Version.v1_12_R1) ? "/Crates1.13-Up" : "/Crates1.12.2-Down";
+        String schemFolder = Version.isNewer(Version.v1_12_R1) ? "/Schematics1.13-Up" : "/Schematics1.12.2-Down";
         fileManager.logInfo(true)
         .registerDefaultGenerateFiles("Basic.yml", "/Crates", cratesFolder)
         .registerDefaultGenerateFiles("Classic.yml", "/Crates", cratesFolder)
@@ -81,7 +79,7 @@ public class Main extends JavaPlugin implements Listener {
         pm.registerEvents(new QuickCrate(), this);
         pm.registerEvents(new CrateControl(), this);
         pm.registerEvents(new CrateOnTheGo(), this);
-        if (Version.getCurrentVersion().isNewer(Version.v1_11_R1)) {
+        if (Version.isNewer(Version.v1_11_R1)) {
             pm.registerEvents(new Events_v1_12_R1_Up(), this);
         } else {
             pm.registerEvents(new Events_v1_11_R1_Down(), this);
@@ -97,11 +95,12 @@ public class Main extends JavaPlugin implements Listener {
             MVdWPlaceholderAPISupport.registerPlaceholders(this);
         }
         Methods.hasUpdate();
+
         new Metrics(this); //Starts up bStats
-        getCommand("key").setExecutor(new KeyCommand());
-        getCommand("key").setTabCompleter(new KeyTab());
-        getCommand("crazycrates").setExecutor(new CCCommand());
-        getCommand("crazycrates").setTabCompleter(new CCTab());
+        this.getCommand("key").setExecutor(new KeyCommand());
+        this.getCommand("key").setTabCompleter(new KeyTab());
+        this.getCommand("crazycrates").setExecutor(new CCCommand());
+        this.getCommand("crazycrates").setTabCompleter(new CCTab());
     }
 
     private void checkVersion() {

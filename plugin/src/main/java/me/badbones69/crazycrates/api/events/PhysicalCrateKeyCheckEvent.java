@@ -9,8 +9,8 @@ import org.bukkit.event.HandlerList;
 public class PhysicalCrateKeyCheckEvent extends Event implements Cancellable {
     
     private static final HandlerList handlers = new HandlerList();
-    private Player player;
-    private CrateLocation crateLocation;
+    private final Player player;
+    private final CrateLocation crateLocation;
     private boolean isCancelled;
     
     /**

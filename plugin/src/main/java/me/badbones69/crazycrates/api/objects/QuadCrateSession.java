@@ -364,7 +364,7 @@ public class QuadCrateSession {
     }
     
     private void spawnParticles(QuadCrateParticles quadCrateParticle, Color particleColor, Location location1, Location location2) {
-        if (Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+        if (Version.isNewer(Version.v1_8_R3)) {
             Particle particle;
             switch (quadCrateParticle) {
                 case FLAME:
@@ -379,7 +379,7 @@ public class QuadCrateSession {
                 default:
                     particle = Particle.REDSTONE;
             }
-            if (Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+            if (Version.isNewer(Version.v1_12_R1)) {
                 if (particle == Particle.REDSTONE) {
                     location1.getWorld().spawnParticle(particle, location1, 0, new DustOptions(particleColor, 1));
                     location2.getWorld().spawnParticle(particle, location2, 0, new DustOptions(particleColor, 1));

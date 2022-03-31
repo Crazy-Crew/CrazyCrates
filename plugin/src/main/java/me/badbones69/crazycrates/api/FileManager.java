@@ -16,16 +16,16 @@ import java.util.logging.Level;
 
 public class FileManager {
     
-    private static FileManager instance = new FileManager();
+    private static final FileManager instance = new FileManager();
     private Plugin plugin;
     private String prefix = "";
     private boolean log = false;
-    private HashMap<Files, File> files = new HashMap<>();
-    private ArrayList<String> homeFolders = new ArrayList<>();
-    private ArrayList<CustomFile> customFiles = new ArrayList<>();
-    private HashMap<String, String> jarHomeFolders = new HashMap<>();
-    private HashMap<String, String> autoGenerateFiles = new HashMap<>();
-    private HashMap<Files, FileConfiguration> configurations = new HashMap<>();
+    private final HashMap<Files, File> files = new HashMap<>();
+    private final ArrayList<String> homeFolders = new ArrayList<>();
+    private final ArrayList<CustomFile> customFiles = new ArrayList<>();
+    private final HashMap<String, String> jarHomeFolders = new HashMap<>();
+    private final HashMap<String, String> autoGenerateFiles = new HashMap<>();
+    private final HashMap<Files, FileConfiguration> configurations = new HashMap<>();
     
     public static FileManager getInstance() {
         return instance;
@@ -318,16 +318,16 @@ public class FileManager {
         LOCATIONS("Locations.yml", "Locations.yml"),
         DATA("data.yml", "data.yml");
         
-        private String fileName;
-        private String fileJar;
-        private String fileLocation;
+        private final String fileName;
+        private final String fileJar;
+        private final String fileLocation;
         
         /**
          * The files that the server will try and load.
          * @param fileName The file name that will be in the plugin's folder.
          * @param fileLocation The location the file in the plugin's folder.
          */
-        private Files(String fileName, String fileLocation) {
+        Files(String fileName, String fileLocation) {
             this(fileName, fileLocation, fileLocation);
         }
         
@@ -337,7 +337,7 @@ public class FileManager {
          * @param fileLocation The location of the file will be in the plugin's folder.
          * @param fileJar The location of the file in the jar.
          */
-        private Files(String fileName, String fileLocation, String fileJar) {
+        Files(String fileName, String fileLocation, String fileJar) {
             this.fileName = fileName;
             this.fileLocation = fileLocation;
             this.fileJar = fileJar;
@@ -350,8 +350,8 @@ public class FileManager {
          * @param newFileJar The location of the 1.13+ file version in the jar.
          * @param oldFileJar The location of the 1.12.2- file version in the jar.
          */
-        private Files(String fileName, String fileLocation, String newFileJar, String oldFileJar) {
-            this(fileName, fileLocation, Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? newFileJar : oldFileJar);
+        Files(String fileName, String fileLocation, String newFileJar, String oldFileJar) {
+            this(fileName, fileLocation, Version.isNewer(Version.v1_12_R1) ? newFileJar : oldFileJar);
         }
         
         /**
@@ -404,10 +404,10 @@ public class FileManager {
     
     public class CustomFile {
         
-        private String name;
-        private Plugin plugin;
-        private String fileName;
-        private String homeFolder;
+        private final String name;
+        private final Plugin plugin;
+        private final String fileName;
+        private final String homeFolder;
         private FileConfiguration file;
         
         /**

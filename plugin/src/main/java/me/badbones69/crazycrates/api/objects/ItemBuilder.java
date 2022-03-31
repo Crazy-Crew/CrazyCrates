@@ -39,13 +39,13 @@ import java.util.stream.Collectors;
  */
 public class ItemBuilder {
     
-    private static CrazyCrates cc = CrazyCrates.getInstance();
-    private static Version version = Version.getCurrentVersion();
+    private static final CrazyCrates cc = CrazyCrates.getInstance();
+    private static final Version version = Version.getCurrentVersion();
     private NBTItem nbtItem;
     private Material material;
     private int damage;
     private String name;
-    private List<String> lore;
+    private final List<String> lore;
     private int amount;
     private String crateName;
     private String player;
@@ -163,7 +163,7 @@ public class ItemBuilder {
             if (nbt.hasKey("Unbreakable")) {
                 itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
             }
-            if (version.isNewer(Version.v1_12_R1)) {
+            if (Version.isNewer(Version.v1_12_R1)) {
                 if (itemMeta instanceof org.bukkit.inventory.meta.Damageable) {
                     itemBuilder.setDamage(((org.bukkit.inventory.meta.Damageable) itemMeta).getDamage());
                 }
@@ -322,7 +322,7 @@ public class ItemBuilder {
         if (m != null) {// Sets the material.
             this.material = m;
             //1.9-1.12.2
-            if (version.isNewer(Version.v1_8_R3) && version.isOlder(Version.v1_13_R2)) {
+            if (Version.isNewer(Version.v1_8_R3) && Version.isOlder(Version.v1_13_R2)) {
                 if (m == Material.matchMaterial("MONSTER_EGG")) {
                     try {
                         this.entityType = EntityType.fromId(damage) != null ? EntityType.fromId(damage) : EntityType.valueOf(metaData);
@@ -875,16 +875,16 @@ public class ItemBuilder {
             ItemMeta itemMeta = item.getItemMeta();
             itemMeta.setDisplayName(getUpdatedName());
             itemMeta.setLore(getUpdatedLore());
-            if (version.isSame(Version.v1_8_R3)) {
+            if (Version.isSame(Version.v1_8_R3)) {
                 if (isHead && !isHash && player != null && !player.equals("")) {
                     SkullMeta skullMeta = (SkullMeta) itemMeta;
                     skullMeta.setOwner(player);
                 }
             }
-            if (version.isNewer(Version.v1_10_R1)) {
+            if (Version.isNewer(Version.v1_10_R1)) {
                 itemMeta.setUnbreakable(unbreakable);
             }
-            if (version.isNewer(Version.v1_12_R1)) {
+            if (Version.isNewer(Version.v1_12_R1)) {
                 if (itemMeta instanceof org.bukkit.inventory.meta.Damageable) {
                     ((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(damage);
                 }
@@ -925,7 +925,7 @@ public class ItemBuilder {
             addGlow(item);
             NBTItem nbt = new NBTItem(item);
             if (isHead) {
-                if (!isHash && player != null && !player.equals("") && version.isNewer(Version.v1_8_R3)) {
+                if (!isHash && player != null && !player.equals("") && Version.isNewer(Version.v1_8_R3)) {
                     nbt.setString("SkullOwner", player);
                 }
             }
@@ -934,7 +934,7 @@ public class ItemBuilder {
                     nbt.addCompound("EntityTag").setString("id", "minecraft:" + entityType.name());
                 }
             }
-            if (version.isOlder(Version.v1_11_R1)) {
+            if (Version.isOlder(Version.v1_11_R1)) {
                 if (unbreakable) {
                     nbt.setBoolean("Unbreakable", true);
                     nbt.setInteger("HideFlags", 4);
@@ -1109,7 +1109,7 @@ public class ItemBuilder {
         for (Enchantment enchantment : Enchantment.values()) {
             try {
                 //MC 1.13+ has the correct names.
-                if (version.isNewer(Version.v1_12_R1)) {
+                if (Version.isNewer(Version.v1_12_R1)) {
                     if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
                         return enchantment;
                     }

@@ -39,7 +39,7 @@ public class CrateControl implements Listener { //Crate Control
      * A list of crate locations that are in use.
      */
     public static HashMap<Player, Location> inUse = new HashMap<>();
-    private CrazyCrates cc = CrazyCrates.getInstance();
+    private final CrazyCrates cc = CrazyCrates.getInstance();
     
     /**
      * This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
@@ -60,7 +60,7 @@ public class CrateControl implements Listener { //Crate Control
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         FileConfiguration config = Files.CONFIG.getFile();
-        if (Version.getCurrentVersion().isNewer(Version.v1_8_R3) && e.getHand() == EquipmentSlot.OFF_HAND) {
+        if (Version.isNewer(Version.v1_8_R3) && e.getHand() == EquipmentSlot.OFF_HAND) {
             if (cc.isKey(player.getInventory().getItemInOffHand())) {
                 e.setCancelled(true);
                 player.updateInventory();
@@ -95,7 +95,7 @@ public class CrateControl implements Listener { //Crate Control
             //Checks if the item in their hand is a key and if so it stops them from right clicking with it.
             ItemStack key = cc.getNMSSupport().getItemInMainHand(player);
             boolean keyInHand = cc.isKey(key);
-            if (!keyInHand && Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+            if (!keyInHand && Version.isNewer(Version.v1_8_R3)) {
                 keyInHand = cc.isKey(player.getEquipment().getItemInOffHand());
             }
             if (keyInHand) {

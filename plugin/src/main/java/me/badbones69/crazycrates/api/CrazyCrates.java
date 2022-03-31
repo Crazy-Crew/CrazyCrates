@@ -166,8 +166,8 @@ public class CrazyCrates {
         crateLocations.clear();
         crateSchematics.clear();
         Version version = Version.getCurrentVersion();
-        useNewMaterial = version.isNewer(Version.v1_12_R1);
-        useNewSounds = version.isNewer(Version.v1_8_R3);
+        useNewMaterial = Version.isNewer(Version.v1_12_R1);
+        useNewSounds = Version.isNewer(Version.v1_8_R3);
         switch (version) {
             case v1_8_R3:
                 nmsSupport = new NMS_v1_8_R3();
@@ -329,7 +329,7 @@ public class CrazyCrates {
         //Loading schematic files
         if (fileManager.isLogging()) Bukkit.getLogger().info(fileManager.getPrefix() + "Searching for schematics to load.");
         String[] schems = new File(plugin.getDataFolder() + "/Schematics/").list();
-        boolean isNewer = Version.getCurrentVersion().isNewer(Version.v1_12_R1);
+        boolean isNewer = Version.isNewer(Version.v1_12_R1);
         for (String schematicName : schems) {
             if (isNewer) {
                 if (schematicName.endsWith(".nbt")) {
@@ -424,7 +424,7 @@ public class CrazyCrates {
             public void run() {
                 cooldowns.remove(player);
             }
-        }.runTaskLater(plugin, 5L);
+        }.runTaskLater(plugin, Files.CONFIG.getFile().getInt("Settings.Cooldown") * 20L);
 
         switch (crate.getCrateType()) {
             case MENU:
@@ -1015,7 +1015,7 @@ public class CrazyCrates {
         List<ItemStack> items = new ArrayList<>();
         if (checkHand) {
             items.add(nmsSupport.getItemInMainHand(player));
-            if (Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+            if (Version.isNewer(Version.v1_8_R3)) {
                 items.add(player.getEquipment().getItemInOffHand());
             }
         } else {
@@ -1128,7 +1128,7 @@ public class CrazyCrates {
         switch (keyType) {
             case PHYSICAL_KEY:
                 int takeAmount = amount;
-                boolean hasOffhand = Version.getCurrentVersion().isNewer(Version.v1_8_R3);
+                boolean hasOffhand = Version.isNewer(Version.v1_8_R3);
                 try {
                     List<ItemStack> items = new ArrayList<>();
                     if (checkHand) {
@@ -1311,7 +1311,7 @@ public class CrazyCrates {
     public void loadSchematics() {
         crateSchematics.clear();
         String[] schems = new File(plugin.getDataFolder() + "/Schematics/").list();
-        boolean isNewer = Version.getCurrentVersion().isNewer(Version.v1_12_R1);
+        boolean isNewer = Version.isNewer(Version.v1_12_R1);
         for (String schematicName : schems) {
             if (isNewer) {
                 if (schematicName.endsWith(".nbt")) {

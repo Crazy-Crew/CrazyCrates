@@ -6,9 +6,9 @@ public enum KeyType {
     VIRTUAL_KEY("Virtual_Key"),
     FREE_KEY("Free_Key");
     
-    private String name;
+    private final String name;
     
-    private KeyType(String name) {
+    KeyType(String name) {
         this.name = name;
     }
     

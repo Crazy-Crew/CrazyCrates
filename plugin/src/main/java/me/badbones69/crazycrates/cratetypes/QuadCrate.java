@@ -34,8 +34,8 @@ import java.util.Random;
  */
 public class QuadCrate implements Listener {
     
-    private CrazyCrates cc = CrazyCrates.getInstance();
-    private NMSSupport nms = cc.getNMSSupport();
+    private final CrazyCrates cc = CrazyCrates.getInstance();
+    private final NMSSupport nms = cc.getNMSSupport();
     
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {

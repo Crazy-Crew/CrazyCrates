@@ -5,9 +5,9 @@ import org.bukkit.Location;
 
 public class CrateLocation {
     
-    private String id;
-    private Crate crate;
-    private Location loc;
+    private final String id;
+    private final Crate crate;
+    private final Location loc;
     
     public CrateLocation(String id, Crate crate, Location loc) {
         this.id = id;

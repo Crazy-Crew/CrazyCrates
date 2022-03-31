@@ -35,8 +35,8 @@ public class Methods {
     
     public static HashMap<Player, String> path = new HashMap<>();
     public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
-    private static CrazyCrates cc = CrazyCrates.getInstance();
-    private static Random random = new Random();
+    private static final CrazyCrates cc = CrazyCrates.getInstance();
+    private static final Random random = new Random();
 
     public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
     
@@ -78,7 +78,7 @@ public class Methods {
                     num = 1 + random.nextInt(max);
                     if (num >= 1 && num <= chance) items.put(item, "Crate.Prizes." + reward);
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
         return items;
@@ -124,7 +124,7 @@ public class Methods {
             } else {
                 item.setAmount(item.getAmount() - 1);
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
     
@@ -168,7 +168,7 @@ public class Methods {
     public static boolean isSimilar(Player player, Crate crate) {
         boolean check = isSimilar(cc.getNMSSupport().getItemInMainHand(player), crate);
         if (!check) {
-            if (Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+            if (Version.isNewer(Version.v1_8_R3)) {
                 check = isSimilar(player.getEquipment().getItemInOffHand(), crate);
             }
         }
@@ -249,7 +249,7 @@ public class Methods {
             if (!newVersion.equals(oldVersion)) {
                 Bukkit.getConsoleSender().sendMessage(getPrefix() + color("&cYour server is running &7v" + oldVersion + "&c and the newest is &7v" + newVersion + "&c."));
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
     
@@ -264,7 +264,7 @@ public class Methods {
             if (!newVersion.equals(oldVersion)) {
                 player.sendMessage(getPrefix() + color("&cYour server is running &7v" + oldVersion + "&c and the newest is &7v" + newVersion + "&c."));
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
     
@@ -278,7 +278,7 @@ public class Methods {
         for (Enchantment enchantment : Enchantment.values()) {
             try {
                 //MC 1.13+ has the correct names.
-                if (Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+                if (Version.isNewer(Version.v1_12_R1)) {
                     if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
                         return enchantment;
                     }
@@ -387,7 +387,7 @@ public class Methods {
     // Thanks ElectronicBoy
     public static HashMap<Integer, ItemStack> removeItemAnySlot(Inventory inventory, ItemStack... items) {
         Validate.notNull(items, "Items cannot be null");
-        HashMap<Integer, ItemStack> leftover = new HashMap<Integer, ItemStack>();
+        HashMap<Integer, ItemStack> leftover = new HashMap<>();
 
         // TODO: optimization
 
@@ -398,7 +398,7 @@ public class Methods {
             while (true) {
                 // Paper start - Allow searching entire contents
                 ItemStack[] toSearch = inventory.getContents();
-                int first = firstFromInventory(item, false, toSearch);
+                int first = firstFromInventory(item, toSearch);
                 // Paper end
 
                 // Drat! we don't have this type in the inventory
@@ -431,7 +431,7 @@ public class Methods {
         return leftover;
     }
 
-    private static int firstFromInventory(ItemStack item, boolean withAmount, ItemStack[] inventory) {
+    private static int firstFromInventory(ItemStack item, ItemStack[] inventory) {
         if (item == null) {
             return -1;
         }
@@ -439,7 +439,7 @@ public class Methods {
         for (int i = 0; i < inventory.length; i++) {
             if (inventory[i] == null) continue;
 
-            if (withAmount ? item.equals(inventory[i]) : item.isSimilar(inventory[i])) {
+            if (item.isSimilar(inventory[i])) {
                 return i;
             }
         }

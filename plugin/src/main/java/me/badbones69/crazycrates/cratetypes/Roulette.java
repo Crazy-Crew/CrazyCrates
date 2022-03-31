@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class Roulette implements Listener {
     
-    private static CrazyCrates cc = CrazyCrates.getInstance();
+    private static final CrazyCrates cc = CrazyCrates.getInstance();
     
     private static void setGlass(Inventory inv) {
         for (int i = 0; i < 27; i++) {

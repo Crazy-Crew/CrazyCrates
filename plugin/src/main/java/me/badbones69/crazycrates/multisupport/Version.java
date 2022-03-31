@@ -21,9 +21,9 @@ public enum Version {
     
     private static Version currentVersion;
     private static Version latest;
-    private int versionInteger;
+    private final int versionInteger;
     
-    private Version(int versionInteger) {
+    Version(int versionInteger) {
         this.versionInteger = versionInteger;
     }
     
@@ -104,6 +104,7 @@ public enum Version {
      */
     public static boolean isNewer(Version version) {
         if (currentVersion == null) getCurrentVersion();
+
         return currentVersion.versionInteger > version.versionInteger || currentVersion.versionInteger == -2;
     }
     

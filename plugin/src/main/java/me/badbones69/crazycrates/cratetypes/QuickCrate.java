@@ -30,8 +30,8 @@ public class QuickCrate implements Listener {
     
     public static ArrayList<Entity> allRewards = new ArrayList<>();
     public static HashMap<Player, Entity> rewards = new HashMap<>();
-    private static CrazyCrates cc = CrazyCrates.getInstance();
-    private static HashMap<Player, BukkitTask> tasks = new HashMap<>();
+    private static final CrazyCrates cc = CrazyCrates.getInstance();
+    private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
     
     public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
         int keys; // If the key is free it is set to one.

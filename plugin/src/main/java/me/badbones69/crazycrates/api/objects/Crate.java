@@ -27,28 +27,28 @@ import java.util.logging.Level;
 public class Crate {
     
     private CrateManager manager;
-    private String name;
-    private ItemStack key;
-    private ItemStack keyNoNBT;
-    private ItemStack adminKey;
+    private final String name;
+    private final ItemStack key;
+    private final ItemStack keyNoNBT;
+    private final ItemStack adminKey;
     private int maxPage = 1;
-    private int maxSlots;
-    private String previewName;
-    private boolean previewToggle;
-    private boolean boarderToggle;
-    private ItemBuilder boarderItem;
-    private CrateType crateType;
-    private FileConfiguration file;
-    private ArrayList<Prize> prizes;
-    private String crateInventoryName;
-    private boolean giveNewPlayerKeys;
+    private final int maxSlots;
+    private final String previewName;
+    private final boolean previewToggle;
+    private final boolean boarderToggle;
+    private final ItemBuilder boarderItem;
+    private final CrateType crateType;
+    private final FileConfiguration file;
+    private final ArrayList<Prize> prizes;
+    private final String crateInventoryName;
+    private final boolean giveNewPlayerKeys;
     private int previewChestlines;
-    private int newPlayerKeys;
-    private ArrayList<ItemStack> preview;
-    private ArrayList<Tier> tiers;
-    private CrateHologram hologram;
-    private FileManager fileManager = FileManager.getInstance();
-    private CrazyCrates cc = CrazyCrates.getInstance();
+    private final int newPlayerKeys;
+    private final ArrayList<ItemStack> preview;
+    private final ArrayList<Tier> tiers;
+    private final CrateHologram hologram;
+    private final FileManager fileManager = FileManager.getInstance();
+    private final CrazyCrates cc = CrazyCrates.getInstance();
     
     /**
      *

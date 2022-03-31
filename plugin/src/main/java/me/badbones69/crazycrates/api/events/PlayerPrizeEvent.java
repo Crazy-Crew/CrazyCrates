@@ -9,10 +9,10 @@ import org.bukkit.event.HandlerList;
 public class PlayerPrizeEvent extends Event {
     
     private static final HandlerList handlers = new HandlerList();
-    private Player player;
-    private Crate crate;
-    private Prize prize;
-    private String crateName;
+    private final Player player;
+    private final Crate crate;
+    private final Prize prize;
+    private final String crateName;
     
     public PlayerPrizeEvent(Player player, Crate crate, String crateName, Prize prize) {
         this.player = player;
