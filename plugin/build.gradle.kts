@@ -35,7 +35,7 @@ tasks {
     shadowJar {
         destinationDirectory.set(project.file("F:/Crazy Crew/..Test Server/plugins"))
 
-        archiveBaseName.set("${rootProject.name}-${rootProject.version}")
+        archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
 
         relocate("dev.triumphteam.cmd", "com.badbones69.libs.cmd")
         relocate("org.bstats", "com.badbones69.libs.bstats")
