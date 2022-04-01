@@ -10,7 +10,7 @@ import org.bukkit.block.structure.StructureRotation
 import java.io.File
 import java.util.*
 
-class StructuresHandler(file: File) : Structures {
+class StructuresHandler(val file: File) : Structures {
 
     private val structureManager = getPlugin().server.structureManager.loadStructure(file)
 

@@ -406,8 +406,7 @@ public class CrazyManager {
                 Location lastLocation = player.getLocation();
                 lastLocation.setPitch(0F);
                 CrateSchematic crateSchematic = CrazyManager.getInstance().getCrateSchematics().get(new Random().nextInt(CrazyManager.getInstance().getCrateSchematics().size()));
-                CrazyManager.getJavaPlugin().getLogger().info("1" + crateSchematic.getSchematicName());
-                QuadCrateSession session = new QuadCrateSession(player, crate, keyType, location, lastLocation, checkHand, crateSchematic);
+                QuadCrateSession session = new QuadCrateSession(player, crate, keyType, location, lastLocation, checkHand, crateSchematic.getSchematicFile());
                 broadcast = session.startCrate();
                 break;
             case FIRE_CRACKER:

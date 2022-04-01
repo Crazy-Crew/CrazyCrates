@@ -16,6 +16,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.io.File;
 import java.util.*;
 
 public class QuadCrateSession {
@@ -87,9 +89,9 @@ public class QuadCrateSession {
     private final Color particleColor;
     private final QuadCrateParticles particle;
 
-    private CrateSchematic crateSchematic;
+    private File crateSchematic;
 
-    public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, CrateSchematic crateSchematic) {
+    public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, File crateSchematic) {
         this.instance = this;
         this.player = player;
         this.crate = crate;
@@ -108,7 +110,7 @@ public class QuadCrateSession {
         crateSessions.add(instance);
     }
 
-    StructuresHandler handler = new StructuresHandler(crateSchematic.getSchematicFile());
+    StructuresHandler handler = new StructuresHandler(crateSchematic);
 
     public boolean startCrate() {
 
@@ -200,7 +202,7 @@ public class QuadCrateSession {
 
             private final QuadCrateSpiralHandler spiralHandler = new QuadCrateSpiralHandler();
 
-            double radius = 0.0;//Radius of the particle spiral
+            double radius = 0.0; //Radius of the particle spiral
             int crateNumber = 0; //The crate number that spawns next
             int tickTillSpawn = 0; //At tick 60 the crate will spawn and then reset the tick
             Location particleLocation = crateLocations.get(crateNumber).clone().add(.5, 3, .5);
@@ -340,10 +342,5 @@ public class QuadCrateSession {
     // Fetch the handler
     public QuadCrateHandler quadCrateHandler() {
         return quadCrateHandler;
-    }
-
-    // Fetch the schematic
-    public CrateSchematic getCrateSchematic() {
-        return crateSchematic;
     }
 }
