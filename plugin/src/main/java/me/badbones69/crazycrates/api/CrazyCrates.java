@@ -76,7 +76,7 @@ public class CrazyCrates {
      * The crate that the player is opening.
      */
     private final HashMap<UUID, Crate> playerOpeningCrates = new HashMap<>();
-    private final List<Player> cooldowns = new ArrayList<>();
+    private final List<UUID> cooldowns = new ArrayList<>();
     
     /**
      * Keys that are being used in crates. Only needed in cosmic due to it taking the key after the player picks a prize and not in a start method.
@@ -393,7 +393,7 @@ public class CrazyCrates {
      * @param checkHand If it just checks the players hand or if it checks their inventory.
      */
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
-        if (cooldowns.contains(player)) {
+        if (cooldowns.contains(player.getUniqueId())) {
             removePlayerFromOpeningList(player);
             return;
         }
@@ -418,13 +418,13 @@ public class CrazyCrates {
         }
 
         //Set player cooldown for 5 ticks
-        cooldowns.add(player);
+        cooldowns.add(player.getUniqueId());
         new BukkitRunnable() {
             @Override
             public void run() {
-                cooldowns.remove(player);
+                cooldowns.remove(player.getUniqueId());
             }
-        }.runTaskLater(plugin, Files.CONFIG.getFile().getInt("Settings.Cooldown") * 20L);
+        }.runTaskLater(plugin, Files.CONFIG.getFile().getInt("Settings.Cooldown", 3) * 20L);
 
         switch (crate.getCrateType()) {
             case MENU:
