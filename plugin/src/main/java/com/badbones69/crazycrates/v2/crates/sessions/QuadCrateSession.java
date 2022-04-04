@@ -64,7 +64,7 @@ public class QuadCrateSession {
     /**
      * Defines the locations of the Chests that will spawn in.
      */
-    private final List<Location> crateLocations = new ArrayList<>();
+    private final ArrayList<Location> crateLocations = new ArrayList<>();
 
     /**
      * Gets the locations of blocks prior to the structure being loaded
@@ -163,7 +163,6 @@ public class QuadCrateSession {
         }
 
         if (CrazyManager.getInstance().getHologramController() != null) CrazyManager.getInstance().getHologramController().removeHologram(spawnLocation.getBlock());
-
 
         // Shove other players away from the player opening the crate.
         shovePlayers.forEach(entity -> entity.getLocation().toVector().subtract(spawnLocation.clone().toVector()).normalize().setY(1));
