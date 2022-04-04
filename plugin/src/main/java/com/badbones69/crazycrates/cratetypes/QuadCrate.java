@@ -82,6 +82,7 @@ public class QuadCrate implements Listener {
                         session.getCratesOpened().put(block.getLocation(), true);
 
                         session.getDisplayedRewards().add(reward);
+
                         if (session.allCratesOpened()) { //All 4 crates have been opened
                             new BukkitRunnable() {
                                 @Override
@@ -100,7 +101,7 @@ public class QuadCrate implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         Player player = e.getPlayer();
-        if (sessionManager.inSession(player)) {//Player tries to walk away from the crate area
+        if (sessionManager.inSession(player)) { //Player tries to walk away from the crate area
             Location from = e.getFrom();
             Location to = e.getTo();
             if (from.getBlockX() != to.getBlockX() || from.getBlockZ() != to.getBlockZ()) {
@@ -109,7 +110,8 @@ public class QuadCrate implements Listener {
                 return;
             }
         }
-        for (Entity en : player.getNearbyEntities(2, 2, 2)) {//Someone tries to enter the crate area
+
+        for (Entity en : player.getNearbyEntities(2, 2, 2)) { //Someone tries to enter the crate area
             if (en instanceof Player p) {
                 if (sessionManager.inSession(p)) {
                     Vector v = player.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().setY(1);
