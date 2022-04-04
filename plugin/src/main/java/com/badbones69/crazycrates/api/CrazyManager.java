@@ -19,7 +19,7 @@ import com.badbones69.crazycrates.support.holograms.DecentHolograms;
 import com.badbones69.crazycrates.support.holograms.HolographicSupport;
 import com.badbones69.crazycrates.support.libs.Support;
 import com.badbones69.crazycrates.v2.crates.sessions.QuadCrateSession;
-import com.badbones69.crazycrates.v2.utils.interfaces.QuadCrate;
+import com.badbones69.crazycrates.v2.utils.quadcrates.StructureHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
@@ -406,7 +406,8 @@ public class CrazyManager {
                 Location lastLocation = player.getLocation();
                 lastLocation.setPitch(0F);
                 CrateSchematic crateSchematic = CrazyManager.getInstance().getCrateSchematics().get(new Random().nextInt(CrazyManager.getInstance().getCrateSchematics().size()));
-                QuadCrateSession session = new QuadCrateSession(player, crate, keyType, location, lastLocation, checkHand, crateSchematic.getSchematicFile());
+                StructureHandler handler = new StructureHandler(crateSchematic.getSchematicFile());
+                QuadCrateSession session = new QuadCrateSession(player, crate, keyType, location, lastLocation, checkHand, handler);
                 broadcast = session.startCrate();
                 break;
             case FIRE_CRACKER:

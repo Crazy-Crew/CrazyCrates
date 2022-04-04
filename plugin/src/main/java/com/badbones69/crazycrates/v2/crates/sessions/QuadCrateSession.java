@@ -89,9 +89,9 @@ public class QuadCrateSession {
     private final Color particleColor;
     private final QuadCrateParticles particle;
 
-    private File crateSchematic;
+    private final StructureHandler handler;
 
-    public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, File crateSchematic) {
+    public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler) {
         this.instance = this;
         this.player = player;
         this.crate = crate;
@@ -101,7 +101,7 @@ public class QuadCrateSession {
         this.spawnLocation = spawnLocation;
         this.lastLocation = lastLocation;
 
-        this.crateSchematic = crateSchematic;
+        this.handler = handler;
 
         List<QuadCrateParticles> particles = Arrays.asList(QuadCrateParticles.values());
         this.particle = particles.get(new Random().nextInt(particles.size()));
@@ -109,8 +109,6 @@ public class QuadCrateSession {
 
         crateSessions.add(instance);
     }
-
-    StructuresHandler handler = new StructuresHandler(crateSchematic);
 
     public boolean startCrate() {
 
