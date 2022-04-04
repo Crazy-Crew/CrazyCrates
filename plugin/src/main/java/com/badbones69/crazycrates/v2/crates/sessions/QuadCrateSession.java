@@ -164,19 +164,15 @@ public class QuadCrateSession {
 
         if (CrazyManager.getInstance().getHologramController() != null) CrazyManager.getInstance().getHologramController().removeHologram(spawnLocation.getBlock());
 
-        player.teleport(spawnLocation.clone().add(0.5, 0, 0.5));
 
         // Shove other players away from the player opening the crate.
         shovePlayers.forEach(entity -> entity.getLocation().toVector().subtract(spawnLocation.clone().toVector()).normalize().setY(1));
 
         // Store the spawned Crates ( Chest Block ) in the ArrayList.
-        addCrateLocations(2, 0, 0);
-        addCrateLocations(0, 0, 2);
-        addCrateLocations(-2, 0, 0);
-        addCrateLocations(0, 0, -2);
-
-        // Teleport the player.
-        player.teleport(spawnLocation.clone().add(.5, 0, .5));
+        addCrateLocations(2, 1, 0);
+        addCrateLocations(0, 1, 2);
+        addCrateLocations(-2, 1, 0);
+        addCrateLocations(0, 1, -2);
 
         // Throws unopened crates in a HashMap.
         crateLocations.forEach(loc -> cratesOpened.put(loc, false));
@@ -195,6 +191,9 @@ public class QuadCrateSession {
 
         // Update the block states
         handler.getStructureBlocks(spawnLocation.clone()).forEach(loc -> loc.getState().update());
+
+        // Teleport the player.
+        player.teleport(spawnLocation.clone().toCenterLocation().toHighestLocation());
 
         CrazyManager.getInstance().addQuadCrateTask(player, new BukkitRunnable() {
 
