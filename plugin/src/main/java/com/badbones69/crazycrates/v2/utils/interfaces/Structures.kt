@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 interface Structures {
 
     // Paste a structure using available .nbt files
-    fun pasteStructure(location: Location, player: Player)
+    fun pasteStructure(location: Location)
 
     // Save a new nbt structure
     fun saveStructure(location: ArrayList<Location>)
