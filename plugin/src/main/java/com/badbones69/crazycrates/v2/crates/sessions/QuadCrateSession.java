@@ -209,9 +209,7 @@ public class QuadCrateSession {
             @Override
             public void run() {
                 if (tickTillSpawn < 60) {
-                    spawnParticles(particle, particleColor,
-                            spiralLocationsClockwise.get(tickTillSpawn),
-                            spiralLocationsCounterClockwise.get(tickTillSpawn));
+                    spawnParticles(particle, particleColor, spiralLocationsClockwise.get(tickTillSpawn), spiralLocationsCounterClockwise.get(tickTillSpawn));
                     tickTillSpawn++;
                 } else {
                     player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
@@ -219,7 +217,7 @@ public class QuadCrateSession {
                     chest.setType(Material.CHEST);
                     new QuadCrateHandler().rotateChest(chest, crateNumber);
                     if (crateNumber == 3) { //Last crate has spawned
-                        CrazyManager.getInstance().endQuadCrate(player); //Canceled when method is called.
+                        CrazyManager.getInstance().endQuadCrate(player); //Cancelled when method is called.
                     } else {
                         tickTillSpawn = 0;
                         crateNumber++;
