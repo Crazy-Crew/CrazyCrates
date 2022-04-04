@@ -11,6 +11,6 @@ interface QuadCrate {
     fun closeChest(block: Block, forceUpdate: Boolean)
 
     // Get the chest and rotate it by altering block state
-    fun rotateChest(chest: Block, direction: Int)
+    fun rotateChest(block: Block, direction: Int)
 
 }
