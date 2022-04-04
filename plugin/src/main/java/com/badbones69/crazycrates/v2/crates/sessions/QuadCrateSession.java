@@ -233,6 +233,7 @@ public class QuadCrateSession {
         CrazyManager.getInstance().addCrateTask(player, new BukkitRunnable() {
             @Override
             public void run() {
+                // End the crate by force.
                 endCrateForce(true);
                 player.sendMessage(Messages.OUT_OF_TIME.getMessage());
             }
@@ -241,16 +242,33 @@ public class QuadCrateSession {
     }
 
     public void endCrate() {
+        // Update old block states. - Doesn't remove them?
         oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
+
         new BukkitRunnable() {
             @Override
             public void run() {
+                // Update crate block states which removes them.
                 crateLocations.forEach(location -> oldCrateBlocks.get(location).update(true, false));
+
+                // Remove displayed rewards
                 displayedRewards.forEach(Entity :: remove);
+
+                // Teleport player to last location.
                 player.teleport(lastLocation);
+
+                // Remove the structure blocks.
+                handler.removeStructure(lastLocation);
+
                 if (CrazyManager.getInstance().getHologramController() != null) CrazyManager.getInstance().getHologramController().createHologram(spawnLocation.getBlock(), crate);
+
+                // End the crate
                 CrazyManager.getInstance().endCrate(player);
+
+                // Remove the player from the list saying they are opening a crate.
                 CrazyManager.getInstance().removePlayerFromOpeningList(player);
+
+                // Remove the "instance" from the crate sessions
                 crateSessions.remove(instance);
             }
         }.runTaskLater(CrazyManager.getJavaPlugin(), 3 * 20);
@@ -264,6 +282,8 @@ public class QuadCrateSession {
         player.teleport(lastLocation);
         CrazyManager.getInstance().removePlayerFromOpeningList(player);
         if (removeForce) crateSessions.remove(instance);
+
+        //handler.removeStructure(lastLocation, lastLocation.getBlock().getState());
     }
 
     // Add to the crateLocations
