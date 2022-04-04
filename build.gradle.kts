@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm") version "1.6.20"
 }
 
 rootProject.group = "com.badbones69"
@@ -54,6 +54,6 @@ subprojects {
     }
 
     dependencies {
-        compileOnly(kotlin("stdlib", "1.6.10"))
+        compileOnly(kotlin("stdlib", "1.6.20"))
     }
 }
