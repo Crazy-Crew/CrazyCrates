@@ -4,10 +4,7 @@ import com.badbones69.crazycrates.api.CrazyManager
 import com.badbones69.crazycrates.api.FileManager
 import com.badbones69.crazycrates.api.FileManager.Files
 import com.badbones69.crazycrates.api.enums.Messages
-import com.badbones69.crazycrates.commands.CCCommand
-import com.badbones69.crazycrates.commands.CCTab
-import com.badbones69.crazycrates.commands.KeyCommand
-import com.badbones69.crazycrates.commands.KeyTab
+import com.badbones69.crazycrates.commands.*
 import com.badbones69.crazycrates.controllers.*
 import com.badbones69.crazycrates.cratetypes.*
 import com.badbones69.crazycrates.func.listeners.BasicListener
@@ -15,11 +12,8 @@ import com.badbones69.crazycrates.func.registerListener
 import com.badbones69.crazycrates.support.libs.Support
 import com.badbones69.crazycrates.support.placeholders.MVdWPlaceholderAPISupport
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport
-import com.badbones69.crazycrates.v2.commands.DebugCommand
 import com.badbones69.crazycrates.v2.utils.quadcrates.sessions.SessionManager
-import dev.triumphteam.cmd.bukkit.BukkitCommandManager
 import org.bstats.bukkit.Metrics
-import org.bukkit.command.CommandSender
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -29,7 +23,7 @@ class CrazyCrates : JavaPlugin(), Listener {
 
     private val plugin = this // Avoid using "this"
 
-    private val manager: BukkitCommandManager<CommandSender> = BukkitCommandManager.create(plugin)
+    // private val manager: BukkitCommandManager<CommandSender> = BukkitCommandManager.create(plugin)
 
     override fun onEnable() {
         FileManager.getInstance().logInfo(true)
