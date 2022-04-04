@@ -6,18 +6,15 @@ import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.QuadCrateParticles;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.CrateSchematic;
 import com.badbones69.crazycrates.v2.utils.quadcrates.QuadCrateHandler;
 import com.badbones69.crazycrates.v2.utils.quadcrates.QuadCrateSpiralHandler;
-import com.badbones69.crazycrates.v2.utils.quadcrates.StructuresHandler;
+import com.badbones69.crazycrates.v2.utils.quadcrates.StructureHandler;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.io.File;
 import java.util.*;
 
 public class QuadCrateSession {

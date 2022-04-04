@@ -7,35 +7,43 @@ import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.structure.Mirror
 import org.bukkit.block.structure.StructureRotation
+import org.bukkit.entity.Player
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 
-class StructuresHandler(val file: File) : Structures {
+class StructureHandler(val file: File) : Structures {
 
     private val structureManager = getPlugin().server.structureManager.loadStructure(file)
 
+    private val blockLocation = ArrayList<Block>()
+
+    private val blocks = ArrayList<Block>()
+
+    // Structure pastes from the corner on the player.
+    // Adding -2.2, 0.0 -2.2 to the "location" somewhat centers it but varies from where the player is standing.
     override fun pasteStructure(location: Location) {
         runCatching {
-            structureManager.place(location.clone(), false, StructureRotation.NONE, Mirror.NONE, 0, 1F, Random())
-
-            getStructureBlocks(location.clone())
+            //.add(-2.2, 0.0, -2.2)
+            structureManager.place(location, false, StructureRotation.NONE, Mirror.NONE, 0, 1F, Random())
         }.onFailure { getPlugin().logger.warning(it.message) }
     }
 
-    override fun saveStructure(location: Array<Location>) {
+    // Don't need
+    override fun saveStructure(location: ArrayList<Location>) {
         runCatching {
 
         }.onFailure { getPlugin().logger.warning(it.message) }
     }
 
-    override fun removeStructure(location: Array<Location>) {
+    // Got to paste it properly first lol.
+    override fun removeStructure(location: Location) {
         runCatching {
-
+            blockLocation.forEach { println(it.type) }
         }.onFailure { getPlugin().logger.warning(it.message) }
     }
 
     override fun getStructureBlocks(location: Location): ArrayList<Block> {
-        val blockLocation = ArrayList<Block>()
         for (x in 0 until structureManager.size.x.toInt()) {
             for (y in 0 until structureManager.size.y.toInt()) {
                 for (z in 0 until structureManager.size.z.toInt()) {
@@ -46,8 +54,7 @@ class StructuresHandler(val file: File) : Structures {
         return blockLocation
     }
 
-    override fun getNearbyBlocks(location: Location): List<Block> {
-        val blocks = ArrayList<Block>()
+    override fun getNearbyBlocks(location: Location): ArrayList<Block> {
         for (x in 0 until structureManager.size.x.toInt()) {
             for (y in 0 until structureManager.size.y.toInt()) {
                 for (z in 0 until structureManager.size.z.toInt()) {
