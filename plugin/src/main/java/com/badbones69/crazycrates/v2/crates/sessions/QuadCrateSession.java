@@ -64,12 +64,6 @@ public class QuadCrateSession {
     private final ArrayList<Location> crateLocations = new ArrayList<>();
 
     /**
-     * Gets the locations of blocks prior to the structure being loaded
-     * Used to check if any of the blocks can't be altered.
-     */
-    private List<Block> structureLocations = new ArrayList<>();
-
-    /**
      * Stores if the crate is open or not.
      */
     private final HashMap<Location, Boolean> cratesOpened = new HashMap<>();
@@ -124,7 +118,7 @@ public class QuadCrateSession {
         }
 
         // Check if the blocks are able to be changed.
-        structureLocations = handler.getNearbyBlocks(spawnLocation.clone());
+        List<Block> structureLocations = handler.getNearbyBlocks(spawnLocation.clone());
 
         // Loop through the blocks and check if the blacklist contains the block type
         // Do not open the crate if the block is not able to be changed.
