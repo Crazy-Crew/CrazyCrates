@@ -232,8 +232,11 @@ public class QuadCrateSession {
     }
 
     public void endCrate() {
-        // Update old block states. - Doesn't remove them?
-        oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
+        /*
+         Update old block states. - Doesn't do anything and IS never updated. okie dokie
+         oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
+         System.out.println(oldBlocks.size());
+        */
 
         new BukkitRunnable() {
             @Override
@@ -248,7 +251,7 @@ public class QuadCrateSession {
                 player.teleport(lastLocation);
 
                 // Remove the structure blocks.
-                handler.removeStructure(lastLocation);
+                // handler.removeStructure(spawnLocation.clone(), player);
 
                 if (CrazyManager.getInstance().getHologramController() != null) CrazyManager.getInstance().getHologramController().createHologram(spawnLocation.getBlock(), crate);
 
@@ -266,7 +269,7 @@ public class QuadCrateSession {
 
     // End the crate & remove the hologram by force.
     public void endCrateForce(boolean removeForce) {
-        oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
+        //oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
         crateLocations.forEach(location -> oldCrateBlocks.get(location).update(true, false));
         displayedRewards.forEach(Entity::remove);
         player.teleport(lastLocation);
