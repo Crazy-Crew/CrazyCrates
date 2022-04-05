@@ -114,6 +114,8 @@ public class QuadCrateSession {
         // Check if schematic folder is empty.
         if (CrazyManager.getInstance().getCrateSchematics().isEmpty()) {
             player.sendMessage(Messages.NO_SCHEMATICS_FOUND.getMessage());
+            CrazyManager.getInstance().removePlayerFromOpeningList(player);
+            crateSessions.remove(instance);
             return false;
         }
 
@@ -126,6 +128,7 @@ public class QuadCrateSession {
             if (handler.getBlackList().contains(block.getType())) {
                 player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
                 CrazyManager.getInstance().removePlayerFromOpeningList(player);
+                crateSessions.remove(instance);
                 return false;
             }
         }
