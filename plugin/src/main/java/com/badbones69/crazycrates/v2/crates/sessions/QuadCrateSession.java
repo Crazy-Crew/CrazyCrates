@@ -89,7 +89,7 @@ public class QuadCrateSession {
         this.keyType = keyType;
         this.checkHand = inHand;
 
-        this.spawnLocation = spawnLocation;
+        this.spawnLocation = spawnLocation.getBlock().getLocation();
         this.lastLocation = lastLocation;
 
         this.handler = handler;
