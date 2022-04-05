@@ -71,7 +71,7 @@ public class QuadCrateSession {
     /**
      * Save the original block states before the structure.
      */
-    private final HashMap<Location, BlockState> oldBlocks = new HashMap<>();
+    //private final HashMap<Location, BlockState> oldBlocks = new HashMap<>();
     private final HashMap<Location, BlockState> oldCrateBlocks = new HashMap<>();
 
     /**
@@ -169,12 +169,12 @@ public class QuadCrateSession {
 
         // Saves the original block states.
         for (Location loc : crateLocations) {
-            if (crateLocations.contains(loc)) {
-                oldCrateBlocks.put(loc.clone(), loc.getBlock().getState());
-            } else {
-                oldBlocks.put(loc.clone(), loc.getBlock().getState());
-            }
+            if (crateLocations.contains(loc)) oldCrateBlocks.put(loc.clone(), loc.getBlock().getState());
+            //} else {
+            //    oldBlocks.put(loc.clone(), loc.getBlock().getState());
+            //}
         }
+
 
         // Paste the structure in.
         handler.pasteStructure(spawnLocation.clone());
