@@ -185,7 +185,7 @@ public class QuadCrateSession {
         // Update the block states
         handler.getStructureBlocks(spawnLocation.clone()).forEach(loc -> loc.getState().update());
 
-        // Teleport the player.
+        // Teleport the player to the center block.
         player.teleport(spawnLocation.clone().toCenterLocation().toHighestLocation());
 
         CrazyManager.getInstance().addQuadCrateTask(player, new BukkitRunnable() {
@@ -282,7 +282,7 @@ public class QuadCrateSession {
         //handler.removeStructure(lastLocation, lastLocation.getBlock().getState());
     }
 
-    // Add to the crateLocations
+    // Add the crate locations
     public void addCrateLocations(Integer x, Integer y, Integer z) {
         crateLocations.add(spawnLocation.clone().add(x, y, z));
     }
