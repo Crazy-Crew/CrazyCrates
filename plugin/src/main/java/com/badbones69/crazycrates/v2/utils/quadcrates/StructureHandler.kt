@@ -16,9 +16,9 @@ class StructureHandler(val file: File) : Structures {
 
     private val structureManager = getPlugin().server.structureManager.loadStructure(file)
 
-    private val blockLocation = ArrayList<Block>()
+    private val structureBlocks = ArrayList<Block>()
 
-    private val blocks = ArrayList<Block>()
+    private val preStructureBlocks = ArrayList<Block>()
 
     // Structure pastes from the corner on the player.
     // Adding -2.2, 0.0 -2.2 to the "location" somewhat centers it but varies from where the player is standing.
@@ -47,22 +47,22 @@ class StructureHandler(val file: File) : Structures {
         for (x in 0 until structureManager.size.x.toInt()) {
             for (y in 0 until structureManager.size.y.toInt()) {
                 for (z in 0 until structureManager.size.z.toInt()) {
-                    blockLocation.add(location.block.getRelative(x, y, z))
+                    if (location.block.getRelative(x, y, z).type != Material.AIR) structureBlocks.add(location.block.getRelative(x, y, z))
                 }
             }
         }
-        return blockLocation
+        return structureBlocks
     }
 
     override fun getNearbyBlocks(location: Location): ArrayList<Block> {
         for (x in 0 until structureManager.size.x.toInt()) {
             for (y in 0 until structureManager.size.y.toInt()) {
                 for (z in 0 until structureManager.size.z.toInt()) {
-                    blocks.add(location.block.getRelative(x, y, z))
+                    if (location.block.getRelative(x, y, z).type != Material.AIR) preStructureBlocks.add(location.block.getRelative(x, y, z))
                 }
             }
         }
-        return blocks
+        return preStructureBlocks
     }
 
     override fun getBlackList(): List<Material> {
