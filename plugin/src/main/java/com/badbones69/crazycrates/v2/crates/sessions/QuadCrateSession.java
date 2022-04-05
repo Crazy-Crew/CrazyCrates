@@ -19,7 +19,7 @@ import java.util.*;
 
 public class QuadCrateSession {
 
-    private QuadCrateHandler quadCrateHandler = new QuadCrateHandler();
+    private final QuadCrateHandler quadCrateHandler = new QuadCrateHandler();
 
     private static final List<QuadCrateSession> crateSessions = new ArrayList<>();
 
