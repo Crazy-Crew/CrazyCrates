@@ -273,7 +273,7 @@ public class QuadCrateSession {
         crateLocations.forEach(location -> oldCrateBlocks.get(location).update(true, false));
         displayedRewards.forEach(Entity::remove);
         player.teleport(lastLocation);
-        CrazyManager.getInstance().removePlayerFromOpeningList(player);
+        if (removeForce) CrazyManager.getInstance().removePlayerFromOpeningList(player);
         if (removeForce) crateSessions.remove(instance);
 
         //handler.removeStructure(lastLocation, lastLocation.getBlock().getState());
