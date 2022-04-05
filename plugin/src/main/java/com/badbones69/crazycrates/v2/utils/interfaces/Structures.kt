@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.v2.utils.interfaces
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
-import org.bukkit.entity.Player
 
 interface Structures {
 

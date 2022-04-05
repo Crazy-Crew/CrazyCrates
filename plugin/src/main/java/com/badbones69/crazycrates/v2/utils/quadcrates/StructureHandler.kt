@@ -7,10 +7,8 @@ import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.structure.Mirror
 import org.bukkit.block.structure.StructureRotation
-import org.bukkit.entity.Player
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
 
 class StructureHandler(val file: File) : Structures {
 
@@ -20,11 +18,8 @@ class StructureHandler(val file: File) : Structures {
 
     private val preStructureBlocks = ArrayList<Block>()
 
-    // Structure pastes from the corner on the player.
-    // Adding -2.2, 0.0 -2.2 to the "location" somewhat centers it but varies from where the player is standing.
     override fun pasteStructure(location: Location) {
         runCatching {
-            //.add(-2.2, 0.0, -2.2)
             structureManager.place(location, false, StructureRotation.NONE, Mirror.NONE, 0, 1F, Random())
         }.onFailure { getPlugin().logger.warning(it.message) }
     }
@@ -36,11 +31,8 @@ class StructureHandler(val file: File) : Structures {
         }.onFailure { getPlugin().logger.warning(it.message) }
     }
 
-    // Got to paste it properly first lol.
     override fun removeStructure(location: Location) {
-        runCatching {
-            blockLocation.forEach { println(it.type) }
-        }.onFailure { getPlugin().logger.warning(it.message) }
+
     }
 
     override fun getStructureBlocks(location: Location): ArrayList<Block> {
