@@ -47,7 +47,6 @@ public class Crate {
     private ArrayList<Tier> tiers;
     private CrateHologram hologram;
     private FileManager fileManager = FileManager.getInstance();
-    private CrazyManager cc = CrazyManager.getInstance();
     
     /**
      *
