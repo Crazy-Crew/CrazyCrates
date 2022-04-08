@@ -14,9 +14,9 @@ class StructureHandler(val file: File) : Structures {
 
     private val structureManager = getPlugin().server.structureManager.loadStructure(file)
 
-    private val structureBlocks = ArrayList<Block>()
+    private val structureBlocks = arrayListOf<Block>()
 
-    private val preStructureBlocks = ArrayList<Block>()
+    private val preStructureBlocks = arrayListOf<Block>()
 
     override fun pasteStructure(location: Location) {
         runCatching {
