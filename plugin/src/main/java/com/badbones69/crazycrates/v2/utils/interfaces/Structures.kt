@@ -20,6 +20,9 @@ interface Structures {
 
     fun getStructureZ(): Double
 
+    // Add & get the blocks from/to the hashmap
+    fun getStructureBlocks(location: Location): ArrayList<Block>
+
     // Get blocks prior to spawning in the structure
     fun getNearbyBlocks(location: Location): ArrayList<Block>
 

@@ -15,7 +15,7 @@ class StructureHandler(val file: File) : Structures {
 
     private val structureManager = getPlugin().server.structureManager.loadStructure(file)
 
-    private val structureBlocks = hashMapOf<Location, BlockState>()
+    private val structureBlocks = arrayListOf<Block>()
 
     private val preStructureBlocks = arrayListOf<Block>()
 
@@ -42,7 +42,7 @@ class StructureHandler(val file: File) : Structures {
 
     override fun removeStructure(location: Location) {
         structureBlocks.forEach {
-            it.value.block.state.update(true, false)
+            it.location.block.type = Material.AIR
         }
     }
 
@@ -54,15 +54,16 @@ class StructureHandler(val file: File) : Structures {
         return structureManager.size.z
     }
 
+    override fun getStructureBlocks(location: Location): ArrayList<Block> {
         for (x in 0 until structureManager.size.x.toInt()) {
             for (y in 0 until structureManager.size.y.toInt()) {
                 for (z in 0 until structureManager.size.z.toInt()) {
-                    structureBlocks[location] = location.block.getRelative(x, y, z).state
+                    structureBlocks.add(location.block.getRelative(x, y, z))
                 }
             }
         }
 
-        //structureBlocks.forEach { it.key.block.state.update() }
+        structureBlocks.forEach { it.location.block.state.update() }
 
         return structureBlocks
     }
