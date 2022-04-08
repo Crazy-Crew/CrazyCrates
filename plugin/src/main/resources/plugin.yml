@@ -12,5 +12,7 @@ commands:
   key:
     description: Views the amount of keys you/others have.
     aliases: [keys]
+  test:
+    description: Tests the schematics
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib:1.6.10
