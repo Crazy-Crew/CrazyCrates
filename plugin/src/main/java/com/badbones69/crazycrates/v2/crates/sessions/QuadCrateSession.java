@@ -245,7 +245,7 @@ public class QuadCrateSession {
                 player.teleport(lastLocation);
 
                 // Remove the structure blocks.
-                // handler.removeStructure(spawnLocation.clone(), player);
+                // handler.removeStructure(spawnLocation.clone());
 
                 if (CrazyManager.getInstance().getHologramController() != null) CrazyManager.getInstance().getHologramController().createHologram(spawnLocation.getBlock(), crate);
 
