@@ -41,7 +41,7 @@ public class Crate {
     private ArrayList<Prize> prizes;
     private String crateInventoryName;
     private boolean giveNewPlayerKeys;
-    private int previewChestlines;
+    private int previewChestLines;
     private int newPlayerKeys;
     private ArrayList<ItemStack> preview;
     private ArrayList<Tier> tiers;
@@ -73,11 +73,11 @@ public class Crate {
         this.preview = loadPreview();
         this.previewToggle = file != null && (!file.contains("Crate.Preview.Toggle") || file.getBoolean("Crate.Preview.Toggle"));
         this.boarderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle");
-        setPreviewChestlines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
+        setPreviewChestLines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
         this.previewName = Methods.sanitizeColor(previewName);
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
-        this.maxSlots = previewChestlines * 9;
+        this.maxSlots = previewChestLines * 9;
         for (int amount = preview.size(); amount > maxSlots - (boarderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0); amount -= maxSlots - (boarderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0), maxPage++) ;
         this.crateInventoryName = file != null ? Methods.sanitizeColor(file.getString("Crate.CrateName")) : "";
         this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
@@ -99,12 +99,12 @@ public class Crate {
      * Set the preview lines for a Crate.
      * @param amount The amount of lines the preview has.
      */
-    public void setPreviewChestlines(int amount) {
+    public void setPreviewChestLines(int amount) {
         int finalAmount;
         if (amount < 3 && boarderToggle) {
             finalAmount = 3;
         } else finalAmount = Math.min(amount, 6);
-        this.previewChestlines = finalAmount;
+        this.previewChestLines = finalAmount;
     }
     
     /**
@@ -112,7 +112,7 @@ public class Crate {
      * @return The amount of lines it is set to show.
      */
     public int getPreviewChestLines() {
-        return this.previewChestlines;
+        return this.previewChestLines;
     }
     
     /**
@@ -543,7 +543,7 @@ public class Crate {
     }
     
     public int getAbsoluteItemPosition(int baseSlot) {
-        return baseSlot + (previewChestlines > 1 ? previewChestlines - 1 : 1) * 9;
+        return baseSlot + (previewChestLines > 1 ? previewChestLines - 1 : 1) * 9;
     }
     
     private boolean isInventoryNameSimilar(String inventory1, String inventory2) {
