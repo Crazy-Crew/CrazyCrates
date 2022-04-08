@@ -50,14 +50,14 @@ class QuadCrateHandler : QuadCrate {
 
     override fun rotateChest(block: Block, direction: Int) {
         val blockFace = when (direction) {
-            0 ->  //East
-                BlockFace.WEST
-            1 ->  //South
-                BlockFace.NORTH
-            2 ->  //West
-                BlockFace.EAST
-            3 ->  //North
+            0 ->  //South
                 BlockFace.SOUTH
+            1 ->  //East
+                BlockFace.EAST
+            2 ->  //West
+                BlockFace.WEST
+            3 ->  //North
+                BlockFace.NORTH
             else -> BlockFace.DOWN
         }
 
@@ -66,5 +66,7 @@ class QuadCrateHandler : QuadCrate {
         blockData.facing = blockFace
 
         block.blockData = blockData
+
+        block.state.update(true)
     }
 }
