@@ -39,7 +39,7 @@ class StructureHandler(val file: File) : Structures {
         for (x in 0 until structureManager.size.x.toInt()) {
             for (y in 0 until structureManager.size.y.toInt()) {
                 for (z in 0 until structureManager.size.z.toInt()) {
-                    if (location.block.getRelative(x, y, z).type != Material.AIR) structureBlocks.add(location.block.getRelative(x, y, z))
+                    structureBlocks.add(location.block.getRelative(x, y, z))
                 }
             }
         }
@@ -50,7 +50,7 @@ class StructureHandler(val file: File) : Structures {
         for (x in 0 until structureManager.size.x.toInt()) {
             for (y in 0 until structureManager.size.y.toInt()) {
                 for (z in 0 until structureManager.size.z.toInt()) {
-                    if (location.block.getRelative(x, y, z).type != Material.AIR) preStructureBlocks.add(location.block.getRelative(x, y, z))
+                    preStructureBlocks.add(location.block.getRelative(x, y, z))
                 }
             }
         }
