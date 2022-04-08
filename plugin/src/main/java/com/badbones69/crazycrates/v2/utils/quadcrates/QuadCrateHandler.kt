@@ -32,7 +32,6 @@ class QuadCrateHandler : QuadCrate {
     override fun closeChest(block: Block, forceUpdate: Boolean) {
         if (block.type != Material.CHEST || block.type != Material.TRAPPED_CHEST || block.type != Material.ENDER_CHEST) return
 
-        // val blockLocation = block.location
         val blockState = block.state
 
         when (block.type) {

@@ -5,12 +5,11 @@ import com.badbones69.crazycrates.v2.utils.interfaces.Structures
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
-import org.bukkit.block.BlockState
 import org.bukkit.block.structure.Mirror
 import org.bukkit.block.structure.StructureRotation
 import java.io.File
 import java.util.*
-import kotlin.collections.HashMap
+import kotlin.collections.ArrayList
 
 class StructureHandler(val file: File) : Structures {
 

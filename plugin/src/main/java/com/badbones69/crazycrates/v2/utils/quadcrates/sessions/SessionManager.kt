@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.v2.utils.quadcrates.sessions
 
 import com.badbones69.crazycrates.v2.crates.sessions.QuadCrateSession
 import org.bukkit.entity.Player
-import java.util.function.Consumer
 
 object SessionManager {
 
