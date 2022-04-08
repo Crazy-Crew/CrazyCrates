@@ -35,7 +35,6 @@ tasks {
 
         archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
 
-        relocate("dev.triumphteam.cmd", "com.badbones69.libs.cmd")
         relocate("org.bstats", "com.badbones69.libs.bstats")
         relocate("de.tr7zw", "com.badbones69.libs.nbt")
     }

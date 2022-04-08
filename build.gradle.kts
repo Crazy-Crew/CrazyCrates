@@ -13,7 +13,6 @@ subprojects {
         repositories {
 
             maven("https://papermc.io/repo/repository/maven-public/")
-            maven("https://repo.triumphteam.dev/snapshots")
 
             maven {
                 url = uri("https://repo.codemc.org/repository/maven-public/")

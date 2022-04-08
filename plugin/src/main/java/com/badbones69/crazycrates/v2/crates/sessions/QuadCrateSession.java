@@ -71,8 +71,7 @@ public class QuadCrateSession {
     /**
      * Save the original block states before the structure.
      */
-    //private final HashMap<Location, BlockState> oldBlocks = new HashMap<>();
-    private final HashMap<Location, BlockState> oldCrateBlocks = new HashMap<>();
+    private final HashMap<Location, BlockState> quadCrateChests = new HashMap<>();
 
     /**
      * Get the particles that will be used to display above the crates.
@@ -173,9 +172,6 @@ public class QuadCrateSession {
         // Saves the original block states.
         for (Location loc : crateLocations) {
             if (crateLocations.contains(loc)) oldCrateBlocks.put(loc.clone(), loc.getBlock().getState());
-            //} else {
-            //    oldBlocks.put(loc.clone(), loc.getBlock().getState());
-            //}
         }
 
 
@@ -235,12 +231,6 @@ public class QuadCrateSession {
     }
 
     public void endCrate() {
-        /*
-         Update old block states. - Doesn't do anything and IS never updated. okie dokie
-         oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
-         System.out.println(oldBlocks.size());
-        */
-
         new BukkitRunnable() {
             @Override
             public void run() {
