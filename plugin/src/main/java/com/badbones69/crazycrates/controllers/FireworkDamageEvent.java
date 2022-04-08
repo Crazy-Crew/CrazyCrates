@@ -37,22 +37,12 @@ public class FireworkDamageEvent implements Listener {
 
     @EventHandler
     public void onFireworkDamage(EntityDamageByEntityEvent e) {
-        if (fireworks.contains(e.getDamager())) {
-            e.setCancelled(true);
-        }
+        if (fireworks.contains(e.getDamager())) e.setCancelled(true);
     }
-    
+
     @EventHandler
     public void onFireworkExplode(FireworkExplodeEvent e) {
         final Entity firework = e.getEntity();
-        if (getFireworks().contains(firework)) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    fireworks.remove(firework);
-                }
-            }.runTaskLater(CrazyManager.getJavaPlugin(), 5);
-        }
+        if (getFireworks().contains(firework)) fireworks.remove(firework);
     }
-    
 }
