@@ -853,7 +853,7 @@ public class ItemBuilder {
             item.addUnsafeEnchantments(enchantments);
             addGlow(item);
             NBTItem nbt = new NBTItem(item);
-            if (isHead) {
+            if (isHead && !isHash) {
                 nbt.setString("SkullOwner", player);
             }
             if (isMobEgg) {
