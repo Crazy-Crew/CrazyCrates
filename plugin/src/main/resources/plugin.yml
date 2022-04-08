@@ -15,4 +15,4 @@ commands:
   test:
     description: Tests the schematics
 libraries:
-  - org.jetbrains.kotlin:kotlin-stdlib:1.6.10
+  - org.jetbrains.kotlin:kotlin-stdlib:1.6.20
