@@ -37,18 +37,18 @@ public class QuadCrateSession {
     private final Crate crate;
 
     /**
-     * The key type
+     * The key type.
      */
     private final KeyType keyType;
 
     /**
-     * The current displayed rewards
+     * The current displayed rewards.
      */
     private final List<Entity> displayedRewards = new ArrayList<>();
 
     /**
-     * The spawn location
-     * Used to define where the structure will load
+     * The spawn location.
+     * Used to define where the structure will load.
      * Also used to get the center of the structure to teleport the player to.
      */
     private final Location spawnLocation;
@@ -69,7 +69,7 @@ public class QuadCrateSession {
     private final HashMap<Location, Boolean> cratesOpened = new HashMap<>();
 
     /**
-     * Saves all the chests spawned by the QuadCrate task
+     * Saves all the chests spawned by the QuadCrate task.
      */
     private final HashMap<Location, BlockState> quadCrateChests = new HashMap<>();
 
@@ -79,6 +79,9 @@ public class QuadCrateSession {
     private final Color particleColor;
     private final QuadCrateParticles particle;
 
+    /**
+     * Get the structure handler.
+     */
     private final StructureHandler handler;
 
     public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler) {
@@ -121,7 +124,7 @@ public class QuadCrateSession {
         // Check if the blocks are able to be changed.
         List<Block> structureLocations = handler.getNearbyBlocks(spawnLocation.clone());
 
-        // Loop through the blocks and check if the blacklist contains the block type
+        // Loop through the blocks and check if the blacklist contains the block type.
         // Do not open the crate if the block is not able to be changed.
         for (Block block : structureLocations) {
             if (handler.getBlackList().contains(block.getType())) {
@@ -185,9 +188,9 @@ public class QuadCrateSession {
 
             private final QuadCrateSpiralHandler spiralHandler = new QuadCrateSpiralHandler();
 
-            double radius = 0.0; //Radius of the particle spiral
-            int crateNumber = 0; //The crate number that spawns next
-            int tickTillSpawn = 0; //At tick 60 the crate will spawn and then reset the tick
+            double radius = 0.0; //Radius of the particle spiral.
+            int crateNumber = 0; //The crate number that spawns next.
+            int tickTillSpawn = 0; //At tick 60 the crate will spawn and then reset the tick.
             Location particleLocation = crateLocations.get(crateNumber).clone().add(.5, 3, .5);
             List<Location> spiralLocationsClockwise = spiralHandler.getSpiralLocationClockwise(particleLocation);
             List<Location> spiralLocationsCounterClockwise = spiralHandler.getSpiralLocationCounterClockwise(particleLocation);
@@ -202,7 +205,7 @@ public class QuadCrateSession {
                     Block chest = crateLocations.get(crateNumber).getBlock();
                     chest.setType(Material.CHEST);
                     new QuadCrateHandler().rotateChest(chest, crateNumber);
-                    if (crateNumber == 3) { //Last crate has spawned
+                    if (crateNumber == 3) { //Last crate has spawned.
                         CrazyManager.getInstance().endQuadCrate(player); //Cancelled when method is called.
                     } else {
                         tickTillSpawn = 0;
@@ -236,7 +239,7 @@ public class QuadCrateSession {
                     quadCrateChests.get(location).update(true, false);
                 });
 
-                // Remove displayed rewards
+                // Remove displayed rewards.
                 displayedRewards.forEach(Entity :: remove);
 
                 // Teleport player to last location.
@@ -247,13 +250,13 @@ public class QuadCrateSession {
 
                 if (CrazyManager.getInstance().getHologramController() != null) CrazyManager.getInstance().getHologramController().createHologram(spawnLocation.getBlock(), crate);
 
-                // End the crate
+                // End the crate.
                 CrazyManager.getInstance().endCrate(player);
 
                 // Remove the player from the list saying they are opening a crate.
                 CrazyManager.getInstance().removePlayerFromOpeningList(player);
 
-                // Remove the "instance" from the crate sessions
+                // Remove the "instance" from the crate sessions.
                 crateSessions.remove(instance);
             }
         }.runTaskLater(CrazyManager.getJavaPlugin(), 3 * 20);
@@ -270,12 +273,12 @@ public class QuadCrateSession {
         handler.removeStructure(lastLocation);
     }
 
-    // Add the crate locations
+    // Add the crate locations.
     public void addCrateLocations(Integer x, Integer y, Integer z) {
         crateLocations.add(spawnLocation.clone().add(x, y, z));
     }
 
-    // Particle management - TODO() - Move to another class.
+    // Particle management. - TODO() - Move to another class.
     private List<Color> getColors() {
         return Arrays.asList(
                 Color.AQUA, Color.BLACK, Color.BLUE, Color.FUCHSIA, Color.GRAY,
@@ -300,32 +303,32 @@ public class QuadCrateSession {
         }
     }
 
-    // Get the crate sessions
+    // Get the crate sessions.
     public static List<QuadCrateSession> getCrateSessions() {
         return crateSessions;
     }
 
-    // Get Player
+    // Get Player.
     public Player getPlayer() {
         return player;
     }
 
-    // Get the crate
+    // Get the crate.
     public List<Location> getCrateLocations() {
         return crateLocations;
     }
 
-    // Get open crates
+    // Get open crates.
     public HashMap<Location, Boolean> getCratesOpened() {
         return cratesOpened;
     }
 
-    // Get the crate
+    // Get the crate.
     public Crate getCrate() {
         return crate;
     }
 
-    // Get display rewards
+    // Get display rewards.
     public List<Entity> getDisplayedRewards() {
         return displayedRewards;
     }
@@ -338,7 +341,7 @@ public class QuadCrateSession {
         return true;
     }
 
-    // Fetch the handler
+    // Fetch the handler.
     public QuadCrateHandler quadCrateHandler() {
         return quadCrateHandler;
     }
