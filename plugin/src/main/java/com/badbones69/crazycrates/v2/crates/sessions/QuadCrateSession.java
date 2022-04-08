@@ -163,8 +163,9 @@ public class QuadCrateSession {
         // Store the spawned Crates ( Chest Block ) in the ArrayList.
         addCrateLocations(2, 1, 0);
         addCrateLocations(0, 1, 2);
-        addCrateLocations(-2, 1, 0);
-        addCrateLocations(0, 1, -2);
+
+        addCrateLocations(4, 1, 2);
+        addCrateLocations(2, 1, 4);
 
         // Throws unopened crates in a HashMap.
         crateLocations.forEach(loc -> cratesOpened.put(loc, false));
