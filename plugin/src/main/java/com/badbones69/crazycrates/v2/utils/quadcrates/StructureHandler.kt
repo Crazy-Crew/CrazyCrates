@@ -20,11 +20,19 @@ class StructureHandler(val file: File) : Structures {
 
     override fun pasteStructure(location: Location) {
         runCatching {
+            // Save the old blocks
+            getNearbyBlocks(location)
+
             structureManager.place(location, false, StructureRotation.NONE, Mirror.NONE, 0, 1F, Random())
-        }.onFailure { getPlugin().logger.warning(it.message) }
+        }.onFailure { getPlugin().logger.warning(it.message) }.onSuccess {
+            getPlugin().logger.info("Saving structure blocks to list.")
+
+            // Save the structure blocks
+            getStructureBlocks(location)
+        }
     }
 
-    // Don't need
+    // Don't need yet
     override fun saveStructure(location: ArrayList<Location>) {
         runCatching {
 
