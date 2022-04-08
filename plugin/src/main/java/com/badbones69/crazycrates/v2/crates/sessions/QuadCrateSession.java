@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.QuadCrateParticles;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.v2.utils.TaskUtil;
 import com.badbones69.crazycrates.v2.utils.quadcrates.QuadCrateHandler;
 import com.badbones69.crazycrates.v2.utils.quadcrates.QuadCrateSpiralHandler;
 import com.badbones69.crazycrates.v2.utils.quadcrates.StructureHandler;
@@ -184,7 +185,7 @@ public class QuadCrateSession {
         // Teleport player to center.
         player.teleport(spawnLocation.clone().add(handler.getStructureX() / 2, 1.0, handler.getStructureZ() / 2));
 
-        CrazyManager.getInstance().addQuadCrateTask(player, new BukkitRunnable() {
+        CrazyManager.getInstance().addQuadCrateTask(player, TaskUtil.INSTANCE.timer(0, 1, new BukkitRunnable() {
 
             private final QuadCrateSpiralHandler spiralHandler = new QuadCrateSpiralHandler();
 
@@ -217,30 +218,28 @@ public class QuadCrateSession {
                     }
                 }
             }
-        }.runTaskTimer(CrazyManager.getJavaPlugin(), 0, 1));
+        }));
 
-        CrazyManager.getInstance().addCrateTask(player, new BukkitRunnable() {
+        CrazyManager.getInstance().addCrateTask(player, TaskUtil.INSTANCE.later(CrazyManager.getInstance().getQuadCrateTimer(), new BukkitRunnable() {
             @Override
             public void run() {
                 // End the crate by force.
                 endCrateForce(true);
                 player.sendMessage(Messages.OUT_OF_TIME.getMessage());
             }
-        }.runTaskLater(CrazyManager.getJavaPlugin(), CrazyManager.getInstance().getQuadCrateTimer()));
+        }));
         return false;
     }
 
     public void endCrate() {
-        new BukkitRunnable() {
+        TaskUtil.INSTANCE.later(3 * 20, new BukkitRunnable() {
             @Override
             public void run() {
                 // Update spawned crate block states which removes them.
-                crateLocations.forEach(location -> {
-                    quadCrateChests.get(location).update(true, false);
-                });
+                crateLocations.forEach(location -> quadCrateChests.get(location).update(true, false));
 
                 // Remove displayed rewards.
-                displayedRewards.forEach(Entity :: remove);
+                displayedRewards.forEach(Entity::remove);
 
                 // Teleport player to last location.
                 player.teleport(lastLocation);
@@ -248,7 +247,8 @@ public class QuadCrateSession {
                 // Remove the structure blocks.
                 handler.removeStructure(spawnLocation.clone());
 
-                if (CrazyManager.getInstance().getHologramController() != null) CrazyManager.getInstance().getHologramController().createHologram(spawnLocation.getBlock(), crate);
+                if (CrazyManager.getInstance().getHologramController() != null)
+                    CrazyManager.getInstance().getHologramController().createHologram(spawnLocation.getBlock(), crate);
 
                 // End the crate.
                 CrazyManager.getInstance().endCrate(player);
@@ -259,7 +259,7 @@ public class QuadCrateSession {
                 // Remove the "instance" from the crate sessions.
                 crateSessions.remove(instance);
             }
-        }.runTaskLater(CrazyManager.getJavaPlugin(), 3 * 20);
+        });
     }
 
     // End the crate & remove the hologram by force.
