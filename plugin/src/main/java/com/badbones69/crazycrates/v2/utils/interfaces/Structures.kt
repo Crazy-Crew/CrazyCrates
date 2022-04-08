@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.v2.utils.interfaces
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
+import org.bukkit.block.BlockState
 
 interface Structures {
 
@@ -16,7 +17,7 @@ interface Structures {
     fun removeStructure(location: Location)
 
     // Add & Get the blocks from/to the ArrayList
-    fun getStructureBlocks(location: Location): ArrayList<Block>
+    fun getStructureBlocks(location: Location): HashMap<Location, BlockState>
 
     // Get blocks prior to spawning in the structure
     fun getNearbyBlocks(location: Location): ArrayList<Block>

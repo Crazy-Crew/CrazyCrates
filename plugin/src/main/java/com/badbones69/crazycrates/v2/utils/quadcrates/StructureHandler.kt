@@ -5,16 +5,18 @@ import com.badbones69.crazycrates.v2.utils.interfaces.Structures
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
+import org.bukkit.block.BlockState
 import org.bukkit.block.structure.Mirror
 import org.bukkit.block.structure.StructureRotation
 import java.io.File
 import java.util.*
+import kotlin.collections.HashMap
 
 class StructureHandler(val file: File) : Structures {
 
     private val structureManager = getPlugin().server.structureManager.loadStructure(file)
 
-    private val structureBlocks = arrayListOf<Block>()
+    private val structureBlocks = hashMapOf<Location, BlockState>()
 
     private val preStructureBlocks = arrayListOf<Block>()
 
@@ -40,17 +42,22 @@ class StructureHandler(val file: File) : Structures {
     }
 
     override fun removeStructure(location: Location) {
-
+        structureBlocks.forEach {
+            it.value.block.state.update(true, false)
+        }
     }
 
-    override fun getStructureBlocks(location: Location): ArrayList<Block> {
+    override fun getStructureBlocks(location: Location): HashMap<Location, BlockState> {
         for (x in 0 until structureManager.size.x.toInt()) {
             for (y in 0 until structureManager.size.y.toInt()) {
                 for (z in 0 until structureManager.size.z.toInt()) {
-                    structureBlocks.add(location.block.getRelative(x, y, z))
+                    structureBlocks[location] = location.block.getRelative(x, y, z).state
                 }
             }
         }
+
+        //structureBlocks.forEach { it.key.block.state.update() }
+
         return structureBlocks
     }
 

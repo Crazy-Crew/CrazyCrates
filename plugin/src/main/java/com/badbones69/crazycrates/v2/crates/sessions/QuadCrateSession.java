@@ -177,11 +177,8 @@ public class QuadCrateSession {
         // Paste the structure in.
         handler.pasteStructure(spawnLocation.clone());
 
-        // Update the block states
-        handler.getStructureBlocks(spawnLocation.clone()).forEach(loc -> loc.getState().update());
-
         // Teleport the player to the center block.
-        player.teleport(spawnLocation.clone().toCenterLocation().toHighestLocation());
+        // player.teleport(spawnLocation.clone().toCenterLocation().toHighestLocation());
 
         CrazyManager.getInstance().addQuadCrateTask(player, new BukkitRunnable() {
 
@@ -245,7 +242,7 @@ public class QuadCrateSession {
                 player.teleport(lastLocation);
 
                 // Remove the structure blocks.
-                // handler.removeStructure(spawnLocation.clone());
+                handler.removeStructure(spawnLocation.clone());
 
                 if (CrazyManager.getInstance().getHologramController() != null) CrazyManager.getInstance().getHologramController().createHologram(spawnLocation.getBlock(), crate);
 
@@ -263,14 +260,13 @@ public class QuadCrateSession {
 
     // End the crate & remove the hologram by force.
     public void endCrateForce(boolean removeForce) {
-        //oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
         crateLocations.forEach(location -> quadCrateChests.get(location).update(true, false));
         displayedRewards.forEach(Entity::remove);
         player.teleport(lastLocation);
         if (removeForce) CrazyManager.getInstance().removePlayerFromOpeningList(player);
         if (removeForce) crateSessions.remove(instance);
 
-        //handler.removeStructure(lastLocation, lastLocation.getBlock().getState());
+        handler.removeStructure(lastLocation);
     }
 
     // Add the crate locations
