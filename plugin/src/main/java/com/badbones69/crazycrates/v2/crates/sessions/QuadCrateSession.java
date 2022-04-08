@@ -189,9 +189,9 @@ public class QuadCrateSession {
 
             private final QuadCrateSpiralHandler spiralHandler = new QuadCrateSpiralHandler();
 
-            double radius = 0.0; //Radius of the particle spiral.
-            int crateNumber = 0; //The crate number that spawns next.
-            int tickTillSpawn = 0; //At tick 60 the crate will spawn and then reset the tick.
+            double radius = 0.0; // Radius of the particle spiral.
+            int crateNumber = 0; // The crate number that spawns next.
+            int tickTillSpawn = 0; // At tick 60 the crate will spawn and then reset the tick.
             Location particleLocation = crateLocations.get(crateNumber).clone().add(.5, 3, .5);
             List<Location> spiralLocationsClockwise = spiralHandler.getSpiralLocationClockwise(particleLocation);
             List<Location> spiralLocationsCounterClockwise = spiralHandler.getSpiralLocationCounterClockwise(particleLocation);
@@ -206,8 +206,8 @@ public class QuadCrateSession {
                     Block chest = crateLocations.get(crateNumber).getBlock();
                     chest.setType(Material.CHEST);
                     new QuadCrateHandler().rotateChest(chest, crateNumber);
-                    if (crateNumber == 3) { //Last crate has spawned.
-                        CrazyManager.getInstance().endQuadCrate(player); //Cancelled when method is called.
+                    if (crateNumber == 3) { // Last crate has spawned.
+                        CrazyManager.getInstance().endQuadCrate(player); // Cancelled when method is called.
                     } else {
                         tickTillSpawn = 0;
                         crateNumber++;
