@@ -33,7 +33,7 @@ public class FileManager {
         files.clear();
         customFiles.clear();
         configurations.clear();
-        //Loads all the normal static files.
+        // Loads all the normal static files.
         for (Files file : Files.values()) {
             File newFile = new File(CrazyManager.getJavaPlugin().getDataFolder(), file.getFileLocation());
             if (log) CrazyManager.getJavaPlugin().getLogger().info("Loading the " + file.getFileName());

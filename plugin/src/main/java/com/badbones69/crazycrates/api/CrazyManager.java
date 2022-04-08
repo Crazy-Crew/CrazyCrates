@@ -1114,7 +1114,7 @@ public class CrazyManager {
                         }
                     }
 
-                    //This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the offhand.
+                    // This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the offhand.
 
                     if (takeAmount > 0) {
                         ItemStack item = player.getEquipment().getItemInOffHand();
@@ -1139,7 +1139,7 @@ public class CrazyManager {
                     return false;
                 }
 
-                //Returns true because it was able to take some keys.
+                // Returns true because it was able to take some keys.
                 if (takeAmount < amount) {
                     return true;
                 }
@@ -1159,7 +1159,7 @@ public class CrazyManager {
 
                 Files.DATA.saveFile();
                 return true;
-            case FREE_KEY://Returns true because it's FREE
+            case FREE_KEY: // Returns true because it's FREE.
                 return true;
         }
         return false;
@@ -1213,7 +1213,7 @@ public class CrazyManager {
      * @param player The player that has just joined.
      */
     public void setNewPlayerKeys(Player player) {
-        if (giveNewPlayersKeys) {// Checks if any crate gives new players keys and if not then no need to do all this stuff.
+        if (giveNewPlayersKeys) { // Checks if any crate gives new players keys and if not then no need to do all this stuff.
             String uuid = player.getUniqueId().toString();
             if (!player.hasPlayedBefore()) {
                 crates.stream()

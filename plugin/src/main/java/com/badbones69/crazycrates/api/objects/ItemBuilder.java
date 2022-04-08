@@ -264,21 +264,21 @@ public class ItemBuilder {
      */
     public ItemBuilder setMaterial(String material) {
         String metaData;
-        if (material.contains(":")) {// Sets the durability or another value option.
+        if (material.contains(":")) { // Sets the durability or another value option.
             String[] b = material.split(":");
             material = b[0];
             metaData = b[1];
             if (metaData.contains("#")) {// <ID>:<Durability>#<CustomModelData>
                 String modelData = metaData.split("#")[1];
-                if (Methods.isInt(modelData)) {//Value is a number.
+                if (Methods.isInt(modelData)) { //Value is a number.
                     this.useCustomModelData = true;
                     this.customModelData = Integer.parseInt(modelData);
                 }
             }
             metaData = metaData.replace("#" + customModelData, "");
-            if (Methods.isInt(metaData)) {//Value is durability.
+            if (Methods.isInt(metaData)) { //Value is durability.
                 this.damage = Integer.parseInt(metaData);
-            } else {//Value is something else.
+            } else { //Value is something else.
                 this.potionType = getPotionType(PotionEffectType.getByName(metaData));
                 this.potionColor = getColor(metaData);
                 this.armorColor = getColor(metaData);
@@ -286,7 +286,7 @@ public class ItemBuilder {
         } else if (material.contains("#")) {
             String[] b = material.split("#");
             material = b[0];
-            if (Methods.isInt(b[1])) {//Value is a number.
+            if (Methods.isInt(b[1])) { //Value is a number.
                 this.useCustomModelData = true;
                 this.customModelData = Integer.parseInt(b[1]);
             }

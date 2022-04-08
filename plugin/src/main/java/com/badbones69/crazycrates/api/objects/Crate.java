@@ -586,13 +586,13 @@ public class Crate {
     private void setDefaultItems(Inventory inventory, Player player) {
         if (boarderToggle) {
             List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
-            for (int i : borderItems) {//Top Boarder slots
+            for (int i : borderItems) { //Top Boarder slots.
                 inventory.setItem(i, boarderItem.build());
             }
             for (int i = 0; i < borderItems.size(); i++) {
                 borderItems.set(i, getAbsoluteItemPosition(borderItems.get(i)));
             }
-            for (int i : borderItems) {//Bottom Boarder slots
+            for (int i : borderItems) { //Bottom Boarder slots.
                 inventory.setItem(i, boarderItem.build());
             }
         }
