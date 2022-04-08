@@ -549,8 +549,7 @@ public class ItemBuilder {
                     break;
                 }
             }
-        } catch (Exception e) {
-        }
+        } catch (Exception ignored) {}
         return this;
     }
     
@@ -766,8 +765,7 @@ public class ItemBuilder {
     public ItemBuilder addItemFlag(String flagString) {
         try {
             addItemFlag(ItemFlag.valueOf(flagString.toUpperCase()));
-        } catch (Exception e) {
-        }
+        } catch (Exception ignored) {}
         return this;
     }
     
@@ -778,8 +776,7 @@ public class ItemBuilder {
                 if (itemFlag != null) {
                     addItemFlag(itemFlag);
                 }
-            } catch (Exception e) {
-            }
+            } catch (Exception ignored) {}
         }
         return this;
     }
