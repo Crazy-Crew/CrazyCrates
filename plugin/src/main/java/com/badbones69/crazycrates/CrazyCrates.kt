@@ -23,8 +23,6 @@ class CrazyCrates : JavaPlugin(), Listener {
 
     private val plugin = this // Avoid using "this"
 
-    // private val manager: BukkitCommandManager<CommandSender> = BukkitCommandManager.create(plugin)
-
     override fun onEnable() {
         FileManager.getInstance().logInfo(true)
             .registerDefaultGenerateFiles("Basic.yml", "/crates", "/crates")
