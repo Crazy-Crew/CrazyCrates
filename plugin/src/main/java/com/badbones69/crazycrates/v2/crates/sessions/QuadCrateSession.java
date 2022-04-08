@@ -174,7 +174,6 @@ public class QuadCrateSession {
             if (crateLocations.contains(loc)) quadCrateChests.put(loc.clone(), loc.getBlock().getState());
         }
 
-
         // Paste the structure in.
         handler.pasteStructure(spawnLocation.clone());
 
