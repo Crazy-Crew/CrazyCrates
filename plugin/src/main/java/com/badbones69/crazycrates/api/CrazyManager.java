@@ -149,8 +149,6 @@ public class CrazyManager {
         crateLocations.clear();
         crateSchematics.clear();
         
-        //nmsSupport = new NMS_Support();
-        
         quadCrateTimer = Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
         giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
 
