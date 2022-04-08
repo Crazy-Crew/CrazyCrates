@@ -69,7 +69,7 @@ public class QuadCrateSession {
     private final HashMap<Location, Boolean> cratesOpened = new HashMap<>();
 
     /**
-     * Save the original block states before the structure.
+     * Saves all the chests spawned by the QuadCrate task
      */
     private final HashMap<Location, BlockState> quadCrateChests = new HashMap<>();
 
@@ -169,9 +169,9 @@ public class QuadCrateSession {
         // Throws unopened crates in a HashMap.
         crateLocations.forEach(loc -> cratesOpened.put(loc, false));
 
-        // Saves the original block states.
+        // This holds the quad crate's spawned chests.
         for (Location loc : crateLocations) {
-            if (crateLocations.contains(loc)) oldCrateBlocks.put(loc.clone(), loc.getBlock().getState());
+            if (crateLocations.contains(loc)) quadCrateChests.put(loc.clone(), loc.getBlock().getState());
         }
 
 
@@ -234,8 +234,10 @@ public class QuadCrateSession {
         new BukkitRunnable() {
             @Override
             public void run() {
-                // Update crate block states which removes them.
-                crateLocations.forEach(location -> oldCrateBlocks.get(location).update(true, false));
+                // Update spawned crate block states which removes them.
+                crateLocations.forEach(location -> {
+                    quadCrateChests.get(location).update(true, false);
+                });
 
                 // Remove displayed rewards
                 displayedRewards.forEach(Entity :: remove);
@@ -263,7 +265,7 @@ public class QuadCrateSession {
     // End the crate & remove the hologram by force.
     public void endCrateForce(boolean removeForce) {
         //oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
-        crateLocations.forEach(location -> oldCrateBlocks.get(location).update(true, false));
+        crateLocations.forEach(location -> quadCrateChests.get(location).update(true, false));
         displayedRewards.forEach(Entity::remove);
         player.teleport(lastLocation);
         if (removeForce) CrazyManager.getInstance().removePlayerFromOpeningList(player);
