@@ -16,8 +16,9 @@ interface Structures {
     // Remove a structure
     fun removeStructure(location: Location)
 
-    // Add & Get the blocks from/to the ArrayList
-    fun getStructureBlocks(location: Location): HashMap<Location, BlockState>
+    fun getStructureX(): Double
+
+    fun getStructureZ(): Double
 
     // Get blocks prior to spawning in the structure
     fun getNearbyBlocks(location: Location): ArrayList<Block>

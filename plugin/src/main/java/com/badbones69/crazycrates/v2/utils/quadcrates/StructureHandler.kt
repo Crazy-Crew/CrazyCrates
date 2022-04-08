@@ -47,7 +47,14 @@ class StructureHandler(val file: File) : Structures {
         }
     }
 
-    override fun getStructureBlocks(location: Location): HashMap<Location, BlockState> {
+    override fun getStructureX(): Double {
+        return structureManager.size.x
+    }
+
+    override fun getStructureZ(): Double {
+        return structureManager.size.z
+    }
+
         for (x in 0 until structureManager.size.x.toInt()) {
             for (y in 0 until structureManager.size.y.toInt()) {
                 for (z in 0 until structureManager.size.z.toInt()) {

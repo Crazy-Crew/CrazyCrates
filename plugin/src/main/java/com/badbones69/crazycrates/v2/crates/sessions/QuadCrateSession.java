@@ -177,8 +177,8 @@ public class QuadCrateSession {
         // Paste the structure in.
         handler.pasteStructure(spawnLocation.clone());
 
-        // Teleport the player to the center block.
-        // player.teleport(spawnLocation.clone().toCenterLocation().toHighestLocation());
+        // Teleport player to center.
+        player.teleport(spawnLocation.clone().add(handler.getStructureX() / 2, 1.0, handler.getStructureZ() / 2));
 
         CrazyManager.getInstance().addQuadCrateTask(player, new BukkitRunnable() {
 
