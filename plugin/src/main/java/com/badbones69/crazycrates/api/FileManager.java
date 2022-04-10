@@ -138,7 +138,7 @@ public class FileManager {
      * @param fileName The name of the file you want to auto-generate when the folder doesn't exist.
      * @param homeFolder The folder that has custom files in it.
      */
-    public FileManager registerDefaultGenerateFiles(String fileName, String homeFolder) {
+    public FileManager registerDefaultGeneratedFiles(String fileName, String homeFolder) {
         autoGenerateFiles.put(fileName, homeFolder);
         return this;
     }
@@ -149,7 +149,7 @@ public class FileManager {
      * @param homeFolder The folder that has custom files in it.
      * @param jarHomeFolder The folder that the file is found in the jar.
      */
-    public FileManager registerDefaultGenerateFiles(String fileName, String homeFolder, String jarHomeFolder) {
+    public FileManager registerDefaultGeneratedFiles(String fileName, String homeFolder, String jarHomeFolder) {
         autoGenerateFiles.put(fileName, homeFolder);
         jarHomeFolders.put(fileName, jarHomeFolder);
         return this;
