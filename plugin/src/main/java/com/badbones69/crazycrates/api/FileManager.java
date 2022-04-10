@@ -41,7 +41,10 @@ public class FileManager {
                 try {
                     File serverFile = new File(CrazyManager.getJavaPlugin().getDataFolder(), "/" + file.getFileLocation());
                     InputStream jarFile = getClass().getResourceAsStream("/" + file.getFileJar());
-                    copyFile(jarFile, serverFile);
+
+                    if (jarFile != null) {
+                        FileUtil.INSTANCE.copyFile(jarFile, serverFile);
+                    }
                 } catch (Exception e) {
                     if (log) CrazyManager.getJavaPlugin().getLogger().warning("Failed to load file: " + file.getFileName());
                     e.printStackTrace();
@@ -80,9 +83,9 @@ public class FileManager {
                             try {
                                 File serverFile = new File(CrazyManager.getJavaPlugin().getDataFolder(), homeFolder + "/" + fileName);
                                 InputStream jarFile = getClass().getResourceAsStream((jarHomeFolders.getOrDefault(fileName, homeFolder)) + "/" + fileName);
-                                copyFile(jarFile, serverFile);
-                                if (fileName.toLowerCase().endsWith(".yml")) {
-                                    customFiles.add(new CustomFile(fileName, homeFolder));
+
+                                if (jarFile != null) {
+                                    FileUtil.INSTANCE.copyFile(jarFile, serverFile);
                                 }
                                 if (log) CrazyManager.getJavaPlugin().getLogger().info("Created new default file: " + homeFolder + "/" + fileName + ".");
                             } catch (Exception e) {
