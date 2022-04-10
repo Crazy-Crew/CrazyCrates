@@ -703,7 +703,7 @@ public class CrazyManager {
                 }
             }
             try {
-                inv.setItem(inv.firstEmpty(), new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setUnbreakable(unbreakable).hideItemFlags(hideItemFlags).setEnchantments(enchantments).setGlowing(glowing).setPlayer(player).build());
+                inv.setItem(inv.firstEmpty(), new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setUnbreakable(unbreakable).hideItemFlags(hideItemFlags).setEnchantments(enchantments).setGlow(glowing).setPlayerName(player).build());
             } catch (Exception e) {
                 inv.addItem(new ItemBuilder().setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + reward)).build());
             }
@@ -1290,7 +1290,7 @@ public class CrazyManager {
         if (file.contains("Crate.PhysicalKey.Glowing")) {
             glowing = file.getBoolean("Crate.PhysicalKey.Glowing");
         }
-        return new ItemBuilder().setMaterial(id).setName(name).setLore(lore).setGlowing(glowing).build();
+        return new ItemBuilder().setMaterial(id).setName(name).setLore(lore).setGlow(glowing).build();
     }
     
     private ItemBuilder getDisplayItem(FileConfiguration file, String prize) {
@@ -1301,12 +1301,12 @@ public class CrazyManager {
             .setAmount(file.getInt(path + "DisplayAmount", 1))
             .setName(file.getString(path + "DisplayName"))
             .setLore(file.getStringList(path + "Lore"))
-            .setGlowing(file.getBoolean(path + "Glowing"))
+            .setGlow(file.getBoolean(path + "Glowing"))
             .setUnbreakable(file.getBoolean(path + "Unbreakable"))
             .hideItemFlags(file.getBoolean(path + "HideItemFlags"))
             .addItemFlags(file.getStringList(path + "Flags"))
             .addPatterns(file.getStringList(path + "Patterns"))
-            .setPlayer(file.getString(path + "Player"));
+            .setPlayerName(file.getString(path + "Player"));
             if (file.contains(path + "DisplayEnchantments")) {
                 for (String enchantmentName : file.getStringList(path + "DisplayEnchantments")) {
                     Enchantment enchantment = Methods.getEnchantment(enchantmentName.split(":")[0]);
