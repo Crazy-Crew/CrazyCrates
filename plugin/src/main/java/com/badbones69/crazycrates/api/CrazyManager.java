@@ -165,7 +165,7 @@ public class CrazyManager {
         if (fileManager.isLogging()) getJavaPlugin().getLogger().info("Loading all crate information...");
         for (String crateName : fileManager.getAllCratesNames()) {
             try {
-                FileConfiguration file = fileManager.getFile(crateName).getFile();
+                FileConfiguration file = fileManager.getCustomFile(crateName).getFile();
                 CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));
                 ArrayList<Prize> prizes = new ArrayList<>();
                 String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
