@@ -37,7 +37,9 @@ public class FileManager {
         // Loads all the normal static files.
         for (Files file : Files.values()) {
             File newFile = new File(CrazyManager.getJavaPlugin().getDataFolder(), file.getFileLocation());
-            if (log) CrazyManager.getJavaPlugin().getLogger().info("Loading the " + file.getFileName());
+
+            if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Loading the " + file.getFileName());
+
             if (!newFile.exists()) {
                 try {
                     File serverFile = new File(CrazyManager.getJavaPlugin().getDataFolder(), "/" + file.getFileLocation());
@@ -47,37 +49,46 @@ public class FileManager {
                         FileUtil.INSTANCE.copyFile(jarFile, serverFile);
                     }
                 } catch (Exception e) {
-                    if (log) CrazyManager.getJavaPlugin().getLogger().warning("Failed to load file: " + file.getFileName());
-                    e.printStackTrace();
+                    if (currentValue) CrazyManager.getJavaPlugin().getLogger().warning("Failed to load file: " + file.getFileName());
+                    if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Error: " + e.getMessage());
                     continue;
                 }
             }
             files.put(file, newFile);
-            configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
-            if (log) CrazyManager.getJavaPlugin().getLogger().info("Successfully loaded " + file.getFileName());
+            configs.put(file, YamlConfiguration.loadConfiguration(newFile));
+
+            if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Successfully loaded " + file.getFileName());
         }
-        //Starts to load all the custom files.
+
+        // Starts to load all the custom files.
         if (homeFolders.size() > 0) {
-            if (log) CrazyManager.getJavaPlugin().getLogger().info("Loading custom files.");
+            if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Loading custom files.");
+
             for (String homeFolder : homeFolders) {
+
                 File homeFile = new File(CrazyManager.getJavaPlugin().getDataFolder(), "/" + homeFolder);
+
                 if (homeFile.exists()) {
                     String[] list = homeFile.list();
+
                     if (list != null) {
                         for (String name : list) {
+
                             if (name.endsWith(".yml")) {
                                 CustomFile file = new CustomFile(name, homeFolder);
                                 if (file.exists()) {
                                     customFiles.add(file);
-                                    if (log) CrazyManager.getJavaPlugin().getLogger().info("Loaded new custom file: " + homeFolder + "/" + name + ".");
+                                    if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Loaded new custom file: " + homeFolder + "/" + name + ".");
                                 }
                             }
                         }
                     }
                     
                 } else {
-                    homeFile.mkdir();
-                    if (log) CrazyManager.getJavaPlugin().getLogger().info("The folder " + homeFolder + "/ was not found so it was created.");
+                    if (!homeFile.exists()) homeFile.mkdir();
+
+                    if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("The folder " + homeFolder + "/ was not found so it was created.");
+
                     for (String fileName : autoGenerateFiles.keySet()) {
                         if (autoGenerateFiles.get(fileName).equalsIgnoreCase(homeFolder)) {
                             homeFolder = autoGenerateFiles.get(fileName);
@@ -88,26 +99,29 @@ public class FileManager {
                                 if (jarFile != null) {
                                     FileUtil.INSTANCE.copyFile(jarFile, serverFile);
                                 }
-                                if (log) CrazyManager.getJavaPlugin().getLogger().info("Created new default file: " + homeFolder + "/" + fileName + ".");
+
+                                if (fileName.toLowerCase().endsWith(".yml")) customFiles.add(new CustomFile(fileName, homeFolder));
+
+                                if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Created new default file: " + homeFolder + "/" + fileName + ".");
                             } catch (Exception e) {
-                                if (log) CrazyManager.getJavaPlugin().getLogger().warning("Failed to create new default file: " + homeFolder + "/" + fileName + "!");
-                                if (log) e.printStackTrace();
+                                if (currentValue) CrazyManager.getJavaPlugin().getLogger().warning("Failed to create new default file: " + homeFolder + "/" + fileName + "!");
+                                if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Error: " + e.getMessage());
                             }
                         }
                     }
                 }
             }
-            if (log) CrazyManager.getJavaPlugin().getLogger().info("Finished loading custom files.");
+            if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Finished loading custom files.");
         }
         return this;
     }
     
     /**
      * Turn on the logger system for the FileManager.
-     * @param log True to turn it on and false for it to be off.
+     * @param newValue True to turn it on and false for it to be off.
      */
-    public FileManager logInfo(boolean log) {
-        this.log = log;
+    public FileManager logInfo(boolean newValue) {
+        this.currentValue = newValue;
         return this;
     }
     
@@ -116,7 +130,7 @@ public class FileManager {
      * @return True if it is and false if it isn't.
      */
     public boolean isLogging() {
-        return log;
+        return currentValue;
     }
     
     /**
@@ -179,6 +193,8 @@ public class FileManager {
 
         configs.put(file, YamlConfiguration.loadConfiguration(files.get(file)));
             configs.get(file).save(files.get(file));
+            if (currentValue) CrazyManager.getJavaPlugin().getLogger().warning("Could not save " + file.getFileName() + "!");
+            if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Error: " + e.getMessage());
     /**
      * Get a custom file from the loaded custom files instead of a hardcoded one.
      * This allows you to get custom files like Per player data files.
@@ -215,13 +231,13 @@ public class FileManager {
         if (file != null) {
             try {
                 file.getFile().save(new File(CrazyManager.getJavaPlugin().getDataFolder(), file.getHomeFolder() + "/" + file.getFileName()));
-                if (log) CrazyManager.getJavaPlugin().getLogger().info("Successfully saved the " + file.getFileName() + ".");
+                if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Successfully saved the " + file.getFileName() + ".");
             } catch (Exception e) {
-                CrazyManager.getJavaPlugin().getLogger().warning("Could not save " + file.getFileName() + "!");
-                e.printStackTrace();
+                if (currentValue) CrazyManager.getJavaPlugin().getLogger().warning("Could not save " + file.getFileName() + "!");
+                if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Error: " + e.getMessage());
             }
         } else {
-            if (log) CrazyManager.getJavaPlugin().getLogger().warning("The file " + name + ".yml could not be found!");
+            if (currentValue) CrazyManager.getJavaPlugin().getLogger().warning("The file " + name + ".yml could not be found!");
         }
     }
     
@@ -249,13 +265,13 @@ public class FileManager {
         if (file != null) {
             try {
                 file.file = YamlConfiguration.loadConfiguration(new File(CrazyManager.getJavaPlugin().getDataFolder(), "/" + file.getHomeFolder() + "/" + file.getFileName()));
-                if (log) CrazyManager.getJavaPlugin().getLogger().info("Successfully reloaded the " + file.getFileName() + ".");
+                if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Successfully reloaded the " + file.getFileName() + ".");
             } catch (Exception e) {
-                CrazyManager.getJavaPlugin().getLogger().warning("Could not reload the " + file.getFileName() + "!");
-                e.printStackTrace();
+                if (currentValue) CrazyManager.getJavaPlugin().getLogger().warning("Could not reload the " + file.getFileName() + "!");
+                if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Error: " + e.getMessage());
             }
         } else {
-            if (log) CrazyManager.getJavaPlugin().getLogger().warning("The file " + name + ".yml could not be found!");
+            if (currentValue) CrazyManager.getJavaPlugin().getLogger().warning("The file " + name + ".yml could not be found!");
         }
     }
     
@@ -403,10 +419,7 @@ public class FileManager {
                     file = YamlConfiguration.loadConfiguration(new File(CrazyManager.getJavaPlugin().getDataFolder(), "/" + homeFolder + "/" + name));
                 } else {
                     file = null;
-                }
-            } else {
-                new File(CrazyManager.getJavaPlugin().getDataFolder(), "/" + homeFolder).mkdir();
-                if (log) CrazyManager.getJavaPlugin().getLogger().info("The folder " + homeFolder + "/ was not found so it was created.");
+                if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("The folder " + homeFolder + "/ was not found so it was created.");
                 file = null;
             }
         }
@@ -459,15 +472,15 @@ public class FileManager {
             if (file != null) {
                 try {
                     file.save(new File(CrazyManager.getJavaPlugin().getDataFolder(), homeFolder + "/" + fileName));
-                    if (log) CrazyManager.getJavaPlugin().getLogger().info("Successfully saved the " + fileName + ".");
+                    if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Successfully saved the " + fileName + ".");
                     return true;
                 } catch (Exception e) {
-                    CrazyManager.getJavaPlugin().getLogger().warning("Could not save " + fileName + "!");
-                    e.printStackTrace();
+                    if (currentValue) CrazyManager.getJavaPlugin().getLogger().warning("Could not save " + fileName + "!");
+                    if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Error: " + e.getMessage());
                     return false;
                 }
             } else {
-                if (log) CrazyManager.getJavaPlugin().getLogger().warning("There was a null custom file that could not be found!");
+                if (currentValue) CrazyManager.getJavaPlugin().getLogger().warning("There was a null custom file that could not be found!");
             }
             return false;
         }
@@ -480,18 +493,16 @@ public class FileManager {
             if (file != null) {
                 try {
                     file = YamlConfiguration.loadConfiguration(new File(CrazyManager.getJavaPlugin().getDataFolder(), "/" + homeFolder + "/" + fileName));
-                    if (log) CrazyManager.getJavaPlugin().getLogger().info("Successfully reloaded the " + fileName + ".");
+                    if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Successfully reloaded the " + fileName + ".");
                     return true;
                 } catch (Exception e) {
-                    CrazyManager.getJavaPlugin().getLogger().warning("Could not reload the " + fileName + "!");
-                    e.printStackTrace();
+                    if (currentValue) CrazyManager.getJavaPlugin().getLogger().warning("Could not reload the " + fileName + "!");
+                    if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Error: " + e.getMessage());
                 }
             } else {
-                if (log) CrazyManager.getJavaPlugin().getLogger().warning("There was a null custom file that was not found!");
+                if (currentValue) CrazyManager.getJavaPlugin().getLogger().warning("There was a null custom file that was not found!");
             }
             return false;
         }
-        
     }
-    
 }
