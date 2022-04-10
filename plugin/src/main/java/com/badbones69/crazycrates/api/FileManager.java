@@ -19,8 +19,8 @@ public class FileManager {
     private ArrayList<CustomFile> customFiles = new ArrayList<>();
     private HashMap<String, String> jarHomeFolders = new HashMap<>();
     private HashMap<String, String> autoGenerateFiles = new HashMap<>();
-    private HashMap<Files, FileConfiguration> configurations = new HashMap<>();
     
+    private final HashMap<Files, FileConfiguration> configs = new HashMap<>();
     public static FileManager getInstance() {
         return instance;
     }
@@ -32,7 +32,8 @@ public class FileManager {
         if (!CrazyManager.getJavaPlugin().getDataFolder().exists()) CrazyManager.getJavaPlugin().getDataFolder().mkdirs();
         files.clear();
         customFiles.clear();
-        configurations.clear();
+        configs.clear();
+
         // Loads all the normal static files.
         for (Files file : Files.values()) {
             File newFile = new File(CrazyManager.getJavaPlugin().getDataFolder(), file.getFileLocation());
@@ -173,9 +174,11 @@ public class FileManager {
      * @return The file from the system.
      */
     public FileConfiguration getFile(Files file) {
-        return configurations.get(file);
+        return configs.get(file);
     }
-    
+
+        configs.put(file, YamlConfiguration.loadConfiguration(files.get(file)));
+            configs.get(file).save(files.get(file));
     /**
      * Get a custom file from the loaded custom files instead of a hardcoded one.
      * This allows you to get custom files like Per player data files.
