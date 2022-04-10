@@ -1,26 +1,37 @@
 package com.badbones69.crazycrates.api;
 
+import com.badbones69.crazycrates.v2.utils.FileUtil;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FileManager {
-    
-    private static FileManager instance = new FileManager();
-    private boolean log = false;
-    private HashMap<Files, File> files = new HashMap<>();
-    private ArrayList<String> homeFolders = new ArrayList<>();
-    private ArrayList<CustomFile> customFiles = new ArrayList<>();
-    private HashMap<String, String> jarHomeFolders = new HashMap<>();
-    private HashMap<String, String> autoGenerateFiles = new HashMap<>();
-    
+
+    // Private instance of the class.
+    private final static FileManager instance = new FileManager();
+
+    // The boolean value for if we should send log Messages or not.
+    private boolean currentValue = false;
+
+    /**
+     * Everything related to pre-defined files.
+     */
+    private final HashMap<Files, File> files = new HashMap<>();
     private final HashMap<Files, FileConfiguration> configs = new HashMap<>();
+
+    /**
+     * Everything related to custom files.
+     */
+    private final ArrayList<String> homeFolders = new ArrayList<>();
+    private final ArrayList<CustomFile> customFiles = new ArrayList<>();
+    private final HashMap<String, String> jarHomeFolders = new HashMap<>();
+    private final HashMap<String, String> autoGenerateFiles = new HashMap<>();
+
+    // Exposes the instance of the class
     public static FileManager getInstance() {
         return instance;
     }
@@ -48,12 +59,14 @@ public class FileManager {
                     if (jarFile != null) {
                         FileUtil.INSTANCE.copyFile(jarFile, serverFile);
                     }
+
                 } catch (Exception e) {
                     if (currentValue) CrazyManager.getJavaPlugin().getLogger().warning("Failed to load file: " + file.getFileName());
                     if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Error: " + e.getMessage());
                     continue;
                 }
             }
+
             files.put(file, newFile);
             configs.put(file, YamlConfiguration.loadConfiguration(newFile));
 
@@ -83,7 +96,6 @@ public class FileManager {
                             }
                         }
                     }
-                    
                 } else {
                     if (!homeFile.exists()) homeFile.mkdir();
 
@@ -132,24 +144,8 @@ public class FileManager {
     public boolean isLogging() {
         return currentValue;
     }
-    
-    /**
-     * Register a folder that has custom files in it. Make sure to have a "/" in front of the folder name.
-     * @param homeFolder The folder that has custom files in it.
-     */
-    public FileManager registerCustomFilesFolder(String homeFolder) {
-        homeFolders.add(homeFolder);
-        return this;
-    }
-    
-    /**
-     * Unregister a folder that has custom files in it. Make sure to have a "/" in front of the folder name.
-     * @param homeFolder The folder with custom files in it.
-     */
-    public FileManager unregisterCustomFilesFolder(String homeFolder) {
-        homeFolders.remove(homeFolder);
-        return this;
-    }
+
+    // Handling default generated files.
     
     /**
      * Register a file that needs to be generated when it's home folder doesn't exist. Make sure to have a "/" in front of the home folder's name.
@@ -177,11 +173,13 @@ public class FileManager {
      * Unregister a file that doesn't need to be generated when it's home folder doesn't exist. Make sure to have a "/" in front of the home folder's name.
      * @param fileName The file that you want to remove from auto-generating.
      */
-    public FileManager unregisterDefaultGenerateFiles(String fileName) {
+    public FileManager removeDefaultGeneratedFiles(String fileName) {
         autoGenerateFiles.remove(fileName);
         jarHomeFolders.remove(fileName);
         return this;
     }
+
+    // End of handling default generated files.
     
     /**
      * Gets the file from the system.
@@ -191,17 +189,52 @@ public class FileManager {
         return configs.get(file);
     }
 
+    /**
+     * Overrides the loaded state file and loads the file systems file.
+     */
+    public void reloadFile(Files file) {
         configs.put(file, YamlConfiguration.loadConfiguration(files.get(file)));
+    }
+    
+    /**
+     * Saves the file from the loaded state to the file system.
+     */
+    public void saveFile(Files file) {
+        try {
             configs.get(file).save(files.get(file));
+        } catch (IOException e) {
             if (currentValue) CrazyManager.getJavaPlugin().getLogger().warning("Could not save " + file.getFileName() + "!");
             if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Error: " + e.getMessage());
+        }
+    }
+
+    // The beginning of Custom File Management.
+
+    /**
+     * Register a folder that has custom files in it. Make sure to have a "/" in front of the folder name.
+     * @param homeFolder The folder that has custom files in it.
+     */
+    public FileManager registerCustomFilesFolder(String homeFolder) {
+        homeFolders.add(homeFolder);
+        return this;
+    }
+
+    /**
+     * Unregister a folder that has custom files in it. Make sure to have a "/" in front of the folder name.
+     * @param homeFolder The folder with custom files in it.
+     */
+    public FileManager removeCustomFilesFolder(String homeFolder) {
+        homeFolders.remove(homeFolder);
+        return this;
+    }
+
     /**
      * Get a custom file from the loaded custom files instead of a hardcoded one.
      * This allows you to get custom files like Per player data files.
      * @param name Name of the crate you want. (Without the .yml)
      * @return The custom file you wanted otherwise if not found will return null.
      */
-    public CustomFile getFile(String name) {
+    public CustomFile getCustomFile(String name) {
         for (CustomFile file : customFiles) {
             if (file.getName().equalsIgnoreCase(name)) {
                 return file;
@@ -211,23 +244,11 @@ public class FileManager {
     }
     
     /**
-     * Saves the file from the loaded state to the file system.
-     */
-    public void saveFile(Files file) {
-        try {
-            configurations.get(file).save(files.get(file));
-        } catch (IOException e) {
-            CrazyManager.getJavaPlugin().getLogger().warning("Could not save " + file.getFileName() + "!");
-            e.printStackTrace();
-        }
-    }
-    
-    /**
      * Save a custom file.
      * @param name The name of the custom file.
      */
-    public void saveFile(String name) {
-        CustomFile file = getFile(name);
+    public void saveCustomFile(String name) {
+        CustomFile file = getCustomFile(name);
         if (file != null) {
             try {
                 file.getFile().save(new File(CrazyManager.getJavaPlugin().getDataFolder(), file.getHomeFolder() + "/" + file.getFileName()));
@@ -244,24 +265,16 @@ public class FileManager {
     /**
      * Save a custom file.
      * @param file The custom file you are saving.
-     * @return True if the file saved correct and false if there was an error.
      */
-    public Boolean saveFile(CustomFile file) {
-        return file.saveFile();
+    public void saveCustomFile(CustomFile file) {
+        file.saveFile();
     }
     
     /**
      * Overrides the loaded state file and loads the file systems file.
      */
-    public void reloadFile(Files file) {
-        configurations.put(file, YamlConfiguration.loadConfiguration(files.get(file)));
-    }
-    
-    /**
-     * Overrides the loaded state file and loads the file systems file.
-     */
-    public void reloadFile(String name) {
-        CustomFile file = getFile(name);
+    public void reloadCustomFile(String name) {
+        CustomFile file = getCustomFile(name);
         if (file != null) {
             try {
                 file.file = YamlConfiguration.loadConfiguration(new File(CrazyManager.getJavaPlugin().getDataFolder(), "/" + file.getHomeFolder() + "/" + file.getFileName()));
@@ -279,14 +292,18 @@ public class FileManager {
      * Overrides the loaded state file and loads the filesystems file.
      * @return True if it reloaded correct and false if the file wasn't found.
      */
-    public Boolean reloadFile(CustomFile file) {
+    public Boolean reloadCustomFile(CustomFile file) {
         return file.reloadFile();
     }
-    
+
+    // End of handling custom files.
+
+    // Other misc methods.
     public void reloadAllFiles() {
         for (Files file : Files.values()) {
             file.reloadFile();
         }
+
         for (CustomFile file : customFiles) {
             file.reloadFile();
         }
@@ -294,26 +311,15 @@ public class FileManager {
     
     public ArrayList<String> getAllCratesNames() {
         ArrayList<String> files = new ArrayList<>();
-        for (String name : new File(CrazyManager.getJavaPlugin().getDataFolder(), "/crates").list()) {
-            if (!name.endsWith(".yml")) {
-                continue;
-            }
+        File cratesFolder = new File(CrazyManager.getJavaPlugin().getDataFolder(), "/crates");
+
+        if (!cratesFolder.exists()) cratesFolder.mkdir();
+
+        for (String name : cratesFolder.list()) {
+            if (!name.endsWith(".yml")) continue;
             files.add(name.replaceAll(".yml", ""));
         }
         return files;
-    }
-    
-    /**
-     * Was found here: https://bukkit.org/threads/extracting-file-from-jar.16962
-     */
-    private void copyFile(InputStream in, File out) throws Exception {
-        try (InputStream fis = in; FileOutputStream fos = new FileOutputStream(out)) {
-            byte[] buf = new byte[1024];
-            int i;
-            while ((i = fis.read(buf)) != -1) {
-                fos.write(buf, 0, i);
-            }
-        }
     }
     
     public enum Files {
@@ -395,14 +401,13 @@ public class FileManager {
         public void reloadFile() {
             getInstance().reloadFile(this);
         }
-        
     }
     
     public class CustomFile {
         
-        private String name;
-        private String fileName;
-        private String homeFolder;
+        private final String name;
+        private final String fileName;
+        private final String homeFolder;
         private FileConfiguration file;
         
         /**
@@ -414,13 +419,15 @@ public class FileManager {
             this.name = name.replace(".yml", "");
             this.fileName = name;
             this.homeFolder = homeFolder;
-            if (new File(CrazyManager.getJavaPlugin().getDataFolder(), "/" + homeFolder).exists()) {
-                if (new File(CrazyManager.getJavaPlugin().getDataFolder(), "/" + homeFolder + "/" + name).exists()) {
-                    file = YamlConfiguration.loadConfiguration(new File(CrazyManager.getJavaPlugin().getDataFolder(), "/" + homeFolder + "/" + name));
-                } else {
-                    file = null;
+
+            File homeDir = new File(CrazyManager.getJavaPlugin().getDataFolder(), "/" + homeFolder);
+
+            if (!homeDir.exists()) {
+                homeDir.mkdir();
                 if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("The folder " + homeFolder + "/ was not found so it was created.");
                 file = null;
+            } else {
+                file = YamlConfiguration.loadConfiguration(new File(CrazyManager.getJavaPlugin().getDataFolder(), "/" + homeFolder + "/" + name));
             }
         }
         
@@ -465,29 +472,25 @@ public class FileManager {
         }
         
         /**
-         * Save the custom file.
-         * @return True if it saved correct and false if something went wrong.
+         * Saves the custom file.
          */
-        public Boolean saveFile() {
+        public void saveFile() {
             if (file != null) {
                 try {
                     file.save(new File(CrazyManager.getJavaPlugin().getDataFolder(), homeFolder + "/" + fileName));
                     if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Successfully saved the " + fileName + ".");
-                    return true;
                 } catch (Exception e) {
                     if (currentValue) CrazyManager.getJavaPlugin().getLogger().warning("Could not save " + fileName + "!");
                     if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Error: " + e.getMessage());
-                    return false;
                 }
             } else {
                 if (currentValue) CrazyManager.getJavaPlugin().getLogger().warning("There was a null custom file that could not be found!");
             }
-            return false;
         }
         
         /**
          * Overrides the loaded state file and loads the filesystems file.
-         * @return True if it reloaded correct and false if the file wasn't found or error.
+         * @return True if it reloaded correct and false if the file wasn't found or there was an error.
          */
         public Boolean reloadFile() {
             if (file != null) {
