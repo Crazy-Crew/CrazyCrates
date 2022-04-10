@@ -29,7 +29,7 @@ public class FileManager {
      * Sets up the plugin and loads all necessary files.
      */
     public FileManager setup() {
-        if (!CrazyManager.getJavaPlugin().getDataFolder().exists()) CrazyManager.getJavaPlugin().getDataFolder().mkdirs();
+
         files.clear();
         customFiles.clear();
         configs.clear();
