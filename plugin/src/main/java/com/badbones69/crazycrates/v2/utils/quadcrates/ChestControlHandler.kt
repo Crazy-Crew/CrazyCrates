@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.v2.utils.quadcrates
 
-import com.badbones69.crazycrates.v2.utils.interfaces.QuadCrate
+import com.badbones69.crazycrates.v2.utils.interfaces.quadcrates.ChestControl
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
@@ -8,7 +8,7 @@ import org.bukkit.block.Chest
 import org.bukkit.block.EnderChest
 import org.bukkit.block.data.Directional
 
-class QuadCrateHandler : QuadCrate {
+class ChestControlHandler : ChestControl {
 
     override fun openChest(block: Block, forceUpdate: Boolean) {
         if (block.type != Material.CHEST || block.type != Material.TRAPPED_CHEST || block.type != Material.ENDER_CHEST) return

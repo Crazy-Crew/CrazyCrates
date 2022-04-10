@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.v2.utils.quadcrates
 
 import com.badbones69.crazycrates.getPlugin
-import com.badbones69.crazycrates.v2.utils.interfaces.Structures
+import com.badbones69.crazycrates.v2.utils.interfaces.quadcrates.StructureControl
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
@@ -11,7 +11,7 @@ import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-class StructureHandler(val file: File) : Structures {
+class StructureHandler(val file: File) : StructureControl {
 
     private val structureManager = getPlugin().server.structureManager.loadStructure(file)
 

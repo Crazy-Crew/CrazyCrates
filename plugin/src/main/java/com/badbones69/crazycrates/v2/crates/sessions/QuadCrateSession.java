@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.QuadCrateParticles;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.v2.utils.TaskUtil;
-import com.badbones69.crazycrates.v2.utils.quadcrates.QuadCrateHandler;
+import com.badbones69.crazycrates.v2.utils.quadcrates.ChestControlHandler;
 import com.badbones69.crazycrates.v2.utils.quadcrates.QuadCrateSpiralHandler;
 import com.badbones69.crazycrates.v2.utils.quadcrates.StructureHandler;
 import org.bukkit.*;
@@ -20,7 +20,7 @@ import java.util.*;
 
 public class QuadCrateSession {
 
-    private final QuadCrateHandler quadCrateHandler = new QuadCrateHandler();
+    private final ChestControlHandler quadCrateHandler = new ChestControlHandler();
 
     private static final List<QuadCrateSession> crateSessions = new ArrayList<>();
 
@@ -205,7 +205,7 @@ public class QuadCrateSession {
                     player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
                     Block chest = crateLocations.get(crateNumber).getBlock();
                     chest.setType(Material.CHEST);
-                    new QuadCrateHandler().rotateChest(chest, crateNumber);
+                    new ChestControlHandler().rotateChest(chest, crateNumber);
                     if (crateNumber == 3) { // Last crate has spawned.
                         CrazyManager.getInstance().endQuadCrate(player); // Cancelled when method is called.
                     } else {
@@ -342,7 +342,7 @@ public class QuadCrateSession {
     }
 
     // Fetch the handler.
-    public QuadCrateHandler quadCrateHandler() {
+    public ChestControlHandler quadCrateHandler() {
         return quadCrateHandler;
     }
 }

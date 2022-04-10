@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.controllers.CrateControl;
-import com.badbones69.crazycrates.v2.utils.quadcrates.QuadCrateHandler;
+import com.badbones69.crazycrates.v2.utils.quadcrates.ChestControlHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -33,7 +33,7 @@ public class QuickCrate implements Listener {
     private static CrazyManager cc = CrazyManager.getInstance();
     private static HashMap<Player, BukkitTask> tasks = new HashMap<>();
 
-    private static QuadCrateHandler quadCrateHandler = new QuadCrateHandler();
+    private static ChestControlHandler quadCrateHandler = new ChestControlHandler();
     
     public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
         int keys = switch (keyType) {

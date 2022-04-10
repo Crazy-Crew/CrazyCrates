@@ -162,6 +162,7 @@ public class CrazyManager {
         if (hologramController != null) {
             hologramController.removeAllHolograms();
         }
+
         if (fileManager.isLogging()) getJavaPlugin().getLogger().info("Loading all crate information...");
         for (String crateName : fileManager.getAllCratesNames()) {
             try {

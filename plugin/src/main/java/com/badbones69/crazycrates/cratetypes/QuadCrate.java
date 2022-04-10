@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.v2.crates.sessions.QuadCrateSession;
-import com.badbones69.crazycrates.v2.utils.quadcrates.QuadCrateHandler;
 import com.badbones69.crazycrates.v2.utils.quadcrates.sessions.SessionManager;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;

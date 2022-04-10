@@ -1,8 +1,8 @@
-package com.badbones69.crazycrates.v2.utils.interfaces
+package com.badbones69.crazycrates.v2.utils.interfaces.quadcrates
 
 import org.bukkit.block.Block
 
-interface QuadCrate {
+interface ChestControl {
 
     // Open a chest by altering the block state
     fun openChest(block: Block, forceUpdate: Boolean)

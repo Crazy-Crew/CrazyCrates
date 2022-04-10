@@ -1,11 +1,10 @@
-package com.badbones69.crazycrates.v2.utils.interfaces
+package com.badbones69.crazycrates.v2.utils.interfaces.quadcrates
 
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
-import org.bukkit.block.BlockState
 
-interface Structures {
+interface StructureControl {
 
     // Paste a structure using available .nbt files
     fun pasteStructure(location: Location)
