@@ -516,7 +516,7 @@ public class Crate {
         }
         file.set(path + ".Editor-Items", items);
 
-        fileManager.saveCustomFile(fileManager.getCustomFile(name));
+        fileManager.saveFile(fileManager.getFile(name));
     }
     
     /**

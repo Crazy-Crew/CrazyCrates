@@ -25,6 +25,9 @@ class CrazyCrates : JavaPlugin(), Listener {
     private val plugin = this // Avoid using "this"
 
     override fun onEnable() {
+
+        if (!dataFolder.exists()) dataFolder.mkdir()
+
         FileManager.getInstance().logInfo(true)
             .registerDefaultGeneratedFiles("Basic.yml", "/crates", "/crates")
             .registerDefaultGeneratedFiles("Classic.yml", "/crates", "/crates")

@@ -234,7 +234,7 @@ public class FileManager {
      * @param name Name of the crate you want. (Without the .yml)
      * @return The custom file you wanted otherwise if not found will return null.
      */
-    public CustomFile getCustomFile(String name) {
+    public CustomFile getFile(String name) {
         for (CustomFile file : customFiles) {
             if (file.getName().equalsIgnoreCase(name)) {
                 return file;
@@ -247,8 +247,8 @@ public class FileManager {
      * Save a custom file.
      * @param name The name of the custom file.
      */
-    public void saveCustomFile(String name) {
-        CustomFile file = getCustomFile(name);
+    public void saveFile(String name) {
+        CustomFile file = getFile(name);
         if (file != null) {
             try {
                 file.getFile().save(new File(CrazyManager.getJavaPlugin().getDataFolder(), file.getHomeFolder() + "/" + file.getFileName()));
@@ -266,15 +266,15 @@ public class FileManager {
      * Save a custom file.
      * @param file The custom file you are saving.
      */
-    public void saveCustomFile(CustomFile file) {
+    public void saveFile(CustomFile file) {
         file.saveFile();
     }
     
     /**
      * Overrides the loaded state file and loads the file systems file.
      */
-    public void reloadCustomFile(String name) {
-        CustomFile file = getCustomFile(name);
+    public void reloadFile(String name) {
+        CustomFile file = getFile(name);
         if (file != null) {
             try {
                 file.file = YamlConfiguration.loadConfiguration(new File(CrazyManager.getJavaPlugin().getDataFolder(), "/" + file.getHomeFolder() + "/" + file.getFileName()));
@@ -292,7 +292,7 @@ public class FileManager {
      * Overrides the loaded state file and loads the filesystems file.
      * @return True if it reloaded correct and false if the file wasn't found.
      */
-    public Boolean reloadCustomFile(CustomFile file) {
+    public Boolean reloadFile(CustomFile file) {
         return file.reloadFile();
     }
 
