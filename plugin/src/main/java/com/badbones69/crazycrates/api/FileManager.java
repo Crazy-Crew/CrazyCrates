@@ -81,8 +81,6 @@ public class FileManager {
                     configs.put(file, YamlConfiguration.loadConfiguration(newFile));
                 }
                 case JSON -> {
-                    Test.INSTANCE.load();
-
                     if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Loading the " + file.getFileName());
                 }
             }
@@ -217,7 +215,6 @@ public class FileManager {
                 configs.put(file, YamlConfiguration.loadConfiguration(files.get(file)));
             }
             case JSON -> {
-                Test.INSTANCE.save();
                 if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Reloading json file.");
             }
         }
@@ -239,7 +236,6 @@ public class FileManager {
                 }
             }
             case JSON -> {
-                Test.INSTANCE.save();
                 if (currentValue) CrazyManager.getJavaPlugin().getLogger().info("Saving json file.");
             }
         }
