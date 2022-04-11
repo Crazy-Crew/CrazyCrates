@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.api.FileManager
 import com.badbones69.crazycrates.api.FileManager.Files
 import com.badbones69.crazycrates.api.enums.Messages
 import com.badbones69.crazycrates.commands.*
-import com.badbones69.crazycrates.commands.v2.TestCommand
 import com.badbones69.crazycrates.controllers.*
 import com.badbones69.crazycrates.cratetypes.*
 import com.badbones69.crazycrates.func.listeners.BasicListener
@@ -85,8 +84,6 @@ class CrazyCrates : JavaPlugin(), Listener {
         getCommand("key")?.tabCompleter = KeyTab()
         getCommand("crazycrates")?.setExecutor(CCCommand())
         getCommand("crazycrates")?.tabCompleter = CCTab()
-
-        getCommand("test")?.setExecutor(TestCommand)
     }
 
     override fun onDisable() {
