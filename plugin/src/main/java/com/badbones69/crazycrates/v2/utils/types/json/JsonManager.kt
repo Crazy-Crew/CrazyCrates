@@ -37,15 +37,7 @@ object JsonManager {
                     return default
                 }
                 else -> {
-                    val loaded = loadClass(classObject, currentFile.name)
-                    if (loaded == null) {
-                        val backup = File("${currentFile.path}_bad")
-
-                        if (backup.exists()) backup.delete()
-                        currentFile.renameTo(backup)
-                        return default
-                    }
-                    return loaded
+                    return loadClass(classObject, currentFile.name)
                 }
             }
         }.onFailure {
@@ -57,24 +49,7 @@ object JsonManager {
         return null
     }
 
-    fun save(fileName: String, default: Any) {
-        val currentFile = File("${getPlugin().dataFolder}/data/$fileName")
-        val broken = File("${currentFile.toPath()}.back-up")
-        runCatching {
-            if (currentFile.exists()) {
-                if (broken.exists()) broken.delete()
-                java.nio.file.Files.copy(currentFile.toPath(), broken.toPath())
-            }
-        }.onFailure {
-            if (FileManager.getInstance().isLogging) {
-                getPlugin().logger.warning("Saving ${currentFile.name} failed.")
-                getPlugin().logger.info("Error: ${it.message}")
-            }
-        }
-
-        broken.delete()
-        return writeFile(fileName, json.toJson(default))
-    }
+    fun save(fileName: String, default: Any) = writeFile(fileName, json.toJson(default))
 
     private fun writeFile(fileName: String, fileContents: String) {
         val currentFile = File("${getPlugin().dataFolder}/data/$fileName")
