@@ -2,8 +2,6 @@ package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.v2.utils.FileUtil;
 import com.badbones69.crazycrates.v2.utils.types.FileTypes;
-import com.badbones69.crazycrates.v2.utils.types.json.JsonManager;
-import com.badbones69.crazycrates.v2.utils.types.json.persist.Test;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
