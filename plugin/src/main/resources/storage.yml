@@ -1,0 +1,9 @@
+Settings:
+  # How should we store Data?
+  #
+  # |  A not so readable but lightweight way to store user data such as uuids etc. Compressed! - Works out of the box.
+  # |=> json (.json file) - A single json file compressed where all user data is stored.
+  # |=> yaml (.yaml file) - A single yml file. It is only here to ensure compatibility for the time being.
+  #
+  # We currently do not support any other data type at the moment.
+  storage-type: yaml
