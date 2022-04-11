@@ -29,6 +29,9 @@ class CrazyCrates : JavaPlugin(), Listener {
 
         if (!dataFolder.exists()) dataFolder.mkdir()
 
+        val pluginDataDir = File("$dataFolder/data")
+        if (!pluginDataDir.exists()) pluginDataDir.mkdir()
+
         FileManager.getInstance().logInfo(true)
             .registerDefaultGeneratedFiles("Basic.yml", "/crates", "/crates")
             .registerDefaultGeneratedFiles("Classic.yml", "/crates", "/crates")
@@ -42,7 +45,6 @@ class CrazyCrates : JavaPlugin(), Listener {
             .registerDefaultGeneratedFiles("wooden.nbt", "/schematics", "/schematics")
             .registerCustomFilesFolder("/crates")
             .registerCustomFilesFolder("/schematics")
-            .registerCustomFilesFolder("/data")
             .setup()
 
         cleanData()
