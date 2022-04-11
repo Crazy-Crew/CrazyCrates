@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.v2.utils.types.json
+package com.badbones69.crazycrates.api.types.json
 
 import com.badbones69.crazycrates.api.FileManager
 import com.badbones69.crazycrates.getPlugin
