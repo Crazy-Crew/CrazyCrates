@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
+import java.io.File
 
 class CrazyCrates : JavaPlugin(), Listener {
 
@@ -41,6 +42,7 @@ class CrazyCrates : JavaPlugin(), Listener {
             .registerDefaultGeneratedFiles("wooden.nbt", "/schematics", "/schematics")
             .registerCustomFilesFolder("/crates")
             .registerCustomFilesFolder("/schematics")
+            .registerCustomFilesFolder("/data")
             .setup()
 
         cleanData()
