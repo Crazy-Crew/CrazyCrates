@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.api;
 
-import com.badbones69.crazycrates.v2.utils.FileUtil;
+import com.badbones69.crazycrates.func.utils.FileUtil;
 import com.badbones69.crazycrates.api.types.FileTypes;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

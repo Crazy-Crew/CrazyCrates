@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.commands.v2
 
 import com.badbones69.crazycrates.getPlugin
-import com.badbones69.crazycrates.v2.utils.quadcrates.StructureHandler
+import com.badbones69.crazycrates.api.managers.quadcrates.StructureHandler
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender

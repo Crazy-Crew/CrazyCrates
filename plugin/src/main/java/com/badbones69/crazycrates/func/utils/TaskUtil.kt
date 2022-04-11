@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.v2.utils
+package com.badbones69.crazycrates.func.utils
 
 import com.badbones69.crazycrates.getPlugin
 

@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.v2.crates.sessions;
+package com.badbones69.crazycrates.api.managers;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
@@ -6,10 +6,10 @@ import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.QuadCrateParticles;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.v2.utils.TaskUtil;
-import com.badbones69.crazycrates.v2.utils.quadcrates.ChestControlHandler;
-import com.badbones69.crazycrates.v2.utils.quadcrates.QuadCrateSpiralHandler;
-import com.badbones69.crazycrates.v2.utils.quadcrates.StructureHandler;
+import com.badbones69.crazycrates.func.utils.TaskUtil;
+import com.badbones69.crazycrates.api.managers.quadcrates.ChestControlHandler;
+import com.badbones69.crazycrates.api.managers.quadcrates.QuadCrateSpiralHandler;
+import com.badbones69.crazycrates.api.managers.quadcrates.StructureHandler;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -18,13 +18,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
-public class QuadCrateSession {
+public class QuadCrateManager {
 
     private final ChestControlHandler quadCrateHandler = new ChestControlHandler();
 
-    private static final List<QuadCrateSession> crateSessions = new ArrayList<>();
+    private static final List<QuadCrateManager> crateSessions = new ArrayList<>();
 
-    private final QuadCrateSession instance;
+    private final QuadCrateManager instance;
     private final Player player;
 
     /**
@@ -85,7 +85,7 @@ public class QuadCrateSession {
      */
     private final StructureHandler handler;
 
-    public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler) {
+    public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler) {
         this.instance = this;
         this.player = player;
         this.crate = crate;
@@ -140,7 +140,7 @@ public class QuadCrateSession {
 
         for (Entity entity : player.getNearbyEntities(3, 3, 3)) {
             if (entity instanceof Player) {
-                for (QuadCrateSession ongoingCrate : crateSessions) {
+                for (QuadCrateManager ongoingCrate : crateSessions) {
                     if (entity.getUniqueId() == ongoingCrate.player.getUniqueId()) {
                         player.sendMessage(Messages.TO_CLOSE_TO_ANOTHER_PLAYER.getMessage("%Player%", entity.getName()));
                         CrazyManager.getInstance().removePlayerFromOpeningList(player);
@@ -304,7 +304,7 @@ public class QuadCrateSession {
     }
 
     // Get the crate sessions.
-    public static List<QuadCrateSession> getCrateSessions() {
+    public static List<QuadCrateManager> getCrateSessions() {
         return crateSessions;
     }
 

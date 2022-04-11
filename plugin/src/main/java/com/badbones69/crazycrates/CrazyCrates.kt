@@ -13,7 +13,7 @@ import com.badbones69.crazycrates.func.registerListener
 import com.badbones69.crazycrates.support.libs.Support
 import com.badbones69.crazycrates.support.placeholders.MVdWPlaceholderAPISupport
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport
-import com.badbones69.crazycrates.v2.utils.quadcrates.sessions.SessionManager
+import com.badbones69.crazycrates.api.managers.quadcrates.sessions.SessionManager
 import org.bstats.bukkit.Metrics
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

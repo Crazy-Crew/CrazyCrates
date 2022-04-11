@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.v2.utils.interfaces
+package com.badbones69.crazycrates.api.interfaces
 
 import org.bukkit.Location
 

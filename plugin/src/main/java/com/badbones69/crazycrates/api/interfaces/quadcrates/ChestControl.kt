@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.v2.utils.interfaces.quadcrates
+package com.badbones69.crazycrates.api.interfaces.quadcrates
 
 import org.bukkit.block.Block
 

@@ -5,8 +5,8 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.v2.crates.sessions.QuadCrateSession;
-import com.badbones69.crazycrates.v2.utils.quadcrates.sessions.SessionManager;
+import com.badbones69.crazycrates.api.managers.QuadCrateManager;
+import com.badbones69.crazycrates.api.managers.quadcrates.sessions.SessionManager;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -49,7 +49,7 @@ public class QuadCrate implements Listener {
     public void onChestClick(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         if (sessionManager.inSession(player)) {
-            QuadCrateSession session = sessionManager.getSession(player);
+            QuadCrateManager session = sessionManager.getSession(player);
             if (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.LEFT_CLICK_BLOCK) {
                 Block block = e.getClickedBlock();
                 if (session.getCrateLocations().contains(block.getLocation())) {

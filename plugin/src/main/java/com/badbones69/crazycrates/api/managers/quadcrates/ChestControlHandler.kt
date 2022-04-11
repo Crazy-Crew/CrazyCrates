@@ -1,6 +1,6 @@
-package com.badbones69.crazycrates.v2.utils.quadcrates
+package com.badbones69.crazycrates.api.managers.quadcrates
 
-import com.badbones69.crazycrates.v2.utils.interfaces.quadcrates.ChestControl
+import com.badbones69.crazycrates.api.interfaces.quadcrates.ChestControl
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace

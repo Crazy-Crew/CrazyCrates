@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.controllers.CrateControl;
-import com.badbones69.crazycrates.v2.utils.quadcrates.ChestControlHandler;
+import com.badbones69.crazycrates.api.managers.quadcrates.ChestControlHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

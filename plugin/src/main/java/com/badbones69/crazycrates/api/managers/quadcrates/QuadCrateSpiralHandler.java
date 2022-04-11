@@ -1,6 +1,6 @@
-package com.badbones69.crazycrates.v2.utils.quadcrates;
+package com.badbones69.crazycrates.api.managers.quadcrates;
 
-import com.badbones69.crazycrates.v2.utils.interfaces.SpiralControl;
+import com.badbones69.crazycrates.api.interfaces.SpiralControl;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
