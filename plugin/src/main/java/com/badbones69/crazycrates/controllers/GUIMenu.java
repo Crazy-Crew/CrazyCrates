@@ -76,10 +76,10 @@ public class GUIMenu implements Listener {
                         }
                     }
                     if (option.contains("Glowing:")) {
-                        item.setGlowing(Boolean.parseBoolean(option.replace("Glowing:", "")));
+                        item.setGlow(Boolean.parseBoolean(option.replace("Glowing:", "")));
                     }
                     if (option.contains("Player:")) {
-                        item.setPlayer(option.replaceAll("%player%", player.getName()));
+                        item.setPlayerName(option.replaceAll("%player%", player.getName()));
                     }
                     if (option.contains("Slot:")) {
                         slot = Integer.parseInt(option.replace("Slot:", ""));
@@ -113,8 +113,8 @@ public class GUIMenu implements Listener {
                     .setName(file.getString(path + "Name"))
                     .setLore(file.getStringList(path + "Lore"))
                     .setCrateName(crate.getName())
-                    .setPlayer(file.getString(path + "Player"))
-                    .setGlowing(file.getBoolean(path + "Glowing"))
+                    .setPlayerName(file.getString(path + "Player"))
+                    .setGlow(file.getBoolean(path + "Glowing"))
                     .addLorePlaceholder("%Keys%", NumberFormat.getNumberInstance().format(cc.getVirtualKeys(player, crate)))
                     .addLorePlaceholder("%Keys_Physical%", NumberFormat.getNumberInstance().format(cc.getPhysicalKeys(player, crate)))
                     .addLorePlaceholder("%Keys_Total%", NumberFormat.getNumberInstance().format(cc.getTotalKeys(player, crate)))
