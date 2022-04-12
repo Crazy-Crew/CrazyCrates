@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.controllers.CrateControl;
+import com.badbones69.crazycrates.api.managers.quadcrates.ChestControlHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -31,6 +32,8 @@ public class QuickCrate implements Listener {
     public static HashMap<Player, Entity> rewards = new HashMap<>();
     private static CrazyManager cc = CrazyManager.getInstance();
     private static HashMap<Player, BukkitTask> tasks = new HashMap<>();
+
+    private static ChestControlHandler quadCrateHandler = new ChestControlHandler();
     
     public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
         int keys = switch (keyType) {
@@ -93,7 +96,7 @@ public class QuickCrate implements Listener {
             reward.setPickupDelay(Integer.MAX_VALUE);
             rewards.put(player, reward);
             allRewards.add(reward);
-            cc.getNMSSupport().openChest(loc.getBlock(), true);
+            quadCrateHandler.openChest(loc.getBlock(), true);
             if (prize.useFireworks()) {
                 Methods.fireWork(loc.clone().add(.5, 1, .5));
             }
@@ -116,7 +119,8 @@ public class QuickCrate implements Listener {
             rewards.get(player).remove();
             rewards.remove(player);
         }
-        cc.getNMSSupport().openChest(loc.getBlock(), false);
+
+        quadCrateHandler.closeChest(loc.getBlock(), true);
         CrateControl.inUse.remove(player);
         cc.removePlayerFromOpeningList(player);
     }
@@ -131,5 +135,4 @@ public class QuickCrate implements Listener {
             e.setCancelled(true);
         }
     }
-    
 }

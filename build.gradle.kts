@@ -1,11 +1,49 @@
 plugins {
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm") version "1.6.20"
 }
 
 rootProject.group = "com.badbones69"
 rootProject.version = "1.10.4"
+rootProject.description = "A plugin to fit all your crate plugin needs."
 
 subprojects {
+
+    project(":plugin") {
+
+        repositories {
+
+            maven("https://papermc.io/repo/repository/maven-public/")
+
+            maven {
+                url = uri("https://repo.codemc.org/repository/maven-public/")
+                content {
+                    includeGroup("de.tr7zw")
+                    includeGroup("com.gmail.filoghost.holographicdisplays")
+                }
+            }
+
+            maven {
+                url = uri("https://jitpack.io")
+                content {
+                    includeGroup("com.github.decentsoftware-eu")
+                }
+            }
+
+            maven {
+                url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+                content {
+                    includeGroup("me.clip")
+                }
+            }
+
+            maven {
+                url = uri("https://repo.mvdw-software.com/content/groups/public/")
+                content {
+                    includeGroup("be.maximvdw")
+                }
+            }
+        }
+    }
 
     apply(plugin = "java")
     apply(plugin = "kotlin")
@@ -15,10 +53,6 @@ subprojects {
     }
 
     dependencies {
-        compileOnly(kotlin("stdlib", "1.6.10"))
-    }
-
-    java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+        compileOnly(kotlin("stdlib", "1.6.20"))
     }
 }

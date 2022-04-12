@@ -25,21 +25,27 @@ public class Wheel implements Listener {
     private static CrazyManager cc = CrazyManager.getInstance();
     
     public static void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
+
         if (!cc.takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
             cc.removePlayerFromOpeningList(player);
             return;
         }
+
         final Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 54, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+
         for (int i = 0; i < 54; i++) {
             inv.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
         }
+
         HashMap<Integer, ItemStack> items = new HashMap<>();
+
         for (int i : getBorder()) {
             Prize prize = crate.pickPrize(player);
             inv.setItem(i, prize.getDisplayItem());
             items.put(i, prize.getDisplayItem());
         }
+
         rewards.put(player, items);
         player.openInventory(inv);
         cc.addCrateTask(player, new BukkitRunnable() {
@@ -164,5 +170,4 @@ public class Wheel implements Listener {
         slots.add(12);
         return slots;
     }
-    
 }

@@ -41,13 +41,12 @@ public class Crate {
     private ArrayList<Prize> prizes;
     private String crateInventoryName;
     private boolean giveNewPlayerKeys;
-    private int previewChestlines;
+    private int previewChestLines;
     private int newPlayerKeys;
     private ArrayList<ItemStack> preview;
     private ArrayList<Tier> tiers;
     private CrateHologram hologram;
     private FileManager fileManager = FileManager.getInstance();
-    private CrazyManager cc = CrazyManager.getInstance();
     
     /**
      *
@@ -74,11 +73,11 @@ public class Crate {
         this.preview = loadPreview();
         this.previewToggle = file != null && (!file.contains("Crate.Preview.Toggle") || file.getBoolean("Crate.Preview.Toggle"));
         this.boarderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle");
-        setPreviewChestlines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
+        setPreviewChestLines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
         this.previewName = Methods.sanitizeColor(previewName);
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
-        this.maxSlots = previewChestlines * 9;
+        this.maxSlots = previewChestLines * 9;
         for (int amount = preview.size(); amount > maxSlots - (boarderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0); amount -= maxSlots - (boarderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0), maxPage++) ;
         this.crateInventoryName = file != null ? Methods.sanitizeColor(file.getString("Crate.CrateName")) : "";
         this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
@@ -100,12 +99,12 @@ public class Crate {
      * Set the preview lines for a Crate.
      * @param amount The amount of lines the preview has.
      */
-    public void setPreviewChestlines(int amount) {
+    public void setPreviewChestLines(int amount) {
         int finalAmount;
         if (amount < 3 && boarderToggle) {
             finalAmount = 3;
         } else finalAmount = Math.min(amount, 6);
-        this.previewChestlines = finalAmount;
+        this.previewChestLines = finalAmount;
     }
     
     /**
@@ -113,7 +112,7 @@ public class Crate {
      * @return The amount of lines it is set to show.
      */
     public int getPreviewChestLines() {
-        return this.previewChestlines;
+        return this.previewChestLines;
     }
     
     /**
@@ -481,24 +480,31 @@ public class Crate {
         items.add(item);
         String path = "Crate.Prizes." + prize;
         if (!file.contains(path)) {
+
             if (item.hasItemMeta()) {
                 if (item.getItemMeta().hasDisplayName()) file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
                 if (item.getItemMeta().hasLore()) file.set(path + ".Lore", item.getItemMeta().getLore());
             }
+
             NBTItem nbtItem = new NBTItem(item);
+
             if (nbtItem.hasNBTData()) {
                 if (nbtItem.hasKey("Unbreakable") && nbtItem.getBoolean("Unbreakable")) {
                     file.set(path + ".Unbreakable", true);
                 }
             }
+
             List<String> enchantments = new ArrayList<>();
+
             for (Enchantment enchantment : item.getEnchantments().keySet()) {
-                enchantments.add((cc.useNewMaterial() ? enchantment.getKey().getKey() : enchantment.getName()) + ":" + item.getEnchantments().get(enchantment));
+                enchantments.add((enchantment.getKey().getKey()));
             }
+
             if (!enchantments.isEmpty()) {
                 file.set(path + ".DisplayEnchantments", enchantments);
             }
-            file.set(path + ".DisplayItem", cc.useNewMaterial() ? item.getType().name() : item.getType().name() + ":" + item.getDurability());
+
+            file.set(path + ".DisplayItem", item.getType().name());
             file.set(path + ".DisplayAmount", item.getAmount());
             file.set(path + ".MaxRange", 100);
             file.set(path + ".Chance", 50);
@@ -509,6 +515,7 @@ public class Crate {
             }
         }
         file.set(path + ".Editor-Items", items);
+
         fileManager.saveFile(fileManager.getFile(name));
     }
     
@@ -537,7 +544,7 @@ public class Crate {
     }
     
     public int getAbsoluteItemPosition(int baseSlot) {
-        return baseSlot + (previewChestlines > 1 ? previewChestlines - 1 : 1) * 9;
+        return baseSlot + (previewChestLines > 1 ? previewChestLines - 1 : 1) * 9;
     }
     
     private boolean isInventoryNameSimilar(String inventory1, String inventory2) {
@@ -580,13 +587,13 @@ public class Crate {
     private void setDefaultItems(Inventory inventory, Player player) {
         if (boarderToggle) {
             List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
-            for (int i : borderItems) {//Top Boarder slots
+            for (int i : borderItems) { //Top Boarder slots.
                 inventory.setItem(i, boarderItem.build());
             }
             for (int i = 0; i < borderItems.size(); i++) {
                 borderItems.set(i, getAbsoluteItemPosition(borderItems.get(i)));
             }
-            for (int i : borderItems) {//Bottom Boarder slots
+            for (int i : borderItems) { //Bottom Boarder slots.
                 inventory.setItem(i, boarderItem.build());
             }
         }

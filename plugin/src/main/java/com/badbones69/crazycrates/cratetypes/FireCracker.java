@@ -63,11 +63,6 @@ public class FireCracker {
         fm.setPower(0);
         fw.setFireworkMeta(fm);
         FireworkDamageEvent.addFirework(fw);
-        new BukkitRunnable() {
-            public void run() {
-                fw.detonate();
-            }
-        }.runTaskLaterAsynchronously(CrazyManager.getJavaPlugin(), 1);
+        fw.detonate();
     }
-    
 }

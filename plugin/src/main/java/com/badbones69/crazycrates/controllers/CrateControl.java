@@ -53,9 +53,9 @@ public class CrateControl implements Listener { //Crate Control
         }
     }
     
-    //This must run as highest, so it doesn't cause other plugins to check
-    //the items that were added to the players inventory and replaced the item in the player's hand.
-    //This is only an issue with QuickCrate
+    // This must run as highest, so it doesn't cause other plugins to check.
+    // the items that were added to the players inventory and replaced the item in the player's hand.
+    // This is only an issue with QuickCrate.
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
@@ -69,11 +69,11 @@ public class CrateControl implements Listener { //Crate Control
         }
         Block clickedBlock = e.getClickedBlock();
         if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            //Loops through all loaded physical locations.
+            // Loops through all loaded physical locations.
             for (CrateLocation loc : cc.getCrateLocations()) {
-                //Checks to see if the clicked block is the same as a physical crate.
+                // Checks to see if the clicked block is the same as a physical crate.
                 if (loc.getLocation().equals(clickedBlock.getLocation())) {
-                    //Checks to see if the player is removing a crate location.
+                    // Checks to see if the player is removing a crate location.
                     if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) {
                         e.setCancelled(true);
                         cc.removeCrateLocation(loc.getID());
@@ -92,8 +92,8 @@ public class CrateControl implements Listener { //Crate Control
                 }
             }
         } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            //Checks if the item in their hand is a key and if so it stops them from right-clicking with it.
-            ItemStack key = cc.getNMSSupport().getItemInMainHand(player);
+            // Checks if the item in their hand is a key and if so it stops them from right-clicking with it.
+            ItemStack key = player.getInventory().getItemInMainHand();
             boolean keyInHand = cc.isKey(key);
             if (!keyInHand) {
                 keyInHand = cc.isKey(player.getEquipment().getItemInOffHand());
@@ -102,13 +102,13 @@ public class CrateControl implements Listener { //Crate Control
                 e.setCancelled(true);
                 player.updateInventory();
             }
-            //Checks to see if the clicked block is a physical crate.
+            // Checks to see if the clicked block is a physical crate.
             CrateLocation crateLocation = cc.getCrateLocation(clickedBlock.getLocation());
             if (crateLocation != null && crateLocation.getCrate() != null) {
                 Crate crate = crateLocation.getCrate();
                 e.setCancelled(true);
                 if (crate.getCrateType() == CrateType.MENU) {
-                    //This is to stop players in QuadCrate to not be able to try and open a crate set to menu.
+                    // This is to stop players in QuadCrate to not be able to try and open a crate set to menu.
                     if (!cc.isInOpeningList(player)) {
                         GUIMenu.openGUI(player);
                     }
@@ -186,8 +186,8 @@ public class CrateControl implements Listener { //Crate Control
                 player.closeInventory();
                 return;
             }
-            //Added the >= due to an error about a raw slot set at -999.
-            if (e.getRawSlot() < inv.getSize() && e.getRawSlot() >= 0) {//Clicked in the admin menu.
+            // Added the >= due to an error about a raw slot set at -999.
+            if (e.getRawSlot() < inv.getSize() && e.getRawSlot() >= 0) { //Clicked in the admin menu.
                 ItemStack item = inv.getItem(e.getRawSlot());
                 if (cc.isKey(item)) {
                     Crate crate = cc.getCrateFromKey(item);

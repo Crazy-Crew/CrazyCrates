@@ -13,4 +13,4 @@ commands:
     description: Views the amount of keys you/others have.
     aliases: [keys]
 libraries:
-  - org.jetbrains.kotlin:kotlin-stdlib:1.6.10
+  - org.jetbrains.kotlin:kotlin-stdlib:1.6.20

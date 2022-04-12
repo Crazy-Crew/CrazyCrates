@@ -15,17 +15,17 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class CrateOnTheGo implements Listener {
-    
+
     private static CrazyManager cc = CrazyManager.getInstance();
-    
+
     @EventHandler
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            ItemStack item = cc.getNMSSupport().getItemInMainHand(player);
-            
+            ItemStack item = player.getInventory().getItemInMainHand();
+
             if (item == null || item.getType() == Material.AIR) return;
-            
+
             for (Crate crate : cc.getCrates()) {
                 if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO && Methods.isSimilar(item, crate)) {
                     e.setCancelled(true);
@@ -42,5 +42,4 @@ public class CrateOnTheGo implements Listener {
             }
         }
     }
-    
 }
