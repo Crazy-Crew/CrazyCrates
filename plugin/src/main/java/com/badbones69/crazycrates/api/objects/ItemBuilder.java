@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.api.objects;
 
-import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.support.SkullCreator;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Color;
@@ -449,7 +448,7 @@ public class ItemBuilder {
             
             if (metaData.contains("#")) { // <ID>:<Durability>#<CustomModelData>
                 String modelData = metaData.split("#")[1];
-                if (Methods.isInt(modelData)) { // Value is a number.
+                if (isInt(modelData)) { // Value is a number.
                     this.useCustomModelData = true;
                     this.customModelData = Integer.parseInt(modelData);
                 }
@@ -457,7 +456,7 @@ public class ItemBuilder {
             
             metaData = metaData.replace("#" + customModelData, "");
             
-            if (Methods.isInt(metaData)) { // Value is durability.
+            if (isInt(metaData)) { // Value is durability.
                 this.damage = Integer.parseInt(metaData);
             } else { // Value is something else.
                 this.potionType = getPotionType(PotionEffectType.getByName(metaData));
@@ -469,7 +468,7 @@ public class ItemBuilder {
             String[] b = material.split("#");
             material = b[0];
             
-            if (Methods.isInt(b[1])) { // Value is a number.
+            if (isInt(b[1])) { // Value is a number.
                 this.useCustomModelData = true;
                 this.customModelData = Integer.parseInt(b[1]);
             }
@@ -738,6 +737,23 @@ public class ItemBuilder {
         return this;
     }
     
+    /**
+     * Set the flags that will be on the item in the builder.
+     *
+     * @param flagStrings The flag names as string you wish to add to the item in the builder.
+     * @return The ItemBuilder with updated info.
+     */
+    public ItemBuilder setFlagsFromStrings(List<String> flagStrings) {
+        itemFlags.clear();
+        for (String flagString : flagStrings) {
+            ItemFlag flag = getFlag(flagString);
+            if (flag != null) {
+                itemFlags.add(flag);
+            }
+        }
+        return this;
+    }
+    
     // Used for multiple Item Flags
     public ItemBuilder addItemFlags(List<String> flagStrings) {
         for (String flagString : flagStrings) {
@@ -748,6 +764,20 @@ public class ItemBuilder {
                 }
             } catch (Exception ignored) {
             }
+        }
+        return this;
+    }
+    
+    /**
+     * Add a flag to the item in the builder.
+     *
+     * @param flagString The name of the flag you wish to add.
+     * @return The ItemBuilder with updated info.
+     */
+    public ItemBuilder addFlags(String flagString) {
+        ItemFlag flag = getFlag(flagString);
+        if (flag != null) {
+            itemFlags.add(flag);
         }
         return this;
     }
@@ -1208,6 +1238,24 @@ public class ItemBuilder {
         enchantments.put("IMPALING", "Impaling");
         enchantments.put("LOYALTY", "Loyalty");
         return enchantments;
+    }
+    
+    private boolean isInt(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+    
+    private ItemFlag getFlag(String flagString) {
+        for (ItemFlag flag : ItemFlag.values()) {
+            if (flag.name().equalsIgnoreCase(flagString)) {
+                return flag;
+            }
+        }
+        return null;
     }
     
 }
