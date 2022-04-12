@@ -34,6 +34,7 @@ Messages:
   No-Schematics-Found: '&cNo schematic were found. Please make sure NBT files exist in the schematics folder if not delete the folder to regenerate.'
   No-Prizes-Found: '&cThis crate contains no prizes that you can win.'
   Same-Player: '&cYou can''t use this command on yourself.'
+  Prize-Error: '&cAn error has occurred while trying to give you the prize called &6%prize%&c in crate called &6%crate%&c. Please contact the server owner and show them this error.'
   Transfer-Keys:
     Not-Enough-Keys: '&cYou do not have enough keys to transfer.'
     Transferred-Keys: '&7You have transferred %amount% %crate% keys to %player%.'

@@ -715,6 +715,13 @@ public class CrazyManager {
         if (prize != null) {
             prize = prize.hasBlacklistPermission(player) ? prize.getAltPrize() : prize;
             for (ItemStack item : prize.getItems()) {
+                if (item == null) {
+                    HashMap<String, String> placeholders = new HashMap<>();
+                    placeholders.put("%Crate%", prize.getCrate());
+                    placeholders.put("%Prize%", prize.getName());
+                    player.sendMessage(Messages.PRIZE_ERROR.getMessage(placeholders));
+                    continue;
+                }
                 if (!Methods.isInventoryFull(player)) {
                     player.getInventory().addItem(item);
                 } else {
