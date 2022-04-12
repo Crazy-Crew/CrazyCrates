@@ -829,6 +829,10 @@ public class ItemBuilder {
                     potionMeta.setColor(potionColor);
                 }
             }
+            if (material == Material.TIPPED_ARROW && potionType != null) {
+                PotionMeta potionMeta = (PotionMeta) itemMeta;
+                potionMeta.setBasePotionData(new PotionData(potionType));
+            }
             if (isLeatherArmor && armorColor != null) {
                 LeatherArmorMeta leatherMeta = (LeatherArmorMeta) itemMeta;
                 leatherMeta.setColor(armorColor);
