@@ -31,7 +31,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public class CrateControl implements Listener { //Crate Control
     
@@ -40,6 +43,7 @@ public class CrateControl implements Listener { //Crate Control
      */
     public static HashMap<Player, Location> inUse = new HashMap<>();
     private final CrazyCrates cc = CrazyCrates.getInstance();
+    private final List<UUID> cooldown = new ArrayList<>();
     
     /**
      * This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
@@ -60,13 +64,17 @@ public class CrateControl implements Listener { //Crate Control
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         FileConfiguration config = Files.CONFIG.getFile();
+
         if (Version.isNewer(Version.v1_8_R3) && e.getHand() == EquipmentSlot.OFF_HAND) {
             if (cc.isKey(player.getInventory().getItemInOffHand())) {
                 e.setCancelled(true);
                 player.updateInventory();
+                return;
             }
-            return;
         }
+
+        boolean sneaking = player.isSneaking();
+
         Block clickedBlock = e.getClickedBlock();
         if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
             //Loops through all loaded physical locations.
@@ -91,7 +99,10 @@ public class CrateControl implements Listener { //Crate Control
                     }
                 }
             }
-        } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             //Checks if the item in their hand is a key and if so it stops them from right clicking with it.
             ItemStack key = cc.getNMSSupport().getItemInMainHand(player);
             boolean keyInHand = cc.isKey(key);
@@ -102,6 +113,7 @@ public class CrateControl implements Listener { //Crate Control
                 e.setCancelled(true);
                 player.updateInventory();
             }
+
             //Checks to see if the clicked block is a physical crate.
             CrateLocation crateLocation = cc.getCrateLocation(clickedBlock.getLocation());
             if (crateLocation != null && crateLocation.getCrate() != null) {
@@ -155,6 +167,28 @@ public class CrateControl implements Listener { //Crate Control
                         if (crate.getCrateType() == CrateType.COSMIC) {//Only cosmic crate type uses this method.
                             cc.addPlayerKeyType(player, keyType);
                         }
+
+                        if(crate.getCrateType() == CrateType.QUICK_CRATE) {
+                            if(sneaking) {
+                                if(cooldown.contains(player.getUniqueId())) return;
+
+                                if (inUse.containsValue(crateLocation.getLocation())) {
+                                    player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
+                                    return;
+                                }
+
+                                e.setCancelled(true);
+
+                                cc.addPlayerToOpeningList(player, crate);
+                                inUse.put(player, crateLocation.getLocation());
+                                QuickCrate.openCrate(player, crateLocation.getLocation(), crate, keyType, true);
+
+                                cooldown.add(player.getUniqueId());
+                                Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin("CrazyCrates"), () -> cooldown.remove(player.getUniqueId()), 100L);
+                                return;
+                            }
+                        }
+
                         cc.addPlayerToOpeningList(player, crate);
                         cc.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true);
                     } else {

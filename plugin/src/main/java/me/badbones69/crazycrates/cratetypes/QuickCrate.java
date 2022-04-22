@@ -33,7 +33,7 @@ public class QuickCrate implements Listener {
     private static final CrazyCrates cc = CrazyCrates.getInstance();
     private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
     
-    public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
+    public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType, boolean multiKeyOpen) {
         int keys; // If the key is free it is set to one.
         switch (keyType) {
             case VIRTUAL_KEY:
@@ -47,7 +47,7 @@ public class QuickCrate implements Listener {
                 break;
         }
 
-        if (player.isSneaking() && keys > 1) {
+        if (multiKeyOpen && keys > 1) {
             int keysUsed = 0;
 
             // give the player the prizes
@@ -125,8 +125,9 @@ public class QuickCrate implements Listener {
             rewards.remove(player);
         }
         cc.getNMSSupport().openChest(loc.getBlock(), false);
-        CrateControl.inUse.remove(player);
         cc.removePlayerFromOpeningList(player);
+
+        CrateControl.inUse.remove(player);
     }
     
     public static void removeAllRewards() {

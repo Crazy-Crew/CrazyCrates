@@ -482,7 +482,7 @@ public class CrazyCrates {
                         return;
                     } else {
                         CrateControl.inUse.put(player, location);
-                        QuickCrate.openCrate(player, location, crate, keyType);
+                        QuickCrate.openCrate(player, location, crate, keyType, player.isSneaking());
                     }
                 }
                 break;

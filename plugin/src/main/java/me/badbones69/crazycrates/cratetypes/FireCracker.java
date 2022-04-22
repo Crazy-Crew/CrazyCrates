@@ -50,7 +50,7 @@ public class FireCracker {
                 if (l == 25) {
                     cc.endCrate(player);
                     // The key type is set to free because the key has already been taken above.
-                    QuickCrate.openCrate(player, loc, crate, KeyType.FREE_KEY);
+                    QuickCrate.openCrate(player, loc, crate, KeyType.FREE_KEY, player.isSneaking());
                 }
             }
         }.runTaskTimer(cc.getPlugin(), 0, 2));
