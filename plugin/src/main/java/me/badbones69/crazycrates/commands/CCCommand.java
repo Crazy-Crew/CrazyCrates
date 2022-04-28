@@ -628,7 +628,9 @@ public class CCCommand implements CommandExecutor {
                             sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
                             if (Files.DATA.getFile().getBoolean("Players." + target.getUniqueId() + ".crateMessages")
                                     || !Files.DATA.getFile().contains("Players." + target.getUniqueId() + ".crateMessages")) {
-                                target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
+                                if (!(args.length >= 6 && args[5].equalsIgnoreCase("false"))) {
+                                    target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
+                                }
                             }
                         }
                         return true;

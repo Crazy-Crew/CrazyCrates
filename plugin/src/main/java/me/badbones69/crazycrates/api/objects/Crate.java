@@ -22,12 +22,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
 
 public class Crate {
-    
+
     private CrateManager manager;
     private final String name;
+
+    private final String bulkMessageDisplayName;
     private final ItemStack key;
     private final ItemStack keyNoNBT;
     private final ItemStack adminKey;
@@ -49,26 +50,26 @@ public class Crate {
     private final CrateHologram hologram;
     private final FileManager fileManager = FileManager.getInstance();
     private final CrazyCrates cc = CrazyCrates.getInstance();
-    
+
     /**
-     *
-     * @param name The name of the crate.
+     * @param name      The name of the crate.
      * @param crateType The crate type of the crate.
-     * @param key The key as an item stack.
-     * @param prizes The prizes that can be won.
-     * @param file The crate file.
+     * @param key       The key as an item stack.
+     * @param prizes    The prizes that can be won.
+     * @param file      The crate file.
      */
-    public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, CrateHologram hologram) {
+    public Crate(String name, String bulkMessageDisplayName, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, CrateHologram hologram) {
         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
         this.keyNoNBT = itemBuilder.build();
         this.key = itemBuilder.setCrateName(name).build();
         this.adminKey = itemBuilder
-        .addLore("")
-        .addLore("&7&l(&6&l!&7&l) Left click for Physical Key")
-        .addLore("&7&l(&6&l!&7&l) Right click for Virtual Key")
-        .setCrateName(name).build();
+                .addLore("")
+                .addLore("&7&l(&6&l!&7&l) Left click for Physical Key")
+                .addLore("&7&l(&6&l!&7&l) Right click for Virtual Key")
+                .setCrateName(name).build();
         this.file = file;
         this.name = name;
+        this.bulkMessageDisplayName = bulkMessageDisplayName;
         this.tiers = tiers != null ? tiers : new ArrayList<>();
         this.prizes = prizes;
         this.crateType = crateType;
@@ -297,17 +298,23 @@ public class Crate {
     public ItemBuilder getBoarderItem() {
         return boarderItem;
     }
-    
+
     /**
      * Get the name of the inventory the crate will have.
+     *
      * @return The name of the inventory for GUI based crate types.
      */
     public String getCrateInventoryName() {
         return crateInventoryName;
     }
-    
+
+    public String getBulkMessageDisplayName() {
+        return bulkMessageDisplayName;
+    }
+
     /**
      * Check if the inventory the player is in is the crate menu.
+     *
      * @param view The inventory view of the inventory.
      * @return True if it is the crate menu and false if not.
      */

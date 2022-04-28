@@ -58,15 +58,25 @@ public enum Messages {
     CONVERT_CRATES_PLUS("Files-Converted.Crates-Plus", Arrays.asList("%prefix%&7Successfully converted CratesPlus config.yml into crate files with no errors.", "&7Please do &6/cc reload &7to register the new crates.")),
     NO_FILES_TO_CONVERT("Files-Converted.No-Files-To-Convert", "&cNo plugins that can be converted were found."),
     ERROR_CONVERTING_FILES("Files-Converted.Error-Converting-Files", "&cThere was an error while trying to convert files. Please check console for the error log."),
+    CRATE_OPEN_BULK("Crate-Open-Bulk",
+            Arrays.asList(
+                    "",
+                    "%crate_bulk_message%",
+                    "&7Opening %keys-used% keys..",
+                    "",
+                    "%crate_reward%",
+                    ""
+            )),
+
     HELP("Help",
-    Arrays.asList(
-    "&3&lCrazy Crates Help Menu",
-    "&6/key [player] &7- Check the number of keys a player has.",
-    "&6/cc &7- Opens the GUI.",
-    "&6/cc additem <crate> <prize> &7- Add items in-game to a prize in a crate.",
-    "&6/cc admin &7- Opens the Admin Keys GUI.",
-    "&6/cc preview <crate> [player] &7- Opens the preview of a crate for a player.",
-    "&6/cc list &7- Lists all the Crates.",
+            Arrays.asList(
+                    "&3&lCrazy Crates Help Menu",
+                    "&6/key [player] &7- Check the number of keys a player has.",
+                    "&6/cc &7- Opens the GUI.",
+                    "&6/cc additem <crate> <prize> &7- Add items in-game to a prize in a crate.",
+                    "&6/cc admin &7- Opens the Admin Keys GUI.",
+                    "&6/cc preview <crate> [player] &7- Opens the preview of a crate for a player.",
+                    "&6/cc list &7- Lists all the Crates.",
     "&6/cc open <crate> [player] &7- Tries to open a crate for a player if they have a key.",
     "&6/cc forceopen <crate> [player] &7- Opens a crate for a player for free.",
     "&6/cc tp <location> &7- Teleport to a Crate.",

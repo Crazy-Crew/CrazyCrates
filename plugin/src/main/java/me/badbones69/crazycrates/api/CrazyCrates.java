@@ -219,6 +219,7 @@ public class CrazyCrates {
                 CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));
                 ArrayList<Prize> prizes = new ArrayList<>();
                 String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
+                String bulkMessageDisplayName = file.contains("Crate.Crate-Bulk-Display-Name") ? file.getString("Crate.Crate-Bulk-Display-Name") : previewName;
                 ArrayList<Tier> tiers = new ArrayList<>();
                 if (file.contains("Crate.Tiers") && file.getConfigurationSection("Crate.Tiers") != null) {
                     for (String tier : file.getConfigurationSection("Crate.Tiers").getKeys(false)) {
@@ -245,10 +246,11 @@ public class CrazyCrates {
                     if (file.contains(path + ".Alternative-Prize")) {
                         if (file.getBoolean(path + ".Alternative-Prize.Toggle")) {
                             altPrize = new Prize("Alternative-Prize",
-                            file.getStringList(path + ".Alternative-Prize.Messages"),
-                            file.getStringList(path + ".Alternative-Prize.Commands"),
-                            null,//No editor items
-                            getItems(file, prize + ".Alternative-Prize"));
+                                    file.getString(path + ".Alternative-Prize.Crate-Bulk-Message", ""),
+                                    file.getStringList(path + ".Alternative-Prize.Messages"),
+                                    file.getStringList(path + ".Alternative-Prize.Commands"),
+                                    null,//No editor items
+                                    getItems(file, prize + ".Alternative-Prize"));
                         }
                     }
                     ArrayList<ItemStack> editorItems = new ArrayList<>();
@@ -258,16 +260,17 @@ public class CrazyCrates {
                         }
                     }
                     prizes.add(new Prize(prize, getDisplayItem(file, prize),
-                    file.getStringList(path + ".Messages"),
-                    file.getStringList(path + ".Commands"),
-                    editorItems,
-                    getItems(file, prize),
-                    crateName,
-                    file.getInt(path + ".Chance", 100),
-                    file.getInt(path + ".MaxRange", 100),
-                    file.getBoolean(path + ".Firework"),
-                    file.getStringList(path + ".BlackListed-Permissions"),
-                    prizeTiers,
+                            file.getString(path + ".Crate-Bulk-Message"),
+                            file.getStringList(path + ".Messages"),
+                            file.getStringList(path + ".Commands"),
+                            editorItems,
+                            getItems(file, prize),
+                            crateName,
+                            file.getInt(path + ".Chance", 100),
+                            file.getInt(path + ".MaxRange", 100),
+                            file.getBoolean(path + ".Firework"),
+                            file.getStringList(path + ".BlackListed-Permissions"),
+                            prizeTiers,
                     altPrize));
                 }
                 int newPlayersKeys = file.getInt("Crate.StartingKeys");
@@ -276,15 +279,15 @@ public class CrazyCrates {
                         giveNewPlayersKeys = true;
                     }
                 }
-                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers,
-                new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"))));
+                crates.add(new Crate(crateName, bulkMessageDisplayName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers,
+                        new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"))));
             } catch (Exception e) {
                 brokecrates.add(crateName);
                 Bukkit.getLogger().log(Level.WARNING, fileManager.getPrefix() + "There was an error while loading the " + crateName + ".yml file.");
                 e.printStackTrace();
             }
         }
-        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null));
+        crates.add(new Crate("Menu", "Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null));
         if (fileManager.isLogging()) Bukkit.getLogger().info(fileManager.getPrefix() + "All crate information has been loaded.");
         if (fileManager.isLogging()) Bukkit.getLogger().info(fileManager.getPrefix() + "Loading all the physical crate locations.");
         FileConfiguration locations = Files.LOCATIONS.getFile();
@@ -753,13 +756,8 @@ public class CrazyCrates {
         }
         return inv;
     }
-    
-    /**
-     * Give a player a prize they have won.
-     * @param player The player you wish to give the prize to.
-     * @param prize The prize the player has won.
-     */
-    public void givePrize(Player player, Prize prize) {
+
+    public void givePrize(Player player, Prize prize, boolean sendMessage) {
         if (prize != null) {
             prize = prize.hasBlacklistPermission(player) ? prize.getAltPrize() : prize;
             for (ItemStack item : prize.getItems()) {
@@ -809,23 +807,36 @@ public class CrazyCrates {
                 }
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Methods.color(command.replace("%Player%", player.getName()).replace("%player%", player.getName())));
             }
+            if (!sendMessage) return;
+
             for (String message : prize.getMessages()) {
                 if (Support.PLACEHOLDERAPI.isPluginLoaded()) {
                     message = PlaceholderAPI.setPlaceholders(player, message);
                 }
                 player.sendMessage(Methods.color(message).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())
-                .replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
+                        .replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
             }
         } else {
             plugin.getLogger().warning("[CrazyCrates]>> No prize was found when giving " + player.getName() + " a prize.");
         }
     }
-    
+
+    /**
+     * Give a player a prize they have won.
+     *
+     * @param player The player you wish to give the prize to.
+     * @param prize  The prize the player has won.
+     */
+    public void givePrize(Player player, Prize prize) {
+        givePrize(player, prize, true);
+    }
+
     /**
      * Give keys to an offline player.
+     *
      * @param player The offline player you wish to give keys to.
-     * @param crate The Crate of which key you are giving to the player.
-     * @param keys The amount of keys you wish to give to the player.
+     * @param crate  The Crate of which key you are giving to the player.
+     * @param keys   The amount of keys you wish to give to the player.
      * @return Returns true if it successfully gave the offline player a key and false if there was an error.
      */
     public boolean addOfflineKeys(String player, Crate crate, int keys) {

@@ -23,18 +23,22 @@ public class Prize {
     private final List<ItemBuilder> itemBuilders;
     private final Prize altPrize;
     private final List<String> blackListPermissions;
-    
+
+    private final String bulkRewardMessage;
+
     /**
      * Create a new prize.
      * This option is used only for Alternative Prizes.
-     * @param name The name of the prize.
+     *
+     * @param name     The name of the prize.
      * @param messages The messages it sends to the player that wins it.
      * @param commands The commands that run when the prize is won.
-     * @param items The ItemStacks that are given to the player that wins.
+     * @param items    The ItemStacks that are given to the player that wins.
      */
-    public Prize(String name, List<String> messages, List<String> commands, List<ItemStack> items, List<ItemBuilder> itemBuilders) {
+    public Prize(String name, String bulkRewardMessage, List<String> messages, List<String> commands, List<ItemStack> items, List<ItemBuilder> itemBuilders) {
         this.name = name != null ? name : "&4No name Found!";
         this.crate = "";
+        this.bulkRewardMessage = bulkRewardMessage;
         this.items = items != null ? items : new ArrayList<>();
         this.itemBuilders = itemBuilders != null ? itemBuilders : new ArrayList<>();
         this.chance = 0;
@@ -63,11 +67,12 @@ public class Prize {
      * @param tiers The tiers the prize is in.
      * @param altPrize The alternative prize that is won if the player has a blacklist permission.
      */
-    public Prize(String name, ItemBuilder displayItem, List<String> messages, List<String> commands,
-    List<ItemStack> items, List<ItemBuilder> itemBuilders, String crate, int chance, int maxRange, boolean firework, List<String> blackListPermissions,
-    List<Tier> tiers, Prize altPrize) {
+    public Prize(String name, ItemBuilder displayItem, String bulkRewardMessage, List<String> messages, List<String> commands,
+                 List<ItemStack> items, List<ItemBuilder> itemBuilders, String crate, int chance, int maxRange, boolean firework, List<String> blackListPermissions,
+                 List<Tier> tiers, Prize altPrize) {
         this.name = name != null ? name : "&4No name Found!";
         this.crate = crate;
+        this.bulkRewardMessage = bulkRewardMessage;
         this.items = items != null ? items : new ArrayList<>();
         this.itemBuilders = itemBuilders != null ? itemBuilders : new ArrayList<>();
         this.chance = chance;
@@ -78,17 +83,21 @@ public class Prize {
         this.commands = commands != null ? commands : new ArrayList<>();
         this.displayItem = displayItem != null ? displayItem : new ItemBuilder();
         this.blackListPermissions = blackListPermissions != null ? blackListPermissions : new ArrayList<>();
-        this.blackListPermissions.replaceAll(String :: toLowerCase);
+        this.blackListPermissions.replaceAll(String::toLowerCase);
         this.altPrize = altPrize;
     }
-    
+
     /**
      * @return Returns the name of the prize.
      */
     public String getName() {
         return name;
     }
-    
+
+    public String getBulkRewardMessage() {
+        return bulkRewardMessage;
+    }
+
     /**
      * @return Returns the display item that is shown for the preview and the winning prize.
      */
