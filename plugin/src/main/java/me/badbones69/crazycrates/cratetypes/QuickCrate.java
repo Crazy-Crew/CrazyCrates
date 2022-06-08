@@ -84,12 +84,8 @@ public class QuickCrate implements Listener {
 
                         final String bulkRewardMessage = prize.getBulkRewardMessage();
                         if (bulkRewardMessage == null) {
-                            System.out.println("no bulk rward for prize " + prize.getName());
                             return;
                         }
-
-                        System.out.println("given reward " + bulkRewardMessage);
-
 
                         player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 bulkRewardMessage.replace("%amount%", Integer.toString(prizeList.size()))));
@@ -104,7 +100,7 @@ public class QuickCrate implements Listener {
             }
 
             if (!rewards) {
-                prizes.forEach(prize -> cc.givePrize(player, prize, false));
+                prizes.forEach(prize -> cc.givePrize(player, prize, true));
             }
 
             if (!cc.takeKeys(keysUsed, player, crate, keyType, false)) {

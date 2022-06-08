@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Prize {
-    
+
     private final int chance;
     private final String name;
     private final String crate;
@@ -19,6 +19,8 @@ public class Prize {
     private final List<Tier> tiers;
     private final List<String> messages;
     private final List<String> commands;
+    private final List<String> bulkCommands;
+
     private final List<ItemStack> items;
     private final List<ItemBuilder> itemBuilders;
     private final Prize altPrize;
@@ -35,7 +37,7 @@ public class Prize {
      * @param commands The commands that run when the prize is won.
      * @param items    The ItemStacks that are given to the player that wins.
      */
-    public Prize(String name, String bulkRewardMessage, List<String> messages, List<String> commands, List<ItemStack> items, List<ItemBuilder> itemBuilders) {
+    public Prize(String name, String bulkRewardMessage, List<String> messages, List<String> commands, List<String> bulkCommands, List<ItemStack> items, List<ItemBuilder> itemBuilders) {
         this.name = name != null ? name : "&4No name Found!";
         this.crate = "";
         this.bulkRewardMessage = bulkRewardMessage;
@@ -47,6 +49,10 @@ public class Prize {
         this.tiers = new ArrayList<>();
         this.messages = messages != null ? messages : new ArrayList<>();
         this.commands = commands != null ? commands : new ArrayList<>();
+        this.bulkCommands = bulkCommands != null ? bulkCommands : new ArrayList<>();
+        if (this.bulkCommands.isEmpty()) {
+            this.bulkCommands.addAll(this.commands);
+        }
         this.displayItem = new ItemBuilder();
         this.blackListPermissions = new ArrayList<>();
         this.altPrize = null;
@@ -68,7 +74,7 @@ public class Prize {
      * @param altPrize The alternative prize that is won if the player has a blacklist permission.
      */
     public Prize(String name, ItemBuilder displayItem, String bulkRewardMessage, List<String> messages, List<String> commands,
-                 List<ItemStack> items, List<ItemBuilder> itemBuilders, String crate, int chance, int maxRange, boolean firework, List<String> blackListPermissions,
+             List<String> bulkCommands, List<ItemStack> items, List<ItemBuilder> itemBuilders, String crate, int chance, int maxRange, boolean firework, List<String> blackListPermissions,
                  List<Tier> tiers, Prize altPrize) {
         this.name = name != null ? name : "&4No name Found!";
         this.crate = crate;
@@ -81,6 +87,10 @@ public class Prize {
         this.tiers = tiers != null ? tiers : new ArrayList<>();
         this.messages = messages != null ? messages : new ArrayList<>();
         this.commands = commands != null ? commands : new ArrayList<>();
+        this.bulkCommands = bulkCommands != null ? bulkCommands : new ArrayList<>();
+        if (this.bulkCommands.isEmpty()) {
+            this.bulkCommands.addAll(this.commands);
+        }
         this.displayItem = displayItem != null ? displayItem : new ItemBuilder();
         this.blackListPermissions = blackListPermissions != null ? blackListPermissions : new ArrayList<>();
         this.blackListPermissions.replaceAll(String::toLowerCase);
@@ -131,21 +141,25 @@ public class Prize {
     public List<String> getMessages() {
         return messages;
     }
-    
+
     /**
      * @return Returns the commands that are ran when the player wins.
      */
     public List<String> getCommands() {
         return commands;
     }
-    
+
+    public List<String> getBulkCommands() {
+        return bulkCommands;
+    }
+
     /**
      * @return Returns the Editor ItemStacks that are given to the player that wins.
      */
     public List<ItemStack> getItems() {
         return items;
     }
-    
+
     /**
      * @return Returns the ItemBuilders for all the custom items made from the Items: option.
      */

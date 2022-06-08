@@ -249,6 +249,7 @@ public class CrazyCrates {
                                     file.getString(path + ".Alternative-Prize.Crate-Bulk-Message", ""),
                                     file.getStringList(path + ".Alternative-Prize.Messages"),
                                     file.getStringList(path + ".Alternative-Prize.Commands"),
+                                    file.getStringList(path + ".Alternative-Prize.Bulk-Commands"),
                                     null,//No editor items
                                     getItems(file, prize + ".Alternative-Prize"));
                         }
@@ -263,6 +264,7 @@ public class CrazyCrates {
                             file.getString(path + ".Crate-Bulk-Message"),
                             file.getStringList(path + ".Messages"),
                             file.getStringList(path + ".Commands"),
+                            file.getStringList(path + ".Bulk-Commands"),
                             editorItems,
                             getItems(file, prize),
                             crateName,
@@ -271,7 +273,7 @@ public class CrazyCrates {
                             file.getBoolean(path + ".Firework"),
                             file.getStringList(path + ".BlackListed-Permissions"),
                             prizeTiers,
-                    altPrize));
+                            altPrize));
                 }
                 int newPlayersKeys = file.getInt("Crate.StartingKeys");
                 if (giveNewPlayersKeys = false) {
@@ -427,7 +429,7 @@ public class CrazyCrates {
             public void run() {
                 cooldowns.remove(player.getUniqueId());
             }
-        }.runTaskLater(plugin, Files.CONFIG.getFile().getInt("Settings.Cooldown", 3) * 20L);
+        }.runTaskLater(plugin, Files.CONFIG.getFile().getInt("Settings.Cooldown", 1) * 20L);
 
         switch (crate.getCrateType()) {
             case MENU:
@@ -779,7 +781,15 @@ public class CrazyCrates {
                     player.getWorld().dropItemNaturally(player.getLocation(), clone.build());
                 }
             }
-            for (String command : prize.getCommands()) {// /give %player% iron %random%:1-64
+
+            List<String> commands;
+            if (sendMessage) {
+                commands = prize.getCommands();
+            } else {
+                commands = prize.getBulkCommands();
+            }
+
+            for (String command : commands) {// /give %player% iron %random%:1-64
                 if (command.contains("%random%:")) {
                     String cmd = command;
                     StringBuilder commandBuilder = new StringBuilder();
