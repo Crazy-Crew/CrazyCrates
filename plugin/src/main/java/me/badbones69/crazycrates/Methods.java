@@ -7,6 +7,7 @@ import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FireworkDamageEvent;
+import me.badbones69.crazycrates.multisupport.ServerVersion;
 import me.badbones69.crazycrates.multisupport.Version;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.Validate;
@@ -41,7 +42,7 @@ public class Methods {
     public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
     
     public static String color(String message) {
-        if (Version.isNewer(Version.v1_15_R1) && !message.startsWith("tellraw")) {
+        if (ServerVersion.isAtLeast(ServerVersion.v1_17) && !message.startsWith("tellraw")) {
             Matcher matcher = HEX_PATTERN.matcher(message);
             StringBuffer buffer = new StringBuffer();
             while (matcher.find()) {
@@ -168,7 +169,7 @@ public class Methods {
     public static boolean isSimilar(Player player, Crate crate) {
         boolean check = isSimilar(cc.getNMSSupport().getItemInMainHand(player), crate);
         if (!check) {
-            if (Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+            if (ServerVersion.isAtLeast(ServerVersion.v1_12)) {
                 check = isSimilar(player.getEquipment().getItemInOffHand(), crate);
             }
         }
@@ -278,7 +279,7 @@ public class Methods {
         for (Enchantment enchantment : Enchantment.values()) {
             try {
                 //MC 1.13+ has the correct names.
-                if (Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+                if (ServerVersion.isAtLeast(ServerVersion.v1_17)) {
                     if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
                         return enchantment;
                     }

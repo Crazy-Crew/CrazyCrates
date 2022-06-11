@@ -15,6 +15,7 @@ import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.controllers.CrateControl;
 import me.badbones69.crazycrates.controllers.GUIMenu;
 import me.badbones69.crazycrates.controllers.Preview;
+import me.badbones69.crazycrates.multisupport.ServerVersion;
 import me.badbones69.crazycrates.multisupport.Support;
 import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.*;
@@ -56,7 +57,7 @@ public class CCCommand implements CommandExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("set1") || args[0].equalsIgnoreCase("set2")) {
                 if (!Methods.permCheck(sender, "admin")) return true;
-                if (Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {
+                if (ServerVersion.isEquals(ServerVersion.v1_8)) {
                     sender.sendMessage(Methods.getPrefix("&cThis command only works on 1.13+. If you wish to make schematics for 1.12.2- use World Edit to do so."));
                     return true;
                 }
@@ -102,7 +103,7 @@ public class CCCommand implements CommandExecutor {
                 //					return true;
             } else if (args[0].equalsIgnoreCase("save")) {// /cc save <file name>
                 if (!Methods.permCheck(sender, "admin")) return true;
-                if (Version.getCurrentVersion().isOlder(Version.v1_13_R2)) {
+                if (ServerVersion.isAtLeast(ServerVersion.v1_8)) {
                     sender.sendMessage(Methods.getPrefix("&cThis command only works on 1.13+. If you wish to make schematics for 1.12.2- use World Edit to do so."));
                     return true;
                 }

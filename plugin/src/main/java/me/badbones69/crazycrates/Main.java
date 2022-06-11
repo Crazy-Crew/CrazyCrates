@@ -31,15 +31,16 @@ public class Main extends JavaPlugin implements Listener {
     
     @Override
     public void onEnable() {
-        if (Version.getCurrentVersion().isOlder(Version.v1_8_R3) || Version.getCurrentVersion().isNewer(Version.v1_17_R1)) {
+
+        if (!ServerVersion.isEquals(ServerVersion.v1_8) || !ServerVersion.isEquals(ServerVersion.v1_12) || !ServerVersion.isEquals(ServerVersion.v1_17)) {
             checkVersion();
             return;
         }
 
         //Crate Files
-        String extension = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "nbt" : "schematic";
-        String cratesFolder = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "/Crates1.13-Up" : "/Crates1.12.2-Down";
-        String schemFolder = Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? "/Schematics1.13-Up" : "/Schematics1.12.2-Down";
+        String extension = ServerVersion.isAtLeast(ServerVersion.v1_17) ? "nbt" : "schematic";
+        String cratesFolder = ServerVersion.isAtLeast(ServerVersion.v1_17) ? "/Crates1.13-Up" : "/Crates1.12.2-Down";
+        String schemFolder = ServerVersion.isAtLeast(ServerVersion.v1_17) ? "/Schematics1.13-Up" : "/Schematics1.12.2-Down";
         fileManager.logInfo(true)
         .registerDefaultGenerateFiles("Basic.yml", "/Crates", cratesFolder)
         .registerDefaultGenerateFiles("Classic.yml", "/Crates", cratesFolder)
@@ -81,11 +82,13 @@ public class Main extends JavaPlugin implements Listener {
         pm.registerEvents(new QuickCrate(), this);
         pm.registerEvents(new CrateControl(), this);
         pm.registerEvents(new CrateOnTheGo(), this);
-        if (Version.getCurrentVersion().isNewer(Version.v1_11_R1)) {
+
+        if (ServerVersion.isAtLeast(ServerVersion.v1_12)) {
             pm.registerEvents(new Events_v1_12_R1_Up(), this);
         } else {
             pm.registerEvents(new Events_v1_11_R1_Down(), this);
         }
+
         if (!cc.getBrokeCrateLocations().isEmpty()) {
             pm.registerEvents(new BrokeLocationsControl(), this);
         }
@@ -93,9 +96,11 @@ public class Main extends JavaPlugin implements Listener {
         if (Support.PLACEHOLDERAPI.isPluginLoaded()) {
             new PlaceholderAPISupport(this).register();
         }
+
         if (Support.MVDWPLACEHOLDERAPI.isPluginLoaded()) {
             MVdWPlaceholderAPISupport.registerPlaceholders(this);
         }
+
         Methods.hasUpdate();
         new Metrics(this); //Starts up bStats
         getCommand("key").setExecutor(new KeyCommand());
@@ -109,13 +114,14 @@ public class Main extends JavaPlugin implements Listener {
         getLogger().warning("============= Crazy Crates =============");
         getLogger().info(" ");
         getLogger().warning("Plugin Disabled: This server is running on an unsupported version and Crazy Crates does not support those versions. "
-                + "Please check the spigot page for more information about lower Minecraft versions.");
+                + "We only support 1.8.8, 1.12.2 & 1.17.1 - Anything else you should think update from your version to these.");
         getLogger().info(" ");
         getLogger().warning("Support Discord: https://discord.com/invite/MCuz8JG/");
-        getLogger().warning("Version Integer: " + Version.getCurrentVersion().getVersionInteger());
+        getLogger().warning("Version Integer: " + ServerVersion.getBukkitVersion());
         getLogger().info(" ");
         getLogger().warning("============= Crazy Crates =============");
-        Bukkit.getPluginManager().disablePlugin(this);
+
+        getServer().getPluginManager().disablePlugin(this);
     }
 
     @Override

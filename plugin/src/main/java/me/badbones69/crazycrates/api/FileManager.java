@@ -1,5 +1,6 @@
 package me.badbones69.crazycrates.api;
 
+import me.badbones69.crazycrates.multisupport.ServerVersion;
 import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -351,7 +352,7 @@ public class FileManager {
          * @param oldFileJar The location of the 1.12.2- file version in the jar.
          */
         private Files(String fileName, String fileLocation, String newFileJar, String oldFileJar) {
-            this(fileName, fileLocation, Version.getCurrentVersion().isNewer(Version.v1_12_R1) ? newFileJar : oldFileJar);
+            this(fileName, fileLocation, ServerVersion.isAtLeast(ServerVersion.v1_17) ? newFileJar : oldFileJar);
         }
         
         /**

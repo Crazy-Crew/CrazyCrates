@@ -10,6 +10,7 @@ import me.badbones69.crazycrates.api.events.PhysicalCrateKeyCheckEvent;
 import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
 import me.badbones69.crazycrates.cratetypes.QuickCrate;
+import me.badbones69.crazycrates.multisupport.ServerVersion;
 import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -60,7 +61,7 @@ public class CrateControl implements Listener { //Crate Control
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         FileConfiguration config = Files.CONFIG.getFile();
-        if (Version.getCurrentVersion().isNewer(Version.v1_8_R3) && e.getHand() == EquipmentSlot.OFF_HAND) {
+        if (ServerVersion.isAtLeast(ServerVersion.v1_12) && e.getHand() == EquipmentSlot.OFF_HAND) {
             if (cc.isKey(player.getInventory().getItemInOffHand())) {
                 e.setCancelled(true);
                 player.updateInventory();
@@ -95,7 +96,7 @@ public class CrateControl implements Listener { //Crate Control
             //Checks if the item in their hand is a key and if so it stops them from right clicking with it.
             ItemStack key = cc.getNMSSupport().getItemInMainHand(player);
             boolean keyInHand = cc.isKey(key);
-            if (!keyInHand && Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+            if (!keyInHand && ServerVersion.isAtLeast(ServerVersion.v1_12)) {
                 keyInHand = cc.isKey(player.getEquipment().getItemInOffHand());
             }
             if (keyInHand) {

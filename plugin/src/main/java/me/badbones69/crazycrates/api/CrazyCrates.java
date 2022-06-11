@@ -17,16 +17,9 @@ import me.badbones69.crazycrates.controllers.Preview;
 import me.badbones69.crazycrates.cratetypes.*;
 import me.badbones69.crazycrates.multisupport.*;
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
-import me.badbones69.crazycrates.multisupport.nms.v1_10_R1.NMS_v1_10_R1;
-import me.badbones69.crazycrates.multisupport.nms.v1_11_R1.NMS_v1_11_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_12_R1.NMS_v1_12_R1;
-import me.badbones69.crazycrates.multisupport.nms.v1_13_R2.NMS_v1_13_R2;
-import me.badbones69.crazycrates.multisupport.nms.v1_14_R1.NMS_v1_14_R1;
-import me.badbones69.crazycrates.multisupport.nms.v1_15_R1.NMS_v1_15_R1;
-import me.badbones69.crazycrates.multisupport.nms.v1_16_R3.NMS_v1_16_R3;
 import me.badbones69.crazycrates.multisupport.nms.v1_17_R1.NMS_v1_17_R1;
 import me.badbones69.crazycrates.multisupport.nms.v1_8_R3.NMS_v1_8_R3;
-import me.badbones69.crazycrates.multisupport.nms.v1_9_R2.NMS_v1_9_R2;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -38,7 +31,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
-
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -165,35 +157,14 @@ public class CrazyCrates {
         crateLocations.clear();
         crateSchematics.clear();
         Version version = Version.getCurrentVersion();
-        useNewMaterial = version.isNewer(Version.v1_12_R1);
-        useNewSounds = version.isNewer(Version.v1_8_R3);
+        useNewMaterial = ServerVersion.isAtLeast(ServerVersion.v1_17);
+        useNewSounds = ServerVersion.isAtLeast(ServerVersion.v1_12);
         switch (version) {
             case v1_8_R3:
                 nmsSupport = new NMS_v1_8_R3();
                 break;
-            case v1_9_R2:
-                nmsSupport = new NMS_v1_9_R2();
-                break;
-            case v1_10_R1:
-                nmsSupport = new NMS_v1_10_R1();
-                break;
-            case v1_11_R1:
-                nmsSupport = new NMS_v1_11_R1();
-                break;
             case v1_12_R1:
                 nmsSupport = new NMS_v1_12_R1();
-                break;
-            case v1_13_R2:
-                nmsSupport = new NMS_v1_13_R2();
-                break;
-            case v1_14_R1:
-                nmsSupport = new NMS_v1_14_R1();
-                break;
-            case v1_15_R1:
-                nmsSupport = new NMS_v1_15_R1();
-                break;
-            case v1_16_R3:
-                nmsSupport = new NMS_v1_16_R3();
                 break;
             case v1_17_R1:
                 nmsSupport = new NMS_v1_17_R1();
@@ -331,7 +302,7 @@ public class CrazyCrates {
         //Loading schematic files
         if (fileManager.isLogging()) Bukkit.getLogger().info(fileManager.getPrefix() + "Searching for schematics to load.");
         String[] schems = new File(plugin.getDataFolder() + "/Schematics/").list();
-        boolean isNewer = Version.getCurrentVersion().isNewer(Version.v1_12_R1);
+        boolean isNewer = ServerVersion.isAtLeast(ServerVersion.v1_12);
         for (String schematicName : schems) {
             if (isNewer) {
                 if (schematicName.endsWith(".nbt")) {
@@ -1012,7 +983,7 @@ public class CrazyCrates {
         List<ItemStack> items = new ArrayList<>();
         if (checkHand) {
             items.add(nmsSupport.getItemInMainHand(player));
-            if (Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+            if (ServerVersion.isAtLeast(ServerVersion.v1_12)) {
                 items.add(player.getEquipment().getItemInOffHand());
             }
         } else {
@@ -1125,7 +1096,7 @@ public class CrazyCrates {
         switch (keyType) {
             case PHYSICAL_KEY:
                 int takeAmount = amount;
-                boolean hasOffhand = Version.getCurrentVersion().isNewer(Version.v1_8_R3);
+                boolean hasOffhand = ServerVersion.isAtLeast(ServerVersion.v1_12);
                 try {
                     List<ItemStack> items = new ArrayList<>();
                     if (checkHand) {
@@ -1308,7 +1279,7 @@ public class CrazyCrates {
     public void loadSchematics() {
         crateSchematics.clear();
         String[] schems = new File(plugin.getDataFolder() + "/Schematics/").list();
-        boolean isNewer = Version.getCurrentVersion().isNewer(Version.v1_12_R1);
+        boolean isNewer = ServerVersion.isAtLeast(ServerVersion.v1_17);
         for (String schematicName : schems) {
             if (isNewer) {
                 if (schematicName.endsWith(".nbt")) {

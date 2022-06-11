@@ -6,6 +6,7 @@ import me.badbones69.crazycrates.api.enums.KeyType;
 import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.enums.QuadCrateParticles;
 import me.badbones69.crazycrates.controllers.ParticleEffect;
+import me.badbones69.crazycrates.multisupport.ServerVersion;
 import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
 import org.bukkit.*;
@@ -364,7 +365,7 @@ public class QuadCrateSession {
     }
     
     private void spawnParticles(QuadCrateParticles quadCrateParticle, Color particleColor, Location location1, Location location2) {
-        if (Version.getCurrentVersion().isNewer(Version.v1_8_R3)) {
+        if (ServerVersion.isAtLeast(ServerVersion.v1_12)) {
             Particle particle;
             switch (quadCrateParticle) {
                 case FLAME:
@@ -379,7 +380,7 @@ public class QuadCrateSession {
                 default:
                     particle = Particle.REDSTONE;
             }
-            if (Version.getCurrentVersion().isNewer(Version.v1_12_R1)) {
+            if (ServerVersion.isAtLeast(ServerVersion.v1_17)) {
                 if (particle == Particle.REDSTONE) {
                     location1.getWorld().spawnParticle(particle, location1, 0, new DustOptions(particleColor, 1));
                     location2.getWorld().spawnParticle(particle, location2, 0, new DustOptions(particleColor, 1));
