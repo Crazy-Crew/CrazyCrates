@@ -16,8 +16,6 @@ import me.badbones69.crazycrates.controllers.CrateControl;
 import me.badbones69.crazycrates.controllers.GUIMenu;
 import me.badbones69.crazycrates.controllers.Preview;
 import me.badbones69.crazycrates.multisupport.ServerVersion;
-import me.badbones69.crazycrates.multisupport.Support;
-import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;

@@ -7,7 +7,6 @@ import me.badbones69.crazycrates.api.enums.Messages;
 import me.badbones69.crazycrates.api.enums.QuadCrateParticles;
 import me.badbones69.crazycrates.controllers.ParticleEffect;
 import me.badbones69.crazycrates.multisupport.ServerVersion;
-import me.badbones69.crazycrates.multisupport.Version;
 import me.badbones69.crazycrates.multisupport.nms.NMSSupport;
 import org.bukkit.*;
 import org.bukkit.Particle.DustOptions;

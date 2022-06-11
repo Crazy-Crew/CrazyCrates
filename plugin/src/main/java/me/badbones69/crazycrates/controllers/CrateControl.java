@@ -11,7 +11,6 @@ import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
 import me.badbones69.crazycrates.cratetypes.QuickCrate;
 import me.badbones69.crazycrates.multisupport.ServerVersion;
-import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;

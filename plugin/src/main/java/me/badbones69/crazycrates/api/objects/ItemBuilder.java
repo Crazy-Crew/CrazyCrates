@@ -5,7 +5,6 @@ import me.badbones69.crazycrates.Methods;
 import me.badbones69.crazycrates.api.CrazyCrates;
 import me.badbones69.crazycrates.multisupport.ServerVersion;
 import me.badbones69.crazycrates.multisupport.SkullCreator;
-import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;

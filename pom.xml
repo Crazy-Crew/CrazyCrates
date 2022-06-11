@@ -22,19 +22,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <name>nexus releases</name>
-            <url>https://nexus.badbones69.com/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <name>nexus snapshots</name>
-            <url>https://nexus.badbones69.com/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <build>
         <defaultGoal>clean package install</defaultGoal>
         <finalName>${project.name}</finalName>

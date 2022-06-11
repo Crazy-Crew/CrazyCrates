@@ -8,7 +8,6 @@ import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.controllers.FireworkDamageEvent;
 import me.badbones69.crazycrates.multisupport.ServerVersion;
-import me.badbones69.crazycrates.multisupport.Version;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.Validate;
 import org.bukkit.*;
