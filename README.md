@@ -13,9 +13,9 @@ N/A
 ## Maven:
 ```xml
 <repository>
-    <id>crazycrew-repo-releases</id>
+    <id>crazycrew-repo-legacy</id>
     <name>CrazyCrew Team</name>
-    <url>https://repo.badbones69.com/releases</url>
+    <url>https://repo.badbones69.com/legacy</url>
 </repository>
 
 <dependency>
