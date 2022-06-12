@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>me.badbones69</groupId>
+        <groupId>com.badbones69</groupId>
         <artifactId>crazycrates-parent</artifactId>
         <version>1.10.2</version>
     </parent>

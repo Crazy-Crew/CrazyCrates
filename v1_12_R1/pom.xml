@@ -3,7 +3,7 @@
 
     <parent>
         <artifactId>crazycrates-parent</artifactId>
-        <groupId>me.badbones69</groupId>
+        <groupId>com.badbones69</groupId>
         <version>1.10.2</version>
     </parent>
 
@@ -20,7 +20,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>me.badbones69</groupId>
+            <groupId>com.badbones69</groupId>
             <artifactId>crazycrates-api</artifactId>
             <version>1.10.2</version>
             <type>jar</type>
