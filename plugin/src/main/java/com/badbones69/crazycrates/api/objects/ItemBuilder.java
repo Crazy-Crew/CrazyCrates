@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 /**
  *
  * The ItemBuilder is designed to make creating items easier by creating an easy to use Builder.
- * This will allow you to covert an existing ItemStack into an ItemBuilder to allow you to edit 
+ * This will allow you to covert an existing ItemStack into an ItemBuilder to allow you to edit
  * an existing ItemStack or make a new ItemStack from scratch.
  *
  * @author BadBones69
@@ -40,7 +40,6 @@ import java.util.stream.Collectors;
 public class ItemBuilder {
     
     private static CrazyCrates cc = CrazyCrates.getInstance();
-    private static ServerVersion version = ServerVersion.valueOf(ServerVersion.getBukkitVersion());
     private NBTItem nbtItem;
     private Material material;
     private int damage;
