@@ -5,7 +5,7 @@ Source Code for Crazy Crates
 https://discord.com/invite/MCuz8JG/
 
 ## Build Status:
-[![Build Status](https://jenkins.badbones69.com/view/Legacy/job/Crazy-Crates-Legacy/badge/icon)](https://jenkins.badbones69.com/view/Legacy/job/Crazy-Crates-Legacy/)
+[![Build Status](https://jenkins.badbones69.com/view/Legacy/job/Crazy-Crates-Modern/badge/icon)](https://jenkins.badbones69.com/view/Modern/job/Crazy-Crates-Modern/)
 
 ## Latest 1.17.X & below Version:
 [https://jenkins.badbones69.com/job/Crazy-Crates-Legacy/](https://jenkins.badbones69.com/view/Legacy/job/Crazy-Crates-Legacy/)
