@@ -15,10 +15,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent.KeyReciveReason;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
-import me.badbones69.crazycrates.api.objects.*;
 import com.badbones69.crazycrates.controllers.GUIMenu;
-import me.badbones69.crazycrates.cratetypes.*;
-import me.badbones69.crazycrates.multisupport.*;
 import com.badbones69.crazycrates.multisupport.nms.v1_12_R1.NMS_v1_12_R1;
 import com.badbones69.crazycrates.multisupport.nms.v1_17_R1.NMS_v1_17_R1;
 import com.badbones69.crazycrates.multisupport.nms.v1_8_R3.NMS_v1_8_R3;
@@ -158,17 +155,17 @@ public class CrazyCrates {
         brokecrates.clear();
         crateLocations.clear();
         crateSchematics.clear();
-        Version version = Version.getCurrentVersion();
+        ServerVersion version = ServerVersion.valueOf(ServerVersion.getBukkitVersion());
         useNewMaterial = ServerVersion.isAtLeast(ServerVersion.v1_17);
         useNewSounds = ServerVersion.isAtLeast(ServerVersion.v1_12);
         switch (version) {
-            case v1_8_R3:
+            case v1_8:
                 nmsSupport = new NMS_v1_8_R3();
                 break;
-            case v1_12_R1:
+            case v1_12:
                 nmsSupport = new NMS_v1_12_R1();
                 break;
-            case v1_17_R1:
+            case v1_17:
                 nmsSupport = new NMS_v1_17_R1();
                 break;
         }
