@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 public class ItemBuilder {
     
     private static CrazyCrates cc = CrazyCrates.getInstance();
-    private static Version version = Version.getCurrentVersion();
+    private static ServerVersion version = ServerVersion.valueOf(ServerVersion.getBukkitVersion());
     private NBTItem nbtItem;
     private Material material;
     private int damage;
