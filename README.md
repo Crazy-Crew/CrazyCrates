@@ -5,26 +5,27 @@ Source Code for Crazy Crates
 https://discord.com/invite/MCuz8JG/
 
 ## Build Status:
-[![Build Status](https://jenkins.badbones69.com/job/Crazy-Crates/badge/icon)](https://jenkins.badbones69.com/job/Crazy-Crates/)
+[![Build Status](https://jenkins.badbones69.com/view/Legacy/job/Crazy-Crates-Legacy/badge/icon)](https://jenkins.badbones69.com/view/Legacy/job/Crazy-Crates-Legacy/)
 
 ## Latest 1.17.X & below Version:
-https://jenkins.badbones69.com/job/Crazy-Crates-Legacy/
+[https://jenkins.badbones69.com/job/Crazy-Crates-Legacy/](https://jenkins.badbones69.com/view/Legacy/job/Crazy-Crates-Legacy/)
 
-## Latest 1.18.X Version: 
-https://jenkins.badbones69.com/job/Crazy-Crates/
+## Latest 1.18.X-1.19.X Version: 
+[https://jenkins.badbones69.com/job/Crazy-Crates/](https://jenkins.badbones69.com/view/Modern/job/Crazy-Crates-Modern/)
 
-## Nexus:
-https://nexus.badbones69.com/#browse/browse:maven-releases:me%2Fbadbones69%2Fcrazycrates-plugin
+## Repo:
+N/A
 
 ## Maven:
 ```xml
 <repository>
-    <id>nexus</id>
-    <url>https://nexus.badbones69.com/repository/maven-releases/</url>
+    <id>crazycrew-repo-releases</id>
+    <name>CrazyCrew Team</name>
+    <url>https://repo.badbones69.com/releases</url>
 </repository>
 
 <dependency>
-    <groupId>me.badbones69</groupId>
+    <groupId>com.badbones69</groupId>
     <artifactId>crazycrates-plugin</artifactId>
     <version>{Latest Version}</version>
 </dependency>
