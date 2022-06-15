@@ -36,8 +36,17 @@ public class QuickCrate implements Listener {
     public static HashMap<Player, Entity> rewards = new HashMap<>();
     private static final CrazyCrates cc = CrazyCrates.getInstance();
     private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
-    
+
+    /**
+     * @deprecated For legacy purposes
+     *
+     * Use {@link #openCrate(Player, Location, Crate, KeyType, int)} instead
+     */
     public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType, boolean multiKeyOpen) {
+        openCrate(player, loc, crate, keyType, multiKeyOpen ? -1 : 0);
+    }
+
+    public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType, int toUse) {
         int keys; // If the key is free it is set to one.
         switch (keyType) {
             case VIRTUAL_KEY:
@@ -51,12 +60,12 @@ public class QuickCrate implements Listener {
                 break;
         }
 
-        if (multiKeyOpen && keys > 1) {
+        if ((toUse == -1 || toUse > 0) && keys > 1) {
             int keysUsed = 0;
 
             // give the player the prizes
             List<Prize> prizes = new ArrayList<>();
-            for(; keys > 0 && keysUsed < 64; keys--) {
+            for(; keys > 0 && keysUsed < (toUse > 0 ? toUse : 64); keys--) {
                 if (Methods.isInventoryFull(player)) break;
 
                 Prize prize = crate.pickPrize(player);

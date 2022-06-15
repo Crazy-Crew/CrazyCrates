@@ -79,3 +79,35 @@ Settings:
     - 'Slot:42, Item:STAINED_GLASS_PANE:15, Name: '
     - 'Slot:43, Item:STAINED_GLASS_PANE:15, Name: '
     - 'Slot:44, Item:STAINED_GLASS_PANE:15, Name: '
+  MassOpenGUI:
+    Title: '&8&lMASS OPEN KEYS'
+    Information:
+      Item: 'SIGN'
+      Name: '&6&lMASS OPEN INFORMATION'
+      Lore:
+        - '&7Click how many keys you want'
+        - '&7to open at once!'
+    OpenItem:
+      Enough:
+        Item: 'INK_SACK'
+        Damage: 10
+        Name: '&a&lOPEN %Count% KEY'
+        Lore: []
+      NotEnough:
+        Item: 'INK_SACK'
+        Damage: 8
+        Name: '&a&lOPEN %Count% KEY'
+        Lore: []
+    AutoCloseToggle:
+      Enabled:
+        Item: 'REDSTONE_COMPARATOR'
+        Name: '&e&lTOGGLE AUTOCLOSE?'
+        Lore:
+          - '&7State: &aEnabled'
+          - '&7Should we close this menu once you open your key'
+      Disabled:
+        Item: 'REDSTONE_COMPARATOR'
+        Name: '&e&lTOGGLE AUTOCLOSE?'
+        Lore:
+          - '&7State: &cDisabled'
+          - '&7Should we close this menu once you open your key'

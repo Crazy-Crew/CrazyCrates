@@ -10,6 +10,7 @@ import me.badbones69.crazycrates.commands.KeyCommand;
 import me.badbones69.crazycrates.commands.KeyTab;
 import me.badbones69.crazycrates.controllers.*;
 import me.badbones69.crazycrates.cratetypes.*;
+import me.badbones69.crazycrates.gui.MassOpenGUI;
 import me.badbones69.crazycrates.multisupport.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -68,6 +69,7 @@ public class Main extends JavaPlugin implements Listener {
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(this, this);
         pm.registerEvents(new GUIMenu(), this);
+        pm.registerEvents(new MassOpenGUI(), this);
         pm.registerEvents(new Preview(), this);
         pm.registerEvents(new QuadCrate(), this);
         pm.registerEvents(new War(), this);
