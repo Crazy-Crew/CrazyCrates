@@ -21,7 +21,6 @@ plugin/build
 
 plugin/src/main/java/com/badbones69/crazycrates/func/v2/data
 build
-buildSrc
 
 .gradle
 gradle

@@ -9,7 +9,6 @@ import org.bukkit.block.structure.StructureRotation
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
 
 class StructureHandler(private val plugin: JavaPlugin, val file: File) : StructureControl {
 
@@ -26,15 +25,13 @@ class StructureHandler(private val plugin: JavaPlugin, val file: File) : Structu
 
             structureManager.place(location, false, StructureRotation.NONE, Mirror.NONE, 0, 1F, Random())
         }.onFailure { plugin.logger.warning(it.message) }.onSuccess {
-            plugin.logger.info("Saving structure blocks to list.")
-
             // Save the structure blocks
             getStructureBlocks(location)
         }
     }
 
     // Don't need yet
-    override fun saveStructure(location: ArrayList<Location>) {
+    override fun saveStructure(location: Array<Location?>?) {
         runCatching {
 
         }.onFailure { plugin.logger.warning(it.message) }

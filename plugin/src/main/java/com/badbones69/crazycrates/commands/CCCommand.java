@@ -14,6 +14,7 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.controllers.CrateControl;
 import com.badbones69.crazycrates.controllers.GUIMenu;
 import com.badbones69.crazycrates.controllers.Preview;
+import com.badbones69.crazycrates.structures.StructureHandler;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,6 +29,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.structure.Structure;
 
 import java.io.File;
 import java.util.HashMap;
@@ -85,7 +87,7 @@ public class CCCommand implements CommandExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("save")) {// /cc save <file name>
                 if (!Methods.permCheck(sender, "admin") || PaperLib.isSpigot()) {
-                    if (PaperLib.isSpigot()) sender.sendMessage(color("&c&l[!] This feature only works on PaperMC [!]"));
+                    if (PaperLib.isSpigot()) sender.sendMessage(color("&c&l[!] This feature only works on Paper [!]"));
                     return true;
                 }
 
@@ -93,15 +95,18 @@ public class CCCommand implements CommandExecutor {
 
                 if (locations != null && locations[0] != null && locations[1] != null) {
                     if (args.length >= 2) {
-                        File file = new File(CrazyManager.getJavaPlugin().getDataFolder() + "/Schematics/" + args[1]);
-                        // cc.getNMSSupport().saveSchematic(locations, sender.getName(), file);
+                        /**
+                        File file = new File(CrazyManager.getJavaPlugin().getDataFolder() + "/schematics/" + args[1]);
+                        new StructureHandler(CrazyManager.getJavaPlugin(), file).saveStructure(locations);
                         sender.sendMessage(Methods.getPrefix("&7Saved the " + args[1] + ".nbt into the Schematics folder."));
                         cc.loadSchematics();
+                         */
+                        sender.sendMessage(color("&c&l[!] Currently disabled."));
                     } else {
                         sender.sendMessage(Methods.getPrefix("&cYou need to specify a schematic file name."));
                     }
                 } else {
-                    sender.sendMessage(Methods.getPrefix("&cYou need to use /cc set1/set2 to set the connors of your schematic."));
+                    sender.sendMessage(Methods.getPrefix("&cYou need to use /cc set1/set2 to set the corners of your schematic."));
                 }
 
                 return true;

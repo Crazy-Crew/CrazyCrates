@@ -16,7 +16,6 @@ import com.badbones69.crazycrates.controllers.CrateControl;
 import com.badbones69.crazycrates.controllers.GUIMenu;
 import com.badbones69.crazycrates.controllers.Preview;
 import com.badbones69.crazycrates.cratetypes.*;
-import com.badbones69.crazycrates.func.TaskUtil;
 import com.badbones69.crazycrates.structures.StructureHandler;
 import com.badbones69.crazycrates.support.holograms.DecentHolograms;
 import com.badbones69.crazycrates.support.holograms.HolographicSupport;
@@ -35,13 +34,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-
 import static com.badbones69.crazycrates.func.ConstantsKt.color;
 
 public class CrazyManager {
@@ -442,6 +438,9 @@ public class CrazyManager {
 
                     player.sendMessage(color("&c&l[!] QuadCrates are disabled on Spigot, Please contact your owner and have them use Paper [!]"));
                     removePlayerFromOpeningList(player);
+
+                    // Check just in case.
+                    if (hasCrateTask(player)) removeCrateTask(player);
                     broadcast = false;
                 }
                 break;
@@ -638,10 +637,11 @@ public class CrazyManager {
      */
     public void addCrateLocation(Location location, Crate crate) {
         FileConfiguration locations = Files.LOCATIONS.getFile();
-        String id = "1"; //Location ID
+        String id = "1"; // Location ID
         for (int i = 1; locations.contains("Locations." + i); i++) {
             id = (i + 1) + "";
         }
+
         for (CrateLocation crateLocation : getCrateLocations()) {
             if (crateLocation.getLocation().equals(location)) {
                 id = crateLocation.getID();
@@ -676,6 +676,7 @@ public class CrazyManager {
                 break;
             }
         }
+
         if (location != null) {
             crateLocations.remove(location);
             if (hologramController != null) {
@@ -749,6 +750,7 @@ public class CrazyManager {
             int amount = file.getInt("Crate.Prizes." + reward + ".DisplayAmount", 1);
             boolean unbreakable = file.getBoolean("Crate.Prizes." + reward + ".Unbreakable", false);
             boolean hideItemFlags = file.getBoolean("Crate.Prizes." + reward + ".HideItemsFlags", false);
+
             for (String enchantmentName : file.getStringList("Crate.Prizes." + reward + ".DisplayEnchantments")) {
                 Enchantment enchantment = Methods.getEnchantment(enchantmentName.split(":")[0]);
                 if (enchantment != null) {
@@ -1173,6 +1175,7 @@ public class CrazyManager {
                         items.addAll(Arrays.asList(player.getInventory().getContents()));
                         items.remove(player.getEquipment().getItemInOffHand());
                     }
+
                     for (ItemStack item : items) {
                         if (item != null) {
                             if (isKeyFromCrate(item, crate)) {
@@ -1190,6 +1193,7 @@ public class CrazyManager {
                             }
                         }
                     }
+
                     //This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the offhand.
                     if (takeAmount > 0) {
                         ItemStack item = player.getEquipment().getItemInOffHand();
@@ -1213,6 +1217,7 @@ public class CrazyManager {
                     Methods.failedToTakeKey(player, crate, e);
                     return false;
                 }
+
                 //Returns true because it was able to take some keys.
                 if (takeAmount < amount) {
                     return true;
@@ -1230,7 +1235,7 @@ public class CrazyManager {
                 }
                 Files.DATA.saveFile();
                 return true;
-            case FREE_KEY://Returns true because it's FREE
+            case FREE_KEY: // Returns true because it's FREE
                 return true;
         }
         return false;

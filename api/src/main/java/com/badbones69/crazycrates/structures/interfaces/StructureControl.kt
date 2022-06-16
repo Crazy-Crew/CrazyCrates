@@ -10,7 +10,7 @@ interface StructureControl {
     fun pasteStructure(location: Location)
 
     // Save a new nbt structure
-    fun saveStructure(location: ArrayList<Location>)
+    fun saveStructure(location: Array<Location?>?)
 
     // Remove a structure
     fun removeStructure(location: Location)
