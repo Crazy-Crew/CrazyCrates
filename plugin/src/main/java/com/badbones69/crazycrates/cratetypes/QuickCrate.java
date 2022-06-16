@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.controllers.CrateControl;
+import com.badbones69.crazycrates.structures.blocks.ChestStateHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -49,6 +50,7 @@ public class QuickCrate implements Listener {
                 Prize prize = crate.pickPrize(player);
                 cc.givePrize(player, prize);
                 CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+
                 if (prize.useFireworks()) {
                     Methods.fireWork(loc.clone().add(.5, 1, .5));
                 }
@@ -62,14 +64,17 @@ public class QuickCrate implements Listener {
                 cc.removePlayerFromOpeningList(player);
                 return;
             }
+
             endQuickCrate(player, loc);
         } else {
+
             if (!cc.takeKeys(1, player, crate, keyType, true)) {
                 Methods.failedToTakeKey(player, crate);
                 CrateControl.inUse.remove(player);
                 cc.removePlayerFromOpeningList(player);
                 return;
             }
+
             Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
             cc.givePrize(player, prize);
             CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
@@ -78,6 +83,7 @@ public class QuickCrate implements Listener {
             nbtItem.setBoolean("crazycrates-item", true);
             displayItem = nbtItem.getItem();
             Item reward;
+
             try {
                 reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
             } catch (IllegalArgumentException e) {
@@ -86,6 +92,7 @@ public class QuickCrate implements Listener {
                 e.printStackTrace();
                 return;
             }
+
             reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(CrazyManager.getJavaPlugin(), true));
             reward.setVelocity(new Vector(0, .2, 0));
             reward.setCustomName(displayItem.getItemMeta().getDisplayName());
@@ -93,10 +100,12 @@ public class QuickCrate implements Listener {
             reward.setPickupDelay(Integer.MAX_VALUE);
             rewards.put(player, reward);
             allRewards.add(reward);
-            cc.getNMSSupport().openChest(loc.getBlock(), true);
+            new ChestStateHandler().openChest(loc.getBlock(), true);
+
             if (prize.useFireworks()) {
                 Methods.fireWork(loc.clone().add(.5, 1, .5));
             }
+
             tasks.put(player, new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -111,12 +120,14 @@ public class QuickCrate implements Listener {
             tasks.get(player).cancel();
             tasks.remove(player);
         }
+
         if (rewards.get(player) != null) {
             allRewards.remove(rewards.get(player));
             rewards.get(player).remove();
             rewards.remove(player);
         }
-        cc.getNMSSupport().openChest(loc.getBlock(), false);
+
+        new ChestStateHandler().openChest(loc.getBlock(), false);
         CrateControl.inUse.remove(player);
         cc.removePlayerFromOpeningList(player);
     }
@@ -131,5 +142,4 @@ public class QuickCrate implements Listener {
             e.setCancelled(true);
         }
     }
-    
 }

@@ -28,12 +28,10 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-
 import java.util.HashMap;
-
 import static com.badbones69.crazycrates.func.ConstantsKt.color;
 
-public class CrateControl implements Listener { //Crate Control
+public class CrateControl implements Listener { // Crate Control
     
     /**
      * A list of crate locations that are in use.
@@ -60,6 +58,7 @@ public class CrateControl implements Listener { //Crate Control
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         FileConfiguration config = Files.CONFIG.getFile();
+
         if (e.getHand() == EquipmentSlot.OFF_HAND) {
             if (cc.isKey(player.getInventory().getItemInOffHand())) {
                 e.setCancelled(true);
@@ -67,6 +66,7 @@ public class CrateControl implements Listener { //Crate Control
             }
             return;
         }
+
         Block clickedBlock = e.getClickedBlock();
         if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
             //Loops through all loaded physical locations.
@@ -93,15 +93,18 @@ public class CrateControl implements Listener { //Crate Control
             }
         } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             //Checks if the item in their hand is a key and if so it stops them from right-clicking with it.
-            ItemStack key = cc.getNMSSupport().getItemInMainHand(player);
+            ItemStack key = player.getInventory().getItemInMainHand();
             boolean keyInHand = cc.isKey(key);
+
             if (!keyInHand) {
                 keyInHand = cc.isKey(player.getEquipment().getItemInOffHand());
             }
+
             if (keyInHand) {
                 e.setCancelled(true);
                 player.updateInventory();
             }
+
             //Checks to see if the clicked block is a physical crate.
             CrateLocation crateLocation = cc.getCrateLocation(clickedBlock.getLocation());
             if (crateLocation != null && crateLocation.getCrate() != null) {

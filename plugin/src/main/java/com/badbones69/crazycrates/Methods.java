@@ -135,10 +135,6 @@ public class Methods {
         return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
     }
     
-    public static List<Location> getLocations(String shem, Location loc) {
-        return cc.getNMSSupport().getLocations(new File(CrazyManager.getJavaPlugin().getDataFolder() + "/Schematics/" + shem), loc);
-    }
-    
     public static boolean isInventoryFull(Player player) {
         return player.getInventory().firstEmpty() == -1;
     }
@@ -148,7 +144,7 @@ public class Methods {
     }
     
     public static boolean isSimilar(Player player, Crate crate) {
-        boolean check = isSimilar(cc.getNMSSupport().getItemInMainHand(player), crate);
+        boolean check = isSimilar(player.getEquipment().getItemInMainHand(), crate);
         if (!check) check = isSimilar(player.getEquipment().getItemInOffHand(), crate);
         return check;
     }

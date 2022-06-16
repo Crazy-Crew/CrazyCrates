@@ -1,4 +1,11 @@
 rootProject.name = "Crazy-Crates"
 
-include("plugin")
-include("api")
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+
+        maven("https://papermc.io/repo/repository/maven-public/")
+    }
+}
+
+include("plugin", "api")

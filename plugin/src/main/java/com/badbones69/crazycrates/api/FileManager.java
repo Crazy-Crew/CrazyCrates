@@ -52,6 +52,7 @@ public class FileManager {
             configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
             if (log) CrazyManager.getJavaPlugin().getLogger().info("Successfully loaded " + file.getFileName());
         }
+
         //Starts to load all the custom files.
         if (homeFolders.size() > 0) {
             if (log) CrazyManager.getJavaPlugin().getLogger().info("Loading custom files.");
@@ -70,7 +71,6 @@ public class FileManager {
                             }
                         }
                     }
-                    
                 } else {
                     homeFile.mkdir();
                     if (log) CrazyManager.getJavaPlugin().getLogger().info("The folder " + homeFolder + "/ was not found so it was created.");

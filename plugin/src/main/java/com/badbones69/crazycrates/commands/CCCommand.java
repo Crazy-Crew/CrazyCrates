@@ -14,6 +14,7 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.controllers.CrateControl;
 import com.badbones69.crazycrates.controllers.GUIMenu;
 import com.badbones69.crazycrates.controllers.Preview;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -60,54 +61,40 @@ public class CCCommand implements CommandExecutor {
                 }
                 return true;
             } else if (args[0].equalsIgnoreCase("set1") || args[0].equalsIgnoreCase("set2")) {
-                if (!Methods.permCheck(sender, "admin")) return true;
+                if (!Methods.permCheck(sender, "admin") || PaperLib.isSpigot()) {
+                    if (PaperLib.isSpigot()) sender.sendMessage(color("&c&l[!] This feature only works on PaperMC [!]"));
+                    return true;
+                }
+
                 Player player = (Player) sender;
                 int set = args[0].equalsIgnoreCase("set1") ? 1 : 2;
                 Block block = player.getTargetBlockExact(10);
+
                 if (block == null || block.isEmpty()) {
                     player.sendMessage(Messages.MUST_BE_LOOKING_AT_A_BLOCK.getMessage());
                     return true;
                 }
+
                 if (cc.getSchematicLocations().containsKey(player.getUniqueId())) {
                     cc.getSchematicLocations().put(player.getUniqueId(), new Location[] {set == 1 ? block.getLocation() : cc.getSchematicLocations().getOrDefault(player.getUniqueId(), null)[0], set == 2 ? block.getLocation() : cc.getSchematicLocations().getOrDefault(player.getUniqueId(), null)[1]});
                 } else {
                     cc.getSchematicLocations().put(player.getUniqueId(), new Location[] {set == 1 ? block.getLocation() : null, set == 2 ? block.getLocation() : null});
                 }
+
                 player.sendMessage(Methods.getPrefix("&7You have set location #" + set + "."));
                 return true;
-                //Commented code is for debugging schematic files if there is an issue with them.
-                //				}else if(args[0].equalsIgnoreCase("pasteall")) {// /cc pasteall
-                //					if(!Methods.permCheck(sender, "admin")) return true;
-                //					Location location = ((Player) sender).getLocation().subtract(0, 1, 0);
-                //					for(CrateSchematic schematic : cc.getCrateSchematics()) {
-                //						cc.getNMSSupport().pasteSchematic(schematic.getSchematicFile(), location);
-                //						location.add(0, 0, 6);
-                //					}
-                //					sender.sendMessage(Methods.getPrefix("&7Pasted all of the schematics."));
-                //					return true;
-                //				}else if(args[0].equalsIgnoreCase("paste")) {// /cc paste <schematic file name>
-                //					if(!Methods.permCheck(sender, "admin")) return true;
-                //					if(args.length >= 2) {
-                //						String name = args[1];
-                //						Location location = ((Player) sender).getLocation().subtract(0, 1, 0);
-                //						CrateSchematic schematic = cc.getCrateSchematic(name);
-                //						if(schematic != null) {
-                //							cc.getNMSSupport().pasteSchematic(schematic.getSchematicFile(), location);
-                //							sender.sendMessage("Pasted the " + schematic.getSchematicName() + " schematic.");
-                //						}else {
-                //							sender.sendMessage(Methods.getPrefix("&cNo schematics by the name of " + name + " where found."));
-                //						}
-                //					}else {
-                //						sender.sendMessage(Methods.getPrefix("&c/cc paste <schematic file name>"));
-                //					}
-                //					return true;
             } else if (args[0].equalsIgnoreCase("save")) {// /cc save <file name>
-                if (!Methods.permCheck(sender, "admin")) return true;
+                if (!Methods.permCheck(sender, "admin") || PaperLib.isSpigot()) {
+                    if (PaperLib.isSpigot()) sender.sendMessage(color("&c&l[!] This feature only works on PaperMC [!]"));
+                    return true;
+                }
+
                 Location[] locations = cc.getSchematicLocations().get(((Player) sender).getUniqueId());
+
                 if (locations != null && locations[0] != null && locations[1] != null) {
                     if (args.length >= 2) {
                         File file = new File(CrazyManager.getJavaPlugin().getDataFolder() + "/Schematics/" + args[1]);
-                        cc.getNMSSupport().saveSchematic(locations, sender.getName(), file);
+                        // cc.getNMSSupport().saveSchematic(locations, sender.getName(), file);
                         sender.sendMessage(Methods.getPrefix("&7Saved the " + args[1] + ".nbt into the Schematics folder."));
                         cc.loadSchematics();
                     } else {
@@ -116,13 +103,14 @@ public class CCCommand implements CommandExecutor {
                 } else {
                     sender.sendMessage(Methods.getPrefix("&cYou need to use /cc set1/set2 to set the connors of your schematic."));
                 }
+
                 return true;
             } else if (args[0].equalsIgnoreCase("additem")) {
                 // /cc additem0 <crate>1 <prize>2
                 if (!Methods.permCheck(sender, "admin")) return true;
                 Player player = (Player) sender;
                 if (args.length >= 3) {
-                    ItemStack item = cc.getNMSSupport().getItemInMainHand(player);
+                    ItemStack item = player.getInventory().getItemInMainHand();
                     if (item != null && item.getType() != Material.AIR) {
                         Crate crate = cc.getCrateFromName(args[1]);
                         if (crate != null) {
@@ -276,14 +264,17 @@ public class CCCommand implements CommandExecutor {
                 sender.sendMessage(color(Methods.getPrefix() + "&c/cc Set <Crate>"));
                 return true;
             } else if (args[0].equalsIgnoreCase("preview")) {// /cc Preview <Crate> [Player]
+
                 if (sender instanceof Player) {
                     if (!Methods.permCheck(sender, "preview")) {
                         return true;
                     }
                 }
+
                 if (args.length >= 2) {
                     Crate crate = null;
                     Player player;
+
                     for (Crate c : cc.getCrates()) {
                         if (c.getCrateType() != CrateType.MENU) {
                             if (c.getName().equalsIgnoreCase(args[1])) {
@@ -291,6 +282,7 @@ public class CCCommand implements CommandExecutor {
                             }
                         }
                     }
+
                     if (crate != null) {
                         if (crate.isPreviewEnabled()) {
                             if (crate.getCrateType() != CrateType.MENU) {
@@ -340,10 +332,12 @@ public class CCCommand implements CommandExecutor {
                                     player = (Player) sender;
                                 }
                             }
+
                             if (CrazyManager.getInstance().isInOpeningList(player)) {
                                 sender.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
                                 return true;
                             }
+
                             CrateType type = crate.getCrateType();
                             if (type != null) {
                                 FileConfiguration config = FileManager.Files.CONFIG.getFile();
@@ -366,6 +360,7 @@ public class CCCommand implements CommandExecutor {
                                             player.playSound(player.getLocation(), sound, 1f, 1f);
                                         }
                                     }
+
                                     player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
                                     CrateControl.knockBack(player, player.getTargetBlock(null, 1).getLocation().add(.5, 0, .5));
                                     return true;

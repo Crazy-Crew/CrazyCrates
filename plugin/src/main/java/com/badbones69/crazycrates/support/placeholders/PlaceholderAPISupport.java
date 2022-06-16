@@ -39,7 +39,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
     
     @Override
     public String getIdentifier() {
-        return "crazycrates";
+        return "com/badbones69/crazycrates";
     }
     
     @Override

@@ -4,17 +4,17 @@ import com.badbones69.crazycrates.api.CrazyManager
 import com.badbones69.crazycrates.api.FileManager
 import com.badbones69.crazycrates.api.FileManager.Files
 import com.badbones69.crazycrates.api.enums.Messages
-import com.badbones69.crazycrates.api.objects.QuadCrateSession
+import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager
 import com.badbones69.crazycrates.commands.CCCommand
 import com.badbones69.crazycrates.commands.CCTab
 import com.badbones69.crazycrates.commands.KeyCommand
 import com.badbones69.crazycrates.commands.KeyTab
 import com.badbones69.crazycrates.controllers.*
 import com.badbones69.crazycrates.cratetypes.*
+import com.badbones69.crazycrates.func.color
 import com.badbones69.crazycrates.func.listeners.BasicListener
 import com.badbones69.crazycrates.func.registerListener
 import com.badbones69.crazycrates.support.libs.Support
-import com.badbones69.crazycrates.support.libs.Version
 import com.badbones69.crazycrates.support.placeholders.MVdWPlaceholderAPISupport
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport
 import io.papermc.lib.PaperLib
@@ -28,35 +28,32 @@ class CrazyCrates : JavaPlugin(), Listener {
 
     private val plugin = this // Avoid using "this"
 
-    override fun onLoad() {
-        if (Version.isOlder(Version.TOO_OLD)) {
-            logger.warning("============= Crazy Crates =============")
-            logger.info(" ")
-            logger.warning("You are running Crazy Crates on a version that is not 1.18.X.")
-            logger.warning("No guarantee that it will run perfectly, You have been warned.")
-            logger.info(" ")
-            logger.warning("Jenkins Page: https://jenkins.badbones69.com/job/Crazy-Crates/")
-            logger.warning("Version Integer: " + Version.getCurrentVersion().versionInteger)
-            logger.info(" ")
-            logger.warning("============= Crazy Crates =============")
-        }
-    }
-
     override fun onEnable() {
-        FileManager.getInstance().logInfo(true)
-            .registerDefaultGenerateFiles("Basic.yml", "/crates", "/crates")
-            .registerDefaultGenerateFiles("Classic.yml", "/crates", "/crates")
-            .registerDefaultGenerateFiles("Crazy.yml", "/crates", "/crates")
-            .registerDefaultGenerateFiles("Galactic.yml", "/crates", "/crates")
-            .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
-            .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
-            .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
-            .registerDefaultGenerateFiles("sea.nbt", "/schematics", "/schematics")
-            .registerDefaultGenerateFiles("soul.nbt", "/schematics", "/schematics")
-            .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
-            .registerCustomFilesFolder("/crates")
-            .registerCustomFilesFolder("/schematics")
-            .setup()
+
+        if (PaperLib.isPaper()) {
+            FileManager.getInstance().logInfo(true)
+                .registerDefaultGenerateFiles("Basic.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("Classic.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("Crazy.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("Galactic.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("sea.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("soul.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
+                .registerCustomFilesFolder("/crates")
+                .registerCustomFilesFolder("/schematics")
+                .setup()
+        } else {
+            logger.warning("Detected a Spigot only server, Schematics will not load & QuadCrates will not function.")
+            FileManager.getInstance().logInfo(true)
+                .registerDefaultGenerateFiles("Basic.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("Classic.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("Galactic.yml", "/crates", "/crates")
+                .registerCustomFilesFolder("/crates")
+                .setup()
+        }
 
         cleanData()
 
@@ -65,7 +62,6 @@ class CrazyCrates : JavaPlugin(), Listener {
         registerListener(
             GUIMenu(),
             Preview(),
-            QuadCrate(),
             War(),
             CSGO(),
             Wheel(),
@@ -80,15 +76,11 @@ class CrazyCrates : JavaPlugin(), Listener {
             this
         )
 
-        PaperLib.suggestPaper(plugin)
-
-        if (PaperLib.isPaper()) {
-            logger.info("Utilizing Paper Functions...")
-            // Do paper specific stuff here.
-        }
+        if (PaperLib.isPaper()) registerListener(QuadCrate()) else logger.warning("Paper was not found so QuadCrates was not enabled.")
 
         // Add missing messages
         Messages.addMissingMessages()
+
         if (CrazyManager.getInstance().brokeCrateLocations.isNotEmpty()) registerListener(BrokeLocationsControl())
 
         if (Support.PLACEHOLDERAPI.isPluginLoaded) PlaceholderAPISupport().register()
@@ -106,7 +98,7 @@ class CrazyCrates : JavaPlugin(), Listener {
 
     override fun onDisable() {
         runCatching {
-            QuadCrateSession.endAllCrates()
+            if (PaperLib.isPaper()) SessionManager.endAllCrates()
             QuickCrate.removeAllRewards()
             if (CrazyManager.getInstance().hologramController != null) CrazyManager.getInstance().hologramController.removeAllHolograms()
         }.onFailure { logger.severe("The plugin did not start up correctly. Grab your logs file and join discord.badbones69.com") }
@@ -118,6 +110,8 @@ class CrazyCrates : JavaPlugin(), Listener {
         CrazyManager.getInstance().loadOfflinePlayersKeys(player)
     }
 }
+
+fun getPlugin() = JavaPlugin.getPlugin(CrazyCrates::class.java)
 
 fun cleanData() {
     if (!Files.LOCATIONS.file.contains("Locations")) {
