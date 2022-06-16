@@ -10,8 +10,8 @@ https://discord.com/invite/MCuz8JG/
 ## Latest 1.17.X & below Version:
 [https://jenkins.badbones69.com/job/Crazy-Crates-Legacy/](https://jenkins.badbones69.com/view/Legacy/job/Crazy-Crates-Legacy/)
 
-## Latest 1.18.X-1.19.X Version: 
-[https://jenkins.badbones69.com/job/Crazy-Crates/](https://jenkins.badbones69.com/view/Modern/job/Crazy-Crates-Modern/)
+## Latest 1.18.X Version:
+[https://jenkins.badbones69.com/job/Crazy-Crates/](https://jenkins.badbones69.com/view/Modern/job/Crazy-Crates/)
 
 ## Repo:
 N/A
