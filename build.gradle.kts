@@ -17,7 +17,7 @@ tasks.compileKotlin {
 }
 
 group = "com.badbones69.crazycrates"
-version = "1.10.5"
+version = "1.19-${System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"}"
 description = "Quality crates for free!"
 
 repositories {
