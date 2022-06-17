@@ -26,6 +26,7 @@ public class Wonder implements Listener {
             cc.removePlayerFromOpeningList(player);
             return;
         }
+
         final Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 45, crate.getCrateInventoryName());
         final ArrayList<String> slots = new ArrayList<>();
         for (int i = 0; i < 45; i++) {
@@ -33,6 +34,7 @@ public class Wonder implements Listener {
             slots.add(i + "");
             inv.setItem(i, prize.getDisplayItem());
         }
+
         player.openInventory(inv);
         cc.addCrateTask(player, new BukkitRunnable() {
             int fulltime = 0;
@@ -58,12 +60,14 @@ public class Wonder implements Listener {
                     slot1++;
                     slot2--;
                 }
+
                 if (fulltime > 67) {
                     ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
                     for (int slot : Slots) {
                         inv.setItem(slot, item);
                     }
                 }
+
                 player.openInventory(inv);
                 if (fulltime > 100) {
                     cc.endCrate(player);
@@ -76,6 +80,7 @@ public class Wonder implements Listener {
                     cc.removePlayerFromOpeningList(player);
                     return;
                 }
+
                 fulltime++;
                 timer++;
                 if (timer > 2) {

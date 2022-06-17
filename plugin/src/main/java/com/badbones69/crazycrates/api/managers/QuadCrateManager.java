@@ -6,15 +6,16 @@ import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.QuadCrateParticles;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.func.TaskUtil;
 import com.badbones69.crazycrates.structures.QuadCrateSpiralHandler;
 import com.badbones69.crazycrates.structures.StructureHandler;
 import com.badbones69.crazycrates.structures.blocks.ChestStateHandler;
+import com.badbones69.crazycrates.utils.Schedulers;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
@@ -109,7 +110,7 @@ public class QuadCrateManager {
         crateSessions.add(instance);
     }
 
-    public boolean startCrate() {
+    public boolean startCrate(JavaPlugin plugin) {
 
         // Check if it is on a block.
         if (spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
@@ -192,7 +193,7 @@ public class QuadCrateManager {
         // Teleport player to center.
         player.teleport(spawnLocation.clone().add(handler.getStructureX() / 2, 1.0, handler.getStructureZ() / 2));
 
-        CrazyManager.getInstance().addQuadCrateTask(player, TaskUtil.INSTANCE.timer(0, 1, new BukkitRunnable() {
+        CrazyManager.getInstance().addQuadCrateTask(player, new Schedulers(plugin).timer(0, 1, new BukkitRunnable() {
 
             private final QuadCrateSpiralHandler spiralHandler = new QuadCrateSpiralHandler();
 
@@ -227,7 +228,7 @@ public class QuadCrateManager {
             }
         }));
 
-        CrazyManager.getInstance().addCrateTask(player, TaskUtil.INSTANCE.later(CrazyManager.getInstance().getQuadCrateTimer(), new BukkitRunnable() {
+        CrazyManager.getInstance().addCrateTask(player, new Schedulers(plugin).later(CrazyManager.getInstance().getQuadCrateTimer(), new BukkitRunnable() {
             @Override
             public void run() {
                 // End the crate by force.
@@ -238,8 +239,8 @@ public class QuadCrateManager {
         return false;
     }
 
-    public void endCrate() {
-        TaskUtil.INSTANCE.later(3 * 20, new BukkitRunnable() {
+    public void endCrate(JavaPlugin plugin) {
+        new Schedulers(plugin).later(3 * 20, new BukkitRunnable() {
             @Override
             public void run() {
                 // Update spawned crate block states which removes them.

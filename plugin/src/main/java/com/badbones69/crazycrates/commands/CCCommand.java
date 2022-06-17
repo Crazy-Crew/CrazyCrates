@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.commands;
 
-import com.badbones69.crazycrates.CrazyCratesKt;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
@@ -14,7 +14,6 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.controllers.CrateControl;
 import com.badbones69.crazycrates.controllers.GUIMenu;
 import com.badbones69.crazycrates.controllers.Preview;
-import com.badbones69.crazycrates.structures.StructureHandler;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,12 +28,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.structure.Structure;
-
-import java.io.File;
 import java.util.HashMap;
 
-import static com.badbones69.crazycrates.func.ConstantsKt.color;
+import static com.badbones69.crazycrates.CrazyCratesKt.cleanFiles;
+import static com.badbones69.crazycrates.utils.ConstantsKt.color;
 
 public class CCCommand implements CommandExecutor {
     
@@ -147,7 +144,7 @@ public class CCCommand implements CommandExecutor {
                 fileManager.reloadAllFiles();
                 fileManager.setup();
                 
-                CrazyCratesKt.cleanData();
+                cleanFiles();
                 
                 cc.loadCrates();
                 sender.sendMessage(Messages.RELOAD.getMessage());

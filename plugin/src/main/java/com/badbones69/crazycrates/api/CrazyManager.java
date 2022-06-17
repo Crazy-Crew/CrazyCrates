@@ -38,7 +38,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import static com.badbones69.crazycrates.func.ConstantsKt.color;
+import static com.badbones69.crazycrates.utils.ConstantsKt.color;
 
 public class CrazyManager {
     

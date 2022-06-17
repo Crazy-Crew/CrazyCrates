@@ -29,7 +29,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import java.util.HashMap;
-import static com.badbones69.crazycrates.func.ConstantsKt.color;
+import static com.badbones69.crazycrates.utils.ConstantsKt.color;
 
 public class CrateControl implements Listener { // Crate Control
     

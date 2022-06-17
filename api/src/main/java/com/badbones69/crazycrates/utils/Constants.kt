@@ -1,10 +1,6 @@
-package com.badbones69.crazycrates.func
+package com.badbones69.crazycrates.utils
 
-import com.badbones69.crazycrates.CrazyCrates
 import net.md_5.bungee.api.ChatColor
-import org.bukkit.event.Listener
-import org.bukkit.plugin.java.JavaPlugin
-import java.io.File
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -18,10 +14,3 @@ fun color(message: String): String {
     }
     return org.bukkit.ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString())
 }
-
-fun getFile(plugin: JavaPlugin, name: String): File {
-    val dataFolder = File(plugin.dataFolder, "/data")
-    return File(dataFolder, name)
-}
-
-fun CrazyCrates.registerListener(vararg listeners: Listener) = listeners.toList().forEach { server.pluginManager.registerEvents(it, this) }
