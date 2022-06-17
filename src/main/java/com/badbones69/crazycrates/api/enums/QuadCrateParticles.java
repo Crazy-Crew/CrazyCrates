@@ -9,7 +9,7 @@ public enum QuadCrateParticles {
     
     private final String name;
     
-    private QuadCrateParticles(String name) {
+    QuadCrateParticles(String name) {
         this.name = name;
     }
     

@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,10 +16,10 @@ import java.util.List;
 
 public class KeyCommand implements CommandExecutor {
     
-    private CrazyManager cc = CrazyManager.getInstance();
+    private final CrazyManager cc = CrazyManager.getInstance();
     
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String commandLabel, String[] args) {
         // /key [player]
         // /key redeem <crate> [amount] << Will be added later.
         if (args.length == 0) {

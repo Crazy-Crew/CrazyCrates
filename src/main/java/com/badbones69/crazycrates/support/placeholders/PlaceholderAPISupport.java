@@ -6,15 +6,16 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.NumberFormat;
 
 public class PlaceholderAPISupport extends PlaceholderExpansion {
     
-    private CrazyManager cc = CrazyManager.getInstance();
+    private final CrazyManager cc = CrazyManager.getInstance();
     
     @Override
-    public String onRequest(OfflinePlayer player, String identifier) {
+    public String onRequest(OfflinePlayer player, @NotNull String identifier) {
         if (player.isOnline()) {
             Player playerOnline = (Player) player;
             for (Crate crate : cc.getCrates()) {
@@ -38,17 +39,17 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
     }
     
     @Override
-    public String getIdentifier() {
+    public @NotNull String getIdentifier() {
         return "com/badbones69/crazycrates";
     }
     
     @Override
-    public String getAuthor() {
+    public @NotNull String getAuthor() {
         return "BadBones69";
     }
     
     @Override
-    public String getVersion() {
+    public @NotNull String getVersion() {
         return CrazyManager.getJavaPlugin().getDescription().getVersion();
     }
     

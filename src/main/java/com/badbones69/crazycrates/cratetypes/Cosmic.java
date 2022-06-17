@@ -28,7 +28,7 @@ import java.util.Random;
 
 public class Cosmic implements Listener {
     
-    private static CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager cc = CrazyManager.getInstance();
     private static HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();
     private static HashMap<Player, ArrayList<Integer>> picks = new HashMap<>();
     private static HashMap<Player, Boolean> checkHands = new HashMap<>();

@@ -19,8 +19,8 @@ import java.util.List;
  */
 public class BrokeLocationsControl implements Listener {
     
-    private CrazyManager cc = CrazyManager.getInstance();
-    private FileManager fileManager = FileManager.getInstance();
+    private final CrazyManager cc = CrazyManager.getInstance();
+    private final FileManager fileManager = FileManager.getInstance();
     
     @EventHandler
     public void onWorldLoad(WorldLoadEvent e) {

@@ -5,9 +5,9 @@ import java.util.List;
 
 public class CrateHologram {
     
-    private boolean enabled;
-    private double height;
-    private List<String> messages;
+    private final boolean enabled;
+    private final double height;
+    private final List<String> messages;
     
     public CrateHologram() {
         this.enabled = false;

@@ -19,7 +19,7 @@ import java.util.Random;
 
 public class FireCracker {
     
-    private static CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager cc = CrazyManager.getInstance();
     
     public static void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc) {
         if (!cc.takeKeys(1, player, crate, keyType, true)) {
@@ -37,10 +37,10 @@ public class FireCracker {
         colors.add(Color.MAROON);
         colors.add(Color.PURPLE);
         cc.addCrateTask(player, new BukkitRunnable() {
-            Random r = new Random();
-            int color = r.nextInt(colors.size());
+            final Random r = new Random();
+            final int color = r.nextInt(colors.size());
             int l = 0;
-            Location L = loc.clone().add(.5, 25, .5);
+            final Location L = loc.clone().add(.5, 25, .5);
             
             @Override
             public void run() {
@@ -63,11 +63,7 @@ public class FireCracker {
         fm.setPower(0);
         fw.setFireworkMeta(fm);
         FireworkDamageEvent.addFirework(fw);
-        new BukkitRunnable() {
-            public void run() {
-                fw.detonate();
-            }
-        }.runTaskLaterAsynchronously(CrazyManager.getJavaPlugin(), 1);
+        fw.detonate();
     }
-    
+
 }

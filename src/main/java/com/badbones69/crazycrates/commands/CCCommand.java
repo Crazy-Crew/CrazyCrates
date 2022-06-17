@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.commands;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
@@ -28,6 +27,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 
 import static com.badbones69.crazycrates.CrazyCratesKt.cleanFiles;
@@ -39,7 +40,7 @@ public class CCCommand implements CommandExecutor {
     private final CrazyManager cc = CrazyManager.getInstance();
     
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String commandLabel, String[] args) {
         if (args.length == 0) {
             if (sender instanceof Player) {
                 if (!Methods.permCheck(sender, "menu")) {

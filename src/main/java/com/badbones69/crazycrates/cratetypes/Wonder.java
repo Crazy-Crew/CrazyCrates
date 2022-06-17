@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class Wonder implements Listener {
     
-    private static CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager cc = CrazyManager.getInstance();
     
     public static void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!cc.takeKeys(1, player, crate, keyType, checkHand)) {
@@ -41,7 +41,7 @@ public class Wonder implements Listener {
             int timer = 0;
             int slot1 = 0;
             int slot2 = 44;
-            ArrayList<Integer> Slots = new ArrayList<>();
+            final ArrayList<Integer> Slots = new ArrayList<>();
             Prize prize = null;
             
             @Override

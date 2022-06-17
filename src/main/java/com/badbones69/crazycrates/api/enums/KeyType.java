@@ -8,7 +8,7 @@ public enum KeyType {
     
     private final String name;
     
-    private KeyType(String name) {
+    KeyType(String name) {
         this.name = name;
     }
     

@@ -9,20 +9,20 @@ import java.util.List;
 
 public class Prize {
     
-    private int chance;
-    private String name;
-    private String crate;
-    private int maxRange;
-    private boolean firework;
+    private final int chance;
+    private final String name;
+    private final String crate;
+    private final int maxRange;
+    private final boolean firework;
     private ItemStack displayItemStack;
-    private ItemBuilder displayItem;
-    private List<Tier> tiers;
-    private List<String> messages;
-    private List<String> commands;
-    private List<ItemStack> items;
-    private List<ItemBuilder> itemBuilders;
-    private Prize altPrize;
-    private List<String> blackListPermissions;
+    private final ItemBuilder displayItem;
+    private final List<Tier> tiers;
+    private final List<String> messages;
+    private final List<String> commands;
+    private final List<ItemStack> items;
+    private final List<ItemBuilder> itemBuilders;
+    private final Prize altPrize;
+    private final List<String> blackListPermissions;
     
     /**
      * Create a new prize.

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class FireworkDamageEvent implements Listener {
     
-    private static ArrayList<Entity> fireworks = new ArrayList<>();
+    private static final ArrayList<Entity> fireworks = new ArrayList<>();
     
     /**
      *

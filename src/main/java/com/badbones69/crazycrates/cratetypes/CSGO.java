@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 public class CSGO implements Listener {
     
-    private static CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager cc = CrazyManager.getInstance();
     
     private static void setGlass(Inventory inv) {
         HashMap<Integer, ItemStack> glass = new HashMap<>();

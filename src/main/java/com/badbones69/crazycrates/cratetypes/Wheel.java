@@ -22,7 +22,7 @@ import java.util.Map;
 public class Wheel implements Listener {
     
     public static Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
-    private static CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager cc = CrazyManager.getInstance();
     
     public static void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!cc.takeKeys(1, player, crate, keyType, checkHand)) {
@@ -43,11 +43,11 @@ public class Wheel implements Listener {
         rewards.put(player, items);
         player.openInventory(inv);
         cc.addCrateTask(player, new BukkitRunnable() {
-            ArrayList<Integer> slots = getBorder();
+            final ArrayList<Integer> slots = getBorder();
             int i = 0;
             int f = 17;
             int full = 0;
-            int timer = Methods.randomNumber(42, 68);
+            final int timer = Methods.randomNumber(42, 68);
             int slower = 0;
             int open = 0;
             int slow = 0;

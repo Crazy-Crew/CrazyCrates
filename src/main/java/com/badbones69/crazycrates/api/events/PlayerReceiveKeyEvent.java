@@ -10,10 +10,10 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
     
     private static final HandlerList handlers = new HandlerList();
     
-    private Player player;
-    private Crate crate;
-    private KeyReceiveReason reason;
-    private int amount;
+    private final Player player;
+    private final Crate crate;
+    private final KeyReceiveReason reason;
+    private final int amount;
     private boolean isCancelled;
     
     public PlayerReceiveKeyEvent(Player player, Crate crate, KeyReceiveReason reason, int amount) {

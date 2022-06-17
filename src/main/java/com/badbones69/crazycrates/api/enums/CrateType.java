@@ -16,7 +16,7 @@ public enum CrateType {
     
     private final String name;
     
-    private CrateType(String name) {
+    CrateType(String name) {
         this.name = name;
     }
     

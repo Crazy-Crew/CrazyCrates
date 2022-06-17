@@ -9,7 +9,7 @@ import java.text.NumberFormat;
 
 public class MVdWPlaceholderAPISupport {
     
-    private static CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager cc = CrazyManager.getInstance();
     
     public static void registerPlaceholders() {
         for (final Crate crate : cc.getCrates()) {

@@ -7,16 +7,17 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CCTab implements TabCompleter {
     
-    private CrazyManager cc = CrazyManager.getInstance();
+    private final CrazyManager cc = CrazyManager.getInstance();
     
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String commandLabel, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String commandLabel, String[] args) {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {// /cc
             if (hasPermission(sender, "access")) completions.add("help");
