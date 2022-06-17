@@ -16,11 +16,10 @@ import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.badbones69.crazycrates.func.ConstantsKt.color;
+import static com.badbones69.crazycrates.utils.ConstantsKt.color;
 
 public class ItemBuilder {
     

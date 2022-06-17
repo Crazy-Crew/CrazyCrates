@@ -96,7 +96,7 @@ class CrazyCrates : JavaPlugin(), Listener {
         // Load crates.
         crazyManager.loadCrates()
 
-        // if (PaperLib.isPaper()) registerListener(QuadCrate()) else logger.warning("Paper was not found so QuadCrates was not enabled.")
+        if (PaperLib.isPaper()) server.pluginManager.registerEvents(QuadCrate(), plugin) else logger.warning("Paper was not found so QuadCrates was not enabled.")
 
         if (crazyManager.brokeCrateLocations.isNotEmpty()) server.pluginManager.registerEvents(BrokeLocationsControl(), plugin)
 

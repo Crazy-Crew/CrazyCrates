@@ -84,7 +84,7 @@ public class QuadCrate implements Listener {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    session.endCrate();
+                                    session.endCrate(CrazyManager.getJavaPlugin());
                                     player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
                                 }
                             }.runTaskLater(CrazyManager.getJavaPlugin(), 60);
@@ -152,7 +152,7 @@ public class QuadCrate implements Listener {
     public void onLeave(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         if (sessionManager.inSession(player)) {
-            sessionManager.getSession(player).endCrate();
+            sessionManager.getSession(player).endCrate(CrazyManager.getJavaPlugin());
         }
     }
 }

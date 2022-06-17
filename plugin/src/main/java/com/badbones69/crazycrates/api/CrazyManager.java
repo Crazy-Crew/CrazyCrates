@@ -302,6 +302,7 @@ public class CrazyManager {
             if (fileManager.isLogging()) getJavaPlugin().getLogger().info("Searching for schematics to load.");
 
             String[] schems = new File(getJavaPlugin().getDataFolder() + "/schematics/").list();
+
             for (String schematicName : schems) {
                 if (schematicName.endsWith(".nbt")) {
                     crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(getJavaPlugin().getDataFolder() + "/schematics/" + schematicName)));
@@ -431,7 +432,7 @@ public class CrazyManager {
                     CrateSchematic crateSchematic = CrazyManager.getInstance().getCrateSchematics().get(new Random().nextInt(CrazyManager.getInstance().getCrateSchematics().size()));
                     StructureHandler handler = new StructureHandler(getJavaPlugin(), crateSchematic.getSchematicFile());
                     QuadCrateManager session = new QuadCrateManager(player, crate, keyType, location, lastLocation, checkHand, handler);
-                    broadcast = session.startCrate();
+                    broadcast = session.startCrate(getJavaPlugin());
                 } else {
                     getJavaPlugin().getLogger().warning(color("&cPaper was not found so the crate was not opened."));
                     getJavaPlugin().getLogger().warning(color("&cPlease use Paper in order for QuadCrates to function."));
