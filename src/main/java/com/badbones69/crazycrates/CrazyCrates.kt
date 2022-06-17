@@ -9,14 +9,18 @@ import com.badbones69.crazycrates.commands.CCTab
 import com.badbones69.crazycrates.commands.KeyCommand
 import com.badbones69.crazycrates.commands.KeyTab
 import com.badbones69.crazycrates.controllers.*
+import com.badbones69.crazycrates.controllers.events.PaperEvents
+import com.badbones69.crazycrates.controllers.events.SpigotEvents
 import com.badbones69.crazycrates.cratetypes.*
 import com.badbones69.crazycrates.support.libs.Support
 import com.badbones69.crazycrates.support.placeholders.MVdWPlaceholderAPISupport
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport
 import io.papermc.lib.PaperLib
 import org.bstats.bukkit.Metrics
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
@@ -96,7 +100,23 @@ class CrazyCrates : JavaPlugin(), Listener {
         // Load crates.
         crazyManager.loadCrates()
 
-        if (PaperLib.isPaper()) server.pluginManager.registerEvents(QuadCrate(), plugin) else logger.warning("Paper was not found so QuadCrates was not enabled.")
+        if (PaperLib.isPaper()) {
+            listOf(
+                PaperEvents(),
+                QuadCrate()
+            ).onEach { loop ->
+                logger.info("Paper was found so we have enabled paper specific features!")
+
+                server.pluginManager.registerEvents(loop, plugin)
+            }
+        } else {
+            // Tell them that QuadCrates is disabled.
+            logger.warning("Paper was not found so QuadCrates was not enabled.")
+
+            // Register spigot alternatives.
+            logger.info("I have enabled Spigot alternatives for the plugin!")
+            server.pluginManager.registerEvents(SpigotEvents(), plugin)
+        }
 
         if (crazyManager.brokeCrateLocations.isNotEmpty()) server.pluginManager.registerEvents(BrokeLocationsControl(), plugin)
 
@@ -121,16 +141,6 @@ class CrazyCrates : JavaPlugin(), Listener {
     fun onPlayerJoin(e: PlayerJoinEvent): Unit = with(e) {
         crazyManager.setNewPlayerKeys(player)
         crazyManager.loadOfflinePlayersKeys(player)
-    }
-
-    @EventHandler
-    fun onPlayerItemPickUp(e: PlayerAttemptPickupItemEvent): Unit = with(e) {
-        if (crazyManager.isDisplayReward(item)) {
-            isCancelled = true
-            return@with
-        }
-
-        if (crazyManager.isInOpeningList(player)) isCancelled = true
     }
 }
 
