@@ -39,8 +39,8 @@ public class ItemBuilder {
     private String crateName;
     
     // Skulls
-    private final boolean isHash;
-    private final boolean isURL;
+    private boolean isHash;
+    private boolean isURL;
     private boolean isHead;
     
     // Enchantments/Flags
@@ -478,7 +478,7 @@ public class ItemBuilder {
         if (matchedMaterial != null) this.material = matchedMaterial;
         
         switch (this.material.name()) {
-            case "PLAYER_HEAD", "SKULL_ITEM" -> this.isHead = true;
+            case "PLAYER_HEAD" -> this.isHead = true;
             case "POTION", "SPLASH_POTION" -> this.isPotion = true;
             case "LEATHER_HELMET", "LEATHER_CHESTPLATE", "LEATHER_LEGGINGS", "LEATHER_BOOTS" -> this.isLeatherArmor = true;
             case "BANNER" -> this.isBanner = true;
@@ -651,8 +651,7 @@ public class ItemBuilder {
                     break;
                 }
             }
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
     
     /**
@@ -699,6 +698,11 @@ public class ItemBuilder {
      */
     public ItemBuilder setPlayerName(String playerName) {
         this.player = playerName;
+
+        if (player != null && player.length() > 16) {
+            this.isHash = true;
+            this.isURL = player.startsWith("http");
+        }
         return this;
     }
     
@@ -761,8 +765,7 @@ public class ItemBuilder {
                 if (itemFlag != null) {
                     addItemFlag(itemFlag);
                 }
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
         return this;
     }
@@ -988,9 +991,7 @@ public class ItemBuilder {
                                     break;
                                 }
                             }
-                        } catch (Exception ignored) {
-                        }
-                        
+                        } catch (Exception ignored) {}
                         break;
                 }
             }
@@ -1041,8 +1042,7 @@ public class ItemBuilder {
                     meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                     item.setItemMeta(meta);
                 }
-            } catch (NoClassDefFoundError ignored) {
-            }
+            } catch (NoClassDefFoundError ignored) {}
         }
     }
     
@@ -1131,11 +1131,11 @@ public class ItemBuilder {
                 case "YELLOW":
                     return Color.YELLOW;
             }
+
             try {
                 String[] rgb = color.split(",");
                 return Color.fromRGB(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2]));
-            } catch (Exception ignore) {
-            }
+            } catch (Exception ignore) {}
         }
         return null;
     }
@@ -1154,8 +1154,7 @@ public class ItemBuilder {
                 try {
                     String[] rgb = color.split(",");
                     return DyeColor.getByColor(Color.fromRGB(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2])));
-                } catch (Exception ignore) {
-                }
+                } catch (Exception ignore) {}
             }
         }
         return null;
@@ -1179,8 +1178,7 @@ public class ItemBuilder {
                 stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
                     return enchantment;
                 }
-            } catch (Exception ignore) {
-            }
+            } catch (Exception ignore) {}
         }
         return null;
     }
