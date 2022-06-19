@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 /**
  *
- * The ItemBuilder is designed to make creating items easier by creating an easy to use Builder.
+ * The ItemBuilder is designed to make creating items easier by creating an easy-to-use Builder.
  * This will allow you to covert an existing ItemStack into an ItemBuilder to allow you to edit
  * an existing ItemStack or make a new ItemStack from scratch.
  *
@@ -343,7 +343,7 @@ public class ItemBuilder {
                 this.isShield = true;
                 break;
         }
-        //1.13+ added different banner names and so this is quicker then listing every banner color.
+        //1.13+ added different banner names and so this is quicker than listing every banner color.
         if (this.material.name().contains("BANNER")) {
             this.isBanner = true;
         }
@@ -351,8 +351,8 @@ public class ItemBuilder {
     }
     
     /**
-     * Get the damage of the item.
-     * @return The damage of the item as an int.
+     * Get the damage to the item.
+     * @return The damage to the item as an int.
      */
     public int getDamage() {
         return damage;
@@ -686,8 +686,8 @@ public class ItemBuilder {
     }
     
     /**
-     * Check if the hash is a url or a Base64.
-     * @return True if it is a url and false if it is a Base64.
+     * Check if the hash is an url or a Base64.
+     * @return True if it is an url and false if it is a Base64.
      */
     public boolean isURL() {
         return isURL;
@@ -947,7 +947,7 @@ public class ItemBuilder {
         return this;
     }
     
-    private final java.util.regex.Pattern HEX_PATTERN = java.util.regex.Pattern.compile("#[a-fA-F0-9]{6}");
+    private final java.util.regex.Pattern HEX_PATTERN = java.util.regex.Pattern.compile("#[a-fA-F\\d]{6}");
     
     private String color(String message) {
         if (ServerVersion.isAtLeast(ServerVersion.v1_17)) {

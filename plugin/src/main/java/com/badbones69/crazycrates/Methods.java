@@ -38,7 +38,7 @@ public class Methods {
     private static final CrazyCrates cc = CrazyCrates.getInstance();
     private static final Random random = new Random();
 
-    public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
+    public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");
     
     public static String color(String message) {
         if (ServerVersion.isAtLeast(ServerVersion.v1_17) && !message.startsWith("tellraw")) {

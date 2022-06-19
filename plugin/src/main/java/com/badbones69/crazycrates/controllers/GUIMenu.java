@@ -147,7 +147,7 @@ public class GUIMenu implements Listener {
                         if (nbtItem.hasNBTData() && nbtItem.hasKey("CrazyCrates-Crate")) {
                             Crate crate = cc.getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
                             if (crate != null) {
-                                if (e.getAction() == InventoryAction.PICKUP_HALF) {//Right clicked the item
+                                if (e.getAction() == InventoryAction.PICKUP_HALF) {//Right-clicked the item
                                     if (crate.isPreviewEnabled()) {
                                         player.closeInventory();
                                         Preview.setPlayerInMenu(player, true);

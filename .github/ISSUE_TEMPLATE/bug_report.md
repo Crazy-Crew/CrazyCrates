@@ -14,7 +14,7 @@ A clear and concise description of what the bug is.
  - Minecraft Server Version: [e.g. 1.8.8]
  - Plugin Version: [e.g. 1.10]
 
-*Do **NOT** say Latest use `/version crazycrates` in the console.
+*Do **NOT** say The Latest use `/version crazycrates` in the console.
 
 **Pastebin any errors in console**
 Link: https://pastebin.com/

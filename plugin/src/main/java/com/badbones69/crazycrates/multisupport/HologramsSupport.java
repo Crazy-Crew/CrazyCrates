@@ -22,7 +22,7 @@ public class HologramsSupport implements HologramController {
     public void createHologram(Block block, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();
         if (crateHologram.isEnabled()) {
-            double hight = crateHologram.getHeight() - .5;//Doing this as Holograms seems to add .5 height when adding lines or something..
+            double hight = crateHologram.getHeight() - .5;//Doing this as Holograms seems to add .5 height when adding lines or something.
             Hologram hologram = new Hologram(new Random().nextInt() + "", block.getLocation().add(.5, hight, .5));
             for (String line : crateHologram.getMessages()) {
                 hologram.addLine(new TextLine(hologram, line));
