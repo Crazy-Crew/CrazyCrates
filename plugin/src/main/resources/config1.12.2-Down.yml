@@ -81,6 +81,18 @@ Settings:
     - 'Slot:44, Item:STAINED_GLASS_PANE:15, Name: '
   MassOpenGUI:
     Title: '&8&lMASS OPEN KEYS'
+    Layout:
+      Scheme:
+        - '####i####'
+        - '##x#x#x##'
+        - '####t####'
+      Information: 'i'
+      AutoCloseToggle: 't'
+      OpenItems: 'x'
+    OpenItemCounts:
+      - 1
+      - 10
+      - 64
     Information:
       Item: 'SIGN'
       Name: '&6&lMASS OPEN INFORMATION'

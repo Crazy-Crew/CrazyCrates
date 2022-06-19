@@ -15,6 +15,7 @@ import me.badbones69.crazycrates.api.objects.Prize;
 import me.badbones69.crazycrates.controllers.CrateControl;
 import me.badbones69.crazycrates.controllers.GUIMenu;
 import me.badbones69.crazycrates.controllers.Preview;
+import me.badbones69.crazycrates.gui.MassOpenGUI;
 import me.badbones69.crazycrates.multisupport.Version;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -178,6 +179,7 @@ public class CCCommand implements CommandExecutor {
                     Files.DATA.saveFile();
                 }
                 cc.loadCrates();
+                MassOpenGUI.reloadConfig();
                 sender.sendMessage(Messages.RELOAD.getMessage());
                 return true;
             } else if (args[0].equalsIgnoreCase("debug")) {

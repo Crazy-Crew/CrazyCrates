@@ -188,7 +188,7 @@ public class CrateControl implements Listener { //Crate Control
                                 Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin("CrazyCrates"), () -> cooldown.remove(player.getUniqueId()), 100L);
                                 return;
                             } else {
-                                MassOpenGUI.open(player, crate, crateLocation);
+                                new MassOpenGUI(player, crate, crateLocation).open();
                                 return;
                             }
                         }

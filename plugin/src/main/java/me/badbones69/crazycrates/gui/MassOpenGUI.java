@@ -8,109 +8,124 @@ import me.badbones69.crazycrates.api.objects.Crate;
 import me.badbones69.crazycrates.api.objects.CrateLocation;
 import me.badbones69.crazycrates.api.objects.ItemBuilder;
 import me.badbones69.crazycrates.cratetypes.QuickCrate;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
+import me.lucko.helper.menu.Gui;
+import me.lucko.helper.menu.Item;
+import me.lucko.helper.menu.scheme.MenuPopulator;
+import me.lucko.helper.menu.scheme.MenuScheme;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
-public class MassOpenGUI implements Listener {
-    private static final boolean DEFAULT_AUTOCLOSE = true;
-    private static final String SETTINGS_PATH = "Settings.MassOpenGUI.";
+import java.util.List;
 
+public class MassOpenGUI extends Gui {
     private static final CrazyCrates cc = CrazyCrates.getInstance();
 
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getClickedInventory() == null || !(event.getClickedInventory().getHolder() instanceof MassOpenInstance)) {
+    private static final boolean DEFAULT_AUTOCLOSE = true;
+
+    private static ConfigurationSection guiConfig;
+
+    private static int MENU_LINES;
+
+    private static MenuScheme INFO_TEMPLATE;
+    private static MenuScheme TOGGLE_TEMPLATE;
+    private static MenuScheme ITEMS_TEMPLATE;
+
+    private static List<Integer> OPEN_ITEM_COUNTS;
+
+    static {
+        reloadConfig();
+    }
+
+    public final Crate crate;
+
+    public final CrateLocation crateLocation;
+
+    private final Item infoItem;
+
+    public MassOpenGUI(Player player, Crate crate, CrateLocation crateLocation) {
+        super(player, MENU_LINES, Methods.sanitizeColor(guiConfig.getString("Title")));
+        this.crate = crate;
+        this.crateLocation = crateLocation;
+
+        this.infoItem = Item.builder(new ItemBuilder()
+                    .setMaterial(guiConfig.getString("Information.Item"))
+                    .setDamage(guiConfig.getInt("Information.Damage", 0))
+                    .setName(guiConfig.getString("Information.Name"))
+                    .setLore(guiConfig.getStringList("Information.Lore"))
+                    .build()
+                ).build();
+    }
+
+    @Override
+    public void redraw() {
+        final int keyCount = getKeyCount();
+
+        INFO_TEMPLATE.newPopulator(this).accept(infoItem);
+        TOGGLE_TEMPLATE.newPopulator(this).accept(Item.builder(makeAutoClose(shouldAutoClose()))
+                .bind(ClickType.LEFT, this::toggleAutoClose)
+                .build());
+
+        final MenuPopulator populator = ITEMS_TEMPLATE.newPopulator(this);
+        for (Integer count : OPEN_ITEM_COUNTS) {
+            populator.acceptIfSpace(Item.builder(makeOpenItem(count, keyCount >= count))
+                    .bind(ClickType.LEFT, () -> openKeys(count))
+                    .build());
+        }
+    }
+
+    private void openKeys(int openCount) {
+        if (getKeyCount() < openCount) {
+            redraw();
             return;
         }
 
-        final Player player = (Player) event.getWhoClicked();
-        final MassOpenInstance instance = ((MassOpenInstance) event.getClickedInventory().getHolder());
+        final Player player = getPlayer();
+        final int physicalKeyCount = Math.min(cc.getPhysicalKeys(player, crate), openCount);
+        if (physicalKeyCount > 0) {
+            QuickCrate.openCrate(player, crateLocation.getLocation(), crate, KeyType.PHYSICAL_KEY, physicalKeyCount);
+        }
+        if (openCount > physicalKeyCount) {
+            final int remainingKeyCount = Math.min(cc.getVirtualKeys(player, crate), openCount - physicalKeyCount);
+            QuickCrate.openCrate(player, crateLocation.getLocation(), crate, KeyType.VIRTUAL_KEY, remainingKeyCount);
+        }
 
-        event.setCancelled(true);
-        final int slot = event.getSlot();
-        if (slot >= 12 && slot <= 14) {
-            final int openCount;
-            switch (slot) {
-                case 12:
-                    openCount = 1;
-                    break;
-                case 13:
-                    openCount = 10;
-                    break;
-                case 14:
-                    openCount = 64;
-                    break;
-                default:
-                    throw new IllegalStateException();
-            }
-
-            if (instance.getKeyCount(player) < openCount) {
-                instance.update(player);
-                return;
-            }
-
-            final int physicalKeyCount = Math.min(cc.getPhysicalKeys(player, instance.crate), openCount);
-            if (physicalKeyCount > 0) {
-                QuickCrate.openCrate(player, instance.crateLocation.getLocation(), instance.crate, KeyType.PHYSICAL_KEY, physicalKeyCount);
-            }
-            if (openCount > physicalKeyCount) {
-                final int remainingKeyCount = Math.min(cc.getVirtualKeys(player, instance.crate), openCount - physicalKeyCount);
-                QuickCrate.openCrate(player, instance.crateLocation.getLocation(), instance.crate, KeyType.VIRTUAL_KEY, remainingKeyCount);
-            }
-            if (instance.shouldAutoClose(player)) {
-                player.closeInventory();
-            } else {
-                instance.update(player);
-            }
-        } else if (slot == 22) {
-            final boolean newState = !instance.shouldAutoClose(player);
-            final String key = "AutoClose." + player.getUniqueId();
-            if (newState != DEFAULT_AUTOCLOSE) {
-                FileManager.Files.DATA.getFile().set(key, newState);
-            } else {
-                // don't let the file grow unnecessarily if player goes back to default
-                FileManager.Files.DATA.getFile().set(key, null);
-            }
-            FileManager.Files.DATA.saveFile();
-            instance.update(player);
+        if (shouldAutoClose()) {
+            player.closeInventory();
+        } else {
+            redraw();
         }
     }
 
-    public static void open(Player player, Crate crate, CrateLocation crateLocation) {
-        final FileConfiguration config = FileManager.Files.CONFIG.getFile();
+    private void toggleAutoClose() {
+        final boolean newState = !shouldAutoClose();
+        final String key = "AutoClose." + getPlayer().getUniqueId();
+        if (newState != DEFAULT_AUTOCLOSE) {
+            FileManager.Files.DATA.getFile().set(key, newState);
+        } else {
+            // don't let the file grow unnecessarily if player goes back to default
+            FileManager.Files.DATA.getFile().set(key, null);
+        }
+        FileManager.Files.DATA.saveFile();
+        redraw();
+    }
 
-        final MassOpenInstance instance = new MassOpenInstance(crate, crateLocation);
-        final Inventory inventory = Bukkit.createInventory(instance, 3 * 9,
-                Methods.sanitizeColor(config.getString(SETTINGS_PATH + "Title")));
-        instance.inventory = inventory;
+    public boolean shouldAutoClose() {
+        return FileManager.Files.DATA.getFile().getBoolean("AutoClose." + getPlayer().getUniqueId(), DEFAULT_AUTOCLOSE);
+    }
 
-        inventory.setItem(4, new ItemBuilder()
-                .setMaterial(config.getString(SETTINGS_PATH + "Information.Item"))
-                .setDamage(config.getInt(SETTINGS_PATH + "Information.Damage", 0))
-                .setName(config.getString(SETTINGS_PATH + "Information.Name"))
-                .setLore(config.getStringList(SETTINGS_PATH + "Information.Lore"))
-                .build());
-        instance.update(player);
-
-        player.openInventory(inventory);
+    public int getKeyCount() {
+        return cc.getPhysicalKeys(getPlayer(), crate) + cc.getVirtualKeys(getPlayer(), crate);
     }
 
     private static ItemStack makeOpenItem(int count, boolean enough) {
-        final FileConfiguration config = FileManager.Files.CONFIG.getFile();
-        final String path = SETTINGS_PATH + "OpenItem." + (enough ? "Enough" : "NotEnough") + ".";
+        final String path = "OpenItem." + (enough ? "Enough" : "NotEnough") + ".";
         return new ItemBuilder()
-                .setMaterial(config.getString(path + "Item", "INK_SACK"))
-                .setDamage(config.getInt(path + "Damage", 0))
-                .setName(config.getString(path + "Name"))
-                .setLore(config.getStringList(path + "Lore"))
+                .setMaterial(guiConfig.getString(path + "Item", "INK_SACK"))
+                .setDamage(guiConfig.getInt(path + "Damage", 0))
+                .setName(guiConfig.getString(path + "Name"))
+                .setLore(guiConfig.getStringList(path + "Lore"))
                 .setAmount(count)
                 .addNamePlaceholder("%Count%", Integer.toString(count))
                 .addLorePlaceholder("%Count%", Integer.toString(count))
@@ -118,49 +133,42 @@ public class MassOpenGUI implements Listener {
     }
 
     private static ItemStack makeAutoClose(boolean enabled) {
-        final FileConfiguration config = FileManager.Files.CONFIG.getFile();
-        final String path = SETTINGS_PATH + "AutoCloseToggle." + (enabled ? "Enabled" : "Disabled") + ".";
+        final String path = "AutoCloseToggle." + (enabled ? "Enabled" : "Disabled") + ".";
         return new ItemBuilder()
-                .setMaterial(config.getString(path + "Item", "STONE"))
-                .setDamage(config.getInt(path + "Damage", 0))
-                .setName(config.getString(path + "Name"))
-                .setLore(config.getStringList(path + "Lore"))
+                .setMaterial(guiConfig.getString(path + "Item", "STONE"))
+                .setDamage(guiConfig.getInt(path + "Damage", 0))
+                .setName(guiConfig.getString(path + "Name"))
+                .setLore(guiConfig.getStringList(path + "Lore"))
                 .build();
     }
 
-    private static class MassOpenInstance implements InventoryHolder {
-        public final Crate crate;
-        public final CrateLocation crateLocation;
+    public static void reloadConfig() {
+        guiConfig = FileManager.Files.CONFIG.getFile().getConfigurationSection("Settings")
+                .getConfigurationSection("MassOpenGUI");
 
-        private Inventory inventory;
+        final ConfigurationSection layout = guiConfig.getConfigurationSection("Layout");;
+        final List<String> template = layout.getStringList("Scheme");
+        MENU_LINES = template.size();
+        INFO_TEMPLATE = loadMenuScheme(template, layout.getString("Information").charAt(0));
+        TOGGLE_TEMPLATE = loadMenuScheme(template, layout.getString("AutoCloseToggle").charAt(0));
+        ITEMS_TEMPLATE = loadMenuScheme(template, layout.getString("OpenItems").charAt(0));
 
-        public MassOpenInstance(Crate crate, CrateLocation crateLocation) {
-            this.crate = crate;
-            this.crateLocation = crateLocation;
+        OPEN_ITEM_COUNTS = guiConfig.getIntegerList("OpenItemCounts");
+    }
+
+    protected static MenuScheme loadMenuScheme(List<String> template, char character) {
+        MenuScheme menuScheme = new MenuScheme();
+        for(String s : template) {
+            StringBuilder mask = new StringBuilder();
+            for(int i = 0; i < s.length(); ++i) {
+                if(s.charAt(i) == character) {
+                    mask.append('1');
+                } else {
+                    mask.append('0');
+                }
+            }
+            menuScheme = menuScheme.mask(mask.toString());
         }
-
-        public boolean shouldAutoClose(Player player) {
-            return FileManager.Files.DATA.getFile().getBoolean("AutoClose." + player.getUniqueId(), DEFAULT_AUTOCLOSE);
-        }
-
-        public int getKeyCount(Player player) {
-            return cc.getPhysicalKeys(player, crate) + cc.getVirtualKeys(player, crate);
-        }
-
-        public void update(Player player) {
-            final int keyCount = getKeyCount(player);
-
-            inventory.setItem(12, makeOpenItem(1, keyCount >= 1));
-            inventory.setItem(13, makeOpenItem(10, keyCount >= 10));
-            inventory.setItem(14, makeOpenItem(64, keyCount >= 64));
-
-            inventory.setItem(22, makeAutoClose(shouldAutoClose(player)));
-        }
-
-        @NotNull
-        @Override
-        public Inventory getInventory() {
-            return inventory;
-        }
+        return menuScheme;
     }
 }

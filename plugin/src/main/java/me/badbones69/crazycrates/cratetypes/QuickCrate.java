@@ -46,6 +46,15 @@ public class QuickCrate implements Listener {
         openCrate(player, loc, crate, keyType, multiKeyOpen ? -1 : 0);
     }
 
+    /**
+     * Opens a crate.
+     *
+     * @param player Player
+     * @param loc Open location
+     * @param crate Crate
+     * @param keyType Key Type
+     * @param toUse Max number of keys to use
+     */
     public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType, int toUse) {
         int keys; // If the key is free it is set to one.
         switch (keyType) {
@@ -120,7 +129,8 @@ public class QuickCrate implements Listener {
             }
             endQuickCrate(player, loc);
         } else {
-            if (!cc.takeKeys(1, player, crate, keyType, true)) {
+            // prioritize hand but allow key in inventory as well (to avoid error)
+            if (!cc.takeKeys(1, player, crate, keyType, true) && !cc.takeKeys(1, player, crate, keyType, false)) {
                 Methods.failedToTakeKey(player, crate);
                 CrateControl.inUse.remove(player);
                 cc.removePlayerFromOpeningList(player);

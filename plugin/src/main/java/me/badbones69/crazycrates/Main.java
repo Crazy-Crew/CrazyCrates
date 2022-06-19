@@ -69,7 +69,6 @@ public class Main extends JavaPlugin implements Listener {
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(this, this);
         pm.registerEvents(new GUIMenu(), this);
-        pm.registerEvents(new MassOpenGUI(), this);
         pm.registerEvents(new Preview(), this);
         pm.registerEvents(new QuadCrate(), this);
         pm.registerEvents(new War(), this);
