@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class FireworkDamageEvent implements Listener {
     
-    private static ArrayList<Entity> fireworks = new ArrayList<>();
-    private Plugin plugin;
+    private static final ArrayList<Entity> fireworks = new ArrayList<>();
+    private final Plugin plugin;
     
     public FireworkDamageEvent(Plugin plugin) {
         this.plugin = plugin;

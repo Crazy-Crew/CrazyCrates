@@ -26,7 +26,7 @@ import java.util.List;
 
 public class GUIMenu implements Listener {
     
-    private static CrazyCrates cc = CrazyCrates.getInstance();
+    private static final CrazyCrates cc = CrazyCrates.getInstance();
     
     public static void openGUI(Player player) {
         int size = FileManager.Files.CONFIG.getFile().getInt("Settings.InventorySize");

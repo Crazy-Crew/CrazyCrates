@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 
 public class Events_v1_12_R1_Up implements Listener {
     
-    private CrazyCrates cc = CrazyCrates.getInstance();
+    private final CrazyCrates cc = CrazyCrates.getInstance();
     
     @EventHandler
     public void onItemPickUp(EntityPickupItemEvent e) {

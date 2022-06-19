@@ -16,16 +16,16 @@ import java.util.logging.Level;
 
 public class FileManager {
     
-    private static FileManager instance = new FileManager();
+    private static final FileManager instance = new FileManager();
     private Plugin plugin;
     private String prefix = "";
     private boolean log = false;
-    private HashMap<Files, File> files = new HashMap<>();
-    private ArrayList<String> homeFolders = new ArrayList<>();
-    private ArrayList<CustomFile> customFiles = new ArrayList<>();
-    private HashMap<String, String> jarHomeFolders = new HashMap<>();
-    private HashMap<String, String> autoGenerateFiles = new HashMap<>();
-    private HashMap<Files, FileConfiguration> configurations = new HashMap<>();
+    private final HashMap<Files, File> files = new HashMap<>();
+    private final ArrayList<String> homeFolders = new ArrayList<>();
+    private final ArrayList<CustomFile> customFiles = new ArrayList<>();
+    private final HashMap<String, String> jarHomeFolders = new HashMap<>();
+    private final HashMap<String, String> autoGenerateFiles = new HashMap<>();
+    private final HashMap<Files, FileConfiguration> configurations = new HashMap<>();
     
     public static FileManager getInstance() {
         return instance;
@@ -33,6 +33,7 @@ public class FileManager {
     
     /**
      * Sets up the plugin and loads all necessary files.
+     *
      * @param plugin The plugin this is getting loading for.
      */
     public FileManager setup(Plugin plugin) {
@@ -115,6 +116,7 @@ public class FileManager {
     
     /**
      * Turn on the logger system for the FileManager.
+     *
      * @param log True to turn it on and false for it to be off.
      */
     public FileManager logInfo(boolean log) {
@@ -124,6 +126,7 @@ public class FileManager {
     
     /**
      * Check if the logger is logging in console.
+     *
      * @return True if it is and false if it isn't.
      */
     public boolean isLogging() {
@@ -132,6 +135,7 @@ public class FileManager {
     
     /**
      * Register a folder that has custom files in it. Make sure to have a "/" in front of the folder name.
+     *
      * @param homeFolder The folder that has custom files in it.
      */
     public FileManager registerCustomFilesFolder(String homeFolder) {
@@ -141,6 +145,7 @@ public class FileManager {
     
     /**
      * Unregister a folder that has custom files in it. Make sure to have a "/" in front of the folder name.
+     *
      * @param homeFolder The folder with custom files in it.
      */
     public FileManager unregisterCustomFilesFolder(String homeFolder) {
@@ -150,6 +155,7 @@ public class FileManager {
     
     /**
      * Register a file that needs to be generated when it's home folder doesn't exist. Make sure to have a "/" in front of the home folder's name.
+     *
      * @param fileName The name of the file you want to auto-generate when the folder doesn't exist.
      * @param homeFolder The folder that has custom files in it.
      */
@@ -160,6 +166,7 @@ public class FileManager {
     
     /**
      * Register a file that needs to be generated when it's home folder doesn't exist. Make sure to have a "/" in front of the home folder's name.
+     *
      * @param fileName The name of the file you want to auto-generate when the folder doesn't exist.
      * @param homeFolder The folder that has custom files in it.
      * @param jarHomeFolder The folder that the file is found in the jar.
@@ -172,6 +179,7 @@ public class FileManager {
     
     /**
      * Unregister a file that doesn't need to be generated when it's home folder doesn't exist. Make sure to have a "/" in front of the home folder's name.
+     *
      * @param fileName The file that you want to remove from auto-generating.
      */
     public FileManager unregisterDefaultGenerateFiles(String fileName) {
@@ -182,6 +190,7 @@ public class FileManager {
     
     /**
      * Gets the file from the system.
+     *
      * @return The file from the system.
      */
     public FileConfiguration getFile(Files file) {
@@ -191,6 +200,7 @@ public class FileManager {
     /**
      * Get a custom file from the loaded custom files instead of a hardcoded one.
      * This allows you to get custom files like Per player data files.
+     *
      * @param name Name of the crate you want. (Without the .yml)
      * @return The custom file you wanted otherwise if not found will return null.
      */
@@ -217,6 +227,7 @@ public class FileManager {
     
     /**
      * Save a custom file.
+     *
      * @param name The name of the custom file.
      */
     public void saveFile(String name) {
@@ -236,6 +247,7 @@ public class FileManager {
     
     /**
      * Save a custom file.
+     *
      * @param file The custom file you are saving.
      * @return True if the file saved correct and false if there was an error.
      */
@@ -270,6 +282,7 @@ public class FileManager {
     
     /**
      * Overrides the loaded state file and loads the filesystems file.
+     *
      * @return True if it reloaded correct and false if the file wasn't found.
      */
     public Boolean reloadFile(CustomFile file) {
@@ -297,7 +310,7 @@ public class FileManager {
     }
     
     /**
-     * Was found here: https://bukkit.org/threads/extracting-file-from-jar.16962
+     * Was found here: <a href="https://bukkit.org/threads/extracting-file-from-jar.16962">URL</a>
      */
     private void copyFile(InputStream in, File out) throws Exception {
         try (InputStream fis = in; FileOutputStream fos = new FileOutputStream(out)) {
@@ -318,26 +331,28 @@ public class FileManager {
         LOCATIONS("Locations.yml", "Locations.yml"),
         DATA("data.yml", "data.yml");
         
-        private String fileName;
-        private String fileJar;
-        private String fileLocation;
+        private final String fileName;
+        private final String fileJar;
+        private final String fileLocation;
         
         /**
          * The files that the server will try and load.
+         *
          * @param fileName The file name that will be in the plugin's folder.
          * @param fileLocation The location the file in the plugin's folder.
          */
-        private Files(String fileName, String fileLocation) {
+        Files(String fileName, String fileLocation) {
             this(fileName, fileLocation, fileLocation);
         }
         
         /**
          * The files that the server will try and load.
+         *
          * @param fileName The file name that will be in the plugin's folder.
          * @param fileLocation The location of the file will be in the plugin's folder.
          * @param fileJar The location of the file in the jar.
          */
-        private Files(String fileName, String fileLocation, String fileJar) {
+        Files(String fileName, String fileLocation, String fileJar) {
             this.fileName = fileName;
             this.fileLocation = fileLocation;
             this.fileJar = fileJar;
@@ -345,17 +360,19 @@ public class FileManager {
         
         /**
          * The files that the server will try and load.
+         *
          * @param fileName The file name that will be in the plugin's folder.
          * @param fileLocation The location of the file will be in the plugin's folder.
          * @param newFileJar The location of the 1.13+ file version in the jar.
          * @param oldFileJar The location of the 1.12.2- file version in the jar.
          */
-        private Files(String fileName, String fileLocation, String newFileJar, String oldFileJar) {
+        Files(String fileName, String fileLocation, String newFileJar, String oldFileJar) {
             this(fileName, fileLocation, ServerVersion.isAtLeast(ServerVersion.v1_17) ? newFileJar : oldFileJar);
         }
         
         /**
          * Get the name of the file.
+         *
          * @return The name of the file.
          */
         public String getFileName() {
@@ -364,6 +381,7 @@ public class FileManager {
         
         /**
          * The location the jar it is at.
+         *
          * @return The location in the jar the file is in.
          */
         public String getFileLocation() {
@@ -372,6 +390,7 @@ public class FileManager {
         
         /**
          * Get the location of the file in the jar.
+         *
          * @return The location of the file in the jar.
          */
         public String getFileJar() {
@@ -380,6 +399,7 @@ public class FileManager {
         
         /**
          * Gets the file from the system.
+         *
          * @return The file from the system.
          */
         public FileConfiguration getFile() {
@@ -404,14 +424,15 @@ public class FileManager {
     
     public class CustomFile {
         
-        private String name;
-        private Plugin plugin;
-        private String fileName;
-        private String homeFolder;
+        private final String name;
+        private final Plugin plugin;
+        private final String fileName;
+        private final String homeFolder;
         private FileConfiguration file;
         
         /**
          * A custom file that is being made.
+         *
          * @param name Name of the file.
          * @param homeFolder The home folder of the file.
          * @param plugin The plugin the files belong to.
@@ -436,6 +457,7 @@ public class FileManager {
         
         /**
          * Get the name of the file without the .yml part.
+         *
          * @return The name of the file without the .yml.
          */
         public String getName() {
@@ -444,6 +466,7 @@ public class FileManager {
         
         /**
          * Get the full name of the file.
+         *
          * @return Full name of the file.
          */
         public String getFileName() {
@@ -452,6 +475,7 @@ public class FileManager {
         
         /**
          * Get the name of the home folder of the file.
+         *
          * @return The name of the home folder the files are in.
          */
         public String getHomeFolder() {
@@ -460,6 +484,7 @@ public class FileManager {
         
         /**
          * Get the plugin the file belongs to.
+         *
          * @return The plugin the file belongs to.
          */
         public Plugin getPlugin() {
@@ -468,6 +493,7 @@ public class FileManager {
         
         /**
          * Get the ConfigurationFile.
+         *
          * @return The ConfigurationFile of this file.
          */
         public FileConfiguration getFile() {
@@ -476,6 +502,7 @@ public class FileManager {
         
         /**
          * Check if the file actually exists in the file system.
+         *
          * @return True if it does and false if it doesn't.
          */
         public Boolean exists() {
@@ -484,6 +511,7 @@ public class FileManager {
         
         /**
          * Save the custom file.
+         *
          * @return True if it saved correct and false if something went wrong.
          */
         public Boolean saveFile() {
@@ -505,6 +533,7 @@ public class FileManager {
         
         /**
          * Overrides the loaded state file and loads the filesystems file.
+         *
          * @return True if it reloaded correct and false if the file wasn't found or errored.
          */
         public Boolean reloadFile() {
@@ -522,5 +551,7 @@ public class FileManager {
             }
             return false;
         }
+        
     }
+    
 }

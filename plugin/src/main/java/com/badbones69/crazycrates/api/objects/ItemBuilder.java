@@ -39,12 +39,12 @@ import java.util.stream.Collectors;
  */
 public class ItemBuilder {
     
-    private static CrazyCrates cc = CrazyCrates.getInstance();
+    private static final CrazyCrates cc = CrazyCrates.getInstance();
     private NBTItem nbtItem;
     private Material material;
     private int damage;
     private String name;
-    private List<String> lore;
+    private final List<String> lore;
     private int amount;
     private String crateName;
     private String player;
@@ -56,7 +56,7 @@ public class ItemBuilder {
     private boolean hideItemFlags;
     private boolean glowing;
     private ItemStack referenceItem;
-    private boolean isMobEgg;
+    private final boolean isMobEgg;
     private EntityType entityType;
     private PotionType potionType;
     private Color potionColor;
@@ -289,7 +289,7 @@ public class ItemBuilder {
      * @return The ItemBuilder with updated info.
      */
     public ItemBuilder setMaterial(String material) {
-        String metaData = "";
+        String metaData;
         if (material.contains(":")) {// Sets the durability or another value option.
             String[] b = material.split(":");
             material = b[0];

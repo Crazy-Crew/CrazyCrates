@@ -24,7 +24,7 @@ import java.util.zip.GZIPOutputStream;
 /**
  * bStats collects some data for plugin authors.
  * <p>
- * Check out https://bStats.org/ to learn more about bStats!
+ * Check out <a href="https://bStats.org/">...</a> to learn more about bStats!
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class Metrics {
@@ -181,7 +181,7 @@ public class Metrics {
         }
         bufferedReader.close();
         if (logResponseStatusText && plugin.getLogger().getLevel() == Level.INFO) {
-            plugin.getLogger().info("Sent data to bStats and received response: " + builder.toString());
+            plugin.getLogger().info("Sent data to bStats and received response: " + builder);
         }
     }
     
@@ -353,7 +353,7 @@ public class Metrics {
                                 if (logFailedRequests) {
                                     this.plugin.getLogger().log(Level.SEVERE, "Encountered unexpected exception", e);
                                 }
-                                continue; // continue looping since we cannot do any other thing.
+                                // continue looping since we cannot do any other thing.
                             }
                         }
                     } catch (NullPointerException | NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {

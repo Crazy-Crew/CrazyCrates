@@ -29,10 +29,10 @@ import java.util.Random;
 
 public class Cosmic implements Listener {
     
-    private static CrazyCrates cc = CrazyCrates.getInstance();
-    private static HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();
-    private static HashMap<Player, ArrayList<Integer>> picks = new HashMap<>();
-    private static HashMap<Player, Boolean> checkHands = new HashMap<>();
+    private static final CrazyCrates cc = CrazyCrates.getInstance();
+    private static final HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();
+    private static final HashMap<Player, ArrayList<Integer>> picks = new HashMap<>();
+    private static final HashMap<Player, Boolean> checkHands = new HashMap<>();
     
     private static void showRewards(Player player, Crate crate) {
         Inventory inv = Bukkit.createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"));

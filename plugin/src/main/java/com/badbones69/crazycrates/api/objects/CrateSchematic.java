@@ -4,8 +4,8 @@ import java.io.File;
 
 public class CrateSchematic {
     
-    private String schematicName;
-    private File schematicFile;
+    private final String schematicName;
+    private final File schematicFile;
     
     public CrateSchematic(String schematicName, File schematicFile) {
         this.schematicName = schematicName;

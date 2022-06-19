@@ -19,6 +19,7 @@ import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -30,7 +31,7 @@ import java.util.Random;
  */
 public class StructureService {
     
-    public static Random random = new Random();
+    public static final Random random = new Random();
     
     /**
      * A comfort method for all lazy guys. Automatically switches to structure arrays, when using an area larger than 32x32x32
@@ -96,7 +97,7 @@ public class StructureService {
         NBTTagCompound fileTag = new NBTTagCompound();
         fileTag = structure.a(fileTag);
         if (structure.b() != null && !structure.b().equals("?")) fileTag.setString("author", structure.b());
-        NBTCompressedStreamTools.a(fileTag, new FileOutputStream(new File(destination + ".nbt")));
+        NBTCompressedStreamTools.a(fileTag, Files.newOutputStream(new File(destination + ".nbt").toPath()));
     }
     
     /**
@@ -152,7 +153,7 @@ public class StructureService {
             NBTTagCompound fileTag = new NBTTagCompound();
             fileTag = structures[i].a(fileTag);
             if (structures[i].b() != null && !structures[i].b().equals("?")) fileTag.setString("author", structures[i].b());
-            NBTCompressedStreamTools.a(fileTag, new FileOutputStream(new File(folder, folder.getName() + "_" + i + ".nbt")));
+            NBTCompressedStreamTools.a(fileTag, Files.newOutputStream(new File(folder, folder.getName() + "_" + i + ".nbt").toPath()));
         }
     }
     
@@ -162,7 +163,7 @@ public class StructureService {
      * @param startEdge - The starting corner for pasting (lowest x, y, z coordinates)
      * @param rotation - You may rotate the structure by 90 degrees steps
      */
-    public static void loadAndInsertAny(File source, Location startEdge, Rotation rotation) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static void loadAndInsertAny(File source, Location startEdge, Rotation rotation) throws IOException, SecurityException, IllegalArgumentException {
         if (source.isDirectory()) {
             DefinedStructure[] structures = StructureService.loadStructuresArray(source);
             StructureService.insertStructuresArray(structures, StructureService.loadAreaDimFile(source), startEdge, rotation.getNMSRot());
@@ -177,7 +178,7 @@ public class StructureService {
      * @param source - The structure array folder or the structure NBT file
      * @param startEdge - The starting corner for pasting (lowest x, y, z coordinates)
      */
-    public static void loadAndInsertAny(File source, Location startEdge) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static void loadAndInsertAny(File source, Location startEdge) throws IOException, SecurityException, IllegalArgumentException {
         StructureService.loadAndInsertAny(source, startEdge, Rotation.DEG_0);
     }
     
@@ -193,7 +194,7 @@ public class StructureService {
         Method parseAndConvert = DefinedStructureManager.class.getDeclaredMethod("a", InputStream.class);
         parseAndConvert.setAccessible(true);
         // 1.13 WorldServer#C, 1.13.1 WorldServer#D
-        return (DefinedStructure) parseAndConvert.invoke(((CraftWorld) world).getHandle().r(), new FileInputStream(source));
+        return (DefinedStructure) parseAndConvert.invoke(((CraftWorld) world).getHandle().r(), Files.newInputStream(source.toPath()));
     }
     
     /**
@@ -203,7 +204,7 @@ public class StructureService {
      */
     public static DefinedStructure loadSingleStructure(File source) throws IOException {
         DefinedStructure structure = new DefinedStructure();
-        structure.b(NBTCompressedStreamTools.a(new FileInputStream(source)));
+        structure.b(NBTCompressedStreamTools.a(Files.newInputStream(source.toPath())));
         return structure;
     }
     
@@ -277,7 +278,7 @@ public class StructureService {
                 Method parseAndConvert = DefinedStructureManager.class.getDeclaredMethod("a", InputStream.class);
                 parseAndConvert.setAccessible(true);
                 // 1.13 WorldServer#C, 1.13.1 WorldServer#D
-                DefinedStructure structure = (DefinedStructure) parseAndConvert.invoke(((CraftWorld) world).getHandle().r(), new FileInputStream(file));
+                DefinedStructure structure = (DefinedStructure) parseAndConvert.invoke(((CraftWorld) world).getHandle().r(), Files.newInputStream(file.toPath()));
                 String suffix = file.getName().split("_")[file.getName().split("_").length - 1];
                 suffix = suffix.substring(0, suffix.length() - 4);
                 structures[Integer.parseInt(suffix)] = structure;
@@ -297,7 +298,7 @@ public class StructureService {
         for (File file : folder.listFiles()) {
             if (!file.getName().equals(folder.getName() + ".nbt")) {
                 DefinedStructure structure = new DefinedStructure();
-                structure.b(NBTCompressedStreamTools.a(new FileInputStream(file)));
+                structure.b(NBTCompressedStreamTools.a(Files.newInputStream(file.toPath())));
                 String suffix = file.getName().split("_")[file.getName().split("_").length - 1];
                 suffix = suffix.substring(0, suffix.length() - 4);
                 structures[Integer.parseInt(suffix)] = structure;
@@ -346,7 +347,7 @@ public class StructureService {
     public static void saveAreaDimFile(int[] dimension, File folder) throws IOException {
         NBTTagCompound fileTag = new NBTTagCompound();
         fileTag.setIntArray("dimensions", dimension);
-        NBTCompressedStreamTools.a(fileTag, new FileOutputStream(new File(folder, folder.getName() + ".nbt")));
+        NBTCompressedStreamTools.a(fileTag, Files.newOutputStream(new File(folder, folder.getName() + ".nbt").toPath()));
     }
     
     /**
@@ -355,7 +356,7 @@ public class StructureService {
      * @return int[3] - width, height, length
      */
     public static int[] loadAreaDimFile(File folder) throws IOException {
-        return NBTCompressedStreamTools.a(new FileInputStream(new File(folder, folder.getName() + ".nbt"))).getIntArray("dimensions");
+        return NBTCompressedStreamTools.a(Files.newInputStream(new File(folder, folder.getName() + ".nbt").toPath())).getIntArray("dimensions");
     }
     
     /**
@@ -460,7 +461,7 @@ public class StructureService {
      */
     public enum Rotation {
         DEG_0(EnumBlockRotation.a), DEG_90(EnumBlockRotation.b), DEG_180(EnumBlockRotation.c), DEG_270(EnumBlockRotation.d);
-        private EnumBlockRotation rotNMS;
+        private final EnumBlockRotation rotNMS;
         
         Rotation(EnumBlockRotation rotNMS) {
             this.rotNMS = rotNMS;

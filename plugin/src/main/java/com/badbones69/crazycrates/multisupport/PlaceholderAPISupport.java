@@ -12,8 +12,8 @@ import java.text.NumberFormat;
 
 public class PlaceholderAPISupport extends PlaceholderExpansion {
     
-    private CrazyCrates cc = CrazyCrates.getInstance();
-    private Plugin plugin;
+    private final CrazyCrates cc = CrazyCrates.getInstance();
+    private final Plugin plugin;
     
     public PlaceholderAPISupport(Plugin plugin) {
         this.plugin = plugin;

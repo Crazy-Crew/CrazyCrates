@@ -38,8 +38,8 @@ public class CrateControl implements Listener { //Crate Control
     /**
      * A list of crate locations that are in use.
      */
-    public static HashMap<Player, Location> inUse = new HashMap<>();
-    private CrazyCrates cc = CrazyCrates.getInstance();
+    public static final HashMap<Player, Location> inUse = new HashMap<>();
+    private final CrazyCrates cc = CrazyCrates.getInstance();
     
     /**
      * This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.

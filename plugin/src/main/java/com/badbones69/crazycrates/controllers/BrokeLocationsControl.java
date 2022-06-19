@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class BrokeLocationsControl implements Listener {
     
-    private CrazyCrates cc = CrazyCrates.getInstance();
-    private FileManager fileManager = FileManager.getInstance();
+    private final CrazyCrates cc = CrazyCrates.getInstance();
+    private final FileManager fileManager = FileManager.getInstance();
     
     @EventHandler
     public void onWorldLoad(WorldLoadEvent e) {
