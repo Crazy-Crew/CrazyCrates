@@ -42,9 +42,11 @@ public class Methods {
             String name = file.getString("Crate.Prizes." + reward + ".DisplayName");
             int chance = file.getInt("Crate.Prizes." + reward + ".Chance");
             int max = 99;
+
             if (file.contains("Crate.Prizes." + reward + ".MaxRange")) {
                 max = file.getInt("Crate.Prizes." + reward + ".MaxRange") - 1;
             }
+
             try {
                 ItemStack item = new ItemBuilder().setMaterial(id).setName(name).build();
                 int num;
@@ -81,11 +83,13 @@ public class Methods {
     }
     
     public static boolean isOnline(String name, CommandSender sender) {
+
         for (Player player : CrazyManager.getJavaPlugin().getServer().getOnlinePlayers()) {
             if (player.getName().equalsIgnoreCase(name)) {
                 return true;
             }
         }
+
         sender.sendMessage(Messages.NOT_ONLINE.getMessage("%Player%", name));
         return false;
     }
@@ -191,11 +195,13 @@ public class Methods {
     private static ItemStack stripNBT(ItemStack item) {
         try {
             NBTItem nbtItem = new NBTItem(item.clone());
+
             if (nbtItem.hasNBTData()) {
                 if (nbtItem.hasKey("CrazyCrates-Crate")) {
                     nbtItem.removeKey("CrazyCrates-Crate");
                 }
             }
+
             return nbtItem.getItem();
         } catch (Exception e) {
             return item;
@@ -205,6 +211,7 @@ public class Methods {
     public static Enchantment getEnchantment(String enchantmentName) {
         HashMap<String, String> enchantments = getEnchantmentList();
         enchantmentName = stripEnchantmentName(enchantmentName);
+
         for (Enchantment enchantment : Enchantment.values()) {
             try {
                 if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
@@ -214,9 +221,9 @@ public class Methods {
                 stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
                     return enchantment;
                 }
-            } catch (Exception ignore) { //If any null enchantments are found they may cause errors.
-            }
+            } catch (Exception ignore) {}
         }
+
         return null;
     }
     
@@ -363,5 +370,4 @@ public class Methods {
         }
         return -1;
     }
-    
 }

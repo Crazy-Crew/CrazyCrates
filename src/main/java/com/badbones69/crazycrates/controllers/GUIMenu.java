@@ -47,9 +47,11 @@ public class GUIMenu implements Listener {
                 ItemBuilder item = new ItemBuilder();
                 String[] split = custom.split(", ");
                 for (String option : split) {
+
                     if (option.contains("Item:")) {
                         item.setMaterial(option.replace("Item:", ""));
                     }
+
                     if (option.contains("Name:")) {
                         option = option.replace("Name:", "");
                         for (Crate crate : cc.getCrates()) {
@@ -61,6 +63,7 @@ public class GUIMenu implements Listener {
                         }
                         item.setName(option.replaceAll("%player%", player.getName()));
                     }
+
                     if (option.contains("Lore:")) {
                         option = option.replace("Lore:", "");
                         String[] d = option.split(",");
@@ -75,38 +78,49 @@ public class GUIMenu implements Listener {
                             item.addLore(option.replaceAll("%player%", player.getName()));
                         }
                     }
+
                     if (option.contains("Glowing:")) {
                         item.setGlow(Boolean.parseBoolean(option.replace("Glowing:", "")));
                     }
+
                     if (option.contains("Player:")) {
                         item.setPlayerName(option.replaceAll("%player%", player.getName()));
                     }
+
                     if (option.contains("Slot:")) {
                         slot = Integer.parseInt(option.replace("Slot:", ""));
                     }
+
                     if (option.contains("Unbreakable-Item")) {
                         item.setUnbreakable(Boolean.parseBoolean(option.replace("Unbreakable-Item:", "")));
                     }
+
                     if (option.contains("Hide-Item-Flags")) {
                         item.hideItemFlags(Boolean.parseBoolean(option.replace("Hide-Item-Flags:", "")));
                     }
                 }
+
                 if (slot > size) {
                     continue;
                 }
+
                 slot--;
                 inv.setItem(slot, item.build());
             }
         }
+
         for (Crate crate : cc.getCrates()) {
             FileConfiguration file = crate.getFile();
+
             if (file != null) {
                 if (file.getBoolean("Crate.InGUI")) {
                     String path = "Crate.";
                     int slot = file.getInt(path + "Slot");
+
                     if (slot > size) {
                         continue;
                     }
+
                     slot--;
                     inv.setItem(slot, new ItemBuilder()
                     .setMaterial(file.getString(path + "Item"))
@@ -123,6 +137,7 @@ public class GUIMenu implements Listener {
                 }
             }
         }
+
         player.openInventory(inv);
     }
     
@@ -132,11 +147,13 @@ public class GUIMenu implements Listener {
         Inventory inv = e.getInventory();
         FileConfiguration config = Files.CONFIG.getFile();
         if (inv != null) {
+
             for (Crate crate : cc.getCrates()) {
                 if (crate.getCrateType() != CrateType.MENU && crate.isCrateMenu(e.getView())) {
                     return;
                 }
             }
+
             if (e.getView().getTitle().equals(Methods.sanitizeColor(config.getString("Settings.InventoryName")))) {
                 e.setCancelled(true);
                 if (e.getCurrentItem() != null) {
@@ -146,7 +163,8 @@ public class GUIMenu implements Listener {
                         if (nbtItem.hasNBTData() && nbtItem.hasKey("CrazyCrates-Crate")) {
                             Crate crate = cc.getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
                             if (crate != null) {
-                                if (e.getAction() == InventoryAction.PICKUP_HALF) {//Right-clicked the item
+                                if (e.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
+
                                     if (crate.isPreviewEnabled()) {
                                         player.closeInventory();
                                         Preview.setPlayerInMenu(player, true);
@@ -154,14 +172,18 @@ public class GUIMenu implements Listener {
                                     } else {
                                         player.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
                                     }
+
                                     return;
                                 }
+
                                 if (cc.isInOpeningList(player)) {
                                     player.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
                                     return;
                                 }
+
                                 boolean hasKey = false;
                                 KeyType keyType = KeyType.VIRTUAL_KEY;
+
                                 if (cc.getVirtualKeys(player, crate) >= 1) {
                                     hasKey = true;
                                 } else {
@@ -170,6 +192,7 @@ public class GUIMenu implements Listener {
                                         keyType = KeyType.PHYSICAL_KEY;
                                     }
                                 }
+
                                 if (!hasKey) {
                                     if (config.contains("Settings.Need-Key-Sound")) {
                                         Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
@@ -180,16 +203,19 @@ public class GUIMenu implements Listener {
                                     player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
                                     return;
                                 }
+
                                 for (String world : getDisabledWorlds()) {
                                     if (world.equalsIgnoreCase(player.getWorld().getName())) {
                                         player.sendMessage(Messages.WORLD_DISABLED.getMessage("%World%", player.getWorld().getName()));
                                         return;
                                     }
                                 }
+
                                 if (Methods.isInventoryFull(player)) {
                                     player.sendMessage(Messages.INVENTORY_FULL.getMessage());
                                     return;
                                 }
+
                                 cc.openCrate(player, crate, keyType, player.getLocation(), true, false);
                             }
                         }

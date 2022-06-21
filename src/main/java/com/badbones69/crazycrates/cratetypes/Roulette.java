@@ -33,11 +33,13 @@ public class Roulette implements Listener {
         setGlass(inv);
         inv.setItem(13, crate.pickPrize(player).getDisplayItem());
         player.openInventory(inv);
+
         if (!cc.takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
             cc.removePlayerFromOpeningList(player);
             return;
         }
+
         startRoulette(player, inv, crate);
     }
     
@@ -60,23 +62,29 @@ public class Roulette implements Listener {
                         inv.setItem(13, crate.pickPrize(player).getDisplayItem());
                     }
                 }
+
                 open++;
                 if (open >= 5) {
                     player.openInventory(inv);
                     open = 0;
                 }
+
                 full++;
                 if (full > 16) {
+
                     if (slowSpin().contains(time)) {
                         setGlass(inv);
                         inv.setItem(13, crate.pickPrize(player).getDisplayItem());
                         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                     }
+
                     time++;
+
                     if (time >= 23) {
                         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                         cc.endCrate(player);
                         Prize prize = crate.getPrize(inv.getItem(13));
+
                         if (prize != null) {
                             cc.givePrize(player, prize);
                             if (prize.useFireworks()) {
@@ -86,6 +94,7 @@ public class Roulette implements Listener {
                         } else {
                             player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
                         }
+
                         cc.removePlayerFromOpeningList(player);
                         new BukkitRunnable() {
                             @Override

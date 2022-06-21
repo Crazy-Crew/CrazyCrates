@@ -32,7 +32,7 @@ public class FileManager {
         files.clear();
         customFiles.clear();
         configurations.clear();
-        //Loads all the normal static files.
+        // Loads all the normal static files.
         for (Files file : Files.values()) {
             File newFile = new File(CrazyManager.getJavaPlugin().getDataFolder(), file.getFileLocation());
             if (log) CrazyManager.getJavaPlugin().getLogger().info("Loading the " + file.getFileName());
@@ -52,7 +52,7 @@ public class FileManager {
             if (log) CrazyManager.getJavaPlugin().getLogger().info("Successfully loaded " + file.getFileName());
         }
 
-        //Starts to load all the custom files.
+        // Starts to load all the custom files.
         if (homeFolders.size() > 0) {
             if (log) CrazyManager.getJavaPlugin().getLogger().info("Loading custom files.");
             for (String homeFolder : homeFolders) {
@@ -295,8 +295,8 @@ public class FileManager {
     
     public enum Files {
         
-        //ENUM_NAME("fileName.yml", "fileLocation.yml"),
-        //ENUM_NAME("fileName.yml", "newFileLocation.yml", "oldFileLocation.yml"),
+        // ENUM_NAME("fileName.yml", "fileLocation.yml"),
+        // ENUM_NAME("fileName.yml", "newFileLocation.yml", "oldFileLocation.yml"),
         CONFIG("config.yml", "config.yml"),
         MESSAGES("messages.yml", "messages.yml"),
         LOCATIONS("locations.yml", "locations.yml"),
@@ -377,9 +377,9 @@ public class FileManager {
     
     public class CustomFile {
         
-        private String name;
-        private String fileName;
-        private String homeFolder;
+        private final String name;
+        private final String fileName;
+        private final String homeFolder;
         private FileConfiguration file;
         
         /**
@@ -484,7 +484,6 @@ public class FileManager {
             }
             return false;
         }
-        
     }
     
 }

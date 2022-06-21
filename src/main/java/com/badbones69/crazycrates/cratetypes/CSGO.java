@@ -24,11 +24,13 @@ public class CSGO implements Listener {
     
     private static void setGlass(Inventory inv) {
         HashMap<Integer, ItemStack> glass = new HashMap<>();
+
         for (int i = 0; i < 10; i++) {
             if (i < 9 && i != 3) {
                 glass.put(i, inv.getItem(i));
             }
         }
+
         for (int i : glass.keySet()) {
             if (inv.getItem(i) == null) {
                 ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
@@ -36,11 +38,13 @@ public class CSGO implements Listener {
                 inv.setItem(i + 18, item);
             }
         }
+
         for (int i = 1; i < 10; i++) {
             if (i < 9 && i != 4) {
                 glass.put(i, inv.getItem(i));
             }
         }
+
         ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
         inv.setItem(0, glass.get(1));
         inv.setItem(18, glass.get(1));
@@ -65,10 +69,13 @@ public class CSGO implements Listener {
     public static void openCSGO(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
         setGlass(inv);
+
         for (int i = 9; i > 8 && i < 18; i++) {
             inv.setItem(i, crate.pickPrize(player).getDisplayItem());
         }
+
         player.openInventory(inv);
+
         if (cc.takeKeys(1, player, crate, keyType, checkHand)) {
             startCSGO(player, inv, crate);
         } else {
@@ -85,28 +92,35 @@ public class CSGO implements Listener {
             
             @Override
             public void run() {
-                if (full <= 50) {//When Spinning
+                if (full <= 50) { // When Spinning
                     moveItems(inv, player, crate);
                     setGlass(inv);
                     player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                 }
+
                 open++;
+
                 if (open >= 5) {
                     player.openInventory(inv);
                     open = 0;
                 }
+
                 full++;
                 if (full > 51) {
-                    if (slowSpin().contains(time)) {//When Slowing Down
+
+                    if (slowSpin().contains(time)) { // When Slowing Down
                         moveItems(inv, player, crate);
                         setGlass(inv);
                         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                     }
+
                     time++;
-                    if (time == 60) {// When done
+
+                    if (time == 60) { // When done
                         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                         cc.endCrate(player);
                         Prize prize = crate.getPrize(inv.getItem(13));
+
                         if (prize != null) {
                             cc.givePrize(player, prize);
                             if (prize.useFireworks()) {
@@ -116,8 +130,10 @@ public class CSGO implements Listener {
                         } else {
                             player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
                         }
+
                         cc.removePlayerFromOpeningList(player);
                         cancel();
+
                         new BukkitRunnable() {
                             @Override
                             public void run() {
@@ -126,7 +142,7 @@ public class CSGO implements Listener {
                                 }
                             }
                         }.runTaskLater(CrazyManager.getJavaPlugin(), 40);
-                    } else if (time > 60) {//Added this due reports of the prizes spamming when low tps.
+                    } else if (time > 60) { // Added this due reports of the prizes spamming when low tps.
                         cancel();
                     }
                 }
@@ -138,6 +154,7 @@ public class CSGO implements Listener {
         ArrayList<Integer> slow = new ArrayList<>();
         int full = 120;
         int cut = 15;
+
         for (int i = 120; cut > 0; full--) {
             if (full <= i - cut || full >= i - cut) {
                 slow.add(i);
@@ -145,14 +162,17 @@ public class CSGO implements Listener {
                 cut--;
             }
         }
+
         return slow;
     }
     
     private static void moveItems(Inventory inv, Player player, Crate crate) {
         ArrayList<ItemStack> items = new ArrayList<>();
+
         for (int i = 9; i > 8 && i < 17; i++) {
             items.add(inv.getItem(i));
         }
+
         inv.setItem(9, crate.pickPrize(player).getDisplayItem());
         for (int i = 0; i < 8; i++) {
             inv.setItem(i + 10, items.get(i));

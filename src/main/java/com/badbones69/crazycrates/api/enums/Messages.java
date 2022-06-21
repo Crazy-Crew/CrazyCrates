@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.api.FileManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import java.util.*;
 import java.util.Map.Entry;
-
 import static com.badbones69.crazycrates.support.utils.ConstantsKt.color;
 
 public enum Messages {
@@ -121,6 +120,7 @@ public enum Messages {
                 }
             }
         }
+
         if (saveFile) {
             FileManager.Files.MESSAGES.saveFile();
         }
@@ -193,6 +193,7 @@ public enum Messages {
         String message;
         boolean isList = isList();
         boolean exists = exists();
+
         if (isList) {
             if (exists) {
                 message = color(convertList(FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path)));
@@ -206,16 +207,18 @@ public enum Messages {
                 message = color(getDefaultMessage());
             }
         }
+
         for (Entry<String, String> placeholder : placeholders.entrySet()) {
             message = message.replace(placeholder.getKey(), placeholder.getValue())
             .replace(placeholder.getKey().toLowerCase(), placeholder.getValue());
         }
-        if (isList) {//Don't want to add a prefix to a list of messages.
+
+        if (isList) { // Don't want to add a prefix to a list of messages.
             return color(message);
-        } else {//If the message isn't a list.
-            if (prefix) {//If the message needs a prefix.
+        } else { // If the message isn't a list.
+            if (prefix) { // If the message needs a prefix.
                 return Methods.getPrefix(message);
-            } else {//If the message doesn't need a prefix.
+            } else { // If the message doesn't need a prefix.
                 return color(message);
             }
         }

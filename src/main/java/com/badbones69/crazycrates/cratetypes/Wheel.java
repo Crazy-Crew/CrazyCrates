@@ -30,18 +30,24 @@ public class Wheel implements Listener {
             cc.removePlayerFromOpeningList(player);
             return;
         }
+
         final Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 54, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+
         for (int i = 0; i < 54; i++) {
             inv.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
         }
+
         HashMap<Integer, ItemStack> items = new HashMap<>();
+
         for (int i : getBorder()) {
             Prize prize = crate.pickPrize(player);
             inv.setItem(i, prize.getDisplayItem());
             items.put(i, prize.getDisplayItem());
         }
+
         rewards.put(player, items);
         player.openInventory(inv);
+
         cc.addCrateTask(player, new BukkitRunnable() {
             final ArrayList<Integer> slots = getBorder();
             int i = 0;
@@ -54,38 +60,48 @@ public class Wheel implements Listener {
             
             @Override
             public void run() {
+
                 if (i >= 18) {
                     i = 0;
                 }
+
                 if (f >= 18) {
                     f = 0;
                 }
+
                 if (full < timer) {
+
                     if (rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
                         inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
                     } else {
                         inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
                     }
+
                     inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
                     player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                     i++;
                     f++;
                 }
+
                 if (full >= timer) {
                     if (slowSpin().contains(slower)) {
+
                         if (rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
                             inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
                         } else {
                             inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
                         }
+
                         inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
                         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                         i++;
                         f++;
                     }
+
                     if (full == timer + 47) {
                         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                     }
+
                     if (full >= timer + 47) {
                         slow++;
                         if (slow >= 2) {
@@ -98,11 +114,14 @@ public class Wheel implements Listener {
                             slow = 0;
                         }
                     }
+
                     if (full >= (timer + 55 + 47)) {
                         Prize prize = null;
+
                         if (cc.isInOpeningList(player)) {
                             prize = crate.getPrize(rewards.get(player).get(slots.get(f)));
                         }
+
                         if (prize != null) {
                             cc.givePrize(player, prize);
                             if (prize.useFireworks()) {
@@ -112,14 +131,17 @@ public class Wheel implements Listener {
                         } else {
                             player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
                         }
+
                         player.closeInventory();
                         cc.removePlayerFromOpeningList(player);
                         cc.endCrate(player);
                     }
                     slower++;
                 }
+
                 full++;
                 open++;
+
                 if (open > 5) {
                     player.openInventory(inv);
                     open = 0;
@@ -139,6 +161,7 @@ public class Wheel implements Listener {
                 cut--;
             }
         }
+
         return slow;
     }
     

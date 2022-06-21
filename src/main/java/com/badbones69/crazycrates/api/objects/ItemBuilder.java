@@ -703,6 +703,7 @@ public class ItemBuilder {
             this.isHash = true;
             this.isURL = player.startsWith("http");
         }
+
         return this;
     }
     
@@ -1037,6 +1038,7 @@ public class ItemBuilder {
                             return;
                         }
                     }
+
                     item.addUnsafeEnchantment(Enchantment.LUCK, 1);
                     ItemMeta meta = item.getItemMeta();
                     meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);

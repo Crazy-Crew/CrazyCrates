@@ -37,6 +37,7 @@ public class War implements Listener {
         InventoryView inventoryView = player.openInventory(inv);
         canPick.put(player, false);
         canClose.put(player, false);
+
         if (!cc.takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
             cc.removePlayerFromOpeningList(player);
@@ -44,6 +45,7 @@ public class War implements Listener {
             canPick.remove(player);
             return;
         }
+
         startWar(player, inv, crate, inventoryView.getTitle());
     }
     
@@ -58,13 +60,16 @@ public class War implements Listener {
                     setRandomPrizes(player, inv, crate, inventoryTitle);
                     player.playSound(player.getLocation(), Sound.BLOCK_LAVA_POP, 1, 1);
                 }
+
                 open++;
                 if (open >= 3) {
                     player.openInventory(inv);
                     open = 0;
                 }
+
                 full++;
-                if (full == 26) {//Finished Rolling
+
+                if (full == 26) { // Finished Rolling
                     player.playSound(player.getLocation(), Sound.BLOCK_LAVA_POP, 1, 1);
                     setRandomGlass(player, inv, inventoryTitle);
                     canPick.put(player, true);
@@ -83,12 +88,15 @@ public class War implements Listener {
     
     private static void setRandomGlass(Player player, Inventory inv, String inventoryTitle) {
         if (cc.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(Methods.sanitizeColor(cc.getOpeningCrate(player).getFile().getString(crateNameString)))) {
+
             if (colorCodes == null) {
                 colorCodes = getColorCode();
             }
+
             ItemBuilder itemBuilder = Methods.getRandomPaneColor();
             itemBuilder.setName("&" + colorCodes.get(itemBuilder.build()) + "&l???");
             ItemStack item = itemBuilder.build();
+
             for (int i = 0; i < 9; i++) {
                 inv.setItem(i, item);
             }
@@ -128,49 +136,62 @@ public class War implements Listener {
                     final int slot = e.getRawSlot();
                     Prize prize = crate.pickPrize(player);
                     inv.setItem(slot, prize.getDisplayItem());
+
                     if (cc.hasCrateTask(player)) {
                         cc.endCrate(player);
                     }
+
                     canPick.remove(player);
                     canClose.put(player, true);
                     cc.givePrize(player, prize);
+
                     if (prize.useFireworks()) {
                         Methods.fireWork(player.getLocation().add(0, 1, 0));
                     }
+
                     CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                     cc.removePlayerFromOpeningList(player);
                     player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 1, 1);
-                    //Sets all other non-picked prizes to show what they could have been.
+                    // Sets all other non-picked prizes to show what they could have been.
+
                     cc.addCrateTask(player, new BukkitRunnable() {
                         @Override
                         public void run() {
+
                             for (int i = 0; i < 9; i++) {
                                 if (i != slot) {
                                     inv.setItem(i, crate.pickPrize(player).getDisplayItem());
                                 }
                             }
+
                             if (cc.hasCrateTask(player)) {
                                 cc.endCrate(player);
                             }
-                            //Removing other items then the prize.
+
+                            // Removing other items then the prize.
                             cc.addCrateTask(player, new BukkitRunnable() {
                                 @Override
                                 public void run() {
+
                                     for (int i = 0; i < 9; i++) {
                                         if (i != slot) {
                                             inv.setItem(i, new ItemStack(Material.AIR));
                                         }
                                     }
+
                                     if (cc.hasCrateTask(player)) {
                                         cc.endCrate(player);
                                     }
-                                    //Closing the inventory when finished.
+                                    // Closing the inventory when finished.
+
                                     cc.addCrateTask(player, new BukkitRunnable() {
                                         @Override
                                         public void run() {
+
                                             if (cc.hasCrateTask(player)) {
                                                 cc.endCrate(player);
                                             }
+
                                             player.closeInventory();
                                         }
                                     }.runTaskLater(CrazyManager.getJavaPlugin(), 30));

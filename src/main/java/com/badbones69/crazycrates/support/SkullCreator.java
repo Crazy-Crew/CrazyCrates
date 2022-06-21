@@ -16,7 +16,6 @@ import java.util.UUID;
 /**
  * A library for the Bukkit API to create player skulls
  * from names, base64 strings, and texture URLs.
- *
  * Does not use any NMS code, and should work across all versions.
  *
  * @author Dean B on 12/28/2016.

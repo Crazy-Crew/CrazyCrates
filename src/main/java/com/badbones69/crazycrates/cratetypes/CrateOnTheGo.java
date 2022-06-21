@@ -34,9 +34,11 @@ public class CrateOnTheGo implements Listener {
                     Prize prize = crate.pickPrize(player);
                     cc.givePrize(player, prize);
                     CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, cc.getOpeningCrate(player).getName(), prize));
+
                     if (prize.useFireworks()) {
                         Methods.fireWork(player.getLocation().add(0, 1, 0));
                     }
+
                     cc.removePlayerFromOpeningList(player);
                 }
             }

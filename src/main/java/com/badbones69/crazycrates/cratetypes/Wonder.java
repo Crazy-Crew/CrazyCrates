@@ -53,10 +53,12 @@ public class Wonder implements Listener {
                     Slots.add(slot2);
                     inv.setItem(slot1, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
                     inv.setItem(slot2, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+
                     for (String slot : slots) {
                         prize = crate.pickPrize(player);
                         inv.setItem(Integer.parseInt(slot), prize.getDisplayItem());
                     }
+
                     slot1++;
                     slot2--;
                 }
@@ -69,6 +71,7 @@ public class Wonder implements Listener {
                 }
 
                 player.openInventory(inv);
+
                 if (fulltime > 100) {
                     cc.endCrate(player);
                     player.closeInventory();
