@@ -17,13 +17,11 @@ import com.badbones69.crazycrates.support.placeholders.MVdWPlaceholderAPISupport
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport
 import io.papermc.lib.PaperLib
 import org.bstats.bukkit.Metrics
-import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.entity.EntityPickupItemEvent
-import org.bukkit.event.player.PlayerAttemptPickupItemEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
+
 
 class CrazyCrates : JavaPlugin(), Listener {
 
@@ -37,10 +35,10 @@ class CrazyCrates : JavaPlugin(), Listener {
 
         if (PaperLib.isPaper()) {
             fileManager.logInfo(true)
-                .registerDefaultGenerateFiles("Basic.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("Classic.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("Crazy.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("Galactic.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("CSGO.yml", "/crates", "/crates")
+                //.registerDefaultGenerateFiles("QuickCrate.yml", "/crates", "/crates")
+                //.registerDefaultGenerateFiles("CosmicCrate.yml", "/crates", "/crates")
+                //.registerDefaultGenerateFiles("QuadCrates.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
                 .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
                 .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
@@ -52,9 +50,9 @@ class CrazyCrates : JavaPlugin(), Listener {
                 .setup()
         } else {
             fileManager.logInfo(true)
-                .registerDefaultGenerateFiles("Basic.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("Classic.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("Galactic.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("CSGO.yml", "/crates", "/crates")
+                //.registerDefaultGenerateFiles("QuickCrate.yml", "/crates", "/crates")
+                //.registerDefaultGenerateFiles("CosmicCrate.yml", "/crates", "/crates")
                 .registerCustomFilesFolder("/crates")
                 .setup()
         }
