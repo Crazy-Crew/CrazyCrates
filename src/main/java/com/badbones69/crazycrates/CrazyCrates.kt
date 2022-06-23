@@ -35,10 +35,10 @@ class CrazyCrates : JavaPlugin(), Listener {
 
         if (PaperLib.isPaper()) {
             fileManager.logInfo(true)
-                .registerDefaultGenerateFiles("CSGO.yml", "/crates", "/crates")
-                //.registerDefaultGenerateFiles("QuickCrate.yml", "/crates", "/crates")
-                //.registerDefaultGenerateFiles("CosmicCrate.yml", "/crates", "/crates")
-                //.registerDefaultGenerateFiles("QuadCrates.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
                 .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
                 .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
@@ -50,9 +50,9 @@ class CrazyCrates : JavaPlugin(), Listener {
                 .setup()
         } else {
             fileManager.logInfo(true)
-                .registerDefaultGenerateFiles("CSGO.yml", "/crates", "/crates")
-                //.registerDefaultGenerateFiles("QuickCrate.yml", "/crates", "/crates")
-                //.registerDefaultGenerateFiles("CosmicCrate.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
                 .registerCustomFilesFolder("/crates")
                 .setup()
         }
