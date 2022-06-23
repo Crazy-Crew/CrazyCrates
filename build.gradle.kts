@@ -17,7 +17,7 @@ tasks.compileKotlin {
 }
 
 group = "com.badbones69.crazycrates"
-version = "1.10.5-${System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"}"
+version = "1.19-1.10.5-${System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"}"
 description = "Quality crates for free!"
 
 repositories {
@@ -64,7 +64,7 @@ dependencies {
 
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
 
-    compileOnly(kotlin("stdlib", "1.6.20"))
+    compileOnly(kotlin("stdlib", "1.6.21"))
 
     implementation("org.bstats:bstats-bukkit:3.0.0")
 
