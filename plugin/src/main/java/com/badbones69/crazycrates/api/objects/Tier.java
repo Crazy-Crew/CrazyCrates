@@ -4,11 +4,11 @@ import org.bukkit.inventory.ItemStack;
 
 public class Tier {
     
-    private String name;
-    private String coloredName;
-    private ItemBuilder colorGlass;
-    private Integer chance;
-    private Integer maxRange;
+    private final String name;
+    private final String coloredName;
+    private final ItemBuilder colorGlass;
+    private final Integer chance;
+    private final Integer maxRange;
     
     public Tier(String name, String coloredName, ItemBuilder colorGlass, Integer chance, Integer maxRange) {
         this.name = name;

@@ -11,9 +11,9 @@ public enum Support {
     HOLOGRAMS("Holograms"),
     DECENT_HOLOGRAMS("DecentHolograms");
     
-    private String name;
+    private final String name;
     
-    private Support(String name) {
+    Support(String name) {
         this.name = name;
     }
     

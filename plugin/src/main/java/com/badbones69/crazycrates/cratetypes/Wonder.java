@@ -19,7 +19,7 @@ import java.util.Random;
 
 public class Wonder implements Listener {
     
-    private static CrazyCrates cc = CrazyCrates.getInstance();
+    private static final CrazyCrates cc = CrazyCrates.getInstance();
     
     public static void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!cc.takeKeys(1, player, crate, keyType, checkHand)) {
@@ -41,7 +41,7 @@ public class Wonder implements Listener {
             int slot1 = 0;
             int slot2 = 44;
             Random r = new Random();
-            ArrayList<Integer> Slots = new ArrayList<>();
+            final ArrayList<Integer> Slots = new ArrayList<>();
             Prize prize = null;
             
             @Override

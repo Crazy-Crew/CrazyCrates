@@ -26,28 +26,28 @@ import java.util.Random;
 public class Crate {
     
     private CrateManager manager;
-    private String name;
-    private ItemStack key;
-    private ItemStack keyNoNBT;
-    private ItemStack adminKey;
-    private int maxPage = 1;
-    private int maxSlots;
-    private String previewName;
-    private boolean previewToggle;
-    private boolean boarderToggle;
-    private ItemBuilder boarderItem;
-    private CrateType crateType;
-    private FileConfiguration file;
-    private ArrayList<Prize> prizes;
-    private String crateInventoryName;
-    private boolean giveNewPlayerKeys;
+    private final String name;
+    private final ItemStack key;
+    private final ItemStack keyNoNBT;
+    private final ItemStack adminKey;
+    private final int maxPage = 1;
+    private final int maxSlots;
+    private final String previewName;
+    private final boolean previewToggle;
+    private final boolean boarderToggle;
+    private final ItemBuilder boarderItem;
+    private final CrateType crateType;
+    private final FileConfiguration file;
+    private final ArrayList<Prize> prizes;
+    private final String crateInventoryName;
+    private final boolean giveNewPlayerKeys;
     private int previewChestlines;
-    private int newPlayerKeys;
-    private ArrayList<ItemStack> preview;
-    private ArrayList<Tier> tiers;
-    private CrateHologram hologram;
-    private FileManager fileManager = FileManager.getInstance();
-    private CrazyCrates cc = CrazyCrates.getInstance();
+    private final int newPlayerKeys;
+    private final ArrayList<ItemStack> preview;
+    private final ArrayList<Tier> tiers;
+    private final CrateHologram hologram;
+    private final FileManager fileManager = FileManager.getInstance();
+    private final CrazyCrates cc = CrazyCrates.getInstance();
     
     /**
      *
@@ -84,12 +84,8 @@ public class Crate {
         this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
         this.hologram = hologram != null ? hologram : new CrateHologram();
         //TODO Add more managers for editing other crate types.
-        switch (crateType) {
-            case COSMIC:
-                this.manager = new CosmicCrateManager(file);
-                break;
-            default:
-                break;
+        if (crateType == CrateType.COSMIC) {
+            this.manager = new CosmicCrateManager(file);
         }
     }
     
@@ -586,12 +582,9 @@ public class Crate {
             for (int i : borderItems) {//Top Boarder slots
                 inventory.setItem(i, boarderItem.build());
             }
-            for (int i = 0; i < borderItems.size(); i++) {
-                borderItems.set(i, getAbsoluteItemPosition(borderItems.get(i)));
-            }
-            for (int i : borderItems) {//Bottom Boarder slots
-                inventory.setItem(i, boarderItem.build());
-            }
+            borderItems.replaceAll(this :: getAbsoluteItemPosition);
+            //Bottom Boarder slots
+            borderItems.forEach(i -> inventory.setItem(i, boarderItem.build()));
         }
         int page = Preview.getPage(player);
         if (Preview.playerInMenu(player)) {

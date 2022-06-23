@@ -38,8 +38,8 @@ public class CrateControl implements Listener { //Crate Control
     /**
      * A list of crate locations that are in use.
      */
-    public static HashMap<Player, Location> inUse = new HashMap<>();
-    private CrazyCrates cc = CrazyCrates.getInstance();
+    public static final HashMap<Player, Location> inUse = new HashMap<>();
+    private final CrazyCrates cc = CrazyCrates.getInstance();
     
     /**
      * This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
@@ -53,7 +53,7 @@ public class CrateControl implements Listener { //Crate Control
         }
     }
     
-    //This must run as highest so it doesn't cause other plugins to check
+    //This must run as highest, so it doesn't cause other plugins to check
     //the items that were added to the players inventory and replaced the item in the player's hand.
     //This is only an issue with QuickCrate
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -92,7 +92,7 @@ public class CrateControl implements Listener { //Crate Control
                 }
             }
         } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            //Checks if the item in their hand is a key and if so it stops them from right clicking with it.
+            //Checks if the item in their hand is a key and if so it stops them from right-clicking with it.
             ItemStack key = cc.getNMSSupport().getItemInMainHand(player);
             boolean keyInHand = cc.isKey(key);
             if (!keyInHand && ServerVersion.isAtLeast(ServerVersion.v1_12)) {

@@ -24,11 +24,11 @@ import java.util.HashMap;
 
 public class War implements Listener {
     
-    private static String crateNameString = "Crate.CrateName";
-    private static CrazyCrates cc = CrazyCrates.getInstance();
+    private static final String crateNameString = "Crate.CrateName";
+    private static final CrazyCrates cc = CrazyCrates.getInstance();
     private static HashMap<ItemStack, String> colorCodes;
-    private static HashMap<Player, Boolean> canPick = new HashMap<>();
-    private static HashMap<Player, Boolean> canClose = new HashMap<>();
+    private static final HashMap<Player, Boolean> canPick = new HashMap<>();
+    private static final HashMap<Player, Boolean> canClose = new HashMap<>();
     
     public static void openWarCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         String crateName = Methods.sanitizeColor(crate.getFile().getString(crateNameString));

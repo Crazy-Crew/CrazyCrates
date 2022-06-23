@@ -1,5 +1,5 @@
 Crate:
-  #Type of crate (CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War/Cosmic(This requires a additional info to work.)).
+  #Type of crate (CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War/Cosmic(This requires an additional info to work.)).
   CrateType: CSGO
   #Name of the Inventory if a GUI crate.
   CrateName: '&8Basic Crate'
@@ -106,7 +106,7 @@ Crate:
         - '&7You just won a &7&lBasic Grass&7.'
       #This allows for one time winnable prizes. If a player has one of the permissions then they will not be able to win it.
       BlackListed-Permissions: [ ]
-      #This allows users who have won the same prize before to get alternative prizes. They must of a BlackListed-Permission to get a alternative prize.
+      #This allows users who have won the same prize before to get alternative prizes. They must have a BlackListed-Permission to get an alternative prize.
       Alternative-Prize:
         #Toggle if the prize will use alternative prizes for the blacklisted permission.
         Toggle: false

@@ -34,11 +34,11 @@ import java.util.regex.Pattern;
 public class Methods {
     
     public static HashMap<Player, String> path = new HashMap<>();
-    public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
-    private static CrazyCrates cc = CrazyCrates.getInstance();
-    private static Random random = new Random();
+    public static final Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyCrates");
+    private static final CrazyCrates cc = CrazyCrates.getInstance();
+    private static final Random random = new Random();
 
-    public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
+    public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");
     
     public static String color(String message) {
         if (ServerVersion.isAtLeast(ServerVersion.v1_17) && !message.startsWith("tellraw")) {
@@ -387,7 +387,7 @@ public class Methods {
     // Thanks ElectronicBoy
     public static HashMap<Integer, ItemStack> removeItemAnySlot(Inventory inventory, ItemStack... items) {
         Validate.notNull(items, "Items cannot be null");
-        HashMap<Integer, ItemStack> leftover = new HashMap<Integer, ItemStack>();
+        HashMap<Integer, ItemStack> leftover = new HashMap<>();
 
         // TODO: optimization
 

@@ -79,7 +79,7 @@ public class CrazyCrates {
     private final HashMap<UUID, BukkitTask> currentTasks = new HashMap<>();
     
     /**
-     * A list of tasks being ran by the QuadCrate type.
+     * A list of tasks being run by the QuadCrate type.
      */
     private final HashMap<UUID, ArrayList<BukkitTask>> currentQuadTasks = new HashMap<>();
     
@@ -243,7 +243,7 @@ public class CrazyCrates {
                     altPrize));
                 }
                 int newPlayersKeys = file.getInt("Crate.StartingKeys");
-                if (giveNewPlayersKeys = false) {
+                if (!giveNewPlayersKeys) {
                     if (newPlayersKeys > 0) {
                         giveNewPlayersKeys = true;
                     }
@@ -559,7 +559,7 @@ public class CrazyCrates {
     }
     
     /**
-     * Checks to see if the a location is a physical crate.
+     * Checks to see if the location is a physical crate.
      * @param loc The location you are checking.
      * @return True if it is a physical crate and false if not.
      */
@@ -836,7 +836,7 @@ public class CrazyCrates {
     }
     
     /**
-     * Load the offline keys of a player who has came online.
+     * Load the offline keys of a player who has come online.
      * @param player The player which you would like to load the offline keys for.
      */
     public void loadOfflinePlayersKeys(Player player) {
@@ -946,7 +946,7 @@ public class CrazyCrates {
     
     /**
      * Remove the player from the list as they have finished the crate.
-     * Currently only used in the Cosmic CrateType.
+     * Currently, only used in the Cosmic CrateType.
      * @param player The player you are removing.
      */
     public void removePlayerKeyType(Player player) {
@@ -1002,7 +1002,7 @@ public class CrazyCrates {
     /**
      * Get a physical key from a players inventory.
      * @param player The player you are checking.
-     * @param crate The Crate of who's key you are getting.
+     * @param crate The Crate of whose key you are getting.
      * @return The ItemStack in the player's inventory. This will return null if not found.
      */
     public ItemStack getPhysicalKey(Player player, Crate crate) {
@@ -1126,7 +1126,7 @@ public class CrazyCrates {
                             }
                         }
                     }
-                    //This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the off hand.
+                    //This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the offhand.
                     if (takeAmount > 0 && hasOffhand) {
                         ItemStack item = player.getEquipment().getItemInOffHand();
                         if (item != null) {
@@ -1166,7 +1166,7 @@ public class CrazyCrates {
                 }
                 FileManager.Files.DATA.saveFile();
                 return true;
-            case FREE_KEY://Returns true because its FREE
+            case FREE_KEY://Returns true because it's FREE
                 return true;
         }
         return false;
@@ -1176,7 +1176,7 @@ public class CrazyCrates {
      * Give a player keys to a Crate.
      * @param amount The amount of keys you are giving them.
      * @param player The player you want to give the keys to.
-     * @param crate The Crate of who's keys you are giving.
+     * @param crate The Crate of whose keys you are giving.
      * @param keyType The type of key you are giving to the player.
      */
     public void addKeys(int amount, Player player, Crate crate, KeyType keyType) {
@@ -1206,7 +1206,7 @@ public class CrazyCrates {
      * Set the amount of virtual keys a player has.
      * @param amount The amount the player will have.
      * @param player The player you are setting the keys to.
-     * @param crate The Crate of who's keys are being set.
+     * @param crate The Crate of whose keys are being set.
      */
     public void setKeys(int amount, Player player, Crate crate) {
         String uuid = player.getUniqueId().toString();

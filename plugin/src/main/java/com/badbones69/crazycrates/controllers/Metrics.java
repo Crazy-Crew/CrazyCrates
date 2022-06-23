@@ -24,7 +24,7 @@ import java.util.zip.GZIPOutputStream;
 /**
  * bStats collects some data for plugin authors.
  * <p>
- * Check out https://bStats.org/ to learn more about bStats!
+ * Check out <a href="https://bStats.org/">...</a> to learn more about bStats!
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class Metrics {
@@ -35,7 +35,7 @@ public class Metrics {
     private static final String URL = "https://bStats.org/submitData/bukkit";
     // Should failed requests be logged?
     private static boolean logFailedRequests;
-    // Should the sent data be logged?
+    // Should the scent data be logged?
     private static boolean logSentData;
     // Should the response text be logged?
     private static boolean logResponseStatusText;
@@ -49,7 +49,7 @@ public class Metrics {
             final String defaultPackage = new String(
             new byte[] {'o', 'r', 'g', '.', 'b', 's', 't', 'a', 't', 's', '.', 'b', 'u', 'k', 'k', 'i', 't'});
             final String examplePackage = new String(new byte[] {'y', 'o', 'u', 'r', '.', 'p', 'a', 'c', 'k', 'a', 'g', 'e'});
-            // We want to make sure nobody just copy & pastes the example and use the wrong package names
+            // We want to make sure nobody just copied & pastes the example and use the wrong package names
             if (Metrics.class.getPackage().getName().equals(defaultPackage) || Metrics.class.getPackage().getName().equals(examplePackage)) {
                 throw new IllegalStateException("bStats Metrics class has not been relocated correctly!");
             }
@@ -86,7 +86,7 @@ public class Metrics {
             config.addDefault("enabled", true);
             // Every server gets it's unique random id.
             config.addDefault("serverUuid", UUID.randomUUID().toString());
-            // Should failed request be logged?
+            // Should fail request be logged?
             config.addDefault("logFailedRequests", false);
             // Should the sent data be logged?
             config.addDefault("logSentData", false);
@@ -181,7 +181,7 @@ public class Metrics {
         }
         bufferedReader.close();
         if (logResponseStatusText && plugin.getLogger().getLevel() == Level.INFO) {
-            plugin.getLogger().info("Sent data to bStats and received response: " + builder.toString());
+            plugin.getLogger().info("Sent data to bStats and received response: " + builder);
         }
     }
     
@@ -353,7 +353,7 @@ public class Metrics {
                                 if (logFailedRequests) {
                                     this.plugin.getLogger().log(Level.SEVERE, "Encountered unexpected exception", e);
                                 }
-                                continue; // continue looping since we cannot do any other thing.
+                                // continue looping since we cannot do any other thing.
                             }
                         }
                     } catch (NullPointerException | NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {

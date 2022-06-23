@@ -10,7 +10,7 @@ import java.text.NumberFormat;
 
 public class MVdWPlaceholderAPISupport {
     
-    private static CrazyCrates cc = CrazyCrates.getInstance();
+    private static final CrazyCrates cc = CrazyCrates.getInstance();
     
     public static void registerPlaceholders(Plugin plugin) {
         for (final Crate crate : cc.getCrates()) {

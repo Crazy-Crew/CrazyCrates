@@ -545,7 +545,7 @@ public class CCCommand implements CommandExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("give")) {// /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
                 if (!Methods.permCheck(sender, "admin")) return true;
-                Player target = null;
+                Player target;
                 KeyType type = KeyType.PHYSICAL_KEY;
                 Crate crate = null;
                 int amount = 1;

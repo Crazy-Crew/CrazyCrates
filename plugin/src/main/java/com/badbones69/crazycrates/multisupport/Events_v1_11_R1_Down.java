@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 
 public class Events_v1_11_R1_Down implements Listener {
     
-    private CrazyCrates cc = CrazyCrates.getInstance();
+    private final CrazyCrates cc = CrazyCrates.getInstance();
     
     @EventHandler
     public void onItemPickUp(PlayerPickupItemEvent e) {
