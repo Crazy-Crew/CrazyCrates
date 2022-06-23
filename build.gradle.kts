@@ -17,7 +17,7 @@ tasks.compileKotlin {
 }
 
 group = "com.badbones69.crazycrates"
-version = "<1.18-1.19>-1.10.5-${System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"}"
+version = "1.10.5-${System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"}"
 description = "Quality crates for free!"
 
 repositories {
@@ -80,7 +80,7 @@ tasks {
     shadowJar {
         minimize()
 
-        archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
+        archiveFileName.set("${rootProject.name}-[1.18-1.19]-${rootProject.version}.jar")
 
         listOf(
             "de.tr7zw",
