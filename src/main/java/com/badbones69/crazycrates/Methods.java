@@ -3,6 +3,7 @@ package com.badbones69.crazycrates;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.Messages;
+import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.controllers.FireworkDamageEvent;
@@ -11,6 +12,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.Validate;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Firework;
@@ -104,16 +106,12 @@ public class Methods {
         } catch (Exception ignored) {}
     }
     
-    public static boolean permCheck(CommandSender sender, String perm) {
-        if (sender instanceof Player) {
-            return permCheck((Player) sender, perm);
-        } else {
-            return true;
-        }
-    }
-    
-    public static boolean permCheck(Player player, String perm) {
-        if (player.hasPermission("crazycrates." + perm.toLowerCase()) || player.hasPermission("crazycrates.admin")) {
+    public static boolean permCheck(CommandSender sender, Permissions permissions) {
+        if (sender instanceof ConsoleCommandSender) return true;
+
+        Player player = (Player) sender;
+
+        if (player.hasPermission(permissions.getGetPerm())) {
             return true;
         } else {
             player.sendMessage(Messages.NO_PERMISSION.getMessage());

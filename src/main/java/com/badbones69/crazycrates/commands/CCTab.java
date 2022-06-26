@@ -1,7 +1,9 @@
 package com.badbones69.crazycrates.commands;
 
+import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
+import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -19,30 +21,30 @@ public class CCTab implements TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String commandLabel, String[] args) {
         List<String> completions = new ArrayList<>();
-        if (args.length == 1) {// /cc
-            if (hasPermission(sender, "access")) completions.add("help");
-            if (hasPermission(sender, "additem")) completions.add("additem");
-            if (hasPermission(sender, "admin")) completions.add("admin");
-            if (hasPermission(sender, "convert")) completions.add("convert");
-            if (hasPermission(sender, "list")) completions.add("list");
-            if (hasPermission(sender, "open")) completions.add("open");
-            if (hasPermission(sender, "forceopen")) completions.add("forceopen");
-            if (hasPermission(sender, "tp")) completions.add("tp");
-            if (hasPermission(sender, "transfer")) completions.add("transfer");
-            if (hasPermission(sender, "give")) completions.add("give");
-            if (hasPermission(sender, "giveall")) completions.add("giveall");
-            if (hasPermission(sender, "take")) completions.add("take");
-            if (hasPermission(sender, "set")) completions.add("set");
-            if (hasPermission(sender, "reload")) completions.add("reload");
-            if (hasPermission(sender, "schematic")) completions.add("set1");
-            if (hasPermission(sender, "schematic")) completions.add("set2");
-            if (hasPermission(sender, "schematic")) completions.add("save");
+        if (args.length == 1) { // /cc
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_HELP)) completions.add("help");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_ADD_ITEM)) completions.add("additem");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_ACCESS)) completions.add("admin");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_CONVERT)) completions.add("convert");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_LIST)) completions.add("list");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_OPEN)) completions.add("open");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_FORCE_OPEN)) completions.add("forceopen");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TELEPORT)) completions.add("tp");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_TRANSFER_KEYS)) completions.add("transfer");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_KEY)) completions.add("give");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_ALL)) completions.add("giveall");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TAKE_KEY)) completions.add("take");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SET_CRATE)) completions.add("set");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_RELOAD)) completions.add("reload");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SET)) completions.add("set1");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SET)) completions.add("set2");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SAVE)) completions.add("save");
             return StringUtil.copyPartialMatches(args[0], completions, new ArrayList<>());
-        } else if (args.length == 2) {// /cc arg0
+        } else if (args.length == 2) { // /cc arg0
             switch (args[0].toLowerCase()) {
                 case "additem", "open", "forceopen", "transfer" -> {
                     cc.getCrates().forEach(crate -> completions.add(crate.getName()));
-                    completions.remove("Menu");//Takes out a crate that doesn't exist as a file.
+                    completions.remove("Menu"); // Takes out a crate that doesn't exist as a file.
                 }
                 case "set" -> cc.getCrates().forEach(crate -> completions.add(crate.getName()));
                 case "tp" -> cc.getCrateLocations().forEach(location -> completions.add(location.getID()));
@@ -55,7 +57,7 @@ public class CCTab implements TabCompleter {
                 case "save" -> completions.add("<Schematic Name>");
             }
             return StringUtil.copyPartialMatches(args[1], completions, new ArrayList<>());
-        } else if (args.length == 3) {// /cc arg0 arg1
+        } else if (args.length == 3) { // /cc arg0 arg1
             switch (args[0].toLowerCase()) {
                 case "additem" -> {
                     Crate crateFromName = cc.getCrateFromName(args[1]);
@@ -66,11 +68,11 @@ public class CCTab implements TabCompleter {
                 case "open", "forceopen", "transfer" -> CrazyManager.getJavaPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
                 case "give", "giveall", "take" -> {
                     cc.getCrates().forEach(crate -> completions.add(crate.getName()));
-                    completions.remove("Menu");//Takes out a crate that doesn't exist as a file.
+                    completions.remove("Menu"); // Takes out a crate that doesn't exist as a file.
                 }
             }
             return StringUtil.copyPartialMatches(args[2], completions, new ArrayList<>());
-        } else if (args.length == 4) {// /cc arg0 arg1 arg2
+        } else if (args.length == 4) { // /cc arg0 arg1 arg2
             switch (args[0].toLowerCase()) {
                 case "give":
                 case "giveall":
@@ -80,7 +82,7 @@ public class CCTab implements TabCompleter {
                     break;
             }
             return StringUtil.copyPartialMatches(args[3], completions, new ArrayList<>());
-        } else if (args.length == 5) {// /cc arg0 arg1 arg2 arg3
+        } else if (args.length == 5) { // /cc arg0 arg1 arg2 arg3
             switch (args[0].toLowerCase()) {
                 case "give", "giveall", "take" -> CrazyManager.getJavaPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
             }
@@ -88,9 +90,4 @@ public class CCTab implements TabCompleter {
         }
         return new ArrayList<>();
     }
-    
-    private boolean hasPermission(CommandSender sender, String node) {
-        return sender.hasPermission("crazycrates." + node) || sender.hasPermission("crazycrates.admin");
-    }
-    
 }

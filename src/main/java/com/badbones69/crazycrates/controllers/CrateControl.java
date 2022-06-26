@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.Messages;
+import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
@@ -185,7 +186,7 @@ public class CrateControl implements Listener { // Crate Control
         Player player = (Player) e.getWhoClicked();
         if (inv != null && e.getView().getTitle().equals(Methods.sanitizeColor("&4&lAdmin Keys"))) {
             e.setCancelled(true);
-            if (!Methods.permCheck(player, "admin")) {
+            if (!Methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS)) {
                 player.closeInventory();
                 return;
             }

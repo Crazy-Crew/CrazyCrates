@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.commands;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.Messages;
+import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,7 +25,7 @@ public class KeyCommand implements CommandExecutor {
         // /key redeem <crate> [amount] << Will be added later.
         if (args.length == 0) {
             if (sender instanceof Player player) {
-                if (!Methods.permCheck(sender, "access")) {
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_KEY)) {
                     return true;
                 }
             } else {
@@ -53,7 +54,7 @@ public class KeyCommand implements CommandExecutor {
             return true;
         } else {
             if (sender instanceof Player) {
-                if (!Methods.permCheck(sender, "admin")) {
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_KEY_OTHERS)) {
                     return true;
                 }
             }
@@ -80,5 +81,4 @@ public class KeyCommand implements CommandExecutor {
         }
         return true;
     }
-    
 }
