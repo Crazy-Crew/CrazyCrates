@@ -42,7 +42,7 @@ public class CCCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String commandLabel, String[] args) {
         if (args.length == 0) {
             if (sender instanceof Player) {
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_MENU)) return true;
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_MENU, false)) return true;
             } else {
                 sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
                 return true;
@@ -52,16 +52,16 @@ public class CCCommand implements CommandExecutor {
         } else {
             if (args[0].equalsIgnoreCase("help")) {
 
-                if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_HELP)) {
+                if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_HELP, false)) {
                     sender.sendMessage(Messages.ADMIN_HELP.getMessage());
-                } else if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_HELP)) {
+                } else if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_HELP, false)) {
                     sender.sendMessage(Messages.HELP.getMessage());
                 }
 
                 return true;
             } else if (args[0].equalsIgnoreCase("set1") || args[0].equalsIgnoreCase("set2")) {
 
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SET)) return true;
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SET, false)) return true;
 
                 if (PaperLib.isSpigot()) {
                     sender.sendMessage(color("&c&l[!] This feature only works on PaperMC [!]"));
@@ -87,7 +87,7 @@ public class CCCommand implements CommandExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("save")) { // /cc save <file name>
 
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SAVE)) return true;
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SAVE, false)) return true;
 
                 if (PaperLib.isSpigot()) {
                     sender.sendMessage(color("&c&l[!] This feature only works on PaperMC [!]"));
@@ -109,7 +109,7 @@ public class CCCommand implements CommandExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("additem")) {
                 // /cc additem0 <crate>1 <prize>2
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_ADD_ITEM)) return true;
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_ADD_ITEM, false)) return true;
                 Player player = (Player) sender;
                 if (args.length >= 3) {
                     ItemStack item = player.getInventory().getItemInMainHand();
@@ -143,7 +143,7 @@ public class CCCommand implements CommandExecutor {
                 }
                 return true;
             } else if (args[0].equalsIgnoreCase("reload")) {
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_RELOAD)) return true;
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_RELOAD, false)) return true;
                 fileManager.reloadAllFiles();
                 fileManager.setup();
                 
@@ -153,7 +153,7 @@ public class CCCommand implements CommandExecutor {
                 sender.sendMessage(Messages.RELOAD.getMessage());
                 return true;
             } else if (args[0].equalsIgnoreCase("debug")) {
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_DEBUG)) return true;
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_DEBUG, false)) return true;
 
                 if (args.length >= 2) {
                     Crate crate = cc.getCrateFromName(args[1]);
@@ -172,7 +172,7 @@ public class CCCommand implements CommandExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("admin")) {
                 if (!(sender instanceof Player player)) return true;
-                if (!Methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_MENU)) return true;
+                if (!Methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_MENU, false)) return true;
                 int size = cc.getCrates().size();
                 int slots = 9;
 
@@ -192,7 +192,7 @@ public class CCCommand implements CommandExecutor {
                 player.openInventory(inv);
                 return true;
             } else if (args[0].equalsIgnoreCase("list")) {
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_LIST)) return true;
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_LIST, false)) return true;
                 StringBuilder crates = new StringBuilder();
                 String brokecrates;
 
@@ -229,7 +229,7 @@ public class CCCommand implements CommandExecutor {
 
                 return true;
             } else if (args[0].equalsIgnoreCase("tp")) { // /cc TP <Location>
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TELEPORT)) return true;
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TELEPORT, false)) return true;
                 if (args.length == 2) {
                     String Loc = args[1];
 
@@ -258,7 +258,7 @@ public class CCCommand implements CommandExecutor {
                 sender.sendMessage(color(Methods.getPrefix() + "&c/cc TP <Location Name>"));
                 return true;
             } else if (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("s")) { // /Crate Set <Crate>
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SET_CRATE)) return true;
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SET_CRATE, false)) return true;
 
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
@@ -295,7 +295,7 @@ public class CCCommand implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("preview")) { // /cc Preview <Crate> [Player]
 
                 if (sender instanceof Player) {
-                    if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_PREVIEW)) {
+                    if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_PREVIEW, false)) {
                         return true;
                     }
                 }
@@ -344,14 +344,14 @@ public class CCCommand implements CommandExecutor {
                 sender.sendMessage(color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
                 return true;
             } else if (args[0].equalsIgnoreCase("open")) { // /cc Open <Crate> [Player]
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_OPEN)) return true;
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_OPEN, false)) return true;
                 if (args.length >= 2) {
                     for (Crate crate : cc.getCrates()) {
                         if (crate.getName().equalsIgnoreCase(args[1])) {
                             Player player;
 
                             if (args.length >= 3) {
-                                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_OPEN_OTHER)) return true;
+                                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_OPEN_OTHER, false)) return true;
                                 if (Methods.isOnline(args[2], sender)) {
                                     player = Methods.getPlayer(args[2]);
                                 } else {
@@ -427,8 +427,8 @@ public class CCCommand implements CommandExecutor {
 
                 sender.sendMessage(color(Methods.getPrefix() + "&c/Crate open <Crate> [Player]"));
                 return true;
-            } else if (args[0].equalsIgnoreCase("forceopen") || args[0].equalsIgnoreCase("fo") || args[0].equalsIgnoreCase("fopen")) {// /cc ForceOpen <Crate> [Player]
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_FORCE_OPEN)) return true;
+            } else if (args[0].equalsIgnoreCase("forceopen") || args[0].equalsIgnoreCase("fo") || args[0].equalsIgnoreCase("fopen")) { // /cc ForceOpen <Crate> [Player]
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_FORCE_OPEN, false)) return true;
 
                 if (args.length >= 2) {
                     for (Crate crate : cc.getCrates()) {
@@ -481,12 +481,12 @@ public class CCCommand implements CommandExecutor {
 
                 sender.sendMessage(color(Methods.getPrefix() + "&c/Crate forceopen <Crate> [Player]"));
                 return true;
-            } else if (args[0].equalsIgnoreCase("transfer") || args[0].equalsIgnoreCase("tran")) {// /crate transfer <crate> <player> [amount]
+            } else if (args[0].equalsIgnoreCase("transfer") || args[0].equalsIgnoreCase("tran")) { // /crate transfer <crate> <player> [amount]
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
                     return true;
                 }
-                if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_TRANSFER_KEYS)) {
+                if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_TRANSFER_KEYS, false)) {
                     if (args.length >= 3) {
                         Crate crate = cc.getCrateFromName(args[1]);
                         if (crate != null) {
@@ -540,7 +540,7 @@ public class CCCommand implements CommandExecutor {
                 }
                 return true;
             } else if (args[0].equalsIgnoreCase("giveall")) { // /Crate GiveAll <Physical/Virtual> <Crate> [Amount]
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_ALL)) return true;
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_ALL, false)) return true;
                 if (args.length >= 3) {
                     int amount = 1;
 
@@ -592,7 +592,7 @@ public class CCCommand implements CommandExecutor {
                 sender.sendMessage(color(Methods.getPrefix() + "&c/Crate GiveAll <Physical/Virtual> <Crate> <Amount>"));
                 return true;
             } else if (args[0].equalsIgnoreCase("give")) { // /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_KEY)) return true;
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_KEY, false)) return true;
                 Player target;
                 KeyType type = KeyType.PHYSICAL_KEY;
                 Crate crate = null;
@@ -674,7 +674,7 @@ public class CCCommand implements CommandExecutor {
                 sender.sendMessage(color(Methods.getPrefix() + "&c/Crate Give <Physical/Virtual> <Crate> [Amount] [Player]"));
                 return true;
             } else if (args[0].equalsIgnoreCase("take")) { // /Crate Take <Physical/Virtual> <Crate> [Amount] [Player]
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TAKE_KEY)) return true;
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TAKE_KEY, false)) return true;
                 KeyType keyType = null;
 
                 if (args.length >= 2) {

@@ -106,7 +106,7 @@ public class Methods {
         } catch (Exception ignored) {}
     }
     
-    public static boolean permCheck(CommandSender sender, Permissions permissions) {
+    public static boolean permCheck(CommandSender sender, Permissions permissions, Boolean tabComplete) {
         if (sender instanceof ConsoleCommandSender) return true;
 
         Player player = (Player) sender;
@@ -114,7 +114,10 @@ public class Methods {
         if (player.hasPermission(permissions.getGetPerm())) {
             return true;
         } else {
-            player.sendMessage(Messages.NO_PERMISSION.getMessage());
+            if (!tabComplete) {
+                player.sendMessage(Messages.NO_PERMISSION.getMessage());
+                return false;
+            }
             return false;
         }
     }
@@ -135,18 +138,16 @@ public class Methods {
         return min + random.nextInt(max - min);
     }
     
-    public static boolean isSimilar(Player player, Crate crate) {
-        boolean check = isSimilar(player.getEquipment().getItemInMainHand(), crate);
-        if (!check) check = isSimilar(player.getEquipment().getItemInOffHand(), crate);
-        return check;
-    }
-    
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
         NBTItem nbtItem = new NBTItem(itemStack);
-        
-        return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
-        itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
-        isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
+
+        if (FileManager.Files.CONFIG.getFile().getBoolean("Settings.Insecure-Keys")) {
+            return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
+                    itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
+                    isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
+        } else {
+            return nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate"));
+        }
     }
     
     private static boolean isSimilarCustom(ItemStack one, ItemStack two) {

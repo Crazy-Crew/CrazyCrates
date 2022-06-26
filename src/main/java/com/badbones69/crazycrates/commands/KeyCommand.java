@@ -25,7 +25,7 @@ public class KeyCommand implements CommandExecutor {
         // /key redeem <crate> [amount] << Will be added later.
         if (args.length == 0) {
             if (sender instanceof Player player) {
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_KEY)) {
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_KEY, false)) {
                     return true;
                 }
             } else {
@@ -54,7 +54,7 @@ public class KeyCommand implements CommandExecutor {
             return true;
         } else {
             if (sender instanceof Player) {
-                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_KEY_OTHERS)) {
+                if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_KEY_OTHERS, false)) {
                     return true;
                 }
             }

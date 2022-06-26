@@ -22,23 +22,23 @@ public class CCTab implements TabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String commandLabel, String[] args) {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) { // /cc
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_HELP)) completions.add("help");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_ADD_ITEM)) completions.add("additem");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_ACCESS)) completions.add("admin");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_CONVERT)) completions.add("convert");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_LIST)) completions.add("list");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_OPEN)) completions.add("open");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_FORCE_OPEN)) completions.add("forceopen");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TELEPORT)) completions.add("tp");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_TRANSFER_KEYS)) completions.add("transfer");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_KEY)) completions.add("give");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_ALL)) completions.add("giveall");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TAKE_KEY)) completions.add("take");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SET_CRATE)) completions.add("set");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_RELOAD)) completions.add("reload");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SET)) completions.add("set1");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SET)) completions.add("set2");
-            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SAVE)) completions.add("save");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_HELP, true)) completions.add("help");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_ADD_ITEM, true)) completions.add("additem");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_ACCESS, true)) completions.add("admin");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_CONVERT, true)) completions.add("convert");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_LIST, true)) completions.add("list");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_OPEN, true)) completions.add("open");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_FORCE_OPEN, true)) completions.add("forceopen");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TELEPORT, true)) completions.add("tp");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_TRANSFER_KEYS, true)) completions.add("transfer");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_KEY, true)) completions.add("give");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_ALL, true)) completions.add("giveall");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TAKE_KEY, true)) completions.add("take");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SET_CRATE, true)) completions.add("set");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_RELOAD, true)) completions.add("reload");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SET, true)) completions.add("set1");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SET, true)) completions.add("set2");
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SAVE, true)) completions.add("save");
             return StringUtil.copyPartialMatches(args[0], completions, new ArrayList<>());
         } else if (args.length == 2) { // /cc arg0
             switch (args[0].toLowerCase()) {
