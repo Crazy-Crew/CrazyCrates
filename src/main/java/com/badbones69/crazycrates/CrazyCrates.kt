@@ -3,6 +3,8 @@ package com.badbones69.crazycrates
 import com.badbones69.crazycrates.api.CrazyManager
 import com.badbones69.crazycrates.api.FileManager.Files
 import com.badbones69.crazycrates.api.enums.Messages
+import com.badbones69.crazycrates.api.enums.Permissions
+import com.badbones69.crazycrates.api.enums.registerPermissions
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager
 import com.badbones69.crazycrates.commands.CCCommand
 import com.badbones69.crazycrates.commands.CCTab
@@ -102,12 +104,11 @@ class CrazyCrates : JavaPlugin(), Listener {
         crazyManager.loadCrates()
 
         if (PaperLib.isPaper()) {
+            logger.info("Paper was found so we have enabled paper specific features!")
             listOf(
                 PaperEvents(),
                 QuadCrate()
             ).onEach { loop ->
-                logger.info("Paper was found so we have enabled paper specific features!")
-
                 server.pluginManager.registerEvents(loop, plugin)
             }
         } else {
