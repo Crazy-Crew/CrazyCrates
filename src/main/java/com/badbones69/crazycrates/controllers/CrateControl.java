@@ -186,12 +186,12 @@ public class CrateControl implements Listener { // Crate Control
         Player player = (Player) e.getWhoClicked();
         if (inv != null && e.getView().getTitle().equals(Methods.sanitizeColor("&4&lAdmin Keys"))) {
             e.setCancelled(true);
-            if (!Methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS)) {
+            if (!Methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
                 player.closeInventory();
                 return;
             }
-            //Added the >= due to an error about a raw slot set at -999.
-            if (e.getRawSlot() < inv.getSize() && e.getRawSlot() >= 0) {//Clicked in the admin menu.
+            // Added the >= due to an error about a raw slot set at -999.
+            if (e.getRawSlot() < inv.getSize() && e.getRawSlot() >= 0) { // Clicked in the admin menu.
                 ItemStack item = inv.getItem(e.getRawSlot());
                 if (cc.isKey(item)) {
                     Crate crate = cc.getCrateFromKey(item);
