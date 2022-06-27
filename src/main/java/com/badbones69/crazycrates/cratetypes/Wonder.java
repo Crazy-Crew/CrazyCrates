@@ -29,6 +29,7 @@ public class Wonder implements Listener {
 
         final Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 45, crate.getCrateInventoryName());
         final ArrayList<String> slots = new ArrayList<>();
+
         for (int i = 0; i < 45; i++) {
             Prize prize = crate.pickPrize(player);
             slots.add(i + "");

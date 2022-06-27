@@ -182,6 +182,7 @@ public class War implements Listener {
                                     if (cc.hasCrateTask(player)) {
                                         cc.endCrate(player);
                                     }
+
                                     // Closing the inventory when finished.
 
                                     cc.addCrateTask(player, new BukkitRunnable() {

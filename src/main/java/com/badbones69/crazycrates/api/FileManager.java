@@ -36,6 +36,7 @@ public class FileManager {
         for (Files file : Files.values()) {
             File newFile = new File(CrazyManager.getJavaPlugin().getDataFolder(), file.getFileLocation());
             if (log) CrazyManager.getJavaPlugin().getLogger().info("Loading the " + file.getFileName());
+
             if (!newFile.exists()) {
                 try {
                     File serverFile = new File(CrazyManager.getJavaPlugin().getDataFolder(), "/" + file.getFileLocation());
@@ -47,6 +48,7 @@ public class FileManager {
                     continue;
                 }
             }
+
             files.put(file, newFile);
             configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
             if (log) CrazyManager.getJavaPlugin().getLogger().info("Successfully loaded " + file.getFileName());
@@ -80,9 +82,11 @@ public class FileManager {
                                 File serverFile = new File(CrazyManager.getJavaPlugin().getDataFolder(), homeFolder + "/" + fileName);
                                 InputStream jarFile = getClass().getResourceAsStream((jarHomeFolders.getOrDefault(fileName, homeFolder)) + "/" + fileName);
                                 copyFile(jarFile, serverFile);
+
                                 if (fileName.toLowerCase().endsWith(".yml")) {
                                     customFiles.add(new CustomFile(fileName, homeFolder));
                                 }
+
                                 if (log) CrazyManager.getJavaPlugin().getLogger().info("Created new default file: " + homeFolder + "/" + fileName + ".");
                             } catch (Exception e) {
                                 if (log) CrazyManager.getJavaPlugin().getLogger().warning("Failed to create new default file: " + homeFolder + "/" + fileName + "!");
@@ -264,6 +268,7 @@ public class FileManager {
         for (Files file : Files.values()) {
             file.reloadFile();
         }
+
         for (CustomFile file : customFiles) {
             file.reloadFile();
         }

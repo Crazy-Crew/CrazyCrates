@@ -2,8 +2,8 @@ package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
+import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.controllers.FireworkDamageEvent;
@@ -111,7 +111,7 @@ public class Methods {
 
         Player player = (Player) sender;
 
-        if (player.hasPermission(permissions.getGetPerm())) {
+        if (player.hasPermission(permissions.getPermission())) {
             return true;
         } else {
             if (!tabComplete) {

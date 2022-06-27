@@ -2,8 +2,7 @@ package com.badbones69.crazycrates
 
 import com.badbones69.crazycrates.api.CrazyManager
 import com.badbones69.crazycrates.api.FileManager.Files
-import com.badbones69.crazycrates.api.enums.Messages
-import com.badbones69.crazycrates.api.enums.Permissions
+import com.badbones69.crazycrates.api.enums.settings.Messages
 import com.badbones69.crazycrates.api.enums.registerPermissions
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager
 import com.badbones69.crazycrates.commands.CCCommand
@@ -23,7 +22,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
-
 
 class CrazyCrates : JavaPlugin(), Listener {
 

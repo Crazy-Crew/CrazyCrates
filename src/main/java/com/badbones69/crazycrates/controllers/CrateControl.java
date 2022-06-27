@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;

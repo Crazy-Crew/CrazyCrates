@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.commands;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.command.Command;
@@ -32,10 +32,12 @@ public class KeyCommand implements CommandExecutor {
                 sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
                 return true;
             }
+
             List<String> message = new ArrayList<>();
             message.add(Messages.PERSONAL_HEADER.getMessageNoPrefix());
             HashMap<Crate, Integer> keys = cc.getVirtualKeys(player);
             boolean hasKeys = false;
+
             for (Crate crate : keys.keySet()) {
                 int amount = keys.get(crate);
                 if (amount > 0) {
@@ -46,11 +48,13 @@ public class KeyCommand implements CommandExecutor {
                     message.add(Messages.PER_CRATE.getMessageNoPrefix(placeholders));
                 }
             }
+
             if (hasKeys) {
                 player.sendMessage(Messages.convertList(message));
             } else {
                 player.sendMessage(Messages.PERSONAL_NO_VIRTUAL_KEYS.getMessage());
             }
+
             return true;
         } else {
             if (sender instanceof Player) {
@@ -58,11 +62,13 @@ public class KeyCommand implements CommandExecutor {
                     return true;
                 }
             }
+
             String player = args[0];
             List<String> message = new ArrayList<>();
             message.add(Messages.OTHER_PLAYER_HEADER.getMessageNoPrefix("%Player%", player));
             HashMap<Crate, Integer> keys = cc.getVirtualKeys(player);
             boolean hasKeys = false;
+
             for (Crate crate : keys.keySet()) {
                 int amount = keys.get(crate);
                 if (amount > 0) {
@@ -73,6 +79,7 @@ public class KeyCommand implements CommandExecutor {
                     message.add(Messages.PER_CRATE.getMessageNoPrefix(placeholders));
                 }
             }
+
             if (hasKeys) {
                 sender.sendMessage(Messages.convertList(message));
             } else {

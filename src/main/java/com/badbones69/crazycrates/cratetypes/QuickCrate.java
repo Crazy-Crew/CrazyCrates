@@ -87,8 +87,8 @@ public class QuickCrate implements Listener {
             try {
                 reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
             } catch (IllegalArgumentException e) {
-                CrazyManager.getJavaPlugin().getServer().getLogger().warning("[CrazyCrates] An prize could not be given due to an invalid display item for this prize. ");
-                CrazyManager.getJavaPlugin().getServer().getLogger().warning("[CrazyCrates] Crate: " + prize.getCrate() + " Prize: " + prize.getName());
+                CrazyManager.getJavaPlugin().getServer().getLogger().warning("A prize could not be given due to an invalid display item for this prize. ");
+                CrazyManager.getJavaPlugin().getServer().getLogger().warning("Crate: " + prize.getCrate() + " Prize: " + prize.getName());
                 e.printStackTrace();
                 return;
             }
