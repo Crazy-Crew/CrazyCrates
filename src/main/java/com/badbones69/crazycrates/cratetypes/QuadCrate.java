@@ -155,4 +155,5 @@ public class QuadCrate implements Listener {
             sessionManager.getSession(player).endCrate(CrazyManager.getJavaPlugin());
         }
     }
+
 }

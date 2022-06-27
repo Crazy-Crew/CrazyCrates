@@ -801,4 +801,5 @@ public class CCCommand implements CommandExecutor {
         sender.sendMessage(color(Methods.getPrefix() + "&cPlease do /cc help for more info."));
         return true;
     }
+
 }

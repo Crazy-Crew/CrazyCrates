@@ -100,4 +100,5 @@ class StructureHandler(private val plugin: JavaPlugin, val file: File) : Structu
             Material.SPRUCE_WALL_SIGN
         )
     }
+
 }

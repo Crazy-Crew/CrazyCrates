@@ -23,4 +23,5 @@ object SessionManager {
         QuadCrateManager.getCrateSessions().forEach { session -> session.endCrateForce(false) }
         QuadCrateManager.getCrateSessions().clear()
     }
+
 }

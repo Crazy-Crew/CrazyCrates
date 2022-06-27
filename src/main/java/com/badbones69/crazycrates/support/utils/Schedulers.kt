@@ -36,4 +36,5 @@ class Schedulers(private val plugin: JavaPlugin) {
      * Better syntax for running task timers async
      */
     fun asyncTimer(period: Long, delay: Long = 0L, task: Runnable) = plugin.server.scheduler.runTaskTimerAsynchronously(plugin, task, delay, period)
+
 }

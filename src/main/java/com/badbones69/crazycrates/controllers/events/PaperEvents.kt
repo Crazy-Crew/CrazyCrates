@@ -24,4 +24,5 @@ class PaperEvents : Listener {
             isCancelled = true
         }
     }
+
 }

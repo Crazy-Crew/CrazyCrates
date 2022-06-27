@@ -356,4 +356,5 @@ public class QuadCrateManager {
     public ChestStateHandler quadCrateHandler() {
         return quadCrateHandler;
     }
+
 }

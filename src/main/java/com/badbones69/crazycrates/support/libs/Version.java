@@ -84,4 +84,5 @@ public enum Version {
     private static boolean isValidVersion(Version compareVersion) {
         return currentVersion != UNKNOWN && compareVersion != UNKNOWN;
     }
+
 }

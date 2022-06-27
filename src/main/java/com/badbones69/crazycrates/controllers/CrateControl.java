@@ -217,9 +217,11 @@ public class CrateControl implements Listener { // Crate Control
         if (cc.hasCrateTask(player)) {
             cc.endCrate(player);
         }
+
         if (cc.hasQuadCrateTask(player)) {
             cc.endQuadCrate(player);
         }
+
         if (cc.isInOpeningList(player)) {
             cc.removePlayerFromOpeningList(player);
         }
