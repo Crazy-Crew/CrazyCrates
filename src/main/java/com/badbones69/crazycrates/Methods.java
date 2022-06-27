@@ -141,7 +141,7 @@ public class Methods {
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
         NBTItem nbtItem = new NBTItem(itemStack);
 
-        if (FileManager.Files.CONFIG.getFile().getBoolean("Settings.Insecure-Keys")) {
+        if (FileManager.Files.CONFIG.getFile().getBoolean("Settings.Old-Keys")) {
             return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
                     itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
                     isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
