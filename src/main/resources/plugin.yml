@@ -17,12 +17,42 @@ commands:
 
 permissions:
   crazycrates.command.player.help:
-    default: op
+    default: true
     children:
       crazycrates.command.player.key: true
 
   crazycrates.command.player.menu:
+    default: true
+
+  crazycrates.command.player.key:
     default: op
+
+  crazycrates.command.player.key.others:
+    default: op
+    children:
+      crazycrates.command.player.key: true
+
+  crazycrates.command.players.*:
+    default: op
+    children:
+      crazycrates.command.player.key.others: true
+      crazycrates.command.player.help: true
+      crazycrates.command.player.menu: true
+
+  crazycrates.command.admin.*:
+    default: op
+    children:
+      crazycrates.command.admin.schematic.*: true
+      crazycrates.command.admin.help: true
+      crazycrates.command.admin.convert: true
+      crazycrates.command.admin.debug: true
+      crazycrates.command.admin.setmenu: true
+      crazycrates.command.admin.giveall: true
+      crazycrates.command.admin.forceopen: true
+      crazycrates.command.admin.open.others: true
+      crazycrates.command.admin.list: true
+      crazycrates.command.admin.preview: true
+      crazycrates.command.admin.additem: true
 
   crazycrates.command.admin.additem:
     default: op
@@ -42,14 +72,6 @@ permissions:
     default: op
     children:
       crazycrates.command.admin.open: true
-
-  crazycrates.command.player.key:
-    default: op
-
-  crazycrates.command.player.key.others:
-    default: op
-    children:
-      crazycrates.command.player.key: true
 
   crazycrates.command.admin.takekey:
     default: op
@@ -76,6 +98,7 @@ permissions:
     children:
       crazycrates.command.admin.givekey: true
       crazycrates.command.admin.takekey: true
+      crazycrates.command.player.transfer: true
 
   crazycrates.command.admin.set:
     default: op
@@ -110,6 +133,7 @@ permissions:
     default: op
     children:
       crazycrates.command.admin.reload: true
+
 
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib:1.6.21
