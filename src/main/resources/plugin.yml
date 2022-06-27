@@ -94,7 +94,7 @@ permissions:
   crazycrates.command.admin.convert:
     default: op
 
-  crazycrates.command.admin.schematic:
+  crazycrates.command.admin.schematic.*:
     default: op
     children:
       crazycrates.command.admin.schematic.save: true
