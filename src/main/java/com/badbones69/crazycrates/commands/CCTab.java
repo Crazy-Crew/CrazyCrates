@@ -43,48 +43,89 @@ public class CCTab implements TabCompleter {
         } else if (args.length == 2) { // /cc arg0
             switch (args[0].toLowerCase()) {
                 case "additem", "open", "forceopen", "transfer" -> {
-                    cc.getCrates().forEach(crate -> completions.add(crate.getName()));
-                    completions.remove("Menu"); // Takes out a crate that doesn't exist as a file.
+                    if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_ADD_ITEM, true)
+                    || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_OPEN, true)
+                    || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_FORCE_OPEN, true)
+                    || Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_TRANSFER_KEYS, true)) {
+                        cc.getCrates().forEach(crate -> completions.add(crate.getName()));
+                        completions.remove("Menu"); // Takes out a crate that doesn't exist as a file.
+                    }
                 }
-                case "set" -> cc.getCrates().forEach(crate -> completions.add(crate.getName()));
-                case "tp" -> cc.getCrateLocations().forEach(location -> completions.add(location.getID()));
+                case "set" -> {
+                    if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SET_CRATE, true)) {
+                        cc.getCrates().forEach(crate -> completions.add(crate.getName()));
+                    }
+                }
+                case "tp" -> {
+                    if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TELEPORT, true)) {
+                        cc.getCrateLocations().forEach(location -> completions.add(location.getID()));
+                    }
+                }
                 case "give", "giveall", "take" -> {
-                    completions.add("physical");
-                    completions.add("p");
-                    completions.add("virtual");
-                    completions.add("v");
+                    if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TAKE_KEY, true)
+                            || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_ALL, true)
+                            || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_KEY, true)) {
+                        completions.add("physical");
+                        completions.add("p");
+                        completions.add("virtual");
+                        completions.add("v");
+                    }
                 }
-                case "save" -> completions.add("<Schematic Name>");
+                case "save" -> {
+                    if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC, true)) {
+                        completions.add("<Schematic Name>");
+                    }
+                }
             }
             return StringUtil.copyPartialMatches(args[1], completions, new ArrayList<>());
         } else if (args.length == 3) { // /cc arg0 arg1
             switch (args[0].toLowerCase()) {
                 case "additem" -> {
-                    Crate crateFromName = cc.getCrateFromName(args[1]);
-                    if (crateFromName != null && crateFromName.getCrateType() != CrateType.MENU) {
-                        cc.getCrateFromName(args[1]).getPrizes().forEach(prize -> completions.add(prize.getName()));
+                    if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_ADD_ITEM, true)) {
+                        Crate crateFromName = cc.getCrateFromName(args[1]);
+                        if (crateFromName != null && crateFromName.getCrateType() != CrateType.MENU) {
+                            cc.getCrateFromName(args[1]).getPrizes().forEach(prize -> completions.add(prize.getName()));
+                        }
                     }
                 }
-                case "open", "forceopen", "transfer" -> CrazyManager.getJavaPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
+                case "open", "forceopen", "transfer" -> {
+                    if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_OPEN, true)
+                            || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_FORCE_OPEN, true)
+                            || Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_TRANSFER_KEYS, true)) {
+                        CrazyManager.getJavaPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
+                    }
+                }
                 case "give", "giveall", "take" -> {
-                    cc.getCrates().forEach(crate -> completions.add(crate.getName()));
-                    completions.remove("Menu"); // Takes out a crate that doesn't exist as a file.
+                    if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TAKE_KEY, true)
+                            || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_ALL, true)
+                            || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_KEY, true)) {
+                        cc.getCrates().forEach(crate -> completions.add(crate.getName()));
+                        completions.remove("Menu"); // Takes out a crate that doesn't exist as a file.
+                    }
                 }
             }
             return StringUtil.copyPartialMatches(args[2], completions, new ArrayList<>());
         } else if (args.length == 4) { // /cc arg0 arg1 arg2
-            switch (args[0].toLowerCase()) {
-                case "give":
-                case "giveall":
-                case "take":
-                case "transfer":
-                    for (int i = 1; i <= 100; i++) completions.add(i + "");
-                    break;
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TAKE_KEY, true)
+                    || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_ALL, true)
+                    || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_KEY, true)) {
+                switch (args[0].toLowerCase()) {
+                    case "give":
+                    case "giveall":
+                    case "take":
+                    case "transfer":
+                        for (int i = 1; i <= 100; i++) completions.add(i + "");
+                        break;
+                }
             }
             return StringUtil.copyPartialMatches(args[3], completions, new ArrayList<>());
         } else if (args.length == 5) { // /cc arg0 arg1 arg2 arg3
-            switch (args[0].toLowerCase()) {
-                case "give", "giveall", "take" -> CrazyManager.getJavaPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
+            if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TAKE_KEY, true)
+                    || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_ALL, true)
+                    || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_KEY, true)) {
+                switch (args[0].toLowerCase()) {
+                    case "give", "giveall", "take" -> CrazyManager.getJavaPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
+                }
             }
             return StringUtil.copyPartialMatches(args[4], completions, new ArrayList<>());
         }
