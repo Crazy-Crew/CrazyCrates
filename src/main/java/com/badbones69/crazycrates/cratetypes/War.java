@@ -24,7 +24,7 @@ import java.util.HashMap;
 
 public class War implements Listener {
     
-    private static String crateNameString = "Crate.CrateName";
+    private static final String crateNameString = "Crate.CrateName";
     private static final CrazyManager cc = CrazyManager.getInstance();
     private static HashMap<ItemStack, String> colorCodes;
     private static final HashMap<Player, Boolean> canPick = new HashMap<>();

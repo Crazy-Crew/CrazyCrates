@@ -8,14 +8,11 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
- *
  */
 public class BrokeLocationsControl implements Listener {
     
@@ -27,6 +24,7 @@ public class BrokeLocationsControl implements Listener {
         if (!cc.getBrokeCrateLocations().isEmpty()) {
             int fixedAmount = 0;
             List<BrokeLocation> fixedWorlds = new ArrayList<>();
+
             for (BrokeLocation brokeLocation : cc.getBrokeCrateLocations()) {
                 Location location = brokeLocation.getLocation();
                 if (location.getWorld() != null) {
@@ -38,7 +36,9 @@ public class BrokeLocationsControl implements Listener {
                     fixedAmount++;
                 }
             }
+
             cc.getBrokeCrateLocations().removeAll(fixedWorlds);
+
             if (fileManager.isLogging()) {
                 CrazyManager.getJavaPlugin().getLogger().warning("Fixed " + fixedAmount + " broken crate locations.");
                 if (cc.getBrokeCrateLocations().isEmpty()) {

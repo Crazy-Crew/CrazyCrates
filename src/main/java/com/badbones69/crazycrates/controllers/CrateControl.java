@@ -52,9 +52,9 @@ public class CrateControl implements Listener { // Crate Control
         }
     }
     
-    //This must run as highest, so it doesn't cause other plugins to check
-    //the items that were added to the players inventory and replaced the item in the player's hand.
-    //This is only an issue with QuickCrate
+    // This must run as highest, so it doesn't cause other plugins to check
+    // the items that were added to the players inventory and replaced the item in the player's hand.
+    // This is only an issue with QuickCrate
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
@@ -70,11 +70,11 @@ public class CrateControl implements Listener { // Crate Control
 
         Block clickedBlock = e.getClickedBlock();
         if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            //Loops through all loaded physical locations.
+            // Loops through all loaded physical locations.
             for (CrateLocation loc : cc.getCrateLocations()) {
-                //Checks to see if the clicked block is the same as a physical crate.
+                // Checks to see if the clicked block is the same as a physical crate.
                 if (loc.getLocation().equals(clickedBlock.getLocation())) {
-                    //Checks to see if the player is removing a crate location.
+                    // Checks to see if the player is removing a crate location.
                     if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) {
                         e.setCancelled(true);
                         cc.removeCrateLocation(loc.getID());
@@ -93,7 +93,7 @@ public class CrateControl implements Listener { // Crate Control
                 }
             }
         } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            //Checks if the item in their hand is a key and if so it stops them from right-clicking with it.
+            // Checks if the item in their hand is a key and if so it stops them from right-clicking with it.
             ItemStack key = player.getInventory().getItemInMainHand();
             boolean keyInHand = cc.isKey(key);
 

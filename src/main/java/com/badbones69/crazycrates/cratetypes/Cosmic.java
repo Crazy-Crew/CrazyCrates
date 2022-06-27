@@ -29,9 +29,9 @@ import java.util.Random;
 public class Cosmic implements Listener {
     
     private static final CrazyManager cc = CrazyManager.getInstance();
-    private static HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();
-    private static HashMap<Player, ArrayList<Integer>> picks = new HashMap<>();
-    private static HashMap<Player, Boolean> checkHands = new HashMap<>();
+    private static final HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();
+    private static final HashMap<Player, ArrayList<Integer>> picks = new HashMap<>();
+    private static final HashMap<Player, Boolean> checkHands = new HashMap<>();
     
     private static void showRewards(Player player, Crate crate) {
         Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"));

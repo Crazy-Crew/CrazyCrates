@@ -78,7 +78,7 @@ class CrazyCrates : JavaPlugin(), Listener {
     private fun enable() {
 
         // Register permissions
-        registerPermissions(server.pluginManager)
+        // registerPermissions(server.pluginManager)
 
         listOf(
             GUIMenu(),

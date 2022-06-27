@@ -198,6 +198,7 @@ public class Crate {
                         continue;
                     }
                 }
+
                 if (prize.getTiers().contains(tier)) {
                     usablePrizes.add(prize);
                 }
@@ -502,6 +503,7 @@ public class Crate {
                 file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
             }
         }
+
         file.set(path + ".Editor-Items", items);
         fileManager.saveFile(fileManager.getFile(name));
     }
@@ -584,6 +586,7 @@ public class Crate {
                 inventory.setItem(i, boarderItem.build());
             }
         }
+
         int page = Preview.getPage(player);
 
         if (Preview.playerInMenu(player)) {
