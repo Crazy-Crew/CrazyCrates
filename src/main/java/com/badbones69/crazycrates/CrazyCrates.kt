@@ -3,7 +3,6 @@ package com.badbones69.crazycrates
 import com.badbones69.crazycrates.api.CrazyManager
 import com.badbones69.crazycrates.api.FileManager.Files
 import com.badbones69.crazycrates.api.enums.settings.Messages
-import com.badbones69.crazycrates.api.enums.registerPermissions
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager
 import com.badbones69.crazycrates.commands.CCCommand
 import com.badbones69.crazycrates.commands.CCTab
