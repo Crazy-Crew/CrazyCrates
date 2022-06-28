@@ -6,10 +6,6 @@ Settings:
   InventorySize: 45
   KnockBack: true
   Update-Checker: true
-  # Defaults to false
-  # Set to true if you want to use the old way.
-  # This option decides whether to use lores/names which is the old way or only check for a nbt tag.
-  Old-Keys: false
   Physical-Accepts-Virtual-Keys: true #If physical crates can accept virtual keys.
   Virtual-Accepts-Physical-Keys: true #If virtual crates can accept physical keys.
   Give-Virtual-Keys-When-Inventory-Full: false #If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
