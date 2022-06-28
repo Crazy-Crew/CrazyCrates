@@ -1,8 +1,6 @@
 package com.badbones69.crazycrates.api.enums
 
-import org.bukkit.plugin.PluginManager
-
-enum class Permissions(private val defaultPermission: String, val description: String) {
+enum class Permissions(private val defaultPermission: String, private val description: String) {
 
     CRAZY_CRATES_PLAYER_KEY("player.key", "Check the number of keys you have."),
     CRAZY_CRATES_PLAYER_KEY_OTHERS("player.key.others", "Check the number of keys a player has."),
@@ -33,4 +31,6 @@ enum class Permissions(private val defaultPermission: String, val description: S
     CRAZY_CRATES_ADMIN_SCHEMATIC_SAVE("admin.schematic.save", "Saves the new schematic file to the schematics folder.");
 
     fun getPermission() = "crazycrates.command.$defaultPermission"
+
+    fun getPermissionDescription() = description
 }
