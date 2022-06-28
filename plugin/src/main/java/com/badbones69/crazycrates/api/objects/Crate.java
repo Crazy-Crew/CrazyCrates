@@ -30,7 +30,7 @@ public class Crate {
     private final ItemStack key;
     private final ItemStack keyNoNBT;
     private final ItemStack adminKey;
-    private final int maxPage = 1;
+    private int maxPage = 1;
     private final int maxSlots;
     private final String previewName;
     private final boolean previewToggle;
