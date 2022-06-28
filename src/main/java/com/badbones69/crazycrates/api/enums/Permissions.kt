@@ -34,15 +34,3 @@ enum class Permissions(private val defaultPermission: String, val description: S
 
     fun getPermission() = "crazycrates.command.$defaultPermission"
 }
-
-fun registerPermissions(pluginManager: PluginManager) {
-    Permissions.values().forEach { permission ->
-        if (pluginManager.getPermission(permission.getPermission()) == null)
-            pluginManager.addPermission(
-                org.bukkit.permissions.Permission(
-                    permission.getPermission(),
-                    permission.description
-                )
-            )
-    }
-}
