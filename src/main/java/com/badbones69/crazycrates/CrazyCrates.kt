@@ -2,7 +2,7 @@ package com.badbones69.crazycrates
 
 import com.badbones69.crazycrates.api.CrazyManager
 import com.badbones69.crazycrates.api.FileManager.Files
-import com.badbones69.crazycrates.api.enums.Messages
+import com.badbones69.crazycrates.api.enums.settings.Messages
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager
 import com.badbones69.crazycrates.commands.CCCommand
 import com.badbones69.crazycrates.commands.CCTab
@@ -21,7 +21,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
-
 
 class CrazyCrates : JavaPlugin(), Listener {
 
@@ -99,12 +98,11 @@ class CrazyCrates : JavaPlugin(), Listener {
         crazyManager.loadCrates()
 
         if (PaperLib.isPaper()) {
+            logger.info("Paper was found so we have enabled paper specific features!")
             listOf(
                 PaperEvents(),
                 QuadCrate()
             ).onEach { loop ->
-                logger.info("Paper was found so we have enabled paper specific features!")
-
                 server.pluginManager.registerEvents(loop, plugin)
             }
         } else {

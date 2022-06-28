@@ -4,7 +4,6 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.objects.Crate;
-
 import java.text.NumberFormat;
 
 public class MVdWPlaceholderAPISupport {

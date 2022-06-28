@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.api.managers;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.enums.QuadCrateParticles;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.support.structures.QuadCrateSpiralHandler;
@@ -356,4 +356,5 @@ public class QuadCrateManager {
     public ChestStateHandler quadCrateHandler() {
         return quadCrateHandler;
     }
+
 }

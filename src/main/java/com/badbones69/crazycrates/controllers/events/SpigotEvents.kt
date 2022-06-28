@@ -29,4 +29,5 @@ class SpigotEvents : Listener {
             isCancelled = true
         }
     }
+
 }

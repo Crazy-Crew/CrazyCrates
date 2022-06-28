@@ -2,7 +2,8 @@ package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.badbones69.crazycrates.api.enums.Permissions;
+import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.controllers.FireworkDamageEvent;
@@ -11,6 +12,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.Validate;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Firework;
@@ -104,19 +106,18 @@ public class Methods {
         } catch (Exception ignored) {}
     }
     
-    public static boolean permCheck(CommandSender sender, String perm) {
-        if (sender instanceof Player) {
-            return permCheck((Player) sender, perm);
-        } else {
-            return true;
-        }
-    }
-    
-    public static boolean permCheck(Player player, String perm) {
-        if (player.hasPermission("crazycrates." + perm.toLowerCase()) || player.hasPermission("crazycrates.admin")) {
+    public static boolean permCheck(CommandSender sender, Permissions permissions, Boolean tabComplete) {
+        if (sender instanceof ConsoleCommandSender) return true;
+
+        Player player = (Player) sender;
+
+        if (player.hasPermission(permissions.getPermission())) {
             return true;
         } else {
-            player.sendMessage(Messages.NO_PERMISSION.getMessage());
+            if (!tabComplete) {
+                player.sendMessage(Messages.NO_PERMISSION.getMessage());
+                return false;
+            }
             return false;
         }
     }
@@ -137,18 +138,11 @@ public class Methods {
         return min + random.nextInt(max - min);
     }
     
-    public static boolean isSimilar(Player player, Crate crate) {
-        boolean check = isSimilar(player.getEquipment().getItemInMainHand(), crate);
-        if (!check) check = isSimilar(player.getEquipment().getItemInOffHand(), crate);
-        return check;
-    }
-    
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
         NBTItem nbtItem = new NBTItem(itemStack);
-        
         return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
-        itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
-        isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
+                itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
+                isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
     }
     
     private static boolean isSimilarCustom(ItemStack one, ItemStack two) {
@@ -370,4 +364,5 @@ public class Methods {
         }
         return -1;
     }
+
 }

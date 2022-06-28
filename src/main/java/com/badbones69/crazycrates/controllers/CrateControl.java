@@ -5,7 +5,8 @@ import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.badbones69.crazycrates.api.enums.settings.Messages;
+import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
@@ -51,9 +52,9 @@ public class CrateControl implements Listener { // Crate Control
         }
     }
     
-    //This must run as highest, so it doesn't cause other plugins to check
-    //the items that were added to the players inventory and replaced the item in the player's hand.
-    //This is only an issue with QuickCrate
+    // This must run as highest, so it doesn't cause other plugins to check
+    // the items that were added to the players inventory and replaced the item in the player's hand.
+    // This is only an issue with QuickCrate
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
@@ -69,11 +70,11 @@ public class CrateControl implements Listener { // Crate Control
 
         Block clickedBlock = e.getClickedBlock();
         if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            //Loops through all loaded physical locations.
+            // Loops through all loaded physical locations.
             for (CrateLocation loc : cc.getCrateLocations()) {
-                //Checks to see if the clicked block is the same as a physical crate.
+                // Checks to see if the clicked block is the same as a physical crate.
                 if (loc.getLocation().equals(clickedBlock.getLocation())) {
-                    //Checks to see if the player is removing a crate location.
+                    // Checks to see if the player is removing a crate location.
                     if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) {
                         e.setCancelled(true);
                         cc.removeCrateLocation(loc.getID());
@@ -92,7 +93,7 @@ public class CrateControl implements Listener { // Crate Control
                 }
             }
         } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            //Checks if the item in their hand is a key and if so it stops them from right-clicking with it.
+            // Checks if the item in their hand is a key and if so it stops them from right-clicking with it.
             ItemStack key = player.getInventory().getItemInMainHand();
             boolean keyInHand = cc.isKey(key);
 
@@ -185,12 +186,12 @@ public class CrateControl implements Listener { // Crate Control
         Player player = (Player) e.getWhoClicked();
         if (inv != null && e.getView().getTitle().equals(Methods.sanitizeColor("&4&lAdmin Keys"))) {
             e.setCancelled(true);
-            if (!Methods.permCheck(player, "admin")) {
+            if (!Methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
                 player.closeInventory();
                 return;
             }
-            //Added the >= due to an error about a raw slot set at -999.
-            if (e.getRawSlot() < inv.getSize() && e.getRawSlot() >= 0) {//Clicked in the admin menu.
+            // Added the >= due to an error about a raw slot set at -999.
+            if (e.getRawSlot() < inv.getSize() && e.getRawSlot() >= 0) { // Clicked in the admin menu.
                 ItemStack item = inv.getItem(e.getRawSlot());
                 if (cc.isKey(item)) {
                     Crate crate = cc.getCrateFromKey(item);
@@ -216,9 +217,11 @@ public class CrateControl implements Listener { // Crate Control
         if (cc.hasCrateTask(player)) {
             cc.endCrate(player);
         }
+
         if (cc.hasQuadCrateTask(player)) {
             cc.endQuadCrate(player);
         }
+
         if (cc.isInOpeningList(player)) {
             cc.removePlayerFromOpeningList(player);
         }

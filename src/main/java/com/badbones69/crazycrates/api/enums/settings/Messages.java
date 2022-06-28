@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.enums;
+package com.badbones69.crazycrates.api.enums.settings;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.FileManager;

@@ -13,7 +13,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.ArrayList;
 
 public class Wonder implements Listener {
@@ -29,6 +28,7 @@ public class Wonder implements Listener {
 
         final Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 45, crate.getCrateInventoryName());
         final ArrayList<String> slots = new ArrayList<>();
+
         for (int i = 0; i < 45; i++) {
             Prize prize = crate.pickPrize(player);
             slots.add(i + "");

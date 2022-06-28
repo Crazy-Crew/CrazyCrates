@@ -170,7 +170,7 @@ public class Crate {
         try {
             return prizes.get(new Random().nextInt(prizes.size()));
         } catch (IllegalArgumentException e) {
-            CrazyManager.getJavaPlugin().getLogger().warning("[CrazyCrates] Failed to find prize from the " + name + " crate for player " + player.getName() + ".");
+            CrazyManager.getJavaPlugin().getLogger().warning("Failed to find prize from the " + name + " crate for player " + player.getName() + ".");
             return null;
         }
     }
@@ -198,6 +198,7 @@ public class Crate {
                         continue;
                     }
                 }
+
                 if (prize.getTiers().contains(tier)) {
                     usablePrizes.add(prize);
                 }
@@ -502,6 +503,7 @@ public class Crate {
                 file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
             }
         }
+
         file.set(path + ".Editor-Items", items);
         fileManager.saveFile(fileManager.getFile(name));
     }
@@ -584,6 +586,7 @@ public class Crate {
                 inventory.setItem(i, boarderItem.build());
             }
         }
+
         int page = Preview.getPage(player);
 
         if (Preview.playerInMenu(player)) {
@@ -606,4 +609,5 @@ public class Crate {
             inventory.setItem(getAbsoluteItemPosition(5), Preview.getNextButton(player));
         }
     }
+
 }

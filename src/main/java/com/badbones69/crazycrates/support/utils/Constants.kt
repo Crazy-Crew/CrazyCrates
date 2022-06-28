@@ -9,8 +9,10 @@ fun color(message: String): String {
     val hexPattern = Pattern.compile("#([A-Fa-f0-9]){6}")
     val matcher: Matcher = hexPattern.matcher(message)
     val buffer = StringBuffer()
+
     while (matcher.find()) {
         matcher.appendReplacement(buffer, ChatColor.of(matcher.group()).toString())
     }
+
     return org.bukkit.ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString())
 }

@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.cratetypes;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
@@ -29,9 +29,9 @@ import java.util.Random;
 public class Cosmic implements Listener {
     
     private static final CrazyManager cc = CrazyManager.getInstance();
-    private static HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();
-    private static HashMap<Player, ArrayList<Integer>> picks = new HashMap<>();
-    private static HashMap<Player, Boolean> checkHands = new HashMap<>();
+    private static final HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();
+    private static final HashMap<Player, ArrayList<Integer>> picks = new HashMap<>();
+    private static final HashMap<Player, Boolean> checkHands = new HashMap<>();
     
     private static void showRewards(Player player, Crate crate) {
         Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"));
@@ -310,7 +310,7 @@ public class Cosmic implements Listener {
     }
     
     private boolean inCosmic(int slot) {
-        //The last slot in cosmic crate is 27
+        // The last slot in cosmic crate is 27
         return slot < 27;
     }
     
