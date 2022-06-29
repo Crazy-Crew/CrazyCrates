@@ -1,8 +1,6 @@
 plugins {
     java
 
-    `maven-publish`
-
     kotlin("jvm") version "1.6.20"
 
     id("com.github.johnrengelman.shadow") version "7.1.2"
@@ -36,14 +34,10 @@ repositories {
     // Paper API
     maven("https://repo.papermc.io/repository/maven-public/")
 
-    // Our Repo
-    maven("https://repo.badbones69.com/releases/")
-
     // Vault API
     maven("https://jitpack.io/")
 
     mavenCentral()
-    mavenLocal()
 }
 
 dependencies {
@@ -77,7 +71,7 @@ dependencies {
 
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
 
-    compileOnly(kotlin("stdlib", "1.6.21"))
+    compileOnly(kotlin("stdlib", "1.7.0"))
 }
 
 tasks {
@@ -97,7 +91,7 @@ tasks {
     }
 
     compileJava {
-       options.release.set(17)
+        options.release.set(17)
     }
 
     processResources {
