@@ -168,7 +168,7 @@ public class CrazyManager {
         crateSchematics.clear();
 
         ServerProtocol version = ServerProtocol.getCurrentProtocol();
-        useNewSounds = ServerProtocol.isAtLeast(ServerProtocol.v1_12_R2);
+        useNewSounds = ServerProtocol.isAtLeast(ServerProtocol.v1_12_R1);
 
         switch (version) {
             case v1_8_R1:
@@ -176,7 +176,7 @@ public class CrazyManager {
             case v1_8_R3:
                 nmsSupport = new NMS_v1_8_R3();
                 break;
-            case v1_12_R2:
+            case v1_12_R1:
                 nmsSupport = new NMS_v1_12_R1();
                 break;
         }

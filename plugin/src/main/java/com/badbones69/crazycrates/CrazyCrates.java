@@ -87,7 +87,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         pm.registerEvents(new CrateControl(), this);
         pm.registerEvents(new CrateOnTheGo(), this);
 
-        if (ServerProtocol.isAtLeast(ServerProtocol.v1_12_R2)) {
+        if (ServerProtocol.isAtLeast(ServerProtocol.v1_12_R1)) {
             pm.registerEvents(new Events_v1_12_R1_Up(), this);
         } else {
             pm.registerEvents(new Events_v1_11_R1_Down(), this);
