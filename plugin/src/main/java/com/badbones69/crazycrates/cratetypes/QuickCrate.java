@@ -1,14 +1,13 @@
 package com.badbones69.crazycrates.cratetypes;
 
 import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.api.CrazyCrates;
+import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.controllers.CrateControl;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -21,7 +20,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -30,9 +28,9 @@ public class QuickCrate implements Listener {
     
     public static final ArrayList<Entity> allRewards = new ArrayList<>();
     public static final HashMap<Player, Entity> rewards = new HashMap<>();
-    private static final CrazyCrates cc = CrazyCrates.getInstance();
+    private static final CrazyManager cc = CrazyManager.getInstance();
     private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
-    
+
     public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
         int keys; // If the key is free it is set to one.
         switch (keyType) {
@@ -56,7 +54,9 @@ public class QuickCrate implements Listener {
 
                 Prize prize = crate.pickPrize(player);
                 cc.givePrize(player, prize);
-                Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+
+                cc.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+
                 if (prize.useFireworks()) {
                     Methods.fireWork(loc.clone().add(.5, 1, .5));
                 }
@@ -70,6 +70,7 @@ public class QuickCrate implements Listener {
                 cc.removePlayerFromOpeningList(player);
                 return;
             }
+
             endQuickCrate(player, loc);
         } else {
             if (!cc.takeKeys(1, player, crate, keyType, true)) {
@@ -78,22 +79,25 @@ public class QuickCrate implements Listener {
                 cc.removePlayerFromOpeningList(player);
                 return;
             }
+
             Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
             cc.givePrize(player, prize);
-            Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+            cc.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
             ItemStack displayItem = prize.getDisplayItem();
             NBTItem nbtItem = new NBTItem(displayItem);
             nbtItem.setBoolean("crazycrates-item", true);
             displayItem = nbtItem.getItem();
             Item reward;
+
             try {
                 reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
             } catch (IllegalArgumentException e) {
-                Bukkit.getServer().getLogger().warning("[CrazyCrates] An prize could not be given due to an invalid display item for this prize. ");
-                Bukkit.getServer().getLogger().warning("[CrazyCrates] Crate: " + prize.getCrate() + " Prize: " + prize.getName());
+                cc.getPlugin().getLogger().warning("An prize could not be given due to an invalid display item for this prize. ");
+                cc.getPlugin().getLogger().warning("Crate: " + prize.getCrate() + " Prize: " + prize.getName());
                 e.printStackTrace();
                 return;
             }
+
             reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(cc.getPlugin(), true));
             reward.setVelocity(new Vector(0, .2, 0));
             reward.setCustomName(displayItem.getItemMeta().getDisplayName());
@@ -102,9 +106,11 @@ public class QuickCrate implements Listener {
             rewards.put(player, reward);
             allRewards.add(reward);
             cc.getNMSSupport().openChest(loc.getBlock(), true);
+
             if (prize.useFireworks()) {
                 Methods.fireWork(loc.clone().add(.5, 1, .5));
             }
+
             tasks.put(player, new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -119,11 +125,13 @@ public class QuickCrate implements Listener {
             tasks.get(player).cancel();
             tasks.remove(player);
         }
+
         if (rewards.get(player) != null) {
             allRewards.remove(rewards.get(player));
             rewards.get(player).remove();
             rewards.remove(player);
         }
+
         cc.getNMSSupport().openChest(loc.getBlock(), false);
         CrateControl.inUse.remove(player);
         cc.removePlayerFromOpeningList(player);

@@ -1,9 +1,10 @@
 package com.badbones69.crazycrates;
 
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.controllers.*;
 import com.badbones69.crazycrates.cratetypes.*;
 import com.badbones69.crazycrates.multisupport.*;
-import com.badbones69.crazycrates.api.CrazyCrates;
+import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.objects.QuadCrateSession;
@@ -11,62 +12,67 @@ import com.badbones69.crazycrates.commands.CCCommand;
 import com.badbones69.crazycrates.commands.CCTab;
 import com.badbones69.crazycrates.commands.KeyCommand;
 import com.badbones69.crazycrates.commands.KeyTab;
-import org.bukkit.Bukkit;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class Main extends JavaPlugin implements Listener {
-    
-    private boolean updateChecker = false;
-    private final CrazyCrates cc = CrazyCrates.getInstance();
+public class CrazyCrates extends JavaPlugin implements Listener {
+
+    private final CrazyManager cc = CrazyManager.getInstance();
     private final FileManager fileManager = FileManager.getInstance();
-    private boolean isEnabled = true;// If the server is supported
+    private boolean isEnabled = true; // If the server is supported
     
     @Override
     public void onEnable() {
 
-        if (!ServerVersion.isEquals(ServerVersion.v1_8) || !ServerVersion.isEquals(ServerVersion.v1_12) || !ServerVersion.isEquals(ServerVersion.v1_17)) {
+        // Initialize the plugin variable.
+        cc.loadPlugin();
+
+        if (!ServerProtocol.isLegacy()) {
             checkVersion();
             return;
         }
 
-        //Crate Files
-        String extension = ServerVersion.isAtLeast(ServerVersion.v1_17) ? "nbt" : "schematic";
-        String cratesFolder = ServerVersion.isAtLeast(ServerVersion.v1_17) ? "/Crates1.13-Up" : "/Crates1.12.2-Down";
-        String schemFolder = ServerVersion.isAtLeast(ServerVersion.v1_17) ? "/Schematics1.13-Up" : "/Schematics1.12.2-Down";
+        // Create data folder
+        if (!getDataFolder().exists()) getDataFolder().mkdirs();
+
         fileManager.logInfo(true)
-        .registerDefaultGenerateFiles("Basic.yml", "/Crates", cratesFolder)
-        .registerDefaultGenerateFiles("Classic.yml", "/Crates", cratesFolder)
-        .registerDefaultGenerateFiles("Crazy.yml", "/Crates", cratesFolder)
-        .registerDefaultGenerateFiles("Galactic.yml", "/Crates", cratesFolder)
-        //Schematics
-        .registerDefaultGenerateFiles("classic." + extension, "/Schematics", schemFolder)
-        .registerDefaultGenerateFiles("nether." + extension, "/Schematics", schemFolder)
-        .registerDefaultGenerateFiles("outdoors." + extension, "/Schematics", schemFolder)
-        .registerDefaultGenerateFiles("sea." + extension, "/Schematics", schemFolder)
-        .registerDefaultGenerateFiles("soul." + extension, "/Schematics", schemFolder)
-        .registerDefaultGenerateFiles("wooden." + extension, "/Schematics", schemFolder)
-        //Register all files inside the custom folders.
-        .registerCustomFilesFolder("/Crates")
-        .registerCustomFilesFolder("/Schematics")
-        .setup(this);
+                .registerDefaultGenerateFiles("Basic.yml", "/Crates", "/Crates")
+                .registerDefaultGenerateFiles("Classic.yml", "/Crates", "/Crates")
+                .registerDefaultGenerateFiles("Crazy.yml", "/Crates", "/Crates")
+                .registerDefaultGenerateFiles("Galactic.yml", "/Crates", "/Crates")
+                //Schematics
+                .registerDefaultGenerateFiles("classic.schematic", "/Schematics", "/Schematics")
+                .registerDefaultGenerateFiles("nether.schematic", "/Schematics", "/Schematics")
+                .registerDefaultGenerateFiles("outdoors.schematic", "/Schematics", "/Schematics")
+                .registerDefaultGenerateFiles("sea.schematic", "/Schematics", "/Schematics")
+                .registerDefaultGenerateFiles("soul.schematic", "/Schematics", "/Schematics")
+                .registerDefaultGenerateFiles("wooden.schematic", "/Schematics", "/Schematics")
+                //Register all files inside the custom folders.
+                .registerCustomFilesFolder("/Crates")
+                .registerCustomFilesFolder("/Schematics")
+                .setup(this);
+
         if (!Files.LOCATIONS.getFile().contains("Locations")) {
             Files.LOCATIONS.getFile().set("Locations.Clear", null);
             Files.LOCATIONS.saveFile();
         }
+
         if (!Files.DATA.getFile().contains("Players")) {
             Files.DATA.getFile().set("Players.Clear", null);
             Files.DATA.saveFile();
         }
-        updateChecker = !Files.CONFIG.getFile().contains("Settings.Update-Checker") || Files.CONFIG.getFile().getBoolean("Settings.Update-Checker");
-        //Messages.addMissingMessages(); #Does work but is disabled for now.
+
+        Messages.addMissingMessages();
+
         cc.loadCrates();
-        PluginManager pm = Bukkit.getPluginManager();
+
+        PluginManager pm = getServer().getPluginManager();
+
         pm.registerEvents(this, this);
         pm.registerEvents(new GUIMenu(), this);
         pm.registerEvents(new Preview(), this);
@@ -81,7 +87,7 @@ public class Main extends JavaPlugin implements Listener {
         pm.registerEvents(new CrateControl(), this);
         pm.registerEvents(new CrateOnTheGo(), this);
 
-        if (ServerVersion.isAtLeast(ServerVersion.v1_12)) {
+        if (ServerProtocol.isAtLeast(ServerProtocol.v1_12_R2)) {
             pm.registerEvents(new Events_v1_12_R1_Up(), this);
         } else {
             pm.registerEvents(new Events_v1_11_R1_Down(), this);
@@ -90,17 +96,19 @@ public class Main extends JavaPlugin implements Listener {
         if (!cc.getBrokeCrateLocations().isEmpty()) {
             pm.registerEvents(new BrokeLocationsControl(), this);
         }
-        pm.registerEvents(new FireworkDamageEvent(this), this);
+
+        pm.registerEvents(new FireworkDamageEvent(), this);
+
         if (Support.PLACEHOLDERAPI.isPluginLoaded()) {
-            new PlaceholderAPISupport(this).register();
+            new PlaceholderAPISupport().register();
         }
 
         if (Support.MVDWPLACEHOLDERAPI.isPluginLoaded()) {
             MVdWPlaceholderAPISupport.registerPlaceholders(this);
         }
 
-        Methods.hasUpdate();
-        new Metrics(this); //Starts up bStats
+        new Metrics(this, 4514);
+
         getCommand("key").setExecutor(new KeyCommand());
         getCommand("key").setTabCompleter(new KeyTab());
         getCommand("crazycrates").setExecutor(new CCCommand());
@@ -111,11 +119,11 @@ public class Main extends JavaPlugin implements Listener {
         isEnabled = false;
         getLogger().warning("============= Crazy Crates =============");
         getLogger().info(" ");
-        getLogger().warning("Plugin Disabled: This server is running on an unsupported version and Crazy Crates does not support those versions. "
-                + "We only support 1.8.8, 1.12.2 & 1.17.1 - Anything else you should think update from your version to these.");
+        getLogger().warning("Plugin Disabled: This server is running on an unsupported version and this version of Crazy Crates does not support those versions. "
+                + "Legacy only supports 1.8.8, 1.12.2 - It will not run on 1.13+.....");
         getLogger().info(" ");
-        getLogger().warning("Support Discord: https://discord.com/invite/MCuz8JG/");
-        getLogger().warning("Version Integer: " + ServerVersion.getBukkitVersion());
+        getLogger().warning("Support Discord: https://discord.badbones69.com");
+        getLogger().warning("Version Integer: " + ServerProtocol.getCurrentProtocol());
         getLogger().info(" ");
         getLogger().warning("============= Crazy Crates =============");
 
@@ -127,6 +135,7 @@ public class Main extends JavaPlugin implements Listener {
         if (isEnabled) {
             QuadCrateSession.endAllCrates();
             QuickCrate.removeAllRewards();
+
             if (cc.getHologramController() != null) {
                 cc.getHologramController().removeAllHolograms();
             }
@@ -138,13 +147,5 @@ public class Main extends JavaPlugin implements Listener {
         Player player = e.getPlayer();
         cc.setNewPlayerKeys(player);
         cc.loadOfflinePlayersKeys(player);
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (player.isOp() && updateChecker) {
-                    Methods.hasUpdate(player);
-                }
-            }
-        }.runTaskLaterAsynchronously(this, 40);
     }
 }

@@ -1,12 +1,11 @@
 package com.badbones69.crazycrates.cratetypes;
 
 import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.api.CrazyCrates;
+import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,11 +16,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class CrateOnTheGo implements Listener {
     
-    private static final CrazyCrates cc = CrazyCrates.getInstance();
+    private static final CrazyManager cc = CrazyManager.getInstance();
     
     @EventHandler
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
+
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             ItemStack item = cc.getNMSSupport().getItemInMainHand(player);
 
@@ -34,13 +34,17 @@ public class CrateOnTheGo implements Listener {
                     Methods.removeItem(item, player);
                     Prize prize = crate.pickPrize(player);
                     cc.givePrize(player, prize);
-                    Bukkit.getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, cc.getOpeningCrate(player).getName(), prize));
+
+                    cc.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, cc.getOpeningCrate(player).getName(), prize));
+
                     if (prize.useFireworks()) {
                         Methods.fireWork(player.getLocation().add(0, 1, 0));
                     }
+
                     cc.removePlayerFromOpeningList(player);
                 }
             }
         }
     }
+
 }

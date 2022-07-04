@@ -1,12 +1,11 @@
 package com.badbones69.crazycrates.multisupport;
 
-import org.bukkit.Bukkit;
+import com.badbones69.crazycrates.api.CrazyManager;
 
 public enum Support {
     
     PLACEHOLDERAPI("PlaceholderAPI"),
     MVDWPLACEHOLDERAPI("MVdWPlaceholderAPI"),
-    CRATESPLUS("CratesPlus"),
     HOLOGRAPHIC_DISPLAYS("HolographicDisplays"),
     HOLOGRAMS("Holograms"),
     DECENT_HOLOGRAMS("DecentHolograms");
@@ -22,7 +21,7 @@ public enum Support {
     }
     
     public boolean isPluginLoaded() {
-        return Bukkit.getServer().getPluginManager().getPlugin(name) != null;
+        return CrazyManager.getInstance().getPlugin().getServer().getPluginManager().getPlugin(name) != null;
     }
     
 }

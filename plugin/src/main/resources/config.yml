@@ -4,7 +4,6 @@ Settings:
   InventoryName: '&b&lCrazy &4&lCrates'
   InventorySize: 45
   KnockBack: true
-  Update-Checker: true
   Physical-Accepts-Virtual-Keys: true #If physical crates can accept virtual keys.
   Virtual-Accepts-Physical-Keys: true #If virtual crates can accept physical keys.
   Give-Virtual-Keys-When-Inventory-Full: false #If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.

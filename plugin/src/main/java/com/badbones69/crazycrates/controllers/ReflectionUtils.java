@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.controllers;
 
-import org.bukkit.Bukkit;
-
+import com.badbones69.crazycrates.api.CrazyManager;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -26,10 +25,11 @@ import java.util.Map;
  * @version 1.1
  */
 public final class ReflectionUtils {
-    
+
     // Prevent accidental construction
-    private ReflectionUtils() {
-    }
+    private ReflectionUtils() {}
+
+    private final static CrazyManager cc = CrazyManager.getInstance();
     
     /**
      * Returns the constructor of a given class with the given parameter types
@@ -44,12 +44,15 @@ public final class ReflectionUtils {
      */
     public static Constructor<?> getConstructor(Class<?> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
         Class<?>[] primitiveTypes = DataType.getPrimitive(parameterTypes);
+
         for (Constructor<?> constructor : clazz.getConstructors()) {
             if (!DataType.compare(DataType.getPrimitive(constructor.getParameterTypes()), primitiveTypes)) {
                 continue;
             }
+
             return constructor;
         }
+
         throw new NoSuchMethodException("There is no such constructor in this class with the specified parameter types");
     }
     
@@ -116,12 +119,15 @@ public final class ReflectionUtils {
      */
     public static Method getMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException {
         Class<?>[] primitiveTypes = DataType.getPrimitive(parameterTypes);
+
         for (Method method : clazz.getMethods()) {
             if (!method.getName().equals(methodName) || !DataType.compare(DataType.getPrimitive(method.getParameterTypes()), primitiveTypes)) {
                 continue;
             }
+
             return method;
         }
+
         throw new NoSuchMethodException("There is no such method in this class with the specified name and parameter types");
     }
     
@@ -350,7 +356,27 @@ public final class ReflectionUtils {
      * @since 1.0
      */
     public enum PackageType {
-        MINECRAFT_SERVER("net.minecraft.server." + getServerVersion()), CRAFTBUKKIT("org.bukkit.craftbukkit." + getServerVersion()), CRAFTBUKKIT_BLOCK(CRAFTBUKKIT, "block"), CRAFTBUKKIT_CHUNKIO(CRAFTBUKKIT, "chunkio"), CRAFTBUKKIT_COMMAND(CRAFTBUKKIT, "command"), CRAFTBUKKIT_CONVERSATIONS(CRAFTBUKKIT, "conversations"), CRAFTBUKKIT_ENCHANTMENS(CRAFTBUKKIT, "enchantments"), CRAFTBUKKIT_ENTITY(CRAFTBUKKIT, "entity"), CRAFTBUKKIT_EVENT(CRAFTBUKKIT, "event"), CRAFTBUKKIT_GENERATOR(CRAFTBUKKIT, "generator"), CRAFTBUKKIT_HELP(CRAFTBUKKIT, "help"), CRAFTBUKKIT_INVENTORY(CRAFTBUKKIT, "inventory"), CRAFTBUKKIT_MAP(CRAFTBUKKIT, "map"), CRAFTBUKKIT_METADATA(CRAFTBUKKIT, "metadata"), CRAFTBUKKIT_POTION(CRAFTBUKKIT, "potion"), CRAFTBUKKIT_PROJECTILES(CRAFTBUKKIT, "projectiles"), CRAFTBUKKIT_SCHEDULER(CRAFTBUKKIT, "scheduler"), CRAFTBUKKIT_SCOREBOARD(CRAFTBUKKIT, "scoreboard"), CRAFTBUKKIT_UPDATER(CRAFTBUKKIT, "updater"), CRAFTBUKKIT_UTIL(CRAFTBUKKIT, "util");
+
+        MINECRAFT_SERVER("net.minecraft.server." + getServerVersion()),
+        CRAFTBUKKIT("org.bukkit.craftbukkit." + getServerVersion()),
+        CRAFTBUKKIT_BLOCK(CRAFTBUKKIT, "block"),
+        CRAFTBUKKIT_CHUNKIO(CRAFTBUKKIT, "chunkio"),
+        CRAFTBUKKIT_COMMAND(CRAFTBUKKIT, "command"),
+        CRAFTBUKKIT_CONVERSATIONS(CRAFTBUKKIT, "conversations"),
+        CRAFTBUKKIT_ENCHANTMENTS(CRAFTBUKKIT, "enchantments"),
+        CRAFTBUKKIT_ENTITY(CRAFTBUKKIT, "entity"),
+        CRAFTBUKKIT_EVENT(CRAFTBUKKIT, "event"),
+        CRAFTBUKKIT_GENERATOR(CRAFTBUKKIT, "generator"),
+        CRAFTBUKKIT_HELP(CRAFTBUKKIT, "help"),
+        CRAFTBUKKIT_INVENTORY(CRAFTBUKKIT, "inventory"),
+        CRAFTBUKKIT_MAP(CRAFTBUKKIT, "map"),
+        CRAFTBUKKIT_METADATA(CRAFTBUKKIT, "metadata"),
+        CRAFTBUKKIT_POTION(CRAFTBUKKIT, "potion"),
+        CRAFTBUKKIT_PROJECTILES(CRAFTBUKKIT, "projectiles"),
+        CRAFTBUKKIT_SCHEDULER(CRAFTBUKKIT, "scheduler"),
+        CRAFTBUKKIT_SCOREBOARD(CRAFTBUKKIT, "scoreboard"),
+        CRAFTBUKKIT_UPDATER(CRAFTBUKKIT, "updater"),
+        CRAFTBUKKIT_UTIL(CRAFTBUKKIT, "util");
         
         private final String path;
         
@@ -379,7 +405,7 @@ public final class ReflectionUtils {
          * @return The server version
          */
         public static String getServerVersion() {
-            return Bukkit.getServer().getClass().getPackage().getName().substring(23);
+            return cc.getPlugin().getServer().getClass().getPackage().getName().substring(23);
         }
         
         /**
@@ -488,6 +514,7 @@ public final class ReflectionUtils {
             for (int index = 0; index < length; index++) {
                 types[index] = getPrimitive(classes[index]);
             }
+
             return types;
         }
         
@@ -503,6 +530,7 @@ public final class ReflectionUtils {
             for (int index = 0; index < length; index++) {
                 types[index] = getReference(classes[index]);
             }
+
             return types;
         }
         
@@ -517,6 +545,7 @@ public final class ReflectionUtils {
             for (int index = 0; index < length; index++) {
                 types[index] = getPrimitive(objects[index].getClass());
             }
+
             return types;
         }
         
@@ -531,6 +560,7 @@ public final class ReflectionUtils {
             for (int index = 0; index < length; index++) {
                 types[index] = getReference(objects[index].getClass());
             }
+
             return types;
         }
         
@@ -545,14 +575,18 @@ public final class ReflectionUtils {
             if (primary == null || secondary == null || primary.length != secondary.length) {
                 return false;
             }
+
             for (int index = 0; index < primary.length; index++) {
                 Class<?> primaryClass = primary[index];
                 Class<?> secondaryClass = secondary[index];
+
                 if (primaryClass.equals(secondaryClass) || primaryClass.isAssignableFrom(secondaryClass)) {
                     continue;
                 }
+
                 return false;
             }
+
             return true;
         }
         
@@ -574,5 +608,5 @@ public final class ReflectionUtils {
             return reference;
         }
     }
-    
+
 }

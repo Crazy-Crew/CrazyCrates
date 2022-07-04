@@ -9,7 +9,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateHologram;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -21,12 +20,15 @@ public class HologramsSupport implements HologramController {
     
     public void createHologram(Block block, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();
+
         if (crateHologram.isEnabled()) {
-            double hight = crateHologram.getHeight() - .5;//Doing this as Holograms seems to add .5 height when adding lines or something.
-            Hologram hologram = new Hologram(new Random().nextInt() + "", block.getLocation().add(.5, hight, .5));
+            double height = crateHologram.getHeight() - .5; // Doing this as Holograms seems to add .5 height when adding lines or something.
+            Hologram hologram = new Hologram(new Random().nextInt() + "", block.getLocation().add(.5, height, .5));
+
             for (String line : crateHologram.getMessages()) {
                 hologram.addLine(new TextLine(hologram, line));
             }
+
             hologramManager.addActiveHologram(hologram);
             hologram.spawn();
             holograms.put(block, hologram);
@@ -47,6 +49,7 @@ public class HologramsSupport implements HologramController {
             Hologram hologram = location.getValue();
             hologramManager.deleteHologram(hologram);
         }
+
         holograms.clear();
     }
     

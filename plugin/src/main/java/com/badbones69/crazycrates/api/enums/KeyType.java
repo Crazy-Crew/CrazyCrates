@@ -20,6 +20,7 @@ public enum KeyType {
         } else if (type.equalsIgnoreCase("free") || type.equalsIgnoreCase("f")) {
             return KeyType.FREE_KEY;
         }
+
         return null;
     }
     

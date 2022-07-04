@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.cratetypes;
 
 import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.api.CrazyCrates;
+import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.controllers.FireworkDamageEvent;
@@ -13,13 +13,12 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 public class FireCracker {
     
-    private static final CrazyCrates cc = CrazyCrates.getInstance();
+    private static final CrazyManager cc = CrazyManager.getInstance();
     
     public static void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc) {
         if (!cc.takeKeys(1, player, crate, keyType, true)) {
@@ -27,6 +26,7 @@ public class FireCracker {
             cc.removePlayerFromOpeningList(player);
             return;
         }
+
         final ArrayList<Color> colors = new ArrayList<>();
         colors.add(Color.RED);
         colors.add(Color.YELLOW);
@@ -36,6 +36,7 @@ public class FireCracker {
         colors.add(Color.AQUA);
         colors.add(Color.MAROON);
         colors.add(Color.PURPLE);
+
         cc.addCrateTask(player, new BukkitRunnable() {
             final Random r = new Random();
             final int color = r.nextInt(colors.size());
@@ -63,11 +64,7 @@ public class FireCracker {
         fm.setPower(0);
         fw.setFireworkMeta(fm);
         FireworkDamageEvent.addFirework(fw);
-        new BukkitRunnable() {
-            public void run() {
-                fw.detonate();
-            }
-        }.runTaskLaterAsynchronously(cc.getPlugin(), 1);
+        fw.detonate();
     }
     
 }

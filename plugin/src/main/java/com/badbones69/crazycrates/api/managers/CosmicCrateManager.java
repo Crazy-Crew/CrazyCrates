@@ -1,9 +1,8 @@
 package com.badbones69.crazycrates.api.managers;
 
-import com.badbones69.crazycrates.api.CrazyCrates;
+import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import org.bukkit.configuration.file.FileConfiguration;
-
 import java.util.Collections;
 
 public class CosmicCrateManager extends CrateManager {
@@ -15,7 +14,7 @@ public class CosmicCrateManager extends CrateManager {
     
     public CosmicCrateManager(FileConfiguration file) {
         this.file = file;
-        CrazyCrates cc = CrazyCrates.getInstance();
+        CrazyManager cc = CrazyManager.getInstance();
         String path = "Crate.Crate-Type-Settings.";
         totalPrizes = file.getInt(path + "Total-Prize-Amount", 4);
         mysteryCrate = new ItemBuilder()
@@ -24,7 +23,7 @@ public class CosmicCrateManager extends CrateManager {
         .setLore(file.contains(path + "Mystery-Crate.Lore") ? file.getStringList(path + "Mystery-Crate.Lore") : Collections.singletonList("&7You may choose 4 crates."));
         mysteryCrate.getNBTItem().setString("Cosmic-Mystery-Crate", "Mystery Crate");
         pickedCrate = new ItemBuilder()
-        .setMaterial(file.getString(path + "Picked-Crate.Item", cc.useNewMaterial() ? "GLASS_PANE" : "THIN_GLASS"))
+        .setMaterial(file.getString(path + "Picked-Crate.Item", "THIN_GLASS"))
         .setName(file.getString(path + "Picked-Crate.Name", "&f&l???"))
         .setLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("&7You have chosen #%slot%."));
         pickedCrate.getNBTItem().setString("Cosmic-Picked-Crate", "Picked Crate");

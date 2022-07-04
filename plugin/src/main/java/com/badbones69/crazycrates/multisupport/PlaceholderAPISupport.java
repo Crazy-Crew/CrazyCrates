@@ -1,28 +1,23 @@
 package com.badbones69.crazycrates.multisupport;
 
-import com.badbones69.crazycrates.api.CrazyCrates;
+import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.objects.Crate;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
+import org.jetbrains.annotations.NotNull;
 import java.text.NumberFormat;
 
 public class PlaceholderAPISupport extends PlaceholderExpansion {
-    
-    private final CrazyCrates cc = CrazyCrates.getInstance();
-    private final Plugin plugin;
-    
-    public PlaceholderAPISupport(Plugin plugin) {
-        this.plugin = plugin;
-    }
-    
+
+    private final CrazyManager cc = CrazyManager.getInstance();
+
     @Override
-    public String onRequest(OfflinePlayer player, String identifier) {
+    public String onRequest(OfflinePlayer player, @NotNull String identifier) {
         if (player.isOnline()) {
             Player playerOnline = (Player) player;
+
             for (Crate crate : cc.getCrates()) {
                 if (crate.getCrateType() != CrateType.MENU) {
                     if (identifier.equalsIgnoreCase(crate.getName())) {
@@ -35,27 +30,28 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
                 }
             }
         }
+
         return "";
     }
-    
+
     @Override
     public boolean persist() {
         return true;
     }
-    
+
     @Override
-    public String getIdentifier() {
-        return "crazycrates";
+    public @NotNull String getIdentifier() {
+        return "CrazyCrates";
     }
-    
+
     @Override
-    public String getAuthor() {
+    public @NotNull String getAuthor() {
         return "BadBones69";
     }
-    
+
     @Override
-    public String getVersion() {
-        return plugin.getDescription().getVersion();
+    public @NotNull String getVersion() {
+        return cc.getPlugin().getDescription().getVersion();
     }
-    
+
 }

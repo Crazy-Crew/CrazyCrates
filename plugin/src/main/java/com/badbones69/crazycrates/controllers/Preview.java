@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.controllers;
 
-import com.badbones69.crazycrates.api.CrazyCrates;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
@@ -10,14 +9,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
 
 public class Preview implements Listener {
-    
-    private static final CrazyCrates cc = CrazyCrates.getInstance();
+
     private static final HashMap<UUID, Integer> playerPage = new HashMap<>();
     private static final HashMap<UUID, Crate> playerCrate = new HashMap<>();
     private static final HashMap<UUID, Boolean> playerInMenu = new HashMap<>();
@@ -69,11 +66,13 @@ public class Preview implements Listener {
     
     public static void setPage(Player player, int pageNumber) {
         int max = playerCrate.get(player.getUniqueId()).getMaxPage();
+
         if (pageNumber < 1) {
             pageNumber = 1;
         } else if (pageNumber >= max) {
             pageNumber = max;
         }
+
         playerPage.put(player.getUniqueId(), pageNumber);
     }
     
@@ -87,9 +86,11 @@ public class Preview implements Listener {
     
     public static ItemStack getNextButton(Player player) {
         ItemBuilder button = new ItemBuilder(nextButton);
+
         if (player != null) {
             button.addLorePlaceholder("%Page%", (getPage(player) + 1) + "");
         }
+
         return button.build();
     }
     
@@ -99,9 +100,11 @@ public class Preview implements Listener {
     
     public static ItemStack getBackButton(Player player) {
         ItemBuilder button = new ItemBuilder(backButton);
+
         if (player != null) {
             button.addLorePlaceholder("%Page%", (getPage(player) - 1) + "");
         }
+
         return button.build();
     }
     
@@ -116,21 +119,25 @@ public class Preview implements Listener {
     @EventHandler
     public void onPlayerClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
+
         if (e.getInventory() != null && playerCrate.get(player.getUniqueId()) != null) {
             Crate crate = playerCrate.get(player.getUniqueId());
+
             if (crate.isPreview(e.getView())) {
                 e.setCancelled(true);
                 if (e.getCurrentItem() != null) {
-                    if (e.getRawSlot() == crate.getAbsoluteItemPosition(4)) {// Clicked the menu button.
+                    if (e.getRawSlot() == crate.getAbsoluteItemPosition(4)) { // Clicked the menu button.
                         if (playerInMenu(player)) {
                             GUIMenu.openGUI(player);
                         }
-                    } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(5)) {// Clicked the next button.
+
+                    } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(5)) { // Clicked the next button.
                         if (getPage(player) < crate.getMaxPage()) {
                             nextPage(player);
                             openPreview(player, crate);
                         }
-                    } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(3)) {// Clicked the back button.
+
+                    } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(3)) { // Clicked the back button.
                         if (getPage(player) > 1 && getPage(player) <= crate.getMaxPage()) {
                             backPage(player);
                             openPreview(player, crate);

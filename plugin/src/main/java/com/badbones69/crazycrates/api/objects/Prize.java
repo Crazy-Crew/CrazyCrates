@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.api.objects;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,6 +98,7 @@ public class Prize {
             nbt.setString("crazycrate-prize", name);
             displayItemStack = nbt.getItem();
         }
+
         return displayItemStack.clone();
     }
     
@@ -204,6 +204,7 @@ public class Prize {
                 }
             }
         }
+
         return false;
     }
     
