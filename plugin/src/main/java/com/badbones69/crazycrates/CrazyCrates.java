@@ -119,8 +119,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         isEnabled = false;
         getLogger().warning("============= Crazy Crates =============");
         getLogger().warning(" ");
-        getLogger().warning("Plugin Disabled: This server is running on an unsupported version and this version of Crazy Crates does not support those versions. "
-                + "Legacy only supports 1.8.8, 1.12.2 - It will not run on 1.13+.....");
+        getLogger().warning("Plugin Disabled: This server is running on an unsupported version and this version of Crazy Crates does not support those versions.");
+        getLogger().warning("Legacy only supports 1.12.2 down to 1.8.8, It will not run on 1.13+");
         getLogger().warning(" ");
         getLogger().warning("Support Discord: https://discord.badbones69.com");
         getLogger().warning("Version Integer: " + ServerProtocol.getCurrentProtocol());
