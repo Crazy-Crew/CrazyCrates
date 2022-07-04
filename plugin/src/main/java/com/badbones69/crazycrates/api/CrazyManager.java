@@ -454,7 +454,7 @@ public class CrazyManager {
             case QUAD_CRATE:
                 Location last = player.getLocation();
                 last.setPitch(0F);
-                QuadCrateSession session = new QuadCrateSession(player, crate, keyType, location, last, checkHand, getPlugin());
+                QuadCrateSession session = new QuadCrateSession(player, crate, keyType, location, last, checkHand);
                 broadcast = session.startCrate();
                 break;
             case FIRE_CRACKER:
