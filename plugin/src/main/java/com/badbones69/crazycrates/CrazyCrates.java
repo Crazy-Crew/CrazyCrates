@@ -118,7 +118,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     private void checkVersion() {
         isEnabled = false;
         getLogger().warning("============= Crazy Crates =============");
-        getLogger().info(" ");
+        getLogger().warning(" ");
         getLogger().warning("Plugin Disabled: This server is running on an unsupported version and this version of Crazy Crates does not support those versions. "
                 + "Legacy only supports 1.8.8, 1.12.2 - It will not run on 1.13+.....");
         getLogger().warning(" ");
