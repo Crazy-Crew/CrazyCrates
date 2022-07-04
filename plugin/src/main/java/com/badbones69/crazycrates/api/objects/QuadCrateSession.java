@@ -43,10 +43,8 @@ public class QuadCrateSession {
     private final List<BukkitRunnable> ongoingTasks = new ArrayList<>();
     private final HashMap<Location, BlockState> oldBlocks = new HashMap<>();
     private final HashMap<Location, BlockState> oldChestBlocks = new HashMap<>();
-
-    private final JavaPlugin javaPlugin;
     
-    public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean checkHand, JavaPlugin javaPlugin) {
+    public QuadCrateSession(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean checkHand) {
         this.instance = this;
         this.crate = crate;
         this.player = player;
@@ -58,8 +56,6 @@ public class QuadCrateSession {
         this.particle = particles.get(new Random().nextInt(particles.size()));
         this.particleColor = getColors().get(new Random().nextInt(getColors().size()));
         crateSessions.add(instance);
-
-        this.javaPlugin = javaPlugin;
     }
     
     public static void endAllCrates() {
@@ -204,7 +200,7 @@ public class QuadCrateSession {
                     }
                 } // 154 - 33
             }
-        }.runTaskTimer(javaPlugin, 0, 1));
+        }.runTaskTimer(cc.getPlugin(), 0, 1));
 
         cc.addCrateTask(player, new BukkitRunnable() {
             @Override
@@ -212,7 +208,7 @@ public class QuadCrateSession {
                 endCrateForce(true);
                 player.sendMessage(Messages.OUT_OF_TIME.getMessage());
             }
-        }.runTaskLater(javaPlugin, cc.getQuadCrateTimer()));
+        }.runTaskLater(cc.getPlugin(), cc.getQuadCrateTimer()));
         return true;
     }
     
@@ -233,7 +229,7 @@ public class QuadCrateSession {
                 cc.removePlayerFromOpeningList(player);
                 crateSessions.remove(instance);
             }
-        }.runTaskLater(javaPlugin, 3 * 20);
+        }.runTaskLater(cc.getPlugin(), 3 * 20);
     }
     
     public void endCrateForce(boolean removeFromSessions) {
@@ -396,7 +392,7 @@ public class QuadCrateSession {
     }
     
     private void spawnParticles(QuadCrateParticles quadCrateParticle, Location location1, Location location2) {
-        if (ServerProtocol.isSame(ServerProtocol.v1_12_R2)) {
+        if (ServerProtocol.isSame(ServerProtocol.v1_12_R1)) {
             Particle particle;
 
             switch (quadCrateParticle) {
