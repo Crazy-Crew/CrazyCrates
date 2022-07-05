@@ -694,15 +694,8 @@ public class CCCommand implements CommandExecutor {
                             placeholders.put("%Player%", target.getName());
                             placeholders.put("%Key%", crate.getKey().getItemMeta().getDisplayName());
                             sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
-<<<<<<< 40fffb2f124beeb19dfd797b0273e7b7b7d63c00
                             if (target != null) {
                                 target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
-=======
-
-                            if (target != null) {
-                                boolean sendMessage = Boolean.parseBoolean(args[5]);
-                                if (sendMessage) target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
->>>>>>> Add true/false option on whether to send messages
                             }
                         }
 

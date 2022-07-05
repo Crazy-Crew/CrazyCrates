@@ -130,20 +130,6 @@ public class CCTab implements TabCompleter {
             }
 
             return StringUtil.copyPartialMatches(args[4], completions, new ArrayList<>());
-        } else if (args.length == 6) {
-            switch (args[0].toLowerCase()) { // /crates arg0 arg1 arg2 arg3 arg4
-                case "give":
-                case "giveall":
-                case "take":
-                    if (hasPermission(sender, "take") || hasPermission(sender, "giveall") || hasPermission(sender, "give")) {
-                        completions.add("true");
-                        completions.add("false");
-                    }
-
-                    break;
-            }
-
-            return StringUtil.copyPartialMatches(args[5], completions, new ArrayList<>());
         }
         return new ArrayList<>();
     }
