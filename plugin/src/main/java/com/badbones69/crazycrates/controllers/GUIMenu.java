@@ -177,13 +177,13 @@ public class GUIMenu implements Listener {
                                         Preview.setPlayerInMenu(player, true);
                                         Preview.openNewPreview(player, crate);
                                     } else {
-                                        player.sendMessage(Messages.PREVIEW_DISABLED.getMessage(true));
+                                        player.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
                                     }
                                     return;
                                 }
 
                                 if (crazyManager.isInOpeningList(player)) {
-                                    player.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage(true));
+                                    player.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
                                     return;
                                 }
 
@@ -206,7 +206,7 @@ public class GUIMenu implements Listener {
                                         }
                                     }
 
-                                    player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage(true));
+                                    player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
                                     return;
                                 }
 
@@ -218,7 +218,7 @@ public class GUIMenu implements Listener {
                                 }
 
                                 if (Methods.isInventoryFull(player)) {
-                                    player.sendMessage(Messages.INVENTORY_FULL.getMessage(true));
+                                    player.sendMessage(Messages.INVENTORY_FULL.getMessage());
                                     return;
                                 }
 

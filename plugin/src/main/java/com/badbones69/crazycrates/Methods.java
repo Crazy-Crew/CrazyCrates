@@ -133,7 +133,7 @@ public class Methods {
         if (player.hasPermission("crazycrates." + perm.toLowerCase()) || player.hasPermission("crazycrates.admin")) {
             return true;
         } else {
-            player.sendMessage(Messages.NO_PERMISSION.getMessage(true));
+            player.sendMessage(Messages.NO_PERMISSION.getMessage());
             return false;
         }
     }

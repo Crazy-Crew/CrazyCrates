@@ -126,11 +126,20 @@ public class CCTab implements TabCompleter {
                         crazyManager.getPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
                     }
 
+<<<<<<< Updated upstream
+=======
+                    if (hasPermission(sender, "giveall")) {
+                        completions.add("true");
+                        completions.add("false");
+                    }
+
+>>>>>>> Stashed changes
                     break;
             }
 
             return StringUtil.copyPartialMatches(args[4], completions, new ArrayList<>());
         }
+
         return new ArrayList<>();
     }
     

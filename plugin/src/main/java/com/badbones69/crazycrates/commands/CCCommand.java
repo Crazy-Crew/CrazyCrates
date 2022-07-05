@@ -84,7 +84,7 @@ public class CCCommand implements CommandExecutor {
                 player.sendMessage(Methods.getPrefix("&7You have set location #" + set + "."));
 
                 return true;
-            } else if (args[0].equalsIgnoreCase("save")) { // /cc save <file name>
+            } else if (args[0].equalsIgnoreCase("save")) { // /crates save <file name>
                 if (!Methods.permCheck(sender, "admin")) return true;
 
                 if (ServerProtocol.isLegacy()) {
@@ -108,13 +108,13 @@ public class CCCommand implements CommandExecutor {
                 }
 
                 return true;
-            } else if (args[0].equalsIgnoreCase("additem")) { // /cc additem0 <crate>1 <prize>2
+            } else if (args[0].equalsIgnoreCase("additem")) { // /crates additem0 <crate>1 <prize>2
                 if (!Methods.permCheck(sender, "admin")) return true;
 
                 Player player = (Player) sender;
 
                 if (args.length >= 3) {
-                    ItemStack item = cc.getNMSSupport().getItemInMainHand(player);
+                    ItemStack item = crazyManager.getNMSSupport().getItemInMainHand(player);
 
                     if (item != null && item.getType() != Material.AIR) {
                         Crate crate = crazyManager.getCrateFromName(args[1]);
@@ -141,7 +141,7 @@ public class CCCommand implements CommandExecutor {
                         player.sendMessage(Messages.NO_ITEM_IN_HAND.getMessage());
                     }
                 } else {
-                    player.sendMessage(Methods.getPrefix("&c/cc additem <crate> <prize>"));
+                    player.sendMessage(Methods.getPrefix("&c/crates additem <Crate> <Prize>"));
                 }
 
                 return true;
@@ -183,7 +183,7 @@ public class CCCommand implements CommandExecutor {
                     return true;
                 }
 
-                sender.sendMessage(Methods.getPrefix("&c/cc debug <crate>"));
+                sender.sendMessage(Methods.getPrefix("&c/crates debug <Crate>"));
                 return true;
             } else if (args[0].equalsIgnoreCase("admin")) {
                 if (!(sender instanceof Player)) return true;
@@ -247,7 +247,7 @@ public class CCCommand implements CommandExecutor {
                 }
 
                 return true;
-            } else if (args[0].equalsIgnoreCase("tp")) { // /cc TP <Location>
+            } else if (args[0].equalsIgnoreCase("tp")) { // /crates tp <Location>
                 if (!Methods.permCheck(sender, "admin")) return true;
 
                 if (args.length == 2) {
@@ -275,9 +275,9 @@ public class CCCommand implements CommandExecutor {
                     return true;
                 }
 
-                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/cc TP <Location Name>"));
+                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/crates tp <Location Name>"));
                 return true;
-            } else if (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("s")) { // /Crate Set <Crate>
+            } else if (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("s")) { // /crates set <Crate>
                 if (!Methods.permCheck(sender, "admin")) return true;
 
                 if (!(sender instanceof Player)) {
@@ -311,9 +311,9 @@ public class CCCommand implements CommandExecutor {
                     return true;
                 }
 
-                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/cc Set <Crate>"));
+                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/crates Set <Crate>"));
                 return true;
-            } else if (args[0].equalsIgnoreCase("preview")) { // /cc Preview <Crate> [Player]
+            } else if (args[0].equalsIgnoreCase("preview")) { // /crates preview <Crate> [Player]
                 if (sender instanceof Player) {
                     if (!Methods.permCheck(sender, "preview")) {
                         return true;
@@ -343,7 +343,7 @@ public class CCCommand implements CommandExecutor {
                                     }
                                 } else {
                                     if (!(sender instanceof Player)) {
-                                        sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
+                                        sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/crates preview <Crate> [Player]"));
                                         return true;
                                     } else {
                                         player = (Player) sender;
@@ -361,9 +361,9 @@ public class CCCommand implements CommandExecutor {
                     }
                 }
 
-                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Preview <Crate> [Player]"));
+                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/crates preview <Crate> [Player]"));
                 return true;
-            } else if (args[0].equalsIgnoreCase("open")) { // /cc Open <Crate> [Player]
+            } else if (args[0].equalsIgnoreCase("open")) { // /crates open <Crate> [Player]
                 if (!Methods.permCheck(sender, "open")) return true;
 
                 if (args.length >= 2) {
@@ -380,7 +380,7 @@ public class CCCommand implements CommandExecutor {
                                 }
                             } else {
                                 if (!(sender instanceof Player)) {
-                                    sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate open <Crate> [Player]"));
+                                    sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/crates open <Crate> [Player]"));
                                     return true;
                                 } else {
                                     player = (Player) sender;
@@ -444,7 +444,7 @@ public class CCCommand implements CommandExecutor {
                     }
                 }
 
-                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate open <Crate> [Player]"));
+                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/crates open <Crate> [Player]"));
                 return true;
             } else if (args[0].equalsIgnoreCase("forceopen") || args[0].equalsIgnoreCase("fo") || args[0].equalsIgnoreCase("fopen")) { // /cc ForceOpen <Crate> [Player]
                 if (!Methods.permCheck(sender, "forceopen")) return true;
@@ -463,7 +463,7 @@ public class CCCommand implements CommandExecutor {
                                     }
                                 } else {
                                     if (!(sender instanceof Player)) {
-                                        sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate forceopen <Crate> [Player]"));
+                                        sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/crates forceopen <Crate> [Player]"));
                                         return true;
                                     } else {
                                         player = (Player) sender;
@@ -500,9 +500,9 @@ public class CCCommand implements CommandExecutor {
                     return true;
                 }
 
-                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate forceopen <Crate> [Player]"));
+                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/crates forceopen <Crate> [Player]"));
                 return true;
-            } else if (args[0].equalsIgnoreCase("transfer") || args[0].equalsIgnoreCase("tran")) { // /crate transfer <crate> <player> [amount]
+            } else if (args[0].equalsIgnoreCase("transfer") || args[0].equalsIgnoreCase("tran")) { // /crates transfer <crate> <player> [amount]
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
                     return true;
@@ -560,14 +560,14 @@ public class CCCommand implements CommandExecutor {
                             sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[1]));
                         }
                     } else {
-                        sender.sendMessage(Methods.getPrefix("&c/Crate Transfer <Crate> <Player> [Amount]"));
+                        sender.sendMessage(Methods.getPrefix("&c/crates transfer <Crate> <Player> [Amount]"));
                     }
                 }
 
                 return true;
-            } else if (args[0].equalsIgnoreCase("giveall")) { // /Crate GiveAll <Physical/Virtual> <Crate> [Amount]
+            } else if (args[0].equalsIgnoreCase("giveall")) { // /crates giveall <Physical/Virtual> <Crate> [Amount]
                 if (!Methods.permCheck(sender, "admin")) return true;
-
+// /crates arg0 arg1 arg2 arg3 arg4
                 if (args.length >= 3) {
                     int amount = 1;
 
@@ -601,6 +601,7 @@ public class CCCommand implements CommandExecutor {
                                 crazyManager.getPlugin().getServer().getPluginManager().callEvent(event);
 
                                 if (!event.isCancelled()) {
+
                                     player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
 
                                     if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
@@ -608,7 +609,7 @@ public class CCCommand implements CommandExecutor {
                                         return true;
                                     }
 
-                                    cc.addKeys(amount, player, crate, type);
+                                    crazyManager.addKeys(amount, player, crate, type);
                                 }
                             }
 
@@ -620,9 +621,9 @@ public class CCCommand implements CommandExecutor {
                     return true;
                 }
 
-                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate GiveAll <Physical/Virtual> <Crate> <Amount>"));
+                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/crates giveall <Physical/Virtual> <Crate> <Amount>"));
                 return true;
-            } else if (args[0].equalsIgnoreCase("give")) { // /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
+            } else if (args[0].equalsIgnoreCase("give")) { // /crates give <Physical/Virtual> <Crate> [Amount] [Player]
                 if (!Methods.permCheck(sender, "admin")) return true;
 
                 Player target;
@@ -651,6 +652,7 @@ public class CCCommand implements CommandExecutor {
                         sender.sendMessage(Messages.NOT_A_NUMBER.getMessage("%Number%", args[3]));
                         return true;
                     }
+
                     amount = Integer.parseInt(args[3]);
                 }
 
@@ -685,6 +687,7 @@ public class CCCommand implements CommandExecutor {
                                         placeholders.put("%Player%", args[4]);
                                         sender.sendMessage(Messages.GIVEN_OFFLINE_PLAYER_KEYS.getMessage(placeholders));
                                     }
+
                                     return true;
                                 }
                             }
@@ -694,6 +697,10 @@ public class CCCommand implements CommandExecutor {
                             placeholders.put("%Player%", target.getName());
                             placeholders.put("%Key%", crate.getKey().getItemMeta().getDisplayName());
                             sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
                             if (target != null) {
                                 target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
                             }
@@ -706,9 +713,9 @@ public class CCCommand implements CommandExecutor {
                     return true;
                 }
 
-                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Give <Physical/Virtual> <Crate> [Amount] [Player]"));
+                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/crates give <Physical/Virtual> <Crate> [Amount] [Player]"));
                 return true;
-            } else if (args[0].equalsIgnoreCase("take")) { // /Crate Give <Physical/Virtual> <Crate> [Amount] [Player]
+            } else if (args[0].equalsIgnoreCase("take")) { // /crates give <Physical/Virtual> <Crate> [Amount] [Player]
                 if (!Methods.permCheck(sender, "admin")) return true;
                 KeyType keyType = null;
 
@@ -738,6 +745,7 @@ public class CCCommand implements CommandExecutor {
                             if (!crazyManager.takeKeys(1, (Player) sender, crate, keyType, false)) {
                                 Methods.failedToTakeKey((Player) sender, crate);
                             }
+
                             return true;
                         }
                     }
@@ -767,6 +775,7 @@ public class CCCommand implements CommandExecutor {
                             if (!crazyManager.takeKeys(amount, (Player) sender, crate, keyType, false)) {
                                 Methods.failedToTakeKey((Player) sender, crate);
                             }
+
                             return true;
                         }
                     }
@@ -819,6 +828,7 @@ public class CCCommand implements CommandExecutor {
                                     sender.sendMessage(Messages.NOT_ONLINE.getMessage("%Player%", args[4]));
                                 }
                             }
+
                             return true;
                         }
                     }
@@ -827,12 +837,12 @@ public class CCCommand implements CommandExecutor {
                     return true;
                 }
 
-                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/Crate Take <Physical/Virtual> <Crate> [Amount] [Player]"));
+                sender.sendMessage(Methods.color(Methods.getPrefix() + "&c/crates take <Physical/Virtual> <Crate> [Amount] [Player]"));
                 return true;
             }
         }
 
-        sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease do /cc help for more info."));
+        sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease do /crates help for more info."));
         return true;
     }
     

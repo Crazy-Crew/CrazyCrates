@@ -90,7 +90,7 @@ public class CrateControl implements Listener { // Crate Control
                             Preview.setPlayerInMenu(player, false);
                             Preview.openNewPreview(player, loc.getCrate());
                         } else {
-                            player.sendMessage(Messages.PREVIEW_DISABLED.getMessage(true));
+                            player.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
                         }
                     }
                 }
@@ -157,13 +157,13 @@ public class CrateControl implements Listener { // Crate Control
                             }
 
                             if (inUse.containsValue(crateLocation.getLocation())) {
-                                player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage(true));
+                                player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
                                 return;
                             }
                         }
 
                         if (Methods.isInventoryFull(player)) {
-                            player.sendMessage(Messages.INVENTORY_FULL.getMessage(true));
+                            player.sendMessage(Messages.INVENTORY_FULL.getMessage());
                             return;
                         }
 

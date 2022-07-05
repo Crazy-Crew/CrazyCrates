@@ -209,7 +209,7 @@ public class QuadCrateSession {
             @Override
             public void run() {
                 endCrateForce(true);
-                player.sendMessage(Messages.OUT_OF_TIME.getMessage(true));
+                player.sendMessage(Messages.OUT_OF_TIME.getMessage());
             }
         }.runTaskLater(crazyManager.getPlugin(), crazyManager.getQuadCrateTimer()));
         return true;
