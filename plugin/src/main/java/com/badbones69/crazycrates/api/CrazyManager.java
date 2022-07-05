@@ -47,6 +47,8 @@ public class CrazyManager {
     public JavaPlugin getPlugin() {
         return plugin;
     }
+
+    private final boolean isLogging = fileManager.isLogging();
     
     /**
      * FileManager object.
@@ -196,7 +198,7 @@ public class CrazyManager {
             hologramController.removeAllHolograms();
         }
 
-        if (fileManager.isLogging()) plugin.getLogger().info("Loading all crate information...");
+        if (isLogging) plugin.getLogger().info("Loading all crate information...");
 
         for (String crateName : fileManager.getAllCratesNames(plugin)) {
             try {
@@ -265,6 +267,7 @@ public class CrazyManager {
                 }
 
                 int newPlayersKeys = file.getInt("Crate.StartingKeys");
+
                 if (!giveNewPlayersKeys) {
                     if (newPlayersKeys > 0) {
                         giveNewPlayersKeys = true;
@@ -282,8 +285,8 @@ public class CrazyManager {
 
         crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null));
 
-        if (fileManager.isLogging()) plugin.getLogger().info("All crate information has been loaded.");
-        if (fileManager.isLogging()) plugin.getLogger().info("Loading all the physical crate locations.");
+        if (isLogging) plugin.getLogger().info("All crate information has been loaded.");
+        if (isLogging) plugin.getLogger().info("Loading all the physical crate locations.");
 
         FileConfiguration locations = FileManager.Files.LOCATIONS.getFile();
         int loadedAmount = 0;
@@ -302,6 +305,7 @@ public class CrazyManager {
 
                     if (world != null && crate != null) {
                         crateLocations.add(new CrateLocation(locationName, crate, location));
+
                         if (hologramController != null) {
                             hologramController.createHologram(location.getBlock(), crate);
                         }
@@ -318,7 +322,7 @@ public class CrazyManager {
         }
 
         // Checking if all physical locations loaded
-        if (fileManager.isLogging()) {
+        if (isLogging) {
             if (loadedAmount > 0 || brokeAmount > 0) {
                 if (brokeAmount <= 0) {
                     plugin.getLogger().info("All physical crate locations have been loaded.");
@@ -330,17 +334,20 @@ public class CrazyManager {
         }
 
         // Loading schematic files
-        if (fileManager.isLogging()) plugin.getLogger().info("Searching for schematics to load.");
+        if (isLogging) plugin.getLogger().info("Searching for schematics to load.");
+
         String[] schems = new File(plugin.getDataFolder() + "/Schematics/").list();
 
         for (String schematicName : schems) {
             if (schematicName.endsWith(".schematic")) {
                 crateSchematics.add(new CrateSchematic(schematicName.replace(".schematic", ""), new File(plugin.getDataFolder() + "/Schematics/" + schematicName)));
-                if (fileManager.isLogging()) plugin.getLogger().info(schematicName + " was successfully found and loaded.");
+
+                if (isLogging) plugin.getLogger().info(schematicName + " was successfully found and loaded.");
             }
         }
 
-        if (fileManager.isLogging()) plugin.getLogger().info("All schematics were found and loaded.");
+        if (isLogging) plugin.getLogger().info("All schematics were found and loaded.");
+
         cleanDataFile();
         Preview.loadButtons();
     }
@@ -360,9 +367,9 @@ public class CrazyManager {
         FileConfiguration data = FileManager.Files.DATA.getFile();
 
         if (data.contains("Players")) {
-            boolean logging = fileManager.isLogging();
 
-            if (logging) plugin.getLogger().info("Cleaning up the data.yml file.");
+            if (isLogging) plugin.getLogger().info("Cleaning up the data.yml file.");
+
             List<String> removePlayers = new ArrayList<>();
 
             for (String uuid : data.getConfigurationSection("Players").getKeys(false)) {
@@ -387,16 +394,17 @@ public class CrazyManager {
             }
 
             if (removePlayers.size() > 0) {
-                if (logging) plugin.getLogger().info(removePlayers.size() + " player's data has been marked to be removed.");
+                if (isLogging) plugin.getLogger().info(removePlayers.size() + " player's data has been marked to be removed.");
 
                 for (String uuid : removePlayers) {
                     data.set("Players." + uuid, null);
                 }
 
-                if (logging) plugin.getLogger().info("All empty player data has been removed.");
+                if (isLogging) plugin.getLogger().info("All empty player data has been removed.");
             }
 
-            if (logging) plugin.getLogger().info("The data.yml file has been cleaned.");
+            if (isLogging) plugin.getLogger().info("The data.yml file has been cleaned.");
+
             FileManager.Files.DATA.saveFile();
         }
     }
@@ -665,6 +673,7 @@ public class CrazyManager {
         locations.set("Locations." + id + ".Y", location.getBlockY());
         locations.set("Locations." + id + ".Z", location.getBlockZ());
         FileManager.Files.LOCATIONS.saveFile();
+
         crateLocations.add(new CrateLocation(id, crate, location));
 
         if (hologramController != null) {
@@ -690,6 +699,7 @@ public class CrazyManager {
 
         if (location != null) {
             crateLocations.remove(location);
+
             if (hologramController != null) {
                 hologramController.removeHologram(location.getLocation().getBlock());
             }
@@ -814,9 +824,11 @@ public class CrazyManager {
                 if (command.contains("%random%:")) {
                     String cmd = command;
                     StringBuilder commandBuilder = new StringBuilder();
+
                     for (String word : cmd.split(" ")) {
                         if (word.startsWith("%random%:")) {
                             word = word.replace("%random%:", "");
+
                             try {
                                 long min = Long.parseLong(word.split("-")[0]);
                                 long max = Long.parseLong(word.split("-")[1]);
@@ -915,8 +927,8 @@ public class CrazyManager {
     public void loadOfflinePlayersKeys(Player player) {
         FileConfiguration data = FileManager.Files.DATA.getFile();
         String name = player.getName().toLowerCase();
-        if (data.contains("Offline-Players." + name)) {
 
+        if (data.contains("Offline-Players." + name)) {
             for (Crate crate : getCrates()) {
                 if (data.contains("Offline-Players." + name + "." + crate.getName())) {
                     PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReciveReason.OFFLINE_PLAYER, 1);
@@ -1090,7 +1102,7 @@ public class CrazyManager {
      */
     public ItemStack getPhysicalKey(Player player, Crate crate) {
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
-            if(item == null || item.getType() == Material.AIR) continue;
+            if (item == null || item.getType() == Material.AIR) continue;
 
             if (Methods.isSimilar(item, crate)) {
                 return item;
@@ -1194,11 +1206,13 @@ public class CrazyManager {
 
                     if (checkHand) {
                         items.add(nmsSupport.getItemInMainHand(player));
+
                         if (hasOffhand) {
                             items.add(player.getEquipment().getItemInOffHand());
                         }
                     } else {
                         items.addAll(Arrays.asList(player.getInventory().getContents()));
+
                         if (hasOffhand) { // Off-hand needs to be removed due to it not being removed in the list.
                             items.remove(player.getEquipment().getItemInOffHand());
                         }
@@ -1208,13 +1222,15 @@ public class CrazyManager {
                         if (item != null) {
                             if (isKeyFromCrate(item, crate)) {
                                 int keyAmount = item.getAmount();
+
                                 if ((takeAmount - keyAmount) >= 0) {
-                                    final HashMap<Integer, ItemStack> integerItemStackHashMap = Methods.removeItemAnySlot(player.getInventory(), item);
+                                    Methods.removeItemAnySlot(player.getInventory(), item);
                                     takeAmount -= keyAmount;
                                 } else {
                                     item.setAmount(keyAmount - takeAmount);
                                     takeAmount = 0;
                                 }
+
                                 if (takeAmount <= 0) {
                                     return true;
                                 }

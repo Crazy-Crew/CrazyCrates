@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 import static com.badbones69.crazycrates.Methods.color;
 
 /**
- *
  * The ItemBuilder is designed to make creating items easier by creating an easy-to-use Builder.
  * This will allow you to covert an existing ItemStack into an ItemBuilder to allow you to edit
  * an existing ItemStack or make a new ItemStack from scratch.
@@ -173,6 +172,7 @@ public class ItemBuilder {
     
     public static ItemBuilder convertString(String itemString, String placeHolder) {
         ItemBuilder itemBuilder = new ItemBuilder();
+
         try {
             for (String optionString : itemString.split(", ")) {
                 String option = optionString.split(":")[0];
@@ -207,6 +207,7 @@ public class ItemBuilder {
                         break;
                     default:
                         Enchantment enchantment = getEnchantment(option);
+
                         if (enchantment != null && enchantment.getName() != null) {
                             try {
                                 itemBuilder.addEnchantments(enchantment, Integer.parseInt(value));
@@ -228,9 +229,11 @@ public class ItemBuilder {
                             for (PatternType pattern : PatternType.values()) {
                                 if (option.equalsIgnoreCase(pattern.name()) || value.equalsIgnoreCase(pattern.getIdentifier())) {
                                     DyeColor color = getDyeColor(value);
+
                                     if (color != null) {
                                         itemBuilder.addPattern(new Pattern(color, pattern));
                                     }
+
                                     break;
                                 }
                             }
@@ -281,6 +284,7 @@ public class ItemBuilder {
      */
     public ItemBuilder setMaterial(String material) {
         String metaData;
+
         if (material.contains(":")) { // Sets the durability or another value option.
             String[] b = material.split(":");
             material = b[0];
@@ -288,6 +292,7 @@ public class ItemBuilder {
 
             if (metaData.contains("#")) { // <ID>:<Durability>#<CustomModelData>
                 String modelData = metaData.split("#")[1];
+
                 if (Methods.isInt(modelData)) { // Value is a number.
                     this.useCustomModelData = true;
                     this.customModelData = Integer.parseInt(modelData);
@@ -313,10 +318,10 @@ public class ItemBuilder {
             }
         }
 
-        Material m = Material.matchMaterial(material);
+        Material matchedMaterial = Material.matchMaterial(material);
 
-        if (m != null) { // Sets the material.
-            this.material = m;
+        if (matchedMaterial != null) { // Sets the material.
+            this.material = matchedMaterial;
         }
 
         switch (this.material.name()) {
@@ -594,6 +599,7 @@ public class ItemBuilder {
     public ItemBuilder addPattern(String stringPattern) {
         try {
             String[] split = stringPattern.split(":");
+
             for (PatternType pattern : PatternType.values()) {
                 if (split[0].equalsIgnoreCase(pattern.name()) || split[0].equalsIgnoreCase(pattern.getIdentifier())) {
                     DyeColor color = getDyeColor(split[1]);
@@ -900,6 +906,7 @@ public class ItemBuilder {
 
             if (isPotion && (potionType != null || potionColor != null)) {
                 PotionMeta potionMeta = (PotionMeta) itemMeta;
+
                 if (potionType != null) {
                     potionMeta.setBasePotionData(new PotionData(potionType));
                 }

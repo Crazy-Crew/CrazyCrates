@@ -18,7 +18,7 @@ public class CCTab implements TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String commandLabel, String[] args) {
         List<String> completions = new ArrayList<>();
-        if (args.length == 1) { // /cc
+        if (args.length == 1) { // /crates
             if (hasPermission(sender, "access")) completions.add("help");
             if (hasPermission(sender, "additem")) completions.add("additem");
             if (hasPermission(sender, "admin")) completions.add("admin");
@@ -103,7 +103,7 @@ public class CCTab implements TabCompleter {
             }
 
             return StringUtil.copyPartialMatches(args[2], completions, new ArrayList<>());
-        } else if (args.length == 4) { // /cc arg0 arg1 arg2
+        } else if (args.length == 4) { // /crates arg0 arg1 arg2
             switch (args[0].toLowerCase()) {
                 case "give":
                 case "giveall":
