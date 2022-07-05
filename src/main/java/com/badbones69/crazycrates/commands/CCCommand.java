@@ -14,7 +14,6 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.controllers.CrateControl;
 import com.badbones69.crazycrates.controllers.GUIMenu;
 import com.badbones69.crazycrates.controllers.Preview;
-import io.papermc.lib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -63,11 +62,6 @@ public class CCCommand implements CommandExecutor {
 
                 if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SET, false)) return true;
 
-                if (PaperLib.isSpigot()) {
-                    sender.sendMessage(color("&c&l[!] This feature only works on PaperMC [!]"));
-                    return true;
-                }
-
                 Player player = (Player) sender;
                 int set = args[0].equalsIgnoreCase("set1") ? 1 : 2;
                 Block block = player.getTargetBlockExact(10);
@@ -89,12 +83,7 @@ public class CCCommand implements CommandExecutor {
 
                 if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SAVE, false)) return true;
 
-                if (PaperLib.isSpigot()) {
-                    sender.sendMessage(color("&c&l[!] This feature only works on PaperMC [!]"));
-                    return true;
-                }
-
-                Location[] locations = cc.getSchematicLocations().get(((Player) sender).getUniqueId());
+                Location[] locations = crazyManager.getSchematicLocations().get(((Player) sender).getUniqueId());
 
                 if (locations != null && locations[0] != null && locations[1] != null) {
                     if (args.length >= 2) {
