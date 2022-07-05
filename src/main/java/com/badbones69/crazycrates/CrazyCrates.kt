@@ -34,29 +34,20 @@ class CrazyCrates : JavaPlugin(), Listener {
 
         crazyManager.loadPlugin()
 
-        if (PaperLib.isPaper()) {
-            fileManager.logInfo(true)
-                .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("sea.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("soul.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
-                .registerCustomFilesFolder("/crates")
-                .registerCustomFilesFolder("/schematics")
-                .setup()
-        } else {
-            fileManager.logInfo(true)
-                .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
-                .registerCustomFilesFolder("/crates")
-                .setup()
-        }
+        fileManager.logInfo(true)
+            .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
+            .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
+            .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
+            .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
+            .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
+            .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
+            .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
+            .registerDefaultGenerateFiles("sea.nbt", "/schematics", "/schematics")
+            .registerDefaultGenerateFiles("soul.nbt", "/schematics", "/schematics")
+            .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
+            .registerCustomFilesFolder("/crates")
+            .registerCustomFilesFolder("/schematics")
+            .setup(this)
 
         // Clean files if we have to.
         cleanFiles()
