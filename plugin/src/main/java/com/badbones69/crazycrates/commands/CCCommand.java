@@ -697,10 +697,7 @@ public class CCCommand implements CommandExecutor {
                             placeholders.put("%Player%", target.getName());
                             placeholders.put("%Key%", crate.getKey().getItemMeta().getDisplayName());
                             sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
                             if (target != null) {
                                 target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
                             }
