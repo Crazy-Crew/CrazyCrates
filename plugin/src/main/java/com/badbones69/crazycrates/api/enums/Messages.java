@@ -3,7 +3,13 @@ package com.badbones69.crazycrates.api.enums;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.FileManager;
 import org.bukkit.configuration.file.FileConfiguration;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 public enum Messages {

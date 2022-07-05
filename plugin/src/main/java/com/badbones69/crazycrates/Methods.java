@@ -10,7 +10,11 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.Validate;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,7 +26,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.util.BlockIterator;
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class Methods {
 

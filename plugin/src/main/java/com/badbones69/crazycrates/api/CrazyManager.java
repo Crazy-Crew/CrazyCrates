@@ -1,11 +1,29 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.api.objects.*;
+import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.CrateHologram;
+import com.badbones69.crazycrates.api.objects.CrateLocation;
+import com.badbones69.crazycrates.api.objects.CrateSchematic;
+import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.objects.QuadCrateSession;
+import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.controllers.CrateControl;
 import com.badbones69.crazycrates.controllers.Preview;
-import com.badbones69.crazycrates.cratetypes.*;
-import com.badbones69.crazycrates.multisupport.*;
+import com.badbones69.crazycrates.cratetypes.CSGO;
+import com.badbones69.crazycrates.cratetypes.Cosmic;
+import com.badbones69.crazycrates.cratetypes.FireCracker;
+import com.badbones69.crazycrates.cratetypes.QuickCrate;
+import com.badbones69.crazycrates.cratetypes.Roulette;
+import com.badbones69.crazycrates.cratetypes.War;
+import com.badbones69.crazycrates.cratetypes.Wheel;
+import com.badbones69.crazycrates.cratetypes.Wonder;
+import com.badbones69.crazycrates.multisupport.holograms.DecentHologramsSupport;
+import com.badbones69.crazycrates.multisupport.holograms.HologramsSupport;
+import com.badbones69.crazycrates.multisupport.holograms.HolographicSupport;
+import com.badbones69.crazycrates.multisupport.ServerProtocol;
+import com.badbones69.crazycrates.multisupport.Support;
 import com.badbones69.crazycrates.multisupport.nms.NMSSupport;
 import com.badbones69.crazycrates.multisupport.nms.v1_12_R1.NMS_v1_12_R1;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -19,7 +37,10 @@ import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.controllers.GUIMenu;
 import com.badbones69.crazycrates.multisupport.nms.v1_8_R3.NMS_v1_8_R3;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -30,7 +51,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CrazyManager {
@@ -190,7 +215,7 @@ public class CrazyManager {
         } else if (Support.HOLOGRAMS.isPluginLoaded()) {
             hologramController = new HologramsSupport();
         } else if (Support.DECENT_HOLOGRAMS.isPluginLoaded()) {
-            hologramController = new DecentHolograms();
+            hologramController = new DecentHologramsSupport();
         }
 
         // Removes all holograms so that they can be replaced.
@@ -518,6 +543,7 @@ public class CrazyManager {
                         Methods.failedToTakeKey(player, crate);
                     }
                 }
+
                 break;
         }
 
