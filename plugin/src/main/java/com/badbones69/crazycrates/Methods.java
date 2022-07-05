@@ -89,7 +89,7 @@ public class Methods {
     }
     
     public static Player getPlayer(String name) {
-        return Bukkit.getPlayerExact(name);
+        return crazyManager.getPlugin().getServer().getPlayerExact(name);
     }
     
     public static boolean isOnline(String name, CommandSender sender) {

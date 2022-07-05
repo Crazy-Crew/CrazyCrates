@@ -194,7 +194,7 @@ public class CCCommand implements CommandExecutor {
                 int slots = 9;
                 for (; size > 9; size -= 9) slots += 9;
 
-                Inventory inv = Bukkit.createInventory(null, slots, Methods.color("&4&lAdmin Keys"));
+                Inventory inv = crazyManager.getPlugin().getServer().createInventory(null, slots, Methods.color("&4&lAdmin Keys"));
 
                 for (Crate crate : crazyManager.getCrates()) {
                     if (crate.getCrateType() != CrateType.MENU) {
