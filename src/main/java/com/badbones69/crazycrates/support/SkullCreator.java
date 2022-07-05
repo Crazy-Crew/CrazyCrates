@@ -21,7 +21,7 @@ import java.util.UUID;
  */
 public class SkullCreator {
 
-    private final CrazyManager crazyManager = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     
     /**
      * Creates a player skull based on a player's name.
@@ -52,7 +52,7 @@ public class SkullCreator {
         notNull(item, "item");
         notNull(name, "name");
         
-        return CrazyManager.getJavaPlugin().getServer().getUnsafe().modifyItemStack(item,
+        return crazyManager.getPlugin().getServer().getUnsafe().modifyItemStack(item,
         "{SkullOwner:\"" + name + "\"}"
         );
     }
@@ -81,7 +81,7 @@ public class SkullCreator {
         notNull(id, "id");
         
         SkullMeta meta = (SkullMeta) item.getItemMeta();
-        meta.setOwningPlayer(CrazyManager.getJavaPlugin().getServer().getOfflinePlayer(id));
+        meta.setOwningPlayer(crazyManager.getPlugin().getServer().getOfflinePlayer(id));
         item.setItemMeta(meta);
         
         return item;
@@ -121,6 +121,7 @@ public class SkullCreator {
      */
     public static ItemStack itemFromBase64(String base64) {
         ItemStack item = getPlayerSkullItem();
+
         return itemWithBase64(item, base64);
     }
     
@@ -136,7 +137,7 @@ public class SkullCreator {
         notNull(base64, "base64");
         
         UUID hashAsId = new UUID(base64.hashCode(), base64.hashCode());
-        return CrazyManager.getJavaPlugin().getServer().getUnsafe().modifyItemStack(item,
+        return crazyManager.getPlugin().getServer().getUnsafe().modifyItemStack(item,
         "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
         );
     }
@@ -206,9 +207,9 @@ public class SkullCreator {
         );
         
         if (newerApi()) {
-            CrazyManager.getJavaPlugin().getServer().dispatchCommand(CrazyManager.getJavaPlugin().getServer().getConsoleSender(), "data merge block " + args);
+            crazyManager.getPlugin().getServer().dispatchCommand(crazyManager.getPlugin().getServer().getConsoleSender(), "data merge block " + args);
         } else {
-            CrazyManager.getJavaPlugin().getServer().dispatchCommand(CrazyManager.getJavaPlugin().getServer().getConsoleSender(), "blockdata " + args);
+            crazyManager.getPlugin().getServer().dispatchCommand(crazyManager.getPlugin().getServer().getConsoleSender(), "blockdata " + args);
         }
     }
     
@@ -216,7 +217,6 @@ public class SkullCreator {
         try {
             Material.valueOf("PLAYER_HEAD");
             return true;
-            
         } catch (IllegalArgumentException e) {
             return false;
         }
@@ -247,11 +247,13 @@ public class SkullCreator {
     private static String urlToBase64(String url) {
         
         URI actualUrl;
+
         try {
             actualUrl = new URI(url);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
+
         String toEncode = "{\"textures\":{\"SKIN\":{\"url\":\"" + actualUrl + "\"}}}";
         return Base64.getEncoder().encodeToString(toEncode.getBytes());
     }
