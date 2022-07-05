@@ -16,32 +16,32 @@ import org.bukkit.inventory.ItemStack;
 
 public class CrateOnTheGo implements Listener {
     
-    private static final CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     
     @EventHandler
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
 
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            ItemStack item = cc.getNMSSupport().getItemInMainHand(player);
+            ItemStack item = crazyManager.getNMSSupport().getItemInMainHand(player);
 
             if (item == null || item.getType() == Material.AIR) return;
 
-            for (Crate crate : cc.getCrates()) {
+            for (Crate crate : crazyManager.getCrates()) {
                 if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO && Methods.isSimilar(item, crate)) {
                     e.setCancelled(true);
-                    cc.addPlayerToOpeningList(player, crate);
+                    crazyManager.addPlayerToOpeningList(player, crate);
                     Methods.removeItem(item, player);
                     Prize prize = crate.pickPrize(player);
-                    cc.givePrize(player, prize);
+                    crazyManager.givePrize(player, prize);
 
-                    cc.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, cc.getOpeningCrate(player).getName(), prize));
+                    crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crazyManager.getOpeningCrate(player).getName(), prize));
 
                     if (prize.useFireworks()) {
                         Methods.fireWork(player.getLocation().add(0, 1, 0));
                     }
 
-                    cc.removePlayerFromOpeningList(player);
+                    crazyManager.removePlayerFromOpeningList(player);
                 }
             }
         }

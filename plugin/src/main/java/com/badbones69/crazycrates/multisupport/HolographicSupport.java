@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class HolographicSupport implements HologramController {
     
-    private static final CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     private static final HashMap<Block, Hologram> holograms = new HashMap<>();
     
     public void createHologram(Block block, Crate crate) {
@@ -21,7 +21,7 @@ public class HolographicSupport implements HologramController {
 
         if (crateHologram.isEnabled()) {
             double height = crateHologram.getHeight();
-            Hologram hologram = HologramsAPI.createHologram(cc.getPlugin(), block.getLocation().add(.5, height, .5));
+            Hologram hologram = HologramsAPI.createHologram(crazyManager.getPlugin(), block.getLocation().add(.5, height, .5));
 
             for (String line : crateHologram.getMessages()) {
                 hologram.appendTextLine(Methods.color(line));

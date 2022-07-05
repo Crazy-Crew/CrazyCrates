@@ -11,7 +11,7 @@ import java.util.List;
 
 public class KeyTab implements TabCompleter {
 
-    private static final CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String commandLabel, String[] args) {
@@ -19,7 +19,7 @@ public class KeyTab implements TabCompleter {
 
         if (args.length == 1) { // /key
             if (hasPermission(sender)) {
-                cc.getPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
+                crazyManager.getPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
             }
 
             return StringUtil.copyPartialMatches(args[0], completions, new ArrayList<>());

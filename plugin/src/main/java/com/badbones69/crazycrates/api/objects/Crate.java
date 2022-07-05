@@ -47,7 +47,7 @@ public class Crate {
 
     private final FileManager fileManager = FileManager.getInstance();
 
-    private final CrazyManager cc = CrazyManager.getInstance();
+    private final CrazyManager crazyManager = CrazyManager.getInstance();
 
     /**
      *
@@ -180,7 +180,7 @@ public class Crate {
         try {
             return prizes.get(new Random().nextInt(prizes.size()));
         } catch (IllegalArgumentException e) {
-            cc.getPlugin().getLogger().warning("Failed to find prize from the " + name + " crate for player " + player.getName() + ".");
+            crazyManager.getPlugin().getLogger().warning("Failed to find prize from the " + name + " crate for player " + player.getName() + ".");
             return null;
         }
     }
@@ -348,7 +348,7 @@ public class Crate {
      * @return The preview as an Inventory object.
      */
     public Inventory getPreview(Player player, int page) {
-        Inventory inventory = cc.getPlugin().getServer().createInventory(null, !borderToggle && (Preview.playerInMenu(player) || maxPage > 1) && maxSlots == 9 ? maxSlots + 9 : maxSlots, previewName);
+        Inventory inventory = crazyManager.getPlugin().getServer().createInventory(null, !borderToggle && (Preview.playerInMenu(player) || maxPage > 1) && maxSlots == 9 ? maxSlots + 9 : maxSlots, previewName);
         setDefaultItems(inventory, player);
 
         for (ItemStack item : getPageItems(page)) {

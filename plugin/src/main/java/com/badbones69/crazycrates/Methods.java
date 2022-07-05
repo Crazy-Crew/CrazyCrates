@@ -26,7 +26,7 @@ import java.util.*;
 
 public class Methods {
 
-    private static final CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     private static final Random random = new Random();
     
     public static String color(String message) {
@@ -43,7 +43,7 @@ public class Methods {
     
     public static HashMap<ItemStack, String> getItems(Player player) {
         HashMap<ItemStack, String> items = new HashMap<>();
-        FileConfiguration file = cc.getOpeningCrate(player).getFile();
+        FileConfiguration file = crazyManager.getOpeningCrate(player).getFile();
 
         for (String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
             String id = file.getString("Crate.Prizes." + reward + ".DisplayItem");
@@ -76,7 +76,7 @@ public class Methods {
         fm.setPower(0);
         fw.setFireworkMeta(fm);
         FireworkDamageEvent.addFirework(fw);
-        cc.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(cc.getPlugin(), fw :: detonate, 2);
+        crazyManager.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(crazyManager.getPlugin(), fw :: detonate, 2);
     }
     
     public static boolean isInt(String s) {
@@ -93,7 +93,7 @@ public class Methods {
     }
     
     public static boolean isOnline(String name, CommandSender sender) {
-        for (Player player : cc.getPlugin().getServer().getOnlinePlayers()) {
+        for (Player player : crazyManager.getPlugin().getServer().getOnlinePlayers()) {
             if (player.getName().equalsIgnoreCase(name)) {
                 return true;
             }
@@ -125,7 +125,7 @@ public class Methods {
         if (player.hasPermission("crazycrates." + perm.toLowerCase()) || player.hasPermission("crazycrates.admin")) {
             return true;
         } else {
-            player.sendMessage(Messages.NO_PERMISSION.getMessage());
+            player.sendMessage(Messages.NO_PERMISSION.getMessage(true));
             return false;
         }
     }
@@ -139,7 +139,7 @@ public class Methods {
     }
     
     public static List<Location> getLocations(String shem, Location loc) {
-        return cc.getNMSSupport().getLocations(new File(cc.getPlugin().getDataFolder() + "/Schematics/" + shem), loc);
+        return crazyManager.getNMSSupport().getLocations(new File(crazyManager.getPlugin().getDataFolder() + "/Schematics/" + shem), loc);
     }
     
     public static boolean isInventoryFull(Player player) {
@@ -151,7 +151,7 @@ public class Methods {
     }
     
     public static boolean isSimilar(Player player, Crate crate) {
-        boolean check = isSimilar(cc.getNMSSupport().getItemInMainHand(player), crate);
+        boolean check = isSimilar(crazyManager.getNMSSupport().getItemInMainHand(player), crate);
 
         if (!check) {
             if (ServerProtocol.isAtLeast(ServerProtocol.v1_9_R1)) {
@@ -200,6 +200,7 @@ public class Methods {
                                     if (!lore.equals(two.getItemMeta().getLore().get(i))) {
                                         return false;
                                     }
+
                                     i++;
                                 }
 
@@ -346,9 +347,10 @@ public class Methods {
     }
     
     public static void failedToTakeKey(Player player, Crate crate, Exception e) {
-        Bukkit.getServer().getLogger().warning("[CrazyCrates] An error has occurred while trying to take a physical key from a player");
-        Bukkit.getServer().getLogger().warning("Player: " + player.getName());
-        Bukkit.getServer().getLogger().warning("Crate: " + crate.getName());
+        crazyManager.getPlugin().getServer().getLogger().warning("An error has occurred while trying to take a physical key from a player");
+        crazyManager.getPlugin().getServer().getLogger().warning("Player: " + player.getName());
+        crazyManager.getPlugin().getServer().getLogger().warning("Crate: " + crate.getName());
+
         player.sendMessage(Methods.getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));
 
         if (e != null) {

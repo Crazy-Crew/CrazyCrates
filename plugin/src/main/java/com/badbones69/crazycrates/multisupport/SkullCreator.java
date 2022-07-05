@@ -20,7 +20,7 @@ import java.util.UUID;
  */
 public class SkullCreator {
 
-    private final static CrazyManager cc = CrazyManager.getInstance();
+    private final static CrazyManager crazyManager = CrazyManager.getInstance();
     
     /**
      * Creates a player skull based on a player's name.
@@ -51,7 +51,7 @@ public class SkullCreator {
         notNull(item, "item");
         notNull(name, "name");
         
-        return cc.getPlugin().getServer().getUnsafe().modifyItemStack(item,
+        return crazyManager.getPlugin().getServer().getUnsafe().modifyItemStack(item,
         "{SkullOwner:\"" + name + "\"}"
         );
     }
@@ -80,7 +80,7 @@ public class SkullCreator {
         notNull(id, "id");
         
         SkullMeta meta = (SkullMeta) item.getItemMeta();
-        meta.setOwningPlayer(cc.getPlugin().getServer().getOfflinePlayer(id));
+        meta.setOwningPlayer(crazyManager.getPlugin().getServer().getOfflinePlayer(id));
         item.setItemMeta(meta);
         
         return item;
@@ -135,7 +135,7 @@ public class SkullCreator {
         notNull(base64, "base64");
         
         UUID hashAsId = new UUID(base64.hashCode(), base64.hashCode());
-        return cc.getPlugin().getServer().getUnsafe().modifyItemStack(item,
+        return crazyManager.getPlugin().getServer().getUnsafe().modifyItemStack(item,
         "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
         );
     }
@@ -154,7 +154,7 @@ public class SkullCreator {
         notNull(name, "name");
         
         setBlockType(block);
-        ((Skull) block.getState()).setOwningPlayer(cc.getPlugin().getServer().getOfflinePlayer(name));
+        ((Skull) block.getState()).setOwningPlayer(crazyManager.getPlugin().getServer().getOfflinePlayer(name));
     }
     
     /**
@@ -168,7 +168,7 @@ public class SkullCreator {
         notNull(id, "id");
         
         setBlockType(block);
-        ((Skull) block.getState()).setOwningPlayer(cc.getPlugin().getServer().getOfflinePlayer(id));
+        ((Skull) block.getState()).setOwningPlayer(crazyManager.getPlugin().getServer().getOfflinePlayer(id));
     }
     
     /**
@@ -205,9 +205,9 @@ public class SkullCreator {
         );
         
         if (newerApi()) {
-            cc.getPlugin().getServer().dispatchCommand(cc.getPlugin().getServer().getConsoleSender(), "data merge block " + args);
+            crazyManager.getPlugin().getServer().dispatchCommand(crazyManager.getPlugin().getServer().getConsoleSender(), "data merge block " + args);
         } else {
-            cc.getPlugin().getServer().dispatchCommand(cc.getPlugin().getServer().getConsoleSender(), "blockdata " + args);
+            crazyManager.getPlugin().getServer().dispatchCommand(crazyManager.getPlugin().getServer().getConsoleSender(), "blockdata " + args);
         }
     }
     

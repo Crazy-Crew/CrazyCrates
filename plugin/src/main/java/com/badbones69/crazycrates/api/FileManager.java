@@ -15,7 +15,7 @@ import java.util.logging.Level;
 public class FileManager {
     
     private static final FileManager instance = new FileManager();
-    private static final CrazyManager cc = new CrazyManager();
+    private static final CrazyManager crazyManager = new CrazyManager();
 
     private boolean log = false;
     private final HashMap<Files, File> files = new HashMap<>();
@@ -224,7 +224,7 @@ public class FileManager {
         try {
             configurations.get(file).save(files.get(file));
         } catch (IOException e) {
-            cc.getPlugin().getLogger().warning("Could not save " + file.getFileName() + "!");
+            crazyManager.getPlugin().getLogger().warning("Could not save " + file.getFileName() + "!");
             e.printStackTrace();
         }
     }
@@ -240,15 +240,15 @@ public class FileManager {
         if (file != null) {
 
             try {
-                file.getFile().save(new File(cc.getPlugin().getDataFolder(), file.getHomeFolder() + "/" + file.getFileName()));
-                if (log) cc.getPlugin().getLogger().info("Successfully saved the " + file.getFileName() + ".");
+                file.getFile().save(new File(crazyManager.getPlugin().getDataFolder(), file.getHomeFolder() + "/" + file.getFileName()));
+                if (log) crazyManager.getPlugin().getLogger().info("Successfully saved the " + file.getFileName() + ".");
             } catch (Exception e) {
-                cc.getPlugin().getLogger().warning("Could not save " + file.getFileName() + "!");
+                crazyManager.getPlugin().getLogger().warning("Could not save " + file.getFileName() + "!");
                 e.printStackTrace();
             }
 
         } else {
-            if (log) cc.getPlugin().getLogger().warning("The file " + name + ".yml could not be found!");
+            if (log) crazyManager.getPlugin().getLogger().warning("The file " + name + ".yml could not be found!");
         }
     }
     
@@ -278,15 +278,15 @@ public class FileManager {
         if (file != null) {
 
             try {
-                file.file = YamlConfiguration.loadConfiguration(new File(cc.getPlugin().getDataFolder(), "/" + file.getHomeFolder() + "/" + file.getFileName()));
-                if (log) cc.getPlugin().getLogger().info("Successfully reload the " + file.getFileName() + ".");
+                file.file = YamlConfiguration.loadConfiguration(new File(crazyManager.getPlugin().getDataFolder(), "/" + file.getHomeFolder() + "/" + file.getFileName()));
+                if (log) crazyManager.getPlugin().getLogger().info("Successfully reload the " + file.getFileName() + ".");
             } catch (Exception e) {
-                cc.getPlugin().getLogger().warning("Could not reload the " + file.getFileName() + "!");
+                crazyManager.getPlugin().getLogger().warning("Could not reload the " + file.getFileName() + "!");
                 e.printStackTrace();
             }
 
         } else {
-            if (log) cc.getPlugin().getLogger().log(Level.WARNING, "The file " + name + ".yml could not be found!");
+            if (log) crazyManager.getPlugin().getLogger().log(Level.WARNING, "The file " + name + ".yml could not be found!");
         }
     }
     

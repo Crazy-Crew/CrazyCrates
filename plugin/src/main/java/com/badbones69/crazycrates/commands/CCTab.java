@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CCTab implements TabCompleter {
     
-    private final CrazyManager cc = CrazyManager.getInstance();
+    private final CrazyManager crazyManager = CrazyManager.getInstance();
     
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String commandLabel, String[] args) {
@@ -44,16 +44,16 @@ public class CCTab implements TabCompleter {
                 case "forceopen":
                 case "transfer":
                     if (hasPermission(sender, "transfer")) {
-                        cc.getCrates().forEach(crate -> completions.add(crate.getName()));
+                        crazyManager.getCrates().forEach(crate -> completions.add(crate.getName()));
                         completions.remove("Menu"); // Takes out a crate that doesn't exist as a file.
                     }
 
                     break;
                 case "set":
-                    if (hasPermission(sender, "set"))cc.getCrates().forEach(crate -> completions.add(crate.getName()));
+                    if (hasPermission(sender, "set")) crazyManager.getCrates().forEach(crate -> completions.add(crate.getName()));
                     break;
                 case "tp":
-                    if (hasPermission(sender, "tp"))cc.getCrateLocations().forEach(location -> completions.add(location.getID()));
+                    if (hasPermission(sender, "tp")) crazyManager.getCrateLocations().forEach(location -> completions.add(location.getID()));
                     break;
                 case "give":
                 case "giveall":
@@ -72,13 +72,13 @@ public class CCTab implements TabCompleter {
             }
 
             return StringUtil.copyPartialMatches(args[1], completions, new ArrayList<>());
-        } else if (args.length == 3) { // /cc arg0 arg1
+        } else if (args.length == 3) { // /crates arg0 arg1
             switch (args[0].toLowerCase()) {
                 case "additem":
                     if (hasPermission(sender, "additem")) {
-                        Crate crateFromName = cc.getCrateFromName(args[1]);
+                        Crate crateFromName = crazyManager.getCrateFromName(args[1]);
                         if (crateFromName != null && crateFromName.getCrateType() != CrateType.MENU) {
-                            cc.getCrateFromName(args[1]).getPrizes().forEach(prize -> completions.add(prize.getName()));
+                            crazyManager.getCrateFromName(args[1]).getPrizes().forEach(prize -> completions.add(prize.getName()));
                         }
                     }
 
@@ -87,7 +87,7 @@ public class CCTab implements TabCompleter {
                 case "forceopen":
                 case "transfer":
                     if (hasPermission(sender, "forceopen") || hasPermission(sender, "open") || hasPermission(sender, "transfer")) {
-                        cc.getPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
+                        crazyManager.getPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
                     }
 
                     break;
@@ -95,7 +95,7 @@ public class CCTab implements TabCompleter {
                 case "giveall":
                 case "take":
                     if (hasPermission(sender, "take") || hasPermission(sender, "giveall") || hasPermission(sender, "give")) {
-                        cc.getCrates().forEach(crate -> completions.add(crate.getName()));
+                        crazyManager.getCrates().forEach(crate -> completions.add(crate.getName()));
                         completions.remove("Menu"); // Takes out a crate that doesn't exist as a file.
                     }
 
@@ -117,13 +117,13 @@ public class CCTab implements TabCompleter {
             }
 
             return StringUtil.copyPartialMatches(args[3], completions, new ArrayList<>());
-        } else if (args.length == 5) { // /cc arg0 arg1 arg2 arg3
+        } else if (args.length == 5) { // /crates arg0 arg1 arg2 arg3
             switch (args[0].toLowerCase()) {
                 case "give":
                 case "giveall":
                 case "take":
                     if (hasPermission(sender, "take") || hasPermission(sender, "giveall") || hasPermission(sender, "give")) {
-                        cc.getPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
+                        crazyManager.getPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
                     }
 
                     break;

@@ -7,15 +7,15 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 
 public class Events_v1_11_R1_Down implements Listener {
     
-    private final CrazyManager cc = CrazyManager.getInstance();
+    private final CrazyManager crazyManager = CrazyManager.getInstance();
     
     @EventHandler
     public void onItemPickUp(PlayerPickupItemEvent e) {
-        if (cc.isDisplayReward(e.getItem())) {
+        if (crazyManager.isDisplayReward(e.getItem())) {
             e.setCancelled(true);
         }
 
-        if (cc.isInOpeningList(e.getPlayer())) {
+        if (crazyManager.isInOpeningList(e.getPlayer())) {
             e.setCancelled(true);
         }
     }

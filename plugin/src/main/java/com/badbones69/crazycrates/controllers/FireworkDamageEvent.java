@@ -13,7 +13,7 @@ public class FireworkDamageEvent implements Listener {
     
     private static final ArrayList<Entity> fireworks = new ArrayList<>();
 
-    private static final CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     
     /**
      *
@@ -55,7 +55,7 @@ public class FireworkDamageEvent implements Listener {
                 public void run() {
                     fireworks.remove(firework);
                 }
-            }.runTaskLater(cc.getPlugin(), 5);
+            }.runTaskLater(crazyManager.getPlugin(), 5);
         }
     }
     

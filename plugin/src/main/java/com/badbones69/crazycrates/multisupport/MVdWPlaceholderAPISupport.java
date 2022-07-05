@@ -9,14 +9,14 @@ import java.text.NumberFormat;
 
 public class MVdWPlaceholderAPISupport {
     
-    private static final CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     
     public static void registerPlaceholders(Plugin plugin) {
-        for (final Crate crate : cc.getCrates()) {
+        for (final Crate crate : crazyManager.getCrates()) {
             if (crate.getCrateType() != CrateType.MENU) {
-                PlaceholderAPI.registerPlaceholder(plugin, "crazycrates_" + crate.getName(), e -> NumberFormat.getNumberInstance().format(cc.getVirtualKeys(e.getPlayer(), crate)));
-                PlaceholderAPI.registerPlaceholder(plugin, "crazycrates_" + crate.getName() + "_physical", e -> NumberFormat.getNumberInstance().format(cc.getPhysicalKeys(e.getPlayer(), crate)));
-                PlaceholderAPI.registerPlaceholder(plugin, "crazycrates_" + crate.getName() + "_total", e -> NumberFormat.getNumberInstance().format(cc.getTotalKeys(e.getPlayer(), crate)));
+                PlaceholderAPI.registerPlaceholder(plugin, "crazycrates_" + crate.getName(), e -> NumberFormat.getNumberInstance().format(crazyManager.getVirtualKeys(e.getPlayer(), crate)));
+                PlaceholderAPI.registerPlaceholder(plugin, "crazycrates_" + crate.getName() + "_physical", e -> NumberFormat.getNumberInstance().format(crazyManager.getPhysicalKeys(e.getPlayer(), crate)));
+                PlaceholderAPI.registerPlaceholder(plugin, "crazycrates_" + crate.getName() + "_total", e -> NumberFormat.getNumberInstance().format(crazyManager.getTotalKeys(e.getPlayer(), crate)));
             }
         }
     }

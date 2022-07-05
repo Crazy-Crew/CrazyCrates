@@ -29,7 +29,7 @@ public final class ReflectionUtils {
     // Prevent accidental construction
     private ReflectionUtils() {}
 
-    private final static CrazyManager cc = CrazyManager.getInstance();
+    private final static CrazyManager crazyManager = CrazyManager.getInstance();
     
     /**
      * Returns the constructor of a given class with the given parameter types
@@ -405,7 +405,7 @@ public final class ReflectionUtils {
          * @return The server version
          */
         public static String getServerVersion() {
-            return cc.getPlugin().getServer().getClass().getPackage().getName().substring(23);
+            return crazyManager.getPlugin().getServer().getClass().getPackage().getName().substring(23);
         }
         
         /**
@@ -444,7 +444,14 @@ public final class ReflectionUtils {
      * @since 1.0
      */
     public enum DataType {
-        BYTE(byte.class, Byte.class), SHORT(short.class, Short.class), INTEGER(int.class, Integer.class), LONG(long.class, Long.class), CHARACTER(char.class, Character.class), FLOAT(float.class, Float.class), DOUBLE(double.class, Double.class), BOOLEAN(boolean.class, Boolean.class);
+        BYTE(byte.class, Byte.class),
+        SHORT(short.class, Short.class),
+        INTEGER(int.class, Integer.class),
+        LONG(long.class, Long.class),
+        CHARACTER(char.class, Character.class),
+        FLOAT(float.class, Float.class),
+        DOUBLE(double.class, Double.class),
+        BOOLEAN(boolean.class, Boolean.class);
         
         private static final Map<Class<?>, DataType> CLASS_MAP = new HashMap<>();
         
@@ -511,6 +518,7 @@ public final class ReflectionUtils {
         public static Class<?>[] getPrimitive(Class<?>[] classes) {
             int length = classes == null ? 0 : classes.length;
             Class<?>[] types = new Class<?>[length];
+
             for (int index = 0; index < length; index++) {
                 types[index] = getPrimitive(classes[index]);
             }
@@ -527,6 +535,7 @@ public final class ReflectionUtils {
         public static Class<?>[] getReference(Class<?>[] classes) {
             int length = classes == null ? 0 : classes.length;
             Class<?>[] types = new Class<?>[length];
+
             for (int index = 0; index < length; index++) {
                 types[index] = getReference(classes[index]);
             }
@@ -542,6 +551,7 @@ public final class ReflectionUtils {
         public static Class<?>[] getPrimitive(Object[] objects) {
             int length = objects == null ? 0 : objects.length;
             Class<?>[] types = new Class<?>[length];
+
             for (int index = 0; index < length; index++) {
                 types[index] = getPrimitive(objects[index].getClass());
             }
@@ -557,6 +567,7 @@ public final class ReflectionUtils {
         public static Class<?>[] getReference(Object[] objects) {
             int length = objects == null ? 0 : objects.length;
             Class<?>[] types = new Class<?>[length];
+
             for (int index = 0; index < length; index++) {
                 types[index] = getReference(objects[index].getClass());
             }

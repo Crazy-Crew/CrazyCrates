@@ -28,17 +28,17 @@ public class QuickCrate implements Listener {
     
     public static final ArrayList<Entity> allRewards = new ArrayList<>();
     public static final HashMap<Player, Entity> rewards = new HashMap<>();
-    private static final CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
 
     public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
         int keys; // If the key is free it is set to one.
         switch (keyType) {
             case VIRTUAL_KEY:
-                keys = cc.getVirtualKeys(player, crate);
+                keys = crazyManager.getVirtualKeys(player, crate);
                 break;
             case PHYSICAL_KEY:
-                keys = cc.getPhysicalKeys(player, crate);
+                keys = crazyManager.getPhysicalKeys(player, crate);
                 break;
             default:
                 keys = 1;
@@ -49,13 +49,13 @@ public class QuickCrate implements Listener {
             int keysUsed = 0;
 
             // give the player the prizes
-            for(; keys > 0; keys--) {
-                if(Methods.isInventoryFull(player)) break;
+            for (; keys > 0; keys--) {
+                if (Methods.isInventoryFull(player)) break;
 
                 Prize prize = crate.pickPrize(player);
-                cc.givePrize(player, prize);
+                crazyManager.givePrize(player, prize);
 
-                cc.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+                crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 
                 if (prize.useFireworks()) {
                     Methods.fireWork(loc.clone().add(.5, 1, .5));
@@ -64,25 +64,25 @@ public class QuickCrate implements Listener {
                 keysUsed++;
             }
 
-            if (!cc.takeKeys(keysUsed, player, crate, keyType, false)) {
+            if (!crazyManager.takeKeys(keysUsed, player, crate, keyType, false)) {
                 Methods.failedToTakeKey(player, crate);
                 CrateControl.inUse.remove(player);
-                cc.removePlayerFromOpeningList(player);
+                crazyManager.removePlayerFromOpeningList(player);
                 return;
             }
 
             endQuickCrate(player, loc);
         } else {
-            if (!cc.takeKeys(1, player, crate, keyType, true)) {
+            if (!crazyManager.takeKeys(1, player, crate, keyType, true)) {
                 Methods.failedToTakeKey(player, crate);
                 CrateControl.inUse.remove(player);
-                cc.removePlayerFromOpeningList(player);
+                crazyManager.removePlayerFromOpeningList(player);
                 return;
             }
 
             Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
-            cc.givePrize(player, prize);
-            cc.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+            crazyManager.givePrize(player, prize);
+            crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
             ItemStack displayItem = prize.getDisplayItem();
             NBTItem nbtItem = new NBTItem(displayItem);
             nbtItem.setBoolean("crazycrates-item", true);
@@ -92,20 +92,20 @@ public class QuickCrate implements Listener {
             try {
                 reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
             } catch (IllegalArgumentException e) {
-                cc.getPlugin().getLogger().warning("An prize could not be given due to an invalid display item for this prize. ");
-                cc.getPlugin().getLogger().warning("Crate: " + prize.getCrate() + " Prize: " + prize.getName());
+                crazyManager.getPlugin().getLogger().warning("An prize could not be given due to an invalid display item for this prize. ");
+                crazyManager.getPlugin().getLogger().warning("Crate: " + prize.getCrate() + " Prize: " + prize.getName());
                 e.printStackTrace();
                 return;
             }
 
-            reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(cc.getPlugin(), true));
+            reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(crazyManager.getPlugin(), true));
             reward.setVelocity(new Vector(0, .2, 0));
             reward.setCustomName(displayItem.getItemMeta().getDisplayName());
             reward.setCustomNameVisible(true);
             reward.setPickupDelay(Integer.MAX_VALUE);
             rewards.put(player, reward);
             allRewards.add(reward);
-            cc.getNMSSupport().openChest(loc.getBlock(), true);
+            crazyManager.getNMSSupport().openChest(loc.getBlock(), true);
 
             if (prize.useFireworks()) {
                 Methods.fireWork(loc.clone().add(.5, 1, .5));
@@ -116,7 +116,7 @@ public class QuickCrate implements Listener {
                 public void run() {
                     endQuickCrate(player, loc);
                 }
-            }.runTaskLater(cc.getPlugin(), 5 * 20));
+            }.runTaskLater(crazyManager.getPlugin(), 5 * 20));
         }
     }
     
@@ -132,9 +132,9 @@ public class QuickCrate implements Listener {
             rewards.remove(player);
         }
 
-        cc.getNMSSupport().openChest(loc.getBlock(), false);
+        crazyManager.getNMSSupport().openChest(loc.getBlock(), false);
         CrateControl.inUse.remove(player);
-        cc.removePlayerFromOpeningList(player);
+        crazyManager.removePlayerFromOpeningList(player);
     }
     
     public static void removeAllRewards() {
@@ -143,7 +143,7 @@ public class QuickCrate implements Listener {
     
     @EventHandler
     public void onHopperPickUp(InventoryPickupItemEvent e) {
-        if (cc.isDisplayReward(e.getItem())) {
+        if (crazyManager.isDisplayReward(e.getItem())) {
             e.setCancelled(true);
         }
     }

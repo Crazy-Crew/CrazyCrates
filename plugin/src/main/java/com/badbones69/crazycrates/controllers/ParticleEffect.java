@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.controllers;
 
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.controllers.ReflectionUtils.PackageType;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -421,7 +420,7 @@ public enum ParticleEffect {
     private static final Map<String, ParticleEffect> NAME_MAP = new HashMap<>();
     private static final Map<Integer, ParticleEffect> ID_MAP = new HashMap<>();
 
-    private static CrazyManager cc = CrazyManager.getInstance();
+    private static CrazyManager crazyManager = CrazyManager.getInstance();
     
     // Initialize map for quick name and id lookup
     static {
@@ -506,8 +505,10 @@ public enum ParticleEffect {
      */
     private static boolean isLongDistance(Location location, List<Player> players) {
         String world = location.getWorld().getName();
+
         for (Player player : players) {
             Location playerLocation = player.getLocation();
+
             if (!world.equals(playerLocation.getWorld().getName()) || playerLocation.distanceSquared(location) < 65536) {
                 continue;
             }
@@ -1649,7 +1650,7 @@ public enum ParticleEffect {
                     String worldName = center.getWorld().getName();
                     double squared = range * range;
 
-                    for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+                    for (Player player : crazyManager.getPlugin().getServer().getOnlinePlayers()) {
 
                         if (!player.getWorld().getName().equals(worldName) || player.getLocation().distanceSquared(center) > squared) {
                             continue;

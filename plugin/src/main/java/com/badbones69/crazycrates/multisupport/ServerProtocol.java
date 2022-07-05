@@ -21,7 +21,7 @@ public enum ServerProtocol {
 
     private final int versionProtocol;
 
-    private static final CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
 
     ServerProtocol(int versionProtocol) {
         this.versionProtocol = versionProtocol;
@@ -29,7 +29,7 @@ public enum ServerProtocol {
 
     public static ServerProtocol getCurrentProtocol() {
 
-        String serVer = cc.getPlugin().getServer().getClass().getPackage().getName();
+        String serVer = crazyManager.getPlugin().getServer().getClass().getPackage().getName();
 
         int serProt = Integer.parseInt(
                 serVer.substring(

@@ -15,14 +15,13 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.material.Chest;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class QuadCrateSession {
     
-    private static final CrazyManager cc = CrazyManager.getInstance();
-    private static final NMSSupport nms = cc.getNMSSupport();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
+    private static final NMSSupport nms = crazyManager.getNMSSupport();
     private static final List<QuadCrateSession> crateSessions = new ArrayList<>();
     private static final List<Material> blacklistBlocks = nms.getQuadCrateBlacklistBlocks();
     
@@ -94,24 +93,24 @@ public class QuadCrateSession {
         // Check if the spawnLocation is on a block
         if (spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
             player.sendMessage(Messages.NOT_ON_BLOCK.getMessage());
-            cc.removePlayerFromOpeningList(player);
+            crazyManager.removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
             return false;
         }
 
-        if (cc.getCrateSchematics().isEmpty()) {
+        if (crazyManager.getCrateSchematics().isEmpty()) {
             player.sendMessage(Messages.NO_SCHEMATICS_FOUND.getMessage());
             return false;
         }
 
-        crateSchematic = cc.getCrateSchematics().get(new Random().nextInt(cc.getCrateSchematics().size()));
+        crateSchematic = crazyManager.getCrateSchematics().get(new Random().nextInt(crazyManager.getCrateSchematics().size()));
         schematicLocations = nms.getLocations(crateSchematic.getSchematicFile(), spawnLocation.clone());
 
         // Check if the locations are all able to be changed
         for (Location loc : schematicLocations) {
             if (blacklistBlocks.contains(loc.getBlock())) {
                 player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
-                cc.removePlayerFromOpeningList(player);
+                crazyManager.removePlayerFromOpeningList(player);
                 crateSessions.remove(instance);
                 return false;
             }
@@ -125,7 +124,7 @@ public class QuadCrateSession {
                 for (QuadCrateSession ongoingCrate : crateSessions) {
                     if (entity.getUniqueId() == ongoingCrate.getPlayer().getUniqueId()) {
                         player.sendMessage(Messages.TO_CLOSE_TO_ANOTHER_PLAYER.getMessage("%Player%", entity.getName()));
-                        cc.removePlayerFromOpeningList(player);
+                        crazyManager.removePlayerFromOpeningList(player);
                         crateSessions.remove(instance);
                         return false;
                     }
@@ -134,15 +133,15 @@ public class QuadCrateSession {
             }
         }
 
-        if (!cc.takeKeys(1, player, crate, keyType, checkHand)) {
+        if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
-            cc.removePlayerFromOpeningList(player);
+            crazyManager.removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
             return false;
         }
 
-        if (cc.getHologramController() != null) {
-            cc.getHologramController().removeHologram(spawnLocation.getBlock());
+        if (crazyManager.getHologramController() != null) {
+            crazyManager.getHologramController().removeHologram(spawnLocation.getBlock());
         }
 
         player.teleport(spawnLocation.clone().add(.5, 0, .5));
@@ -169,7 +168,7 @@ public class QuadCrateSession {
         nms.pasteSchematic(crateSchematic.getSchematicFile(), spawnLocation.clone());
         schematicLocations.forEach(location -> location.getBlock().getState().update());
 
-        cc.addQuadCrateTask(player, new BukkitRunnable() {
+        crazyManager.addQuadCrateTask(player, new BukkitRunnable() {
             double radius = 0.0; // Radius of the particle spiral
             int crateNumber = 0; // The crate number that spawns next
             int tickTillSpawn = 0; // At tick 60 the crate will spawn and then reset the tick
@@ -183,13 +182,13 @@ public class QuadCrateSession {
                     spawnParticles(particle, spiralLocationsClockwise.get(tickTillSpawn), spiralLocationsCounterClockwise.get(tickTillSpawn));
                     tickTillSpawn++;
                 } else {
-                    player.playSound(player.getLocation(), cc.getSound("BLOCK_STONE_STEP", "STEP_STONE"), 1, 1);
+                    player.playSound(player.getLocation(), crazyManager.getSound("BLOCK_STONE_STEP", "STEP_STONE"), 1, 1);
                     Block chest = chestLocations.get(crateNumber).getBlock();
                     chest.setType(Material.CHEST);
                     rotateChest(chest, crateNumber);
 
                     if (crateNumber == 3) { // Last crate has spawned
-                        cc.endQuadCrate(player); // Is canceled when method is called.
+                        crazyManager.endQuadCrate(player); // Is canceled when method is called.
                     } else {
                         tickTillSpawn = 0;
                         crateNumber++;
@@ -200,15 +199,15 @@ public class QuadCrateSession {
                     }
                 } // 154 - 33
             }
-        }.runTaskTimer(cc.getPlugin(), 0, 1));
+        }.runTaskTimer(crazyManager.getPlugin(), 0, 1));
 
-        cc.addCrateTask(player, new BukkitRunnable() {
+        crazyManager.addCrateTask(player, new BukkitRunnable() {
             @Override
             public void run() {
                 endCrateForce(true);
-                player.sendMessage(Messages.OUT_OF_TIME.getMessage());
+                player.sendMessage(Messages.OUT_OF_TIME.getMessage(true));
             }
-        }.runTaskLater(cc.getPlugin(), cc.getQuadCrateTimer()));
+        }.runTaskLater(crazyManager.getPlugin(), crazyManager.getQuadCrateTimer()));
         return true;
     }
     
@@ -221,15 +220,15 @@ public class QuadCrateSession {
                 displayedRewards.forEach(Entity :: remove);
                 player.teleport(lastLocation);
 
-                if (cc.getHologramController() != null) {
-                    cc.getHologramController().createHologram(spawnLocation.getBlock(), crate);
+                if (crazyManager.getHologramController() != null) {
+                    crazyManager.getHologramController().createHologram(spawnLocation.getBlock(), crate);
                 }
 
-                cc.endCrate(player);
-                cc.removePlayerFromOpeningList(player);
+                crazyManager.endCrate(player);
+                crazyManager.removePlayerFromOpeningList(player);
                 crateSessions.remove(instance);
             }
-        }.runTaskLater(cc.getPlugin(), 3 * 20);
+        }.runTaskLater(crazyManager.getPlugin(), 3 * 20);
     }
     
     public void endCrateForce(boolean removeFromSessions) {
@@ -237,7 +236,7 @@ public class QuadCrateSession {
         chestLocations.forEach(location -> oldChestBlocks.get(location).update(true, false));
         displayedRewards.forEach(Entity :: remove);
         player.teleport(lastLocation);
-        cc.removePlayerFromOpeningList(player);
+        crazyManager.removePlayerFromOpeningList(player);
 
         if (removeFromSessions) {
             crateSessions.remove(instance);

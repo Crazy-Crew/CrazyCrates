@@ -22,7 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class CrazyCrates extends JavaPlugin implements Listener {
 
-    private final CrazyManager cc = CrazyManager.getInstance();
+    private final CrazyManager crazyManager = CrazyManager.getInstance();
     private final FileManager fileManager = FileManager.getInstance();
     private boolean isEnabled = true; // If the server is supported
     
@@ -30,7 +30,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onEnable() {
 
         // Initialize the plugin variable.
-        cc.loadPlugin(this);
+        crazyManager.loadPlugin(this);
 
         if (!ServerProtocol.isLegacy()) {
             checkVersion();
@@ -69,7 +69,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         Messages.addMissingMessages();
 
-        cc.loadCrates();
+        crazyManager.loadCrates();
 
         PluginManager pm = getServer().getPluginManager();
 
@@ -93,7 +93,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             pm.registerEvents(new Events_v1_11_R1_Down(), this);
         }
 
-        if (!cc.getBrokeCrateLocations().isEmpty()) {
+        if (!crazyManager.getBrokeCrateLocations().isEmpty()) {
             pm.registerEvents(new BrokeLocationsControl(), this);
         }
 
@@ -136,8 +136,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             QuadCrateSession.endAllCrates();
             QuickCrate.removeAllRewards();
 
-            if (cc.getHologramController() != null) {
-                cc.getHologramController().removeAllHolograms();
+            if (crazyManager.getHologramController() != null) {
+                crazyManager.getHologramController().removeAllHolograms();
             }
         }
     }
@@ -145,7 +145,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        cc.setNewPlayerKeys(player);
-        cc.loadOfflinePlayersKeys(player);
+        crazyManager.setNewPlayerKeys(player);
+        crazyManager.loadOfflinePlayersKeys(player);
     }
 }

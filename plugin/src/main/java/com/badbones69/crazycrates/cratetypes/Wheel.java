@@ -19,16 +19,16 @@ import java.util.Map;
 public class Wheel implements Listener {
     
     public static final Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
-    private static final CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     
     public static void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        if (!cc.takeKeys(1, player, crate, keyType, checkHand)) {
+        if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
-            cc.removePlayerFromOpeningList(player);
+            crazyManager.removePlayerFromOpeningList(player);
             return;
         }
 
-        final Inventory inv = cc.getPlugin().getServer().createInventory(null, 54, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        final Inventory inv = crazyManager.getPlugin().getServer().createInventory(null, 54, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
 
         for (int i = 0; i < 54; i++) {
             inv.setItem(i, new ItemBuilder().setMaterial("STAINED_GLASS_PANE:15").setName(" ").build());
@@ -44,7 +44,8 @@ public class Wheel implements Listener {
 
         rewards.put(player, items);
         player.openInventory(inv);
-        cc.addCrateTask(player, new BukkitRunnable() {
+
+        crazyManager.addCrateTask(player, new BukkitRunnable() {
             final ArrayList<Integer> slots = getBorder();
             int i = 0;
             int f = 17;
@@ -72,7 +73,7 @@ public class Wheel implements Listener {
                     }
 
                     inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
-                    player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
+                    player.playSound(player.getLocation(), crazyManager.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
                     i++;
                     f++;
                 }
@@ -86,17 +87,18 @@ public class Wheel implements Listener {
                         }
 
                         inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
-                        player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
+                        player.playSound(player.getLocation(), crazyManager.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
                         i++;
                         f++;
                     }
 
                     if (full == timer + 47) {
-                        player.playSound(player.getLocation(), cc.getSound("ENTITY_PLAYER_LEVELUP", "LEVEL_UP"), 1, 1);
+                        player.playSound(player.getLocation(), crazyManager.getSound("ENTITY_PLAYER_LEVELUP", "LEVEL_UP"), 1, 1);
                     }
 
                     if (full >= timer + 47) {
                         slow++;
+
                         if (slow >= 2) {
                             ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
 
@@ -113,25 +115,25 @@ public class Wheel implements Listener {
                     if (full >= (timer + 55 + 47)) {
                         Prize prize = null;
 
-                        if (cc.isInOpeningList(player)) {
+                        if (crazyManager.isInOpeningList(player)) {
                             prize = crate.getPrize(rewards.get(player).get(slots.get(f)));
                         }
 
                         if (prize != null) {
-                            cc.givePrize(player, prize);
+                            crazyManager.givePrize(player, prize);
 
                             if (prize.useFireworks()) {
                                 Methods.fireWork(player.getLocation().add(0, 1, 0));
                             }
 
-                            cc.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+                            crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                         } else {
                             player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
                         }
 
                         player.closeInventory();
-                        cc.removePlayerFromOpeningList(player);
-                        cc.endCrate(player);
+                        crazyManager.removePlayerFromOpeningList(player);
+                        crazyManager.endCrate(player);
                     }
 
                     slower++;
@@ -145,7 +147,7 @@ public class Wheel implements Listener {
                     open = 0;
                 }
             }
-        }.runTaskTimer(cc.getPlugin(), 1, 1));
+        }.runTaskTimer(crazyManager.getPlugin(), 1, 1));
     }
     
     private static ArrayList<Integer> slowSpin() {

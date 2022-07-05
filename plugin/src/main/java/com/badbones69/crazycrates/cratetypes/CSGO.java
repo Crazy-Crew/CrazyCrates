@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 public class CSGO implements Listener {
     
-    private static final CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     
     private static void setGlass(Inventory inv) {
 
@@ -65,7 +65,7 @@ public class CSGO implements Listener {
     }
     
     public static void openCSGO(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = cc.getPlugin().getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        Inventory inv = crazyManager.getPlugin().getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
         setGlass(inv);
 
         for (int i = 9; i > 8 && i < 18; i++) {
@@ -74,16 +74,16 @@ public class CSGO implements Listener {
 
         player.openInventory(inv);
 
-        if (cc.takeKeys(1, player, crate, keyType, checkHand)) {
+        if (crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             startCSGO(player, inv, crate);
         } else {
             Methods.failedToTakeKey(player, crate);
-            cc.removePlayerFromOpeningList(player);
+            crazyManager.removePlayerFromOpeningList(player);
         }
     }
     
     private static void startCSGO(final Player player, final Inventory inv, Crate crate) {
-        cc.addCrateTask(player, new BukkitRunnable() {
+        crazyManager.addCrateTask(player, new BukkitRunnable() {
             int time = 1;
             int full = 0;
             int open = 0;
@@ -93,43 +93,44 @@ public class CSGO implements Listener {
                 if (full <= 50) { // When Spinning
                     moveItems(inv, player, crate);
                     setGlass(inv);
-                    player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
+                    player.playSound(player.getLocation(), crazyManager.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
                 }
 
                 open++;
+
                 if (open >= 5) {
                     player.openInventory(inv);
                     open = 0;
                 }
 
                 full++;
+
                 if (full > 51) {
                     if (slowSpin().contains(time)) { // When Slowing Down
                         moveItems(inv, player, crate);
                         setGlass(inv);
-                        player.playSound(player.getLocation(), cc.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
+                        player.playSound(player.getLocation(), crazyManager.getSound("UI_BUTTON_CLICK", "CLICK"), 1, 1);
                     }
 
                     time++;
-
                     if (time == 60) { // When done
-                        player.playSound(player.getLocation(), cc.getSound("ENTITY_PLAYER_LEVELUP", "LEVEL_UP"), 1, 1);
-                        cc.endCrate(player);
+                        player.playSound(player.getLocation(), crazyManager.getSound("ENTITY_PLAYER_LEVELUP", "LEVEL_UP"), 1, 1);
+                        crazyManager.endCrate(player);
                         Prize prize = crate.getPrize(inv.getItem(13));
 
                         if (prize != null) {
-                            cc.givePrize(player, prize);
+                            crazyManager.givePrize(player, prize);
 
                             if (prize.useFireworks()) {
                                 Methods.fireWork(player.getLocation().add(0, 1, 0));
                             }
 
-                            cc.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+                            crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                         } else {
                             player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
                         }
 
-                        cc.removePlayerFromOpeningList(player);
+                        crazyManager.removePlayerFromOpeningList(player);
                         cancel();
 
                         new BukkitRunnable() {
@@ -139,13 +140,13 @@ public class CSGO implements Listener {
                                     player.closeInventory();
                                 }
                             }
-                        }.runTaskLater(cc.getPlugin(), 40);
+                        }.runTaskLater(crazyManager.getPlugin(), 40);
                     } else if (time > 60) { // Added this due reports of the prizes spamming when low tps.
                         cancel();
                     }
                 }
             }
-        }.runTaskTimer(cc.getPlugin(), 1, 1));
+        }.runTaskTimer(crazyManager.getPlugin(), 1, 1));
     }
     
     private static ArrayList<Integer> slowSpin() {

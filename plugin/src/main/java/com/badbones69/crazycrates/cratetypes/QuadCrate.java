@@ -32,8 +32,8 @@ import java.util.Random;
  */
 public class QuadCrate implements Listener {
     
-    private final CrazyManager cc = CrazyManager.getInstance();
-    private final NMSSupport nms = cc.getNMSSupport();
+    private final CrazyManager crazyManager = CrazyManager.getInstance();
+    private final NMSSupport nms = crazyManager.getNMSSupport();
     
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
@@ -59,7 +59,7 @@ public class QuadCrate implements Listener {
                         nms.openChest(block, true);
                         Crate crate = session.getCrate();
                         Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
-                        cc.givePrize(player, prize);
+                        crazyManager.givePrize(player, prize);
                         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(prize.getDisplayItem());
                         itemBuilder.addLore(new Random().nextInt(Integer.MAX_VALUE) + ""); // Makes sure items don't merge
                         ItemStack item = itemBuilder.build();
@@ -67,7 +67,7 @@ public class QuadCrate implements Listener {
                         nbtItem.setBoolean("crazycrates-item", true);
                         item = nbtItem.getItem();
                         Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), item);
-                        reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(cc.getPlugin(), true));
+                        reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(crazyManager.getPlugin(), true));
                         reward.setVelocity(new Vector(0, .2, 0));
                         reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
                         reward.setCustomNameVisible(true);
@@ -80,9 +80,9 @@ public class QuadCrate implements Listener {
                                 @Override
                                 public void run() {
                                     session.endCrate();
-                                    player.playSound(player.getLocation(), cc.getSound("BLOCK_STONE_STEP", "STEP_STONE"), 1, 1);
+                                    player.playSound(player.getLocation(), crazyManager.getSound("BLOCK_STONE_STEP", "STEP_STONE"), 1, 1);
                                 }
-                            }.runTaskLater(cc.getPlugin(), 60);
+                            }.runTaskLater(crazyManager.getPlugin(), 60);
                         }
                     }
                 }
