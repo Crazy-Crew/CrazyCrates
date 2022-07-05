@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class CrateOnTheGo implements Listener {
     
-    private static final CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     
     @EventHandler
     public void onCrateOpen(PlayerInteractEvent e) {
@@ -26,20 +26,20 @@ public class CrateOnTheGo implements Listener {
             
             if (item == null || item.getType() == Material.AIR) return;
             
-            for (Crate crate : cc.getCrates()) {
+            for (Crate crate : crazyManager.getCrates()) {
                 if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO && Methods.isSimilar(item, crate)) {
                     e.setCancelled(true);
-                    cc.addPlayerToOpeningList(player, crate);
+                    crazyManager.addPlayerToOpeningList(player, crate);
                     Methods.removeItem(item, player);
                     Prize prize = crate.pickPrize(player);
-                    cc.givePrize(player, prize);
-                    CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, cc.getOpeningCrate(player).getName(), prize));
+                    crazyManager.givePrize(player, prize);
+                    crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crazyManager.getOpeningCrate(player).getName(), prize));
 
                     if (prize.useFireworks()) {
                         Methods.fireWork(player.getLocation().add(0, 1, 0));
                     }
 
-                    cc.removePlayerFromOpeningList(player);
+                    crazyManager.removePlayerFromOpeningList(player);
                 }
             }
         }

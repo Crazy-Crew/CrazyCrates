@@ -32,6 +32,8 @@ class CrazyCrates : JavaPlugin(), Listener {
 
     override fun onEnable() {
 
+        crazyManager.loadPlugin()
+
         if (PaperLib.isPaper()) {
             fileManager.logInfo(true)
                 .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")

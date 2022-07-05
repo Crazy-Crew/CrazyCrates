@@ -10,6 +10,8 @@ public class BrokeLocation {
     private String world;
     private final String locationName;
     private Crate crate;
+
+    private final CrazyManager crazyManager = CrazyManager.getInstance();
     
     public BrokeLocation(String locationName, Crate crate, int x, int y, int z, String world) {
         this.x = x;
@@ -65,7 +67,7 @@ public class BrokeLocation {
     }
     
     public Location getLocation() {
-        return new Location(CrazyManager.getJavaPlugin().getServer().getWorld(world), x, y, z);
+        return new Location(crazyManager.getPlugin().getServer().getWorld(world), x, y, z);
     }
     
 }

@@ -21,16 +21,16 @@ import java.util.Map;
 public class Wheel implements Listener {
     
     public static Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
-    private static final CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     
     public static void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        if (!cc.takeKeys(1, player, crate, keyType, checkHand)) {
+        if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
-            cc.removePlayerFromOpeningList(player);
+            crazyManager.removePlayerFromOpeningList(player);
             return;
         }
 
-        final Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 54, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        final Inventory inv = crazyManager.getPlugin().getServer().createInventory(null, 54, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
 
         for (int i = 0; i < 54; i++) {
             inv.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
@@ -47,7 +47,7 @@ public class Wheel implements Listener {
         rewards.put(player, items);
         player.openInventory(inv);
 
-        cc.addCrateTask(player, new BukkitRunnable() {
+        crazyManager.addCrateTask(player, new BukkitRunnable() {
             final ArrayList<Integer> slots = getBorder();
             int i = 0;
             int f = 17;
@@ -103,6 +103,7 @@ public class Wheel implements Listener {
 
                     if (full >= timer + 47) {
                         slow++;
+
                         if (slow >= 2) {
                             ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
                             for (int slot = 0; slot < 54; slot++) {
@@ -110,6 +111,7 @@ public class Wheel implements Listener {
                                     inv.setItem(slot, item);
                                 }
                             }
+
                             slow = 0;
                         }
                     }
@@ -117,24 +119,27 @@ public class Wheel implements Listener {
                     if (full >= (timer + 55 + 47)) {
                         Prize prize = null;
 
-                        if (cc.isInOpeningList(player)) {
+                        if (crazyManager.isInOpeningList(player)) {
                             prize = crate.getPrize(rewards.get(player).get(slots.get(f)));
                         }
 
                         if (prize != null) {
-                            cc.givePrize(player, prize);
+                            crazyManager.givePrize(player, prize);
+
                             if (prize.useFireworks()) {
                                 Methods.fireWork(player.getLocation().add(0, 1, 0));
                             }
-                            CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+
+                            crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                         } else {
                             player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
                         }
 
                         player.closeInventory();
-                        cc.removePlayerFromOpeningList(player);
-                        cc.endCrate(player);
+                        crazyManager.removePlayerFromOpeningList(player);
+                        crazyManager.endCrate(player);
                     }
+
                     slower++;
                 }
 
@@ -146,13 +151,14 @@ public class Wheel implements Listener {
                     open = 0;
                 }
             }
-        }.runTaskTimer(CrazyManager.getJavaPlugin(), 1, 1));
+        }.runTaskTimer(crazyManager.getPlugin(), 1, 1));
     }
     
     private static ArrayList<Integer> slowSpin() {
         ArrayList<Integer> slow = new ArrayList<>();
         int full = 46;
         int cut = 9;
+
         for (int i = 46; cut > 0; full--) {
             if (full <= i - cut || full >= i - cut) {
                 slow.add(i);

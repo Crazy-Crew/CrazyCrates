@@ -12,16 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KeyTab implements TabCompleter {
+
+    private final CrazyManager crazyManager = CrazyManager.getInstance();
     
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String commandLabel, String[] args) {
         List<String> completions = new ArrayList<>();
+
         if (args.length == 1) { // /key
             if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_KEY_OTHERS, true)) {
-                CrazyManager.getJavaPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
+                crazyManager.getPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
             }
+
             return StringUtil.copyPartialMatches(args[0], completions, new ArrayList<>());
         }
+
         return new ArrayList<>();
     }
 

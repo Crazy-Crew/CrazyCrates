@@ -98,6 +98,7 @@ public class Prize {
             nbt.setString("crazycrate-prize", name);
             displayItemStack = nbt.getItem();
         }
+
         return displayItemStack.clone();
     }
     
@@ -203,6 +204,7 @@ public class Prize {
                 }
             }
         }
+
         return false;
     }
     

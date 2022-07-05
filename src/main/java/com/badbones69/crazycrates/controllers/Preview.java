@@ -66,11 +66,13 @@ public class Preview implements Listener {
     
     public static void setPage(Player player, int pageNumber) {
         int max = playerCrate.get(player.getUniqueId()).getMaxPage();
+
         if (pageNumber < 1) {
             pageNumber = 1;
         } else if (pageNumber >= max) {
             pageNumber = max;
         }
+
         playerPage.put(player.getUniqueId(), pageNumber);
     }
     
@@ -84,9 +86,11 @@ public class Preview implements Listener {
     
     public static ItemStack getNextButton(Player player) {
         ItemBuilder button = new ItemBuilder(nextButton);
+
         if (player != null) {
             button.addLorePlaceholder("%Page%", (getPage(player) + 1) + "");
         }
+
         return button.build();
     }
     
@@ -96,9 +100,11 @@ public class Preview implements Listener {
     
     public static ItemStack getBackButton(Player player) {
         ItemBuilder button = new ItemBuilder(backButton);
+
         if (player != null) {
             button.addLorePlaceholder("%Page%", (getPage(player) - 1) + "");
         }
+
         return button.build();
     }
     
@@ -113,8 +119,10 @@ public class Preview implements Listener {
     @EventHandler
     public void onPlayerClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
+
         if (e.getInventory() != null && playerCrate.get(player.getUniqueId()) != null) {
             Crate crate = playerCrate.get(player.getUniqueId());
+
             if (crate.isPreview(e.getView())) {
                 e.setCancelled(true);
                 if (e.getCurrentItem() != null) {

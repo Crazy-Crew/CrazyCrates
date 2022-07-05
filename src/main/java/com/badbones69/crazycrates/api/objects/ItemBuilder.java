@@ -329,6 +329,7 @@ public class ItemBuilder {
         }
         
         ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material);
+
         if (item.getType() != Material.AIR) {
             
             if (isHead) { // Has to go 1st due to it removing all data when finished.
@@ -345,6 +346,7 @@ public class ItemBuilder {
             ItemMeta itemMeta = item.getItemMeta();
             itemMeta.setDisplayName(getUpdatedName());
             itemMeta.setLore(getUpdatedLore());
+
             if (itemMeta instanceof org.bukkit.inventory.meta.Damageable) ((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(damage);
             
             if (isPotion && (potionType != null || potionColor != null)) {
@@ -485,6 +487,7 @@ public class ItemBuilder {
         }
         
         if (this.material.name().contains("BANNER")) this.isBanner = true;
+
         return this;
     }
     
@@ -553,10 +556,12 @@ public class ItemBuilder {
     public ItemBuilder setLore(List<String> lore) {
         if (lore != null) {
             this.itemLore.clear();
+
             for (String line : lore) {
                 this.itemLore.add(color(line));
             }
         }
+
         return this;
     }
     
@@ -601,12 +606,15 @@ public class ItemBuilder {
      */
     public List<String> getUpdatedLore() {
         List<String> newLore = new ArrayList<>();
+
         for (String item : itemLore) {
             for (String placeholder : lorePlaceholders.keySet()) {
                 item = item.replace(placeholder, lorePlaceholders.get(placeholder)).replace(placeholder.toLowerCase(), lorePlaceholders.get(placeholder));
             }
+
             newLore.add(item);
         }
+
         return newLore;
     }
     
@@ -647,6 +655,7 @@ public class ItemBuilder {
                     if (color != null) {
                         addPattern(new Pattern(color, pattern));
                     }
+
                     break;
                 }
             }
@@ -748,12 +757,15 @@ public class ItemBuilder {
      */
     public ItemBuilder setFlagsFromStrings(List<String> flagStrings) {
         itemFlags.clear();
+
         for (String flagString : flagStrings) {
             ItemFlag flag = getFlag(flagString);
+
             if (flag != null) {
                 itemFlags.add(flag);
             }
         }
+
         return this;
     }
     
@@ -762,11 +774,13 @@ public class ItemBuilder {
         for (String flagString : flagStrings) {
             try {
                 ItemFlag itemFlag = ItemFlag.valueOf(flagString.toUpperCase());
+
                 if (itemFlag != null) {
                     addItemFlag(itemFlag);
                 }
             } catch (Exception ignored) {}
         }
+
         return this;
     }
     
@@ -778,9 +792,11 @@ public class ItemBuilder {
      */
     public ItemBuilder addFlags(String flagString) {
         ItemFlag flag = getFlag(flagString);
+
         if (flag != null) {
             itemFlags.add(flag);
         }
+
         return this;
     }
     
@@ -828,6 +844,7 @@ public class ItemBuilder {
                 return item;
             }
         }
+
         return item;
     }
     
@@ -902,6 +919,7 @@ public class ItemBuilder {
             ItemMeta itemMeta = item.getItemMeta();
             itemBuilder.setName(itemMeta.getDisplayName()).setLore(itemMeta.getLore());
             NBTItem nbt = new NBTItem(item);
+
             if (nbt.hasKey("Unbreakable")) itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
             
             if (itemMeta instanceof org.bukkit.inventory.meta.Damageable) itemBuilder.setDamage(((org.bukkit.inventory.meta.Damageable) itemMeta).getDamage());
@@ -929,10 +947,12 @@ public class ItemBuilder {
      */
     public static ItemBuilder convertString(String itemString, String placeHolder) {
         ItemBuilder itemBuilder = new ItemBuilder();
+
         try {
             for (String optionString : itemString.split(", ")) {
                 String option = optionString.split(":")[0];
                 String value = optionString.replace(option + ":", "").replace(option, "");
+
                 switch (option.toLowerCase()) {
                     case "item":
                         itemBuilder.setMaterial(value);
@@ -999,6 +1019,7 @@ public class ItemBuilder {
             itemBuilder.setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor : &c" + (placeHolder != null ? placeHolder : "")));
             e.printStackTrace();
         }
+
         return itemBuilder;
     }
     
@@ -1085,6 +1106,7 @@ public class ItemBuilder {
                 return PotionType.WEAKNESS;
             }
         }
+
         return null;
     }
     
@@ -1138,6 +1160,7 @@ public class ItemBuilder {
                 return Color.fromRGB(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2]));
             } catch (Exception ignore) {}
         }
+
         return null;
     }
     
@@ -1158,6 +1181,7 @@ public class ItemBuilder {
                 } catch (Exception ignore) {}
             }
         }
+
         return null;
     }
     
@@ -1175,12 +1199,14 @@ public class ItemBuilder {
                     return enchantment;
                 }
                 HashMap<String, String> enchantments = getEnchantmentList();
+
                 if (stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null &&
                 stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
                     return enchantment;
                 }
             } catch (Exception ignore) {}
         }
+
         return null;
     }
     
@@ -1235,6 +1261,7 @@ public class ItemBuilder {
         enchantments.put("CHANNELING", "Channeling");
         enchantments.put("IMPALING", "Impaling");
         enchantments.put("LOYALTY", "Loyalty");
+
         return enchantments;
     }
     
@@ -1244,6 +1271,7 @@ public class ItemBuilder {
         } catch (NumberFormatException nfe) {
             return false;
         }
+
         return true;
     }
     
@@ -1253,6 +1281,7 @@ public class ItemBuilder {
                 return flag;
             }
         }
+
         return null;
     }
     

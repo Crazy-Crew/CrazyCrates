@@ -17,7 +17,7 @@ import java.util.List;
 
 public class KeyCommand implements CommandExecutor {
     
-    private final CrazyManager cc = CrazyManager.getInstance();
+    private final CrazyManager crazyManager = CrazyManager.getInstance();
     
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String commandLabel, String[] args) {
@@ -35,11 +35,12 @@ public class KeyCommand implements CommandExecutor {
 
             List<String> message = new ArrayList<>();
             message.add(Messages.PERSONAL_HEADER.getMessageNoPrefix());
-            HashMap<Crate, Integer> keys = cc.getVirtualKeys(player);
+            HashMap<Crate, Integer> keys = crazyManager.getVirtualKeys(player);
             boolean hasKeys = false;
 
             for (Crate crate : keys.keySet()) {
                 int amount = keys.get(crate);
+
                 if (amount > 0) {
                     hasKeys = true;
                     HashMap<String, String> placeholders = new HashMap<>();
@@ -66,11 +67,12 @@ public class KeyCommand implements CommandExecutor {
             String player = args[0];
             List<String> message = new ArrayList<>();
             message.add(Messages.OTHER_PLAYER_HEADER.getMessageNoPrefix("%Player%", player));
-            HashMap<Crate, Integer> keys = cc.getVirtualKeys(player);
+            HashMap<Crate, Integer> keys = crazyManager.getVirtualKeys(player);
             boolean hasKeys = false;
 
             for (Crate crate : keys.keySet()) {
                 int amount = keys.get(crate);
+
                 if (amount > 0) {
                     hasKeys = true;
                     HashMap<String, String> placeholders = new HashMap<>();
@@ -86,6 +88,7 @@ public class KeyCommand implements CommandExecutor {
                 sender.sendMessage(Messages.OTHER_PLAYER_NO_VIRTUAL_KEYS.getMessage("%Player%", player));
             }
         }
+
         return true;
     }
 

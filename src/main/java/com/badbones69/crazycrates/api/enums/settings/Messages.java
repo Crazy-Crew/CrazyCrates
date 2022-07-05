@@ -156,39 +156,39 @@ public enum Messages {
         }
         return newMessageList;
     }
-    
+
     public String getMessage() {
         return getMessage(true);
     }
-    
+
     public String getMessage(String placeholder, String replacement) {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put(placeholder, replacement);
         return getMessage(placeholders, true);
     }
-    
+
     public String getMessage(Map<String, String> placeholders) {
         return getMessage(placeholders, true);
     }
-    
+
     public String getMessageNoPrefix() {
         return getMessage(false);
     }
-    
+
     public String getMessageNoPrefix(String placeholder, String replacement) {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put(placeholder, replacement);
         return getMessage(placeholders, false);
     }
-    
+
     public String getMessageNoPrefix(Map<String, String> placeholders) {
         return getMessage(placeholders, false);
     }
-    
+
     private String getMessage(boolean prefix) {
         return getMessage(new HashMap<>(), prefix);
     }
-    
+
     private String getMessage(Map<String, String> placeholders, boolean prefix) {
         String message;
         boolean isList = isList();
@@ -209,8 +209,7 @@ public enum Messages {
         }
 
         for (Entry<String, String> placeholder : placeholders.entrySet()) {
-            message = message.replace(placeholder.getKey(), placeholder.getValue())
-            .replace(placeholder.getKey().toLowerCase(), placeholder.getValue());
+            message = message.replace(placeholder.getKey(), placeholder.getValue()).replace(placeholder.getKey().toLowerCase(), placeholder.getValue());
         }
 
         if (isList) { // Don't want to add a prefix to a list of messages.

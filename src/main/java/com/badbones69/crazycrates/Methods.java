@@ -39,6 +39,7 @@ public class Methods {
     public static HashMap<ItemStack, String> getItems(Player player) {
         HashMap<ItemStack, String> items = new HashMap<>();
         FileConfiguration file = crazyManager.getOpeningCrate(player).getFile();
+
         for (String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
             String id = file.getString("Crate.Prizes." + reward + ".DisplayItem");
             String name = file.getString("Crate.Prizes." + reward + ".DisplayName");
@@ -52,12 +53,14 @@ public class Methods {
             try {
                 ItemStack item = new ItemBuilder().setMaterial(id).setName(name).build();
                 int num;
+
                 for (int counter = 1; counter <= 1; counter++) {
                     num = 1 + random.nextInt(max);
                     if (num >= 1 && num <= chance) items.put(item, "Crate.Prizes." + reward);
                 }
             } catch (Exception ignored) {}
         }
+
         return items;
     }
     
@@ -68,7 +71,7 @@ public class Methods {
         fm.setPower(0);
         fw.setFireworkMeta(fm);
         FireworkDamageEvent.addFirework(fw);
-        CrazyManager.getJavaPlugin().getServer().getScheduler().scheduleSyncDelayedTask(CrazyManager.getJavaPlugin(), fw :: detonate, 2);
+        crazyManager.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(crazyManager.getPlugin(), fw :: detonate, 2);
     }
     
     public static boolean isInt(String s) {
@@ -77,16 +80,17 @@ public class Methods {
         } catch (NumberFormatException nfe) {
             return false;
         }
+
         return true;
     }
     
     public static Player getPlayer(String name) {
-        return CrazyManager.getJavaPlugin().getServer().getPlayerExact(name);
+        return crazyManager.getPlugin().getServer().getPlayerExact(name);
     }
     
     public static boolean isOnline(String name, CommandSender sender) {
 
-        for (Player player : CrazyManager.getJavaPlugin().getServer().getOnlinePlayers()) {
+        for (Player player : crazyManager.getPlugin().getServer().getOnlinePlayers()) {
             if (player.getName().equalsIgnoreCase(name)) {
                 return true;
             }
@@ -118,6 +122,7 @@ public class Methods {
                 player.sendMessage(Messages.NO_PERMISSION.getMessage());
                 return false;
             }
+
             return false;
         }
     }
@@ -158,8 +163,10 @@ public class Methods {
                                         if (!lore.equals(two.getItemMeta().getLore().get(i))) {
                                             return false;
                                         }
+
                                         i++;
                                     }
+
                                     return true;
                                 }
                             } else return !one.getItemMeta().hasLore() && !two.getItemMeta().hasLore();
@@ -172,8 +179,10 @@ public class Methods {
                                     if (!lore.equals(two.getItemMeta().getLore().get(i))) {
                                         return false;
                                     }
+
                                     i++;
                                 }
+
                                 return true;
                             } else {
                                 return false;
@@ -183,6 +192,7 @@ public class Methods {
                 } else return !one.hasItemMeta() && !two.hasItemMeta();
             }
         }
+
         return false;
     }
     
@@ -290,10 +300,11 @@ public class Methods {
     }
     
     public static void failedToTakeKey(Player player, Crate crate, Exception e) {
-        CrazyManager.getJavaPlugin().getServer().getLogger().warning("[CrazyCrates] An error has occurred while trying to take a physical key from a player");
-        CrazyManager.getJavaPlugin().getServer().getLogger().warning("Player: " + player.getName());
-        CrazyManager.getJavaPlugin().getServer().getLogger().warning("Crate: " + crate.getName());
+        crazyManager.getPlugin().getServer().getLogger().warning("An error has occurred while trying to take a physical key from a player");
+        crazyManager.getPlugin().getServer().getLogger().warning("Player: " + player.getName());
+        crazyManager.getPlugin().getServer().getLogger().warning("Crate: " + crate.getName());
         player.sendMessage(Methods.getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));
+
         if (e != null) {
             e.printStackTrace();
         }
@@ -347,6 +358,7 @@ public class Methods {
                 }
             }
         }
+
         return leftover;
     }
     
@@ -362,6 +374,7 @@ public class Methods {
                 return i;
             }
         }
+
         return -1;
     }
 

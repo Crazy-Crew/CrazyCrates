@@ -18,13 +18,13 @@ import java.util.Random;
 
 public class FireCracker {
     
-    private static final CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     
     public static void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc) {
 
-        if (!cc.takeKeys(1, player, crate, keyType, true)) {
+        if (!crazyManager.takeKeys(1, player, crate, keyType, true)) {
             Methods.failedToTakeKey(player, crate);
-            cc.removePlayerFromOpeningList(player);
+            crazyManager.removePlayerFromOpeningList(player);
             return;
         }
 
@@ -38,7 +38,7 @@ public class FireCracker {
         colors.add(Color.MAROON);
         colors.add(Color.PURPLE);
 
-        cc.addCrateTask(player, new BukkitRunnable() {
+        crazyManager.addCrateTask(player, new BukkitRunnable() {
             final Random r = new Random();
             final int color = r.nextInt(colors.size());
             int l = 0;
@@ -50,12 +50,12 @@ public class FireCracker {
                 fireWork(L, colors.get(color));
                 l++;
                 if (l == 25) {
-                    cc.endCrate(player);
+                    crazyManager.endCrate(player);
                     // The key type is set to free because the key has already been taken above.
                     QuickCrate.openCrate(player, loc, crate, KeyType.FREE_KEY);
                 }
             }
-        }.runTaskTimer(CrazyManager.getJavaPlugin(), 0, 2));
+        }.runTaskTimer(crazyManager.getPlugin(), 0, 2));
     }
     
     private static void fireWork(Location loc, Color color) {

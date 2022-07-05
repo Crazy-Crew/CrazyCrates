@@ -11,20 +11,20 @@ import java.text.NumberFormat;
 
 public class PlaceholderAPISupport extends PlaceholderExpansion {
     
-    private final CrazyManager cc = CrazyManager.getInstance();
+    private final CrazyManager crazyManager = CrazyManager.getInstance();
     
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {
         if (player.isOnline()) {
             Player playerOnline = (Player) player;
-            for (Crate crate : cc.getCrates()) {
+            for (Crate crate : crazyManager.getCrates()) {
                 if (crate.getCrateType() != CrateType.MENU) {
                     if (identifier.equalsIgnoreCase(crate.getName())) {
-                        return NumberFormat.getNumberInstance().format(cc.getVirtualKeys(playerOnline, crate));
+                        return NumberFormat.getNumberInstance().format(crazyManager.getVirtualKeys(playerOnline, crate));
                     } else if (identifier.equalsIgnoreCase(crate.getName() + "_physical")) {
-                        return NumberFormat.getNumberInstance().format(cc.getPhysicalKeys(playerOnline, crate));
+                        return NumberFormat.getNumberInstance().format(crazyManager.getPhysicalKeys(playerOnline, crate));
                     } else if (identifier.equalsIgnoreCase(crate.getName() + "_total")) {
-                        return NumberFormat.getNumberInstance().format(cc.getTotalKeys(playerOnline, crate));
+                        return NumberFormat.getNumberInstance().format(crazyManager.getTotalKeys(playerOnline, crate));
                     }
                 }
             }
@@ -49,7 +49,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
     
     @Override
     public @NotNull String getVersion() {
-        return CrazyManager.getJavaPlugin().getDescription().getVersion();
+        return crazyManager.getPlugin().getDescription().getVersion();
     }
     
 }

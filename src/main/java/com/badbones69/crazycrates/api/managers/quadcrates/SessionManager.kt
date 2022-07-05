@@ -9,6 +9,7 @@ object SessionManager {
         QuadCrateManager.getCrateSessions().forEach {
             if (it.player == player) return true
         }
+
         return false;
     }
 
@@ -16,6 +17,7 @@ object SessionManager {
         QuadCrateManager.getCrateSessions().forEach {
             if (it.player == player) return it
         }
+
         return null
     }
 

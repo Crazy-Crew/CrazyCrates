@@ -12,9 +12,10 @@ import java.util.ArrayList;
 public class FireworkDamageEvent implements Listener {
     
     private static final ArrayList<Entity> fireworks = new ArrayList<>();
+
+    private final CrazyManager crazyManager = CrazyManager.getInstance();
     
     /**
-     *
      * @return All the active fireworks.
      */
     public static ArrayList<Entity> getFireworks() {
@@ -22,7 +23,6 @@ public class FireworkDamageEvent implements Listener {
     }
     
     /**
-     *
      * @param firework The firework you want to add.
      */
     public static void addFirework(Entity firework) {
@@ -30,7 +30,6 @@ public class FireworkDamageEvent implements Listener {
     }
     
     /**
-     *
      * @param firework The firework you are removing.
      */
     public static void removeFirework(Entity firework) {
@@ -53,7 +52,7 @@ public class FireworkDamageEvent implements Listener {
                 public void run() {
                     fireworks.remove(firework);
                 }
-            }.runTaskLater(CrazyManager.getJavaPlugin(), 5);
+            }.runTaskLater(crazyManager.getPlugin(), 5);
         }
     }
     

@@ -17,16 +17,16 @@ import java.util.ArrayList;
 
 public class Wonder implements Listener {
     
-    private static final CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     
     public static void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        if (!cc.takeKeys(1, player, crate, keyType, checkHand)) {
+        if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
-            cc.removePlayerFromOpeningList(player);
+            crazyManager.removePlayerFromOpeningList(player);
             return;
         }
 
-        final Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 45, crate.getCrateInventoryName());
+        final Inventory inv = crazyManager.getPlugin().getServer().createInventory(null, 45, crate.getCrateInventoryName());
         final ArrayList<String> slots = new ArrayList<>();
 
         for (int i = 0; i < 45; i++) {
@@ -36,7 +36,8 @@ public class Wonder implements Listener {
         }
 
         player.openInventory(inv);
-        cc.addCrateTask(player, new BukkitRunnable() {
+
+        crazyManager.addCrateTask(player, new BukkitRunnable() {
             int fulltime = 0;
             int timer = 0;
             int slot1 = 0;
@@ -65,6 +66,7 @@ public class Wonder implements Listener {
 
                 if (fulltime > 67) {
                     ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+
                     for (int slot : Slots) {
                         inv.setItem(slot, item);
                     }
@@ -73,24 +75,27 @@ public class Wonder implements Listener {
                 player.openInventory(inv);
 
                 if (fulltime > 100) {
-                    cc.endCrate(player);
+                    crazyManager.endCrate(player);
                     player.closeInventory();
-                    cc.givePrize(player, prize);
+                    crazyManager.givePrize(player, prize);
+
                     if (prize.useFireworks()) {
                         Methods.fireWork(player.getLocation().add(0, 1, 0));
                     }
-                    CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-                    cc.removePlayerFromOpeningList(player);
+
+                    crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+                    crazyManager.removePlayerFromOpeningList(player);
                     return;
                 }
 
                 fulltime++;
                 timer++;
+
                 if (timer > 2) {
                     timer = 0;
                 }
             }
-        }.runTaskTimer(CrazyManager.getJavaPlugin(), 0, 2));
+        }.runTaskTimer(crazyManager.getPlugin(), 0, 2));
     }
     
 }

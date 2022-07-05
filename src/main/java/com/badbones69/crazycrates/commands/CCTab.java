@@ -10,13 +10,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class CCTab implements TabCompleter {
     
-    private final CrazyManager cc = CrazyManager.getInstance();
+    private final CrazyManager crazyManager = CrazyManager.getInstance();
     
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String commandLabel, String[] args) {
@@ -39,6 +38,7 @@ public class CCTab implements TabCompleter {
             if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SET, true)) completions.add("set1");
             if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SET, true)) completions.add("set2");
             if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SAVE, true)) completions.add("save");
+
             return StringUtil.copyPartialMatches(args[0], completions, new ArrayList<>());
         } else if (args.length == 2) { // /cc arg0
             switch (args[0].toLowerCase()) {
@@ -47,18 +47,18 @@ public class CCTab implements TabCompleter {
                     || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_OPEN, true)
                     || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_FORCE_OPEN, true)
                     || Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_TRANSFER_KEYS, true)) {
-                        cc.getCrates().forEach(crate -> completions.add(crate.getName()));
+                        crazyManager.getCrates().forEach(crate -> completions.add(crate.getName()));
                         completions.remove("Menu"); // Takes out a crate that doesn't exist as a file.
                     }
                 }
                 case "set" -> {
                     if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SET_CRATE, true)) {
-                        cc.getCrates().forEach(crate -> completions.add(crate.getName()));
+                        crazyManager.getCrates().forEach(crate -> completions.add(crate.getName()));
                     }
                 }
                 case "tp" -> {
                     if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TELEPORT, true)) {
-                        cc.getCrateLocations().forEach(location -> completions.add(location.getID()));
+                        crazyManager.getCrateLocations().forEach(location -> completions.add(location.getID()));
                     }
                 }
                 case "give", "giveall", "take" -> {
@@ -77,14 +77,15 @@ public class CCTab implements TabCompleter {
                     }
                 }
             }
+
             return StringUtil.copyPartialMatches(args[1], completions, new ArrayList<>());
         } else if (args.length == 3) { // /cc arg0 arg1
             switch (args[0].toLowerCase()) {
                 case "additem" -> {
                     if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_ADD_ITEM, true)) {
-                        Crate crateFromName = cc.getCrateFromName(args[1]);
+                        Crate crateFromName = crazyManager.getCrateFromName(args[1]);
                         if (crateFromName != null && crateFromName.getCrateType() != CrateType.MENU) {
-                            cc.getCrateFromName(args[1]).getPrizes().forEach(prize -> completions.add(prize.getName()));
+                            crazyManager.getCrateFromName(args[1]).getPrizes().forEach(prize -> completions.add(prize.getName()));
                         }
                     }
                 }
@@ -92,18 +93,19 @@ public class CCTab implements TabCompleter {
                     if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_OPEN, true)
                             || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_FORCE_OPEN, true)
                             || Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_TRANSFER_KEYS, true)) {
-                        CrazyManager.getJavaPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
+                        crazyManager.getPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
                     }
                 }
                 case "give", "giveall", "take" -> {
                     if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TAKE_KEY, true)
                             || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_ALL, true)
                             || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_KEY, true)) {
-                        cc.getCrates().forEach(crate -> completions.add(crate.getName()));
+                        crazyManager.getCrates().forEach(crate -> completions.add(crate.getName()));
                         completions.remove("Menu"); // Takes out a crate that doesn't exist as a file.
                     }
                 }
             }
+
             return StringUtil.copyPartialMatches(args[2], completions, new ArrayList<>());
         } else if (args.length == 4) { // /cc arg0 arg1 arg2
             if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TAKE_KEY, true)
@@ -118,17 +120,20 @@ public class CCTab implements TabCompleter {
                         break;
                 }
             }
+
             return StringUtil.copyPartialMatches(args[3], completions, new ArrayList<>());
         } else if (args.length == 5) { // /cc arg0 arg1 arg2 arg3
             if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TAKE_KEY, true)
                     || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_ALL, true)
                     || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_KEY, true)) {
                 switch (args[0].toLowerCase()) {
-                    case "give", "giveall", "take" -> CrazyManager.getJavaPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
+                    case "give", "giveall", "take" -> crazyManager.getPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
                 }
             }
+
             return StringUtil.copyPartialMatches(args[4], completions, new ArrayList<>());
         }
+
         return new ArrayList<>();
     }
 

@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 public class CSGO implements Listener {
     
-    private static final CrazyManager cc = CrazyManager.getInstance();
+    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     
     private static void setGlass(Inventory inv) {
         HashMap<Integer, ItemStack> glass = new HashMap<>();
@@ -66,7 +66,7 @@ public class CSGO implements Listener {
     }
     
     public static void openCSGO(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = CrazyManager.getJavaPlugin().getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        Inventory inv = crazyManager.getPlugin().getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
         setGlass(inv);
 
         for (int i = 9; i > 8 && i < 18; i++) {
@@ -75,16 +75,16 @@ public class CSGO implements Listener {
 
         player.openInventory(inv);
 
-        if (cc.takeKeys(1, player, crate, keyType, checkHand)) {
+        if (crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             startCSGO(player, inv, crate);
         } else {
             Methods.failedToTakeKey(player, crate);
-            cc.removePlayerFromOpeningList(player);
+            crazyManager.removePlayerFromOpeningList(player);
         }
     }
     
     private static void startCSGO(final Player player, final Inventory inv, Crate crate) {
-        cc.addCrateTask(player, new BukkitRunnable() {
+        crazyManager.addCrateTask(player, new BukkitRunnable() {
             int time = 1;
             int full = 0;
             int open = 0;
@@ -117,20 +117,22 @@ public class CSGO implements Listener {
 
                     if (time == 60) { // When done
                         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-                        cc.endCrate(player);
+                        crazyManager.endCrate(player);
                         Prize prize = crate.getPrize(inv.getItem(13));
 
                         if (prize != null) {
-                            cc.givePrize(player, prize);
+                            crazyManager.givePrize(player, prize);
+
                             if (prize.useFireworks()) {
                                 Methods.fireWork(player.getLocation().add(0, 1, 0));
                             }
-                            CrazyManager.getJavaPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+
+                            crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                         } else {
                             player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
                         }
 
-                        cc.removePlayerFromOpeningList(player);
+                        crazyManager.removePlayerFromOpeningList(player);
                         cancel();
 
                         new BukkitRunnable() {
@@ -140,13 +142,13 @@ public class CSGO implements Listener {
                                     player.closeInventory();
                                 }
                             }
-                        }.runTaskLater(CrazyManager.getJavaPlugin(), 40);
+                        }.runTaskLater(crazyManager.getPlugin(), 40);
                     } else if (time > 60) { // Added this due reports of the prizes spamming when low tps.
                         cancel();
                     }
                 }
             }
-        }.runTaskTimer(CrazyManager.getJavaPlugin(), 1, 1));
+        }.runTaskTimer(crazyManager.getPlugin(), 1, 1));
     }
     
     private static ArrayList<Integer> slowSpin() {
@@ -173,6 +175,7 @@ public class CSGO implements Listener {
         }
 
         inv.setItem(9, crate.pickPrize(player).getDisplayItem());
+
         for (int i = 0; i < 8; i++) {
             inv.setItem(i + 10, items.get(i));
         }

@@ -39,6 +39,7 @@ public class QuadCrateSpiralHandler implements SpiralControl {
                 nextLocation = 0;
             }
         }
+
         return locations;
     }
 
@@ -73,6 +74,7 @@ public class QuadCrateSpiralHandler implements SpiralControl {
                 nextLocation = 0;
             }
         }
+
         return locations;
     }
 
