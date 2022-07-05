@@ -16,6 +16,14 @@
 
     <artifactId>crazycrates-plugin</artifactId>
 
+    <distributionManagement>
+        <repository>
+            <id>crazycrew-legacy</id>
+            <name>CrazyCrew Repo</name>
+            <url>https://repo.badbones69.com/legacy</url>
+        </repository>
+    </distributionManagement>
+
     <repositories>
         <repository>
             <id>spigot-repo</id>
