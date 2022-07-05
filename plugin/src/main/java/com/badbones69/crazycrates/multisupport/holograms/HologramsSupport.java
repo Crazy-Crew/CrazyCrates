@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.multisupport;
+package com.badbones69.crazycrates.multisupport.holograms;
 
 import com.sainttx.holograms.HologramPlugin;
 import com.sainttx.holograms.api.Hologram;

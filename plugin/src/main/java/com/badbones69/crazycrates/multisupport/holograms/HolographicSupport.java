@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.multisupport;
+package com.badbones69.crazycrates.multisupport.holograms;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;

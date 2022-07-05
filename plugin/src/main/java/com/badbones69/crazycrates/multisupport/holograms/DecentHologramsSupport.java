@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.multisupport;
+package com.badbones69.crazycrates.multisupport.holograms;
 
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
@@ -10,7 +10,7 @@ import org.bukkit.block.Block;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class DecentHolograms implements HologramController {
+public class DecentHologramsSupport implements HologramController {
     
     private static final HashMap<Block, Hologram> holograms = new HashMap<>();
     

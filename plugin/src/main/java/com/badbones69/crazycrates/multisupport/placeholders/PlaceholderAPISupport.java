@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.multisupport;
+package com.badbones69.crazycrates.multisupport.placeholders;
 
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.CrateType;

@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.multisupport;
+package com.badbones69.crazycrates.multisupport.placeholders;
 
 import be.maximvdw.placeholderapi.PlaceholderAPI;
 import com.badbones69.crazycrates.api.CrazyManager;
