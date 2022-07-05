@@ -3,7 +3,7 @@ plugins {
 
     `maven-publish`
 
-    kotlin("jvm") version "1.6.20"
+    kotlin("jvm") version "1.7.0"
 
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
@@ -71,13 +71,11 @@ dependencies {
         exclude(group = "org.bukkit", module = "bukkit")
     }
 
-    compileOnly("cloud.commandframework:cloud-core:1.7.0")
-
     compileOnly("org.apache.commons:commons-text:1.9")
 
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
 
-    compileOnly(kotlin("stdlib", "1.6.21"))
+    compileOnly(kotlin("stdlib", "1.7.0"))
 }
 
 tasks {
