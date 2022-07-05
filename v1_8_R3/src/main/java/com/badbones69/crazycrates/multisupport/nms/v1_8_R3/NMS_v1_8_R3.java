@@ -1,7 +1,12 @@
 package com.badbones69.crazycrates.multisupport.nms.v1_8_R3;
 
 import com.badbones69.crazycrates.multisupport.nms.NMSSupport;
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.NBTCompressedStreamTools;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import net.minecraft.server.v1_8_R3.TileEntityChest;
+import net.minecraft.server.v1_8_R3.TileEntityEnderChest;
+import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -10,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

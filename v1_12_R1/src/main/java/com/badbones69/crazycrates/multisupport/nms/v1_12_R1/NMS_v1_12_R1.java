@@ -1,7 +1,12 @@
 package com.badbones69.crazycrates.multisupport.nms.v1_12_R1;
 
 import com.badbones69.crazycrates.multisupport.nms.NMSSupport;
-import net.minecraft.server.v1_12_R1.*;
+import net.minecraft.server.v1_12_R1.BlockPosition;
+import net.minecraft.server.v1_12_R1.NBTCompressedStreamTools;
+import net.minecraft.server.v1_12_R1.NBTTagCompound;
+import net.minecraft.server.v1_12_R1.TileEntityChest;
+import net.minecraft.server.v1_12_R1.TileEntityEnderChest;
+import net.minecraft.server.v1_12_R1.World;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
