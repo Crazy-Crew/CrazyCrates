@@ -30,7 +30,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onEnable() {
 
         // Initialize the plugin variable.
-        cc.loadPlugin();
+        cc.loadPlugin(this);
 
         if (!ServerProtocol.isLegacy()) {
             checkVersion();
