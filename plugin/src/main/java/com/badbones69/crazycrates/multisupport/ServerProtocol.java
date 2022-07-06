@@ -74,6 +74,11 @@ public enum ServerProtocol {
         return proto >= protocol.versionProtocol || proto == -2;
     }
 
+    public static boolean isNewer(ServerProtocol protocol) {
+        if (currentProtocol == null) getCurrentProtocol();
+        return currentProtocol.versionProtocol > protocol.versionProtocol || currentProtocol.versionProtocol == -2;
+    }
+
     public static boolean isSame(ServerProtocol protocol) {
         if (currentProtocol == null) getCurrentProtocol();
         return currentProtocol.versionProtocol == protocol.versionProtocol;

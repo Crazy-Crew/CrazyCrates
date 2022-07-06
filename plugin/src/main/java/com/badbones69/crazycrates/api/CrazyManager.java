@@ -1510,6 +1510,7 @@ public class CrazyManager {
     
     private long pickNumber(long min, long max) {
         max++;
+
         try {
             // new Random() does not have a nextLong(long bound) method.
             return min + ThreadLocalRandom.current().nextLong(max - min);

@@ -395,7 +395,7 @@ public class QuadCrateSession {
     }
     
     private void spawnParticles(QuadCrateParticles quadCrateParticle, Location location1, Location location2) {
-        if (ServerProtocol.isSame(ServerProtocol.v1_12_R1)) {
+        if (ServerProtocol.isAtLeast(ServerProtocol.v1_12_R1)) {
             Particle particle;
 
             switch (quadCrateParticle) {
