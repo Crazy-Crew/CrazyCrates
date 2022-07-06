@@ -58,18 +58,22 @@ public class CrazyManager {
      * FileManager object.
      */
     private static final FileManager fileManager = FileManager.getInstance();
+
     /**
      * The instance of this class.
      */
     private static final CrazyManager instance = new CrazyManager();
+
     /**
      * All the crates that have been loaded.
      */
     private final ArrayList<Crate> crates = new ArrayList<>();
+
     /**
      * A list of all the physical crate locations.
      */
     private final ArrayList<CrateLocation> crateLocations = new ArrayList<>();
+
     /**
      * List of all the broken crates.
      */
