@@ -152,8 +152,8 @@ public class CrazyManager {
         return fileManager;
     }
 
-    public void loadPlugin() {
-        plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    public void loadPlugin(JavaPlugin plugin) {
+        this.plugin = plugin;
     }
     
     /**

@@ -8,10 +8,22 @@ import com.badbones69.crazycrates.commands.CCCommand
 import com.badbones69.crazycrates.commands.CCTab
 import com.badbones69.crazycrates.commands.KeyCommand
 import com.badbones69.crazycrates.commands.KeyTab
-import com.badbones69.crazycrates.controllers.*
+import com.badbones69.crazycrates.controllers.BrokeLocationsControl
+import com.badbones69.crazycrates.controllers.CrateControl
+import com.badbones69.crazycrates.controllers.FireworkDamageEvent
+import com.badbones69.crazycrates.controllers.GUIMenu
+import com.badbones69.crazycrates.controllers.Preview
 import com.badbones69.crazycrates.controllers.events.PaperEvents
 import com.badbones69.crazycrates.controllers.events.SpigotEvents
-import com.badbones69.crazycrates.cratetypes.*
+import com.badbones69.crazycrates.cratetypes.CSGO
+import com.badbones69.crazycrates.cratetypes.Cosmic
+import com.badbones69.crazycrates.cratetypes.CrateOnTheGo
+import com.badbones69.crazycrates.cratetypes.QuadCrate
+import com.badbones69.crazycrates.cratetypes.QuickCrate
+import com.badbones69.crazycrates.cratetypes.Roulette
+import com.badbones69.crazycrates.cratetypes.War
+import com.badbones69.crazycrates.cratetypes.Wheel
+import com.badbones69.crazycrates.cratetypes.Wonder
 import com.badbones69.crazycrates.support.libs.Support
 import com.badbones69.crazycrates.support.placeholders.MVdWPlaceholderAPISupport
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport
@@ -32,7 +44,7 @@ class CrazyCrates : JavaPlugin(), Listener {
 
     override fun onEnable() {
 
-        crazyManager.loadPlugin()
+        crazyManager.loadPlugin(plugin)
 
         fileManager.logInfo(true)
             .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
@@ -47,7 +59,7 @@ class CrazyCrates : JavaPlugin(), Listener {
             .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
             .registerCustomFilesFolder("/crates")
             .registerCustomFilesFolder("/schematics")
-            .setup(this)
+            .setup(plugin)
 
         // Clean files if we have to.
         cleanFiles()
@@ -55,8 +67,18 @@ class CrazyCrates : JavaPlugin(), Listener {
         // Add missing messages.
         Messages.addMissingMessages()
 
-        // Enable metrics.
-        Metrics(plugin, 4514)
+        val metricsEnabled = Files.CONFIG.file.getBoolean("Settings.Toggle-Metrics")
+
+        if (Files.CONFIG.file.getString("Settings.Toggle-Metrics") != null) {
+            if (metricsEnabled) Metrics(plugin, 4514)
+        } else {
+            logger.warning("Metrics was automatically enabled.")
+            logger.warning("Please add Toggle-Metrics: false to the top of your config.yml")
+            logger.warning("https://github.com/Crazy-Crew/Crazy-Crates/blob/main/src/main/resources/config.yml")
+            logger.warning("An example if confused is linked above.")
+
+            Metrics(plugin, 4514)
+        }
 
         // Enable the plugin.
         enable()
