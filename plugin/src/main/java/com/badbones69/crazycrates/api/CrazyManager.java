@@ -61,21 +61,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CrazyManager {
 
     /**
-     * The CrazyCrates plugin.
-     */
-    private JavaPlugin plugin;
-
-    /**
-     * Get the CrazyCrates Plugin.
-     * @return The CrazyCrates Plugin object.
-     */
-    public JavaPlugin getPlugin() {
-        return plugin;
-    }
-
-    private final boolean isLogging = fileManager.isLogging();
-    
-    /**
      * FileManager object.
      */
     private static final FileManager fileManager = FileManager.getInstance();
@@ -170,13 +155,27 @@ public class CrazyManager {
     public static CrazyManager getInstance() {
         return instance;
     }
-    
+
     /**
      * Get the file manager that controls all yml files.
+     *
      * @return The FileManager that controls all yml files.
      */
     public static FileManager getFileManager() {
         return fileManager;
+    }
+
+    /**
+     * The CrazyCrates plugin.
+     */
+    private JavaPlugin plugin;
+
+    /**
+     * Get the CrazyCrates Plugin.
+     * @return The CrazyCrates Plugin object.
+     */
+    public JavaPlugin getPlugin() {
+        return plugin;
     }
 
     public void loadPlugin(JavaPlugin plugin) {
@@ -223,7 +222,7 @@ public class CrazyManager {
             hologramController.removeAllHolograms();
         }
 
-        if (isLogging) plugin.getLogger().info("Loading all crate information...");
+        if (fileManager.isLogging()) plugin.getLogger().info("Loading all crate information...");
 
         for (String crateName : fileManager.getAllCratesNames(plugin)) {
             try {
@@ -310,8 +309,8 @@ public class CrazyManager {
 
         crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null));
 
-        if (isLogging) plugin.getLogger().info("All crate information has been loaded.");
-        if (isLogging) plugin.getLogger().info("Loading all the physical crate locations.");
+        if (fileManager.isLogging()) plugin.getLogger().info("All crate information has been loaded.");
+        if (fileManager.isLogging()) plugin.getLogger().info("Loading all the physical crate locations.");
 
         FileConfiguration locations = FileManager.Files.LOCATIONS.getFile();
         int loadedAmount = 0;
@@ -347,7 +346,7 @@ public class CrazyManager {
         }
 
         // Checking if all physical locations loaded
-        if (isLogging) {
+        if (fileManager.isLogging()) {
             if (loadedAmount > 0 || brokeAmount > 0) {
                 if (brokeAmount <= 0) {
                     plugin.getLogger().info("All physical crate locations have been loaded.");
@@ -359,7 +358,7 @@ public class CrazyManager {
         }
 
         // Loading schematic files
-        if (isLogging) plugin.getLogger().info("Searching for schematics to load.");
+        if (fileManager.isLogging()) plugin.getLogger().info("Searching for schematics to load.");
 
         String[] schems = new File(plugin.getDataFolder() + "/Schematics/").list();
 
@@ -367,11 +366,11 @@ public class CrazyManager {
             if (schematicName.endsWith(".schematic")) {
                 crateSchematics.add(new CrateSchematic(schematicName.replace(".schematic", ""), new File(plugin.getDataFolder() + "/Schematics/" + schematicName)));
 
-                if (isLogging) plugin.getLogger().info(schematicName + " was successfully found and loaded.");
+                if (fileManager.isLogging()) plugin.getLogger().info(schematicName + " was successfully found and loaded.");
             }
         }
 
-        if (isLogging) plugin.getLogger().info("All schematics were found and loaded.");
+        if (fileManager.isLogging()) plugin.getLogger().info("All schematics were found and loaded.");
 
         cleanDataFile();
         Preview.loadButtons();
@@ -393,7 +392,7 @@ public class CrazyManager {
 
         if (data.contains("Players")) {
 
-            if (isLogging) plugin.getLogger().info("Cleaning up the data.yml file.");
+            if (fileManager.isLogging()) plugin.getLogger().info("Cleaning up the data.yml file.");
 
             List<String> removePlayers = new ArrayList<>();
 
@@ -419,16 +418,16 @@ public class CrazyManager {
             }
 
             if (removePlayers.size() > 0) {
-                if (isLogging) plugin.getLogger().info(removePlayers.size() + " player's data has been marked to be removed.");
+                if (fileManager.isLogging()) plugin.getLogger().info(removePlayers.size() + " player's data has been marked to be removed.");
 
                 for (String uuid : removePlayers) {
                     data.set("Players." + uuid, null);
                 }
 
-                if (isLogging) plugin.getLogger().info("All empty player data has been removed.");
+                if (fileManager.isLogging()) plugin.getLogger().info("All empty player data has been removed.");
             }
 
-            if (isLogging) plugin.getLogger().info("The data.yml file has been cleaned.");
+            if (fileManager.isLogging()) plugin.getLogger().info("The data.yml file has been cleaned.");
 
             FileManager.Files.DATA.saveFile();
         }
