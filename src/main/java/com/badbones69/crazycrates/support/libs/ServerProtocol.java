@@ -7,14 +7,10 @@ import com.badbones69.crazycrates.api.CrazyManager;
  */
 public enum ServerProtocol {
 
-    TOO_OLD(1),
-    v1_13_R2(1132),
-    v1_14_R4(1141),
-    v1_15_R2(1152),
-    v1_16_5(1165),
-    v1_17_1(1171),
-    v1_18_1(1181),
-    v1_19(119),
+    TOO_OLD(-1),
+    v1_18_R1(1181),
+    v1_18_R2(1182),
+    v1_19(1191),
     TOO_NEW(-2);
 
     private static ServerProtocol currentProtocol;
@@ -51,7 +47,7 @@ public enum ServerProtocol {
     }
 
     public static boolean isLegacy() {
-        return isOlder(ServerProtocol.v1_13_R2);
+        return isOlder(ServerProtocol.v1_18_R1);
     }
 
     public static ServerProtocol getLatestProtocol() {
