@@ -3,6 +3,7 @@ Settings:
   Prefix: '&8[&bCrazyCrates&8]: '
   InventoryName: '&b&lCrazy &4&lCrates'
   InventorySize: 45
+  Toggle-Metrics: true #Turn on and off if your server stats are sent to https://bstats.org/ - Requires a restart!
   KnockBack: true
   Physical-Accepts-Virtual-Keys: true #If physical crates can accept virtual keys.
   Virtual-Accepts-Physical-Keys: true #If virtual crates can accept physical keys.

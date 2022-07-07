@@ -88,33 +88,33 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         crazyManager.loadCrates();
 
-        PluginManager pm = getServer().getPluginManager();
+        PluginManager pluginManager = getServer().getPluginManager();
 
-        pm.registerEvents(this, this);
-        pm.registerEvents(new GUIMenu(), this);
-        pm.registerEvents(new Preview(), this);
-        pm.registerEvents(new QuadCrate(), this);
-        pm.registerEvents(new War(), this);
-        pm.registerEvents(new CSGO(), this);
-        pm.registerEvents(new Wheel(), this);
-        pm.registerEvents(new Wonder(), this);
-        pm.registerEvents(new Cosmic(), this);
-        pm.registerEvents(new Roulette(), this);
-        pm.registerEvents(new QuickCrate(), this);
-        pm.registerEvents(new CrateControl(), this);
-        pm.registerEvents(new CrateOnTheGo(), this);
+        pluginManager.registerEvents(this, this);
+        pluginManager.registerEvents(new GUIMenu(), this);
+        pluginManager.registerEvents(new Preview(), this);
+        pluginManager.registerEvents(new QuadCrate(), this);
+        pluginManager.registerEvents(new War(), this);
+        pluginManager.registerEvents(new CSGO(), this);
+        pluginManager.registerEvents(new Wheel(), this);
+        pluginManager.registerEvents(new Wonder(), this);
+        pluginManager.registerEvents(new Cosmic(), this);
+        pluginManager.registerEvents(new Roulette(), this);
+        pluginManager.registerEvents(new QuickCrate(), this);
+        pluginManager.registerEvents(new CrateControl(), this);
+        pluginManager.registerEvents(new CrateOnTheGo(), this);
 
         if (ServerProtocol.isAtLeast(ServerProtocol.v1_12_R1)) {
-            pm.registerEvents(new Events_v1_12_R1_Up(), this);
+            pluginManager.registerEvents(new Events_v1_12_R1_Up(), this);
         } else {
-            pm.registerEvents(new Events_v1_11_R1_Down(), this);
+            pluginManager.registerEvents(new Events_v1_11_R1_Down(), this);
         }
 
         if (!crazyManager.getBrokeCrateLocations().isEmpty()) {
-            pm.registerEvents(new BrokeLocationsControl(), this);
+            pluginManager.registerEvents(new BrokeLocationsControl(), this);
         }
 
-        pm.registerEvents(new FireworkDamageEvent(), this);
+        pluginManager.registerEvents(new FireworkDamageEvent(), this);
 
         if (Support.PLACEHOLDERAPI.isPluginLoaded()) {
             new PlaceholderAPISupport().register();
@@ -124,7 +124,19 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             MVdWPlaceholderAPISupport.registerPlaceholders(this);
         }
 
-        new Metrics(this, 4514);
+        boolean metricsEnabled = Files.CONFIG.getFile().getBoolean("Settings.Toggle-Metrics");
+
+        if (Files.CONFIG.getFile().getString("Settings.Toggle-Metrics") != null) {
+            if (metricsEnabled) new Metrics(this, 4514);
+        } else {
+            getLogger().warning("Metrics was automatically enabled.");
+            getLogger().warning("Please add Toggle-Metrics: false to the top of your config.yml");
+            getLogger().warning("https://github.com/Crazy-Crew/Crazy-Crates/blob/main/src/main/resources/config.yml");
+
+            getLogger().warning("An example if confused is linked above.");
+
+            new Metrics(this, 4514);
+        }
 
         getCommand("key").setExecutor(new KeyCommand());
         getCommand("key").setTabCompleter(new KeyTab());
