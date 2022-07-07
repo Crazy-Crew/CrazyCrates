@@ -40,19 +40,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.badbones69.crazycrates.support.utils.ConstantsKt.color;
 
 public class CrazyManager {
-
-    /**
-     * The CrazyCrates plugin.
-     */
-    private JavaPlugin plugin;
-
-    /**
-     * Get the CrazyCrates Plugin.
-     * @return The CrazyCrates Plugin object.
-     */
-    public JavaPlugin getPlugin() {
-        return plugin;
-    }
     
     /**
      * FileManager object.
@@ -150,6 +137,19 @@ public class CrazyManager {
      */
     public static FileManager getFileManager() {
         return fileManager;
+    }
+
+    /**
+     * The CrazyEnvoys plugin.
+     */
+    private JavaPlugin plugin;
+
+    /**
+     * Get the CrazyEnvoys Plugin.
+     * @return The CrazyEnvoys Plugin object.
+     */
+    public JavaPlugin getPlugin() {
+        return plugin;
     }
 
     public void loadPlugin(JavaPlugin plugin) {
