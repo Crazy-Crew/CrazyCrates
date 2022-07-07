@@ -46,12 +46,16 @@ public class QuadCrate implements Listener {
     @EventHandler
     public void onChestClick(PlayerInteractEvent e) {
         Player player = e.getPlayer();
+
         if (sessionManager.inSession(player)) {
             QuadCrateManager session = sessionManager.getSession(player);
+
             if (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.LEFT_CLICK_BLOCK) {
                 Block block = e.getClickedBlock();
+
                 if (session.getCrateLocations().contains(block.getLocation())) {
                     e.setCancelled(true);
+
                     if (!session.getCratesOpened().get(block.getLocation())) {
 
                         session.quadCrateHandler().openChest(block, true);
@@ -120,6 +124,7 @@ public class QuadCrate implements Listener {
                     } else {
                         player.setVelocity(v);
                     }
+
                     break;
                 }
             }
