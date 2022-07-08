@@ -141,7 +141,7 @@ class CrazyCrates : JavaPlugin(), Listener {
     }
 
     private fun disable() {
-        if (PaperLib.isPaper()) SessionManager.endAllCrates()
+        SessionManager.endAllCrates()
 
         QuickCrate.removeAllRewards()
 
