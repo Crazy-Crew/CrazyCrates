@@ -1,9 +1,12 @@
 name: CrazyCrates
 main: "${group}.CrazyCrates"
-author: BadBones69
 version: ${version}
 api-version: 1.18
 description: ${description}
+
+authors:
+  - BadBones69
+  - RyderBelserion
 
 softdepend: [HolographicDisplays, DecentHolograms, MVdWPlaceholderAPI, PlaceholderAPI]
 
