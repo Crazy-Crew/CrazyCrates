@@ -1,32 +1,41 @@
-# Crazy Crates
-Source Code for Crazy Crates
+## Crazy Crates
 
-## Support:
-https://discord.com/invite/MCuz8JG/
+[![Join us on Discord](https://img.shields.io/discord/182615261403283459.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.badbones69.com)
 
-## Build Status:
-[![Build Status](https://jenkins.badbones69.com/view/Legacy/job/Crazy-Crates-Modern/badge/icon)](https://jenkins.badbones69.com/view/Modern/job/Crazy-Crates-Modern/)
+[![CrazyCrate's Stargazers](https://img.shields.io/github/stars/Crazy-Crew/Crazy-Crates?label=stars&logo=github)](https://github.com/Crazy-Crew/Crazy-Crates/stargazers)
+[![CrazyCrate's Forks](https://img.shields.io/github/forks/Crazy-Crew/Crazy-Crates?label=forks&logo=github)](https://github.com/Crazy-Crew/Crazy-Crates/network/members)
+[![CrazyCrate's Watchers](https://img.shields.io/github/watchers/Crazy-Crew/Crazy-Crates?label=watchers&logo=github)](https://github.com/Crazy-Crew/Crazy-Crates/watchers)
 
-## Latest 1.19.X Version:
-[https://jenkins.badbones69.com/job/Crazy-Crates/](https://jenkins.badbones69.com/view/Modern/job/Crazy-Crates/)
+CrazyCrates is a simple crates plugin that offers quality crates for free!
 
-## Latest 1.17.X & below Version:
-[https://jenkins.badbones69.com/job/Crazy-Crates-Legacy/](https://jenkins.badbones69.com/view/Legacy/job/Crazy-Crates-Legacy/)
+## Contact
+[![Join us on Discord](https://img.shields.io/discord/182615261403283459.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.badbones69.com)
 
-## Repo:
-N/A
+Join us on [Discord](https://discord.badbones69.com)
 
-## Maven:
-```xml
-<repository>
-    <id>crazycrew-repo-releases</id>
-    <name>CrazyCrew Team</name>
-    <url>https://repo.badbones69.com/releases</url>
-</repository>
+## Downloads
+[![Build Status](https://jenkins.badbones69.com/view/Stable/job/Crazy-Crates/badge/icon)](https://jenkins.badbones69.com/view/Stable/job/Crazy-Crates/)
 
-<dependency>
-    <groupId>com.badbones69</groupId>
-    <artifactId>crazycrates-plugin</artifactId>
-    <version>{Latest Version}</version>
-</dependency>
-```
+Downloads can be obtained from the [spigot page](https://www.spigotmc.org/resources/crazy-crates.16470/) or the [Jenkins](https://jenkins.badbones69.com/view/Stable/job/Crazy-Crates/).
+
+## Plugin Data
+[![bStats Graph Data](https://bstats.org/signatures/bukkit/CrazyCrates.svg)](https://bstats.org/signatures/bukkit/CrazyCrates)
+
+## API
+In Progress.
+
+### Dependency Information
+
+#### Maven
+In Progress.
+
+#### Gradle
+In Progress.
+
+## Working with CrazyCrates.
+
+#### Contributing
+Fork the project & open a pull request.
+
+#### Compiling
+Clone the project & run the shadowJar task.
