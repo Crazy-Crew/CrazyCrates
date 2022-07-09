@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.Methods;
+import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.multisupport.ServerProtocol;
 import com.badbones69.crazycrates.multisupport.SkullCreator;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -270,6 +271,18 @@ public class ItemBuilder {
     public Material getMaterial() {
         return material;
     }
+
+    private final CrazyManager crazyManager = CrazyManager.getInstance();
+
+    /**
+     * Set the type of item and its metadata in the builder.
+     * @param newMaterial The 1.13+ string must be in this form: %Material% or %Material%:%MetaData%
+     * @param oldMaterial The 1.12.2- string must be in this form: %Material% or %Material%:%MetaData%
+     * @return The ItemBuilder with updated info.
+     */
+    public ItemBuilder setMaterial(String newMaterial, String oldMaterial) {
+        return setMaterial(crazyManager.useNewMaterial() ? newMaterial : oldMaterial);
+    }
     
     /**
      * Set the type of item the builder is set to.
@@ -278,10 +291,9 @@ public class ItemBuilder {
      */
     public ItemBuilder setMaterial(Material material) {
         this.material = material;
-        this.isHead = material == (Material.matchMaterial("SKULL_ITEM"));
+        this.isHead = material == (crazyManager.useNewMaterial() ? Material.matchMaterial("PLAYER_HEAD") : Material.matchMaterial("SKULL_ITEM"));
         return this;
-    }
-    
+    }    
     /**
      * Set the type of item and its metadata in the builder.
      * @param material The string must be in this form: %Material% or %Material%:%MetaData%
@@ -342,6 +354,7 @@ public class ItemBuilder {
             case "LEATHER_CHESTPLATE":
             case "LEATHER_LEGGINGS":
             case "LEATHER_BOOTS":
+            case "LEATHER_HORSE_ARMOR":
                 this.isLeatherArmor = true;
                 break;
             case "BANNER":
