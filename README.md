@@ -19,7 +19,7 @@ Join us on [Discord](https://discord.badbones69.com)
 Downloads can be obtained from the [spigot page](https://www.spigotmc.org/resources/crazy-crates.16470/) or the [Jenkins](https://jenkins.badbones69.com/view/Stable/job/Crazy-Crates/).
 
 ## Plugin Data
-[![bStats Graph Data](https://bstats.org/signatures/bukkit/CrazyCrates.svg)](https://bstats.org/signatures/bukkit/CrazyCrates)
+[![bStats Graph Data](https://bstats.org/signatures/bukkit/CrazyCrates.svg)](https://bstats.org/plugin/bukkit/CrazyCrates/4514)
 
 ## API
 In Progress.
