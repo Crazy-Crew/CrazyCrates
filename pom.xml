@@ -21,11 +21,14 @@
         <!--This is used to show the build number for jenkins.-->
         <build.number/>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--  compiler settings -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <build>
         <defaultGoal>clean package install</defaultGoal>
-        <finalName>${project.name}-[1.8-1.12]-[v${project.version}]</finalName>
+        <finalName>${project.name}-[1.8-1.17]-[v${project.version}]</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
             <plugin>

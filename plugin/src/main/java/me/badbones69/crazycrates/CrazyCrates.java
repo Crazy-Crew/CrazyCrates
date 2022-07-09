@@ -53,7 +53,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         // Initialize the plugin variable.
         crazyManager.loadPlugin(this);
 
-        if (!ServerProtocol.isLegacy()) {
+        if (ServerProtocol.isNewer(ServerProtocol.v1_17_R1)) {
             checkVersion();
             return;
         }
