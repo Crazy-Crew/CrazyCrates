@@ -50,9 +50,8 @@ public class Wonder implements Listener {
                     slots.remove(slot2 + "");
                     Slots.add(slot1);
                     Slots.add(slot2);
-                    inv.setItem(slot1, new ItemBuilder().setMaterial("STAINED_GLASS_PANE:15").setName(" ").build());
-                    inv.setItem(slot2, new ItemBuilder().setMaterial("STAINED_GLASS_PANE:15").setName(" ").build());
-
+                    inv.setItem(slot1, new ItemBuilder().setMaterial("BLACK_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:15").setName(" ").build());
+                    inv.setItem(slot2, new ItemBuilder().setMaterial("BLACK_STAINED_GLASS_PANE", "STAINED_GLASS_PANE:15").setName(" ").build());
                     for (String slot : slots) {
                         prize = crate.pickPrize(player);
                         inv.setItem(Integer.parseInt(slot), prize.getDisplayItem());
