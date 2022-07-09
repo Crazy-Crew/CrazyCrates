@@ -481,7 +481,7 @@ public class ItemBuilder {
         switch (this.material.name()) {
             case "PLAYER_HEAD" -> this.isHead = true;
             case "POTION", "SPLASH_POTION" -> this.isPotion = true;
-            case "LEATHER_HELMET", "LEATHER_CHESTPLATE", "LEATHER_LEGGINGS", "LEATHER_BOOTS" -> this.isLeatherArmor = true;
+            case "LEATHER_HELMET", "LEATHER_CHESTPLATE", "LEATHER_LEGGINGS", "LEATHER_BOOTS", "LEATHER_HORSE_ARMOR" -> this.isLeatherArmor = true;
             case "BANNER" -> this.isBanner = true;
             case "SHIELD" -> this.isShield = true;
         }
