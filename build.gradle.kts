@@ -1,5 +1,6 @@
 plugins {
     java
+    idea
 
     kotlin("jvm") version "1.7.0"
 
@@ -8,6 +9,13 @@ plugins {
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
+
+idea {
+    module {
+        isDownloadJavadoc = true
+        isDownloadSources = true
+    }
 }
 
 tasks.compileKotlin {
@@ -93,7 +101,7 @@ tasks {
     }
 
     compileJava {
-       options.release.set(17)
+        options.release.set(17)
     }
 
     processResources {
