@@ -58,22 +58,27 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             return;
         }
 
+        // Crate Files
+        String extensions = ServerProtocol.getCurrentProtocol().isNewer(ServerProtocol.v1_12_R1) ? "nbt" : "schematic";
+        String cratesFolder = ServerProtocol.getCurrentProtocol().isNewer(ServerProtocol.v1_12_R1) ? "/Crates1.13-Up" : "/Crates1.12.2-Down";
+        String schemFolder = ServerProtocol.getCurrentProtocol().isNewer(ServerProtocol.v1_12_R1) ? "/Schematics1.13-Up" : "/Schematics1.12.2-Down";
+
         fileManager.logInfo(true)
-                .registerDefaultGenerateFiles("Basic.yml", "/Crates", "/Crates")
-                .registerDefaultGenerateFiles("Classic.yml", "/Crates", "/Crates")
-                .registerDefaultGenerateFiles("Crazy.yml", "/Crates", "/Crates")
-                .registerDefaultGenerateFiles("Galactic.yml", "/Crates", "/Crates")
-                // Schematics
-                .registerDefaultGenerateFiles("classic.schematic", "/Schematics", "/Schematics")
-                .registerDefaultGenerateFiles("nether.schematic", "/Schematics", "/Schematics")
-                .registerDefaultGenerateFiles("outdoors.schematic", "/Schematics", "/Schematics")
-                .registerDefaultGenerateFiles("sea.schematic", "/Schematics", "/Schematics")
-                .registerDefaultGenerateFiles("soul.schematic", "/Schematics", "/Schematics")
-                .registerDefaultGenerateFiles("wooden.schematic", "/Schematics", "/Schematics")
-                // Register all files inside the custom folders.
+                .registerDefaultGenerateFiles("Basic.yml", "/Crates", cratesFolder)
+                .registerDefaultGenerateFiles("Classic.yml", "/Crates", cratesFolder)
+                .registerDefaultGenerateFiles("Crazy.yml", "/Crates", cratesFolder)
+                .registerDefaultGenerateFiles("Galactic.yml", "/Crates", cratesFolder)
+                //Schematics
+                .registerDefaultGenerateFiles("classic." + extensions, "/Schematics", schemFolder)
+                .registerDefaultGenerateFiles("nether." + extensions, "/Schematics", schemFolder)
+                .registerDefaultGenerateFiles("outdoors." + extensions, "/Schematics", schemFolder)
+                .registerDefaultGenerateFiles("sea." + extensions, "/Schematics", schemFolder)
+                .registerDefaultGenerateFiles("soul." + extensions, "/Schematics", schemFolder)
+                .registerDefaultGenerateFiles("wooden." + extensions, "/Schematics", schemFolder)
+                //Register all files inside the custom folders.
                 .registerCustomFilesFolder("/Crates")
                 .registerCustomFilesFolder("/Schematics")
-                .setup(plugin);
+                .setup(this);
 
         if (!Files.LOCATIONS.getFile().contains("Locations")) {
             Files.LOCATIONS.getFile().set("Locations.Clear", null);

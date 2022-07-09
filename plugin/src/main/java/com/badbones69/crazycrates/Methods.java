@@ -312,24 +312,26 @@ public class Methods {
         enchantments.put("LOYALTY", "Loyalty");
         return enchantments;
     }
-    
+
     public static ItemBuilder getRandomPaneColor() {
+        boolean newMaterial = crazyManager.useNewMaterial();
         List<String> colors = Arrays.asList(
-                "STAINED_GLASS_PANE:0",
-                "STAINED_GLASS_PANE:1",
-                "STAINED_GLASS_PANE:2",
-                "STAINED_GLASS_PANE:3",
-                "STAINED_GLASS_PANE:4",
-                "STAINED_GLASS_PANE:5",
-                "STAINED_GLASS_PANE:6",
-                "STAINED_GLASS_PANE:7",
-                "STAINED_GLASS_PANE:9",
-                "STAINED_GLASS_PANE:10",
-                "STAINED_GLASS_PANE:11",
-                "STAINED_GLASS_PANE:12",
-                "STAINED_GLASS_PANE:13",
-                "STAINED_GLASS_PANE:14",
-                "STAINED_GLASS_PANE:15");
+                newMaterial ? "WHITE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:0",// 0
+                newMaterial ? "ORANGE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:1",// 1
+                newMaterial ? "MAGENTA_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:2",// 2
+                newMaterial ? "LIGHT_BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:3",// 3
+                newMaterial ? "YELLOW_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:4",// 4
+                newMaterial ? "LIME_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:5",// 5
+                newMaterial ? "PINK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:6",// 6
+                newMaterial ? "GRAY_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:7",// 7
+                //Skipped 8 due to it being basically invisible in a GUI.
+                newMaterial ? "CYAN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:9",// 9
+                newMaterial ? "PURPLE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:10",// 10
+                newMaterial ? "BLUE_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:11",// 11
+                newMaterial ? "BROWN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:12",// 12
+                newMaterial ? "GREEN_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:13",// 13
+                newMaterial ? "RED_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:14",// 14
+                newMaterial ? "BLACK_STAINED_GLASS_PANE" : "STAINED_GLASS_PANE:15");// 15
         return new ItemBuilder().setMaterial(colors.get(random.nextInt(colors.size())));
     }
 

@@ -1,0 +1,80 @@
+Crate:
+  CrateType: QuickCrate
+  CrateName: '&8Classic Crate'
+  Preview-Name: '&8Classic Crate Preview'
+  StartingKeys: 0
+  InGUI: false
+  Slot: 14
+  OpeningBroadCast: true
+  BroadCast: '%Prefix%&6&l%Player% &7is opening a &e&lClassic Chest&7.'
+  Item: 'CHEST'
+  Glowing: false
+  Name: '&e&lClassic Chest'
+  Lore:
+    - '&7This crate contains classic items.'
+    - '&7You have &6%Keys% keys &7to open this crate with.'
+    - '&7&l(&e&l!&7&l) Right click to view rewards.'
+  Preview:
+    Toggle: true
+    ChestLines: 6
+    Glass:
+      Toggle: true
+      Item: 'YELLOW_STAINED_GLASS_PANE'
+  PhysicalKey:
+    Name: '&e&lClassic Crate &c&lKey'
+    Lore:
+      - '&7A special Key'
+      - '&7For a special Crate.'
+    Item: 'TRIPWIRE_HOOK'
+    Glowing: True
+  Hologram:
+    Toggle: true
+    Height: 1.5
+    Message:
+      - '&e&lClassic Chest'
+  Prizes:
+    1:
+      DisplayName: '&a&lFancy Pants'
+      DisplayItem: 'CHAINMAIL_LEGGINGS'
+      DisplayAmount: 1
+      Lore:
+        - '&7Win a fancy pair of pants.'
+        - '&6&lChance: &c&l40%'
+      DisplayEnchantments:
+        - 'PROTECTION_ENVIRONMENTAL:2'
+      MaxRange: 100
+      Chance: 40
+      Items:
+        - 'Item:CHAINMAIL_LEGGINGS, Amount:1, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
+      Messages:
+        - '&7You just won a &a&lFancy Pants&7.'
+    2:
+      DisplayName: '&b&lClassic Sword'
+      DisplayItem: 'DIAMOND_SWORD'
+      DisplayAmount: 1
+      Lore:
+        - '&7Win a old classic sword.'
+        - '&6&lChance: &c&l35%'
+      DisplayEnchantments:
+        - 'DAMAGE_ALL:2'
+        - 'FIRE_ASPECT:1'
+      MaxRange: 100
+      Chance: 35
+      Items:
+        - 'Item:DIAMOND_SWORD, Amount:1, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1'
+      Messages:
+        - '&7You just won a &b&lClassic Sword&7.'
+    3:
+      DisplayName: '&e&l$100,000'
+      DisplayItem: 'SUNFLOWER'
+      DisplayAmount: 1
+      Lore:
+        - '&7Make it rain a lot of Money.'
+        - '&6&lChance: &c&l20%'
+      MaxRange: 100
+      Chance: 20
+      Firework: true
+      Commands:
+        - 'eco give %Player% 100000'
+      Messages:
+        - '&7You just won &a$100,000&7.'

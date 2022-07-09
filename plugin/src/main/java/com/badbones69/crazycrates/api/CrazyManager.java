@@ -26,6 +26,8 @@ import com.badbones69.crazycrates.multisupport.ServerProtocol;
 import com.badbones69.crazycrates.multisupport.Support;
 import com.badbones69.crazycrates.multisupport.nms.NMSSupport;
 import com.badbones69.crazycrates.multisupport.nms.v1_12_R1.NMS_v1_12_R1;
+import com.badbones69.crazycrates.multisupport.nms.v1_16_R3.NMS_v1_16_R3;
+import com.badbones69.crazycrates.multisupport.nms.v1_17_R1.NMS_v1_17_R1;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import com.badbones69.crazycrates.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.api.enums.CrateType;
@@ -130,7 +132,12 @@ public class CrazyManager {
      * True if at least one crate gives new players keys and false if none give new players keys.
      */
     private boolean giveNewPlayersKeys;
-    
+
+    /**
+     * True if using 1.13+ material names and false if using lower versions.
+     */
+    private boolean useNewMaterial;
+
     private boolean useNewSounds;
     
     /**
@@ -193,7 +200,8 @@ public class CrazyManager {
         crateSchematics.clear();
 
         ServerProtocol version = ServerProtocol.getCurrentProtocol();
-        useNewSounds = ServerProtocol.isAtLeast(ServerProtocol.v1_12_R1);
+        useNewMaterial = ServerProtocol.isNewer(ServerProtocol.v1_12_R1);
+        useNewSounds = ServerProtocol.isAtLeast(ServerProtocol.v1_9_R1);
 
         switch (version) {
             case v1_8_R1:
@@ -203,6 +211,14 @@ public class CrazyManager {
                 break;
             case v1_12_R1:
                 nmsSupport = new NMS_v1_12_R1();
+                break;
+            case v1_16_R1:
+            case v1_16_R2:
+            case v1_16_R3:
+                nmsSupport = new NMS_v1_16_R3();
+                break;
+            case v1_17_R1:
+                nmsSupport = new NMS_v1_17_R1();
                 break;
         }
 
@@ -1392,7 +1408,15 @@ public class CrazyManager {
     public HologramController getHologramController() {
         return hologramController;
     }
-    
+
+    /**
+     * Check if the server uses new 1.13+ material names.
+     * @return True if the server is 1.13+ and false if it is 1.12.2-.
+     */
+    public boolean useNewMaterial() {
+        return useNewMaterial;
+    }
+
     /**
      * Get the correct sound for the version of minecraft.
      * @param newSound The sound from 1.9+

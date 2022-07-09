@@ -1,5 +1,5 @@
 Crate:
-  #Type of crate (CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War/Cosmic(This requires an additional info to work.)).
+  #Type of crate (CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War/Cosmic(This requires a additional info to work.)).
   CrateType: CSGO
   #Name of the Inventory if a GUI crate.
   CrateName: '&8Basic Crate'
@@ -35,7 +35,7 @@ Crate:
       #Turn the glass boarder in the preview on and off.
       Toggle: true
       #The item that shows in the boarder. Can be glass or any other item.
-      Item: 'STAINED_GLASS_PANE:7'
+      Item: 'GRAY_STAINED_GLASS_PANE'
   PhysicalKey:
     #Name of the Key.
     Name: '&7&lBasic Crate &b&lKey'
@@ -47,6 +47,7 @@ Crate:
     Item: 'TRIPWIRE_HOOK'
     #Makes the key look enchanted.
     Glowing: true
+    #Settings for the holograms.
   Hologram:
     #Toggle on and off the holograms for the crates.
     Toggle: true
@@ -61,7 +62,7 @@ Crate:
       #Name of the item shown by the crate.
       DisplayName: '&7&lBasic Grass'
       #Item that is shown by the crate.
-      DisplayItem: 'GRASS'
+      DisplayItem: 'GRASS_BLOCK'
       #The amount that is displayed.
       DisplayAmount: 1
       #Lore will be shown in rewards GUI.
@@ -86,16 +87,16 @@ Crate:
       Unbreakable: false
       #When set to true, tags like Armor, Unbreakable and other tags are hidden and not visible to the user.
       HideItemFlags: false
-      # Items that the player wins if this prize is picked. (If you wish not to give an Item in the prize just delete the Items Section)
+      # Items that the player wins if this prize is picked. (If you wish not to give an Item in the prize just delete the Items Section) 
       # Items: Options
-      # Item:<ID:MD> - You can choose the item with its id and meta data.
+      # Item:<Item Name> - The item you wish to give.
       # Amount:<Number> - Choose how many of the item you get.
       # Name:<Name> - The display name that goes on the item.
       # Lore:<Line 1>,<Line 2>,<Line 3>,<Line 4> - The lore that will go under the enchantments. Split lines with a ','
       # Unbreakable-Item:<True/False> - Will add the Unbreaking NBT tag to the item to allow custom textured items to be gained through the envoys.
       # <Enchantment>:<Level> - Choose the enchantment you want to add to the item. You can use the in-game names of the enchantment if you want. Replace the spaces in the name with "_".
       Items:
-        - 'Item:GRASS, Amount:32, Name:&7&lBasic Grass'
+        - 'Item:GRASS_BLOCK, Amount:32, Name:&7&lBasic Grass'
       #Commands are the commands that are run when this prize is won. (If you wish not to use a CMD in the prize just delete the Commands Section)
       #You can use %Player% to get the player that won the prize.
       Commands:
@@ -106,7 +107,7 @@ Crate:
         - '&7You just won a &7&lBasic Grass&7.'
       #This allows for one time winnable prizes. If a player has one of the permissions then they will not be able to win it.
       BlackListed-Permissions: [ ]
-      #This allows users who have won the same prize before to get alternative prizes. They must have a BlackListed-Permission to get an alternative prize.
+      #This allows users who have won the same prize before to get alternative prizes. They must of a BlackListed-Permission to get a alternative prize.
       Alternative-Prize:
         #Toggle if the prize will use alternative prizes for the blacklisted permission.
         Toggle: false
@@ -115,7 +116,7 @@ Crate:
         Items: [ ]
     2:
       DisplayName: '&b&lCheap Helmet'
-      DisplayItem: 'GOLD_HELMET'
+      DisplayItem: 'GOLDEN_HELMET'
       DisplayAmount: 1
       Lore:
         - '&7Win a cheap helmet.'
@@ -123,10 +124,10 @@ Crate:
       MaxRange: 100
       Chance: 60
       Items:
-        - 'Item:GOLD_HELMET, Amount:1, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
+        - 'Item:GOLDEN_HELMET, Amount:1, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
     3:
       DisplayName: '&e&l$1,000'
-      DisplayItem: 'DOUBLE_PLANT:0'
+      DisplayItem: 'SUNFLOWER'
       DisplayAmount: 1
       Lore:
         - '&7Make it rain Money.'
@@ -146,4 +147,4 @@ Crate:
         Messages:
           - '&8[&bCrazyCrates&8]: &7You have already won that prize, so enjoy some gold nuggets.'
         Commands:
-          - 'give %player% 371 16'
+          - 'give %player% gold_nugget 16'

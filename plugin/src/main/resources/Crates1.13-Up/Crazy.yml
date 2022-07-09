@@ -1,0 +1,79 @@
+Crate:
+  CrateType: QuadCrate
+  CrateName: '&8Crazy Crate'
+  Preview-Name: '&8Crazy Crate Preview'
+  StartingKeys: 0
+  InGUI: true
+  Slot: 25
+  OpeningBroadCast: true
+  BroadCast: '%Prefix%&6&l%Player% &7is opening a &b&lCrazy Chest&7.'
+  Item: 'CHEST'
+  Glowing: false
+  Name: '&b&lCrazy Chest'
+  Lore:
+    - '&7This crate contains Crazy things.'
+    - '&7You have &6%Keys% keys &7to open this crate with.'
+    - '&7&l(&e&l!&7&l) Right click to view rewards.'
+  Preview:
+    Toggle: true
+    ChestLines: 6
+    Glass:
+      Toggle: true
+      Item: 'BLACK_STAINED_GLASS_PANE'
+  PhysicalKey:
+    Name: '&b&lCrazy Crate &6&lKey'
+    Lore:
+      - '&7A special Key'
+      - '&7For a special Crate.'
+    Item: 'TRIPWIRE_HOOK'
+    Glowing: True
+  Hologram:
+    Toggle: true
+    Height: 1.5
+    Message:
+      - '&b&lCrazy Chest'
+  Prizes:
+    1:
+      DisplayName: '&3&lRare ChestPlate'
+      DisplayItem: 'DIAMOND_CHESTPLATE'
+      DisplayAmount: 1
+      Lore:
+        - '&7Win a very rare chest plate.'
+        - '&6&lChance: &c&l40%'
+      DisplayEnchantments:
+        - 'PROTECTION_ENVIRONMENTAL:5'
+        - 'DURABILITY:3'
+      MaxRange: 100
+      Chance: 40
+      Items:
+        - 'Item:DIAMOND_CHESTPLATE, Amount:1, Name:&3Rare ChestPlate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3'
+    2:
+      DisplayName: '&b&lCrazy &4&lSword'
+      DisplayItem: 'GOLDEN_SWORD'
+      DisplayAmount: 1
+      Lore:
+        - '&7Win a crazy cool sword.'
+        - '&6&lChance: &c&l35%'
+      DisplayEnchantments:
+        - 'DAMAGE_ALL:5'
+        - 'FIRE_ASPECT:1'
+      MaxRange: 100
+      Chance: 35
+      Items:
+        - 'Item:GOLDEN_SWORD, Amount:1, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1'
+      Messages:
+        - '&7You just won a &b&lCrazy &4&lSword&7.'
+    3:
+      DisplayName: '&e&l$1,000,000'
+      DisplayItem: 'SUNFLOWER'
+      DisplayAmount: 1
+      Lore:
+        - '&7Make it rain a butt load of Money.'
+        - '&6&lChance: &c&l20%'
+      MaxRange: 100
+      Chance: 20
+      Firework: true
+      Commands:
+        - 'eco give %Player% 1000000'
+      Messages:
+        - '&7You just won &a$1,000,000&7.'

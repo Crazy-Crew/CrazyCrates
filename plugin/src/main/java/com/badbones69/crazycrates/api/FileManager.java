@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api;
 
+import com.badbones69.crazycrates.multisupport.ServerProtocol;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -349,7 +350,7 @@ public class FileManager {
         
         // ENUM_NAME("fileName.yml", "fileLocation.yml"),
         // ENUM_NAME("fileName.yml", "newFileLocation.yml", "oldFileLocation.yml"),
-        CONFIG("config.yml", "config.yml"),
+        CONFIG("config.yml", "config.yml", "config1.13-Up.yml", "config1.12.2-Down.yml"),
         MESSAGES("Messages.yml", "Messages.yml"),
         LOCATIONS("Locations.yml", "Locations.yml"),
         DATA("data.yml", "data.yml");
@@ -379,6 +380,17 @@ public class FileManager {
             this.fileName = fileName;
             this.fileLocation = fileLocation;
             this.fileJar = fileJar;
+        }
+
+        /**
+         * The files that the server will try and load.
+         * @param fileName The file name that will be in the plugin's folder.
+         * @param fileLocation The location of the file will be in the plugin's folder.
+         * @param newFileJar The location of the 1.13+ file version in the jar.
+         * @param oldFileJar The location of the 1.12.2- file version in the jar.
+         */
+        Files(String fileName, String fileLocation, String newFileJar, String oldFileJar) {
+            this(fileName, fileLocation, ServerProtocol.getCurrentProtocol().isNewer(ServerProtocol.v1_12_R1) ? newFileJar : oldFileJar);
         }
         
         /**
