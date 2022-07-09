@@ -14,7 +14,7 @@ public class CosmicCrateManager extends CrateManager {
     
     public CosmicCrateManager(FileConfiguration file) {
         this.file = file;
-        CrazyManager cc = CrazyManager.getInstance();
+        CrazyManager crazyManager = CrazyManager.getInstance();
         String path = "Crate.Crate-Type-Settings.";
         totalPrizes = file.getInt(path + "Total-Prize-Amount", 4);
         mysteryCrate = new ItemBuilder()
@@ -23,7 +23,7 @@ public class CosmicCrateManager extends CrateManager {
         .setLore(file.contains(path + "Mystery-Crate.Lore") ? file.getStringList(path + "Mystery-Crate.Lore") : Collections.singletonList("&7You may choose 4 crates."));
         mysteryCrate.getNBTItem().setString("Cosmic-Mystery-Crate", "Mystery Crate");
         pickedCrate = new ItemBuilder()
-        .setMaterial(file.getString(path + "Picked-Crate.Item", "THIN_GLASS"))
+                .setMaterial(file.getString(path + "Picked-Crate.Item", crazyManager.useNewMaterial() ? "GLASS_PANE" : "THIN_GLASS"))
         .setName(file.getString(path + "Picked-Crate.Name", "&f&l???"))
         .setLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("&7You have chosen #%slot%."));
         pickedCrate.getNBTItem().setString("Cosmic-Picked-Crate", "Picked Crate");
