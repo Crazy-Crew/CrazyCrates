@@ -77,13 +77,15 @@ public class Crate {
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
         this.maxSlots = previewChestLines * 9;
+
         for (int amount = preview.size(); amount > maxSlots - (borderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0); amount -= maxSlots - (borderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0), maxPage++) ;
+
         this.crateInventoryName = file != null ? Methods.sanitizeColor(file.getString("Crate.CrateName")) : "";
         this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
         this.hologram = hologram != null ? hologram : new CrateHologram();
-        //TODO Add more managers for editing other crate types.
-        if (crateType == CrateType.COSMIC) {
-            this.manager = new CosmicCrateManager(file);
+
+        switch (crateType) {
+            case COSMIC -> this.manager = new CosmicCrateManager(file);
         }
     }
     
@@ -349,6 +351,7 @@ public class Crate {
 
         for (ItemStack item : getPageItems(page)) {
             int nextSlot = inventory.firstEmpty();
+
             if (nextSlot >= 0) {
                 inventory.setItem(nextSlot, item);
             } else {
