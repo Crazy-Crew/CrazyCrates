@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api.managers;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
@@ -10,14 +11,22 @@ import com.badbones69.crazycrates.support.structures.QuadCrateSpiralHandler;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import com.badbones69.crazycrates.support.utils.Schedulers;
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class QuadCrateManager {
 
@@ -112,7 +121,7 @@ public class QuadCrateManager {
         crateSessions.add(instance);
     }
 
-    public boolean startCrate(JavaPlugin plugin) {
+    public boolean startCrate(CrazyCrates plugin) {
 
         // Check if it is on a block.
         if (spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
@@ -244,7 +253,7 @@ public class QuadCrateManager {
         return false;
     }
 
-    public void endCrate(JavaPlugin plugin) {
+    public void endCrate(CrazyCrates plugin) {
         new Schedulers(plugin).later(3 * 20, new BukkitRunnable() {
             @Override
             public void run() {

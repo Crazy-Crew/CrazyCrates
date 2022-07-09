@@ -32,7 +32,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 import java.io.File;
 import java.util.*;
@@ -142,17 +141,17 @@ public class CrazyManager {
     /**
      * The CrazyEnvoys plugin.
      */
-    private JavaPlugin plugin;
+    private CrazyCrates plugin;
 
     /**
      * Get the CrazyEnvoys Plugin.
      * @return The CrazyEnvoys Plugin object.
      */
-    public JavaPlugin getPlugin() {
+    public CrazyCrates getPlugin() {
         return plugin;
     }
 
-    public void loadPlugin(JavaPlugin plugin) {
+    public void loadPlugin(CrazyCrates plugin) {
         this.plugin = plugin;
     }
     

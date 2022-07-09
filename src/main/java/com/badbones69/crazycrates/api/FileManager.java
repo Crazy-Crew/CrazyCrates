@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.api;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class FileManager {
     /**
      * Sets up the plugin and loads all necessary files.
      */
-    public FileManager setup(JavaPlugin plugin) {
+    public FileManager setup(CrazyCrates plugin) {
         if (!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdirs();
 
         files.clear();
@@ -299,7 +299,7 @@ public class FileManager {
         }
     }
     
-    public ArrayList<String> getAllCratesNames(JavaPlugin plugin) {
+    public ArrayList<String> getAllCratesNames(CrazyCrates plugin) {
         ArrayList<String> files = new ArrayList<>();
 
         for (String name : new File(plugin.getDataFolder(), "/crates").list()) {
@@ -415,14 +415,14 @@ public class FileManager {
         private final String homeFolder;
         private FileConfiguration file;
 
-        private final JavaPlugin plugin;
+        private final CrazyCrates plugin;
         
         /**
          * A custom file that is being made.
          * @param name Name of the file.
          * @param homeFolder The home folder of the file.
          */
-        public CustomFile(String name, String homeFolder, JavaPlugin plugin) {
+        public CustomFile(String name, String homeFolder, CrazyCrates plugin) {
             this.name = name.replace(".yml", "");
             this.plugin = plugin;
             this.fileName = name;

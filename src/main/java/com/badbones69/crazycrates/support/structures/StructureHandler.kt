@@ -1,16 +1,16 @@
 package com.badbones69.crazycrates.support.structures
 
+import com.badbones69.crazycrates.CrazyCrates
 import com.badbones69.crazycrates.support.structures.interfaces.StructureControl
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.structure.Mirror
 import org.bukkit.block.structure.StructureRotation
-import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.util.*
 
-class StructureHandler(private val plugin: JavaPlugin, val file: File) : StructureControl {
+class StructureHandler(private val plugin: CrazyCrates, val file: File) : StructureControl {
 
     private val structureManager = plugin.server.structureManager.loadStructure(file)
 

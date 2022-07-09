@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.support.utils
 
-import org.bukkit.plugin.java.JavaPlugin
+import com.badbones69.crazycrates.CrazyCrates
 
-class Schedulers(private val plugin: JavaPlugin) {
+class Schedulers(private val plugin: CrazyCrates) {
 
     /**
      * Better syntax for running sync tasks
