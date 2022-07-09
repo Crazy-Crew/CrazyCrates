@@ -508,7 +508,7 @@ public class Crate {
             List<String> enchantments = new ArrayList<>();
 
             for (Enchantment enchantment : item.getEnchantments().keySet()) {
-                enchantments.add((enchantment.getKey().getKey()));
+                enchantments.add((enchantment.getKey().getKey() + ":" + item.getEnchantmentLevel(enchantment)));
             }
 
             if (!enchantments.isEmpty()) {
