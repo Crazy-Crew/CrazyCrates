@@ -51,16 +51,19 @@ public class CCTab implements TabCompleter {
                         completions.remove("Menu"); // Takes out a crate that doesn't exist as a file.
                     }
                 }
+
                 case "set" -> {
                     if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SET_CRATE, true)) {
                         crazyManager.getCrates().forEach(crate -> completions.add(crate.getName()));
                     }
                 }
+
                 case "tp" -> {
                     if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TELEPORT, true)) {
                         crazyManager.getCrateLocations().forEach(location -> completions.add(location.getID()));
                     }
                 }
+
                 case "give", "giveall", "take" -> {
                     if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TAKE_KEY, true)
                             || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_ALL, true)
@@ -71,6 +74,7 @@ public class CCTab implements TabCompleter {
                         completions.add("v");
                     }
                 }
+
                 case "save" -> {
                     if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC, true)) {
                         completions.add("<Schematic Name>");
@@ -89,6 +93,7 @@ public class CCTab implements TabCompleter {
                         }
                     }
                 }
+
                 case "open", "forceopen", "transfer" -> {
                     if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_OPEN, true)
                             || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_FORCE_OPEN, true)
@@ -96,6 +101,7 @@ public class CCTab implements TabCompleter {
                         crazyManager.getPlugin().getServer().getOnlinePlayers().forEach(player -> completions.add(player.getName()));
                     }
                 }
+
                 case "give", "giveall", "take" -> {
                     if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_TAKE_KEY, true)
                             || Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_ALL, true)
@@ -136,5 +142,4 @@ public class CCTab implements TabCompleter {
 
         return new ArrayList<>();
     }
-
 }

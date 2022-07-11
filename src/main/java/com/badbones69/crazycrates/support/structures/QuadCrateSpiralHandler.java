@@ -77,5 +77,4 @@ public class QuadCrateSpiralHandler implements SpiralControl {
 
         return locations;
     }
-
 }

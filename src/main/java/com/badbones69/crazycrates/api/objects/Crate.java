@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.api.managers.CrateManager;
-import com.badbones69.crazycrates.controllers.Preview;
+import com.badbones69.crazycrates.listeners.PreviewListener;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -338,7 +338,7 @@ public class Crate {
      * @return The preview as an Inventory object.
      */
     public Inventory getPreview(Player player) {
-        return getPreview(player, Preview.getPage(player));
+        return getPreview(player, PreviewListener.getPage(player));
     }
     
     /**
@@ -346,7 +346,7 @@ public class Crate {
      * @return The preview as an Inventory object.
      */
     public Inventory getPreview(Player player, int page) {
-        Inventory inventory = crazyManager.getPlugin().getServer().createInventory(null, !borderToggle && (Preview.playerInMenu(player) || maxPage > 1) && maxSlots == 9 ? maxSlots + 9 : maxSlots, previewName);
+        Inventory inventory = player.getServer().createInventory(null, !borderToggle && (PreviewListener.playerInMenu(player) || maxPage > 1) && maxSlots == 9 ? maxSlots + 9 : maxSlots, previewName);
         setDefaultItems(inventory, player);
 
         for (ItemStack item : getPageItems(page)) {
@@ -612,10 +612,10 @@ public class Crate {
             }
         }
 
-        int page = Preview.getPage(player);
+        int page = PreviewListener.getPage(player);
 
-        if (Preview.playerInMenu(player)) {
-            inventory.setItem(getAbsoluteItemPosition(4), Preview.getMenuButton());
+        if (PreviewListener.playerInMenu(player)) {
+            inventory.setItem(getAbsoluteItemPosition(4), PreviewListener.getMenuButton());
         }
 
         if (page == 1) {
@@ -623,7 +623,7 @@ public class Crate {
                 inventory.setItem(getAbsoluteItemPosition(3), boarderItem.build());
             }
         } else {
-            inventory.setItem(getAbsoluteItemPosition(3), Preview.getBackButton(player));
+            inventory.setItem(getAbsoluteItemPosition(3), PreviewListener.getBackButton(player));
         }
 
         if (page == maxPage) {
@@ -631,8 +631,7 @@ public class Crate {
                 inventory.setItem(getAbsoluteItemPosition(5), boarderItem.build());
             }
         } else {
-            inventory.setItem(getAbsoluteItemPosition(5), Preview.getNextButton(player));
+            inventory.setItem(getAbsoluteItemPosition(5), PreviewListener.getNextButton(player));
         }
     }
-
 }

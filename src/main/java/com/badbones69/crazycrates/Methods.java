@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
-import com.badbones69.crazycrates.controllers.FireworkDamageEvent;
+import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.Validate;
@@ -15,6 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -56,6 +57,7 @@ public class Methods {
 
                 for (int counter = 1; counter <= 1; counter++) {
                     num = 1 + random.nextInt(max);
+
                     if (num >= 1 && num <= chance) items.put(item, "Crate.Prizes." + reward);
                 }
             } catch (Exception ignored) {}
@@ -64,13 +66,23 @@ public class Methods {
         return items;
     }
     
-    public static void fireWork(Location loc) {
+    public static void firework(Location loc) {
         final Firework fw = loc.getWorld().spawn(loc, Firework.class);
         FireworkMeta fm = fw.getFireworkMeta();
         fm.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.RED).withColor(Color.AQUA).withColor(Color.ORANGE).withColor(Color.YELLOW).trail(false).flicker(false).build());
         fm.setPower(0);
         fw.setFireworkMeta(fm);
-        FireworkDamageEvent.addFirework(fw);
+        FireworkDamageListener.addFirework(fw);
+        crazyManager.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(crazyManager.getPlugin(), fw :: detonate, 2);
+    }
+
+    public static void firework(Location loc, Color color) {
+        final Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
+        FireworkMeta fm = fw.getFireworkMeta();
+        fm.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL).withColor(color).withColor(color).trail(false).flicker(false).build());
+        fm.setPower(0);
+        fw.setFireworkMeta(fm);
+        FireworkDamageListener.addFirework(fw);
         crazyManager.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(crazyManager.getPlugin(), fw :: detonate, 2);
     }
     
@@ -159,6 +171,7 @@ public class Methods {
                             if (one.getItemMeta().hasLore() && two.getItemMeta().hasLore()) {
                                 if (one.getItemMeta().getLore().size() == two.getItemMeta().getLore().size()) {
                                     int i = 0;
+
                                     for (String lore : one.getItemMeta().getLore()) {
                                         if (!lore.equals(two.getItemMeta().getLore().get(i))) {
                                             return false;
@@ -175,6 +188,7 @@ public class Methods {
                         if (one.getItemMeta().hasLore() && two.getItemMeta().hasLore()) {
                             if (one.getItemMeta().getLore().size() == two.getItemMeta().getLore().size()) {
                                 int i = 0;
+
                                 for (String lore : one.getItemMeta().getLore()) {
                                     if (!lore.equals(two.getItemMeta().getLore().get(i))) {
                                         return false;
@@ -221,6 +235,7 @@ public class Methods {
                 if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
                     return enchantment;
                 }
+
                 if (stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null &&
                 stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
                     return enchantment;
@@ -377,5 +392,4 @@ public class Methods {
 
         return -1;
     }
-
 }

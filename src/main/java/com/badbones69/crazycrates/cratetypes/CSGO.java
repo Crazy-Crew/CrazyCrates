@@ -124,7 +124,7 @@ public class CSGO implements Listener {
                             crazyManager.givePrize(player, prize);
 
                             if (prize.useFireworks()) {
-                                Methods.fireWork(player.getLocation().add(0, 1, 0));
+                                Methods.firework(player.getLocation().add(0, 1, 0));
                             }
 
                             crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
@@ -180,5 +180,4 @@ public class CSGO implements Listener {
             inv.setItem(i + 10, items.get(i));
         }
     }
-    
 }

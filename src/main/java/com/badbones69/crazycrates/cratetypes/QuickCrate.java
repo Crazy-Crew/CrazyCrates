@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.controllers.CrateControl;
+import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
@@ -51,7 +51,7 @@ public class QuickCrate implements Listener {
                 crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 
                 if (prize.useFireworks()) {
-                    Methods.fireWork(loc.clone().add(.5, 1, .5));
+                    Methods.firework(loc.clone().add(.5, 1, .5));
                 }
                 
                 keysUsed++;
@@ -59,7 +59,7 @@ public class QuickCrate implements Listener {
             
             if (!crazyManager.takeKeys(keysUsed, player, crate, keyType, false)) {
                 Methods.failedToTakeKey(player, crate);
-                CrateControl.inUse.remove(player);
+                CrateControlListener.inUse.remove(player);
                 crazyManager.removePlayerFromOpeningList(player);
                 return;
             }
@@ -69,7 +69,7 @@ public class QuickCrate implements Listener {
 
             if (!crazyManager.takeKeys(1, player, crate, keyType, true)) {
                 Methods.failedToTakeKey(player, crate);
-                CrateControl.inUse.remove(player);
+                CrateControlListener.inUse.remove(player);
                 crazyManager.removePlayerFromOpeningList(player);
                 return;
             }
@@ -102,7 +102,7 @@ public class QuickCrate implements Listener {
             new ChestStateHandler().openChest(loc.getBlock(), true);
 
             if (prize.useFireworks()) {
-                Methods.fireWork(loc.clone().add(.5, 1, .5));
+                Methods.firework(loc.clone().add(.5, 1, .5));
             }
 
             tasks.put(player, new BukkitRunnable() {
@@ -127,7 +127,7 @@ public class QuickCrate implements Listener {
         }
 
         new ChestStateHandler().openChest(loc.getBlock(), false);
-        CrateControl.inUse.remove(player);
+        CrateControlListener.inUse.remove(player);
         crazyManager.removePlayerFromOpeningList(player);
     }
     
@@ -141,5 +141,4 @@ public class QuickCrate implements Listener {
             e.setCancelled(true);
         }
     }
-
 }

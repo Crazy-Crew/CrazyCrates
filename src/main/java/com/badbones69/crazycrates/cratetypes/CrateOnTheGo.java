@@ -36,7 +36,7 @@ public class CrateOnTheGo implements Listener {
                     crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crazyManager.getOpeningCrate(player).getName(), prize));
 
                     if (prize.useFireworks()) {
-                        Methods.fireWork(player.getLocation().add(0, 1, 0));
+                        Methods.firework(player.getLocation().add(0, 1, 0));
                     }
 
                     crazyManager.removePlayerFromOpeningList(player);
@@ -44,5 +44,4 @@ public class CrateOnTheGo implements Listener {
             }
         }
     }
-
 }

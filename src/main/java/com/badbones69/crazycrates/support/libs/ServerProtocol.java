@@ -100,5 +100,4 @@ public enum ServerProtocol {
 
         return result;
     }
-
 }

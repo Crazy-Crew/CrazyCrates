@@ -34,7 +34,7 @@ import java.util.Random;
 public class QuadCrate implements Listener {
 
     private final CrazyManager crazyManager = CrazyManager.getInstance();
-    private final SessionManager sessionManager = SessionManager.INSTANCE;
+    private final SessionManager sessionManager = new SessionManager();
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
@@ -166,5 +166,4 @@ public class QuadCrate implements Listener {
             sessionManager.getSession(player).endCrate(crazyManager.getPlugin());
         }
     }
-
 }

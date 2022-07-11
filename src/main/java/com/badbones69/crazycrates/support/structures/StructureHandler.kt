@@ -73,6 +73,7 @@ class StructureHandler(private val plugin: CrazyCrates, val file: File) : Struct
                 }
             }
         }
+
         return preStructureBlocks
     }
 
@@ -100,5 +101,4 @@ class StructureHandler(private val plugin: CrazyCrates, val file: File) : Struct
             Material.SPRUCE_WALL_SIGN
         )
     }
-
 }

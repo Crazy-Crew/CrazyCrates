@@ -71,5 +71,4 @@ class ChestStateHandler : ChestControl {
 
         block.state.update(true)
     }
-
 }

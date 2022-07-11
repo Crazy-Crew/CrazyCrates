@@ -19,7 +19,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.HashMap;
 
 public class War implements Listener {
@@ -150,7 +149,7 @@ public class War implements Listener {
                     crazyManager.givePrize(player, prize);
 
                     if (prize.useFireworks()) {
-                        Methods.fireWork(player.getLocation().add(0, 1, 0));
+                        Methods.firework(player.getLocation().add(0, 1, 0));
                     }
 
                     crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
@@ -224,5 +223,4 @@ public class War implements Listener {
             }
         }
     }
-    
 }

@@ -10,10 +10,9 @@ import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
-import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.controllers.CrateControl;
-import com.badbones69.crazycrates.controllers.GUIMenu;
-import com.badbones69.crazycrates.controllers.Preview;
+import com.badbones69.crazycrates.listeners.CrateControlListener;
+import com.badbones69.crazycrates.listeners.MenuListener;
+import com.badbones69.crazycrates.listeners.PreviewListener;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -29,7 +28,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
-import static com.badbones69.crazycrates.CrazyCratesKt.cleanFiles;
 import static com.badbones69.crazycrates.support.utils.ConstantsKt.color;
 
 public class CCCommand implements CommandExecutor {
@@ -47,11 +45,10 @@ public class CCCommand implements CommandExecutor {
                 return true;
             }
 
-            GUIMenu.openGUI((Player) sender);
+            MenuListener.openGUI((Player) sender);
             return true;
         } else {
             if (args[0].equalsIgnoreCase("help")) {
-
                 if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_HELP, false)) {
                     sender.sendMessage(Messages.ADMIN_HELP.getMessage());
                 } else if (Methods.permCheck(sender, Permissions.CRAZY_CRATES_PLAYER_HELP, false)) {
@@ -60,7 +57,6 @@ public class CCCommand implements CommandExecutor {
 
                 return true;
             } else if (args[0].equalsIgnoreCase("set1") || args[0].equalsIgnoreCase("set2")) {
-
                 if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SET, false)) return true;
 
                 Player player = (Player) sender;
@@ -81,7 +77,6 @@ public class CCCommand implements CommandExecutor {
                 player.sendMessage(Methods.getPrefix("&7You have set location #" + set + "."));
                 return true;
             } else if (args[0].equalsIgnoreCase("save")) { // /crates save <File Name>
-
                 if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_SCHEMATIC_SAVE, false)) return true;
 
                 Location[] locations = crazyManager.getSchematicLocations().get(((Player) sender).getUniqueId());
@@ -114,7 +109,8 @@ public class CCCommand implements CommandExecutor {
                             try {
                                 crate.addEditorItem(prize, item);
                             } catch (Exception e) {
-                                crazyManager.getPlugin().getLogger().warning("Failed to add a new prize to the " + crate.getName() + " crate.");
+                                player.getServer().getLogger().warning("Failed to add a new prize to the " + crate.getName() + " crate.");
+
                                 e.printStackTrace();
                             }
 
@@ -141,7 +137,7 @@ public class CCCommand implements CommandExecutor {
                 fileManager.reloadAllFiles();
                 fileManager.setup(crazyManager.getPlugin());
                 
-                cleanFiles();
+                crazyManager.getPlugin().cleanFiles();
                 
                 crazyManager.loadCrates();
                 sender.sendMessage(Messages.RELOAD.getMessage());
@@ -151,10 +147,9 @@ public class CCCommand implements CommandExecutor {
 
                 if (args.length >= 2) {
                     Crate crate = crazyManager.getCrateFromName(args[1]);
+
                     if (crate != null) {
-                        for (Prize prize : crate.getPrizes()) {
-                            crazyManager.givePrize((Player) sender, prize);
-                        }
+                        crate.getPrizes().forEach(prize -> crazyManager.givePrize((Player) sender, prize));
                     } else {
                         sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[1]));
                         return true;
@@ -167,14 +162,16 @@ public class CCCommand implements CommandExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("admin")) {
                 if (!(sender instanceof Player player)) return true;
+
                 if (!Methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_MENU, false)) return true;
+
                 int size = crazyManager.getCrates().size();
                 int slots = 9;
 
                 for (; size > 9; size -= 9)
                     slots += 9;
 
-                Inventory inv = crazyManager.getPlugin().getServer().createInventory(null, slots, color("&4&lAdmin Keys"));
+                Inventory inv = player.getServer().createInventory(null, slots, color("&4&lAdmin Keys"));
 
                 for (Crate crate : crazyManager.getCrates()) {
                     if (crate.getCrateType() != CrateType.MENU) {
@@ -188,25 +185,20 @@ public class CCCommand implements CommandExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("list")) {
                 if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_LIST, false)) return true;
+
                 StringBuilder crates = new StringBuilder();
                 String brokecrates;
 
-                for (Crate crate : crazyManager.getCrates()) {
-                    crates.append("&a").append(crate.getName()).append("&8, ");
-                }
+                crazyManager.getCrates().forEach(crate -> crates.append("&a").append(crate.getName()).append("&8, "));
 
                 StringBuilder brokecratesBuilder = new StringBuilder();
 
-                for (String crate : crazyManager.getBrokeCrates()) {
-                    brokecratesBuilder.append("&c").append(crate).append(".yml&8, ");
-                }
+                crazyManager.getBrokeCrates().forEach(crate -> brokecratesBuilder.append("&c").append(crate).append(".yml&8,"));
 
                 brokecrates = brokecratesBuilder.toString();
                 sender.sendMessage(color("&e&lCrates:&f " + crates));
 
-                if (brokecrates.length() > 0) {
-                    sender.sendMessage(color("&6&lBroken Crates:&f " + brokecrates.substring(0, brokecrates.length() - 2)));
-                }
+                if (brokecrates.length() > 0) sender.sendMessage(color("&6&lBroken Crates:&f " + brokecrates.substring(0, brokecrates.length() - 2)));
 
                 sender.sendMessage(color("&e&lAll Crate Locations:"));
                 sender.sendMessage(color("&c[ID]&8, &c[Crate]&8, &c[World]&8, &c[X]&8, &c[Y]&8, &c[Z]"));
@@ -264,6 +256,7 @@ public class CCCommand implements CommandExecutor {
                 if (args.length == 2) {
                     Player player = (Player) sender;
                     String c = args[1]; // Crate
+
                     for (Crate crate : crazyManager.getCrates()) {
                         if (crate.getName().equalsIgnoreCase(c)) {
                             Block block = player.getTargetBlock(null, 5);
@@ -327,8 +320,8 @@ public class CCCommand implements CommandExecutor {
                                     }
                                 }
 
-                                Preview.setPlayerInMenu(player, false);
-                                Preview.openNewPreview(player, crate);
+                                PreviewListener.setPlayerInMenu(player, false);
+                                PreviewListener.openNewPreview(player, crate);
                             }
                         } else {
                             sender.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
@@ -389,13 +382,14 @@ public class CCCommand implements CommandExecutor {
                                 if (!hasKey) {
                                     if (config.contains("Settings.Need-Key-Sound")) {
                                         Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
+
                                         if (sound != null) {
                                             player.playSound(player.getLocation(), sound, 1f, 1f);
                                         }
                                     }
 
                                     player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
-                                    CrateControl.knockBack(player, player.getTargetBlock(null, 1).getLocation().add(.5, 0, .5));
+                                    CrateControlListener.knockBack(player, player.getTargetBlock(null, 1).getLocation().add(.5, 0, .5));
                                     return true;
                                 }
 
@@ -449,12 +443,13 @@ public class CCCommand implements CommandExecutor {
                                     }
                                 }
 
-                                if (CrazyManager.getInstance().isInOpeningList(player)) {
+                                if (crazyManager.isInOpeningList(player)) {
                                     sender.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
                                     return true;
                                 }
 
                                 CrateType type = crate.getCrateType();
+
                                 if (type != null) {
                                     if (type != CrateType.CRATE_ON_THE_GO && type != CrateType.QUICK_CRATE && type != CrateType.FIRE_CRACKER) {
                                         crazyManager.openCrate(player, crate, KeyType.FREE_KEY, player.getLocation(), true, false);
@@ -514,7 +509,7 @@ public class CCCommand implements CommandExecutor {
 
                                 if (crazyManager.getVirtualKeys(player, crate) >= amount) {
                                     PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.TRANSFER, amount);
-                                    crazyManager.getPlugin().getServer().getPluginManager().callEvent(event);
+                                    player.getServer().getPluginManager().callEvent(event);
 
                                     if (!event.isCancelled()) {
                                         crazyManager.takeKeys(amount, player, crate, KeyType.VIRTUAL_KEY, false);
@@ -544,6 +539,7 @@ public class CCCommand implements CommandExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("giveall")) { // /crates giveall <Physical/Virtual> <Crate> [Amount]
                 if (!Methods.permCheck(sender, Permissions.CRAZY_CRATES_ADMIN_GIVE_ALL, false)) return true;
+
                 if (args.length >= 3) {
                     int amount = 1;
 
@@ -574,7 +570,7 @@ public class CCCommand implements CommandExecutor {
 
                             for (Player player : crazyManager.getPlugin().getServer().getOnlinePlayers()) {
                                 PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_ALL_COMMAND, amount);
-                                crazyManager.getPlugin().getServer().getPluginManager().callEvent(event);
+                                player.getServer().getPluginManager().callEvent(event);
 
                                 if (!event.isCancelled()) {
                                     player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
@@ -595,6 +591,7 @@ public class CCCommand implements CommandExecutor {
                     sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[2]));
                     return true;
                 }
+
                 sender.sendMessage(color(Methods.getPrefix() + "&c/crates giveall <Physical/Virtual> <Crate> <Amount>"));
                 return true;
             } else if (args[0].equalsIgnoreCase("give")) { // /crates give <Physical/Virtual> <Crate> [Amount] [Player]
@@ -646,7 +643,7 @@ public class CCCommand implements CommandExecutor {
                 if (args.length >= 3) {
                     if (crate.getCrateType() != CrateType.MENU) {
                         PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(target, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
-                        crazyManager.getPlugin().getServer().getPluginManager().callEvent(event);
+                        sender.getServer().getPluginManager().callEvent(event);
 
                         if (!event.isCancelled()) {
                             if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
@@ -825,5 +822,4 @@ public class CCCommand implements CommandExecutor {
         sender.sendMessage(color(Methods.getPrefix() + "&cPlease do /crates help for more info."));
         return true;
     }
-
 }

@@ -106,6 +106,7 @@ public class Wheel implements Listener {
 
                         if (slow >= 2) {
                             ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+
                             for (int slot = 0; slot < 54; slot++) {
                                 if (!getBorder().contains(slot)) {
                                     inv.setItem(slot, item);
@@ -127,7 +128,7 @@ public class Wheel implements Listener {
                             crazyManager.givePrize(player, prize);
 
                             if (prize.useFireworks()) {
-                                Methods.fireWork(player.getLocation().add(0, 1, 0));
+                                Methods.firework(player.getLocation().add(0, 1, 0));
                             }
 
                             crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
@@ -192,5 +193,4 @@ public class Wheel implements Listener {
         slots.add(12);
         return slots;
     }
-    
 }

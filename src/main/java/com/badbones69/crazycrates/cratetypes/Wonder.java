@@ -80,7 +80,7 @@ public class Wonder implements Listener {
                     crazyManager.givePrize(player, prize);
 
                     if (prize.useFireworks()) {
-                        Methods.fireWork(player.getLocation().add(0, 1, 0));
+                        Methods.firework(player.getLocation().add(0, 1, 0));
                     }
 
                     crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
@@ -97,5 +97,4 @@ public class Wonder implements Listener {
             }
         }.runTaskTimer(crazyManager.getPlugin(), 0, 2));
     }
-    
 }

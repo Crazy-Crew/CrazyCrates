@@ -109,6 +109,7 @@ public class Cosmic implements Listener {
             if (e.getView().getTitle().equals(Methods.sanitizeColor(file.getString("Crate.CrateName") + " - Prizes"))) {
                 e.setCancelled(true);
                 int slot = e.getRawSlot();
+
                 if (inCosmic(slot)) {
                     for (int i : picks.get(player)) {
                         if (slot == i) {
@@ -129,7 +130,7 @@ public class Cosmic implements Listener {
                                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 
                                     if (prize.useFireworks()) {
-                                        Methods.fireWork(player.getLocation().add(0, 1, 0));
+                                        Methods.firework(player.getLocation().add(0, 1, 0));
                                     }
                                 }
 
@@ -232,6 +233,7 @@ public class Cosmic implements Listener {
                                         crazyManager.endCrate(player);
                                         showRewards(player, crate);
                                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1, 1);
+
                                         new BukkitRunnable() {
                                             @Override
                                             public void run() {
@@ -333,5 +335,4 @@ public class Cosmic implements Listener {
         // The last slot in cosmic crate is 27
         return slot < 27;
     }
-    
 }

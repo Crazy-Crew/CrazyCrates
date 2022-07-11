@@ -91,7 +91,7 @@ public class Roulette implements Listener {
                             crazyManager.givePrize(player, prize);
 
                             if (prize.useFireworks()) {
-                                Methods.fireWork(player.getLocation().add(0, 1, 0));
+                                Methods.firework(player.getLocation().add(0, 1, 0));
                             }
 
                             crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
@@ -100,6 +100,7 @@ public class Roulette implements Listener {
                         }
 
                         crazyManager.removePlayerFromOpeningList(player);
+
                         new BukkitRunnable() {
                             @Override
                             public void run() {
@@ -129,5 +130,4 @@ public class Roulette implements Listener {
 
         return slow;
     }
-    
 }
