@@ -30,17 +30,16 @@ class StructureHandler(private val plugin: CrazyCrates, val file: File) : Struct
         }
     }
 
-    // Don't need yet
-    override fun saveStructure(location: Array<Location?>?) {
-        runCatching {
-
-        }.onFailure { plugin.logger.warning(it.message) }
-    }
-
     override fun removeStructure(location: Location) {
         structureBlocks.forEach {
             it.location.block.type = Material.AIR
         }
+    }
+
+    override fun saveSchematic(locations: Array<out Location>?) {
+        runCatching {
+
+        }.onFailure { plugin.logger.warning(it.message) }
     }
 
     override fun getStructureX(): Double {

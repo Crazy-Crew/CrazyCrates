@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import java.util.List;
 
-interface StructureControl {
+public interface StructureControl {
 
     void pasteStructure(Location location);
 
