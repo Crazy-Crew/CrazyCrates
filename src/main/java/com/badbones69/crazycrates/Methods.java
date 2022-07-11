@@ -13,6 +13,7 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -73,6 +74,7 @@ public class Methods {
         fm.setPower(0);
         fw.setFireworkMeta(fm);
         FireworkDamageListener.addFirework(fw);
+
         crazyManager.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(crazyManager.getPlugin(), fw :: detonate, 2);
     }
 
@@ -83,6 +85,7 @@ public class Methods {
         fm.setPower(0);
         fw.setFireworkMeta(fm);
         FireworkDamageListener.addFirework(fw);
+
         crazyManager.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(crazyManager.getPlugin(), fw :: detonate, 2);
     }
     
@@ -123,11 +126,11 @@ public class Methods {
     }
     
     public static boolean permCheck(CommandSender sender, Permissions permissions, Boolean tabComplete) {
-        if (sender instanceof ConsoleCommandSender) return true;
+        if (sender instanceof ConsoleCommandSender || sender instanceof RemoteConsoleCommandSender) return true;
 
         Player player = (Player) sender;
 
-        if (player.hasPermission(permissions.getPermission())) {
+        if (player.hasPermission(permissions.getPermission("command"))) {
             return true;
         } else {
             if (!tabComplete) {

@@ -43,5 +43,4 @@ public class CosmicCrateManager extends CrateManager {
     public ItemBuilder getPickedCrate() {
         return pickedCrate;
     }
-    
 }

@@ -35,26 +35,20 @@ public class QuadCrateManager {
     private static final List<QuadCrateManager> crateSessions = new ArrayList<>();
 
     private final QuadCrateManager instance;
+
+    // Get the player.
     private final Player player;
 
-    /**
-     * Check player hand.
-     */
+    // Check player hand.
     private final boolean checkHand;
 
-    /**
-     * The crate that is being used.
-     */
+    // The crate that is being used.
     private final Crate crate;
 
-    /**
-     * The key type.
-     */
+    // The key type.
     private final KeyType keyType;
 
-    /**
-     * The current displayed rewards.
-     */
+    // Get display rewards.
     private final List<Entity> displayedRewards = new ArrayList<>();
 
     /**
@@ -64,42 +58,29 @@ public class QuadCrateManager {
      */
     private final Location spawnLocation;
 
-    /**
-     * The last location the player was originally at.
-     */
+    // The last location the player was originally at.
     private final Location lastLocation;
 
-    /**
-     * Defines the locations of the Chests that will spawn in.
-     */
+    // Defines the locations of the Chests that will spawn in.
     private final ArrayList<Location> crateLocations = new ArrayList<>();
 
-    /**
-     * Stores if the crate is open or not.
-     */
+    // Stores if the crate is open or not.
     private final HashMap<Location, Boolean> cratesOpened = new HashMap<>();
 
-    /**
-     * Saves all the chests spawned by the QuadCrate task.
-     */
+    // Saves all the chests spawned by the QuadCrate task.
     private final HashMap<Location, BlockState> quadCrateChests = new HashMap<>();
 
-    /**
-     * Saves all the old blocks to restore after.
-     */
+    // Saves all the old blocks to restore after.
     private final HashMap<Location, BlockState> oldBlocks = new HashMap<>();
 
-    /**
-     * Get the particles that will be used to display above the crates.
-     */
+    // Get the particles that will be used to display above the crates.
     private final Color particleColor;
     private final QuadCrateParticles particle;
 
-    /**
-     * Get the structure handler.
-     */
+    // Get the structure handler.
     private final StructureHandler handler;
 
+    // Get the manager instance.
     private final CrazyManager crazyManager = CrazyManager.getInstance();
 
     public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler) {
@@ -380,5 +361,4 @@ public class QuadCrateManager {
     public ChestStateHandler quadCrateHandler() {
         return quadCrateHandler;
     }
-
 }

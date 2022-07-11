@@ -16,5 +16,4 @@ public enum QuadCrateParticles {
     public String getName() {
         return name;
     }
-    
 }

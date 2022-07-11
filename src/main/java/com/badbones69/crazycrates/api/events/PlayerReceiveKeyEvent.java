@@ -59,26 +59,15 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
     }
     
     public enum KeyReceiveReason {
-        /**
-         * Received a key from the /cc give command.
-         */
+        // Received a key from the /cc give command.
         GIVE_COMMAND,
-        /**
-         * Received a key from the /cc giveall command.
-         */
+        // Received a key from the /cc giveall command.
         GIVE_ALL_COMMAND,
-        /**
-         * Received when player has come online after being given a key while offline.
-         */
+        // Received when player has come online after being given a key while offline.
         OFFLINE_PLAYER,
-        /**
-         * Received a key as a refund from a crate that failed.
-         */
+        // Received a key as a refund from a crate that failed.
         REFUND,
-        /**
-         * Received a key from the /cc transfer command.
-         */
+        // Received a key from the /cc transfer command.
         TRANSFER
     }
-    
 }

@@ -44,5 +44,4 @@ public class PlayerPrizeEvent extends Event {
     public Prize getPrize() {
         return prize;
     }
-    
 }

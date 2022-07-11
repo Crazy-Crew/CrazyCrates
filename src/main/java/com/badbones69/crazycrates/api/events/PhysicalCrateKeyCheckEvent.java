@@ -50,5 +50,4 @@ public class PhysicalCrateKeyCheckEvent extends Event implements Cancellable {
     public void setCancelled(boolean isCancelled) {
         this.isCancelled = isCancelled;
     }
-    
 }
