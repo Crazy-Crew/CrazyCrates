@@ -1,6 +1,6 @@
-package com.badbones69.crazycrates.api.enums
+package com.badbones69.crazycrates.api.enums;
 
-enum class Permissions(private val defaultPermission: String, private val description: String) {
+public enum Permissions {
 
     CRAZY_CRATES_PLAYER_KEY("player.key", "Check the number of keys you have."),
     CRAZY_CRATES_PLAYER_KEY_OTHERS("player.key.others", "Check the number of keys a player has."),
@@ -30,7 +30,20 @@ enum class Permissions(private val defaultPermission: String, private val descri
     CRAZY_CRATES_ADMIN_SCHEMATIC_SET("admin.schematic.set", "Sets the positions #1 or #2 when making a new schematic for quadcrates."),
     CRAZY_CRATES_ADMIN_SCHEMATIC_SAVE("admin.schematic.save", "Saves the new schematic file to the schematics folder.");
 
-    fun getPermission() = "crazycrates.command.$defaultPermission"
 
-    fun getPermissionDescription() = description
+    private final String defaultPermission;
+    private final String description;
+
+    Permissions(String defaultPermission, String description) {
+        this.defaultPermission = defaultPermission;
+        this.description = description;
+    }
+
+    public String getPermission(String action) {
+        return "crazycrates." + action + "." + defaultPermission;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
