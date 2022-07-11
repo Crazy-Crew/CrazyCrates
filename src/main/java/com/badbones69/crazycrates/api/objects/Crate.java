@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api.objects;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
@@ -7,6 +8,7 @@ import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.api.managers.CrateManager;
 import com.badbones69.crazycrates.listeners.PreviewListener;
+import com.google.inject.Inject;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -47,6 +49,8 @@ public class Crate {
 
     private final FileManager fileManager = FileManager.getInstance();
     private final CrazyManager crazyManager = CrazyManager.getInstance();
+
+    @Inject private CrazyCrates plugin;
     
     /**
      * @param name The name of the crate.
@@ -179,7 +183,7 @@ public class Crate {
         try {
             return prizes.get(new Random().nextInt(prizes.size()));
         } catch (IllegalArgumentException e) {
-            crazyManager.getPlugin().getLogger().warning("Failed to find prize from the " + name + " crate for player " + player.getName() + ".");
+            plugin.getLogger().warning("Failed to find prize from the " + name + " crate for player " + player.getName() + ".");
             return null;
         }
     }

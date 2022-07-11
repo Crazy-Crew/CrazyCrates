@@ -1,7 +1,8 @@
 package com.badbones69.crazycrates.api.enums;
 
-import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.google.inject.Inject;
 import org.bukkit.Location;
 
 public class BrokeLocation {
@@ -10,8 +11,6 @@ public class BrokeLocation {
     private String world;
     private final String locationName;
     private Crate crate;
-
-    private final CrazyManager crazyManager = CrazyManager.getInstance();
     
     public BrokeLocation(String locationName, Crate crate, int x, int y, int z, String world) {
         this.x = x;
@@ -21,6 +20,9 @@ public class BrokeLocation {
         this.crate = crate;
         this.locationName = locationName;
     }
+
+    @Inject
+    private CrazyCrates plugin;
     
     public String getLocationName() {
         return locationName;
@@ -67,7 +69,6 @@ public class BrokeLocation {
     }
     
     public Location getLocation() {
-        return new Location(crazyManager.getPlugin().getServer().getWorld(world), x, y, z);
+        return new Location(plugin.getServer().getWorld(world), x, y, z);
     }
-    
 }

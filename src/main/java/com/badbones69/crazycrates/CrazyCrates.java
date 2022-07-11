@@ -23,7 +23,7 @@ import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import com.badbones69.crazycrates.listeners.MenuListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
-import com.badbones69.crazycrates.support.BinderModule;
+import com.badbones69.crazycrates.modules.PluginModule;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
@@ -62,7 +62,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
             crazyManager.loadPlugin(this);
 
-            BinderModule module = new BinderModule(this);
+            PluginModule module = new PluginModule(this);
 
             injector = module.createInjector();
 
