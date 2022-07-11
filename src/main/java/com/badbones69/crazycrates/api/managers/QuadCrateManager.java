@@ -140,10 +140,18 @@ public class QuadCrateManager {
         }
 
         // Check if the blocks are able to be changed.
-        List<Block> structureLocations = handler.getNearbyBlocks(spawnLocation.clone());
+        List<Block> structureLocations = null;
+
+        try {
+            structureLocations = handler.getNearbyBlocks(spawnLocation.clone());
+        } catch (Exception e) {
+            crazyManager.getPlugin().getLogger().warning(e.getMessage());
+        }
 
         // Loop through the blocks and check if the blacklist contains the block type.
         // Do not open the crate if the block is not able to be changed.
+        assert structureLocations != null;
+
         for (Block block : structureLocations) {
             if (handler.getBlackList().contains(block.getType())) {
                 player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
