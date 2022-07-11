@@ -132,7 +132,7 @@ public class QuadCrateManager {
         }
 
         // Check if schematic folder is empty.
-        if (CrazyManager.getInstance().getCrateSchematics().isEmpty()) {
+        if (crazyManager.getCrateSchematics().isEmpty()) {
             player.sendMessage(Messages.NO_SCHEMATICS_FOUND.getMessage());
             CrazyManager.getInstance().removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
@@ -145,7 +145,7 @@ public class QuadCrateManager {
         try {
             structureLocations = handler.getNearbyBlocks(spawnLocation.clone());
         } catch (Exception e) {
-            crazyManager.getPlugin().getLogger().warning(e.getMessage());
+            player.getServer().getLogger().warning(e.getMessage());
         }
 
         // Loop through the blocks and check if the blacklist contains the block type.

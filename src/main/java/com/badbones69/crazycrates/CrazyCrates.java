@@ -60,6 +60,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onEnable() {
         try {
 
+            crazyManager.loadPlugin(this);
+
             BinderModule module = new BinderModule(this);
 
             injector = module.createInjector();

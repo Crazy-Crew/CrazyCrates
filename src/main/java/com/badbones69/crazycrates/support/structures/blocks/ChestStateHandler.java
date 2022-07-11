@@ -56,14 +56,14 @@ public class ChestStateHandler implements ChestControl {
     public void rotateChest(Block block, int direction) {
 
         BlockFace blockFace = switch (direction) {
-            case 0 -> // East
-                    BlockFace.WEST;
-            case 1 -> // South
-                    BlockFace.NORTH;
-            case 2 -> // West
-                    BlockFace.EAST;
-            case 3 -> // North
+            case 0 -> // South
                     BlockFace.SOUTH;
+            case 1 -> // East
+                    BlockFace.EAST;
+            case 2 -> // West
+                    BlockFace.WEST;
+            case 3 -> // North
+                    BlockFace.NORTH;
             default -> BlockFace.DOWN;
         };
 
