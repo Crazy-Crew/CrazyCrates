@@ -18,7 +18,9 @@ public class HolographicSupport implements HologramController {
     
     public void createHologram(Block block, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();
+
         if (!crateHologram.isEnabled()) return;
+
         double height = crateHologram.getHeight();
         Hologram hologram = HologramsAPI.createHologram(crazyManager.getPlugin(), block.getLocation().add(.5, height, .5));
         crateHologram.getMessages().forEach(line -> hologram.appendTextLine(color(line)));
@@ -27,6 +29,7 @@ public class HolographicSupport implements HologramController {
     
     public void removeHologram(Block block) {
         if (!holograms.containsKey(block)) return;
+
         Hologram hologram = holograms.get(block);
         holograms.remove(block);
         hologram.delete();
@@ -36,5 +39,4 @@ public class HolographicSupport implements HologramController {
         holograms.forEach((key, value) -> value.delete());
         holograms.clear();
     }
-
 }

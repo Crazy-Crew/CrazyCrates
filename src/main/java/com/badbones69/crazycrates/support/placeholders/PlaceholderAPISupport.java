@@ -17,6 +17,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {
         if (player.isOnline()) {
             Player playerOnline = (Player) player;
+
             for (Crate crate : crazyManager.getCrates()) {
                 if (crate.getCrateType() != CrateType.MENU) {
                     if (identifier.equalsIgnoreCase(crate.getName())) {
@@ -29,6 +30,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
                 }
             }
         }
+
         return "";
     }
     
@@ -51,5 +53,4 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
     public @NotNull String getVersion() {
         return crazyManager.getPlugin().getDescription().getVersion();
     }
-    
 }

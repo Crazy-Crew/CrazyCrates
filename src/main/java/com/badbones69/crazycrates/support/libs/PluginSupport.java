@@ -1,17 +1,18 @@
 package com.badbones69.crazycrates.support.libs;
 
-import org.bukkit.Bukkit;
+import com.badbones69.crazycrates.api.CrazyManager;
 
-public enum Support {
+public enum PluginSupport {
     
     PLACEHOLDERAPI("PlaceholderAPI"),
-    MVDWPLACEHOLDERAPI("MVdWPlaceholderAPI"),
     HOLOGRAPHIC_DISPLAYS("HolographicDisplays"),
     DECENT_HOLOGRAMS("DecentHolograms");
     
     private final String name;
+
+    private final CrazyManager crazyManager = CrazyManager.getInstance();
     
-    Support(String name) {
+    PluginSupport(String name) {
         this.name = name;
     }
     
@@ -20,7 +21,6 @@ public enum Support {
     }
     
     public boolean isPluginLoaded() {
-        return Bukkit.getServer().getPluginManager().getPlugin(name) != null;
+        return crazyManager.getPlugin().getServer().getPluginManager().getPlugin(name) != null;
     }
-    
 }
