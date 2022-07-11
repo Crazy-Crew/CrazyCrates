@@ -1,13 +1,13 @@
-package com.badbones69.crazycrates.controllers;
+package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.api.FileManager.Files;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,13 +22,13 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GUIMenu implements Listener {
-    
+public class MenuListener implements Listener {
+
     private static final CrazyManager crazyManager = CrazyManager.getInstance();
     
     public static void openGUI(Player player) {
         int size = Files.CONFIG.getFile().getInt("Settings.InventorySize");
-        Inventory inv = crazyManager.getPlugin().getServer().createInventory(null, size, Methods.sanitizeColor(Files.CONFIG.getFile().getString("Settings.InventoryName")));
+        Inventory inv = player.getServer().createInventory(null, size, Methods.sanitizeColor(Files.CONFIG.getFile().getString("Settings.InventoryName")));
 
         if (Files.CONFIG.getFile().contains("Settings.Filler.Toggle")) {
             if (Files.CONFIG.getFile().getBoolean("Settings.Filler.Toggle")) {
@@ -170,6 +170,7 @@ public class GUIMenu implements Listener {
 
                     if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
                         NBTItem nbtItem = new NBTItem(item);
+
                         if (nbtItem.hasNBTData() && nbtItem.hasKey("CrazyCrates-Crate")) {
                             Crate crate = crazyManager.getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
 
@@ -178,8 +179,8 @@ public class GUIMenu implements Listener {
 
                                     if (crate.isPreviewEnabled()) {
                                         player.closeInventory();
-                                        Preview.setPlayerInMenu(player, true);
-                                        Preview.openNewPreview(player, crate);
+                                        PreviewListener.setPlayerInMenu(player, true);
+                                        PreviewListener.openNewPreview(player, crate);
                                     } else {
                                         player.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
                                     }
@@ -207,6 +208,7 @@ public class GUIMenu implements Listener {
                                 if (!hasKey) {
                                     if (config.contains("Settings.Need-Key-Sound")) {
                                         Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
+
                                         if (sound != null) {
                                             player.playSound(player.getLocation(), sound, 1f, 1f);
                                         }
@@ -240,5 +242,4 @@ public class GUIMenu implements Listener {
     private ArrayList<String> getDisabledWorlds() {
         return new ArrayList<>(Files.CONFIG.getFile().getStringList("Settings.DisabledWorlds"));
     }
-    
 }

@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.controllers;
+package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
@@ -11,11 +11,9 @@ import org.bukkit.event.world.WorldLoadEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
- */
-public class BrokeLocationsControl implements Listener {
-    
+// Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
+public class BrokeLocationsListener implements Listener {
+
     private final CrazyManager crazyManager = CrazyManager.getInstance();
     private final FileManager fileManager = FileManager.getInstance();
     
@@ -45,11 +43,8 @@ public class BrokeLocationsControl implements Listener {
             if (fileManager.isLogging()) {
                 crazyManager.getPlugin().getLogger().warning("Fixed " + fixedAmount + " broken crate locations.");
 
-                if (crazyManager.getBrokeCrateLocations().isEmpty()) {
-                    crazyManager.getPlugin().getLogger().warning("All broken crate locations have been fixed.");
-                }
+                if (crazyManager.getBrokeCrateLocations().isEmpty()) crazyManager.getPlugin().getLogger().warning("All broken crate locations have been fixed.");
             }
         }
     }
-    
 }

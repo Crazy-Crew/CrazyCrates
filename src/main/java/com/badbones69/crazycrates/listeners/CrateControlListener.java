@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.controllers;
+package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
@@ -32,17 +32,14 @@ import org.bukkit.util.Vector;
 import java.util.HashMap;
 import static com.badbones69.crazycrates.support.utils.ConstantsKt.color;
 
-public class CrateControl implements Listener { // Crate Control
+public class CrateControlListener implements Listener { // Crate Control
     
-    /**
-     * A list of crate locations that are in use.
-     */
+    // A list of crate locations that are in use.
     public static HashMap<Player, Location> inUse = new HashMap<>();
+
     private final CrazyManager crazyManager = CrazyManager.getInstance();
     
-    /**
-     * This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
-     */
+    // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
     @EventHandler
     public void onCrateInventoryClick(InventoryClickEvent e) {
         for (Crate crate : crazyManager.getCrates()) {
@@ -88,8 +85,8 @@ public class CrateControl implements Listener { // Crate Control
 
                     if (loc.getCrateType() != CrateType.MENU) {
                         if (loc.getCrate().isPreviewEnabled()) {
-                            Preview.setPlayerInMenu(player, false);
-                            Preview.openNewPreview(player, loc.getCrate());
+                            PreviewListener.setPlayerInMenu(player, false);
+                            PreviewListener.openNewPreview(player, loc.getCrate());
                         } else {
                             player.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
                         }
@@ -120,14 +117,14 @@ public class CrateControl implements Listener { // Crate Control
                 if (crate.getCrateType() == CrateType.MENU) {
                     //This is to stop players in QuadCrate to not be able to try and open a crate set to menu.
                     if (!crazyManager.isInOpeningList(player)) {
-                        GUIMenu.openGUI(player);
+                        MenuListener.openGUI(player);
                     }
 
                     return;
                 }
 
                 PhysicalCrateKeyCheckEvent event = new PhysicalCrateKeyCheckEvent(player, crateLocation);
-                crazyManager.getPlugin().getServer().getPluginManager().callEvent(event);
+                player.getServer().getPluginManager().callEvent(event);
 
                 if (!event.isCancelled()) {
                     boolean hasKey = false;
@@ -243,17 +240,11 @@ public class CrateControl implements Listener { // Crate Control
     public void onLeave(PlayerQuitEvent e) {
         Player player = e.getPlayer();
 
-        if (crazyManager.hasCrateTask(player)) {
-            crazyManager.endCrate(player);
-        }
+        if (crazyManager.hasCrateTask(player)) crazyManager.endCrate(player);
 
-        if (crazyManager.hasQuadCrateTask(player)) {
-            crazyManager.endQuadCrate(player);
-        }
+        if (crazyManager.hasQuadCrateTask(player)) crazyManager.endQuadCrate(player);
 
-        if (crazyManager.isInOpeningList(player)) {
-            crazyManager.removePlayerFromOpeningList(player);
-        }
+        if (crazyManager.isInOpeningList(player)) crazyManager.removePlayerFromOpeningList(player);
     }
     
     public static void knockBack(Player player, Location location) {
@@ -266,5 +257,4 @@ public class CrateControl implements Listener { // Crate Control
 
         player.setVelocity(vector);
     }
-    
 }

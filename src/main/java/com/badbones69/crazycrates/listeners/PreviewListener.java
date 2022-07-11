@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.controllers;
+package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class Preview implements Listener {
+public class PreviewListener implements Listener {
     
     private static final HashMap<UUID, Integer> playerPage = new HashMap<>();
     private static final HashMap<UUID, Crate> playerCrate = new HashMap<>();
@@ -21,7 +21,7 @@ public class Preview implements Listener {
     private static ItemStack menuButton;
     private static ItemBuilder nextButton;
     private static ItemBuilder backButton;
-    
+
     public static void loadButtons() {
         FileConfiguration config = Files.CONFIG.getFile();
         String path = "Settings.Preview.Buttons.";
@@ -125,11 +125,12 @@ public class Preview implements Listener {
 
             if (crate.isPreview(e.getView())) {
                 e.setCancelled(true);
+
                 if (e.getCurrentItem() != null) {
                     if (e.getRawSlot() == crate.getAbsoluteItemPosition(4)) { // Clicked the menu button.
 
                         if (playerInMenu(player)) {
-                            GUIMenu.openGUI(player);
+                            MenuListener.openGUI(player);
                         }
 
                     } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(5)) { // Clicked the next button.
@@ -157,5 +158,4 @@ public class Preview implements Listener {
     public void backPage(Player player) {
         setPage(player, getPage(player) - 1);
     }
-    
 }

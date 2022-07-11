@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.controllers;
+package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.CrazyManager;
 import org.bukkit.entity.Entity;
@@ -9,7 +9,7 @@ import org.bukkit.event.entity.FireworkExplodeEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 
-public class FireworkDamageEvent implements Listener {
+public class FireworkDamageListener implements Listener {
     
     private static final ArrayList<Entity> fireworks = new ArrayList<>();
 
@@ -46,6 +46,7 @@ public class FireworkDamageEvent implements Listener {
     @EventHandler
     public void onFireworkExplode(FireworkExplodeEvent e) {
         final Entity firework = e.getEntity();
+
         if (getFireworks().contains(firework)) {
             new BukkitRunnable() {
                 @Override
@@ -55,5 +56,4 @@ public class FireworkDamageEvent implements Listener {
             }.runTaskLater(crazyManager.getPlugin(), 5);
         }
     }
-    
 }
