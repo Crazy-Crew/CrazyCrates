@@ -407,7 +407,7 @@ public class CrazyManager {
                 Location lastLocation = player.getLocation();
                 lastLocation.setPitch(0F);
                 CrateSchematic crateSchematic = getCrateSchematics().get(new Random().nextInt(getCrateSchematics().size()));
-                StructureHandler handler = new StructureHandler(plugin, crateSchematic.schematicFile());
+                StructureHandler handler = new StructureHandler(crateSchematic.schematicFile());
                 QuadCrateManager session = new QuadCrateManager(player, crate, keyType, location, lastLocation, checkHand, handler);
                 broadcast = session.startCrate(plugin);
                 break;
