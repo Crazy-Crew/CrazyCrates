@@ -140,3 +140,4 @@ permissions:
 
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib:1.7.0
+  - com.google.inject:guice:5.1.0
