@@ -27,6 +27,7 @@ public enum Messages {
     NEEDS_MORE_ROOM("Needs-More-Room", "&cThere is not enough space to open that here."),
     OUT_OF_TIME("Out-Of-Time", "&cYou took 5 Minutes to open the crate so it closed."),
     MUST_BE_A_PLAYER("Must-Be-A-Player", "&cYou must be a player to use this command."),
+    MUST_BE_A_CONSOLE_SENDER("Must-Be-A-Console-Sender", "&cYou must be using console to use this command."),
     MUST_BE_LOOKING_AT_A_BLOCK("Must-Be-Looking-At-A-Block", "&cYou must be looking at a block."),
     NOT_A_CRATE("Not-A-Crate", "&cThere is no crate called &6%crate%."),
     NOT_A_NUMBER("Not-A-Number", "&6%number% &cis not a number."),

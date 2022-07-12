@@ -17,6 +17,7 @@ Messages:
   Needs-More-Room: '&cThere is not enough space to open that here.'
   Out-Of-Time: '&cYou took 5 Minutes to open the Crate so it closed.'
   Must-Be-A-Player: '&cYou must be a player to use this command.'
+  Must-Be-A-Console-Sender: '&cYou must be using console to use this command.'
   Must-Be-Looking-At-A-Block: '&cYou must be looking at a block.'
   Not-A-Crate: '&cThere is no crate called &6%crate%.'
   Not-A-Number: '&6%number% &cis not a number.'
