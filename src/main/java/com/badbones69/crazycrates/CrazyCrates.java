@@ -23,9 +23,6 @@ import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import com.badbones69.crazycrates.listeners.MenuListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
-import com.badbones69.crazycrates.modules.PluginModule;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
@@ -42,20 +39,6 @@ import java.util.logging.Level;
 
 @Singleton
 public class CrazyCrates extends JavaPlugin implements Listener {
-
-    private Injector injector;
-
-    @Inject private CCCommand ccCommand;
-    @Inject private CCTab ccTab;
-
-    @Inject private BaseKeyCommand baseKeyCommand;
-
-    @Inject private BrokeLocationsListener brokeLocationsListener;
-    @Inject private CrateControlListener crateControlListener;
-    @Inject private FireworkDamageListener fireworkDamageListener;
-    @Inject private MenuListener menuListener;
-    @Inject private MiscListener miscListener;
-    @Inject private PreviewListener previewListener;
 
     private final FileManager fileManager = FileManager.getInstance();
     private final CrazyManager crazyManager = CrazyManager.getInstance();
@@ -77,12 +60,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         try {
 
             crazyManager.loadPlugin(this);
-
-            PluginModule module = new PluginModule(this);
-
-            injector = module.createInjector();
-
-            injector.injectMembers(this);
 
             fileManager.logInfo(true)
                     .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
@@ -145,8 +122,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         QuickCrate.removeAllRewards();
 
         if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
-
-        injector = null;
     }
 
     @EventHandler
@@ -171,11 +146,11 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         PluginManager pluginManager = getServer().getPluginManager();
 
-        pluginManager.registerEvents(menuListener, this);
-        pluginManager.registerEvents(previewListener, this);
-        pluginManager.registerEvents(fireworkDamageListener, this);
-        pluginManager.registerEvents(crateControlListener, this);
-        pluginManager.registerEvents(miscListener, this);
+        pluginManager.registerEvents(new MenuListener(), this);
+        pluginManager.registerEvents(new PreviewListener(), this);
+        pluginManager.registerEvents(new FireworkDamageListener(), this);
+        pluginManager.registerEvents(new CrateControlListener(), this);
+        pluginManager.registerEvents(new MiscListener(), this);
 
         pluginManager.registerEvents(new War(), this);
         pluginManager.registerEvents(new CSGO(), this);
@@ -191,7 +166,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         crazyManager.loadCrates();
 
-        if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(brokeLocationsListener, this);
+        if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
 
         manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> {
             sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage());
@@ -221,9 +196,9 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage());
         });
 
-        manager.registerCommand(baseKeyCommand);
+        manager.registerCommand(new BaseKeyCommand());
 
-        getCommand("crazycrates").setExecutor(ccCommand);
-        getCommand("crazycrates").setTabCompleter(ccTab);
+        getCommand("crazycrates").setExecutor(new CCCommand());
+        getCommand("crazycrates").setTabCompleter(new CCTab());
     }
 }
