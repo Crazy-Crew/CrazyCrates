@@ -49,7 +49,19 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onEnable() {
 
         if (!PaperLib.isPaper()) {
-            PaperLib.suggestPaper(this, Level.WARNING);
+            getLogger().warning("====================================================");
+            getLogger().warning(" " + this.getName() + " works better if you use Paper ");
+            getLogger().warning(" as your server software.");
+            getLogger().warning(" ");
+            getLogger().warning(" Paper offers significant performance improvements,");
+            getLogger().warning(" bug fixes, security enhancements and optional");
+            getLogger().warning(" features for server owners to enhance their server.");
+            getLogger().warning(" ");
+            getLogger().warning(" All of your plugins should still work, and the");
+            getLogger().warning(" Paper community will gladly help you fix any issues.");
+            getLogger().warning("");
+            getLogger().warning(" Join the Paper Community @ https://papermc.io");
+            getLogger().warning("====================================================");
 
             getServer().getPluginManager().disablePlugin(this);
             return;
