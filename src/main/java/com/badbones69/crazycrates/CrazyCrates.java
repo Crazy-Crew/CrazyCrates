@@ -7,8 +7,7 @@ import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.commands.CCCommand;
 import com.badbones69.crazycrates.commands.CCTab;
-import com.badbones69.crazycrates.commands.KeyCommand;
-import com.badbones69.crazycrates.commands.KeyTab;
+import com.badbones69.crazycrates.commands.v2.BaseKeyCommand;
 import com.badbones69.crazycrates.cratetypes.CSGO;
 import com.badbones69.crazycrates.cratetypes.Cosmic;
 import com.badbones69.crazycrates.cratetypes.CrateOnTheGo;
@@ -17,6 +16,7 @@ import com.badbones69.crazycrates.cratetypes.QuickCrate;
 import com.badbones69.crazycrates.cratetypes.Roulette;
 import com.badbones69.crazycrates.cratetypes.War;
 import com.badbones69.crazycrates.cratetypes.Wheel;
+import com.badbones69.crazycrates.cratetypes.Wonder;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
@@ -27,12 +27,19 @@ import com.badbones69.crazycrates.modules.PluginModule;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
+import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
+import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
+import dev.triumphteam.cmd.core.message.MessageKey;
+import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.logging.Level;
 
 @Singleton
 public class CrazyCrates extends JavaPlugin implements Listener {
@@ -41,8 +48,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     @Inject private CCCommand ccCommand;
     @Inject private CCTab ccTab;
-    @Inject private KeyCommand keyCommand;
-    @Inject private KeyTab keyTab;
+
+    @Inject private BaseKeyCommand baseKeyCommand;
 
     @Inject private BrokeLocationsListener brokeLocationsListener;
     @Inject private CrateControlListener crateControlListener;
@@ -56,8 +63,18 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     private boolean isEnabled = false;
 
+    BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
+
     @Override
     public void onEnable() {
+
+        if (!PaperLib.isPaper()) {
+            PaperLib.suggestPaper(this, Level.WARNING);
+
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         try {
 
             crazyManager.loadPlugin(this);
@@ -159,24 +176,54 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         pluginManager.registerEvents(previewListener, this);
         pluginManager.registerEvents(fireworkDamageListener, this);
         pluginManager.registerEvents(crateControlListener, this);
-        pluginManager.registerEvents(brokeLocationsListener, this);
         pluginManager.registerEvents(miscListener, this);
 
         pluginManager.registerEvents(new War(), this);
         pluginManager.registerEvents(new CSGO(), this);
         pluginManager.registerEvents(new Wheel(), this);
+        pluginManager.registerEvents(new Wonder(), this);
         pluginManager.registerEvents(new Cosmic(), this);
         pluginManager.registerEvents(new Roulette(), this);
         pluginManager.registerEvents(new QuickCrate(), this);
         pluginManager.registerEvents(new CrateOnTheGo(), this);
         pluginManager.registerEvents(new QuadCrate(), this);
 
+        pluginManager.registerEvents(this, this);
+
         crazyManager.loadCrates();
 
-        if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
+        if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(brokeLocationsListener, this);
 
-        getCommand("key").setExecutor(keyCommand);
-        getCommand("key").setTabCompleter(keyTab);
+        manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> {
+            sender.sendMessage(Messages.INTERNAL_ERROR.getMessage());
+        });
+
+        // manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
+
+        // });
+
+        // manager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
+
+        // });
+
+        manager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> {
+            sender.sendMessage(Messages.NOT_ONLINE.getMessage().replace("%Player%", context.getName()));
+        });
+
+        manager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> {
+            sender.sendMessage(Messages.NO_PERMISSION.getMessage());
+        });
+
+        manager.registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> {
+            sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
+        });
+
+        manager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> {
+            sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage());
+        });
+
+        manager.registerCommand(baseKeyCommand);
+
         getCommand("crazycrates").setExecutor(ccCommand);
         getCommand("crazycrates").setTabCompleter(ccTab);
     }
