@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.modules;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
-import com.google.inject.Inject;
 import com.google.inject.Injector;
 import javax.annotation.Nonnull;
 
@@ -11,7 +10,6 @@ public class PluginModule extends AbstractModule {
 
     private final CrazyCrates plugin;
 
-    @Inject
     public PluginModule(CrazyCrates plugin) {
         this.plugin = plugin;
     }
