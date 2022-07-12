@@ -38,7 +38,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.util.logging.Level;
 
 @Singleton
@@ -207,7 +206,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         });
 
         manager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> {
-            sender.sendMessage(Messages.NOT_ONLINE.getMessage().replace("%Player%", context.getName()));
+            sender.sendMessage(Messages.NOT_ONLINE.getMessage().replace("%player%", context.getTypedArgument()));
         });
 
         manager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> {
