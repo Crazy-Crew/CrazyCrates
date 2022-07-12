@@ -257,7 +257,7 @@ public class CrazyManager {
 
                         loadedAmount++;
                     } else {
-                        brokeLocations.add(new BrokeLocation(locationName, crate, x, y, z, worldName));
+                        brokeLocations.add(new BrokeLocation(locationName, crate, x, y, z, worldName, plugin));
                         brokeAmount++;
                     }
 
