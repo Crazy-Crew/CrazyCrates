@@ -2,13 +2,11 @@ package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.api.managers.CrateManager;
 import com.badbones69.crazycrates.listeners.PreviewListener;
-import com.google.inject.Inject;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -46,11 +44,10 @@ public class Crate {
     private final ArrayList<ItemStack> preview;
     private final ArrayList<Tier> tiers;
     private final CrateHologram hologram;
+    private final CrazyCrates plugin;
+
 
     private final FileManager fileManager = FileManager.getInstance();
-    private final CrazyManager crazyManager = CrazyManager.getInstance();
-
-    @Inject private CrazyCrates plugin;
     
     /**
      * @param name The name of the crate.
@@ -59,7 +56,7 @@ public class Crate {
      * @param prizes The prizes that can be won.
      * @param file The crate file.
      */
-    public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, CrateHologram hologram) {
+    public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, CrateHologram hologram, CrazyCrates plugin) {
         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
         this.keyNoNBT = itemBuilder.build();
         this.key = itemBuilder.setCrateName(name).build();
@@ -91,6 +88,8 @@ public class Crate {
         switch (crateType) {
             case COSMIC -> this.manager = new CosmicCrateManager(file);
         }
+
+        this.plugin = plugin;
     }
     
     /**

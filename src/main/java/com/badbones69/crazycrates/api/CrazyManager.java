@@ -220,7 +220,7 @@ public class CrazyManager {
                 }
 
                 CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"));
-                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, holo));
+                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, holo, plugin));
             } catch (Exception e) {
                 brokecrates.add(crateName);
                 plugin.getLogger().warning("There was an error while loading the " + crateName + ".yml file.");
@@ -228,7 +228,7 @@ public class CrazyManager {
             }
         }
 
-        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null));
+        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null, plugin));
 
         if (fileManager.isLogging()) plugin.getLogger().info("All crate information has been loaded.");
         if (fileManager.isLogging()) plugin.getLogger().info("Loading all the physical crate locations.");
