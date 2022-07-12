@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.commands.v2;
+package com.badbones69.crazycrates.commands.subs.player;
 
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Command(value = "key", alias = {"keys"})
+@Command(value = "keys", alias = {"key"})
 public class BaseKeyCommand extends BaseCommand {
 
     private final CrazyManager crazyManager = CrazyManager.getInstance();

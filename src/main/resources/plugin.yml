@@ -14,9 +14,9 @@ commands:
   crazycrates:
     description: Opens the GUI.
     aliases: [cc, crazycrate, crate, crates]
-  key:
+  keys:
     description: Views the amount of keys you/others have.
-    aliases: [keys]
+    aliases: [key]
 
 permissions:
   crazycrates.command.player.help:

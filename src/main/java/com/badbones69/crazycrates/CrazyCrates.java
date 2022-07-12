@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.commands.CCCommand;
 import com.badbones69.crazycrates.commands.CCTab;
-import com.badbones69.crazycrates.commands.v2.BaseKeyCommand;
+import com.badbones69.crazycrates.commands.subs.player.BaseKeyCommand;
 import com.badbones69.crazycrates.cratetypes.CSGO;
 import com.badbones69.crazycrates.cratetypes.Cosmic;
 import com.badbones69.crazycrates.cratetypes.CrateOnTheGo;
