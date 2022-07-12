@@ -60,11 +60,12 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             getLogger().warning(" All of your plugins should still work, and the");
             getLogger().warning(" Paper community will gladly help you fix any issues.");
             getLogger().warning("");
-            getLogger().warning(" Join the Paper Community @ https://papermc.io");
+            getLogger().warning(" Join the Purpur Community @ https://purpurmc.org/discord");
             getLogger().warning("====================================================");
 
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+            getLogger().warning("A few features might not work on Spigot so be warned.");
+
+            // getServer().getPluginManager().disablePlugin(this);
         }
 
         try {
