@@ -42,6 +42,9 @@ repositories {
     // Paper API
     maven("https://repo.papermc.io/repository/maven-public/")
 
+    // Triumph Team
+    maven("https://repo.triumphteam.dev/snapshots/")
+
     // Our Repo
     maven("https://repo.badbones69.com/releases/")
 
@@ -53,6 +56,8 @@ repositories {
 }
 
 dependencies {
+
+    implementation("dev.triumphteam:triumph-cmd-bukkit:2.0.0-SNAPSHOT")
 
     implementation("org.bstats:bstats-bukkit:3.0.0")
 
@@ -96,7 +101,8 @@ tasks {
         listOf(
             "de.tr7zw",
             "org.bstats",
-            "io.papermc"
+            "io.papermc",
+            "dev.triumphteam.cmd"
         ).forEach {
             relocate(it, "${rootProject.group}.plugin.lib.$it")
         }
