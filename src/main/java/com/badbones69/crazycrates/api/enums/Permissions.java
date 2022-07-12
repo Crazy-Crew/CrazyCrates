@@ -43,6 +43,10 @@ public enum Permissions {
         return "crazycrates." + action + "." + defaultPermission;
     }
 
+    public String getPermission() {
+        return "crazycrates.command." + defaultPermission;
+    }
+
     public String getDescription() {
         return description;
     }
