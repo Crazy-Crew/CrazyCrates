@@ -1,6 +1,6 @@
 plugins {
     java
-    idea
+    // idea
 
     kotlin("jvm") version "1.7.0"
 
@@ -11,12 +11,12 @@ java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
-idea {
-    module {
-        isDownloadJavadoc = true
-        isDownloadSources = true
-    }
-}
+//idea {
+//    module {
+//        isDownloadJavadoc = true
+//        isDownloadSources = true
+//    }
+//}
 
 tasks.compileKotlin {
     kotlinOptions {
