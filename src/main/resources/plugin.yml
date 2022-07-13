@@ -8,12 +8,12 @@ authors:
   - BadBones69
   - RyderBelserion
 
-softdepend: [HolographicDisplays, DecentHolograms, MVdWPlaceholderAPI, PlaceholderAPI]
+softdepend: [HolographicDisplays, DecentHolograms, PlaceholderAPI]
 
 commands:
-  crazycrates:
-    description: Opens the GUI.
-    aliases: [cc, crazycrate, crate, crates]
+  crates:
+    description: The base command for Crazy Crates
+    aliases: [crate, cc]
   keys:
     description: Views the amount of keys you/others have.
     aliases: [key]
@@ -56,8 +56,12 @@ permissions:
       crazycrates.command.admin.list: true
       crazycrates.command.admin.preview: true
       crazycrates.command.admin.additem: true
+      crazycrates.command.admin.access: true
 
   crazycrates.command.admin.additem:
+    default: op
+
+  crazycrates.command.admin.access:
     default: op
 
   crazycrates.command.admin.preview:

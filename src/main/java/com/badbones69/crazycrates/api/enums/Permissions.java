@@ -11,7 +11,6 @@ public enum Permissions {
     CRAZY_CRATES_ADMIN_HELP("admin.help", "Shows the help menu for admins"),
     CRAZY_CRATES_ADMIN_ACCESS("admin.access", "General purpose access for admins."),
     CRAZY_CRATES_ADMIN_ADD_ITEM("admin.additem", "Adds items in-game to a prize in a crate."),
-    CRAZY_CRATES_ADMIN_MENU("admin.menu", "Opens the admin menu"),
     CRAZY_CRATES_ADMIN_PREVIEW("admin.preview", "Opens the preview of any crate for a player."),
     CRAZY_CRATES_ADMIN_LIST("admin.list", "Displays a list of all available crates"),
     CRAZY_CRATES_ADMIN_OPEN("admin.open", "Tries to open a crate for the player if they have a key."),
