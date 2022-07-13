@@ -163,7 +163,7 @@ public class CCCommand implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("admin")) {
                 if (!(sender instanceof Player player)) return true;
 
-                if (!Methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_MENU, false)) return true;
+                if (!Methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) return true;
 
                 int size = crazyManager.getCrates().size();
                 int slots = 9;
