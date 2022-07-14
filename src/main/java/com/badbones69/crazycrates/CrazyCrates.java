@@ -57,8 +57,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             getLogger().warning(" bug fixes, security enhancements and optional");
             getLogger().warning(" features for server owners to enhance their server.");
             getLogger().warning(" ");
-            getLogger().warning(" All of your plugins should still work, and the");
-            getLogger().warning(" Paper community will gladly help you fix any issues.");
+            getLogger().warning(" All of your plugins will function the same,");
+            getLogger().warning(" as it is a drop in replacement over spigot.")
             getLogger().warning("");
             getLogger().warning(" Join the Purpur Community @ https://purpurmc.org/discord");
             getLogger().warning("====================================================");
