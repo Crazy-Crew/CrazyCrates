@@ -208,7 +208,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         manager.registerCommand(new BaseKeyCommand());
 
-        getCommand("crazycrates").setExecutor(new CCCommand());
-        getCommand("crazycrates").setTabCompleter(new CCTab());
+        getCommand("crates").setExecutor(new CCCommand());
+        getCommand("crates").setTabCompleter(new CCTab());
     }
 }
