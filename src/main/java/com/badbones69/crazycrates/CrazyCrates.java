@@ -23,6 +23,8 @@ import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import com.badbones69.crazycrates.listeners.MenuListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
+import com.badbones69.crazycrates.support.libs.PluginSupport;
+import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
 import dev.triumphteam.cmd.core.message.MessageKey;
@@ -177,6 +179,10 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         crazyManager.loadCrates();
 
         if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
+
+        if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) {
+            new PlaceholderAPISupport().register();
+        }
 
         manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> {
             sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage());
