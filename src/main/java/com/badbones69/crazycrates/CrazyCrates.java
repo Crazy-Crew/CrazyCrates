@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.commands.CrateBaseCommand;
 import com.badbones69.crazycrates.commands.KeysBaseCommand;
 import com.badbones69.crazycrates.commands.subs.admin.CrateReloadCommand;
+import com.badbones69.crazycrates.commands.subs.admin.schematics.CrateSchematicSet;
 import com.badbones69.crazycrates.commands.subs.player.CrateHelpCommand;
 import com.badbones69.crazycrates.commands.subs.player.keys.KeysViewCommand;
 import com.badbones69.crazycrates.cratetypes.CSGO;
@@ -27,6 +28,9 @@ import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
+import com.badbones69.crazycrates.support.utils.modules.PluginModule;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
 import dev.triumphteam.cmd.core.message.MessageKey;
@@ -44,9 +48,11 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     private final FileManager fileManager = FileManager.getInstance();
     private final CrazyManager crazyManager = CrazyManager.getInstance();
 
-    private boolean isEnabled = false;
-
     BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
+
+    private boolean pluginEnabled = false;
+
+    private Injector injector;
 
     @Override
     public void onEnable() {
@@ -72,6 +78,13 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         }
 
         try {
+
+            // Guice injector
+            PluginModule module = new PluginModule(this);
+
+            injector = module.createInjector();
+
+            injector.injectMembers(this);
 
             crazyManager.loadPlugin(this);
 
@@ -117,25 +130,27 @@ public class CrazyCrates extends JavaPlugin implements Listener {
                 getLogger().severe(String.valueOf(stack));
             }
 
-            isEnabled = false;
+            pluginEnabled = false;
 
             return;
         }
 
         enable();
 
-        isEnabled = true;
+        pluginEnabled = true;
     }
 
     @Override
     public void onDisable() {
-        if (!isEnabled) return;
+        if (!pluginEnabled) return;
 
         SessionManager.endCrates();
 
         QuickCrate.removeAllRewards();
 
         if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
+
+        injector = null;
     }
 
     @EventHandler
@@ -155,6 +170,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             Files.DATA.saveFile();
         }
     }
+
+    @Inject private CrateSchematicSet crateSchematicSet;
 
     private void enable() {
 
@@ -225,5 +242,10 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         // Admin Commands.
         manager.registerCommand(new CrateReloadCommand());
+
+        // Schematic Commands.
+        manager.registerCommand(crateSchematicSet);
+
+        pluginManager.registerEvents(crateSchematicSet, this);
     }
 }

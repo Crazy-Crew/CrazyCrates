@@ -105,7 +105,7 @@ public class Methods {
     
     public static boolean isOnline(String name, CommandSender sender) {
 
-        for (Player player : crazyManager.getPlugin().getServer().getOnlinePlayers()) {
+        for (Player player : sender.getServer().getOnlinePlayers()) {
             if (player.getName().equalsIgnoreCase(name)) {
                 return true;
             }

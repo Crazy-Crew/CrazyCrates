@@ -106,12 +106,12 @@ public class CrazyManager {
         return fileManager;
     }
 
-    // The CrazyEnvoys plugin.
+    // The CrazyCrates plugin.
     private CrazyCrates plugin;
 
     /**
-     * Get the CrazyEnvoys Plugin.
-     * @return The CrazyEnvoys Plugin object.
+     * Get the CrazyCrates Plugin.
+     * @return The CrazyCrates Plugin object.
      */
     public CrazyCrates getPlugin() {
         return plugin;

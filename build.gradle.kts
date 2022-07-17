@@ -86,6 +86,8 @@ dependencies {
 
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
 
+    compileOnly("com.google.inject:guice:5.1.0")
+
     compileOnly(kotlin("stdlib", "1.7.0"))
 }
 

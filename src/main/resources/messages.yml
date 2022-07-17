@@ -35,6 +35,7 @@ Messages:
   No-Item-In-Hand: '&cYou need to have an item in your hand to add it to the Crate.'
   Added-Item-With-Editor: '&7The item has been added to the %crate% Crate in prize #%prize%.'
   Preview-Disabled: '&cThe preview for that crate is currently disabled.'
+  Schematic-Location-Set: '&cYou have set location #%set%.'
   No-Schematics-Found: '&cNo schematic were found. Please make sure NBT files exist in the schematics folder if not delete the folder to regenerate.'
   No-Prizes-Found: '&cThis crate contains no prizes that you can win.'
   Same-Player: '&cYou can''t use this command on yourself.'

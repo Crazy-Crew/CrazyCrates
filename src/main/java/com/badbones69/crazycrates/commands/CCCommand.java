@@ -69,9 +69,19 @@ public class CCCommand implements CommandExecutor {
                 }
 
                 if (crazyManager.getSchematicLocations().containsKey(player.getUniqueId())) {
-                    crazyManager.getSchematicLocations().put(player.getUniqueId(), new Location[] {set == 1 ? block.getLocation() : crazyManager.getSchematicLocations().getOrDefault(player.getUniqueId(), null)[0], set == 2 ? block.getLocation() : crazyManager.getSchematicLocations().getOrDefault(player.getUniqueId(), null)[1]});
+                    crazyManager.getSchematicLocations().put(player.getUniqueId(),
+                            new Location[] {set == 1 ? block.getLocation() :
+                                    crazyManager
+                                            .getSchematicLocations()
+                                            .getOrDefault(player.getUniqueId(), null)[0],
+                                    set == 2 ? block.getLocation() :
+                                            crazyManager
+                                                    .getSchematicLocations()
+                                                    .getOrDefault(player.getUniqueId(), null)[1]});
                 } else {
-                    crazyManager.getSchematicLocations().put(player.getUniqueId(), new Location[] {set == 1 ? block.getLocation() : null, set == 2 ? block.getLocation() : null});
+                    crazyManager.getSchematicLocations().put(player.getUniqueId(),
+                            new Location[] {set == 1 ? block.getLocation() : null, set == 2
+                                    ? block.getLocation() : null});
                 }
 
                 player.sendMessage(Methods.getPrefix("&7You have set location #" + set + "."));

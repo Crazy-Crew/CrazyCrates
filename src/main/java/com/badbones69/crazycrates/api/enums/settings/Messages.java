@@ -52,6 +52,7 @@ public enum Messages {
     OTHER_PLAYER_HEADER("Keys.Other-Player.Header", Collections.singletonList("&8&l(&6&l!&8&l) &7List of %player%''s current amount of keys.")),
     PER_CRATE("Keys.Per-Crate", "%crate% &7&l>&8&l> &6%keys% keys"),
     PREVIEW_DISABLED("Preview-Disabled", "&cThe preview for that Crate is currently disabled."),
+    SCHEMATICS_LOCATION_SET("Schematic-Location-Set", "&cYou have set location #%set%."),
     NO_SCHEMATICS_FOUND("No-Schematics-Found", "&cNo schematic were found. Please make sure NBT files exist in the schematics folder if not delete the folder to regenerate."),
     NO_PRIZES_FOUND("No-Prizes-Found", "&cThis Crate contains no prizes that you can win."),
     SAME_PLAYER("Same-Player", "&cYou can't use this command on yourself."),
