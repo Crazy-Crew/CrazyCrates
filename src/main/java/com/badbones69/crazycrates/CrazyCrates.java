@@ -5,9 +5,11 @@ import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
-import com.badbones69.crazycrates.commands.CCCommand;
-import com.badbones69.crazycrates.commands.CCTab;
-import com.badbones69.crazycrates.commands.subs.player.BaseKeyCommand;
+import com.badbones69.crazycrates.commands.CrateBaseCommand;
+import com.badbones69.crazycrates.commands.KeysBaseCommand;
+import com.badbones69.crazycrates.commands.subs.admin.CrateReloadCommand;
+import com.badbones69.crazycrates.commands.subs.player.CrateHelpCommand;
+import com.badbones69.crazycrates.commands.subs.player.keys.KeysViewCommand;
 import com.badbones69.crazycrates.cratetypes.CSGO;
 import com.badbones69.crazycrates.cratetypes.Cosmic;
 import com.badbones69.crazycrates.cratetypes.CrateOnTheGo;
@@ -212,9 +214,16 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage());
         });
 
-        manager.registerCommand(new BaseKeyCommand());
+        // Base Commands
+        manager.registerCommand(new CrateBaseCommand());
+        manager.registerCommand(new KeysBaseCommand());
 
-        getCommand("crates").setExecutor(new CCCommand());
-        getCommand("crates").setTabCompleter(new CCTab());
+        // Player Commands
+        manager.registerCommand(new CrateHelpCommand());
+
+        manager.registerCommand(new KeysViewCommand());
+
+        // Admin Commands.
+        manager.registerCommand(new CrateReloadCommand());
     }
 }
