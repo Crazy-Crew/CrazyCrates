@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.support.holograms;
 
+import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -8,7 +9,6 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import org.bukkit.block.Block;
 import java.util.HashMap;
-import static com.badbones69.crazycrates.support.utils.ConstantsKt.color;
 
 public class HolographicSupport implements HologramController {
     
@@ -23,7 +23,7 @@ public class HolographicSupport implements HologramController {
 
         double height = crateHologram.getHeight();
         Hologram hologram = HologramsAPI.createHologram(crazyManager.getPlugin(), block.getLocation().add(.5, height, .5));
-        crateHologram.getMessages().forEach(line -> hologram.appendTextLine(color(line)));
+        crateHologram.getMessages().forEach(line -> hologram.appendTextLine(Methods.color(line)));
         holograms.put(block, hologram);
     }
     

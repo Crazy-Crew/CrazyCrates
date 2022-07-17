@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.api.FileManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import java.util.*;
 import java.util.Map.Entry;
-import static com.badbones69.crazycrates.support.utils.ConstantsKt.color;
 
 public enum Messages {
     
@@ -107,7 +106,7 @@ public enum Messages {
     public static String convertList(List<String> list) {
         StringBuilder message = new StringBuilder();
         for (String line : list) {
-            message.append(color(line)).append("\n");
+            message.append(Methods.color(line)).append("\n");
         }
         return message.toString();
     }
@@ -201,15 +200,15 @@ public enum Messages {
 
         if (isList) {
             if (exists) {
-                message = color(convertList(FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path)));
+                message = Methods.color(convertList(FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path)));
             } else {
-                message = color(convertList(getDefaultListMessage()));
+                message = Methods.color(convertList(getDefaultListMessage()));
             }
         } else {
             if (exists) {
-                message = color(FileManager.Files.MESSAGES.getFile().getString("Messages." + path));
+                message = Methods.color(FileManager.Files.MESSAGES.getFile().getString("Messages." + path));
             } else {
-                message = color(getDefaultMessage());
+                message = Methods.color(getDefaultMessage());
             }
         }
 
@@ -218,12 +217,12 @@ public enum Messages {
         }
 
         if (isList) { // Don't want to add a prefix to a list of messages.
-            return color(message);
+            return Methods.color(message);
         } else { // If the message isn't a list.
             if (prefix) { // If the message needs a prefix.
                 return Methods.getPrefix(message);
             } else { // If the message doesn't need a prefix.
-                return color(message);
+                return Methods.color(message);
             }
         }
     }

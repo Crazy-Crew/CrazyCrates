@@ -30,7 +30,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import java.util.HashMap;
-import static com.badbones69.crazycrates.support.utils.ConstantsKt.color;
 
 public class CrateControlListener implements Listener { // Crate Control
     
@@ -229,7 +228,7 @@ public class CrateControlListener implements Listener { // Crate Control
                             name = key.getItemMeta().getDisplayName();
                         }
 
-                        player.sendMessage(Methods.getPrefix() + color("&a&l+1 " + (name != null ? name : crate.getName())));
+                        player.sendMessage(Methods.getPrefix() + Methods.color("&a&l+1 " + (name != null ? name : crate.getName())));
                     }
                 }
             }
