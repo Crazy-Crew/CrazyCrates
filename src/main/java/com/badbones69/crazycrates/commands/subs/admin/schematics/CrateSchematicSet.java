@@ -15,11 +15,9 @@ import java.util.UUID;
 
 public class CrateSchematicSet extends CrateBaseCommand implements Listener {
 
-    @Inject
-    private CrazyManager crazyManager;
+    @Inject private CrazyManager crazyManager;
 
-    @Inject
-    private CrazyCrates plugin;
+    @Inject private CrazyCrates plugin;
 
     @SubCommand("set")
     public void set(Player player, int set) {
