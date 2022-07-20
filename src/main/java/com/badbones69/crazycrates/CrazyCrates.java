@@ -184,33 +184,19 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             new PlaceholderAPISupport().register();
         }
 
-        manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> {
-            sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage());
-        });
+        manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage()));
 
-        manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
-            sender.sendMessage(Messages.TOO_MANY_ARGS.getMessage());
-        });
+        manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> sender.sendMessage(Messages.TOO_MANY_ARGS.getMessage()));
 
-        manager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
-            sender.sendMessage(Messages.NOT_ENOUGH_ARGS.getMessage());
-        });
+        manager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> sender.sendMessage(Messages.NOT_ENOUGH_ARGS.getMessage()));
 
-        manager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> {
-            sender.sendMessage(Messages.NOT_ONLINE.getMessage().replace("%player%", context.getTypedArgument()));
-        });
+        manager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> sender.sendMessage(Messages.NOT_ONLINE.getMessage().replace("%player%", context.getTypedArgument())));
 
-        manager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> {
-            sender.sendMessage(Messages.NO_PERMISSION.getMessage());
-        });
+        manager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> sender.sendMessage(Messages.NO_PERMISSION.getMessage()));
 
-        manager.registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> {
-            sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
-        });
+        manager.registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage()));
 
-        manager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> {
-            sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage());
-        });
+        manager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage()));
 
         manager.registerCommand(new BaseKeyCommand());
 
