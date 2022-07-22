@@ -2,8 +2,8 @@ package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
+import com.badbones69.crazycrates.api.files.FileManager;
 import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.api.managers.CrateManager;
 import com.badbones69.crazycrates.listeners.PreviewListener;
@@ -16,10 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Crate {
     
@@ -45,9 +42,6 @@ public class Crate {
     private final ArrayList<Tier> tiers;
     private final CrateHologram hologram;
     private final CrazyCrates plugin;
-
-
-    private final FileManager fileManager = FileManager.getInstance();
     
     /**
      * @param name The name of the crate.
@@ -530,7 +524,8 @@ public class Crate {
         }
 
         file.set(path + ".Editor-Items", items);
-        fileManager.saveFile(fileManager.getFile(name));
+
+        FileManager.INSTANCE.saveCustom(Objects.requireNonNull(FileManager.INSTANCE.getCustom(name)).toString());
     }
     
     /**

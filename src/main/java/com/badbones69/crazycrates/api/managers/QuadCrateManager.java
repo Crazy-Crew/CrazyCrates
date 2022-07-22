@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
-import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.enums.QuadCrateParticles;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.support.structures.QuadCrateSpiralHandler;
@@ -106,7 +105,7 @@ public class QuadCrateManager {
 
         // Check if it is on a block.
         if (spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
-            player.sendMessage(Messages.NOT_ON_BLOCK.getMessage());
+            //player.sendMessage(Messages.NOT_ON_BLOCK.getMessage());
             crazyManager.removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
             return false;
@@ -114,7 +113,7 @@ public class QuadCrateManager {
 
         // Check if schematic folder is empty.
         if (crazyManager.getCrateSchematics().isEmpty()) {
-            player.sendMessage(Messages.NO_SCHEMATICS_FOUND.getMessage());
+            //player.sendMessage(Messages.NO_SCHEMATICS_FOUND.getMessage());
             CrazyManager.getInstance().removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
             return false;
@@ -135,7 +134,7 @@ public class QuadCrateManager {
 
         for (Block block : structureLocations) {
             if (handler.getBlackList().contains(block.getType())) {
-                player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
+                //player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
                 crazyManager.removePlayerFromOpeningList(player);
                 crateSessions.remove(instance);
                 return false;
@@ -150,7 +149,7 @@ public class QuadCrateManager {
             if (entity instanceof Player) {
                 for (QuadCrateManager ongoingCrate : crateSessions) {
                     if (entity.getUniqueId() == ongoingCrate.player.getUniqueId()) {
-                        player.sendMessage(Messages.TO_CLOSE_TO_ANOTHER_PLAYER.getMessage("%Player%", entity.getName()));
+                        //player.sendMessage(Messages.TO_CLOSE_TO_ANOTHER_PLAYER.getMessage("%Player%", entity.getName()));
                         crazyManager.removePlayerFromOpeningList(player);
                         crateSessions.remove(instance);
                         return false;
@@ -235,7 +234,7 @@ public class QuadCrateManager {
             public void run() {
                 // End the crate by force.
                 endCrateForce(true);
-                player.sendMessage(Messages.OUT_OF_TIME.getMessage());
+                //player.sendMessage(Messages.OUT_OF_TIME.getMessage());
             }
         }));
 

@@ -32,5 +32,4 @@ public class CrateHologram {
     public List<String> getMessages() {
         return messages;
     }
-    
 }

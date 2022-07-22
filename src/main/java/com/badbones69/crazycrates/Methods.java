@@ -1,11 +1,10 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.Permissions;
-import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.config.Config;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -111,7 +110,7 @@ public class Methods {
             }
         }
 
-        sender.sendMessage(Messages.NOT_ONLINE.getMessage("%Player%", name));
+        //sender.sendMessage(Messages.NOT_ONLINE.getMessage("%Player%", name));
         return false;
     }
     
@@ -134,7 +133,7 @@ public class Methods {
             return true;
         } else {
             if (!tabComplete) {
-                player.sendMessage(Messages.NO_PERMISSION.getMessage());
+                //player.sendMessage(Messages.NO_PERMISSION.getMessage());
                 return false;
             }
 
@@ -143,11 +142,11 @@ public class Methods {
     }
     
     public static String getPrefix() {
-        return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix"));
+        return color(Config.prefix);
     }
     
     public static String getPrefix(String msg) {
-        return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
+        return color(getPrefix() + msg);
     }
     
     public static boolean isInventoryFull(Player player) {

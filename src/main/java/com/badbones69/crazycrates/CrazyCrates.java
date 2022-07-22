@@ -1,13 +1,12 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.FileManager.Files;
-import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.api.enums.settings.Messages;
+import com.badbones69.crazycrates.api.files.FileManager;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.commands.CCCommand;
 import com.badbones69.crazycrates.commands.CCTab;
 import com.badbones69.crazycrates.commands.subs.player.BaseKeyCommand;
+import com.badbones69.crazycrates.config.Config;
 import com.badbones69.crazycrates.cratetypes.CSGO;
 import com.badbones69.crazycrates.cratetypes.Cosmic;
 import com.badbones69.crazycrates.cratetypes.CrateOnTheGo;
@@ -39,10 +38,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class CrazyCrates extends JavaPlugin implements Listener {
 
-    private final FileManager fileManager = FileManager.getInstance();
     private final CrazyManager crazyManager = CrazyManager.getInstance();
 
-    private boolean isEnabled = false;
+    private boolean pluginEnabled = false;
 
     BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
 
@@ -70,64 +68,42 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         }
 
         try {
-
             crazyManager.loadPlugin(this);
 
-            fileManager.logInfo(true)
-                    .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("sea.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("soul.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
-                    .registerCustomFilesFolder("/crates")
-                    .registerCustomFilesFolder("/schematics")
-                    .setup(this);
+            FileManager.INSTANCE.registerDefaultGeneratedFiles("CrateExample.yml", "/crates")
+                    .registerDefaultGeneratedFiles("QuadCrateExample.yml", "/crates")
+                    .registerDefaultGeneratedFiles("CosmicCrateExample.yml", "/crates")
+                    .registerDefaultGeneratedFiles("QuickCrateExample.yml", "/crates")
+                    .registerDefaultGeneratedFiles("classic.nbt", "/schematics")
+                    .registerDefaultGeneratedFiles("nether.nbt", "/schematics")
+                    .registerDefaultGeneratedFiles("outdoors.nbt", "/schematics")
+                    .registerDefaultGeneratedFiles("sea.nbt", "/schematics")
+                    .registerDefaultGeneratedFiles("soul.nbt", "/schematics")
+                    .registerDefaultGeneratedFiles("wooden.nbt", "/schematics")
+                    .registerCustomFolder("/crates")
+                    .registerCustomFolder("/schematics").setup().logInfo(false);
 
-            // Clean files if we have to.
-            cleanFiles();
+            if (Config.toggleMetrics) new Metrics(this, 4514);
 
-            // Add extra messages.
-            Messages.addMissingMessages();
-
-            String metricsPath = FileManager.Files.CONFIG.getFile().getString("Settings.Toggle-Metrics");
-            boolean metricsEnabled = Files.CONFIG.getFile().getBoolean("Settings.Toggle-Metrics");
-
-            if (metricsPath != null) {
-                if (metricsEnabled) new Metrics(this, 4514);
-            } else {
-                getLogger().warning("Metrics was automatically enabled.");
-                getLogger().warning("Please add Toggle-Metrics: false to the top of your config.yml.");
-                getLogger().warning("https://github.com/Crazy-Crew/Crazy-Crates/blob/main/src/main/resources/config.yml");
-                getLogger().warning("An example if confused is linked above.");
-
-                new Metrics(this, 4514);
-            }
         } catch (Exception e) {
 
             getLogger().severe(e.getMessage());
 
-            for (StackTraceElement stack : e.getStackTrace()) {
-                getLogger().severe(String.valueOf(stack));
-            }
+            e.printStackTrace();
 
-            isEnabled = false;
+            pluginEnabled = false;
 
             return;
         }
 
         enable();
 
-        isEnabled = true;
+        pluginEnabled = true;
     }
 
     @Override
     public void onDisable() {
-        if (!isEnabled) return;
+        if (!pluginEnabled) return;
 
         SessionManager.endCrates();
 
@@ -143,15 +119,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     }
 
     public void cleanFiles() {
-        if (!Files.LOCATIONS.getFile().contains("Locations")) {
-            Files.LOCATIONS.getFile().set("Locations.Clear", null);
-            Files.LOCATIONS.saveFile();
-        }
 
-        if (!Files.DATA.getFile().contains("Players")) {
-            Files.DATA.getFile().set("Players.Clear", null);
-            Files.DATA.saveFile();
-        }
     }
 
     private void enable() {
@@ -180,37 +148,21 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
 
-        if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) {
-            new PlaceholderAPISupport().register();
-        }
+        if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) new PlaceholderAPISupport().register();
 
-        manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> {
-            sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage());
-        });
+        //manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage()));
 
-        manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
-            sender.sendMessage(Messages.TOO_MANY_ARGS.getMessage());
-        });
+        //manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> sender.sendMessage(Messages.TOO_MANY_ARGS.getMessage()));
 
-        manager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
-            sender.sendMessage(Messages.NOT_ENOUGH_ARGS.getMessage());
-        });
+        //manager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> sender.sendMessage(Messages.NOT_ENOUGH_ARGS.getMessage()));
 
-        manager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> {
-            sender.sendMessage(Messages.NOT_ONLINE.getMessage().replace("%player%", context.getTypedArgument()));
-        });
+        //manager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> sender.sendMessage(Messages.NOT_ONLINE.getMessage().replace("%player%", context.getTypedArgument())));
 
-        manager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> {
-            sender.sendMessage(Messages.NO_PERMISSION.getMessage());
-        });
+        //manager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> sender.sendMessage(Messages.NO_PERMISSION.getMessage()));
 
-        manager.registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> {
-            sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage());
-        });
+        //manager.registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage()));
 
-        manager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> {
-            sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage());
-        });
+        //manager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage()));
 
         manager.registerCommand(new BaseKeyCommand());
 

@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.cratetypes;
 
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -144,7 +143,7 @@ public class QuadCrate implements Listener {
 
         if (sessionManager.inSession(player) && !player.hasPermission("crazycrates.admin")) {
             e.setCancelled(true);
-            player.sendMessage(Messages.NO_COMMANDS_WHILE_CRATE_OPENED.getMessage("%Player%", player.getName()));
+            //player.sendMessage(Messages.NO_COMMANDS_WHILE_CRATE_OPENED.getMessage("%Player%", player.getName()));
         }
     }
 
@@ -154,7 +153,7 @@ public class QuadCrate implements Listener {
 
         if (sessionManager.inSession(player) && e.getCause() == TeleportCause.ENDER_PEARL) {
             e.setCancelled(true);
-            player.sendMessage(Messages.NO_TELEPORTING.getMessage("%Player%", player.getName()));
+            //layer.sendMessage(Messages.NO_TELEPORTING.getMessage("%Player%", player.getName()));
         }
     }
 

@@ -1,15 +1,13 @@
 package com.badbones69.crazycrates.listeners;
 
-import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
-import org.bukkit.configuration.file.FileConfiguration;
+import com.badbones69.crazycrates.config.Config;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -23,21 +21,9 @@ public class PreviewListener implements Listener {
     private static ItemBuilder backButton;
 
     public static void loadButtons() {
-        FileConfiguration config = Files.CONFIG.getFile();
-        String path = "Settings.Preview.Buttons.";
-        menuButton = new ItemBuilder()
-        .setMaterial(config.getString(path + "Menu.Item", "COMPASS"))
-        .setName(config.getString(path + "Menu.Name", "&7&l>> &c&lMenu &7&l<<"))
-        .setLore(config.contains(path + "Menu.Lore") ? config.getStringList(path + "Menu.Lore") : Collections.singletonList("&7Return to the menu."))
-        .build();
-        nextButton = new ItemBuilder()
-        .setMaterial(config.getString(path + "Next.Item", "FEATHER"))
-        .setName(config.getString(path + "Next.Name", "&6&lNext >>"))
-        .setLore(config.contains(path + "Next.Lore") ? config.getStringList(path + "Next.Lore") : Collections.singletonList("&7&lPage: &b%page%"));
-        backButton = new ItemBuilder()
-        .setMaterial(config.getString(path + "Back.Item", "FEATHER"))
-        .setName(config.getString(path + "Back.Name", "&6&l<< Back"))
-        .setLore(config.contains(path + "Back.Lore") ? config.getStringList(path + "Back.Lore") : Collections.singletonList("&7&lPage: &b%page%"));
+        menuButton = new ItemBuilder().setMaterial(Config.previewMenuItem).setName(Config.previewMenuName).setLore(Config.previewMenuLore).build();
+        nextButton = new ItemBuilder().setMaterial(Config.previewNextItem).setName(Config.previewNextName).setLore(Config.previewNextLore);
+        backButton = new ItemBuilder().setMaterial(Config.previewBackItem).setName(Config.previewBackName).setLore(Config.previewBackLore);
     }
     
     public static void openNewPreview(Player player, Crate crate) {

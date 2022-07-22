@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.cratetypes;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
-import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
@@ -182,7 +181,7 @@ public class Cosmic implements Listener {
 
                             if (keyType == KeyType.PHYSICAL_KEY && !crazyManager.hasPhysicalKey(player, crate, checkHands.get(player))) {
                                 player.closeInventory();
-                                player.sendMessage(Messages.NO_KEY.getMessage());
+                                //player.sendMessage(Messages.NO_KEY.getMessage());
 
                                 if (crazyManager.isInOpeningList(player)) {
                                     crazyManager.removePlayerFromOpeningList(player);
