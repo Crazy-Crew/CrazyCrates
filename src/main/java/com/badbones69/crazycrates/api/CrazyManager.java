@@ -32,7 +32,6 @@ import org.bukkit.scheduler.BukkitTask;
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import static com.badbones69.crazycrates.support.utils.ConstantsKt.color;
 
 public class CrazyManager {
 
@@ -90,12 +89,12 @@ public class CrazyManager {
         return instance;
     }
 
-    // The CrazyEnvoys plugin.
+    // The CrazyCrates plugin.
     private CrazyCrates plugin;
 
     /**
-     * Get the CrazyEnvoys Plugin.
-     * @return The CrazyEnvoys Plugin object.
+     * Get the CrazyCrates Plugin.
+     * @return The CrazyCrates Plugin object.
      */
     public CrazyCrates getPlugin() {
         return plugin;
@@ -360,7 +359,7 @@ public class CrazyManager {
         if (broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {
             if (crate.getFile().contains("Crate.BroadCast")) {
                 if (!crate.getFile().getString("Crate.BroadCast").isEmpty()) {
-                    plugin.getServer().broadcastMessage(color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
+                    plugin.getServer().broadcastMessage(Methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
                 }
             }
 
@@ -454,7 +453,7 @@ public class CrazyManager {
 
         if (broadcast) {
             if (!crate.getFile().getString("Crate.BroadCast").isEmpty()) {
-                player.getServer().broadcastMessage(color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
+                player.getServer().broadcastMessage(Methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
             }
         }
     }
@@ -811,7 +810,7 @@ public class CrazyManager {
                     command = PlaceholderAPI.setPlaceholders(player, command);
                 }
 
-                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), color(command.replace("%Player%", player.getName()).replace("%player%", player.getName())));
+                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), Methods.color(command.replace("%Player%", player.getName()).replace("%player%", player.getName())));
             }
 
             for (String message : prize.getMessages()) {
@@ -819,7 +818,7 @@ public class CrazyManager {
                     message = PlaceholderAPI.setPlaceholders(player, message);
                 }
 
-                player.sendMessage(color(message).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())
+                player.sendMessage(Methods.color(message).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())
                 .replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
             }
         } else {

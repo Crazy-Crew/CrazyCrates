@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.support.holograms;
 
+import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateHologram;
-import static com.badbones69.crazycrates.support.utils.ConstantsKt.color;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.block.Block;
@@ -21,7 +21,7 @@ public class DecentHologramsSupport implements HologramController {
 
         double height = crateHologram.getHeight();
         Hologram hologram = DHAPI.createHologram(ThreadLocalRandom.current().nextInt() + "", block.getLocation().add(.5, height, .5));
-        crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, color(line)));
+        crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, Methods.color(line)));
         holograms.put(block, hologram);
     }
     

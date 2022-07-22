@@ -21,8 +21,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.jetbrains.annotations.NotNull;
 import java.util.*;
-import static com.badbones69.crazycrates.support.utils.ConstantsKt.color;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Methods {
     
@@ -87,6 +89,19 @@ public class Methods {
 
         crazyManager.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(crazyManager.getPlugin(), fw :: detonate, 2);
     }
+
+    public static @NotNull String color(String message) {
+
+        Pattern hexPattern = Pattern.compile("#[a-fA-F\\d]{6}");
+
+        Matcher matcher = hexPattern.matcher(message);
+
+        StringBuffer buffer = new StringBuffer();
+
+        while (matcher.find()) matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group()).toString());
+
+        return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
+    }
     
     public static boolean isInt(String s) {
         try {
@@ -104,7 +119,7 @@ public class Methods {
     
     public static boolean isOnline(String name, CommandSender sender) {
 
-        for (Player player : crazyManager.getPlugin().getServer().getOnlinePlayers()) {
+        for (Player player : sender.getServer().getOnlinePlayers()) {
             if (player.getName().equalsIgnoreCase(name)) {
                 return true;
             }

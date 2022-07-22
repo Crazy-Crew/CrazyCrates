@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.files.FileManager;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.commands.CCCommand;
-import com.badbones69.crazycrates.commands.CCTab;
 import com.badbones69.crazycrates.commands.subs.player.BaseKeyCommand;
 import com.badbones69.crazycrates.config.Config;
 import com.badbones69.crazycrates.cratetypes.CSGO;
@@ -24,9 +23,9 @@ import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
+import com.badbones69.crazycrates.support.utils.modules.PluginModule;
+import com.google.inject.Injector;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
-import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
-import dev.triumphteam.cmd.core.message.MessageKey;
 import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
@@ -40,9 +39,11 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     private final CrazyManager crazyManager = CrazyManager.getInstance();
 
+    BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
+
     private boolean pluginEnabled = false;
 
-    BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
+    private Injector injector;
 
     @Override
     public void onEnable() {
@@ -68,6 +69,13 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         }
 
         try {
+            // Guice injector
+            PluginModule module = new PluginModule(this);
+
+            injector = module.createInjector();
+
+            injector.injectMembers(this);
+
             crazyManager.loadPlugin(this);
 
             FileManager.INSTANCE.registerDefaultGeneratedFiles("CrateExample.yml", "/crates")
@@ -110,6 +118,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         QuickCrate.removeAllRewards();
 
         if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
+
+        injector = null;
     }
 
     @EventHandler
@@ -167,6 +177,5 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         manager.registerCommand(new BaseKeyCommand());
 
         getCommand("crates").setExecutor(new CCCommand());
-        getCommand("crates").setTabCompleter(new CCTab());
     }
 }
