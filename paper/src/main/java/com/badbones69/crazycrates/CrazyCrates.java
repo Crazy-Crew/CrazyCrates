@@ -44,23 +44,13 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onEnable() {
 
         if (!PaperLib.isPaper()) {
-            getLogger().warning("====================================================");
-            getLogger().warning(" " + this.getName() + " works better if you use Paper ");
-            getLogger().warning(" as your server software.");
-            getLogger().warning(" ");
-            getLogger().warning(" Paper offers significant performance improvements,");
-            getLogger().warning(" bug fixes, security enhancements and optional");
-            getLogger().warning(" features for server owners to enhance their server.");
-            getLogger().warning(" ");
-            getLogger().warning(" All of your plugins will function the same,");
-            getLogger().warning(" as it is a drop in replacement over spigot.");
-            getLogger().warning("");
-            getLogger().warning(" Join the Purpur Community @ https://purpurmc.org/discord");
-            getLogger().warning("====================================================");
+            PaperLib.suggestPaper(this);
 
-            getLogger().warning("A few features might not work on Spigot so be warned.");
+            getLogger().warning("Disabling the plugin now...");
 
-            // getServer().getPluginManager().disablePlugin(this);
+            pluginEnabled = false;
+
+            getServer().getPluginManager().disablePlugin(this);
         }
 
         try {
