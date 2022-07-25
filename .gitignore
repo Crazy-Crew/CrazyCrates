@@ -13,5 +13,11 @@
 gradlew
 gradlew.bat
 
+
+paper/build
+common/build
+api/build
+build-logic/build
+build-logic/.gradle
+
 .gradle
-build
