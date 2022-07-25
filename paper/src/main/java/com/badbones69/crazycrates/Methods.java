@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
@@ -21,6 +22,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import java.util.*;
+
+import static com.badbones69.crazycrates.utils.ColorUtilsKt.color;
 
 public class Methods {
     
@@ -139,13 +142,13 @@ public class Methods {
         }
     }
     
-    //public static String getPrefix() {
-        //return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix"));
-    //}
+    public static String getPrefix() {
+        return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix"));
+    }
     
-    //public static String getPrefix(String msg) {
-    //    return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
-    //}
+    public static String getPrefix(String msg) {
+        return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
+    }
     
     public static boolean isInventoryFull(Player player) {
         return player.getInventory().firstEmpty() == -1;
