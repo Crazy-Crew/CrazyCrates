@@ -7,12 +7,8 @@ java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
-kotlin {
-    sourceSets
-}
-
 dependencies {
-
+    compileOnly(kotlin("stdlib", "1.7.10"))
 }
 
 tasks {
@@ -23,6 +19,6 @@ tasks {
     }
 
     compileJava {
-
+        options.release.set(17)
     }
 }
