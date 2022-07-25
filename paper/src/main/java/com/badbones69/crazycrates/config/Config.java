@@ -14,15 +14,15 @@ public class Config extends AbstractConfig {
 
     @Key("Settings.Toggle-Metrics")
     @Comment("Turn metrics on or off.")
-    public boolean toggleMetrics = true;
+    public static boolean toggleMetrics = true;
 
     @Key("Settings.Language-File")
     @Comment("Check the locale directory for a list of available languages.")
     public static String languageFile = "locale-en.yml";
 
-    @Key("Settings.Extra-Logging")
+    @Key("Settings.Verbose")
     @Comment("Turning this on is useful for debugging but gets spammy very quickly.")
-    public static boolean extraLogging = true;
+    public static boolean verbose = true;
 
     @Key("Settings.InventoryName")
     @Comment("The name of the inventory.")
@@ -161,6 +161,6 @@ public class Config extends AbstractConfig {
     }};
 
     public void reload() {
-        save(FileUtils.INSTANCE.getDataFolder().resolve("config.yml"), this);
+        reload(FileUtils.INSTANCE.getDataFolder().resolve("config.yml"), this);
     }
 }
