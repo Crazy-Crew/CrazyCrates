@@ -12,6 +12,6 @@ public class KeysBaseCommand extends BaseCommand {
     @Default
     @Permission("crazycrates.command.player.key")
     public void view(Player player) {
-        //keyUtils.checkKeys(player, Messages.PERSONAL_HEADER.getMessageNoPrefix(), null);
+        //KeyUtils.checkKeys(player, Messages.PERSONAL_HEADER.getMessageNoPrefix(), null);
     }
 }

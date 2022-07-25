@@ -1,8 +1,10 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.BrokeLocation;
+import com.badbones69.crazycrates.api.BrokenLocations;
+import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
+import com.badbones69.crazycrates.config.Config;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,26 +22,26 @@ public class BrokeLocationsListener implements Listener {
     public void onWorldLoad(WorldLoadEvent e) {
         if (!crazyManager.getBrokeCrateLocations().isEmpty()) {
             int fixedAmount = 0;
-            List<BrokeLocation> fixedWorlds = new ArrayList<>();
+            List<BrokenLocations> fixedWorlds = new ArrayList<>();
 
-            for (BrokeLocation brokeLocation : crazyManager.getBrokeCrateLocations()) {
-                Location location = brokeLocation.getLocation();
+            for (BrokenLocations brokenLocations : crazyManager.getBrokeCrateLocations()) {
+                Location location = brokenLocations.getLocation();
 
                 if (location.getWorld() != null) {
-                    crazyManager.getCrateLocations().add(new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location));
+                    crazyManager.getCrateLocations().add(new CrateLocation(brokenLocations.getLocationName(), brokenLocations.getCrate(), location));
 
                     if (crazyManager.getHologramController() != null) {
-                        crazyManager.getHologramController().createHologram(location.getBlock(), brokeLocation.getCrate());
+                        crazyManager.getHologramController().createHologram(location.getBlock(), brokenLocations.getCrate());
                     }
 
-                    fixedWorlds.add(brokeLocation);
+                    fixedWorlds.add(brokenLocations);
                     fixedAmount++;
                 }
             }
 
             crazyManager.getBrokeCrateLocations().removeAll(fixedWorlds);
 
-            if (fileManager.isLogging()) {
+            if (Config.verbose) {
                 crazyManager.getPlugin().getLogger().warning("Fixed " + fixedAmount + " broken crate locations.");
 
                 if (crazyManager.getBrokeCrateLocations().isEmpty()) crazyManager.getPlugin().getLogger().warning("All broken crate locations have been fixed.");

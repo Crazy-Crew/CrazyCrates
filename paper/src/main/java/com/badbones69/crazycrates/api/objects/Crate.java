@@ -44,9 +44,6 @@ public class Crate {
     private final ArrayList<Tier> tiers;
     private final CrateHologram hologram;
     private final CrazyCrates plugin;
-
-
-    private final FileManager fileManager = FileManager.getInstance();
     
     /**
      * @param name The name of the crate.
@@ -89,7 +86,8 @@ public class Crate {
 
         this.crateInventoryName = file != null ? file.getString("Crate.CrateName") : "";
 
-        this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
+        this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item"))
+                .setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
         this.hologram = hologram != null ? hologram : new CrateHologram();
 
         switch (crateType) {
@@ -537,7 +535,9 @@ public class Crate {
         }
 
         file.set(path + ".Editor-Items", items);
-        fileManager.saveFile(fileManager.getFile(name));
+
+        // TODO() Add the saveFile back.
+        //fileManager.saveFile(fileManager.getFile(name));
     }
     
     /**
@@ -575,9 +575,11 @@ public class Crate {
      */
     private ArrayList<ItemStack> loadPreview() {
         ArrayList<ItemStack> items = new ArrayList<>();
+
         for (Prize prize : getPrizes()) {
             items.add(prize.getDisplayItem());
         }
+
         return items;
     }
     
@@ -604,6 +606,7 @@ public class Crate {
                 if (index < list.size()) items.add(list.get(index));
             }
         }
+
         return items;
     }
     
