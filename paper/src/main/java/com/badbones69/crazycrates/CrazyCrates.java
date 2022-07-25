@@ -57,20 +57,23 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
             crazyManager.loadPlugin(this);
 
-            fileManager.logInfo(true)
-                    .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("sea.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("soul.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
-                    .registerCustomFilesFolder("/crates")
-                    .registerCustomFilesFolder("/schematics")
-                    .setup(this);
+            fileManager.registerDefaultGeneratedFiles("CrateExample.yml",  "/crates")
+                    .registerDefaultGeneratedFiles("QuadCrateExample.yml", "/crates")
+                    .registerDefaultGeneratedFiles("CosmicCrateExample.yml", "/crates")
+                    .registerDefaultGeneratedFiles("QuickCrateExample.yml",  "/crates")
+                    .registerDefaultGeneratedFiles("classic.nbt", "/schematics")
+                    .registerDefaultGeneratedFiles("nether.nbt", "/schematics")
+                    .registerDefaultGeneratedFiles("outdoors.nbt",  "/schematics")
+                    .registerDefaultGeneratedFiles("sea.nbt", "/schematics")
+                    .registerDefaultGeneratedFiles("soul.nbt",  "/schematics")
+                    .registerDefaultGeneratedFiles("wooden.nbt",  "/schematics")
+                    .registerCustomFolder("/crates")
+                    .registerCustomFolder("/schematics")
+                    .registerCustomFolder("/v1")
+                    .setup();
+
+            // Set up old FileManager for now.
+            oldFileManager.setup(this);
 
             // Clean files if we have to.
             //cleanFiles();
