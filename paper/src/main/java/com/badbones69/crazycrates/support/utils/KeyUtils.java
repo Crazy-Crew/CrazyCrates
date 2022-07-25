@@ -11,6 +11,12 @@ public class KeyUtils {
 
     private final CrazyManager crazyManager = CrazyManager.getInstance();
 
+    private static final KeyUtils keyUtils = new KeyUtils();
+
+    public static KeyUtils getKeyUtils() {
+        return keyUtils;
+    }
+
     public void checkKeys(Player player, String messageHeader, Player otherPlayer) {
 
         AtomicBoolean hasKeys = new AtomicBoolean(false);
