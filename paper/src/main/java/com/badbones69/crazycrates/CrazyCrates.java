@@ -1,24 +1,14 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.FileManager;
+import com.badbones69.crazycrates.api.files.NewFileManager;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.commands.CCCommand;
 import com.badbones69.crazycrates.commands.subs.player.BaseKeyCommand;
-import com.badbones69.crazycrates.cratetypes.CSGO;
-import com.badbones69.crazycrates.cratetypes.Cosmic;
-import com.badbones69.crazycrates.cratetypes.CrateOnTheGo;
-import com.badbones69.crazycrates.cratetypes.QuadCrate;
-import com.badbones69.crazycrates.cratetypes.QuickCrate;
-import com.badbones69.crazycrates.cratetypes.Roulette;
-import com.badbones69.crazycrates.cratetypes.War;
-import com.badbones69.crazycrates.cratetypes.Wheel;
-import com.badbones69.crazycrates.cratetypes.Wonder;
-import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
-import com.badbones69.crazycrates.listeners.CrateControlListener;
-import com.badbones69.crazycrates.listeners.FireworkDamageListener;
-import com.badbones69.crazycrates.listeners.MenuListener;
-import com.badbones69.crazycrates.listeners.MiscListener;
-import com.badbones69.crazycrates.listeners.PreviewListener;
+import com.badbones69.crazycrates.config.Config;
+import com.badbones69.crazycrates.cratetypes.*;
+import com.badbones69.crazycrates.listeners.*;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
@@ -33,12 +23,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class CrazyCrates extends JavaPlugin implements Listener {
 
-    private final FileManager fileManager = FileManager.getInstance();
+    private final NewFileManager fileManager = NewFileManager.INSTANCE;
+
+    private final FileManager oldFileManager = FileManager.getInstance();
+
     private final CrazyManager crazyManager = CrazyManager.getInstance();
 
-    private boolean isEnabled = false;
-
     BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
+
+    private boolean pluginEnabled = false;
 
     @Override
     public void onEnable() {
@@ -78,31 +71,11 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             // Clean files if we have to.
             //cleanFiles();
 
-            // Add extra messages.
-            //Messages.addMissingMessages();
+            if (Config.toggleMetrics) new Metrics(this, 4514);
 
-            String metricsPath = FileManager.Files.CONFIG.getFile().getString("Settings.Toggle-Metrics");
-            boolean metricsEnabled = Files.CONFIG.getFile().getBoolean("Settings.Toggle-Metrics");
-
-            if (metricsPath != null) {
-                if (metricsEnabled) new Metrics(this, 4514);
-            } else {
-                getLogger().warning("Metrics was automatically enabled.");
-                getLogger().warning("Please add Toggle-Metrics: false to the top of your config.yml.");
-                getLogger().warning("https://github.com/Crazy-Crew/Crazy-Crates/blob/main/src/main/resources/config.yml");
-                getLogger().warning("An example if confused is linked above.");
-
-                new Metrics(this, 4514);
-            }
         } catch (Exception e) {
 
             pluginEnabled = false;
-
-            for (StackTraceElement stack : e.getStackTrace()) {
-                getLogger().severe(String.valueOf(stack));
-            }
-
-            isEnabled = false;
 
             return;
         }
@@ -130,15 +103,15 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     }
 
     public void cleanFiles() {
-        if (!Files.LOCATIONS.getFile().contains("Locations")) {
-            Files.LOCATIONS.getFile().set("Locations.Clear", null);
-            Files.LOCATIONS.saveFile();
-        }
+        //if (!Files.LOCATIONS.getFile().contains("Locations")) {
+        //    Files.LOCATIONS.getFile().set("Locations.Clear", null);
+        //    Files.LOCATIONS.saveFile();
+        //}
 
-        if (!Files.DATA.getFile().contains("Players")) {
-            Files.DATA.getFile().set("Players.Clear", null);
-            Files.DATA.saveFile();
-        }
+        //if (!Files.DATA.getFile().contains("Players")) {
+       //     Files.DATA.getFile().set("Players.Clear", null);
+        //    Files.DATA.saveFile();
+        //}
     }
 
     private void enable() {
