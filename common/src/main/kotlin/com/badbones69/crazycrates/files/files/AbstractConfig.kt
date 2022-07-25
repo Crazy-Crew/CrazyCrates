@@ -2,8 +2,6 @@ package com.badbones69.crazycrates.api.files
 
 import com.badbones69.crazycrates.api.files.annotations.Comment
 import com.badbones69.crazycrates.api.files.annotations.Key
-import org.bukkit.configuration.file.FileConfiguration
-import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.nio.file.Path
 
@@ -18,7 +16,7 @@ open class AbstractConfig {
 
     private val configurations: HashMap<File, FileConfiguration> = hashMapOf()
 
-    fun save(path: Path, classObject: Any) {
+    fun reload(path: Path, classObject: Any) {
         // Clear just in case.
         files.clear()
         configurations.clear()
@@ -45,13 +43,14 @@ open class AbstractConfig {
         getConfig?.load(file)
 
         classObject::class.java.declaredFields.forEach { method ->
+            method.isAccessible = true
+
             val key = method.getAnnotation(Key::class.java)
             val comment = method.getAnnotation(Comment::class.java)
 
-            println(key.value)
-            println(comment.value)
+            val value = getValues(file, key.value, method[classObject])
 
-            println(method[classObject].toString())
+            method.set(classObject, value)
 
             if (comment != null) getConfiguration(file)?.setComments(key.value, comment.value.split("\n").toList())
         }

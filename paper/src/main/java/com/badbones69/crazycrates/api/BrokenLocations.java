@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.Location;
 
-public class BrokeLocation {
+public class BrokenLocations {
     
     private int x, y, z;
     private String world;
@@ -13,7 +13,7 @@ public class BrokeLocation {
 
     private final CrazyCrates plugin;
     
-    public BrokeLocation(String locationName, Crate crate, int x, int y, int z, String world, CrazyCrates plugin) {
+    public BrokenLocations(String locationName, Crate crate, int x, int y, int z, String world, CrazyCrates plugin) {
         this.x = x;
         this.y = y;
         this.z = z;
