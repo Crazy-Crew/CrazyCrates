@@ -2,9 +2,9 @@ plugins {
     id("crazycrates-language")
 }
 
-group = "com.badbones69.crazycrates"
-version = "1.0.0-${System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"}"
-description = "The best crates plugin!"
+rootProject.group = "com.badbones69.crazycrates"
+rootProject.version = "2.11.5-${System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"}"
+rootProject.description = "The best crates plugin!"
 
 repositories {
     mavenCentral()
