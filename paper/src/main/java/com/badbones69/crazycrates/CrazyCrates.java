@@ -93,7 +93,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             }
         } catch (Exception e) {
 
-            getLogger().severe(e.getMessage());
+            pluginEnabled = false;
 
             for (StackTraceElement stack : e.getStackTrace()) {
                 getLogger().severe(String.valueOf(stack));
@@ -106,12 +106,12 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         enable();
 
-        isEnabled = true;
+        pluginEnabled = true;
     }
 
     @Override
     public void onDisable() {
-        if (!isEnabled) return;
+        if (!pluginEnabled) return;
 
         SessionManager.endCrates();
 
