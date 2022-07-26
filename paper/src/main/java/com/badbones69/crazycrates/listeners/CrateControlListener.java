@@ -51,7 +51,7 @@ public class CrateControlListener implements Listener { // Crate Control
     // This must run as highest, so it doesn't cause other plugins to check
     // the items that were added to the players inventory and replaced the item in the player's hand.
     // This is only an issue with QuickCrate
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         FileConfiguration config = OldFileManager.Files.CONFIG.getFile();

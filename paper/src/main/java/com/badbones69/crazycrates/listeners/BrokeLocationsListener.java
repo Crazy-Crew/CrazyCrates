@@ -20,7 +20,7 @@ public class BrokeLocationsListener implements Listener {
 
     private final Config config = new Config();
     
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onWorldLoad(WorldLoadEvent e) {
         if (!crazyManager.getBrokeCrateLocations().isEmpty()) {
             int fixedAmount = 0;
