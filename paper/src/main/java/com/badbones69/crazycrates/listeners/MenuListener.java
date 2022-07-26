@@ -148,8 +148,8 @@ public class MenuListener implements Listener {
 
         player.openInventory(inv);
     }
-    
-    @EventHandler
+
+    @EventHandler(ignoreCancelled = true)
     public void onInvClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
         Inventory inv = e.getInventory();

@@ -10,7 +10,7 @@ public class MiscListener implements Listener {
 
     private final CrazyManager crazyManager = CrazyManager.getInstance();
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerPickUp(PlayerAttemptPickupItemEvent event) {
         if (crazyManager.isDisplayReward(event.getItem())) {
             event.setCancelled(true);

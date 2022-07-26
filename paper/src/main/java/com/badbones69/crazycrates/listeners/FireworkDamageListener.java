@@ -36,15 +36,15 @@ public class FireworkDamageListener implements Listener {
     public static void removeFirework(Entity firework) {
         fireworks.remove(firework);
     }
-    
-    @EventHandler
+
+    @EventHandler(ignoreCancelled = true)
     public void onFireworkDamage(EntityDamageByEntityEvent e) {
         if (fireworks.contains(e.getDamager())) {
             e.setCancelled(true);
         }
     }
     
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onFireworkExplode(FireworkExplodeEvent e) {
         final Entity firework = e.getEntity();
 

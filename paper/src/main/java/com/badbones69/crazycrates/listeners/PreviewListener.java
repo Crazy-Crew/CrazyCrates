@@ -116,8 +116,8 @@ public class PreviewListener implements Listener {
     public static void setPlayerInMenu(Player player, boolean inMenu) {
         playerInMenu.put(player.getUniqueId(), inMenu);
     }
-    
-    @EventHandler
+
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
 
