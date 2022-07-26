@@ -1,14 +1,15 @@
 package com.badbones69.crazycrates.listeners;
 
-import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.BrokenLocations;
-import com.badbones69.crazycrates.api.FileManager;
+import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.OldFileManager;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.config.Config;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class BrokeLocationsListener implements Listener {
 
     private final CrazyManager crazyManager = CrazyManager.getInstance();
-    private final FileManager fileManager = FileManager.getInstance();
+    private final OldFileManager oldFileManager = OldFileManager.getInstance();
     
     @EventHandler
     public void onWorldLoad(WorldLoadEvent e) {

@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api.enums;
 
 import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.api.FileManager;
+import com.badbones69.crazycrates.api.OldFileManager;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.*;
@@ -114,7 +114,7 @@ public enum Messages {
     }
     
     public static void addMissingMessages() {
-        FileConfiguration messages = FileManager.Files.MESSAGES.getFile();
+        FileConfiguration messages = OldFileManager.Files.MESSAGES.getFile();
         boolean saveFile = false;
         for (Messages message : values()) {
             if (!messages.contains("Messages." + message.getPath())) {
@@ -128,7 +128,7 @@ public enum Messages {
         }
 
         if (saveFile) {
-            FileManager.Files.MESSAGES.saveFile();
+            OldFileManager.Files.MESSAGES.saveFile();
         }
     }
     
@@ -202,13 +202,13 @@ public enum Messages {
 
         if (isList) {
             if (exists) {
-                message = color(convertList(FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path)));
+                message = color(convertList(OldFileManager.Files.MESSAGES.getFile().getStringList("Messages." + path)));
             } else {
                 message = color(convertList(getDefaultListMessage()));
             }
         } else {
             if (exists) {
-                message = color(FileManager.Files.MESSAGES.getFile().getString("Messages." + path));
+                message = color(OldFileManager.Files.MESSAGES.getFile().getString("Messages." + path));
             } else {
                 message = color(getDefaultMessage());
             }
@@ -230,12 +230,12 @@ public enum Messages {
     }
     
     private boolean exists() {
-        return FileManager.Files.MESSAGES.getFile().contains("Messages." + path);
+        return OldFileManager.Files.MESSAGES.getFile().contains("Messages." + path);
     }
     
     private boolean isList() {
-        if (FileManager.Files.MESSAGES.getFile().contains("Messages." + path)) {
-            return !FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path).isEmpty();
+        if (OldFileManager.Files.MESSAGES.getFile().contains("Messages." + path)) {
+            return !OldFileManager.Files.MESSAGES.getFile().getStringList("Messages." + path).isEmpty();
         } else {
             return defaultMessage == null;
         }

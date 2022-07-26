@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.FileManager;
+import com.badbones69.crazycrates.api.OldFileManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.Permissions;
@@ -54,7 +54,7 @@ public class CrateControlListener implements Listener { // Crate Control
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
-        FileConfiguration config = FileManager.Files.CONFIG.getFile();
+        FileConfiguration config = OldFileManager.Files.CONFIG.getFile();
 
         if (e.getHand() == EquipmentSlot.OFF_HAND) {
             if (crazyManager.isKey(player.getInventory().getItemInOffHand())) {

@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.listeners;
 
-import com.badbones69.crazycrates.api.FileManager;
+import com.badbones69.crazycrates.api.OldFileManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,7 +24,7 @@ public class PreviewListener implements Listener {
     private static ItemBuilder backButton;
 
     public static void loadButtons() {
-        FileConfiguration config = FileManager.Files.CONFIG.getFile();
+        FileConfiguration config = OldFileManager.Files.CONFIG.getFile();
         String path = "Settings.Preview.Buttons.";
         menuButton = new ItemBuilder()
         .setMaterial(config.getString(path + "Menu.Item", "COMPASS"))

@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.api.files.NewFileManager;
+import com.badbones69.crazycrates.api.OldFileManager;
+import com.badbones69.crazycrates.api.OldFileManager.Files;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.commands.CCCommand;
 import com.badbones69.crazycrates.commands.subs.player.BaseKeyCommand;
@@ -23,9 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class CrazyCrates extends JavaPlugin implements Listener {
 
-    private final NewFileManager fileManager = NewFileManager.INSTANCE;
-
-    private final FileManager oldFileManager = FileManager.getInstance();
+    private final OldFileManager fileManager = OldFileManager.getInstance();
 
     private final CrazyManager crazyManager = CrazyManager.getInstance();
 
@@ -50,23 +48,10 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
             crazyManager.loadPlugin(this);
 
-            fileManager.registerDefaultGeneratedFiles("CrateExample.yml",  "/crates")
-                    .registerDefaultGeneratedFiles("QuadCrateExample.yml", "/crates")
-                    .registerDefaultGeneratedFiles("CosmicCrateExample.yml", "/crates")
-                    .registerDefaultGeneratedFiles("QuickCrateExample.yml",  "/crates")
-                    .registerDefaultGeneratedFiles("classic.nbt", "/schematics")
-                    .registerDefaultGeneratedFiles("nether.nbt", "/schematics")
-                    .registerDefaultGeneratedFiles("outdoors.nbt",  "/schematics")
-                    .registerDefaultGeneratedFiles("sea.nbt", "/schematics")
-                    .registerDefaultGeneratedFiles("soul.nbt",  "/schematics")
-                    .registerDefaultGeneratedFiles("wooden.nbt",  "/schematics")
-                    .registerCustomFolder("/crates")
-                    .registerCustomFolder("/schematics")
-                    .registerCustomFolder("/v1")
-                    .setup();
-
             // Set up old FileManager for now.
-            oldFileManager.setup(this);
+            fileManager.setup(this);
+
+            // Config.INSTANCE.reload(getDataFolder().toPath());
 
             // Clean files if we have to.
             //cleanFiles();
@@ -103,15 +88,15 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     }
 
     public void cleanFiles() {
-        //if (!Files.LOCATIONS.getFile().contains("Locations")) {
-        //    Files.LOCATIONS.getFile().set("Locations.Clear", null);
-        //    Files.LOCATIONS.saveFile();
-        //}
+        if (!Files.LOCATIONS.getFile().contains("Locations")) {
+            Files.LOCATIONS.getFile().set("Locations.Clear", null);
+            Files.LOCATIONS.saveFile();
+        }
 
-        //if (!Files.DATA.getFile().contains("Players")) {
-       //     Files.DATA.getFile().set("Players.Clear", null);
-        //    Files.DATA.saveFile();
-        //}
+        if (!Files.DATA.getFile().contains("Players")) {
+            Files.DATA.getFile().set("Players.Clear", null);
+            Files.DATA.saveFile();
+        }
     }
 
     private void enable() {

@@ -2,13 +2,13 @@ package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
+import com.badbones69.crazycrates.api.OldFileManager.Files;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent.KeyReceiveReason;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.managers.QuadCrateManager;
-import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.objects.*;
 import com.badbones69.crazycrates.config.Config;
 import com.badbones69.crazycrates.cratetypes.*;
@@ -32,6 +32,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
+
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -39,7 +40,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CrazyManager {
 
     // FileManager object.
-    private static final FileManager fileManager = FileManager.getInstance();
+    private static final OldFileManager fileManager = OldFileManager.getInstance();
 
     // The instance of this class.
     private static final CrazyManager instance = new CrazyManager();
@@ -95,15 +96,6 @@ public class CrazyManager {
         return instance;
     }
 
-    /**
-     * Get the file manager that controls all yml files.
-     *
-     * @return The FileManager that controls all yml files.
-     */
-    public static FileManager getFileManager() {
-        return fileManager;
-    }
-
     // The CrazyEnvoys plugin.
     private CrazyCrates plugin;
 
@@ -127,7 +119,7 @@ public class CrazyManager {
         crateLocations.clear();
         crateSchematics.clear();
 
-        quadCrateTimer = FileManager.Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
+        quadCrateTimer = OldFileManager.Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
         giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
 
         if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginLoaded()) {
@@ -141,7 +133,7 @@ public class CrazyManager {
 
         if (Config.verbose) plugin.getLogger().info("Loading all crate information...");
 
-        for (String crateName : fileManager.getAllCratesNames(plugin)) {
+        /*for (String crateName : fileManager.getAllCratesNames(plugin)) {
             try {
                 FileConfiguration file = fileManager.getFile(crateName).getFile();
                 CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));
@@ -221,7 +213,7 @@ public class CrazyManager {
                 if (Config.verbose) plugin.getLogger().warning("There was an error while loading the " + crateName + ".yml file.");
                 e.printStackTrace();
             }
-        }
+        }*/
 
         crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null, plugin));
 

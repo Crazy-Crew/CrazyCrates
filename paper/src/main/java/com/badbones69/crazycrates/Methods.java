@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.FileManager;
+import com.badbones69.crazycrates.api.OldFileManager;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
@@ -147,11 +147,11 @@ public class Methods {
     }
     
     public static String getPrefix() {
-        return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix"));
+        return color(OldFileManager.Files.CONFIG.getFile().getString("Settings.Prefix"));
     }
     
     public static String getPrefix(String msg) {
-        return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
+        return color(OldFileManager.Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
     }
     
     public static boolean isInventoryFull(Player player) {
