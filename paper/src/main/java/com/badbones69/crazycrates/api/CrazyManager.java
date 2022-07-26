@@ -99,6 +99,8 @@ public class CrazyManager {
     // The CrazyEnvoys plugin.
     private CrazyCrates plugin;
 
+    private final Config config = new Config();
+
     /**
      * Get the CrazyEnvoys Plugin.
      * @return The CrazyEnvoys Plugin object.
@@ -131,7 +133,7 @@ public class CrazyManager {
         // Removes all holograms so that they can be replaced.
         if (hologramController != null) hologramController.removeAllHolograms();
 
-        if (Config.verbose) plugin.getLogger().info("Loading all crate information...");
+        if (config.verbose) plugin.getLogger().info("Loading all crate information...");
 
         /*for (String crateName : fileManager.getAllCratesNames(plugin)) {
             try {
@@ -217,7 +219,7 @@ public class CrazyManager {
 
         crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null, plugin));
 
-        if (Config.verbose) {
+        if (config.verbose) {
             plugin.getLogger().info("All crate information has been loaded.");
             plugin.getLogger().info("Loading all the physical crate locations.");
         }
@@ -258,7 +260,7 @@ public class CrazyManager {
         }
 
         // Checking if all physical locations loaded
-        if (Config.verbose) {
+        if (config.verbose) {
             if (loadedAmount > 0 || brokeAmount > 0) {
                 if (brokeAmount <= 0) {
                     plugin.getLogger().info("All physical crate locations have been loaded.");
@@ -270,7 +272,7 @@ public class CrazyManager {
         }
 
         // Loading schematic files
-        if (Config.verbose) plugin.getLogger().info("Searching for schematics to load.");
+        if (config.verbose) plugin.getLogger().info("Searching for schematics to load.");
 
         String[] schems = new File(plugin.getDataFolder() + "/schematics/").list();
 
@@ -278,11 +280,11 @@ public class CrazyManager {
             if (schematicName.endsWith(".nbt")) {
                 crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(plugin.getDataFolder() + "/schematics/" + schematicName)));
 
-                if (Config.verbose) plugin.getLogger().info(schematicName + " was successfully found and loaded.");
+                if (config.verbose) plugin.getLogger().info(schematicName + " was successfully found and loaded.");
             }
         }
 
-        if (Config.verbose) plugin.getLogger().info("All schematics were found and loaded.");
+        if (config.verbose) plugin.getLogger().info("All schematics were found and loaded.");
 
         cleanDataFile();
         PreviewListener.loadButtons();
@@ -303,7 +305,7 @@ public class CrazyManager {
 
         if (data.contains("Players")) {
 
-            if (Config.verbose) plugin.getLogger().info("Cleaning up the data.yml file.");
+            if (config.verbose) plugin.getLogger().info("Cleaning up the data.yml file.");
 
             List<String> removePlayers = new ArrayList<>();
 
@@ -327,14 +329,14 @@ public class CrazyManager {
             }
 
             if (removePlayers.size() > 0) {
-                if (Config.verbose) plugin.getLogger().info(removePlayers.size() + " player's data has been marked to be removed.");
+                if (config.verbose) plugin.getLogger().info(removePlayers.size() + " player's data has been marked to be removed.");
 
                 removePlayers.forEach(uuid -> data.set("Players." + uuid, null));
 
-                if (Config.verbose) plugin.getLogger().info("All empty player data has been removed.");
+                if (config.verbose) plugin.getLogger().info("All empty player data has been removed.");
             }
 
-            if (Config.verbose) plugin.getLogger().info("The data.yml file has been cleaned.");
+            if (config.verbose) plugin.getLogger().info("The data.yml file has been cleaned.");
 
             Files.DATA.saveFile();
         }
@@ -828,7 +830,7 @@ public class CrazyManager {
                 //.replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
             }
         } else {
-            if (Config.verbose) plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
+            if (config.verbose) plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
         }
     }
     

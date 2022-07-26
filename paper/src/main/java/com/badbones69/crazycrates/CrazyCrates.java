@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.commands.CCCommand;
 import com.badbones69.crazycrates.commands.subs.player.BaseKeyCommand;
 import com.badbones69.crazycrates.config.Config;
 import com.badbones69.crazycrates.cratetypes.*;
+import com.badbones69.crazycrates.files.files.FileManager;
 import com.badbones69.crazycrates.listeners.*;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
@@ -23,7 +24,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class CrazyCrates extends JavaPlugin implements Listener {
 
-    private final OldFileManager fileManager = OldFileManager.getInstance();
+    private final OldFileManager oldFileManager = OldFileManager.getInstance();
+
+    private final FileManager fileManager = FileManager.INSTANCE;
 
     private final CrazyManager crazyManager = CrazyManager.getInstance();
 
@@ -49,14 +52,17 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             crazyManager.loadPlugin(this);
 
             // Set up old FileManager for now.
-            fileManager.setup(this);
+            oldFileManager.setup(this);
 
-            // Config.INSTANCE.reload(getDataFolder().toPath());
+            fileManager.registerCustomFolder("/v2")
+                    .setup(getDataFolder().toPath());
+
+            new Config().reload(getDataFolder().toPath());
 
             // Clean files if we have to.
             //cleanFiles();
 
-            if (Config.toggleMetrics) new Metrics(this, 4514);
+            if (new Config().toggleMetrics) new Metrics(this, 4514);
 
         } catch (Exception e) {
 
@@ -121,7 +127,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         pluginManager.registerEvents(this, this);
 
-        crazyManager.loadCrates();
+        // crazyManager.loadCrates();
 
         if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
 

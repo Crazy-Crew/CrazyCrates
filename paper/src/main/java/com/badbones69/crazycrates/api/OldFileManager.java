@@ -21,11 +21,13 @@ public class OldFileManager {
     public static OldFileManager getInstance() {
         return instance;
     }
-    
+
+    private final Config config = new Config();
+
     /**
      * Sets up the plugin and loads all necessary files.
      */
-    public OldFileManager setup(CrazyCrates plugin) {
+    public void setup(CrazyCrates plugin) {
         if (!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdirs();
 
         files.clear();
@@ -35,7 +37,7 @@ public class OldFileManager {
         for (Files file : Files.values()) {
             File newFile = new File(plugin.getDataFolder(), file.getFileLocation());
 
-            if (Config.verbose) plugin.getLogger().info("Loading the " + file.getFileName());
+            if (new Config().verbose) plugin.getLogger().info("Loading the " + file.getFileName());
 
             if (!newFile.exists()) {
                 try {
@@ -43,7 +45,7 @@ public class OldFileManager {
                     InputStream jarFile = getClass().getResourceAsStream("/" + file.getFileJar());
                     copyFile(jarFile, serverFile);
                 } catch (Exception e) {
-                    if (Config.verbose) plugin.getLogger().warning("Failed to load file: " + file.getFileName());
+                    if (config.verbose) plugin.getLogger().warning("Failed to load file: " + file.getFileName());
                     e.printStackTrace();
                     continue;
                 }
@@ -52,10 +54,9 @@ public class OldFileManager {
             files.put(file, newFile);
             configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
 
-            if (Config.verbose) plugin.getLogger().info("Successfully loaded " + file.getFileName());
+            if (config.verbose) plugin.getLogger().info("Successfully loaded " + file.getFileName());
         }
 
-        return this;
     }
 
     /**

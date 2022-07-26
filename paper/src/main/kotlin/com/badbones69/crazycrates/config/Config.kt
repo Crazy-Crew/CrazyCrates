@@ -3,10 +3,9 @@ package com.badbones69.crazycrates.config
 import com.badbones69.crazycrates.files.files.AbstractConfig
 import com.badbones69.crazycrates.files.annotations.Comment
 import com.badbones69.crazycrates.files.annotations.Key
-import com.badbones69.crazycrates.utils.FileUtils
 import java.nio.file.Path
 
-object Config : AbstractConfig() {
+class Config : AbstractConfig() {
 
     @Key("Settings.Prefix")
     @Comment("The base prefix for the plugin.")

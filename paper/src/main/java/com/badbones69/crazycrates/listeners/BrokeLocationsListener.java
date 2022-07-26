@@ -17,7 +17,8 @@ import java.util.List;
 public class BrokeLocationsListener implements Listener {
 
     private final CrazyManager crazyManager = CrazyManager.getInstance();
-    private final OldFileManager oldFileManager = OldFileManager.getInstance();
+
+    private final Config config = new Config();
     
     @EventHandler
     public void onWorldLoad(WorldLoadEvent e) {
@@ -42,7 +43,7 @@ public class BrokeLocationsListener implements Listener {
 
             crazyManager.getBrokeCrateLocations().removeAll(fixedWorlds);
 
-            if (Config.verbose) {
+            if (config.verbose) {
                 crazyManager.getPlugin().getLogger().warning("Fixed " + fixedAmount + " broken crate locations.");
 
                 if (crazyManager.getBrokeCrateLocations().isEmpty()) crazyManager.getPlugin().getLogger().warning("All broken crate locations have been fixed.");
