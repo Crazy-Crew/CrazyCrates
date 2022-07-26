@@ -22,6 +22,8 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":common"))
+
     implementation("dev.triumphteam:triumph-cmd-bukkit:2.0.0-SNAPSHOT")
 
     implementation("org.bstats:bstats-bukkit:3.0.0")
