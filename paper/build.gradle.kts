@@ -11,6 +11,10 @@ plugins {
 //    }
 //}
 
+dependencies {
+    implementation(project(":common"))
+}
+
 tasks {
     shadowJar {
         minimize()

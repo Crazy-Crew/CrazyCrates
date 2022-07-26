@@ -1,8 +1,6 @@
 package com.badbones69.crazycrates.utils
 
-import com.badbones69.crazycrates.files.files.NewFileManager
 import java.io.BufferedOutputStream
-import java.io.File
 import java.io.FileOutputStream
 import java.net.JarURLConnection
 import java.nio.file.Files
@@ -10,9 +8,6 @@ import java.nio.file.Path
 import java.util.zip.ZipFile
 
 class FileUtils {
-
-    val dataFolder: Path? = NewFileManager.getDataFolder()?.toPath()
-    val localeDir: Path? = dataFolder?.resolve("locale")
 
     fun extract(inDir: String, outDir: Path, replace: Boolean) {
         val dirURL = javaClass.getResource(inDir)

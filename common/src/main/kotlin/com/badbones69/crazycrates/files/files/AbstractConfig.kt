@@ -1,9 +1,11 @@
-package com.badbones69.crazycrates.api.files
+package com.badbones69.crazycrates.files.files
 
-import com.badbones69.crazycrates.api.files.annotations.Comment
-import com.badbones69.crazycrates.api.files.annotations.Key
-import java.io.File
+import com.badbones69.crazycrates.files.annotations.Comment
+import com.badbones69.crazycrates.files.annotations.Key
+import org.simpleyaml.configuration.file.YamlFile
 import java.nio.file.Path
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTime
 
 /**
  * @author BillyGalbreath
@@ -12,62 +14,42 @@ import java.nio.file.Path
  */
 open class AbstractConfig {
 
-    private val files: HashSet<File> = hashSetOf()
-
-    private val configurations: HashMap<File, FileConfiguration> = hashMapOf()
-
+    @OptIn(ExperimentalTime::class)
     fun reload(path: Path, classObject: Any) {
-        // Clear just in case.
-        files.clear()
-        configurations.clear()
+        val time = measureTime {
+            val file = YamlFile(path.toFile())
 
-        // Get file path
-        val file = path.toFile()
+            // Create file.
+            if (!file.exists()) file.createNewFile()
 
-        // Create file.
-        if (!file.exists()) file.createNewFile()
+            // Set option values.
+            file.options().copyDefaults(true)
 
-        // Add file to hashSet.
-        addFile(file)
+            // Load the file.
+            file.load()
 
-        // Put file in hashmap.
-        addConfiguration(file)
+            classObject::class.java.declaredFields.forEach { method ->
+                method.isAccessible = true
 
-        val getConfig = getConfiguration(file)
+                val key = method.getAnnotation(Key::class.java)
+                val comment = method.getAnnotation(Comment::class.java)
 
-        // Set option values.
-        getConfig?.options()?.copyDefaults(true)
-        getConfig?.options()?.parseComments(true)
+                val value = getValues(file, key.value, method[classObject])
 
-        // Load the file.
-        getConfig?.load(file)
+                method.set(classObject, value)
 
-        classObject::class.java.declaredFields.forEach { method ->
-            method.isAccessible = true
+                if (comment != null) file.setComment(key.value, comment.value)
+            }
 
-            val key = method.getAnnotation(Key::class.java)
-            val comment = method.getAnnotation(Comment::class.java)
-
-            val value = getValues(file, key.value, method[classObject])
-
-            method.set(classObject, value)
-
-            if (comment != null) getConfiguration(file)?.setComments(key.value, comment.value.split("\n").toList())
+            file.save()
         }
 
-        // Save the file.
-        getConfig?.save(file)
+        println("File creation completed in ${time}")
     }
 
-    private fun addFile(file: File) = files.add(file)
+    private fun getValues(file: YamlFile, path: String, default: Any?): Any? {
+        if (file.get(path) == null) file.set(path, default)
 
-    private fun addConfiguration(file: File) = configurations.put(file, YamlConfiguration.loadConfiguration(file))
-
-    private fun getConfiguration(file: File) = configurations[file]
-
-    private fun getValues(file: File, path: String, default: Any?): Any? {
-        if (getConfiguration(file)?.get(path) == null) getConfiguration(file)?.set(path, default)
-
-        return getConfiguration(file)?.get(path)
+        return file.get(path)
     }
 }

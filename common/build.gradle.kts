@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation("org.yaml:snakeyaml:1.30")
+    implementation("me.carleslc.Simple-YAML:Simple-Yaml:1.8")
 }

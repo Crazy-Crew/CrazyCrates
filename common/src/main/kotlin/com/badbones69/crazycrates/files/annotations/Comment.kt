@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.files.annotations
+package com.badbones69.crazycrates.files.annotations
 
 @Target(AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
