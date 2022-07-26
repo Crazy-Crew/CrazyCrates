@@ -1,0 +1,17 @@
+preview-gui:
+  buttons:
+    back-menu-button:
+      item: 'COMPASS'
+      name: '<bold><gray>!!!</gray> <red>Menu</red> <gray>!!!</gray></bold>'
+      lore:
+        - '<gray>Return to the main menu.</gray>'
+    next-page-button:
+      item: 'FEATHER'
+      name: '<bold><gold>Next >></gold></bold>'
+      lore:
+        - '<bold><gray>Page:</gray></bold> <blue>%page%</blue>'
+    back-page-button:
+      item: 'FEATHER'
+      name: '<bold><gold><< Back</gold></bold>'
+      lore:
+        - '<bold><gray>Page:</gray></bold> <blue>%page%</blue>'
