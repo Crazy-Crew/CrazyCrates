@@ -106,7 +106,7 @@ public class CrateControlListener implements Listener { // Crate Control
                 player.updateInventory();
             }
 
-            //Checks to see if the clicked block is a physical crate.
+            // Checks to see if the clicked block is a physical crate.
             CrateLocation crateLocation = crazyManager.getCrateLocation(clickedBlock.getLocation());
 
             if (crateLocation != null && crateLocation.getCrate() != null) {
@@ -114,7 +114,7 @@ public class CrateControlListener implements Listener { // Crate Control
                 e.setCancelled(true);
 
                 if (crate.getCrateType() == CrateType.MENU) {
-                    //This is to stop players in QuadCrate to not be able to try and open a crate set to menu.
+                    // This is to stop players in QuadCrate to not be able to try and open a crate set to menu.
                     if (!crazyManager.isInOpeningList(player)) {
                         MenuListener.openGUI(player);
                     }
@@ -123,7 +123,7 @@ public class CrateControlListener implements Listener { // Crate Control
                 }
 
                 PhysicalCrateKeyCheckEvent event = new PhysicalCrateKeyCheckEvent(player, crateLocation);
-                player.getServer().getPluginManager().callEvent(event);
+                crazyManager.getPlugin().getServer().getPluginManager().callEvent(event);
 
                 if (!event.isCancelled()) {
                     boolean hasKey = false;
