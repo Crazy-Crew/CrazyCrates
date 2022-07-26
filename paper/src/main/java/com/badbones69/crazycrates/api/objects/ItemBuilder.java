@@ -20,6 +20,8 @@ import org.bukkit.potion.PotionType;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.badbones69.crazycrates.utils.ColorUtilsKt.color;
+
 public class ItemBuilder {
     
     private NBTItem nbtItem;
@@ -311,9 +313,11 @@ public class ItemBuilder {
      */
     public String getUpdatedName() {
         String newName = itemName;
+
         for (String placeholder : namePlaceholders.keySet()) {
             newName = newName.replace(placeholder, namePlaceholders.get(placeholder)).replace(placeholder.toLowerCase(), namePlaceholders.get(placeholder));
         }
+
         return newName;
     }
     
@@ -448,6 +452,7 @@ public class ItemBuilder {
             
             if (metaData.contains("#")) { // <ID>:<Durability>#<CustomModelData>
                 String modelData = metaData.split("#")[1];
+
                 if (isInt(modelData)) { // Value is a number.
                     this.useCustomModelData = true;
                     this.customModelData = Integer.parseInt(modelData);
@@ -511,7 +516,7 @@ public class ItemBuilder {
      * @return The ItemBuilder with an updated name.
      */
     public ItemBuilder setName(String itemName) {
-        // if (itemName != null) this.itemName = color(itemName);
+        if (itemName != null) this.itemName = color(itemName);
         return this;
     }
     
@@ -558,7 +563,7 @@ public class ItemBuilder {
             this.itemLore.clear();
 
             for (String line : lore) {
-                // this.itemLore.add(color(line));
+                this.itemLore.add(color(line));
             }
         }
 
@@ -572,7 +577,7 @@ public class ItemBuilder {
      * @return The ItemBuilder with updated info.
      */
     public ItemBuilder addLore(String lore) {
-        // if (lore != null) this.itemLore.add(color(lore));
+        if (lore != null) this.itemLore.add(color(lore));
         return this;
     }
     
@@ -1005,6 +1010,7 @@ public class ItemBuilder {
                             for (PatternType pattern : PatternType.values()) {
                                 if (option.equalsIgnoreCase(pattern.name()) || value.equalsIgnoreCase(pattern.getIdentifier())) {
                                     DyeColor color = getDyeColor(value);
+
                                     if (color != null) {
                                         itemBuilder.addPattern(new Pattern(color, pattern));
                                     }
