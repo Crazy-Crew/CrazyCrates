@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.objects.CrateHologram;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import org.bukkit.block.Block;
+
 import java.util.HashMap;
 
 public class HolographicSupport implements HologramController {

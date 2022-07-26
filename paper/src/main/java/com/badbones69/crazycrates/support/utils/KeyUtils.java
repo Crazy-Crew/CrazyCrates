@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.support.utils;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.entity.Player;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;

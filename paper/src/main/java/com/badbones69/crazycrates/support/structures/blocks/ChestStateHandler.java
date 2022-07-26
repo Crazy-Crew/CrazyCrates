@@ -2,11 +2,7 @@ package com.badbones69.crazycrates.support.structures.blocks;
 
 import com.badbones69.crazycrates.support.structures.interfaces.ChestControl;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
-import org.bukkit.block.EnderChest;
+import org.bukkit.block.*;
 import org.bukkit.block.data.Directional;
 
 public class ChestStateHandler implements ChestControl {

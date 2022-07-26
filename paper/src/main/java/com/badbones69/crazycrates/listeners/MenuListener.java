@@ -17,6 +17,7 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;

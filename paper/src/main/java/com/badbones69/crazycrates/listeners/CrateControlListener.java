@@ -28,6 +28,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
 import java.util.HashMap;
 
 public class CrateControlListener implements Listener { // Crate Control

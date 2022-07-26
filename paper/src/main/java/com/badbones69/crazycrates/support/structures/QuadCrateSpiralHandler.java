@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.support.structures.interfaces.SpiralControl;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 public class QuadCrateSpiralHandler implements SpiralControl {

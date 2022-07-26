@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api.enums;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.FileManager;
 import org.bukkit.configuration.file.FileConfiguration;
+
 import java.util.*;
 import java.util.Map.Entry;
 
