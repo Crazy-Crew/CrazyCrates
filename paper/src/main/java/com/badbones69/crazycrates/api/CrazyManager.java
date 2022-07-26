@@ -238,7 +238,8 @@ public class CrazyManager {
             for (String locationName : locations.getConfigurationSection("Locations").getKeys(false)) {
                 try {
                     String worldName = locations.getString("Locations." + locationName + ".World");
-                    World world = plugin.getServer().getWorld(worldName);
+                    World world = null;
+                    if (worldName != null) world = plugin.getServer().getWorld(worldName);
                     int x = locations.getInt("Locations." + locationName + ".X");
                     int y = locations.getInt("Locations." + locationName + ".Y");
                     int z = locations.getInt("Locations." + locationName + ".Z");
