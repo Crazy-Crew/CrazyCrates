@@ -16,13 +16,13 @@ object FileManager {
 
     private val dataFolder: File? = null
 
-    fun setup(path: Path, dataFolder: Path): FileManager {
+    fun setup(path: Path): FileManager {
         var filePath = path.toFile()
 
         if (!filePath.exists()) {
             filePath.mkdirs()
 
-            filePath = dataFolder.toFile()
+            if (dataFolder != null) filePath = dataFolder
         }
 
         if (isHomeFoldersEmpty()) {
