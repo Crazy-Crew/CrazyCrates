@@ -21,7 +21,8 @@ tasks {
             "de.tr7zw",
             "org.bstats",
             "io.papermc",
-            "dev.triumphteam.cmd"
+            "dev.triumphteam.cmd",
+            "dev.triumphteam.gui"
         ).forEach {
             relocate(it, "${rootProject.group}.plugin.lib.$it")
         }
