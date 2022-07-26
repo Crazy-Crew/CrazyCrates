@@ -51,7 +51,7 @@ class Config : AbstractConfig() {
 
     @Key("Settings.Need-Key-Sound")
     @Comment("The sound for when you need a key.")
-    var needKeySound = "ENTITY_VILLAGER_NO"
+     var needKeySound = "ENTITY_VILLAGER_NO"
 
     @Key("Settings.QuadCrate.Timer")
     @Comment("The timer on the Quad Crate")
@@ -65,54 +65,15 @@ class Config : AbstractConfig() {
         }
     }
 
-    @Key("Settings.Preview.Buttons.Menu.Item")
-    var previewMenuItem = "COMPASS"
-
-    @Key("Settings.Preview.Buttons.Menu.Name")
-    var previewMenuName = "<bold><gray>!!!</gray> <red>Menu</red> <gray>!!!</gray></bold>"
-
-    @Key("Settings.Preview.Buttons.Menu.Lore")
-    var previewMenuLore: ArrayList<String?> = object : ArrayList<String?>() {
-        init {
-            add("<gray>Return to the menu.</gray>")
-        }
-    }
-
-    @Key("Settings.Preview.Buttons.Next.Item")
-    var previewNextItem = "FEATHER"
-
-    @Key("Settings.Preview.Buttons.Next.Name")
-    var previewNextName = "<bold><gold>Next >></gold></bold>"
-
-    @Key("Settings.Preview.Buttons.Next.Lore")
-    var previewNextLore: ArrayList<String?> = object : ArrayList<String?>() {
-        init {
-            add("<bold><gray>Page:</gray></bold> <blue>%page%</blue>")
-        }
-    }
-
-    @Key("Settings.Preview.Buttons.Back.Item")
-    var previewBackItem = "FEATHER"
-
-    @Key("Settings.Preview.Buttons.Back.Name")
-    var previewBackName = "&6&l<< Back"
-
-    @Key("Settings.Preview.Buttons.Back.Lore")
-    var previewBackLore: ArrayList<String?> = object : ArrayList<String?>() {
-        init {
-            add("<bold><gray>Page:</gray></bold> <blue>%page%</blue>")
-        }
-    }
-
     @Key("Settings.Filler.Toggle")
     @Comment("If it fills the GUI with an item.")
     var fillerToggle = false
 
-    @Key("Settings.Preview.Buttons.Back.Lore")
+    @Key("Settings.Filler.Item")
     @Comment("The item you wish to use.")
     var fillerItem = "BLACK_STAINED_GLASS_PANE"
 
-    @Key("Settings.Preview.Buttons.Back.Lore")
+    @Key("Settings.Filler.Name")
     @Comment("The name of the item.")
     var fillerName = " "
 
@@ -120,7 +81,7 @@ class Config : AbstractConfig() {
     @Comment("The lore of the item.")
     var fillerLore: ArrayList<String?> = object : ArrayList<String?>() {}
 
-    @Key("Settings.Filler.Lore")
+    @Key("Settings.GUI-Customizer")
     @Comment("Place extra items in the GUI. If you wish to not use this, remove all items and set it to GUI-Customizer: {}")
     var guiCustomizer: ArrayList<String?> = object : ArrayList<String?>() {
         init {
