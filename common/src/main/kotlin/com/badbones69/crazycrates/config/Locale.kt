@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.config
 
+import com.badbones69.crazycrates.files.AbstractConfig
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver

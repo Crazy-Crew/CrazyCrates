@@ -4,6 +4,9 @@
 paper = "1.19-R0.1-SNAPSHOT"
 paper-lib = "1.0.8-SNAPSHOT"
 
+# Kyori
+kyori-api = "4.11.0"
+
 # Misc
 bstats = "3.0.0"
 nbt-api = "2.10.0"
@@ -32,6 +35,10 @@ gui = "3.1.2"
 # PaperMC
 paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 paper-lib = { module = "io.papermc:paperlib", version.ref = "paper-lib" }
+
+# Kyori
+kyori-api = { module = "net.kyori:adventure-api", version.ref = "kyori-api" }
+mini-message = { module = "net.kyori:adventure-text-minimessage", version.ref = "kyori-api" }
 
 # BStats Bukkit
 bstats-bukkit = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
