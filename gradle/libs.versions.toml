@@ -1,0 +1,15 @@
+[versions]
+
+# Paper
+paper = "1.19-R0.1-SNAPSHOT"
+
+# Triumph Team
+cmds = "2.0.0-SNAPSHOT"
+
+[libraries]
+
+# PaperMC
+paper = { module = "io.papermc.paper:paper-api", version.ref = "paper"}
+
+# Triumph Team
+triumph-cmds = { module = "dev.triumphteam:triumph-cmd-core", version.ref = "cmds"}
