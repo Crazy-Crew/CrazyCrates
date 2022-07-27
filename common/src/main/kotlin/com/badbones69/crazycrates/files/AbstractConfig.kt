@@ -15,7 +15,7 @@ import kotlin.time.measureTime
 open class AbstractConfig {
 
     @OptIn(ExperimentalTime::class)
-    fun reload(path: Path, classObject: Class<*>) {
+    fun reload(path: Path, classObject: Class<out AbstractConfig>) {
         val time = measureTime {
             val file = YamlFile(path.toFile())
 
