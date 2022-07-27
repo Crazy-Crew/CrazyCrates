@@ -170,27 +170,27 @@ public class CrateControl implements Listener { //Crate Control
                         }
 
                         if(crate.getCrateType() == CrateType.QUICK_CRATE) {
-                            if(sneaking) {
-                                if(cooldown.contains(player.getUniqueId())) return;
-
-                                if (inUse.containsValue(crateLocation.getLocation())) {
-                                    player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
-                                    return;
-                                }
-
-                                e.setCancelled(true);
-
-                                cc.addPlayerToOpeningList(player, crate);
-                                inUse.put(player, crateLocation.getLocation());
-                                QuickCrate.openCrate(player, crateLocation.getLocation(), crate, keyType, true);
-
-                                cooldown.add(player.getUniqueId());
-                                Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin("CrazyCrates"), () -> cooldown.remove(player.getUniqueId()), 100L);
-                                return;
-                            } else {
+//                            if(sneaking) {
+//                                if(cooldown.contains(player.getUniqueId())) return;
+//
+//                                if (inUse.containsValue(crateLocation.getLocation())) {
+//                                    player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
+//                                    return;
+//                                }
+//
+//                                e.setCancelled(true);
+//
+//                                cc.addPlayerToOpeningList(player, crate);
+//                                inUse.put(player, crateLocation.getLocation());
+//                                QuickCrate.openCrate(player, crateLocation.getLocation(), crate, keyType, true);
+//
+//                                cooldown.add(player.getUniqueId());
+//                                Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin("CrazyCrates"), () -> cooldown.remove(player.getUniqueId()), 100L);
+//                                return;
+//                            } else {
                                 new MassOpenGUI(player, crate, crateLocation).open();
-                                return;
-                            }
+//                                return;
+//                            }
                         }
 
                         cc.addPlayerToOpeningList(player, crate);
