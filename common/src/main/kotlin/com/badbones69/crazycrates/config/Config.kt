@@ -130,7 +130,5 @@ class Config : AbstractConfig() {
         }
     }
 
-    fun reload(dataFolder: Path) {
-        reload(dataFolder.resolve("v2/config.yml"), this::class.java)
-    }
+    fun reload(dataFolder: Path) = reload(dataFolder.resolve("v2/config.yml"), this::class.java)
 }

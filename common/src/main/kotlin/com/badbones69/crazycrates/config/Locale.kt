@@ -3,36 +3,27 @@ package com.badbones69.crazycrates.config
 import com.badbones69.crazycrates.files.AbstractConfig
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
+import java.nio.file.Path
 
 object Locale : AbstractConfig() {
 
-    fun reload() {
-        //reload(FileUtils().localeDir!!.resolve(Config.languageFile), this)
+    fun reload(dataFolder: Path) = reload(dataFolder.resolve(Config().languageFile), this::class.java)
+
+    fun send(recipient: Audience, msg: String, vararg placeholders: TagResolver.Single) = send(recipient, true, msg, *placeholders)
+
+    fun send(recipient: Audience, prefix: Boolean, msg: String, vararg placeholders: TagResolver.Single) {
+        msg.split("\n").forEach {
+            send(recipient, prefix, parse(it, *placeholders))
+        }
     }
 
-    fun send(recipient: Audience, msg: String?, vararg placeholders: TagResolver.Single?) {
-        send(recipient, true, msg, *placeholders)
+    fun send(recipient: Audience, component: Component?) = send(recipient, true, component)
+
+    fun send(recipient: Audience, prefix: Boolean, component: Component?) = recipient.sendMessage((if (prefix) parse("").append(component!!) else component)!!)
+
+    private fun parse(msg: String?, vararg placeholders: TagResolver.Single): Component {
+       return MiniMessage.miniMessage().deserialize(msg.toString(), *placeholders)
     }
-
-    fun send(recipient: Audience, prefix: Boolean, msg: String?, vararg placeholders: TagResolver.Single?) {
-        //if (msg == null) return
-
-        //for (part in msg.split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) {
-        //    send(recipient, prefix, parse(part, *placeholders))
-        //}
-    }
-
-    fun send(recipient: Audience, prefix: Boolean, component: Component?) {
-        //if (recipient is ConsoleCommandSender) {
-       //     recipient.sendMessage((if (prefix) parse("bleh").append(component!!) else component)!!)
-        //    return
-        //}
-
-        //recipient.sendMessage((if (prefix) parse("blah").append(component!!) else component)!!)
-    }
-
-    //fun parse(msg: String?, vararg placeholders: TagResolver.Single?): Component {
-    //    return MiniMessage.miniMessage().deserialize(msg, *placeholders)
-    //}
 }
