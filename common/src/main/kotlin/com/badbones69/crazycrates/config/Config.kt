@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.config
 
-import com.badbones69.crazycrates.files.files.AbstractConfig
+import com.badbones69.crazycrates.files.AbstractConfig
 import com.badbones69.crazycrates.files.annotations.Comment
 import com.badbones69.crazycrates.files.annotations.Key
 import java.nio.file.Path

@@ -8,7 +8,7 @@ import com.badbones69.crazycrates.commands.CCCommand;
 import com.badbones69.crazycrates.commands.subs.player.BaseKeyCommand;
 import com.badbones69.crazycrates.config.Config;
 import com.badbones69.crazycrates.cratetypes.*;
-import com.badbones69.crazycrates.files.files.FileManager;
+import com.badbones69.crazycrates.files.FileManager;
 import com.badbones69.crazycrates.listeners.*;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
@@ -21,7 +21,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import java.util.Objects;
 
 public class CrazyCrates extends JavaPlugin implements Listener {
 

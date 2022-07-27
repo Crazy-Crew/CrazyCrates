@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.files.files
+package com.badbones69.crazycrates.files
 
 import org.simpleyaml.configuration.file.FileConfiguration
 import org.simpleyaml.configuration.file.YamlConfiguration

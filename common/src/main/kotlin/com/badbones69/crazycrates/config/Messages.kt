@@ -1,8 +1,7 @@
 package com.badbones69.crazycrates.config
 
-import com.badbones69.crazycrates.files.files.AbstractConfig
+import com.badbones69.crazycrates.files.AbstractConfig
 import com.badbones69.crazycrates.files.annotations.Key
-import com.badbones69.crazycrates.utils.FileUtils
 
 object Messages : AbstractConfig() {
 

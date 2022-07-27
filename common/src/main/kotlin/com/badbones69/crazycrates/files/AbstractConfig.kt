@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.files.files
+package com.badbones69.crazycrates.files
 
 import com.badbones69.crazycrates.files.annotations.Comment
 import com.badbones69.crazycrates.files.annotations.Key
