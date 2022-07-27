@@ -52,9 +52,7 @@ public class Methods {
             int chance = file.getInt("Crate.Prizes." + reward + ".Chance");
             int max = 99;
 
-            if (file.contains("Crate.Prizes." + reward + ".MaxRange")) {
-                max = file.getInt("Crate.Prizes." + reward + ".MaxRange") - 1;
-            }
+            if (file.contains("Crate.Prizes." + reward + ".MaxRange")) max = file.getInt("Crate.Prizes." + reward + ".MaxRange") - 1;
 
             try {
                 ItemStack item = new ItemBuilder().setMaterial(id).setName(name).build();

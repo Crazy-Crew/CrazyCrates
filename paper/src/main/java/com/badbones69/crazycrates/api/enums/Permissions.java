@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.api.enums;
 
+import org.bukkit.permissions.PermissionDefault;
+
 public enum Permissions {
 
     CRAZY_CRATES_PLAYER_KEY("player.key", "Check the number of keys you have."),
@@ -21,18 +23,19 @@ public enum Permissions {
     CRAZY_CRATES_ADMIN_GIVE_ALL("admin.giveall", "Gives all online players keys to use on crates."),
     CRAZY_CRATES_ADMIN_TAKE_KEY("admin.takekey", "Allows you to take keys from a player."),
     CRAZY_CRATES_ADMIN_SET_CRATE("admin.set", "Set the block you are looking at as the specified crate."),
-    CRAZY_CRATES_ADMIN_SET_MENU("admin.setmenu", "Sets the block you are looking at to open the (/cc) crate menu."),
+    CRAZY_CRATES_ADMIN_SET_MENU("admin.setmenu", "Sets the block you are looking at to open the (/crates) crate menu."),
     CRAZY_CRATES_ADMIN_RELOAD("admin.reload", "Reloads the entire plugin."),
     CRAZY_CRATES_ADMIN_DEBUG("admin.debug", "Debugs the plugin."),
     CRAZY_CRATES_ADMIN_CONVERT("admin.convert", "Converts data from other supported crate plugins into crazy crates."),
     CRAZY_CRATES_ADMIN_SCHEMATIC("admin.schematic.*", "Gives all permissions related to schematics"),
+    
     CRAZY_CRATES_ADMIN_SCHEMATIC_SET("admin.schematic.set", "Sets the positions #1 or #2 when making a new schematic for quadcrates."),
     CRAZY_CRATES_ADMIN_SCHEMATIC_SAVE("admin.schematic.save", "Saves the new schematic file to the schematics folder.");
 
 
     private final String defaultPermission;
     private final String description;
-
+    
     Permissions(String defaultPermission, String description) {
         this.defaultPermission = defaultPermission;
         this.description = description;
