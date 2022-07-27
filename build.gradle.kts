@@ -65,7 +65,7 @@ dependencies {
 
     implementation("io.papermc:paperlib:1.0.7")
 
-    compileOnly("com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9")
+    compileOnly("com.gmail.filoghost.holographicdisplays:holographicdisplays-api:3.0.0")
 
     compileOnly("be.maximvdw:MVdWPlaceholderAPI:3.1.1-SNAPSHOT") {
         exclude(group = "org.spigotmc", module = "spigot")
@@ -73,11 +73,11 @@ dependencies {
         exclude(group = "be.maximvdw", module = "MVdWUpdater")
     }
 
-    compileOnly("com.github.decentsoftware-eu:decentholograms:2.2.5")
+    compileOnly("com.github.decentsoftware-eu:decentholograms:2.5.2")
 
     compileOnly("io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT")
 
-    compileOnly("me.clip:placeholderapi:2.11.1") {
+    compileOnly("me.clip:placeholderapi:2.11.2") {
         exclude(group = "org.spigotmc", module = "spigot")
         exclude(group = "org.bukkit", module = "bukkit")
     }
