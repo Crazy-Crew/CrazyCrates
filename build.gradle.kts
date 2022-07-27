@@ -65,7 +65,7 @@ dependencies {
 
     implementation("io.papermc:paperlib:1.0.7")
 
-    compileOnly("com.gmail.filoghost.holographicdisplays:holographicdisplays-api:3.0.0")
+    compileOnly("com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9")
 
     compileOnly("be.maximvdw:MVdWPlaceholderAPI:3.1.1-SNAPSHOT") {
         exclude(group = "org.spigotmc", module = "spigot")
