@@ -1,12 +1,70 @@
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription;
-import org.jetbrains.kotlin.build.report.metrics.BuildPerformanceMetric.Companion.children
 
 plugins {
-    id("crazycrates-paper")
+    id("crazycrates-base")
 
     id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
 
     id("com.github.johnrengelman.shadow") version "7.1.2"
+}
+
+repositories {
+    // PAPI API
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+
+    // MVDW API
+    maven("https://repo.mvdw-software.com/content/groups/public/")
+
+    // NBT API
+    maven("https://repo.codemc.org/repository/maven-public/")
+
+    // Paper API
+    maven("https://repo.papermc.io/repository/maven-public/")
+
+    // Triumph Team
+    maven("https://repo.triumphteam.dev/snapshots/")
+}
+
+dependencies {
+    implementation(project(":common"))
+
+    // Paper API
+    compileOnly(libs.paper)
+
+    // Paper Lib
+    implementation(libs.paper.lib)
+
+    // Misc
+    implementation(libs.bstats.bukkit)
+
+    // NBT API - TODO() Replace this by using PDC.
+    implementation(libs.nbt.api)
+
+    // Apache Commons - forgot what I used this for.
+    compileOnly(libs.apache.commons)
+
+    // Vault API
+    compileOnly(libs.vault.api)
+
+    // Holograms
+    compileOnly(libs.holographic.displays)
+    compileOnly(libs.decent.holograms)
+
+    // Placeholders
+    compileOnly(libs.mvdw.placeholder.api) {
+        exclude(group = "org.spigotmc", module = "spigot")
+        exclude(group = "org.bukkit", module = "bukkit")
+        exclude(group = "be.maximvdw", module = "MVdWUpdater")
+    }
+
+    compileOnly(libs.placeholder.api) {
+        exclude(group = "org.spigotmc", module = "spigot")
+        exclude(group = "org.bukkit", module = "bukkit")
+    }
+
+    // Triumph Team
+    implementation(libs.triumph.bukkit)
+    implementation(libs.triumph.gui.bukkit)
 }
 
 //idea {
@@ -84,11 +142,6 @@ bukkit {
     val permNotOP = BukkitPluginDescription.Permission.Default.NOT_OP
 
     permissions {
-
-        //register("crazycrates.command.players.*") {
-        //    childrenMap = mapOf("crazycrates.command.player.key.others" to true)
-        //}
-
         register("crazycrates.command.player.menu") {
             default = permTrue
         }
