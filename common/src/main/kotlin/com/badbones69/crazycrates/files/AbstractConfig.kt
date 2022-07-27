@@ -15,7 +15,7 @@ import kotlin.time.measureTime
 open class AbstractConfig {
 
     @OptIn(ExperimentalTime::class)
-    fun reload(path: Path, classObject: Any) {
+    fun reload(path: Path, classObject: Class<*>) {
         val time = measureTime {
             val file = YamlFile(path.toFile())
 
@@ -28,7 +28,7 @@ open class AbstractConfig {
             // Load the file.
             file.load()
 
-            classObject::class.java.declaredFields.forEach { method ->
+            classObject.declaredFields.forEach { method ->
                 method.isAccessible = true
 
                 val key = method.getAnnotation(Key::class.java)
@@ -44,7 +44,7 @@ open class AbstractConfig {
             file.save()
         }
 
-        println("File creation completed in ${time}")
+        println("File creation completed in $time")
     }
 
     private fun getValues(file: YamlFile, path: String, default: Any?): Any? {
