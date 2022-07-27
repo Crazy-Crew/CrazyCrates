@@ -9,57 +9,57 @@ class Config : AbstractConfig() {
 
     @Key("Settings.Prefix")
     @Comment("The base prefix for the plugin.")
-    var prefix = "<dark_gray>[</dark_gray><gradient:#5e4fa2:#f79459>CrazyCrates</gradient><dark_gray]</dark_gray>: "
+    val prefix = "<dark_gray>[</dark_gray><gradient:#5e4fa2:#f79459>CrazyCrates</gradient><dark_gray]</dark_gray>: "
 
     @JvmField
     @Key("Settings.Toggle-Metrics")
     @Comment("Turn metrics on or off.")
-    var toggleMetrics = true
+    val toggleMetrics = true
 
     @Key("Settings.Language-File")
     @Comment("Check the locale directory for a list of available languages.")
-    var languageFile = "locale-en.yml"
+    val languageFile = "locale-en.yml"
 
     @JvmField
     @Key("Settings.Verbose")
     @Comment("Turning this on is useful for debugging but gets spammy very quickly.")
-    var verbose = true
+    val verbose = true
 
     @Key("Settings.InventoryName")
     @Comment("The name of the inventory.")
-    var inventoryName = "<blue><bold>Crazy</blue> <red>Crates</red></bold>"
+    val inventoryName = "<blue><bold>Crazy</blue> <red>Crates</red></bold>"
 
     @Key("Settings.InventorySize")
     @Comment("The size of the inventory.")
-    var inventorySize = 45
+    val inventorySize = 45
 
     @Key("Settings.KnockBack")
     @Comment("Whether or not crates have knock back.")
-    var knockBack = true
+    val knockBack = true
 
     @Key("Settings.Physical-Accepts-Virtual-Keys")
     @Comment("Whether or not a physical crate will accept virtual keys.")
-    var physicalAcceptsVirtualKeys = true
+    val physicalAcceptsVirtualKeys = true
 
     @Key("Settings.Virtual-Accepts-Physical-Keys")
     @Comment("Whether or not virtual crates will accept physicals")
-    var virtualAcceptsPhysicalKeys = true
+    val virtualAcceptsPhysicalKeys = true
 
     @Key("Settings.Give-Virtual-Keys-When-Inventory-Full")
     @Comment("Give virtual keys when inventory is full.")
-    var giveVirtualKeysWhenInventoryFull = false
+    val giveVirtualKeysWhenInventoryFull = false
 
     @Key("Settings.Need-Key-Sound")
     @Comment("The sound for when you need a key.")
-     var needKeySound = "ENTITY_VILLAGER_NO"
+     val needKeySound = "ENTITY_VILLAGER_NO"
 
     @Key("Settings.QuadCrate.Timer")
     @Comment("The timer on the Quad Crate")
-    var quadCrateTimer = 300
+    val quadCrateTimer = 300
 
     @Key("Settings.DisabledWorlds")
     @Comment("Worlds where crates are disabled.")
-    var disabledWorlds: ArrayList<String?> = object : ArrayList<String?>() {
+    val disabledWorlds: ArrayList<String?> = object : ArrayList<String?>() {
         init {
             add("world_nether")
         }
@@ -67,23 +67,23 @@ class Config : AbstractConfig() {
 
     @Key("Settings.Filler.Toggle")
     @Comment("If it fills the GUI with an item.")
-    var fillerToggle = false
+    val fillerToggle = false
 
     @Key("Settings.Filler.Item")
     @Comment("The item you wish to use.")
-    var fillerItem = "BLACK_STAINED_GLASS_PANE"
+    val fillerItem = "BLACK_STAINED_GLASS_PANE"
 
     @Key("Settings.Filler.Name")
     @Comment("The name of the item.")
-    var fillerName = " "
+    val fillerName = " "
 
     @Key("Settings.Filler.Lore")
     @Comment("The lore of the item.")
-    var fillerLore: ArrayList<String?> = object : ArrayList<String?>() {}
+    val fillerLore: ArrayList<String?> = object : ArrayList<String?>() {}
 
     @Key("Settings.GUI-Customizer")
     @Comment("Place extra items in the GUI. If you wish to not use this, remove all items and set it to GUI-Customizer: {}")
-    var guiCustomizer: ArrayList<String?> = object : ArrayList<String?>() {
+    val guiCustomizer: ArrayList<String?> = object : ArrayList<String?>() {
         init {
             add("Slot:1, Item:BLACK_STAINED_GLASS_PANE, Name: ")
             add("Slot:2, Item:BLACK_STAINED_GLASS_PANE, Name: ")
