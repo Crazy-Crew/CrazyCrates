@@ -1,6 +1,8 @@
 package com.badbones69.crazycrates.config
 
+import com.badbones69.crazycrates.files.AbstractConfig
 import com.badbones69.crazycrates.files.annotations.Key
+import java.nio.file.Path
 
 object Messages : AbstractConfig() {
 
@@ -207,7 +209,5 @@ object Messages : AbstractConfig() {
         }
     }
 
-    fun reload() {
-        //reload(FileUtils().dataFolder!!.resolve("messages.yml"), this)
-    }
+    fun reload(dataFolder: Path) = reload(dataFolder.resolve("messages.yml"), this::class.java)
 }

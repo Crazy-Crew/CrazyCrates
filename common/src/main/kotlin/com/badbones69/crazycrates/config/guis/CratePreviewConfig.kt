@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.config.guis
 
+import com.badbones69.crazycrates.files.AbstractConfig
 import com.badbones69.crazycrates.files.annotations.Key
 import java.nio.file.Path
 
@@ -44,7 +45,5 @@ class CratePreviewConfig : AbstractConfig() {
         }
     }
 
-    fun reload(dataFolder: Path) {
-        reload(dataFolder.resolve("guis/crate-preview-gui.yml"), this)
-    }
+    fun reload(dataFolder: Path) = reload(dataFolder.resolve("guis/crate-preview-gui.yml"), this::class.java)
 }
