@@ -8,6 +8,9 @@ paper-lib = "1.0.8-SNAPSHOT"
 bstats = "3.0.0"
 nbt-api = "2.10.0"
 
+# YAML
+yaml = "1.8"
+
 # Holograms
 holographic-displays = "2.4.9"
 decent-holograms = "2.5.2"
@@ -32,6 +35,9 @@ paper-lib = { module = "io.papermc:paperlib", version.ref = "paper-lib" }
 
 # BStats Bukkit
 bstats-bukkit = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
+
+# YAML
+yaml = { module = "me.carleslc.Simple-YAML:Simple-Yaml", version.ref = "yaml" }
 
 # Holograms
 holographic-displays = { module = "com.gmail.filoghost.holographicdisplays:holographicdisplays-api", version.ref = "holographic-displays" }

@@ -40,9 +40,6 @@ dependencies {
     // NBT API - TODO() Replace this by using PDC.
     implementation(libs.nbt.api)
 
-    // Apache Commons - forgot what I used this for.
-    compileOnly(libs.apache.commons)
-
     // Vault API
     compileOnly(libs.vault.api)
 
