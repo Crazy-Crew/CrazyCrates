@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.listeners;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.CrazyManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
@@ -14,7 +15,11 @@ public class FireworkDamageListener implements Listener {
     
     private static final ArrayList<Entity> fireworks = new ArrayList<>();
 
-    private final CrazyManager crazyManager = CrazyManager.getInstance();
+    private final CrazyCrates plugin;
+
+    public FireworkDamageListener(CrazyCrates plugin) {
+        this.plugin = plugin;
+    }
     
     /**
      * @return All the active fireworks.
@@ -39,9 +44,7 @@ public class FireworkDamageListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onFireworkDamage(EntityDamageByEntityEvent e) {
-        if (fireworks.contains(e.getDamager())) {
-            e.setCancelled(true);
-        }
+        if (fireworks.contains(e.getDamager())) e.setCancelled(true);
     }
     
     @EventHandler(ignoreCancelled = true)
@@ -54,7 +57,7 @@ public class FireworkDamageListener implements Listener {
                 public void run() {
                     fireworks.remove(firework);
                 }
-            }.runTaskLater(crazyManager.getPlugin(), 5);
+            }.runTaskLater(plugin, 5);
         }
     }
 }

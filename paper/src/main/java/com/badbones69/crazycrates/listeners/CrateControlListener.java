@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.listeners;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.OldFileManager;
@@ -31,12 +32,22 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 
+import static com.badbones69.crazycrates.utils.ColorUtilsKt.color;
+
 public class CrateControlListener implements Listener { // Crate Control
     
     // A list of crate locations that are in use.
     public static HashMap<Player, Location> inUse = new HashMap<>();
 
-    private final CrazyManager crazyManager = CrazyManager.getInstance();
+    private final CrazyCrates plugin;
+
+    private final CrazyManager crazyManager;
+
+    public CrateControlListener(CrazyCrates plugin, CrazyManager crazyManager) {
+        this.plugin = plugin;
+
+        this.crazyManager = crazyManager;
+    }
     
     // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
     @EventHandler
@@ -114,16 +125,16 @@ public class CrateControlListener implements Listener { // Crate Control
                 e.setCancelled(true);
 
                 if (crate.getCrateType() == CrateType.MENU) {
+
+                    // TODO() Make this no longer static.
                     // This is to stop players in QuadCrate to not be able to try and open a crate set to menu.
-                    if (!crazyManager.isInOpeningList(player)) {
-                        MenuListener.openGUI(player);
-                    }
+                    // if (!crazyManager.isInOpeningList(player)) MenuListener.openGUI(player);
 
                     return;
                 }
 
                 PhysicalCrateKeyCheckEvent event = new PhysicalCrateKeyCheckEvent(player, crateLocation);
-                crazyManager.getPlugin().getServer().getPluginManager().callEvent(event);
+                plugin.getServer().getPluginManager().callEvent(event);
 
                 if (!event.isCancelled()) {
                     boolean hasKey = false;
@@ -164,15 +175,13 @@ public class CrateControlListener implements Listener { // Crate Control
                             return;
                         }
 
-                        if (useQuickCrateAgain) {
-                            QuickCrate.endQuickCrate(player, crateLocation.getLocation());
-                        }
+                        // TODO() Make this no longer static.
+                        //if (useQuickCrateAgain) QuickCrate.endQuickCrate(player, crateLocation.getLocation());
 
                         KeyType keyType = isPhysical ? KeyType.PHYSICAL_KEY : KeyType.VIRTUAL_KEY;
 
-                        if (crate.getCrateType() == CrateType.COSMIC) { // Only cosmic crate type uses this method.
-                            crazyManager.addPlayerKeyType(player, keyType);
-                        }
+                        // Only cosmic crate type uses this method.
+                        if (crate.getCrateType() == CrateType.COSMIC) crazyManager.addPlayerKeyType(player, keyType);
 
                         crazyManager.addPlayerToOpeningList(player, crate);
                         crazyManager.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true);
@@ -185,9 +194,7 @@ public class CrateControlListener implements Listener { // Crate Control
                             if (config.contains("Settings.Need-Key-Sound")) {
                                 Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
 
-                                if (sound != null) {
-                                    player.playSound(player.getLocation(), sound, 1f, 1f);
-                                }
+                                if (sound != null) player.playSound(player.getLocation(), sound, 1f, 1f);
                             }
 
                             //player.sendMessage(Messages.NO_KEY.getMessage("%Key%", keyName));
@@ -225,11 +232,9 @@ public class CrateControlListener implements Listener { // Crate Control
                         String name = null;
                         ItemStack key = crate.getKey();
 
-                        if (key.hasItemMeta() && key.getItemMeta().hasDisplayName()) {
-                            name = key.getItemMeta().getDisplayName();
-                        }
+                        if (key.hasItemMeta() && key.getItemMeta().hasDisplayName()) name = key.getItemMeta().getDisplayName();
 
-                        //player.sendMessage(Methods.getPrefix() + color("&a&l+1 " + (name != null ? name : crate.getName())));
+                        player.sendMessage(Methods.getPrefix() + color("&a&l+1 " + (name != null ? name : crate.getName())));
                     }
                 }
             }

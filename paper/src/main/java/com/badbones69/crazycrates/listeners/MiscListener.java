@@ -8,7 +8,11 @@ import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 
 public class MiscListener implements Listener {
 
-    private final CrazyManager crazyManager = CrazyManager.getInstance();
+    private final CrazyManager crazyManager;
+
+    public MiscListener(CrazyManager crazyManager) {
+        this.crazyManager = crazyManager;
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerPickUp(PlayerAttemptPickupItemEvent event) {

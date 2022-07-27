@@ -24,9 +24,13 @@ import java.util.List;
 
 public class MenuListener implements Listener {
 
-    private static final CrazyManager crazyManager = CrazyManager.getInstance();
+    private final CrazyManager crazyManager;
+
+    public MenuListener(CrazyManager crazyManager) {
+        this.crazyManager = crazyManager;
+    }
     
-    public static void openGUI(Player player) {
+    public void openGUI(Player player) {
         int size = Files.CONFIG.getFile().getInt("Settings.InventorySize");
         // TODO() The crate title was sanitized.
         Inventory inv = player.getServer().createInventory(null, size, Files.CONFIG.getFile().getString("Settings.InventoryName"));

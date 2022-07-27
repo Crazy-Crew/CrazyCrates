@@ -1,8 +1,10 @@
 package com.badbones69.crazycrates.api.enums;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.OldFileManager;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -107,9 +109,11 @@ public enum Messages {
     
     public static String convertList(List<String> list) {
         StringBuilder message = new StringBuilder();
+
         for (String line : list) {
-            //message.append(color(line)).append("\n");
+            message.append(color(line)).append("\n");
         }
+
         return message.toString();
     }
     
@@ -143,6 +147,7 @@ public enum Messages {
             message = message.replace(placeholder.getKey(), placeholder.getValue())
             .replace(placeholder.getKey().toLowerCase(), placeholder.getValue());
         }
+
         return message;
     }
     
@@ -154,12 +159,14 @@ public enum Messages {
     
     public static List<String> replacePlaceholders(Map<String, String> placeholders, List<String> messageList) {
         List<String> newMessageList = new ArrayList<>();
+
         for (String message : messageList) {
             for (Entry<String, String> placeholder : placeholders.entrySet()) {
                 message = message.replace(placeholder.getKey(), placeholder.getValue())
                 .replace(placeholder.getKey().toLowerCase(), placeholder.getValue());
             }
         }
+
         return newMessageList;
     }
 
@@ -252,5 +259,4 @@ public enum Messages {
     private List<String> getDefaultListMessage() {
         return defaultListMessage;
     }
-    
 }

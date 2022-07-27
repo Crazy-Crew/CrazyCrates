@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.cratetypes;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
@@ -22,7 +23,15 @@ import java.util.Map;
 public class Wheel implements Listener {
     
     public static Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
-    private static final CrazyManager crazyManager = CrazyManager.getInstance();
+    private final CrazyCrates plugin;
+
+    private final CrazyManager crazyManager;
+
+    public Wheel(CrazyCrates plugin, CrazyManager crazyManager) {
+        this.plugin = plugin;
+
+        this.crazyManager = crazyManager;
+    }
     
     public static void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {

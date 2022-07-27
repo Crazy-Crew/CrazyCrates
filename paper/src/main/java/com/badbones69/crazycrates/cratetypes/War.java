@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.cratetypes;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
@@ -25,10 +26,19 @@ import java.util.HashMap;
 public class War implements Listener {
     
     private static final String crateNameString = "Crate.CrateName";
-    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     private static HashMap<ItemStack, String> colorCodes;
     private static final HashMap<Player, Boolean> canPick = new HashMap<>();
     private static final HashMap<Player, Boolean> canClose = new HashMap<>();
+
+    private final CrazyCrates plugin;
+
+    private final CrazyManager crazyManager;
+
+    public War(CrazyCrates plugin, CrazyManager crazyManager) {
+        this.plugin = plugin;
+
+        this.crazyManager = crazyManager;
+    }
     
     public static void openWarCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         // TODO() The crate title was sanitized.

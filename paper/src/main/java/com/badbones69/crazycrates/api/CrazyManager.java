@@ -32,18 +32,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
-
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CrazyManager {
 
+    private final CrazyCrates plugin;
+
+    public CrazyManager(CrazyCrates plugin) {
+        this.plugin = plugin;
+    }
+
     // FileManager object.
     private static final OldFileManager fileManager = OldFileManager.getInstance();
-
-    // The instance of this class.
-    private static final CrazyManager instance = new CrazyManager();
 
     // All the crates that have been loaded.
     private final ArrayList<Crate> crates = new ArrayList<>();
@@ -86,32 +88,8 @@ public class CrazyManager {
     
     // Schematic locations for 1.13+.
     private final HashMap<UUID, Location[]> schemLocations = new HashMap<>();
-    
-    /**
-     * Gets the instance of the CrazyCrates class.
-     *
-     * @return Instance of this class.
-     */
-    public static CrazyManager getInstance() {
-        return instance;
-    }
-
-    // The CrazyEnvoys plugin.
-    private CrazyCrates plugin;
 
     private final Config config = new Config();
-
-    /**
-     * Get the CrazyEnvoys Plugin.
-     * @return The CrazyEnvoys Plugin object.
-     */
-    public CrazyCrates getPlugin() {
-        return plugin;
-    }
-
-    public void loadPlugin(CrazyCrates plugin) {
-        this.plugin = plugin;
-    }
     
     // Loads all the information the plugin needs to run.
     public void loadCrates() {
@@ -402,7 +380,7 @@ public class CrazyManager {
                 lastLocation.setPitch(0F);
                 CrateSchematic crateSchematic = getCrateSchematics().get(new Random().nextInt(getCrateSchematics().size()));
                 StructureHandler handler = new StructureHandler(plugin, crateSchematic.schematicFile());
-                QuadCrateManager session = new QuadCrateManager(player, crate, keyType, location, lastLocation, checkHand, handler);
+                QuadCrateManager session = new QuadCrateManager(player, crate, keyType, location, lastLocation, checkHand, handler, this);
                 broadcast = session.startCrate(plugin);
                 break;
             case FIRE_CRACKER:

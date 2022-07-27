@@ -21,8 +21,6 @@ import java.util.*;
 
 public class QuadCrateManager {
 
-    private final ChestStateHandler quadCrateHandler = new ChestStateHandler();
-
     private static final List<QuadCrateManager> crateSessions = new ArrayList<>();
 
     private final QuadCrateManager instance;
@@ -71,11 +69,15 @@ public class QuadCrateManager {
     // Get the structure handler.
     private final StructureHandler handler;
 
-    // Get the manager instance.
-    private final CrazyManager crazyManager = CrazyManager.getInstance();
+    // Get the crazy manager class.
+    private final CrazyManager crazyManager;
 
-    public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler) {
-        this.instance = this;
+    // Get the chest handler.
+    private final ChestStateHandler chestStateHandler;
+
+    public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler, CrazyManager crazyManager, ChestStateHandler chestStateHandler) {
+        instance = this;
+        
         this.player = player;
         this.crate = crate;
         this.keyType = keyType;
@@ -89,6 +91,10 @@ public class QuadCrateManager {
         List<QuadCrateParticles> particles = Arrays.asList(QuadCrateParticles.values());
         this.particle = particles.get(new Random().nextInt(particles.size()));
         this.particleColor = getColors().get(new Random().nextInt(getColors().size()));
+
+        this.crazyManager = crazyManager;
+
+        this.chestStateHandler = chestStateHandler;
 
         crateSessions.add(instance);
     }
@@ -106,7 +112,7 @@ public class QuadCrateManager {
         // Check if schematic folder is empty.
         if (crazyManager.getCrateSchematics().isEmpty()) {
             //player.sendMessage(Messages.NO_SCHEMATICS_FOUND.getMessage());
-            CrazyManager.getInstance().removePlayerFromOpeningList(player);
+            crazyManager.removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
             return false;
         }
@@ -152,7 +158,7 @@ public class QuadCrateManager {
             }
         }
 
-        if (!CrazyManager.getInstance().takeKeys(1, player, crate, keyType, checkHand)) {
+        if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
@@ -205,7 +211,7 @@ public class QuadCrateManager {
                     player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
                     Block chest = crateLocations.get(crateNumber).getBlock();
                     chest.setType(Material.CHEST);
-                    new ChestStateHandler().rotateChest(chest, crateNumber);
+                    chestStateHandler.rotateChest(chest, crateNumber);
 
                     if (crateNumber == 3) { // Last crate has spawned.
                         crazyManager.endQuadCrate(player); // Cancelled when method is called.
@@ -272,8 +278,10 @@ public class QuadCrateManager {
         displayedRewards.forEach(Entity::remove);
         player.teleport(lastLocation);
 
-        if (removeForce) CrazyManager.getInstance().removePlayerFromOpeningList(player);
-        if (removeForce) crateSessions.remove(instance);
+        if (removeForce) {
+            crazyManager.removePlayerFromOpeningList(player);
+            crateSessions.remove(instance);
+        }
 
         handler.removeStructure(lastLocation);
     }
@@ -349,7 +357,7 @@ public class QuadCrateManager {
     }
 
     // Fetch the handler.
-    public ChestStateHandler quadCrateHandler() {
-        return quadCrateHandler;
+    public ChestStateHandler chestStateHandler() {
+        return chestStateHandler;
     }
 }

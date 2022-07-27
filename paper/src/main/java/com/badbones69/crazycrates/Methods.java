@@ -21,28 +21,28 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
-
+import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
 import static com.badbones69.crazycrates.utils.ColorUtilsKt.color;
 
 public class Methods {
-    
-    private static final CrazyManager crazyManager = CrazyManager.getInstance();
+
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
     private static final Random random = new Random();
     
-    //public static String sanitizeColor(String msg) {
-        //return sanitizeFormat(color(msg));
-    //}
+    public static String sanitizeColor(String msg) {
+        return sanitizeFormat(color(msg));
+    }
     
     public static String removeColor(String msg) {
         return ChatColor.stripColor(msg);
     }
     
-    public static HashMap<ItemStack, String> getItems(Player player) {
+    public HashMap<ItemStack, String> getItems(Player player, CrazyManager crazyManager) {
         HashMap<ItemStack, String> items = new HashMap<>();
         FileConfiguration file = crazyManager.getOpeningCrate(player).getFile();
 
@@ -69,7 +69,7 @@ public class Methods {
         return items;
     }
     
-    public static void firework(Location loc) {
+    public void firework(Location loc) {
         final Firework fw = loc.getWorld().spawn(loc, Firework.class);
         FireworkMeta fm = fw.getFireworkMeta();
         fm.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.RED).withColor(Color.AQUA).withColor(Color.ORANGE).withColor(Color.YELLOW).trail(false).flicker(false).build());
@@ -77,10 +77,10 @@ public class Methods {
         fw.setFireworkMeta(fm);
         FireworkDamageListener.addFirework(fw);
 
-        crazyManager.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(crazyManager.getPlugin(), fw :: detonate, 2);
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, fw :: detonate, 2);
     }
 
-    public static void firework(Location loc, Color color) {
+    public void firework(Location loc, Color color) {
         final Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
         FireworkMeta fm = fw.getFireworkMeta();
         fm.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL).withColor(color).withColor(color).trail(false).flicker(false).build());
@@ -88,7 +88,7 @@ public class Methods {
         fw.setFireworkMeta(fm);
         FireworkDamageListener.addFirework(fw);
 
-        crazyManager.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(crazyManager.getPlugin(), fw :: detonate, 2);
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, fw::detonate, 2);
     }
     
     public static boolean isInt(String s) {
@@ -101,13 +101,12 @@ public class Methods {
         return true;
     }
     
-    public static Player getPlayer(String name) {
-        return crazyManager.getPlugin().getServer().getPlayerExact(name);
+    public Player getPlayer(String name) {
+        return plugin.getServer().getPlayerExact(name);
     }
     
-    public static boolean isOnline(String name, CommandSender sender) {
-
-        for (Player player : crazyManager.getPlugin().getServer().getOnlinePlayers()) {
+    public  boolean isOnline(String name, CommandSender sender) {
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
             if (player.getName().equalsIgnoreCase(name)) {
                 return true;
             }
@@ -315,19 +314,18 @@ public class Methods {
         return new ItemBuilder().setMaterial(colors.get(random.nextInt(colors.size())));
     }
     
-    public static void failedToTakeKey(Player player, Crate crate) {
+    public void failedToTakeKey(Player player, Crate crate) {
         failedToTakeKey(player, crate, null);
     }
     
-    public static void failedToTakeKey(Player player, Crate crate, Exception e) {
-        crazyManager.getPlugin().getServer().getLogger().warning("An error has occurred while trying to take a physical key from a player");
-        crazyManager.getPlugin().getServer().getLogger().warning("Player: " + player.getName());
-        crazyManager.getPlugin().getServer().getLogger().warning("Crate: " + crate.getName());
+    public void failedToTakeKey(Player player, Crate crate, Exception e) {
+        plugin.getServer().getLogger().warning("An error has occurred while trying to take a physical key from a player");
+        plugin.getServer().getLogger().warning("Player: " + player.getName());
+        plugin.getServer().getLogger().warning("Crate: " + crate.getName());
+
         //player.sendMessage(Methods.getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));
 
-        if (e != null) {
-            e.printStackTrace();
-        }
+        if (e != null) e.printStackTrace();
     }
     
     public static String sanitizeFormat(String string) {
@@ -335,7 +333,7 @@ public class Methods {
     }
     
     // Thanks ElectronicBoy
-    public static HashMap<Integer, ItemStack> removeItemAnySlot(Inventory inventory, ItemStack... items) {
+    public HashMap<Integer, ItemStack> removeItemAnySlot(Inventory inventory, ItemStack... items) {
         Validate.notNull(items, "Items cannot be null");
         HashMap<Integer, ItemStack> leftover = new HashMap<>();
         

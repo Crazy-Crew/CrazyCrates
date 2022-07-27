@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.cratetypes;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
@@ -24,7 +25,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
 import java.util.Random;
 
 /**
@@ -33,14 +33,19 @@ import java.util.Random;
  */
 public class QuadCrate implements Listener {
 
-    private final CrazyManager crazyManager = CrazyManager.getInstance();
+    private final CrazyCrates plugin;
+    private final CrazyManager crazyManager;
+
+    public QuadCrate(CrazyCrates plugin, CrazyManager crazyManager) {
+        this.plugin = plugin;
+        this.crazyManager = crazyManager;
+    }
+
     private final SessionManager sessionManager = new SessionManager();
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
-        if (sessionManager.inSession(e.getPlayer())) {
-            e.setCancelled(true);
-        }
+        if (sessionManager.inSession(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler
@@ -58,7 +63,7 @@ public class QuadCrate implements Listener {
 
                     if (!session.getCratesOpened().get(block.getLocation())) {
 
-                        session.quadCrateHandler().openChest(block, true);
+                        session.chestStateHandler().openChest(block, true);
 
                         Crate crate = session.getCrate();
                         Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
@@ -73,7 +78,7 @@ public class QuadCrate implements Listener {
                         item = nbtItem.getItem();
                         Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), item);
 
-                        reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(crazyManager.getPlugin(), true));
+                        reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(plugin, true));
                         reward.setVelocity(new Vector(0, .2, 0));
 
                         reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
@@ -88,10 +93,10 @@ public class QuadCrate implements Listener {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    session.endCrate(crazyManager.getPlugin());
+                                    session.endCrate(plugin);
                                     player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
                                 }
-                            }.runTaskLater(crazyManager.getPlugin(), 60);
+                            }.runTaskLater(plugin, 60);
                         }
                     }
                 }
@@ -162,8 +167,6 @@ public class QuadCrate implements Listener {
     public void onLeave(PlayerQuitEvent e) {
         Player player = e.getPlayer();
 
-        if (sessionManager.inSession(player)) {
-            sessionManager.getSession(player).endCrate(crazyManager.getPlugin());
-        }
+        if (sessionManager.inSession(player)) sessionManager.getSession(player).endCrate(plugin);
     }
 }
