@@ -1,7 +1,7 @@
 [versions]
 
 # Paper
-paper = "1.19-R0.1-SNAPSHOT"
+paper = "1.19.1-R0.1-SNAPSHOT"
 paper-lib = "1.0.8-SNAPSHOT"
 
 # Kyori
