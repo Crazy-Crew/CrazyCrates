@@ -252,9 +252,7 @@ public class Crate {
     public Prize pickPrize(Player player, Location location) {
         Prize prize = pickPrize(player);
 
-        if (prize.useFireworks()) {
-            Methods.firework(location);
-        }
+        if (prize.useFireworks()) Methods.firework(location);
 
         return prize;
     }

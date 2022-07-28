@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.OldFileManager;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
@@ -26,17 +25,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import static com.badbones69.crazycrates.utils.ColorUtilsKt.color;
 
 public class Methods {
 
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private static final Random random = new Random();
-    
-    public static String sanitizeColor(String msg) {
-        return sanitizeFormat(color(msg));
-    }
     
     public static String removeColor(String msg) {
         return ChatColor.stripColor(msg);
@@ -105,7 +99,7 @@ public class Methods {
         return plugin.getServer().getPlayerExact(name);
     }
     
-    public  boolean isOnline(String name, CommandSender sender) {
+    public boolean isOnline(String name, CommandSender sender) {
         for (Player player : plugin.getServer().getOnlinePlayers()) {
             if (player.getName().equalsIgnoreCase(name)) {
                 return true;
@@ -141,14 +135,6 @@ public class Methods {
 
             return false;
         }
-    }
-    
-    public static String getPrefix() {
-        return color(OldFileManager.Files.CONFIG.getFile().getString("Settings.Prefix"));
-    }
-    
-    public static String getPrefix(String msg) {
-        return color(OldFileManager.Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
     }
     
     public static boolean isInventoryFull(Player player) {
@@ -326,10 +312,6 @@ public class Methods {
         //player.sendMessage(Methods.getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));
 
         if (e != null) e.printStackTrace();
-    }
-    
-    public static String sanitizeFormat(String string) {
-        return TextComponent.toLegacyText(TextComponent.fromLegacyText(string));
     }
     
     // Thanks ElectronicBoy
