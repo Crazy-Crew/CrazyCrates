@@ -143,4 +143,4 @@ permissions:
 
 
 libraries:
-  - org.jetbrains.kotlin:kotlin-stdlib:1.7.0
+  - org.jetbrains.kotlin:kotlin-stdlib:1.7.10

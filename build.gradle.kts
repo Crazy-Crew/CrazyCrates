@@ -2,7 +2,7 @@ plugins {
     java
     // idea
 
-    kotlin("jvm") version "1.7.0"
+    kotlin("jvm") version "1.7.10"
 
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
@@ -75,7 +75,7 @@ dependencies {
 
     compileOnly("com.github.decentsoftware-eu:decentholograms:2.5.2")
 
-    compileOnly("io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.19.1-R0.1-SNAPSHOT")
 
     compileOnly("me.clip:placeholderapi:2.11.2") {
         exclude(group = "org.spigotmc", module = "spigot")
@@ -86,7 +86,7 @@ dependencies {
 
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
 
-    compileOnly(kotlin("stdlib", "1.7.0"))
+    compileOnly(kotlin("stdlib", "1.7.10"))
 }
 
 tasks {
