@@ -19,5 +19,6 @@ common/build
 api/build
 build-logic/build
 build-logic/.gradle
+build
 
 .gradle
