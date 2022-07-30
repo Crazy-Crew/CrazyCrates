@@ -22,7 +22,7 @@ holographic-displays = "2.4.9"
 decent-holograms = "2.5.2"
 
 # Placeholders
-mvdw-placeholder-api= "3.1.1-SNAPSHOT"
+# mvdw-placeholder-api= "3.1.1-SNAPSHOT"
 placeholder-api = "2.11.2"
 
 # Truly random
@@ -57,7 +57,7 @@ holographic-displays = { module = "com.gmail.filoghost.holographicdisplays:holog
 decent-holograms = { module = "com.github.decentsoftware-eu:decentholograms", version.ref = "decent-holograms" }
 
 # Placeholders
-mvdw-placeholder-api = { module = "be.maximvdw:MVdWPlaceholderAPI", version.ref = "mvdw-placeholder-api" }
+# mvdw-placeholder-api = { module = "be.maximvdw:MVdWPlaceholderAPI", version.ref = "mvdw-placeholder-api" }
 placeholder-api = { module = "me.clip:placeholderapi", version.ref = "placeholder-api" }
 
 # NBT API
