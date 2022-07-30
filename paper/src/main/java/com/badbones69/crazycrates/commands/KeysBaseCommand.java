@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.commands;
 
+/*
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.Command;
@@ -15,3 +16,4 @@ public class KeysBaseCommand extends BaseCommand {
         //KeyUtils.checkKeys(player, Messages.PERSONAL_HEADER.getMessageNoPrefix(), null);
     }
 }
+ */

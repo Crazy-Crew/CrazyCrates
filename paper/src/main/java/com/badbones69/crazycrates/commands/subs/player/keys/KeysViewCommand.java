@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.commands.subs.player.keys;
 
+/*
 import com.badbones69.crazycrates.commands.KeysBaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotation.SubCommand;
@@ -16,3 +17,4 @@ public class KeysViewCommand extends KeysBaseCommand {
         // keyUtils.checkKeys(target, header, (Player) sender);
     }
 }
+ */

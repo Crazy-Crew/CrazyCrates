@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.commands.subs.admin.schematics;
 
+/*
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.commands.CrateBaseCommand;
 import dev.triumphteam.cmd.core.annotation.SubCommand;
@@ -40,3 +41,4 @@ public class CrateSchematicSet extends CrateBaseCommand implements Listener {
 
     }
 }
+ */

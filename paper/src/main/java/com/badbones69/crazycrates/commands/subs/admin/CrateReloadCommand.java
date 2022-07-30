@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.commands.subs.admin;
 
-
+/*
 import com.badbones69.crazycrates.api.OldFileManager;
 import com.badbones69.crazycrates.commands.CrateBaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -19,3 +19,4 @@ public class CrateReloadCommand extends CrateBaseCommand {
         // sender.sendMessage(Messages.RELOAD.getMessage());
     }
 }
+ */

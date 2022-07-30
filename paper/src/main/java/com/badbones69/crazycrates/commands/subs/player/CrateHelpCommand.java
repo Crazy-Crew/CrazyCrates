@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.commands.subs.player;
 
+/*
 import com.badbones69.crazycrates.commands.CrateBaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotation.SubCommand;
@@ -19,3 +20,4 @@ public class CrateHelpCommand extends CrateBaseCommand {
         //sender.sendMessage(Messages.ADMIN_HELP.getMessage());
     }
 }
+ */

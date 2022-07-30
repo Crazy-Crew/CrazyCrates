@@ -5,17 +5,14 @@ import com.badbones69.crazycrates.api.OldFileManager;
 import com.badbones69.crazycrates.api.OldFileManager.Files;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.commands.CCCommand;
-import com.badbones69.crazycrates.commands.subs.player.BaseKeyCommand;
 import com.badbones69.crazycrates.config.Config;
 import com.badbones69.crazycrates.cratetypes.*;
 import com.badbones69.crazycrates.files.FileManager;
 import com.badbones69.crazycrates.listeners.*;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
-import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -27,8 +24,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     private CrazyManager crazyManager;
 
     private final FileManager fileManager = FileManager.INSTANCE;
-
-    BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
 
     private boolean pluginEnabled = false;
 
@@ -133,22 +128,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
 
         if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) new PlaceholderAPISupport().register();
-
-        //manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage()));
-
-        //manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> sender.sendMessage(Messages.TOO_MANY_ARGS.getMessage()));
-
-        //manager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> sender.sendMessage(Messages.NOT_ENOUGH_ARGS.getMessage()));
-
-        //manager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> sender.sendMessage(Messages.NOT_ONLINE.getMessage().replace("%player%", context.getTypedArgument())));
-
-        //manager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> sender.sendMessage(Messages.NO_PERMISSION.getMessage()));
-
-        //manager.registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage()));
-
-        //manager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage()));
-
-        manager.registerCommand(new BaseKeyCommand());
 
         getCommand("crates").setExecutor(new CCCommand());
     }

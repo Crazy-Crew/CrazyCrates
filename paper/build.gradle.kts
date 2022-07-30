@@ -34,6 +34,9 @@ dependencies {
     // Paper Lib
     implementation(libs.paper.lib)
 
+    // Paper Cloud Commands
+    compileOnly(libs.paper.command.cloud)
+
     // Misc
     implementation(libs.bstats.bukkit)
 
@@ -55,7 +58,6 @@ dependencies {
     }
 
     // Triumph Team
-    implementation(libs.triumph.bukkit)
     implementation(libs.triumph.gui.bukkit)
 }
 
@@ -76,8 +78,8 @@ tasks {
             "de.tr7zw",
             "org.bstats",
             "io.papermc",
-            "dev.triumphteam.cmd",
-            "dev.triumphteam.gui"
+            "dev.triumphteam.gui",
+            "com.google.inject"
         ).forEach {
             relocate(it, "${rootProject.group}.plugin.lib.$it")
         }
@@ -124,7 +126,8 @@ bukkit {
         }
 
         libraries = listOf(
-            "org.jetbrains.kotlin:kotlin-stdlib:1.7.10"
+            "org.jetbrains.kotlin:kotlin-stdlib:1.7.10",
+            "cloud.commandframework:cloud-velocity:1.7.0"
         )
     }
 
