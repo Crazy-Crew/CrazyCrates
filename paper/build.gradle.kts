@@ -48,11 +48,6 @@ dependencies {
     compileOnly(libs.decent.holograms)
 
     // Placeholders
-    compileOnly(libs.mvdw.placeholder.api) {
-        exclude(group = "org.spigotmc", module = "spigot")
-        exclude(group = "org.bukkit", module = "bukkit")
-        exclude(group = "be.maximvdw", module = "MVdWUpdater")
-    }
 
     compileOnly(libs.placeholder.api) {
         exclude(group = "org.spigotmc", module = "spigot")
