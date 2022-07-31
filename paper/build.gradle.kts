@@ -114,7 +114,8 @@ bukkit {
             aliases = listOf(
                 "crate",
                 "cc",
-                "crazycrates"
+                "crazycrates",
+                "crazycrate"
             )
         }
 
