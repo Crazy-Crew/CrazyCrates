@@ -32,10 +32,10 @@ import java.io.File;
 import java.util.HashMap;
 
 public class CCCommand implements CommandExecutor {
-    
+
     private final FileManager fileManager = FileManager.getInstance();
     private final CrazyCrates cc = CrazyCrates.getInstance();
-    
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args) {
         if (args.length == 0) {
@@ -157,7 +157,7 @@ public class CCCommand implements CommandExecutor {
                             player.sendMessage(Messages.ADDED_ITEM_WITH_EDITOR.getMessage(placeholders));
                         } else {
                             player.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", args[1]));
-                            
+
                         }
                     } else {
                         player.sendMessage(Messages.NO_ITEM_IN_HAND.getMessage());
@@ -627,7 +627,18 @@ public class CCCommand implements CommandExecutor {
                             placeholders.put("%Amount%", amount + "");
                             placeholders.put("%Player%", target.getName());
                             placeholders.put("%Key%", crate.getKey().getItemMeta().getDisplayName());
-                            sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
+                            placeholders.put("%create%", crate.getName());
+                            // check if sender is console sender
+                            if (sender instanceof ConsoleCommandSender && Files.CONFIG.getFile().contains("crates-send-console-log")) {
+                                if (Files.CONFIG.getFile().getStringList("crates-send-console-log").contains(
+                                    crate.getName()
+                                )) {
+                                    sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
+                                }
+                            } else {
+                                sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
+                            }
+
                             if (Files.DATA.getFile().getBoolean("Players." + target.getUniqueId() + ".crateMessages")
                                     || !Files.DATA.getFile().contains("Players." + target.getUniqueId() + ".crateMessages")) {
                                 if (!(args.length >= 6 && args[5].equalsIgnoreCase("false"))) {
@@ -753,5 +764,5 @@ public class CCCommand implements CommandExecutor {
         sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease do /cc help for more info."));
         return true;
     }
-    
+
 }
