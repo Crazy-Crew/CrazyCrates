@@ -117,6 +117,8 @@ bukkit {
                 "crazycrates",
                 "crazycrate"
             )
+            permission = "crazycrates.crates.command.base"
+            permissionMessage = "You do not have the proper permission for this, Try adding crazycrates.crates.command.base!"
         }
 
         register("keys") {
@@ -124,6 +126,8 @@ bukkit {
             aliases = listOf(
                 "key"
             )
+            permission = "crazycrates.keys.command.base"
+            permissionMessage = "You do not have the proper permission for this, Try adding crazycrates.keys.command.base!"
         }
 
         libraries = listOf(
