@@ -58,7 +58,7 @@ dependencies {
     }
 
     // Triumph Team
-    implementation(libs.triumph.gui.bukkit)
+    // implementation(libs.triumph.gui.bukkit)
 }
 
 //idea {
