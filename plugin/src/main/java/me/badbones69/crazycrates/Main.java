@@ -92,9 +92,6 @@ public class Main extends JavaPlugin implements Listener {
         if (Support.PLACEHOLDERAPI.isPluginLoaded()) {
             new PlaceholderAPISupport(this).register();
         }
-        if (Support.MVDWPLACEHOLDERAPI.isPluginLoaded()) {
-            MVdWPlaceholderAPISupport.registerPlaceholders(this);
-        }
         Methods.hasUpdate();
 
         new Metrics(this); //Starts up bStats
