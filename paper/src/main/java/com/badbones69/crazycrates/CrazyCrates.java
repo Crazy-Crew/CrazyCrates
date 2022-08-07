@@ -38,8 +38,9 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         }
 
         try {
-            crazyManager = new CrazyManager(this);
             methods = new Methods(this, fireworkDamageListener);
+
+            crazyManager = new CrazyManager(this, methods);
 
             // Set up old FileManager for now.
             //oldFileManager.setup(this);
@@ -100,8 +101,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         sessionManager = new SessionManager();
 
         pluginManager.registerEvents(fireworkDamageListener = new FireworkDamageListener(), this);
-        pluginManager.registerEvents(crateControlListener = new CrateControlListener(this, crazyManager), this);
-        pluginManager.registerEvents(menuListener = new MenuListener(crazyManager), this);
+        pluginManager.registerEvents(crateControlListener = new CrateControlListener(this, crazyManager, methods), this);
+        pluginManager.registerEvents(menuListener = new MenuListener(crazyManager, methods), this);
 
         pluginManager.registerEvents(new PreviewListener(menuListener), this);
         pluginManager.registerEvents(new MiscListener(crazyManager), this);

@@ -76,7 +76,7 @@ public class Wonder implements Listener {
                 }
 
                 if (fullTime > 67) {
-                    ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+                    ItemStack item = methods.getRandomPaneColor().setName(" ").build();
 
                     Slots.forEach(slot -> inv.setItem(slot, item));
                 }

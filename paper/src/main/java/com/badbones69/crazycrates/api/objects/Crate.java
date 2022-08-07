@@ -44,6 +44,8 @@ public class Crate {
     private final ArrayList<Tier> tiers;
     private final CrateHologram hologram;
     private final CrazyCrates plugin;
+
+    private final Methods methods;
     
     /**
      * @param name The name of the crate.
@@ -62,7 +64,7 @@ public class Crate {
             int newPlayerKeys,
             ArrayList<Tier> tiers,
             CrateHologram hologram,
-            CrazyCrates plugin) {
+            CrazyCrates plugin, Methods methods) {
         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
         this.keyNoNBT = itemBuilder.build();
         this.key = itemBuilder.setCrateName(name).build();
@@ -107,6 +109,7 @@ public class Crate {
         }
 
         this.plugin = plugin;
+        this.methods = methods;
     }
     
     /**
@@ -552,7 +555,7 @@ public class Crate {
     }
     
     private boolean isInventoryNameSimilar(String inventory1, String inventory2) {
-        return Methods.removeColor(inventory1).equalsIgnoreCase(Methods.removeColor(inventory2));
+        return methods.removeColor(inventory1).equalsIgnoreCase(methods.removeColor(inventory2));
     }
     
     /**

@@ -32,7 +32,7 @@ public class Roulette implements Listener {
     private void setGlass(Inventory inv) {
         for (int i = 0; i < 27; i++) {
             if (i != 13) {
-                ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+                ItemStack item = methods.getRandomPaneColor().setName(" ").build();
                 inv.setItem(i, item);
             }
         }

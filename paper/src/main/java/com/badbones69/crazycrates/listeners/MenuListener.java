@@ -17,9 +17,12 @@ import org.bukkit.inventory.ItemStack;
 public class MenuListener implements Listener {
 
     private final CrazyManager crazyManager;
+    private final Methods methods;
 
-    public MenuListener(CrazyManager crazyManager) {
+    public MenuListener(CrazyManager crazyManager, Methods methods) {
         this.crazyManager = crazyManager;
+
+        this.methods = methods;
     }
 
     /*
@@ -225,7 +228,7 @@ public class MenuListener implements Listener {
                                 //    }
                                 //}
 
-                                if (Methods.isInventoryFull(player)) {
+                                if (methods.isInventoryFull(player)) {
                                     //player.sendMessage(Messages.INVENTORY_FULL.getMessage());
                                     return;
                                 }

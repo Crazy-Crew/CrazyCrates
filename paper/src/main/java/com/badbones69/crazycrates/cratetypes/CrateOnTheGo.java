@@ -39,10 +39,10 @@ public class CrateOnTheGo implements Listener {
             if (item == null || item.getType() == Material.AIR) return;
             
             for (Crate crate : crazyManager.getCrates()) {
-                if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO && Methods.isSimilar(item, crate)) {
+                if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO && methods.isSimilar(item, crate)) {
                     e.setCancelled(true);
                     crazyManager.addPlayerToOpeningList(player, crate);
-                    Methods.removeItem(item, player);
+                    methods.removeItem(item, player);
                     Prize prize = crate.pickPrize(player);
                     crazyManager.givePrize(player, prize);
                     plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crazyManager.getOpeningCrate(player).getName(), prize));

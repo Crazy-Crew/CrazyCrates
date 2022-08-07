@@ -34,9 +34,9 @@ public class Methods {
         this.fireworkDamageListener = fireworkDamageListener;
     }
 
-    private static final Random random = new Random();
+    private final Random random = new Random();
     
-    public static String removeColor(String msg) {
+    public String removeColor(String msg) {
         return ChatColor.stripColor(msg);
     }
     
@@ -94,7 +94,7 @@ public class Methods {
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, firework::detonate, 2);
     }
     
-    public static boolean isInt(String s) {
+    public boolean isInt(String s) {
         try {
             Integer.parseInt(s);
         } catch (NumberFormatException nfe) {
@@ -119,7 +119,7 @@ public class Methods {
         return false;
     }
     
-    public static void removeItem(ItemStack item, Player player) {
+    public void removeItem(ItemStack item, Player player) {
         try {
             if (item.getAmount() <= 1) {
                 player.getInventory().removeItem(item);
@@ -129,7 +129,7 @@ public class Methods {
         } catch (Exception ignored) {}
     }
     
-    public static boolean permCheck(CommandSender sender, Permissions permissions, Boolean tabComplete) {
+    public boolean permCheck(CommandSender sender, Permissions permissions, Boolean tabComplete) {
         if (sender instanceof ConsoleCommandSender || sender instanceof RemoteConsoleCommandSender) return true;
 
         Player player = (Player) sender;
@@ -146,22 +146,22 @@ public class Methods {
         }
     }
     
-    public static boolean isInventoryFull(Player player) {
+    public boolean isInventoryFull(Player player) {
         return player.getInventory().firstEmpty() == -1;
     }
     
-    public static Integer randomNumber(int min, int max) {
+    public Integer randomNumber(int min, int max) {
         return min + random.nextInt(max - min);
     }
     
-    public static boolean isSimilar(ItemStack itemStack, Crate crate) {
+    public boolean isSimilar(ItemStack itemStack, Crate crate) {
         NBTItem nbtItem = new NBTItem(itemStack);
         return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
                 itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
                 isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
     }
     
-    private static boolean isSimilarCustom(ItemStack one, ItemStack two) {
+    private boolean isSimilarCustom(ItemStack one, ItemStack two) {
         if (one != null && two != null) {
             if (one.getType() == two.getType()) {
                 if (one.hasItemMeta() && two.hasItemMeta()) {
@@ -209,7 +209,7 @@ public class Methods {
         return false;
     }
     
-    private static ItemStack stripNBT(ItemStack item) {
+    private ItemStack stripNBT(ItemStack item) {
         try {
             NBTItem nbtItem = new NBTItem(item.clone());
 
@@ -225,7 +225,7 @@ public class Methods {
         }
     }
     
-    public static Enchantment getEnchantment(String enchantmentName) {
+    public Enchantment getEnchantment(String enchantmentName) {
         HashMap<String, String> enchantments = getEnchantmentList();
         enchantmentName = stripEnchantmentName(enchantmentName);
 
@@ -245,11 +245,11 @@ public class Methods {
         return null;
     }
     
-    private static String stripEnchantmentName(String enchantmentName) {
+    private String stripEnchantmentName(String enchantmentName) {
         return enchantmentName != null ? enchantmentName.replace("-", "").replace("_", "").replace(" ", "") : null;
     }
     
-    private static HashMap<String, String> getEnchantmentList() {
+    private HashMap<String, String> getEnchantmentList() {
         HashMap<String, String> enchantments = new HashMap<>();
         enchantments.put("ARROW_DAMAGE", "Power");
         enchantments.put("ARROW_FIRE", "Flame");
@@ -288,7 +288,7 @@ public class Methods {
         return enchantments;
     }
     
-    public static ItemBuilder getRandomPaneColor() {
+    public ItemBuilder getRandomPaneColor() {
         List<String> colors = Arrays.asList(
         Material.WHITE_STAINED_GLASS_PANE.toString(),
         Material.ORANGE_STAINED_GLASS_PANE.toString(),
@@ -371,7 +371,7 @@ public class Methods {
         return leftover;
     }
     
-    private static int firstFromInventory(ItemStack item, boolean withAmount, ItemStack[] inventory) {
+    private int firstFromInventory(ItemStack item, boolean withAmount, ItemStack[] inventory) {
         if (item == null) {
             return -1;
         }

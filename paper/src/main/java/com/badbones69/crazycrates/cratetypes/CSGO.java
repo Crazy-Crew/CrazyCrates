@@ -41,7 +41,7 @@ public class CSGO implements Listener {
 
         for (int i : glass.keySet()) {
             if (inv.getItem(i) == null) {
-                ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+                ItemStack item = methods.getRandomPaneColor().setName(" ").build();
                 inv.setItem(i, item);
                 inv.setItem(i + 18, item);
             }
@@ -51,7 +51,7 @@ public class CSGO implements Listener {
             if (i < 9 && i != 4) glass.put(i, inv.getItem(i));
         }
 
-        ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+        ItemStack item = methods.getRandomPaneColor().setName(" ").build();
 
         inv.setItem(0, glass.get(1));
         inv.setItem(18, glass.get(1));

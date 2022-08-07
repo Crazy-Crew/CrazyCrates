@@ -35,9 +35,12 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CrazyManager {
 
     private final CrazyCrates plugin;
+    private final Methods methods;
 
-    public CrazyManager(CrazyCrates plugin) {
+    public CrazyManager(CrazyCrates plugin, Methods methods) {
         this.plugin = plugin;
+
+        this.methods = methods;
     }
 
     // FileManager object.
@@ -189,7 +192,7 @@ public class CrazyManager {
             }
         }*/
 
-        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null, plugin));
+        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null, plugin, methods));
 
         //if (config.verbose) {
         //    plugin.getLogger().info("All crate information has been loaded.");
@@ -688,7 +691,7 @@ public class CrazyManager {
             boolean hideItemFlags = file.getBoolean("Crate.Prizes." + reward + ".HideItemsFlags", false);
 
             for (String enchantmentName : file.getStringList("Crate.Prizes." + reward + ".DisplayEnchantments")) {
-                Enchantment enchantment = Methods.getEnchantment(enchantmentName.split(":")[0]);
+                Enchantment enchantment = methods.getEnchantment(enchantmentName.split(":")[0]);
 
                 if (enchantment != null) enchantments.put(enchantment, Integer.parseInt(enchantmentName.split(":")[1]));
             }
@@ -726,7 +729,7 @@ public class CrazyManager {
                     continue;
                 }
 
-                if (!Methods.isInventoryFull(player)) {
+                if (!methods.isInventoryFull(player)) {
                     player.getInventory().addItem(item);
                 } else {
                     player.getWorld().dropItemNaturally(player.getLocation(), item);
@@ -741,7 +744,7 @@ public class CrazyManager {
                     clone.setLore(PlaceholderAPI.setPlaceholders(player, clone.getLore()));
                 }
 
-                if (!Methods.isInventoryFull(player)) {
+                if (!methods.isInventoryFull(player)) {
                     player.getInventory().addItem(clone.build());
                 } else {
                     player.getWorld().dropItemNaturally(player.getLocation(), clone.build());
@@ -950,7 +953,7 @@ public class CrazyManager {
     public boolean isKeyFromCrate(ItemStack item, Crate crate) {
         if (crate.getCrateType() != CrateType.MENU) {
             if (item != null && item.getType() != Material.AIR) {
-                return Methods.isSimilar(item, crate);
+                return methods.isSimilar(item, crate);
             }
         }
 
@@ -1039,7 +1042,7 @@ public class CrazyManager {
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
             if (item == null || item.getType() == Material.AIR) continue;
 
-            if (Methods.isSimilar(item, crate)) {
+            if (methods.isSimilar(item, crate)) {
                 return item;
             }
         }
@@ -1108,7 +1111,7 @@ public class CrazyManager {
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
             if (item == null || item.getType() == Material.AIR) continue;
 
-            if (Methods.isSimilar(item, crate)) {
+            if (methods.isSimilar(item, crate)) {
                 keys += item.getAmount();
             }
         }
@@ -1228,7 +1231,7 @@ public class CrazyManager {
     public void addKeys(int amount, Player player, Crate crate, KeyType keyType) {
         switch (keyType) {
             case PHYSICAL_KEY:
-                if (Methods.isInventoryFull(player)) {
+                if (methods.isInventoryFull(player)) {
                     if (giveVirtualKeysWhenInventoryFull) {
                         addKeys(amount, player, crate, KeyType.VIRTUAL_KEY);
                     } else {
@@ -1379,7 +1382,7 @@ public class CrazyManager {
 
             if (file.contains(path + "DisplayEnchantments")) {
                 for (String enchantmentName : file.getStringList(path + "DisplayEnchantments")) {
-                    Enchantment enchantment = Methods.getEnchantment(enchantmentName.split(":")[0]);
+                    Enchantment enchantment = methods.getEnchantment(enchantmentName.split(":")[0]);
 
                     if (enchantment != null) {
                         itemBuilder.addEnchantments(enchantment, Integer.parseInt(enchantmentName.split(":")[1]));

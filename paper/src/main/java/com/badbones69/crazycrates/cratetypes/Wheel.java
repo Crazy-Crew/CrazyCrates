@@ -65,7 +65,7 @@ public class Wheel implements Listener {
             int i = 0;
             int f = 17;
             int full = 0;
-            final int timer = Methods.randomNumber(42, 68);
+            final int timer = methods.randomNumber(42, 68);
             int slower = 0;
             int open = 0;
             int slow = 0;
@@ -116,7 +116,7 @@ public class Wheel implements Listener {
                         slow++;
 
                         if (slow >= 2) {
-                            ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+                            ItemStack item = methods.getRandomPaneColor().setName(" ").build();
 
                             for (int slot = 0; slot < 54; slot++) {
                                 if (!getBorder().contains(slot)) {

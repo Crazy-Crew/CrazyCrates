@@ -106,7 +106,7 @@ public class War implements Listener {
 
             if (colorCodes == null) colorCodes = getColorCode();
 
-            ItemBuilder itemBuilder = Methods.getRandomPaneColor();
+            ItemBuilder itemBuilder = methods.getRandomPaneColor();
             itemBuilder.setName("&" + colorCodes.get(itemBuilder.build()) + "&l???");
             ItemStack item = itemBuilder.build();
 

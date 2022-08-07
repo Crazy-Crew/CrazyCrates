@@ -35,9 +35,13 @@ public class CrateControlListener implements Listener { // Crate Control
     private final CrazyCrates plugin;
     private final CrazyManager crazyManager;
 
-    public CrateControlListener(CrazyCrates plugin, CrazyManager crazyManager) {
+    private final Methods methods;
+
+    public CrateControlListener(CrazyCrates plugin, CrazyManager crazyManager, Methods methods) {
         this.plugin = plugin;
         this.crazyManager = crazyManager;
+
+        this.methods = methods;
     }
 
     // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
@@ -155,7 +159,7 @@ public class CrateControlListener implements Listener { // Crate Control
                             }
                         }
 
-                        if (Methods.isInventoryFull(player)) {
+                        if (methods.isInventoryFull(player)) {
                             //player.sendMessage(Messages.INVENTORY_FULL.getMessage());
                             return;
                         }
@@ -199,7 +203,7 @@ public class CrateControlListener implements Listener { // Crate Control
         if (inv != null && e.getView().getTitle().equals("&4&lAdmin Keys")) {
             e.setCancelled(true);
 
-            if (!Methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
+            if (!methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
                 player.closeInventory();
                 return;
             }
@@ -237,7 +241,7 @@ public class CrateControlListener implements Listener { // Crate Control
         if (crazyManager.isInOpeningList(player)) crazyManager.removePlayerFromOpeningList(player);
     }
     
-    public static void knockBack(Player player, Location location) {
+    public void knockBack(Player player, Location location) {
         Vector vector = player.getLocation().toVector().subtract(location.toVector()).normalize().multiply(1).setY(.1);
 
         if (player.isInsideVehicle()) {
