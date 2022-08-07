@@ -6,6 +6,7 @@ import org.bukkit.block.*;
 import org.bukkit.block.data.Directional;
 
 public class ChestStateHandler implements ChestControl {
+
     @Override
     public void openChest(Block block, boolean forceUpdate) {
         if (block.getType() != Material.CHEST || block.getType() != Material.TRAPPED_CHEST || block.getType() != Material.ENDER_CHEST) return;
