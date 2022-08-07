@@ -6,6 +6,7 @@ import java.util.regex.Pattern
 
 fun color(message: String): String {
     if (message.startsWith("tellraw")) return org.bukkit.ChatColor.translateAlternateColorCodes('&', message)
+
     val hexPattern = Pattern.compile("#([A-Fa-f0-9]){6}")
     val matcher: Matcher = hexPattern.matcher(message)
     val buffer = StringBuilder()
