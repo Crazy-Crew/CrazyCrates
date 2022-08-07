@@ -37,7 +37,7 @@ dependencies {
     implementation(libs.paper.lib)
 
     // Paper Cloud Commands
-    compileOnly(libs.paper.command.cloud)
+    // compileOnly(libs.paper.command.cloud)
 
     // Misc
     implementation(libs.bstats.bukkit)
@@ -66,13 +66,6 @@ dependencies {
     // implementation(libs.triumph.gui.bukkit)
 }
 
-//idea {
-//    module {
-//        isDownloadJavadoc = true
-//        isDownloadSources = true
-//    }
-//}
-
 tasks {
     reobfJar {
         outputJar.set(rootProject.layout.buildDirectory.file("libs/${rootProject.name}-[1.18-1.19]-${rootProject.version}.jar"))
@@ -94,16 +87,10 @@ tasks {
     }
 
     shadowJar {
-        minimize()
-
-        archiveFileName.set("${rootProject.name}-[1.18-1.19]-v${rootProject.version}.jar")
-
         listOf(
             "de.tr7zw",
             "org.bstats",
-            "io.papermc",
-            "dev.triumphteam.gui",
-            "com.google.inject"
+            "io.papermc"
         ).forEach {
             relocate(it, "${rootProject.group}.plugin.lib.$it")
         }
