@@ -3,7 +3,9 @@ import net.minecrell.pluginyml.bukkit.BukkitPluginDescription;
 plugins {
     id("crazycrates-base")
 
-    id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
+    id("io.papermc.paperweight.userdev") version "1.3.7"
+
+    id("xyz.jpenilla.run-paper") version "1.0.6"
 
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
@@ -29,6 +31,8 @@ dependencies {
     implementation(project(":common"))
 
     // Paper API
+    paperDevBundle("1.19-R0.1-SNAPSHOT")
+
     compileOnly(libs.paper)
 
     // Paper Lib
@@ -69,6 +73,25 @@ dependencies {
 //}
 
 tasks {
+    reobfJar {
+        outputJar.set(rootProject.layout.buildDirectory.file("libs/${rootProject.name}-[1.18-1.19]-${rootProject.version}.jar"))
+    }
+
+    assemble {
+        dependsOn(reobfJar)
+    }
+
+    processResources {
+        filesMatching("plugin.yml") {
+            expand (
+                "name" to rootProject.name,
+                "group" to rootProject.group,
+                "version" to rootProject.version,
+                "description" to rootProject.description
+            )
+        }
+    }
+
     shadowJar {
         minimize()
 
