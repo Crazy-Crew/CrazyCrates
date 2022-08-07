@@ -7,6 +7,4 @@ dependencies {
 
     implementation(libs.kyori.api)
     implementation(libs.mini.message)
-
-    implementation(libs.guice)
 }

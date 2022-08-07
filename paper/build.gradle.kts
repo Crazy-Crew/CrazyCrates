@@ -52,9 +52,6 @@ dependencies {
     compileOnly(libs.holographic.displays)
     compileOnly(libs.decent.holograms)
 
-    // Guice
-    compileOnly(libs.guice)
-
     // Placeholders
 
     compileOnly(libs.placeholder.api) {

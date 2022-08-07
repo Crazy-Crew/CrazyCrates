@@ -15,9 +15,6 @@ nbt-api = "2.10.0"
 # YAML
 yaml = "1.8"
 
-# Guice
-guice = "5.1.0"
-
 # Holograms
 holographic-displays = "2.4.9"
 decent-holograms = "2.5.2"
@@ -47,9 +44,6 @@ bstats-bukkit = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
 
 # YAML
 yaml = { module = "me.carleslc.Simple-YAML:Simple-Yaml", version.ref = "yaml" }
-
-# Guice
-guice = { module = "com.google.inject:guice", version.ref = "guice" }
 
 # Holograms
 holographic-displays = { module = "com.gmail.filoghost.holographicdisplays:holographicdisplays-api", version.ref = "holographic-displays" }
