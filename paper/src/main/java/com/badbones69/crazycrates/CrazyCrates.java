@@ -17,8 +17,22 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class CrazyCrates extends JavaPlugin implements Listener {
 
     private CrazyManager crazyManager;
+    private SessionManager sessionManager;
 
     private FireworkDamageListener fireworkDamageListener;
+    private MenuListener menuListener;
+    private CrateControlListener crateControlListener;
+    private ChestStateHandler chestStateHandler;
+
+    private War war;
+    private Wonder wonder;
+    private Roulette roulette;
+    private CSGO csgo;
+    private Cosmic cosmic;
+    private Wheel wheel;
+
+    private QuickCrate quickCrate;
+    private FireCracker fireCracker;
 
     private Methods methods;
 
@@ -40,7 +54,20 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         try {
             methods = new Methods(this, fireworkDamageListener);
 
-            crazyManager = new CrazyManager(this, methods);
+            crazyManager = new CrazyManager(
+                    this,
+                    methods,
+                    chestStateHandler,
+                    crateControlListener,
+                    menuListener,
+                    war,
+                    wonder,
+                    roulette,
+                    csgo,
+                    cosmic,
+                    wheel,
+                    quickCrate,
+                    fireCracker);
 
             // Set up old FileManager for now.
             //oldFileManager.setup(this);
@@ -62,9 +89,9 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onDisable() {
         if (!pluginEnabled) return;
 
-        //sessionManager.endCrates();
+        sessionManager.endCrates();
 
-        //quickCrate.removeAllRewards();
+        quickCrate.removeAllRewards();
 
         if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
     }
@@ -92,13 +119,10 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         PluginManager pluginManager = getServer().getPluginManager();
 
-        MenuListener menuListener;
-        CrateControlListener crateControlListener;
-        ChestStateHandler chestStateHandler;
-        SessionManager sessionManager;
-
         chestStateHandler = new ChestStateHandler();
         sessionManager = new SessionManager();
+
+        fireCracker = new FireCracker(this, crazyManager, methods, quickCrate);
 
         pluginManager.registerEvents(fireworkDamageListener = new FireworkDamageListener(), this);
         pluginManager.registerEvents(crateControlListener = new CrateControlListener(this, crazyManager, methods), this);
@@ -107,18 +131,15 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         pluginManager.registerEvents(new PreviewListener(menuListener), this);
         pluginManager.registerEvents(new MiscListener(crazyManager), this);
 
-        pluginManager.registerEvents(new Cosmic(this, crazyManager, methods), this);
+        pluginManager.registerEvents(cosmic = new Cosmic(this, crazyManager, methods), this);pluginManager.registerEvents(csgo = new CSGO(this, crazyManager, methods), this);
+        pluginManager.registerEvents(roulette = new Roulette(this, crazyManager, methods), this);
+        pluginManager.registerEvents(war = new War(this, crazyManager, methods), this);
+        pluginManager.registerEvents(wonder = new Wonder(this, crazyManager, methods), this);pluginManager.registerEvents(new QuadCrate(this, crazyManager, sessionManager), this);
+        pluginManager.registerEvents(quickCrate = new QuickCrate(this, crazyManager, methods, crateControlListener, chestStateHandler), this);
+        pluginManager.registerEvents(wheel = new Wheel(this, crazyManager, methods), this);
+
         pluginManager.registerEvents(new CrateOnTheGo(this, crazyManager, methods), this);
-        pluginManager.registerEvents(new CSGO(this, crazyManager, methods), this);
 
-        pluginManager.registerEvents(new QuickCrate(this, crazyManager, methods, crateControlListener, chestStateHandler), this);
-
-        pluginManager.registerEvents(new War(this, crazyManager, methods), this);
-        pluginManager.registerEvents(new CSGO(this, crazyManager, methods), this);
-        pluginManager.registerEvents(new Wheel(this, crazyManager, methods), this);
-        pluginManager.registerEvents(new Wonder(this, crazyManager, methods), this);
-        pluginManager.registerEvents(new Roulette(this, crazyManager, methods), this);
-        pluginManager.registerEvents(new QuadCrate(this, crazyManager, sessionManager), this);
 
         pluginManager.registerEvents(this, this);
 

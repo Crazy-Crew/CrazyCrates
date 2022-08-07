@@ -75,7 +75,7 @@ public class QuickCrate implements Listener {
             
             if (!crazyManager.takeKeys(keysUsed, player, crate, keyType, false)) {
                 methods.failedToTakeKey(player, crate);
-                CrateControlListener.inUse.remove(player);
+                crateControlListener.removePlayer(player);
                 crazyManager.removePlayerFromOpeningList(player);
                 return;
             }
@@ -85,7 +85,7 @@ public class QuickCrate implements Listener {
 
             if (!crazyManager.takeKeys(1, player, crate, keyType, true)) {
                 methods.failedToTakeKey(player, crate);
-                crateControlListener.inUse.remove(player);
+                crateControlListener.removePlayer(player);
                 crazyManager.removePlayerFromOpeningList(player);
                 return;
             }
@@ -144,11 +144,11 @@ public class QuickCrate implements Listener {
         }
 
         chestStateHandler.openChest(loc.getBlock(), false);
-        crateControlListener.inUse.remove(player);
+        crateControlListener.removePlayer(player);
         crazyManager.removePlayerFromOpeningList(player);
     }
     
-    public static void removeAllRewards() {
+    public void removeAllRewards() {
         allRewards.stream().filter(Objects :: nonNull).forEach(Entity :: remove);
     }
     

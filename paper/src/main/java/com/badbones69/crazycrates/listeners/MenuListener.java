@@ -2,10 +2,13 @@ package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.OldFileManager.Files;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,6 +16,9 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuListener implements Listener {
 
@@ -25,7 +31,6 @@ public class MenuListener implements Listener {
         this.methods = methods;
     }
 
-    /*
     public void openGUI(Player player) {
         int size = Files.CONFIG.getFile().getInt("Settings.InventorySize");
         // TODO() The crate title was sanitized.
@@ -148,7 +153,6 @@ public class MenuListener implements Listener {
 
         player.openInventory(inv);
     }
-     */
 
     @EventHandler(ignoreCancelled = true)
     public void onInvClick(InventoryClickEvent e) {
@@ -242,7 +246,7 @@ public class MenuListener implements Listener {
         }
     }
     
-    //private ArrayList<String> getDisabledWorlds() {
-        //return new ArrayList<>(Files.CONFIG.getFile().getStringList("Settings.DisabledWorlds"));
-    //}
+    private ArrayList<String> getDisabledWorlds() {
+        return new ArrayList<>(Files.CONFIG.getFile().getStringList("Settings.DisabledWorlds"));
+    }
 }

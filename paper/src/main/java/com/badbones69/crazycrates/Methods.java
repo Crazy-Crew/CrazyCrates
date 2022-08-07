@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -110,9 +111,7 @@ public class Methods {
     
     public boolean isOnline(String name, CommandSender sender) {
         for (Player player : plugin.getServer().getOnlinePlayers()) {
-            if (player.getName().equalsIgnoreCase(name)) {
-                return true;
-            }
+            if (player.getName().equalsIgnoreCase(name)) return true;
         }
 
         //sender.sendMessage(Messages.NOT_ONLINE.getMessage("%Player%", name));
@@ -172,9 +171,7 @@ public class Methods {
                                     int i = 0;
 
                                     for (String lore : one.getItemMeta().getLore()) {
-                                        if (!lore.equals(two.getItemMeta().getLore().get(i))) {
-                                            return false;
-                                        }
+                                        if (!lore.equals(two.getItemMeta().getLore().get(i))) return false;
 
                                         i++;
                                     }
@@ -189,9 +186,7 @@ public class Methods {
                                 int i = 0;
 
                                 for (String lore : one.getItemMeta().getLore()) {
-                                    if (!lore.equals(two.getItemMeta().getLore().get(i))) {
-                                        return false;
-                                    }
+                                    if (!lore.equals(two.getItemMeta().getLore().get(i))) return false;
 
                                     i++;
                                 }
@@ -214,9 +209,7 @@ public class Methods {
             NBTItem nbtItem = new NBTItem(item.clone());
 
             if (nbtItem.hasNBTData()) {
-                if (nbtItem.hasKey("CrazyCrates-Crate")) {
-                    nbtItem.removeKey("CrazyCrates-Crate");
-                }
+                if (nbtItem.hasKey("CrazyCrates-Crate")) nbtItem.removeKey("CrazyCrates-Crate");
             }
 
             return nbtItem.getItem();
@@ -231,14 +224,10 @@ public class Methods {
 
         for (Enchantment enchantment : Enchantment.values()) {
             try {
-                if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
-                    return enchantment;
-                }
+                if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) return enchantment;
 
                 if (stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null &&
-                stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
-                    return enchantment;
-                }
+                stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) return enchantment;
             } catch (Exception ignore) {}
         }
 
@@ -250,7 +239,13 @@ public class Methods {
     }
     
     private HashMap<String, String> getEnchantmentList() {
+        return getStringStringHashMap();
+    }
+
+    @NotNull
+    public static HashMap<String, String> getStringStringHashMap() {
         HashMap<String, String> enchantments = new HashMap<>();
+
         enchantments.put("ARROW_DAMAGE", "Power");
         enchantments.put("ARROW_FIRE", "Flame");
         enchantments.put("ARROW_INFINITE", "Infinity");
@@ -285,9 +280,10 @@ public class Methods {
         enchantments.put("CHANNELING", "Channeling");
         enchantments.put("IMPALING", "Impaling");
         enchantments.put("LOYALTY", "Loyalty");
+
         return enchantments;
     }
-    
+
     public ItemBuilder getRandomPaneColor() {
         List<String> colors = Arrays.asList(
         Material.WHITE_STAINED_GLASS_PANE.toString(),
@@ -362,9 +358,7 @@ public class Methods {
                 }
                 
                 // Bail when done
-                if (toDelete <= 0) {
-                    break;
-                }
+                if (toDelete <= 0) break;
             }
         }
 
@@ -372,16 +366,12 @@ public class Methods {
     }
     
     private int firstFromInventory(ItemStack item, boolean withAmount, ItemStack[] inventory) {
-        if (item == null) {
-            return -1;
-        }
+        if (item == null) return -1;
         
         for (int i = 0; i < inventory.length; i++) {
             if (inventory[i] == null) continue;
             
-            if (withAmount ? item.equals(inventory[i]) : item.isSimilar(inventory[i])) {
-                return i;
-            }
+            if (withAmount ? item.equals(inventory[i]) : item.isSimilar(inventory[i])) return i;
         }
 
         return -1;
