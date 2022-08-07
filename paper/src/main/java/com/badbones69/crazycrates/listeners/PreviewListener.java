@@ -1,16 +1,12 @@
 package com.badbones69.crazycrates.listeners;
 
-import com.badbones69.crazycrates.api.OldFileManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
 

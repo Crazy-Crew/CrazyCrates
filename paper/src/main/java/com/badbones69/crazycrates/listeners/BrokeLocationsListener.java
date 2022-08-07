@@ -2,22 +2,25 @@ package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.BrokenLocations;
+import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
-import com.badbones69.crazycrates.config.Config;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.List;
 
 // Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
 public class BrokeLocationsListener implements Listener {
 
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin;
+    private final CrazyManager crazyManager;
 
-    private final Config config = new Config();
+    public BrokeLocationsListener(CrazyCrates plugin, CrazyManager crazyManager) {
+        this.plugin = plugin;
+        this.crazyManager = crazyManager;
+    }
     
     @EventHandler(ignoreCancelled = true)
     public void onWorldLoad(WorldLoadEvent e) {
@@ -31,9 +34,7 @@ public class BrokeLocationsListener implements Listener {
                 if (location.getWorld() != null) {
                     crazyManager.getCrateLocations().add(new CrateLocation(brokenLocations.getLocationName(), brokenLocations.getCrate(), location));
 
-                    if (crazyManager.getHologramController() != null) {
-                        crazyManager.getHologramController().createHologram(location.getBlock(), brokenLocations.getCrate());
-                    }
+                    if (crazyManager.getHologramController() != null) crazyManager.getHologramController().createHologram(location.getBlock(), brokenLocations.getCrate(), plugin);
 
                     fixedWorlds.add(brokenLocations);
                     fixedAmount++;
@@ -42,11 +43,11 @@ public class BrokeLocationsListener implements Listener {
 
             crazyManager.getBrokeCrateLocations().removeAll(fixedWorlds);
 
-            if (config.verbose) {
-                plugin.getLogger().warning("Fixed " + fixedAmount + " broken crate locations.");
+            //if (config.verbose) {
+            //    plugin.getLogger().warning("Fixed " + fixedAmount + " broken crate locations.");
 
-                if (crazyManager.getBrokeCrateLocations().isEmpty()) crazyManager.getPlugin().getLogger().warning("All broken crate locations have been fixed.");
-            }
+            //    if (crazyManager.getBrokeCrateLocations().isEmpty()) crazyManager.getPlugin().getLogger().warning("All broken crate locations have been fixed.");
+            //}
         }
     }
 }

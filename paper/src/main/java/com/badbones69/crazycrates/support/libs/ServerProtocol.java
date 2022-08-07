@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.support.libs;
 
-import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.CrazyCrates;
 
 /**
  * @Author Badbones69
@@ -42,10 +42,6 @@ public enum ServerProtocol {
         if (currentProtocol == null) currentProtocol = ServerProtocol.TOO_NEW;
 
         return currentProtocol;
-    }
-
-    public static boolean isLegacy() {
-        return isOlder(ServerProtocol.v1_18_R1);
     }
 
     public static ServerProtocol getLatestProtocol() {

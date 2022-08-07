@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api.interfaces;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.block.Block;
 

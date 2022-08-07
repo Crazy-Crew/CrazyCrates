@@ -1,13 +1,12 @@
 package com.badbones69.crazycrates.support.holograms;
 
-import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateHologram;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import org.bukkit.block.Block;
-
 import java.util.HashMap;
 
 public class HolographicDisplaysSupport implements HologramController {

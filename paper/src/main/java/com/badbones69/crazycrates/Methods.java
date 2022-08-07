@@ -28,7 +28,14 @@ import java.util.Random;
 
 public class Methods {
 
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin;
+    private final FireworkDamageListener fireworkDamageListener;
+
+    public Methods(CrazyCrates plugin, FireworkDamageListener fireworkDamageListener) {
+        this.plugin = plugin;
+
+        this.fireworkDamageListener = fireworkDamageListener;
+    }
 
     private static final Random random = new Random();
     

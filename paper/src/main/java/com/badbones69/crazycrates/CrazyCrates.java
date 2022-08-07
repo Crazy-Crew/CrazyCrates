@@ -85,6 +85,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         //}
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private void enable() {
 
         PluginManager pluginManager = getServer().getPluginManager();

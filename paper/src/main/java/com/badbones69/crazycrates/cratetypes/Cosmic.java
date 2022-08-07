@@ -21,7 +21,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -29,14 +28,12 @@ import java.util.Random;
 public class Cosmic implements Listener {
 
     private final CrazyCrates plugin;
-
     private final CrazyManager crazyManager;
 
     private final Methods methods;
 
     public Cosmic(CrazyCrates plugin, CrazyManager crazyManager, Methods methods) {
         this.plugin = plugin;
-
         this.crazyManager = crazyManager;
 
         this.methods = methods;
@@ -76,7 +73,7 @@ public class Cosmic implements Listener {
     }
     
     public void openCosmic(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"));
+        Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Choose");
         setChests(inv, crate);
         crazyManager.addPlayerKeyType(player, keyType);
         checkHands.put(player, checkHand);
@@ -118,9 +115,9 @@ public class Cosmic implements Listener {
 
             final FileConfiguration file = crate.getFile();
 
-            if (e.getView().getTitle().equals(Methods.sanitizeColor(file.getString("Crate.CrateName") + " - Shuffling"))) e.setCancelled(true);
+            //if (e.getView().getTitle().equals(Methods.sanitizeColor(file.getString("Crate.CrateName") + " - Shuffling"))) e.setCancelled(true);
 
-            if (e.getView().getTitle().equals(Methods.sanitizeColor(file.getString("Crate.CrateName") + " - Prizes"))) {
+            if (e.getView().getTitle().equals(file.getString("Crate.CrateName") + " - Prizes")) {
                 e.setCancelled(true);
                 int slot = e.getRawSlot();
 
@@ -144,7 +141,7 @@ public class Cosmic implements Listener {
                                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 
                                     // TODO() - Move this to methods.
-                                    if (prize.useFireworks()) Methods.firework(player.getLocation().add(0, 1, 0));
+                                    if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
                                 }
 
                                 return;
@@ -208,7 +205,7 @@ public class Cosmic implements Listener {
                             }
 
                             if (crazyManager.hasPlayerKeyType(player) && !crazyManager.takeKeys(1, player, crate, keyType, checkHands.get(player))) {
-                                Methods.failedToTakeKey(player, crate);
+                                methods.failedToTakeKey(player, crate);
                                 crazyManager.removePlayerFromOpeningList(player);
                                 crazyManager.removePlayerKeyType(player);
                                 checkHands.remove(player);
@@ -284,7 +281,7 @@ public class Cosmic implements Listener {
             return;
         }
 
-        if (e.getView().getTitle().equals(Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"))) {
+        if (e.getView().getTitle().equals(crate.getFile().getString("Crate.CrateName") + " - Prizes")) {
             boolean playSound = false;
 
             for (int i : picks.get(player)) {
@@ -317,7 +314,7 @@ public class Cosmic implements Listener {
             checkHands.remove(player);
         }
 
-        if (crazyManager.isInOpeningList(player) && e.getView().getTitle().equals(Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"))) {
+        if (crazyManager.isInOpeningList(player) && e.getView().getTitle().equals((crate.getFile().getString("Crate.CrateName") + " - Choose"))) {
 
             if (!glass.containsKey(player) || glass.get(player).size() < 4) {
                 crazyManager.removePlayerFromOpeningList(player);

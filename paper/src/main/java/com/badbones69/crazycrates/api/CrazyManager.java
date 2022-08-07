@@ -84,8 +84,6 @@ public class CrazyManager {
     
     // Schematic locations for 1.13+.
     private final HashMap<UUID, Location[]> schemLocations = new HashMap<>();
-
-    private final Config config = new Config();
     
     // Loads all the information the plugin needs to run.
     public void loadCrates() {
@@ -217,9 +215,7 @@ public class CrazyManager {
                     if (world != null && crate != null) {
                         crateLocations.add(new CrateLocation(locationName, crate, location));
 
-                        if (hologramController != null) {
-                            hologramController.createHologram(location.getBlock(), crate);
-                        }
+                        if (hologramController != null) hologramController.createHologram(location.getBlock(), crate, plugin);
 
                         loadedAmount++;
                     } else {

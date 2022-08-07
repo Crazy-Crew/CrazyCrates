@@ -83,6 +83,7 @@ public class Crate {
 
         // TODO() remember this doesn't work.
         this.previewName = previewName;
+
         //this.previewName = Methods.sanitizeColor(previewName);
 
         this.newPlayerKeys = newPlayerKeys;
@@ -251,7 +252,7 @@ public class Crate {
     public Prize pickPrize(Player player, Location location) {
         Prize prize = pickPrize(player);
 
-        if (prize.useFireworks()) Methods.firework(location);
+        //if (prize.useFireworks()) Methods.firework(location);
 
         return prize;
     }

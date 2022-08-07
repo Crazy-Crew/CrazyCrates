@@ -24,7 +24,6 @@ public class FireCracker {
 
     public FireCracker(CrazyCrates plugin, CrazyManager crazyManager, Methods methods, QuickCrate quickCrate) {
         this.plugin = plugin;
-
         this.crazyManager = crazyManager;
 
         this.methods = methods;

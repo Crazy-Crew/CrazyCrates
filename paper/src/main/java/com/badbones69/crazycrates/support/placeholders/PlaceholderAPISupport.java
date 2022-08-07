@@ -11,8 +11,14 @@ import org.jetbrains.annotations.NotNull;
 import java.text.NumberFormat;
 
 public class PlaceholderAPISupport extends PlaceholderExpansion {
-    
-    private final CrazyManager crazyManager = CrazyManager.getInstance();
+
+    private final CrazyCrates plugin;
+    private final CrazyManager crazyManager;
+
+    public PlaceholderAPISupport(CrazyCrates plugin, CrazyManager crazyManager) {
+        this.plugin = plugin;
+        this.crazyManager = crazyManager;
+    }
     
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {

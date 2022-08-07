@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.support.libs;
 
-import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.CrazyCrates;
 
 public enum PluginSupport {
     

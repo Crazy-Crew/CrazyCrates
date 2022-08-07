@@ -3,19 +3,15 @@ package com.badbones69.crazycrates.listeners;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.OldFileManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
-import com.badbones69.crazycrates.cratetypes.QuickCrate;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -29,10 +25,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-
 import java.util.HashMap;
-
-import static com.badbones69.crazycrates.utils.ColorUtilsKt.color;
 
 public class CrateControlListener implements Listener { // Crate Control
     
@@ -40,12 +33,10 @@ public class CrateControlListener implements Listener { // Crate Control
     public static HashMap<Player, Location> inUse = new HashMap<>();
 
     private final CrazyCrates plugin;
-
     private final CrazyManager crazyManager;
 
     public CrateControlListener(CrazyCrates plugin, CrazyManager crazyManager) {
         this.plugin = plugin;
-
         this.crazyManager = crazyManager;
     }
 
@@ -63,7 +54,7 @@ public class CrateControlListener implements Listener { // Crate Control
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
-        FileConfiguration config = OldFileManager.Files.CONFIG.getFile();
+        //FileConfiguration config = OldFileManager.Files.CONFIG.getFile();
 
         if (e.getHand() == EquipmentSlot.OFF_HAND) {
             if (crazyManager.isKey(player.getInventory().getItemInOffHand())) {
@@ -144,9 +135,7 @@ public class CrateControlListener implements Listener { // Crate Control
                         isPhysical = true;
                     }
 
-                    if (config.getBoolean("Settings.Physical-Accepts-Virtual-Keys") && crazyManager.getVirtualKeys(player, crate) >= 1) {
-                        hasKey = true;
-                    }
+                    //if (config.getBoolean("Settings.Physical-Accepts-Virtual-Keys") && crazyManager.getVirtualKeys(player, crate) >= 1) hasKey = true;
 
                     if (hasKey) {
                         // Checks if the player uses the quick crate again.
@@ -183,15 +172,15 @@ public class CrateControlListener implements Listener { // Crate Control
                         crazyManager.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true);
                     } else {
                         if (crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
-                            if (config.getBoolean("Settings.KnockBack")) {
-                                knockBack(player, clickedBlock.getLocation());
-                            }
+                            //if (config.getBoolean("Settings.KnockBack")) {
+                            //    knockBack(player, clickedBlock.getLocation());
+                            //}
 
-                            if (config.contains("Settings.Need-Key-Sound")) {
-                                Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
+                            //if (config.contains("Settings.Need-Key-Sound")) {
+                            //    Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
 
-                                if (sound != null) player.playSound(player.getLocation(), sound, 1f, 1f);
-                            }
+                            //    if (sound != null) player.playSound(player.getLocation(), sound, 1f, 1f);
+                            //}
 
                             //player.sendMessage(Messages.NO_KEY.getMessage("%Key%", keyName));
                         }
@@ -230,7 +219,7 @@ public class CrateControlListener implements Listener { // Crate Control
 
                         if (key.hasItemMeta() && key.getItemMeta().hasDisplayName()) name = key.getItemMeta().getDisplayName();
 
-                        player.sendMessage(Methods.getPrefix() + color("&a&l+1 " + (name != null ? name : crate.getName())));
+                        // player.sendMessage(methods.getPrefix() + color("&a&l+1 " + (name != null ? name : crate.getName())));
                     }
                 }
             }

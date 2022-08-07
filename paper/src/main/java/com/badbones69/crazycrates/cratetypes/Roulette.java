@@ -18,14 +18,12 @@ import java.util.ArrayList;
 public class Roulette implements Listener {
 
     private final CrazyCrates plugin;
-
     private final CrazyManager crazyManager;
 
     private final Methods methods;
 
     public Roulette(CrazyCrates plugin, CrazyManager crazyManager, Methods methods) {
         this.plugin = plugin;
-
         this.crazyManager = crazyManager;
 
         this.methods = methods;
