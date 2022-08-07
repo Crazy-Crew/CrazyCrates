@@ -24,7 +24,9 @@ class StructureHandler(private val plugin: CrazyCrates, val file: File) : Struct
             getNearbyBlocks(location)
 
             structureManager.place(location, false, StructureRotation.NONE, Mirror.NONE, 0, 1F, Random())
-        }.onFailure { plugin.logger.warning(it.message) }.onSuccess {
+        }.onFailure {
+            plugin.logger.warning(it.message)
+        }.onSuccess {
             // Save the structure blocks
             getStructureBlocks(location)
         }
@@ -39,7 +41,9 @@ class StructureHandler(private val plugin: CrazyCrates, val file: File) : Struct
     override fun saveSchematic(locations: Array<out Location>?) {
         runCatching {
 
-        }.onFailure { plugin.logger.warning(it.message) }
+        }.onFailure {
+            plugin.logger.warning(it.message)
+        }
     }
 
     override fun getStructureX(): Double {
@@ -50,28 +54,31 @@ class StructureHandler(private val plugin: CrazyCrates, val file: File) : Struct
         return structureManager.size.z
     }
 
-    override fun getStructureBlocks(location: Location): ArrayList<Block> {
+    private fun loop(getStructureBlocks: Boolean, location: Location) {
         for (x in 0 until structureManager.size.x.toInt()) {
             for (y in 0 until structureManager.size.y.toInt()) {
                 for (z in 0 until structureManager.size.z.toInt()) {
-                    structureBlocks.add(location.block.getRelative(x, y, z))
+                    if (getStructureBlocks) {
+                        structureBlocks.add(location.block.getRelative(x, y, z))
+
+                        structureBlocks.forEach { it.location.block.state.update() }
+                        return
+                    }
+
+                    preStructureBlocks.add(location.block.getRelative(x, y, z))
                 }
             }
         }
+    }
 
-        structureBlocks.forEach { it.location.block.state.update() }
+    override fun getStructureBlocks(location: Location): ArrayList<Block> {
+        loop(true, location)
 
         return structureBlocks
     }
 
     override fun getNearbyBlocks(location: Location): ArrayList<Block> {
-        for (x in 0 until structureManager.size.x.toInt()) {
-            for (y in 0 until structureManager.size.y.toInt()) {
-                for (z in 0 until structureManager.size.z.toInt()) {
-                    preStructureBlocks.add(location.block.getRelative(x, y, z))
-                }
-            }
-        }
+        loop(false, location)
 
         return preStructureBlocks
     }
