@@ -9,8 +9,6 @@ public enum PluginSupport {
     DECENT_HOLOGRAMS("DecentHolograms");
     
     private final String name;
-
-    private final CrazyManager crazyManager = CrazyManager.getInstance();
     
     PluginSupport(String name) {
         this.name = name;
