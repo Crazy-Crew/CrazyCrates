@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.cratetypes.*;
 import com.badbones69.crazycrates.listeners.*;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
@@ -93,8 +94,10 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         MenuListener menuListener;
         CrateControlListener crateControlListener;
         ChestStateHandler chestStateHandler;
+        SessionManager sessionManager;
 
         chestStateHandler = new ChestStateHandler();
+        sessionManager = new SessionManager();
 
         pluginManager.registerEvents(fireworkDamageListener = new FireworkDamageListener(), this);
         pluginManager.registerEvents(crateControlListener = new CrateControlListener(this, crazyManager), this);
@@ -114,7 +117,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         pluginManager.registerEvents(new Wheel(this, crazyManager, methods), this);
         pluginManager.registerEvents(new Wonder(this, crazyManager, methods), this);
         pluginManager.registerEvents(new Roulette(this, crazyManager, methods), this);
-        pluginManager.registerEvents(new QuadCrate(this, crazyManager), this);
+        pluginManager.registerEvents(new QuadCrate(this, crazyManager, sessionManager), this);
 
         pluginManager.registerEvents(this, this);
 

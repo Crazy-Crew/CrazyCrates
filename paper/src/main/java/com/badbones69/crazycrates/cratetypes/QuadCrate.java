@@ -36,12 +36,14 @@ public class QuadCrate implements Listener {
     private final CrazyCrates plugin;
     private final CrazyManager crazyManager;
 
-    public QuadCrate(CrazyCrates plugin, CrazyManager crazyManager) {
+    private final SessionManager sessionManager;
+
+    public QuadCrate(CrazyCrates plugin, CrazyManager crazyManager, SessionManager sessionManager) {
         this.plugin = plugin;
         this.crazyManager = crazyManager;
-    }
 
-    private final SessionManager sessionManager = new SessionManager();
+        this.sessionManager = sessionManager;
+    }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
