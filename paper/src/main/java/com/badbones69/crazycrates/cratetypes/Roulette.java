@@ -22,10 +22,14 @@ public class Roulette implements Listener {
 
     private final CrazyManager crazyManager;
 
-    public Roulette(CrazyCrates plugin, CrazyManager crazyManager) {
+    private final Methods methods;
+
+    public Roulette(CrazyCrates plugin, CrazyManager crazyManager, Methods methods) {
         this.plugin = plugin;
 
         this.crazyManager = crazyManager;
+
+        this.methods = methods;
     }
     
     private void setGlass(Inventory inv) {
@@ -44,7 +48,7 @@ public class Roulette implements Listener {
         player.openInventory(inv);
 
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
-            Methods.failedToTakeKey(player, crate);
+            methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             return;
         }
@@ -100,9 +104,7 @@ public class Roulette implements Listener {
                         if (prize != null) {
                             crazyManager.givePrize(player, prize);
 
-                            if (prize.useFireworks()) {
-                                Methods.firework(player.getLocation().add(0, 1, 0));
-                            }
+                            if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 
                             plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                         } else {

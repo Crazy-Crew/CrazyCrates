@@ -20,9 +20,13 @@ public class CrateOnTheGo implements Listener {
     private final CrazyCrates plugin;
     private final CrazyManager crazyManager;
 
-    public CrateOnTheGo(CrazyCrates plugin, CrazyManager crazyManager) {
+    private final Methods methods;
+
+    public CrateOnTheGo(CrazyCrates plugin, CrazyManager crazyManager, Methods methods) {
         this.plugin = plugin;
         this.crazyManager = crazyManager;
+
+        this.methods = methods;
     }
     
     @EventHandler

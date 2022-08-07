@@ -23,15 +23,19 @@ public class Wonder implements Listener {
 
     private final CrazyManager crazyManager;
 
-    public Wonder(CrazyCrates plugin, CrazyManager crazyManager) {
+    private final Methods methods;
+
+    public Wonder(CrazyCrates plugin, CrazyManager crazyManager, Methods methods) {
         this.plugin = plugin;
 
         this.crazyManager = crazyManager;
+
+        this.methods = methods;
     }
     
     public void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
-            Methods.failedToTakeKey(player, crate);
+            methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             return;
         }
@@ -90,7 +94,7 @@ public class Wonder implements Listener {
                     crazyManager.givePrize(player, prize);
 
                     // TODO() - Move this to methods.
-                    if (prize.useFireworks()) Methods.firework(player.getLocation().add(0, 1, 0));
+                    if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 
                     plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                     crazyManager.removePlayerFromOpeningList(player);

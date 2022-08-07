@@ -32,10 +32,14 @@ public class Cosmic implements Listener {
 
     private final CrazyManager crazyManager;
 
-    public Cosmic(CrazyCrates plugin, CrazyManager crazyManager) {
+    private final Methods methods;
+
+    public Cosmic(CrazyCrates plugin, CrazyManager crazyManager, Methods methods) {
         this.plugin = plugin;
 
         this.crazyManager = crazyManager;
+
+        this.methods = methods;
     }
 
     private final HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();

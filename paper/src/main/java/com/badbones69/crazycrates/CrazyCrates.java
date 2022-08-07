@@ -23,7 +23,9 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     private CrazyManager crazyManager;
 
-    private final FileManager fileManager = FileManager.INSTANCE;
+    private FireworkDamageListener fireworkDamageListener;
+
+    private Methods methods;
 
     private boolean pluginEnabled = false;
 
@@ -45,6 +47,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         OldFileManager oldFileManager = new OldFileManager();
 
         try {
+            crazyManager = new CrazyManager(this);
+            methods = new Methods(this, fireworkDamageListener);
 
             // Set up old FileManager for now.
             oldFileManager.setup(this);
@@ -104,30 +108,40 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         PluginManager pluginManager = getServer().getPluginManager();
 
-        pluginManager.registerEvents(new MenuListener(crazyManager), this);
-        pluginManager.registerEvents(new PreviewListener(), this);
-        pluginManager.registerEvents(new FireworkDamageListener(this), this);
-        pluginManager.registerEvents(new CrateControlListener(this, crazyManager), this);
+        MenuListener menuListener;
+        CrateControlListener crateControlListener;
+        ChestStateHandler chestStateHandler;
+
+        chestStateHandler = new ChestStateHandler();
+
+        pluginManager.registerEvents(fireworkDamageListener = new FireworkDamageListener(), this);
+        pluginManager.registerEvents(crateControlListener = new CrateControlListener(this, crazyManager), this);
+        pluginManager.registerEvents(menuListener = new MenuListener(crazyManager), this);
+
+        pluginManager.registerEvents(new PreviewListener(menuListener), this);
         pluginManager.registerEvents(new MiscListener(crazyManager), this);
 
-        pluginManager.registerEvents(new War(this, crazyManager), this);
-        pluginManager.registerEvents(new CSGO(this, crazyManager), this);
-        pluginManager.registerEvents(new Wheel(this, crazyManager), this);
-        pluginManager.registerEvents(new Wonder(this, crazyManager), this);
-        pluginManager.registerEvents(new Cosmic(this, crazyManager), this);
-        pluginManager.registerEvents(new Roulette(this, crazyManager), this);
-        pluginManager.registerEvents(new QuickCrate(this, crazyManager), this);
-        pluginManager.registerEvents(new CrateOnTheGo(this, crazyManager), this);
+        pluginManager.registerEvents(new Cosmic(this, crazyManager, methods), this);
+        pluginManager.registerEvents(new CrateOnTheGo(this, crazyManager, methods), this);
+        pluginManager.registerEvents(new CSGO(this, crazyManager, methods), this);
+
+        pluginManager.registerEvents(new QuickCrate(this, crazyManager, methods, crateControlListener, chestStateHandler), this);
+
+        pluginManager.registerEvents(new War(this, crazyManager, methods), this);
+        pluginManager.registerEvents(new CSGO(this, crazyManager, methods), this);
+        pluginManager.registerEvents(new Wheel(this, crazyManager, methods), this);
+        pluginManager.registerEvents(new Wonder(this, crazyManager, methods), this);
+        pluginManager.registerEvents(new Roulette(this, crazyManager, methods), this);
         pluginManager.registerEvents(new QuadCrate(this, crazyManager), this);
 
         pluginManager.registerEvents(this, this);
 
         // Load crates.
-        // crazyManager.loadCrates();
+        crazyManager.loadCrates();
 
-        if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
+        if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(this, crazyManager), this);
 
-        if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) new PlaceholderAPISupport().register();
+        if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded(this)) new PlaceholderAPISupport(this, crazyManager).register();
 
         getCommand("crates").setExecutor(new CCCommand());
     }

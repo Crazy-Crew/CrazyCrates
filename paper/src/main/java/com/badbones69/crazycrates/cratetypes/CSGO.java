@@ -25,10 +25,14 @@ public class CSGO implements Listener {
 
     private final CrazyManager crazyManager;
 
-    public CSGO(CrazyCrates plugin, CrazyManager crazyManager) {
+    private final Methods methods;
+
+    public CSGO(CrazyCrates plugin, CrazyManager crazyManager, Methods methods) {
         this.plugin = plugin;
 
         this.crazyManager = crazyManager;
+
+        this.methods = methods;
     }
     
     private static void setGlass(Inventory inv) {
@@ -89,7 +93,7 @@ public class CSGO implements Listener {
         if (crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             startCSGO(player, inv, crate);
         } else {
-            Methods.failedToTakeKey(player, crate);
+            methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
         }
     }
@@ -134,9 +138,7 @@ public class CSGO implements Listener {
                         if (prize != null) {
                             crazyManager.givePrize(player, prize);
 
-                            if (prize.useFireworks()) {
-                                Methods.firework(player.getLocation().add(0, 1, 0));
-                            }
+                            if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 
                             crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                         } else {

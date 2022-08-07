@@ -34,10 +34,14 @@ public class War implements Listener {
 
     private final CrazyManager crazyManager;
 
-    public War(CrazyCrates plugin, CrazyManager crazyManager) {
+    private final Methods methods;
+
+    public War(CrazyCrates plugin, CrazyManager crazyManager, Methods methods) {
         this.plugin = plugin;
 
         this.crazyManager = crazyManager;
+
+        this.methods = methods;
     }
     
     public static void openWarCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
@@ -50,7 +54,7 @@ public class War implements Listener {
         canClose.put(player, false);
 
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
-            Methods.failedToTakeKey(player, crate);
+            methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             canClose.remove(player);
             canPick.remove(player);
@@ -162,9 +166,7 @@ public class War implements Listener {
                     canClose.put(player, true);
                     crazyManager.givePrize(player, prize);
 
-                    if (prize.useFireworks()) {
-                        Methods.firework(player.getLocation().add(0, 1, 0));
-                    }
+                    if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 
                     crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                     crazyManager.removePlayerFromOpeningList(player);

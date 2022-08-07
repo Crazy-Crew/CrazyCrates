@@ -19,10 +19,18 @@ public class FireCracker {
 
     private final CrazyManager crazyManager;
 
-    public FireCracker(CrazyCrates plugin, CrazyManager crazyManager) {
+    private final Methods methods;
+
+    private final QuickCrate quickCrate;
+
+    public FireCracker(CrazyCrates plugin, CrazyManager crazyManager, Methods methods, QuickCrate quickCrate) {
         this.plugin = plugin;
 
         this.crazyManager = crazyManager;
+
+        this.methods = methods;
+
+        this.quickCrate = quickCrate;
     }
     
     public static void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc) {

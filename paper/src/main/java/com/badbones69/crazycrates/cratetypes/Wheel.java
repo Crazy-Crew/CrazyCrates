@@ -23,19 +23,23 @@ import java.util.Map;
 public class Wheel implements Listener {
     
     public static Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
-    private final CrazyCrates plugin;
 
+    private final CrazyCrates plugin;
     private final CrazyManager crazyManager;
 
-    public Wheel(CrazyCrates plugin, CrazyManager crazyManager) {
+    private final Methods methods;
+
+    public Wheel(CrazyCrates plugin, CrazyManager crazyManager, Methods methods) {
         this.plugin = plugin;
 
         this.crazyManager = crazyManager;
+
+        this.methods = methods;
     }
     
     public static void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
-            Methods.failedToTakeKey(player, crate);
+            methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             return;
         }
@@ -138,9 +142,7 @@ public class Wheel implements Listener {
                         if (prize != null) {
                             crazyManager.givePrize(player, prize);
 
-                            if (prize.useFireworks()) {
-                                Methods.firework(player.getLocation().add(0, 1, 0));
-                            }
+                            if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 
                             crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                         } else {
