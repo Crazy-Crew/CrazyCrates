@@ -20,7 +20,7 @@ public enum PluginSupport {
         return name;
     }
     
-    public boolean isPluginLoaded() {
-        return crazyManager.getPlugin().getServer().getPluginManager().getPlugin(name) != null;
+    public boolean isPluginLoaded(CrazyCrates plugin) {
+        return plugin.getServer().getPluginManager().getPlugin(name) != null;
     }
 }

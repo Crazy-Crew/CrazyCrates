@@ -1,18 +1,12 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.OldFileManager;
-import com.badbones69.crazycrates.api.OldFileManager.Files;
-import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
-import com.badbones69.crazycrates.commands.CCCommand;
-import com.badbones69.crazycrates.config.Config;
 import com.badbones69.crazycrates.cratetypes.*;
-import com.badbones69.crazycrates.files.FileManager;
 import com.badbones69.crazycrates.listeners.*;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
+import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import io.papermc.lib.PaperLib;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -42,30 +36,17 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             getServer().getPluginManager().disablePlugin(this);
         }
 
-        crazyManager = new CrazyManager(this);
-
-        OldFileManager oldFileManager = new OldFileManager();
-
         try {
             crazyManager = new CrazyManager(this);
             methods = new Methods(this, fireworkDamageListener);
 
             // Set up old FileManager for now.
-            oldFileManager.setup(this);
-
-            fileManager.registerCustomFolder("/v2")
-                    .setup(getDataFolder().toPath());
-
-            new Config().reload(getDataFolder().toPath());
-
-            // Clean files if we have to.
-            //cleanFiles();
-
-            if (new Config().toggleMetrics) new Metrics(this, 4514);
+            //oldFileManager.setup(this);
 
         } catch (Exception e) {
-
             pluginEnabled = false;
+
+            getLogger().severe(e.getMessage());
 
             return;
         }
@@ -79,9 +60,9 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onDisable() {
         if (!pluginEnabled) return;
 
-        SessionManager.endCrates();
+        //sessionManager.endCrates();
 
-        QuickCrate.removeAllRewards();
+        //quickCrate.removeAllRewards();
 
         if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
     }
@@ -93,15 +74,15 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     }
 
     public void cleanFiles() {
-        if (!Files.LOCATIONS.getFile().contains("Locations")) {
-            Files.LOCATIONS.getFile().set("Locations.Clear", null);
-            Files.LOCATIONS.saveFile();
-        }
+        //if (!Files.LOCATIONS.getFile().contains("Locations")) {
+        //    Files.LOCATIONS.getFile().set("Locations.Clear", null);
+        //    Files.LOCATIONS.saveFile();
+        //}
 
-        if (!Files.DATA.getFile().contains("Players")) {
-            Files.DATA.getFile().set("Players.Clear", null);
-            Files.DATA.saveFile();
-        }
+        //if (!Files.DATA.getFile().contains("Players")) {
+        //    Files.DATA.getFile().set("Players.Clear", null);
+        //    Files.DATA.saveFile();
+        //}
     }
 
     private void enable() {
@@ -143,6 +124,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded(this)) new PlaceholderAPISupport(this, crazyManager).register();
 
-        getCommand("crates").setExecutor(new CCCommand());
+        //Objects.requireNonNull(getCommand("crazycrates")).setExecutor("");
     }
 }

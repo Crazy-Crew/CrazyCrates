@@ -6,22 +6,22 @@ import org.bukkit.entity.Player;
 public class SessionManager {
 
     public boolean inSession(Player player) {
-        for (QuadCrateManager quadCrateManager : QuadCrateManager.getCrateSessions()) {
-            if (quadCrateManager.getPlayer() == player) return true;
+        for (QuadCrateManager loop : QuadCrateManager.getCrateSessions()) {
+            if (loop.getPlayer() == player) return true;
         }
 
         return false;
     }
 
     public QuadCrateManager getSession(Player player) {
-        for (QuadCrateManager quadCrateManager : QuadCrateManager.getCrateSessions()) {
-            if (quadCrateManager.getPlayer() == player) return quadCrateManager;
+        for (QuadCrateManager loop : QuadCrateManager.getCrateSessions()) {
+            if (loop.getPlayer() == player) return loop;
         }
 
         return null;
     }
 
-    public static void endCrates() {
+    public void endCrates() {
         QuadCrateManager.getCrateSessions().forEach(session -> session.endCrateForce(false));
         QuadCrateManager.getCrateSessions().clear();
     }

@@ -32,6 +32,7 @@ public class CrateOnTheGo implements Listener {
     @EventHandler
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
+
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             ItemStack item = player.getInventory().getItemInMainHand();
             
@@ -46,7 +47,7 @@ public class CrateOnTheGo implements Listener {
                     crazyManager.givePrize(player, prize);
                     plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crazyManager.getOpeningCrate(player).getName(), prize));
 
-                    if (prize.useFireworks()) Methods.firework(player.getLocation().add(0, 1, 0));
+                    if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 
                     crazyManager.removePlayerFromOpeningList(player);
                 }

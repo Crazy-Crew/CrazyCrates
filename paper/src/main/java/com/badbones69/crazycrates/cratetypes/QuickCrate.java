@@ -22,7 +22,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -93,7 +92,9 @@ public class QuickCrate implements Listener {
 
             Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
             crazyManager.givePrize(player, prize);
+
             plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+
             ItemStack displayItem = prize.getDisplayItem();
             NBTItem nbtItem = new NBTItem(displayItem);
             nbtItem.setBoolean("crazycrates-item", true);
@@ -117,7 +118,7 @@ public class QuickCrate implements Listener {
             rewards.put(player, reward);
             allRewards.add(reward);
 
-            new ChestStateHandler().openChest(loc.getBlock(), true);
+            chestStateHandler.openChest(loc.getBlock(), true);
 
             if (prize.useFireworks()) methods.firework(loc.clone().add(.5, 1, .5));
 
@@ -142,8 +143,8 @@ public class QuickCrate implements Listener {
             rewards.remove(player);
         }
 
-        new ChestStateHandler().openChest(loc.getBlock(), false);
-        CrateControlListener.inUse.remove(player);
+        chestStateHandler.openChest(loc.getBlock(), false);
+        crateControlListener.inUse.remove(player);
         crazyManager.removePlayerFromOpeningList(player);
     }
     

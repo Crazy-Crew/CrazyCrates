@@ -2,14 +2,10 @@ package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.OldFileManager.Files;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import org.bukkit.Sound;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,10 +14,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 public class MenuListener implements Listener {
 
     private final CrazyManager crazyManager;
@@ -29,7 +21,8 @@ public class MenuListener implements Listener {
     public MenuListener(CrazyManager crazyManager) {
         this.crazyManager = crazyManager;
     }
-    
+
+    /*
     public void openGUI(Player player) {
         int size = Files.CONFIG.getFile().getInt("Settings.InventorySize");
         // TODO() The crate title was sanitized.
@@ -152,12 +145,13 @@ public class MenuListener implements Listener {
 
         player.openInventory(inv);
     }
+     */
 
     @EventHandler(ignoreCancelled = true)
     public void onInvClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
         Inventory inv = e.getInventory();
-        FileConfiguration config = Files.CONFIG.getFile();
+        //FileConfiguration config = Files.CONFIG.getFile();
 
         if (inv != null) {
 
@@ -167,8 +161,8 @@ public class MenuListener implements Listener {
                 }
             }
 
-            // TODO() The crate title was sanitized.
-            if (e.getView().getTitle().equals(config.getString("Settings.InventoryName"))) {
+            // TODO() The crate title was sanitized. config.getString("Settings.InventoryName"))
+            if (e.getView().getTitle().equals(" ")) {
                 e.setCancelled(true);
 
                 if (e.getCurrentItem() != null) {
@@ -205,31 +199,31 @@ public class MenuListener implements Listener {
                                 if (crazyManager.getVirtualKeys(player, crate) >= 1) {
                                     hasKey = true;
                                 } else {
-                                    if (Files.CONFIG.getFile().getBoolean("Settings.Virtual-Accepts-Physical-Keys") && crazyManager.hasPhysicalKey(player, crate, false)) {
-                                        hasKey = true;
-                                        keyType = KeyType.PHYSICAL_KEY;
-                                    }
+                                    //if (Files.CONFIG.getFile().getBoolean("Settings.Virtual-Accepts-Physical-Keys") && crazyManager.hasPhysicalKey(player, crate, false)) {
+                                    //    hasKey = true;
+                                    //    keyType = KeyType.PHYSICAL_KEY;
+                                    //}
                                 }
 
                                 if (!hasKey) {
-                                    if (config.contains("Settings.Need-Key-Sound")) {
-                                        Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
+                                    //if (config.contains("Settings.Need-Key-Sound")) {
+                                    //    Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
 
-                                        if (sound != null) {
-                                            player.playSound(player.getLocation(), sound, 1f, 1f);
-                                        }
-                                    }
+                                    //    if (sound != null) {
+                                    //        player.playSound(player.getLocation(), sound, 1f, 1f);
+                                    //    }
+                                    //}
 
                                     //player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
                                     return;
                                 }
 
-                                for (String world : getDisabledWorlds()) {
-                                    if (world.equalsIgnoreCase(player.getWorld().getName())) {
+                                //for (String world : getDisabledWorlds()) {
+                                //    if (world.equalsIgnoreCase(player.getWorld().getName())) {
                                         //player.sendMessage(Messages.WORLD_DISABLED.getMessage("%World%", player.getWorld().getName()));
-                                        return;
-                                    }
-                                }
+                                //        return;
+                                //    }
+                                //}
 
                                 if (Methods.isInventoryFull(player)) {
                                     //player.sendMessage(Messages.INVENTORY_FULL.getMessage());
@@ -245,7 +239,7 @@ public class MenuListener implements Listener {
         }
     }
     
-    private ArrayList<String> getDisabledWorlds() {
-        return new ArrayList<>(Files.CONFIG.getFile().getStringList("Settings.DisabledWorlds"));
-    }
+    //private ArrayList<String> getDisabledWorlds() {
+        //return new ArrayList<>(Files.CONFIG.getFile().getStringList("Settings.DisabledWorlds"));
+    //}
 }

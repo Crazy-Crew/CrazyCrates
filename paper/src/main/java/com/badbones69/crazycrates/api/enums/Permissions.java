@@ -9,7 +9,6 @@ public enum Permissions {
     CRAZY_CRATES_PLAYER_TRANSFER_KEYS("player.transfer", "Allows players to send virtual keys to another player."),
     CRAZY_CRATES_PLAYER_MENU("player.menu", "Opens the primary crate menu."),
     CRAZY_CRATES_PLAYER_HELP("player.help", "Shows the help menu for Crazy Crates."),
-
     CRAZY_CRATES_ADMIN_HELP("admin.help", "Shows the help menu for admins"),
     CRAZY_CRATES_ADMIN_ACCESS("admin.access", "General purpose access for admins."),
     CRAZY_CRATES_ADMIN_ADD_ITEM("admin.additem", "Adds items in-game to a prize in a crate."),

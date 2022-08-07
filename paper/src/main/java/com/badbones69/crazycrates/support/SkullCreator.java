@@ -1,13 +1,11 @@
 package com.badbones69.crazycrates.support;
 
-import com.badbones69.crazycrates.api.CrazyManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Base64;
@@ -21,8 +19,6 @@ import java.util.UUID;
  * @author Dean B on 12/28/2016.
  */
 public class SkullCreator {
-
-    private static final CrazyManager crazyManager = CrazyManager.getInstance();
     
     /**
      * Creates a player skull based on a player's name.
@@ -53,9 +49,7 @@ public class SkullCreator {
         notNull(item, "item");
         notNull(name, "name");
         
-        return crazyManager.getPlugin().getServer().getUnsafe().modifyItemStack(item,
-        "{SkullOwner:\"" + name + "\"}"
-        );
+        return Bukkit.getServer().getUnsafe().modifyItemStack(item, "{SkullOwner:\"" + name + "\"}");
     }
     
     /**
@@ -82,7 +76,7 @@ public class SkullCreator {
         notNull(id, "id");
         
         SkullMeta meta = (SkullMeta) item.getItemMeta();
-        meta.setOwningPlayer(crazyManager.getPlugin().getServer().getOfflinePlayer(id));
+        meta.setOwningPlayer(Bukkit.getServer().getOfflinePlayer(id));
         item.setItemMeta(meta);
         
         return item;
@@ -138,9 +132,7 @@ public class SkullCreator {
         notNull(base64, "base64");
         
         UUID hashAsId = new UUID(base64.hashCode(), base64.hashCode());
-        return crazyManager.getPlugin().getServer().getUnsafe().modifyItemStack(item,
-        "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
-        );
+        return Bukkit.getServer().getUnsafe().modifyItemStack(item, "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}");
     }
     
     /**
@@ -206,43 +198,20 @@ public class SkullCreator {
         block.getZ(),
         "{Owner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
         );
-        
-        if (newerApi()) {
-            crazyManager.getPlugin().getServer().dispatchCommand(crazyManager.getPlugin().getServer().getConsoleSender(), "data merge block " + args);
-        } else {
-            crazyManager.getPlugin().getServer().dispatchCommand(crazyManager.getPlugin().getServer().getConsoleSender(), "blockdata " + args);
-        }
-    }
-    
-    private static boolean newerApi() {
-        try {
-            Material.valueOf("PLAYER_HEAD");
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
+
+        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "data merge block " + args);
     }
     
     private static ItemStack getPlayerSkullItem() {
-        if (newerApi()) {
-            return new ItemStack(Material.valueOf("PLAYER_HEAD"));
-        } else {
-            return new ItemStack(Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
-        }
+        return new ItemStack(Material.valueOf("PLAYER_HEAD"));
     }
     
     private static void setBlockType(Block block) {
-        try {
-            block.setType(Material.valueOf("PLAYER_HEAD"), false);
-        } catch (IllegalArgumentException e) {
-            block.setType(Material.valueOf("SKULL"), false);
-        }
+        block.setType(Material.valueOf("PLAYER_HEAD"), false);
     }
     
     private static void notNull(Object o, String name) {
-        if (o == null) {
-            throw new NullPointerException(name + " should not be null!");
-        }
+        if (o == null) throw new NullPointerException(name + " should not be null!");
     }
     
     private static String urlToBase64(String url) {

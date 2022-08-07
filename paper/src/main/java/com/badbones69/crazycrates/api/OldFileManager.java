@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.config.Config;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
@@ -13,7 +12,6 @@ import java.util.HashMap;
 public class OldFileManager {
     
     private static final OldFileManager instance = new OldFileManager();
-    private static final CrazyManager crazyManager = CrazyManager.getInstance();
 
     private final HashMap<Files, File> files = new HashMap<>();
     private final HashMap<Files, FileConfiguration> configurations = new HashMap<>();
@@ -22,7 +20,7 @@ public class OldFileManager {
         return instance;
     }
 
-    private final Config config = new Config();
+    //private final Config config = new Config();
 
     /**
      * Sets up the plugin and loads all necessary files.
@@ -37,7 +35,7 @@ public class OldFileManager {
         for (Files file : Files.values()) {
             File newFile = new File(plugin.getDataFolder(), file.getFileLocation());
 
-            if (new Config().verbose) plugin.getLogger().info("Loading the " + file.getFileName());
+            //if (new Config().verbose) plugin.getLogger().info("Loading the " + file.getFileName());
 
             if (!newFile.exists()) {
                 try {
@@ -45,7 +43,7 @@ public class OldFileManager {
                     InputStream jarFile = getClass().getResourceAsStream("/" + file.getFileJar());
                     copyFile(jarFile, serverFile);
                 } catch (Exception e) {
-                    if (config.verbose) plugin.getLogger().warning("Failed to load file: " + file.getFileName());
+                    //if (config.verbose) plugin.getLogger().warning("Failed to load file: " + file.getFileName());
                     e.printStackTrace();
                     continue;
                 }
@@ -54,9 +52,8 @@ public class OldFileManager {
             files.put(file, newFile);
             configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
 
-            if (config.verbose) plugin.getLogger().info("Successfully loaded " + file.getFileName());
+            //if (config.verbose) plugin.getLogger().info("Successfully loaded " + file.getFileName());
         }
-
     }
 
     /**
@@ -74,7 +71,7 @@ public class OldFileManager {
         try {
             configurations.get(file).save(files.get(file));
         } catch (IOException e) {
-            crazyManager.getPlugin().getLogger().warning("Could not save " + file.getFileName() + "!");
+           // crazyManager.getPlugin().getLogger().warning("Could not save " + file.getFileName() + "!");
             e.printStackTrace();
         }
     }
@@ -93,7 +90,7 @@ public class OldFileManager {
     }
     
     /**
-     * Was found here: https://bukkit.org/threads/extracting-file-from-jar.16962
+     * Was found here: <a href="https://bukkit.org/threads/extracting-file-from-jar.16962">...</a>
      */
     private void copyFile(InputStream in, File out) throws Exception {
         try (InputStream fis = in; FileOutputStream fos = new FileOutputStream(out)) {

@@ -14,7 +14,7 @@ public class DecentHologramsSupport implements HologramController {
     
     private static final HashMap<Block, Hologram> holograms = new HashMap<>();
     
-    public void createHologram(Block block, Crate crate) {
+    public void createHologram(Block block, Crate crate, CrazyCrates plugin) {
         CrateHologram crateHologram = crate.getHologram();
 
         if (!crateHologram.isEnabled()) return;

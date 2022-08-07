@@ -13,7 +13,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.ArrayList;
 
 public class Roulette implements Listener {
@@ -42,10 +41,10 @@ public class Roulette implements Listener {
     }
     
     public void openRoulette(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, Methods.sanitizeFormat(crate.getFile().getString("Crate.CrateName")));
-        setGlass(inv);
-        inv.setItem(13, crate.pickPrize(player).getDisplayItem());
-        player.openInventory(inv);
+        //Inventory inv = plugin.getServer().createInventory(null, 27, methods.sanitizeFormat(crate.getFile().getString("Crate.CrateName")));
+        //setGlass(inv);
+        //inv.setItem(13, crate.pickPrize(player).getDisplayItem());
+        //player.openInventory(inv);
 
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             methods.failedToTakeKey(player, crate);
@@ -53,7 +52,7 @@ public class Roulette implements Listener {
             return;
         }
 
-        startRoulette(player, inv, crate);
+        //startRoulette(player, inv, crate);
     }
     
     private void startRoulette(final Player player, final Inventory inv, final Crate crate) {

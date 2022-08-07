@@ -36,9 +36,7 @@ public class QuadCrateSpiralHandler implements SpiralControl {
                 radius += expandingRadius;
             }
 
-            if (nextLocation == 10) {
-                nextLocation = 0;
-            }
+            if (nextLocation == 10) nextLocation = 0;
         }
 
         return locations;
@@ -71,9 +69,7 @@ public class QuadCrateSpiralHandler implements SpiralControl {
                 radius += expandingRadius;
             }
 
-            if (nextLocation == 10) {
-                nextLocation = 0;
-            }
+            if (nextLocation == 10) nextLocation = 0;
         }
 
         return locations;

@@ -18,15 +18,13 @@ public enum ServerProtocol {
 
     private final int versionProtocol;
 
-    private static final CrazyManager crazyManager = CrazyManager.getInstance();
-
     ServerProtocol(int versionProtocol) {
         this.versionProtocol = versionProtocol;
     }
 
-    public static ServerProtocol getCurrentProtocol() {
+    public static ServerProtocol getCurrentProtocol(CrazyCrates plugin) {
 
-        String serVer = crazyManager.getPlugin().getServer().getClass().getPackage().getName();
+        String serVer = plugin.getServer().getClass().getPackage().getName();
 
         int serProt = Integer.parseInt(
                 serVer.substring(
@@ -65,24 +63,24 @@ public enum ServerProtocol {
         return old;
     }
 
-    public static boolean isAtLeast(ServerProtocol protocol) {
-        if (currentProtocol == null) getCurrentProtocol();
+    public static boolean isAtLeast(ServerProtocol protocol, CrazyCrates plugin) {
+        if (currentProtocol == null) getCurrentProtocol(plugin);
         int proto = currentProtocol.versionProtocol;
         return proto >= protocol.versionProtocol || proto == -2;
     }
 
-    public static boolean isNewer(ServerProtocol protocol) {
-        if (currentProtocol == null) getCurrentProtocol();
+    public static boolean isNewer(ServerProtocol protocol, CrazyCrates plugin) {
+        if (currentProtocol == null) getCurrentProtocol(plugin);
         return currentProtocol.versionProtocol > protocol.versionProtocol || currentProtocol.versionProtocol == -2;
     }
 
-    public static boolean isSame(ServerProtocol protocol) {
-        if (currentProtocol == null) getCurrentProtocol();
+    public static boolean isSame(ServerProtocol protocol, CrazyCrates plugin) {
+        if (currentProtocol == null) getCurrentProtocol(plugin);
         return currentProtocol.versionProtocol == protocol.versionProtocol;
     }
 
-    public static boolean isOlder(ServerProtocol protocol) {
-        if (currentProtocol == null) getCurrentProtocol();
+    public static boolean isOlder(ServerProtocol protocol, CrazyCrates plugin) {
+        if (currentProtocol == null) getCurrentProtocol(plugin);
         int proto = currentProtocol.versionProtocol;
         return proto < protocol.versionProtocol || proto == -1;
     }

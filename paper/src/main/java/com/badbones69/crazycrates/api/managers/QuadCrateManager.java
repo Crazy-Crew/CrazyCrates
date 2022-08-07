@@ -16,7 +16,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.*;
 
 public class QuadCrateManager {
@@ -172,7 +171,7 @@ public class QuadCrateManager {
         }
 
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
-            Methods.failedToTakeKey(player, crate);
+            methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
             return false;
@@ -271,7 +270,7 @@ public class QuadCrateManager {
                 // Restore the old blocks.
                 oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
 
-                if (crazyManager.getHologramController() != null) crazyManager.getHologramController().createHologram(spawnLocation.getBlock(), crate);
+                if (crazyManager.getHologramController() != null) crazyManager.getHologramController().createHologram(spawnLocation.getBlock(), crate, plugin);
 
                 // End the crate.
                 crazyManager.endCrate(player);

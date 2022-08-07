@@ -23,22 +23,28 @@ public class PreviewListener implements Listener {
     private static ItemBuilder nextButton;
     private static ItemBuilder backButton;
 
+    private final MenuListener menuListener;
+
+    public PreviewListener(MenuListener menuListener) {
+        this.menuListener = menuListener;
+    }
+
     public static void loadButtons() {
-        FileConfiguration config = OldFileManager.Files.CONFIG.getFile();
+        //FileConfiguration config = OldFileManager.Files.CONFIG.getFile();
         String path = "Settings.Preview.Buttons.";
-        menuButton = new ItemBuilder()
-        .setMaterial(config.getString(path + "Menu.Item", "COMPASS"))
-        .setName(config.getString(path + "Menu.Name", "&7&l>> &c&lMenu &7&l<<"))
-        .setLore(config.contains(path + "Menu.Lore") ? config.getStringList(path + "Menu.Lore") : Collections.singletonList("&7Return to the menu."))
-        .build();
-        nextButton = new ItemBuilder()
-        .setMaterial(config.getString(path + "Next.Item", "FEATHER"))
-        .setName(config.getString(path + "Next.Name", "&6&lNext >>"))
-        .setLore(config.contains(path + "Next.Lore") ? config.getStringList(path + "Next.Lore") : Collections.singletonList("&7&lPage: &b%page%"));
-        backButton = new ItemBuilder()
-        .setMaterial(config.getString(path + "Back.Item", "FEATHER"))
-        .setName(config.getString(path + "Back.Name", "&6&l<< Back"))
-        .setLore(config.contains(path + "Back.Lore") ? config.getStringList(path + "Back.Lore") : Collections.singletonList("&7&lPage: &b%page%"));
+        //menuButton = new ItemBuilder()
+        //.setMaterial(config.getString(path + "Menu.Item", "COMPASS"))
+        //.setName(config.getString(path + "Menu.Name", "&7&l>> &c&lMenu &7&l<<"))
+        //.setLore(config.contains(path + "Menu.Lore") ? config.getStringList(path + "Menu.Lore") : Collections.singletonList("&7Return to the menu."))
+        //.build();
+        //nextButton = new ItemBuilder()
+        //.setMaterial(config.getString(path + "Next.Item", "FEATHER"))
+        //.setName(config.getString(path + "Next.Name", "&6&lNext >>"))
+        //.setLore(config.contains(path + "Next.Lore") ? config.getStringList(path + "Next.Lore") : Collections.singletonList("&7&lPage: &b%page%"));
+       // backButton = new ItemBuilder()
+        //.setMaterial(config.getString(path + "Back.Item", "FEATHER"))
+        //.setName(config.getString(path + "Back.Name", "&6&l<< Back"))
+        //.setLore(config.contains(path + "Back.Lore") ? config.getStringList(path + "Back.Lore") : Collections.singletonList("&7&lPage: &b%page%"));
     }
     
     public static void openNewPreview(Player player, Crate crate) {
@@ -88,9 +94,7 @@ public class PreviewListener implements Listener {
     public static ItemStack getNextButton(Player player) {
         ItemBuilder button = new ItemBuilder(nextButton);
 
-        if (player != null) {
-            button.addLorePlaceholder("%Page%", (getPage(player) + 1) + "");
-        }
+        if (player != null) button.addLorePlaceholder("%Page%", (getPage(player) + 1) + "");
 
         return button.build();
     }
@@ -102,9 +106,7 @@ public class PreviewListener implements Listener {
     public static ItemStack getBackButton(Player player) {
         ItemBuilder button = new ItemBuilder(backButton);
 
-        if (player != null) {
-            button.addLorePlaceholder("%Page%", (getPage(player) - 1) + "");
-        }
+        if (player != null) button.addLorePlaceholder("%Page%", (getPage(player) - 1) + "");
 
         return button.build();
     }
@@ -130,9 +132,7 @@ public class PreviewListener implements Listener {
                 if (e.getCurrentItem() != null) {
                     if (e.getRawSlot() == crate.getAbsoluteItemPosition(4)) { // Clicked the menu button.
 
-                        if (playerInMenu(player)) {
-                            MenuListener.openGUI(player);
-                        }
+                        //if (playerInMenu(player)) menuListener.openGUI(player);
 
                     } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(5)) { // Clicked the next button.
 

@@ -15,7 +15,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,13 +30,12 @@ public class Wheel implements Listener {
 
     public Wheel(CrazyCrates plugin, CrazyManager crazyManager, Methods methods) {
         this.plugin = plugin;
-
         this.crazyManager = crazyManager;
 
         this.methods = methods;
     }
     
-    public static void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
+    public void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
@@ -45,7 +43,7 @@ public class Wheel implements Listener {
         }
 
         // TODO() The crate title was sanitized.
-        final Inventory inv = crazyManager.getPlugin().getServer().createInventory(null, 54, crate.getFile().getString("Crate.CrateName"));
+        final Inventory inv = plugin.getServer().createInventory(null, 54, crate.getFile().getString("Crate.CrateName"));
 
         for (int i = 0; i < 54; i++) {
             inv.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
@@ -112,9 +110,7 @@ public class Wheel implements Listener {
                         f++;
                     }
 
-                    if (full == timer + 47) {
-                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-                    }
+                    if (full == timer + 47) player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 
                     if (full >= timer + 47) {
                         slow++;
@@ -135,16 +131,14 @@ public class Wheel implements Listener {
                     if (full >= (timer + 55 + 47)) {
                         Prize prize = null;
 
-                        if (crazyManager.isInOpeningList(player)) {
-                            prize = crate.getPrize(rewards.get(player).get(slots.get(f)));
-                        }
+                        if (crazyManager.isInOpeningList(player)) prize = crate.getPrize(rewards.get(player).get(slots.get(f)));
 
                         if (prize != null) {
                             crazyManager.givePrize(player, prize);
 
                             if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 
-                            crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+                            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                         } else {
                             //player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
                         }
@@ -165,7 +159,7 @@ public class Wheel implements Listener {
                     open = 0;
                 }
             }
-        }.runTaskTimer(crazyManager.getPlugin(), 1, 1));
+        }.runTaskTimer(plugin, 1, 1));
     }
     
     private static ArrayList<Integer> slowSpin() {
@@ -186,6 +180,7 @@ public class Wheel implements Listener {
     
     private static ArrayList<Integer> getBorder() {
         ArrayList<Integer> slots = new ArrayList<>();
+
         slots.add(13);
         slots.add(14);
         slots.add(15);
@@ -204,6 +199,7 @@ public class Wheel implements Listener {
         slots.add(10);
         slots.add(11);
         slots.add(12);
+
         return slots;
     }
 }

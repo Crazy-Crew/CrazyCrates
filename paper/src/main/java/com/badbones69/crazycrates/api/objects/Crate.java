@@ -52,7 +52,17 @@ public class Crate {
      * @param prizes The prizes that can be won.
      * @param file The crate file.
      */
-    public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, CrateHologram hologram, CrazyCrates plugin) {
+    public Crate(
+            String name,
+            String previewName,
+            CrateType crateType,
+            ItemStack key,
+            ArrayList<Prize> prizes,
+            FileConfiguration file,
+            int newPlayerKeys,
+            ArrayList<Tier> tiers,
+            CrateHologram hologram,
+            CrazyCrates plugin) {
         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
         this.keyNoNBT = itemBuilder.build();
         this.key = itemBuilder.setCrateName(name).build();
@@ -90,8 +100,9 @@ public class Crate {
                 .setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
         this.hologram = hologram != null ? hologram : new CrateHologram();
 
-        switch (crateType) {
-            case COSMIC -> this.manager = new CosmicCrateManager(file);
+        if (crateType == CrateType.COSMIC) {
+            assert file != null;
+            this.manager = new CosmicCrateManager(file);
         }
 
         this.plugin = plugin;
@@ -158,9 +169,7 @@ public class Crate {
         } else {
             for (Prize prize : getPrizes()) {
                 if (prize.hasBlacklistPermission(player)) {
-                    if (!prize.hasAltPrize()) {
-                        continue;
-                    }
+                    if (!prize.hasAltPrize()) continue;
                 }
 
                 usablePrizes.add(prize);
@@ -177,9 +186,7 @@ public class Crate {
                 for (int counter = 1; counter <= 1; counter++) {
                     num = 1 + new Random().nextInt(max);
 
-                    if (num <= chance) {
-                        prizes.add(prize);
-                    }
+                    if (num <= chance) prizes.add(prize);
                 }
             }
         }
@@ -205,21 +212,15 @@ public class Crate {
         // ================= Blacklist Check ================= //
         if (player.isOp()) {
             for (Prize prize : getPrizes()) {
-                if (prize.getTiers().contains(tier)) {
-                    usablePrizes.add(prize);
-                }
+                if (prize.getTiers().contains(tier)) usablePrizes.add(prize);
             }
         } else {
             for (Prize prize : getPrizes()) {
                 if (prize.hasBlacklistPermission(player)) {
-                    if (!prize.hasAltPrize()) {
-                        continue;
-                    }
+                    if (!prize.hasAltPrize()) continue;
                 }
 
-                if (prize.getTiers().contains(tier)) {
-                    usablePrizes.add(prize);
-                }
+                if (prize.getTiers().contains(tier)) usablePrizes.add(prize);
             }
         }
 
@@ -233,9 +234,7 @@ public class Crate {
                 for (int counter = 1; counter <= 1; counter++) {
                     num = 1 + new Random().nextInt(max);
 
-                    if (num <= chance) {
-                        prizes.add(prize);
-                    }
+                    if (num <= chance) prizes.add(prize);
                 }
             }
         }
@@ -446,9 +445,7 @@ public class Crate {
      */
     public Prize getPrize(String name) {
         for (Prize prize : prizes) {
-            if (prize.getName().equalsIgnoreCase(name)) {
-                return prize;
-            }
+            if (prize.getName().equalsIgnoreCase(name)) return prize;
         }
 
         return null;
@@ -458,15 +455,11 @@ public class Crate {
         try {
             NBTItem nbt = new NBTItem(item);
 
-            if (nbt.hasKey("crazycrate-prize")) {
-                return getPrize(nbt.getString("crazycrate-prize"));
-            }
+            if (nbt.hasKey("crazycrate-prize")) return getPrize(nbt.getString("crazycrate-prize"));
         } catch (Exception ignored) {}
         
         for (Prize prize : prizes) {
-            if (item.isSimilar(prize.getDisplayItem())) {
-                return prize;
-            }
+            if (item.isSimilar(prize.getDisplayItem())) return prize;
         }
 
         return null;
@@ -506,9 +499,7 @@ public class Crate {
             NBTItem nbtItem = new NBTItem(item);
 
             if (nbtItem.hasNBTData()) {
-                if (nbtItem.hasKey("Unbreakable") && nbtItem.getBoolean("Unbreakable")) {
-                    file.set(path + ".Unbreakable", true);
-                }
+                if (nbtItem.hasKey("Unbreakable") && nbtItem.getBoolean("Unbreakable")) file.set(path + ".Unbreakable", true);
             }
 
             List<String> enchantments = new ArrayList<>();
@@ -517,9 +508,7 @@ public class Crate {
                 enchantments.add((enchantment.getKey().getKey() + ":" + item.getEnchantmentLevel(enchantment)));
             }
 
-            if (!enchantments.isEmpty()) {
-                file.set(path + ".DisplayEnchantments", enchantments);
-            }
+            if (!enchantments.isEmpty()) file.set(path + ".DisplayEnchantments", enchantments);
 
             file.set(path + ".DisplayItem", item.getType().name());
             file.set(path + ".DisplayAmount", item.getAmount());
@@ -527,9 +516,7 @@ public class Crate {
             file.set(path + ".Chance", 50);
         } else {
             // Must be checked as getList will return null if nothing is found.
-            if (file.contains(path + ".Editor-Items")) {
-                file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
-            }
+            if (file.contains(path + ".Editor-Items")) file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
         }
 
         file.set(path + ".Editor-Items", items);
@@ -574,9 +561,7 @@ public class Crate {
     private ArrayList<ItemStack> loadPreview() {
         ArrayList<ItemStack> items = new ArrayList<>();
 
-        for (Prize prize : getPrizes()) {
-            items.add(prize.getDisplayItem());
-        }
+        getPrizes().forEach(prize -> items.add(prize.getDisplayItem()));
 
         return items;
     }
@@ -612,15 +597,11 @@ public class Crate {
         if (borderToggle) {
             List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
 
-            for (int i : borderItems) { // Top Boarder slots
-                inventory.setItem(i, boarderItem.build());
-            }
+            borderItems.forEach(integer -> inventory.setItem(integer, boarderItem.build()));
 
             borderItems.replaceAll(this::getAbsoluteItemPosition);
 
-            for (int i : borderItems) { // Bottom Boarder slots
-                inventory.setItem(i, boarderItem.build());
-            }
+            borderItems.forEach(integer -> inventory.setItem(integer, boarderItem.build()));
         }
 
         int page = PreviewListener.getPage(player);
@@ -630,17 +611,13 @@ public class Crate {
         }
 
         if (page == 1) {
-            if (borderToggle) {
-                inventory.setItem(getAbsoluteItemPosition(3), boarderItem.build());
-            }
+            if (borderToggle) inventory.setItem(getAbsoluteItemPosition(3), boarderItem.build());
         } else {
             inventory.setItem(getAbsoluteItemPosition(3), PreviewListener.getBackButton(player));
         }
 
         if (page == maxPage) {
-            if (borderToggle) {
-                inventory.setItem(getAbsoluteItemPosition(5), boarderItem.build());
-            }
+            if (borderToggle) inventory.setItem(getAbsoluteItemPosition(5), boarderItem.build());
         } else {
             inventory.setItem(getAbsoluteItemPosition(5), PreviewListener.getNextButton(player));
         }

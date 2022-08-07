@@ -1,19 +1,15 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.OldFileManager.Files;
+import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent.KeyReceiveReason;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
-import com.badbones69.crazycrates.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.api.objects.*;
-import com.badbones69.crazycrates.config.Config;
-import com.badbones69.crazycrates.cratetypes.*;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
-import com.badbones69.crazycrates.listeners.MenuListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
 import com.badbones69.crazycrates.support.holograms.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.HolographicDisplaysSupport;
@@ -45,7 +41,7 @@ public class CrazyManager {
     }
 
     // FileManager object.
-    private static final OldFileManager fileManager = OldFileManager.getInstance();
+    // private static final OldFileManager fileManager = OldFileManager.getInstance();
 
     // All the crates that have been loaded.
     private final ArrayList<Crate> crates = new ArrayList<>();
@@ -71,7 +67,7 @@ public class CrazyManager {
     // A list of tasks being run by the QuadCrate type.
     private final HashMap<UUID, ArrayList<BukkitTask>> currentQuadTasks = new HashMap<>();
     
-    // The time in seconds a quadcrate can go until afk kicks them from it.
+    // The time in seconds a quad crate can go until afk kicks them from it.
     private Integer quadCrateTimer;
     
     // A list of current crate schematics for Quad Crate.
@@ -99,19 +95,19 @@ public class CrazyManager {
         crateLocations.clear();
         crateSchematics.clear();
 
-        quadCrateTimer = OldFileManager.Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
-        giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
+        //quadCrateTimer = OldFileManager.Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
+        //giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
 
-        if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginLoaded()) {
+        if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginLoaded(plugin)) {
             hologramController = new HolographicDisplaysSupport();
-        } else if (PluginSupport.DECENT_HOLOGRAMS.isPluginLoaded()) {
+        } else if (PluginSupport.DECENT_HOLOGRAMS.isPluginLoaded(plugin)) {
             hologramController = new DecentHologramsSupport();
         }
 
         // Removes all holograms so that they can be replaced.
         if (hologramController != null) hologramController.removeAllHolograms();
 
-        if (config.verbose) plugin.getLogger().info("Loading all crate information...");
+        //if (config.verbose) plugin.getLogger().info("Loading all crate information...");
 
         /*for (String crateName : fileManager.getAllCratesNames(plugin)) {
             try {
@@ -197,10 +193,10 @@ public class CrazyManager {
 
         crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null, plugin));
 
-        if (config.verbose) {
-            plugin.getLogger().info("All crate information has been loaded.");
-            plugin.getLogger().info("Loading all the physical crate locations.");
-        }
+        //if (config.verbose) {
+        //    plugin.getLogger().info("All crate information has been loaded.");
+        //    plugin.getLogger().info("Loading all the physical crate locations.");
+       // }
 
         FileConfiguration locations = Files.LOCATIONS.getFile();
         int loadedAmount = 0;
@@ -238,7 +234,7 @@ public class CrazyManager {
         }
 
         // Checking if all physical locations loaded
-        if (config.verbose) {
+        /*if (config.verbose) {
             if (loadedAmount > 0 || brokeAmount > 0) {
                 if (brokeAmount <= 0) {
                     plugin.getLogger().info("All physical crate locations have been loaded.");
@@ -251,6 +247,7 @@ public class CrazyManager {
 
         // Loading schematic files
         if (config.verbose) plugin.getLogger().info("Searching for schematics to load.");
+         */
 
         String[] schems = new File(plugin.getDataFolder() + "/schematics/").list();
 
@@ -258,11 +255,11 @@ public class CrazyManager {
             if (schematicName.endsWith(".nbt")) {
                 crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(plugin.getDataFolder() + "/schematics/" + schematicName)));
 
-                if (config.verbose) plugin.getLogger().info(schematicName + " was successfully found and loaded.");
+                //if (config.verbose) plugin.getLogger().info(schematicName + " was successfully found and loaded.");
             }
         }
 
-        if (config.verbose) plugin.getLogger().info("All schematics were found and loaded.");
+        //if (config.verbose) plugin.getLogger().info("All schematics were found and loaded.");
 
         cleanDataFile();
         PreviewListener.loadButtons();
@@ -283,7 +280,7 @@ public class CrazyManager {
 
         if (data.contains("Players")) {
 
-            if (config.verbose) plugin.getLogger().info("Cleaning up the data.yml file.");
+            //if (config.verbose) plugin.getLogger().info("Cleaning up the data.yml file.");
 
             List<String> removePlayers = new ArrayList<>();
 
@@ -307,14 +304,14 @@ public class CrazyManager {
             }
 
             if (removePlayers.size() > 0) {
-                if (config.verbose) plugin.getLogger().info(removePlayers.size() + " player's data has been marked to be removed.");
+                //if (config.verbose) plugin.getLogger().info(removePlayers.size() + " player's data has been marked to be removed.");
 
                 removePlayers.forEach(uuid -> data.set("Players." + uuid, null));
 
-                if (config.verbose) plugin.getLogger().info("All empty player data has been removed.");
+                //if (config.verbose) plugin.getLogger().info("All empty player data has been removed.");
             }
 
-            if (config.verbose) plugin.getLogger().info("The data.yml file has been cleaned.");
+            //if (config.verbose) plugin.getLogger().info("The data.yml file has been cleaned.");
 
             Files.DATA.saveFile();
         }
@@ -355,33 +352,33 @@ public class CrazyManager {
 
         switch (crate.getCrateType()) {
             case MENU:
-                MenuListener.openGUI(player);
+                //MenuListener.openGUI(player);
                 break;
             case COSMIC:
-                Cosmic.openCosmic(player, crate, keyType, checkHand);
+                //Cosmic.openCosmic(player, crate, keyType, checkHand);
                 break;
             case CSGO:
-                CSGO.openCSGO(player, crate, keyType, checkHand);
+                //CSGO.openCSGO(player, crate, keyType, checkHand);
                 break;
             case ROULETTE:
-                Roulette.openRoulette(player, crate, keyType, checkHand);
+                //Roulette.openRoulette(player, crate, keyType, checkHand);
                 break;
             case WHEEL:
-                Wheel.startWheel(player, crate, keyType, checkHand);
+                //Wheel.startWheel(player, crate, keyType, checkHand);
                 break;
             case WONDER:
-                Wonder.startWonder(player, crate, keyType, checkHand);
+                //Wonder.startWonder(player, crate, keyType, checkHand);
                 break;
             case WAR:
-                War.openWarCrate(player, crate, keyType, checkHand);
+                //War.openWarCrate(player, crate, keyType, checkHand);
                 break;
             case QUAD_CRATE:
                 Location lastLocation = player.getLocation();
                 lastLocation.setPitch(0F);
                 CrateSchematic crateSchematic = getCrateSchematics().get(new Random().nextInt(getCrateSchematics().size()));
                 StructureHandler handler = new StructureHandler(plugin, crateSchematic.schematicFile());
-                QuadCrateManager session = new QuadCrateManager(player, crate, keyType, location, lastLocation, checkHand, handler, this);
-                broadcast = session.startCrate(plugin);
+                //QuadCrateManager session = new QuadCrateManager(player, crate, keyType, location, lastLocation, checkHand, handler, this);
+                //broadcast = session.startCrate(plugin);
                 break;
             case FIRE_CRACKER:
                 if (CrateControlListener.inUse.containsValue(location)) {
@@ -394,26 +391,26 @@ public class CrazyManager {
                         removePlayerFromOpeningList(player);
                         return;
                     } else {
-                        CrateControlListener.inUse.put(player, location);
-                        FireCracker.startFireCracker(player, crate, keyType, location);
+                        //CrateControlListener.inUse.put(player, location);
+                        //FireCracker.startFireCracker(player, crate, keyType, location);
                     }
                 }
                 break;
             case QUICK_CRATE:
-                if (CrateControlListener.inUse.containsValue(location)) {
+                //if (CrateControlListener.inUse.containsValue(location)) {
                     //player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
-                    removePlayerFromOpeningList(player);
-                    return;
-                } else {
-                    if (virtualCrate && location.equals(player.getLocation())) {
+                //    removePlayerFromOpeningList(player);
+                //    return;
+                //} else {
+                //    if (virtualCrate && location.equals(player.getLocation())) {
                         //player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
-                        removePlayerFromOpeningList(player);
-                        return;
-                    } else {
-                        CrateControlListener.inUse.put(player, location);
-                        QuickCrate.openCrate(player, location, crate, keyType);
-                    }
-                }
+                //        removePlayerFromOpeningList(player);
+                //        return;
+                //    } else {
+                        //CrateControlListener.inUse.put(player, location);
+                        //QuickCrate.openCrate(player, location, crate, keyType);
+                //    }
+                //}
                 break;
             case CRATE_ON_THE_GO:
                 if (virtualCrate) {
@@ -425,13 +422,13 @@ public class CrazyManager {
                         Prize prize = crate.pickPrize(player);
                         givePrize(player, prize);
 
-                        if (prize.useFireworks()) {
-                            Methods.firework(player.getLocation().add(0, 1, 0));
-                        }
+                        //if (prize.useFireworks()) {
+                        //    Methods.firework(player.getLocation().add(0, 1, 0));
+                        //}
 
                         removePlayerFromOpeningList(player);
                     } else {
-                        Methods.failedToTakeKey(player, crate);
+                        //Methods.failedToTakeKey(player, crate);
                     }
                 }
 
@@ -466,9 +463,7 @@ public class CrazyManager {
      */
     public void endQuadCrate(Player player) {
         if (currentQuadTasks.containsKey(player.getUniqueId())) {
-            for (BukkitTask task : currentQuadTasks.get(player.getUniqueId())) {
-                task.cancel();
-            }
+            currentQuadTasks.get(player.getUniqueId()).forEach(BukkitTask::cancel);
 
             currentQuadTasks.remove(player.getUniqueId());
         }
@@ -481,9 +476,7 @@ public class CrazyManager {
      * @param task The task of the quad crate.
      */
     public void addQuadCrateTask(Player player, BukkitTask task) {
-        if (!currentQuadTasks.containsKey(player.getUniqueId())) {
-            currentQuadTasks.put(player.getUniqueId(), new ArrayList<>());
-        }
+        if (!currentQuadTasks.containsKey(player.getUniqueId())) currentQuadTasks.put(player.getUniqueId(), new ArrayList<>());
 
         currentQuadTasks.get(player.getUniqueId()).add(task);
     }
@@ -544,9 +537,7 @@ public class CrazyManager {
      */
     public boolean isCrateLocation(Location loc) {
         for (CrateLocation crateLocation : getCrateLocations()) {
-            if (crateLocation.getLocation().equals(loc)) {
-                return true;
-            }
+            if (crateLocation.getLocation().equals(loc)) return true;
         }
 
         return false;
@@ -560,9 +551,7 @@ public class CrazyManager {
      */
     public CrateLocation getCrateLocation(Location loc) {
         for (CrateLocation crateLocation : getCrateLocations()) {
-            if (crateLocation.getLocation().equals(loc)) {
-                return crateLocation;
-            }
+            if (crateLocation.getLocation().equals(loc)) return crateLocation;
         }
 
         return null;
@@ -607,9 +596,7 @@ public class CrazyManager {
 
         crateLocations.add(new CrateLocation(id, crate, location));
 
-        if (hologramController != null) {
-            hologramController.createHologram(location.getBlock(), crate);
-        }
+        if (hologramController != null) hologramController.createHologram(location.getBlock(), crate, plugin);
     }
     
     /**
@@ -662,9 +649,7 @@ public class CrazyManager {
      */
     public Crate getCrateFromName(String name) {
         for (Crate crate : getCrates()) {
-            if (crate.getName().equalsIgnoreCase(name)) {
-                return crate;
-            }
+            if (crate.getName().equalsIgnoreCase(name)) return crate;
         }
 
         return null;
@@ -709,9 +694,7 @@ public class CrazyManager {
             for (String enchantmentName : file.getStringList("Crate.Prizes." + reward + ".DisplayEnchantments")) {
                 Enchantment enchantment = Methods.getEnchantment(enchantmentName.split(":")[0]);
 
-                if (enchantment != null) {
-                    enchantments.put(enchantment, Integer.parseInt(enchantmentName.split(":")[1]));
-                }
+                if (enchantment != null) enchantments.put(enchantment, Integer.parseInt(enchantmentName.split(":")[1]));
             }
 
             try {
@@ -757,7 +740,7 @@ public class CrazyManager {
             for (ItemBuilder item : prize.getItemBuilders()) {
                 ItemBuilder clone = new ItemBuilder(item);
 
-                if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) {
+                if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded(plugin)) {
                     clone.setName(PlaceholderAPI.setPlaceholders(player, clone.getName()));
                     clone.setLore(PlaceholderAPI.setPlaceholders(player, clone.getLore()));
                 }
@@ -796,19 +779,19 @@ public class CrazyManager {
                     command = command.substring(0, command.length() - 1);
                 }
 
-                if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) command = PlaceholderAPI.setPlaceholders(player, command);
+                if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded(plugin)) command = PlaceholderAPI.setPlaceholders(player, command);
 
                 //plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), color(command.replace("%Player%", player.getName()).replace("%player%", player.getName())));
             }
 
             for (String message : prize.getMessages()) {
-                if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) message = PlaceholderAPI.setPlaceholders(player, message);
+                if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded(plugin)) message = PlaceholderAPI.setPlaceholders(player, message);
 
                 //player.sendMessage(color(message).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())
                 //.replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
             }
         } else {
-            if (config.verbose) plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
+            //if (config.verbose) plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
         }
     }
     
@@ -1176,16 +1159,14 @@ public class CrazyManager {
                                 int keyAmount = item.getAmount();
 
                                 if ((takeAmount - keyAmount) >= 0) {
-                                    Methods.removeItemAnySlot(player.getInventory(), item);
+                                    //Methods.removeItemAnySlot(player.getInventory(), item);
                                     takeAmount -= keyAmount;
                                 } else {
                                     item.setAmount(keyAmount - takeAmount);
                                     takeAmount = 0;
                                 }
 
-                                if (takeAmount <= 0) {
-                                    return true;
-                                }
+                                if (takeAmount <= 0) return true;
                             }
                         }
                     }
@@ -1193,6 +1174,7 @@ public class CrazyManager {
                     // This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the offhand.
                     if (takeAmount > 0) {
                         ItemStack item = player.getEquipment().getItemInOffHand();
+
                         if (item != null) {
                             if (isKeyFromCrate(item, crate)) {
                                 int keyAmount = item.getAmount();
@@ -1205,21 +1187,17 @@ public class CrazyManager {
                                     takeAmount = 0;
                                 }
 
-                                if (takeAmount <= 0) {
-                                    return true;
-                                }
+                                if (takeAmount <= 0) return true;
                             }
                         }
                     }
                 } catch (Exception e) {
-                    Methods.failedToTakeKey(player, crate, e);
+                    //Methods.failedToTakeKey(player, crate, e);
                     return false;
                 }
 
                 // Returns true because it was able to take some keys.
-                if (takeAmount < amount) {
-                    return true;
-                }
+                if (takeAmount < amount) return true;
 
                 break;
             case VIRTUAL_KEY:

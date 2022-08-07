@@ -14,15 +14,13 @@ public class HolographicDisplaysSupport implements HologramController {
     
     private static final HashMap<Block, Hologram> holograms = new HashMap<>();
 
-    private final CrazyManager crazyManager = CrazyManager.getInstance();
-    
-    public void createHologram(Block block, Crate crate) {
+    public void createHologram(Block block, Crate crate, CrazyCrates plugin) {
         CrateHologram crateHologram = crate.getHologram();
 
         if (!crateHologram.isEnabled()) return;
 
         double height = crateHologram.getHeight();
-        Hologram hologram = HologramsAPI.createHologram(crazyManager.getPlugin(), block.getLocation().add(.5, height, .5));
+        Hologram hologram = HologramsAPI.createHologram(plugin, block.getLocation().add(.5, height, .5));
         //crateHologram.getMessages().forEach(line -> hologram.appendTextLine(color(line)));
         holograms.put(block, hologram);
     }
