@@ -63,26 +63,31 @@ public class Methods {
         return items;
     }
     
-    public void firework(Location loc) {
-        final Firework fw = loc.getWorld().spawn(loc, Firework.class);
-        FireworkMeta fm = fw.getFireworkMeta();
-        fm.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.RED).withColor(Color.AQUA).withColor(Color.ORANGE).withColor(Color.YELLOW).trail(false).flicker(false).build());
-        fm.setPower(0);
-        fw.setFireworkMeta(fm);
-        FireworkDamageListener.addFirework(fw);
+    public void firework(Location loc, List<Color> colors) {
+        Firework firework = loc.getWorld().spawn(loc, Firework.class);
+        FireworkMeta fireworkMeta = firework.getFireworkMeta();
+        fireworkMeta.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(colors).trail(false).flicker(false).build());
+        fireworkMeta.setPower(0);
+        firework.setFireworkMeta(fireworkMeta);
+        fireworkDamageListener.addFirework(firework, plugin);
 
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, fw :: detonate, 2);
+        detonate(firework);
     }
 
-    public void firework(Location loc, Color color) {
-        final Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
-        FireworkMeta fm = fw.getFireworkMeta();
-        fm.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL).withColor(color).withColor(color).trail(false).flicker(false).build());
-        fm.setPower(0);
-        fw.setFireworkMeta(fm);
-        FireworkDamageListener.addFirework(fw);
+    public void firework(Location loc) {
+        Firework firework = loc.getWorld().spawn(loc, Firework.class);
+        FireworkMeta fireworkMeta = firework.getFireworkMeta();
+        fireworkMeta.addEffects(FireworkEffect.builder()
+                .with(FireworkEffect.Type.BALL_LARGE).withColor(Color.RED).withColor(Color.AQUA).withColor(Color.ORANGE).withColor(Color.YELLOW).trail(false).flicker(false).build());
+        fireworkMeta.setPower(0);
+        firework.setFireworkMeta(fireworkMeta);
+        fireworkDamageListener.addFirework(firework, plugin);
 
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, fw::detonate, 2);
+        detonate(firework);
+    }
+
+    private void detonate(final Firework firework) {
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, firework::detonate, 2);
     }
     
     public static boolean isInt(String s) {
