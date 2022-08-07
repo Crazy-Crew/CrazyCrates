@@ -380,7 +380,7 @@ public class CrazyManager {
                 //broadcast = session.startCrate(plugin);
                 break;
             case FIRE_CRACKER:
-                if (CrateControlListener.inUse.containsValue(location)) {
+                if (crateControlListener.containsPlayer(location)) {
                     //player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
                     removePlayerFromOpeningList(player);
                     return;
@@ -390,26 +390,26 @@ public class CrazyManager {
                         removePlayerFromOpeningList(player);
                         return;
                     } else {
-                        //CrateControlListener.inUse.put(player, location);
-                        //FireCracker.startFireCracker(player, crate, keyType, location);
+                        crateControlListener.addPlayer(player, location);
+                        fireCracker.startFireCracker(player, crate, keyType, location);
                     }
                 }
                 break;
             case QUICK_CRATE:
-                //if (CrateControlListener.inUse.containsValue(location)) {
+                if (crateControlListener.containsPlayer(location)) {
                     //player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
                 //    removePlayerFromOpeningList(player);
                 //    return;
                 //} else {
                 //    if (virtualCrate && location.equals(player.getLocation())) {
                         //player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
-                //        removePlayerFromOpeningList(player);
-                //        return;
-                //    } else {
-                        //CrateControlListener.inUse.put(player, location);
-                        //QuickCrate.openCrate(player, location, crate, keyType);
-                //    }
-                //}
+                        removePlayerFromOpeningList(player);
+                        return;
+                    } else {
+                        crateControlListener.addPlayer(player, location);
+                        quickCrate.openCrate(player, location, crate, keyType);
+                    }
+                }
                 break;
             case CRATE_ON_THE_GO:
                 if (virtualCrate) {

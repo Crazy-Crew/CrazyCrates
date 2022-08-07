@@ -30,7 +30,19 @@ import java.util.HashMap;
 public class CrateControlListener implements Listener { // Crate Control
     
     // A list of crate locations that are in use.
-    public static HashMap<Player, Location> inUse = new HashMap<>();
+    private final HashMap<Player, Location> inUse = new HashMap<>();
+
+    public void removePlayer(Player player) {
+        inUse.remove(player);
+    }
+
+    public boolean containsPlayer(Location location) {
+        return inUse.containsValue(location);
+    }
+
+    public void addPlayer(Player player, Location location) {
+        inUse.put(player, location);
+    }
 
     private final CrazyCrates plugin;
     private final CrazyManager crazyManager;
