@@ -9,6 +9,7 @@ import dev.triumphteam.cmd.core.annotation.ArgName;
 import dev.triumphteam.cmd.core.annotation.Command;
 import dev.triumphteam.cmd.core.annotation.Default;
 import dev.triumphteam.cmd.core.annotation.SubCommand;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,10 +50,10 @@ public class BaseKeyCommand extends BaseCommand {
 
     @SubCommand("view")
     @Permission("crazycrates.command.player.key.others")
-    public void viewOthers(Player player, @ArgName("username") Player target) {
+    public void viewOthers(CommandSender sender, @ArgName("username") Player target) {
         List<String> message = new ArrayList<>();
         message.add(Messages.OTHER_PLAYER_HEADER.getMessageNoPrefix("%Player%", target.getName()));
-        HashMap<Crate, Integer> keys = crazyManager.getVirtualKeys(player);
+        HashMap<Crate, Integer> keys = crazyManager.getVirtualKeys(target);
         boolean hasKeys = false;
 
         for (Crate crate : keys.keySet()) {
@@ -68,9 +69,9 @@ public class BaseKeyCommand extends BaseCommand {
         }
 
         if (hasKeys) {
-            player.sendMessage(Messages.convertList(message));
+            sender.sendMessage(Messages.convertList(message));
         } else {
-            player.sendMessage(Messages.OTHER_PLAYER_NO_VIRTUAL_KEYS.getMessage("%Player%", player.getName()));
+            sender.sendMessage(Messages.OTHER_PLAYER_NO_VIRTUAL_KEYS.getMessage("%Player%", target.getName()));
         }
     }
 }
