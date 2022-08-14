@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.support.modules;
+package com.badbones69.crazycrates.modules;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
