@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.modules.config.files;
 import com.badbones69.crazycrates.modules.config.AbstractConfig;
 import com.badbones69.crazycrates.utilities.FileUtils;
 import com.google.inject.Inject;
-
 import java.util.ArrayList;
 import java.util.List;
 
