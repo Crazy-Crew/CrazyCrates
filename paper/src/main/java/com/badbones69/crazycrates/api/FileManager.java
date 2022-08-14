@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
@@ -10,6 +11,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Singleton
 public class FileManager {
     
     @Inject private CrazyCrates plugin;

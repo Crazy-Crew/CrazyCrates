@@ -2,10 +2,10 @@ package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.cratetypes.*;
-import com.badbones69.crazycrates.support.modules.PluginModule;
+import com.badbones69.crazycrates.modules.PluginModule;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Singleton;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+@Singleton
 public class CrazyCrates extends JavaPlugin implements Listener {
 
     private Injector injector;
