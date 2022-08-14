@@ -12,6 +12,6 @@ pluginManagement {
 // Project Name!
 rootProject.name = "Crazy-Crates"
 
-include("paper", "api", "common")
+include("paper")
 
 enableFeaturePreview("VERSION_CATALOGS")

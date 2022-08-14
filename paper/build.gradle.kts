@@ -1,8 +1,6 @@
 plugins {
     id("crazycrates-base")
 
-    id("io.papermc.paperweight.userdev") version "1.3.7"
-
     id("xyz.jpenilla.run-paper") version "1.0.6"
 
     id("com.github.johnrengelman.shadow") version "7.1.2"
@@ -29,7 +27,7 @@ dependencies {
     //implementation(project(":common"))
 
     // Paper API
-    paperDevBundle("1.19-R0.1-SNAPSHOT")
+    // paperDevBundle("1.19-R0.1-SNAPSHOT")
 
     compileOnly(libs.paper)
 
@@ -66,14 +64,6 @@ dependencies {
 }
 
 tasks {
-    reobfJar {
-        outputJar.set(rootProject.layout.buildDirectory.file("libs/${rootProject.name}-[1.18-1.19]-${rootProject.version}.jar"))
-    }
-
-    assemble {
-        dependsOn(reobfJar)
-    }
-
     processResources {
         filesMatching("plugin.yml") {
             expand (
@@ -86,6 +76,9 @@ tasks {
     }
 
     shadowJar {
+
+        archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
+
         listOf(
             "de.tr7zw",
             "org.bstats",
