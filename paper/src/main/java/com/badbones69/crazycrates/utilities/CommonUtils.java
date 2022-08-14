@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-public class Functions {
+public class CommonUtils {
 
     @Inject private CrazyCrates plugin;
 
