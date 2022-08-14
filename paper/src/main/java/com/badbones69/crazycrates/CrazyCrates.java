@@ -7,10 +7,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Singleton
@@ -38,8 +35,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onEnable() {
 
         try {
-            //fileManager = new FileManager();
-
             PluginModule module = new PluginModule(this);
 
             injector = module.createInjector();
@@ -60,9 +55,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
                     .registerCustomFilesFolder("/crates")
                     .registerCustomFilesFolder("/schematics")
                     .setup(this);
-
-            // Clean files if we have to.
-            cleanFiles();
 
             new Metrics(this, 4514);
 
@@ -108,29 +100,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         injector = null;
     }
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        //crazyManager.setNewPlayerKeys(e.getPlayer());
-        //crazyManager.loadOfflinePlayersKeys(e.getPlayer());
-    }
-
-    public void cleanFiles() {
-        //if (!Files.LOCATIONS.getFile().contains("Locations")) {
-        //    Files.LOCATIONS.getFile().set("Locations.Clear", null);
-        //    Files.LOCATIONS.saveFile();
-        //}
-
-        //if (!Files.DATA.getFile().contains("Players")) {
-        //    Files.DATA.getFile().set("Players.Clear", null);
-        //    Files.DATA.saveFile();
-        //}
-    }
-
     private void enable() {
-
-        PluginManager pluginManager = getServer().getPluginManager();
-
-        pluginManager.registerEvents(this, this);
 
         //crazyManager.loadCrates();
 
