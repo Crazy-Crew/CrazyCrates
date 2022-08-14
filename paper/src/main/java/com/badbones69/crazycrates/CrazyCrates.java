@@ -35,6 +35,15 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onEnable() {
 
         try {
+            Class.forName("io.papermc.paper.configurations.PaperConfigurations");
+        } catch (ClassNotFoundException e) {
+            getLogger().severe("This plugin requires Paper or a fork of to run.");
+            getServer().getPluginManager().disablePlugin(this);
+
+            return;
+        }
+
+        try {
             PluginModule module = new PluginModule(this);
 
             injector = module.createInjector();
