@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.utilities.Functions;
+import com.badbones69.crazycrates.utilities.CommonUtils;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -23,7 +23,7 @@ public class PluginModule extends AbstractModule {
     // Old methods class.
     private final Methods methods = new Methods();
     // New functions class to replace Methods slowly.
-    private final Functions functions = new Functions();
+    private final CommonUtils commonUtils = new CommonUtils();
 
     public PluginModule(CrazyCrates plugin) {
         this.plugin = plugin;
@@ -43,7 +43,7 @@ public class PluginModule extends AbstractModule {
         bind(FileManager.class).toInstance(fileManager);
 
         bind(Methods.class).toInstance(methods);
-        bind(Functions.class).toInstance(functions);
+        bind(CommonUtils.class).toInstance(commonUtils);
 
         bind(File.class).annotatedWith(Names.named("ConfigFolder")).toInstance(plugin.getDataFolder());
     }
