@@ -31,10 +31,10 @@ public class LocaleFile extends AbstractConfig {
 
     // Errors
     @Key("errors.no-prizes-found")
-    public String NO_PRIZES_FOUND = "";
+    public String NO_PRIZES_FOUND = "&cThis crate contains no prizes that you can win.";
 
     @Key("errors.no-schematics-found")
-    public String NO_SCHEMATICS_FOUND = "";
+    public String NO_SCHEMATICS_FOUND = "&cNo schematic were found, Please re-generate them by deleting the folder or checking for errors!";
 
     @Key("errors.prize-error")
     public List<String> PRIZE_ERROR = new ArrayList<>() {{
