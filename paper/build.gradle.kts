@@ -27,7 +27,7 @@ dependencies {
     // Paper API
     // paperDevBundle("1.19-R0.1-SNAPSHOT")
 
-    compileOnly(libs.paper)
+    //compileOnly(libs.paper)
 
     // Paper Lib
     implementation(libs.paper.lib)
