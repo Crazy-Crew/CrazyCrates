@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
+import com.google.inject.Inject;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.ChatColor;
@@ -29,14 +30,8 @@ import java.util.regex.Pattern;
 
 public class Methods {
 
-    private final CrazyCrates plugin;
-    private final FireworkDamageListener fireworkDamageListener;
-
-    public Methods(CrazyCrates plugin, FireworkDamageListener fireworkDamageListener) {
-        this.plugin = plugin;
-
-        this.fireworkDamageListener = fireworkDamageListener;
-    }
+    @Inject
+    private CrazyCrates plugin;
 
     private final Random random = new Random();
 
@@ -112,7 +107,7 @@ public class Methods {
         fireworkMeta.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(colors).trail(false).flicker(false).build());
         fireworkMeta.setPower(0);
         firework.setFireworkMeta(fireworkMeta);
-        fireworkDamageListener.addFirework(firework, plugin);
+        //fireworkDamageListener.addFirework(firework, plugin);
 
         detonate(firework);
     }
@@ -123,7 +118,7 @@ public class Methods {
         fireworkMeta.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.RED).withColor(Color.AQUA).withColor(Color.ORANGE).withColor(Color.YELLOW).trail(false).flicker(false).build());
         fireworkMeta.setPower(0);
         firework.setFireworkMeta(fireworkMeta);
-        fireworkDamageListener.addFirework(firework, plugin);
+        //fireworkDamageListener.addFirework(firework, plugin);
 
         detonate(firework);
     }

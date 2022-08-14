@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.support.modules;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
 import com.google.inject.AbstractModule;
@@ -14,6 +15,8 @@ public class PluginModule extends AbstractModule {
 
     private final CrazyManager crazyManager = new CrazyManager();
     private final FileManager fileManager = new FileManager();
+
+    private final Methods methods = new Methods();
 
     public PluginModule(CrazyCrates plugin) {
         this.plugin = plugin;
@@ -31,5 +34,7 @@ public class PluginModule extends AbstractModule {
         bind(CrazyManager.class).toInstance(crazyManager);
 
         bind(FileManager.class).toInstance(fileManager);
+
+        bind(Methods.class).toInstance(methods);
     }
 }

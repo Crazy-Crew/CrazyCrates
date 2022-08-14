@@ -22,16 +22,16 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     @Inject private CrazyManager crazyManager;
     @Inject private FileManager fileManager;
 
-    @Inject private CosmicCrate cosmicCrate;
-    @Inject private CrateOnTheGo crateOnTheGo;
-    @Inject private CsgoCrate csgoCrate;
-    @Inject private FireCrackerCrate fireCrackerCrate;
-    @Inject private QuadCrate quadCrate;
-    @Inject private QuickCrate quickCrate;
-    @Inject private RouletteCrate rouletteCrate;
-    @Inject private WarCrate warCrate;
-    @Inject private WheelCrate wheelCrate;
-    @Inject private WonderCrate wonderCrate;
+    //@Inject private CosmicCrate cosmicCrate;
+    //@Inject private CrateOnTheGo crateOnTheGo;
+    //@Inject private CsgoCrate csgoCrate;
+    //@Inject private FireCrackerCrate fireCrackerCrate;
+    //@Inject private QuadCrate quadCrate;
+    //@Inject private QuickCrate quickCrate;
+    //@Inject private RouletteCrate rouletteCrate;
+    //@Inject private WarCrate warCrate;
+    //@Inject private WheelCrate wheelCrate;
+    //@Inject private WonderCrate wonderCrate;
 
     @Override
     public void onEnable() {
@@ -109,7 +109,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        crazyManager.setNewPlayerKeys(e.getPlayer());
+        //crazyManager.setNewPlayerKeys(e.getPlayer());
         //crazyManager.loadOfflinePlayersKeys(e.getPlayer());
     }
 

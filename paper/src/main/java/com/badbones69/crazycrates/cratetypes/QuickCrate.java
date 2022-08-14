@@ -39,9 +39,9 @@ public class QuickCrate implements Listener {
 
     @Inject private Methods methods;
 
-    @Inject private CrateControlListener crateControlListener;
+    //@Inject private CrateControlListener crateControlListener;
 
-    @Inject private ChestStateHandler chestStateHandler;
+    //@Inject private ChestStateHandler chestStateHandler;
 
     public void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
         int keys = switch (keyType) {
@@ -68,7 +68,7 @@ public class QuickCrate implements Listener {
             
             if (!crazyManager.takeKeys(keysUsed, player, crate, keyType, false)) {
                 methods.failedToTakeKey(player, crate);
-                crateControlListener.removePlayer(player);
+                //crateControlListener.removePlayer(player);
                 crazyManager.removePlayerFromOpeningList(player);
                 return;
             }
@@ -78,7 +78,7 @@ public class QuickCrate implements Listener {
 
             if (!crazyManager.takeKeys(1, player, crate, keyType, true)) {
                 methods.failedToTakeKey(player, crate);
-                crateControlListener.removePlayer(player);
+                //crateControlListener.removePlayer(player);
                 crazyManager.removePlayerFromOpeningList(player);
                 return;
             }
@@ -108,7 +108,7 @@ public class QuickCrate implements Listener {
             reward.setPickupDelay(Integer.MAX_VALUE);
             rewards.put(player, reward);
             allRewards.add(reward);
-            chestStateHandler.openChest(loc.getBlock(), true);
+            //chestStateHandler.openChest(loc.getBlock(), true);
 
             if (prize.useFireworks()) methods.firework(loc.clone().add(.5, 1, .5));
 
@@ -133,8 +133,8 @@ public class QuickCrate implements Listener {
             rewards.remove(player);
         }
 
-        chestStateHandler.openChest(loc.getBlock(), false);
-        crateControlListener.removePlayer(player);
+        //chestStateHandler.openChest(loc.getBlock(), false);
+        //crateControlListener.removePlayer(player);
         crazyManager.removePlayerFromOpeningList(player);
     }
     

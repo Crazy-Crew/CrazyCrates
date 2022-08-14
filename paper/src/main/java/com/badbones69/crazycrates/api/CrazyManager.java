@@ -34,23 +34,23 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CrazyManager {
 
-    @Inject private CrateControlListener crateControlListener;
-    @Inject private ChestStateHandler chestStateHandler;
+    //@Inject private CrateControlListener crateControlListener;
+    //@Inject private ChestStateHandler chestStateHandler;
     @Inject private Methods methods;
 
     @Inject private CrazyCrates plugin;
     @Inject private FileManager fileManager;
 
-    @Inject private CosmicCrate cosmicCrate;
-    @Inject private CrateOnTheGo crateOnTheGo;
-    @Inject private CsgoCrate csgoCrate;
-    @Inject private FireCrackerCrate fireCrackerCrate;
-    @Inject private QuadCrate quadCrate;
-    @Inject private QuickCrate quickCrate;
-    @Inject private RouletteCrate rouletteCrate;
-    @Inject private WarCrate warCrate;
-    @Inject private WheelCrate wheelCrate;
-    @Inject private WonderCrate wonderCrate;
+    //@Inject private CosmicCrate cosmicCrate;
+    //@Inject private CrateOnTheGo crateOnTheGo;
+    //@Inject private CsgoCrate csgoCrate;
+    //@Inject private FireCrackerCrate fireCrackerCrate;
+    //@Inject private QuadCrate quadCrate;
+    //@Inject private QuickCrate quickCrate;
+    //@Inject private RouletteCrate rouletteCrate;
+    //@Inject private WarCrate warCrate;
+    //@Inject private WheelCrate wheelCrate;
+    //@Inject private WonderCrate wonderCrate;
 
     // All the crates that have been loaded.
     private final ArrayList<Crate> crates = new ArrayList<>();
@@ -106,7 +106,7 @@ public class CrazyManager {
         //giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
 
         if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginLoaded(plugin)) {
-            hologramController = new HolographicSupport(plugin);
+            hologramController = new HolographicSupport();
         } else if (PluginSupport.DECENT_HOLOGRAMS.isPluginLoaded(plugin)) {
             hologramController = new DecentHologramsSupport();
         }
@@ -354,62 +354,62 @@ public class CrazyManager {
                 //menuListener.openGUI(player);
                 break;
             case COSMIC:
-                cosmicCrate.openCosmic(player, crate, keyType, checkHand);
+                //cosmicCrate.openCosmic(player, crate, keyType, checkHand);
                 break;
             case CSGO:
-                csgoCrate.openCSGO(player, crate, keyType, checkHand);
+                //csgoCrate.openCSGO(player, crate, keyType, checkHand);
                 break;
             case ROULETTE:
-                rouletteCrate.openRoulette(player, crate, keyType, checkHand);
+                //rouletteCrate.openRoulette(player, crate, keyType, checkHand);
                 break;
             case WHEEL:
-                wheelCrate.startWheel(player, crate, keyType, checkHand);
+                //wheelCrate.startWheel(player, crate, keyType, checkHand);
                 break;
             case WONDER:
-                wonderCrate.startWonder(player, crate, keyType, checkHand);
+                //wonderCrate.startWonder(player, crate, keyType, checkHand);
                 break;
             case WAR:
-                warCrate.openWarCrate(player, crate, keyType, checkHand);
+                //warCrate.openWarCrate(player, crate, keyType, checkHand);
                 break;
             case QUAD_CRATE:
                 Location lastLocation = player.getLocation();
                 lastLocation.setPitch(0F);
                 CrateSchematic crateSchematic = getCrateSchematics().get(new Random().nextInt(getCrateSchematics().size()));
                 StructureHandler handler = new StructureHandler(plugin, crateSchematic.schematicFile());
-                QuadCrateManager session = new QuadCrateManager(player, crate, keyType, location, lastLocation, checkHand, handler, this, methods, chestStateHandler);
-                broadcast = session.startCrate(plugin);
+                //QuadCrateManager session = new QuadCrateManager(player, crate, keyType, location, lastLocation, checkHand, handler, this, methods, chestStateHandler);
+                //broadcast = session.startCrate(plugin);
                 break;
             case FIRE_CRACKER:
-                if (crateControlListener.containsPlayer(location)) {
+                //if (crateControlListener.containsPlayer(location)) {
                     //player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage(methods));
-                    removePlayerFromOpeningList(player);
-                    return;
-                } else {
-                    if (virtualCrate) {
+                //   removePlayerFromOpeningList(player);
+                //    return;
+                //} else {
+                //    if (virtualCrate) {
                         //player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage(methods));
-                        removePlayerFromOpeningList(player);
-                        return;
-                    } else {
-                        crateControlListener.addPlayer(player, location);
-                        fireCrackerCrate.startFireCracker(player, crate, keyType, location);
-                    }
-                }
+                //        removePlayerFromOpeningList(player);
+                //        return;
+                //    } else {
+                //        crateControlListener.addPlayer(player, location);
+                //        fireCrackerCrate.startFireCracker(player, crate, keyType, location);
+                //    }
+                //}
                 break;
             case QUICK_CRATE:
-                if (crateControlListener.containsPlayer(location)) {
-                    //player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage(methods));
-                    removePlayerFromOpeningList(player);
-                    return;
-                } else {
-                    if (virtualCrate && location.equals(player.getLocation())) {
-                        //player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage(methods));
-                        removePlayerFromOpeningList(player);
-                        return;
-                    } else {
-                        crateControlListener.addPlayer(player, location);
-                        quickCrate.openCrate(player, location, crate, keyType);
-                    }
-                }
+                //if (crateControlListener.containsPlayer(location)) {
+                //    //player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage(methods));
+                //    removePlayerFromOpeningList(player);
+                //    return;
+                //} else {
+                //    if (virtualCrate && location.equals(player.getLocation())) {
+                //        //player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage(methods));
+                //        removePlayerFromOpeningList(player);
+                //        return;
+                //    } else {
+                //        crateControlListener.addPlayer(player, location);
+                //        quickCrate.openCrate(player, location, crate, keyType);
+                //    }
+                //}
                 break;
             case CRATE_ON_THE_GO:
                 if (virtualCrate) {

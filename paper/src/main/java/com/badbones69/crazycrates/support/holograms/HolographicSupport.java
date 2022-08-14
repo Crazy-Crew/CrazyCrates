@@ -17,10 +17,6 @@ public class HolographicSupport implements HologramController {
 
     @Inject private CrazyCrates plugin;
     @Inject private Methods methods;
-
-    public HolographicSupport(CrazyCrates plugin) {
-        this.plugin = plugin;
-    }
     
     public void createHologram(Block block, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();
