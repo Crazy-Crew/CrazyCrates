@@ -80,7 +80,7 @@ command:
         - '&8(&6!&8) &7A list of &c%player%''s &7current amount of keys.'
     # Related to what will show in the output above.
     crate-format: '%crate% &8>> &6%keys% keys.'
-  help:
+  player-help:
     - '&r &2Crazy Crates Player Help!'
     - ''
     - '&8> &6/key [player] &7- &eCheck how many keys a player has.'
