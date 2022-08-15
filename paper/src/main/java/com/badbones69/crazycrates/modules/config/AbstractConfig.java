@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.modules.config;
-
+/*
 import com.badbones69.crazycrates.CrazyCrates;
-import com.google.inject.Inject;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,15 +16,13 @@ import java.util.List;
 
 public class AbstractConfig {
 
-    @Inject private CrazyCrates plugin;
-
     private YamlConfiguration config;
 
     public YamlConfiguration getConfig() {
         return this.config;
     }
 
-    public void reload(Path path, Class<? extends AbstractConfig> clazz) {
+    public void reload(Path path, Class<? extends AbstractConfig> clazz, CrazyCrates plugin) {
         this.config = new YamlConfiguration();
 
         getConfig().options().copyDefaults(true);
@@ -54,6 +51,11 @@ public class AbstractConfig {
             try {
                 Object classObj = getClassObject();
                 Object value = getValue(key.value(), field.get(classObj));
+
+                System.out.println(value);
+                System.out.println(key.value());
+                System.out.println(comment.value());
+
                 field.set(classObj, value instanceof String str ? StringEscapeUtils.unescapeJava(str) : value);
             } catch (IllegalAccessException e) {
                 plugin.getLogger().warning("Failed to write to " + fileName + "...");
@@ -86,16 +88,5 @@ public class AbstractConfig {
     protected void setComments(String path, List<String> comments) {
         getConfig().setComments(path, comments);
     }
-
-    @Target(ElementType.FIELD)
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface Key {
-        String value();
-    }
-
-    @Target(ElementType.FIELD)
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface Comment {
-        String value();
-    }
 }
+ */
