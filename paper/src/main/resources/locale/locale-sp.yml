@@ -1,6 +1,3 @@
-
-
-#No hay tildes por si minecraft no reconoce las tildes
 misc:
   unknown-command: '&cEste comando no existe.'
   no-teleporting: '&cNo debes teletransportarte mientras abres&r %crate%.'
@@ -64,7 +61,7 @@ command:
   convert:
     no-files-to-convert: '&cNo esta disponible el plugin para convertir los archivos.'
     error-converting-files: '&cHa ocurrido un error mientras convertiamos los archivos. No hemos podido convertir &a%file% &cpor favor mira la consola.'
-    successfully-converted-files: '&aLa 'Plugin Conversion' se ha completado.'
+    successfully-converted-files: '&aLa ''Plugin Conversion'' se ha completado.'
   reload:
     confirm-reload: '&e¿Seguro que quieres recargar el plugin?'
     reload-completed: '&aLa recarga del plugin se ha completado.'
