@@ -24,8 +24,8 @@ public class FileUtils {
     public void create(ConfigFile configFile, LocaleFile localeFile, Path localeDirectory, Path pluginDirectory, CrazyCrates plugin) {
         extract("/locale/", localeDirectory, false, plugin);
 
-        configFile.reload(pluginDirectory);
-        localeFile.reload(pluginDirectory, configFile.LANGUAGE_FILE);
+        configFile.reload(pluginDirectory, plugin);
+        localeFile.reload(pluginDirectory, configFile.LANGUAGE_FILE, plugin);
     }
 
     public void extract(String inDir, Path outDir, boolean replace, CrazyCrates plugin) {

@@ -1,6 +1,8 @@
 package com.badbones69.crazycrates.modules.config.files;
 
-import com.badbones69.crazycrates.modules.config.AbstractConfig;
+import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.utils.ConfigurationUtils;
+import com.badbones69.crazycrates.utils.keys.Key;
 import com.google.inject.Singleton;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
-public class LocaleFile extends AbstractConfig {
+public class LocaleFile extends ConfigurationUtils {
 
     @Key("prefix.logger")
     public String PREFIX_LOGGER = "<gray>[<gold>CrazyCrates</gold>]</gray>";
@@ -225,8 +227,11 @@ public class LocaleFile extends AbstractConfig {
         add("&7You can find a list of permissions @ &ehttps://github.com/badbones69/Crazy-Crates/wiki/Commands-and-Permissions");
     }};
 
-    public void reload(Path path, String fileName) {
-        this.reload(path.resolve("/locale/" + fileName), LocaleFile.class);
+    public void reload(Path path, String fileName, CrazyCrates plugin) {
+        System.out.println(fileName);
+        System.out.println(path.resolve("/locale/" + fileName));
+
+        this.reload(path.resolve("/locale/" + fileName), LocaleFile.class, plugin);
     }
 
     public void send(Audience recipient, String msg, TagResolver.Single... placeholders) {
