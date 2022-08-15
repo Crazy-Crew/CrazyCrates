@@ -1,16 +1,24 @@
 package com.badbones69.crazycrates.modules.config.files;
 
 import com.badbones69.crazycrates.modules.config.AbstractConfig;
-import com.badbones69.crazycrates.utilities.FileUtils;
-import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.bukkit.command.ConsoleCommandSender;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 public class LocaleFile extends AbstractConfig {
 
-    @Inject private FileUtils fileUtils;
+    @Key("prefix.logger")
+    public String PREFIX_LOGGER = "<gray>[<gold>CrazyCrates</gold>]</gray>";
 
-    @Inject private ConfigFile configFile;
+    @Key("prefix.command")
+    public String PREFIX_COMMAND = "<white>[<gradient:#FE5F55:#392F5A>CrazyCrew</gradient>]</white>";
 
     // Misc
     @Key("misc.unknown-command")
@@ -217,7 +225,35 @@ public class LocaleFile extends AbstractConfig {
         add("&7You can find a list of permissions @ &ehttps://github.com/badbones69/Crazy-Crates/wiki/Commands-and-Permissions");
     }};
 
-    public void reload() {
-        this.reload(fileUtils.LOCALE_DIRECTORY.resolve(configFile.LANGUAGE_FILE), LocaleFile.class);
+    public void reload(Path path, String fileName) {
+        this.reload(path.resolve("/locale/" + fileName), LocaleFile.class);
+    }
+
+    public void send(Audience recipient, String msg, TagResolver.Single... placeholders) {
+        send(recipient, true, msg, placeholders);
+    }
+
+    public void send(Audience recipient, boolean prefix, String msg, TagResolver.Single... placeholders) {
+        if (msg == null) return;
+
+        for (String part : msg.split("\n")) {
+            send(recipient, prefix, parse(part, placeholders));
+        }
+    }
+
+    public void send(Audience recipient, Component component) {
+        send(recipient, true, component);
+    }
+
+    public void send(Audience recipient, boolean prefix, Component component) {
+        if (recipient instanceof ConsoleCommandSender) {
+            recipient.sendMessage(prefix ? parse(PREFIX_LOGGER).append(component) : component);
+        } else {
+            recipient.sendMessage(prefix ? parse(PREFIX_COMMAND).append(component) : component);
+        }
+    }
+
+    public Component parse(String msg, TagResolver.Single... placeholders) {
+        return MiniMessage.miniMessage().deserialize(msg, placeholders);
     }
 }

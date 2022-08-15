@@ -5,7 +5,6 @@ import com.google.inject.Inject;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.ElementType;
@@ -45,6 +44,8 @@ public class AbstractConfig {
         }
 
         Arrays.stream(clazz.getDeclaredFields()).forEach(field -> {
+            field.setAccessible(true);
+
             Key key = field.getDeclaredAnnotation(Key.class);
             Comment comment = field.getDeclaredAnnotation(Comment.class);
 

@@ -2,10 +2,12 @@ package com.badbones69.crazycrates.utilities;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
+@Singleton
 public class CommonUtils {
 
     @Inject private CrazyCrates plugin;
