@@ -9,7 +9,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.support.structures.QuadCrateSpiralHandler;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
-import com.badbones69.crazycrates.utils.Schedulers;
+import com.badbones69.crazycrates.utils.ScheduleUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -202,7 +202,7 @@ public class QuadCrateManager {
         // Teleport player to center.
         player.teleport(spawnLocation.clone().add(handler.getStructureX() / 2, 1.0, handler.getStructureZ() / 2));
 
-        crazyManager.addQuadCrateTask(player, new Schedulers(plugin).timer(0, 1, new BukkitRunnable() {
+        crazyManager.addQuadCrateTask(player, new ScheduleUtils(plugin).timer(0, 1, new BukkitRunnable() {
 
             private final QuadCrateSpiralHandler spiralHandler = new QuadCrateSpiralHandler();
 
@@ -238,7 +238,7 @@ public class QuadCrateManager {
             }
         }));
 
-        crazyManager.addCrateTask(player, new Schedulers(plugin).later(crazyManager.getQuadCrateTimer(), new BukkitRunnable() {
+        crazyManager.addCrateTask(player, new ScheduleUtils(plugin).later(crazyManager.getQuadCrateTimer(), new BukkitRunnable() {
             @Override
             public void run() {
                 // End the crate by force.
@@ -251,7 +251,7 @@ public class QuadCrateManager {
     }
 
     public void endCrate(CrazyCrates plugin) {
-        new Schedulers(plugin).later(3 * 20, new BukkitRunnable() {
+        new ScheduleUtils(plugin).later(3 * 20, new BukkitRunnable() {
             @Override
             public void run() {
                 // Update spawned crate block states which removes them.

@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.utils
 
 import com.badbones69.crazycrates.CrazyCrates
 
-class Schedulers(private val plugin: CrazyCrates) {
+class ScheduleUtils(private val plugin: CrazyCrates) {
 
     /**
      * Better syntax for running sync tasks
