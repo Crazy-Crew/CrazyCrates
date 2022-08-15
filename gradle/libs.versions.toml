@@ -1,7 +1,7 @@
 [versions]
 
 # Paper
-paper = "1.19.1-R0.1-SNAPSHOT"
+paper = "1.19.2-R0.1-SNAPSHOT"
 paper-command-cloud = "1.7.0"
 paper-lib = "1.0.8-SNAPSHOT"
 
