@@ -24,207 +24,207 @@ public class LocaleFile extends ConfigurationUtils {
 
     // Misc
     @Key("misc.unknown-command")
-    public String UNKNOWN_COMMAND = "&cThis command is not known.";
+    public String UNKNOWN_COMMAND = "<red>This command is not known.";
 
     @Key("misc.no-teleporting")
-    public String NO_TELEPORTING = "&cYou may not teleport away while opening&r %crate%.";
+    public String NO_TELEPORTING = "<red>You may not teleport away while opening <gold>%crate%.";
 
     @Key("misc.no-commands")
-    public String NO_COMMANDS = "&cYou are not allowed to use commands while opening&r %crate%.";
+    public String NO_COMMANDS = "<red>You are not allowed to use commands while opening <gold>%crate%.";
 
     @Key("misc.no-keys")
-    public String NO_KEYS = "&cYou need a&r %key% &cin your hand to use %crate%.";
+    public String NO_KEYS = "<red>You need a %key% <red>in your hand to use <gold>%crate%.";
 
     @Key("misc.no-virtual-keys")
-    public String NO_VIRTUAL_KEYS = "&cYou need&r %key% &cto open %crate%.";
+    public String NO_VIRTUAL_KEYS = "<red>You need %key% <red>to open <gold>%crate%.";
 
     // Errors
     @Key("errors.no-prizes-found")
-    public String NO_PRIZES_FOUND = "&cThis crate contains no prizes that you can win.";
+    public String NO_PRIZES_FOUND = "<red>This crate contains no prizes that you can win.";
 
     @Key("errors.no-schematics-found")
-    public String NO_SCHEMATICS_FOUND = "&cNo schematic were found, Please re-generate them by deleting the folder or checking for errors!";
+    public String NO_SCHEMATICS_FOUND = "<red>No schematic were found, Please re-generate them by deleting the folder or checking for errors!";
 
     @Key("errors.prize-error")
     public List<String> PRIZE_ERROR = new ArrayList<>() {{
-        add("&cAn error has occurred while trying to give you the prize&r %prize%.");
-        add("&eThis has occurred in&r %crate%. Please notify your owner.");
+        add("<red>An error has occurred while trying to give you the prize <gold>%prize%.");
+        add("<yellow>This has occurred in %crate%. <yellow>Please notify your owner.");
     }};
 
     @Key("errors.internal-error")
-    public String INTERNAL_ERROR = "&cAn internal error has occurred. Please check the console for the full error.";
+    public String INTERNAL_ERROR = "<red>An internal error has occurred. Please check the console for the full error.";
 
     // Player handling
     @Key("player.requirements.too-many-args")
-    public String TOO_MANY_ARGS = "&cYou put more arguments then I can handle.";
+    public String TOO_MANY_ARGS = "<red>You put more arguments then I can handle.";
 
     @Key("player.requirements.not-enough-args")
-    public String NOT_ENOUGH_ARGs = "&cYou did not supply enough arguments.";
+    public String NOT_ENOUGH_ARGs = "<red>You did not supply enough arguments.";
 
     @Key("player.requirements.must-be-player")
-    public String MUST_BE_PLAYER = "&cYou must be a player to use this command.";
+    public String MUST_BE_PLAYER = "<red>You must be a player to use this command.";
 
     @Key("player.requirements.must-be-console-sender")
-    public String MUST_BE_CONSOLE_SENDER = "&cYou must be using console to use this command.";
+    public String MUST_BE_CONSOLE_SENDER = "<red>You must be using console to use this command.";
 
     @Key("player.requirements.must-be-looking-at-block")
-    public String MUST_BE_LOOKING_AT_BLOCK = "&cYou must be looking at a block.";
+    public String MUST_BE_LOOKING_AT_BLOCK = "<red>You must be looking at a block.";
 
     @Key("player.target-not-online")
-    public String TARGET_NOT_ONLINE = "&cThe player&r &6%player% &cis not online.";
+    public String TARGET_NOT_ONLINE = "<red>The player <gold>%player% <red>is not online.";
 
     @Key("player.target-same-player")
-    public String TARGET_SAME_PLAYER = "&cYou cannot use this command on yourself.";
+    public String TARGET_SAME_PLAYER = "<red>You cannot use this command on yourself.";
 
     @Key("player.no-permission")
-    public String NO_PERMISSION = "&cYou do not have permission to use that command!";
+    public String NO_PERMISSION = "<red>You do not have permission to use that command!";
 
     @Key("player.inventory-not-empty")
-    public String INVENTORY_NOT_EMPTY = "&cInventory is not empty, Please make room before opening&r %crate%.";
+    public String INVENTORY_NOT_EMPTY = "<red>Inventory is not empty, Please make room before opening <gold>%crate%.";
 
     @Key("player.obtaining-keys")
-    public String OBTAINING_KEYS = "&7You have been given &6%amount% %key% &7Keys.";
+    public String OBTAINING_KEYS = "<gray>You have been given <gold>%amount% %key% <gray>Keys.";
 
     @Key("player.too-close-to-another-player")
-    public String TOO_CLOSE_TO_ANOTHER_PLAYER = "&cYou are too close to a player that is opening their Crate.";
+    public String TOO_CLOSE_TO_ANOTHER_PLAYER = "<red>You are too close to a player that is opening their Crate.";
 
     // Crates
     @Key("crates.requirements.not-a-crate")
-    public String NOT_A_CRATE = "&cThere is no crate called&r %crate%.";
+    public String NOT_A_CRATE = "<red>There is no crate called <gold>%crate%.";
 
     @Key("crates.requirements.not-a-number")
-    public String NOT_A_NUMBER = "&6%number% &cis not a number.";
+    public String NOT_A_NUMBER = "<gold>%number% <red>is not a number.";
 
     @Key("crates.not-a-block")
-    public String NOT_A_BLOCK = "&cYou must be standing on a block to use&r %crate%.";
+    public String NOT_A_BLOCK = "<red>You must be standing on a block to use <gold>%crate%.";
 
     @Key("crates.out-of-time")
-    public String OUT_OF_TIME = "&cYou took &a5 Minutes &cto open the&r %crate% &cso it closed.";
+    public String OUT_OF_TIME = "<red>You took <green>5 Minutes <red>to open the <gold>%crate% <red>so it closed.";
 
     @Key("crates.crate-preview-disabled")
-    public String CRATE_PREVIEW_DISABLED = "&cThe preview for&r %crate% &7is currently disabled.";
+    public String CRATE_PREVIEW_DISABLED = "<red>The preview for <gold>%crate% <red>is currently disabled.";
 
     @Key("crates.crate-already-open")
-    public String CRATES_ALREADY_OPEN = "&cYou are already opening&r %crate%.";
+    public String CRATES_ALREADY_OPEN = "<red>You are already opening <gold>%crate%.";
 
     @Key("crates.crate-in-use")
-    public String CRATES_IN_USE = "%crate% &cis already in use. Please wait until it finishes!";
+    public String CRATES_IN_USE = "<gold>%crate% <red>is already in use. Please wait until it finishes!";
 
     @Key("crates.cannot-be-a-virtual-crate")
-    public String CANNOT_BE_A_VIRTUAL_CRATE = "&c%crate% cannot be used as a Virtual Crate. You have it set to&r %cratetype%";
+    public String CANNOT_BE_A_VIRTUAL_CRATE = "<gold>%crate% <red>cannot be used as a Virtual Crate. You have it set to <gold>%cratetype%";
 
     @Key("crates.need-more-room")
-    public String NEED_MORE_ROOM = "&cThere is not enough space to open that here.";
+    public String NEED_MORE_ROOM = "<red>There is not enough space to open that here.";
 
     @Key("crates.world-disabled")
-    public String WORLD_DISABLED = "&cCrates are disabled in &a%world%.";
+    public String WORLD_DISABLED = "<red>Crates are disabled in <green>%world%.";
 
     @Key("crates.physical-crate.created")
     public List<String> PHYSICAL_CRATE_CREATED = new ArrayList<>() {{
-        add("&7You have set that block to&r %crate%.");
-        add("&7To remove&r %crate%, &7Shift Click Break in Creative to remove.");
+        add("<gray>You have set that block to <gold>%crate%.");
+        add("<gray>To remove <gold>%crate%, <gray>Shift Click Break in Creative to remove.");
     }};
 
     @Key("crates.physical-crate.removed")
-    public String PHYSICAL_CRATE_REMOVED = "&7You have removed &6%id%.";
+    public String PHYSICAL_CRATE_REMOVED = "<gray>You have removed <gold>%id%.";
 
     // Commands
     @Key("command.open.opened-a-crate")
-    public String OPENED_A_CRAtE = "&7You have opened the&r %crate% &7crate for &6%player%.";
+    public String OPENED_A_CRAtE = "<gray>You have opened the <gold>%crate% <gray>crate for <gold>%player%.";
 
     @Key("command.give.given-player-keys")
-    public String GIVEN_PLAYER_KEYS = "&7You have given &6%player% %amount% &7Keys.";
+    public String GIVEN_PLAYER_KEYS = "<gray>You have given <gold>%player% %amount% <gray>Keys.";
 
     @Key("command.give.given-everyone-keys")
-    public String GIVEN_EVERYONE_KEYS = "&7You have given everyone &6%amount% &7Keys.";
+    public String GIVEN_EVERYONE_KEYS = "<gray>You have given everyone <gold>%amount% <gray>Keys.";
 
     @Key("command.given-offline-player-keys")
-    public String GIVEN_OFFLINE_PLAYER_KEYS = "&7You have given &6%amount% &7key(s) to the offline player &6%player%.";
+    public String GIVEN_OFFLINE_PLAYER_KEYS = "<gray>You have given <gold>%amount% <gray>key(s) to the offline player <gold>%player%.";
 
     @Key("command.take.take-player-keys")
-    public String TAKE_PLAYER_KEYS = "&7You have taken &6%amount% &7key(s) from &6%player%.";
+    public String TAKE_PLAYER_KEYS = "<gray>You have taken <gold>%amount% <gray>key(s) from <gold>%player%.";
 
     @Key("command.take.take-offline-player-keys")
-    public String TAKE_OFFLINE_PLAYER_KEYS = "&7You have taken &6%amount% &7key(s) from the offline player &6%player%.";
+    public String TAKE_OFFLINE_PLAYER_KEYS = "<gray>You have taken <gold>%amount% <gray>key(s) from the offline player <gold>%player%.";
 
     @Key("command.additem.no-item-in-hand")
-    public String NO_ITEM_IN_HAND = "&cYou need to have an item in your hand to add it to&r %crate%.";
+    public String NO_ITEM_IN_HAND = "<red>You need to have an item in your hand to add it to <gold>%crate%.";
 
     @Key("command.additem.add-item-from-hand")
-    public String ADD_ITEM_FROM_HAND = "&7The item has been added to&r %crate% as Prize #%prize%.";
+    public String ADD_ITEM_FROM_HAND = "<gray>The item has been added to <gold>%crate% as <gold>Prize #%prize%.";
 
     @Key("command.convert.no-files-to-convert")
-    public String NO_FILES_TO_CONVERT = "&cNo available plugins to convert files.";
+    public String NO_FILES_TO_CONVERT = "<red>No available plugins to convert files.";
 
     @Key("command.convert.error-converting-files")
-    public String ERROR_CONVERTING_FILES = "&cAn error has occurred while trying to convert files. We could not convert &a%file% &cso please check the console.";
+    public String ERROR_CONVERTING_FILES = "<red>An error has occurred while trying to convert files. We could not convert <green>%file% <red>so please check the console.";
 
     @Key("command.convert.successfully-converted-files")
-    public String SUCCESSFULLY_CONVERTED_FILES = "&aPlugin Conversion has succeeded!";
+    public String SUCCESSFULLY_CONVERTED_FILES = "<green>Plugin Conversion has succeeded!";
 
     @Key("command.reload.confirm-reload")
-    public String CONFIRM_RELOAD = "&eAre you sure you want to reload the plugin?";
+    public String CONFIRM_RELOAD = "<yellow>Are you sure you want to reload the plugin?";
 
     @Key("command.reload.reload-completed")
-    public String RELOAD_COMPLETED = "&aPlugin reload has been completed.";
+    public String RELOAD_COMPLETED = "<green>Plugin reload has been completed.";
 
     @Key("command.transfer.not-enough-keys")
-    public String TRANSFER_NOT_ENOUGH_KEYS = "&cYou do not have enough keys to transfer.";
+    public String TRANSFER_NOT_ENOUGH_KEYS = "<red>You do not have enough keys to transfer.";
 
     @Key("command.transfer.transferred-keys")
-    public String TRANSFERRED_KEYS = "&7You have transferred &a%amount% %crate% &7keys to &c%player%.";
+    public String TRANSFERRED_KEYS = "<gray>You have transferred <green>%amount% %crate% <gray>keys to <red>%player%.";
 
     @Key("command.transfer.transferred-keys-received")
-    public String TRANSFERRED_KEYS_RECEIVED = "&7You have received &a%amount%&r %crate% &7keys from &c%player%.";
+    public String TRANSFERRED_KEYS_RECEIVED = "<gray>You have received <green>%amount% <gold>%crate% <gray>keys from <red>%player%.";
 
     @Key("command.keys.personal.no-virtual-keys")
-    public String KEYS_PERSONAL_NO_VIRTUAL_KEYS = "&8(&c!&8) &7You currently do not have any virtual keys.";
+    public String KEYS_PERSONAL_NO_VIRTUAL_KEYS = "<dark_gray>(<red>!<dark_gray>) <gray>You currently do not have any virtual keys.";
 
     @Key("command.keys.personal.virtual-keys-header")
     public List<String> KEYS_PERSONAL_VIRTUAL_KEYS_HEADER = new ArrayList<>() {{
-        add("&8(&6!&8) &7A list of your current amount of keys.");
+        add("<dark_gray>(<red>!<dark_gray>) <gray>A list of your current amount of keys.");
     }};
 
     @Key("command.keys.other-player.no-virtual-keys")
-    public String KEYS_OTHER_PLAYER_NO_VIRTUAL_KEYS = "&8(&c!&8) &7The player &c%player% &7does not have any keys.";
+    public String KEYS_OTHER_PLAYER_NO_VIRTUAL_KEYS = "<dark_gray>(<red>!<dark_gray>) <gray>The player <red>%player% <gray>does not have any keys.";
 
     @Key("command.keys.other-player.virtual-keys-header")
     public List<String> KEYS_OTHER_PLAYER_NO_VIRTUAL_KEYS_HEADER = new ArrayList<>() {{
-        add("&8(&6!&8) &7A list of &c%player%''s &7current amount of keys.");
+        add("<dark_gray>(<red>!<dark_gray>) <gray>A list of <red>%player%''s <gray>current amount of keys.");
     }};
 
     @Key("command.keys.crate-format")
-    public String CRATE_FORMAT = "%crate% &8>> &6%keys% keys.";
+    public String CRATE_FORMAT = "%crate% <dark_gray>»» <gold>%keys% keys.";
 
     @Key("command.player-help")
     public List<String> PLAYER_HELP = new ArrayList<>() {{
-        add("&r &2Crazy Crates Player Help!");
+        add(" <dark_green>Crazy Crates Player Help!");
         add(" ");
-        add("&8> &6/key [player] &7- &eCheck how many keys a player has.");
-        add("&8> &6/cc &7- &eOpens the crate menu.");
+        add(" <dark_gray>» <gold>/key [player] <gray>» <yellow>Check how many keys a player has.");
+        add(" <dark_gray>» <gold>/cc <gray>» <yellow>Opens the crate menu.");
     }};
 
     @Key("command.admin-help")
     public List<String> ADMIN_HELP = new ArrayList<>() {{
-        add("&r &cCrazy Crates Admin Help");
+        add(" <red>Crazy Crates Admin Help");
         add(" ");
-        add("&8> &6/cc additem <crate> <prize> &7- &eAdd items in-game to a prize in a crate.");
-        add("&8> &6/cc preview <crate> [player] &7- &eOpens the preview of a crate for a player.");
-        add("&8> &6/cc list &7- &eLists all crates.");
-        add("&8> &6/cc open <crate> [player] &7- &eTries to open a crate for a player if they have a key.");
-        add("&8> &6/cc forceopen <crate> [player] &7- &eOpens a crate for a player for free.");
-        add("&8> &6/cc tp <location> &7- &eTeleport to a Crate.");
-        add("&8> &6/cc give <physical/virtual> <crate> [amount] [player] &7- &eAllows you to take keys from a player.");
-        add("&8> &6/cc set <crate> &7- &eSet the block you are looking at as a crate.");
-        add("&8> &6/cc set Menu &7- &eSet the block you are looking at to open the /cc menu.");
-        add("&8> &6/cc reload &7- &eReloads the config/data files.");
-        add("&8> &6/cc set1/set2 &7- &eSets position &c#1 &eor &c#2 for when making a new schematic for QuadCrates.");
-        add("&8> &6/cc save <file name> &7- &eCreate a new nbt file in the schematics folder.");
+        add(" <dark_gray>» <gold>/cc additem <crate> <prize> <gray>- <yellow>Add items in-game to a prize in a crate.");
+        add(" <dark_gray>» <gold>/cc preview <crate> [player] <gray>- <yellow>Opens the preview of a crate for a player.");
+        add(" <dark_gray>» <gold>/cc list <gray>- <yellow>Lists all crates.");
+        add(" <dark_gray>» <gold>/cc open <crate> [player] <gray>- <yellow>Tries to open a crate for a player if they have a key.");
+        add(" <dark_gray>» <gold>/cc forceopen <crate> [player] <gray>- <yellow>Opens a crate for a player for free.");
+        add(" <dark_gray>» <gold>/cc tp <location> <gray>- <yellow>Teleport to a Crate.");
+        add(" <dark_gray>» <gold>/cc give <physical/virtual> <crate> [amount] [player] <gray>- <yellow>Allows you to take keys from a player.");
+        add(" <dark_gray>» <gold>/cc set <crate> <gray>- <yellow>Set the block you are looking at as a crate.");
+        add(" <dark_gray>» <gold>/cc set Menu <gray>- <yellow>Set the block you are looking at to open the <red>/cc menu.");
+        add(" <dark_gray>» <gold>/cc reload <gray>- <yellow>Reloads the config/data files.");
+        add(" <dark_gray>» <gold>/cc set1/set2 <gray>- <yellow>Sets position <red>#1 <yellow>or <red>#2 for when making a new schematic for QuadCrates.");
+        add(" <dark_gray>» <gold>/cc save <file name> <gray>- <yellow>Create a new nbt file in the schematics folder.");
         add(" ");
-        add("&8> &6/key [player] &7- &eCheck how many keys a player has.");
-        add("&8> &6/cc &7- &eOpens the crate menu.");
+        add(" <dark_gray>» <gold>/key [player] <gray>- <yellow>Check how many keys a player has.");
+        add(" <dark_gray>» <gold>/cc <gray>- <yellow>Opens the crate menu.");
         add(" ");
-        add("&7You can find a list of permissions @ &ehttps://github.com/badbones69/Crazy-Crates/wiki/Commands-and-Permissions");
+        add("<gray>You can find a list of permissions @ <yellow>https://github.com/badbones69/Crazy-Crates/wiki/Commands-and-Permissions");
     }};
 
     public void reload(Path path, String fileName, CrazyCrates plugin) {
