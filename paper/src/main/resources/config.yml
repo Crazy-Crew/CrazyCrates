@@ -1,3 +1,4 @@
 settings:
   # The language file to use from the locale folder.
+  # Supported languages are Spanish(sp), Czech(cz) & English(en).
   language-file: 'locale-en.yml'
