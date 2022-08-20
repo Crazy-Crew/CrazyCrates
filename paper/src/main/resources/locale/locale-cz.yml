@@ -1,0 +1,109 @@
+
+
+misc:
+  unknown-command: '<red>Tento příkaz nebyl nalezen.'
+  no-teleporting: '<red>Nelze se telepertovat pryč během otevírání <gold>%crate%.'
+  no-commands: '<red>Nemůžeš používat příkazy během otevírání <gold>%crate%.'
+  no-keys: '<red>Potřebuješ mít v ruce %key% <red>pro otevření <gold>%crate%.'
+  no-virtual-keys: '<red>Potřebuješ %key% <red>pro otevření <gold>%crate%.'
+
+errors:
+  no-prizes-found: '<red>Tato bedna neobsahuje žádné odměny které by šlo vyhrát.'
+  no-schematics-found: '<red>Nenalezena žádná schémata, prosím regeneruj je smazáním složky či zkontrolováním chyb!'
+  prize-error:
+    - '<red>Nastala chyba při pokusu dát ti odměnu <gold>%prize%.'
+    - '<yellow>Chyba nastala v <gold>%crate%. Prosím kontakuj majitele.'
+  internal-error: '<red>Vyskytla se neočekávaná chyba. Prosím zkontroluj konzoli, pro kompletní chybu.'
+
+player:
+  requirements:
+    too-many-args: '<red>Zadáno více argumentů, než je možné zpracovat.'
+    not-enough-args: '<red>Nedodáno dostatek argumentů.'
+    must-be-player: '<red>Musíš být hráč, pro použití tohoto příkazu.'
+    must-be-console-sender: '<red>Musíš být console, pro použití tohoto příkazu.'
+    must-be-looking-at-block: '<red>Musíš se dívat na blok.'
+  target-not-online: '<red>Hráč <gold>%player% <red>není online.'
+  target-same-player: '<red>Nemůžeš použít tento příkaz sám na sebe.'
+  no-permission: '<red>Nemáš oprávnění pro použití tohoto příkazu!'
+  inventory-not-empty: '<red>Inventář není prázdný, před otevřením %crate% jej vyprázdni.'
+  obtaining-keys: '<gray>Obdrženo <gold>%amount% %key% <gray>Klíčů.'
+  too-close-to-another-player: '<red>Jsi příliš blízko hráče, který otevírá svou bednu.'
+
+crates:
+  requirements:
+    not-a-crate: '<red>Není zde žádná bedna s názvem <gold>%crate%.'
+    not-a-number: '<gold>%number% <red>není číslice.'
+  not-a-block: '<red>Musíš stát na bloku pro použití <gold>%crate%.'
+  out-of-time: '<red>Otevření %crate% ti zabralo <green>5 Minut<red>, nyní je zavřená.'
+  crate-preview-disabled: '<red>Náhled pro %crate% <gray>je aktuálně vypnutý.'
+  crate-already-open: '<red>Již otevíráš bednu <gold>%crate%.'
+  crate-in-use: '<gold>%crate% <red>je již používána! Vyčkej prosím na dokončení!'
+  cannot-be-a-virtual-crate: '<gold>%crate% <red>nemůže být použita jako Virtuální bedna. Typ bedny je nastaven na <gold>%cratetype%'
+  need-more-room: '<red>Není zde dostatek místa pro otevření.'
+  world-disabled: '<red>Bedny jsou vypnuté ve světě <green>%world%.'
+  physical-crate:
+    created:
+      - '<gray>Tento blok byl nastaven na <gold>%crate%.'
+      - '<gray>Pro odstranění %crate%, <gray>Shift a Pravý klik během creative módu.'
+    removed: '<gray>Odstranil jsi <gold>%id%.'
+
+command:
+  open:
+    opened-a-crate: '<gray>Otevřel jsi  %crate% <gray>bednu pro hráče <gold>%player%.'
+  give:
+    given-player-keys: '<gray>Dal jsi hráči <gold>%player% %amount% <gray>Klíčů.'
+    given-everyone-keys: '<gray>Dal jsi všem hráčům <gold>%amount% <gray>Klíčů.'
+    given-offline-player-keys: '<gray>Dal jsi <gold>%amount% <gray>klíč(ů) offline hráči <gold>%player%.'
+  take:
+    take-player-keys: '<gray>Odebral jsi <gold>%amount% <gray>klíč(ů) hráči <gold>%player%.'
+    take-offline-player-keys: '<gray>Odebral jsi <gold>%amount% <gray>klíč(ů) offline hráči <gold>%player%.'
+  additem:
+    no-item-in-hand: '<red>Musíš držet v ruce předmět, pro jeho přidání do <gold>%crate%.'
+    add-item-from-hand: '<gray>Předmět byl přidán do <gold>%crate% <red>jako <gold>Cena #%prize%.'
+  convert:
+    no-files-to-convert: '<red>Žádné dostupné pluginy pro převod souborů.'
+    error-converting-files: '<red>Nastala chyba během převodu souborů. Nemohl být převeden soubor <green>%file%<red>, prosím zkontroluj consoli.'
+    successfully-converted-files: '<green>Převod pluginu byl úspěšný!'
+  reload:
+    confirm-reload: '<yellow>Opravdu chceš provést reload pluginu?'
+    reload-completed: '<green>Znovu načtění pluginu bylo dokončeno.'
+  transfer:
+    not-enough-keys: '<red>Nemáš dostatek klíčů na převod.'
+    transferred-keys: '<gray>Převedl jsi <green>%amount% %crate% <gray>klíčů hráči <red>%player%.'
+    transferred-keys-received: '<gray>Obdržel jsi <green>%amount% %crate% <gray>klíčů od hráče <red>%player%.'
+  keys:
+    personal:
+      no-virtual-keys: '<dark_gray>(<red>!<dark_gray>) <gray>Aktuálně nemáš žádné virtuální klíče.'
+      virtual-keys-header:
+        - '<dark_gray>(<gold>!<dark_gray>) <gray>Aktuální seznam tvých virtuálních klíčů.'
+    other-player:
+      no-virtual-keys: '<dark_gray>(<red>!<dark_gray>) <gray>Hráč <red>%player% <gray>nemá žádné klíče.'
+      virtual-keys-header:
+        - '<dark_gray>(<gold>!<dark_gray>) <gray>Aktuální seznam počtu klíčů hráče <red>%player%<gray>.'
+    # Related to what will show in the output above.
+    crate-format: '%crate% <dark_gray>»» <gold>%keys% klíčů.'
+  player-help:
+    - ' <dark_green>Crazy Crates Hráčská nápověda!'
+    - ''
+    - '<dark_gray>» <gold>/key [player] <gray>- <yellow>Zkontroluje kolik klíčů má hráč.'
+    - '<dark_gray>» <gold>/cc <gray>- <yellow>Otevře menu beden.'
+  admin-help:
+    - ' <red>Crazy Crates Admin Nápověda'
+    - ''
+    - '<dark_gray>» <gold>/cc additem <crate> <prize> <gray>- <yellow>Přidá itemy ve hře jako výhru do bedny.'
+    - '<dark_gray>» <gold>/cc preview <crate> [player] <gray>- <yellow>Otevře náhled bedny pro hráče.'
+    - '<dark_gray>» <gold>/cc list <gray>- <yellow>Seznam všech beden.'
+    - '<dark_gray>» <gold>/cc open <crate> [player] <gray>- <yellow>Pokusí se otevřít bednu hráči, pokud má klíč.'
+    - '<dark_gray>» <gold>/cc forceopen <crate> [player] <gray>- <yellow>Otevře hráči bednu bez nutnosti mít klíč.'
+    - '<dark_gray>» <gold>/cc tp <location> <gray>- <yellow>Teleportuje k bedně.'
+    - '<dark_gray>» <gold>/cc give <physical/virtual> <crate> [amount] [player] <gray>- <yellow>Umožní ti vzít klíče od hráče.'
+    - '<dark_gray>» <gold>/cc set <crate> <gray>- <yellow>Nastaví blok na který se díváš jako bednu.'
+    - '<dark_gray>» <gold>/cc set Menu <gray>- <yellow>Nastaví blok na který se díváš jako /cc menu.'
+    - '<dark_gray>» <gold>/cc reload <gray>- <yellow>Znovu načte config/soubory s daty.'
+    - '<dark_gray>» <gold>/cc set1/set2 <gray>- <yellow>Nastaví pozici <red>#1 <yellow>nebo <red>#2 při dělání nového schématu pro QuadCrates.'
+    - '<dark_gray>» <gold>/cc save <file name> <gray>- <yellow>Vytvoří nový nbt soubor ve složce schematic.'
+    - ' '
+    - '<dark_gray>» <gold>/key [player] <gray>- <yellow>Zkontroluje kolik klíčů má u sebe hráč.'
+    - '<dark_gray>» <gold>/cc <gray>- <yellow>Otevře menu beden.'
+    - ' '
+    - '<gray>Zde můžeš najít seznam oprávnění @ <yellow>https://github.com/badbones69/Crazy-Crates/wiki/Commands-and-Permissions'
