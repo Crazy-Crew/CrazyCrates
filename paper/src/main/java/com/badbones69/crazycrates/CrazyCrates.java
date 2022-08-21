@@ -53,8 +53,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             String schematicFolder = "/schematics";
             String localeFolder = "/locale";
 
-            List<String> blah = new ArrayList<>();
-
             // TODO() Add more crate types.
             fileManager.logInfo(true)
                     // Crate Examples.
