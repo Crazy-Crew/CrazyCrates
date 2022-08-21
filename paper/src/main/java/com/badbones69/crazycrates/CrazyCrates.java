@@ -3,6 +3,7 @@ package com.badbones69.crazycrates;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.modules.PluginModule;
 import com.badbones69.crazycrates.modules.config.files.ConfigFile;
+import com.badbones69.crazycrates.modules.config.files.LocaleFile;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
@@ -10,8 +11,6 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 @Singleton
 public class CrazyCrates extends JavaPlugin implements Listener {
@@ -79,11 +78,9 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
             // Create default config.
             saveDefaultConfig();
+
             ConfigFile.reload(PLUGIN_DIRECTORY, this);
-
-            System.out.println(ConfigFile.LANGUAGE_FILE);
-
-            //localeFile.reload(PLUGIN_DIRECTORY, "locale-en.yml", this);
+            LocaleFile.reload(PLUGIN_DIRECTORY, ConfigFile.LANGUAGE_FILE, this);
 
             new Metrics(this, 4514);
 
