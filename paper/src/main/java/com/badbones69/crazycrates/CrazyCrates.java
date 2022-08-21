@@ -1,18 +1,14 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.modules.PluginModule;
 import com.badbones69.crazycrates.modules.config.files.ConfigFile;
-import com.badbones69.crazycrates.modules.config.files.LocaleFile;
-import com.badbones69.crazycrates.utilities.FileUtils;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.nio.file.Path;
 
 @Singleton
@@ -22,14 +18,11 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     private boolean pluginEnabled = false;
 
-    @Inject private CrazyManager crazyManager;
+    //@Inject private CrazyManager crazyManager;
     @Inject private FileManager fileManager;
-
-    @Inject private FileUtils fileUtils;
 
     public final Path DATA_DIRECTORY = getDataFolder().toPath().resolve("data");
     public final Path LOCALE_DIRECTORY = getDataFolder().toPath().resolve("locale");
-
     public final Path PLUGIN_DIRECTORY = getDataFolder().toPath();
 
     //@Inject private CosmicCrate cosmicCrate;
@@ -44,39 +37,51 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     //@Inject private WonderCrate wonderCrate;
 
     @Inject private ConfigFile configFile;
-    @Inject private LocaleFile localeFile;
+    //@Inject private LocaleFile localeFile;
 
     @Override
     public void onEnable() {
         try {
-
             if (!getDataFolder().exists()) getDataFolder().mkdirs();
-
-            if (!LOCALE_DIRECTORY.toFile().exists()) LOCALE_DIRECTORY.toFile().mkdirs();
 
             PluginModule module = new PluginModule(this);
 
             injector = module.createInjector();
 
             injector.injectMembers(this);
+            
+            String cratesFolder = "/crates";
+            String schematicFolder = "/schematics";
+            String localeFolder = "/locale";
 
-            saveDefaultConfig();
-            fileUtils.create(configFile, localeFile, LOCALE_DIRECTORY, PLUGIN_DIRECTORY, this);
-
+            // TODO() Add more crate types.
             fileManager.logInfo(true)
-                    .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("sea.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("soul.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
+                    // Crate Examples.
+                    .registerDefaultGenerateFiles("crate-example.yml", cratesFolder, cratesFolder)
+
+                    // Locale Files.
+                    .registerDefaultGenerateFiles("locale-cz.yml", localeFolder, localeFolder)
+                    .registerDefaultGenerateFiles("locale-sp.yml", localeFolder, localeFolder)
+
+                    // NBT Files.
+                    .registerDefaultGenerateFiles("classic.nbt", schematicFolder, schematicFolder)
+                    .registerDefaultGenerateFiles("nether.nbt", schematicFolder, schematicFolder)
+                    .registerDefaultGenerateFiles("outdoors.nbt", schematicFolder, schematicFolder)
+                    .registerDefaultGenerateFiles("sea.nbt", schematicFolder, schematicFolder)
+                    .registerDefaultGenerateFiles("soul.nbt", schematicFolder, schematicFolder)
+                    .registerDefaultGenerateFiles("wooden.nbt", schematicFolder, schematicFolder)
+
+                    // Directories.
                     .registerCustomFilesFolder("/crates")
                     .registerCustomFilesFolder("/schematics")
+                    .registerCustomFilesFolder("/locale")
                     .setup(this);
+
+            // Create default config.
+            saveDefaultConfig();
+            configFile.reload(PLUGIN_DIRECTORY, this);
+
+            //localeFile.reload(PLUGIN_DIRECTORY, "locale-en.yml", this);
 
             new Metrics(this, 4514);
 
@@ -96,7 +101,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             //}
 
         } catch (Exception e) {
-
             e.printStackTrace();
 
             pluginEnabled = false;

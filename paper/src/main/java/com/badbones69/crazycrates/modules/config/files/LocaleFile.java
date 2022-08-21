@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.modules.config.files;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.utils.ConfigurationUtils;
+import com.badbones69.crazycrates.modules.config.ConfigurationUtils;
 import com.badbones69.crazycrates.utils.keys.Key;
 import com.google.inject.Singleton;
 import net.kyori.adventure.audience.Audience;
@@ -17,10 +17,10 @@ import java.util.List;
 public class LocaleFile extends ConfigurationUtils {
 
     @Key("prefix.logger")
-    public String PREFIX_LOGGER = "<gray>[<gold>CrazyCrates</gold>]</gray>";
+    public String PREFIX_LOGGER = "<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>";
 
     @Key("prefix.command")
-    public String PREFIX_COMMAND = "<white>[<gradient:#FE5F55:#392F5A>CrazyCrew</gradient>]</white>";
+    public String PREFIX_COMMAND = "<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>";
 
     // Misc
     @Key("misc.unknown-command")
@@ -228,10 +228,7 @@ public class LocaleFile extends ConfigurationUtils {
     }};
 
     public void reload(Path path, String fileName, CrazyCrates plugin) {
-        System.out.println(fileName);
-        System.out.println(path.resolve("/locale/" + fileName));
-
-        this.reload(path.resolve("/locale/" + fileName), LocaleFile.class, plugin);
+        handle(path.resolve("/locale/" + fileName), LocaleFile.class, plugin);
     }
 
     public void send(Audience recipient, String msg, TagResolver.Single... placeholders) {

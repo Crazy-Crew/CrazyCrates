@@ -1,28 +1,30 @@
 package com.badbones69.crazycrates.modules.config;
-/*
+
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.badbones69.crazycrates.utils.keys.Comment;
+import com.badbones69.crazycrates.utils.keys.Key;
+import com.google.inject.Inject;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
-public class AbstractConfig {
+public class ConfigurationUtils {
 
     private YamlConfiguration config;
+
+    @Inject private CrazyLogger logger;
 
     public YamlConfiguration getConfig() {
         return this.config;
     }
 
-    public void reload(Path path, Class<? extends AbstractConfig> clazz, CrazyCrates plugin) {
+    public void handle(Path path, Class<? extends ConfigurationUtils> clazz, CrazyCrates plugin) {
         this.config = new YamlConfiguration();
 
         getConfig().options().copyDefaults(true);
@@ -35,7 +37,7 @@ public class AbstractConfig {
         try {
             getConfig().load(file);
         } catch (IOException | InvalidConfigurationException e) {
-            plugin.getLogger().warning("Failed to load " + fileName + "...");
+            logger.debug("<red>Failed to load</red> <gold>" + fileName + "</gold><red>...</red>");
 
             e.printStackTrace();
         }
@@ -52,13 +54,9 @@ public class AbstractConfig {
                 Object classObj = getClassObject();
                 Object value = getValue(key.value(), field.get(classObj));
 
-                System.out.println(value);
-                System.out.println(key.value());
-                System.out.println(comment.value());
-
                 field.set(classObj, value instanceof String str ? StringEscapeUtils.unescapeJava(str) : value);
             } catch (IllegalAccessException e) {
-                plugin.getLogger().warning("Failed to write to " + fileName + "...");
+                plugin.getLogger().warning("<red>Failed to write to</red> <gold>" + fileName + "</gold><red>...</red>");
 
                 e.printStackTrace();
             }
@@ -69,7 +67,7 @@ public class AbstractConfig {
         try {
             getConfig().save(file);
         } catch (IOException e) {
-            plugin.getLogger().warning("Failed to save " + fileName + "...");
+            plugin.getLogger().warning("<red>Failed to save</red> <gold>" + fileName + "</gold><red>...</red>");
 
             e.printStackTrace();
         }
@@ -89,4 +87,3 @@ public class AbstractConfig {
         getConfig().setComments(path, comments);
     }
 }
- */
