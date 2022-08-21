@@ -1,4 +1,11 @@
 # Translated by ^TheLaoming#6969
+
+prefix:
+  # Change how the prefix in console will look!
+  logger: '<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>'
+  # Change how the prefix for commands will look!
+  command: '<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>'
+
 misc:
   unknown-command: '<red>Tento příkaz nebyl nalezen.</red>'
   no-teleporting: '<red>Nelze se telepertovat pryč během otevírání</red> <gold>%crate%.</gold>'
@@ -43,7 +50,7 @@ crates:
   physical-crate:
     created:
       - '<gray>Tento blok byl nastaven na</gray> <gold>%crate%.</gold>'
-      - '<gray>Pro odstranění</gray> <gold>%crate%</gold>, <gray>Shift a Pravý klik během creative módu.</gray>'
+      - '<gray>Pro odstranění</gray> <gold>%crate%,</gold> <gray>Shift a Pravý klik během creative módu.</gray>'
     removed: '<gray>Odstranil jsi</gold> <gold>%id%.</gold>'
 
 command:
@@ -89,18 +96,18 @@ command:
   admin-help:
     - ' <red>Crazy Crates Admin Nápověda'
     - ''
-    - '<dark_gray>»</dark_grey> <gold>/cc additem <crate> <prize></gold> <gray>-</gray> <yellow>Přidá itemy ve hře jako výhru do bedny.</yellow>'
-    - '<dark_gray>»</dark_grey> <gold>/cc preview <crate></gold> [player] <gray>-</gray> <yellow>Otevře náhled bedny pro hráče.</yellow>'
+    - '<dark_gray>»</dark_grey> <gold>/cc additem [crate] [prize]</gold> <gray>-</gray> <yellow>Přidá itemy ve hře jako výhru do bedny.</yellow>'
+    - '<dark_gray>»</dark_grey> <gold>/cc preview [crate] [player]</gold> <gray>-</gray> <yellow>Otevře náhled bedny pro hráče.</yellow>'
     - '<dark_gray>»</dark_grey> <gold>/cc list</gold> <gray>-</gray> <yellow>Seznam všech beden.</yellow>'
-    - '<dark_gray>»</dark_grey> <gold>/cc open</gold> <crate> [player] <gray>-</gray> <yellow>Pokusí se otevřít bednu hráči, pokud má klíč.</yellow>'
-    - '<dark_gray>»</dark_grey> <gold>/cc forceopen <crate> [player]</gold> <gray>-</gray> <yellow>Otevře hráči bednu bez nutnosti mít klíč.</yellow>'
-    - '<dark_gray>»</dark_grey> <gold>/cc tp <location></gold> <gray>-</gray> <yellow>Teleportuje k bedně.</yellow>'
-    - '<dark_gray>»</dark_grey> <gold>/cc give <physical/virtual> <crate> [amount] [player]</gold> <gray>-</gray> <yellow>Umožní ti vzít klíče od hráče.</yellow>'
-    - '<dark_gray>»</dark_grey> <gold>/cc set <crate></gold> <gray>-</gray> <yellow>Nastaví blok na který se díváš jako bednu.</yellow>'
+    - '<dark_gray>»</dark_grey> <gold>/cc open [crate] [player]</gold> <gray>-</gray> <yellow>Pokusí se otevřít bednu hráči, pokud má klíč.</yellow>'
+    - '<dark_gray>»</dark_grey> <gold>/cc forceopen [crate] [player]</gold> <gray>-</gray> <yellow>Otevře hráči bednu bez nutnosti mít klíč.</yellow>'
+    - '<dark_gray>»</dark_grey> <gold>/cc tp [location]</gold> <gray>-</gray> <yellow>Teleportuje k bedně.</yellow>'
+    - '<dark_gray>»</dark_grey> <gold>/cc give [physical/virtual] [crate] [amount] [player]</gold> <gray>-</gray> <yellow>Umožní ti vzít klíče od hráče.</yellow>'
+    - '<dark_gray>»</dark_grey> <gold>/cc set [crate]</gold> <gray>-</gray> <yellow>Nastaví blok na který se díváš jako bednu.</yellow>'
     - '<dark_gray>»</dark_grey> <gold>/cc set Menu</gold> <gray>-</gray> <yellow>Nastaví blok na který se díváš jako /cc menu.</yellow>'
     - '<dark_gray>»</dark_grey> <gold>/cc reload</gold> <gray>-</gray> <yellow>Znovu načte config/soubory s daty.</yellow>'
     - '<dark_gray>»</dark_grey> <gold>/cc set1/set2</gold> <gray>-</gray> <yellow>Nastaví pozici <red>#1 <yellow>nebo <red>#2 při dělání nového schématu pro QuadCrates.</yellow>'
-    - '<dark_gray>»</dark_grey> <gold>/cc save <file name></gold> <gray>-</gray> <yellow>Vytvoří nový nbt soubor ve složce schematic.</yellow>'
+    - '<dark_gray>»</dark_grey> <gold>/cc save [file name]</gold> <gray>-</gray> <yellow>Vytvoří nový nbt soubor ve složce schematic.</yellow>'
     - ' '
     - '<dark_gray>»</dark_grey> <gold>/key [player]</gold> <gray>-</gray> <yellow>Zkontroluje kolik klíčů má u sebe hráč.</yellow>'
     - '<dark_gray>»</dark_grey> <gold>/cc</gold> <gray>-</gray> <yellow>Otevře menu beden.</yellow>'
