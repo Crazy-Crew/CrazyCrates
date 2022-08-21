@@ -4,8 +4,6 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.modules.config.files.ConfigFile;
-import com.badbones69.crazycrates.modules.config.files.LocaleFile;
 import com.badbones69.crazycrates.utilities.CommonUtils;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.AbstractModule;
@@ -28,9 +26,6 @@ public class PluginModule extends AbstractModule {
     // New functions class to replace Methods slowly.
     private final CommonUtils commonUtils = new CommonUtils();
 
-    private final ConfigFile configFile = new ConfigFile();
-    private final LocaleFile localeFile = new LocaleFile();
-
     public PluginModule(CrazyCrates plugin) {
         this.plugin = plugin;
     }
@@ -52,8 +47,5 @@ public class PluginModule extends AbstractModule {
 
         bind(Methods.class).toInstance(methods);
         bind(CommonUtils.class).toInstance(commonUtils);
-
-        bind(ConfigFile.class).toInstance(configFile);
-        bind(LocaleFile.class).toInstance(localeFile);
     }
 }

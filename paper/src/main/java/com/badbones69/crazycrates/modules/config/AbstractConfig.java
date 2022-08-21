@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
-public class ConfigurationUtils {
+public class AbstractConfig {
 
     private YamlConfiguration config;
 
@@ -24,7 +24,7 @@ public class ConfigurationUtils {
         return this.config;
     }
 
-    public void handle(Path path, Class<? extends ConfigurationUtils> clazz, CrazyCrates plugin) {
+    public void handle(Path path, Class<? extends AbstractConfig> clazz, CrazyCrates plugin) {
         this.config = new YamlConfiguration();
 
         getConfig().options().copyDefaults(true);

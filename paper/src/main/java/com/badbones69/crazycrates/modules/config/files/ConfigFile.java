@@ -1,20 +1,22 @@
 package com.badbones69.crazycrates.modules.config.files;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.modules.config.ConfigurationUtils;
+import com.badbones69.crazycrates.modules.config.AbstractConfig;
 import com.badbones69.crazycrates.utils.keys.Comment;
 import com.badbones69.crazycrates.utils.keys.Key;
-import com.google.inject.Singleton;
 import java.nio.file.Path;
 
-@Singleton
-public class ConfigFile extends ConfigurationUtils {
+public class ConfigFile extends AbstractConfig {
 
     @Key("settings.language-file")
-    @Comment("The language file to use from the locale folder.")
-    public String LANGUAGE_FILE = "locale-en.yml";
+    @Comment("""
+            The language file to use from the locale folder.
+            Supported languages are Spanish(sp), Czech(cz) & English(en).""")
+    public static String LANGUAGE_FILE = "locale-en.yml";
 
-    public void reload(Path path, CrazyCrates plugin) {
-        handle(path.resolve("config.yml"), ConfigFile.class, plugin);
+    private static final ConfigFile CONFIG_FILE = new ConfigFile();
+
+    public static void reload(Path path, CrazyCrates plugin) {
+        CONFIG_FILE.handle(path.resolve("config.yml"), ConfigFile.class, plugin);
     }
 }

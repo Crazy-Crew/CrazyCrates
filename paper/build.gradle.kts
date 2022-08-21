@@ -63,7 +63,7 @@ dependencies {
 tasks {
 
     reobfJar {
-        outputJar.set(rootProject.layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}-Paper.jar"))
+        outputJar.set(rootProject.layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}-PAPER.jar"))
     }
 
     assemble {

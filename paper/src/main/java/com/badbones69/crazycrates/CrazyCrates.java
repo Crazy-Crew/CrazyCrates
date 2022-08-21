@@ -10,6 +10,8 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 @Singleton
 public class CrazyCrates extends JavaPlugin implements Listener {
@@ -36,9 +38,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     //@Inject private WheelCrate wheelCrate;
     //@Inject private WonderCrate wonderCrate;
 
-    @Inject private ConfigFile configFile;
-    //@Inject private LocaleFile localeFile;
-
     @Override
     public void onEnable() {
         try {
@@ -54,12 +53,15 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             String schematicFolder = "/schematics";
             String localeFolder = "/locale";
 
+            List<String> blah = new ArrayList<>();
+
             // TODO() Add more crate types.
             fileManager.logInfo(true)
                     // Crate Examples.
                     .registerDefaultGenerateFiles("crate-example.yml", cratesFolder, cratesFolder)
 
                     // Locale Files.
+                    .registerDefaultGenerateFiles("locale-en.yml", localeFolder, localeFolder)
                     .registerDefaultGenerateFiles("locale-cz.yml", localeFolder, localeFolder)
                     .registerDefaultGenerateFiles("locale-sp.yml", localeFolder, localeFolder)
 
@@ -79,7 +81,9 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
             // Create default config.
             saveDefaultConfig();
-            configFile.reload(PLUGIN_DIRECTORY, this);
+            ConfigFile.reload(PLUGIN_DIRECTORY, this);
+
+            System.out.println(ConfigFile.LANGUAGE_FILE);
 
             //localeFile.reload(PLUGIN_DIRECTORY, "locale-en.yml", this);
 

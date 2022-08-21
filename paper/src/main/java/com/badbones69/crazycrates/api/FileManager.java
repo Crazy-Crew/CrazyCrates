@@ -86,7 +86,6 @@ public class FileManager {
 
             if (log) plugin.getLogger().info("Finished loading custom files.");
         }
-
     }
     
     /**
