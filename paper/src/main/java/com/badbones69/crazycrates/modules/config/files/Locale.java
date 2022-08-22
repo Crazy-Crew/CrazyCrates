@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public  class LocaleFile extends AbstractConfig {
+public  class Locale extends AbstractConfig {
 
     @Key("prefix.logger")
     @Comment("Change how the prefix in console will look!")
@@ -224,9 +224,9 @@ public  class LocaleFile extends AbstractConfig {
         add("<gray>You can find a list of permissions @</gray> <yellow>https://github.com/badbones69/Crazy-Crates/wiki/Commands-and-Permissions</yellow>");
     }};
 
-    private static final LocaleFile LOCALE_FILE = new LocaleFile();
+    private static final Locale LOCALE_FILE = new Locale();
 
     public static void reload(Path path, String fileName, CrazyCrates plugin, CrazyLogger logger) {
-        LOCALE_FILE.handle(path.resolve(fileName), LocaleFile.class, plugin, logger);
+        LOCALE_FILE.handle(path.resolve(fileName), Locale.class, plugin, logger);
     }
 }

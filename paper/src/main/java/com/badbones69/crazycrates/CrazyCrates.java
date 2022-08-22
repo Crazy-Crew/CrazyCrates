@@ -2,9 +2,8 @@ package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.modules.PluginModule;
-import com.badbones69.crazycrates.modules.config.files.ConfigFile;
-import com.badbones69.crazycrates.modules.config.files.LocaleFile;
-import com.badbones69.crazycrates.modules.config.files.menus.CrateMenuFile;
+import com.badbones69.crazycrates.modules.config.files.Config;
+import com.badbones69.crazycrates.modules.config.files.Locale;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -85,15 +84,15 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             // Create default config.
             saveDefaultConfig();
 
-            ConfigFile.reload(PLUGIN_DIRECTORY, this, crazyLogger);
-            LocaleFile.reload(LOCALE_DIRECTORY, ConfigFile.LANGUAGE_FILE, this, crazyLogger);
+            Config.reload(PLUGIN_DIRECTORY, this, crazyLogger);
+            Locale.reload(LOCALE_DIRECTORY, Config.LANGUAGE_FILE, this, crazyLogger);
 
             // Crate Menus.
             //CrateMenuFile.reload(MENU_DIRECTORY, this);
 
             new Metrics(this, 4514);
 
-            if (ConfigFile.TOGGLE_METRICS) new Metrics(this, 4514);
+            if (Config.TOGGLE_METRICS) new Metrics(this, 4514);
         } catch (Exception e) {
             e.printStackTrace();
 

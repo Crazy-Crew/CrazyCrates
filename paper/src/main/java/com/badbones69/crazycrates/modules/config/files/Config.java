@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConfigFile extends AbstractConfig {
+public class Config extends AbstractConfig {
 
     @Key("settings.language-file")
     @Comment("""
@@ -55,9 +55,9 @@ public class ConfigFile extends AbstractConfig {
         add("world_nether");
     }};
 
-    private static final ConfigFile CONFIG_FILE = new ConfigFile();
+    private static final Config CONFIG_FILE = new Config();
 
     public static void reload(Path path, CrazyCrates plugin, CrazyLogger logger) {
-        CONFIG_FILE.handle(path.resolve("config.yml"), ConfigFile.class, plugin, logger);
+        CONFIG_FILE.handle(path.resolve("config.yml"), Config.class, plugin, logger);
     }
 }
