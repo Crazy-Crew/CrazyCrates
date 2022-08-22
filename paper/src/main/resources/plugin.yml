@@ -31,6 +31,7 @@ commands:
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib:1.7.10
   - com.google.inject:guice:5.1.0
+  - dev.triumphteam:triumph-gui:3.1.2
 
 permissions:
   crazycrates.command.player.menu:
