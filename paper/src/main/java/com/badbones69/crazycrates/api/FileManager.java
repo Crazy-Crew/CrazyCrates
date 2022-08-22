@@ -76,7 +76,7 @@ public class FileManager {
                                 if (log) logger.debug("<red>Created new default file:</red> <gold>" + homeFolder + "/" + fileName + ".</gold>");
                             } catch (Exception e) {
                                 if (log) {
-                                    plugin.getLogger().warning("<red>Failed to create new default file:</red> <gold>" + homeFolder + "/" + fileName + "!</gold>");
+                                    logger.debug("<red>Failed to create new default file:</red> <gold>" + homeFolder + "/" + fileName + "!</gold>");
 
                                     e.printStackTrace();
                                 }
@@ -184,11 +184,13 @@ public class FileManager {
 
                 if (log) logger.debug("<red>Successfully saved the</red> <gold>" + file.getFileName() + ".</gold>");
             } catch (Exception e) {
-                plugin.getLogger().warning("<red>Could not save</red> <gold>" + file.getFileName() + "!</gold>");
-                e.printStackTrace();
+                if (log) {
+                    logger.debug("<red>Could not save</red> <gold>" + file.getFileName() + "!</gold>");
+                    e.printStackTrace();
+                }
             }
         } else {
-            if (log) plugin.getLogger().warning("<red>The file</red> <gold>" + name + ".yml</gold> <red>could not be found!</red>");
+            if (log) logger.debug("<red>The file</red> <gold>" + name + ".yml</gold> <red>could not be found!</red>");
         }
     }
     
@@ -213,11 +215,13 @@ public class FileManager {
 
                 if (log) logger.debug("<red>Successfully reloaded the</red> <gold>" + file.getFileName() + ".</gold>");
             } catch (Exception e) {
-                plugin.getLogger().warning("<red>Could not reload the</red> <gold>" + file.getFileName() + "!</gold>");
-                e.printStackTrace();
+                if (log) {
+                    logger.debug(("<red>Could not reload the</red> <gold>" + file.getFileName() + "!</gold>"));
+                    e.printStackTrace();
+                }
             }
         } else {
-            if (log) plugin.getLogger().warning("<red>The file</red> <gold>" + name + ".yml</gold> <red>could not be found!</red>");
+            if (log) logger.debug("<red>The file</red> <gold>" + name + ".yml</gold> <red>could not be found!</red>");
         }
     }
     
@@ -347,9 +351,12 @@ public class FileManager {
 
                     return true;
                 } catch (Exception e) {
-                    plugin.getLogger().warning("<red>Could not save</red> <gold>" + fileName + "!</gold>");
-                    e.printStackTrace();
-                    return false;
+                    if (log) {
+                        logger.debug(("<red>Could not save</red> <gold>" + fileName + "!</gold>"));
+                        e.printStackTrace();
+
+                        return false;
+                    }
                 }
             } else {
                 if (log) plugin.getLogger().warning("<red>There was a null custom file that could not be found!</red>");
@@ -371,8 +378,10 @@ public class FileManager {
 
                     return true;
                 } catch (Exception e) {
-                    plugin.getLogger().warning("<red>Could not reload the</red> <gold>" + fileName + "!</gold>");
-                    e.printStackTrace();
+                    if (log) {
+                        logger.debug(("<red>Could not reload the</red> <gold>\" + fileName + \"!</gold>"));
+                        e.printStackTrace();
+                    }
                 }
             } else {
                 if (log) plugin.getLogger().warning("<red>There was a null custom file that was not found!</red>");
