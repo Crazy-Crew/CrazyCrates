@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.badbones69.crazycrates.utils.keys.Comment;
 import com.badbones69.crazycrates.utils.keys.Key;
-import com.google.inject.Inject;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -54,7 +53,7 @@ public class AbstractConfig {
 
                 field.set(classObj, value instanceof String str ? StringEscapeUtils.unescapeJava(str) : value);
             } catch (IllegalAccessException e) {
-                plugin.getLogger().warning("<red>Failed to write to</red> <gold>" + fileName + "</gold><red>...</red>");
+                logger.debug("<red>Failed to write to</red> <gold>" + fileName + "</gold><red>...</red>");
 
                 e.printStackTrace();
             }
@@ -65,7 +64,7 @@ public class AbstractConfig {
         try {
             getConfig().save(file);
         } catch (IOException e) {
-            plugin.getLogger().warning("<red>Failed to save</red> <gold>" + fileName + "</gold><red>...</red>");
+            logger.debug("<red>Failed to save</red> <gold>" + fileName + "</gold><red>...</red>");
 
             e.printStackTrace();
         }
