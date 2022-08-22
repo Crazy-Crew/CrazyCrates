@@ -1,0 +1,14 @@
+settings:
+  # Choose how large this menu should be.
+  # 1, 2, 3, 4, 5 or 6 are the available options.
+  # Only works with the CHEST type gui.
+  crate-menu-size: 6
+  # Available types are CHEST, WORKBENCH, HOPPER, DISPENSER, BREWING
+  # Every type except CHEST ignores "crate-menu-size"
+  crate-menu-type: CHEST
+
+crate-menu-filler:
+  toggle: false
+  item: "BLACK_STAINED_GLASS_PANE"
+  name: " "
+  lore: []
