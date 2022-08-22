@@ -1,13 +1,15 @@
 package com.badbones69.crazycrates.modules.config;
 
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
-import com.badbones69.crazycrates.utils.keys.Comment;
-import com.badbones69.crazycrates.utils.keys.Key;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
@@ -81,5 +83,17 @@ public class AbstractConfig {
 
     protected void setComments(String path, List<String> comments) {
         getConfig().setComments(path, comments);
+    }
+
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Key {
+        String value();
+    }
+
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Comment {
+        String value();
     }
 }
