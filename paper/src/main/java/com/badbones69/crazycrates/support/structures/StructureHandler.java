@@ -8,7 +8,6 @@ import org.bukkit.block.structure.Mirror;
 import org.bukkit.block.structure.StructureRotation;
 import org.bukkit.structure.StructureManager;
 import org.bukkit.util.BlockVector;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
