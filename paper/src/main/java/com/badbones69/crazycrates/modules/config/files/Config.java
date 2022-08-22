@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.modules.config.files;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.modules.config.AbstractConfig;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.badbones69.crazycrates.utils.keys.Comment;
@@ -57,7 +56,7 @@ public class Config extends AbstractConfig {
 
     private static final Config CONFIG_FILE = new Config();
 
-    public static void reload(Path path, CrazyCrates plugin, CrazyLogger logger) {
-        CONFIG_FILE.handle(path.resolve("config.yml"), Config.class, plugin, logger);
+    public static void reload(Path path, CrazyLogger logger) {
+        CONFIG_FILE.handle(path.resolve("config.yml"), Config.class, logger);
     }
 }

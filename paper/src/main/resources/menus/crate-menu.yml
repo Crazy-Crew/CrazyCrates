@@ -1,4 +1,7 @@
 settings:
+  # The title of the menu.
+  # Available Placeholders: %crate%
+  crate-menu-title: "<red>Crate Browser</red> <dark_gray>:</dark_gray> <reset>%crate%"
   # Choose how large this menu should be.
   # 1, 2, 3, 4, 5 or 6 are the available options.
   # Only works with the CHEST type gui.

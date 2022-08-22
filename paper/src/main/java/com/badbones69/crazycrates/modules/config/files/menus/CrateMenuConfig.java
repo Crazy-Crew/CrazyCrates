@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.modules.config.files.menus;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.modules.config.AbstractConfig;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.badbones69.crazycrates.utils.keys.Comment;
@@ -13,6 +12,13 @@ import java.util.List;
 public class CrateMenuConfig extends AbstractConfig {
 
     private static final CrateMenuConfig CRATE_MENU_FILE = new CrateMenuConfig();
+
+    @Key("settings.crate-menu-title")
+    @Comment("""
+            The title of the menu.
+            Available Placeholders: %crate%
+            """)
+    public static String CRATE_MENU_TITLE = "<red>Crate Browser</red> <dark_gray>:</dark_gray> <reset>%crate%";
 
     @Key("settings.crate-menu-size")
     @Comment("""
@@ -41,7 +47,7 @@ public class CrateMenuConfig extends AbstractConfig {
     @Key("crate-menu-filler.lore")
     public static List<String> CRATE_MENU_FILLER_LORE = new ArrayList<>() {};
 
-    public static void reload(Path path, CrazyCrates plugin, CrazyLogger logger) {
-        CRATE_MENU_FILE.handle(path.resolve("crate-menu.yml"), CrateMenuConfig.class, plugin, logger);
+    public static void reload(Path path, CrazyLogger logger) {
+        CRATE_MENU_FILE.handle(path.resolve("crate-menu.yml"), CrateMenuConfig.class, logger);
     }
 }

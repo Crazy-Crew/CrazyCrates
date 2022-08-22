@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.modules.config.files;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.modules.config.AbstractConfig;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.badbones69.crazycrates.utils.keys.Comment;
@@ -226,7 +225,7 @@ public  class Locale extends AbstractConfig {
 
     private static final Locale LOCALE_FILE = new Locale();
 
-    public static void reload(Path path, String fileName, CrazyCrates plugin, CrazyLogger logger) {
-        LOCALE_FILE.handle(path.resolve(fileName), Locale.class, plugin, logger);
+    public static void reload(Path path, String fileName, CrazyLogger logger) {
+        LOCALE_FILE.handle(path.resolve(fileName), Locale.class, logger);
     }
 }

@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.modules.config;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.badbones69.crazycrates.utils.keys.Comment;
 import com.badbones69.crazycrates.utils.keys.Key;
@@ -21,7 +20,7 @@ public class AbstractConfig {
         return this.config;
     }
 
-    public void handle(Path path, Class<? extends AbstractConfig> clazz, CrazyCrates plugin, CrazyLogger logger) {
+    public void handle(Path path, Class<? extends AbstractConfig> clazz, CrazyLogger logger) {
         this.config = new YamlConfiguration();
 
         getConfig().options().copyDefaults(true);
