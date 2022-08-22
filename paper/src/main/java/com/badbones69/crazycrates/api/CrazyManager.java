@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.*;
+import com.badbones69.crazycrates.modules.config.files.Config;
 import com.badbones69.crazycrates.support.holograms.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.HolographicSupport;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
@@ -58,14 +59,8 @@ public class CrazyManager {
     // A list of tasks being run by the QuadCrate type.
     private final HashMap<UUID, ArrayList<BukkitTask>> currentQuadTasks = new HashMap<>();
     
-    // The time in seconds a quadcrate can go until afk kicks them from it.
-    private Integer quadCrateTimer;
-    
     // A list of current crate schematics for Quad Crate.
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
-    
-    // If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
-    private boolean giveVirtualKeysWhenInventoryFull;
     
     // True if at least one crate gives new players keys and false if none give new players keys.
     private boolean giveNewPlayersKeys;
@@ -83,9 +78,6 @@ public class CrazyManager {
         brokecrates.clear();
         crateLocations.clear();
         crateSchematics.clear();
-
-        //quadCrateTimer = Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
-        //giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
 
         if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginLoaded(plugin)) {
             hologramController = new HolographicSupport();
@@ -244,15 +236,6 @@ public class CrazyManager {
 
         //cleanDataFile();
         //previewListener.loadButtons();
-    }
-    
-    /**
-     * If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
-     *
-     * @return True if the player will get a virtual key and false if it drops on the floor.
-     */
-    public boolean getGiveVirtualKeysWhenInventoryFull() {
-        return giveVirtualKeysWhenInventoryFull;
     }
 
     /*
@@ -634,15 +617,6 @@ public class CrazyManager {
         }
 
         return null;
-    }
-    
-    /**
-     * The time in seconds a quadcrate will last before kicking the player.
-     *
-     * @return The time in seconds till kick.
-     */
-    public Integer getQuadCrateTimer() {
-        return quadCrateTimer;
     }
     
     /**
@@ -1192,7 +1166,7 @@ public class CrazyManager {
         switch (keyType) {
             case PHYSICAL_KEY:
                 if (methods.isInventoryFull(player)) {
-                    if (giveVirtualKeysWhenInventoryFull) {
+                    if (Config.GIVE_VIRTUAL_KEYS_WITH_FULL_INVENTORY) {
                         addKeys(amount, player, crate, KeyType.VIRTUAL_KEY);
                     } else {
                         player.getWorld().dropItem(player.getLocation(), crate.getKey(amount));
