@@ -6,10 +6,12 @@ import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.QuadCrateParticles;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.modules.config.files.Config;
 import com.badbones69.crazycrates.support.structures.QuadCrateSpiralHandler;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
-import com.badbones69.crazycrates.utils.ScheduleUtils;
+import com.badbones69.crazycrates.utilities.ScheduleUtils;
+import com.google.inject.Inject;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,6 +30,8 @@ import java.util.Map;
 import java.util.Random;
 
 public class QuadCrateManager {
+
+    @Inject private ScheduleUtils scheduleUtils;
 
     private final ChestStateHandler quadCrateHandler = new ChestStateHandler();
 
@@ -142,7 +146,7 @@ public class QuadCrateManager {
         assert structureLocations != null;
 
         for (Block block : structureLocations) {
-            if (handler.getBlackList().contains(block.getType())) {
+            if (handler.getBlockBlackList().contains(block.getType())) {
                 //player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage(methods));
                 crazyManager.removePlayerFromOpeningList(player);
                 crateSessions.remove(instance);
@@ -202,8 +206,7 @@ public class QuadCrateManager {
         // Teleport player to center.
         player.teleport(spawnLocation.clone().add(handler.getStructureX() / 2, 1.0, handler.getStructureZ() / 2));
 
-        crazyManager.addQuadCrateTask(player, new ScheduleUtils(plugin).timer(0, 1, new BukkitRunnable() {
-
+        crazyManager.addQuadCrateTask(player, scheduleUtils.timer(0L, 1L, new BukkitRunnable() {
             private final QuadCrateSpiralHandler spiralHandler = new QuadCrateSpiralHandler();
 
             double radius = 0.0; // Radius of the particle spiral.
@@ -238,7 +241,7 @@ public class QuadCrateManager {
             }
         }));
 
-        crazyManager.addCrateTask(player, new ScheduleUtils(plugin).later(crazyManager.getQuadCrateTimer(), new BukkitRunnable() {
+        crazyManager.addCrateTask(player, scheduleUtils.later(Config.QUAD_CRATE_TIMERS.longValue(), new BukkitRunnable() {
             @Override
             public void run() {
                 // End the crate by force.
@@ -251,7 +254,7 @@ public class QuadCrateManager {
     }
 
     public void endCrate(CrazyCrates plugin) {
-        new ScheduleUtils(plugin).later(3 * 20, new BukkitRunnable() {
+        scheduleUtils.later(3 * 20L, new BukkitRunnable() {
             @Override
             public void run() {
                 // Update spawned crate block states which removes them.
@@ -264,7 +267,7 @@ public class QuadCrateManager {
                 player.teleport(lastLocation);
 
                 // Remove the structure blocks.
-                handler.removeStructure(spawnLocation.clone());
+                handler.removeStructure();
 
                 // Restore the old blocks.
                 oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
@@ -294,7 +297,7 @@ public class QuadCrateManager {
             crateSessions.remove(instance);
         }
 
-        handler.removeStructure(lastLocation);
+        handler.removeStructure();
     }
 
     // Add the crate locations.
