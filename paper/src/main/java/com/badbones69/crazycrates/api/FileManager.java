@@ -1,13 +1,13 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.utilities.CommonUtils;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +18,7 @@ public class FileManager {
     @Inject private CrazyCrates plugin;
     
     @Inject private CrazyLogger logger;
+    @Inject private CommonUtils commonUtils;
 
     private boolean log = false;
 
@@ -69,7 +70,7 @@ public class FileManager {
                             try {
                                 File serverFile = new File(plugin.getDataFolder(), homeFolder + "/" + fileName);
                                 InputStream jarFile = getClass().getResourceAsStream((jarHomeFolders.getOrDefault(fileName, homeFolder)) + "/" + fileName);
-                                copyFile(jarFile, serverFile);
+                                commonUtils.copyFile(jarFile, serverFile);
 
                                 if (fileName.toLowerCase().endsWith(".yml")) customFiles.add(new CustomFile(fileName, homeFolder, plugin));
 
@@ -250,17 +251,6 @@ public class FileManager {
         }
 
         return files;
-    }
-
-    private void copyFile(InputStream in, File out) throws Exception {
-        try (InputStream fis = in; FileOutputStream fos = new FileOutputStream(out)) {
-            byte[] buf = new byte[1024];
-            int i;
-
-            while ((i = fis.read(buf)) != -1) {
-                fos.write(buf, 0, i);
-            }
-        }
     }
     
     public class CustomFile {
