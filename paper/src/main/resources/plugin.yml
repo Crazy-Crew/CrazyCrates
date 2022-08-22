@@ -29,7 +29,7 @@ commands:
     permission-message: "You do not have the proper permission for this, Try adding crazycrates.keys.command.base!"
 
 libraries:
-  - org.jetbrains.kotlin:kotlin-stdlib:1.7.20-Beta
+  - org.jetbrains.kotlin:kotlin-stdlib:1.7.10
   - com.google.inject:guice:5.1.0
 
 permissions:
