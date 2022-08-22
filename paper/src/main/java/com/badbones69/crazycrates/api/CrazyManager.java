@@ -29,24 +29,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CrazyManager {
 
-    //@Inject private CrateControlListener crateControlListener;
-    //@Inject private ChestStateHandler chestStateHandler;
-
     @Inject private CrazyCrates plugin;
     @Inject private CrazyManager crazyManager;
     @Inject private FileManager fileManager;
     @Inject private Methods methods;
-
-    //@Inject private CosmicCrate cosmicCrate;
-    //@Inject private CrateOnTheGo crateOnTheGo;
-    //@Inject private CsgoCrate csgoCrate;
-    //@Inject private FireCrackerCrate fireCrackerCrate;
-    //@Inject private QuadCrate quadCrate;
-    //@Inject private QuickCrate quickCrate;
-    //@Inject private RouletteCrate rouletteCrate;
-    //@Inject private WarCrate warCrate;
-    //@Inject private WheelCrate wheelCrate;
-    //@Inject private WonderCrate wonderCrate;
 
     // All the crates that have been loaded.
     private final ArrayList<Crate> crates = new ArrayList<>();
