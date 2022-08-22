@@ -8,30 +8,45 @@ import java.util.ArrayList;
 
 public class QuadCrateSpiralHandler implements SpiralControl {
 
-    @Override
-    public @NotNull ArrayList<Location> getSpiralLocationClockwise(Location center) {
+    private ArrayList<Location> getLocations(Location center, Boolean clockWise) {
         World world = center.getWorld();
-        double downwardsDistance = .05;
+
+        double downWardsDistance = .05;
         double expandingRadius = .08;
-        double y = center.getY();
+
+        double centerY = center.getY();
         double radius = 0;
-        int amount = 10; // Amount of particles in each circle
-        int increaseRadius = 0;
-        int nextLocation = 0; // The limit of how far the circle goes before reset.
-        double increment = (2 * Math.PI) / amount; // Spacing
+
+        int particleAmount = 10;
+        int radiusIncrease = 0;
+
+        int nextLocation = 0;
+
+        double increment = (2*Math.PI) / particleAmount;
+
         ArrayList<Location> locations = new ArrayList<>();
 
         for (int i = 0; i < 60; i++) {
             double angle = nextLocation * increment;
-            double x = center.getX() + (radius * Math.cos(angle));
-            double z = center.getZ() + (radius * Math.sin(angle));
-            locations.add(new Location(world, x, y, z));
-            y -= downwardsDistance;
-            nextLocation++;
-            increaseRadius++;
 
-            if (increaseRadius == 6) {
-                increaseRadius = 0;
+            double x;
+            double z;
+
+            if (clockWise) {
+                x = center.getX() + (radius * Math.cos(angle));
+                z = center.getZ() + (radius * Math.sin(angle));
+            } else {
+                x = center.getX() - (radius * Math.cos(angle));
+                z = center.getZ() - (radius * Math.sin(angle));
+            }
+
+            locations.add(new Location(world, x, centerY, z));
+            centerY -= downWardsDistance;
+            nextLocation++;
+            radiusIncrease++;
+
+            if (radiusIncrease == 6) {
+                radiusIncrease = 0;
                 radius += expandingRadius;
             }
 
@@ -42,35 +57,12 @@ public class QuadCrateSpiralHandler implements SpiralControl {
     }
 
     @Override
+    public @NotNull ArrayList<Location> getSpiralLocationClockwise(Location center) {
+        return getLocations(center, true);
+    }
+
+    @Override
     public @NotNull ArrayList<Location> getSpiralLocationCounterClockwise(Location center) {
-        World world = center.getWorld();
-        double downwardsDistance = .05;
-        double expandingRadius = .08;
-        double y = center.getY();
-        double radius = 0;
-        int amount = 10; // Amount of particles in each circle
-        int increaseRadius = 0;
-        int nextLocation = 0; // The limit of how far the circle goes before reset.
-        double increment = (2 * Math.PI) / amount; // Spacing
-        ArrayList<Location> locations = new ArrayList<>();
-
-        for (int i = 0; i < 60; i++) {
-            double angle = nextLocation * increment;
-            double x = center.getX() - (radius * Math.cos(angle));
-            double z = center.getZ() - (radius * Math.sin(angle));
-            locations.add(new Location(world, x, y, z));
-            y -= downwardsDistance;
-            nextLocation++;
-            increaseRadius++;
-
-            if (increaseRadius == 6) {
-                increaseRadius = 0;
-                radius += expandingRadius;
-            }
-
-            if (nextLocation == 10) nextLocation = 0;
-        }
-
-        return locations;
+        return getLocations(center, false);
     }
 }
