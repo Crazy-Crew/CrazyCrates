@@ -151,7 +151,8 @@ public class CrateControlListener implements Listener { // Crate Control
 
                     if (hasKey) {
                         // Checks if the player uses the quick crate again.
-                        if (crazyManager.isInOpeningList(player) && crazyManager.getOpeningCrate(player).getCrateType() == CrateType.QUICK_CRATE && inUse.containsKey(player) && inUse.get(player).equals(crateLocation.getLocation())) {
+                        if (crazyManager.isInOpeningList(player) && crazyManager.getOpeningCrate(player).getCrateType() == CrateType.QUICK_CRATE &&
+                                inUse.containsKey(player) && inUse.get(player).equals(crateLocation.getLocation())) {
                             useQuickCrateAgain = true;
                         }
 
