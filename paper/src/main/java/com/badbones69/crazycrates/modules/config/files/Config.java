@@ -2,8 +2,6 @@ package com.badbones69.crazycrates.modules.config.files;
 
 import com.badbones69.crazycrates.modules.config.AbstractConfig;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
-import com.badbones69.crazycrates.utils.keys.Comment;
-import com.badbones69.crazycrates.utils.keys.Key;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +13,10 @@ public class Config extends AbstractConfig {
             The language file to use from the locale folder.
             Supported languages are Spanish(sp), Czech(cz) & English(en).""")
     public static String LANGUAGE_FILE = "locale-en.yml";
+
+    @Key("settings.verbose")
+    @Comment("Whether you want to have extra logging enabled.")
+    public static Boolean TOGGLE_VERBOSE = true;
 
     @Key("settings.toggle-metrics")
     @Comment("Whether you want metrics to be enabled.")

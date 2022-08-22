@@ -2,6 +2,8 @@ settings:
   # The language file to use from the locale folder.
   # Supported languages are Spanish(sp), Czech(cz) & English(en).
   language-file: 'locale-en.yml'
+  # Whether you want to have extra logging enabled.
+  verbose: true
   # Whether you want metrics to be enabled.
   toggle-metrics: true
   # Crate related settings

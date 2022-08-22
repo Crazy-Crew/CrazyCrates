@@ -7,38 +7,23 @@ import com.badbones69.crazycrates.modules.config.files.Locale;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.Singleton;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.file.Path;
 
-@Singleton
 public class CrazyCrates extends JavaPlugin implements Listener {
 
     private Injector injector;
 
     private boolean pluginEnabled = false;
 
-    //@Inject private CrazyManager crazyManager;
-    @Inject private FileManager fileManager;
-
     public final Path DATA_DIRECTORY = getDataFolder().toPath().resolve("data");
     public final Path MENU_DIRECTORY = getDataFolder().toPath().resolve("menus");
     public final Path LOCALE_DIRECTORY = getDataFolder().toPath().resolve("locale");
     public final Path PLUGIN_DIRECTORY = getDataFolder().toPath();
 
-    //@Inject private CosmicCrate cosmicCrate;
-    //@Inject private CrateOnTheGo crateOnTheGo;
-    //@Inject private CsgoCrate csgoCrate;
-    //@Inject private FireCrackerCrate fireCrackerCrate;
-    //@Inject private QuadCrate quadCrate;
-    //@Inject private QuickCrate quickCrate;
-    //@Inject private RouletteCrate rouletteCrate;
-    //@Inject private WarCrate warCrate;
-    //@Inject private WheelCrate wheelCrate;
-    //@Inject private WonderCrate wonderCrate;
-
+    @Inject private FileManager fileManager;
     @Inject private CrazyLogger crazyLogger;
 
     @Override
@@ -56,8 +41,13 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             String schematicFolder = "/schematics";
             String localeFolder = "/locale";
 
+            // Create default config.
+            saveDefaultConfig();
+
+            Config.reload(PLUGIN_DIRECTORY, crazyLogger);
+
             // TODO() Add more crate types.
-            fileManager.logInfo(true)
+            fileManager.toggleLogging(Config.TOGGLE_VERBOSE)
                     // Crate Examples.
                     //.registerDefaultGenerateFiles("crate-example.yml", cratesFolder, cratesFolder)
 
@@ -81,10 +71,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
                     .registerCustomFilesFolder("/menus")
                     .setup(this);
 
-            // Create default config.
-            saveDefaultConfig();
-
-            Config.reload(PLUGIN_DIRECTORY, crazyLogger);
             Locale.reload(LOCALE_DIRECTORY, Config.LANGUAGE_FILE, crazyLogger);
 
             // Crate Menus.

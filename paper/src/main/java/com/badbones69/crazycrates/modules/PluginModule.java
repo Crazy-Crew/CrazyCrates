@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.utilities.AdventureUtils;
 import com.badbones69.crazycrates.utilities.CommonUtils;
+import com.badbones69.crazycrates.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -28,6 +29,7 @@ public class PluginModule extends AbstractModule {
     private final CommonUtils commonUtils = new CommonUtils();
 
     private final AdventureUtils adventureUtils = new AdventureUtils();
+    private final ScheduleUtils scheduleUtils = new ScheduleUtils();
 
     public PluginModule(CrazyCrates plugin) {
         this.plugin = plugin;
@@ -48,9 +50,10 @@ public class PluginModule extends AbstractModule {
 
         bind(CrazyLogger.class).toInstance(crazyLogger);
 
-        bind(AdventureUtils.class).toInstance(adventureUtils);
-
         bind(Methods.class).toInstance(methods);
+
         bind(CommonUtils.class).toInstance(commonUtils);
+        bind(AdventureUtils.class).toInstance(adventureUtils);
+        bind(ScheduleUtils.class).toInstance(scheduleUtils);
     }
 }

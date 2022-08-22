@@ -20,7 +20,7 @@ public class FileManager {
     @Inject private CrazyLogger logger;
     @Inject private CommonUtils commonUtils;
 
-    private boolean log = false;
+    private boolean isLogging = false;
 
     private final ArrayList<String> homeFolders = new ArrayList<>();
     private final ArrayList<CustomFile> customFiles = new ArrayList<>();
@@ -37,7 +37,7 @@ public class FileManager {
 
         // Starts to load all the custom files.
         if (homeFolders.size() > 0) {
-            if (log) logger.debug("<red>Loading custom files.</red>");
+            if (isLogging) logger.debug("<red>Loading custom files.</red>");
 
             for (String homeFolder : homeFolders) {
                 File homeFile = new File(plugin.getDataFolder(), "/" + homeFolder);
@@ -53,7 +53,7 @@ public class FileManager {
                                 if (file.exists()) {
                                     customFiles.add(file);
 
-                                    if (log) logger.debug("<red>Loaded new custom file:</red> <gold>" + homeFolder + "/" + name + ".</gold>");
+                                    if (isLogging) logger.debug("<red>Loaded new custom file:</red> <gold>" + homeFolder + "/" + name + ".</gold>");
                                 }
                             }
                         }
@@ -61,7 +61,7 @@ public class FileManager {
                 } else {
                     homeFile.mkdir();
 
-                    if (log) logger.debug("<red>The folder</red> <gold>" + homeFolder + "/</gold> <red>was not found so it was created.</red>");
+                    if (isLogging) logger.debug("<red>The folder</red> <gold>" + homeFolder + "/</gold> <red>was not found so it was created.</red>");
 
                     for (String fileName : autoGenerateFiles.keySet()) {
                         if (autoGenerateFiles.get(fileName).equalsIgnoreCase(homeFolder)) {
@@ -74,9 +74,9 @@ public class FileManager {
 
                                 if (fileName.toLowerCase().endsWith(".yml")) customFiles.add(new CustomFile(fileName, homeFolder, plugin));
 
-                                if (log) logger.debug("<red>Created new default file:</red> <gold>" + homeFolder + "/" + fileName + ".</gold>");
+                                if (isLogging) logger.debug("<red>Created new default file:</red> <gold>" + homeFolder + "/" + fileName + ".</gold>");
                             } catch (Exception e) {
-                                if (log) {
+                                if (isLogging) {
                                     logger.debug("<red>Failed to create new default file:</red> <gold>" + homeFolder + "/" + fileName + "!</gold>");
 
                                     e.printStackTrace();
@@ -87,16 +87,16 @@ public class FileManager {
                 }
             }
 
-            if (log) logger.debug("<red>Finished loading custom files.</red>");
+            if (isLogging) logger.debug("<red>Finished loading custom files.</red>");
         }
     }
     
     /**
      * Turn on the logger system for the FileManager.
-     * @param log True to turn it on and false for it to be off.
+     * @param isLogging True to turn it on and false for it to be off.
      */
-    public FileManager logInfo(boolean log) {
-        this.log = log;
+    public FileManager toggleLogging(boolean isLogging) {
+        this.isLogging = isLogging;
         return this;
     }
     
@@ -105,7 +105,7 @@ public class FileManager {
      * @return True if it is and false if it isn't.
      */
     public boolean isLogging() {
-        return log;
+        return this.isLogging;
     }
     
     /**
@@ -183,15 +183,15 @@ public class FileManager {
             try {
                 file.getFile().save(new File(plugin.getDataFolder(), file.getHomeFolder() + "/" + file.getFileName()));
 
-                if (log) logger.debug("<red>Successfully saved the</red> <gold>" + file.getFileName() + ".</gold>");
+                if (isLogging) logger.debug("<red>Successfully saved the</red> <gold>" + file.getFileName() + ".</gold>");
             } catch (Exception e) {
-                if (log) {
+                if (isLogging) {
                     logger.debug("<red>Could not save</red> <gold>" + file.getFileName() + "!</gold>");
                     e.printStackTrace();
                 }
             }
         } else {
-            if (log) logger.debug("<red>The file</red> <gold>" + name + ".yml</gold> <red>could not be found!</red>");
+            if (isLogging) logger.debug("<red>The file</red> <gold>" + name + ".yml</gold> <red>could not be found!</red>");
         }
     }
     
@@ -214,15 +214,15 @@ public class FileManager {
             try {
                 file.file = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "/" + file.getHomeFolder() + "/" + file.getFileName()));
 
-                if (log) logger.debug("<red>Successfully reloaded the</red> <gold>" + file.getFileName() + ".</gold>");
+                if (isLogging) logger.debug("<red>Successfully reloaded the</red> <gold>" + file.getFileName() + ".</gold>");
             } catch (Exception e) {
-                if (log) {
+                if (isLogging) {
                     logger.debug(("<red>Could not reload the</red> <gold>" + file.getFileName() + "!</gold>"));
                     e.printStackTrace();
                 }
             }
         } else {
-            if (log) logger.debug("<red>The file</red> <gold>" + name + ".yml</gold> <red>could not be found!</red>");
+            if (isLogging) logger.debug("<red>The file</red> <gold>" + name + ".yml</gold> <red>could not be found!</red>");
         }
     }
     
@@ -282,7 +282,7 @@ public class FileManager {
             } else {
                 new File(plugin.getDataFolder(), "/" + homeFolder).mkdir();
 
-                if (log) logger.debug("<red>The folder</red> <gold>" + homeFolder + "/</gold> <red>was not found so it was created.</red>");
+                if (isLogging) logger.debug("<red>The folder</red> <gold>" + homeFolder + "/</gold> <red>was not found so it was created.</red>");
 
                 file = null;
             }
@@ -337,19 +337,19 @@ public class FileManager {
                 try {
                     file.save(new File(plugin.getDataFolder(), homeFolder + "/" + fileName));
 
-                    if (log) logger.debug("<red>Successfully saved the</red> <gold>" + fileName + ".</gold>");
+                    if (isLogging) logger.debug("<red>Successfully saved the</red> <gold>" + fileName + ".</gold>");
 
                     return true;
                 } catch (Exception e) {
-                    if (log) {
+                    if (isLogging) {
                         logger.debug(("<red>Could not save</red> <gold>" + fileName + "!</gold>"));
                         e.printStackTrace();
-
-                        return false;
                     }
+
+                    return false;
                 }
             } else {
-                if (log) plugin.getLogger().warning("<red>There was a null custom file that could not be found!</red>");
+                if (isLogging) plugin.getLogger().warning("<red>There was a null custom file that could not be found!</red>");
             }
 
             return false;
@@ -364,17 +364,17 @@ public class FileManager {
                 try {
                     file = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "/" + homeFolder + "/" + fileName));
 
-                    if (log) logger.debug("<red>Successfully reloaded the</red> <gold>" + fileName + ".</gold>");
+                    if (isLogging) logger.debug("<red>Successfully reloaded the</red> <gold>" + fileName + ".</gold>");
 
                     return true;
                 } catch (Exception e) {
-                    if (log) {
+                    if (isLogging) {
                         logger.debug(("<red>Could not reload the</red> <gold>\" + fileName + \"!</gold>"));
                         e.printStackTrace();
                     }
                 }
             } else {
-                if (log) plugin.getLogger().warning("<red>There was a null custom file that was not found!</red>");
+                if (isLogging) plugin.getLogger().warning("<red>There was a null custom file that was not found!</red>");
             }
 
             return false;
