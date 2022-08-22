@@ -38,7 +38,7 @@ dependencies {
     implementation(libs.bstats.bukkit)
 
     // NBT API - TODO() Replace this by using PDC.
-    implementation(libs.nbt.api)
+    //implementation(libs.nbt.api)
 
     // Vault API
     compileOnly(libs.vault.api)
@@ -82,11 +82,7 @@ tasks {
     }
 
     shadowJar {
-
-        //archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
-
         listOf(
-            "de.tr7zw",
             "org.bstats"
         ).forEach {
             relocate(it, "${rootProject.group}.plugin.lib.$it")
