@@ -4,6 +4,8 @@ import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.modules.PluginModule;
 import com.badbones69.crazycrates.modules.config.files.ConfigFile;
 import com.badbones69.crazycrates.modules.config.files.LocaleFile;
+import com.badbones69.crazycrates.modules.config.files.menus.CrateMenuFile;
+import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
@@ -23,6 +25,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     @Inject private FileManager fileManager;
 
     public final Path DATA_DIRECTORY = getDataFolder().toPath().resolve("data");
+    public final Path MENU_DIRECTORY = getDataFolder().toPath().resolve("menus");
     public final Path LOCALE_DIRECTORY = getDataFolder().toPath().resolve("locale");
     public final Path PLUGIN_DIRECTORY = getDataFolder().toPath();
 
@@ -36,6 +39,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     //@Inject private WarCrate warCrate;
     //@Inject private WheelCrate wheelCrate;
     //@Inject private WonderCrate wonderCrate;
+
+    @Inject private CrazyLogger crazyLogger;
 
     @Override
     public void onEnable() {
@@ -55,7 +60,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             // TODO() Add more crate types.
             fileManager.logInfo(true)
                     // Crate Examples.
-                    .registerDefaultGenerateFiles("crate-example.yml", cratesFolder, cratesFolder)
+                    //.registerDefaultGenerateFiles("crate-example.yml", cratesFolder, cratesFolder)
 
                     // Locale Files.
                     .registerDefaultGenerateFiles("locale-en.yml", localeFolder, localeFolder)
@@ -74,6 +79,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
                     .registerCustomFilesFolder("/crates")
                     .registerCustomFilesFolder("/schematics")
                     .registerCustomFilesFolder("/locale")
+                    .registerCustomFilesFolder("/menus")
                     .setup(this);
 
             // Create default config.
@@ -82,23 +88,12 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             ConfigFile.reload(PLUGIN_DIRECTORY, this, crazyLogger);
             LocaleFile.reload(LOCALE_DIRECTORY, ConfigFile.LANGUAGE_FILE, this, crazyLogger);
 
+            // Crate Menus.
+            //CrateMenuFile.reload(MENU_DIRECTORY, this);
+
             new Metrics(this, 4514);
 
-            // Add extra messages.
-            //Messages.addMissingMessages();
-
-            //String metricsPath = FileManager.Files.CONFIG.getFile().getString("Settings.Toggle-Metrics");
-            //boolean metricsEnabled = Files.CONFIG.getFile().getBoolean("Settings.Toggle-Metrics");
-
-            //if (metricsPath != null) {
-            //    if (metricsEnabled) new Metrics(this, 4514);
-            //} else {
-            //    getLogger().warning("Metrics was automatically enabled.");
-            //    getLogger().warning("Please add Toggle-Metrics: false to the top of your config.yml.");
-            //    getLogger().warning("https://github.com/Crazy-Crew/Crazy-Crates/blob/main/src/main/resources/config.yml");
-            //    getLogger().warning("An example if confused is linked above.");
-            //}
-
+            if (ConfigFile.TOGGLE_METRICS) new Metrics(this, 4514);
         } catch (Exception e) {
             e.printStackTrace();
 

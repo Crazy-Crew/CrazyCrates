@@ -2,18 +2,14 @@ package com.badbones69.crazycrates.modules.config.files;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.modules.config.AbstractConfig;
+import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.badbones69.crazycrates.utils.keys.Comment;
 import com.badbones69.crazycrates.utils.keys.Key;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.bukkit.command.ConsoleCommandSender;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocaleFile extends AbstractConfig {
+public  class LocaleFile extends AbstractConfig {
 
     @Key("prefix.logger")
     @Comment("Change how the prefix in console will look!")
@@ -230,35 +226,7 @@ public class LocaleFile extends AbstractConfig {
 
     private static final LocaleFile LOCALE_FILE = new LocaleFile();
 
-    public static void reload(Path path, String fileName, CrazyCrates plugin) {
-        LOCALE_FILE.handle(path.resolve("/locale/" + fileName), LocaleFile.class, plugin);
-    }
-
-    public void send(Audience recipient, String msg, TagResolver.Single... placeholders) {
-        send(recipient, true, msg, placeholders);
-    }
-
-    public void send(Audience recipient, boolean prefix, String msg, TagResolver.Single... placeholders) {
-        if (msg == null) return;
-
-        for (String part : msg.split("\n")) {
-            send(recipient, prefix, parse(part, placeholders));
-        }
-    }
-
-    public void send(Audience recipient, Component component) {
-        send(recipient, true, component);
-    }
-
-    public void send(Audience recipient, boolean prefix, Component component) {
-        if (recipient instanceof ConsoleCommandSender) {
-            recipient.sendMessage(prefix ? parse(PREFIX_LOGGER).append(component) : component);
-        } else {
-            recipient.sendMessage(prefix ? parse(PREFIX_COMMAND).append(component) : component);
-        }
-    }
-
-    public Component parse(String msg, TagResolver.Single... placeholders) {
-        return MiniMessage.miniMessage().deserialize(msg, placeholders);
+    public static void reload(Path path, String fileName, CrazyCrates plugin, CrazyLogger logger) {
+        LOCALE_FILE.handle(path.resolve(fileName), LocaleFile.class, plugin, logger);
     }
 }

@@ -57,7 +57,7 @@ dependencies {
     compileOnly(libs.guice)
 
     // Triumph Team
-    // implementation(libs.triumph.gui.bukkit)
+    implementation(libs.triumph.gui.bukkit)
 }
 
 tasks {
