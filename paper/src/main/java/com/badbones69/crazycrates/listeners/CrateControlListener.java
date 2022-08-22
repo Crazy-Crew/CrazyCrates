@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.listeners;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.Permissions;
@@ -47,20 +48,9 @@ public class CrateControlListener implements Listener { // Crate Control
     }
 
     @Inject private CrazyCrates plugin;
-
-    private final CrazyManager crazyManager;
-    private final Methods methods;
-
-    // Crates
-    private final QuickCrate quickCrate;
-
-    public CrateControlListener(CrazyManager crazyManager, Methods methods, QuickCrate quickCrate) {
-        this.crazyManager = crazyManager;
-
-        this.methods = methods;
-
-        this.quickCrate = quickCrate;
-    }
+    @Inject private CrazyManager crazyManager;
+    @Inject private Methods methods;
+    @Inject private QuickCrate quickCrate;
 
     // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
     @EventHandler
@@ -214,7 +204,7 @@ public class CrateControlListener implements Listener { // Crate Control
         Inventory inv = e.getInventory();
         Player player = (Player) e.getWhoClicked();
 
-        if (inv != null && e.getView().getTitle().equals(methods.sanitizeColor("&4&lAdmin Keys"))) {
+        if (inv != null && e.getView().getTitle().equals("&4&lAdmin Keys")) {
             e.setCancelled(true);
 
             if (!methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
@@ -237,7 +227,7 @@ public class CrateControlListener implements Listener { // Crate Control
 
                         if (key.hasItemMeta() && key.getItemMeta().hasDisplayName()) name = key.getItemMeta().getDisplayName();
 
-                        player.sendMessage(methods.getPrefix() + methods.color("&a&l+1 " + (name != null ? name : crate.getName())));
+                        //player.sendMessage(methods.getPrefix() + methods.color("&a&l+1 " + (name != null ? name : crate.getName())));
                     }
                 }
             }

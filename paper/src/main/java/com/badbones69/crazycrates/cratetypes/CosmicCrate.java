@@ -11,7 +11,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.google.inject.Inject;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -33,19 +32,17 @@ public class CosmicCrate implements Listener {
     private final HashMap<Player, Boolean> checkHands = new HashMap<>();
 
     @Inject private CrazyCrates plugin;
-
     @Inject private CrazyManager crazyManager;
-
     @Inject private Methods methods;
 
     private void showRewards(Player player, Crate crate) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"));
+        Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Prizes");
         picks.get(player).forEach(i -> inv.setItem(i, pickTier(player).getTierPane()));
         player.openInventory(inv);
     }
     
     private void startRoll(Player player, Crate crate) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Shuffling"));
+        Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Shuffling");
 
         for (int i = 0; i < 27; i++) {
             inv.setItem(i, pickTier(player).getTierPane());
@@ -66,7 +63,7 @@ public class CosmicCrate implements Listener {
     }
     
     public void openCosmic(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"));
+        Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Choose");
         setChests(inv, crate);
         crazyManager.addPlayerKeyType(player, keyType);
         checkHands.put(player, checkHand);
@@ -106,11 +103,11 @@ public class CosmicCrate implements Listener {
 
             final FileConfiguration file = crate.getFile();
 
-            if (e.getView().getTitle().equals(methods.sanitizeColor(file.getString("Crate.CrateName") + " - Shuffling"))) {
+            if (e.getView().getTitle().equals(file.getString("Crate.CrateName") + " - Shuffling")) {
                 e.setCancelled(true);
             }
 
-            if (e.getView().getTitle().equals(methods.sanitizeColor(file.getString("Crate.CrateName") + " - Prizes"))) {
+            if (e.getView().getTitle().equals(file.getString("Crate.CrateName") + " - Prizes")) {
                 e.setCancelled(true);
                 int slot = e.getRawSlot();
 
@@ -143,7 +140,7 @@ public class CosmicCrate implements Listener {
                 }
             }
 
-            if (e.getView().getTitle().equals(methods.sanitizeColor(file.getString("Crate.CrateName") + " - Choose"))) {
+            if (e.getView().getTitle().equals(file.getString("Crate.CrateName") + " - Choose")) {
                 e.setCancelled(true);
                 int slot = e.getRawSlot();
 
@@ -154,9 +151,9 @@ public class CosmicCrate implements Listener {
                         CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
                         int totalPrizes = manager.getTotalPrizes();
                         int pickedSlot = slot + 1;
-                        NBTItem nbtItem = new NBTItem(item);
+                        //NBTItem nbtItem = new NBTItem(item);
 
-                        if (nbtItem.hasNBTData()) {
+                        /*if (nbtItem.hasNBTData()) {
                             if (nbtItem.hasKey("Cosmic-Mystery-Crate")) {
                                 if (!glass.containsKey(player)) glass.put(player, new ArrayList<>());
 
@@ -177,7 +174,7 @@ public class CosmicCrate implements Listener {
                                 glass.put(player, l);
                                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                             }
-                        }
+                        }*/
 
                         if (glass.get(player).size() >= totalPrizes) {
                             KeyType keyType = crazyManager.getPlayerKeyType(player);
@@ -270,7 +267,7 @@ public class CosmicCrate implements Listener {
             return;
         }
 
-        if (e.getView().getTitle().equals(methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"))) {
+        if (e.getView().getTitle().equals(crate.getFile().getString("Crate.CrateName") + " - Prizes")) {
             boolean playSound = false;
 
             for (int i : picks.get(player)) {
@@ -305,7 +302,7 @@ public class CosmicCrate implements Listener {
             checkHands.remove(player);
         }
 
-        if (crazyManager.isInOpeningList(player) && e.getView().getTitle().equals(methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"))) {
+        if (crazyManager.isInOpeningList(player) && e.getView().getTitle().equals(crate.getFile().getString("Crate.CrateName") + " - Choose")) {
 
             if (!glass.containsKey(player) || glass.get(player).size() < 4) {
                 crazyManager.removePlayerFromOpeningList(player);

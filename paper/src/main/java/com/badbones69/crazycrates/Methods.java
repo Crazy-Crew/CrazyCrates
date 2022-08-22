@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import com.google.inject.Inject;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.Validate;
@@ -30,32 +29,9 @@ import java.util.regex.Pattern;
 
 public class Methods {
 
-    @Inject
-    private CrazyCrates plugin;
+    @Inject private CrazyCrates plugin;
 
     private final Random random = new Random();
-
-    public String sanitizeColor(String msg) {
-        return sanitizeFormat(color(msg));
-    }
-
-    public String sanitizeFormat(String string) {
-        return TextComponent.toLegacyText(TextComponent.fromLegacyText(string));
-    }
-
-    public String color(String message) {
-        if (message.startsWith("tellraw")) return ChatColor.translateAlternateColorCodes('&', message);
-
-        Pattern hexPattern = Pattern.compile("#([A-Fa-f0-9]){6}");
-        Matcher matcher = hexPattern.matcher(message);
-        StringBuilder stringBuilder = new StringBuilder();
-
-        while (matcher.find()) {
-            matcher.appendReplacement(stringBuilder, ChatColor.of(matcher.group()).toString());
-        }
-
-        return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(stringBuilder).toString());
-    }
 
     public String getPrefix() {
         //String prefix = FileManager.Files.CONFIG.getFile().getString("Settings.Prefix");
@@ -186,68 +162,9 @@ public class Methods {
     }
 
     public boolean isSimilar(ItemStack itemStack, Crate crate) {
-        NBTItem nbtItem = new NBTItem(itemStack);
-        return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
-                itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
-                isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
-    }
-
-    private boolean isSimilarCustom(ItemStack one, ItemStack two) {
-        if (one != null && two != null) {
-            if (one.getType() == two.getType()) {
-                if (one.hasItemMeta() && two.hasItemMeta()) {
-                    if (one.getItemMeta().hasDisplayName() && two.getItemMeta().hasDisplayName()) {
-                        if (one.getItemMeta().getDisplayName().equalsIgnoreCase(two.getItemMeta().getDisplayName())) {
-                            if (one.getItemMeta().hasLore() && two.getItemMeta().hasLore()) {
-                                if (one.getItemMeta().getLore().size() == two.getItemMeta().getLore().size()) {
-                                    int i = 0;
-
-                                    for (String lore : one.getItemMeta().getLore()) {
-                                        if (!lore.equals(two.getItemMeta().getLore().get(i))) return false;
-
-                                        i++;
-                                    }
-
-                                    return true;
-                                }
-                            } else return !one.getItemMeta().hasLore() && !two.getItemMeta().hasLore();
-                        }
-                    } else if (!one.getItemMeta().hasDisplayName() && !two.getItemMeta().hasDisplayName()) {
-                        if (one.getItemMeta().hasLore() && two.getItemMeta().hasLore()) {
-                            if (one.getItemMeta().getLore().size() == two.getItemMeta().getLore().size()) {
-                                int i = 0;
-
-                                for (String lore : one.getItemMeta().getLore()) {
-                                    if (!lore.equals(two.getItemMeta().getLore().get(i))) return false;
-
-                                    i++;
-                                }
-
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else return !one.getItemMeta().hasLore() && !two.getItemMeta().hasLore();
-                    }
-                } else return !one.hasItemMeta() && !two.hasItemMeta();
-            }
-        }
-
-        return false;
-    }
-
-    private ItemStack stripNBT(ItemStack item) {
-        try {
-            NBTItem nbtItem = new NBTItem(item.clone());
-
-            if (nbtItem.hasNBTData()) {
-                if (nbtItem.hasKey("CrazyCrates-Crate")) nbtItem.removeKey("CrazyCrates-Crate");
-            }
-
-            return nbtItem.getItem();
-        } catch (Exception e) {
-            return item;
-        }
+        //NBTItem nbtItem = new NBTItem(itemStack);
+        //return nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
+        return true;
     }
 
     public Enchantment getEnchantment(String enchantmentName) {
@@ -337,11 +254,11 @@ public class Methods {
     }
 
     public void failedToTakeKey(Player player, Crate crate, Exception e) {
-        plugin.getServer().getLogger().warning("An error has occurred while trying to take a physical key from a player");
-        plugin.getServer().getLogger().warning("Player: " + player.getName());
-        plugin.getServer().getLogger().warning("Crate: " + crate.getName());
+        //plugin.getServer().getLogger().warning("An error has occurred while trying to take a physical key from a player");
+        //plugin.getServer().getLogger().warning("Player: " + player.getName());
+        //plugin.getServer().getLogger().warning("Crate: " + crate.getName());
 
-        player.sendMessage(getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));
+        //player.sendMessage(getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));
 
         if (e != null) e.printStackTrace();
     }

@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.api.managers.CrateManager;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -72,14 +71,14 @@ public class Crate {
         this.previewToggle = file != null && (!file.contains("Crate.Preview.Toggle") || file.getBoolean("Crate.Preview.Toggle"));
         this.borderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle");
         setPreviewChestLines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
-        this.previewName = methods.sanitizeColor(previewName);
+        this.previewName = previewName;
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
         this.maxSlots = previewChestLines * 9;
 
         for (int amount = preview.size(); amount > maxSlots - (borderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0); amount -= maxSlots - (borderToggle ? 18 : maxSlots == preview.size() ? 0 : maxSlots != 9 ? 9 : 0), maxPage++) ;
 
-        this.crateInventoryName = file != null ? methods.sanitizeColor(file.getString("Crate.CrateName")) : "";
+        this.crateInventoryName = file != null ? file.getString("Crate.CrateName") : "";
         this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
         this.hologram = hologram != null ? hologram : new CrateHologram();
 
@@ -444,9 +443,9 @@ public class Crate {
     
     public Prize getPrize(ItemStack item) {
         try {
-            NBTItem nbt = new NBTItem(item);
+            //NBTItem nbt = new NBTItem(item);
 
-            if (nbt.hasKey("crazycrate-prize")) return getPrize(nbt.getString("crazycrate-prize"));
+            //if (nbt.hasKey("crazycrate-prize")) return getPrize(nbt.getString("crazycrate-prize"));
         } catch (Exception ignored) {}
         
         for (Prize prize : prizes) {
@@ -487,11 +486,11 @@ public class Crate {
                 if (item.getItemMeta().hasLore()) file.set(path + ".Lore", item.getItemMeta().getLore());
             }
 
-            NBTItem nbtItem = new NBTItem(item);
+            //NBTItem nbtItem = new NBTItem(item);
 
-            if (nbtItem.hasNBTData()) {
-                if (nbtItem.hasKey("Unbreakable") && nbtItem.getBoolean("Unbreakable")) file.set(path + ".Unbreakable", true);
-            }
+            //if (nbtItem.hasNBTData()) {
+            //if (nbtItem.hasKey("Unbreakable") && nbtItem.getBoolean("Unbreakable")) file.set(path + ".Unbreakable", true);
+            //}
 
             List<String> enchantments = new ArrayList<>();
 

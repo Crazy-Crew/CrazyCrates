@@ -25,7 +25,7 @@ public class HolographicSupport implements HologramController {
 
         double height = crateHologram.getHeight();
         Hologram hologram = HologramsAPI.createHologram(plugin, block.getLocation().add(.5, height, .5));
-        crateHologram.getMessages().forEach(line -> hologram.appendTextLine(methods.color(line)));
+        //crateHologram.getMessages().forEach(line -> hologram.appendTextLine(methods.color(line)));
         holograms.put(block, hologram);
     }
     

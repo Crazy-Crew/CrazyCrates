@@ -7,10 +7,7 @@ import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.listeners.CrateControlListener;
-import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import com.google.inject.Inject;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -34,9 +31,7 @@ public class QuickCrate implements Listener {
     private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
 
     @Inject private CrazyCrates plugin;
-
     @Inject private CrazyManager crazyManager;
-
     @Inject private Methods methods;
 
     //@Inject private CrateControlListener crateControlListener;
@@ -87,9 +82,11 @@ public class QuickCrate implements Listener {
             crazyManager.givePrize(player, prize);
             plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
             ItemStack displayItem = prize.getDisplayItem();
-            NBTItem nbtItem = new NBTItem(displayItem);
-            nbtItem.setBoolean("crazycrates-item", true);
-            displayItem = nbtItem.getItem();
+
+            //NBTItem nbtItem = new NBTItem(displayItem);
+            //nbtItem.setBoolean("crazycrates-item", true);
+            //displayItem = nbtItem.getItem();
+
             Item reward;
 
             try {

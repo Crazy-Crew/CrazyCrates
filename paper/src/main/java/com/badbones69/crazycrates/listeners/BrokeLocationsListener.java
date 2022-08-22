@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.BrokeLocation;
@@ -17,9 +18,7 @@ import java.util.List;
 public class BrokeLocationsListener implements Listener {
 
     @Inject private CrazyCrates plugin;
-
     @Inject private CrazyManager crazyManager;
-
     @Inject private FileManager fileManager;
     
     @EventHandler

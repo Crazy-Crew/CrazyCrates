@@ -2,8 +2,6 @@ package com.badbones69.crazycrates.modules.config.files;
 
 import com.badbones69.crazycrates.modules.config.AbstractConfig;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
-import com.badbones69.crazycrates.utils.keys.Comment;
-import com.badbones69.crazycrates.utils.keys.Key;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;

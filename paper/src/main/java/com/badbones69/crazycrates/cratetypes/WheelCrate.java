@@ -25,9 +25,7 @@ public class WheelCrate implements Listener {
     public static Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
 
     @Inject private CrazyCrates plugin;
-
     @Inject private CrazyManager crazyManager;
-
     @Inject private Methods methods;
 
     public void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
@@ -37,7 +35,7 @@ public class WheelCrate implements Listener {
             return;
         }
 
-        final Inventory inv = plugin.getServer().createInventory(null, 54, methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        final Inventory inv = plugin.getServer().createInventory(null, 54, crate.getFile().getString("Crate.CrateName"));
 
         for (int i = 0; i < 54; i++) {
             inv.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());

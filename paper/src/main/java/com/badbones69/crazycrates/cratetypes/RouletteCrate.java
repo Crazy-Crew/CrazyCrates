@@ -19,9 +19,7 @@ import java.util.ArrayList;
 public class RouletteCrate implements Listener {
 
     @Inject private CrazyCrates plugin;
-
     @Inject private CrazyManager crazyManager;
-
     @Inject private Methods methods;
 
     private void setGlass(Inventory inv) {
@@ -34,7 +32,7 @@ public class RouletteCrate implements Listener {
     }
     
     public void openRoulette(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName"));
         setGlass(inv);
         inv.setItem(13, crate.pickPrize(player).getDisplayItem());
         player.openInventory(inv);

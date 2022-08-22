@@ -19,9 +19,7 @@ import org.bukkit.inventory.ItemStack;
 public class CrateOnTheGo implements Listener {
 
     @Inject private CrazyCrates plugin;
-
     @Inject private CrazyManager crazyManager;
-
     @Inject private Methods methods;
 
     @EventHandler

@@ -1,26 +1,20 @@
 package com.badbones69.crazycrates.modules.menus;
 
-import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.modules.config.files.menus.CrateMenuConfig;
 import com.badbones69.crazycrates.utilities.AdventureUtils;
 import com.google.inject.Inject;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.builder.item.SkullBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-
 import java.util.List;
 
 public class CrateMenuHandler {
 
     @Inject private CrazyManager crazyManager;
-    @Inject private Methods methods;
-
     @Inject private AdventureUtils adventureUtils;
 
     private final Gui gui = Gui.gui()

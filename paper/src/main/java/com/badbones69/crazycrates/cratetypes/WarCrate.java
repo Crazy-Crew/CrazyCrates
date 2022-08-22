@@ -31,13 +31,11 @@ public class WarCrate implements Listener {
     private static final HashMap<Player, Boolean> canClose = new HashMap<>();
 
     @Inject private CrazyCrates plugin;
-
     @Inject private CrazyManager crazyManager;
-
     @Inject private Methods methods;
 
     public void openWarCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        String crateName = methods.sanitizeColor(crate.getFile().getString(crateNameString));
+        String crateName = crate.getFile().getString(crateNameString);
         Inventory inv = plugin.getServer().createInventory(null, 9, crateName);
         setRandomPrizes(player, inv, crate, crateName);
         InventoryView inventoryView = player.openInventory(inv);
@@ -86,7 +84,7 @@ public class WarCrate implements Listener {
     }
     
     private void setRandomPrizes(Player player, Inventory inv, Crate crate, String inventoryTitle) {
-        if (crazyManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(methods.sanitizeColor(crazyManager.getOpeningCrate(player).getFile().getString(crateNameString)))) {
+        if (crazyManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(crazyManager.getOpeningCrate(player).getFile().getString(crateNameString))) {
             for (int i = 0; i < 9; i++) {
                 inv.setItem(i, crate.pickPrize(player).getDisplayItem());
             }
@@ -94,7 +92,7 @@ public class WarCrate implements Listener {
     }
     
     private void setRandomGlass(Player player, Inventory inv, String inventoryTitle) {
-        if (crazyManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(methods.sanitizeColor(crazyManager.getOpeningCrate(player).getFile().getString(crateNameString)))) {
+        if (crazyManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(crazyManager.getOpeningCrate(player).getFile().getString(crateNameString))) {
 
             if (colorCodes == null) colorCodes = getColorCode();
 
@@ -206,7 +204,7 @@ public class WarCrate implements Listener {
 
         if (canClose.containsKey(player) && canClose.get(player)) {
             for (Crate crate : crazyManager.getCrates()) {
-                if (crate.getCrateType() == CrateType.WAR && e.getView().getTitle().equalsIgnoreCase(methods.sanitizeColor(crate.getFile().getString(crateNameString)))) {
+                if (crate.getCrateType() == CrateType.WAR && e.getView().getTitle().equalsIgnoreCase(crate.getFile().getString(crateNameString))) {
                     canClose.remove(player);
 
                     if (crazyManager.hasCrateTask(player)) crazyManager.endCrate(player);

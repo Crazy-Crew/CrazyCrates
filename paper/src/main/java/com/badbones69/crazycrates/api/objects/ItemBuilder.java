@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.api.objects;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class ItemBuilder {
     
-    private NBTItem nbtItem;
+    //private NBTItem nbtItem;
     
     // Item Data
     private Material material;
@@ -84,7 +83,7 @@ public class ItemBuilder {
      * Create a blank item builder.
      */
     public ItemBuilder() {
-        this.nbtItem = null;
+        //this.nbtItem = null;
         this.material = Material.STONE;
         this.damage = 0;
         this.itemName = "";
@@ -131,7 +130,7 @@ public class ItemBuilder {
      * @param itemBuilder The item builder to deduplicate.
      */
     public ItemBuilder(ItemBuilder itemBuilder) {
-        this.nbtItem = itemBuilder.nbtItem;
+        //this.nbtItem = itemBuilder.nbtItem;
         this.material = itemBuilder.material;
         this.damage = itemBuilder.damage;
         this.itemName = itemBuilder.itemName;
@@ -178,11 +177,11 @@ public class ItemBuilder {
     /**
      * Gets the nbt item.
      */
-    public NBTItem getNBTItem() {
-        nbtItem = new NBTItem(build());
+    //public NBTItem getNBTItem() {
+    //    nbtItem = new NBTItem(build());
 
-        return nbtItem;
-    }
+    //    return nbtItem;
+    //}
     
     /**
      * Gets the material.
@@ -325,7 +324,7 @@ public class ItemBuilder {
      */
     public ItemStack build() {
         
-        if (nbtItem != null) referenceItem = nbtItem.getItem();
+        //if (nbtItem != null) referenceItem = nbtItem.getItem();
         
         ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material);
 
@@ -386,20 +385,22 @@ public class ItemBuilder {
             hideItemFlags(item);
             item.addUnsafeEnchantments(enchantments);
             addGlow(item);
-            NBTItem nbt = new NBTItem(item);
+            //NBTItem nbt = new NBTItem(item);
             
-            if (isHead && !isHash) nbt.setString("SkullOwner", player);
+            //if (isHead && !isHash) nbt.setString("SkullOwner", player);
             
-            if (isMobEgg) {
-                if (entityType != null) nbt.addCompound("EntityTag").setString("id", "minecraft:" + entityType.name());
-            }
+            //if (isMobEgg) {
+            //    if (entityType != null) nbt.addCompound("EntityTag").setString("id", "minecraft:" + entityType.name());
+            //}
             
-            if (!crateName.isEmpty()) nbt.setString("CrazyCrates-Crate", crateName);
+            //if (!crateName.isEmpty()) nbt.setString("CrazyCrates-Crate", crateName);
             
-            return nbt.getItem();
+            //return nbt.getItem();
         } else {
             return item;
         }
+
+        return item;
     }
 
     /*
@@ -916,9 +917,9 @@ public class ItemBuilder {
         if (item.hasItemMeta()) {
             ItemMeta itemMeta = item.getItemMeta();
             itemBuilder.setName(itemMeta.getDisplayName()).setLore(itemMeta.getLore());
-            NBTItem nbt = new NBTItem(item);
+            //NBTItem nbt = new NBTItem(item);
 
-            if (nbt.hasKey("Unbreakable")) itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
+            //if (nbt.hasKey("Unbreakable")) itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
             
             if (itemMeta instanceof org.bukkit.inventory.meta.Damageable) itemBuilder.setDamage(((org.bukkit.inventory.meta.Damageable) itemMeta).getDamage());
         }

@@ -20,9 +20,7 @@ import java.util.ArrayList;
 public class WonderCrate implements Listener {
 
     @Inject private CrazyCrates plugin;
-
     @Inject private CrazyManager crazyManager;
-
     @Inject private Methods methods;
 
     public void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {

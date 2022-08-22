@@ -17,11 +17,8 @@ import java.util.Random;
 public class FireCrackerCrate {
 
     @Inject private CrazyCrates plugin;
-
     @Inject private CrazyManager crazyManager;
-
     @Inject private Methods methods;
-
     @Inject private QuickCrate quickCrate;
 
     public void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc) {
