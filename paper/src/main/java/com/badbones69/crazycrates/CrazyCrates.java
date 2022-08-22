@@ -79,8 +79,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             // Create default config.
             saveDefaultConfig();
 
-            ConfigFile.reload(PLUGIN_DIRECTORY, this);
-            LocaleFile.reload(PLUGIN_DIRECTORY, ConfigFile.LANGUAGE_FILE, this);
+            ConfigFile.reload(PLUGIN_DIRECTORY, this, crazyLogger);
+            LocaleFile.reload(LOCALE_DIRECTORY, ConfigFile.LANGUAGE_FILE, this, crazyLogger);
 
             new Metrics(this, 4514);
 

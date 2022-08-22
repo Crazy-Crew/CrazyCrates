@@ -18,13 +18,11 @@ public class AbstractConfig {
 
     private YamlConfiguration config;
 
-    @Inject private CrazyLogger logger;
-
     public YamlConfiguration getConfig() {
         return this.config;
     }
 
-    public void handle(Path path, Class<? extends AbstractConfig> clazz, CrazyCrates plugin) {
+    public void handle(Path path, Class<? extends AbstractConfig> clazz, CrazyCrates plugin, CrazyLogger logger) {
         this.config = new YamlConfiguration();
 
         getConfig().options().copyDefaults(true);

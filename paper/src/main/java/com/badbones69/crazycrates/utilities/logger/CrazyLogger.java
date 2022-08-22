@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.utilities.logger;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.modules.config.files.LocaleFile;
+import com.badbones69.crazycrates.utilities.AdventureUtils;
 import com.google.inject.Inject;
 import io.papermc.paper.console.HexFormattingConverter;
 import net.kyori.adventure.text.Component;
@@ -11,10 +11,10 @@ public class CrazyLogger {
 
     @Inject CrazyCrates plugin;
 
-    @Inject LocaleFile localeFile;
+    @Inject AdventureUtils adventureUtils;
 
     public void debug(String message) {
-        localeFile.send(plugin.getServer().getConsoleSender(), parse(" " + message));
+        adventureUtils.send(plugin.getServer().getConsoleSender(), parse(" " + message));
     }
 
     public String parse(String message) {
