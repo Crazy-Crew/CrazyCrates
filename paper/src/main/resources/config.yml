@@ -2,3 +2,27 @@ settings:
   # The language file to use from the locale folder.
   # Supported languages are Spanish(sp), Czech(cz) & English(en).
   language-file: 'locale-en.yml'
+  # Whether you want metrics to be enabled.
+  toggle-metrics: true
+  # Crate related settings
+  crate:
+    # If crates should have knock back if they have no keys.
+    knock-back: true
+    keys:
+      # Should a physical crate accept virtual keys?
+      physical-crate-accepts-virtual-keys: true
+      # Should a virtual crate ( /crates ) accept physical keys?
+      virtual-crate-accepts-physical-keys: true
+      # Should I give virtual keys if inventory is full?
+      give-virtual-keys-with-full-inventory: false
+      key-sound:
+        # Do you want me to play a sound?
+        enabled: false
+        # The sound you want to play!
+        name: 'ENTITY_VILLAGER_NO'
+    quad-crate:
+      # I don't know what this is yet.
+      timer: 300
+    # What worlds do you want Crates to be disabled in?
+    disabled-worlds:
+      - 'world_nether'
