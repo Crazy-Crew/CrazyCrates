@@ -248,7 +248,7 @@ public class CrateControlListener implements Listener { // Crate Control
     public void knockBack(Player player, Location location) {
         Vector vector = player.getLocation().toVector().subtract(location.toVector()).normalize().multiply(1).setY(.1);
 
-        if (player.isInsideVehicle()) {
+        if (player.isInsideVehicle() && player.getVehicle() != null) {
             player.getVehicle().setVelocity(vector);
             return;
         }
