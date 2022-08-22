@@ -6,17 +6,12 @@ import com.badbones69.crazycrates.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
-import com.badbones69.crazycrates.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.api.objects.*;
-import com.badbones69.crazycrates.cratetypes.*;
-import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.support.holograms.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.HolographicSupport;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
-import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import com.google.inject.Inject;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -36,10 +31,11 @@ public class CrazyManager {
 
     //@Inject private CrateControlListener crateControlListener;
     //@Inject private ChestStateHandler chestStateHandler;
-    @Inject private Methods methods;
 
     @Inject private CrazyCrates plugin;
+    @Inject private CrazyManager crazyManager;
     @Inject private FileManager fileManager;
+    @Inject private Methods methods;
 
     //@Inject private CosmicCrate cosmicCrate;
     //@Inject private CrateOnTheGo crateOnTheGo;
@@ -342,7 +338,8 @@ public class CrazyManager {
         if (broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {
             if (crate.getFile().contains("Crate.BroadCast")) {
                 if (!crate.getFile().getString("Crate.BroadCast").isEmpty()) {
-                    plugin.getServer().broadcastMessage(methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", methods.getPrefix()).replaceAll("%prefix%", methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
+                    //plugin.getServer().broadcastMessage(methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll(
+                    //        "%Prefix%", methods.getPrefix()).replaceAll("%prefix%", methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
                 }
             }
 
@@ -434,7 +431,10 @@ public class CrazyManager {
 
         if (broadcast) {
             if (!crate.getFile().getString("Crate.BroadCast").isEmpty()) {
-                player.getServer().broadcastMessage(methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", methods.getPrefix()).replaceAll("%prefix%", methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
+                //player.getServer().broadcastMessage(
+                //        methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll(
+                //                "%Prefix%", methods.getPrefix()).replaceAll("%prefix%", methods.getPrefix()).replaceAll(
+                //                        "%Player%", player.getName()).replaceAll("%player%", player.getName())));
             }
         }
     }
@@ -673,7 +673,7 @@ public class CrazyManager {
             slots += 9;
         }
 
-        Inventory inv = plugin.getServer().createInventory(null, slots, methods.sanitizeColor(file.getString("Crate.Name")));
+        Inventory inv = plugin.getServer().createInventory(null, slots, file.getString("Crate.Name"));
 
         for (String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
             String id = file.getString("Crate.Prizes." + reward + ".DisplayItem", "Stone");
@@ -773,14 +773,14 @@ public class CrazyManager {
 
                 if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded(plugin)) command = PlaceholderAPI.setPlaceholders(player, command);
 
-                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), methods.color(command.replace("%Player%", player.getName()).replace("%player%", player.getName())));
+                //plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), methods.color(command.replace("%Player%", player.getName()).replace("%player%", player.getName())));
             }
 
             for (String message : prize.getMessages()) {
                 if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded(plugin)) message = PlaceholderAPI.setPlaceholders(player, message);
 
-                player.sendMessage(methods.color(message).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())
-                .replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
+                //player.sendMessage(methods.color(message).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())
+                //.replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
             }
         } else {
             plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
@@ -1311,7 +1311,7 @@ public class CrazyManager {
         if (entity instanceof Item) {
             ItemStack item = ((Item) entity).getItemStack();
 
-            if (item.getType() != Material.AIR) return new NBTItem(item).hasKey("crazycrates-item");
+            //if (item.getType() != Material.AIR) return new NBTItem(item).hasKey("crazycrates-item");
         }
 
         return false;
