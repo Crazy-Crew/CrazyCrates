@@ -11,6 +11,7 @@ import com.badbones69.crazycrates.support.structures.QuadCrateSpiralHandler;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
+import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -32,6 +33,8 @@ import java.util.Random;
 public class QuadCrateManager {
 
     @Inject private ScheduleUtils scheduleUtils;
+
+    @Inject private CrazyLogger crazyLogger;
 
     private final ChestStateHandler quadCrateHandler = new ChestStateHandler();
 
@@ -114,7 +117,7 @@ public class QuadCrateManager {
         crateSessions.add(instance);
     }
 
-    public boolean startCrate(CrazyCrates plugin) {
+    public boolean startCrate() {
 
         // Check if it is on a block.
         if (spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
@@ -138,7 +141,10 @@ public class QuadCrateManager {
         try {
             structureLocations = handler.getNearbyBlocks(spawnLocation.clone());
         } catch (Exception e) {
-            plugin.getServer().getLogger().warning(e.getMessage());
+            if (Config.TOGGLE_VERBOSE) {
+                crazyLogger.debug(e.getMessage());
+                e.printStackTrace();
+            }
         }
 
         // Loop through the blocks and check if the blacklist contains the block type.
@@ -253,7 +259,7 @@ public class QuadCrateManager {
         return false;
     }
 
-    public void endCrate(CrazyCrates plugin) {
+    public void endCrate() {
         scheduleUtils.later(3 * 20L, new BukkitRunnable() {
             @Override
             public void run() {
@@ -332,7 +338,7 @@ public class QuadCrateManager {
     }
 
     // Get the crate sessions.
-    public static List<QuadCrateManager> getCrateSessions() {
+    public List<QuadCrateManager> getCrateSessions() {
         return crateSessions;
     }
 

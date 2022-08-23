@@ -960,13 +960,11 @@ public class ItemBuilder {
                         itemBuilder.setName(value);
                         break;
                     case "amount":
-                        
                         try {
                             itemBuilder.setAmount(Integer.parseInt(value));
                         } catch (NumberFormatException e) {
                             itemBuilder.setAmount(1);
                         }
-                        
                         break;
                     case "lore":
                         itemBuilder.setLore(Arrays.asList(value.split(",")));
@@ -975,9 +973,7 @@ public class ItemBuilder {
                         itemBuilder.setPlayerName(value);
                         break;
                     case "unbreakable-item":
-                        
                         if (value.isEmpty() || value.equalsIgnoreCase("true")) itemBuilder.setUnbreakable(true);
-                        
                         break;
                     default:
                         Enchantment enchantment = getEnchantment(option);

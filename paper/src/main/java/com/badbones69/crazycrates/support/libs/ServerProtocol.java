@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.support.libs;
 import com.badbones69.crazycrates.CrazyCrates;
 
 /**
- * @Author Badbones69
+ * @author Badbones69
  */
 public enum ServerProtocol {
 
@@ -55,9 +55,7 @@ public enum ServerProtocol {
         ServerProtocol old = ServerProtocol.TOO_OLD;
 
         for (ServerProtocol protocol : values()) {
-            if (protocol.compare(old) == 1) {
-                old = protocol;
-            }
+            if (protocol.compare(old) == 1) old = protocol;
         }
 
         return old;
@@ -65,23 +63,29 @@ public enum ServerProtocol {
 
     public static boolean isAtLeast(ServerProtocol protocol, CrazyCrates plugin) {
         if (currentProtocol == null) getCurrentProtocol(plugin);
+
         int proto = currentProtocol.versionProtocol;
+
         return proto >= protocol.versionProtocol || proto == -2;
     }
 
     public static boolean isNewer(ServerProtocol protocol, CrazyCrates plugin) {
         if (currentProtocol == null) getCurrentProtocol(plugin);
+
         return currentProtocol.versionProtocol > protocol.versionProtocol || currentProtocol.versionProtocol == -2;
     }
 
     public static boolean isSame(ServerProtocol protocol, CrazyCrates plugin) {
         if (currentProtocol == null) getCurrentProtocol(plugin);
+
         return currentProtocol.versionProtocol == protocol.versionProtocol;
     }
 
     public static boolean isOlder(ServerProtocol protocol, CrazyCrates plugin) {
         if (currentProtocol == null) getCurrentProtocol(plugin);
+
         int proto = currentProtocol.versionProtocol;
+
         return proto < protocol.versionProtocol || proto == -1;
     }
 

@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.listeners;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.Permissions;
@@ -11,9 +10,12 @@ import com.badbones69.crazycrates.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.cratetypes.QuickCrate;
+import com.badbones69.crazycrates.modules.config.files.Config;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,6 +32,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import java.util.HashMap;
 
+@Singleton
 public class CrateControlListener implements Listener { // Crate Control
 
     // A list of crate locations that are in use.
@@ -66,7 +69,6 @@ public class CrateControlListener implements Listener { // Crate Control
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
-        //FileConfiguration config = FileManager.Files.CONFIG.getFile();
 
         if (e.getHand() == EquipmentSlot.OFF_HAND) {
             if (crazyManager.isKey(player.getInventory().getItemInOffHand())) {
@@ -147,7 +149,7 @@ public class CrateControlListener implements Listener { // Crate Control
                         isPhysical = true;
                     }
 
-                    //if (config.getBoolean("Settings.Physical-Accepts-Virtual-Keys") && crazyManager.getVirtualKeys(player, crate) >= 1) hasKey = true;
+                    if (Config.PHYSICAL_CRATE_ACCEPTS_VIRTUAL_KEYS && crazyManager.getVirtualKeys(player, crate) >= 1) hasKey = true;
 
                     if (hasKey) {
                         // Checks if the player uses the quick crate again.
@@ -168,7 +170,7 @@ public class CrateControlListener implements Listener { // Crate Control
                             }
                         }
 
-                        if (methods.isInventoryFull(player)) {
+                        if (!player.getInventory().isEmpty()) {
                             //player.sendMessage(Messages.INVENTORY_FULL.getMessage(methods));
                             return;
                         }
@@ -184,13 +186,9 @@ public class CrateControlListener implements Listener { // Crate Control
                         crazyManager.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true);
                     } else {
                         if (crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
-                           // if (config.getBoolean("Settings.KnockBack")) knockBack(player, clickedBlock.getLocation());
+                            if (Config.TOGGLE_CRATE_KNOCKBACK) knockBack(player, clickedBlock.getLocation());
 
-                            // (config.contains("Settings.Need-Key-Sound")) {
-                            //    Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
-
-                            //    player.playSound(player.getLocation(), sound, 1f, 1f);
-                            //}
+                            if (Config.KEY_SOUND_ENABLED) player.playSound(player.getLocation(), Sound.valueOf(Config.KEY_SOUND_NAME), 1f, 1f);
 
                            // player.sendMessage(Messages.NO_KEY.getMessage("%Key%", keyName, methods));
                         }
@@ -236,7 +234,7 @@ public class CrateControlListener implements Listener { // Crate Control
     }
 
     @EventHandler
-    public void onLeave(PlayerQuitEvent e) {
+    public void onPlayerLeave(PlayerQuitEvent e) {
         Player player = e.getPlayer();
 
         if (crazyManager.hasCrateTask(player)) crazyManager.endCrate(player);

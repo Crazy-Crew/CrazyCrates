@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.support.holograms;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateHologram;
@@ -13,10 +12,9 @@ import java.util.HashMap;
 
 public class HolographicSupport implements HologramController {
     
-    private static final HashMap<Block, Hologram> holograms = new HashMap<>();
+    private final HashMap<Block, Hologram> holograms = new HashMap<>();
 
     @Inject private CrazyCrates plugin;
-    @Inject private Methods methods;
     
     public void createHologram(Block block, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();

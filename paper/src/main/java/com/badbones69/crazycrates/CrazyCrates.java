@@ -1,17 +1,30 @@
 package com.badbones69.crazycrates;
 
+import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
+import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
+import com.badbones69.crazycrates.cratetypes.*;
+import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
+import com.badbones69.crazycrates.listeners.CrateControlListener;
+import com.badbones69.crazycrates.listeners.FireworkDamageListener;
+import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.modules.PluginModule;
 import com.badbones69.crazycrates.modules.config.files.Config;
 import com.badbones69.crazycrates.modules.config.files.Locale;
+import com.badbones69.crazycrates.modules.config.files.menus.CrateMenuConfig;
+import com.badbones69.crazycrates.support.libs.PluginSupport;
+import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Singleton;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.file.Path;
 
+@Singleton
 public class CrazyCrates extends JavaPlugin implements Listener {
 
     private Injector injector;
@@ -23,8 +36,25 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public final Path LOCALE_DIRECTORY = getDataFolder().toPath().resolve("locale");
     public final Path PLUGIN_DIRECTORY = getDataFolder().toPath();
 
+    @Inject private CrazyManager crazyManager;
     @Inject private FileManager fileManager;
+    @Inject private SessionManager sessionManager;
     @Inject private CrazyLogger crazyLogger;
+
+    @Inject private CosmicCrate cosmicCrate;
+    @Inject private CrateOnTheGo crateOnTheGo;
+    @Inject private CsgoCrate csgoCrate;
+    @Inject private QuadCrate quadCrate;
+    @Inject private QuickCrate quickCrate;
+    @Inject private RouletteCrate rouletteCrate;
+    @Inject private WarCrate warCrate;
+    @Inject private WheelCrate wheelCrate;
+    @Inject private WonderCrate wonderCrate;
+
+    @Inject private BrokeLocationsListener brokeLocationsListener;
+    @Inject private CrateControlListener crateControlListener;
+    @Inject private FireworkDamageListener fireworkDamageListener;
+    @Inject private MiscListener miscListener;
 
     @Override
     public void onEnable() {
@@ -40,6 +70,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             String cratesFolder = "/crates";
             String schematicFolder = "/schematics";
             String localeFolder = "/locale";
+            String menuFolder = "/menus";
 
             // Create default config.
             saveDefaultConfig();
@@ -50,6 +81,10 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             fileManager.toggleLogging(Config.TOGGLE_VERBOSE)
                     // Crate Examples.
                     //.registerDefaultGenerateFiles("crate-example.yml", cratesFolder, cratesFolder)
+
+                    // Crate Menu Files.
+                    .registerDefaultGenerateFiles("crate-menu.yml", menuFolder, menuFolder)
+                    .registerDefaultGenerateFiles("preview-menu.yml", menuFolder, menuFolder)
 
                     // Locale Files.
                     .registerDefaultGenerateFiles("locale-en.yml", localeFolder, localeFolder)
@@ -74,9 +109,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             Locale.reload(LOCALE_DIRECTORY, Config.LANGUAGE_FILE, crazyLogger);
 
             // Crate Menus.
-            //CrateMenuFile.reload(MENU_DIRECTORY, this);
-
-            new Metrics(this, 4514);
+            CrateMenuConfig.reload(MENU_DIRECTORY, crazyLogger);
 
             if (Config.TOGGLE_METRICS) new Metrics(this, 4514);
         } catch (Exception e) {
@@ -96,21 +129,37 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onDisable() {
         if (!pluginEnabled) return;
 
-        //SessionManager.endCrates();
+        sessionManager.endCrates();
 
-        //quickCrate.removeAllRewards();
+        quickCrate.removeAllRewards();
 
-        //if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
+        if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
 
         injector = null;
     }
 
     private void enable() {
 
-        //crazyManager.loadCrates();
+        crazyManager.loadCrates();
 
-        //if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
+        PluginManager pluginManager = getServer().getPluginManager();
 
-        //if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded(this)) new PlaceholderAPISupport().register();
+        if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(brokeLocationsListener, this);
+
+        pluginManager.registerEvents(crateControlListener, this);
+        pluginManager.registerEvents(fireworkDamageListener, this);
+        pluginManager.registerEvents(miscListener, this);
+
+        pluginManager.registerEvents(cosmicCrate, this);
+        pluginManager.registerEvents(crateOnTheGo, this);
+        pluginManager.registerEvents(csgoCrate, this);
+        pluginManager.registerEvents(quadCrate, this);
+        pluginManager.registerEvents(quickCrate, this);
+        pluginManager.registerEvents(rouletteCrate, this);
+        pluginManager.registerEvents(warCrate, this);
+        pluginManager.registerEvents(wheelCrate, this);
+        pluginManager.registerEvents(wonderCrate, this);
+
+        if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded(this)) new PlaceholderAPISupport().register();
     }
 }

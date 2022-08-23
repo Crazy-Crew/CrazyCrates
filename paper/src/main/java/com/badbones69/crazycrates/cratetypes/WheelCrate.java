@@ -4,11 +4,13 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.utilities.CommonUtils;
+import com.badbones69.crazycrates.utilities.ScheduleUtils;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+@Singleton
 public class WheelCrate implements Listener {
     
     public static Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
@@ -27,6 +30,8 @@ public class WheelCrate implements Listener {
     @Inject private CrazyCrates plugin;
     @Inject private CrazyManager crazyManager;
     @Inject private Methods methods;
+    @Inject private CommonUtils commonUtils;
+    @Inject private ScheduleUtils scheduleUtils;
 
     public void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
@@ -52,7 +57,8 @@ public class WheelCrate implements Listener {
         rewards.put(player, items);
         player.openInventory(inv);
 
-        crazyManager.addCrateTask(player, new BukkitRunnable() {
+        crazyManager.addCrateTask(player, scheduleUtils.timer(1L, 1L, new BukkitRunnable() {
+
             final ArrayList<Integer> slots = getBorder();
             int i = 0;
             int f = 17;
@@ -61,7 +67,7 @@ public class WheelCrate implements Listener {
             int slower = 0;
             int open = 0;
             int slow = 0;
-            
+
             @Override
             public void run() {
 
@@ -72,7 +78,7 @@ public class WheelCrate implements Listener {
                 if (full < timer) rewardCheck();
 
                 if (full >= timer) {
-                    if (slowSpin().contains(slower)) rewardCheck();
+                    if (commonUtils.slowSpin().contains(slower)) rewardCheck();
 
                     if (full == timer + 47) player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 
@@ -95,15 +101,7 @@ public class WheelCrate implements Listener {
 
                         if (crazyManager.isInOpeningList(player)) prize = crate.getPrize(rewards.get(player).get(slots.get(f)));
 
-                        if (prize != null) {
-                            crazyManager.givePrize(player, prize);
-
-                            if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
-
-                            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-                        } else {
-                            player.sendMessage(methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
-                        }
+                        commonUtils.pickPrize(player, crate, prize);
 
                         player.closeInventory();
                         crazyManager.removePlayerFromOpeningList(player);
@@ -131,27 +129,12 @@ public class WheelCrate implements Listener {
 
                 inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+
                 i++;
                 f++;
             }
 
-        }.runTaskTimer(plugin, 1, 1));
-    }
-    
-    private static ArrayList<Integer> slowSpin() {
-        ArrayList<Integer> slow = new ArrayList<>();
-        int full = 46;
-        int cut = 9;
-
-        for (int i = 46; cut > 0; full--) {
-            if (full <= i - cut || full >= i - cut) {
-                slow.add(i);
-                i -= cut;
-                cut--;
-            }
-        }
-
-        return slow;
+        }));
     }
     
     private static ArrayList<Integer> getBorder() {

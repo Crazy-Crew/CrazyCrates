@@ -4,12 +4,14 @@ import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
-import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import com.google.inject.Inject;
-import net.md_5.bungee.api.chat.TextComponent;
+import com.google.inject.Singleton;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.Validate;
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.RemoteConsoleCommandSender;
@@ -24,8 +26,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Singleton
 public class Methods {
@@ -33,19 +33,6 @@ public class Methods {
     @Inject private CrazyCrates plugin;
 
     private final Random random = new Random();
-
-    public String getPrefix() {
-        //String prefix = FileManager.Files.CONFIG.getFile().getString("Settings.Prefix");
-
-        //if (prefix != null) return color(prefix);
-
-        return null;
-    }
-
-    public String getPrefix(String msg) {
-        return msg;
-        //return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
-    }
 
     public String removeColor(String msg) {
         return ChatColor.stripColor(msg);
@@ -55,24 +42,27 @@ public class Methods {
         HashMap<ItemStack, String> items = new HashMap<>();
         FileConfiguration file = crazyManager.getOpeningCrate(player).getFile();
 
-        for (String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
-            String id = file.getString("Crate.Prizes." + reward + ".DisplayItem");
-            String name = file.getString("Crate.Prizes." + reward + ".DisplayName");
-            int chance = file.getInt("Crate.Prizes." + reward + ".Chance");
-            int max = 99;
+        if (file.getConfigurationSection("Crate.Prizes") != null) {
+            for (String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
+                String id = file.getString("Crate.Prizes." + reward + ".DisplayItem");
+                String name = file.getString("Crate.Prizes." + reward + ".DisplayName");
+                int chance = file.getInt("Crate.Prizes." + reward + ".Chance");
+                int max = 99;
 
-            if (file.contains("Crate.Prizes." + reward + ".MaxRange")) max = file.getInt("Crate.Prizes." + reward + ".MaxRange") - 1;
+                if (file.contains("Crate.Prizes." + reward + ".MaxRange")) max = file.getInt("Crate.Prizes." + reward + ".MaxRange") - 1;
 
-            try {
-                ItemStack item = new ItemBuilder().setMaterial(id).setName(name).build();
-                int num;
+                try {
+                    assert id != null;
+                    ItemStack item = new ItemBuilder().setMaterial(id).setName(name).build();
+                    int num;
 
-                for (int counter = 1; counter <= 1; counter++) {
-                    num = 1 + random.nextInt(max);
+                    for (int counter = 1; counter <= 1; counter++) {
+                        num = 1 + random.nextInt(max);
 
-                    if (num >= 1 && num <= chance) items.put(item, "Crate.Prizes." + reward);
-                }
-            } catch (Exception ignored) {}
+                        if (num <= chance) items.put(item, "Crate.Prizes." + reward);
+                    }
+                } catch (Exception ignored) {}
+            }
         }
 
         return items;
@@ -84,6 +74,7 @@ public class Methods {
         fireworkMeta.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(colors).trail(false).flicker(false).build());
         fireworkMeta.setPower(0);
         firework.setFireworkMeta(fireworkMeta);
+
         //fireworkDamageListener.addFirework(firework, plugin);
 
         detonate(firework);
@@ -95,6 +86,7 @@ public class Methods {
         fireworkMeta.addEffects(FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.RED).withColor(Color.AQUA).withColor(Color.ORANGE).withColor(Color.YELLOW).trail(false).flicker(false).build());
         fireworkMeta.setPower(0);
         firework.setFireworkMeta(fireworkMeta);
+
         //fireworkDamageListener.addFirework(firework, plugin);
 
         detonate(firework);
@@ -264,7 +256,9 @@ public class Methods {
         if (e != null) e.printStackTrace();
     }
 
-    // Thanks ElectronicBoy
+    /**
+     * @author ElectronicBoy
+     */
     public HashMap<Integer, ItemStack> removeItemAnySlot(Inventory inventory, ItemStack... items) {
         Validate.notNull(items, "Items cannot be null");
         HashMap<Integer, ItemStack> leftover = new HashMap<>();
@@ -288,6 +282,7 @@ public class Methods {
                     break;
                 } else {
                     ItemStack itemStack = inventory.getItem(first);
+                    assert itemStack != null;
                     int amount = itemStack.getAmount();
 
                     if (amount <= toDelete) {

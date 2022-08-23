@@ -1,11 +1,12 @@
 package com.badbones69.crazycrates.cratetypes;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.utilities.ScheduleUtils;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -14,12 +15,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+@Singleton
 public class FireCrackerCrate {
-
-    @Inject private CrazyCrates plugin;
     @Inject private CrazyManager crazyManager;
     @Inject private Methods methods;
     @Inject private QuickCrate quickCrate;
+
+    @Inject private ScheduleUtils scheduleUtils;
 
     public void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc) {
 
@@ -39,7 +41,8 @@ public class FireCrackerCrate {
         colors.add(Color.MAROON);
         colors.add(Color.PURPLE);
 
-        crazyManager.addCrateTask(player, new BukkitRunnable() {
+        scheduleUtils.timer(2L, 0L, new BukkitRunnable() {
+
             final Random random = new Random();
 
             final int color = random.nextInt(colors.size());
@@ -61,6 +64,6 @@ public class FireCrackerCrate {
                     quickCrate.openCrate(player, loc, crate, KeyType.FREE_KEY);
                 }
             }
-        }.runTaskTimer(plugin, 0, 2));
+        });
     }
 }

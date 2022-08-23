@@ -4,11 +4,12 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
-import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.utilities.CommonUtils;
+import com.badbones69.crazycrates.utilities.ScheduleUtils;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -19,11 +20,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Singleton
 public class CsgoCrate implements Listener {
 
     @Inject private CrazyCrates plugin;
     @Inject private CrazyManager crazyManager;
     @Inject private Methods methods;
+
+    @Inject private ScheduleUtils scheduleUtils;
+    @Inject private CommonUtils commonUtils;
 
     private void setGlass(Inventory inv) {
         HashMap<Integer, ItemStack> glass = new HashMap<>();
@@ -84,14 +89,16 @@ public class CsgoCrate implements Listener {
     }
     
     private void startCSGO(final Player player, final Inventory inv, Crate crate) {
-        crazyManager.addCrateTask(player, new BukkitRunnable() {
+
+        scheduleUtils.timer(1L, 1L, new BukkitRunnable() {
+
             int time = 1;
             int full = 0;
             int open = 0;
-            
+
             @Override
             public void run() {
-                if (full <= 50) { // When Spinning
+                if (full <= 50) { // When spinning
                     moveItems(inv, player, crate);
                     setGlass(inv);
                     player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
@@ -105,6 +112,7 @@ public class CsgoCrate implements Listener {
                 }
 
                 full++;
+
                 if (full > 51) {
 
                     if (slowSpin().contains(time)) { // When Slowing Down
@@ -116,37 +124,25 @@ public class CsgoCrate implements Listener {
                     time++;
 
                     if (time == 60) { // When done
-                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-                        crazyManager.endCrate(player);
-                        Prize prize = crate.getPrize(inv.getItem(13));
+                        commonUtils.endCrate(player, crate, inv);
 
-                        if (prize != null) {
-                            crazyManager.givePrize(player, prize);
-
-                            if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
-
-                            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-                        } else {
-                            player.sendMessage(methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
-                        }
-
-                        crazyManager.removePlayerFromOpeningList(player);
                         cancel();
 
-                        new BukkitRunnable() {
+                        scheduleUtils.later(40L, new BukkitRunnable() {
                             @Override
                             public void run() {
                                 if (player.getOpenInventory().getTopInventory().equals(inv)) player.closeInventory();
                             }
-                        }.runTaskLater(plugin, 40);
+                        });
+
                     } else if (time > 60) { // Added this due reports of the prizes spamming when low tps.
                         cancel();
                     }
                 }
             }
-        }.runTaskTimer(plugin, 1, 1));
+        });
     }
-    
+
     private ArrayList<Integer> slowSpin() {
         ArrayList<Integer> slow = new ArrayList<>();
         int full = 120;

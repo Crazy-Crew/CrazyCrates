@@ -7,7 +7,9 @@ import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.utilities.ScheduleUtils;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -31,11 +33,14 @@ import java.util.Random;
  * Controller class for the quad-crate crate type.
  * Display items are controlled from the quick crate due to them using nbt tags.
  */
+@Singleton
 public class QuadCrate implements Listener {
 
     @Inject private CrazyCrates plugin;
     @Inject private CrazyManager crazyManager;
     @Inject private SessionManager sessionManager;
+
+    @Inject private ScheduleUtils scheduleUtils;
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
@@ -43,7 +48,7 @@ public class QuadCrate implements Listener {
     }
 
     @EventHandler
-    public void onChestClick(PlayerInteractEvent e) {
+    public void onPlayerChestClick(PlayerInteractEvent e) {
         Player player = e.getPlayer();
 
         if (sessionManager.inSession(player)) {
@@ -67,9 +72,11 @@ public class QuadCrate implements Listener {
                         itemBuilder.addLore(new Random().nextInt(Integer.MAX_VALUE) + ""); // Makes sure items don't merge
 
                         ItemStack item = itemBuilder.build();
+
                         //NBTItem nbtItem = new NBTItem(item);
                         //nbtItem.setBoolean("crazycrates-item", true);
                         //item = nbtItem.getItem();
+
                         Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), item);
 
                         reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(plugin, true));
@@ -84,13 +91,13 @@ public class QuadCrate implements Listener {
                         session.getDisplayedRewards().add(reward);
 
                         if (session.allCratesOpened()) { // All 4 crates have been opened
-                            new BukkitRunnable() {
+                            scheduleUtils.later(60L, new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    session.endCrate(plugin);
+                                    session.endCrate();
                                     player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
                                 }
-                            }.runTaskLater(plugin, 60);
+                            });
                         }
                     }
                 }

@@ -8,7 +8,9 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.utilities.ScheduleUtils;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -17,11 +19,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 
+@Singleton
 public class WonderCrate implements Listener {
 
     @Inject private CrazyCrates plugin;
     @Inject private CrazyManager crazyManager;
     @Inject private Methods methods;
+
+    @Inject private ScheduleUtils scheduleUtils;
 
     public void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
@@ -41,31 +46,33 @@ public class WonderCrate implements Listener {
 
         player.openInventory(inv);
 
-        crazyManager.addCrateTask(player, new BukkitRunnable() {
+        crazyManager.addCrateTask(player, scheduleUtils.timer(2L, 0L, new BukkitRunnable() {
+
             int fullTime = 0;
             int timer = 0;
-            int slot1 = 0;
-            int slot2 = 44;
-            final ArrayList<Integer> Slots = new ArrayList<>();
-            Prize prize = null;
-            
+            int slotOne = 0;
+            int slotTwo = 44;
+
             @Override
             public void run() {
+                final ArrayList<Integer> Slots = new ArrayList<>();
+                Prize prize = null;
+
                 if (timer >= 2 && fullTime <= 65) {
-                    slots.remove(slot1 + "");
-                    slots.remove(slot2 + "");
-                    Slots.add(slot1);
-                    Slots.add(slot2);
-                    inv.setItem(slot1, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
-                    inv.setItem(slot2, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+                    slots.remove(slotOne + "");
+                    slots.remove(slotTwo + "");
+                    Slots.add(slotOne);
+                    Slots.add(slotTwo);
+                    inv.setItem(slotOne, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+                    inv.setItem(slotTwo, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
 
                     for (String slot : slots) {
                         prize = crate.pickPrize(player);
                         inv.setItem(Integer.parseInt(slot), prize.getDisplayItem());
                     }
 
-                    slot1++;
-                    slot2--;
+                    slotOne++;
+                    slotTwo--;
                 }
 
                 if (fullTime > 67) {
@@ -81,9 +88,11 @@ public class WonderCrate implements Listener {
                     player.closeInventory();
                     crazyManager.givePrize(player, prize);
 
+                    assert prize != null;
                     if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 
                     plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+
                     crazyManager.removePlayerFromOpeningList(player);
                     return;
                 }
@@ -91,10 +100,8 @@ public class WonderCrate implements Listener {
                 fullTime++;
                 timer++;
 
-                if (timer > 2) {
-                    timer = 0;
-                }
+                if (timer > 2) timer = 0;
             }
-        }.runTaskTimer(plugin, 0, 2));
+        }));
     }
 }

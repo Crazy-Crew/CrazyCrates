@@ -10,7 +10,10 @@ import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
+import com.badbones69.crazycrates.utilities.ScheduleUtils;
+import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+@Singleton
 public class CosmicCrate implements Listener {
 
     private final HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();
@@ -33,7 +37,10 @@ public class CosmicCrate implements Listener {
 
     @Inject private CrazyCrates plugin;
     @Inject private CrazyManager crazyManager;
+    @Inject private CrazyLogger crazyLogger;
     @Inject private Methods methods;
+
+    @Inject private ScheduleUtils scheduleUtils;
 
     private void showRewards(Player player, Crate crate) {
         Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Prizes");
@@ -126,7 +133,9 @@ public class CosmicCrate implements Listener {
 
                                 if (prize != null) {
                                     crazyManager.givePrize(player, prize);
+
                                     plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crazyManager.getOpeningCrate(player).getName(), prize));
+
                                     e.setCurrentItem(prize.getDisplayItem());
                                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 
@@ -151,6 +160,7 @@ public class CosmicCrate implements Listener {
                         CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
                         int totalPrizes = manager.getTotalPrizes();
                         int pickedSlot = slot + 1;
+
                         //NBTItem nbtItem = new NBTItem(item);
 
                         /*if (nbtItem.hasNBTData()) {
@@ -202,9 +212,10 @@ public class CosmicCrate implements Listener {
                                 return;
                             }
 
-                            crazyManager.addCrateTask(player, new BukkitRunnable() {
+                            crazyManager.addCrateTask(player, scheduleUtils.timer(0L, 2L, new BukkitRunnable() {
+
                                 int time = 0;
-                                
+
                                 @Override
                                 public void run() {
                                     try {
@@ -216,32 +227,35 @@ public class CosmicCrate implements Listener {
                                         if (!event.isCancelled()) {
                                             crazyManager.addKeys(1, player, crate, keyType);
                                             crazyManager.endCrate(player);
+
                                             cancel();
-                                            player.sendMessage(methods.getPrefix("&cAn issue has occurred and so a key refund was given."));
-                                            plugin.getServer().getLogger().warning("An issue occurred when the user " + player.getName() +
-                                            " was using the " + crate.getName() + " crate and so they were issued a key refund.");
+
+                                            // TODO() - Configurable error message.
+                                            // player.sendMessage(methods.getPrefix("&cAn issue has occurred and so a key refund was given."));
+
+                                            crazyLogger.debug("<red>Issue occurred when</red> <gold>" + player.getName() + "</gold> <red>was using </red><gold>" + crate.getName() + "</gold> <red>crate and were issued a key refund.</red>");
                                             e.printStackTrace();
+
+                                            return;
                                         }
 
-                                        return;
-                                    }
+                                        time++;
 
-                                    time++;
+                                        if (time == 40) {
+                                            crazyManager.endCrate(player);
+                                            showRewards(player, crate);
+                                            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1, 1);
 
-                                    if (time == 40) {
-                                        crazyManager.endCrate(player);
-                                        showRewards(player, crate);
-                                        player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1, 1);
-
-                                        new BukkitRunnable() {
-                                            @Override
-                                            public void run() {
-                                                if (player.getOpenInventory().getTopInventory().equals(inv)) player.closeInventory();
-                                            }
-                                        }.runTaskLater(plugin, 40);
+                                            scheduleUtils.later(40L, new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    if (player.getOpenInventory().getTopInventory().equals(inv)) player.closeInventory();
+                                                }
+                                            });
+                                        }
                                     }
                                 }
-                            }.runTaskTimer(plugin, 0, 2));
+                            }));
                         }
                     }
                 }
@@ -287,9 +301,7 @@ public class CosmicCrate implements Listener {
                 }
             }
 
-            if (playSound) {
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
-            }
+            if (playSound) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 
             crazyManager.removePlayerFromOpeningList(player);
             crazyManager.removePlayerKeyType(player);

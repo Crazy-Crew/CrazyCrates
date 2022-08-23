@@ -4,30 +4,28 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.utilities.CommonUtils;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import java.util.ArrayList;
 
+@Singleton
 public class RouletteCrate implements Listener {
 
     @Inject private CrazyCrates plugin;
     @Inject private CrazyManager crazyManager;
     @Inject private Methods methods;
 
+    @Inject private CommonUtils commonUtils;
+
     private void setGlass(Inventory inv) {
         for (int i = 0; i < 27; i++) {
-            if (i != 13) {
-                ItemStack item = methods.getRandomPaneColor().setName(" ").build();
-                inv.setItem(i, item);
-            }
+            if (i != 13) inv.setItem(i, methods.getRandomPaneColor().setName(" ").build());
         }
     }
     
@@ -78,7 +76,7 @@ public class RouletteCrate implements Listener {
 
                 if (full > 16) {
 
-                    if (slowSpin().contains(time)) {
+                    if (commonUtils.slowSpin().contains(time)) {
                         setGlass(inv);
                         inv.setItem(13, crate.pickPrize(player).getDisplayItem());
                         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
@@ -87,21 +85,7 @@ public class RouletteCrate implements Listener {
                     time++;
 
                     if (time >= 23) {
-                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-                        crazyManager.endCrate(player);
-                        Prize prize = crate.getPrize(inv.getItem(13));
-
-                        if (prize != null) {
-                            crazyManager.givePrize(player, prize);
-
-                            if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
-
-                            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-                        } else {
-                            player.sendMessage(methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
-                        }
-
-                        crazyManager.removePlayerFromOpeningList(player);
+                        commonUtils.endCrate(player, crate, inv);
 
                         new BukkitRunnable() {
                             @Override
@@ -113,21 +97,5 @@ public class RouletteCrate implements Listener {
                 }
             }
         }.runTaskTimer(plugin, 2, 2));
-    }
-    
-    private static ArrayList<Integer> slowSpin() {
-        ArrayList<Integer> slow = new ArrayList<>();
-        int full = 46;
-        int cut = 9;
-
-        for (int i = 46; cut > 0; full--) {
-            if (full <= i - cut || full >= i - cut) {
-                slow.add(i);
-                i -= cut;
-                cut--;
-            }
-        }
-
-        return slow;
     }
 }

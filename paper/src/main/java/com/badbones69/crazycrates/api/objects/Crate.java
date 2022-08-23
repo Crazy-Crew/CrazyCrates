@@ -41,11 +41,11 @@ public class Crate {
     private final ArrayList<ItemStack> preview;
     private final ArrayList<Tier> tiers;
     private final CrateHologram hologram;
-
-    private final CrazyCrates plugin;
     private final FileManager fileManager;
     private final Methods methods;
-    
+
+    @Inject private CrazyLogger crazyLogger;
+
     /**
      * @param name The name of the crate.
      * @param crateType The crate type of the crate.
@@ -53,7 +53,7 @@ public class Crate {
      * @param prizes The prizes that can be won.
      * @param file The crate file.
      */
-    public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, CrateHologram hologram, CrazyCrates plugin, Methods methods, FileManager fileManager) {
+    public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, CrateHologram hologram, Methods methods, FileManager fileManager) {
         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
         this.keyNoNBT = itemBuilder.build();
         this.key = itemBuilder.setCrateName(name).build();
@@ -86,7 +86,6 @@ public class Crate {
             this.manager = new CosmicCrateManager(file);
         }
 
-        this.plugin = plugin;
         this.methods = methods;
         this.fileManager = fileManager;
 
@@ -164,6 +163,7 @@ public class Crate {
         }
 
         // ================= Chance Check ================= //
+            crazyLogger.debug("<red>Failed to find prize from the</red> <gold>" + name + "</gold> <red>crate for player</red> <gold>" + player.getName() + ".</gold>");
         for (int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
             for (Prize prize : usablePrizes) {
                 int max = prize.getMaxRange();
@@ -177,15 +177,8 @@ public class Crate {
                 }
             }
         }
-
-        try {
-            return prizes.get(new Random().nextInt(prizes.size()));
-        } catch (IllegalArgumentException e) {
-            plugin.getLogger().warning("Failed to find prize from the " + name + " crate for player " + player.getName() + ".");
-            return null;
-        }
     }
-    
+
     /**
      * Picks a random prize based on BlackList Permissions and the Chance System. Only used in the Cosmic Crate Type since it is the only one with tiers.
      * @param player The player that will be winning the prize.
