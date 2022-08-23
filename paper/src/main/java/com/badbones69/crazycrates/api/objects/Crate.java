@@ -6,6 +6,8 @@ import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.api.managers.CrateManager;
+import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.google.inject.Inject;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -82,7 +84,7 @@ public class Crate {
         this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
         this.hologram = hologram != null ? hologram : new CrateHologram();
 
-        if (crateType == CrateType.COSMIC) {
+        if (crateType == CrateType.COSMIC && file != null) {
             this.manager = new CosmicCrateManager(file);
         }
 
@@ -153,9 +155,7 @@ public class Crate {
         } else {
             for (Prize prize : getPrizes()) {
                 if (prize.hasBlacklistPermission(player)) {
-                    if (!prize.hasAltPrize()) {
-                        continue;
-                    }
+                    if (!prize.hasAltPrize()) continue;
                 }
 
                 usablePrizes.add(prize);
@@ -163,7 +163,17 @@ public class Crate {
         }
 
         // ================= Chance Check ================= //
+        checkChance(prizes, usablePrizes);
+
+        try {
+            return prizes.get(new Random().nextInt(prizes.size()));
+        } catch (IllegalArgumentException e) {
             crazyLogger.debug("<red>Failed to find prize from the</red> <gold>" + name + "</gold> <red>crate for player</red> <gold>" + player.getName() + ".</gold>");
+            return null;
+        }
+    }
+
+    private void checkChance(ArrayList<Prize> prizes, ArrayList<Prize> usablePrizes) {
         for (int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
             for (Prize prize : usablePrizes) {
                 int max = prize.getMaxRange();
@@ -205,19 +215,7 @@ public class Crate {
         }
 
         // ================= Chance Check ================= //
-        for (int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
-            for (Prize prize : usablePrizes) {
-                int max = prize.getMaxRange();
-                int chance = prize.getChance();
-                int num;
-
-                for (int counter = 1; counter <= 1; counter++) {
-                    num = 1 + new Random().nextInt(max);
-
-                    if (num <= chance) prizes.add(prize);
-                }
-            }
-        }
+        checkChance(prizes, usablePrizes);
 
         return prizes.get(new Random().nextInt(prizes.size()));
     }

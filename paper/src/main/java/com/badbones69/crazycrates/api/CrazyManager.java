@@ -161,7 +161,7 @@ public class CrazyManager {
                 }
 
                 CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"));
-                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, holo, plugin, methods, fileManager));
+                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, holo, methods, fileManager));
             } catch (Exception e) {
                 brokecrates.add(crateName);
                 plugin.getLogger().warning("There was an error while loading the " + crateName + ".yml file.");
@@ -169,7 +169,7 @@ public class CrazyManager {
             }
         }
 
-        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null, plugin, methods, fileManager));
+        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null, methods, fileManager));
 
         if (fileManager.isLogging()) plugin.getLogger().info("All crate information has been loaded.");
         if (fileManager.isLogging()) plugin.getLogger().info("Loading all the physical crate locations.");
@@ -682,7 +682,7 @@ public class CrazyManager {
                     continue;
                 }
 
-                if (!methods.isInventoryFull(player)) {
+                if (!player.getInventory().isEmpty()) {
                     player.getInventory().addItem(item);
                 } else {
                     player.getWorld().dropItemNaturally(player.getLocation(), item);
@@ -697,7 +697,7 @@ public class CrazyManager {
                     clone.setLore(PlaceholderAPI.setPlaceholders(player, clone.getLore()));
                 }
 
-                if (!methods.isInventoryFull(player)) {
+                if (!player.getInventory().isEmpty()) {
                     player.getInventory().addItem(clone.build());
                 } else {
                     player.getWorld().dropItemNaturally(player.getLocation(), clone.build());
@@ -1164,25 +1164,27 @@ public class CrazyManager {
      */
     public void addKeys(int amount, Player player, Crate crate, KeyType keyType) {
         switch (keyType) {
-            case PHYSICAL_KEY:
-                if (methods.isInventoryFull(player)) {
+            case PHYSICAL_KEY -> {
+                if (!player.getInventory().isEmpty()) {
                     if (Config.GIVE_VIRTUAL_KEYS_WITH_FULL_INVENTORY) {
                         addKeys(amount, player, crate, KeyType.VIRTUAL_KEY);
-                    } else {
-                        player.getWorld().dropItem(player.getLocation(), crate.getKey(amount));
+                        return;
                     }
-                } else {
-                    player.getInventory().addItem(crate.getKey(amount));
+
+                    player.getWorld().dropItem(player.getLocation(), crate.getKey(amount));
+                    return;
                 }
 
-                break;
-            case VIRTUAL_KEY:
+                player.getInventory().addItem(crate.getKey(amount));
+            }
+            case VIRTUAL_KEY -> {
                 String uuid = player.getUniqueId().toString();
                 int keys = getVirtualKeys(player, crate);
+
                 //Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
                 //Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), (Math.max((keys + amount), 0)));
                 //Files.DATA.saveFile();
-                break;
+            }
         }
     }
     
@@ -1195,6 +1197,7 @@ public class CrazyManager {
      */
     public void setKeys(int amount, Player player, Crate crate) {
         String uuid = player.getUniqueId().toString();
+
         //Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
         //Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), amount);
         //Files.DATA.saveFile();

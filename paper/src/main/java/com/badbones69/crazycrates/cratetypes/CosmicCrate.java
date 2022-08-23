@@ -110,9 +110,7 @@ public class CosmicCrate implements Listener {
 
             final FileConfiguration file = crate.getFile();
 
-            if (e.getView().getTitle().equals(file.getString("Crate.CrateName") + " - Shuffling")) {
-                e.setCancelled(true);
-            }
+            if (e.getView().getTitle().equals(file.getString("Crate.CrateName") + " - Shuffling")) e.setCancelled(true);
 
             if (e.getView().getTitle().equals(file.getString("Crate.CrateName") + " - Prizes")) {
                 e.setCancelled(true);
@@ -332,9 +330,7 @@ public class CosmicCrate implements Listener {
     
     private Tier getTier(Crate crate, ItemStack item) {
         for (Tier tier : crate.getTiers()) {
-            if (tier.getTierPane().isSimilar(item)) {
-                return tier;
-            }
+            if (tier.getTierPane().isSimilar(item)) return tier;
         }
 
         return null;

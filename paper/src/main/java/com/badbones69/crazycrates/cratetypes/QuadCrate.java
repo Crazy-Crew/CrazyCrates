@@ -120,12 +120,12 @@ public class QuadCrate implements Listener {
             }
         }
 
-        for (Entity en : player.getNearbyEntities(2, 2, 2)) { // Someone tries to enter the crate area
-            if (en instanceof Player p) {
-                if (sessionManager.inSession(p)) {
-                    Vector v = player.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().setY(1);
+        for (Entity entity : player.getNearbyEntities(2, 2, 2)) { // Someone tries to enter the crate area
+            if (entity instanceof Player entityPlayer) {
+                if (sessionManager.inSession(entityPlayer)) {
+                    Vector v = player.getLocation().toVector().subtract(entityPlayer.getLocation().toVector()).normalize().setY(1);
 
-                    if (player.isInsideVehicle()) {
+                    if (player.isInsideVehicle() && player.getVehicle() != null) {
                         player.getVehicle().setVelocity(v);
                     } else {
                         player.setVelocity(v);
@@ -139,13 +139,11 @@ public class QuadCrate implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
-        if (sessionManager.inSession(e.getPlayer())) {
-            e.setCancelled(true);
-        }
+        if (sessionManager.inSession(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler
-    public void onCMD(PlayerCommandPreprocessEvent e) {
+    public void onPlayerPreCommand(PlayerCommandPreprocessEvent e) {
         Player player = e.getPlayer();
 
         if (sessionManager.inSession(player) && !player.hasPermission("crazycrates.admin")) {
@@ -155,7 +153,7 @@ public class QuadCrate implements Listener {
     }
 
     @EventHandler
-    public void onTeleport(PlayerTeleportEvent e) {
+    public void onPlayerTeleport(PlayerTeleportEvent e) {
         Player player = e.getPlayer();
 
         if (sessionManager.inSession(player) && e.getCause() == TeleportCause.ENDER_PEARL) {
@@ -165,9 +163,9 @@ public class QuadCrate implements Listener {
     }
 
     @EventHandler
-    public void onLeave(PlayerQuitEvent e) {
+    public void onPlayerLeave(PlayerQuitEvent e) {
         Player player = e.getPlayer();
 
-        if (sessionManager.inSession(player)) sessionManager.getSession(player).endCrate(plugin);
+        if (sessionManager.inSession(player)) sessionManager.getSession(player).endCrate();
     }
 }
