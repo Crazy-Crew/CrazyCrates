@@ -183,6 +183,7 @@ public class QuadCrateManager {
             methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
+
             return false;
         }
 

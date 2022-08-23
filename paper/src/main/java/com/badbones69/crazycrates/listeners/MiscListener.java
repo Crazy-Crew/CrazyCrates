@@ -7,17 +7,11 @@ import com.google.inject.Singleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 @Singleton
 public class MiscListener implements Listener {
 
     @Inject private CrazyManager crazyManager;
-
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerJoin(PlayerJoinEvent event) {
-
-    }
 
 
     @EventHandler(ignoreCancelled = true)

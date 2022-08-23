@@ -78,7 +78,6 @@ public class FileManager {
                             } catch (Exception e) {
                                 if (isLogging) {
                                     logger.debug("<red>Failed to create new default file:</red> <gold>" + homeFolder + "/" + fileName + "!</gold>");
-
                                     e.printStackTrace();
                                 }
                             }
@@ -349,7 +348,7 @@ public class FileManager {
                     return false;
                 }
             } else {
-                if (isLogging) plugin.getLogger().warning("<red>There was a null custom file that could not be found!</red>");
+                if (isLogging) logger.debug("<red>There was a null custom file that could not be found!</red>");
             }
 
             return false;

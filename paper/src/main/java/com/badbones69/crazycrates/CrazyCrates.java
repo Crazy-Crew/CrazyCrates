@@ -150,15 +150,15 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         pluginManager.registerEvents(fireworkDamageListener, this);
         pluginManager.registerEvents(miscListener, this);
 
-        pluginManager.registerEvents(cosmicCrate, this);
-        pluginManager.registerEvents(crateOnTheGo, this);
-        pluginManager.registerEvents(csgoCrate, this);
-        pluginManager.registerEvents(quadCrate, this);
-        pluginManager.registerEvents(quickCrate, this);
-        pluginManager.registerEvents(rouletteCrate, this);
-        pluginManager.registerEvents(warCrate, this);
-        pluginManager.registerEvents(wheelCrate, this);
-        pluginManager.registerEvents(wonderCrate, this);
+        //pluginManager.registerEvents(cosmicCrate, this);
+        //pluginManager.registerEvents(crateOnTheGo, this);
+        //pluginManager.registerEvents(csgoCrate, this);
+        //pluginManager.registerEvents(quadCrate, this);
+        //pluginManager.registerEvents(quickCrate, this);
+        //pluginManager.registerEvents(rouletteCrate, this);
+        //pluginManager.registerEvents(warCrate, this);
+        //pluginManager.registerEvents(wheelCrate, this);
+        //pluginManager.registerEvents(wonderCrate, this);
 
         if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded(this)) new PlaceholderAPISupport().register();
     }

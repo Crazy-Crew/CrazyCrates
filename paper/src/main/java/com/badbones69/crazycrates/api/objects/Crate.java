@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.api.managers.CrateManager;
+import com.badbones69.crazycrates.modules.config.files.Config;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import org.bukkit.Location;
@@ -168,7 +169,12 @@ public class Crate {
         try {
             return prizes.get(new Random().nextInt(prizes.size()));
         } catch (IllegalArgumentException e) {
-            crazyLogger.debug("<red>Failed to find prize from the</red> <gold>" + name + "</gold> <red>crate for player</red> <gold>" + player.getName() + ".</gold>");
+            if (Config.TOGGLE_VERBOSE) {
+                crazyLogger.debug("<red>Failed to find prize from the</red> <gold>" + name + "</gold> <red>crate for player</red> <gold>" + player.getName() + ".</gold>");
+
+                e.printStackTrace();
+            }
+
             return null;
         }
     }

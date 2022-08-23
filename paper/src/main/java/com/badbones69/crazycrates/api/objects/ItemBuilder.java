@@ -984,7 +984,6 @@ public class ItemBuilder {
                             } catch (NumberFormatException e) {
                                 itemBuilder.addEnchantments(enchantment, 1);
                             }
-
                             break;
                         }
                         

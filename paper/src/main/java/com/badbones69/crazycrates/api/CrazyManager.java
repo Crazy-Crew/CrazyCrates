@@ -12,6 +12,7 @@ import com.badbones69.crazycrates.support.holograms.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.HolographicSupport;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
+import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
@@ -31,7 +32,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CrazyManager {
 
     @Inject private CrazyCrates plugin;
-    @Inject private CrazyManager crazyManager;
+    @Inject private CrazyLogger crazyLogger;
     @Inject private FileManager fileManager;
     @Inject private Methods methods;
 
@@ -88,7 +89,7 @@ public class CrazyManager {
         // Removes all holograms so that they can be replaced.
         if (hologramController != null) hologramController.removeAllHolograms();
 
-        if (fileManager.isLogging()) plugin.getLogger().info("Loading all crate information...");
+        if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>Loading all crate information...</red>");
 
         for (String crateName : fileManager.getAllCratesNames(plugin)) {
             try {
@@ -107,7 +108,9 @@ public class CrazyManager {
 
                 if (crateType == CrateType.COSMIC && tiers.isEmpty()) {
                     brokecrates.add(crateName);
-                    plugin.getLogger().warning("No tiers were found for this cosmic crate " + crateName + ".yml file.");
+
+                    if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>No tiers were found for this cosmic crate</red> <gold>" + crateName + ".yml</gold> <red>file.</red>");
+
                     continue;
                 }
 
@@ -164,15 +167,19 @@ public class CrazyManager {
                 crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, holo, methods, fileManager));
             } catch (Exception e) {
                 brokecrates.add(crateName);
-                plugin.getLogger().warning("There was an error while loading the " + crateName + ".yml file.");
+
+                if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>There was an error while loading the</red> <gold>" + crateName + ".yml</gold> <red>file.</red>");
+
                 e.printStackTrace();
             }
         }
 
         crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null, methods, fileManager));
 
-        if (fileManager.isLogging()) plugin.getLogger().info("All crate information has been loaded.");
-        if (fileManager.isLogging()) plugin.getLogger().info("Loading all the physical crate locations.");
+        if (Config.TOGGLE_VERBOSE) {
+            crazyLogger.debug("<red>All crate information has been loaded.</red>");
+            crazyLogger.debug("<red>Loading all the physical crate locations.</red>");
+        }
 
         int loadedAmount = 0;
         int brokeAmount = 0;
@@ -208,19 +215,19 @@ public class CrazyManager {
          */
 
         // Checking if all physical locations loaded
-        if (fileManager.isLogging()) {
-            if (loadedAmount > 0 || brokeAmount > 0) {
-                if (brokeAmount <= 0) {
-                    plugin.getLogger().info("All physical crate locations have been loaded.");
-                } else {
-                    plugin.getLogger().info("Loaded " + loadedAmount + " physical crate locations.");
-                    plugin.getLogger().info("Failed to load " + brokeAmount + " physical crate locations.");
+        if (loadedAmount > 0 || brokeAmount > 0) {
+            if (brokeAmount <= 0) {
+                if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>All physical crate locations have been loaded.</red>");
+            } else {
+                if (Config.TOGGLE_VERBOSE) {
+                    crazyLogger.debug("<red>Loaded</red> <gold>" + loadedAmount + "</gold> <red>physical crate locations.</red>");
+                    crazyLogger.debug("<red>Failed to load</red> <gold>" + brokeAmount + "</gold> <red>physical crate locations.</red>");
                 }
             }
         }
 
         // Loading schematic files
-        if (fileManager.isLogging()) plugin.getLogger().info("Searching for schematics to load.");
+        if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>Searching for schematics to load.</red>");
 
         String[] schems = new File(plugin.getDataFolder() + "/schematics/").list();
 
@@ -228,60 +235,14 @@ public class CrazyManager {
             if (schematicName.endsWith(".nbt")) {
                 crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(plugin.getDataFolder() + "/schematics/" + schematicName)));
 
-                if (fileManager.isLogging()) plugin.getLogger().info(schematicName + " was successfully found and loaded.");
+                if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<gold>" + schematicName + "</gold> <red>was successfully found and loaded.</red>");
             }
         }
 
-        if (fileManager.isLogging()) plugin.getLogger().info("All schematics were found and loaded.");
+        if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>All schematics were found and loaded.</red>");
 
-        //cleanDataFile();
         //previewListener.loadButtons();
     }
-
-    /*
-    // This method is deigned to help clean the data.yml file of any unless info that it may have.
-    public void cleanDataFile() {
-        FileConfiguration data = Files.DATA.getFile();
-
-        if (data.contains("Players")) {
-            boolean logging = fileManager.isLogging();
-
-            if (logging) plugin.getLogger().info("Cleaning up the data.yml file.");
-
-            List<String> removePlayers = new ArrayList<>();
-
-            for (String uuid : data.getConfigurationSection("Players").getKeys(false)) {
-                boolean hasKeys = false;
-                List<String> noKeys = new ArrayList<>();
-
-                for (Crate crate : getCrates()) {
-                    if (data.getInt("Players." + uuid + "." + crate.getName()) <= 0) {
-                        noKeys.add(crate.getName());
-                    } else {
-                        hasKeys = true;
-                    }
-                }
-
-                if (hasKeys) {
-                    noKeys.forEach(crate -> data.set("Players." + uuid + "." + crate, null));
-                } else {
-                    removePlayers.add(uuid);
-                }
-            }
-
-            if (removePlayers.size() > 0) {
-                if (logging) plugin.getLogger().info(removePlayers.size() + " player's data has been marked to be removed.");
-
-                removePlayers.forEach(uuid -> data.set("Players." + uuid, null));
-
-                if (logging) plugin.getLogger().info("All empty player data has been removed.");
-            }
-
-            if (logging) plugin.getLogger().info("The data.yml file has been cleaned.");
-
-            Files.DATA.saveFile();
-        }
-    }*/
     
     /**
      * Opens a crate for a player.
@@ -719,8 +680,11 @@ public class CrazyManager {
                                 commandBuilder.append(pickNumber(min, max)).append(" ");
                             } catch (Exception e) {
                                 commandBuilder.append("1 ");
-                                plugin.getLogger().warning("The prize " + prize.getName() + " in the " + prize.getCrate() + " crate has caused an error when trying to run a command.");
-                                plugin.getLogger().warning("Command: " + cmd);
+
+                                if (Config.TOGGLE_VERBOSE) {
+                                    crazyLogger.debug("<red>The prize</red> <gold>" + prize.getName() + "</gold> <red>in the</red> <gold>" + prize.getCrate() + "</gold> <red>crate has caused an error when trying to run a command.</red>");
+                                    crazyLogger.debug("<red>Command:</red> <gold>" + cmd + "</gold>");
+                                }
                             }
                         } else {
                             commandBuilder.append(word).append(" ");
@@ -743,7 +707,7 @@ public class CrazyManager {
                 //.replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
             }
         } else {
-            plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
+            if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>No prize was found when giving</red> <gold>" + player.getName() + "</gold> <red>a prize.</red>");
         }
     }
     
@@ -768,6 +732,7 @@ public class CrazyManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+
             return false;
         }
     }
@@ -794,6 +759,7 @@ public class CrazyManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+
             return false;
         }
     }
