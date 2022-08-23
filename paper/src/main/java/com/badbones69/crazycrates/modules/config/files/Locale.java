@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public  class Locale extends AbstractConfig {
+public class Locale extends AbstractConfig {
 
     @Key("prefix.logger")
     @Comment("Change how the prefix in console will look!")
