@@ -2,8 +2,10 @@ package com.badbones69.crazycrates.utilities;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.scheduler.BukkitTask;
 
+@Singleton
 public class ScheduleUtils {
 
     @Inject private CrazyCrates plugin;

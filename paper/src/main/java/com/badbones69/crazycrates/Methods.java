@@ -27,6 +27,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Singleton
 public class Methods {
 
     @Inject private CrazyCrates plugin;

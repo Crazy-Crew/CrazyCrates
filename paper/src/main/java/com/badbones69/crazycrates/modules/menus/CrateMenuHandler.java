@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import java.util.List;
 
+@Singleton
 public class CrateMenuHandler {
 
     @Inject private CrazyManager crazyManager;

@@ -1,11 +1,13 @@
 package com.badbones69.crazycrates.support.structures;
 
 import com.badbones69.crazycrates.support.structures.interfaces.SpiralControl;
+import com.google.inject.Singleton;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
+@Singleton
 public class QuadCrateSpiralHandler implements SpiralControl {
 
     private ArrayList<Location> getLocations(Location center, Boolean clockWise) {
