@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.modules.config.files.menus.CrateMenuConfig;
 import com.badbones69.crazycrates.utilities.AdventureUtils;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -25,7 +26,7 @@ public class CrateMenuHandler {
             .disableAllInteractions()
             .create();
 
-    // TODO() This gui shit fucking weird. Sleepy time
+    //TODO() This gui shit fucking weird. Sleepy time
     // We gotta just overhaul this, think very hard on it
     // also got to talk to Matt
     public void openGUI(Player player) {
