@@ -20,8 +20,8 @@ public class BrokeLocationsListener implements Listener {
     @Inject private CrazyManager crazyManager;
     @Inject private FileManager fileManager;
     @Inject private CrazyLogger crazyLogger;
-    
-    @EventHandler
+
+    @EventHandler(ignoreCancelled = true)
     public void onWorldLoad(WorldLoadEvent e) {
         if (!crazyManager.getBrokeCrateLocations().isEmpty()) {
             int fixedAmount = 0;

@@ -134,8 +134,8 @@ public class WarCrate implements Listener {
 
         return colorCodes;
     }
-    
-    @EventHandler
+
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent e) {
         final Player player = (Player) e.getWhoClicked();
         final Inventory inv = e.getInventory();
@@ -199,8 +199,8 @@ public class WarCrate implements Listener {
             }
         }
     }
-    
-    @EventHandler
+
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent e) {
         Player player = (Player) e.getPlayer();
 

@@ -151,8 +151,8 @@ public class QuickCrate implements Listener {
     public void removeAllRewards() {
         allRewards.stream().filter(Objects :: nonNull).forEach(Entity :: remove);
     }
-    
-    @EventHandler
+
+    @EventHandler(ignoreCancelled = true)
     public void onHopperPickUp(InventoryPickupItemEvent e) {
         if (crazyManager.isDisplayReward(e.getItem())) e.setCancelled(true);
     }

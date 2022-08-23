@@ -24,7 +24,7 @@ public class CrateOnTheGo implements Listener {
     @Inject private CrazyManager crazyManager;
     @Inject private Methods methods;
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
 

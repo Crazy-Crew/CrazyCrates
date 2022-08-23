@@ -21,7 +21,7 @@ public class FireworkDamageListener implements Listener {
         firework.setMetadata("nodamage", new FixedMetadataValue(plugin, true));
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerDamage(EntityDamageByEntityEvent e) {
         if (e.getDamager() instanceof Firework fw) {
             if (fw.hasMetadata("nodamage")) e.setCancelled(true);

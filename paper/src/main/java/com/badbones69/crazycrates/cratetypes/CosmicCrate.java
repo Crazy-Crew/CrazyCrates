@@ -93,8 +93,8 @@ public class CosmicCrate implements Listener {
 
         return null;
     }
-    
-    @EventHandler
+
+    @EventHandler(ignoreCancelled = true)
     public void onInvClick(InventoryClickEvent e) {
         final Inventory inv = e.getInventory();
         final Player player = (Player) e.getWhoClicked();
@@ -260,8 +260,8 @@ public class CosmicCrate implements Listener {
             }
         }
     }
-    
-    @EventHandler
+
+    @EventHandler(ignoreCancelled = true)
     public void onInvClose(InventoryCloseEvent e) {
         Inventory inv = e.getInventory();
         Player player = (Player) e.getPlayer();
@@ -271,9 +271,9 @@ public class CosmicCrate implements Listener {
             if (crate.getFile() == null) {
                 return;
             } else {
-                if (!crate.getFile().getString("Crate.CrateType").equalsIgnoreCase("Cosmic")) {
-                    return;
-                }
+                String type = crate.getFile().getString("Crate.CrateType");
+                assert type != null;
+                if (!type.equalsIgnoreCase("Cosmic")) return;
             }
         } else {
             return;

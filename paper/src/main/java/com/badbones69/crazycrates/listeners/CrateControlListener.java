@@ -56,7 +56,7 @@ public class CrateControlListener implements Listener { // Crate Control
     @Inject private QuickCrate quickCrate;
 
     // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCrateInventoryClick(InventoryClickEvent e) {
         for (Crate crate : crazyManager.getCrates()) {
             if (crate.getCrateType() != CrateType.MENU && crate.isCrateMenu(e.getView())) e.setCancelled(true);
@@ -198,7 +198,7 @@ public class CrateControlListener implements Listener { // Crate Control
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onAdminMenuClick(InventoryClickEvent e) {
         Inventory inv = e.getInventory();
         Player player = (Player) e.getWhoClicked();
@@ -233,7 +233,7 @@ public class CrateControlListener implements Listener { // Crate Control
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerLeave(PlayerQuitEvent e) {
         Player player = e.getPlayer();
 

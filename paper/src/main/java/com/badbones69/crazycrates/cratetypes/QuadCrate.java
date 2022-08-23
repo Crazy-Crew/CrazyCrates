@@ -42,12 +42,12 @@ public class QuadCrate implements Listener {
 
     @Inject private ScheduleUtils scheduleUtils;
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e) {
         if (sessionManager.inSession(e.getPlayer())) e.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerChestClick(PlayerInteractEvent e) {
         Player player = e.getPlayer();
 
