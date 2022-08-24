@@ -22,6 +22,69 @@ public class Config extends AbstractConfig {
     @Comment("Whether you want metrics to be enabled.")
     public static Boolean TOGGLE_METRICS = true;
 
+    @Key("settings.data-storage.storage-method")
+    @Comment("""
+            How the plugin should store data
+            
+            - Your Options
+            | Remote Database Types - You need to supply connection information.
+             |» MySQL *NOT IMPLEMENTED*
+             |» MariaDB ( Recommended over MySQL ) *NOT IMPLEMENTED*
+              
+            | Local Database Types
+             |» H2 *NOT IMPLEMENTED*
+             
+            | Text File Based Storage
+             |» JSON (.json files) *DEFAULT
+            """)
+    public static String STORAGE_METHOD = "JSON";
+
+    @Key("settings.data-storage.data.address")
+    @Comment("""
+            Define the address / port for the database.
+            » Default port is used for each one.
+             MariaDB: 3306
+            » If the port is different, Use "host:port"
+            """)
+    public static String STORAGE_ADDRESS = "localhost";
+
+    @Key("settings.data-storage.data.database")
+    @Comment("The name of the database to use *Must be created beforehand manually.")
+    public static String STORAGE_DATABASE = "minecraft";
+
+    @Key("settings.data-storage.data.username")
+    @Comment("The user you use to connect to the database. *root is not recommended!")
+    public static String STORAGE_USERNAME = "root";
+
+    @Key("settings.data-storage.data.password")
+    @Comment("The password.")
+    public static String STORAGE_PASSWORD = "";
+
+    @Key("settings.data-storage.data.table-prefix")
+    @Comment("What should the name of the table be?")
+    public static String STORAGE_TABLE_PREFIX = "crazycrates_";
+
+    @Key("settings.data-storage.data.pool-settings.max-pool-size")
+    public static Integer STORAGE_MAX_POOL_SIZE = 10;
+
+    @Key("settings.data-storage.data.pool-settings.min-idle")
+    public static Integer STORAGE_MIN_IDLE = 10;
+
+    @Key("settings.data-storage.data.pool-settings.max-life-time")
+    public static Integer STORAGE_MAX_LIFE_TIME = 1800000;
+
+    @Key("settings.data-storage.data.pool-settings.keep-alive-time")
+    public static Integer STORAGE_KEEP_ALIVE_TIME = 0;
+
+    @Key("settings.data-storage.data.pool-settings.connection-timeout")
+    public static Integer STORAGE_CONNECTION_TIMEOUT = 5000;
+
+    @Key("settings.data-storage.data.pool-settings.properties.use-unicode")
+    public static Boolean STORAGE_USE_UNICODE = true;
+
+    @Key("settings.data-storage.data.pool-settings.properties.character-encoding")
+    public static String STORAGE_CHARACTER_ENCODING = "utf8";
+
     @Key("settings.crate.knock-back")
     @Comment("If crates should have knock back if they have no keys.")
     public static Boolean TOGGLE_CRATE_KNOCKBACK = true;
@@ -58,7 +121,7 @@ public class Config extends AbstractConfig {
 
     private static final Config CONFIG_FILE = new Config();
 
-    public static void reload(Path path, CrazyLogger logger) {
-        CONFIG_FILE.handle(path.resolve("config.yml"), Config.class, logger);
+    public static void reload(Path path, CrazyLogger crazyLogger) {
+        CONFIG_FILE.handle(path.resolve("config.yml"), Config.class, crazyLogger);
     }
 }

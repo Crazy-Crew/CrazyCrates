@@ -6,6 +6,49 @@ settings:
   verbose: true
   # Whether you want metrics to be enabled.
   toggle-metrics: true
+  # Settings related to Data Storage
+  data-storage:
+    # How the plugin should store data
+    #
+    # - Your Options
+    # | Remote Database Types - You need to supply connection information.
+    # |» MySQL *NOT IMPLEMENTED*
+    # |» MariaDB ( Recommended over MySQL ) *NOT IMPLEMENTED*
+    #
+    # | Local Database Types
+    # |» H2 *NOT IMPLEMENTED*
+    #
+    # | Text File Based Storage
+    # |» JSON (.json files) *DEFAULT
+    storage-method: JSON
+
+    data:
+      # Define the address / port for the database.
+      # » Default port is used for each one.
+      #  MariaDB: 3306
+      # » If the port is different, Use "host:port"
+      address: localhost
+      # The name of the database to use *Must be created beforehand manually.
+      database: minecraft
+      # The user you use to connect to the database. *root is not recommended!
+      username: root
+      # The password.
+      password: ''
+
+      # What should the name of the table be?
+      table-prefix: 'crazycrates_'
+
+      # Don't touch these unless you know what your doing.
+      pool-settings:
+        max-pool-size: 10
+        min-idle: 10
+        max-life-time: 1800000 # 30 Minutes
+        keep-alive-time: 0
+        connection-timeout: 5000 # 5 Seconds
+        properties:
+          use-unicode: true
+          character-encoding: utf8
+
   # Crate related settings
   crate:
     # If crates should have knock back if they have no keys.
