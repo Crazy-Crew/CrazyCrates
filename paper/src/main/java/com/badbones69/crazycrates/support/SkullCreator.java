@@ -1,8 +1,6 @@
 package com.badbones69.crazycrates.support;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.CrazyManager;
-import com.google.inject.Inject;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -22,8 +20,8 @@ import java.util.UUID;
  * @author Dean B on 12/28/2016.
  */
 public class SkullCreator {
-    
-    @Inject private CrazyCrates plugin;
+
+    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
     
     /**
      * Creates a player skull based on a player's name.
@@ -54,7 +52,7 @@ public class SkullCreator {
         notNull(item, "item");
         notNull(name, "name");
         
-        return plugin.getServer().getUnsafe().modifyItemStack(item,
+        return crazyCrates.getServer().getUnsafe().modifyItemStack(item,
         "{SkullOwner:\"" + name + "\"}"
         );
     }
@@ -83,7 +81,7 @@ public class SkullCreator {
         notNull(id, "id");
         
         SkullMeta meta = (SkullMeta) item.getItemMeta();
-        meta.setOwningPlayer(plugin.getServer().getOfflinePlayer(id));
+        meta.setOwningPlayer(crazyCrates.getServer().getOfflinePlayer(id));
         item.setItemMeta(meta);
         
         return item;
@@ -139,7 +137,7 @@ public class SkullCreator {
         notNull(base64, "base64");
         
         UUID hashAsId = new UUID(base64.hashCode(), base64.hashCode());
-        return plugin.getServer().getUnsafe().modifyItemStack(item,
+        return crazyCrates.getServer().getUnsafe().modifyItemStack(item,
         "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
         );
     }
@@ -208,7 +206,7 @@ public class SkullCreator {
         "{Owner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
         );
 
-        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "data merge block " + args);
+        crazyCrates.getServer().dispatchCommand(crazyCrates.getServer().getConsoleSender(), "data merge block " + args);
     }
     
     private ItemStack getPlayerSkullItem() {

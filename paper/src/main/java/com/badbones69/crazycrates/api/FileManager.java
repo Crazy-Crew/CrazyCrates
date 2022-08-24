@@ -1,24 +1,24 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.utilities.CommonUtils;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@Singleton
 public class FileManager {
-    
-    @Inject private CrazyCrates plugin;
-    
-    @Inject private CrazyLogger logger;
-    @Inject private CommonUtils commonUtils;
+
+    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+
+    private final CrazyLogger crazyLogger;
+
+    public FileManager(CrazyLogger crazyLogger) {
+        this.crazyLogger = crazyLogger;
+    }
 
     private boolean isLogging = false;
 
@@ -37,7 +37,7 @@ public class FileManager {
 
         // Starts to load all the custom files.
         if (homeFolders.size() > 0) {
-            if (isLogging) logger.debug("<red>Loading custom files.</red>");
+            if (isLogging) crazyLogger.debug("<red>Loading custom files.</red>");
 
             for (String homeFolder : homeFolders) {
                 File homeFile = new File(plugin.getDataFolder(), "/" + homeFolder);
@@ -53,7 +53,7 @@ public class FileManager {
                                 if (file.exists()) {
                                     customFiles.add(file);
 
-                                    if (isLogging) logger.debug("<red>Loaded new custom file:</red> <gold>" + homeFolder + "/" + name + ".</gold>");
+                                    if (isLogging) crazyLogger.debug("<red>Loaded new custom file:</red> <gold>" + homeFolder + "/" + name + ".</gold>");
                                 }
                             }
                         }
@@ -61,7 +61,7 @@ public class FileManager {
                 } else {
                     homeFile.mkdir();
 
-                    if (isLogging) logger.debug("<red>The folder</red> <gold>" + homeFolder + "/</gold> <red>was not found so it was created.</red>");
+                    if (isLogging) crazyLogger.debug("<red>The folder</red> <gold>" + homeFolder + "/</gold> <red>was not found so it was created.</red>");
 
                     for (String fileName : autoGenerateFiles.keySet()) {
                         if (autoGenerateFiles.get(fileName).equalsIgnoreCase(homeFolder)) {
@@ -70,14 +70,14 @@ public class FileManager {
                             try {
                                 File serverFile = new File(plugin.getDataFolder(), homeFolder + "/" + fileName);
                                 InputStream jarFile = getClass().getResourceAsStream((jarHomeFolders.getOrDefault(fileName, homeFolder)) + "/" + fileName);
-                                commonUtils.copyFile(jarFile, serverFile);
+                                copyFile(jarFile, serverFile);
 
                                 if (fileName.toLowerCase().endsWith(".yml")) customFiles.add(new CustomFile(fileName, homeFolder, plugin));
 
-                                if (isLogging) logger.debug("<red>Created new default file:</red> <gold>" + homeFolder + "/" + fileName + ".</gold>");
+                                if (isLogging) crazyLogger.debug("<red>Created new default file:</red> <gold>" + homeFolder + "/" + fileName + ".</gold>");
                             } catch (Exception e) {
                                 if (isLogging) {
-                                    logger.debug("<red>Failed to create new default file:</red> <gold>" + homeFolder + "/" + fileName + "!</gold>");
+                                    crazyLogger.debug("<red>Failed to create new default file:</red> <gold>" + homeFolder + "/" + fileName + "!</gold>");
                                     e.printStackTrace();
                                 }
                             }
@@ -86,7 +86,22 @@ public class FileManager {
                 }
             }
 
-            if (isLogging) logger.debug("<red>Finished loading custom files.</red>");
+            if (isLogging) crazyLogger.debug("<red>Finished loading custom files.</red>");
+        }
+    }
+
+    public void copyFile(InputStream sourceFile, File destinationFile) {
+        try (InputStream fis = sourceFile; FileOutputStream fos = new FileOutputStream(destinationFile)) {
+            byte[] buf = new byte[1024];
+            int i;
+
+            while ((i = fis.read(buf)) != -1) {
+                fos.write(buf, 0, i);
+            }
+        } catch (Exception e) {
+            crazyLogger.debug("<red>Failed to copy</red> <gold>" + destinationFile.getName() + "...</gold>");
+
+            e.printStackTrace();
         }
     }
     
@@ -180,17 +195,17 @@ public class FileManager {
 
         if (file != null) {
             try {
-                file.getFile().save(new File(plugin.getDataFolder(), file.getHomeFolder() + "/" + file.getFileName()));
+                file.getFile().save(new File(crazyCrates.getDataFolder(), file.getHomeFolder() + "/" + file.getFileName()));
 
-                if (isLogging) logger.debug("<red>Successfully saved the</red> <gold>" + file.getFileName() + ".</gold>");
+                if (isLogging) crazyLogger.debug("<red>Successfully saved the</red> <gold>" + file.getFileName() + ".</gold>");
             } catch (Exception e) {
                 if (isLogging) {
-                    logger.debug("<red>Could not save</red> <gold>" + file.getFileName() + "!</gold>");
+                    crazyLogger.debug("<red>Could not save</red> <gold>" + file.getFileName() + "!</gold>");
                     e.printStackTrace();
                 }
             }
         } else {
-            if (isLogging) logger.debug("<red>The file</red> <gold>" + name + ".yml</gold> <red>could not be found!</red>");
+            if (isLogging) crazyLogger.debug("<red>The file</red> <gold>" + name + ".yml</gold> <red>could not be found!</red>");
         }
     }
     
@@ -211,17 +226,17 @@ public class FileManager {
 
         if (file != null) {
             try {
-                file.file = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "/" + file.getHomeFolder() + "/" + file.getFileName()));
+                file.file = YamlConfiguration.loadConfiguration(new File(crazyCrates.getDataFolder(), "/" + file.getHomeFolder() + "/" + file.getFileName()));
 
-                if (isLogging) logger.debug("<red>Successfully reloaded the</red> <gold>" + file.getFileName() + ".</gold>");
+                if (isLogging) crazyLogger.debug("<red>Successfully reloaded the</red> <gold>" + file.getFileName() + ".</gold>");
             } catch (Exception e) {
                 if (isLogging) {
-                    logger.debug(("<red>Could not reload the</red> <gold>" + file.getFileName() + "!</gold>"));
+                    crazyLogger.debug(("<red>Could not reload the</red> <gold>" + file.getFileName() + "!</gold>"));
                     e.printStackTrace();
                 }
             }
         } else {
-            if (isLogging) logger.debug("<red>The file</red> <gold>" + name + ".yml</gold> <red>could not be found!</red>");
+            if (isLogging) crazyLogger.debug("<red>The file</red> <gold>" + name + ".yml</gold> <red>could not be found!</red>");
         }
     }
     
@@ -237,10 +252,10 @@ public class FileManager {
         customFiles.forEach(CustomFile::reloadFile);
     }
     
-    public ArrayList<String> getAllCratesNames(CrazyCrates plugin) {
+    public ArrayList<String> getAllCratesNames() {
         ArrayList<String> files = new ArrayList<>();
 
-        String[] cratesFolder = new File(plugin.getDataFolder(), "/crates").list();
+        String[] cratesFolder = new File(crazyCrates.getDataFolder(), "/crates").list();
 
         assert cratesFolder != null;
         for (String name : cratesFolder) {
@@ -281,7 +296,7 @@ public class FileManager {
             } else {
                 new File(plugin.getDataFolder(), "/" + homeFolder).mkdir();
 
-                if (isLogging) logger.debug("<red>The folder</red> <gold>" + homeFolder + "/</gold> <red>was not found so it was created.</red>");
+                if (isLogging) crazyLogger.debug("<red>The folder</red> <gold>" + homeFolder + "/</gold> <red>was not found so it was created.</red>");
 
                 file = null;
             }
@@ -336,19 +351,19 @@ public class FileManager {
                 try {
                     file.save(new File(plugin.getDataFolder(), homeFolder + "/" + fileName));
 
-                    if (isLogging) logger.debug("<red>Successfully saved the</red> <gold>" + fileName + ".</gold>");
+                    if (isLogging) crazyLogger.debug("<red>Successfully saved the</red> <gold>" + fileName + ".</gold>");
 
                     return true;
                 } catch (Exception e) {
                     if (isLogging) {
-                        logger.debug(("<red>Could not save</red> <gold>" + fileName + "!</gold>"));
+                        crazyLogger.debug(("<red>Could not save</red> <gold>" + fileName + "!</gold>"));
                         e.printStackTrace();
                     }
 
                     return false;
                 }
             } else {
-                if (isLogging) logger.debug("<red>There was a null custom file that could not be found!</red>");
+                if (isLogging) crazyLogger.debug("<red>There was a null custom file that could not be found!</red>");
             }
 
             return false;
@@ -363,12 +378,12 @@ public class FileManager {
                 try {
                     file = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "/" + homeFolder + "/" + fileName));
 
-                    if (isLogging) logger.debug("<red>Successfully reloaded the</red> <gold>" + fileName + ".</gold>");
+                    if (isLogging) crazyLogger.debug("<red>Successfully reloaded the</red> <gold>" + fileName + ".</gold>");
 
                     return true;
                 } catch (Exception e) {
                     if (isLogging) {
-                        logger.debug(("<red>Could not reload the</red> <gold>\" + fileName + \"!</gold>"));
+                        crazyLogger.debug(("<red>Could not reload the</red> <gold>\" + fileName + \"!</gold>"));
                         e.printStackTrace();
                     }
                 }

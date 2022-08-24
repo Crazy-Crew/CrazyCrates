@@ -9,8 +9,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -19,14 +17,19 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 
-@Singleton
 public class WonderCrate implements Listener {
 
-    @Inject private CrazyCrates plugin;
-    @Inject private CrazyManager crazyManager;
-    @Inject private Methods methods;
+    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
 
-    @Inject private ScheduleUtils scheduleUtils;
+    private final CrazyManager crazyManager;
+    private final Methods methods;
+    private final ScheduleUtils scheduleUtils;
+
+    public WonderCrate(CrazyManager crazyManager, Methods methods, ScheduleUtils scheduleUtils) {
+        this.crazyManager = crazyManager;
+        this.methods = methods;
+        this.scheduleUtils = scheduleUtils;
+    }
 
     public void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
@@ -35,7 +38,7 @@ public class WonderCrate implements Listener {
             return;
         }
 
-        final Inventory inv = plugin.getServer().createInventory(null, 45, crate.getCrateInventoryName());
+        final Inventory inv = crazyCrates.getServer().createInventory(null, 45, crate.getCrateInventoryName());
         final ArrayList<String> slots = new ArrayList<>();
 
         for (int i = 0; i < 45; i++) {
@@ -91,7 +94,7 @@ public class WonderCrate implements Listener {
                     assert prize != null;
                     if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 
-                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+                    crazyCrates.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 
                     crazyManager.removePlayerFromOpeningList(player);
                     return;

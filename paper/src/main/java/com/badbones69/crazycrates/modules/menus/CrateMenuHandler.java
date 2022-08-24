@@ -3,9 +3,8 @@ package com.badbones69.crazycrates.modules.menus;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.modules.config.files.menus.CrateMenuConfig;
 import com.badbones69.crazycrates.utilities.AdventureUtils;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.components.GuiType;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
@@ -13,22 +12,24 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import java.util.List;
 
-@Singleton
 public class CrateMenuHandler {
 
-    @Inject private CrazyManager crazyManager;
-    @Inject private AdventureUtils adventureUtils;
+    private final CrazyManager crazyManager;
+    private AdventureUtils adventureUtils;
+
+    public CrateMenuHandler(CrazyManager crazyManager, AdventureUtils adventureUtils) {
+        this.crazyManager = crazyManager;
+        this.adventureUtils = adventureUtils;
+    }
 
     private final Gui gui = Gui.gui()
             .title(adventureUtils.parse(CrateMenuConfig.CRATE_MENU_TITLE))
-            .type(CrateMenuConfig.CRATE_MENU_TYPE)
+            .type(GuiType.valueOf(CrateMenuConfig.CRATE_MENU_TYPE))
             .rows(CrateMenuConfig.CRATE_MENU_SIZE)
             .disableAllInteractions()
             .create();
 
     //TODO() This gui shit fucking weird. Sleepy time
-    // We gotta just overhaul this, think very hard on it
-    // also got to talk to Matt
     public void openGUI(Player player) {
 
         crazyManager.getCrates().forEach(crate -> {

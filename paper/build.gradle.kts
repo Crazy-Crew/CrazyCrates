@@ -54,7 +54,7 @@ dependencies {
         exclude(group = "org.bukkit", module = "bukkit")
     }
 
-    compileOnly(libs.guice)
+    //compileOnly(libs.guice)
 
     // Triumph Team
     compileOnly(libs.triumph.gui.bukkit)

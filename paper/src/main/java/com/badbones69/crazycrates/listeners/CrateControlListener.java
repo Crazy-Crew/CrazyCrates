@@ -11,8 +11,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.cratetypes.QuickCrate;
 import com.badbones69.crazycrates.modules.config.files.Config;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -32,7 +30,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import java.util.HashMap;
 
-@Singleton
 public class CrateControlListener implements Listener { // Crate Control
 
     // A list of crate locations that are in use.
@@ -50,10 +47,17 @@ public class CrateControlListener implements Listener { // Crate Control
         inUse.put(player, location);
     }
 
-    @Inject private CrazyCrates plugin;
-    @Inject private CrazyManager crazyManager;
-    @Inject private Methods methods;
-    @Inject private QuickCrate quickCrate;
+    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+
+    private final CrazyManager crazyManager;
+    private final Methods methods;
+    private final QuickCrate quickCrate;
+
+    public CrateControlListener(CrazyManager crazyManager, Methods methods, QuickCrate quickCrate) {
+        this.crazyManager = crazyManager;
+        this.methods = methods;
+        this.quickCrate = quickCrate;
+    }
 
     // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
     @EventHandler(ignoreCancelled = true)
@@ -135,7 +139,7 @@ public class CrateControlListener implements Listener { // Crate Control
                 }
 
                 PhysicalCrateKeyCheckEvent event = new PhysicalCrateKeyCheckEvent(player, crateLocation);
-                plugin.getServer().getPluginManager().callEvent(event);
+                crazyCrates.getServer().getPluginManager().callEvent(event);
 
                 if (!event.isCancelled()) {
                     boolean hasKey = false;

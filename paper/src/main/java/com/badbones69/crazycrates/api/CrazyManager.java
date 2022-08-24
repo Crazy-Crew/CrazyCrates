@@ -13,7 +13,6 @@ import com.badbones69.crazycrates.support.holograms.HolographicSupport;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
-import com.google.inject.Inject;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,10 +30,17 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CrazyManager {
 
-    @Inject private CrazyCrates plugin;
-    @Inject private CrazyLogger crazyLogger;
-    @Inject private FileManager fileManager;
-    @Inject private Methods methods;
+    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+
+    private final CrazyLogger crazyLogger;
+    private final FileManager fileManager;
+    private final Methods methods;
+
+    public CrazyManager(CrazyLogger crazyLogger, FileManager fileManager, Methods methods) {
+        this.crazyLogger = crazyLogger;
+        this.fileManager = fileManager;
+        this.methods = methods;
+    }
 
     // All the crates that have been loaded.
     private final ArrayList<Crate> crates = new ArrayList<>();
@@ -80,9 +86,9 @@ public class CrazyManager {
         crateLocations.clear();
         crateSchematics.clear();
 
-        if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginLoaded(plugin)) {
+        if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginLoaded()) {
             hologramController = new HolographicSupport();
-        } else if (PluginSupport.DECENT_HOLOGRAMS.isPluginLoaded(plugin)) {
+        } else if (PluginSupport.DECENT_HOLOGRAMS.isPluginLoaded()) {
             hologramController = new DecentHologramsSupport();
         }
 
@@ -91,7 +97,7 @@ public class CrazyManager {
 
         if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>Loading all crate information...</red>");
 
-        for (String crateName : fileManager.getAllCratesNames(plugin)) {
+        for (String crateName : fileManager.getAllCratesNames()) {
             try {
                 FileConfiguration file = fileManager.getFile(crateName).getFile();
                 CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));
@@ -164,7 +170,7 @@ public class CrazyManager {
                 }
 
                 CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"));
-                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, holo, methods, fileManager));
+                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, holo, methods, fileManager, crazyLogger));
             } catch (Exception e) {
                 brokecrates.add(crateName);
 
@@ -174,7 +180,7 @@ public class CrazyManager {
             }
         }
 
-        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null, methods, fileManager));
+        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null, methods, fileManager, crazyLogger));
 
         if (Config.TOGGLE_VERBOSE) {
             crazyLogger.debug("<red>All crate information has been loaded.</red>");
@@ -229,11 +235,11 @@ public class CrazyManager {
         // Loading schematic files
         if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>Searching for schematics to load.</red>");
 
-        String[] schems = new File(plugin.getDataFolder() + "/schematics/").list();
+        String[] schems = new File(crazyCrates.getDataFolder() + "/schematics/").list();
 
         for (String schematicName : schems) {
             if (schematicName.endsWith(".nbt")) {
-                crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(plugin.getDataFolder() + "/schematics/" + schematicName)));
+                crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(crazyCrates.getDataFolder() + "/schematics/" + schematicName)));
 
                 if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<gold>" + schematicName + "</gold> <red>was successfully found and loaded.</red>");
             }
@@ -302,7 +308,7 @@ public class CrazyManager {
                 Location lastLocation = player.getLocation();
                 lastLocation.setPitch(0F);
                 CrateSchematic crateSchematic = getCrateSchematics().get(new Random().nextInt(getCrateSchematics().size()));
-                StructureHandler handler = new StructureHandler(plugin, crateSchematic.schematicFile());
+                StructureHandler handler = new StructureHandler(crateSchematic.schematicFile());
                 //QuadCrateManager session = new QuadCrateManager(player, crate, keyType, location, lastLocation, checkHand, handler, this, methods, chestStateHandler);
                 //broadcast = session.startCrate(plugin);
                 break;
@@ -594,7 +600,7 @@ public class CrazyManager {
             slots += 9;
         }
 
-        Inventory inv = plugin.getServer().createInventory(null, slots, file.getString("Crate.Name"));
+        Inventory inv = crazyCrates.getServer().createInventory(null, slots, file.getString("Crate.Name"));
 
         for (String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
             String id = file.getString("Crate.Prizes." + reward + ".DisplayItem", "Stone");
@@ -653,7 +659,7 @@ public class CrazyManager {
             for (ItemBuilder item : prize.getItemBuilders()) {
                 ItemBuilder clone = new ItemBuilder(item);
 
-                if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded(plugin)) {
+                if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) {
                     clone.setName(PlaceholderAPI.setPlaceholders(player, clone.getName()));
                     clone.setLore(PlaceholderAPI.setPlaceholders(player, clone.getLore()));
                 }
@@ -695,13 +701,13 @@ public class CrazyManager {
                     command = command.substring(0, command.length() - 1);
                 }
 
-                if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded(plugin)) command = PlaceholderAPI.setPlaceholders(player, command);
+                if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) command = PlaceholderAPI.setPlaceholders(player, command);
 
                 //plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), methods.color(command.replace("%Player%", player.getName()).replace("%player%", player.getName())));
             }
 
             for (String message : prize.getMessages()) {
-                if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded(plugin)) message = PlaceholderAPI.setPlaceholders(player, message);
+                if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) message = PlaceholderAPI.setPlaceholders(player, message);
 
                 //player.sendMessage(methods.color(message).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())
                 //.replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
@@ -1200,10 +1206,10 @@ public class CrazyManager {
      */
     public void loadSchematics() {
         crateSchematics.clear();
-        String[] schems = new File(plugin.getDataFolder() + "/schematics/").list();
+        String[] schems = new File(crazyCrates.getDataFolder() + "/schematics/").list();
 
         for (String schematicName : schems) {
-            if (schematicName.endsWith(".nbt")) crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(plugin.getDataFolder() + "/schematics/" + schematicName)));
+            if (schematicName.endsWith(".nbt")) crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(crazyCrates.getDataFolder() + "/schematics/" + schematicName)));
         }
     }
     

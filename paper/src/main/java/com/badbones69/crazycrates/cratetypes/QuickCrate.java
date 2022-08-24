@@ -12,8 +12,6 @@ import com.badbones69.crazycrates.modules.config.files.Config;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -30,23 +28,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-@Singleton
 public class QuickCrate implements Listener {
     
     public static ArrayList<Entity> allRewards = new ArrayList<>();
     public static HashMap<Player, Entity> rewards = new HashMap<>();
     private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
 
-    @Inject private CrazyCrates plugin;
-    @Inject private CrazyManager crazyManager;
-    @Inject private CrazyLogger crazyLogger;
-    @Inject private Methods methods;
+    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
 
-    @Inject private ScheduleUtils scheduleUtils;
+    private final CrazyManager crazyManager;
+    private final CrazyLogger crazyLogger;
+    private final Methods methods;
 
-    @Inject private CrateControlListener crateControlListener;
+    private final ScheduleUtils scheduleUtils;
 
-    @Inject private ChestStateHandler chestStateHandler;
+    private final CrateControlListener crateControlListener;
+
+    private final ChestStateHandler chestStateHandler;
+
+    public QuickCrate(CrazyManager crazyManager, CrazyLogger crazyLogger, Methods methods, ScheduleUtils scheduleUtils, CrateControlListener crateControlListener, ChestStateHandler chestStateHandler) {
+        this.crazyManager = crazyManager;
+        this.methods = methods;
+        this.scheduleUtils = scheduleUtils;
+
+        this.crazyLogger = crazyLogger;
+        this.crateControlListener = crateControlListener;
+        this.chestStateHandler = chestStateHandler;
+    }
 
     public void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
         int keys = switch (keyType) {
@@ -64,7 +72,7 @@ public class QuickCrate implements Listener {
                 
                 Prize prize = crate.pickPrize(player);
                 crazyManager.givePrize(player, prize);
-                plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+                crazyCrates.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 
                 if (prize.useFireworks()) methods.firework(loc.clone().add(.5, 1, .5));
                 
@@ -90,7 +98,7 @@ public class QuickCrate implements Listener {
 
             Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
             crazyManager.givePrize(player, prize);
-            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+            crazyCrates.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
             ItemStack displayItem = prize.getDisplayItem();
 
             //NBTItem nbtItem = new NBTItem(displayItem);
@@ -112,7 +120,7 @@ public class QuickCrate implements Listener {
                 return;
             }
 
-            reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(plugin, true));
+            reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(crazyCrates, true));
             reward.setVelocity(new Vector(0, .2, 0));
             reward.setCustomName(displayItem.getItemMeta().getDisplayName());
             reward.setCustomNameVisible(true);

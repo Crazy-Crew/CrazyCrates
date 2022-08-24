@@ -16,11 +16,11 @@ import java.util.Random;
 
 public class StructureHandler {
 
-    private final CrazyCrates plugin;
+    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+
     private final File file;
 
-    public StructureHandler(CrazyCrates plugin, File file) {
-        this.plugin = plugin;
+    public StructureHandler(File file) {
         this.file = file;
     }
 
@@ -29,7 +29,7 @@ public class StructureHandler {
     private final List<Block> preStructureBlocks = new ArrayList<>();
 
     private StructureManager getStructureManager() {
-        return plugin.getServer().getStructureManager();
+        return crazyCrates.getServer().getStructureManager();
     }
 
     private BlockVector getStructureSize() {

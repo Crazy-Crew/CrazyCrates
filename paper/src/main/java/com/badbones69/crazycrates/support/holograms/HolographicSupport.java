@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateHologram;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.google.inject.Inject;
 import org.bukkit.block.Block;
 import java.util.HashMap;
 
@@ -14,7 +13,7 @@ public class HolographicSupport implements HologramController {
     
     private final HashMap<Block, Hologram> holograms = new HashMap<>();
 
-    @Inject private CrazyCrates plugin;
+    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
     
     public void createHologram(Block block, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();
@@ -22,7 +21,7 @@ public class HolographicSupport implements HologramController {
         if (!crateHologram.isEnabled()) return;
 
         double height = crateHologram.getHeight();
-        Hologram hologram = HologramsAPI.createHologram(plugin, block.getLocation().add(.5, height, .5));
+        Hologram hologram = HologramsAPI.createHologram(crazyCrates, block.getLocation().add(.5, height, .5));
         //crateHologram.getMessages().forEach(line -> hologram.appendTextLine(methods.color(line)));
         holograms.put(block, hologram);
     }

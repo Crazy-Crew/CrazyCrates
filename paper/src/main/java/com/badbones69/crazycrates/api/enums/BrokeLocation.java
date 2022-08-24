@@ -5,23 +5,21 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.Location;
 
 public class BrokeLocation {
+
+    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
     
     private int x, y, z;
     private String world;
     private final String locationName;
     private Crate crate;
-
-    private final CrazyCrates plugin;
     
-    public BrokeLocation(String locationName, Crate crate, int x, int y, int z, String world, CrazyCrates plugin) {
+    public BrokeLocation(String locationName, Crate crate, int x, int y, int z, String world) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.world = world;
         this.crate = crate;
         this.locationName = locationName;
-
-        this.plugin = plugin;
     }
     
     public String getLocationName() {
@@ -69,6 +67,6 @@ public class BrokeLocation {
     }
     
     public Location getLocation() {
-        return new Location(plugin.getServer().getWorld(world), x, y, z);
+        return new Location(crazyCrates.getServer().getWorld(world), x, y, z);
     }
 }

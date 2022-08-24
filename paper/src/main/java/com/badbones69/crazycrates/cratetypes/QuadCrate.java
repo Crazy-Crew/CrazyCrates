@@ -7,9 +7,8 @@ import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -33,14 +32,24 @@ import java.util.Random;
  * Controller class for the quad-crate crate type.
  * Display items are controlled from the quick crate due to them using nbt tags.
  */
-@Singleton
 public class QuadCrate implements Listener {
 
-    @Inject private CrazyCrates plugin;
-    @Inject private CrazyManager crazyManager;
-    @Inject private SessionManager sessionManager;
+    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
 
-    @Inject private ScheduleUtils scheduleUtils;
+    private final SessionManager sessionManager = new SessionManager();
+
+    private final CrazyManager crazyManager;
+
+    private final ChestStateHandler chestStateHandler;
+
+    private final ScheduleUtils scheduleUtils;
+
+    public QuadCrate(CrazyManager crazyManager, ChestStateHandler chestStateHandler, ScheduleUtils scheduleUtils) {
+        this.crazyManager = crazyManager;
+        this.chestStateHandler = chestStateHandler;
+
+        this.scheduleUtils = scheduleUtils;
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e) {
@@ -62,7 +71,7 @@ public class QuadCrate implements Listener {
 
                     if (!session.getCratesOpened().get(block.getLocation())) {
 
-                        session.quadCrateHandler().openChest(block, true);
+                        chestStateHandler.openChest(block, true);
 
                         Crate crate = session.getCrate();
                         Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
@@ -79,7 +88,7 @@ public class QuadCrate implements Listener {
 
                         Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), item);
 
-                        reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(plugin, true));
+                        reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(crazyCrates, true));
                         reward.setVelocity(new Vector(0, .2, 0));
 
                         reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());

@@ -12,8 +12,6 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -28,28 +26,34 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-@Singleton
 public class CosmicCrate implements Listener {
 
     private final HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();
     private final HashMap<Player, ArrayList<Integer>> picks = new HashMap<>();
     private final HashMap<Player, Boolean> checkHands = new HashMap<>();
 
-    @Inject private CrazyCrates plugin;
-    @Inject private CrazyManager crazyManager;
-    @Inject private CrazyLogger crazyLogger;
-    @Inject private Methods methods;
+    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
 
-    @Inject private ScheduleUtils scheduleUtils;
+    private final CrazyManager crazyManager;
+    private final CrazyLogger crazyLogger;
+    private final Methods methods;
+    private final ScheduleUtils scheduleUtils;
+
+    public CosmicCrate(CrazyManager crazyManager, CrazyLogger crazyLogger, Methods methods, ScheduleUtils scheduleUtils) {
+        this.crazyManager = crazyManager;
+        this.crazyLogger = crazyLogger;
+        this.methods = methods;
+        this.scheduleUtils = scheduleUtils;
+    }
 
     private void showRewards(Player player, Crate crate) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Prizes");
+        Inventory inv = crazyCrates.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Prizes");
         picks.get(player).forEach(i -> inv.setItem(i, pickTier(player).getTierPane()));
         player.openInventory(inv);
     }
     
     private void startRoll(Player player, Crate crate) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Shuffling");
+        Inventory inv = crazyCrates.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Shuffling");
 
         for (int i = 0; i < 27; i++) {
             inv.setItem(i, pickTier(player).getTierPane());
@@ -70,7 +74,7 @@ public class CosmicCrate implements Listener {
     }
     
     public void openCosmic(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Choose");
+        Inventory inv = crazyCrates.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Choose");
         setChests(inv, crate);
         crazyManager.addPlayerKeyType(player, keyType);
         checkHands.put(player, checkHand);
@@ -132,7 +136,7 @@ public class CosmicCrate implements Listener {
                                 if (prize != null) {
                                     crazyManager.givePrize(player, prize);
 
-                                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crazyManager.getOpeningCrate(player).getName(), prize));
+                                    crazyCrates.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crazyManager.getOpeningCrate(player).getName(), prize));
 
                                     e.setCurrentItem(prize.getDisplayItem());
                                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
@@ -220,7 +224,7 @@ public class CosmicCrate implements Listener {
                                         startRoll(player, crate);
                                     } catch (Exception e) {
                                         PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.REFUND, 1);
-                                        plugin.getServer().getPluginManager().callEvent(event);
+                                        crazyCrates.getServer().getPluginManager().callEvent(event);
 
                                         if (!event.isCancelled()) {
                                             crazyManager.addKeys(1, player, crate, keyType);

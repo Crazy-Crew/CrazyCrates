@@ -8,8 +8,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.utilities.CommonUtils;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -20,15 +18,21 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@Singleton
 public class CsgoCrate implements Listener {
 
-    @Inject private CrazyCrates plugin;
-    @Inject private CrazyManager crazyManager;
-    @Inject private Methods methods;
+    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
 
-    @Inject private ScheduleUtils scheduleUtils;
-    @Inject private CommonUtils commonUtils;
+    private final CrazyManager crazyManager;
+    private final Methods methods;
+    private final ScheduleUtils scheduleUtils;
+    private final CommonUtils commonUtils;
+
+    public CsgoCrate(CrazyManager crazyManager, Methods methods, ScheduleUtils scheduleUtils, CommonUtils commonUtils) {
+        this.crazyManager = crazyManager;
+        this.methods = methods;
+        this.scheduleUtils = scheduleUtils;
+        this.commonUtils = commonUtils;
+    }
 
     private void setGlass(Inventory inv) {
         HashMap<Integer, ItemStack> glass = new HashMap<>();
@@ -71,7 +75,7 @@ public class CsgoCrate implements Listener {
     }
     
     public void openCSGO(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName"));
+        Inventory inv = crazyCrates.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName"));
         setGlass(inv);
 
         for (int i = 9; i > 8 && i < 18; i++) {

@@ -223,7 +223,7 @@ public class Locale extends AbstractConfig {
 
     private static final Locale LOCALE_FILE = new Locale();
 
-    public static void reload(Path path, String fileName, CrazyLogger logger) {
-        LOCALE_FILE.handle(path.resolve(fileName), Locale.class, logger);
+    public static void reload(Path path, String fileName, CrazyLogger crazyLogger) {
+        LOCALE_FILE.handle(path.resolve(fileName), Locale.class, crazyLogger);
     }
 }

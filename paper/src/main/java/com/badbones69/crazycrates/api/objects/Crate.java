@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.api.objects;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
@@ -8,7 +7,6 @@ import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.api.managers.CrateManager;
 import com.badbones69.crazycrates.modules.config.files.Config;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
-import com.google.inject.Inject;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -47,7 +45,7 @@ public class Crate {
     private final FileManager fileManager;
     private final Methods methods;
 
-    @Inject private CrazyLogger crazyLogger;
+    private final CrazyLogger crazyLogger;
 
     /**
      * @param name The name of the crate.
@@ -56,7 +54,8 @@ public class Crate {
      * @param prizes The prizes that can be won.
      * @param file The crate file.
      */
-    public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, CrateHologram hologram, Methods methods, FileManager fileManager) {
+    public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers,
+                 CrateHologram hologram, Methods methods, FileManager fileManager, CrazyLogger crazyLogger) {
         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
         this.keyNoNBT = itemBuilder.build();
         this.key = itemBuilder.setCrateName(name).build();
@@ -91,6 +90,8 @@ public class Crate {
 
         this.methods = methods;
         this.fileManager = fileManager;
+
+        this.crazyLogger = crazyLogger;
 
         //this.previewListener = previewListener;
     }

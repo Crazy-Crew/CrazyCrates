@@ -1,12 +1,10 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
+import com.badbones69.crazycrates.modules.config.files.Config;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,11 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
-@Singleton
 public class BrokeLocationsListener implements Listener {
-    @Inject private CrazyManager crazyManager;
-    @Inject private FileManager fileManager;
-    @Inject private CrazyLogger crazyLogger;
+
+    private final CrazyManager crazyManager;
+    private final CrazyLogger crazyLogger;
+
+    public BrokeLocationsListener(CrazyManager crazyManager, CrazyLogger crazyLogger) {
+        this.crazyManager = crazyManager;
+        this.crazyLogger = crazyLogger;
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onWorldLoad(WorldLoadEvent e) {
@@ -42,7 +44,7 @@ public class BrokeLocationsListener implements Listener {
 
             crazyManager.getBrokeCrateLocations().removeAll(fixedWorlds);
 
-            if (fileManager.isLogging()) {
+            if (Config.TOGGLE_VERBOSE) {
                 crazyLogger.debug("<red>Fixed</red> <gold>" + fixedAmount + "</gold> <red>broken crate locations.</red>");
 
                 if (crazyManager.getBrokeCrateLocations().isEmpty()) crazyLogger.debug("<red>All broken crate locations have been fixed.</red>");

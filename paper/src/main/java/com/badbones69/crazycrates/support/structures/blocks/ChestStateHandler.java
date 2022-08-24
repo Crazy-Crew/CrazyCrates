@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.support.structures.blocks;
 
 import com.badbones69.crazycrates.support.structures.interfaces.ChestControl;
-import com.google.inject.Singleton;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -10,7 +9,6 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.EnderChest;
 import org.bukkit.block.data.Directional;
 
-@Singleton
 public class ChestStateHandler implements ChestControl {
 
     @Override

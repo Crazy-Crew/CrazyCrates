@@ -4,8 +4,6 @@ import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Color;
@@ -27,10 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-@Singleton
 public class Methods {
 
-    @Inject private CrazyCrates plugin;
+    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
 
     private final Random random = new Random();
 
@@ -93,7 +90,7 @@ public class Methods {
     }
 
     private void detonate(final Firework firework) {
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, firework::detonate, 2);
+        crazyCrates.getServer().getScheduler().scheduleSyncDelayedTask(crazyCrates, firework::detonate, 2);
     }
 
     public boolean isInt(String s) {
@@ -107,11 +104,11 @@ public class Methods {
     }
 
     public Player getPlayer(String name) {
-        return plugin.getServer().getPlayerExact(name);
+        return crazyCrates.getServer().getPlayerExact(name);
     }
 
     public boolean isOnline(String name, CommandSender sender) {
-        for (Player player : plugin.getServer().getOnlinePlayers()) {
+        for (Player player : crazyCrates.getServer().getOnlinePlayers()) {
             if (player.getName().equalsIgnoreCase(name)) return true;
         }
 

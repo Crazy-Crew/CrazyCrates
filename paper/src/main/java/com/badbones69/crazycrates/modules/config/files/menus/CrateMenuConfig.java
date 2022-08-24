@@ -29,7 +29,7 @@ public class CrateMenuConfig extends AbstractConfig {
             Available types are CHEST, WORKBENCH, HOPPER< DISPENSER, BREWING
             Every type except CHEST ignores "crate-menu-size"
             """)
-    public static GuiType CRATE_MENU_TYPE = GuiType.CHEST;
+    public static String CRATE_MENU_TYPE = "CHEST";
 
     @Key("crate-menu-filler.toggle")
     public static Boolean CRATE_MENU_FILLER_TOGGLE = false;
@@ -45,7 +45,7 @@ public class CrateMenuConfig extends AbstractConfig {
 
     private static final CrateMenuConfig CRATE_MENU_FILE = new CrateMenuConfig();
 
-    public static void reload(Path path, CrazyLogger logger) {
-        CRATE_MENU_FILE.handle(path.resolve("crate-menu.yml"), CrateMenuConfig.class, logger);
+    public static void reload(Path path, CrazyLogger crazyLogger) {
+        CRATE_MENU_FILE.handle(path.resolve("crate-menu.yml"), CrateMenuConfig.class, crazyLogger);
     }
 }

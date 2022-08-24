@@ -9,6 +9,8 @@ public enum PluginSupport {
     DECENT_HOLOGRAMS("DecentHolograms");
     
     private final String name;
+
+    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
     
     PluginSupport(String name) {
         this.name = name;
@@ -18,7 +20,7 @@ public enum PluginSupport {
         return name;
     }
     
-    public boolean isPluginLoaded(CrazyCrates plugin) {
-        return plugin.getServer().getPluginManager().getPlugin(name) != null;
+    public boolean isPluginLoaded() {
+        return crazyCrates.getServer().getPluginManager().getPlugin(name) != null;
     }
 }

@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.api.managers;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
@@ -12,7 +11,6 @@ import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
-import com.google.inject.Inject;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,12 +29,6 @@ import java.util.Map;
 import java.util.Random;
 
 public class QuadCrateManager {
-
-    @Inject private ScheduleUtils scheduleUtils;
-
-    @Inject private CrazyLogger crazyLogger;
-
-    private final ChestStateHandler quadCrateHandler = new ChestStateHandler();
 
     private static final List<QuadCrateManager> crateSessions = new ArrayList<>();
 
@@ -86,19 +78,14 @@ public class QuadCrateManager {
     // Get the structure handler.
     private final StructureHandler handler;
 
-    // Get the manager instance.
+    private final ScheduleUtils scheduleUtils;
+    private final CrazyLogger crazyLogger;
     private final CrazyManager crazyManager;
     private final Methods methods;
-
     private final ChestStateHandler chestStateHandler;
 
-    public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler, CrazyManager crazyManager, Methods methods, ChestStateHandler chestStateHandler) {
-
-        this.crazyManager = crazyManager;
-        this.methods = methods;
-
-        this.chestStateHandler = chestStateHandler;
-
+    public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler,
+                            ScheduleUtils scheduleUtils, CrazyLogger crazyLogger, CrazyManager crazyManager, Methods methods, ChestStateHandler chestStateHandler) {
         this.instance = this;
         this.player = player;
         this.crate = crate;
@@ -113,6 +100,12 @@ public class QuadCrateManager {
         List<QuadCrateParticles> particles = Arrays.asList(QuadCrateParticles.values());
         this.particle = particles.get(new Random().nextInt(particles.size()));
         this.particleColor = getColors().get(new Random().nextInt(getColors().size()));
+
+        this.scheduleUtils = scheduleUtils;
+        this.crazyLogger = crazyLogger;
+        this.crazyManager = crazyManager;
+        this.methods = methods;
+        this.chestStateHandler = chestStateHandler;
 
         crateSessions.add(instance);
     }
@@ -339,7 +332,7 @@ public class QuadCrateManager {
     }
 
     // Get the crate sessions.
-    public List<QuadCrateManager> getCrateSessions() {
+    public static List<QuadCrateManager> getCrateSessions() {
         return crateSessions;
     }
 
@@ -375,10 +368,5 @@ public class QuadCrateManager {
         }
 
         return true;
-    }
-
-    // Fetch the handler.
-    public ChestStateHandler quadCrateHandler() {
-        return quadCrateHandler;
     }
 }

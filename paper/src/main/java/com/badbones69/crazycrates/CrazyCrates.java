@@ -3,31 +3,25 @@ package com.badbones69.crazycrates;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
-import com.badbones69.crazycrates.cratetypes.*;
-import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
-import com.badbones69.crazycrates.listeners.CrateControlListener;
-import com.badbones69.crazycrates.listeners.FireworkDamageListener;
-import com.badbones69.crazycrates.listeners.MiscListener;
-import com.badbones69.crazycrates.modules.PluginModule;
+import com.badbones69.crazycrates.cratetypes.QuadCrate;
 import com.badbones69.crazycrates.modules.config.files.Config;
 import com.badbones69.crazycrates.modules.config.files.Locale;
 import com.badbones69.crazycrates.modules.config.files.menus.CrateMenuConfig;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
+import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
+import com.badbones69.crazycrates.utilities.AdventureUtils;
+import com.badbones69.crazycrates.utilities.CommonUtils;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.Singleton;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.file.Path;
 
-@Singleton
 public class CrazyCrates extends JavaPlugin implements Listener {
 
-    private Injector injector;
+    private static CrazyCrates plugin;
 
     private boolean pluginEnabled = false;
 
@@ -36,36 +30,31 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public final Path LOCALE_DIRECTORY = getDataFolder().toPath().resolve("locale");
     public final Path PLUGIN_DIRECTORY = getDataFolder().toPath();
 
-    @Inject private CrazyManager crazyManager;
-    @Inject private FileManager fileManager;
-    @Inject private SessionManager sessionManager;
-    @Inject private CrazyLogger crazyLogger;
-
-    @Inject private CosmicCrate cosmicCrate;
-    @Inject private CrateOnTheGo crateOnTheGo;
-    @Inject private CsgoCrate csgoCrate;
-    @Inject private QuadCrate quadCrate;
-    @Inject private QuickCrate quickCrate;
-    @Inject private RouletteCrate rouletteCrate;
-    @Inject private WarCrate warCrate;
-    @Inject private WheelCrate wheelCrate;
-    @Inject private WonderCrate wonderCrate;
-
-    @Inject private BrokeLocationsListener brokeLocationsListener;
-    @Inject private CrateControlListener crateControlListener;
-    @Inject private FireworkDamageListener fireworkDamageListener;
-    @Inject private MiscListener miscListener;
+    private FileManager fileManager;
+    private CrazyManager crazyManager;
+    private CrazyLogger crazyLogger;
+    private Methods methods;
+    private CommonUtils commonUtils;
+    private AdventureUtils adventureUtils;
 
     @Override
     public void onEnable() {
         try {
+            plugin = this;
+
+            adventureUtils = new AdventureUtils();
+
+            crazyLogger = new CrazyLogger(adventureUtils);
+
+            fileManager = new FileManager(crazyLogger);
+
+            methods = new Methods();
+
+            commonUtils = new CommonUtils(crazyLogger, crazyManager = new CrazyManager(crazyLogger, fileManager, methods), methods);
+
             if (!getDataFolder().exists()) getDataFolder().mkdirs();
 
-            PluginModule module = new PluginModule(this);
-
-            injector = module.createInjector();
-
-            injector.injectMembers(this);
+            //data.load();
             
             String cratesFolder = "/crates";
             String schematicFolder = "/schematics";
@@ -129,13 +118,11 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onDisable() {
         if (!pluginEnabled) return;
 
-        sessionManager.endCrates();
+        SessionManager.endCrates();
 
-        quickCrate.removeAllRewards();
+        //quickCrate.removeAllRewards();
 
         if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
-
-        injector = null;
     }
 
     private void enable() {
@@ -144,11 +131,11 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         PluginManager pluginManager = getServer().getPluginManager();
 
-        if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(brokeLocationsListener, this);
+        //if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(brokeLocationsListener, this);
 
-        pluginManager.registerEvents(crateControlListener, this);
-        pluginManager.registerEvents(fireworkDamageListener, this);
-        pluginManager.registerEvents(miscListener, this);
+        //pluginManager.registerEvents(crateControlListener, this);
+        //pluginManager.registerEvents(fireworkDamageListener, this);
+        //pluginManager.registerEvents(miscListener, this);
 
         //pluginManager.registerEvents(cosmicCrate, this);
         //pluginManager.registerEvents(crateOnTheGo, this);
@@ -160,6 +147,10 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         //pluginManager.registerEvents(wheelCrate, this);
         //pluginManager.registerEvents(wonderCrate, this);
 
-        if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded(this)) new PlaceholderAPISupport().register();
+        if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) new PlaceholderAPISupport(crazyManager).register();
+    }
+
+    public static CrazyCrates getInstance() {
+        return plugin;
     }
 }
