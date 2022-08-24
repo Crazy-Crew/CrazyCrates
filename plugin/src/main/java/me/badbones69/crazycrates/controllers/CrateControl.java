@@ -189,7 +189,7 @@ public class CrateControl implements Listener { //Crate Control
 //                                return;
 //                            } else {
                                 new MassOpenGUI(player, crate, crateLocation).open();
-//                                return;
+                                return;
 //                            }
                         }
 
