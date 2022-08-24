@@ -93,6 +93,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
                     .registerCustomFilesFolder("/schematics")
                     .registerCustomFilesFolder("/locale")
                     .registerCustomFilesFolder("/menus")
+                    .registerCustomFilesFolder("/data")
                     .setup(this);
 
             Locale.reload(LOCALE_DIRECTORY, Config.LANGUAGE_FILE, crazyLogger);

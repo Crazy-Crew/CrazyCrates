@@ -22,9 +22,6 @@ vault-api = "1.7"
 # Triumph Team
 gui = "3.1.2"
 
-# Guice
-guice = "5.1.0"
-
 [libraries]
 
 # PaperMC
