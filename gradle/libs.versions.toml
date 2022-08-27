@@ -48,6 +48,3 @@ vault-api = { module = "com.github.MilkBowl:VaultAPI", version.ref = "vault-api"
 
 # Triumph Team
 triumph-gui-bukkit = { module = "dev.triumphteam:triumph-gui", version.ref = "gui" }
-
-# Guice
-guice = { module = "com.google.inject:guice", version.ref = "guice" }
