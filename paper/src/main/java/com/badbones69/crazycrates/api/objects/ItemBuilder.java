@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.api.objects;
 
+import com.badbones69.crazycrates.support.SkullCreator;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -19,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class ItemBuilder {
     
-    //private NBTItem nbtItem;
+    private NBTItem nbtItem;
     
     // Item Data
     private Material material;
@@ -83,7 +85,7 @@ public class ItemBuilder {
      * Create a blank item builder.
      */
     public ItemBuilder() {
-        //this.nbtItem = null;
+        this.nbtItem = null;
         this.material = Material.STONE;
         this.damage = 0;
         this.itemName = "";
@@ -177,11 +179,11 @@ public class ItemBuilder {
     /**
      * Gets the nbt item.
      */
-    //public NBTItem getNBTItem() {
-    //    nbtItem = new NBTItem(build());
+    public NBTItem getNBTItem() {
+        nbtItem = new NBTItem(build());
 
-    //    return nbtItem;
-    //}
+        return nbtItem;
+    }
     
     /**
      * Gets the material.
@@ -324,7 +326,7 @@ public class ItemBuilder {
      */
     public ItemStack build() {
         
-        //if (nbtItem != null) referenceItem = nbtItem.getItem();
+        if (nbtItem != null) referenceItem = nbtItem.getItem();
         
         ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material);
 
@@ -333,9 +335,9 @@ public class ItemBuilder {
             if (isHead) { // Has to go 1st due to it removing all data when finished.
                 if (isHash) { // Sauce: https://github.com/deanveloper/SkullCreator
                     if (isURL) {
-                        //SkullCreator.itemWithUrl(item, player);
+                        SkullCreator.itemWithUrl(item, player);
                     } else {
-                        //SkullCreator.itemWithBase64(item, player);
+                        SkullCreator.itemWithBase64(item, player);
                     }
                 }
             }
@@ -385,22 +387,21 @@ public class ItemBuilder {
             hideItemFlags(item);
             item.addUnsafeEnchantments(enchantments);
             addGlow(item);
-            //NBTItem nbt = new NBTItem(item);
+
+            NBTItem nbt = new NBTItem(item);
             
-            //if (isHead && !isHash) nbt.setString("SkullOwner", player);
+            if (isHead && !isHash) nbt.setString("SkullOwner", player);
             
-            //if (isMobEgg) {
-            //    if (entityType != null) nbt.addCompound("EntityTag").setString("id", "minecraft:" + entityType.name());
-            //}
+            if (isMobEgg) {
+                if (entityType != null) nbt.addCompound("EntityTag").setString("id", "minecraft:" + entityType.name());
+            }
             
-            //if (!crateName.isEmpty()) nbt.setString("CrazyCrates-Crate", crateName);
+            if (!crateName.isEmpty()) nbt.setString("CrazyCrates-Crate", crateName);
             
-            //return nbt.getItem();
+            return nbt.getItem();
         } else {
             return item;
         }
-
-        return item;
     }
 
     /*
@@ -917,9 +918,9 @@ public class ItemBuilder {
         if (item.hasItemMeta()) {
             ItemMeta itemMeta = item.getItemMeta();
             itemBuilder.setName(itemMeta.getDisplayName()).setLore(itemMeta.getLore());
-            //NBTItem nbt = new NBTItem(item);
+            NBTItem nbt = new NBTItem(item);
 
-            //if (nbt.hasKey("Unbreakable")) itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
+            if (nbt.hasKey("Unbreakable")) itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
             
             if (itemMeta instanceof org.bukkit.inventory.meta.Damageable) itemBuilder.setDamage(((org.bukkit.inventory.meta.Damageable) itemMeta).getDamage());
         }

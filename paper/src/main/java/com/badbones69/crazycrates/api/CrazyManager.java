@@ -13,6 +13,7 @@ import com.badbones69.crazycrates.support.holograms.HolographicSupport;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -1246,7 +1247,7 @@ public class CrazyManager {
         if (entity instanceof Item) {
             ItemStack item = ((Item) entity).getItemStack();
 
-            //if (item.getType() != Material.AIR) return new NBTItem(item).hasKey("crazycrates-item");
+            if (item.getType() != Material.AIR) return new NBTItem(item).hasKey("crazycrates-item");
         }
 
         return false;

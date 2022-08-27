@@ -38,7 +38,7 @@ dependencies {
     implementation(libs.bstats.bukkit)
 
     // NBT API - TODO() Replace this by using PDC.
-    //implementation(libs.nbt.api)
+    implementation(libs.nbt.api)
 
     // Vault API
     compileOnly(libs.vault.api)

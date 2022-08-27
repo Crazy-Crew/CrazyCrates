@@ -106,7 +106,7 @@ public class SkullCreator {
      * @param url The URL of the Mojang skin
      * @return The head associated with the URL
      */
-    public ItemStack itemWithUrl(ItemStack item, String url) {
+    public static ItemStack itemWithUrl(ItemStack item, String url) {
         notNull(item, "item");
         notNull(url, "url");
         
@@ -132,7 +132,7 @@ public class SkullCreator {
      * @param base64 The base64 string containing the texture
      * @return The head with a custom texture
      */
-    public ItemStack itemWithBase64(ItemStack item, String base64) {
+    public static ItemStack itemWithBase64(ItemStack item, String base64) {
         notNull(item, "item");
         notNull(base64, "base64");
         

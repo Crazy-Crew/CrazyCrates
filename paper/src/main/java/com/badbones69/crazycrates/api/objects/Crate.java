@@ -24,7 +24,6 @@ public class Crate {
     private CrateManager manager;
     private final String name;
     private final ItemStack key;
-    private final ItemStack keyNoNBT;
     private final ItemStack adminKey;
     private int maxPage = 1;
     private final int maxSlots;
@@ -57,7 +56,6 @@ public class Crate {
     public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers,
                  CrateHologram hologram, Methods methods, FileManager fileManager, CrazyLogger crazyLogger) {
         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
-        this.keyNoNBT = itemBuilder.build();
         this.key = itemBuilder.setCrateName(name).build();
         this.adminKey = itemBuilder
         .addLore("")
@@ -382,24 +380,6 @@ public class Crate {
      */
     public ItemStack getKey(int amount) {
         ItemStack key = this.key.clone();
-        key.setAmount(amount);
-
-        return key;
-    }
-    
-    /**
-     * @return The key as an item stack with no nbt tags.
-     */
-    public ItemStack getKeyNoNBT() {
-        return this.keyNoNBT.clone();
-    }
-    
-    /**
-     * @param amount The amount of keys you want.
-     * @return The key as an item stack with no nbt tags.
-     */
-    public ItemStack getKeyNoNBT(int amount) {
-        ItemStack key = this.keyNoNBT.clone();
         key.setAmount(amount);
 
         return key;
