@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -36,8 +37,6 @@ public class QuadCrate implements Listener {
 
     private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
 
-    private final SessionManager sessionManager = new SessionManager();
-
     private final CrazyManager crazyManager;
 
     private final ChestStateHandler chestStateHandler;
@@ -53,19 +52,21 @@ public class QuadCrate implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e) {
-        if (sessionManager.inSession(e.getPlayer())) e.setCancelled(true);
+        if (SessionManager.inSession(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerChestClick(PlayerInteractEvent e) {
         Player player = e.getPlayer();
 
-        if (sessionManager.inSession(player)) {
-            QuadCrateManager session = sessionManager.getSession(player);
+        if (SessionManager.inSession(player)) {
+            QuadCrateManager session = SessionManager.getSession(player);
 
             if (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.LEFT_CLICK_BLOCK) {
                 Block block = e.getClickedBlock();
 
+                assert block != null;
+                assert session != null;
                 if (session.getCrateLocations().contains(block.getLocation())) {
                     e.setCancelled(true);
 
@@ -82,9 +83,9 @@ public class QuadCrate implements Listener {
 
                         ItemStack item = itemBuilder.build();
 
-                        //NBTItem nbtItem = new NBTItem(item);
-                        //nbtItem.setBoolean("crazycrates-item", true);
-                        //item = nbtItem.getItem();
+                        NBTItem nbtItem = new NBTItem(item);
+                        nbtItem.setBoolean("crazycrates-item", true);
+                        item = nbtItem.getItem();
 
                         Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), item);
 
@@ -118,7 +119,7 @@ public class QuadCrate implements Listener {
     public void onPlayerMove(PlayerMoveEvent e) {
         Player player = e.getPlayer();
 
-        if (sessionManager.inSession(player)) { // Player tries to walk away from the crate area
+        if (SessionManager.inSession(player)) { // Player tries to walk away from the crate area
             Location from = e.getFrom();
             Location to = e.getTo();
 
@@ -131,7 +132,7 @@ public class QuadCrate implements Listener {
 
         for (Entity entity : player.getNearbyEntities(2, 2, 2)) { // Someone tries to enter the crate area
             if (entity instanceof Player entityPlayer) {
-                if (sessionManager.inSession(entityPlayer)) {
+                if (SessionManager.inSession(entityPlayer)) {
                     Vector v = player.getLocation().toVector().subtract(entityPlayer.getLocation().toVector()).normalize().setY(1);
 
                     if (player.isInsideVehicle() && player.getVehicle() != null) {
@@ -148,14 +149,14 @@ public class QuadCrate implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
-        if (sessionManager.inSession(e.getPlayer())) e.setCancelled(true);
+        if (SessionManager.inSession(e.getPlayer())) e.setCancelled(true);
     }
 
     @EventHandler
     public void onPlayerPreCommand(PlayerCommandPreprocessEvent e) {
         Player player = e.getPlayer();
 
-        if (sessionManager.inSession(player) && !player.hasPermission("crazycrates.admin")) {
+        if (SessionManager.inSession(player) && !player.hasPermission("crazycrates.admin")) {
             e.setCancelled(true);
             //player.sendMessage(Messages.NO_COMMANDS_WHILE_CRATE_OPENED.getMessage("%Player%", player.getName()));
         }
@@ -165,7 +166,7 @@ public class QuadCrate implements Listener {
     public void onPlayerTeleport(PlayerTeleportEvent e) {
         Player player = e.getPlayer();
 
-        if (sessionManager.inSession(player) && e.getCause() == TeleportCause.ENDER_PEARL) {
+        if (SessionManager.inSession(player) && e.getCause() == TeleportCause.ENDER_PEARL) {
             e.setCancelled(true);
             //player.sendMessage(Messages.NO_TELEPORTING.getMessage("%Player%", player.getName()));
         }
@@ -175,6 +176,10 @@ public class QuadCrate implements Listener {
     public void onPlayerLeave(PlayerQuitEvent e) {
         Player player = e.getPlayer();
 
-        if (sessionManager.inSession(player)) sessionManager.getSession(player).endCrate();
+        QuadCrateManager session = SessionManager.getSession(player);
+
+        if (SessionManager.inSession(player)) {
+            if (session != null) session.endCrate();
+        }
     }
 }
