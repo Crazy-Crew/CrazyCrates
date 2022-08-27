@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.modules.config.types.json;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.modules.config.types.json.adapters.EnumTypeAdapter;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,7 +16,6 @@ public class PersistEngine {
             .disableHtmlEscaping()
             .enableComplexMapKeySerialization()
             .excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-            .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY)
             .create();
 
     public File getFile(String fileName) {
