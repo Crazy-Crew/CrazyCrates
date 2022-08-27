@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
-import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
@@ -20,12 +19,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import java.util.HashMap;
@@ -130,8 +127,6 @@ public class CrateControlListener implements Listener { // Crate Control
                 e.setCancelled(true);
 
                 if (crate.getCrateType() == CrateType.MENU) {
-
-                    // TODO() Make this no longer static.
                     // This is to stop players in QuadCrate to not be able to try and open a crate set to menu.
                     //if (!crazyManager.isInOpeningList(player)) menuListener.openGUI(player);
 
@@ -196,41 +191,6 @@ public class CrateControlListener implements Listener { // Crate Control
 
                            // player.sendMessage(Messages.NO_KEY.getMessage("%Key%", keyName, methods));
                         }
-                    }
-                }
-            }
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onAdminMenuClick(InventoryClickEvent e) {
-        Inventory inv = e.getInventory();
-        Player player = (Player) e.getWhoClicked();
-
-        if (inv != null && e.getView().getTitle().equals("&4&lAdmin Keys")) {
-            e.setCancelled(true);
-
-            if (!methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
-                player.closeInventory();
-                return;
-            }
-
-            // Added the >= due to an error about a raw slot set at -999.
-            if (e.getRawSlot() < inv.getSize() && e.getRawSlot() >= 0) { // Clicked in the admin menu.
-                ItemStack item = inv.getItem(e.getRawSlot());
-                if (crazyManager.isKey(item)) {
-                    Crate crate = crazyManager.getCrateFromKey(item);
-
-                    if (e.getAction() == InventoryAction.PICKUP_ALL) {
-                        player.getInventory().addItem(crate.getKey());
-                    } else if (e.getAction() == InventoryAction.PICKUP_HALF) {
-                        crazyManager.addKeys(1, player, crate, KeyType.VIRTUAL_KEY);
-                        String name = null;
-                        ItemStack key = crate.getKey();
-
-                        if (key.hasItemMeta() && key.getItemMeta().hasDisplayName()) name = key.getItemMeta().getDisplayName();
-
-                        //player.sendMessage(methods.getPrefix() + methods.color("&a&l+1 " + (name != null ? name : crate.getName())));
                     }
                 }
             }

@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Color;
@@ -11,8 +11,6 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Firework;
@@ -126,35 +124,13 @@ public class Methods {
         } catch (Exception ignored) {}
     }
 
-    public boolean permCheck(CommandSender sender, Permissions permissions, Boolean tabComplete) {
-        if (sender instanceof ConsoleCommandSender || sender instanceof RemoteConsoleCommandSender) return true;
-
-        Player player = (Player) sender;
-
-        if (player.hasPermission(permissions.getPermission("command"))) {
-            return true;
-        } else {
-            if (!tabComplete) {
-                //player.sendMessage(Messages.NO_PERMISSION.getMessage(this));
-                return false;
-            }
-
-            return false;
-        }
-    }
-
-    public boolean isInventoryFull(Player player) {
-        return player.getInventory().firstEmpty() == -1;
-    }
-
     public Integer randomNumber(int min, int max) {
         return min + random.nextInt(max - min);
     }
 
     public boolean isSimilar(ItemStack itemStack, Crate crate) {
-        //NBTItem nbtItem = new NBTItem(itemStack);
-        //return nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
-        return true;
+        NBTItem nbtItem = new NBTItem(itemStack);
+        return nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate"));
     }
 
     public Enchantment getEnchantment(String enchantmentName) {
