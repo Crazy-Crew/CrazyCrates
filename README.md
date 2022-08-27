@@ -1,8 +1,8 @@
 <br />
+
+[![crazycrates](https://raw.githubusercontent.com/RyderBelserion/Assets/main/crazycrew/CrazyCrates.png)](https://github.com/Crazy-Crew/CrazyCrates)
+
 <div align="center">
-  <a href="https://github.com/RyderBelserion/Assets/blob/main/crazycrew/CrazyCrates.png">
-    <img src="images/CrazyCrates.png" alt="Logo" width="512" height="80">
-  </a>
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -10,8 +10,6 @@
 [![Issues][issues-shield]][issues-url]
 [![GPU License][license-shield]][license-url]
 [![Contact][discord-shield]][discord-url]
-
-<h3 align="center">Crazy Crates</h3>
 
   <p align="center">
     A crates plugin that offers quality crates with ease!
