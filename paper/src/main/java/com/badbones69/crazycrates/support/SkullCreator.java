@@ -21,7 +21,7 @@ import java.util.UUID;
  */
 public class SkullCreator {
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private static final CrazyCrates crazyCrates = CrazyCrates.getInstance();
     
     /**
      * Creates a player skull based on a player's name.
@@ -217,11 +217,11 @@ public class SkullCreator {
         block.setType(Material.valueOf("PLAYER_HEAD"), false);
     }
     
-    private void notNull(Object o, String name) {
+    private static void notNull(Object o, String name) {
         if (o == null) throw new NullPointerException(name + " should not be null!");
     }
     
-    private String urlToBase64(String url) {
+    private static String urlToBase64(String url) {
         
         URI actualUrl;
 
