@@ -825,7 +825,7 @@ public class CrazyManager {
                     command = PlaceholderAPI.setPlaceholders(player, command);
                 }
 
-                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), color(command.replace("%Player%", player.getName()).replace("%player%", player.getName())));
+                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command.replace("%Player%", player.getName()).replace("%player%", player.getName()));
             }
 
             for (String message : prize.getMessages()) {
