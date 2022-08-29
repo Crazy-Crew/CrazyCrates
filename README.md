@@ -25,7 +25,7 @@
   
   [![download](https://github.com/modrinth/art/blob/main/Branding/Badge/badge-dark__184x72.png)](https://modrinth.com/plugin/crazycrates)
 
-  [![Join us on Discord](https://discord.com/api/guilds/182615261403283459/widget.png?style=banner2)](https://purpurmc.org/discord)
+  [![Join us on Discord](https://discord.com/api/guilds/182615261403283459/widget.png?style=banner2)](https://discord.badbones69.com)
 
 </div>
 
