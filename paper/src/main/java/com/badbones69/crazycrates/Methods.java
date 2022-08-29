@@ -196,11 +196,13 @@ public class Methods {
     }
 
     public void failedToTakeKey(Player player, Crate crate, Exception e) {
-        //plugin.getServer().getLogger().warning("An error has occurred while trying to take a physical key from a player");
-        //plugin.getServer().getLogger().warning("Player: " + player.getName());
-        //plugin.getServer().getLogger().warning("Crate: " + crate.getName());
-
         //player.sendMessage(getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));
+
+        if (Config.TOGGLE_VERBOSE) {
+            crazyLogger.debug("<red>An error has occurred while trying to take a physical key from a player.</red>");
+            crazyLogger.debug("<gold>Player:</gold> <red>" + player.getName() + "</red>");
+            crazyLogger.debug("<gold>Gold:</gold> <red>" + crate.getName() + "</red>");
+        }
 
         if (e != null) e.printStackTrace();
     }
