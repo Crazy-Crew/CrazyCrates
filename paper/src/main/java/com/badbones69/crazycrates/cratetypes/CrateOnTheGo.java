@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class CrateOnTheGo implements Listener {
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final CrazyManager crazyManager;
     private final Methods methods;
 
@@ -45,7 +45,7 @@ public class CrateOnTheGo implements Listener {
                     Prize prize = crate.pickPrize(player);
                     crazyManager.givePrize(player, prize);
 
-                    crazyCrates.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crazyManager.getOpeningCrate(player).getName(), prize));
+                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crazyManager.getOpeningCrate(player).getName(), prize));
 
                     if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 

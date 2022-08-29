@@ -6,7 +6,7 @@ import org.bukkit.Location;
 
 public class BrokeLocation {
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
     
     private int x, y, z;
     private String world;
@@ -67,6 +67,6 @@ public class BrokeLocation {
     }
     
     public Location getLocation() {
-        return new Location(crazyCrates.getServer().getWorld(world), x, y, z);
+        return new Location(plugin.getServer().getWorld(world), x, y, z);
     }
 }

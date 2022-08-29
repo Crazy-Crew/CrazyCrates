@@ -8,7 +8,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class CrazyLogger {
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final AdventureUtils adventureUtils;
 

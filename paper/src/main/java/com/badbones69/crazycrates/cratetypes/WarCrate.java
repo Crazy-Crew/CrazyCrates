@@ -30,7 +30,7 @@ public class WarCrate implements Listener {
     private static final HashMap<Player, Boolean> canPick = new HashMap<>();
     private static final HashMap<Player, Boolean> canClose = new HashMap<>();
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyManager crazyManager;
     private final Methods methods;
@@ -44,7 +44,7 @@ public class WarCrate implements Listener {
 
     public void openWarCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         String crateName = crate.getFile().getString(crateNameString);
-        Inventory inv = crazyCrates.getServer().createInventory(null, 9, crateName);
+        Inventory inv = plugin.getServer().createInventory(null, 9, crateName);
         setRandomPrizes(player, inv, crate, crateName);
         InventoryView inventoryView = player.openInventory(inv);
         canPick.put(player, false);
@@ -162,7 +162,7 @@ public class WarCrate implements Listener {
 
                     if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 
-                    crazyCrates.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 
                     crazyManager.removePlayerFromOpeningList(player);
                     player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 1, 1);

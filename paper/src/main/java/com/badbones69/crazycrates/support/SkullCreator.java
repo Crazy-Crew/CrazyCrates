@@ -21,7 +21,7 @@ import java.util.UUID;
  */
 public class SkullCreator {
 
-    private static final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
     
     /**
      * Creates a player skull based on a player's name.
@@ -52,9 +52,7 @@ public class SkullCreator {
         notNull(item, "item");
         notNull(name, "name");
         
-        return crazyCrates.getServer().getUnsafe().modifyItemStack(item,
-        "{SkullOwner:\"" + name + "\"}"
-        );
+        return plugin.getServer().getUnsafe().modifyItemStack(item, "{SkullOwner:\"" + name + "\"}");
     }
     
     /**
@@ -81,7 +79,7 @@ public class SkullCreator {
         notNull(id, "id");
         
         SkullMeta meta = (SkullMeta) item.getItemMeta();
-        meta.setOwningPlayer(crazyCrates.getServer().getOfflinePlayer(id));
+        meta.setOwningPlayer(plugin.getServer().getOfflinePlayer(id));
         item.setItemMeta(meta);
         
         return item;
@@ -137,9 +135,7 @@ public class SkullCreator {
         notNull(base64, "base64");
         
         UUID hashAsId = new UUID(base64.hashCode(), base64.hashCode());
-        return crazyCrates.getServer().getUnsafe().modifyItemStack(item,
-        "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
-        );
+        return plugin.getServer().getUnsafe().modifyItemStack(item, "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}");
     }
     
     /**
@@ -206,7 +202,7 @@ public class SkullCreator {
         "{Owner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
         );
 
-        crazyCrates.getServer().dispatchCommand(crazyCrates.getServer().getConsoleSender(), "data merge block " + args);
+        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "data merge block " + args);
     }
     
     private ItemStack getPlayerSkullItem() {

@@ -7,10 +7,10 @@ public enum PluginSupport {
     PLACEHOLDERAPI("PlaceholderAPI"),
     HOLOGRAPHIC_DISPLAYS("HolographicDisplays"),
     DECENT_HOLOGRAMS("DecentHolograms");
+
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
     
     private final String name;
-
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
     
     PluginSupport(String name) {
         this.name = name;
@@ -21,6 +21,6 @@ public enum PluginSupport {
     }
     
     public boolean isPluginLoaded() {
-        return crazyCrates.getServer().getPluginManager().getPlugin(name) != null;
+        return plugin.getServer().getPluginManager().getPlugin(name) != null;
     }
 }

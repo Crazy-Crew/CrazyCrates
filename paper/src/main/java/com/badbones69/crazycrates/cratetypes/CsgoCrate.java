@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 public class CsgoCrate implements Listener {
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyManager crazyManager;
     private final Methods methods;
@@ -75,7 +75,7 @@ public class CsgoCrate implements Listener {
     }
     
     public void openCSGO(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = crazyCrates.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName"));
+        Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName"));
         setGlass(inv);
 
         for (int i = 9; i > 8 && i < 18; i++) {

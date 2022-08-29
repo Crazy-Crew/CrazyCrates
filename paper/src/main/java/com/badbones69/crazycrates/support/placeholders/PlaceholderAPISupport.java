@@ -12,7 +12,7 @@ import java.text.NumberFormat;
 
 public class PlaceholderAPISupport extends PlaceholderExpansion {
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyManager crazyManager;
 
@@ -58,6 +58,6 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
     
     @Override
     public @NotNull String getVersion() {
-        return crazyCrates.getDescription().getVersion();
+        return plugin.getDescription().getVersion();
     }
 }

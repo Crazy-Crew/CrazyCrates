@@ -33,7 +33,7 @@ public class CosmicCrate implements Listener {
     private final HashMap<Player, ArrayList<Integer>> picks = new HashMap<>();
     private final HashMap<Player, Boolean> checkHands = new HashMap<>();
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyManager crazyManager;
     private final CrazyLogger crazyLogger;
@@ -48,13 +48,13 @@ public class CosmicCrate implements Listener {
     }
 
     private void showRewards(Player player, Crate crate) {
-        Inventory inv = crazyCrates.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Prizes");
+        Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Prizes");
         picks.get(player).forEach(i -> inv.setItem(i, pickTier(player).getTierPane()));
         player.openInventory(inv);
     }
     
     private void startRoll(Player player, Crate crate) {
-        Inventory inv = crazyCrates.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Shuffling");
+        Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Shuffling");
 
         for (int i = 0; i < 27; i++) {
             inv.setItem(i, pickTier(player).getTierPane());
@@ -75,7 +75,7 @@ public class CosmicCrate implements Listener {
     }
     
     public void openCosmic(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = crazyCrates.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Choose");
+        Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Choose");
         setChests(inv, crate);
         crazyManager.addPlayerKeyType(player, keyType);
         checkHands.put(player, checkHand);

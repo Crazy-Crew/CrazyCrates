@@ -25,7 +25,7 @@ import java.util.Random;
 
 public class Methods {
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final Random random = new Random();
 
@@ -88,7 +88,7 @@ public class Methods {
     }
 
     private void detonate(final Firework firework) {
-        crazyCrates.getServer().getScheduler().scheduleSyncDelayedTask(crazyCrates, firework::detonate, 2);
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, firework::detonate, 2);
     }
 
     public boolean isInt(String s) {
@@ -102,11 +102,11 @@ public class Methods {
     }
 
     public Player getPlayer(String name) {
-        return crazyCrates.getServer().getPlayerExact(name);
+        return plugin.getServer().getPlayerExact(name);
     }
 
     public boolean isOnline(String name, CommandSender sender) {
-        for (Player player : crazyCrates.getServer().getOnlinePlayers()) {
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
             if (player.getName().equalsIgnoreCase(name)) return true;
         }
 

@@ -44,7 +44,7 @@ public class CrateControlListener implements Listener { // Crate Control
         inUse.put(player, location);
     }
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyManager crazyManager;
     private final Methods methods;
@@ -134,7 +134,7 @@ public class CrateControlListener implements Listener { // Crate Control
                 }
 
                 PhysicalCrateKeyCheckEvent event = new PhysicalCrateKeyCheckEvent(player, crateLocation);
-                crazyCrates.getServer().getPluginManager().callEvent(event);
+                plugin.getServer().getPluginManager().callEvent(event);
 
                 if (!event.isCancelled()) {
                     boolean hasKey = false;

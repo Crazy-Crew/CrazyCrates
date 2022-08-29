@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class RouletteCrate implements Listener {
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyManager crazyManager;
     private final Methods methods;
@@ -33,7 +33,7 @@ public class RouletteCrate implements Listener {
     }
     
     public void openRoulette(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = crazyCrates.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName"));
+        Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName"));
         setGlass(inv);
         inv.setItem(13, crate.pickPrize(player).getDisplayItem());
         player.openInventory(inv);

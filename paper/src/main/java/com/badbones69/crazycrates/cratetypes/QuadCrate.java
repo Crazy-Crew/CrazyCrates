@@ -35,9 +35,8 @@ import java.util.Random;
  */
 public class QuadCrate implements Listener {
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
 
-    private final CrazyManager crazyManager;
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final ChestStateHandler chestStateHandler;
 
@@ -89,7 +88,7 @@ public class QuadCrate implements Listener {
 
                         Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), item);
 
-                        reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(crazyCrates, true));
+                        reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(plugin, true));
                         reward.setVelocity(new Vector(0, .2, 0));
 
                         reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());

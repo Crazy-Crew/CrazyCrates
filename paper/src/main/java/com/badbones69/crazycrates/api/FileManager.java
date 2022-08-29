@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class FileManager {
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyLogger crazyLogger;
 
@@ -30,7 +30,7 @@ public class FileManager {
     /**
      * Sets up the plugin and loads all necessary files.
      */
-    public void setup(CrazyCrates plugin) {
+    public void setup() {
         if (!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdirs();
 
         customFiles.clear();
@@ -195,7 +195,7 @@ public class FileManager {
 
         if (file != null) {
             try {
-                file.getFile().save(new File(crazyCrates.getDataFolder(), file.getHomeFolder() + "/" + file.getFileName()));
+                file.getFile().save(new File(plugin.getDataFolder(), file.getHomeFolder() + "/" + file.getFileName()));
 
                 if (isLogging) crazyLogger.debug("<red>Successfully saved the</red> <gold>" + file.getFileName() + ".</gold>");
             } catch (Exception e) {
@@ -226,7 +226,7 @@ public class FileManager {
 
         if (file != null) {
             try {
-                file.file = YamlConfiguration.loadConfiguration(new File(crazyCrates.getDataFolder(), "/" + file.getHomeFolder() + "/" + file.getFileName()));
+                file.file = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "/" + file.getHomeFolder() + "/" + file.getFileName()));
 
                 if (isLogging) crazyLogger.debug("<red>Successfully reloaded the</red> <gold>" + file.getFileName() + ".</gold>");
             } catch (Exception e) {
@@ -255,7 +255,7 @@ public class FileManager {
     public ArrayList<String> getAllCratesNames() {
         ArrayList<String> files = new ArrayList<>();
 
-        String[] cratesFolder = new File(crazyCrates.getDataFolder(), "/crates").list();
+        String[] cratesFolder = new File(plugin.getDataFolder(), "/crates").list();
 
         assert cratesFolder != null;
         for (String name : cratesFolder) {

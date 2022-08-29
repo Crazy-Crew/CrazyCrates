@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class WonderCrate implements Listener {
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyManager crazyManager;
     private final Methods methods;
@@ -38,7 +38,7 @@ public class WonderCrate implements Listener {
             return;
         }
 
-        final Inventory inv = crazyCrates.getServer().createInventory(null, 45, crate.getCrateInventoryName());
+        final Inventory inv = plugin.getServer().createInventory(null, 45, crate.getCrateInventoryName());
         final ArrayList<String> slots = new ArrayList<>();
 
         for (int i = 0; i < 45; i++) {

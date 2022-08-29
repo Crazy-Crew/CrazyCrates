@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class PersistEngine {
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final Gson gson = new GsonBuilder()
             .disableHtmlEscaping()
@@ -19,7 +19,7 @@ public class PersistEngine {
             .create();
 
     public File getFile(String fileName) {
-        return new File(crazyCrates.DATA_DIRECTORY.toFile(), fileName);
+        return new File(plugin.DATA_DIRECTORY.toFile(), fileName);
     }
 
     public void handle(Class<? extends PersistEngine> classObject, CrazyLogger crazyLogger) {

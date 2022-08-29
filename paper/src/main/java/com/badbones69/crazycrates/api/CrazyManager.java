@@ -31,7 +31,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CrazyManager {
 
-    private final CrazyCrates crazyCrates = CrazyCrates.getInstance();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyLogger crazyLogger;
     private final FileManager fileManager;
@@ -236,11 +236,11 @@ public class CrazyManager {
         // Loading schematic files
         if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>Searching for schematics to load.</red>");
 
-        String[] schems = new File(crazyCrates.getDataFolder() + "/schematics/").list();
+        String[] schems = new File(plugin.getDataFolder() + "/schematics/").list();
 
         for (String schematicName : schems) {
             if (schematicName.endsWith(".nbt")) {
-                crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(crazyCrates.getDataFolder() + "/schematics/" + schematicName)));
+                crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(plugin.getDataFolder() + "/schematics/" + schematicName)));
 
                 if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<gold>" + schematicName + "</gold> <red>was successfully found and loaded.</red>");
             }
@@ -601,7 +601,7 @@ public class CrazyManager {
             slots += 9;
         }
 
-        Inventory inv = crazyCrates.getServer().createInventory(null, slots, file.getString("Crate.Name"));
+        Inventory inv = plugin.getServer().createInventory(null, slots, file.getString("Crate.Name"));
 
         for (String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
             String id = file.getString("Crate.Prizes." + reward + ".DisplayItem", "Stone");
@@ -1207,10 +1207,10 @@ public class CrazyManager {
      */
     public void loadSchematics() {
         crateSchematics.clear();
-        String[] schems = new File(crazyCrates.getDataFolder() + "/schematics/").list();
+        String[] schems = new File(plugin.getDataFolder() + "/schematics/").list();
 
         for (String schematicName : schems) {
-            if (schematicName.endsWith(".nbt")) crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(crazyCrates.getDataFolder() + "/schematics/" + schematicName)));
+            if (schematicName.endsWith(".nbt")) crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(plugin.getDataFolder() + "/schematics/" + schematicName)));
         }
     }
     
