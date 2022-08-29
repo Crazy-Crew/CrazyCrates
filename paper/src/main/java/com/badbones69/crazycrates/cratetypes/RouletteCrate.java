@@ -53,8 +53,6 @@ public class RouletteCrate implements Listener {
 
     private void startRoulette(final Player player, final Inventory inv, final Crate crate) {
 
-        CrateTaskHandler crateTaskHandler = new CrateTaskHandler();
-
         crateTaskHandler.addTask(player, scheduleUtils.timer(2L, 2L, () -> {
 
             AtomicInteger full = new AtomicInteger();
@@ -62,7 +60,7 @@ public class RouletteCrate implements Listener {
             AtomicInteger even = new AtomicInteger();
             AtomicInteger open = new AtomicInteger();
 
-            if (full.incrementAndGet() <= 15) {
+            if (full.get() <= 15) {
                 inv.setItem(13, crate.pickPrize(player).getDisplayItem());
                 setGlass(inv);
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
@@ -86,7 +84,7 @@ public class RouletteCrate implements Listener {
                     player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                 }
 
-                if (time.incrementAndGet() >= 23) {
+                if (time.incrementAndGet() >= 23) { // When done
                     crateTaskHandler.endCrate(player, crate, inv);
 
                     scheduleUtils.later(40L, () -> {

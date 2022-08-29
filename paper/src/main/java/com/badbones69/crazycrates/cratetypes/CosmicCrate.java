@@ -11,7 +11,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
-import com.badbones69.crazycrates.utilities.handlers.objects.CrateTask;
 import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
@@ -233,7 +232,7 @@ public class CosmicCrate implements Listener {
                                     crazyManager.addKeys(1, player, crate, keyType);
 
                                     // TODO() Experimental -> DEBUG
-                                    crateTaskHandler.endCrate();
+                                    crateTaskHandler.endCrate(player);
 
                                     // TODO() - Configurable error message.
                                     // player.sendMessage(methods.getPrefix("&cAn issue has occurred and so a key refund was given."));
@@ -249,7 +248,7 @@ public class CosmicCrate implements Listener {
 
                                     crazyLogger.debug("<red>Count:</red> <gold>" + count.get() + ".</gold>");
 
-                                    crateTaskHandler.endCrate();
+                                    crateTaskHandler.endCrate(player);
 
                                     showRewards(player, crate);
 

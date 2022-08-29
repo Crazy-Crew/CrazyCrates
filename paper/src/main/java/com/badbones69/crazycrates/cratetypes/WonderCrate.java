@@ -51,8 +51,6 @@ public class WonderCrate implements Listener {
 
         player.openInventory(inv);
 
-        CrateTaskHandler crateTaskHandler = new CrateTaskHandler();
-
         crateTaskHandler.addTask(player, scheduleUtils.timer(2L, 0L, () -> {
             AtomicInteger fullTime = new AtomicInteger();
             AtomicInteger timer = new AtomicInteger();
@@ -88,7 +86,7 @@ public class WonderCrate implements Listener {
             player.openInventory(inv);
 
             if (fullTime.get() > 100) {
-                crateTaskHandler.endCrate();
+                crateTaskHandler.endCrate(player);
                 player.closeInventory();
                 crazyManager.givePrize(player, prize);
 

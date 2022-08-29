@@ -31,7 +31,6 @@ public class CsgoCrate implements Listener {
     // Utilities
     @Inject private Methods methods;
     @Inject private ScheduleUtils scheduleUtils;
-    @Inject private CommonUtils commonUtils;
 
     @Inject private CrateTaskHandler crateTaskHandler;
 
@@ -94,8 +93,6 @@ public class CsgoCrate implements Listener {
     }
     
     private void startCSGO(final Player player, final Inventory inv, Crate crate) {
-        CrateTaskHandler crateTaskHandler = new CrateTaskHandler();
-
         crateTaskHandler.addTask(player, scheduleUtils.timer(1L, 1L, () -> {
             AtomicInteger time = new AtomicInteger();
             AtomicInteger full = new AtomicInteger();
@@ -127,7 +124,7 @@ public class CsgoCrate implements Listener {
                         if (player.getOpenInventory().getTopInventory().equals(inv)) player.closeInventory();
                     });
                 } else if (time.get() > 60) { // Added this due reports of the prizes spamming when low tps.
-                    crateTaskHandler.endCrate();
+                    crateTaskHandler.endCrate(player);
                 }
             }
         }));

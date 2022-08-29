@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.utilities.CommonUtils;
-import com.badbones69.crazycrates.utilities.handlers.objects.CrateTask;
+import com.badbones69.crazycrates.utilities.handlers.objects.crates.CrateTask;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.bukkit.Sound;
@@ -19,8 +19,6 @@ public class CrateTaskHandler {
 
     private final HashMap<UUID, CrateTask> currentTasks = new HashMap<>();
 
-    private final CrateTask crateTask = new CrateTask();
-
     @Inject private CrazyManager crazyManager;
 
     @Inject private CommonUtils commonUtils;
@@ -32,6 +30,8 @@ public class CrateTaskHandler {
      * @param task The task of the crate.
      */
     public void addTask(Player player, BukkitTask task) {
+        CrateTask crateTask = new CrateTask();
+
         crateTask.setPlayer(player.getUniqueId());
         crateTask.setCurrentTask(task);
 
@@ -45,35 +45,31 @@ public class CrateTaskHandler {
      *
      * @return True if they do have a task and false if not.
      */
-    public boolean hasCrateTask() {
-        System.out.println(crateTask.getPlayer());
-
-        return currentTasks.containsKey(crateTask.getPlayer());
+    public boolean hasCrateTask(Player player) {
+        return currentTasks.containsKey(player.getUniqueId());
     }
 
     /**
      * Remove a task from the list of current tasks.
      */
-    public void removeTask() {
-        System.out.println(crateTask.getPlayer());
+    public void removeTask(Player player) {
+        if (hasCrateTask(player)) getCurrentTasks().get(player.getUniqueId()).getCurrentTask().cancel();
 
-        if (hasCrateTask()) getCurrentTasks().get(crateTask.getPlayer()).getCurrentTask().cancel();
-
-        currentTasks.remove(crateTask.getPlayer());
+        currentTasks.remove(player.getUniqueId());
     }
 
     public HashMap<UUID, CrateTask> getCurrentTasks() {
         return currentTasks;
     }
 
-    public void endCrate() {
-        if (hasCrateTask()) removeTask();
+    public void endCrate(Player player) {
+        if (hasCrateTask(player)) removeTask(player);
     }
 
     public void endCrate(Player player, Crate crate, Inventory inventory) {
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 
-        endCrate();
+        endCrate(player);
 
         Prize prize = crate.getPrize(inventory.getItem(13));
 

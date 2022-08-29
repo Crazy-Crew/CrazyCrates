@@ -50,8 +50,6 @@ public class FireCrackerCrate {
         colors.add(Color.MAROON);
         colors.add(Color.PURPLE);
 
-        CrateTaskHandler crateTaskHandler = new CrateTaskHandler();
-
         crateTaskHandler.addTask(player, scheduleUtils.timer(2L, 0L, () -> {
             final Random random = new Random();
 
@@ -66,7 +64,7 @@ public class FireCrackerCrate {
             methods.firework(location, Collections.singletonList(colors.get(color)));
 
             if (count.incrementAndGet() == 25) {
-                crateTaskHandler.endCrate();
+                crateTaskHandler.endCrate(player);
                 // The key type is set to free because the key has already been taken above.
                 quickCrate.openCrate(player, loc, crate, KeyType.FREE_KEY);
             }

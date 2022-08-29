@@ -36,6 +36,8 @@ public class WheelCrate implements Listener {
     @Inject private ScheduleUtils scheduleUtils;
     @Inject private CommonUtils commonUtils;
 
+    @Inject private CrateTaskHandler crateTaskHandler;
+
     public void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             methods.failedToTakeKey(player, crate);
@@ -59,8 +61,6 @@ public class WheelCrate implements Listener {
 
         rewards.put(player, items);
         player.openInventory(inv);
-
-        CrateTaskHandler crateTaskHandler = new CrateTaskHandler();
 
         crateTaskHandler.addTask(player, scheduleUtils.timer(1L, 1L, () -> {
 
@@ -122,7 +122,7 @@ public class WheelCrate implements Listener {
 
                     player.closeInventory();
                     crazyManager.removePlayerFromOpeningList(player);
-                    // crazyManager.endCrate(player);
+                    crateTaskHandler.endCrate(player);
                 }
 
                 slower.incrementAndGet();

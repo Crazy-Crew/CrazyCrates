@@ -150,7 +150,7 @@ public class WarCrate implements Listener {
                     Prize prize = crate.pickPrize(player);
                     inv.setItem(slot, prize.getDisplayItem());
 
-                    if (crateTaskHandler.hasCrateTask()) crateTaskHandler.endCrate();
+                    if (crateTaskHandler.hasCrateTask(player)) crateTaskHandler.endCrate(player);
 
                     canPick.remove(player);
                     canClose.put(player, true);
@@ -170,17 +170,17 @@ public class WarCrate implements Listener {
                             if (i != slot) inv.setItem(i, crate.pickPrize(player).getDisplayItem());
                         }
 
-                        if (crateTaskHandler.hasCrateTask()) crateTaskHandler.endCrate();
+                        if (crateTaskHandler.hasCrateTask(player)) crateTaskHandler.endCrate(player);
 
                         crateTaskHandler.addTask(player, scheduleUtils.later(30L, () -> {
                             for (int i = 0; i < 9; i++) {
                                 if (i != slot) inv.setItem(i, new ItemStack(Material.AIR));
                             }
 
-                            if (crateTaskHandler.hasCrateTask()) crateTaskHandler.endCrate();
+                            if (crateTaskHandler.hasCrateTask(player)) crateTaskHandler.endCrate(player);
 
                             crateTaskHandler.addTask(player, scheduleUtils.later(30L, () -> {
-                                if (crateTaskHandler.hasCrateTask()) crateTaskHandler.endCrate();
+                                if (crateTaskHandler.hasCrateTask(player)) crateTaskHandler.endCrate(player);
 
                                 player.closeInventory();
                             }));
@@ -200,7 +200,7 @@ public class WarCrate implements Listener {
                 if (crate.getCrateType() == CrateType.WAR && e.getView().getTitle().equalsIgnoreCase(crate.getFile().getString(crateNameString))) {
                     canClose.remove(player);
 
-                    if (crateTaskHandler.hasCrateTask()) crateTaskHandler.endCrate();
+                    if (crateTaskHandler.hasCrateTask(player)) crateTaskHandler.endCrate(player);
                 }
             }
         }

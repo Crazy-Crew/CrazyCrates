@@ -64,7 +64,7 @@ public class QuickCrate implements Listener {
             int keysUsed = 0;
             
             // give the player the prizes
-            for (; keys > 0; keys--) {
+            for (;keys > 0; keys--) {
                 if (!player.getInventory().isEmpty()) break;
                 
                 Prize prize = crate.pickPrize(player);
@@ -129,10 +129,8 @@ public class QuickCrate implements Listener {
 
             if (prize.useFireworks()) methods.firework(loc.clone().add(.5, 1, .5));
 
-            CrateTaskHandler crateTaskHandler = new CrateTaskHandler();
-
             crateTaskHandler.addTask(player, scheduleUtils.later(5 * 20L, () -> {
-                crateTaskHandler.endCrate();
+                crateTaskHandler.endCrate(player);
 
                 endQuickCrate(player, loc);
             }));

@@ -98,12 +98,9 @@ public class QuadCrate implements Listener {
                         session.getDisplayedRewards().add(reward);
 
                         if (session.allCratesOpened()) { // All 4 crates have been opened
-                            scheduleUtils.later(60L, new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    session.endCrate();
-                                    player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
-                                }
+                            scheduleUtils.later(60L, () -> {
+                                session.endCrate();
+                                player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
                             });
                         }
                     }
