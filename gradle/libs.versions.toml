@@ -9,6 +9,8 @@ paper-lib = "1.0.8-SNAPSHOT"
 bstats = "3.0.0"
 nbt-api = "2.10.0"
 
+guice = "5.1.0"
+
 # Holograms
 holographic-displays = "2.4.9"
 decent-holograms = "2.5.2"
@@ -44,7 +46,10 @@ placeholder-api = { module = "me.clip:placeholderapi", version.ref = "placeholde
 # NBT API
 nbt-api = { module = "de.tr7zw:nbt-data-api", version.ref = "nbt-api" }
 
+# Misc
 vault-api = { module = "com.github.MilkBowl:VaultAPI", version.ref = "vault-api" }
+
+guice = { module = "com.google.inject:guice", version.ref = "guice" }
 
 # Triumph Team
 triumph-gui-bukkit = { module = "dev.triumphteam:triumph-gui", version.ref = "gui" }

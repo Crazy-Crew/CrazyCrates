@@ -31,6 +31,8 @@ dependencies {
 
     compileOnly(libs.paper)
 
+    compileOnly(libs.guice)
+
     // Paper Cloud Commands
     // compileOnly(libs.paper.command.cloud)
 

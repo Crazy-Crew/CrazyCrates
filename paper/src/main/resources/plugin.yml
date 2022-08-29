@@ -30,6 +30,7 @@ commands:
 
 libraries:
   - dev.triumphteam:triumph-gui:3.1.2
+  - com.google.inject:guice:5.1.0
 
 permissions:
   crazycrates.command.player.menu:
