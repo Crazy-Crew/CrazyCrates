@@ -124,24 +124,6 @@ Distributed under the GPU v3 License. See `LICENSE.MD` for more information.
 
 </details>
 
-## Information
-<details>
-  <summary>Commands</summary>
-  
-  <center> <a href="https://github.com/Crazy-Crew/Crazy-Crates/wiki/Commands-and-Permissions">https://github.com/Crazy-Crew/Crazy-Crates/wiki/Commands-and-Permissions</a> </center>
-</details>
-
-<details>
-  <summary>Dependencies</summary>
-  None
-</details>
-
-<details>
-  <summary>Permissions</summary>
-
-  <center> <a href="https://github.com/Crazy-Crew/Crazy-Crates/wiki/Commands-and-Permissions">https://github.com/Crazy-Crew/Crazy-Crates/wiki/Commands-and-Permissions</a> </center>
-</details>
-
 [discord-shield]: https://img.shields.io/discord/182615261403283459.svg?style=for-the-badge
 [discord-url]: https://discord.badbones69.com
 
