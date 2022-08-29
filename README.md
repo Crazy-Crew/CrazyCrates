@@ -111,16 +111,16 @@ Distributed under the GPU v3 License. See `LICENSE.MD` for more information.
   <summary>Gradle</summary>
 
   ```
-  repositories {
-         maven("https://repo.badbones69.com/snapshots")
+   repositories {
+       maven("https://repo.badbones69.com/snapshots")
    }
-   ```
+  ```
 
-   ```
+  ```
    dependencies {
-           compileOnly("com.crazycrates:crazycrates-api:2.11.1-SNAPSHOT")
+       compileOnly("com.crazycrates:crazycrates-api:2.11.1-SNAPSHOT")
    }
-   ```
+  ```
 
 </details>
 
