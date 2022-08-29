@@ -34,7 +34,7 @@ public class CrateOnTheGo implements Listener {
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             ItemStack item = player.getInventory().getItemInMainHand();
             
-            if (item == null || item.getType() == Material.AIR) return;
+            if (item.getType() == Material.AIR) return;
             
             for (Crate crate : crazyManager.getCrates()) {
                 if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO && methods.isSimilar(item, crate)) {

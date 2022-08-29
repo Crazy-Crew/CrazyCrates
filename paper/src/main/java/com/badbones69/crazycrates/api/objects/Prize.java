@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api.objects;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class Prize {
      * @param items The ItemStacks that are given to the player that wins.
      */
     public Prize(String name, List<String> messages, List<String> commands, List<ItemStack> items, List<ItemBuilder> itemBuilders) {
-        this.name = name != null ? name : "&4No name Found!";
+        this.name = name != null ? name : "<red>No name Found!</red>";
         this.crate = "";
         this.items = items != null ? items : new ArrayList<>();
         this.itemBuilders = itemBuilders != null ? itemBuilders : new ArrayList<>();
@@ -64,7 +65,7 @@ public class Prize {
     public Prize(String name, ItemBuilder displayItem, List<String> messages, List<String> commands,
     List<ItemStack> items, List<ItemBuilder> itemBuilders, String crate, int chance, int maxRange, boolean firework, List<String> blackListPermissions,
     List<Tier> tiers, Prize altPrize) {
-        this.name = name != null ? name : "&4No name Found!";
+        this.name = name != null ? name : "<red>No name Found!</red>";
         this.crate = crate;
         this.items = items != null ? items : new ArrayList<>();
         this.itemBuilders = itemBuilders != null ? itemBuilders : new ArrayList<>();
@@ -93,9 +94,10 @@ public class Prize {
     public ItemStack getDisplayItem() {
         if (displayItemStack == null) {
             displayItemStack = displayItem.build();
-            //NBTItem nbt = new NBTItem(displayItemStack);
-            //nbt.setString("crazycrate-prize", name);
-            //displayItemStack = nbt.getItem();
+            NBTItem nbt = new NBTItem(displayItemStack);
+
+            nbt.setString("crazycrate-prize", name);
+            displayItemStack = nbt.getItem();
         }
 
         return displayItemStack.clone();

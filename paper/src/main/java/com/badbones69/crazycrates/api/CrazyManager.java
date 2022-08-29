@@ -1052,8 +1052,8 @@ public class CrazyManager {
                             }
                         }
                     }
-                } catch (Exception e) {
-                    methods.failedToTakeKey(player, crate, e);
+                } catch (Exception exception) {
+                    methods.failedToTakeKey(player, crate, exception);
                     return false;
                 }
 
@@ -1244,7 +1244,7 @@ public class CrazyManager {
             }
 
             return itemBuilder;
-        } catch (Exception e) {
+        } catch (Exception ignored) {
             return new ItemBuilder().setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
         }
     }
