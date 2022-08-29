@@ -34,15 +34,11 @@ public class CrazyManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyLogger crazyLogger;
-    private final FileManager fileManager;
-    private final Methods methods;
+    @Inject private CrazyLogger crazyLogger;
 
-    public CrazyManager(CrazyLogger crazyLogger, FileManager fileManager, Methods methods) {
-        this.crazyLogger = crazyLogger;
-        this.fileManager = fileManager;
-        this.methods = methods;
-    }
+    @Inject private FileManager fileManager;
+
+    @Inject private Methods methods;
 
     // All the crates that have been loaded.
     private final ArrayList<Crate> crates = new ArrayList<>();

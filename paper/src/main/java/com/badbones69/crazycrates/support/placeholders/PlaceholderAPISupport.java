@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
@@ -16,11 +17,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyManager crazyManager;
-
-    public PlaceholderAPISupport(CrazyManager crazyManager) {
-        this.crazyManager = crazyManager;
-    }
+    @Inject private CrazyManager crazyManager;
     
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {

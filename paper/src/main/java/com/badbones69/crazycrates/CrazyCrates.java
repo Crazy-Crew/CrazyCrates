@@ -3,14 +3,16 @@ package com.badbones69.crazycrates;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
+import com.badbones69.crazycrates.modules.ModuleManager;
 import com.badbones69.crazycrates.modules.config.files.Config;
 import com.badbones69.crazycrates.modules.config.files.Locale;
 import com.badbones69.crazycrates.modules.config.files.menus.CrateMenuConfig;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
-import com.badbones69.crazycrates.utilities.AdventureUtils;
-import com.badbones69.crazycrates.utilities.CommonUtils;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.Singleton;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -22,6 +24,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     private static CrazyCrates plugin;
 
+    private Injector injector;
+
     private boolean pluginEnabled = false;
 
     public final Path DATA_DIRECTORY = getDataFolder().toPath().resolve("data");
@@ -29,27 +33,22 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public final Path LOCALE_DIRECTORY = getDataFolder().toPath().resolve("locale");
     public final Path PLUGIN_DIRECTORY = getDataFolder().toPath();
 
-    private FileManager fileManager;
-    private CrazyManager crazyManager;
-    private CrazyLogger crazyLogger;
-    private Methods methods;
-    private CommonUtils commonUtils;
-    private AdventureUtils adventureUtils;
+    @Inject private CrazyLogger crazyLogger;
+
+    @Inject private CrazyManager crazyManager;
+
+    @Inject private FileManager fileManager;
 
     @Override
     public void onEnable() {
         try {
             plugin = this;
 
-            adventureUtils = new AdventureUtils();
+            ModuleManager moduleManager = new ModuleManager(new CrazyManager());
 
-            crazyLogger = new CrazyLogger(adventureUtils);
+            injector = moduleManager.createInjector();
 
-            fileManager = new FileManager(crazyLogger);
-
-            methods = new Methods();
-
-            commonUtils = new CommonUtils(crazyLogger, crazyManager = new CrazyManager(crazyLogger, fileManager, methods), methods);
+            injector.injectMembers(this);
 
             if (!getDataFolder().exists()) getDataFolder().mkdirs();
 
@@ -93,7 +92,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
                     .registerCustomFilesFolder("/locale")
                     .registerCustomFilesFolder("/menus")
                     .registerCustomFilesFolder("/data")
-                    .setup(this);
+                    .setup();
 
             Locale.reload(LOCALE_DIRECTORY, Config.LANGUAGE_FILE, crazyLogger);
 
@@ -123,7 +122,11 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         //quickCrate.removeAllRewards();
 
         if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
+
+        injector = null;
     }
+
+    @Inject private PlaceholderAPISupport placeholderAPISupport;
 
     private void enable() {
 
@@ -147,10 +150,10 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         //pluginManager.registerEvents(wheelCrate, this);
         //pluginManager.registerEvents(wonderCrate, this);
 
-        if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) new PlaceholderAPISupport(crazyManager).register();
+        if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) placeholderAPISupport.register();
     }
 
-    public static CrazyCrates getInstance() {
+    public static CrazyCrates getPlugin() {
         return plugin;
     }
 }

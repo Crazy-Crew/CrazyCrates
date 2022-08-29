@@ -4,11 +4,11 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
+import com.badbones69.crazycrates.api.events.player.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.utilities.ScheduleUtils;
-import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,13 +21,11 @@ import org.bukkit.inventory.ItemStack;
 public class CrateOnTheGo implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
-    private final CrazyManager crazyManager;
-    private final Methods methods;
 
-    public CrateOnTheGo(CrazyManager crazyManager, Methods methods) {
-        this.crazyManager = crazyManager;
-        this.methods = methods;
-    }
+    @Inject private CrazyManager crazyManager;
+
+    // Utilities
+    @Inject private Methods methods;
 
     @EventHandler(ignoreCancelled = true)
     public void onCrateOpen(PlayerInteractEvent e) {

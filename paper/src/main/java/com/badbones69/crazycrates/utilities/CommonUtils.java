@@ -3,10 +3,12 @@ package com.badbones69.crazycrates.utilities;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
+import com.badbones69.crazycrates.api.events.player.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.badbones69.crazycrates.utilities.handlers.CrateHandler;
+import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -18,21 +20,15 @@ public class CommonUtils {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyLogger crazyLogger;
+    @Inject private CrazyManager crazyManager;
 
-    private final CrazyManager crazyManager;
+    @Inject private Methods methods;
 
-    private final Methods methods;
+    @Inject private CrateHandler crateHandler;
 
-    public CommonUtils(CrazyLogger crazyLogger, CrazyManager crazyManager, Methods methods) {
-        this.crazyLogger = crazyLogger;
-        this.crazyManager = crazyManager;
-        this.methods = methods;
-    }
-
-    public void endCrate(Player player, Crate crate, Inventory inv) {
+    public void endCrate(Player player, Crate crate, Inventory inv, CrateTaskHandler crateTaskHandler) {
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-        crazyManager.endCrate(player);
+        crateHandler.endCrate(crateTaskHandler);
         Prize prize = crate.getPrize(inv.getItem(13));
 
         pickPrize(player, crate, prize);
@@ -46,7 +42,7 @@ public class CommonUtils {
 
             if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 
-            crazyCrates.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
         } else {
             // player.sendMessage(methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
         }

@@ -36,17 +36,16 @@ public class CosmicCrate implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyManager crazyManager;
-    private final CrazyLogger crazyLogger;
-    private final Methods methods;
-    private final ScheduleUtils scheduleUtils;
+    @Inject private CrazyManager crazyManager;
+    @Inject private CrazyLogger crazyLogger;
 
-    public CosmicCrate(CrazyManager crazyManager, CrazyLogger crazyLogger, Methods methods, ScheduleUtils scheduleUtils) {
-        this.crazyManager = crazyManager;
-        this.crazyLogger = crazyLogger;
-        this.methods = methods;
-        this.scheduleUtils = scheduleUtils;
-    }
+    // Utilities
+    @Inject private Methods methods;
+
+    @Inject private ScheduleUtils scheduleUtils;
+
+    // Task Handler
+    @Inject private CrateHandler crateHandler;
 
     private void showRewards(Player player, Crate crate) {
         Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Prizes");

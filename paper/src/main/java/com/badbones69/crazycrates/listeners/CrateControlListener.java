@@ -10,6 +10,8 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.cratetypes.QuickCrate;
 import com.badbones69.crazycrates.modules.config.files.Config;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -47,15 +49,11 @@ public class CrateControlListener implements Listener { // Crate Control
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyManager crazyManager;
-    private final Methods methods;
-    private final QuickCrate quickCrate;
+    @Inject private CrazyManager crazyManager;
 
-    public CrateControlListener(CrazyManager crazyManager, Methods methods, QuickCrate quickCrate) {
-        this.crazyManager = crazyManager;
-        this.methods = methods;
-        this.quickCrate = quickCrate;
-    }
+    @Inject private Methods methods;
+
+    @Inject private QuickCrate quickCrate;
 
     // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
     @EventHandler(ignoreCancelled = true)

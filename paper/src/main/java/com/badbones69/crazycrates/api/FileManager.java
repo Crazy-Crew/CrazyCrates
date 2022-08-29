@@ -2,6 +2,8 @@ package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
@@ -15,11 +17,7 @@ public class FileManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyLogger crazyLogger;
-
-    public FileManager(CrazyLogger crazyLogger) {
-        this.crazyLogger = crazyLogger;
-    }
+    @Inject private CrazyLogger crazyLogger;
 
     private boolean isLogging = false;
 

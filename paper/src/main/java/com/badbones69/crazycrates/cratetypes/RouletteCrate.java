@@ -6,33 +6,33 @@ import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.utilities.CommonUtils;
+import com.badbones69.crazycrates.utilities.ScheduleUtils;
+import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scheduler.BukkitRunnable;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
 public class RouletteCrate implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyManager crazyManager;
-    private final Methods methods;
-    private final CommonUtils commonUtils;
+    @Inject private CrazyManager crazyManager;
 
-    public RouletteCrate(CrazyManager crazyManager, Methods methods, CommonUtils commonUtils) {
-        this.crazyManager = crazyManager;
-        this.methods = methods;
-        this.commonUtils = commonUtils;
-    }
+    @Inject private Methods methods;
+    @Inject private ScheduleUtils scheduleUtils;
+    @Inject private CommonUtils commonUtils;
 
     private void setGlass(Inventory inv) {
         for (int i = 0; i < 27; i++) {
             if (i != 13) inv.setItem(i, methods.getRandomPaneColor().setName(" ").build());
         }
     }
-    
+
     public void openRoulette(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName"));
         setGlass(inv);

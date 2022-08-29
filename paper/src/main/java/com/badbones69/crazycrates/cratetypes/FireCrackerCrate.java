@@ -5,29 +5,32 @@ import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
+import com.badbones69.crazycrates.utilities.handlers.CrateHandler;
+import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
 public class FireCrackerCrate {
 
-    private final CrazyManager crazyManager;
-    private final Methods methods;
-    private final ScheduleUtils scheduleUtils;
-    private final QuickCrate quickCrate;
+    @Inject private CrazyManager crazyManager;
 
-    public FireCrackerCrate(CrazyManager crazyManager, Methods methods, ScheduleUtils scheduleUtils, QuickCrate quickCrate) {
-        this.crazyManager = crazyManager;
-        this.methods = methods;
-        this.scheduleUtils = scheduleUtils;
+    // Utilities
+    @Inject private Methods methods;
+    @Inject private ScheduleUtils scheduleUtils;
 
-        this.quickCrate = quickCrate;
-    }
+    // Listeners
+    @Inject private QuickCrate quickCrate;
+
+    // Task Handler
+    @Inject private CrateHandler crateHandler;
 
     public void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc) {
 

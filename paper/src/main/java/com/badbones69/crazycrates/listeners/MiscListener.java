@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,11 +11,7 @@ import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 @Singleton
 public class MiscListener implements Listener {
 
-    private final CrazyManager crazyManager;
-
-    public MiscListener(CrazyManager crazyManager) {
-        this.crazyManager = crazyManager;
-    }
+    @Inject private CrazyManager crazyManager;
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerPickUp(PlayerAttemptPickupItemEvent event) {

@@ -5,6 +5,8 @@ import com.badbones69.crazycrates.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.modules.config.files.Config;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,13 +18,8 @@ import java.util.List;
 @Singleton
 public class BrokeLocationsListener implements Listener {
 
-    private final CrazyManager crazyManager;
-    private final CrazyLogger crazyLogger;
-
-    public BrokeLocationsListener(CrazyManager crazyManager, CrazyLogger crazyLogger) {
-        this.crazyManager = crazyManager;
-        this.crazyLogger = crazyLogger;
-    }
+    @Inject private CrazyManager crazyManager;
+    @Inject private CrazyLogger crazyLogger;
 
     @EventHandler(ignoreCancelled = true)
     public void onWorldLoad(WorldLoadEvent e) {

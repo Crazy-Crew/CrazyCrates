@@ -4,33 +4,34 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
+import com.badbones69.crazycrates.api.events.player.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
+import com.badbones69.crazycrates.utilities.handlers.CrateHandler;
+import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Singleton
 public class WonderCrate implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyManager crazyManager;
-    private final Methods methods;
-    private final ScheduleUtils scheduleUtils;
+    @Inject private CrazyManager crazyManager;
 
-    public WonderCrate(CrazyManager crazyManager, Methods methods, ScheduleUtils scheduleUtils) {
-        this.crazyManager = crazyManager;
-        this.methods = methods;
-        this.scheduleUtils = scheduleUtils;
-    }
+    @Inject private Methods methods;
+    @Inject private ScheduleUtils scheduleUtils;
+
+    @Inject private CrateHandler crateHandler;
 
     public void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {

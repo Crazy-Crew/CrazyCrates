@@ -9,6 +9,8 @@ import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -39,16 +41,11 @@ public class QuadCrate implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final ChestStateHandler chestStateHandler;
+    @Inject private CrazyManager crazyManager;
 
-    private final ScheduleUtils scheduleUtils;
-
-    public QuadCrate(CrazyManager crazyManager, ChestStateHandler chestStateHandler, ScheduleUtils scheduleUtils) {
-        this.crazyManager = crazyManager;
-        this.chestStateHandler = chestStateHandler;
-
-        this.scheduleUtils = scheduleUtils;
-    }
+    // Utilities
+    @Inject private ChestStateHandler chestStateHandler;
+    @Inject private ScheduleUtils scheduleUtils;
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e) {

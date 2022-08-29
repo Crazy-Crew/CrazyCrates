@@ -1,8 +1,10 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.modules.config.files.Config;
+import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.ChatColor;
@@ -12,7 +14,6 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -28,6 +29,8 @@ import java.util.Random;
 public class Methods {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    @Inject private CrazyLogger crazyLogger;
 
     private final Random random = new Random();
 
@@ -132,6 +135,7 @@ public class Methods {
 
     public boolean isSimilar(ItemStack itemStack, Crate crate) {
         NBTItem nbtItem = new NBTItem(itemStack);
+
         return nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate"));
     }
 

@@ -4,14 +4,19 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
+import com.badbones69.crazycrates.api.events.player.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.modules.config.files.Config;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
+import com.badbones69.crazycrates.utilities.handlers.CrateHandler;
+import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -21,8 +26,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,29 +36,23 @@ public class QuickCrate implements Listener {
     
     public static ArrayList<Entity> allRewards = new ArrayList<>();
     public static HashMap<Player, Entity> rewards = new HashMap<>();
-    private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyManager crazyManager;
-    private final CrazyLogger crazyLogger;
-    private final Methods methods;
+    @Inject private CrazyManager crazyManager;
+    @Inject private CrazyLogger crazyLogger;
 
-    private final ScheduleUtils scheduleUtils;
+    // Utilities
+    @Inject private Methods methods;
+    @Inject private ScheduleUtils scheduleUtils;
 
-    private final CrateControlListener crateControlListener;
+    @Inject private ChestStateHandler chestStateHandler;
 
-    private final ChestStateHandler chestStateHandler;
+    // Listeners
+    @Inject private CrateControlListener crateControlListener;
 
-    public QuickCrate(CrazyManager crazyManager, CrazyLogger crazyLogger, Methods methods, ScheduleUtils scheduleUtils, CrateControlListener crateControlListener, ChestStateHandler chestStateHandler) {
-        this.crazyManager = crazyManager;
-        this.methods = methods;
-        this.scheduleUtils = scheduleUtils;
-
-        this.crazyLogger = crazyLogger;
-        this.crateControlListener = crateControlListener;
-        this.chestStateHandler = chestStateHandler;
-    }
+    // Task Handler
+    @Inject private CrateHandler crateHandler;
 
     public void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
         int keys = switch (keyType) {

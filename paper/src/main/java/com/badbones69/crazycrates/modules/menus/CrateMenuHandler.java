@@ -15,6 +15,7 @@ import java.util.List;
 public class CrateMenuHandler {
 
     private final CrazyManager crazyManager;
+
     private AdventureUtils adventureUtils;
 
     public CrateMenuHandler(CrazyManager crazyManager, AdventureUtils adventureUtils) {
