@@ -10,6 +10,7 @@
 [![Issues][issues-shield]][issues-url]
 [![GPU License][license-shield]][license-url]
 [![Contact][discord-shield]][discord-url]
+![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/crazy-crew/crazycrates/features/multi-platform?style=for-the-badge)
 
   <p align="center">
     A crates plugin that offers quality crates with ease!
