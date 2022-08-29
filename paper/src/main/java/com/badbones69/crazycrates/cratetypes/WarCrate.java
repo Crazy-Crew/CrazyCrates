@@ -23,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashMap;
 
+@Singleton
 public class WarCrate implements Listener {
     
     private static final String crateNameString = "Crate.CrateName";

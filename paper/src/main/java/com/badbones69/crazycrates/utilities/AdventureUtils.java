@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.utilities;
 
+import com.google.inject.Singleton;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -8,6 +9,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import static com.badbones69.crazycrates.modules.config.files.Locale.PREFIX_COMMAND;
 import static com.badbones69.crazycrates.modules.config.files.Locale.PREFIX_LOGGER;
 
+@Singleton
 public class AdventureUtils {
 
     public void send(Audience recipient, String msg, TagResolver.Single... placeholders) {

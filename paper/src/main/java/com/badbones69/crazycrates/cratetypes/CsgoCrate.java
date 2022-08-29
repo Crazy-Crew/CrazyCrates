@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Singleton
 public class CsgoCrate implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();

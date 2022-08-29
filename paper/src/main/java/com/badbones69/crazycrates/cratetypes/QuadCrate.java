@@ -33,6 +33,7 @@ import java.util.Random;
  * Controller class for the quad-crate crate type.
  * Display items are controlled from the quick crate due to them using nbt tags.
  */
+@Singleton
 public class QuadCrate implements Listener {
 
 

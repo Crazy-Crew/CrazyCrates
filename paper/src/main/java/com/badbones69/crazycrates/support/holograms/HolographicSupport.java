@@ -7,9 +7,11 @@ import com.badbones69.crazycrates.api.objects.CrateHologram;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.block.Block;
 import java.util.HashMap;
 
+@Singleton
 public class HolographicSupport implements HologramController {
     
     private final HashMap<Block, Hologram> holograms = new HashMap<>();

@@ -3,12 +3,14 @@ package com.badbones69.crazycrates.support.holograms;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateHologram;
+import com.google.inject.Singleton;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.block.Block;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Singleton
 public class DecentHologramsSupport implements HologramController {
     
     private final HashMap<Block, Hologram> holograms = new HashMap<>();

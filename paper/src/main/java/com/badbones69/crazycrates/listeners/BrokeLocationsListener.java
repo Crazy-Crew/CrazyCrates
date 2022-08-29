@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
+@Singleton
 public class BrokeLocationsListener implements Listener {
 
     private final CrazyManager crazyManager;

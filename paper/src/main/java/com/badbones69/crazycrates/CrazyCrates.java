@@ -17,6 +17,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.file.Path;
 
+@Singleton
 public class CrazyCrates extends JavaPlugin implements Listener {
 
     private static CrazyCrates plugin;

@@ -3,6 +3,7 @@ package com.badbones69.crazycrates;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.google.inject.Singleton;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.Validate;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+@Singleton
 public class Methods {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+@Singleton
 public class CosmicCrate implements Listener {
 
     private final HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();

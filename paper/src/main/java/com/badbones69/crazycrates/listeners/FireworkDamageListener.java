@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.google.inject.Singleton;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Firework;
 import org.bukkit.event.EventHandler;
@@ -8,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
+@Singleton
 public class FireworkDamageListener implements Listener {
 
     // Ryder Start

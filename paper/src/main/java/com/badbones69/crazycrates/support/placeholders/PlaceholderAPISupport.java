@@ -4,12 +4,14 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.google.inject.Singleton;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import java.text.NumberFormat;
 
+@Singleton
 public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();

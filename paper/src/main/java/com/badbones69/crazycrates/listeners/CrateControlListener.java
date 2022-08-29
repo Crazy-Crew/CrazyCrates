@@ -27,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import java.util.HashMap;
 
+@Singleton
 public class CrateControlListener implements Listener { // Crate Control
 
     // A list of crate locations that are in use.

@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+@Singleton
 public class QuickCrate implements Listener {
     
     public static ArrayList<Entity> allRewards = new ArrayList<>();

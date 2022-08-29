@@ -29,6 +29,7 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Singleton
 public class CrazyManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();

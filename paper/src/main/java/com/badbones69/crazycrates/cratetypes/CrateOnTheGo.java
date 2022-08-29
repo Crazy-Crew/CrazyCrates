@@ -17,6 +17,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+@Singleton
 public class CrateOnTheGo implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();

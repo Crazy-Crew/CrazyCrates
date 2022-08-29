@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+@Singleton
 public class FireCrackerCrate {
 
     private final CrazyManager crazyManager;

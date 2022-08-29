@@ -7,11 +7,13 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.google.inject.Singleton;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import java.util.ArrayList;
 
+@Singleton
 public class CommonUtils {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();

@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Singleton
 public class FileManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();

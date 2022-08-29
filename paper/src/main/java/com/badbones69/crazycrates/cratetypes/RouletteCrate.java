@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
+@Singleton
 public class RouletteCrate implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();

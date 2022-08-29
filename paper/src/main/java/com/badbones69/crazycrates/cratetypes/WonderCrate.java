@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 
+@Singleton
 public class WonderCrate implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
