@@ -38,36 +38,6 @@ public class Methods {
         return ChatColor.stripColor(msg);
     }
 
-    public HashMap<ItemStack, String> getItems(Player player, CrazyManager crazyManager) {
-        HashMap<ItemStack, String> items = new HashMap<>();
-        FileConfiguration file = crazyManager.getOpeningCrate(player).getFile();
-
-        if (file.getConfigurationSection("Crate.Prizes") != null) {
-            for (String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
-                String id = file.getString("Crate.Prizes." + reward + ".DisplayItem");
-                String name = file.getString("Crate.Prizes." + reward + ".DisplayName");
-                int chance = file.getInt("Crate.Prizes." + reward + ".Chance");
-                int max = 99;
-
-                if (file.contains("Crate.Prizes." + reward + ".MaxRange")) max = file.getInt("Crate.Prizes." + reward + ".MaxRange") - 1;
-
-                try {
-                    assert id != null;
-                    ItemStack item = new ItemBuilder().setMaterial(id).setName(name).build();
-                    int num;
-
-                    for (int counter = 1; counter <= 1; counter++) {
-                        num = 1 + random.nextInt(max);
-
-                        if (num <= chance) items.put(item, "Crate.Prizes." + reward);
-                    }
-                } catch (Exception ignored) {}
-            }
-        }
-
-        return items;
-    }
-
     public void firework(Location loc, List<Color> colors) {
         Firework firework = loc.getWorld().spawn(loc, Firework.class);
         FireworkMeta fireworkMeta = firework.getFireworkMeta();
