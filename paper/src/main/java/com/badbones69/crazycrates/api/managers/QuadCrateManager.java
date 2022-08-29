@@ -10,6 +10,7 @@ import com.badbones69.crazycrates.support.structures.QuadCrateSpiralHandler;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
+import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -20,13 +21,13 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class QuadCrateManager {
 
@@ -84,8 +85,10 @@ public class QuadCrateManager {
     private final Methods methods;
     private final ChestStateHandler chestStateHandler;
 
+    private final CrateTaskHandler crateTaskHandler;
+
     public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler,
-                            ScheduleUtils scheduleUtils, CrazyLogger crazyLogger, CrazyManager crazyManager, Methods methods, ChestStateHandler chestStateHandler) {
+                            ScheduleUtils scheduleUtils, CrazyLogger crazyLogger, CrazyManager crazyManager, Methods methods, ChestStateHandler chestStateHandler, CrateTaskHandler crateTaskHandler) {
         this.instance = this;
         this.player = player;
         this.crate = crate;
@@ -106,6 +109,8 @@ public class QuadCrateManager {
         this.crazyManager = crazyManager;
         this.methods = methods;
         this.chestStateHandler = chestStateHandler;
+
+        this.crateTaskHandler = crateTaskHandler;
 
         crateSessions.add(instance);
     }
@@ -206,83 +211,71 @@ public class QuadCrateManager {
         // Teleport player to center.
         player.teleport(spawnLocation.clone().add(handler.getStructureX() / 2, 1.0, handler.getStructureZ() / 2));
 
-        crazyManager.addQuadCrateTask(player, scheduleUtils.timer(0L, 1L, new BukkitRunnable() {
-            private final QuadCrateSpiralHandler spiralHandler = new QuadCrateSpiralHandler();
+        crazyManager.addQuadCrateTask(player, scheduleUtils.timer(0L, 1L, () -> {
+            final QuadCrateSpiralHandler spiralHandler = new QuadCrateSpiralHandler();
 
-            double radius = 0.0; // Radius of the particle spiral.
-            int crateNumber = 0; // The crate number that spawns next.
-            int tickTillSpawn = 0; // At tick 60 the crate will spawn and then reset the tick.
-            Location particleLocation = crateLocations.get(crateNumber).clone().add(.5, 3, .5);
+            AtomicInteger tickTillSpawn = new AtomicInteger(0); // At tick 60 the crate will spawn and then reset the tick.
+            AtomicInteger crateNumber = new AtomicInteger(0); // The crate number that spawns next.
+
+            Location particleLocation = crateLocations.get(crateNumber.get()).clone().add(.5, 3, .5);
+
             List<Location> spiralLocationsClockwise = spiralHandler.getSpiralLocationClockwise(particleLocation);
+
             List<Location> spiralLocationsCounterClockwise = spiralHandler.getSpiralLocationCounterClockwise(particleLocation);
 
-            @Override
-            public void run() {
-                if (tickTillSpawn < 60) {
-                    spawnParticles(particle, particleColor, spiralLocationsClockwise.get(tickTillSpawn), spiralLocationsCounterClockwise.get(tickTillSpawn));
-                    tickTillSpawn++;
-                } else {
-                    player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
-                    Block chest = crateLocations.get(crateNumber).getBlock();
-                    chest.setType(Material.CHEST);
-                    chestStateHandler.rotateChest(chest, crateNumber);
+            if (tickTillSpawn.get() < 60) {
+                spawnParticles(particle, particleColor, spiralLocationsClockwise.get(tickTillSpawn.get()), spiralLocationsCounterClockwise.get(tickTillSpawn.get()));
+                tickTillSpawn.incrementAndGet();
+            } else {
+                player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
+                Block chest = crateLocations.get(crateNumber.get()).getBlock();
+                chest.setType(Material.CHEST);
+                chestStateHandler.rotateChest(chest, crateNumber.get());
 
-                    if (crateNumber == 3) { // Last crate has spawned.
-                        crazyManager.endQuadCrate(player); // Cancelled when method is called.
-                    } else {
-                        tickTillSpawn = 0;
-                        crateNumber++;
-                        radius = 0;
-                        particleLocation = crateLocations.get(crateNumber).clone().add(.5, 3, .5); // Set the new particle location for the new crate
-                        spiralLocationsClockwise = spiralHandler.getSpiralLocationClockwise(particleLocation);
-                        spiralLocationsCounterClockwise = spiralHandler.getSpiralLocationCounterClockwise(particleLocation);
-                    }
+                if (crateNumber.get() == 3) { // Last crate has spawned.
+                    crazyManager.endQuadCrate(player); // Cancelled when method is called.
+                } else {
+                    tickTillSpawn.set(0);
+                    crateNumber.incrementAndGet();
                 }
             }
         }));
 
-        crazyManager.addCrateTask(player, scheduleUtils.later(Config.QUAD_CRATE_TIMERS.longValue(), new BukkitRunnable() {
-            @Override
-            public void run() {
-                // End the crate by force.
-                endCrateForce(true);
-                //player.sendMessage(Messages.OUT_OF_TIME.getMessage(methods));
-            }
+        crateTaskHandler.addTask(player, scheduleUtils.later(Config.QUAD_CRATE_TIMERS.longValue(), () -> {
+            endCrateForce(true);
+
+            //player.sendMessage(Messages.OUT_OF_TIME.getMessage(methods));
         }));
 
         return false;
     }
 
     public void endCrate() {
-        scheduleUtils.later(3 * 20L, new BukkitRunnable() {
-            @Override
-            public void run() {
-                // Update spawned crate block states which removes them.
-                crateLocations.forEach(location -> quadCrateChests.get(location).update(true, false));
+        scheduleUtils.later(3 * 20L, () -> {
+            // Update spawned crate block states which removes them.
+            crateLocations.forEach(location -> quadCrateChests.get(location).update(true, false));
 
-                // Remove displayed rewards.
-                displayedRewards.forEach(Entity::remove);
+            // Remove displayed rewards.
+            displayedRewards.forEach(Entity::remove);
 
-                // Teleport player to last location.
-                player.teleport(lastLocation);
+            // Teleport player to last location.
+            player.teleport(lastLocation);
 
-                // Remove the structure blocks.
-                handler.removeStructure();
+            // Remove the structure blocks.
+            handler.removeStructure();
 
-                // Restore the old blocks.
-                oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
+            // Restore the old blocks.
+            oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
 
-                if (crazyManager.getHologramController() != null) crazyManager.getHologramController().createHologram(spawnLocation.getBlock(), crate);
+            if (crazyManager.getHologramController() != null) crazyManager.getHologramController().createHologram(spawnLocation.getBlock(), crate);
 
-                // End the crate.
-                crazyManager.endCrate(player);
+            crateTaskHandler.endCrate();
 
-                // Remove the player from the list saying they are opening a crate.
-                crazyManager.removePlayerFromOpeningList(player);
+            // Remove the player from the list saying they are opening a crate.
+            crazyManager.removePlayerFromOpeningList(player);
 
-                // Remove the "instance" from the crate sessions.
-                crateSessions.remove(instance);
-            }
+            // Remove the "instance" from the crate sessions.
+            crateSessions.remove(instance);
         });
     }
 
