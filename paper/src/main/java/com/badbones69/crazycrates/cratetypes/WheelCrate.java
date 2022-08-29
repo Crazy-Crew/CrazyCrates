@@ -60,83 +60,81 @@ public class WheelCrate implements Listener {
         rewards.put(player, items);
         player.openInventory(inv);
 
-        crazyManager.addCrateTask(player, scheduleUtils.timer(1L, 1L, new BukkitRunnable() {
+        CrateTaskHandler crateTaskHandler = new CrateTaskHandler();
+
+        crateTaskHandler.addTask(player, scheduleUtils.timer(1L, 1L, () -> {
 
             final ArrayList<Integer> slots = getBorder();
-            int i = 0;
-            int f = 17;
-            int full = 0;
+
+            AtomicInteger item = new AtomicInteger();
+            AtomicInteger slot = new AtomicInteger(17);
+            AtomicInteger full = new AtomicInteger();
+
             final int timer = methods.randomNumber(42, 68);
-            int slower = 0;
-            int open = 0;
-            int slow = 0;
 
-            @Override
-            public void run() {
+            AtomicInteger slower = new AtomicInteger();
+            AtomicInteger open = new AtomicInteger();
+            AtomicInteger slow = new AtomicInteger();
 
-                if (i >= 18) i = 0;
 
-                if (f >= 18) f = 0;
+            if (item.get() >= 18) item.set(0);
 
-                if (full < timer) rewardCheck();
+            if (slot.get() >= 18) slot.set(0);
 
-                if (full >= timer) {
-                    if (commonUtils.slowSpin().contains(slower)) rewardCheck();
-
-                    if (full == timer + 47) player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-
-                    if (full >= timer + 47) {
-                        slow++;
-
-                        if (slow >= 2) {
-                            ItemStack item = methods.getRandomPaneColor().setName(" ").build();
-
-                            for (int slot = 0; slot < 54; slot++) {
-                                if (!getBorder().contains(slot)) inv.setItem(slot, item);
-                            }
-
-                            slow = 0;
-                        }
-                    }
-
-                    if (full >= (timer + 55 + 47)) {
-                        Prize prize = null;
-
-                        if (crazyManager.isInOpeningList(player)) prize = crate.getPrize(rewards.get(player).get(slots.get(f)));
-
-                        commonUtils.pickPrize(player, crate, prize);
-
-                        player.closeInventory();
-                        crazyManager.removePlayerFromOpeningList(player);
-                        crazyManager.endCrate(player);
-                    }
-
-                    slower++;
-                }
-
-                full++;
-                open++;
-
-                if (open > 5) {
-                    player.openInventory(inv);
-                    open = 0;
-                }
-            }
-
-            private void rewardCheck() {
-                if (rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
-                    inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
+            if (full.get() < timer) {
+                if (rewards.get(player).get(slots.get(item.get())).getItemMeta().hasLore()) {
+                    inv.setItem(slots.get(item.get()), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(item.get())).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(item.get())).getItemMeta().getLore()).build());
                 } else {
-                    inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
+                    inv.setItem(slots.get(item.get()), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(item.get())).getItemMeta().getDisplayName()).build());
                 }
 
-                inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
+                inv.setItem(slots.get(slot.get()), rewards.get(player).get(slots.get(slot.get())));
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 
-                i++;
-                f++;
+                item.incrementAndGet();
+                slot.incrementAndGet();
             }
 
+            if (full.get() >= timer) {
+                //if (commonUtils.slowSpin().contains(slower.get())) rewardCheck();
+
+                if (full.get() == timer + 47) player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+
+                if (full.get() >= timer + 47) {
+
+                    if (slow.incrementAndGet() >= 2) {
+                        ItemStack itemStack = methods.getRandomPaneColor().setName(" ").build();
+
+                        for (int slotAdd = 0; slotAdd < 54; slotAdd++) {
+                            if (!getBorder().contains(slot.get())) inv.setItem(slotAdd, itemStack);
+                        }
+
+                        slow.set(0);
+                    }
+                }
+
+                if (full.get() >= (timer + 55 + 47)) {
+                    Prize prize = null;
+
+                    if (crazyManager.isInOpeningList(player)) prize = crate.getPrize(rewards.get(player).get(slots.get(slot.get())));
+
+                    commonUtils.pickPrize(player, crate, prize);
+
+                    player.closeInventory();
+                    crazyManager.removePlayerFromOpeningList(player);
+                    // crazyManager.endCrate(player);
+                }
+
+                slower.incrementAndGet();
+            }
+
+            full.incrementAndGet();
+            open.incrementAndGet();
+
+            if (open.incrementAndGet() > 5) {
+                player.openInventory(inv);
+                open.set(0);
+            }
         }));
     }
     

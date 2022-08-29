@@ -8,7 +8,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.utilities.CommonUtils;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
-import com.badbones69.crazycrates.utilities.handlers.CrateHandler;
 import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -34,7 +33,7 @@ public class CsgoCrate implements Listener {
     @Inject private ScheduleUtils scheduleUtils;
     @Inject private CommonUtils commonUtils;
 
-    @Inject private CrateHandler crateHandler;
+    @Inject private CrateTaskHandler crateTaskHandler;
 
     private void setGlass(Inventory inv) {
         HashMap<Integer, ItemStack> glass = new HashMap<>();
@@ -95,58 +94,43 @@ public class CsgoCrate implements Listener {
     }
     
     private void startCSGO(final Player player, final Inventory inv, Crate crate) {
+        CrateTaskHandler crateTaskHandler = new CrateTaskHandler();
 
-        scheduleUtils.timer(1L, 1L, new BukkitRunnable() {
+        crateTaskHandler.addTask(player, scheduleUtils.timer(1L, 1L, () -> {
+            AtomicInteger time = new AtomicInteger();
+            AtomicInteger full = new AtomicInteger();
+            AtomicInteger open = new AtomicInteger();
 
-            int time = 1;
-            int full = 0;
-            int open = 0;
+            if (full.incrementAndGet() <= 50) { // When spinning
+                moveItems(inv, player, crate);
+                setGlass(inv);
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+            }
 
-            @Override
-            public void run() {
-                if (full <= 50) { // When spinning
+            if (open.incrementAndGet() >= 5) {
+                player.openInventory(inv);
+                open.set(0);
+            }
+
+            if (full.incrementAndGet() > 51) {
+
+                if (slowSpin().contains(time.get())) { // When Slowing Down
                     moveItems(inv, player, crate);
                     setGlass(inv);
                     player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                 }
 
-                open++;
+                if (time.incrementAndGet() == 60) { // When done
+                    crateTaskHandler.endCrate(player, crate, inv);
 
-                if (open >= 5) {
-                    player.openInventory(inv);
-                    open = 0;
-                }
-
-                full++;
-
-                if (full > 51) {
-
-                    if (slowSpin().contains(time)) { // When Slowing Down
-                        moveItems(inv, player, crate);
-                        setGlass(inv);
-                        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
-                    }
-
-                    time++;
-
-                    if (time == 60) { // When done
-                        commonUtils.endCrate(player, crate, inv);
-
-                        cancel();
-
-                        scheduleUtils.later(40L, new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                if (player.getOpenInventory().getTopInventory().equals(inv)) player.closeInventory();
-                            }
-                        });
-
-                    } else if (time > 60) { // Added this due reports of the prizes spamming when low tps.
-                        cancel();
-                    }
+                    scheduleUtils.later(40L, () -> {
+                        if (player.getOpenInventory().getTopInventory().equals(inv)) player.closeInventory();
+                    });
+                } else if (time.get() > 60) { // Added this due reports of the prizes spamming when low tps.
+                    crateTaskHandler.endCrate();
                 }
             }
-        });
+        }));
     }
 
     private ArrayList<Integer> slowSpin() {

@@ -27,6 +27,9 @@ public class RouletteCrate implements Listener {
     @Inject private ScheduleUtils scheduleUtils;
     @Inject private CommonUtils commonUtils;
 
+    // Task Handler
+    @Inject private CrateTaskHandler crateTaskHandler;
+
     private void setGlass(Inventory inv) {
         for (int i = 0; i < 27; i++) {
             if (i != 13) inv.setItem(i, methods.getRandomPaneColor().setName(" ").build());
@@ -47,59 +50,50 @@ public class RouletteCrate implements Listener {
 
         startRoulette(player, inv, crate);
     }
-    
+
     private void startRoulette(final Player player, final Inventory inv, final Crate crate) {
-        crazyManager.addCrateTask(player, new BukkitRunnable() {
-            int time = 1;
-            int even = 0;
-            int full = 0;
-            int open = 0;
-            
-            @Override
-            public void run() {
-                if (full <= 15) {
+
+        CrateTaskHandler crateTaskHandler = new CrateTaskHandler();
+
+        crateTaskHandler.addTask(player, scheduleUtils.timer(2L, 2L, () -> {
+
+            AtomicInteger full = new AtomicInteger();
+            AtomicInteger time = new AtomicInteger();
+            AtomicInteger even = new AtomicInteger();
+            AtomicInteger open = new AtomicInteger();
+
+            if (full.incrementAndGet() <= 15) {
+                inv.setItem(13, crate.pickPrize(player).getDisplayItem());
+                setGlass(inv);
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+
+                if (even.incrementAndGet() >= 4) {
+                    even.set(0);
                     inv.setItem(13, crate.pickPrize(player).getDisplayItem());
-                    setGlass(inv);
-                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
-                    even++;
-
-                    if (even >= 4) {
-                        even = 0;
-                        inv.setItem(13, crate.pickPrize(player).getDisplayItem());
-                    }
-                }
-
-                open++;
-
-                if (open >= 5) {
-                    player.openInventory(inv);
-                    open = 0;
-                }
-
-                full++;
-
-                if (full > 16) {
-
-                    if (commonUtils.slowSpin().contains(time)) {
-                        setGlass(inv);
-                        inv.setItem(13, crate.pickPrize(player).getDisplayItem());
-                        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
-                    }
-
-                    time++;
-
-                    if (time >= 23) {
-                        commonUtils.endCrate(player, crate, inv);
-
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                if (player.getOpenInventory().getTopInventory().equals(inv)) player.closeInventory();
-                            }
-                        }.runTaskLater(crazyCrates, 40);
-                    }
                 }
             }
-        }.runTaskTimer(crazyCrates, 2, 2));
+
+            if (open.incrementAndGet() >= 5) {
+                player.openInventory(inv);
+                open.set(0);
+            }
+
+            if (full.incrementAndGet() > 16) {
+
+                if (commonUtils.slowSpin().contains(time.get())) {
+                    setGlass(inv);
+                    inv.setItem(13, crate.pickPrize(player).getDisplayItem());
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+                }
+
+                if (time.incrementAndGet() >= 23) {
+                    crateTaskHandler.endCrate(player, crate, inv);
+
+                    scheduleUtils.later(40L, () -> {
+                        if (player.getOpenInventory().getTopInventory().equals(inv)) player.closeInventory();
+                    });
+                }
+            }
+        }));
     }
 }

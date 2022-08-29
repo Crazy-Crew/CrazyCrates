@@ -12,12 +12,12 @@ import org.bukkit.metadata.FixedMetadataValue;
 @Singleton
 public class FireworkDamageListener implements Listener {
 
-    // Ryder Start
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     /**
      * @param firework The firework you want to add.
      */
-    public void addFirework(Entity firework, CrazyCrates plugin) {
+    public void addFirework(Entity firework) {
         firework.setMetadata("nodamage", new FixedMetadataValue(plugin, true));
     }
 
@@ -27,6 +27,4 @@ public class FireworkDamageListener implements Listener {
             if (fw.hasMetadata("nodamage")) e.setCancelled(true);
         }
     }
-
-    // Ryder End
 }

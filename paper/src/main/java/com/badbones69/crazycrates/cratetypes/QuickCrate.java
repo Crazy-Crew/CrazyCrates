@@ -11,7 +11,6 @@ import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.modules.config.files.Config;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
-import com.badbones69.crazycrates.utilities.handlers.CrateHandler;
 import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
@@ -52,7 +51,7 @@ public class QuickCrate implements Listener {
     @Inject private CrateControlListener crateControlListener;
 
     // Task Handler
-    @Inject private CrateHandler crateHandler;
+    @Inject private CrateTaskHandler crateTaskHandler;
 
     public void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
         int keys = switch (keyType) {
@@ -99,9 +98,9 @@ public class QuickCrate implements Listener {
             plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
             ItemStack displayItem = prize.getDisplayItem();
 
-            //NBTItem nbtItem = new NBTItem(displayItem);
-            //nbtItem.setBoolean("crazycrates-item", true);
-            //displayItem = nbtItem.getItem();
+            NBTItem nbtItem = new NBTItem(displayItem);
+            nbtItem.setBoolean("crazycrates-item", true);
+            displayItem = nbtItem.getItem();
 
             Item reward;
 
@@ -130,21 +129,17 @@ public class QuickCrate implements Listener {
 
             if (prize.useFireworks()) methods.firework(loc.clone().add(.5, 1, .5));
 
-            tasks.put(player, scheduleUtils.later(5 * 20L, new BukkitRunnable() {
-                @Override
-                public void run() {
-                    endQuickCrate(player, loc);
-                }
+            CrateTaskHandler crateTaskHandler = new CrateTaskHandler();
+
+            crateTaskHandler.addTask(player, scheduleUtils.later(5 * 20L, () -> {
+                crateTaskHandler.endCrate();
+
+                endQuickCrate(player, loc);
             }));
         }
     }
     
     public void endQuickCrate(Player player, Location loc) {
-        if (tasks.containsKey(player)) {
-            tasks.get(player).cancel();
-            tasks.remove(player);
-        }
-
         if (rewards.get(player) != null) {
             allRewards.remove(rewards.get(player));
             rewards.get(player).remove();

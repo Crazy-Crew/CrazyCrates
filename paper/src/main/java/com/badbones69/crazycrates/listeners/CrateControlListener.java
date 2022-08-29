@@ -10,6 +10,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.cratetypes.QuickCrate;
 import com.badbones69.crazycrates.modules.config.files.Config;
+import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.bukkit.GameMode;
@@ -89,8 +90,8 @@ public class CrateControlListener implements Listener { // Crate Control
                     // Checks to see if the player is removing a crate location.
                     if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) {
                         e.setCancelled(true);
-                        //crazyManager.removeCrateLocation(loc.getID());
-                        //player.sendMessage(Messages.REMOVED_PHYSICAL_CRATE.getMessage("%ID%", loc.getID(), methods));
+                        // crazyManager.removeCrateLocation(loc.getID());
+                        // player.sendMessage(Messages.REMOVED_PHYSICAL_CRATE.getMessage("%ID%", loc.getID(), methods));
                         return;
                     }
 
@@ -196,11 +197,13 @@ public class CrateControlListener implements Listener { // Crate Control
         }
     }
 
+    @Inject private CrateTaskHandler crateTaskHandler;
+
     @EventHandler(ignoreCancelled = true)
     public void onPlayerLeave(PlayerQuitEvent e) {
         Player player = e.getPlayer();
 
-        if (crazyManager.hasCrateTask(player)) crazyManager.endCrate(player);
+        if (crateTaskHandler.hasCrateTask()) crateTaskHandler.endCrate();
 
         if (crazyManager.hasQuadCrateTask(player)) crazyManager.endQuadCrate(player);
 

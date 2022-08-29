@@ -9,7 +9,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
-import com.badbones69.crazycrates.utilities.handlers.CrateHandler;
 import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -31,7 +30,8 @@ public class WonderCrate implements Listener {
     @Inject private Methods methods;
     @Inject private ScheduleUtils scheduleUtils;
 
-    @Inject private CrateHandler crateHandler;
+    // Task Handler
+    @Inject private CrateTaskHandler crateTaskHandler;
 
     public void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
@@ -51,62 +51,61 @@ public class WonderCrate implements Listener {
 
         player.openInventory(inv);
 
-        crazyManager.addCrateTask(player, scheduleUtils.timer(2L, 0L, new BukkitRunnable() {
+        CrateTaskHandler crateTaskHandler = new CrateTaskHandler();
 
-            int fullTime = 0;
-            int timer = 0;
-            int slotOne = 0;
-            int slotTwo = 44;
+        crateTaskHandler.addTask(player, scheduleUtils.timer(2L, 0L, () -> {
+            AtomicInteger fullTime = new AtomicInteger();
+            AtomicInteger timer = new AtomicInteger();
+            AtomicInteger slotOne = new AtomicInteger();
+            AtomicInteger slotTwo = new AtomicInteger(44);
 
-            @Override
-            public void run() {
-                final ArrayList<Integer> Slots = new ArrayList<>();
-                Prize prize = null;
+            final ArrayList<Integer> Slots = new ArrayList<>();
+            Prize prize = null;
 
-                if (timer >= 2 && fullTime <= 65) {
-                    slots.remove(slotOne + "");
-                    slots.remove(slotTwo + "");
-                    Slots.add(slotOne);
-                    Slots.add(slotTwo);
-                    inv.setItem(slotOne, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
-                    inv.setItem(slotTwo, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+            if (timer.get() >= 2 && fullTime.get() <= 65) {
+                slots.remove(slotOne + "");
+                slots.remove(slotTwo + "");
+                Slots.add(slotOne.get());
+                Slots.add(slotTwo.get());
+                inv.setItem(slotOne.get(), new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+                inv.setItem(slotTwo.get(), new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
 
-                    for (String slot : slots) {
-                        prize = crate.pickPrize(player);
-                        inv.setItem(Integer.parseInt(slot), prize.getDisplayItem());
-                    }
-
-                    slotOne++;
-                    slotTwo--;
+                for (String slot : slots) {
+                    prize = crate.pickPrize(player);
+                    inv.setItem(Integer.parseInt(slot), prize.getDisplayItem());
                 }
 
-                if (fullTime > 67) {
-                    ItemStack item = methods.getRandomPaneColor().setName(" ").build();
-
-                    Slots.forEach(slot -> inv.setItem(slot, item));
-                }
-
-                player.openInventory(inv);
-
-                if (fullTime > 100) {
-                    crazyManager.endCrate(player);
-                    player.closeInventory();
-                    crazyManager.givePrize(player, prize);
-
-                    assert prize != null;
-                    if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
-
-                    crazyCrates.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-
-                    crazyManager.removePlayerFromOpeningList(player);
-                    return;
-                }
-
-                fullTime++;
-                timer++;
-
-                if (timer > 2) timer = 0;
+                slotOne.incrementAndGet();
+                slotTwo.decrementAndGet();
             }
+
+            if (fullTime.get() > 67) {
+                ItemStack item = methods.getRandomPaneColor().setName(" ").build();
+
+                Slots.forEach(slot -> inv.setItem(slot, item));
+            }
+
+            player.openInventory(inv);
+
+            if (fullTime.get() > 100) {
+                crateTaskHandler.endCrate();
+                player.closeInventory();
+                crazyManager.givePrize(player, prize);
+
+                assert prize != null;
+                if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
+
+                plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+
+                crazyManager.removePlayerFromOpeningList(player);
+
+                return;
+            }
+
+            fullTime.incrementAndGet();
+            timer.incrementAndGet();
+
+            if (timer.get() > 2) timer.set(0);
         }));
     }
 }

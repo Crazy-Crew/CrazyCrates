@@ -13,6 +13,8 @@ import com.badbones69.crazycrates.support.holograms.HolographicSupport;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
@@ -57,9 +59,6 @@ public class CrazyManager {
     
     // Keys that are being used in crates. Only needed in cosmic due to it taking the key after the player picks a prize and not in a start method.
     private final HashMap<UUID, KeyType> playerKeys = new HashMap<>();
-    
-    // A list of all current crate tasks that are running that a time. Used to force stop any crates it needs to.
-    private final HashMap<UUID, BukkitTask> currentTasks = new HashMap<>();
     
     // A list of tasks being run by the QuadCrate type.
     private final HashMap<UUID, ArrayList<BukkitTask>> currentQuadTasks = new HashMap<>();
@@ -374,18 +373,6 @@ public class CrazyManager {
     }
     
     /**
-     * This forces a crate to end and will not give out a prize. This is meant for people who leave the server to stop any errors or lag from happening.
-     *
-     * @param player The player that the crate is being ended for.
-     */
-    public void endCrate(Player player) {
-        if (currentTasks.containsKey(player.getUniqueId())) {
-            currentTasks.get(player.getUniqueId()).cancel();
-            removeCrateTask(player);
-        }
-    }
-    
-    /**
      * Ends the tasks running by a player.
      *
      * @param player The player using the crate.
@@ -418,35 +405,6 @@ public class CrazyManager {
      */
     public boolean hasQuadCrateTask(Player player) {
         return currentQuadTasks.containsKey(player.getUniqueId());
-    }
-    
-    /**
-     * Add a crate task that is going on for a player.
-     *
-     * @param player The player opening the crate.
-     * @param task The task of the crate.
-     */
-    public void addCrateTask(Player player, BukkitTask task) {
-        currentTasks.put(player.getUniqueId(), task);
-    }
-    
-    /**
-     * Remove a task from the list of current tasks.
-     *
-     * @param player The player using the crate.
-     */
-    public void removeCrateTask(Player player) {
-        currentTasks.remove(player.getUniqueId());
-    }
-    
-    /**
-     * Checks to see if the player has a crate task going on.
-     *
-     * @param player The player that is being checked.
-     * @return True if they do have a task and false if not.
-     */
-    public boolean hasCrateTask(Player player) {
-        return currentTasks.containsKey(player.getUniqueId());
     }
     
     /**
