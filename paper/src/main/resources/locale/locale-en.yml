@@ -1,0 +1,115 @@
+# Translated by The World.
+
+prefix:
+  # Change how the prefix in console will look!
+  logger: '<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>'
+  # Change how the prefix for commands will look!
+  command: '<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>'
+
+misc:
+  unknown-command: '<red>This command is not known.</red>'
+  no-teleporting: '<red>You may not teleport away while opening</red> <gold>%crate%.</gold>'
+  no-commands: '<red>You are not allowed to use commands while opening</red> <gold>%crate%.</gold>'
+  no-keys: '<red>You need a</red> %key% <red>in your hand to use</red> <gold>%crate%.</gold>'
+  no-virtual-keys: '<red>You need</red> %key% <red>to open</red> <gold>%crate%.</gold>'
+
+errors:
+  no-prizes-found: '<red>This crate contains no prizes that you can win.</red>'
+  no-schematics-found: '<red>No schematic were found, Please re-generate them by deleting the folder or checking for errors!</red>'
+  prize-error:
+    - '<red>An error has occurred while trying to give you the prize</red> <gold>%prize%.</gold>'
+    - '<yellow>This has occurred in</yellow> <gold>%crate%.</gold> <yellow>Please notify your owner.</yellow>'
+  internal-error: '<red>An internal error has occurred. Please check the console for the full error.</red>'
+
+player:
+  requirements:
+    too-many-args: '<red>You put more arguments then I can handle.</red>'
+    not-enough-args: '<red>You did not supply enough arguments.</red>'
+    must-be-player: '<red>You must be a player to use this command.</red>'
+    must-be-console-sender: '<red>You must be using console to use this command.</red>'
+    must-be-looking-at-block: '<red>You must be looking at a block.</red>'
+  target-not-online: '<red>The player</red> <gold>%player%</gold> <red>is not online.</red>'
+  target-same-player: '<red>You cannot use this command on yourself.</red>'
+  no-permission: '<red>You do not have permission to use that command!</red>'
+  inventory-not-empty: '<red>Inventory is not empty, Please make room before opening</red> <gold>%crate%.</gold>'
+  obtaining-keys: '<gray>You have been given</gray> <gold>%amount% %key%</gold> <gray>Keys.</gray>'
+  too-close-to-another-player: '<red>You are too close to a player that is opening their Crate.</red>'
+
+crates:
+  requirements:
+    not-a-crate: '<red>There is no crate called</red> <gold>%crate%.</gold>'
+    not-a-number: '<gold>%number%</gold> <red>is not a number.</red>'
+  not-a-block: '<red>You must be standing on a block to use</red> <gold>%crate%.</gold>'
+  out-of-time: '<red>You took</red> <green>5 Minutes</green> <red>to open the</red> <gold>%crate%</gold> <red>so it closed.</red>'
+  crate-preview-disabled: '<red>The preview for</red> <gold>%crate%</gold> <gray>is currently disabled.</gray>'
+  crate-already-open: '<red>You are already opening <gold>%crate%.</gold>'
+  crate-in-use: '<gold>%crate%</gold> <red>is already in use. Please wait until it finishes!</red>'
+  cannot-be-a-virtual-crate: '<gold>%crate%</gold> <red>cannot be used as a Virtual Crate. You have it set to</red> <gold>%cratetype%.</gold>'
+  need-more-room: '<red>There is not enough space to open that here.</red>'
+  world-disabled: '<red>Crates are disabled in</red> <green>%world%.</green>'
+  physical-crate:
+    created:
+      - '<gray>You have set that block to</gray> <gold>%crate%.</gold>'
+      - '<gray>To remove</grey> <gold>%crate%,</gold> <gray>Shift Click Break in Creative to remove.</gray>'
+    removed: '<gray>You have removed</gray> <gold>%id%.</gold>'
+
+command:
+  open:
+    opened-a-crate: '<gray>You have opened the</gray> <gold>%crate%</gold> <gray>crate for</gray> <gold>%player%.</gold>'
+  give:
+    given-player-keys: '<gray>You have given</gray> <gold>%player% %amount% Keys.</gold>'
+    given-everyone-keys: '<gray>You have given everyone</gray> <gold>%amount% Keys.</gold>'
+    given-offline-player-keys: '<gray>You have given</gray> <gold>%amount% key(s)</gold> <gray>to the offline player</gray> <gold>%player%.</gold>'
+  take:
+    take-player-keys: '<gray>You have taken <gold>%amount% key(s)</gold> <gray>from</gray> <gold>%player%.</gold>'
+    take-offline-player-keys: '<gray>You have taken</gray> <gold>%amount% key(s)</gold> <gray>from the offline player</gray> <gold>%player%.</gold>'
+  additem:
+    no-item-in-hand: '<red>You need to have an item in your hand to add it to</red> <gold>%crate%.</gold>'
+    add-item-from-hand: '<gray>The item has been added to</gray> <gold>%crate%</gold> <gray>as</gray> <gold>Prize #%prize%.</gold>'
+  convert:
+    no-files-to-convert: '<red>No available plugins to convert files.</red>'
+    error-converting-files: '<red>An error has occurred while trying to convert files. We could not convert</red> <green>%file%</green> <red>so please check the console.</red>'
+    successfully-converted-files: '<green>Plugin Conversion has succeeded!</green>'
+  reload:
+    confirm-reload: '<yellow>Are you sure you want to reload the plugin?</yellow>'
+    reload-completed: '<green>Plugin reload has been completed.</green>'
+  transfer:
+    not-enough-keys: '<red>You do not have enough keys to transfer.</red>'
+    transferred-keys: '<gray>You have transferred</gray> <green>%amount% %crate% keys</green> <gray>to</gray> <red>%player%.</red>'
+    transferred-keys-received: '<gray>You have received</gray> <green>%amount% %crate% keys</green> <gray>from</gray> <red>%player%.</red>'
+  keys:
+    personal:
+      no-virtual-keys: '<dark_gray>(</dark_gray><gold>!</gold><dark_gray>)</dark_gray> <gray>You currently do not have any virtual keys.</gray>'
+      virtual-keys-header:
+        - '<dark_gray>(</dark_gray><gold>!</gold><dark_gray>)</dark_gray> <gray>A list of your current amount of keys.</gray>'
+    other-player:
+      no-virtual-keys: '<dark_gray>(</dark_gray><gold>!</gold><dark_gray>)</dark_gray> <gray>The player</gray> <red>%player%</red> <gray>does not have any keys.</gray>'
+      virtual-keys-header:
+        - '<dark_gray>(</dark_gray><gold>!</gold><dark_gray>)</dark_gray> <gray>A list of</gray> <red>%player%''s</red> <gray>current amount of keys.</gray>'
+    # Related to what will show in the output above.
+    crate-format: '%crate% <dark_gray>»</dark_gray> <gold>%keys% keys.</gold>'
+  player-help:
+    - ' <dark_green>Crazy Crates Player Help!</dark_green>'
+    - ''
+    - '<dark_gray>»</dark_gray> <gold>/key [player]</gold> <gray>-</gray> <yellow>Check how many keys a player has.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc</gold> <gray>-</gray> <yellow>Opens the crate menu.</yellow>'
+  admin-help:
+    - ' <red>Crazy Crates Admin Help'
+    - ''
+    - '<dark_gray>»</dark_gray> <gold>/cc additem [crate] [prize]</gold> <gray>-</gray> <yellow>Add items in-game to a prize in a crate.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc preview [crate] [player]</gold> <gray>-</gray> <yellow>Opens the preview of a crate for a player.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc list</gold> <gray>-</gray> <yellow>Lists all crates.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc open [crate] [player]</gold> <gray>-</gray> <yellow>Tries to open a crate for a player if they have a key.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc forceopen [crate] [player]</gold> <gray>-</gray> <yellow>Opens a crate for a player for free.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc tp [location]</gold> <gray>-</gray> <yellow>Teleport to a Crate.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc give [physical/virtual] [crate] [amount] [player]</gold> <gray>-</gray> <yellow>Allows you to take keys from a player.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc set [crate]</gold> <gray>-</gray> <yellow>Set the block you are looking at as a crate.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc set Menu</gold> <gray>-</gray> <yellow>Set the block you are looking at to open the /cc menu.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc reload</gold> <gray>-</gray> <yellow>Reloads the config/data files.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc set1/set2</gold> <gray>-</gray> <yellow>Sets position <red>#1 or #2</red> for when making a new schematic for QuadCrates.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc save [file name]</gold> <gray>-</gray> <yellow>Create a new nbt file in the schematics folder.</yellow>'
+    - ' '
+    - '<dark_gray>»</dark_gray> <gold>/key [player]</gold> <gray>-</gray> <yellow>Check how many keys a player has.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc</gold> <gray>-</gray> <yellow>Opens the crate menu.</yellow>'
+    - ' '
+    - '<gray>You can find a list of permissions</yellow> @ <yellow>https://github.com/badbones69/Crazy-Crates/wiki/Commands-and-Permissions</yellow>'

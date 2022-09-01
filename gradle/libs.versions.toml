@@ -1,0 +1,55 @@
+[versions]
+
+# Paper
+paper = "1.19.2-R0.1-SNAPSHOT"
+paper-command-cloud = "1.7.0"
+paper-lib = "1.0.8-SNAPSHOT"
+
+# Misc
+bstats = "3.0.0"
+nbt-api = "2.10.0"
+
+guice = "5.1.0"
+
+# Holograms
+holographic-displays = "2.4.9"
+decent-holograms = "2.5.2"
+
+# Placeholders
+# mvdw-placeholder-api= "3.1.1-SNAPSHOT"
+placeholder-api = "2.11.2"
+
+vault-api = "1.7"
+
+# Triumph Team
+gui = "3.1.2"
+
+[libraries]
+
+# PaperMC
+paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
+paper-command-cloud = { module = "cloud.commandframework:cloud-paper", version.ref = "paper-command-cloud" }
+paper-lib = { module = "io.papermc:paperlib", version.ref = "paper-lib" }
+
+# BStats Bukkit
+bstats-bukkit = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
+
+# Holograms
+holographic-displays = { module = "com.gmail.filoghost.holographicdisplays:holographicdisplays-api", version.ref = "holographic-displays" }
+decent-holograms = { module = "com.github.decentsoftware-eu:decentholograms", version.ref = "decent-holograms" }
+
+# Placeholders
+# This is currently broken for some reason.
+# mvdw-placeholder-api = { module = "be.maximvdw:MVdWPlaceholderAPI", version.ref = "mvdw-placeholder-api" }
+placeholder-api = { module = "me.clip:placeholderapi", version.ref = "placeholder-api" }
+
+# NBT API
+nbt-api = { module = "de.tr7zw:nbt-data-api", version.ref = "nbt-api" }
+
+# Misc
+vault-api = { module = "com.github.MilkBowl:VaultAPI", version.ref = "vault-api" }
+
+guice = { module = "com.google.inject:guice", version.ref = "guice" }
+
+# Triumph Team
+triumph-gui-bukkit = { module = "dev.triumphteam:triumph-gui", version.ref = "gui" }

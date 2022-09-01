@@ -1,0 +1,115 @@
+# Translated by IBM_ESP#1321
+
+prefix:
+  # Change how the prefix in console will look!
+  logger: '<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>'
+  # Change how the prefix for commands will look!
+  command: '<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>'
+
+misc:
+  unknown-command: '<red>Este comando no existe.</red>'
+  no-teleporting: '<red>No debes teletransportarte mientras abres</red> <gold>%crate%.</gold>'
+  no-commands: '<red>No tienes permisos para usar comandos mientras abres</red> <gold>%crate%.</gold>'
+  no-keys: '<red>Necesitas una</red> %key% <red>en tu mano para usar</red> <gold>%crate%.</gold>'
+  no-virtual-keys: '<red>Necesitas una</red> %key% <red>para abrir</red> <gold>%crate%.</gold>'
+
+errors:
+  no-prizes-found: '<red>Esta caja no tiene ningun premio que puedas ganar.</red>'
+  no-schematics-found: '<red>No se han encontrado esquemas, por favor regeneralos eliminando la carpeta o buscando errores.</red>'
+  prize-error:
+    - '<red>Ha ocurrido un error mientras te intentabamos dar el</red> <gold>premio %prize%.</gold>'
+    - '<yellow>Esto ha ocurrido en la caja</yellow> <gold>%crate%.</gold> <yellow>Por favor notifica al dueño.</yellow>'
+  internal-error: '<red>Ha ocurrido un error interno. Por favor mira la consola para ver el error completo.</red>'
+
+player:
+  requirements:
+    too-many-args: '<red>Has puesto mas argumentos de los que puedo soportar.</red>'
+    not-enough-args: '<red>No has puesto suficientes argumentos.</red>'
+    must-be-player: '<red>Debes ser un jugador para usar este comando.</red>'
+    must-be-console-sender: '<red>Debes usar la consola para usar este comando.</red>'
+    must-be-looking-at-block: '<red>Debes mirar a un bloque.</red>'
+  target-not-online: '<red>El jugador</red> <gold>%player%</gold> <red>no esta en linea.</red>'
+  target-same-player: '<red>No puedes usar este comando contigo mismo.</red>'
+  no-permission: '<red>No tienes permisos para usar este comando!'
+  inventory-not-empty: '<red>El inventario no esta vacio, por favor haz espacio antes de abrir <gold>%crate%.</gold>'
+  obtaining-keys: '<gray>Te han dado</gray> <gold>%amount% %key%</gold> <gray>llaves.</gray>'
+  too-close-to-another-player: '<red>Estas demasiado cerca de a un jugador que esta abriendo su caja.</red>'
+
+crates:
+  requirements:
+    not-a-crate: '<red>No hay ninguna caja que se llame</red> <gold>%crate%.</gold>'
+    not-a-number: '<gold>%number%</gold> <red>no es un numero.</red>'
+  not-a-block: '<red>Debes estar sobre un bloque para usar</red> <gold>%crate%.</gold>'
+  out-of-time: '<red>Has tardado</red> <green>5 Minutos</green> <red>para abrir</red> <gold>%crate%</gold> <red>por lo que se ha cerrado.</red>'
+  crate-preview-disabled: '<red>La previsualizacion para</red> <gold>%crate%</gold> <gray>esta deshabilitada.</gray>'
+  crate-already-open: '<red>Ya estas abriendo</red> <gold>%crate%.</gold>'
+  crate-in-use: '<gold>%crate%</gold> <red>ya esta en uso. Por favor espera hasta que termine.</red>'
+  cannot-be-a-virtual-crate: '<gold>%crate%</gold> <red>no se puede usar como una caja virtual. Esta puesta como una</red> <gold>%cratetype%</gold>'
+  need-more-room: '<red>No hay suficiente espacio para abrir eso aqui.</red>'
+  world-disabled: '<red>Las cajas esta deshabilitadas en</red> <gold>%world%.</gold>'
+  physical-crate:
+    created:
+      - '<gray>Tienes que poner ese bloque como</gray> <gold>%crate%.</gold>'
+      - '<gray>Para eliminar <gold>%crate%,</gold> <gray>haz Shift Click y rompe en creativo.</gray>'
+    removed: '<gray>Has eliminado</gray> <gold>%id%.</gold>'
+
+command:
+  open:
+    opened-a-crate: '<gray>Has abierto</gray> </gold>%crate%</gold> <gray>para</gray> <gold>%player%.</gold>'
+  give:
+    given-player-keys: '<gold>%player%</gold> <gray>te ha dado</gray> <gold>%amount%</gold> <gray>llaves.</gray>'
+    given-everyone-keys: '<gray>Has dado a todo el mundo</gray> <gold>%amount%</gold> <gray>llaves.</gray>'
+    given-offline-player-keys: '<gray>Has dado</gray> <gold>%amount%</gold> <gray>llave(s) al jugador desconectado</gray> <gold>%player%.</gold>'
+  take:
+    take-player-keys: '<gray>Has cogido</gray> <gold>%amount%</gold> <gray>llave(s) de</gray> <gold>%player%.</gold>'
+    take-offline-player-keys: '<gray>Has cogido</gray> <gold>%amount%</gold> <gray>llave(s) del jugador desconectado</gray> <gold>%player%.</gold>'
+  additem:
+    no-item-in-hand: '<red>You need to have an item in your hand to add it to</red> <gold>%crate%.</gold>'
+    add-item-from-hand: '<gray>Se ha añadido ese item a</gray> <gold>%crate%</gold> <gray>como un</gray> <gold>premio #%prize%.</gold>'
+  convert:
+    no-files-to-convert: '<red>No esta disponible el plugin para convertir los archivos.</red>'
+    error-converting-files: '<red>Ha ocurrido un error mientras convertiamos los archivos. No hemos podido convertir <green>%file%</green> <red>por favor mira la consola.</red>'
+    successfully-converted-files: '<green>La ''Plugin Conversion'' se ha completado.</green>'
+  reload:
+    confirm-reload: '<yellow>¿Seguro que quieres recargar el plugin?</yellow>'
+    reload-completed: '<green>La recarga del plugin se ha completado.</green>'
+  transfer:
+    not-enough-keys: '<red>No tienes suficientes llaves para transferir.</red>'
+    transferred-keys: '<gray>Has transferido</gray> <green>%amount% %crate%</green> <gray>llave a</gray> <red>%player%.</red>'
+    transferred-keys-received: '<gray>Has recibido</gray> <green>%amount% %crate%</green> <gray>llaves de</gray> <red>%player%.</red>'
+  keys:
+    personal:
+      no-virtual-keys: '<dark_gray>(</dark_gray><gold>!</gold><dark_gray>)</dark_gray> <gray>No tienes llaves virtuales.</gray>'
+      virtual-keys-header:
+        - '<dark_gray>(</dark_gray><gold>!</gold><dark_gray>)</dark_gray> <gray>Una lista de las cantidad de llaves que tienes.</gray>'
+    other-player:
+      no-virtual-keys: '<dark_gray>(</dark_gray><gold>!</gold><dark_gray>)</dark_gray> <gray>El jugador</gray> <red>%player% <gray>no tiene ninguna llave.</gray>'
+      virtual-keys-header:
+        - '<dark_gray>(</dark_gray><gold>!</gold><dark_gray>)</dark_gray> <gray>Una lista de las llaves de</gray> <red>%player%.</red>'
+    # Related to what will show in the output above.
+    crate-format: '%crate% <dark_gray>»»</dark_gray> <gold>%keys% llaves.</gold>'
+  player-help:
+    - ' <dark_green>Crazy Crates Player Help!</dark_green>'
+    - ''
+    - '<dark_gray>»</dark_gray> <gold>/key</gold> [player]</gold> <gray>-</gray> <yellow>Comprueba cuantas llaves tiene un jugador.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc</gold> <gray>-</gray> <yellow>Abre el menu.</yellow>'
+  admin-help:
+    - ' <red>Crazy Crates Admin Help'
+    - ''
+    - '<dark_gray>»</dark_gray> <gold>/cc additem [crate] [prize]</gold> <gray>-</gray> <yellow>Añade items in-game a los premios a una caja.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc preview [crate] [player]</gold> <gray>-</gray> <yellow>Abre la previsualizacion de una caja para un jugador.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc list</gold> <gray>-</gray> <yellow>Lista de todas la caja.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc open [crate] [player]</gold> <gray>-</gray> <yellow>Intenta abrir una caja para un jugador si tiene una llava.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc forceopen [crate] [player]</gold> <gray>-</gray> <yellow>Abre una caja gratuita para un jugador.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc tp [location]</gold> <gray>-</gray> <yellow>Teletransportate a una caja.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc give [physical/virtual] [crate] [amount] [player]</gold> <gray>-</gray> <yellow>Te permite coger llaves de un jugador.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc set [crate]</gold> <gray>-</gray> <yellow>Pone el bloque que estas mirando como una caja.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc set Menu</gold> <gray>-</gray> <yellow>Pone el bloque que estas mirando para abrrir el /cc menu.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc reload</gold> <gray>-</gray> <yellow>Recarga los archivos de cofiguracion/datos.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc set1/set2</gold> <gray>-</gray> <yellow>Pone <red>#1 <yellow>o <red>#2 para cuando estas haciendo un nuevo esquema para QuadCrates.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc save [file name]</gold> <gray>-</gray> <yellow>Crea un nuevo archivo nbt en la carpeta de esquemas.</yellow>'
+    - ' '
+    - '<dark_gray>»</dark_gray> <gold>/key [player]</gold> <gray>-</gray> <yellow>Comprueba cuantas llaves tiene un jugador.</yellow>'
+    - '<dark_gray>»</dark_gray> <gold>/cc</gold> <gray>-</gray> <yellow>Abre el crate menu.</yellow>'
+    - ' '
+    - '<gray>Puedes encontrar la listas de permisos en</gray> <yellow>https://github.com/badbones69/Crazy-Crates/wiki/Commands-and-Permissions</yellow>'

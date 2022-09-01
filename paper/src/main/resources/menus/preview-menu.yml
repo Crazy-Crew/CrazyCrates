@@ -1,0 +1,20 @@
+#List of all the enchantments: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html
+#List of all the sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+Settings:
+  Preview:
+    Buttons:
+      Menu:
+        Item: 'COMPASS'
+        Name: '&7&l>> &c&lMenu &7&l<<'
+        Lore:
+          - '&7Return to the menu.'
+      Next:
+        Item: 'FEATHER'
+        Name: '&6&lNext >>'
+        Lore:
+          - '&7&lPage: &b%page%'
+      Back:
+        Item: 'FEATHER'
+        Name: '&6&l<< Back'
+        Lore:
+          - '&7&lPage: &b%page%'
