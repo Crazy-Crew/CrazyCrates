@@ -3,6 +3,8 @@ package com.badbones69.crazycrates.support.holograms;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateHologram;
+import com.badbones69.crazycrates.utilities.AdventureUtils;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
@@ -14,6 +16,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class DecentHologramsSupport implements HologramController {
     
     private final HashMap<Block, Hologram> holograms = new HashMap<>();
+
+    @Inject private AdventureUtils adventureUtils;
     
     public void createHologram(Block block, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();
@@ -22,7 +26,8 @@ public class DecentHologramsSupport implements HologramController {
 
         double height = crateHologram.getHeight();
         Hologram hologram = DHAPI.createHologram(ThreadLocalRandom.current().nextInt() + "", block.getLocation().add(.5, height, .5));
-        // crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, methods.color(line)));
+        crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, adventureUtils.getMiniMessage().deserialize(line).toString()));
+
         holograms.put(block, hologram);
     }
     
@@ -30,6 +35,7 @@ public class DecentHologramsSupport implements HologramController {
         if (!holograms.containsKey(block)) return;
 
         Hologram hologram = holograms.get(block);
+
         holograms.remove(block);
         hologram.delete();
     }

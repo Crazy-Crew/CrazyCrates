@@ -12,6 +12,8 @@ import static com.badbones69.crazycrates.modules.config.files.Locale.PREFIX_LOGG
 @Singleton
 public class AdventureUtils {
 
+    private final MiniMessage miniMessage = MiniMessage.miniMessage();
+
     public void send(Audience recipient, String msg, TagResolver.Single... placeholders) {
         send(recipient, true, msg, placeholders);
     }
@@ -37,6 +39,10 @@ public class AdventureUtils {
     }
 
     public Component parse(String msg, TagResolver.Single... placeholders) {
-        return MiniMessage.miniMessage().deserialize(msg, placeholders);
+        return miniMessage.deserialize(msg, placeholders);
+    }
+
+    public MiniMessage getMiniMessage() {
+        return miniMessage;
     }
 }
