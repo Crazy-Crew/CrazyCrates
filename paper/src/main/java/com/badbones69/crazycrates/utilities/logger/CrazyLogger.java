@@ -6,7 +6,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.papermc.paper.console.HexFormattingConverter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 
 @Singleton
 public class CrazyLogger {
@@ -20,7 +19,7 @@ public class CrazyLogger {
     }
 
     public String parse(String message) {
-        Component component = MiniMessage.miniMessage().deserialize(message);
+        Component component = adventureUtils.getMiniMessage().deserialize(message);
 
         return HexFormattingConverter.SERIALIZER.serialize(component);
     }

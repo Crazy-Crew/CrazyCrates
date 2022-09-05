@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.utilities;
 
 import com.google.inject.Singleton;
+import io.papermc.paper.console.HexFormattingConverter;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -40,6 +41,12 @@ public class AdventureUtils {
 
     public Component parse(String msg, TagResolver.Single... placeholders) {
         return miniMessage.deserialize(msg, placeholders);
+    }
+
+    public String parseMessage(String message) {
+        Component component = miniMessage.deserialize(message);
+
+        return HexFormattingConverter.SERIALIZER.serialize(component);
     }
 
     public MiniMessage getMiniMessage() {

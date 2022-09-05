@@ -29,7 +29,7 @@ public class HolographicSupport implements HologramController {
         double height = crateHologram.getHeight();
         Hologram hologram = HologramsAPI.createHologram(plugin, block.getLocation().add(.5, height, .5));
 
-        crateHologram.getMessages().forEach(line -> hologram.appendTextLine(adventureUtils.getMiniMessage().deserialize(line).toString()));
+        crateHologram.getMessages().forEach(line -> hologram.appendTextLine(adventureUtils.parseMessage(line)));
 
         holograms.put(block, hologram);
     }
