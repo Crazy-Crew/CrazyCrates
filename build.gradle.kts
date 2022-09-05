@@ -73,9 +73,9 @@ dependencies {
         exclude(group = "be.maximvdw", module = "MVdWUpdater")
     }
 
-    compileOnly("com.github.decentsoftware-eu:decentholograms:2.5.2")
+    compileOnly("com.github.decentsoftware-eu:decentholograms:2.7.2")
 
-    compileOnly("io.papermc.paper:paper-api:1.19.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT")
 
     compileOnly("me.clip:placeholderapi:2.11.2") {
         exclude(group = "org.spigotmc", module = "spigot")
