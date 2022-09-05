@@ -14,6 +14,10 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author Billygalbreath
+ * Thanks billy ^_^
+ */
 public class AbstractConfig {
 
     private YamlConfiguration config;
