@@ -35,8 +35,6 @@ public class CrateTaskHandler {
         crateTask.setPlayer(player.getUniqueId());
         crateTask.setCurrentTask(task);
 
-        System.out.println(crateTask.getPlayer());
-
         currentTasks.put(crateTask.getPlayer(), crateTask);
     }
 
@@ -53,12 +51,19 @@ public class CrateTaskHandler {
      * Remove a task from the list of current tasks.
      */
     public void removeTask(Player player) {
-        if (hasCrateTask(player)) getCurrentTasks().get(player.getUniqueId()).getCurrentTask().cancel();
+        if (hasCrateTask(player)) getTasks().get(player.getUniqueId()).getCurrentTask().cancel();
 
         currentTasks.remove(player.getUniqueId());
     }
 
-    public HashMap<UUID, CrateTask> getCurrentTasks() {
+    /**
+     * Clear all tasks
+     */
+    public void clearTasks() {
+        if (!currentTasks.isEmpty()) currentTasks.clear();
+    }
+
+    public HashMap<UUID, CrateTask> getTasks() {
         return currentTasks;
     }
 

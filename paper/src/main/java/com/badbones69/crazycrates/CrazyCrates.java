@@ -14,6 +14,7 @@ import com.badbones69.crazycrates.modules.config.files.Locale;
 import com.badbones69.crazycrates.modules.config.files.menus.CrateMenuConfig;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
+import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -128,6 +129,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     @Inject private WheelCrate wheelCrate;
     @Inject private WonderCrate wonderCrate;
 
+    @Inject private CrateTaskHandler crateTaskHandler;
+
     @Override
     public void onDisable() {
         if (!pluginEnabled) return;
@@ -135,6 +138,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         SessionManager.endCrates();
 
         quickCrate.removeAllRewards();
+
+        crateTaskHandler.clearTasks();
 
         if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
 
