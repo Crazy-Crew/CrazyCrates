@@ -109,7 +109,7 @@ public class QuadCrate implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent e) {
         Player player = e.getPlayer();
 
@@ -141,12 +141,12 @@ public class QuadCrate implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent e) {
         if (SessionManager.inSession(e.getPlayer())) e.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerPreCommand(PlayerCommandPreprocessEvent e) {
         Player player = e.getPlayer();
 
@@ -156,7 +156,7 @@ public class QuadCrate implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent e) {
         Player player = e.getPlayer();
 
@@ -166,7 +166,7 @@ public class QuadCrate implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerLeave(PlayerQuitEvent e) {
         Player player = e.getPlayer();
 
