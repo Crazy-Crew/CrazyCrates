@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.cratetypes;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.KeyType;
+import com.badbones69.crazycrates.common.enums.crates.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;

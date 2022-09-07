@@ -2,16 +2,12 @@ package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.cratetypes.*;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.modules.ModuleManager;
-import com.badbones69.crazycrates.modules.config.files.Config;
-import com.badbones69.crazycrates.modules.config.files.Locale;
-import com.badbones69.crazycrates.modules.config.files.menus.CrateMenuConfig;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;
@@ -19,7 +15,6 @@ import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -60,52 +55,52 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
             //data.load();
             
-            String cratesFolder = "/crates";
-            String schematicFolder = "/schematics";
-            String localeFolder = "/locale";
-            String menuFolder = "/menus";
+            //String cratesFolder = "/crates";
+            //String schematicFolder = "/schematics";
+            //String localeFolder = "/locale";
+            //String menuFolder = "/menus";
 
             // Create default config.
-            saveDefaultConfig();
+            //saveDefaultConfig();
 
-            Config.reload(PLUGIN_DIRECTORY, crazyLogger);
+            //Config.reload(PLUGIN_DIRECTORY, crazyLogger);
 
             // TODO() Add more crate types.
-            fileManager.toggleLogging(Config.TOGGLE_VERBOSE)
+            //fileManager.toggleLogging(Config.TOGGLE_VERBOSE)
                     // Crate Examples.
                     //.registerDefaultGenerateFiles("crate-example.yml", cratesFolder, cratesFolder)
 
                     // Crate Menu Files.
-                    .registerDefaultGenerateFiles("crate-menu.yml", menuFolder, menuFolder)
-                    .registerDefaultGenerateFiles("preview-menu.yml", menuFolder, menuFolder)
+            //        .registerDefaultGenerateFiles("crate-menu.yml", menuFolder, menuFolder)
+            //        .registerDefaultGenerateFiles("preview-menu.yml", menuFolder, menuFolder)
 
                     // Locale Files.
-                    .registerDefaultGenerateFiles("locale-en.yml", localeFolder, localeFolder)
-                    .registerDefaultGenerateFiles("locale-cz.yml", localeFolder, localeFolder)
-                    .registerDefaultGenerateFiles("locale-sp.yml", localeFolder, localeFolder)
+            //        .registerDefaultGenerateFiles("locale-en.yml", localeFolder, localeFolder)
+            //        .registerDefaultGenerateFiles("locale-cz.yml", localeFolder, localeFolder)
+            //        .registerDefaultGenerateFiles("locale-sp.yml", localeFolder, localeFolder)
 
                     // NBT Files.
-                    .registerDefaultGenerateFiles("classic.nbt", schematicFolder, schematicFolder)
-                    .registerDefaultGenerateFiles("nether.nbt", schematicFolder, schematicFolder)
-                    .registerDefaultGenerateFiles("outdoors.nbt", schematicFolder, schematicFolder)
-                    .registerDefaultGenerateFiles("sea.nbt", schematicFolder, schematicFolder)
-                    .registerDefaultGenerateFiles("soul.nbt", schematicFolder, schematicFolder)
-                    .registerDefaultGenerateFiles("wooden.nbt", schematicFolder, schematicFolder)
+            //        .registerDefaultGenerateFiles("classic.nbt", schematicFolder, schematicFolder)
+            //        .registerDefaultGenerateFiles("nether.nbt", schematicFolder, schematicFolder)
+            //        .registerDefaultGenerateFiles("outdoors.nbt", schematicFolder, schematicFolder)
+            //        .registerDefaultGenerateFiles("sea.nbt", schematicFolder, schematicFolder)
+            //        .registerDefaultGenerateFiles("soul.nbt", schematicFolder, schematicFolder)
+            //        .registerDefaultGenerateFiles("wooden.nbt", schematicFolder, schematicFolder)
 
                     // Directories.
-                    .registerCustomFilesFolder("/crates")
-                    .registerCustomFilesFolder("/schematics")
-                    .registerCustomFilesFolder("/locale")
-                    .registerCustomFilesFolder("/menus")
-                    .registerCustomFilesFolder("/data")
-                    .setup();
+            //        .registerCustomFilesFolder("/crates")
+            //        .registerCustomFilesFolder("/schematics")
+            //        .registerCustomFilesFolder("/locale")
+            //        .registerCustomFilesFolder("/menus")
+            //        .registerCustomFilesFolder("/data")
+            //        .setup();
 
-            Locale.reload(LOCALE_DIRECTORY, Config.LANGUAGE_FILE, crazyLogger);
+            //Locale.reload(LOCALE_DIRECTORY, Config.LANGUAGE_FILE, crazyLogger);
 
             // Crate Menus.
-            CrateMenuConfig.reload(MENU_DIRECTORY, crazyLogger);
+            //CrateMenuConfig.reload(MENU_DIRECTORY, crazyLogger);
 
-            if (Config.TOGGLE_METRICS) new Metrics(this, 4514);
+            //if (Config.TOGGLE_METRICS) new Metrics(this, 4514);
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -135,13 +130,13 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onDisable() {
         if (!pluginEnabled) return;
 
-        SessionManager.endCrates();
+        //.endCrates();
 
-        quickCrate.removeAllRewards();
+        //quickCrate.removeAllRewards();
 
-        crateTaskHandler.clearTasks();
+        //crateTaskHandler.clearTasks();
 
-        if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
+        //if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
 
         injector = null;
     }
@@ -154,7 +149,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     @Inject private MiscListener miscListener;
 
     private void enable() {
-
         crazyManager.loadCrates();
 
         PluginManager pluginManager = getServer().getPluginManager();

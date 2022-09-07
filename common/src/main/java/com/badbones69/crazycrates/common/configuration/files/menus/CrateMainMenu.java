@@ -1,13 +1,10 @@
-package com.badbones69.crazycrates.modules.config.files.menus;
+package com.badbones69.crazycrates.common.configuration.files.menus;
 
-import com.badbones69.crazycrates.modules.config.AbstractConfig;
-import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
-import dev.triumphteam.gui.components.GuiType;
-import java.nio.file.Path;
+import com.badbones69.crazycrates.common.configuration.AbstractConfig;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CrateMenuConfig extends AbstractConfig {
+public class CrateMainMenu extends AbstractConfig {
 
     @Key("settings.crate-menu-title")
     @Comment("""
@@ -42,10 +39,4 @@ public class CrateMenuConfig extends AbstractConfig {
 
     @Key("crate-menu-filler.lore")
     public static List<String> CRATE_MENU_FILLER_LORE = new ArrayList<>() {};
-
-    private static final CrateMenuConfig CRATE_MENU_FILE = new CrateMenuConfig();
-
-    public static void reload(Path path, CrazyLogger crazyLogger) {
-        CRATE_MENU_FILE.handle(path.resolve("crate-menu.yml"), CrateMenuConfig.class, crazyLogger);
-    }
 }

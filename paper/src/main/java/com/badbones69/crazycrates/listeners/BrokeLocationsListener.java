@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.listeners;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
-import com.badbones69.crazycrates.modules.config.files.Config;
+import com.badbones69.crazycrates.common.configuration.files.Config;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -18,13 +18,16 @@ import java.util.List;
 @Singleton
 public class BrokeLocationsListener implements Listener {
 
-    @Inject private CrazyManager crazyManager;
-    @Inject private CrazyLogger crazyLogger;
+    @Inject
+    private CrazyManager crazyManager;
+    @Inject
+    private CrazyLogger crazyLogger;
 
     @EventHandler(ignoreCancelled = true)
     public void onWorldLoad(WorldLoadEvent e) {
-        if (!crazyManager.getBrokeCrateLocations().isEmpty()) {
+        while (!crazyManager.getBrokeCrateLocations().isEmpty()) {
             int fixedAmount = 0;
+
             List<BrokeLocation> fixedWorlds = new ArrayList<>();
 
             for (BrokeLocation brokeLocation : crazyManager.getBrokeCrateLocations()) {
@@ -33,7 +36,8 @@ public class BrokeLocationsListener implements Listener {
                 if (location.getWorld() != null) {
                     crazyManager.getCrateLocations().add(new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location));
 
-                    if (crazyManager.getHologramController() != null) crazyManager.getHologramController().createHologram(location.getBlock(), brokeLocation.getCrate());
+                    if (crazyManager.getHologramController() != null)
+                        crazyManager.getHologramController().createHologram(location.getBlock(), brokeLocation.getCrate());
 
                     fixedWorlds.add(brokeLocation);
                     fixedAmount++;
@@ -45,7 +49,8 @@ public class BrokeLocationsListener implements Listener {
             if (Config.TOGGLE_VERBOSE) {
                 crazyLogger.debug("<red>Fixed</red> <gold>" + fixedAmount + "</gold> <red>broken crate locations.</red>");
 
-                if (crazyManager.getBrokeCrateLocations().isEmpty()) crazyLogger.debug("<red>All broken crate locations have been fixed.</red>");
+                if (crazyManager.getBrokeCrateLocations().isEmpty())
+                    crazyLogger.debug("<red>All broken crate locations have been fixed.</red>");
             }
         }
     }

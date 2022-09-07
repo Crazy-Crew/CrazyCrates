@@ -24,14 +24,18 @@ repositories {
 }
 
 dependencies {
-    //implementation(project(":common"))
+    implementation(project(":common"))
 
     // Paper API
-    paperDevBundle("1.19.2-R0.1-SNAPSHOT")
+    paperDevBundle("1.19.2-R0.1-SNAPSHOT") {
+        exclude(group = "com.google.code.gson", module = "gson")
+    }
 
-    compileOnly(libs.paper)
+    compileOnly(libs.paper) {
+        exclude(group = "com.google.code.gson", module = "gson")
+    }
 
-    compileOnly(libs.guice)
+    implementation(libs.google.guice)
 
     // Paper Cloud Commands
     // compileOnly(libs.paper.command.cloud)
@@ -70,6 +74,15 @@ tasks {
         dependsOn(reobfJar)
     }
 
+    shadowJar {
+        listOf(
+            "org.bstats",
+            "com.badbones69.crazycrates.common"
+        ).forEach {
+            relocate(it, "${rootProject.group}.plugin.lib.$it")
+        }
+    }
+
     processResources {
         filesMatching("plugin.yml") {
             expand (
@@ -78,14 +91,6 @@ tasks {
                 "version" to rootProject.version,
                 "description" to rootProject.description
             )
-        }
-    }
-
-    shadowJar {
-        listOf(
-            "org.bstats"
-        ).forEach {
-            relocate(it, "${rootProject.group}.plugin.lib.$it")
         }
     }
 }

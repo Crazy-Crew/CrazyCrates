@@ -2,10 +2,11 @@ package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.api.enums.CrateType;
+import com.badbones69.crazycrates.common.enums.crates.CrateType;
 import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.api.managers.CrateManager;
-import com.badbones69.crazycrates.modules.config.files.Config;
+import com.badbones69.crazycrates.common.configuration.files.Config;
+import com.badbones69.crazycrates.common.configuration.objects.CrateHologram;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import org.bukkit.Location;
 import org.bukkit.Material;

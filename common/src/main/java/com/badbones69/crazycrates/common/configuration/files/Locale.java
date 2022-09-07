@@ -1,8 +1,7 @@
-package com.badbones69.crazycrates.modules.config.files;
+package com.badbones69.crazycrates.common.configuration.files;
 
-import com.badbones69.crazycrates.modules.config.AbstractConfig;
-import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
-import java.nio.file.Path;
+import com.badbones69.crazycrates.common.configuration.AbstractConfig;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -220,10 +219,4 @@ public class Locale extends AbstractConfig {
         add(" ");
         add("<gray>You can find a list of permissions @</gray> <yellow>https://github.com/badbones69/Crazy-Crates/wiki/Commands-and-Permissions</yellow>");
     }};
-
-    private static final Locale LOCALE_FILE = new Locale();
-
-    public static void reload(Path path, String fileName, CrazyLogger crazyLogger) {
-        LOCALE_FILE.handle(path.resolve(fileName), Locale.class, crazyLogger);
-    }
 }

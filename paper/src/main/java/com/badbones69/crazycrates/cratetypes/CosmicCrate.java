@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.cratetypes;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.KeyType;
+import com.badbones69.crazycrates.common.enums.crates.KeyType;
 import com.badbones69.crazycrates.api.events.player.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.player.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.managers.CosmicCrateManager;

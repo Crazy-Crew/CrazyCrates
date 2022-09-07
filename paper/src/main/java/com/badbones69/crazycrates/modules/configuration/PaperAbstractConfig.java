@@ -1,15 +1,12 @@
-package com.badbones69.crazycrates.modules.config;
+package com.badbones69.crazycrates.modules.configuration;
 
+import com.badbones69.crazycrates.common.configuration.AbstractConfig;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
@@ -18,9 +15,9 @@ import java.util.List;
  * @author Billygalbreath
  * Thanks billy ^_^
  */
-public class AbstractConfig {
+public class PaperAbstractConfig extends AbstractConfig {
 
-    private YamlConfiguration config;
+    protected YamlConfiguration config;
 
     public YamlConfiguration getConfig() {
         return this.config;
@@ -29,15 +26,15 @@ public class AbstractConfig {
     public void handle(Path path, Class<? extends AbstractConfig> clazz, CrazyLogger logger) {
         this.config = new YamlConfiguration();
 
-        getConfig().options().copyDefaults(true);
-        getConfig().options().parseComments(true);
-        getConfig().options().width(9999);
+        this.config.options().copyDefaults(true);
+        this.config.options().parseComments(true);
+        this.config.options().width(9999);
 
         File file = path.toFile();
         String fileName = path.getFileName().toString();
 
         try {
-            getConfig().load(file);
+            this.config.load(file);
         } catch (IOException | InvalidConfigurationException e) {
             logger.debug("<red>Failed to load</red> <gold>" + fileName + "</gold><red>...</red>");
 
@@ -67,7 +64,7 @@ public class AbstractConfig {
         });
 
         try {
-            getConfig().save(file);
+            this.config.save(file);
         } catch (IOException e) {
             logger.debug("<red>Failed to save</red> <gold>" + fileName + "</gold><red>...</red>");
 
@@ -80,24 +77,12 @@ public class AbstractConfig {
     }
 
     protected Object getValue(String path, Object def) {
-        if (getConfig().get(path) == null) getConfig().set(path, def);
+        if (this.config.get(path) == null) this.config.set(path, def);
 
-        return getConfig().get(path);
+        return this.config.get(path);
     }
 
     protected void setComments(String path, List<String> comments) {
-        getConfig().setComments(path, comments);
-    }
-
-    @Target(ElementType.FIELD)
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface Key {
-        String value();
-    }
-
-    @Target(ElementType.FIELD)
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface Comment {
-        String value();
+        this.config.setComments(path, comments);
     }
 }

@@ -2,10 +2,10 @@ package com.badbones69.crazycrates.api.managers;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.KeyType;
-import com.badbones69.crazycrates.api.enums.QuadCrateParticles;
+import com.badbones69.crazycrates.common.enums.crates.KeyType;
+import com.badbones69.crazycrates.common.enums.particles.QuadCrateParticles;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.modules.config.files.Config;
+import com.badbones69.crazycrates.common.configuration.files.Config;
 import com.badbones69.crazycrates.support.structures.QuadCrateSpiralHandler;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
@@ -269,7 +269,7 @@ public class QuadCrateManager {
 
             if (crazyManager.getHologramController() != null) crazyManager.getHologramController().createHologram(spawnLocation.getBlock(), crate);
 
-            crateTaskHandler.endCrate();
+            crateTaskHandler.endCrate(player);
 
             // Remove the player from the list saying they are opening a crate.
             crazyManager.removePlayerFromOpeningList(player);

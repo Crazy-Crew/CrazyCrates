@@ -1,7 +1,8 @@
 package com.badbones69.crazycrates.modules.menus;
 
+/*
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.modules.config.files.menus.CrateMenuConfig;
+import com.badbones69.crazycrates.modules.configuration.files.menus.PaperMenuConfig;
 import com.badbones69.crazycrates.utilities.AdventureUtils;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.GuiType;
@@ -24,9 +25,9 @@ public class CrateMenuHandler {
     }
 
     private final Gui gui = Gui.gui()
-            .title(adventureUtils.parse(CrateMenuConfig.CRATE_MENU_TITLE))
-            .type(GuiType.valueOf(CrateMenuConfig.CRATE_MENU_TYPE))
-            .rows(CrateMenuConfig.CRATE_MENU_SIZE)
+            .title(adventureUtils.parse(PaperMenuConfig.CRATE_MENU_TITLE))
+            .type(GuiType.valueOf(PaperMenuConfig.CRATE_MENU_TYPE))
+            .rows(PaperMenuConfig.CRATE_MENU_SIZE)
             .disableAllInteractions()
             .create();
 
@@ -71,3 +72,4 @@ public class CrateMenuHandler {
         gui.open(player);
     }
 }
+ */

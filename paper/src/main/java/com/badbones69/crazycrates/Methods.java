@@ -2,7 +2,7 @@ package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
-import com.badbones69.crazycrates.modules.config.files.Config;
+import com.badbones69.crazycrates.common.configuration.files.Config;
 import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

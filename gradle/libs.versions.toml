@@ -9,20 +9,21 @@ paper-lib = "1.0.8-SNAPSHOT"
 bstats = "3.0.0"
 nbt-api = "2.10.0"
 
-guice = "5.1.0"
-
 # Holograms
 holographic-displays = "2.4.9"
 decent-holograms = "2.7.2"
 
 # Placeholders
-# mvdw-placeholder-api= "3.1.1-SNAPSHOT"
 placeholder-api = "2.11.2"
 
 vault-api = "1.7"
 
 # Triumph Team
 gui = "3.1.2"
+
+# Common Versions
+guice = "5.1.0"
+gson = "2.9.1"
 
 [libraries]
 
@@ -39,17 +40,17 @@ holographic-displays = { module = "com.gmail.filoghost.holographicdisplays:holog
 decent-holograms = { module = "com.github.decentsoftware-eu:decentholograms", version.ref = "decent-holograms" }
 
 # Placeholders
-# This is currently broken for some reason.
-# mvdw-placeholder-api = { module = "be.maximvdw:MVdWPlaceholderAPI", version.ref = "mvdw-placeholder-api" }
 placeholder-api = { module = "me.clip:placeholderapi", version.ref = "placeholder-api" }
 
-# NBT API
+# NBT API Libraries
 nbt-api = { module = "de.tr7zw:nbt-data-api", version.ref = "nbt-api" }
 
-# Misc
+# Misc Libraries
 vault-api = { module = "com.github.MilkBowl:VaultAPI", version.ref = "vault-api" }
-
-guice = { module = "com.google.inject:guice", version.ref = "guice" }
 
 # Triumph Team
 triumph-gui-bukkit = { module = "dev.triumphteam:triumph-gui", version.ref = "gui" }
+
+# Common Libraries
+google-guice = { module = "com.google.inject:guice", version.ref = "guice" }
+google-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }

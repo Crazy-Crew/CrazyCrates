@@ -3,11 +3,13 @@ package com.badbones69.crazycrates.api;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.enums.BrokeLocation;
-import com.badbones69.crazycrates.api.enums.CrateType;
-import com.badbones69.crazycrates.api.enums.KeyType;
+import com.badbones69.crazycrates.common.enums.crates.CrateType;
+import com.badbones69.crazycrates.common.enums.crates.KeyType;
+import com.badbones69.crazycrates.common.configuration.objects.CrateHologram;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.*;
-import com.badbones69.crazycrates.modules.config.files.Config;
+import com.badbones69.crazycrates.common.configuration.files.Config;
+import com.badbones69.crazycrates.common.schematics.CrateSchematic;
 import com.badbones69.crazycrates.support.holograms.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.HolographicSupport;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
@@ -306,6 +308,7 @@ public class CrazyManager {
                 lastLocation.setPitch(0F);
                 CrateSchematic crateSchematic = getCrateSchematics().get(new Random().nextInt(getCrateSchematics().size()));
                 StructureHandler handler = new StructureHandler(crateSchematic.schematicFile());
+
                 //QuadCrateManager session = new QuadCrateManager(player, crate, keyType, location, lastLocation, checkHand, handler, this, methods, chestStateHandler);
                 //broadcast = session.startCrate(plugin);
                 break;

@@ -1,8 +1,7 @@
-package com.badbones69.crazycrates.modules.config.files;
+package com.badbones69.crazycrates.common.configuration.files;
 
-import com.badbones69.crazycrates.modules.config.AbstractConfig;
-import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
-import java.nio.file.Path;
+import com.badbones69.crazycrates.common.configuration.AbstractConfig;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,10 +117,4 @@ public class Config extends AbstractConfig {
     public static List<String> DISABLED_WORLDS = new ArrayList<>() {{
         add("world_nether");
     }};
-
-    private static final Config CONFIG_FILE = new Config();
-
-    public static void reload(Path path, CrazyLogger crazyLogger) {
-        CONFIG_FILE.handle(path.resolve("config.yml"), Config.class, crazyLogger);
-    }
 }

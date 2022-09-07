@@ -3,13 +3,13 @@ package com.badbones69.crazycrates.listeners;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.CrateType;
-import com.badbones69.crazycrates.api.enums.KeyType;
+import com.badbones69.crazycrates.common.enums.crates.CrateType;
+import com.badbones69.crazycrates.common.enums.crates.KeyType;
 import com.badbones69.crazycrates.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
+import com.badbones69.crazycrates.common.configuration.files.Config;
 import com.badbones69.crazycrates.cratetypes.QuickCrate;
-import com.badbones69.crazycrates.modules.config.files.Config;
 import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -40,8 +40,16 @@ public class CrateControlListener implements Listener { // Crate Control
         inUse.remove(player);
     }
 
-    public boolean containsPlayer(Location location) {
+    public boolean containsPlayer(Player player) {
+        return inUse.containsKey(player);
+    }
+
+    public boolean containsLocation(Location location) {
         return inUse.containsValue(location);
+    }
+
+    public Location getLocation(Player player) {
+        return inUse.get(player);
     }
 
     public void addPlayer(Player player, Location location) {
@@ -153,7 +161,7 @@ public class CrateControlListener implements Listener { // Crate Control
                     if (hasKey) {
                         // Checks if the player uses the quick crate again.
                         if (crazyManager.isInOpeningList(player) && crazyManager.getOpeningCrate(player).getCrateType() == CrateType.QUICK_CRATE &&
-                                inUse.containsKey(player) && inUse.get(player).equals(crateLocation.getLocation())) {
+                                containsPlayer(player) && getLocation(player).equals(crateLocation.getLocation())) {
                             useQuickCrateAgain = true;
                         }
 
@@ -163,7 +171,7 @@ public class CrateControlListener implements Listener { // Crate Control
                                 return;
                             }
 
-                            if (inUse.containsValue(crateLocation.getLocation())) {
+                            if (containsLocation(crateLocation.getLocation())) {
                                 //player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage(methods));
                                 return;
                             }
@@ -203,7 +211,7 @@ public class CrateControlListener implements Listener { // Crate Control
     public void onPlayerLeave(PlayerQuitEvent e) {
         Player player = e.getPlayer();
 
-        if (crateTaskHandler.hasCrateTask()) crateTaskHandler.endCrate();
+        if (crateTaskHandler.hasCrateTask(player)) crateTaskHandler.endCrate(player);
 
         if (crazyManager.hasQuadCrateTask(player)) crazyManager.endQuadCrate(player);
 
