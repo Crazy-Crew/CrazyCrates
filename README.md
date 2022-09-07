@@ -15,14 +15,14 @@
   <p align="center">
     A crates plugin that offers quality crates with ease!
     <br />
-    <a href="https://github.com/Crazy-Crew/Crazy-Crates/wiki"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/Crazy-Crew/CrazyCrates/wiki"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/Crazy-Crew/Crazy-Crates/issues">Report Bug</a>
+    <a href="https://github.com/Crazy-Crew/CrazyCrates/issues">Report Bug</a>
     ·
-    <a href="https://github.com/Crazy-Crew/Crazy-Crates/discussions/categories/feature-rquests">Request Feature</a>
+    <a href="https://github.com/Crazy-Crew/CrazyCrates/discussions/categories/feature-rquests">Request Feature</a>
     ·
-    <a href="https://github.com/Crazy-Crew/Crazy-Crates/discussions/categories/support">Get Support</a>
+    <a href="https://github.com/Crazy-Crew/CrazyCrates/discussions/categories/support">Get Support</a>
   </p>
 </div>
 
@@ -59,7 +59,7 @@ A list of things necessary to make sure you can build CrazyCrates properly.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/Crazy-Crew/Crazy-Crates.git
+   git clone https://github.com/Crazy-Crew/CrazyCrates.git
    ```
 2. Open the repository using Intellij IDEA & wait until it finishes downloading/indexing.
 3. Run the reobfJar task.
@@ -86,13 +86,13 @@ Distributed under the GPU v3 License. See `LICENSE.MD` for more information.
 [discord-shield]: https://img.shields.io/discord/182615261403283459.svg?style=for-the-badge
 [discord-url]: https://discord.gg/crazycrew
 
-[contributors-shield]: https://img.shields.io/github/contributors/Crazy-Crew/Crazy-Crates.svg?style=for-the-badge
-[contributors-url]: https://github.com/Crazy-Crew/Crazy-Crates/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Crazy-Crew/Crazy-Crates.svg?style=for-the-badge
-[forks-url]: https://github.com/Crazy-Crew/Crazy-Crates/network/members
-[stars-shield]: https://img.shields.io/github/stars/Crazy-Crew/Crazy-Crates.svg?style=for-the-badge
-[stars-url]: https://github.com/Crazy-Crew/Crazy-Crates/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Crazy-Crew/Crazy-Crates.svg?style=for-the-badge
-[issues-url]: https://github.com/Crazy-Crew/Crazy-Crates/issues
-[license-shield]: https://img.shields.io/github/license/Crazy-Crew/Crazy-Crates.svg?style=for-the-badge
-[license-url]: https://github.com/Crazy-Crew/Crazy-Crates/blob/master/LICENSE.MD
+[contributors-shield]: https://img.shields.io/github/contributors/Crazy-Crew/CrazyCrates.svg?style=for-the-badge
+[contributors-url]: https://github.com/Crazy-Crew/CrazyCrates/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Crazy-Crew/CrazyCrates.svg?style=for-the-badge
+[forks-url]: https://github.com/Crazy-Crew/CrazyCrates/network/members
+[stars-shield]: https://img.shields.io/github/stars/Crazy-Crew/CrazyCrates.svg?style=for-the-badge
+[stars-url]: https://github.com/Crazy-Crew/CrazyCrates/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Crazy-Crew/CrazyCrates.svg?style=for-the-badge
+[issues-url]: https://github.com/Crazy-Crew/CrazyCrates/issues
+[license-shield]: https://img.shields.io/github/license/Crazy-Crew/CrazyCrates.svg?style=for-the-badge
+[license-url]: https://github.com/Crazy-Crew/CrazyCrates/blob/master/LICENSE.MD
