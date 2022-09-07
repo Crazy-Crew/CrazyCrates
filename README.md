@@ -84,7 +84,7 @@ Check our public [trello board](https://trello.com/b/AJvEmcbL) for our current p
 Distributed under the GPU v3 License. See `LICENSE.MD` for more information.
 
 [discord-shield]: https://img.shields.io/discord/182615261403283459.svg?style=for-the-badge
-[discord-url]: https://discord.badbones69.com
+[discord-url]: https://discord.gg/crazycrew
 
 [contributors-shield]: https://img.shields.io/github/contributors/Crazy-Crew/Crazy-Crates.svg?style=for-the-badge
 [contributors-url]: https://github.com/Crazy-Crew/Crazy-Crates/graphs/contributors
