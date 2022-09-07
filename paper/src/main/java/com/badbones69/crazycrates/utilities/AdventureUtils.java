@@ -7,7 +7,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.command.ConsoleCommandSender;
-
 import static com.badbones69.crazycrates.common.configuration.files.Locale.PREFIX_COMMAND;
 import static com.badbones69.crazycrates.common.configuration.files.Locale.PREFIX_LOGGER;
 

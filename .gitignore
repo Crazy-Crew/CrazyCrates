@@ -15,3 +15,7 @@ gradlew.bat
 
 .gradle
 build
+
+paper/build
+common/build
+build-logic/build

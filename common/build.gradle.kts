@@ -21,7 +21,7 @@ tasks {
         doLast {
             copy {
                 from("build/libs/${rootProject.name}-${rootProject.version}-COMMON.jar")
-                into(rootProject.layout.buildDirectory.file("libs"))
+                into(rootProject.layout.buildDirectory.dir("libs"))
             }
         }
     }
