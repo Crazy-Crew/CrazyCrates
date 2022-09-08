@@ -156,7 +156,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         PluginManager pluginManager = getServer().getPluginManager();
 
-        if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(brokeLocationsListener, this);
+        pluginManager.registerEvents(new ServerReadyEvent(), this);
 
         pluginManager.registerEvents(crateControlListener, this);
         pluginManager.registerEvents(fireworkDamageListener, this);
@@ -172,7 +172,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         pluginManager.registerEvents(wheelCrate, this);
         pluginManager.registerEvents(wonderCrate, this);
 
-        //if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) placeholderAPISupport.register();
+        //if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(brokeLocationsListener, this);
     }
 
     public static CrazyCrates getPlugin() {
