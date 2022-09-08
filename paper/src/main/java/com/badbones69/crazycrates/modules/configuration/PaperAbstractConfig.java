@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.modules.configuration;
 
 import com.badbones69.crazycrates.common.configuration.AbstractConfig;
-import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.badbones69.crazycrates.api.utilities.logger.CrazyLogger;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;

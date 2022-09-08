@@ -1,10 +1,10 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.BrokeLocation;
-import com.badbones69.crazycrates.api.objects.CrateLocation;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.CrateBrokeLocation;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.common.configuration.files.Config;
-import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.badbones69.crazycrates.api.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.bukkit.Location;
@@ -28,18 +28,18 @@ public class BrokeLocationsListener implements Listener {
         while (!crazyManager.getBrokeCrateLocations().isEmpty()) {
             int fixedAmount = 0;
 
-            List<BrokeLocation> fixedWorlds = new ArrayList<>();
+            List<CrateBrokeLocation> fixedWorlds = new ArrayList<>();
 
-            for (BrokeLocation brokeLocation : crazyManager.getBrokeCrateLocations()) {
-                Location location = brokeLocation.getLocation();
+            for (CrateBrokeLocation crateBrokeLocation : crazyManager.getBrokeCrateLocations()) {
+                Location location = crateBrokeLocation.getLocation();
 
                 if (location.getWorld() != null) {
-                    crazyManager.getCrateLocations().add(new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location));
+                    crazyManager.getCrateLocations().add(new CrateLocation(crateBrokeLocation.getLocationName(), crateBrokeLocation.getCrate(), location));
 
                     if (crazyManager.getHologramController() != null)
-                        crazyManager.getHologramController().createHologram(location.getBlock(), brokeLocation.getCrate());
+                        crazyManager.getHologramController().createHologram(location.getBlock(), crateBrokeLocation.getCrate());
 
-                    fixedWorlds.add(brokeLocation);
+                    fixedWorlds.add(crateBrokeLocation);
                     fixedAmount++;
                 }
             }

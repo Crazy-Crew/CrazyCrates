@@ -1,7 +1,7 @@
-package com.badbones69.crazycrates.utilities.logger;
+package com.badbones69.crazycrates.api.utilities.logger;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.utilities.AdventureUtils;
+import com.badbones69.crazycrates.api.utilities.AdventureUtils;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.papermc.paper.console.HexFormattingConverter;

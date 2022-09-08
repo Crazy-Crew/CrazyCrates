@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.objects;
+package com.badbones69.crazycrates.api.utilities.handlers.objects;
 
 import com.badbones69.crazycrates.support.SkullCreator;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -1217,7 +1217,7 @@ public class ItemBuilder {
      *
      * @return The list of enchantments and their in-Game names.
      */
-    private static HashMap<String, String> getEnchantmentList() {
+    public static HashMap<String, String> getEnchantmentList() {
         HashMap<String, String> enchantments = new HashMap<>();
 
         enchantments.put("ARROW_DAMAGE", "Power");
@@ -1258,10 +1258,10 @@ public class ItemBuilder {
         return enchantments;
     }
     
-    private boolean isInt(String s) {
+    private boolean isInt(String number) {
         try {
-            Integer.parseInt(s);
-        } catch (NumberFormatException nfe) {
+            Integer.parseInt(number);
+        } catch (NumberFormatException exception) {
             return false;
         }
 

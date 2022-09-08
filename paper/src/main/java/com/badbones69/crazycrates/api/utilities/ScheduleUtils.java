@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.utilities;
+package com.badbones69.crazycrates.api.utilities;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.google.inject.Singleton;

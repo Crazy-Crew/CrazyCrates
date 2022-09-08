@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.objects;
+package com.badbones69.crazycrates.api.utilities.handlers.objects;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.entity.Player;

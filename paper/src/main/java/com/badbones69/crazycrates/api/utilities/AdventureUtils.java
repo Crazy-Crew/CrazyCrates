@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.utilities;
+package com.badbones69.crazycrates.api.utilities;
 
 import com.google.inject.Singleton;
 import io.papermc.paper.console.HexFormattingConverter;

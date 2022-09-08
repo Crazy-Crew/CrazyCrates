@@ -1,10 +1,10 @@
-package com.badbones69.crazycrates.utilities.handlers.tasks;
+package com.badbones69.crazycrates.api.utilities.handlers.tasks;
 
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.utilities.CommonUtils;
-import com.badbones69.crazycrates.utilities.handlers.objects.crates.CrateTask;
+import com.badbones69.crazycrates.api.utilities.CommonUtils;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.CrateTask;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.bukkit.Sound;

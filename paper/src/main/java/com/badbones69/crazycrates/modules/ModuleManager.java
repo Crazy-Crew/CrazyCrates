@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.modules;
 
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
-import com.badbones69.crazycrates.utilities.handlers.tasks.CrateTaskHandler;
+import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;

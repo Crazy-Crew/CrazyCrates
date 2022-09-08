@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.api.events.player;
 
-import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

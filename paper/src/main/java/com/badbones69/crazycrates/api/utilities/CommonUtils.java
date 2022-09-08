@@ -1,11 +1,11 @@
-package com.badbones69.crazycrates.utilities;
+package com.badbones69.crazycrates.api.utilities;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.events.player.PlayerPrizeEvent;
-import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.bukkit.entity.Player;

@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api.events.player;
 
-import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

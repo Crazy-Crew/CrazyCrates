@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.support.placeholders;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.common.enums.crates.CrateType;
-import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;

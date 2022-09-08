@@ -1,10 +1,9 @@
-package com.badbones69.crazycrates.api.enums;
+package com.badbones69.crazycrates.api.utilities.handlers.objects.crates;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.Location;
 
-public class BrokeLocation {
+public class CrateBrokeLocation {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     
@@ -13,7 +12,7 @@ public class BrokeLocation {
     private final String locationName;
     private Crate crate;
     
-    public BrokeLocation(String locationName, Crate crate, int x, int y, int z, String world) {
+    public CrateBrokeLocation(String locationName, Crate crate, int x, int y, int z, String world) {
         this.x = x;
         this.y = y;
         this.z = z;

@@ -2,19 +2,23 @@ package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.api.enums.BrokeLocation;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.ItemBuilder;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.Tier;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.CrateBrokeLocation;
 import com.badbones69.crazycrates.common.enums.crates.CrateType;
 import com.badbones69.crazycrates.common.enums.crates.KeyType;
 import com.badbones69.crazycrates.common.configuration.objects.CrateHologram;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
-import com.badbones69.crazycrates.api.objects.*;
 import com.badbones69.crazycrates.common.configuration.files.Config;
 import com.badbones69.crazycrates.common.schematics.CrateSchematic;
 import com.badbones69.crazycrates.support.holograms.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.HolographicSupport;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
-import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.CrateLocation;
+import com.badbones69.crazycrates.api.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -54,7 +58,7 @@ public class CrazyManager {
     private final ArrayList<String> brokecrates = new ArrayList<>();
     
     // List of broken physical crate locations.
-    private final List<BrokeLocation> brokeLocations = new ArrayList<>();
+    private final List<CrateBrokeLocation> crateBrokeLocations = new ArrayList<>();
     
     // The crate that the player is opening.
     private final HashMap<UUID, Crate> playerOpeningCrates = new HashMap<>();
@@ -452,8 +456,8 @@ public class CrazyManager {
      *
      * @return List of broken crate locations.
      */
-    public List<BrokeLocation> getBrokeCrateLocations() {
-        return brokeLocations;
+    public List<CrateBrokeLocation> getBrokeCrateLocations() {
+        return crateBrokeLocations;
     }
     
     /**

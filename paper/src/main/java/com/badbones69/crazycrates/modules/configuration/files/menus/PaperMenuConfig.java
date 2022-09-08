@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.modules.configuration.files.menus;
 
 import com.badbones69.crazycrates.modules.configuration.PaperAbstractConfig;
-import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.badbones69.crazycrates.api.utilities.logger.CrazyLogger;
 import java.nio.file.Path;
 
 public class PaperMenuConfig extends PaperAbstractConfig {

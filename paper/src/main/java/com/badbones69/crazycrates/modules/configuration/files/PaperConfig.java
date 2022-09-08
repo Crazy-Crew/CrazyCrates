@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.modules.configuration.files;
 
 import com.badbones69.crazycrates.common.configuration.files.Config;
 import com.badbones69.crazycrates.modules.configuration.PaperAbstractConfig;
-import com.badbones69.crazycrates.utilities.logger.CrazyLogger;
+import com.badbones69.crazycrates.api.utilities.logger.CrazyLogger;
 import java.nio.file.Path;
 
 public class PaperConfig extends PaperAbstractConfig {

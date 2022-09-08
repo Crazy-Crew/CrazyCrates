@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.utilities.handlers.objects.crates;
+package com.badbones69.crazycrates.api.utilities.handlers.objects.crates;
 
 import org.bukkit.scheduler.BukkitTask;
 import java.util.UUID;
