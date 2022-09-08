@@ -74,6 +74,7 @@ dependencies {
     }
 
     compileOnly("com.github.decentsoftware-eu:decentholograms:2.5.2")
+    compileOnly("com.github.LoneDev6:API-ItemsAdder:3.2.3c")
 
     compileOnly("io.papermc.paper:paper-api:1.19.1-R0.1-SNAPSHOT")
 

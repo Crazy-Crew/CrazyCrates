@@ -17,12 +17,7 @@ import com.badbones69.crazycrates.cratetypes.Roulette;
 import com.badbones69.crazycrates.cratetypes.War;
 import com.badbones69.crazycrates.cratetypes.Wheel;
 import com.badbones69.crazycrates.cratetypes.Wonder;
-import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
-import com.badbones69.crazycrates.listeners.CrateControlListener;
-import com.badbones69.crazycrates.listeners.FireworkDamageListener;
-import com.badbones69.crazycrates.listeners.MenuListener;
-import com.badbones69.crazycrates.listeners.MiscListener;
-import com.badbones69.crazycrates.listeners.PreviewListener;
+import com.badbones69.crazycrates.listeners.*;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
@@ -123,6 +118,14 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         enable();
 
         isEnabled = true;
+
+        //If items adder exist, we have to wait for the plugin to load all custom items
+        //If not loaded, just run as normal behaviour
+        if (PluginSupport.ITEMS_ADDER.isPluginLoaded()) {
+            getServer().getPluginManager().registerEvents(new ItemsAdderEvent(), this);
+        } else {
+            crazyManager.loadCrates();
+        }
     }
 
     @Override
@@ -175,8 +178,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         pluginManager.registerEvents(new QuadCrate(), this);
 
         pluginManager.registerEvents(this, this);
-
-        crazyManager.loadCrates();
 
         if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
 

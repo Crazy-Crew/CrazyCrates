@@ -8,7 +8,7 @@ authors:
   - BadBones69
   - RyderBelserion
 
-softdepend: [HolographicDisplays, DecentHolograms, PlaceholderAPI]
+softdepend: [HolographicDisplays, DecentHolograms, PlaceholderAPI, ItemsAdder]
 
 commands:
   crates:

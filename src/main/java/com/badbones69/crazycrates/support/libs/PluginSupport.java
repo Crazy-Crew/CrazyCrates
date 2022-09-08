@@ -6,7 +6,8 @@ public enum PluginSupport {
     
     PLACEHOLDERAPI("PlaceholderAPI"),
     HOLOGRAPHIC_DISPLAYS("HolographicDisplays"),
-    DECENT_HOLOGRAMS("DecentHolograms");
+    DECENT_HOLOGRAMS("DecentHolograms"),
+    ITEMS_ADDER("ItemsAdder");
     
     private final String name;
 
