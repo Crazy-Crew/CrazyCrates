@@ -1,17 +1,22 @@
 settings:
-  # The title of the menu.
-  # Available Placeholders: %crate%
-  crate-menu-title: "<red>Crate Browser</red> <dark_gray>:</dark_gray> <reset>%crate%"
-  # Choose how large this menu should be.
-  # 1, 2, 3, 4, 5 or 6 are the available options.
-  # Only works with the CHEST type gui.
-  crate-menu-size: 6
-  # Available types are CHEST, WORKBENCH, HOPPER, DISPENSER, BREWING
-  # Every type except CHEST ignores "crate-menu-size"
-  crate-menu-type: CHEST
+  crate-menu:
+    # The title of the menu.
+    # Available Placeholders: %crate%
+    title: "<red>Crate Browser</red> <dark_gray>:</dark_gray> <reset>%crate%</reset>"
+    # Choose how large this menu should be.
+    # 1, 2, 3, 4, 5 or 6 are the available options.
+    # Only works with the CHEST type gui.
+    size: 6
+    # Available types are CHEST, WORKBENCH, HOPPER, DISPENSER, BREWING
+    # Every type except CHEST ignores "crate-menu-size"
+    type: CHEST
 
 crate-menu-filler:
+  # Whether you want the filler to be enabled.
   toggle: false
+  # The item you want to fill it.
   item: "BLACK_STAINED_GLASS_PANE"
+  # The name of the item.
   name: " "
+  # The lore of the item.
   lore: []

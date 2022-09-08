@@ -2,19 +2,24 @@
 #List of all the sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
 
 settings:
+  crate-preview:
+    # The title of the menu.
+    # Available Placeholders: %crate%
+    title: "<red>Crate Preview</red> <dark_gray>:</dark_gray> <reset>%crate%</reset>"
+
   preview-buttons:
     menu-button:
-      item: 'COMPASS'
-      name: '<gray><bold>»»</bold></gray> <red><bold>Menu</bold></red> <gray><bold>««</bold></gray>'
+      item: "COMPASS"
+      name: "<gray><bold>»»</bold></gray> <red><bold>Menu</bold></red> <gray><bold>««</bold></gray>"
       lore:
-        - '<gray>Return to the crate browser.</gray>'
+        - "<gray>Return to the crate browser.</gray>"
     next-button:
-      item: 'FEATHER'
-      name: '<orange><bold>Next »</bold></orange>'
+      item: "FEATHER"
+      name: "<orange><bold>Next »</bold></orange>"
       lore:
-        - '<gray><bold>Page:</bold></gray> <blue>%page%</blue>'
+        - "<gray><bold>Page:</bold></gray> <blue>%page%</blue>"
     back-button:
-      item: 'FEATHER'
-      name: '<orange><bold>« Back</bold></orange>'
+      item: "FEATHER"
+      name: "<orange><bold>« Back</bold></orange>"
       lore:
-        - '<gray><bold>Page:</bold></gray> <blue>%page%</blue>'
+        - "<gray><bold>Page:</bold></gray> <blue>%page%</blue>"

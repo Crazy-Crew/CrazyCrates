@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api.utilities.handlers.objects.crates;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.FileManager;
+import com.badbones69.crazycrates.api.utilities.LoggerUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.Tier;
@@ -10,7 +11,6 @@ import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.api.managers.CrateManager;
 import com.badbones69.crazycrates.common.configuration.files.Config;
 import com.badbones69.crazycrates.common.configuration.objects.CrateHologram;
-import com.badbones69.crazycrates.api.utilities.logger.CrazyLogger;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -48,7 +48,7 @@ public class Crate {
     private final FileManager fileManager;
     private final Methods methods;
 
-    private final CrazyLogger crazyLogger;
+    private final LoggerUtils loggerUtils;
 
     /**
      * @param name The name of the crate.
@@ -58,7 +58,7 @@ public class Crate {
      * @param file The crate file.
      */
     public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers,
-                 CrateHologram hologram, Methods methods, FileManager fileManager, CrazyLogger crazyLogger) {
+                 CrateHologram hologram, Methods methods, FileManager fileManager, LoggerUtils loggerUtils) {
         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
         this.key = itemBuilder.setCrateName(name).build();
         this.adminKey = itemBuilder
@@ -93,7 +93,7 @@ public class Crate {
         this.methods = methods;
         this.fileManager = fileManager;
 
-        this.crazyLogger = crazyLogger;
+        this.loggerUtils = loggerUtils;
 
         //this.previewListener = previewListener;
     }
@@ -173,7 +173,7 @@ public class Crate {
             return prizes.get(new Random().nextInt(prizes.size()));
         } catch (IllegalArgumentException e) {
             if (Config.TOGGLE_VERBOSE) {
-                crazyLogger.debug("<red>Failed to find prize from the</red> <gold>" + name + "</gold> <red>crate for player</red> <gold>" + player.getName() + ".</gold>");
+                loggerUtils.debug("<red>Failed to find prize from the</red> <gold>" + name + "</gold> <red>crate for player</red> <gold>" + player.getName() + ".</gold>");
 
                 e.printStackTrace();
             }

@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api.managers;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.utilities.LoggerUtils;
 import com.badbones69.crazycrates.common.enums.crates.KeyType;
 import com.badbones69.crazycrates.common.enums.particles.QuadCrateParticles;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
@@ -11,7 +12,6 @@ import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import com.badbones69.crazycrates.api.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
-import com.badbones69.crazycrates.api.utilities.logger.CrazyLogger;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -80,7 +80,7 @@ public class QuadCrateManager {
     private final StructureHandler handler;
 
     private final ScheduleUtils scheduleUtils;
-    private final CrazyLogger crazyLogger;
+    private final LoggerUtils loggerUtils;
     private final CrazyManager crazyManager;
     private final Methods methods;
     private final ChestStateHandler chestStateHandler;
@@ -88,7 +88,7 @@ public class QuadCrateManager {
     private final CrateTaskHandler crateTaskHandler;
 
     public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler,
-                            ScheduleUtils scheduleUtils, CrazyLogger crazyLogger, CrazyManager crazyManager, Methods methods, ChestStateHandler chestStateHandler, CrateTaskHandler crateTaskHandler) {
+                            ScheduleUtils scheduleUtils, LoggerUtils loggerUtils, CrazyManager crazyManager, Methods methods, ChestStateHandler chestStateHandler, CrateTaskHandler crateTaskHandler) {
         this.instance = this;
         this.player = player;
         this.crate = crate;
@@ -105,7 +105,7 @@ public class QuadCrateManager {
         this.particleColor = getColors().get(new Random().nextInt(getColors().size()));
 
         this.scheduleUtils = scheduleUtils;
-        this.crazyLogger = crazyLogger;
+        this.loggerUtils = loggerUtils;
         this.crazyManager = crazyManager;
         this.methods = methods;
         this.chestStateHandler = chestStateHandler;
@@ -140,7 +140,7 @@ public class QuadCrateManager {
             structureLocations = handler.getNearbyBlocks(spawnLocation.clone());
         } catch (Exception e) {
             if (Config.TOGGLE_VERBOSE) {
-                crazyLogger.debug(e.getMessage());
+                loggerUtils.debug(e.getMessage());
                 e.printStackTrace();
             }
         }

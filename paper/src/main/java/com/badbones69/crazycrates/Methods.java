@@ -1,10 +1,9 @@
 package com.badbones69.crazycrates;
 
+import com.badbones69.crazycrates.api.utilities.LoggerUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.ItemBuilder;
 import com.badbones69.crazycrates.common.configuration.files.Config;
-import com.badbones69.crazycrates.api.utilities.logger.CrazyLogger;
-import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -31,7 +30,7 @@ public class Methods {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    @Inject private CrazyLogger crazyLogger;
+    @Inject private LoggerUtils loggerUtils;
 
     private final Random random = new Random();
 
@@ -159,9 +158,9 @@ public class Methods {
         //player.sendMessage(getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));
 
         if (Config.TOGGLE_VERBOSE) {
-            crazyLogger.debug("<red>An error has occurred while trying to take a physical key from a player.</red>");
-            crazyLogger.debug("<gold>Player:</gold> <red>" + player.getName() + "</red>");
-            crazyLogger.debug("<gold>Gold:</gold> <red>" + crate.getName() + "</red>");
+            loggerUtils.debug("<red>An error has occurred while trying to take a physical key from a player.</red>");
+            loggerUtils.debug("<gold>Player:</gold> <red>" + player.getName() + "</red>");
+            loggerUtils.debug("<gold>Gold:</gold> <red>" + crate.getName() + "</red>");
         }
 
         if (e != null) e.printStackTrace();

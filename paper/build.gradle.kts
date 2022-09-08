@@ -1,8 +1,6 @@
 plugins {
     id("crazycrates-base")
 
-    id("io.papermc.paperweight.userdev") version "1.3.8"
-
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
@@ -25,11 +23,6 @@ repositories {
 
 dependencies {
     implementation(project(":common"))
-
-    // Paper API
-    paperDevBundle("1.19.2-R0.1-SNAPSHOT") {
-        exclude(group = "com.google.code.gson", module = "gson")
-    }
 
     compileOnly(libs.paper) {
         exclude(group = "com.google.code.gson", module = "gson")
@@ -65,21 +58,21 @@ dependencies {
 }
 
 tasks {
-
-    reobfJar {
-        outputJar.set(rootProject.layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}-PAPER.jar"))
-    }
-
-    assemble {
-        dependsOn(reobfJar)
-    }
-
     shadowJar {
+        archiveFileName.set("${rootProject.name}-${rootProject.version}-PAPER.jar")
+
         listOf(
             "org.bstats",
             "com.badbones69.crazycrates.common"
         ).forEach {
             relocate(it, "${rootProject.group}.plugin.lib.$it")
+        }
+
+        doLast {
+            copy {
+                from("build/libs/${rootProject.name}-${rootProject.version}-PAPER.jar")
+                into(rootProject.layout.buildDirectory.dir("libs"))
+            }
         }
     }
 

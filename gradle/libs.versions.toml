@@ -16,7 +16,9 @@ decent-holograms = "2.7.2"
 # Placeholders
 placeholder-api = "2.11.2"
 
+# Misc Libraries
 vault-api = "1.7"
+adventure-api = "4.11.0"
 
 # Triumph Team
 gui = "3.1.2"
@@ -24,6 +26,11 @@ gui = "3.1.2"
 # Common Versions
 guice = "5.1.0"
 gson = "2.9.1"
+
+apache = "3.12.0"
+
+# Simple YAML
+yaml = "1.8.1"
 
 [libraries]
 
@@ -47,6 +54,8 @@ nbt-api = { module = "de.tr7zw:nbt-data-api", version.ref = "nbt-api" }
 
 # Misc Libraries
 vault-api = { module = "com.github.MilkBowl:VaultAPI", version.ref = "vault-api" }
+adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventure-api" }
+adventure-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure-api" }
 
 # Triumph Team
 triumph-gui-bukkit = { module = "dev.triumphteam:triumph-gui", version.ref = "gui" }
@@ -54,3 +63,8 @@ triumph-gui-bukkit = { module = "dev.triumphteam:triumph-gui", version.ref = "gu
 # Common Libraries
 google-guice = { module = "com.google.inject:guice", version.ref = "guice" }
 google-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+
+apache-commons = { module = "org.apache.commons:commons-lang3", version.ref = "apache" }
+
+# Simple YAML
+simple-yaml = { module = "me.carleslc.Simple-YAML:Simple-Yaml", version.ref = "yaml" }

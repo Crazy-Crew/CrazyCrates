@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.modules;
 
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.modules.configuration.files.PaperCrateConfig;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
 import com.google.inject.AbstractModule;
@@ -15,8 +16,11 @@ public class ModuleManager extends AbstractModule {
     // Crate Tasks
     private final CrateTaskHandler crateTaskHandler = new CrateTaskHandler();
 
+    // File Managers
+    private final PaperCrateConfig paperCrateConfig = new PaperCrateConfig();
+
     // Dependencies
-    private final PlaceholderAPISupport placeholderAPISupport = new PlaceholderAPISupport();
+    //private final PlaceholderAPISupport placeholderAPISupport = new PlaceholderAPISupport();
 
     public ModuleManager(CrazyManager crazyManager) {
         this.crazyManager = crazyManager;
@@ -34,7 +38,10 @@ public class ModuleManager extends AbstractModule {
         // Crate Tasks
         bind(CrateTaskHandler.class).toInstance(crateTaskHandler);
 
+        // File Managers
+        bind(PaperCrateConfig.class).toInstance(paperCrateConfig);
+
         // Dependencies
-        bind(PlaceholderAPISupport.class).toInstance(placeholderAPISupport);
+        //bind(PlaceholderAPISupport.class).toInstance(placeholderAPISupport);
     }
 }

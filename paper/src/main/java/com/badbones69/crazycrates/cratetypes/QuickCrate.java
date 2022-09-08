@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.cratetypes;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.utilities.LoggerUtils;
 import com.badbones69.crazycrates.common.enums.crates.KeyType;
 import com.badbones69.crazycrates.api.events.player.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
@@ -12,7 +13,6 @@ import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import com.badbones69.crazycrates.api.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
-import com.badbones69.crazycrates.api.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -39,7 +39,7 @@ public class QuickCrate implements Listener {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     @Inject private CrazyManager crazyManager;
-    @Inject private CrazyLogger crazyLogger;
+    @Inject private LoggerUtils loggerUtils;
 
     // Utilities
     @Inject private Methods methods;
@@ -108,8 +108,8 @@ public class QuickCrate implements Listener {
                 reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
             } catch (IllegalArgumentException e) {
                 if (Config.TOGGLE_VERBOSE) {
-                    crazyLogger.debug("<red>A prize could not be given due to an invalid display item for this prize.</red>");
-                    crazyLogger.debug("<red>Crate:</red> <gold>" + prize.getCrate() + "</gold><red> Prize:</red> <gold>" + prize.getName() + ".</gold>");
+                    loggerUtils.debug("<red>A prize could not be given due to an invalid display item for this prize.</red>");
+                    loggerUtils.debug("<red>Crate:</red> <gold>" + prize.getCrate() + "</gold><red> Prize:</red> <gold>" + prize.getName() + ".</gold>");
 
                     e.printStackTrace();
                 }

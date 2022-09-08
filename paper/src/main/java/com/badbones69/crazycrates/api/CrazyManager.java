@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
+import com.badbones69.crazycrates.api.utilities.LoggerUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.Tier;
@@ -13,12 +14,12 @@ import com.badbones69.crazycrates.common.configuration.objects.CrateHologram;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.common.configuration.files.Config;
 import com.badbones69.crazycrates.common.schematics.CrateSchematic;
+import com.badbones69.crazycrates.common.utilities.logger.CrazyLogger;
 import com.badbones69.crazycrates.support.holograms.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.HolographicSupport;
-import com.badbones69.crazycrates.support.libs.PluginSupport;
+import com.badbones69.crazycrates.support.PluginSupport;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.CrateLocation;
-import com.badbones69.crazycrates.api.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -42,7 +43,7 @@ public class CrazyManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    @Inject private CrazyLogger crazyLogger;
+    @Inject private LoggerUtils loggerUtils;
 
     @Inject private FileManager fileManager;
 
@@ -98,7 +99,7 @@ public class CrazyManager {
         // Removes all holograms so that they can be replaced.
         if (hologramController != null) hologramController.removeAllHolograms();
 
-        if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>Loading all crate information...</red>");
+        if (Config.TOGGLE_VERBOSE) loggerUtils.debug("<red>Loading all crate information...</red>");
 
         for (String crateName : fileManager.getAllCratesNames()) {
             try {
@@ -118,7 +119,7 @@ public class CrazyManager {
                 if (crateType == CrateType.COSMIC && tiers.isEmpty()) {
                     brokecrates.add(crateName);
 
-                    if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>No tiers were found for this cosmic crate</red> <gold>" + crateName + ".yml</gold> <red>file.</red>");
+                    if (Config.TOGGLE_VERBOSE) loggerUtils.debug("<red>No tiers were found for this cosmic crate</red> <gold>" + crateName + ".yml</gold> <red>file.</red>");
 
                     continue;
                 }
@@ -173,21 +174,21 @@ public class CrazyManager {
                 }
 
                 CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"));
-                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, holo, methods, fileManager, crazyLogger));
+                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, holo, methods, fileManager, loggerUtils));
             } catch (Exception e) {
                 brokecrates.add(crateName);
 
-                if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>There was an error while loading the</red> <gold>" + crateName + ".yml</gold> <red>file.</red>");
+                if (Config.TOGGLE_VERBOSE) loggerUtils.debug("<red>There was an error while loading the</red> <gold>" + crateName + ".yml</gold> <red>file.</red>");
 
                 e.printStackTrace();
             }
         }
 
-        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null, methods, fileManager, crazyLogger));
+        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null, methods, fileManager, loggerUtils));
 
         if (Config.TOGGLE_VERBOSE) {
-            crazyLogger.debug("<red>All crate information has been loaded.</red>");
-            crazyLogger.debug("<red>Loading all the physical crate locations.</red>");
+            loggerUtils.debug("<red>All crate information has been loaded.</red>");
+            loggerUtils.debug("<red>Loading all the physical crate locations.</red>");
         }
 
         int loadedAmount = 0;
@@ -226,17 +227,17 @@ public class CrazyManager {
         // Checking if all physical locations loaded
         if (loadedAmount > 0 || brokeAmount > 0) {
             if (brokeAmount <= 0) {
-                if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>All physical crate locations have been loaded.</red>");
+                if (Config.TOGGLE_VERBOSE) loggerUtils.debug("<red>All physical crate locations have been loaded.</red>");
             } else {
                 if (Config.TOGGLE_VERBOSE) {
-                    crazyLogger.debug("<red>Loaded</red> <gold>" + loadedAmount + "</gold> <red>physical crate locations.</red>");
-                    crazyLogger.debug("<red>Failed to load</red> <gold>" + brokeAmount + "</gold> <red>physical crate locations.</red>");
+                    loggerUtils.debug("<red>Loaded</red> <gold>" + loadedAmount + "</gold> <red>physical crate locations.</red>");
+                    loggerUtils.debug("<red>Failed to load</red> <gold>" + brokeAmount + "</gold> <red>physical crate locations.</red>");
                 }
             }
         }
 
         // Loading schematic files
-        if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>Searching for schematics to load.</red>");
+        if (Config.TOGGLE_VERBOSE) loggerUtils.debug("<red>Searching for schematics to load.</red>");
 
         String[] schems = new File(plugin.getDataFolder() + "/schematics/").list();
 
@@ -244,11 +245,11 @@ public class CrazyManager {
             if (schematicName.endsWith(".nbt")) {
                 crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(plugin.getDataFolder() + "/schematics/" + schematicName)));
 
-                if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<gold>" + schematicName + "</gold> <red>was successfully found and loaded.</red>");
+                if (Config.TOGGLE_VERBOSE) loggerUtils.debug("<gold>" + schematicName + "</gold> <red>was successfully found and loaded.</red>");
             }
         }
 
-        if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>All schematics were found and loaded.</red>");
+        if (Config.TOGGLE_VERBOSE) loggerUtils.debug("<red>All schematics were found and loaded.</red>");
 
         //previewListener.loadButtons();
     }
@@ -651,8 +652,8 @@ public class CrazyManager {
                                 commandBuilder.append("1 ");
 
                                 if (Config.TOGGLE_VERBOSE) {
-                                    crazyLogger.debug("<red>The prize</red> <gold>" + prize.getName() + "</gold> <red>in the</red> <gold>" + prize.getCrate() + "</gold> <red>crate has caused an error when trying to run a command.</red>");
-                                    crazyLogger.debug("<red>Command:</red> <gold>" + cmd + "</gold>");
+                                    loggerUtils.debug("<red>The prize</red> <gold>" + prize.getName() + "</gold> <red>in the</red> <gold>" + prize.getCrate() + "</gold> <red>crate has caused an error when trying to run a command.</red>");
+                                    loggerUtils.debug("<red>Command:</red> <gold>" + cmd + "</gold>");
                                 }
                             }
                         } else {
@@ -676,7 +677,7 @@ public class CrazyManager {
                 //.replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
             }
         } else {
-            if (Config.TOGGLE_VERBOSE) crazyLogger.debug("<red>No prize was found when giving</red> <gold>" + player.getName() + "</gold> <red>a prize.</red>");
+            if (Config.TOGGLE_VERBOSE) loggerUtils.debug("<red>No prize was found when giving</red> <gold>" + player.getName() + "</gold> <red>a prize.</red>");
         }
     }
     

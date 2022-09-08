@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.cratetypes;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.utilities.LoggerUtils;
 import com.badbones69.crazycrates.common.enums.crates.KeyType;
 import com.badbones69.crazycrates.api.events.player.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.player.PlayerReceiveKeyEvent;
@@ -12,7 +13,6 @@ import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.Tier;
 import com.badbones69.crazycrates.api.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
-import com.badbones69.crazycrates.api.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -25,7 +25,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -41,7 +40,7 @@ public class CosmicCrate implements Listener {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     @Inject private CrazyManager crazyManager;
-    @Inject private CrazyLogger crazyLogger;
+    @Inject private LoggerUtils loggerUtils;
 
     // Utilities
     @Inject private Methods methods;
@@ -237,7 +236,7 @@ public class CosmicCrate implements Listener {
                                     // TODO() - Configurable error message.
                                     // player.sendMessage(methods.getPrefix("&cAn issue has occurred and so a key refund was given."));
 
-                                    crazyLogger.debug("<red>Issue occurred when</red> <gold>" + player.getName() + "</gold> <red>was using </red><gold>" + crate.getName() + "</gold> <red>crate and were issued a key refund.</red>");
+                                    loggerUtils.debug("<red>Issue occurred when</red> <gold>" + player.getName() + "</gold> <red>was using </red><gold>" + crate.getName() + "</gold> <red>crate and were issued a key refund.</red>");
                                     error.printStackTrace();
 
                                     return;
@@ -246,7 +245,7 @@ public class CosmicCrate implements Listener {
                                 // TODO() - Debug this.
                                 if (count.incrementAndGet() == 40) {
 
-                                    crazyLogger.debug("<red>Count:</red> <gold>" + count.get() + ".</gold>");
+                                    loggerUtils.debug("<red>Count:</red> <gold>" + count.get() + ".</gold>");
 
                                     crateTaskHandler.endCrate(player);
 

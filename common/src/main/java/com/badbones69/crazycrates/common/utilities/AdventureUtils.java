@@ -1,38 +1,34 @@
-package com.badbones69.crazycrates.api.utilities;
+package com.badbones69.crazycrates.common.utilities;
 
-import com.google.inject.Singleton;
-import io.papermc.paper.console.HexFormattingConverter;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.bukkit.command.ConsoleCommandSender;
 import static com.badbones69.crazycrates.common.configuration.files.Locale.PREFIX_COMMAND;
 import static com.badbones69.crazycrates.common.configuration.files.Locale.PREFIX_LOGGER;
 
-@Singleton
 public class AdventureUtils {
 
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
 
-    public void send(Audience recipient, String msg, TagResolver.Single... placeholders) {
-        send(recipient, true, msg, placeholders);
+    public void send(boolean consoleSender, Audience recipient, String msg, TagResolver.Single... placeholders) {
+        send(consoleSender, recipient, true, msg, placeholders);
     }
 
-    public void send(Audience recipient, boolean prefix, String msg, TagResolver.Single... placeholders) {
+    public void send(boolean consoleSender, Audience recipient, boolean prefix, String msg, TagResolver.Single... placeholders) {
         if (msg == null) return;
 
         for (String part : msg.split("\n")) {
-            send(recipient, prefix, parse(part, placeholders));
+            send(consoleSender, recipient, prefix, parse(part, placeholders));
         }
     }
 
-    public void send(Audience recipient, Component component) {
-        send(recipient, true, component);
+    public void send(boolean consoleSender, Audience recipient, Component component) {
+        send(consoleSender, recipient, true, component);
     }
 
-    public void send(Audience recipient, boolean prefix, Component component) {
-        if (recipient instanceof ConsoleCommandSender) {
+    public void send(boolean consoleSender, Audience recipient, boolean prefix, Component component) {
+        if (consoleSender) {
             recipient.sendMessage(prefix ? parse(PREFIX_LOGGER).append(component) : component);
         } else {
             recipient.sendMessage(prefix ? parse(PREFIX_COMMAND).append(component) : component);
@@ -43,10 +39,8 @@ public class AdventureUtils {
         return miniMessage.deserialize(msg, placeholders);
     }
 
-    public String parseMessage(String message) {
-        Component component = miniMessage.deserialize(message);
-
-        return HexFormattingConverter.SERIALIZER.serialize(component);
+    public Component parseMessage(String message) {
+        return miniMessage.deserialize(message);
     }
 
     public MiniMessage getMiniMessage() {

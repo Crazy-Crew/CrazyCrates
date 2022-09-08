@@ -2,16 +2,15 @@ package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
+import com.badbones69.crazycrates.api.utilities.LoggerUtils;
 import com.badbones69.crazycrates.cratetypes.*;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.modules.ModuleManager;
-import com.badbones69.crazycrates.support.libs.PluginSupport;
-import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
+import com.badbones69.crazycrates.modules.configuration.files.PaperCrateConfig;
 import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
-import com.badbones69.crazycrates.api.utilities.logger.CrazyLogger;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
@@ -34,11 +33,13 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public final Path LOCALE_DIRECTORY = getDataFolder().toPath().resolve("locale");
     public final Path PLUGIN_DIRECTORY = getDataFolder().toPath();
 
-    @Inject private CrazyLogger crazyLogger;
+    @Inject private LoggerUtils loggerUtils;
 
     @Inject private CrazyManager crazyManager;
 
     @Inject private FileManager fileManager;
+
+    @Inject private PaperCrateConfig paperCrateConfig;
 
     @Override
     public void onEnable() {
@@ -52,6 +53,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             injector.injectMembers(this);
 
             if (!getDataFolder().exists()) getDataFolder().mkdirs();
+
+            paperCrateConfig.setup();
 
             //data.load();
             
@@ -141,7 +144,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         injector = null;
     }
 
-    @Inject private PlaceholderAPISupport placeholderAPISupport;
+    //@Inject private PlaceholderAPISupport placeholderAPISupport;
 
     @Inject private BrokeLocationsListener brokeLocationsListener;
     @Inject private CrateControlListener crateControlListener;
@@ -169,7 +172,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         pluginManager.registerEvents(wheelCrate, this);
         pluginManager.registerEvents(wonderCrate, this);
 
-        if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) placeholderAPISupport.register();
+        //if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) placeholderAPISupport.register();
     }
 
     public static CrazyCrates getPlugin() {

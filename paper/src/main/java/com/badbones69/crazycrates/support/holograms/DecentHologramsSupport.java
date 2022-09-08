@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.support.holograms;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import com.badbones69.crazycrates.common.configuration.objects.CrateHologram;
-import com.badbones69.crazycrates.api.utilities.AdventureUtils;
+import com.badbones69.crazycrates.common.utilities.AdventureUtils;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import eu.decentsoftware.holograms.api.DHAPI;
@@ -26,7 +26,7 @@ public class DecentHologramsSupport implements HologramController {
 
         double height = crateHologram.getHeight();
         Hologram hologram = DHAPI.createHologram(ThreadLocalRandom.current().nextInt() + "", block.getLocation().add(.5, height, .5));
-        crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, adventureUtils.parseMessage(line)));
+        crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, String.valueOf(adventureUtils.parseMessage(line))));
 
         holograms.put(block, hologram);
     }

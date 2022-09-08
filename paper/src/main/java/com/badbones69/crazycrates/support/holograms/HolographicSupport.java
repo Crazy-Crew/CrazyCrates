@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import com.badbones69.crazycrates.common.configuration.objects.CrateHologram;
-import com.badbones69.crazycrates.api.utilities.AdventureUtils;
+import com.badbones69.crazycrates.common.utilities.AdventureUtils;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.google.inject.Inject;
@@ -29,7 +29,7 @@ public class HolographicSupport implements HologramController {
         double height = crateHologram.getHeight();
         Hologram hologram = HologramsAPI.createHologram(plugin, block.getLocation().add(.5, height, .5));
 
-        crateHologram.getMessages().forEach(line -> hologram.appendTextLine(adventureUtils.parseMessage(line)));
+        crateHologram.getMessages().forEach(line -> hologram.appendTextLine(String.valueOf(adventureUtils.parseMessage(line))));
 
         holograms.put(block, hologram);
     }
