@@ -40,6 +40,7 @@ public class CrateTaskHandler {
 
     /**
      * Checks to see if the player has a crate task going on.
+     * @param player - The player opening the crate.
      *
      * @return True if they do have a task and false if not.
      */
@@ -49,6 +50,7 @@ public class CrateTaskHandler {
 
     /**
      * Remove a task from the list of current tasks.
+     * @param player - The player opening the crate.
      */
     public void removeTask(Player player) {
         if (hasCrateTask(player)) getTasks().get(player.getUniqueId()).getCurrentTask().cancel();
@@ -63,14 +65,27 @@ public class CrateTaskHandler {
         if (!currentTasks.isEmpty()) currentTasks.clear();
     }
 
+    /**
+     * Get the list of current tasks
+     */
     public HashMap<UUID, CrateTask> getTasks() {
         return currentTasks;
     }
 
+    /**
+     * End the task for a player if they have one.
+     * @param player - The player opening the crate.
+     */
     public void endCrate(Player player) {
         if (hasCrateTask(player)) removeTask(player);
     }
 
+    /**
+     * End the crate and give the prize to the player.
+     * @param player - The player opening the crate.
+     * @param crate - The crate they are using.
+     * @param inventory - The inventory that is open.
+     */
     public void endCrate(Player player, Crate crate, Inventory inventory) {
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 

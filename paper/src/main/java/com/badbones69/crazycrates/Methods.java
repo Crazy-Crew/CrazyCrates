@@ -168,6 +168,9 @@ public class Methods {
 
     /**
      * @author ElectronicBoy
+     *
+     * @param inventory - The inventory of the player.
+     * @param items - The items in the inventory of the player to check.
      */
     public HashMap<Integer, ItemStack> removeItemAnySlot(Inventory inventory, ItemStack... items) {
         Validate.notNull(items, "Items cannot be null");
