@@ -33,9 +33,6 @@ repositories {
     // PAPI API
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 
-    // MVDW API
-    maven("https://repo.mvdw-software.com/content/groups/public/")
-
     // NBT API
     maven("https://repo.codemc.org/repository/maven-public/")
 
@@ -67,16 +64,10 @@ dependencies {
 
     compileOnly("com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9")
 
-    compileOnly("be.maximvdw:MVdWPlaceholderAPI:3.1.1-SNAPSHOT") {
-        exclude(group = "org.spigotmc", module = "spigot")
-        exclude(group = "org.bukkit", module = "bukkit")
-        exclude(group = "be.maximvdw", module = "MVdWUpdater")
-    }
-
-    compileOnly("com.github.decentsoftware-eu:decentholograms:2.5.2")
+    compileOnly("com.github.decentsoftware-eu:decentholograms:2.7.2")
     compileOnly("com.github.LoneDev6:API-ItemsAdder:3.2.3c")
 
-    compileOnly("io.papermc.paper:paper-api:1.19.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT")
 
     compileOnly("me.clip:placeholderapi:2.11.2") {
         exclude(group = "org.spigotmc", module = "spigot")
