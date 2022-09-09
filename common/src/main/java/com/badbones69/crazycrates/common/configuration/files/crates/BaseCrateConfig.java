@@ -1,10 +1,10 @@
-package com.badbones69.crazycrates.common.configuration.files;
+package com.badbones69.crazycrates.common.configuration.files.crates;
 
 import com.badbones69.crazycrates.common.configuration.AbstractConfig;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CrateConfig extends AbstractConfig {
+public class BaseCrateConfig extends AbstractConfig {
 
     @Key("crate.type")
     @Comment("""
@@ -34,75 +34,71 @@ public class CrateConfig extends AbstractConfig {
     @Comment("The starting keys for when a player first joins.")
     public static Integer CRATE_STARTING_KEYS = 0;
 
-    @Key("crate.in-menu")
-    @Comment("""
-            If the crate should show up in /crates menu
-            """)
-    public static Boolean CRATE_IN_MENU = true;
+    @Key("crate.options.menu-settings.enabled")
+    @Comment("If the crate should show up in /crates menu")
+    public static Boolean CRATE_MENU_ENABLED = true;
 
-    @Key("crate.slot")
+    @Key("crate.options.menu-settings.slot")
     @Comment("The slot of the item in the menu.")
-    public static Integer CRATE_ITEM_SLOT = 21;
+    public static Integer CRATE_MENU_SLOT = 21;
 
-    @Key("crate.opening-broadcast")
+    @Key("crate.options.menu-settings.material")
+    @Comment("The material of the crate in the menu.")
+    public static String CRATE_MENU_MATERIAL = "CHEST";
+
+    @Key("crate.options.broadcast-settings.enabled")
     @Comment("If a message should be sent when a crate is open.")
     public static Boolean CRATE_OPENING_BROADCAST = true;
 
-    @Key("crate.broadcast-message")
+    @Key("crate.options.broadcast-settings.message")
     @Comment("""
             The message sent when opening the crate.
             Available Placeholders: %player%, %crate%
             """)
-    public static String CRATE_BROADCAST_MESSAGE = "<orange><bold>^player%</bold></orange> <gray>is opening a</gray> <reset>%crate%</reset>";
-
-    @Key("crate.item")
-    @Comment("The material of the crate in the menu.")
-    public static String CRATE_ITEM = "CHEST";
-
-    @Key("crate.glowing")
-    @Comment("If the item in the main menu is glowing or not.")
-    public static Boolean CRATE_GLOWING = false;
+    public static String CRATE_BROADCAST_MESSAGE = "<orange><bold>%player%</bold></orange> <gray>is opening a</gray> <reset>%crate%</reset>";
 
     /**
      * Crate Preview Settings.
      */
-    @Key("crate.preview.toggle")
+    @Key("crate.options.preview-settings.glowing")
+    @Comment("If the item in the main menu is glowing or not.")
+    public static Boolean CRATE_PREVIEW_GLOWING = true;
+
+    @Key("crate.options.preview-settings.enabled")
     @Comment("Turn the preview for this Crate on & off.")
     public static Boolean CRATE_PREVIEW_TOGGLE = true;
 
-    @Key("crate.preview.size")
-    @Comment("""
-            How large should the crate preview be?
-            """)
-    public static Integer CRATE_PREVIEW_SIZE = 6;
-
-    @Key("crate.preview-name")
+    @Key("crate.options.preview-settings.name")
     @Comment("The name of the Preview Crate when right clicking a crate.")
     public static String CRATE_PREVIEW_NAME = "<green>Example Crate Preview</green>";
 
-    @Key("crate.preview.border.toggle")
+    @Key("crate.options.preview-settings.size")
+    @Comment("How large should the crate preview be?")
+    public static Integer CRATE_PREVIEW_SIZE = 6;
+
+    @Key("crate.options.preview-settings.border.enabled")
     @Comment("If the glass border should be enabled or not.")
     public static Boolean CRATE_PREVIEW_BORDER_TOGGLE = true;
 
-    @Key("crate.preview.border.item")
-    @Comment("The item that will show in the border. GRAY_STAINED_GLASS_PANE is default.")
+    @Key("crate.options.preview-settings.border.material")
+    @Comment("The item that will show if the border is enabled.")
     public static String CRATE_PREVIEW_BORDER_ITEM = "GRAY_STAINED_GLASS_PANE";
 
     /**
      * Physical Key Settings.
      */
-    @Key("crate.physical-key.name")
+    @Key("crate.options.key-settings.name")
     @Comment("The name of the Crate Key!")
     public static String CRATE_PHYSICAL_KEY_NAME = "<gray>Example Crate Key</gray>";
 
-    @Key("crate.physical-key.lore")
+    @Key("crate.options.key-settings.lore")
     @Comment("The lore of the Crate Key!")
     public static List<String> CRATE_PHYSICAL_KEY_LORE = new ArrayList<>() {{
         add("<gray>A strange mystical key</gray>");
         add("<gray>which opens a strange crate</gray>");
     }};
 
-    @Key("crate.physical-key.item")
+    @Key("crate.options.key-settings.material")
     @Comment("""
             The item that represents your Crate Key!
             
@@ -111,24 +107,25 @@ public class CrateConfig extends AbstractConfig {
             """)
     public static String CRATE_PHYSICAL_KEY_ITEM = "TRIPWIRE_HOOK";
 
-    @Key("crate.physical-key.glowing")
+    @Key("crate.options.key-settings.glowing")
     @Comment("If the key is glowing or not.")
     public static Boolean CRATE_PHYSICAL_KEY_ITEM_GLOWING = true;
 
     /**
      * Hologram Settings
      */
-    @Key("crate.hologram.toggle")
+    @Key("crate.options.hologram-settings.enabled")
     @Comment("Whether holograms should be enabled for the crate.")
     public static Boolean CRATE_HOLOGRAM_TOGGLE = true;
 
-    @Key("crate.hologram.height")
+    @Key("crate.options.hologram-settings.height")
     @Comment("The height of the hologram above your crate.")
     public static Double CRATE_HOLOGRAM_HEIGHT = 1.5;
 
-    @Key("crate.hologram.message")
+    @Key("crate.options.hologram-settings.lore")
     @Comment("The entire message in your hologram.")
     public static List<String> CRATE_HOLOGRAM_LORE = new ArrayList<>() {{
        add("<orange>An example hologram</orange>");
+       add("<red>Line 2</red>");
     }};
 }

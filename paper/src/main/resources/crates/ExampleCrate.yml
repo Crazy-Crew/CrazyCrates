@@ -1,0 +1,78 @@
+crate:
+  # Available Crate Types | CSGO
+  #
+  # Make sure to check our wiki!
+  # https://github.com/Crazy-Crew/CrazyCrates/wiki
+  type: CSGO
+  # Name of the Crate if enabled in /crates.
+  name: "<green>Example Crate</green>"
+  # The lore of the Crate in /crates
+  # Available Placeholders: %key%
+  lore:
+    - "<gray>This crate contains strange objects.</gray>"
+    - "<gray>You have <orange>%keys% keys</orange> <gray>to open this crate with.</gray>"
+    - "<gray>(</gray><yellow>!</yellow><gray>)</gray> <yellow>Right click to view rewards</yellow>"
+  options:
+    # The starting keys for when a player first joins.
+    starting-keys: 1
+
+    # All settings relating to the menu.
+    menu-settings:
+      # If the crate should show up in /crates menu
+      enabled: true
+      # The slot of the item in the menu.
+      slot: 21
+      # The material of the crate in the menu.
+      material: "CHEST"
+
+    # All settings related to the broadcast.
+    broadcast-settings:
+      # If a message should be sent when a crate is open.
+      enabled: true
+      # The message sent when opening the crate.
+      # Available Placeholders: %player%, %crate%
+      message: "<orange><bold>%player%</bold></orange> <gray>is opening a</gray> <reset>%crate%</reset>"
+
+    # All settings related to the crate preview.
+    preview-settings:
+      # Turn the preview for this Crate on & off.
+      enabled: true
+      # The name of the Preview Crate when right-clicking a crate.
+      name: "<green>Example Crate Preview</green>"
+      # How large should the crate preview be?
+      size: 6
+      # All settings related to the crate preview.
+      border:
+        # If the glass border should be enabled or not.
+        enabled: true
+        # The material that will show if the border is enabled.
+        material: "GRAY_STAINED_GLASS_PANE"
+      # If the item in the main menu is glowing or not.
+      glowing: true
+
+    # All settings related to keys.
+    key-settings:
+      # The name of the Crate Key!
+      name: "<gray>Example Crate Key</gray>"
+      # The lore of the Crate Key!
+      lore:
+        - "<gray>A strange mystical key</gray>"
+        - "<gray>which opens a strange crate</gray>"
+      # The item that represents your Crate Key!
+      #
+      # and yes for the 100th time, We support Custom Model Data
+      # TRIPWIRE_HOOK#1 is an example of how to do it.
+      material: "TRIPWIRE_HOOK"
+      # If the key is glowing or not.
+      glowing: true
+
+    # All settings related to holograms.
+    hologram-settings:
+      # Whether holograms should be enabled for the crate.
+      enabled: true
+      # The height of the hologram above your crate.
+      height: 1.5
+      # The entire message in your hologram.
+      lore:
+        - "<orange>An example hologram</orange>"
+        - "<red>Line 2</red>"
