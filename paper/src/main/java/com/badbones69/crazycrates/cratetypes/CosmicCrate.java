@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.cratetypes;
 
+/*
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
@@ -49,6 +50,10 @@ public class CosmicCrate implements Listener {
 
     // Task Handler
     @Inject private CrateTaskHandler crateTaskHandler;
+
+    public WonderCrate(CrazyManager crazyManager, ScheduleUtils scheduleUtils, Methods methods, CrateTaskHandler crateTaskHandler) {
+
+    }
 
     private void showRewards(Player player, Crate crate) {
         Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Prizes");
@@ -346,3 +351,4 @@ public class CosmicCrate implements Listener {
         return slot < 27;
     }
 }
+ */

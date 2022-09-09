@@ -5,8 +5,6 @@ import com.badbones69.crazycrates.api.utilities.LoggerUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.CrateBrokeLocation;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.common.configuration.files.Config;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,12 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
-@Singleton
 public class BrokeLocationsListener implements Listener {
 
-    @Inject private CrazyManager crazyManager;
+    private final CrazyManager crazyManager;
 
-    @Inject private LoggerUtils loggerUtils;
+    private final LoggerUtils loggerUtils;
+
+    public BrokeLocationsListener(CrazyManager crazyManager, LoggerUtils loggerUtils) {
+        this.crazyManager = crazyManager;
+
+        this.loggerUtils = loggerUtils;
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onWorldLoad(WorldLoadEvent e) {

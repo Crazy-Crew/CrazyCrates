@@ -2,8 +2,6 @@ package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.utilities.LoggerUtils;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
@@ -12,12 +10,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@Singleton
 public class FileManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    @Inject private LoggerUtils loggerUtils;
+    private final LoggerUtils loggerUtils;
 
     private boolean isLogging = false;
 
@@ -25,7 +22,12 @@ public class FileManager {
     private final ArrayList<CustomFile> customFiles = new ArrayList<>();
     private final HashMap<String, String> jarHomeFolders = new HashMap<>();
     private final HashMap<String, String> autoGenerateFiles = new HashMap<>();
-    
+
+
+    public FileManager(LoggerUtils loggerUtils) {
+        this.loggerUtils = loggerUtils;
+    }
+
     /**
      * Sets up the plugin and loads all necessary files.
      */

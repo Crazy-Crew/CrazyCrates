@@ -5,8 +5,6 @@ import com.badbones69.crazycrates.api.utilities.CommonUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.CrateTask;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -14,14 +12,18 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.HashMap;
 import java.util.UUID;
 
-@Singleton
 public class CrateTaskHandler {
 
     private final HashMap<UUID, CrateTask> currentTasks = new HashMap<>();
 
-    @Inject private CrazyManager crazyManager;
+    private final CrazyManager crazyManager;
 
-    @Inject private CommonUtils commonUtils;
+    private final CommonUtils commonUtils;
+
+    public CrateTaskHandler(CrazyManager crazyManager, CommonUtils commonUtils) {
+        this.crazyManager = crazyManager;
+        this.commonUtils = commonUtils;
+    }
 
     /**
      * Add a crate task that is going on for a player.

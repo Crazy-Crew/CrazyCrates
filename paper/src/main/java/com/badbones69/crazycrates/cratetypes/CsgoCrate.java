@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.cratetypes;
 
+/*
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
@@ -32,6 +33,10 @@ public class CsgoCrate implements Listener {
     @Inject private ScheduleUtils scheduleUtils;
 
     @Inject private CrateTaskHandler crateTaskHandler;
+
+    public WonderCrate(CrazyManager crazyManager, ScheduleUtils scheduleUtils, Methods methods, CrateTaskHandler crateTaskHandler) {
+
+    }
 
     private void setGlass(Inventory inv) {
         HashMap<Integer, ItemStack> glass = new HashMap<>();
@@ -159,3 +164,4 @@ public class CsgoCrate implements Listener {
         }
     }
 }
+ */

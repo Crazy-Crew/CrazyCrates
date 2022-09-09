@@ -6,19 +6,21 @@ import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.events.player.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.entity.Player;
 import java.util.ArrayList;
 
-@Singleton
 public class CommonUtils {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    @Inject private CrazyManager crazyManager;
+    private final CrazyManager crazyManager;
+    private final Methods methods;
 
-    @Inject private Methods methods;
+    public CommonUtils(CrazyManager crazyManager, Methods methods) {
+        this.crazyManager = crazyManager;
+
+        this.methods = methods;
+    }
 
     public void pickPrize(Player player, Crate crate, Prize prize) {
         if (prize != null) {

@@ -7,19 +7,20 @@ import com.badbones69.crazycrates.common.configuration.objects.CrateHologram;
 import com.badbones69.crazycrates.common.utilities.AdventureUtils;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.block.Block;
 import java.util.HashMap;
 
-@Singleton
-public class HolographicSupport implements HologramController {
+public class HolographicDisplaysSupport implements HologramController {
     
     private final HashMap<Block, Hologram> holograms = new HashMap<>();
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    @Inject private AdventureUtils adventureUtils;
+    private final AdventureUtils adventureUtils;
+
+    public HolographicDisplaysSupport(AdventureUtils adventureUtils) {
+        this.adventureUtils = adventureUtils;
+    }
     
     public void createHologram(Block block, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();

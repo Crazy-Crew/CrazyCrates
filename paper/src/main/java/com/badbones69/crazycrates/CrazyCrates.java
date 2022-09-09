@@ -1,26 +1,13 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.api.utilities.LoggerUtils;
-import com.badbones69.crazycrates.listeners.server.ServerReadyEvent;
-import com.badbones69.crazycrates.modules.ModuleManager;
-import com.badbones69.crazycrates.modules.configuration.files.PaperCrateConfig;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.Singleton;
-import org.bukkit.Server;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.file.Path;
 
-@Singleton
 public class CrazyCrates extends JavaPlugin implements Listener {
 
     private static CrazyCrates plugin;
-
-    private Injector injector;
 
     private boolean pluginEnabled = false;
 
@@ -29,28 +16,14 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public final Path LOCALE_DIRECTORY = getDataFolder().toPath().resolve("locale");
     public final Path PLUGIN_DIRECTORY = getDataFolder().toPath();
 
-    @Inject private LoggerUtils loggerUtils;
-
-    @Inject private CrazyManager crazyManager;
-
-    @Inject private FileManager fileManager;
-
-    @Inject private PaperCrateConfig paperCrateConfig;
-
     @Override
     public void onEnable() {
         try {
             plugin = this;
 
-            ModuleManager moduleManager = new ModuleManager(new CrazyManager());
+            //if (!getDataFolder().exists()) getDataFolder().mkdirs();
 
-            injector = moduleManager.createInjector();
-
-            injector.injectMembers(this);
-
-            if (!getDataFolder().exists()) getDataFolder().mkdirs();
-
-            paperCrateConfig.setup();
+            //paperCrateConfig.setup();
 
             //data.load();
             
@@ -113,44 +86,19 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         pluginEnabled = true;
     }
 
-    // @Inject private CosmicCrate cosmicCrate;
-    // @Inject private QuickCrate quickCrate;
-    // @Inject private CrateOnTheGo crateOnTheGo;
-    // @Inject private CsgoCrate csgoCrate;
-    // @Inject private QuadCrate quadCrate;
-    // @Inject private RouletteCrate rouletteCrate;
-    // @Inject private WarCrate warCrate;
-    // @Inject private WheelCrate wheelCrate;
-    // @Inject private WonderCrate wonderCrate;
-
-    // @Inject private CrateTaskHandler crateTaskHandler;
-
     @Override
     public void onDisable() {
         if (!pluginEnabled) return;
 
-        //.endCrates();
-
-        //quickCrate.removeAllRewards();
-
-        //crateTaskHandler.clearTasks();
-
-        if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
-
-        injector = null;
+        //if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
     }
-
-    // @Inject private BrokeLocationsListener brokeLocationsListener;
-    // @Inject private CrateControlListener crateControlListener;
-    // @Inject private FireworkDamageListener fireworkDamageListener;
-    // @Inject private MiscListener miscListener;
 
     private void enable() {
         //crazyManager.loadCrates();
 
         PluginManager pluginManager = getServer().getPluginManager();
 
-        pluginManager.registerEvents(new ServerReadyEvent(), this);
+        // pluginManager.registerEvents(new ServerReadyEvent(), this);
 
         //if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(brokeLocationsListener, this);
     }

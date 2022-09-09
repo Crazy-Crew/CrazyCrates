@@ -4,20 +4,21 @@ import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import com.badbones69.crazycrates.common.configuration.objects.CrateHologram;
 import com.badbones69.crazycrates.common.utilities.AdventureUtils;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.block.Block;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Singleton
 public class DecentHologramsSupport implements HologramController {
     
     private final HashMap<Block, Hologram> holograms = new HashMap<>();
 
-    @Inject private AdventureUtils adventureUtils;
+    private final AdventureUtils adventureUtils;
+
+    public DecentHologramsSupport(AdventureUtils adventureUtils) {
+        this.adventureUtils = adventureUtils;
+    }
     
     public void createHologram(Block block, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();

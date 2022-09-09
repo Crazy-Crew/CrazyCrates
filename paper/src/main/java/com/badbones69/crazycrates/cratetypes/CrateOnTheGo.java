@@ -1,8 +1,11 @@
 package com.badbones69.crazycrates.cratetypes;
 
+/*
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.utilities.ScheduleUtils;
+import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
 import com.badbones69.crazycrates.common.enums.crates.CrateType;
 import com.badbones69.crazycrates.api.events.player.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
@@ -26,6 +29,10 @@ public class CrateOnTheGo implements Listener {
 
     // Utilities
     @Inject private Methods methods;
+
+    public WonderCrate(CrazyManager crazyManager, ScheduleUtils scheduleUtils, Methods methods, CrateTaskHandler crateTaskHandler) {
+
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onCrateOpen(PlayerInteractEvent e) {
@@ -54,3 +61,4 @@ public class CrateOnTheGo implements Listener {
         }
     }
 }
+ */

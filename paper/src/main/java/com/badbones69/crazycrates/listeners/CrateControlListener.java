@@ -1,18 +1,14 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
 import com.badbones69.crazycrates.common.enums.crates.CrateType;
 import com.badbones69.crazycrates.common.enums.crates.KeyType;
 import com.badbones69.crazycrates.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.common.configuration.files.Config;
-import com.badbones69.crazycrates.cratetypes.QuickCrate;
-import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -30,7 +26,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import java.util.HashMap;
 
-@Singleton
 public class CrateControlListener implements Listener { // Crate Control
 
     // A list of crate locations that are in use.
@@ -58,11 +53,15 @@ public class CrateControlListener implements Listener { // Crate Control
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    @Inject private CrazyManager crazyManager;
+    private final CrazyManager crazyManager;
 
-    @Inject private Methods methods;
+    private final CrateTaskHandler crateTaskHandler;
 
-    @Inject private QuickCrate quickCrate;
+    public CrateControlListener(CrazyManager crazyManager, CrateTaskHandler crateTaskHandler) {
+        this.crazyManager = crazyManager;
+
+        this.crateTaskHandler = crateTaskHandler;
+    }
 
     // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
     @EventHandler(ignoreCancelled = true)
@@ -182,7 +181,7 @@ public class CrateControlListener implements Listener { // Crate Control
                             return;
                         }
 
-                        if (useQuickCrateAgain) quickCrate.endQuickCrate(player, crateLocation.getLocation());
+                        // if (useQuickCrateAgain) quickCrate.endQuickCrate(player, crateLocation.getLocation());
 
                         KeyType keyType = isPhysical ? KeyType.PHYSICAL_KEY : KeyType.VIRTUAL_KEY;
 
@@ -204,8 +203,6 @@ public class CrateControlListener implements Listener { // Crate Control
             }
         }
     }
-
-    @Inject private CrateTaskHandler crateTaskHandler;
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerLeave(PlayerQuitEvent e) {

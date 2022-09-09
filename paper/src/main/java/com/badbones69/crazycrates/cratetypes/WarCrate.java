@@ -11,8 +11,6 @@ import com.badbones69.crazycrates.api.utilities.handlers.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
 import com.badbones69.crazycrates.api.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -26,7 +24,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Singleton
 public class WarCrate implements Listener {
     
     private static final String crateNameString = "Crate.CrateName";
@@ -36,14 +33,20 @@ public class WarCrate implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    @Inject private CrazyManager crazyManager;
+    private final CrazyManager crazyManager;
 
-    @Inject private Methods methods;
+    private final ScheduleUtils scheduleUtils;
+    private final Methods methods;
 
-    @Inject private ScheduleUtils scheduleUtils;
+    private final CrateTaskHandler crateTaskHandler;
 
-    // Task Handler
-    @Inject private CrateTaskHandler crateTaskHandler;
+    public WarCrate(CrazyManager crazyManager, ScheduleUtils scheduleUtils, Methods methods, CrateTaskHandler crateTaskHandler) {
+        this.crazyManager = crazyManager;
+        this.scheduleUtils = scheduleUtils;
+
+        this.methods = methods;
+        this.crateTaskHandler = crateTaskHandler;
+    }
 
     public void openWarCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         String crateName = crate.getFile().getString(crateNameString);

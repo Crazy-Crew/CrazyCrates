@@ -14,14 +14,12 @@ import com.badbones69.crazycrates.common.configuration.objects.CrateHologram;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.common.configuration.files.Config;
 import com.badbones69.crazycrates.common.schematics.CrateSchematic;
-import com.badbones69.crazycrates.common.utilities.logger.CrazyLogger;
+import com.badbones69.crazycrates.common.utilities.AdventureUtils;
 import com.badbones69.crazycrates.support.holograms.DecentHologramsSupport;
-import com.badbones69.crazycrates.support.holograms.HolographicSupport;
+import com.badbones69.crazycrates.support.holograms.HolographicDisplaysSupport;
 import com.badbones69.crazycrates.support.PluginSupport;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.CrateLocation;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
@@ -38,16 +36,9 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Singleton
 public class CrazyManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
-
-    @Inject private LoggerUtils loggerUtils;
-
-    @Inject private FileManager fileManager;
-
-    @Inject private Methods methods;
 
     // All the crates that have been loaded.
     private final ArrayList<Crate> crates = new ArrayList<>();
@@ -81,6 +72,22 @@ public class CrazyManager {
     
     // Schematic locations for 1.13+.
     private final HashMap<UUID, Location[]> schemLocations = new HashMap<>();
+
+    private final LoggerUtils loggerUtils;
+    private final AdventureUtils adventureUtils;
+
+    private final FileManager fileManager;
+
+    private final Methods methods;
+
+    public CrazyManager(FileManager fileManager, LoggerUtils loggerUtils, AdventureUtils adventureUtils, Methods methods) {
+        this.fileManager = fileManager;
+
+        this.loggerUtils = loggerUtils;
+        this.adventureUtils = adventureUtils;
+
+        this.methods = methods;
+    }
     
     // Loads all the information the plugin needs to run.
     public void loadCrates() {
@@ -91,9 +98,9 @@ public class CrazyManager {
         crateSchematics.clear();
 
         if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginLoaded()) {
-            hologramController = new HolographicSupport();
+            hologramController = new HolographicDisplaysSupport(adventureUtils);
         } else if (PluginSupport.DECENT_HOLOGRAMS.isPluginLoaded()) {
-            hologramController = new DecentHologramsSupport();
+            hologramController = new DecentHologramsSupport(adventureUtils);
         }
 
         // Removes all holograms so that they can be replaced.

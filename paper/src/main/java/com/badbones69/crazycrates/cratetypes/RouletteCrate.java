@@ -8,27 +8,32 @@ import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import com.badbones69.crazycrates.api.utilities.CommonUtils;
 import com.badbones69.crazycrates.api.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Singleton
 public class RouletteCrate implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    @Inject private CrazyManager crazyManager;
+    private final CrazyManager crazyManager;
 
-    @Inject private Methods methods;
-    @Inject private ScheduleUtils scheduleUtils;
-    @Inject private CommonUtils commonUtils;
+    private final ScheduleUtils scheduleUtils;
+    private final CommonUtils commonUtils;
+    private final Methods methods;
 
-    // Task Handler
-    @Inject private CrateTaskHandler crateTaskHandler;
+    private final CrateTaskHandler crateTaskHandler;
+
+    public RouletteCrate(CrazyManager crazyManager, ScheduleUtils scheduleUtils, CommonUtils commonUtils, Methods methods, CrateTaskHandler crateTaskHandler) {
+        this.crazyManager = crazyManager;
+        this.scheduleUtils = scheduleUtils;
+        this.commonUtils = commonUtils;
+
+        this.methods = methods;
+        this.crateTaskHandler = crateTaskHandler;
+    }
 
     private void setGlass(Inventory inv) {
         for (int i = 0; i < 27; i++) {

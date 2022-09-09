@@ -10,8 +10,6 @@ import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
 import com.badbones69.crazycrates.api.utilities.CommonUtils;
 import com.badbones69.crazycrates.api.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -23,20 +21,28 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Singleton
 public class WheelCrate implements Listener {
     
     public static Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    @Inject private CrazyManager crazyManager;
+    private final CrazyManager crazyManager;
 
-    @Inject private Methods methods;
-    @Inject private ScheduleUtils scheduleUtils;
-    @Inject private CommonUtils commonUtils;
+    private final ScheduleUtils scheduleUtils;
+    private final CommonUtils commonUtils;
+    private final Methods methods;
 
-    @Inject private CrateTaskHandler crateTaskHandler;
+    private final CrateTaskHandler crateTaskHandler;
+
+    public WheelCrate(CrazyManager crazyManager, ScheduleUtils scheduleUtils, CommonUtils commonUtils, Methods methods, CrateTaskHandler crateTaskHandler) {
+        this.crazyManager = crazyManager;
+        this.scheduleUtils = scheduleUtils;
+        this.commonUtils = commonUtils;
+
+        this.methods = methods;
+        this.crateTaskHandler = crateTaskHandler;
+    }
 
     public void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {

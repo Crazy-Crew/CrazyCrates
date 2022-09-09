@@ -1,11 +1,8 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.api.utilities.LoggerUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.ItemBuilder;
 import com.badbones69.crazycrates.common.configuration.files.Config;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.Validate;
@@ -25,12 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-@Singleton
 public class Methods {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
-
-    @Inject private LoggerUtils loggerUtils;
 
     private final Random random = new Random();
 
@@ -66,16 +60,6 @@ public class Methods {
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, firework::detonate, 2);
     }
 
-    public boolean isInt(String s) {
-        try {
-            Integer.parseInt(s);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-
-        return true;
-    }
-
     public Player getPlayer(String name) {
         return plugin.getServer().getPlayerExact(name);
     }
@@ -103,6 +87,7 @@ public class Methods {
         return min + random.nextInt(max - min);
     }
 
+    // TODO: Switch to using PDC
     public boolean isSimilar(ItemStack itemStack, Crate crate) {
         NBTItem nbtItem = new NBTItem(itemStack);
 
@@ -150,17 +135,19 @@ public class Methods {
         return new ItemBuilder().setMaterial(colors.get(random.nextInt(colors.size())));
     }
 
+    // TODO: Shrink this code
     public void failedToTakeKey(Player player, Crate crate) {
         failedToTakeKey(player, crate, null);
     }
 
     public void failedToTakeKey(Player player, Crate crate, Exception e) {
+        // TODO: Configurable error message
         //player.sendMessage(getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));
 
         if (Config.TOGGLE_VERBOSE) {
-            loggerUtils.debug("<red>An error has occurred while trying to take a physical key from a player.</red>");
-            loggerUtils.debug("<gold>Player:</gold> <red>" + player.getName() + "</red>");
-            loggerUtils.debug("<gold>Gold:</gold> <red>" + crate.getName() + "</red>");
+            // loggerUtils.debug("<red>An error has occurred while trying to take a physical key from a player.</red>");
+            // loggerUtils.debug("<gold>Player:</gold> <red>" + player.getName() + "</red>");
+            // loggerUtils.debug("<gold>Gold:</gold> <red>" + crate.getName() + "</red>");
         }
 
         if (e != null) e.printStackTrace();

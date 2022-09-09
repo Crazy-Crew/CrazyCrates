@@ -87,8 +87,19 @@ public class QuadCrateManager {
 
     private final CrateTaskHandler crateTaskHandler;
 
-    public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler,
-                            ScheduleUtils scheduleUtils, LoggerUtils loggerUtils, CrazyManager crazyManager, Methods methods, ChestStateHandler chestStateHandler, CrateTaskHandler crateTaskHandler) {
+    public QuadCrateManager(Player player,
+                            Crate crate,
+                            KeyType keyType,
+                            Location spawnLocation,
+                            Location lastLocation,
+                            boolean inHand,
+                            StructureHandler handler,
+                            ScheduleUtils scheduleUtils,
+                            LoggerUtils loggerUtils,
+                            CrazyManager crazyManager,
+                            Methods methods,
+                            ChestStateHandler chestStateHandler,
+                            CrateTaskHandler crateTaskHandler) {
         this.instance = this;
         this.player = player;
         this.crate = crate;

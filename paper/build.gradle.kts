@@ -28,8 +28,6 @@ dependencies {
         exclude(group = "com.google.code.gson", module = "gson")
     }
 
-    implementation(libs.google.guice)
-
     // Paper Cloud Commands
     // compileOnly(libs.paper.command.cloud)
 

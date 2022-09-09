@@ -10,8 +10,6 @@ import com.badbones69.crazycrates.api.utilities.handlers.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
 import com.badbones69.crazycrates.api.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -20,18 +18,27 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Singleton
 public class WonderCrate implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    @Inject private CrazyManager crazyManager;
+    private final CrazyManager crazyManager;
 
-    @Inject private Methods methods;
-    @Inject private ScheduleUtils scheduleUtils;
+    private final ScheduleUtils scheduleUtils;
+
+    private final Methods methods;
 
     // Task Handler
-    @Inject private CrateTaskHandler crateTaskHandler;
+    private final CrateTaskHandler crateTaskHandler;
+
+    public WonderCrate(CrazyManager crazyManager, ScheduleUtils scheduleUtils, Methods methods, CrateTaskHandler crateTaskHandler) {
+        this.crazyManager = crazyManager;
+        this.scheduleUtils = scheduleUtils;
+
+        this.methods = methods;
+
+        this.crateTaskHandler = crateTaskHandler;
+    }
 
     public void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {

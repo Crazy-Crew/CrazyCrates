@@ -17,7 +17,7 @@ public class CrateMenuHandler {
 
     private final CrazyManager crazyManager;
 
-    private AdventureUtils adventureUtils;
+    private final AdventureUtils adventureUtils;
 
     public CrateMenuHandler(CrazyManager crazyManager, AdventureUtils adventureUtils) {
         this.crazyManager = crazyManager;
