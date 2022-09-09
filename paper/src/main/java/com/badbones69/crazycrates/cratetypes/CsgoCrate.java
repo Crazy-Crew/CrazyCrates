@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.cratetypes;
 
-/*
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
@@ -9,8 +8,6 @@ import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -21,23 +18,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Singleton
 public class CsgoCrate implements Listener {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    // Global Methods.
+    public final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    @Inject private CrazyManager crazyManager;
+    public final ScheduleUtils scheduleUtils = plugin.getStarter().getScheduleUtils();
 
-    // Utilities
-    @Inject private Methods methods;
-    @Inject private ScheduleUtils scheduleUtils;
+    public final Methods methods = plugin.getStarter().getMethods();
 
-    @Inject private CrateTaskHandler crateTaskHandler;
+    public final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
-    public WonderCrate(CrazyManager crazyManager, ScheduleUtils scheduleUtils, Methods methods, CrateTaskHandler crateTaskHandler) {
+    public final CrateTaskHandler crateTaskHandler = plugin.getStarter().getCrateTaskHandler();
 
-    }
-
+    // Class Internals.
     private void setGlass(Inventory inv) {
         HashMap<Integer, ItemStack> glass = new HashMap<>();
 
@@ -164,4 +158,3 @@ public class CsgoCrate implements Listener {
         }
     }
 }
- */

@@ -14,7 +14,6 @@ import com.badbones69.crazycrates.common.configuration.objects.CrateHologram;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.common.configuration.files.Config;
 import com.badbones69.crazycrates.common.schematics.CrateSchematic;
-import com.badbones69.crazycrates.common.utilities.AdventureUtils;
 import com.badbones69.crazycrates.support.holograms.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.HolographicDisplaysSupport;
 import com.badbones69.crazycrates.support.PluginSupport;
@@ -38,58 +37,76 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CrazyManager {
 
+    // Global Methods.
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    // All the crates that have been loaded.
+    private final LoggerUtils loggerUtils = plugin.getStarter().getLoggerUtils();
+
+    private final Methods methods = plugin.getStarter().getMethods();
+
+    private final FileManager fileManager = plugin.getStarter().getFileManager();
+
+    // Class Internals.
+
+    /**
+     * Every crate that has been loaded.
+     */
     private final ArrayList<Crate> crates = new ArrayList<>();
 
-    // A list of all the physical crate locations.
+    /**
+     * List of all physical crate locations.
+     */
     private final ArrayList<CrateLocation> crateLocations = new ArrayList<>();
 
-    // List of all the broken crates.
+    /**
+     * List of broken crates.
+     */
     private final ArrayList<String> brokecrates = new ArrayList<>();
     
     // List of broken physical crate locations.
+    /**
+     * List of all broken physical crate locations.
+     */
     private final List<CrateBrokeLocation> crateBrokeLocations = new ArrayList<>();
-    
-    // The crate that the player is opening.
+
+    /**
+     * The crate that the player is opening.
+     */
     private final HashMap<UUID, Crate> playerOpeningCrates = new HashMap<>();
-    
-    // Keys that are being used in crates. Only needed in cosmic due to it taking the key after the player picks a prize and not in a start method.
+
+    /**
+     * Keys that are being used in crates. Only needed in cosmic due to it taking the key after the player picks a prize and not in a start method.
+     */
     private final HashMap<UUID, KeyType> playerKeys = new HashMap<>();
-    
-    // A list of tasks being run by the QuadCrate type.
+
+    /**
+     * A list of the tasks being run by the QuadCrate crate type.
+     */
     private final HashMap<UUID, ArrayList<BukkitTask>> currentQuadTasks = new HashMap<>();
-    
-    // A list of current crate schematics for Quad Crate.
+
+    /**
+     * A list of the current crate schematics possible for QuadCrates.
+     */
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
-    
-    // True if at least one crate gives new players keys and false if none give new players keys.
+
+    /**
+     * True if at least one crate will be giving new player keys. False if none give new players keys.
+     */
     private boolean giveNewPlayersKeys;
-    
-    // The hologram api that is being hooked into.
+
+    /**
+     * The hologram implementation we are hooking into.
+     */
     private HologramController hologramController;
-    
-    // Schematic locations for 1.13+.
+
+    /**
+     * All the schematics locations.
+     */
     private final HashMap<UUID, Location[]> schemLocations = new HashMap<>();
 
-    private final LoggerUtils loggerUtils;
-    private final AdventureUtils adventureUtils;
-
-    private final FileManager fileManager;
-
-    private final Methods methods;
-
-    public CrazyManager(FileManager fileManager, LoggerUtils loggerUtils, AdventureUtils adventureUtils, Methods methods) {
-        this.fileManager = fileManager;
-
-        this.loggerUtils = loggerUtils;
-        this.adventureUtils = adventureUtils;
-
-        this.methods = methods;
-    }
-    
-    // Loads all the information the plugin needs to run.
+    /**
+     * Loads all the information the plugin needs to run.
+     */
     public void loadCrates() {
         giveNewPlayersKeys = false;
         crates.clear();
@@ -98,9 +115,9 @@ public class CrazyManager {
         crateSchematics.clear();
 
         if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginLoaded()) {
-            hologramController = new HolographicDisplaysSupport(adventureUtils);
+            hologramController = new HolographicDisplaysSupport();
         } else if (PluginSupport.DECENT_HOLOGRAMS.isPluginLoaded()) {
-            hologramController = new DecentHologramsSupport(adventureUtils);
+            hologramController = new DecentHologramsSupport();
         }
 
         // Removes all holograms so that they can be replaced.
@@ -181,7 +198,7 @@ public class CrazyManager {
                 }
 
                 CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"));
-                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, holo, methods, fileManager, loggerUtils));
+                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, holo));
             } catch (Exception e) {
                 brokecrates.add(crateName);
 
@@ -191,7 +208,7 @@ public class CrazyManager {
             }
         }
 
-        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null, methods, fileManager, loggerUtils));
+        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null));
 
         if (Config.TOGGLE_VERBOSE) {
             loggerUtils.debug("<red>All crate information has been loaded.</red>");
@@ -1222,7 +1239,12 @@ public class CrazyManager {
 
         return false;
     }
-    
+
+    /**
+     * Build & fetch the key.
+     * @param file - The file configuration we get our values from.
+     * @return The newly built key.
+     */
     private ItemStack getKey(FileConfiguration file) {
         String name = file.getString("Crate.PhysicalKey.Name");
         List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
@@ -1233,7 +1255,13 @@ public class CrazyManager {
 
         return new ItemBuilder().setMaterial(id).setName(name).setLore(lore).setGlow(glowing).build();
     }
-    
+
+    /**
+     * Build and fetch our display item.
+     * @param file - The file configuration we get our values from.
+     * @param prize - The id of the prize.
+     * @return The newly built display item.
+     */
     private ItemBuilder getDisplayItem(FileConfiguration file, String prize) {
         String path = "Crate.Prizes." + prize + ".";
         ItemBuilder itemBuilder = new ItemBuilder();
@@ -1263,11 +1291,23 @@ public class CrazyManager {
             return new ItemBuilder().setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
         }
     }
-    
+
+    /**
+     * Get the converted items.
+     * @param file - The file configuration we get our values from.
+     * @param prize - The id of the prize.
+     * @return The converted list of items.
+     */
     private List<ItemBuilder> getItems(FileConfiguration file, String prize) {
         return ItemBuilder.convertStringList(file.getStringList("Crate.Prizes." + prize + ".Items"), prize);
     }
-    
+
+    /**
+     * What decides which number to pick for RNG args
+     * @param min - The minimum
+     * @param max - The maximum
+     * @return The random amount.
+     */
     private long pickNumber(long min, long max) {
         max++;
 

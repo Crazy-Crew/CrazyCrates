@@ -1,13 +1,17 @@
 package com.badbones69.crazycrates.cratetypes;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
+import com.badbones69.crazycrates.api.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
+import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -30,9 +34,16 @@ import java.util.Random;
  */
 public class QuadCrate implements Listener {
 
-
+    // Global Methods.
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
+    private final ScheduleUtils scheduleUtils = plugin.getStarter().getScheduleUtils();
+
+    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+
+    private final ChestStateHandler chestStateHandler = plugin.getStarter().getChestStateHandler();
+
+    // Class Internals.
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e) {
         if (SessionManager.inSession(e.getPlayer())) e.setCancelled(true);
@@ -55,11 +66,11 @@ public class QuadCrate implements Listener {
 
                     if (!session.getCratesOpened().get(block.getLocation())) {
 
-                        //chestStateHandler.openChest(block, true);
+                        chestStateHandler.openChest(block, true);
 
                         Crate crate = session.getCrate();
                         Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
-                        //crazyManager.givePrize(player, prize);
+                        crazyManager.givePrize(player, prize);
 
                         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(prize.getDisplayItem());
                         itemBuilder.addLore(new Random().nextInt(Integer.MAX_VALUE) + ""); // Makes sure items don't merge
@@ -84,10 +95,10 @@ public class QuadCrate implements Listener {
                         session.getDisplayedRewards().add(reward);
 
                         if (session.allCratesOpened()) { // All 4 crates have been opened
-                            //scheduleUtils.later(60L, () -> {
-                            //    session.endCrate();
-                            //    player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
-                            //});
+                            scheduleUtils.later(60L, () -> {
+                                session.endCrate();
+                                player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
+                            });
                         }
                     }
                 }

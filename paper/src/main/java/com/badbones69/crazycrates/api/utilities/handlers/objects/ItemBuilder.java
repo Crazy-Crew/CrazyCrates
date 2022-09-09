@@ -22,15 +22,12 @@ import java.util.stream.Collectors;
 public class ItemBuilder {
     
     private NBTItem nbtItem;
-    
-    // Item Data
     private Material material;
     private int damage;
     private String itemName;
     private final List<String> itemLore;
     private int itemAmount;
-    
-    // Player
+
     private String player;
     
     // Crates
@@ -129,7 +126,7 @@ public class ItemBuilder {
     /**
      * Deduplicate an item builder.
      *
-     * @param itemBuilder The item builder to deduplicate.
+     * @param itemBuilder - The item builder to deduplicate.
      */
     public ItemBuilder(ItemBuilder itemBuilder) {
         //this.nbtItem = itemBuilder.nbtItem;

@@ -28,6 +28,12 @@ import java.util.HashMap;
 
 public class CrateControlListener implements Listener { // Crate Control
 
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+
+    private final CrateTaskHandler crateTaskHandler = plugin.getStarter().getCrateTaskHandler();
+
     // A list of crate locations that are in use.
     private final HashMap<Player, Location> inUse = new HashMap<>();
 
@@ -49,18 +55,6 @@ public class CrateControlListener implements Listener { // Crate Control
 
     public void addPlayer(Player player, Location location) {
         inUse.put(player, location);
-    }
-
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
-
-    private final CrazyManager crazyManager;
-
-    private final CrateTaskHandler crateTaskHandler;
-
-    public CrateControlListener(CrazyManager crazyManager, CrateTaskHandler crateTaskHandler) {
-        this.crazyManager = crazyManager;
-
-        this.crateTaskHandler = crateTaskHandler;
     }
 
     // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.

@@ -11,6 +11,7 @@ import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
 import com.badbones69.crazycrates.common.configuration.files.Config;
 import com.badbones69.crazycrates.common.enums.crates.KeyType;
+import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -27,29 +28,25 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class QuickCrate implements Listener {
-    
-    public static ArrayList<Entity> allRewards = new ArrayList<>();
-    public static HashMap<Player, Entity> rewards = new HashMap<>();
 
+    // Global Methods.
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyManager crazyManager;
+    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
-    private final ScheduleUtils scheduleUtils;
-    private final LoggerUtils loggerUtils;
+    private final LoggerUtils loggerUtils = plugin.getStarter().getLoggerUtils();
 
-    private final Methods methods;
+    private final ScheduleUtils scheduleUtils = plugin.getStarter().getScheduleUtils();
 
-    private final CrateTaskHandler crateTaskHandler;
+    private final Methods methods = plugin.getStarter().getMethods();
 
-    public QuickCrate(CrazyManager crazyManager, ScheduleUtils scheduleUtils, LoggerUtils loggerUtils, Methods methods, CrateTaskHandler crateTaskHandler) {
-        this.crazyManager = crazyManager;
-        this.scheduleUtils = scheduleUtils;
-        this.loggerUtils = loggerUtils;
+    private final ChestStateHandler chestStateHandler = plugin.getStarter().getChestStateHandler();
 
-        this.crateTaskHandler = crateTaskHandler;
-        this.methods = methods;
-    }
+    private final CrateTaskHandler crateTaskHandler = plugin.getStarter().getCrateTaskHandler();
+
+    // Class Internals.
+    public static ArrayList<Entity> allRewards = new ArrayList<>();
+    public static HashMap<Player, Entity> rewards = new HashMap<>();
 
     public void openCrate(Player player, Location loc, Crate crate, KeyType keyType) {
         int keys = switch (keyType) {
@@ -123,7 +120,7 @@ public class QuickCrate implements Listener {
             rewards.put(player, reward);
             allRewards.add(reward);
 
-            //chestStateHandler.openChest(loc.getBlock(), true);
+            chestStateHandler.openChest(loc.getBlock(), true);
 
             if (prize.useFireworks()) methods.firework(loc.clone().add(.5, 1, .5));
 
@@ -142,8 +139,10 @@ public class QuickCrate implements Listener {
             rewards.remove(player);
         }
 
-        //chestStateHandler.openChest(loc.getBlock(), false);
+        chestStateHandler.openChest(loc.getBlock(), false);
+
         //crateControlListener.removePlayer(player);
+
         crazyManager.removePlayerFromOpeningList(player);
     }
     

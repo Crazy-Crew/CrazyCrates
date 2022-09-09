@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api.managers;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.utilities.LoggerUtils;
@@ -31,23 +32,56 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class QuadCrateManager {
 
+    // Global Methods.
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final LoggerUtils loggerUtils = plugin.getStarter().getLoggerUtils();
+
+    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+
+    private final ScheduleUtils scheduleUtils = plugin.getStarter().getScheduleUtils();
+
+    private final Methods methods = plugin.getStarter().getMethods();
+
+    private final ChestStateHandler chestStateHandler = plugin.getStarter().getChestStateHandler();
+
+    private final CrateTaskHandler crateTaskHandler = plugin.getStarter().getCrateTaskHandler();
+
+    // Class Internals.
+
+    /**
+     * Where you store and fetch active crate sessions.
+     */
     private static final List<QuadCrateManager> crateSessions = new ArrayList<>();
 
+    /**
+     * The class instance.
+     */
     private final QuadCrateManager instance;
 
-    // Get the player.
+    /**
+     * Get the player object.
+     */
     private final Player player;
 
-    // Check player hand.
+    /**
+     * Whether to check the player's hand.
+     */
     private final boolean checkHand;
 
-    // The crate that is being used.
+    /**
+     * The crate that the player is using.
+     */
     private final Crate crate;
 
-    // The key type.
+    /**
+     * The key type the player used.
+     */
     private final KeyType keyType;
 
-    // Get display rewards.
+    /**
+     * Where you save and fetch all display rewards.
+     */
     private final List<Entity> displayedRewards = new ArrayList<>();
 
     /**
@@ -57,49 +91,53 @@ public class QuadCrateManager {
      */
     private final Location spawnLocation;
 
-    // The last location the player was originally at.
+    /**
+     * The last location the player was originally at.
+     */
     private final Location lastLocation;
 
-    // Defines the locations of the Chests that will spawn in.
+    /**
+     * Defines the locations of the Chests that will spawn in.
+     */
     private final ArrayList<Location> crateLocations = new ArrayList<>();
 
-    // Stores if the crate is open or not.
+    /**
+     * Stores if the crate is open or not.
+     */
     private final HashMap<Location, Boolean> cratesOpened = new HashMap<>();
 
-    // Saves all the chests spawned by the QuadCrate task.
+    /**
+     * Where you save all the chests spawned by the QuadCrate Task.
+     */
     private final HashMap<Location, BlockState> quadCrateChests = new HashMap<>();
 
-    // Saves all the old blocks to restore after.
+    /**
+     * Where you save & fetch the old blocks prior to the structure spawning.
+     */
     private final HashMap<Location, BlockState> oldBlocks = new HashMap<>();
 
-    // Get the particles that will be used to display above the crates.
+    /**
+     * Get the particles that will spawn above the crates.
+     */
     private final Color particleColor;
     private final QuadCrateParticles particle;
 
-    // Get the structure handler.
+    /**
+     * Get the structure handler.
+     */
     private final StructureHandler handler;
 
-    private final ScheduleUtils scheduleUtils;
-    private final LoggerUtils loggerUtils;
-    private final CrazyManager crazyManager;
-    private final Methods methods;
-    private final ChestStateHandler chestStateHandler;
-
-    private final CrateTaskHandler crateTaskHandler;
-
-    public QuadCrateManager(Player player,
-                            Crate crate,
-                            KeyType keyType,
-                            Location spawnLocation,
-                            Location lastLocation,
-                            boolean inHand,
-                            StructureHandler handler,
-                            ScheduleUtils scheduleUtils,
-                            LoggerUtils loggerUtils,
-                            CrazyManager crazyManager,
-                            Methods methods,
-                            ChestStateHandler chestStateHandler,
-                            CrateTaskHandler crateTaskHandler) {
+    /**
+     * Builds everything that lets a QuadCrate function
+     * @param player - The player who is opening the crate.
+     * @param crate - The crate being opened by the player.
+     * @param keyType - The key type the player is using.
+     * @param spawnLocation - The spawn location where the crate spawned.
+     * @param lastLocation - The last location the player was originally at.
+     * @param inHand - Check if the item is in their hand.
+     * @param handler - The structure handler that spawns the nbt files.
+     */
+    public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler) {
         this.instance = this;
         this.player = player;
         this.crate = crate;
@@ -115,17 +153,12 @@ public class QuadCrateManager {
         this.particle = particles.get(new Random().nextInt(particles.size()));
         this.particleColor = getColors().get(new Random().nextInt(getColors().size()));
 
-        this.scheduleUtils = scheduleUtils;
-        this.loggerUtils = loggerUtils;
-        this.crazyManager = crazyManager;
-        this.methods = methods;
-        this.chestStateHandler = chestStateHandler;
-
-        this.crateTaskHandler = crateTaskHandler;
-
         crateSessions.add(instance);
     }
 
+    /**
+     * Start the crate session.
+     */
     public boolean startCrate() {
 
         // Check if it is on a block.
@@ -261,6 +294,9 @@ public class QuadCrateManager {
         return false;
     }
 
+    /**
+     * End the crate session.
+     */
     public void endCrate() {
         scheduleUtils.later(3 * 20L, () -> {
             // Update spawned crate block states which removes them.
@@ -290,7 +326,10 @@ public class QuadCrateManager {
         });
     }
 
-    // End the crate & remove the hologram by force.
+    /**
+     * End a crate session by force.
+     * @param removeForce - The option that decides if the crate should be removed.
+     */
     public void endCrateForce(boolean removeForce) {
         crateLocations.forEach(location -> quadCrateChests.get(location).update(true, false));
         displayedRewards.forEach(Entity::remove);
@@ -304,12 +343,19 @@ public class QuadCrateManager {
         handler.removeStructure();
     }
 
-    // Add the crate locations.
+    /**
+     * Adds a location to the arraylist!
+     * @param x - The x coordinate
+     * @param y - The y coordinate
+     * @param z - The z coordinate
+     */
     public void addCrateLocations(Integer x, Integer y, Integer z) {
         crateLocations.add(spawnLocation.clone().add(x, y, z));
     }
 
-    // Particle management. - TODO() - Move to another class.
+    /**
+     * @return A list of colors.
+     */
     private List<Color> getColors() {
         return Arrays.asList(
                 Color.AQUA, Color.BLACK, Color.BLUE, Color.FUCHSIA, Color.GRAY,
@@ -318,6 +364,13 @@ public class QuadCrateManager {
                 Color.WHITE, Color.YELLOW);
     }
 
+    /**
+     * Spawns a particle on 2 locations, Location 1 & Location 2.
+     * @param quadCrateParticle - The particle from the enum.
+     * @param particleColor - The color of the particle.
+     * @param location1 - The first location of the particle.
+     * @param location2 - The second location of the particle.
+     */
     private void spawnParticles(QuadCrateParticles quadCrateParticle, Color particleColor, Location location1, Location location2) {
         Particle particle = switch (quadCrateParticle) {
             case FLAME -> Particle.FLAME;
@@ -335,37 +388,52 @@ public class QuadCrateManager {
         }
     }
 
-    // Get the crate sessions.
+    /**
+     * @return All active crate sessions.
+     */
     public static List<QuadCrateManager> getCrateSessions() {
         return crateSessions;
     }
 
-    // Get Player.
+    /**
+     * @return The player object.
+     */
     public Player getPlayer() {
         return player;
     }
 
-    // Get the crate.
+    /**
+     * @return All crate locations.
+     */
     public List<Location> getCrateLocations() {
         return crateLocations;
     }
 
-    // Get open crates.
+    /**
+     * @return All open crates.
+     */
     public HashMap<Location, Boolean> getCratesOpened() {
         return cratesOpened;
     }
 
-    // Get the crate.
+    /**
+     * @return The crate object.
+     */
     public Crate getCrate() {
         return crate;
     }
 
-    // Get display rewards.
+    /**
+     * @return The display rewards.
+     */
     public List<Entity> getDisplayedRewards() {
         return displayedRewards;
     }
 
-    // Check if all crates are opened.
+    /**
+     * Check if all crates are opened.
+     * @return false if they are all not open & true if they are.
+     */
     public Boolean allCratesOpened() {
         for (Map.Entry<Location, Boolean> location : cratesOpened.entrySet()) {
             if (!location.getValue()) return false;

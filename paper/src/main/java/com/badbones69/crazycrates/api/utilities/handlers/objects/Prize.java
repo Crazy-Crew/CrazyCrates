@@ -48,7 +48,6 @@ public class Prize {
     }
     
     /**
-     *
      * @param name The name of the prize.
      * @param displayItem The display item that is shown in the preview and for what the player wins.
      * @param messages The messages it sends to the player that wins it.

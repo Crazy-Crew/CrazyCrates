@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.cratetypes;
 
-/*
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
@@ -14,8 +13,6 @@ import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.Tier;
 import com.badbones69.crazycrates.api.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -31,29 +28,25 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Singleton
 public class CosmicCrate implements Listener {
 
+    // Global Methods.
+    public final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final LoggerUtils loggerUtils = plugin.getStarter().getLoggerUtils();
+
+    public final ScheduleUtils scheduleUtils = plugin.getStarter().getScheduleUtils();
+
+    public final Methods methods = plugin.getStarter().getMethods();
+
+    public final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+
+    public final CrateTaskHandler crateTaskHandler = plugin.getStarter().getCrateTaskHandler();
+
+    // Class Internals.
     private final HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();
     private final HashMap<Player, ArrayList<Integer>> picks = new HashMap<>();
     private final HashMap<Player, Boolean> checkHands = new HashMap<>();
-
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
-
-    @Inject private CrazyManager crazyManager;
-    @Inject private LoggerUtils loggerUtils;
-
-    // Utilities
-    @Inject private Methods methods;
-
-    @Inject private ScheduleUtils scheduleUtils;
-
-    // Task Handler
-    @Inject private CrateTaskHandler crateTaskHandler;
-
-    public WonderCrate(CrazyManager crazyManager, ScheduleUtils scheduleUtils, Methods methods, CrateTaskHandler crateTaskHandler) {
-
-    }
 
     private void showRewards(Player player, Crate crate) {
         Inventory inv = plugin.getServer().createInventory(null, 27, crate.getFile().getString("Crate.CrateName") + " - Prizes");
@@ -351,4 +344,3 @@ public class CosmicCrate implements Listener {
         return slot < 27;
     }
 }
- */

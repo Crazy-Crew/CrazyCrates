@@ -22,27 +22,22 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class WheelCrate implements Listener {
-    
-    public static Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
 
+    // Global Methods.
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyManager crazyManager;
+    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
-    private final ScheduleUtils scheduleUtils;
-    private final CommonUtils commonUtils;
-    private final Methods methods;
+    private final CommonUtils commonUtils = plugin.getStarter().getCommonUtils();
 
-    private final CrateTaskHandler crateTaskHandler;
+    private final ScheduleUtils scheduleUtils = plugin.getStarter().getScheduleUtils();
 
-    public WheelCrate(CrazyManager crazyManager, ScheduleUtils scheduleUtils, CommonUtils commonUtils, Methods methods, CrateTaskHandler crateTaskHandler) {
-        this.crazyManager = crazyManager;
-        this.scheduleUtils = scheduleUtils;
-        this.commonUtils = commonUtils;
+    private final Methods methods = plugin.getStarter().getMethods();
 
-        this.methods = methods;
-        this.crateTaskHandler = crateTaskHandler;
-    }
+    private final CrateTaskHandler crateTaskHandler = plugin.getStarter().getCrateTaskHandler();
+
+    // Class Internals.
+    public Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
 
     public void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {

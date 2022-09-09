@@ -4,11 +4,28 @@ import com.badbones69.crazycrates.common.enums.crates.CrateType;
 import org.bukkit.Location;
 
 public class CrateLocation {
-    
+
+    /**
+     * The id of the crate.
+     */
     private final String id;
+
+    /**
+     * The crate object.
+     */
     private final Crate crate;
+
+    /**
+     * The location of the crate.
+     */
     private final Location loc;
-    
+
+    /**
+     * Everything regarding the Crate Location.
+     * @param id - The location id
+     * @param crate - The crate object
+     * @param loc - The location of the crate.
+     */
     public CrateLocation(String id, Crate crate, Location loc) {
         this.id = id;
         this.crate = crate;

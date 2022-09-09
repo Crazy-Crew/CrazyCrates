@@ -25,28 +25,23 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class WarCrate implements Listener {
-    
+
+    // Global Methods.
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+
+    private final ScheduleUtils scheduleUtils = plugin.getStarter().getScheduleUtils();
+
+    private final Methods methods = plugin.getStarter().getMethods();
+
+    private final CrateTaskHandler crateTaskHandler = plugin.getStarter().getCrateTaskHandler();
+
+    // Class Internals.
     private static final String crateNameString = "Crate.CrateName";
     private static HashMap<ItemStack, String> colorCodes;
     private static final HashMap<Player, Boolean> canPick = new HashMap<>();
     private static final HashMap<Player, Boolean> canClose = new HashMap<>();
-
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
-
-    private final CrazyManager crazyManager;
-
-    private final ScheduleUtils scheduleUtils;
-    private final Methods methods;
-
-    private final CrateTaskHandler crateTaskHandler;
-
-    public WarCrate(CrazyManager crazyManager, ScheduleUtils scheduleUtils, Methods methods, CrateTaskHandler crateTaskHandler) {
-        this.crazyManager = crazyManager;
-        this.scheduleUtils = scheduleUtils;
-
-        this.methods = methods;
-        this.crateTaskHandler = crateTaskHandler;
-    }
 
     public void openWarCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         String crateName = crate.getFile().getString(crateNameString);

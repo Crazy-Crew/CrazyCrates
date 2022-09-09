@@ -16,11 +16,7 @@ public class HolographicDisplaysSupport implements HologramController {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final AdventureUtils adventureUtils;
-
-    public HolographicDisplaysSupport(AdventureUtils adventureUtils) {
-        this.adventureUtils = adventureUtils;
-    }
+    private final AdventureUtils adventureUtils = plugin.getStarter().getAdventureUtils();
     
     public void createHologram(Block block, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();

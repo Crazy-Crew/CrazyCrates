@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates;
 
+import com.badbones69.crazycrates.api.utilities.LoggerUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.ItemBuilder;
 import com.badbones69.crazycrates.common.configuration.files.Config;
@@ -25,6 +26,8 @@ import java.util.Random;
 public class Methods {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final LoggerUtils loggerUtils = plugin.getStarter().getLoggerUtils();
 
     private final Random random = new Random();
 
@@ -145,9 +148,9 @@ public class Methods {
         //player.sendMessage(getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));
 
         if (Config.TOGGLE_VERBOSE) {
-            // loggerUtils.debug("<red>An error has occurred while trying to take a physical key from a player.</red>");
-            // loggerUtils.debug("<gold>Player:</gold> <red>" + player.getName() + "</red>");
-            // loggerUtils.debug("<gold>Gold:</gold> <red>" + crate.getName() + "</red>");
+            loggerUtils.debug("<red>An error has occurred while trying to take a physical key from a player.</red>");
+            loggerUtils.debug("<gold>Player:</gold> <red>" + player.getName() + "</red>");
+            loggerUtils.debug("<gold>Gold:</gold> <red>" + crate.getName() + "</red>");
         }
 
         if (e != null) e.printStackTrace();

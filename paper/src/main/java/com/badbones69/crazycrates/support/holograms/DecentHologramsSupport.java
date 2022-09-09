@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.support.holograms;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
 import com.badbones69.crazycrates.common.configuration.objects.CrateHologram;
@@ -14,11 +15,9 @@ public class DecentHologramsSupport implements HologramController {
     
     private final HashMap<Block, Hologram> holograms = new HashMap<>();
 
-    private final AdventureUtils adventureUtils;
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    public DecentHologramsSupport(AdventureUtils adventureUtils) {
-        this.adventureUtils = adventureUtils;
-    }
+    private final AdventureUtils adventureUtils = plugin.getStarter().getAdventureUtils();
     
     public void createHologram(Block block, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();

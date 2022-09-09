@@ -20,25 +20,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class WonderCrate implements Listener {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    public final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyManager crazyManager;
+    public final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
-    private final ScheduleUtils scheduleUtils;
+    public final ScheduleUtils scheduleUtils = plugin.getStarter().getScheduleUtils();
 
-    private final Methods methods;
+    public final Methods methods = plugin.getStarter().getMethods();
 
-    // Task Handler
-    private final CrateTaskHandler crateTaskHandler;
-
-    public WonderCrate(CrazyManager crazyManager, ScheduleUtils scheduleUtils, Methods methods, CrateTaskHandler crateTaskHandler) {
-        this.crazyManager = crazyManager;
-        this.scheduleUtils = scheduleUtils;
-
-        this.methods = methods;
-
-        this.crateTaskHandler = crateTaskHandler;
-    }
+    public final CrateTaskHandler crateTaskHandler = plugin.getStarter().getCrateTaskHandler();
 
     public void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {

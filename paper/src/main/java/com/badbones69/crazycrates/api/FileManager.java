@@ -12,21 +12,18 @@ import java.util.HashMap;
 
 public class FileManager {
 
+    // Global Methods.
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final LoggerUtils loggerUtils;
+    private final LoggerUtils loggerUtils = plugin.getStarter().getLoggerUtils();
 
+    // Class Internals.
     private boolean isLogging = false;
 
     private final ArrayList<String> homeFolders = new ArrayList<>();
     private final ArrayList<CustomFile> customFiles = new ArrayList<>();
     private final HashMap<String, String> jarHomeFolders = new HashMap<>();
     private final HashMap<String, String> autoGenerateFiles = new HashMap<>();
-
-
-    public FileManager(LoggerUtils loggerUtils) {
-        this.loggerUtils = loggerUtils;
-    }
 
     /**
      * Sets up the plugin and loads all necessary files.

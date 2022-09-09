@@ -3,11 +3,30 @@ package com.badbones69.crazycrates.api.utilities.handlers.objects;
 import org.bukkit.inventory.ItemStack;
 
 public class Tier {
-    
+
+    /**
+     * The name of the tier.
+     */
     private final String name;
+
+    /**
+     * The name of the colored glass.
+     */
     private final String coloredName;
+
+    /**
+     * The unbuilt colored glass.
+     */
     private final ItemBuilder colorGlass;
+
+    /**
+     * The chance to win the item.
+     */
+
     private final Integer chance;
+    /**
+     * The max range.
+     */
     private final Integer maxRange;
     
     public Tier(String name, String coloredName, ItemBuilder colorGlass, Integer chance, Integer maxRange) {

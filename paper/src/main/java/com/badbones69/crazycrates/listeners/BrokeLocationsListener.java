@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.listeners;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.utilities.LoggerUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.CrateBrokeLocation;
@@ -15,15 +16,11 @@ import java.util.List;
 // Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
 public class BrokeLocationsListener implements Listener {
 
-    private final CrazyManager crazyManager;
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final LoggerUtils loggerUtils;
+    private final LoggerUtils loggerUtils = plugin.getStarter().getLoggerUtils();
 
-    public BrokeLocationsListener(CrazyManager crazyManager, LoggerUtils loggerUtils) {
-        this.crazyManager = crazyManager;
-
-        this.loggerUtils = loggerUtils;
-    }
+    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
     @EventHandler(ignoreCancelled = true)
     public void onWorldLoad(WorldLoadEvent e) {

@@ -16,25 +16,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class RouletteCrate implements Listener {
 
+    // Global Methods.
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyManager crazyManager;
+    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
-    private final ScheduleUtils scheduleUtils;
-    private final CommonUtils commonUtils;
-    private final Methods methods;
+    private final CommonUtils commonUtils = plugin.getStarter().getCommonUtils();
 
-    private final CrateTaskHandler crateTaskHandler;
+    private final ScheduleUtils scheduleUtils = plugin.getStarter().getScheduleUtils();
 
-    public RouletteCrate(CrazyManager crazyManager, ScheduleUtils scheduleUtils, CommonUtils commonUtils, Methods methods, CrateTaskHandler crateTaskHandler) {
-        this.crazyManager = crazyManager;
-        this.scheduleUtils = scheduleUtils;
-        this.commonUtils = commonUtils;
+    private final Methods methods = plugin.getStarter().getMethods();
 
-        this.methods = methods;
-        this.crateTaskHandler = crateTaskHandler;
-    }
+    private final CrateTaskHandler crateTaskHandler = plugin.getStarter().getCrateTaskHandler();
 
+    // Class Internals.
+
+    /**
+     * Updates the inventory with glass.
+     * @param inv - The inventory the player is viewing.
+     */
     private void setGlass(Inventory inv) {
         for (int i = 0; i < 27; i++) {
             if (i != 13) inv.setItem(i, methods.getRandomPaneColor().setName(" ").build());

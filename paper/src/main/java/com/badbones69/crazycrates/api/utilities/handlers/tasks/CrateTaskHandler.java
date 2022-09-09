@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api.utilities.handlers.tasks;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.utilities.CommonUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.crates.Crate;
@@ -16,14 +17,11 @@ public class CrateTaskHandler {
 
     private final HashMap<UUID, CrateTask> currentTasks = new HashMap<>();
 
-    private final CrazyManager crazyManager;
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CommonUtils commonUtils;
+    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
-    public CrateTaskHandler(CrazyManager crazyManager, CommonUtils commonUtils) {
-        this.crazyManager = crazyManager;
-        this.commonUtils = commonUtils;
-    }
+    private final CommonUtils commonUtils = plugin.getStarter().getCommonUtils();
 
     /**
      * Add a crate task that is going on for a player.

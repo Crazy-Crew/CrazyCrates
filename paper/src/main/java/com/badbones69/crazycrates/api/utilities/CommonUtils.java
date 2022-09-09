@@ -11,17 +11,21 @@ import java.util.ArrayList;
 
 public class CommonUtils {
 
+    // Global Methods.
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyManager crazyManager;
-    private final Methods methods;
+    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
-    public CommonUtils(CrazyManager crazyManager, Methods methods) {
-        this.crazyManager = crazyManager;
+    private final Methods methods = plugin.getStarter().getMethods();
 
-        this.methods = methods;
-    }
+    // Class Internals.
 
+    /**
+     * Picks the prize for the player.
+     * @param player - The player who the prize is for.
+     * @param crate - The crate the player is opening.
+     * @param prize - The prize the player is being given.
+     */
     public void pickPrize(Player player, Crate crate, Prize prize) {
         if (prize != null) {
             crazyManager.givePrize(player, prize);
@@ -34,6 +38,9 @@ public class CommonUtils {
         }
     }
 
+    /**
+     * Decides when the crate should start to slow down.
+     */
     public ArrayList<Integer> slowSpin() {
         ArrayList<Integer> slow = new ArrayList<>();
         int full = 46;

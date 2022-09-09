@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api.utilities.handlers.objects.crates;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.utilities.LoggerUtils;
@@ -24,7 +25,17 @@ import java.util.List;
 import java.util.Random;
 
 public class Crate {
-    
+
+    // Global Methods.
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final LoggerUtils loggerUtils = plugin.getStarter().getLoggerUtils();
+
+    private final Methods methods = plugin.getStarter().getMethods();
+
+    private final FileManager fileManager = plugin.getStarter().getFileManager();
+
+    // Class Internals.
     private CrateManager manager;
     private final String name;
     private final ItemStack key;
@@ -45,20 +56,16 @@ public class Crate {
     private final ArrayList<ItemStack> preview;
     private final ArrayList<Tier> tiers;
     private final CrateHologram hologram;
-    private final FileManager fileManager;
-    private final Methods methods;
-
-    private final LoggerUtils loggerUtils;
 
     /**
-     * @param name The name of the crate.
-     * @param crateType The crate type of the crate.
-     * @param key The key as an item stack.
-     * @param prizes The prizes that can be won.
-     * @param file The crate file.
+     * Builds the entire crate.
+     * @param name - The name of the crate.
+     * @param crateType - The crate type of the crate.
+     * @param key - The key as an item stack.
+     * @param prizes - The prizes that can be won.
+     * @param file - The crate file.
      */
-    public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers,
-                 CrateHologram hologram, Methods methods, FileManager fileManager, LoggerUtils loggerUtils) {
+    public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, CrateHologram hologram) {
         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
         this.key = itemBuilder.setCrateName(name).build();
         this.adminKey = itemBuilder
@@ -90,11 +97,6 @@ public class Crate {
             this.manager = new CosmicCrateManager(file);
         }
 
-        this.methods = methods;
-        this.fileManager = fileManager;
-
-        this.loggerUtils = loggerUtils;
-
         //this.previewListener = previewListener;
     }
     
@@ -107,7 +109,7 @@ public class Crate {
     
     /**
      * Set the preview lines for a Crate.
-     * @param amount The amount of lines the preview has.
+     * @param amount - The amount of lines the preview has.
      */
     public void setPreviewChestLines(int amount) {
         int finalAmount;
@@ -137,7 +139,7 @@ public class Crate {
     
     /**
      * Check to see if a player can win a prize from a crate.
-     * @param player The player you are checking.
+     * @param player - The player you are checking.
      * @return True if they can win at least 1 prize and false if they can't win any.
      */
     public boolean canWinPrizes(Player player) {
@@ -146,7 +148,7 @@ public class Crate {
     
     /**
      * Picks a random prize based on BlackList Permissions and the Chance System.
-     * @param player The player that will be winning the prize.
+     * @param player - The player that will be winning the prize.
      * @return The winning prize.
      */
     public Prize pickPrize(Player player) {
@@ -182,6 +184,11 @@ public class Crate {
         }
     }
 
+    /**
+     * Checks the chance of each prize in the arraylists.
+     * @param prizes - All the prizes.
+     * @param usablePrizes - All the prizes that can be used i.e they passed the check.
+     */
     private void checkChance(ArrayList<Prize> prizes, ArrayList<Prize> usablePrizes) {
         for (int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
             for (Prize prize : usablePrizes) {
@@ -200,8 +207,8 @@ public class Crate {
 
     /**
      * Picks a random prize based on BlackList Permissions and the Chance System. Only used in the Cosmic Crate Type since it is the only one with tiers.
-     * @param player The player that will be winning the prize.
-     * @param tier The tier you wish the prize to be from.
+     * @param player - The player that will be winning the prize.
+     * @param tier - The tier you wish the prize to be from.
      * @return The winning prize based on the crate's tiers.
      */
     public Prize pickPrize(Player player, Tier tier) {
@@ -231,8 +238,8 @@ public class Crate {
     
     /**
      * Picks a random prize based on BlackList Permissions and the Chance System. Spawns the display item at the location.
-     * @param player The player that will be winning the prize.
-     * @param location The location the firework will spawn at.
+     * @param player - The player that will be winning the prize.
+     * @param location - The location the firework will spawn at.
      * @return The winning prize.
      */
     public Prize pickPrize(Player player, Location location) {
@@ -244,7 +251,7 @@ public class Crate {
     }
     
     /**
-     * @return name The name of the crate.
+     * @return The name of the crate.
      */
     public String getName() {
         return this.name;
@@ -259,8 +266,8 @@ public class Crate {
     
     /**
      * Check if the inventory the player is in is the preview menu.
-     * @param view The inventory view of the inventory.
-     * @return True if it is the preview menu and false if not.
+     * @param view - The inventory view of the inventory.
+     * @return true if it is the preview menu and false if not.
      */
     public boolean isPreview(InventoryView view) {
         return view != null && isPreview(view.getTitle());
@@ -268,7 +275,7 @@ public class Crate {
     
     /**
      * Check if the inventory the player is in is the preview menu.
-     * @param inventoryName The name of the inventory.
+     * @param inventoryName - The name of the inventory.
      * @return True if it is the preview menu and false if not.
      */
     public boolean isPreview(String inventoryName) {
@@ -292,8 +299,8 @@ public class Crate {
     }
     
     /**
-     * Get the item that shows as the preview boarder if enabled.
-     * @return The ItemBuilder for the boarder item.
+     * Get the item that shows as the preview border if enabled.
+     * @return The ItemBuilder for the border item.
      */
     public ItemBuilder getBoarderItem() {
         return boarderItem;
@@ -309,7 +316,7 @@ public class Crate {
     
     /**
      * Check if the inventory the player is in is the crate menu.
-     * @param view The inventory view of the inventory.
+     * @param view - The inventory view of the inventory.
      * @return True if it is the crate menu and false if not.
      */
     public boolean isCrateMenu(InventoryView view) {
@@ -318,7 +325,7 @@ public class Crate {
     
     /**
      * Check if the inventory the player is in is the crate menu.
-     * @param inventoryName The name of the inventory.
+     * @param inventoryName - The name of the inventory.
      * @return True if it is the crate menu and false if not.
      */
     public boolean isCrateMenu(String inventoryName) {
@@ -379,7 +386,7 @@ public class Crate {
     }
     
     /**
-     * @param amount The amount of keys you want.
+     * @param amount - The amount of keys you want.
      * @return The key as an item stack.
      */
     public ItemStack getKey(int amount) {
@@ -390,8 +397,8 @@ public class Crate {
     }
     
     /**
-     * Get the key that shows in the /cc admin menu.
-     * @return The itemstack of the key shown in the /cc admin menu.
+     * Get the key that shows in the /crates admin menu.
+     * @return The itemstack of the key shown in the /crates admin menu.
      */
     public ItemStack getAdminKey() {
         return adminKey;
@@ -412,7 +419,7 @@ public class Crate {
     }
     
     /**
-     * @param name Name of the prize you want.
+     * @param name - Name of the prize you want.
      * @return The prize you asked for.
      */
     public Prize getPrize(String name) {
@@ -422,7 +429,11 @@ public class Crate {
 
         return null;
     }
-    
+
+    /**
+     * @param item - Item of the prize you want.
+     * @return The prize you asked for.
+     */
     public Prize getPrize(ItemStack item) {
         try {
             //NBTItem nbt = new NBTItem(item);
@@ -453,8 +464,8 @@ public class Crate {
     
     /**
      * Add a new editor item to a prize in the Crate.
-     * @param prize The prize the item is being added to.
-     * @param item The ItemStack that is being added.
+     * @param prize - The prize the item is being added to.
+     * @param item - The ItemStack that is being added.
      */
     public void addEditorItem(String prize, ItemStack item) {
         ArrayList<ItemStack> items = new ArrayList<>();
@@ -533,7 +544,11 @@ public class Crate {
 
         return items;
     }
-    
+
+    /**
+     * @param page - The page number.
+     * @return The array list of items on the pages.
+     */
     private List<ItemStack> getPageItems(int page) {
         List<ItemStack> list = preview;
         List<ItemStack> items = new ArrayList<>();
@@ -559,7 +574,12 @@ public class Crate {
         }
         return items;
     }
-    
+
+    /**
+     * Set default items in the Preview Menu.
+     * @param inventory - The inventory the player is opening.
+     * @param player - The player.
+     */
     private void setDefaultItems(Inventory inventory, Player player) {
         if (borderToggle) {
             List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
