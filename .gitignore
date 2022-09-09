@@ -16,6 +16,12 @@ gradlew.bat
 .gradle
 build
 
+paper/.gradle
+common/.gradle
+fabric/.gradle
+build-logic/.gradle
+
 paper/build
 common/build
 build-logic/build
+fabric/build

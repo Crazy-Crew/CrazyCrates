@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "crazycrates",
+  "version": "${version}",
+
+  "name": "CrazyCrates",
+  "description": "The best crates plugin!",
+  "authors": [
+    "Ryder Belserion",
+    "Badbones69"
+  ],
+  "contact": {
+    "homepage": "https://github.com/CrazyCrew",
+    "sources": "https://github.com/CrazyCrew/CrazyCrates"
+  },
+
+  "license": "MIT",
+  "icon": "assets/CrazyCrates.png",
+
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "com.badbones69.crazycrates.CrazyCrates"
+    ]
+  },
+
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  }
+}

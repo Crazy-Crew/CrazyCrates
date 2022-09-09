@@ -5,6 +5,14 @@ paper = "1.19.2-R0.1-SNAPSHOT"
 paper-command-cloud = "1.7.0"
 paper-lib = "1.0.8-SNAPSHOT"
 
+# Fabric
+minecraft-version = "1.19.2"
+
+yarn-mappings = "1.19.2+build.9"
+loader-version = "0.14.9"
+
+fabric-version = "0.60.0+1.19.2"
+
 # Misc
 bstats = "3.0.0"
 nbt-api = "2.10.0"
@@ -37,6 +45,13 @@ yaml = "1.8.1"
 paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 paper-command-cloud = { module = "cloud.commandframework:cloud-paper", version.ref = "paper-command-cloud" }
 paper-lib = { module = "io.papermc:paperlib", version.ref = "paper-lib" }
+
+# FabricMC
+fabric-minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft-version" }
+fabric-mappings = { module = "net.fabricmc:yarn", version.ref = "yarn-mappings" }
+fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "loader-version" }
+
+fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-version" }
 
 # BStats Bukkit
 bstats-bukkit = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
