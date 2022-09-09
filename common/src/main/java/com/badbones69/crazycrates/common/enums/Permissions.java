@@ -29,22 +29,42 @@ public enum Permissions {
     CRAZY_CRATES_ADMIN_SCHEMATIC_SET("admin.schematic.set", "Sets the positions #1 or #2 when making a new schematic for quadcrates."),
     CRAZY_CRATES_ADMIN_SCHEMATIC_SAVE("admin.schematic.save", "Saves the new schematic file to the schematics folder.");
 
+    /**
+     * The default permission.
+     */
     private final String defaultPermission;
+    /**
+     * The description.
+     */
     private final String description;
 
+    /**
+     * @param defaultPermission - The fallback permission
+     * @param description - The description of the permission.
+     */
     Permissions(String defaultPermission, String description) {
         this.defaultPermission = defaultPermission;
         this.description = description;
     }
 
+    /**
+     * @param action - The action i.e. command or inventory action.
+     * @return - The built permission.
+     */
     public String getPermission(String action) {
         return "crazycrates." + action + "." + defaultPermission;
     }
 
+    /**
+     * @return Fetch the default permission.
+     */
     public String getPermission() {
         return "crazycrates.command." + defaultPermission;
     }
 
+    /**
+     * Get the permission description.
+     */
     public String getDescription() {
         return description;
     }
