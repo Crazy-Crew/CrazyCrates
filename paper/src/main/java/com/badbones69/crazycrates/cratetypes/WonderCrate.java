@@ -30,7 +30,7 @@ public class WonderCrate implements Listener {
 
     public final CrateTaskHandler crateTaskHandler = plugin.getStarter().getCrateTaskHandler();
 
-    public void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
+    public void startWonder(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);

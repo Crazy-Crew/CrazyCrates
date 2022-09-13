@@ -19,7 +19,7 @@ public class CrateMainMenu extends AbstractConfig {
             1, 2, 3, 4, 5 or 6 are the available options.
             Only works with the CHEST type gui.
             """)
-    public static Integer CRATE_MENU_SIZE = 6;
+    public static int CRATE_MENU_SIZE = 6;
 
     @Key("settings.crate-menu.type")
     @Comment("""
@@ -30,7 +30,7 @@ public class CrateMainMenu extends AbstractConfig {
 
     @Key("crate-menu-filler.toggle")
     @Comment("Whether you want the filler to be enabled.")
-    public static Boolean CRATE_MENU_FILLER_TOGGLE = false;
+    public static boolean CRATE_MENU_FILLER_TOGGLE = false;
 
     @Key("crate-menu-filler.item")
     @Comment("The item you want to fill it.")

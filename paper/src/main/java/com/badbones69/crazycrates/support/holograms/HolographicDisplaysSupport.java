@@ -35,6 +35,7 @@ public class HolographicDisplaysSupport implements HologramController {
         if (!holograms.containsKey(block)) return;
 
         Hologram hologram = holograms.get(block);
+
         holograms.remove(block);
         hologram.delete();
     }

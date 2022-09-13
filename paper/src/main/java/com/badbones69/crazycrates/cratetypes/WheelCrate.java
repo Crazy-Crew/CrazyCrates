@@ -10,6 +10,7 @@ import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
 import com.badbones69.crazycrates.api.utilities.CommonUtils;
 import com.badbones69.crazycrates.api.utilities.ScheduleUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateTaskHandler;
+import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -39,7 +40,7 @@ public class WheelCrate implements Listener {
     // Class Internals.
     public Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
 
-    public void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
+    public void startWheel(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
@@ -139,28 +140,7 @@ public class WheelCrate implements Listener {
         }));
     }
     
-    private static ArrayList<Integer> getBorder() {
-        ArrayList<Integer> slots = new ArrayList<>();
-
-        slots.add(13);
-        slots.add(14);
-        slots.add(15);
-        slots.add(16);
-        slots.add(25);
-        slots.add(34);
-        slots.add(43);
-        slots.add(42);
-        slots.add(41);
-        slots.add(40);
-        slots.add(39);
-        slots.add(38);
-        slots.add(37);
-        slots.add(28);
-        slots.add(19);
-        slots.add(10);
-        slots.add(11);
-        slots.add(12);
-
-        return slots;
+    private ArrayList<Integer> getBorder() {
+        return Lists.newArrayList(10,11,12,13,14,15,16,19,25,28,34,37,38,39,40,41,42,43);
     }
 }

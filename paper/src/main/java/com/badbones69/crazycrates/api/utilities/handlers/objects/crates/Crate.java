@@ -12,6 +12,7 @@ import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.api.managers.CrateManager;
 import com.badbones69.crazycrates.common.configuration.files.Config;
 import com.badbones69.crazycrates.common.configuration.objects.CrateHologram;
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -187,7 +188,7 @@ public class Crate {
     /**
      * Checks the chance of each prize in the arraylists.
      * @param prizes - All the prizes.
-     * @param usablePrizes - All the prizes that can be used i.e they passed the check.
+     * @param usablePrizes - All the prizes that can be used i.e. they passed the check.
      */
     private void checkChance(ArrayList<Prize> prizes, ArrayList<Prize> usablePrizes) {
         for (int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {

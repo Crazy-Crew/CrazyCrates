@@ -15,11 +15,11 @@ public class Config extends AbstractConfig {
 
     @Key("settings.verbose")
     @Comment("Whether you want to have extra logging enabled.")
-    public static Boolean TOGGLE_VERBOSE = true;
+    public static boolean TOGGLE_VERBOSE = true;
 
     @Key("settings.toggle-metrics")
     @Comment("Whether you want metrics to be enabled.")
-    public static Boolean TOGGLE_METRICS = true;
+    public static boolean TOGGLE_METRICS = true;
 
     @Key("settings.data-storage.storage-method")
     @Comment("""
@@ -64,45 +64,45 @@ public class Config extends AbstractConfig {
     public static String STORAGE_TABLE_PREFIX = "crazycrates_";
 
     @Key("settings.data-storage.data.pool-settings.max-pool-size")
-    public static Integer STORAGE_MAX_POOL_SIZE = 10;
+    public static int STORAGE_MAX_POOL_SIZE = 10;
 
     @Key("settings.data-storage.data.pool-settings.min-idle")
-    public static Integer STORAGE_MIN_IDLE = 10;
+    public static int STORAGE_MIN_IDLE = 10;
 
     @Key("settings.data-storage.data.pool-settings.max-life-time")
-    public static Integer STORAGE_MAX_LIFE_TIME = 1800000;
+    public static int STORAGE_MAX_LIFE_TIME = 1800000;
 
     @Key("settings.data-storage.data.pool-settings.keep-alive-time")
-    public static Integer STORAGE_KEEP_ALIVE_TIME = 0;
+    public static int STORAGE_KEEP_ALIVE_TIME = 0;
 
     @Key("settings.data-storage.data.pool-settings.connection-timeout")
-    public static Integer STORAGE_CONNECTION_TIMEOUT = 5000;
+    public static int STORAGE_CONNECTION_TIMEOUT = 5000;
 
     @Key("settings.data-storage.data.pool-settings.properties.use-unicode")
-    public static Boolean STORAGE_USE_UNICODE = true;
+    public static boolean STORAGE_USE_UNICODE = true;
 
     @Key("settings.data-storage.data.pool-settings.properties.character-encoding")
     public static String STORAGE_CHARACTER_ENCODING = "utf8";
 
     @Key("settings.crate.knock-back")
     @Comment("If crates should have knock back if they have no keys.")
-    public static Boolean TOGGLE_CRATE_KNOCKBACK = true;
+    public static boolean TOGGLE_CRATE_KNOCKBACK = true;
 
     @Key("settings.crate.keys.physical-crate-accepts-virtual-keys")
     @Comment("Should a physical crate accept virtual keys?")
-    public static Boolean PHYSICAL_CRATE_ACCEPTS_VIRTUAL_KEYS = true;
+    public static boolean PHYSICAL_CRATE_ACCEPTS_VIRTUAL_KEYS = true;
 
     @Key("settings.crate.keys.virtual-crate-accepts-physical-keys")
     @Comment("Should a virtual crate ( /crates ) accept physical keys?")
-    public static Boolean VIRTUAL_CRATE_ACCEPTS_PHYSICAL_KEYS = true;
+    public static boolean VIRTUAL_CRATE_ACCEPTS_PHYSICAL_KEYS = true;
 
     @Key("settings.crate.give-virtual-keys-with-full-inventory")
     @Comment("Should I give virtual keys if inventory is full?")
-    public static Boolean GIVE_VIRTUAL_KEYS_WITH_FULL_INVENTORY = false;
+    public static boolean GIVE_VIRTUAL_KEYS_WITH_FULL_INVENTORY = false;
 
     @Key("settings.crate.keys.key-sound.enabled")
     @Comment("Do you want me to play a sound?")
-    public static Boolean KEY_SOUND_ENABLED = false;
+    public static boolean KEY_SOUND_ENABLED = false;
 
     @Key("settings.crate.keys.key-sound.name")
     @Comment("The sound you want to play!")
@@ -110,7 +110,7 @@ public class Config extends AbstractConfig {
 
     @Key("settings.crate.quad-crate.timer")
     @Comment("I don't know what this is yet.")
-    public static Integer QUAD_CRATE_TIMERS = 300;
+    public static long QUAD_CRATE_TIMERS = 300;
 
     @Key("settings.crate.disabled-worlds")
     @Comment("What worlds do you want Crates to be disabled in?")

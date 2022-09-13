@@ -90,7 +90,7 @@ public class CsgoCrate implements Listener {
         }
     }
     
-    private void startCSGO(final Player player, final Inventory inv, Crate crate) {
+    private void startCSGO(Player player, Inventory inv, Crate crate) {
         crateTaskHandler.addTask(player, scheduleUtils.timer(1L, 1L, () -> {
             AtomicInteger time = new AtomicInteger();
             AtomicInteger full = new AtomicInteger();

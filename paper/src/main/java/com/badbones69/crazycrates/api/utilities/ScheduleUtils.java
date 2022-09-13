@@ -34,7 +34,7 @@ public class ScheduleUtils {
      * @param task - The runnable lambda.
      * @return The new sync later task.
      */
-    public BukkitTask later(Long delay, Runnable task) {
+    public BukkitTask later(long delay, Runnable task) {
         return plugin.getServer().getScheduler().runTaskLater(plugin, task, delay);
     }
 
@@ -44,7 +44,7 @@ public class ScheduleUtils {
      * @param task - The runnable lambda.
      * @return The new async later task.
      */
-    public BukkitTask laterAsync(Long delay, Runnable task) {
+    public BukkitTask laterAsync(long delay, Runnable task) {
         return plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, task, delay);
     }
 
@@ -55,7 +55,7 @@ public class ScheduleUtils {
      * @param task - The runnable lambda.
      * @return The new sync timed task.
      */
-    public BukkitTask timer(Long period, Long delay, Runnable task) {
+    public BukkitTask timer(long period, long delay, Runnable task) {
         return plugin.getServer().getScheduler().runTaskTimer(plugin, task, delay, period);
     }
 
@@ -66,7 +66,7 @@ public class ScheduleUtils {
      * @param task - The runnable lambda.
      * @return The new async timed task.
      */
-    public BukkitTask timerAsync(Long period, Long delay, Runnable task) {
+    public BukkitTask timerAsync(long period, long delay, Runnable task) {
         return plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, task, delay, period);
     }
 }

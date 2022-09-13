@@ -21,7 +21,7 @@ import java.util.UUID;
  */
 public class SkullCreator {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
     
     /**
      * Creates a player skull based on a player's name.
@@ -104,7 +104,7 @@ public class SkullCreator {
      * @param url The URL of the Mojang skin
      * @return The head associated with the URL
      */
-    public static ItemStack itemWithUrl(ItemStack item, String url) {
+    public ItemStack itemWithUrl(ItemStack item, String url) {
         notNull(item, "item");
         notNull(url, "url");
         
@@ -130,7 +130,7 @@ public class SkullCreator {
      * @param base64 The base64 string containing the texture
      * @return The head with a custom texture
      */
-    public static ItemStack itemWithBase64(ItemStack item, String base64) {
+    public ItemStack itemWithBase64(ItemStack item, String base64) {
         notNull(item, "item");
         notNull(base64, "base64");
         
@@ -213,11 +213,11 @@ public class SkullCreator {
         block.setType(Material.valueOf("PLAYER_HEAD"), false);
     }
     
-    private static void notNull(Object o, String name) {
+    private void notNull(Object o, String name) {
         if (o == null) throw new NullPointerException(name + " should not be null!");
     }
     
-    private static String urlToBase64(String url) {
+    private String urlToBase64(String url) {
         
         URI actualUrl;
 

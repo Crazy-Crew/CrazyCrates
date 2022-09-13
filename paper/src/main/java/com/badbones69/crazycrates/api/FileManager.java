@@ -46,7 +46,7 @@ public class FileManager {
                     if (list != null) {
                         for (String name : list) {
                             if (name.endsWith(".yml")) {
-                                CustomFile file = new CustomFile(name, homeFolder, plugin);
+                                CustomFile file = new CustomFile(name, homeFolder);
 
                                 if (file.exists()) {
                                     customFiles.add(file);
@@ -70,7 +70,7 @@ public class FileManager {
                                 InputStream jarFile = getClass().getResourceAsStream((jarHomeFolders.getOrDefault(fileName, homeFolder)) + "/" + fileName);
                                 copyFile(jarFile, serverFile);
 
-                                if (fileName.toLowerCase().endsWith(".yml")) customFiles.add(new CustomFile(fileName, homeFolder, plugin));
+                                if (fileName.toLowerCase().endsWith(".yml")) customFiles.add(new CustomFile(fileName, homeFolder));
 
                                 if (isLogging) loggerUtils.debug("<red>Created new default file:</red> <gold>" + homeFolder + "/" + fileName + ".</gold>");
                             } catch (Exception e) {
@@ -212,7 +212,7 @@ public class FileManager {
      * @param file The custom file you are saving.
      * @return True if the file saved correct and false if there was an error.
      */
-    public Boolean saveFile(CustomFile file) {
+    public boolean saveFile(CustomFile file) {
         return file.saveFile();
     }
     
@@ -272,16 +272,15 @@ public class FileManager {
         private final String homeFolder;
         private FileConfiguration file;
 
-        private final CrazyCrates plugin;
+        private final CrazyCrates plugin = CrazyCrates.getPlugin();
         
         /**
          * A custom file that is being made.
          * @param name Name of the file.
          * @param homeFolder The home folder of the file.
          */
-        public CustomFile(String name, String homeFolder, CrazyCrates plugin) {
+        public CustomFile(String name, String homeFolder) {
             this.name = name.replace(".yml", "");
-            this.plugin = plugin;
             this.fileName = name;
             this.homeFolder = homeFolder;
 
@@ -336,7 +335,7 @@ public class FileManager {
          * Check if the file actually exists in the file system.
          * @return True if it does and false if it doesn't.
          */
-        public Boolean exists() {
+        public boolean exists() {
             return file != null;
         }
         
@@ -344,7 +343,7 @@ public class FileManager {
          * Save the custom file.
          * @return True if it saved correct and false if something went wrong.
          */
-        public Boolean saveFile() {
+        public boolean saveFile() {
             if (file != null) {
                 try {
                     file.save(new File(plugin.getDataFolder(), homeFolder + "/" + fileName));
@@ -371,7 +370,7 @@ public class FileManager {
          * Overrides the loaded state file and loads the filesystems file.
          * @return True if it reloaded correct and false if the file wasn't found or error.
          */
-        public Boolean reloadFile() {
+        public boolean reloadFile() {
             if (file != null) {
                 try {
                     file = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "/" + homeFolder + "/" + fileName));

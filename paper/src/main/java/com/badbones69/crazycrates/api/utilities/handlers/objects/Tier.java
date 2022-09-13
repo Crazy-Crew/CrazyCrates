@@ -23,13 +23,13 @@ public class Tier {
      * The chance to win the item.
      */
 
-    private final Integer chance;
+    private final int chance;
     /**
      * The max range.
      */
-    private final Integer maxRange;
+    private final int maxRange;
     
-    public Tier(String name, String coloredName, ItemBuilder colorGlass, Integer chance, Integer maxRange) {
+    public Tier(String name, String coloredName, ItemBuilder colorGlass, int chance, int maxRange) {
         this.name = name;
         this.coloredName = coloredName;
         this.colorGlass = colorGlass.setName(coloredName);
@@ -37,7 +37,7 @@ public class Tier {
         this.maxRange = maxRange;
     }
     
-    public Tier(String name, String coloredName, String colorGlass, Integer chance, Integer maxRange) {
+    public Tier(String name, String coloredName, String colorGlass, int chance, int maxRange) {
         this.name = name;
         this.coloredName = coloredName;
         this.colorGlass = new ItemBuilder().setMaterial(colorGlass).setName(coloredName);
@@ -69,14 +69,14 @@ public class Tier {
     /**
      * @return The chance of being picked.
      */
-    public Integer getChance() {
+    public int getChance() {
         return chance;
     }
     
     /**
      * @return The range of max possible\ chances.
      */
-    public Integer getMaxRange() {
+    public int getMaxRange() {
         return maxRange;
     }
 

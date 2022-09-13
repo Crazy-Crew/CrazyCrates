@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class QuadCrateSpiralHandler implements SpiralControl {
 
-    private ArrayList<Location> getLocations(Location center, Boolean clockWise) {
+    private ArrayList<Location> getLocations(Location center, boolean clockWise) {
         World world = center.getWorld();
 
         double downWardsDistance = .05;

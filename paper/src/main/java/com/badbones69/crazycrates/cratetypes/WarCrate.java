@@ -62,7 +62,7 @@ public class WarCrate implements Listener {
         startWar(player, inv, crate, inventoryView.getTitle());
     }
     
-    private void startWar(final Player player, final Inventory inv, final Crate crate, final String inventoryTitle) {
+    private void startWar(Player player, Inventory inv, Crate crate, String inventoryTitle) {
 
         crateTaskHandler.addTask(player, scheduleUtils.timer(3L, 1L, () -> {
             AtomicInteger full = new AtomicInteger();

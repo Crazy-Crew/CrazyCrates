@@ -56,7 +56,7 @@ public class RouletteCrate implements Listener {
         startRoulette(player, inv, crate);
     }
 
-    private void startRoulette(final Player player, final Inventory inv, final Crate crate) {
+    private void startRoulette(Player player, Inventory inv, Crate crate) {
 
         crateTaskHandler.addTask(player, scheduleUtils.timer(2L, 2L, () -> {
 

@@ -32,15 +32,15 @@ public class BaseCrateConfig extends AbstractConfig {
 
     @Key("crate.starting-keys")
     @Comment("The starting keys for when a player first joins.")
-    public static Integer CRATE_STARTING_KEYS = 0;
+    public static int CRATE_STARTING_KEYS = 0;
 
     @Key("crate.options.menu-settings.enabled")
     @Comment("If the crate should show up in /crates menu")
-    public static Boolean CRATE_MENU_ENABLED = true;
+    public static boolean CRATE_MENU_ENABLED = true;
 
     @Key("crate.options.menu-settings.slot")
     @Comment("The slot of the item in the menu.")
-    public static Integer CRATE_MENU_SLOT = 21;
+    public static int CRATE_MENU_SLOT = 21;
 
     @Key("crate.options.menu-settings.material")
     @Comment("The material of the crate in the menu.")
@@ -48,7 +48,7 @@ public class BaseCrateConfig extends AbstractConfig {
 
     @Key("crate.options.broadcast-settings.enabled")
     @Comment("If a message should be sent when a crate is open.")
-    public static Boolean CRATE_OPENING_BROADCAST = true;
+    public static boolean CRATE_OPENING_BROADCAST = true;
 
     @Key("crate.options.broadcast-settings.message")
     @Comment("""
@@ -62,11 +62,11 @@ public class BaseCrateConfig extends AbstractConfig {
      */
     @Key("crate.options.preview-settings.glowing")
     @Comment("If the item in the main menu is glowing or not.")
-    public static Boolean CRATE_PREVIEW_GLOWING = true;
+    public static boolean CRATE_PREVIEW_GLOWING = true;
 
     @Key("crate.options.preview-settings.enabled")
     @Comment("Turn the preview for this Crate on & off.")
-    public static Boolean CRATE_PREVIEW_TOGGLE = true;
+    public static boolean CRATE_PREVIEW_TOGGLE = true;
 
     @Key("crate.options.preview-settings.name")
     @Comment("The name of the Preview Crate when right clicking a crate.")
@@ -74,11 +74,11 @@ public class BaseCrateConfig extends AbstractConfig {
 
     @Key("crate.options.preview-settings.size")
     @Comment("How large should the crate preview be?")
-    public static Integer CRATE_PREVIEW_SIZE = 6;
+    public static int CRATE_PREVIEW_SIZE = 6;
 
     @Key("crate.options.preview-settings.border.enabled")
     @Comment("If the glass border should be enabled or not.")
-    public static Boolean CRATE_PREVIEW_BORDER_TOGGLE = true;
+    public static boolean CRATE_PREVIEW_BORDER_TOGGLE = true;
 
     @Key("crate.options.preview-settings.border.material")
     @Comment("The item that will show if the border is enabled.")
@@ -109,18 +109,18 @@ public class BaseCrateConfig extends AbstractConfig {
 
     @Key("crate.options.key-settings.glowing")
     @Comment("If the key is glowing or not.")
-    public static Boolean CRATE_PHYSICAL_KEY_ITEM_GLOWING = true;
+    public static boolean CRATE_PHYSICAL_KEY_ITEM_GLOWING = true;
 
     /**
      * Hologram Settings
      */
     @Key("crate.options.hologram-settings.enabled")
     @Comment("Whether holograms should be enabled for the crate.")
-    public static Boolean CRATE_HOLOGRAM_TOGGLE = true;
+    public static boolean CRATE_HOLOGRAM_TOGGLE = true;
 
     @Key("crate.options.hologram-settings.height")
     @Comment("The height of the hologram above your crate.")
-    public static Double CRATE_HOLOGRAM_HEIGHT = 1.5;
+    public static double CRATE_HOLOGRAM_HEIGHT = 1.5;
 
     @Key("crate.options.hologram-settings.lore")
     @Comment("The entire message in your hologram.")

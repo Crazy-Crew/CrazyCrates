@@ -8,7 +8,7 @@ import org.bukkit.event.HandlerList;
 
 public class PlayerPrizeEvent extends Event {
     
-    private static final HandlerList handlers = new HandlerList();
+    private final HandlerList handlers = new HandlerList();
     private final Player player;
     private final Crate crate;
     private final Prize prize;

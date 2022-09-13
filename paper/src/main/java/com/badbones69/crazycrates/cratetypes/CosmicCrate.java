@@ -65,7 +65,7 @@ public class CosmicCrate implements Listener {
         player.openInventory(inv);
     }
     
-    private static void setChests(Inventory inv, Crate crate) {
+    private void setChests(Inventory inv, Crate crate) {
         CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
         int slot = 1;
 

@@ -50,7 +50,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     private void enable() {
         PluginManager pluginManager = getServer().getPluginManager();
 
-        pluginManager.registerEvents(new ServerReadyEvent(starter.getCrazyManager()), this);
+        pluginManager.registerEvents(new ServerReadyEvent(), this);
     }
 
     public static CrazyCrates getPlugin() {

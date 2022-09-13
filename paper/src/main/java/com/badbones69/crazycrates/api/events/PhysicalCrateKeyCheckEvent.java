@@ -12,7 +12,7 @@ public class PhysicalCrateKeyCheckEvent extends Event implements Cancellable {
     /**
      * A list of handlers.
      */
-    private static final HandlerList handlers = new HandlerList();
+    private final HandlerList handlers = new HandlerList();
 
     /**
      * The player object.

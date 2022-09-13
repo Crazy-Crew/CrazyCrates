@@ -12,7 +12,7 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
     /**
      * A list of handlers.
      */
-    private static final HandlerList handlers = new HandlerList();
+    private final HandlerList handlers = new HandlerList();
 
     /**
      * The player object.
@@ -51,6 +51,7 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
         this.crate = crate;
         this.reason = reason;
         this.amount = amount;
+
         isCancelled = false;
     }
 

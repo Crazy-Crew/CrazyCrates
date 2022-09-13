@@ -9,17 +9,26 @@ settings:
 
   preview-buttons:
     menu-button:
-      item: "COMPASS"
+      # The material the Main Menu button will be.
+      material: "COMPASS"
+      # The name of the Main Menu button.
       name: "<gray><bold>»»</bold></gray> <red><bold>Menu</bold></red> <gray><bold>««</bold></gray>"
+      # The lore for the Main Menu button.
       lore:
         - "<gray>Return to the crate browser.</gray>"
     next-button:
-      item: "FEATHER"
+      # The material the Next button will be.
+      material: "FEATHER"
+      # The name of the Next button.
       name: "<orange><bold>Next »</bold></orange>"
+      # The lore for the Next button.
       lore:
         - "<gray><bold>Page:</bold></gray> <blue>%page%</blue>"
     back-button:
-      item: "FEATHER"
+      # The material the Back button will be.
+      material: "FEATHER"
+      # The name of the Back button.
       name: "<orange><bold>« Back</bold></orange>"
+      # The lore for the Back button.
       lore:
         - "<gray><bold>Page:</bold></gray> <blue>%page%</blue>"

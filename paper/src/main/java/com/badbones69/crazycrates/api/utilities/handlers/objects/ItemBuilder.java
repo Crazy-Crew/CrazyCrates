@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api.utilities.handlers.objects;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.support.SkullCreator;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Color;
@@ -77,6 +78,10 @@ public class ItemBuilder {
     // Custom Data
     private int customModelData;
     private boolean useCustomModelData;
+
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final SkullCreator skullCreator = plugin.getStarter().getSkullCreator();
     
     /**
      * Create a blank item builder.
@@ -129,7 +134,7 @@ public class ItemBuilder {
      * @param itemBuilder - The item builder to deduplicate.
      */
     public ItemBuilder(ItemBuilder itemBuilder) {
-        //this.nbtItem = itemBuilder.nbtItem;
+        this.nbtItem = itemBuilder.nbtItem;
         this.material = itemBuilder.material;
         this.damage = itemBuilder.damage;
         this.itemName = itemBuilder.itemName;
@@ -290,7 +295,7 @@ public class ItemBuilder {
     /**
      * Returns the amount of the item stack.
      */
-    public Integer getAmount() {
+    public int getAmount() {
         return itemAmount;
     }
     
@@ -332,9 +337,9 @@ public class ItemBuilder {
             if (isHead) { // Has to go 1st due to it removing all data when finished.
                 if (isHash) { // Sauce: https://github.com/deanveloper/SkullCreator
                     if (isURL) {
-                        SkullCreator.itemWithUrl(item, player);
+                        skullCreator.itemWithUrl(item, player);
                     } else {
-                        SkullCreator.itemWithBase64(item, player);
+                        skullCreator.itemWithBase64(item, player);
                     }
                 }
             }
@@ -690,7 +695,7 @@ public class ItemBuilder {
      * @param amount The amount of the item stack.
      * @return The ItemBuilder with an updated item count.
      */
-    public ItemBuilder setAmount(Integer amount) {
+    public ItemBuilder setAmount(int amount) {
         this.itemAmount = amount;
 
         return this;
@@ -732,7 +737,7 @@ public class ItemBuilder {
      * @param level The level of the enchantment ( Unsafe levels included )
      * @return The ItemBuilder with updated enchantments.
      */
-    public ItemBuilder addEnchantments(Enchantment enchantment, Integer level) {
+    public ItemBuilder addEnchantments(Enchantment enchantment, int level) {
         this.enchantments.put(enchantment, level);
 
         return this;
