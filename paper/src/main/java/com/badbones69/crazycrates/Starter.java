@@ -28,6 +28,8 @@ public class Starter {
 
     private CrateTaskHandler crateTaskHandler;
 
+    private CrateSessionHandler crateSessionHandler;
+
     private SkullCreator skullCreator;
 
     public void run() {
@@ -44,6 +46,8 @@ public class Starter {
 
         chestStateHandler = new ChestStateHandler();
         crateTaskHandler = new CrateTaskHandler();
+
+        crateSessionHandler = new CrateSessionHandler();
 
         skullCreator = new SkullCreator();
     }
@@ -83,6 +87,10 @@ public class Starter {
     public CrateTaskHandler getCrateTaskHandler() {
         return crateTaskHandler;
     }
+    public CrateSessionHandler getSessionManager() {
+        return crateSessionHandler;
+    }
+
     public SkullCreator getSkullCreator() {
         return skullCreator;
     }
