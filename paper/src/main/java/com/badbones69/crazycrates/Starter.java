@@ -28,6 +28,8 @@ public class Starter {
 
     private CrateTaskHandler crateTaskHandler;
 
+    private SkullCreator skullCreator;
+
     public void run() {
         adventureUtils = new AdventureUtils();
         loggerUtils = new LoggerUtils();
@@ -42,6 +44,8 @@ public class Starter {
 
         chestStateHandler = new ChestStateHandler();
         crateTaskHandler = new CrateTaskHandler();
+
+        skullCreator = new SkullCreator();
     }
 
     public LoggerUtils getLoggerUtils() {
@@ -78,5 +82,8 @@ public class Starter {
 
     public CrateTaskHandler getCrateTaskHandler() {
         return crateTaskHandler;
+    }
+    public SkullCreator getSkullCreator() {
+        return skullCreator;
     }
 }
