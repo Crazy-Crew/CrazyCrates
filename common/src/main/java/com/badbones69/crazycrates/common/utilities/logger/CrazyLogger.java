@@ -1,17 +1,19 @@
 package com.badbones69.crazycrates.common.utilities.logger;
 
-import com.badbones69.crazycrates.common.utilities.AdventureUtils;
+import com.badbones69.crazycrates.common.CommonsBuilder;
+import com.badbones69.crazycrates.common.CommonsStarter;
 import net.kyori.adventure.audience.Audience;
 
 public class CrazyLogger {
 
+    private final CommonsBuilder commonsStarter = CommonsStarter.getCommonsBuilder();
+
     /**
      * @param message - The message.
      * @param recipient - The person to receive the message.
-     * @param adventureUtils - The utils class to parse & send it.
      */
-    public void debug(String message, Audience recipient, AdventureUtils adventureUtils) {
-        adventureUtils.send(true, recipient, parse(" " + message));
+    public void debug(String message, Audience recipient) {
+        commonsStarter.getAdventureUtils().send(true, recipient, parse(" " + message));
     }
 
     /**

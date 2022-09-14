@@ -43,7 +43,7 @@ public class QuadCrate implements Listener {
 
     private final ChestStateHandler chestStateHandler = plugin.getStarter().getChestStateHandler();
 
-    private final CrateSessionHandler crateSessionHandler = plugin.getStarter().getSessionManager();
+    private final CrateSessionHandler crateSessionHandler = plugin.getStarter().getCrateSessionHandler();
 
     // Class Internals.
     @EventHandler(ignoreCancelled = true)

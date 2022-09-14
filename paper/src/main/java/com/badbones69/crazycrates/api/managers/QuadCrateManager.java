@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.api.managers;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.utilities.LoggerUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.tasks.CrateSessionHandler;
 import com.badbones69.crazycrates.common.enums.crates.KeyType;
 import com.badbones69.crazycrates.common.enums.particles.QuadCrateParticles;
@@ -36,8 +35,6 @@ public class QuadCrateManager {
     // Global Methods.
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final LoggerUtils loggerUtils = plugin.getStarter().getLoggerUtils();
-
     private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
     private final ScheduleUtils scheduleUtils = plugin.getStarter().getScheduleUtils();
@@ -48,7 +45,7 @@ public class QuadCrateManager {
 
     private final CrateTaskHandler crateTaskHandler = plugin.getStarter().getCrateTaskHandler();
     
-    private final CrateSessionHandler crateSessionHandler = plugin.getStarter().getSessionManager();
+    private final CrateSessionHandler crateSessionHandler = plugin.getStarter().getCrateSessionHandler();
 
     // Class Internals.
 

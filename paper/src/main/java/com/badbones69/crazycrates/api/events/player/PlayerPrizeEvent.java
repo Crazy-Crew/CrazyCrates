@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerPrizeEvent extends Event {
     
@@ -28,7 +29,7 @@ public class PlayerPrizeEvent extends Event {
         this.crateName = crateName;
     }
     
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
     

@@ -89,7 +89,8 @@ public class Starter {
     public CrateTaskHandler getCrateTaskHandler() {
         return crateTaskHandler;
     }
-    public CrateSessionHandler getSessionManager() {
+
+    public CrateSessionHandler getCrateSessionHandler() {
         return crateSessionHandler;
     }
 

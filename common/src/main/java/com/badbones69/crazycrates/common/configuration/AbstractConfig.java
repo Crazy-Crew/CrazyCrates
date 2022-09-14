@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.common.configuration;
 
-import com.badbones69.crazycrates.common.utilities.AdventureUtils;
+import com.badbones69.crazycrates.common.CommonsBuilder;
+import com.badbones69.crazycrates.common.CommonsStarter;
 import com.badbones69.crazycrates.common.utilities.logger.CrazyLogger;
 import net.kyori.adventure.audience.Audience;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -19,11 +20,15 @@ public class AbstractConfig {
 
     protected YamlFile config;
 
+    private final CommonsBuilder commonsStarter = CommonsStarter.getCommonsBuilder();
+    
+    private final CrazyLogger crazyLogger = commonsStarter.getCrazyLogger();
+
     public YamlFile getConfig() {
         return this.config;
     }
 
-    public void handle(Path path, Class<? extends AbstractConfig> clazz, CrazyLogger logger, Audience audience, AdventureUtils adventureUtils) {
+    public void handle(Path path, Class<? extends AbstractConfig> clazz, Audience audience) {
         config = new YamlFile(path.toFile());
 
         File file = path.toFile();
@@ -32,7 +37,7 @@ public class AbstractConfig {
         try {
             config.createOrLoadWithComments();
         } catch (IOException e) {
-            logger.debug("<red>Failed to load</red> <gold>" + fileName + "</gold><red>...</red>", audience, adventureUtils);
+            crazyLogger.debug("<red>Failed to load</red> <gold>" + fileName + "</gold><red>...</red>", audience);
 
             e.printStackTrace();
         }
@@ -51,7 +56,7 @@ public class AbstractConfig {
 
                 field.set(classObj, value instanceof String str ? StringEscapeUtils.unescapeJava(str) : value);
             } catch (IllegalAccessException e) {
-                logger.debug("<red>Failed to write to</red> <gold>" + fileName + "</gold><red>...</red>", audience, adventureUtils);
+                crazyLogger.debug("<red>Failed to write to</red> <gold>" + fileName + "</gold><red>...</red>", audience);
 
                 e.printStackTrace();
             }
@@ -62,7 +67,7 @@ public class AbstractConfig {
         try {
             config.save(file);
         } catch (IOException e) {
-            logger.debug("<red>Failed to save</red> <gold>" + fileName + "</gold><red>...</red>", audience, adventureUtils);
+            crazyLogger.debug("<red>Failed to save</red> <gold>" + fileName + "</gold><red>...</red>", audience);
 
             e.printStackTrace();
         }

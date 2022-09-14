@@ -9,8 +9,6 @@ public class LoggerUtils extends CrazyLogger {
     // Global Methods.
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final AdventureUtils adventureUtils = plugin.getStarter().getAdventureUtils();
-
     // Class Internals.
 
     /**
@@ -18,6 +16,6 @@ public class LoggerUtils extends CrazyLogger {
      * @param message - The message to be sent.
      */
     public void debug(String message) {
-        this.debug(message, plugin.getServer().getConsoleSender(), adventureUtils);
+        this.debug(message, plugin.getServer().getConsoleSender());
     }
 }

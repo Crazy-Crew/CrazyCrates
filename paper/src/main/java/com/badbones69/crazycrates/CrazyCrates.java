@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates;
 
+import com.badbones69.crazycrates.common.CommonsStarter;
 import com.badbones69.crazycrates.listeners.server.ServerReadyEvent;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -12,6 +13,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     private Starter starter;
 
+    private CommonsStarter commonsStarter;
+
     private boolean pluginEnabled = false;
 
     public final Path DATA_DIRECTORY = getDataFolder().toPath().resolve("data");
@@ -23,6 +26,10 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onEnable() {
         try {
             plugin = this;
+
+            commonsStarter = new CommonsStarter();
+
+            commonsStarter.run();
 
             starter = new Starter();
 
@@ -45,6 +52,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         if (!pluginEnabled) return;
+
+        // starter.getCrateSessionHandler().endSessions();
     }
 
     private void enable() {
@@ -59,5 +68,9 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     public Starter getStarter() {
         return starter;
+    }
+
+    public CommonsStarter getCommonsStarter() {
+        return commonsStarter;
     }
 }

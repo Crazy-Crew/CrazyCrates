@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
+import com.badbones69.crazycrates.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.api.utilities.LoggerUtils;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.utilities.handlers.objects.Prize;
@@ -338,8 +339,9 @@ public class CrazyManager {
                 CrateSchematic crateSchematic = getCrateSchematics().get(new Random().nextInt(getCrateSchematics().size()));
                 StructureHandler handler = new StructureHandler(crateSchematic.schematicFile());
 
-                //QuadCrateManager session = new QuadCrateManager(player, crate, keyType, location, lastLocation, checkHand, handler, this, methods, chestStateHandler);
-                //broadcast = session.startCrate(plugin);
+                QuadCrateManager session = new QuadCrateManager(player, crate, keyType, location, lastLocation, checkHand, handler);
+                broadcast = session.startCrate();
+
                 break;
             case FIRE_CRACKER:
                 //if (crateControlListener.containsPlayer(location)) {

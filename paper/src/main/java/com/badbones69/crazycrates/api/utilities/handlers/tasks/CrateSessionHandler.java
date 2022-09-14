@@ -49,7 +49,7 @@ public class CrateSessionHandler {
     /**
      * End all crates forcefully & clear the array list.
      */
-    public void endCrates() {
+    public void endSessions() {
         crateSessions.forEach(session -> session.endCrateForce(false));
 
         crateSessions.clear();

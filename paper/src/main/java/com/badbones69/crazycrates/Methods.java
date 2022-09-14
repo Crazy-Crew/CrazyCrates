@@ -59,7 +59,7 @@ public class Methods {
         detonate(firework);
     }
 
-    private void detonate(final Firework firework) {
+    private void detonate(Firework firework) {
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, firework::detonate, 2);
     }
 
@@ -90,7 +90,7 @@ public class Methods {
         return min + random.nextInt(max - min);
     }
 
-    // TODO: Switch to using PDC
+    // TODO() Switch to using PDC
     public boolean isSimilar(ItemStack itemStack, Crate crate) {
         NBTItem nbtItem = new NBTItem(itemStack);
 
