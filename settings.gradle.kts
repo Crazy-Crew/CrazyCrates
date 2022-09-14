@@ -14,6 +14,6 @@ pluginManagement {
 // Project Name!
 rootProject.name = "Crazy-Crates"
 
-include("paper", "fabric", "common")
+include("paper", "common")
 
 enableFeaturePreview("VERSION_CATALOGS")
