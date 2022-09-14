@@ -10,7 +10,7 @@
 [![Issues][issues-shield]][issues-url]
 [![GPU License][license-shield]][license-url]
 [![Contact][discord-shield]][discord-url]
-![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/crazy-crew/crazycrates/features/paper?style=for-the-badge)
+![CodeFactor][codefactor-shield]
 
   <p align="center">
     A crates plugin that offers quality crates with ease!
@@ -43,6 +43,9 @@
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
+
+## Downloads
+N/A
 
 ## Getting Started
 
@@ -96,3 +99,5 @@ Distributed under the GPU v3 License. See `LICENSE.MD` for more information.
 [issues-url]: https://github.com/Crazy-Crew/CrazyCrates/issues
 [license-shield]: https://img.shields.io/github/license/Crazy-Crew/CrazyCrates.svg?style=for-the-badge
 [license-url]: https://github.com/Crazy-Crew/CrazyCrates/blob/master/LICENSE.MD
+
+[codefactor-shield]: https://img.shields.io/codefactor/grade/github/crazy-crew/crazycrates/features/paper?style=for-the-badge
