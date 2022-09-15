@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.cratetypes;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
@@ -18,16 +18,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CSGO implements Listener {
-    
-    private static final CrazyManager crazyManager = CrazyManager.getInstance();
+
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private static final CrazyManager crazyManager = plugin.getCrazyManager();
     
     private static void setGlass(Inventory inv) {
         HashMap<Integer, ItemStack> glass = new HashMap<>();
 
         for (int i = 0; i < 10; i++) {
-            if (i < 9 && i != 3) {
-                glass.put(i, inv.getItem(i));
-            }
+            if (i < 9 && i != 3) glass.put(i, inv.getItem(i));
         }
 
         for (int i : glass.keySet()) {
@@ -39,12 +39,11 @@ public class CSGO implements Listener {
         }
 
         for (int i = 1; i < 10; i++) {
-            if (i < 9 && i != 4) {
-                glass.put(i, inv.getItem(i));
-            }
+            if (i < 9 && i != 4) glass.put(i, inv.getItem(i));
         }
 
         ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+
         inv.setItem(0, glass.get(1));
         inv.setItem(18, glass.get(1));
         inv.setItem(1, glass.get(2));
@@ -66,7 +65,7 @@ public class CSGO implements Listener {
     }
     
     public static void openCSGO(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = crazyManager.getPlugin().getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        Inventory inv = plugin.getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
         setGlass(inv);
 
         for (int i = 9; i > 8 && i < 18; i++) {
@@ -120,17 +119,7 @@ public class CSGO implements Listener {
                         crazyManager.endCrate(player);
                         Prize prize = crate.getPrize(inv.getItem(13));
 
-                        if (prize != null) {
-                            crazyManager.givePrize(player, prize);
-
-                            if (prize.useFireworks()) {
-                                Methods.firework(player.getLocation().add(0, 1, 0));
-                            }
-
-                            crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-                        } else {
-                            player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
-                        }
+                        Methods.checkPrize(prize, crazyManager, plugin, player, crate);
 
                         crazyManager.removePlayerFromOpeningList(player);
                         cancel();
@@ -138,17 +127,15 @@ public class CSGO implements Listener {
                         new BukkitRunnable() {
                             @Override
                             public void run() {
-                                if (player.getOpenInventory().getTopInventory().equals(inv)) {
-                                    player.closeInventory();
-                                }
+                                if (player.getOpenInventory().getTopInventory().equals(inv)) player.closeInventory();
                             }
-                        }.runTaskLater(crazyManager.getPlugin(), 40);
+                        }.runTaskLater(plugin, 40);
                     } else if (time > 60) { // Added this due reports of the prizes spamming when low tps.
                         cancel();
                     }
                 }
             }
-        }.runTaskTimer(crazyManager.getPlugin(), 1, 1));
+        }.runTaskTimer(plugin, 1, 1));
     }
     
     private static ArrayList<Integer> slowSpin() {

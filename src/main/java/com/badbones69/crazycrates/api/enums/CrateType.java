@@ -22,9 +22,7 @@ public enum CrateType {
     
     public static CrateType getFromName(String name) {
         for (CrateType crate : CrateType.values()) {
-            if (crate.getName().equalsIgnoreCase(name)) {
-                return crate;
-            }
+            if (crate.getName().equalsIgnoreCase(name)) return crate;
         }
 
         return null;

@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api.objects;
 
+import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.support.SkullCreator;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Color;
@@ -18,7 +19,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import java.util.*;
 import java.util.stream.Collectors;
-import static com.badbones69.crazycrates.support.utils.ConstantsKt.color;
 
 public class ItemBuilder {
     
@@ -311,9 +311,11 @@ public class ItemBuilder {
      */
     public String getUpdatedName() {
         String newName = itemName;
+
         for (String placeholder : namePlaceholders.keySet()) {
             newName = newName.replace(placeholder, namePlaceholders.get(placeholder)).replace(placeholder.toLowerCase(), namePlaceholders.get(placeholder));
         }
+
         return newName;
     }
     
@@ -324,9 +326,7 @@ public class ItemBuilder {
      */
     public ItemStack build() {
         
-        if (nbtItem != null) {
-            referenceItem = nbtItem.getItem();
-        }
+        if (nbtItem != null) referenceItem = nbtItem.getItem();
         
         ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material);
 
@@ -352,14 +352,9 @@ public class ItemBuilder {
             if (isPotion && (potionType != null || potionColor != null)) {
                 PotionMeta potionMeta = (PotionMeta) itemMeta;
                 
-                if (potionType != null) {
-                    potionMeta.setBasePotionData(new PotionData(potionType));
-                }
+                if (potionType != null) potionMeta.setBasePotionData(new PotionData(potionType));
                 
-                if (potionColor != null) {
-                    potionMeta.setColor(potionColor);
-                }
-                
+                if (potionColor != null) potionMeta.setColor(potionColor);
             }
             
             if (material == Material.TIPPED_ARROW && potionType != null) {
@@ -385,9 +380,7 @@ public class ItemBuilder {
                 shieldMeta.setBlockState(banner);
             }
             
-            if (useCustomModelData) {
-                itemMeta.setCustomModelData(customModelData);
-            }
+            if (useCustomModelData) itemMeta.setCustomModelData(customModelData);
             
             itemFlags.forEach(itemMeta :: addItemFlags);
             item.setItemMeta(itemMeta);
@@ -396,19 +389,13 @@ public class ItemBuilder {
             addGlow(item);
             NBTItem nbt = new NBTItem(item);
             
-            if (isHead && !isHash) {
-                nbt.setString("SkullOwner", player);
-            }
+            if (isHead && !isHash) nbt.setString("SkullOwner", player);
             
             if (isMobEgg) {
-                if (entityType != null) {
-                    nbt.addCompound("EntityTag").setString("id", "minecraft:" + entityType.name());
-                }
+                if (entityType != null) nbt.addCompound("EntityTag").setString("id", "minecraft:" + entityType.name());
             }
             
-            if (!crateName.isEmpty()) {
-                nbt.setString("CrazyCrates-Crate", crateName);
-            }
+            if (!crateName.isEmpty()) nbt.setString("CrazyCrates-Crate", crateName);
             
             return nbt.getItem();
         } else {
@@ -511,7 +498,7 @@ public class ItemBuilder {
      * @return The ItemBuilder with an updated name.
      */
     public ItemBuilder setName(String itemName) {
-        if (itemName != null) this.itemName = color(itemName);
+        if (itemName != null) this.itemName = Methods.color(itemName);
         return this;
     }
     
@@ -558,7 +545,7 @@ public class ItemBuilder {
             this.itemLore.clear();
 
             for (String line : lore) {
-                this.itemLore.add(color(line));
+                this.itemLore.add(Methods.color(line));
             }
         }
 
@@ -572,7 +559,7 @@ public class ItemBuilder {
      * @return The ItemBuilder with updated info.
      */
     public ItemBuilder addLore(String lore) {
-        if (lore != null) this.itemLore.add(color(lore));
+        if (lore != null) this.itemLore.add(Methods.color(lore));
         return this;
     }
     
@@ -652,9 +639,7 @@ public class ItemBuilder {
                 if (split[0].equalsIgnoreCase(pattern.name()) || split[0].equalsIgnoreCase(pattern.getIdentifier())) {
                     DyeColor color = getDyeColor(split[1]);
                     
-                    if (color != null) {
-                        addPattern(new Pattern(color, pattern));
-                    }
+                    if (color != null) addPattern(new Pattern(color, pattern));
 
                     break;
                 }
@@ -761,9 +746,7 @@ public class ItemBuilder {
         for (String flagString : flagStrings) {
             ItemFlag flag = getFlag(flagString);
 
-            if (flag != null) {
-                itemFlags.add(flag);
-            }
+            if (flag != null) itemFlags.add(flag);
         }
 
         return this;
@@ -775,9 +758,7 @@ public class ItemBuilder {
             try {
                 ItemFlag itemFlag = ItemFlag.valueOf(flagString.toUpperCase());
 
-                if (itemFlag != null) {
-                    addItemFlag(itemFlag);
-                }
+                if (itemFlag != null) addItemFlag(itemFlag);
             } catch (Exception ignored) {}
         }
 
@@ -793,10 +774,7 @@ public class ItemBuilder {
     public ItemBuilder addFlags(String flagString) {
         ItemFlag flag = getFlag(flagString);
 
-        if (flag != null) {
-            itemFlags.add(flag);
-        }
-
+        if (flag != null) itemFlags.add(flag);
         return this;
     }
     
@@ -991,6 +969,7 @@ public class ItemBuilder {
                             } catch (NumberFormatException e) {
                                 itemBuilder.addEnchantments(enchantment, 1);
                             }
+
                             break;
                         }
                         
@@ -1005,9 +984,7 @@ public class ItemBuilder {
                             for (PatternType pattern : PatternType.values()) {
                                 if (option.equalsIgnoreCase(pattern.name()) || value.equalsIgnoreCase(pattern.getIdentifier())) {
                                     DyeColor color = getDyeColor(value);
-                                    if (color != null) {
-                                        itemBuilder.addPattern(new Pattern(color, pattern));
-                                    }
+                                    if (color != null) itemBuilder.addPattern(new Pattern(color, pattern));
                                     break;
                                 }
                             }
@@ -1054,9 +1031,7 @@ public class ItemBuilder {
             try {
                 if (item != null) {
                     if (item.hasItemMeta()) {
-                        if (item.getItemMeta().hasEnchants()) {
-                            return;
-                        }
+                        if (item.getItemMeta().hasEnchants()) return;
                     }
 
                     item.addUnsafeEnchantment(Enchantment.LUCK, 1);
@@ -1195,15 +1170,12 @@ public class ItemBuilder {
         enchantmentName = stripEnchantmentName(enchantmentName);
         for (Enchantment enchantment : Enchantment.values()) {
             try {
-                if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
-                    return enchantment;
-                }
+                if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) return enchantment;
+
                 HashMap<String, String> enchantments = getEnchantmentList();
 
                 if (stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null &&
-                stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
-                    return enchantment;
-                }
+                stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) return enchantment;
             } catch (Exception ignore) {}
         }
 
@@ -1277,12 +1249,9 @@ public class ItemBuilder {
     
     private ItemFlag getFlag(String flagString) {
         for (ItemFlag flag : ItemFlag.values()) {
-            if (flag.name().equalsIgnoreCase(flagString)) {
-                return flag;
-            }
+            if (flag.name().equalsIgnoreCase(flagString)) return flag;
         }
 
         return null;
     }
-    
 }

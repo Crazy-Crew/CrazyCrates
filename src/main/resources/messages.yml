@@ -1,6 +1,7 @@
 Messages:
   No-Teleporting: '&cYou may not teleport away while opening a Crate.'
   No-Commands-While-In-Crate: '&cYou are not allowed to use commands while opening Crates.'
+  Feature-Disabled: '&cThis feature is disabled. We have no ETA on when this will function.'
   No-Key: '&cYou must have a %key% &cin your hand to use that Crate.'
   No-Virtual-Key: '&cYou need a key to open that Crate.'
   Not-On-Block: '&cYou must be standing on a block to use this Crate.'

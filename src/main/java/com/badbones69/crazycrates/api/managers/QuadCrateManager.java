@@ -10,7 +10,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.support.structures.QuadCrateSpiralHandler;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
-import com.badbones69.crazycrates.support.utils.Schedulers;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,7 +29,11 @@ import java.util.Random;
 
 public class QuadCrateManager {
 
-    private final ChestStateHandler quadCrateHandler = new ChestStateHandler();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final ChestStateHandler chestStateHandler = plugin.getChestStateHandler();
+
+    private final CrazyManager crazyManager = plugin.getCrazyManager();
 
     private static final List<QuadCrateManager> crateSessions = new ArrayList<>();
 
@@ -80,9 +83,6 @@ public class QuadCrateManager {
     // Get the structure handler.
     private final StructureHandler handler;
 
-    // Get the manager instance.
-    private final CrazyManager crazyManager = CrazyManager.getInstance();
-
     public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler) {
         this.instance = this;
         this.player = player;
@@ -115,7 +115,7 @@ public class QuadCrateManager {
         // Check if schematic folder is empty.
         if (crazyManager.getCrateSchematics().isEmpty()) {
             player.sendMessage(Messages.NO_SCHEMATICS_FOUND.getMessage());
-            CrazyManager.getInstance().removePlayerFromOpeningList(player);
+            crazyManager.removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
             return false;
         }
@@ -126,7 +126,7 @@ public class QuadCrateManager {
         try {
             structureLocations = handler.getNearbyBlocks(spawnLocation.clone());
         } catch (Exception e) {
-            player.getServer().getLogger().warning(e.getMessage());
+            e.printStackTrace();
         }
 
         // Loop through the blocks and check if the blacklist contains the block type.
@@ -134,7 +134,7 @@ public class QuadCrateManager {
         assert structureLocations != null;
 
         for (Block block : structureLocations) {
-            if (handler.getBlackList().contains(block.getType())) {
+            if (handler.getBlockBlackList().contains(block.getType())) {
                 player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
                 crazyManager.removePlayerFromOpeningList(player);
                 crateSessions.remove(instance);
@@ -161,8 +161,9 @@ public class QuadCrateManager {
             }
         }
 
-        if (!CrazyManager.getInstance().takeKeys(1, player, crate, keyType, checkHand)) {
+        if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
+
             crazyManager.removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
             return false;
@@ -194,7 +195,7 @@ public class QuadCrateManager {
         // Teleport player to center.
         player.teleport(spawnLocation.clone().add(handler.getStructureX() / 2, 1.0, handler.getStructureZ() / 2));
 
-        crazyManager.addQuadCrateTask(player, new Schedulers(plugin).timer(0, 1, new BukkitRunnable() {
+        crazyManager.addQuadCrateTask(player, new BukkitRunnable() {
 
             private final QuadCrateSpiralHandler spiralHandler = new QuadCrateSpiralHandler();
 
@@ -214,7 +215,7 @@ public class QuadCrateManager {
                     player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
                     Block chest = crateLocations.get(crateNumber).getBlock();
                     chest.setType(Material.CHEST);
-                    new ChestStateHandler().rotateChest(chest, crateNumber);
+                    chestStateHandler.rotateChest(chest, crateNumber);
 
                     if (crateNumber == 3) { // Last crate has spawned.
                         crazyManager.endQuadCrate(player); // Cancelled when method is called.
@@ -228,22 +229,22 @@ public class QuadCrateManager {
                     }
                 }
             }
-        }));
+        }.runTaskLater(plugin, 40));
 
-        crazyManager.addCrateTask(player, new Schedulers(plugin).later(crazyManager.getQuadCrateTimer(), new BukkitRunnable() {
+        crazyManager.addCrateTask(player, new BukkitRunnable() {
             @Override
             public void run() {
                 // End the crate by force.
                 endCrateForce(true);
                 player.sendMessage(Messages.OUT_OF_TIME.getMessage());
             }
-        }));
+        }.runTaskLater(plugin, crazyManager.getQuadCrateTimer()));
 
         return false;
     }
 
     public void endCrate(CrazyCrates plugin) {
-        new Schedulers(plugin).later(3 * 20, new BukkitRunnable() {
+        new BukkitRunnable() {
             @Override
             public void run() {
                 // Update spawned crate block states which removes them.
@@ -256,7 +257,7 @@ public class QuadCrateManager {
                 player.teleport(lastLocation);
 
                 // Remove the structure blocks.
-                handler.removeStructure(spawnLocation.clone());
+                handler.removeStructure();
 
                 // Restore the old blocks.
                 oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
@@ -272,7 +273,7 @@ public class QuadCrateManager {
                 // Remove the "instance" from the crate sessions.
                 crateSessions.remove(instance);
             }
-        });
+        }.runTaskLater(plugin, 3 * 20);
     }
 
     // End the crate & remove the hologram by force.
@@ -281,10 +282,12 @@ public class QuadCrateManager {
         displayedRewards.forEach(Entity::remove);
         player.teleport(lastLocation);
 
-        if (removeForce) CrazyManager.getInstance().removePlayerFromOpeningList(player);
-        if (removeForce) crateSessions.remove(instance);
+        if (removeForce) {
+            crazyManager.removePlayerFromOpeningList(player);
+            crateSessions.remove(instance);
+        }
 
-        handler.removeStructure(lastLocation);
+        handler.removeStructure();
     }
 
     // Add the crate locations.
@@ -292,7 +295,6 @@ public class QuadCrateManager {
         crateLocations.add(spawnLocation.clone().add(x, y, z));
     }
 
-    // Particle management. - TODO() - Move to another class.
     private List<Color> getColors() {
         return Arrays.asList(
                 Color.AQUA, Color.BLACK, Color.BLUE, Color.FUCHSIA, Color.GRAY,
@@ -355,10 +357,5 @@ public class QuadCrateManager {
         }
 
         return true;
-    }
-
-    // Fetch the handler.
-    public ChestStateHandler quadCrateHandler() {
-        return quadCrateHandler;
     }
 }

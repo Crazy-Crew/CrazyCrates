@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.support.libs;
 
-import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.CrazyCrates;
 
 /**
- * @Author Badbones69
+ * @author Badbones69
  */
 public enum ServerProtocol {
 
@@ -18,7 +18,7 @@ public enum ServerProtocol {
 
     private final int versionProtocol;
 
-    private static final CrazyManager crazyManager = CrazyManager.getInstance();
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     ServerProtocol(int versionProtocol) {
         this.versionProtocol = versionProtocol;
@@ -26,7 +26,7 @@ public enum ServerProtocol {
 
     public static ServerProtocol getCurrentProtocol() {
 
-        String serVer = crazyManager.getPlugin().getServer().getClass().getPackage().getName();
+        String serVer = plugin.getServer().getClass().getPackage().getName();
 
         int serProt = Integer.parseInt(
                 serVer.substring(
@@ -67,23 +67,29 @@ public enum ServerProtocol {
 
     public static boolean isAtLeast(ServerProtocol protocol) {
         if (currentProtocol == null) getCurrentProtocol();
+
         int proto = currentProtocol.versionProtocol;
+
         return proto >= protocol.versionProtocol || proto == -2;
     }
 
     public static boolean isNewer(ServerProtocol protocol) {
         if (currentProtocol == null) getCurrentProtocol();
+
         return currentProtocol.versionProtocol > protocol.versionProtocol || currentProtocol.versionProtocol == -2;
     }
 
     public static boolean isSame(ServerProtocol protocol) {
         if (currentProtocol == null) getCurrentProtocol();
+
         return currentProtocol.versionProtocol == protocol.versionProtocol;
     }
 
     public static boolean isOlder(ServerProtocol protocol) {
         if (currentProtocol == null) getCurrentProtocol();
+
         int proto = currentProtocol.versionProtocol;
+
         return proto < protocol.versionProtocol || proto == -1;
     }
 

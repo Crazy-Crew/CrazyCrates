@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 public class PhysicalCrateKeyCheckEvent extends Event implements Cancellable {
     
@@ -25,11 +26,11 @@ public class PhysicalCrateKeyCheckEvent extends Event implements Cancellable {
         this.isCancelled = false;
     }
     
-    public static HandlerList getHandlerList() {
+    public HandlerList getHandlerList() {
         return handlers;
     }
     
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
     

@@ -27,7 +27,6 @@ public class Tier {
     }
     
     /**
-     *
      * @return Name of the tier.
      */
     public String getName() {
@@ -35,7 +34,6 @@ public class Tier {
     }
     
     /**
-     *
      * @return The colored name of the tier.
      */
     public String getColoredName() {
@@ -43,7 +41,6 @@ public class Tier {
     }
     
     /**
-     *
      * @return The colored glass pane.
      */
     public ItemBuilder getColorGlass() {
@@ -51,7 +48,6 @@ public class Tier {
     }
     
     /**
-     *
      * @return The chance of being picked.
      */
     public Integer getChance() {
@@ -59,7 +55,6 @@ public class Tier {
     }
     
     /**
-     *
      * @return The range of max possible\ chances.
      */
     public Integer getMaxRange() {
@@ -69,5 +64,4 @@ public class Tier {
     public ItemStack getTierPane() {
         return colorGlass.build();
     }
-    
 }

@@ -5,12 +5,12 @@ import com.badbones69.crazycrates.api.FileManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import java.util.*;
 import java.util.Map.Entry;
-import static com.badbones69.crazycrates.support.utils.ConstantsKt.color;
 
 public enum Messages {
     
     NO_TELEPORTING("No-Teleporting", "&cYou may not teleport away while opening a Crate."),
     NO_COMMANDS_WHILE_CRATE_OPENED("No-Commands-While-In-Crate", "&cYou are not allowed to use commands while opening Crates."),
+    FEATURE_DISABLED("Feature-Disabled", "&cThis feature is disabled. We have no ETA on when this will function."),
     NO_KEY("No-Key", "&cYou must have a %key% &cin your hand to use that Crate."),
     NO_VIRTUAL_KEY("No-Virtual-Key", "&cYou need a key to open that Crate."),
     NOT_ON_BLOCK("Not-On-Block", "&cYou must be standing on a block to use this Crate."),
@@ -105,15 +105,18 @@ public enum Messages {
     
     public static String convertList(List<String> list) {
         StringBuilder message = new StringBuilder();
+
         for (String line : list) {
-            message.append(color(line)).append("\n");
+            message.append(Methods.color(line)).append("\n");
         }
+
         return message.toString();
     }
     
     public static void addMissingMessages() {
         FileConfiguration messages = FileManager.Files.MESSAGES.getFile();
         boolean saveFile = false;
+
         for (Messages message : values()) {
             if (!messages.contains("Messages." + message.getPath())) {
                 saveFile = true;
@@ -141,6 +144,7 @@ public enum Messages {
             message = message.replace(placeholder.getKey(), placeholder.getValue())
             .replace(placeholder.getKey().toLowerCase(), placeholder.getValue());
         }
+
         return message;
     }
     
@@ -152,12 +156,14 @@ public enum Messages {
     
     public static List<String> replacePlaceholders(Map<String, String> placeholders, List<String> messageList) {
         List<String> newMessageList = new ArrayList<>();
+
         for (String message : messageList) {
             for (Entry<String, String> placeholder : placeholders.entrySet()) {
                 message = message.replace(placeholder.getKey(), placeholder.getValue())
                 .replace(placeholder.getKey().toLowerCase(), placeholder.getValue());
             }
         }
+
         return newMessageList;
     }
 
@@ -200,15 +206,15 @@ public enum Messages {
 
         if (isList) {
             if (exists) {
-                message = color(convertList(FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path)));
+                message = Methods.color(convertList(FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path)));
             } else {
-                message = color(convertList(getDefaultListMessage()));
+                message = Methods.color(convertList(getDefaultListMessage()));
             }
         } else {
             if (exists) {
-                message = color(FileManager.Files.MESSAGES.getFile().getString("Messages." + path));
+                message = Methods.color(FileManager.Files.MESSAGES.getFile().getString("Messages." + path));
             } else {
-                message = color(getDefaultMessage());
+                message = Methods.color(getDefaultMessage());
             }
         }
 
@@ -217,12 +223,12 @@ public enum Messages {
         }
 
         if (isList) { // Don't want to add a prefix to a list of messages.
-            return color(message);
+            return Methods.color(message);
         } else { // If the message isn't a list.
             if (prefix) { // If the message needs a prefix.
                 return Methods.getPrefix(message);
             } else { // If the message doesn't need a prefix.
-                return color(message);
+                return Methods.color(message);
             }
         }
     }
@@ -250,5 +256,4 @@ public enum Messages {
     private List<String> getDefaultListMessage() {
         return defaultListMessage;
     }
-    
 }

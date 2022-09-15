@@ -19,5 +19,4 @@ public record CrateSchematic(String schematicName, File schematicFile) {
     public File schematicFile() {
         return schematicFile;
     }
-
 }

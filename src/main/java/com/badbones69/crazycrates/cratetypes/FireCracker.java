@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.cratetypes;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
@@ -12,8 +13,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class FireCracker {
-    
-    private static final CrazyManager crazyManager = CrazyManager.getInstance();
+
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private static final CrazyManager crazyManager = plugin.getCrazyManager();
     
     public static void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc) {
 
@@ -51,6 +54,6 @@ public class FireCracker {
                     QuickCrate.openCrate(player, loc, crate, KeyType.FREE_KEY);
                 }
             }
-        }.runTaskTimer(crazyManager.getPlugin(), 0, 2));
+        }.runTaskTimer(plugin, 0, 2));
     }
 }

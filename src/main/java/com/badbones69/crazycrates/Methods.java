@@ -4,8 +4,10 @@ import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
+import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -23,12 +25,28 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import java.util.*;
-import static com.badbones69.crazycrates.support.utils.ConstantsKt.color;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Methods {
-    
-    private static final CrazyManager crazyManager = CrazyManager.getInstance();
+
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private static final CrazyManager crazyManager = plugin.getCrazyManager();
     private static final Random random = new Random();
+
+    public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");
+
+    public static String color(String message) {
+        Matcher matcher = HEX_PATTERN.matcher(message);
+        StringBuilder buffer = new StringBuilder();
+
+        while (matcher.find()) {
+            matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group()).toString());
+        }
+
+        return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
+    }
     
     public static String sanitizeColor(String msg) {
         return sanitizeFormat(color(msg));
@@ -75,7 +93,7 @@ public class Methods {
         fw.setFireworkMeta(fm);
         FireworkDamageListener.addFirework(fw);
 
-        crazyManager.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(crazyManager.getPlugin(), fw :: detonate, 2);
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, fw :: detonate, 2);
     }
 
     public static void firework(Location loc, Color color) {
@@ -86,7 +104,7 @@ public class Methods {
         fw.setFireworkMeta(fm);
         FireworkDamageListener.addFirework(fw);
 
-        crazyManager.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(crazyManager.getPlugin(), fw :: detonate, 2);
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, fw :: detonate, 2);
     }
     
     public static boolean isInt(String s) {
@@ -100,12 +118,12 @@ public class Methods {
     }
     
     public static Player getPlayer(String name) {
-        return crazyManager.getPlugin().getServer().getPlayerExact(name);
+        return plugin.getServer().getPlayerExact(name);
     }
     
     public static boolean isOnline(String name, CommandSender sender) {
 
-        for (Player player : crazyManager.getPlugin().getServer().getOnlinePlayers()) {
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
             if (player.getName().equalsIgnoreCase(name)) {
                 return true;
             }
@@ -312,20 +330,63 @@ public class Methods {
         Material.LIGHT_GRAY_STAINED_GLASS_PANE.toString());
         return new ItemBuilder().setMaterial(colors.get(random.nextInt(colors.size())));
     }
-    
-    public static void failedToTakeKey(Player player, Crate crate) {
-        failedToTakeKey(player, crate, null);
+
+    /**
+     * Decides when the crate should start to slow down.
+     */
+    public static ArrayList<Integer> slowSpin() {
+        ArrayList<Integer> slow = new ArrayList<>();
+        int full = 46;
+        int cut = 9;
+
+        for (int i = 46; cut > 0; full--) {
+            if (full <= i - cut || full >= i - cut) {
+                slow.add(i);
+                i -= cut;
+                cut--;
+            }
+        }
+
+        return slow;
+    }
+
+    /**
+     * Picks the prize for the player.
+     * @param player - The player who the prize is for.
+     * @param crate - The crate the player is opening.
+     * @param prize - The prize the player is being given.
+     */
+    public static void pickPrize(Player player, Crate crate, Prize prize) {
+        if (prize != null) {
+            crazyManager.givePrize(player, prize);
+
+            if (prize.useFireworks()) firework(player.getLocation().add(0, 1, 0));
+
+            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+        } else {
+            player.sendMessage(getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
+        }
+    }
+
+    public static void checkPrize(Prize prize, CrazyManager crazyManager, CrazyCrates plugin, Player player, Crate crate) {
+        if (prize != null) {
+            crazyManager.givePrize(player, prize);
+
+            if (prize.useFireworks()) Methods.firework(player.getLocation().add(0, 1, 0));
+
+            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+        } else {
+            player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
+        }
     }
     
-    public static void failedToTakeKey(Player player, Crate crate, Exception e) {
-        crazyManager.getPlugin().getServer().getLogger().warning("An error has occurred while trying to take a physical key from a player");
-        crazyManager.getPlugin().getServer().getLogger().warning("Player: " + player.getName());
-        crazyManager.getPlugin().getServer().getLogger().warning("Crate: " + crate.getName());
-        player.sendMessage(Methods.getPrefix("&cAn issue has occurred when trying to take a key and so the crate failed to open."));
+    public static void failedToTakeKey(CommandSender player, Crate crate) {
+        plugin.getServer().getLogger().warning("An error has occurred while trying to take a physical key from a player");
+        plugin.getServer().getLogger().warning("Player: " + player.getName());
+        plugin.getServer().getLogger().warning("Crate: " + crate.getName());
 
-        if (e != null) {
-            e.printStackTrace();
-        }
+        player.sendMessage(Methods.getPrefix("&cAn issue has occurred when trying to take a key."));
+        player.sendMessage(Methods.getPrefix("&cCommon reasons includes not having enough keys."));
     }
     
     public static String sanitizeFormat(String string) {
