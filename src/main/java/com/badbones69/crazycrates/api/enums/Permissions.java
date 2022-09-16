@@ -29,7 +29,6 @@ public enum Permissions {
     CRAZY_CRATES_ADMIN_SCHEMATIC_SET("admin.schematic.set", "Sets the positions #1 or #2 when making a new schematic for quadcrates."),
     CRAZY_CRATES_ADMIN_SCHEMATIC_SAVE("admin.schematic.save", "Saves the new schematic file to the schematics folder.");
 
-
     private final String defaultPermission;
     private final String description;
 

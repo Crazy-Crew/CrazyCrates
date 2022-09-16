@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.support.libs;
 
-import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.CrazyCrates;
 
 public enum PluginSupport {
     
@@ -11,7 +11,7 @@ public enum PluginSupport {
     
     private final String name;
 
-    private final CrazyManager crazyManager = CrazyManager.getInstance();
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
     
     PluginSupport(String name) {
         this.name = name;
@@ -22,6 +22,6 @@ public enum PluginSupport {
     }
     
     public boolean isPluginLoaded() {
-        return crazyManager.getPlugin().getServer().getPluginManager().getPlugin(name) != null;
+        return plugin.getServer().getPluginManager().getPlugin(name) != null;
     }
 }

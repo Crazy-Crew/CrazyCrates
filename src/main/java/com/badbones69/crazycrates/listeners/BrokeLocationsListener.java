@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.listeners;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.BrokeLocation;
@@ -14,8 +15,11 @@ import java.util.List;
 // Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
 public class BrokeLocationsListener implements Listener {
 
-    private final CrazyManager crazyManager = CrazyManager.getInstance();
-    private final FileManager fileManager = FileManager.getInstance();
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private static final CrazyManager crazyManager = plugin.getCrazyManager();
+
+    private static final FileManager fileManager = plugin.getFileManager();
     
     @EventHandler
     public void onWorldLoad(WorldLoadEvent e) {
@@ -29,9 +33,7 @@ public class BrokeLocationsListener implements Listener {
                 if (location.getWorld() != null) {
                     crazyManager.getCrateLocations().add(new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location));
 
-                    if (crazyManager.getHologramController() != null) {
-                        crazyManager.getHologramController().createHologram(location.getBlock(), brokeLocation.getCrate());
-                    }
+                    if (crazyManager.getHologramController() != null) crazyManager.getHologramController().createHologram(location.getBlock(), brokeLocation.getCrate());
 
                     fixedWorlds.add(brokeLocation);
                     fixedAmount++;
@@ -41,9 +43,9 @@ public class BrokeLocationsListener implements Listener {
             crazyManager.getBrokeCrateLocations().removeAll(fixedWorlds);
 
             if (fileManager.isLogging()) {
-                crazyManager.getPlugin().getLogger().warning("Fixed " + fixedAmount + " broken crate locations.");
+                plugin.getLogger().warning("Fixed " + fixedAmount + " broken crate locations.");
 
-                if (crazyManager.getBrokeCrateLocations().isEmpty()) crazyManager.getPlugin().getLogger().warning("All broken crate locations have been fixed.");
+                if (crazyManager.getBrokeCrateLocations().isEmpty()) plugin.getLogger().warning("All broken crate locations have been fixed.");
             }
         }
     }

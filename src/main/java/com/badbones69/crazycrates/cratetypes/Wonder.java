@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.cratetypes;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
@@ -16,8 +17,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 
 public class Wonder implements Listener {
-    
-    private static final CrazyManager crazyManager = CrazyManager.getInstance();
+
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private static final CrazyManager crazyManager = plugin.getCrazyManager();
     
     public static void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
@@ -26,7 +29,7 @@ public class Wonder implements Listener {
             return;
         }
 
-        final Inventory inv = crazyManager.getPlugin().getServer().createInventory(null, 45, crate.getCrateInventoryName());
+        final Inventory inv = plugin.getServer().createInventory(null, 45, crate.getCrateInventoryName());
         final ArrayList<String> slots = new ArrayList<>();
 
         for (int i = 0; i < 45; i++) {
@@ -79,22 +82,19 @@ public class Wonder implements Listener {
                     player.closeInventory();
                     crazyManager.givePrize(player, prize);
 
-                    if (prize.useFireworks()) {
-                        Methods.firework(player.getLocation().add(0, 1, 0));
-                    }
+                    if (prize.useFireworks()) Methods.firework(player.getLocation().add(0, 1, 0));
 
-                    crazyManager.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                     crazyManager.removePlayerFromOpeningList(player);
+
                     return;
                 }
 
                 fulltime++;
                 timer++;
 
-                if (timer > 2) {
-                    timer = 0;
-                }
+                if (timer > 2) timer = 0;
             }
-        }.runTaskTimer(crazyManager.getPlugin(), 0, 2));
+        }.runTaskTimer(plugin, 0, 2));
     }
 }

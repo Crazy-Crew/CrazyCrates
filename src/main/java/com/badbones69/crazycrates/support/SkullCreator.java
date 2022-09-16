@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.support;
 
-import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.CrazyCrates;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,7 +21,7 @@ import java.util.UUID;
  */
 public class SkullCreator {
 
-    private static final CrazyManager crazyManager = CrazyManager.getInstance();
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
     
     /**
      * Creates a player skull based on a player's name.
@@ -52,7 +52,7 @@ public class SkullCreator {
         notNull(item, "item");
         notNull(name, "name");
         
-        return crazyManager.getPlugin().getServer().getUnsafe().modifyItemStack(item,
+        return plugin.getServer().getUnsafe().modifyItemStack(item,
         "{SkullOwner:\"" + name + "\"}"
         );
     }
@@ -81,7 +81,7 @@ public class SkullCreator {
         notNull(id, "id");
         
         SkullMeta meta = (SkullMeta) item.getItemMeta();
-        meta.setOwningPlayer(crazyManager.getPlugin().getServer().getOfflinePlayer(id));
+        meta.setOwningPlayer(plugin.getServer().getOfflinePlayer(id));
         item.setItemMeta(meta);
         
         return item;
@@ -137,7 +137,7 @@ public class SkullCreator {
         notNull(base64, "base64");
         
         UUID hashAsId = new UUID(base64.hashCode(), base64.hashCode());
-        return crazyManager.getPlugin().getServer().getUnsafe().modifyItemStack(item,
+        return plugin.getServer().getUnsafe().modifyItemStack(item,
         "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
         );
     }
@@ -207,9 +207,9 @@ public class SkullCreator {
         );
         
         if (newerApi()) {
-            crazyManager.getPlugin().getServer().dispatchCommand(crazyManager.getPlugin().getServer().getConsoleSender(), "data merge block " + args);
+            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "data merge block " + args);
         } else {
-            crazyManager.getPlugin().getServer().dispatchCommand(crazyManager.getPlugin().getServer().getConsoleSender(), "blockdata " + args);
+            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "blockdata " + args);
         }
     }
     

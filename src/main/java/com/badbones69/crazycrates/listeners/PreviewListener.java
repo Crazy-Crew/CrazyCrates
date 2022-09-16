@@ -87,9 +87,7 @@ public class PreviewListener implements Listener {
     public static ItemStack getNextButton(Player player) {
         ItemBuilder button = new ItemBuilder(nextButton);
 
-        if (player != null) {
-            button.addLorePlaceholder("%Page%", (getPage(player) + 1) + "");
-        }
+        if (player != null) button.addLorePlaceholder("%Page%", (getPage(player) + 1) + "");
 
         return button.build();
     }
@@ -101,9 +99,7 @@ public class PreviewListener implements Listener {
     public static ItemStack getBackButton(Player player) {
         ItemBuilder button = new ItemBuilder(backButton);
 
-        if (player != null) {
-            button.addLorePlaceholder("%Page%", (getPage(player) - 1) + "");
-        }
+        if (player != null) button.addLorePlaceholder("%Page%", (getPage(player) - 1) + "");
 
         return button.build();
     }
@@ -129,9 +125,7 @@ public class PreviewListener implements Listener {
                 if (e.getCurrentItem() != null) {
                     if (e.getRawSlot() == crate.getAbsoluteItemPosition(4)) { // Clicked the menu button.
 
-                        if (playerInMenu(player)) {
-                            MenuListener.openGUI(player);
-                        }
+                        if (playerInMenu(player)) MenuListener.openGUI(player);
 
                     } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(5)) { // Clicked the next button.
 

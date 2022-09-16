@@ -140,7 +140,3 @@ permissions:
     default: op
     children:
       crazycrates.command.admin.reload: true
-
-
-libraries:
-  - org.jetbrains.kotlin:kotlin-stdlib:1.7.10

@@ -46,5 +46,4 @@ public class CrateLocation {
     public Location getLocation() {
         return loc;
     }
-    
 }

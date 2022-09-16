@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerReceiveKeyEvent extends Event implements Cancellable {
     
@@ -24,7 +25,7 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
         isCancelled = false;
     }
     
-    public static HandlerList getHandlerList() {
+    public HandlerList getHandlerList() {
         return handlers;
     }
     
@@ -50,7 +51,7 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
         isCancelled = cancel;
     }
     
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
     

@@ -5,8 +5,10 @@ import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
-import com.badbones69.crazycrates.commands.CCCommand;
-import com.badbones69.crazycrates.commands.CCTab;
+import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.CrateLocation;
+import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.commands.subs.CrateBaseCommand;
 import com.badbones69.crazycrates.commands.subs.player.BaseKeyCommand;
 import com.badbones69.crazycrates.cratetypes.CSGO;
 import com.badbones69.crazycrates.cratetypes.Cosmic;
@@ -20,22 +22,38 @@ import com.badbones69.crazycrates.cratetypes.Wonder;
 import com.badbones69.crazycrates.listeners.*;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
+import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
 import dev.triumphteam.cmd.core.message.MessageKey;
+import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
 import io.papermc.lib.PaperLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
 public class CrazyCrates extends JavaPlugin implements Listener {
 
-    private final FileManager fileManager = FileManager.getInstance();
-    private final CrazyManager crazyManager = CrazyManager.getInstance();
+    private static CrazyCrates plugin;
+
+    private FileManager fileManager;
+
+    private CrazyManager crazyManager;
+
+    private ChestStateHandler chestStateHandler;
 
     private boolean isEnabled = false;
 
@@ -65,8 +83,13 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         }
 
         try {
+            plugin = this;
 
-            crazyManager.loadPlugin(this);
+            fileManager = new FileManager();
+
+            crazyManager = new CrazyManager();
+
+            chestStateHandler = new ChestStateHandler();
 
             fileManager.logInfo(true)
                     .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
@@ -81,7 +104,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
                     .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
                     .registerCustomFilesFolder("/crates")
                     .registerCustomFilesFolder("/schematics")
-                    .setup(this);
+                    .setup();
 
             // Clean files if we have to.
             cleanFiles();
@@ -103,12 +126,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
                 new Metrics(this, 4514);
             }
         } catch (Exception e) {
-
-            getLogger().severe(e.getMessage());
-
-            for (StackTraceElement stack : e.getStackTrace()) {
-                getLogger().severe(String.valueOf(stack));
-            }
+            e.printStackTrace();
 
             isEnabled = false;
 
@@ -181,9 +199,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         if (!crazyManager.getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
 
-        if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) {
-            new PlaceholderAPISupport().register();
-        }
+        if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) new PlaceholderAPISupport().register();
 
         manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage()));
 
@@ -199,9 +215,50 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         manager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage()));
 
+        manager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> fileManager.getAllCratesNames(plugin).stream().toList());
+
+        manager.registerSuggestion(SuggestionKey.of("key-types"), (sender, context) -> KEYS);
+
+        manager.registerSuggestion(SuggestionKey.of("players"), (sender, context) -> getServer().getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
+
+        manager.registerSuggestion(SuggestionKey.of("locations"), (sender, context) -> crazyManager.getCrateLocations().stream().map(CrateLocation::getID).toList());
+
+        manager.registerSuggestion(SuggestionKey.of("prizes"), (sender, context) -> {
+            List<String> numbers = new ArrayList<>();
+
+            crazyManager.getCrateFromName(context.getArgs().get(0)).getPrizes().forEach(prize -> numbers.add(prize.getName()));
+
+            return numbers;
+        });
+
+        manager.registerSuggestion(SuggestionKey.of("numbers"), (sender, context) -> {
+            List<String> numbers = new ArrayList<>();
+
+            for (int i = 1; i <= 250; i++) numbers.add(i + "");
+
+            return numbers;
+        });
+
         manager.registerCommand(new BaseKeyCommand());
 
-        getCommand("crates").setExecutor(new CCCommand());
-        getCommand("crates").setTabCompleter(new CCTab());
+        manager.registerCommand(new CrateBaseCommand());
+    }
+
+    public final List<String> KEYS = List.of("virtual", "v", "physical", "p");
+
+    public static CrazyCrates getPlugin() {
+        return plugin;
+    }
+
+    public CrazyManager getCrazyManager() {
+        return crazyManager;
+    }
+
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    public ChestStateHandler getChestStateHandler() {
+        return chestStateHandler;
     }
 }

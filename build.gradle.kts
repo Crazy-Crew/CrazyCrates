@@ -2,8 +2,6 @@ plugins {
     java
     // idea
 
-    kotlin("jvm") version "1.7.10"
-
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
@@ -18,14 +16,8 @@ java {
 //    }
 //}
 
-tasks.compileKotlin {
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-}
-
 group = "com.badbones69.crazycrates"
-version = "1.11.6-${System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"}"
+version = "1.11.7-${System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"}"
 description = "Quality crates for free!"
 
 repositories {
@@ -77,8 +69,6 @@ dependencies {
     compileOnly("org.apache.commons:commons-text:1.9")
 
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
-
-    compileOnly(kotlin("stdlib", "1.7.10"))
 }
 
 tasks {

@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FileManager {
-    
-    private static final FileManager instance = new FileManager();
-    private static final CrazyManager crazyManager = CrazyManager.getInstance();
+
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private boolean log = false;
 
@@ -24,14 +23,10 @@ public class FileManager {
     private final HashMap<String, String> autoGenerateFiles = new HashMap<>();
     private final HashMap<Files, FileConfiguration> configurations = new HashMap<>();
     
-    public static FileManager getInstance() {
-        return instance;
-    }
-    
     /**
      * Sets up the plugin and loads all necessary files.
      */
-    public FileManager setup(CrazyCrates plugin) {
+    public FileManager setup() {
         if (!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdirs();
 
         files.clear();
@@ -75,7 +70,7 @@ public class FileManager {
                     if (list != null) {
                         for (String name : list) {
                             if (name.endsWith(".yml")) {
-                                CustomFile file = new CustomFile(name, homeFolder, plugin);
+                                CustomFile file = new CustomFile(name, homeFolder);
 
                                 if (file.exists()) {
                                     customFiles.add(file);
@@ -99,9 +94,7 @@ public class FileManager {
                                 InputStream jarFile = getClass().getResourceAsStream((jarHomeFolders.getOrDefault(fileName, homeFolder)) + "/" + fileName);
                                 copyFile(jarFile, serverFile);
 
-                                if (fileName.toLowerCase().endsWith(".yml")) {
-                                    customFiles.add(new CustomFile(fileName, homeFolder, plugin));
-                                }
+                                if (fileName.toLowerCase().endsWith(".yml")) customFiles.add(new CustomFile(fileName, homeFolder));
 
                                 if (log) plugin.getLogger().info("Created new default file: " + homeFolder + "/" + fileName + ".");
                             } catch (Exception e) {
@@ -204,9 +197,7 @@ public class FileManager {
      */
     public CustomFile getFile(String name) {
         for (CustomFile file : customFiles) {
-            if (file.getName().equalsIgnoreCase(name)) {
-                return file;
-            }
+            if (file.getName().equalsIgnoreCase(name)) return file;
         }
 
         return null;
@@ -219,7 +210,8 @@ public class FileManager {
         try {
             configurations.get(file).save(files.get(file));
         } catch (IOException e) {
-            crazyManager.getPlugin().getLogger().warning("Could not save " + file.getFileName() + "!");
+            plugin.getLogger().warning("Could not save " + file.getFileName() + "!");
+            
             e.printStackTrace();
         }
     }
@@ -233,15 +225,15 @@ public class FileManager {
 
         if (file != null) {
             try {
-                file.getFile().save(new File(crazyManager.getPlugin().getDataFolder(), file.getHomeFolder() + "/" + file.getFileName()));
+                file.getFile().save(new File(plugin.getDataFolder(), file.getHomeFolder() + "/" + file.getFileName()));
 
-                if (log) crazyManager.getPlugin().getLogger().info("Successfully saved the " + file.getFileName() + ".");
+                if (log) plugin.getLogger().info("Successfully saved the " + file.getFileName() + ".");
             } catch (Exception e) {
-                crazyManager.getPlugin().getLogger().warning("Could not save " + file.getFileName() + "!");
+                plugin.getLogger().warning("Could not save " + file.getFileName() + "!");
                 e.printStackTrace();
             }
         } else {
-            if (log) crazyManager.getPlugin().getLogger().warning("The file " + name + ".yml could not be found!");
+            if (log) plugin.getLogger().warning("The file " + name + ".yml could not be found!");
         }
     }
     
@@ -269,15 +261,15 @@ public class FileManager {
 
         if (file != null) {
             try {
-                file.file = YamlConfiguration.loadConfiguration(new File(crazyManager.getPlugin().getDataFolder(), "/" + file.getHomeFolder() + "/" + file.getFileName()));
+                file.file = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "/" + file.getHomeFolder() + "/" + file.getFileName()));
 
-                if (log) crazyManager.getPlugin().getLogger().info("Successfully reloaded the " + file.getFileName() + ".");
+                if (log) plugin.getLogger().info("Successfully reloaded the " + file.getFileName() + ".");
             } catch (Exception e) {
-                crazyManager.getPlugin().getLogger().warning("Could not reload the " + file.getFileName() + "!");
+                plugin.getLogger().warning("Could not reload the " + file.getFileName() + "!");
                 e.printStackTrace();
             }
         } else {
-            if (log) crazyManager.getPlugin().getLogger().warning("The file " + name + ".yml could not be found!");
+            if (log) plugin.getLogger().warning("The file " + name + ".yml could not be found!");
         }
     }
     
@@ -302,19 +294,21 @@ public class FileManager {
     public ArrayList<String> getAllCratesNames(CrazyCrates plugin) {
         ArrayList<String> files = new ArrayList<>();
 
-        for (String name : new File(plugin.getDataFolder(), "/crates").list()) {
-            if (!name.endsWith(".yml")) {
-                continue;
-            }
+        String[] file = new File(plugin.getDataFolder(), "/crates").list();
 
-            files.add(name.replaceAll(".yml", ""));
+        if (file != null) {
+            for (String name : file) {
+                if (!name.endsWith(".yml")) continue;
+
+                files.add(name.replaceAll(".yml", ""));
+            }
         }
 
         return files;
     }
     
     /**
-     * Was found here: https://bukkit.org/threads/extracting-file-from-jar.16962
+     * Was found here: <a href="https://bukkit.org/threads/extracting-file-from-jar.16962">...</a>
      */
     private void copyFile(InputStream in, File out) throws Exception {
         try (InputStream fis = in; FileOutputStream fos = new FileOutputStream(out)) {
@@ -339,6 +333,10 @@ public class FileManager {
         private final String fileName;
         private final String fileJar;
         private final String fileLocation;
+
+        private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+        private final FileManager fileManager = plugin.getFileManager();
         
         /**
          * The files that the server will try and load.
@@ -390,21 +388,21 @@ public class FileManager {
          * @return The file from the system.
          */
         public FileConfiguration getFile() {
-            return getInstance().getFile(this);
+            return fileManager.getFile(this);
         }
         
         /**
          * Saves the file from the loaded state to the file system.
          */
         public void saveFile() {
-            getInstance().saveFile(this);
+            fileManager.saveFile(this);
         }
         
         /**
          * Overrides the loaded state file and loads the file systems file.
          */
         public void reloadFile() {
-            getInstance().reloadFile(this);
+            fileManager.reloadFile(this);
         }
     }
     
@@ -415,16 +413,15 @@ public class FileManager {
         private final String homeFolder;
         private FileConfiguration file;
 
-        private final CrazyCrates plugin;
+        private final CrazyCrates plugin = CrazyCrates.getPlugin();
         
         /**
          * A custom file that is being made.
          * @param name Name of the file.
          * @param homeFolder The home folder of the file.
          */
-        public CustomFile(String name, String homeFolder, CrazyCrates plugin) {
+        public CustomFile(String name, String homeFolder) {
             this.name = name.replace(".yml", "");
-            this.plugin = plugin;
             this.fileName = name;
             this.homeFolder = homeFolder;
 

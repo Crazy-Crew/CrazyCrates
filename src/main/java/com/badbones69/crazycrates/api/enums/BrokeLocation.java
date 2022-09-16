@@ -11,17 +11,15 @@ public class BrokeLocation {
     private final String locationName;
     private Crate crate;
 
-    private final CrazyCrates plugin;
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
     
-    public BrokeLocation(String locationName, Crate crate, int x, int y, int z, String world, CrazyCrates plugin) {
+    public BrokeLocation(String locationName, Crate crate, int x, int y, int z, String world) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.world = world;
         this.crate = crate;
         this.locationName = locationName;
-
-        this.plugin = plugin;
     }
     
     public String getLocationName() {

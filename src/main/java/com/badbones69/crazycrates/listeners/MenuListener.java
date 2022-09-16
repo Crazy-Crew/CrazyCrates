@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.listeners;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
@@ -24,7 +25,9 @@ import java.util.List;
 
 public class MenuListener implements Listener {
 
-    private static final CrazyManager crazyManager = CrazyManager.getInstance();
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private static final CrazyManager crazyManager = plugin.getCrazyManager();
     
     public static void openGUI(Player player) {
         int size = Files.CONFIG.getFile().getInt("Settings.InventorySize");
@@ -51,20 +54,12 @@ public class MenuListener implements Listener {
 
                 for (String option : split) {
 
-                    if (option.contains("Item:")) {
-                        item.setMaterial(option.replace("Item:", ""));
-                    }
+                    if (option.contains("Item:")) item.setMaterial(option.replace("Item:", ""));
 
                     if (option.contains("Name:")) {
                         option = option.replace("Name:", "");
 
-                        for (Crate crate : crazyManager.getCrates()) {
-                            if (crate.getCrateType() != CrateType.MENU) {
-                                option = option.replaceAll("%" + crate.getName().toLowerCase() + "%", crazyManager.getVirtualKeys(player, crate) + "")
-                                .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", crazyManager.getPhysicalKeys(player, crate) + "")
-                                .replaceAll("%" + crate.getName().toLowerCase() + "_total%", crazyManager.getTotalKeys(player, crate) + "");
-                            }
-                        }
+                        option = getCrates(player, option);
 
                         item.setName(option.replaceAll("%player%", player.getName()));
                     }
@@ -74,42 +69,24 @@ public class MenuListener implements Listener {
                         String[] d = option.split(",");
 
                         for (String l : d) {
-                            for (Crate crate : crazyManager.getCrates()) {
-                                if (crate.getCrateType() != CrateType.MENU) {
-                                    option = option.replaceAll("%" + crate.getName().toLowerCase() + "%", crazyManager.getVirtualKeys(player, crate) + "")
-                                    .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", crazyManager.getPhysicalKeys(player, crate) + "")
-                                    .replaceAll("%" + crate.getName().toLowerCase() + "_total%", crazyManager.getTotalKeys(player, crate) + "");
-                                }
-                            }
+                            option = getCrates(player, option);
 
                             item.addLore(option.replaceAll("%player%", player.getName()));
                         }
                     }
 
-                    if (option.contains("Glowing:")) {
-                        item.setGlow(Boolean.parseBoolean(option.replace("Glowing:", "")));
-                    }
+                    if (option.contains("Glowing:")) item.setGlow(Boolean.parseBoolean(option.replace("Glowing:", "")));
 
-                    if (option.contains("Player:")) {
-                        item.setPlayerName(option.replaceAll("%player%", player.getName()));
-                    }
+                    if (option.contains("Player:")) item.setPlayerName(option.replaceAll("%player%", player.getName()));
 
-                    if (option.contains("Slot:")) {
-                        slot = Integer.parseInt(option.replace("Slot:", ""));
-                    }
+                    if (option.contains("Slot:")) slot = Integer.parseInt(option.replace("Slot:", ""));
 
-                    if (option.contains("Unbreakable-Item")) {
-                        item.setUnbreakable(Boolean.parseBoolean(option.replace("Unbreakable-Item:", "")));
-                    }
+                    if (option.contains("Unbreakable-Item")) item.setUnbreakable(Boolean.parseBoolean(option.replace("Unbreakable-Item:", "")));
 
-                    if (option.contains("Hide-Item-Flags")) {
-                        item.hideItemFlags(Boolean.parseBoolean(option.replace("Hide-Item-Flags:", "")));
-                    }
+                    if (option.contains("Hide-Item-Flags")) item.hideItemFlags(Boolean.parseBoolean(option.replace("Hide-Item-Flags:", "")));
                 }
 
-                if (slot > size) {
-                    continue;
-                }
+                if (slot > size) continue;
 
                 slot--;
                 inv.setItem(slot, item.build());
@@ -124,9 +101,7 @@ public class MenuListener implements Listener {
                     String path = "Crate.";
                     int slot = file.getInt(path + "Slot");
 
-                    if (slot > size) {
-                        continue;
-                    }
+                    if (slot > size) continue;
 
                     slot--;
                     inv.setItem(slot, new ItemBuilder()
@@ -147,7 +122,19 @@ public class MenuListener implements Listener {
 
         player.openInventory(inv);
     }
-    
+
+    private static String getCrates(Player player, String option) {
+        for (Crate crate : crazyManager.getCrates()) {
+            if (crate.getCrateType() != CrateType.MENU) {
+                option = option.replaceAll("%" + crate.getName().toLowerCase() + "%", crazyManager.getVirtualKeys(player, crate) + "")
+                .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", crazyManager.getPhysicalKeys(player, crate) + "")
+                .replaceAll("%" + crate.getName().toLowerCase() + "_total%", crazyManager.getTotalKeys(player, crate) + "");
+            }
+        }
+
+        return option;
+    }
+
     @EventHandler
     public void onInvClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
@@ -157,9 +144,7 @@ public class MenuListener implements Listener {
         if (inv != null) {
 
             for (Crate crate : crazyManager.getCrates()) {
-                if (crate.getCrateType() != CrateType.MENU && crate.isCrateMenu(e.getView())) {
-                    return;
-                }
+                if (crate.getCrateType() != CrateType.MENU && crate.isCrateMenu(e.getView())) return;
             }
 
             if (e.getView().getTitle().equals(Methods.sanitizeColor(config.getString("Settings.InventoryName")))) {
@@ -209,9 +194,7 @@ public class MenuListener implements Listener {
                                     if (config.contains("Settings.Need-Key-Sound")) {
                                         Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
 
-                                        if (sound != null) {
-                                            player.playSound(player.getLocation(), sound, 1f, 1f);
-                                        }
+                                        if (sound != null) player.playSound(player.getLocation(), sound, 1f, 1f);
                                     }
 
                                     player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
