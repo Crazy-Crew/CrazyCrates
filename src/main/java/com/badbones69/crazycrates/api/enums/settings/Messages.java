@@ -86,7 +86,7 @@ public enum Messages {
     "&6/key [player] &7- &eCheck the number of keys a player has.",
     "&6/cc &7- &eOpens the menu.",
     " ",
-    "&7You can find a list of permissions @ &ehttps://github.com/badbones69/Crazy-Crates/wiki/Commands-and-Permissions"
+    "&7You can find a list of permissions @ &ehttps://github.com/badbones69/CrazyCrates/wiki/Commands-and-Permissions"
     ));
     
     private final String path;
