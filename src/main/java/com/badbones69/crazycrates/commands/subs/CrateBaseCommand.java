@@ -38,12 +38,6 @@ public class CrateBaseCommand extends BaseCommand {
 
     private final FileManager fileManager = plugin.getFileManager();
 
-    @SubCommand("clear")
-    @Permission(value = "test", def = PermissionDefault.TRUE)
-    public void onClear(Player player) {
-        player.getInventory().clear();
-    }
-
     @Default
     @Permission(value = "crazycrates.command.player.menu", def = PermissionDefault.TRUE)
     public void onDefaultMenu(Player player) {
@@ -64,9 +58,9 @@ public class CrateBaseCommand extends BaseCommand {
         if (crate != null) {
             if (!player.getName().equalsIgnoreCase(sender.getName())) {
 
-                if (crazyManager.getVirtualKeys(player, crate) >= amount) {
+                if (crazyManager.getVirtualKeys(sender, crate) >= amount) {
                     PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.TRANSFER, amount);
-                    player.getServer().getPluginManager().callEvent(event);
+                    plugin.getServer().getPluginManager().callEvent(event);
 
                     if (!event.isCancelled()) {
                         crazyManager.takeKeys(amount, sender, crate, KeyType.VIRTUAL_KEY, false);
@@ -78,9 +72,9 @@ public class CrateBaseCommand extends BaseCommand {
                         placeholders.put("%Amount%", amount + "");
                         placeholders.put("%Player%", player.getName());
 
-                        player.sendMessage(Messages.TRANSFERRED_KEYS.getMessage(placeholders));
+                        sender.sendMessage(Messages.TRANSFERRED_KEYS.getMessage(placeholders));
 
-                        placeholders.put("%Player%", player.getName());
+                        placeholders.put("%Player%", sender.getName());
 
                         player.sendMessage(Messages.RECEIVED_TRANSFERRED_KEYS.getMessage(placeholders));
                     }
