@@ -83,22 +83,11 @@ public class WheelCrate implements Listener {
 
             if (slot.get() >= 18) slot.set(0);
 
-            if (full.get() < timer) {
-                if (rewards.get(player).get(slots.get(item.get())).getItemMeta().hasLore()) {
-                    inv.setItem(slots.get(item.get()), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(item.get())).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(item.get())).getItemMeta().getLore()).build());
-                } else {
-                    inv.setItem(slots.get(item.get()), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(item.get())).getItemMeta().getDisplayName()).build());
-                }
-
-                inv.setItem(slots.get(slot.get()), rewards.get(player).get(slots.get(slot.get())));
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
-
-                item.incrementAndGet();
-                slot.incrementAndGet();
-            }
+            if (full.get() < timer) checkLore(player, inv, slots, item, slot, slower);
 
             if (full.get() >= timer) {
-                //if (commonUtils.slowSpin().contains(slower.get())) rewardCheck();
+
+                checkLore(player, inv, slots, item, slot, slower);
 
                 if (full.get() == timer + 47) player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 
@@ -139,7 +128,23 @@ public class WheelCrate implements Listener {
             }
         }));
     }
-    
+
+    private void checkLore(Player player, Inventory inv, ArrayList<Integer> slots, AtomicInteger item, AtomicInteger slot, AtomicInteger slower) {
+        if (commonUtils.slowSpin().contains(slower.get())) {
+            if (rewards.get(player).get(slots.get(item.get())).getItemMeta().hasLore()) {
+                inv.setItem(slots.get(item.get()), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(item.get())).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(item.get())).getItemMeta().getLore()).build());
+            } else {
+                inv.setItem(slots.get(item.get()), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(item.get())).getItemMeta().getDisplayName()).build());
+            }
+
+            inv.setItem(slots.get(slot.get()), rewards.get(player).get(slots.get(slot.get())));
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+
+            item.incrementAndGet();
+            slot.incrementAndGet();
+        }
+    }
+
     private ArrayList<Integer> getBorder() {
         return Lists.newArrayList(10,11,12,13,14,15,16,19,25,28,34,37,38,39,40,41,42,43);
     }

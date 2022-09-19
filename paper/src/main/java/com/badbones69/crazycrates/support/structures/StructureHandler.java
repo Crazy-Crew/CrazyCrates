@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.support.structures;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -110,29 +111,8 @@ public class StructureHandler {
     }
 
     public List<Material> getBlockBlackList() {
-        List<Material> blockList = new ArrayList<>();
-
-        blockList.add(Material.ACACIA_SIGN);
-        blockList.add(Material.BIRCH_SIGN);
-        blockList.add(Material.DARK_OAK_SIGN);
-        blockList.add(Material.JUNGLE_SIGN);
-        blockList.add(Material.OAK_SIGN);
-        blockList.add(Material.SPRUCE_SIGN);
-        blockList.add(Material.ACACIA_WALL_SIGN);
-        blockList.add(Material.BIRCH_WALL_SIGN);
-        blockList.add(Material.DARK_OAK_WALL_SIGN);
-        blockList.add(Material.JUNGLE_WALL_SIGN);
-        blockList.add(Material.OAK_WALL_SIGN);
-        blockList.add(Material.SPRUCE_WALL_SIGN);
-        blockList.add(Material.STONE_BUTTON);
-        blockList.add(Material.BIRCH_BUTTON);
-        blockList.add(Material.ACACIA_BUTTON);
-        blockList.add(Material.DARK_OAK_BUTTON);
-        blockList.add(Material.JUNGLE_BUTTON);
-        blockList.add(Material.OAK_BUTTON);
-        blockList.add(Material.SPRUCE_BUTTON);
-        blockList.add(Material.STONE_BUTTON);
-
-        return blockList;
+        return Lists.newArrayList(Material.ACACIA_SIGN, Material.BIRCH_SIGN, Material.DARK_OAK_SIGN, Material.JUNGLE_SIGN, Material.OAK_SIGN,
+                Material.SPRUCE_SIGN, Material.ACACIA_WALL_SIGN, Material.BIRCH_WALL_SIGN, Material.DARK_OAK_WALL_SIGN, Material.JUNGLE_WALL_SIGN, Material.OAK_WALL_SIGN,
+                Material.SPRUCE_WALL_SIGN,Material.STONE_BUTTON,Material.BIRCH_BUTTON,Material.ACACIA_BUTTON,Material.DARK_OAK_BUTTON, Material.JUNGLE_BUTTON, Material.SPRUCE_BUTTON);
     }
 }
