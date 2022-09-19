@@ -25,3 +25,5 @@ paper/build
 common/build
 build-logic/build
 fabric/build
+
+.env
