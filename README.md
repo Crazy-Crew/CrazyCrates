@@ -69,9 +69,9 @@ A list of things necessary to make sure you can build CrazyCrates properly.
    git clone https://github.com/Crazy-Crew/CrazyCrates.git
    ```
 2. Open the repository using Intellij IDEA & wait until it finishes downloading/indexing.
-3. Run the reobfJar task.
+3. Run the shadowJar task.
    ```gradle
-   ./gradlew reobfJar
+   ./gradlew shadowJar
    ```
 
 ## Roadmap
