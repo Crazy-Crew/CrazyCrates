@@ -104,4 +104,4 @@ Distributed under the GPU v3 License. See `LICENSE.MD` for more information.
 [license-shield]: https://img.shields.io/github/license/Crazy-Crew/CrazyCrates.svg?style=for-the-badge
 [license-url]: https://github.com/Crazy-Crew/CrazyCrates/blob/master/LICENSE.MD
 
-[codefactor-shield]: https://img.shields.io/codefactor/grade/github/crazy-crew/crazycrates/features/paper?style=for-the-badge
+[codefactor-shield]: https://img.shields.io/codefactor/grade/github/crazy-crew/crazycrates/main?style=for-the-badge
