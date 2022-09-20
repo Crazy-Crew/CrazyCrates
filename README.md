@@ -12,9 +12,9 @@
 [![Contact][discord-shield]][discord-url]
 ![CodeFactor][codefactor-shield]
 
-<a href="/#"><img src="https://raw.githubusercontent.com/intergrav/devins-badges/v1/assets/supported/spigot_64h.png" height="50"></a>
-<a href="/#"><img src="https://raw.githubusercontent.com/intergrav/devins-badges/v1/assets/supported/paper_64h.png" height="50"></a>
-<a href="/#"><img src="https://raw.githubusercontent.com/intergrav/devins-badges/v1/assets/supported/purpur_64h.png" height="50"></a>
+<a href="/#"><img src="https://raw.githubusercontent.com/intergrav/devins-badges/v2/assets/cozy/supported/spigot_64h.png" height="50"></a>
+<a href="/#"><img src="https://raw.githubusercontent.com/intergrav/devins-badges/v2/assets/cozy/supported/paper_64h.png" height="50"></a>
+<a href="/#"><img src="https://raw.githubusercontent.com/intergrav/devins-badges/v2/assets/cozy/supported/purpur_64h.png" height="50"></a>
 
   <p align="center">
     A crates plugin that offers quality crates with ease!
