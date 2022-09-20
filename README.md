@@ -1,6 +1,6 @@
 <br />
 
-[![crazycrates](https://raw.githubusercontent.com/RyderBelserion/Assets/main/crazycrew/banners/CrazyCrates.png)](https://modrinth.com/mod/crazycrates)
+[![crazycrates](https://raw.githubusercontent.com/RyderBelserion/Assets/main/crazycrew/banners/CrazyCrates.png)](https://www.spigotmc.org/resources/crazy-crates.17599/)
 
 <div align="center">
 
