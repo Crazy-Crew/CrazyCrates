@@ -78,7 +78,7 @@ A list of things necessary to make sure you can build CrazyCrates properly.
 
 ## Roadmap
 
-Check our public [trello board](https://trello.com/b/AJvEmcbL) for our current plans, any bugs and general tracking of the project progress.
+Check our public [trello board](https://trello.com/b/bzQ5TwXo) for our current plans, any bugs and general tracking of the project progress.
 
 ## Contributing
 
