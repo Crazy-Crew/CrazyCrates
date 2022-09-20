@@ -49,7 +49,9 @@
 </details>
 
 ## Downloads
-N/A
+https://www.spigotmc.org/resources/crazy-crates.17599/
+
+https://jenkins.badbones69.com/view/Stable/job/Crazy-Crates/
 
 ## Getting Started
 
