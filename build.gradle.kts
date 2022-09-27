@@ -1,6 +1,5 @@
 plugins {
     java
-    // idea
 
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
@@ -8,13 +7,6 @@ plugins {
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
-
-//idea {
-//    module {
-//        isDownloadJavadoc = true
-//        isDownloadSources = true
-//    }
-//}
 
 group = "com.badbones69.crazycrates"
 version = "1.11.7-${System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"}"
@@ -73,7 +65,7 @@ tasks {
     shadowJar {
         minimize()
 
-        archiveFileName.set("${rootProject.name}-[1.18-1.19]-[v${rootProject.version}].jar")
+        archiveFileName.set("${rootProject.name}-[v${rootProject.version}].jar")
 
         listOf(
             "de.tr7zw",
