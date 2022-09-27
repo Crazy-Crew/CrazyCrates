@@ -1,12 +1,11 @@
-name: CrazyCrates
+name: "CrazyCrates"
 main: "${group}.CrazyCrates"
-version: ${version}
-api-version: 1.18
-description: ${description}
 
-authors:
-  - BadBones69
-  - RyderBelserion
+authors: [BadBones69, RyderBelserion]
+
+version: ${version}
+api-version: "1.19"
+description: ${description}
 
 softdepend: [HolographicDisplays, DecentHolograms, PlaceholderAPI]
 
