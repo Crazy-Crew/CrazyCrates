@@ -46,8 +46,8 @@ public class CrateBaseCommand extends BaseCommand {
 
     @SubCommand("help")
     @Permission(value = "crazycrates.command.player.help", def = PermissionDefault.TRUE)
-    public void onHelp(Player player) {
-        player.sendMessage(Messages.HELP.getMessage());
+    public void onHelp(CommandSender sender) {
+        sender.sendMessage(Messages.HELP.getMessage());
     }
 
     @SubCommand("transfer")
