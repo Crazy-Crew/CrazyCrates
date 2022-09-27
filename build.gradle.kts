@@ -52,8 +52,6 @@ dependencies {
 
     implementation("de.tr7zw:nbt-data-api:2.10.0")
 
-    implementation("io.papermc:paperlib:1.0.7")
-
     compileOnly("com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9")
 
     compileOnly("com.github.decentsoftware-eu:decentholograms:2.7.2")
@@ -80,7 +78,6 @@ tasks {
         listOf(
             "de.tr7zw",
             "org.bstats",
-            "io.papermc",
             "dev.triumphteam.cmd"
         ).forEach {
             relocate(it, "${rootProject.group}.plugin.lib.$it")
