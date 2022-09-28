@@ -8,6 +8,8 @@ public enum Permissions {
     CRAZY_CRATES_PLAYER_MENU("player.menu", "Opens the primary crate menu."),
     CRAZY_CRATES_PLAYER_HELP("player.help", "Shows the help menu for Crazy Crates."),
 
+    CRAZY_CRATES_PLAYER_EXCLUDE_GIVE_ALL("exclude.player.giveall", "Permission to prevent a player from getting keys from /GiveAll."),
+
     CRAZY_CRATES_ADMIN_HELP("admin.help", "Shows the help menu for admins"),
     CRAZY_CRATES_ADMIN_ACCESS("admin.access", "General purpose access for admins."),
     CRAZY_CRATES_ADMIN_ADD_ITEM("admin.additem", "Adds items in-game to a prize in a crate."),
