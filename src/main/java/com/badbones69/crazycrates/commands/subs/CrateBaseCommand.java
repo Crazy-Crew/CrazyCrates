@@ -530,7 +530,7 @@ public class CrateBaseCommand extends BaseCommand {
 
                 for (Player onlinePlayer : plugin.getServer().getOnlinePlayers()) {
 
-                    if (Methods.permCheck(onlinePlayer, Permissions.CRAZY_CRATES_PLAYER_EXCLUDE_GIVE_ALL, false)) continue;
+                    if (Methods.permCheck(onlinePlayer, Permissions.CRAZY_CRATES_PLAYER_EXCLUDE_GIVE_ALL, true)) continue;
 
                     PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(onlinePlayer, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_ALL_COMMAND, amount);
                     onlinePlayer.getServer().getPluginManager().callEvent(event);
