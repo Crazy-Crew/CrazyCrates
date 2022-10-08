@@ -8,11 +8,13 @@ public enum Permissions {
     CRAZY_CRATES_PLAYER_MENU("player.menu", "Opens the primary crate menu."),
     CRAZY_CRATES_PLAYER_HELP("player.help", "Shows the help menu for Crazy Crates."),
 
-    CRAZY_CRATES_ADMIN_HELP("admin.help", "Shows the help menu for admins"),
+    CRAZY_CRATES_PLAYER_EXCLUDE_GIVE_ALL("exclude.player.giveall", "Permission to prevent a player from getting keys from /GiveAll."),
+
+    CRAZY_CRATES_ADMIN_HELP("admin.help", "Shows the help menu for admins."),
     CRAZY_CRATES_ADMIN_ACCESS("admin.access", "General purpose access for admins."),
     CRAZY_CRATES_ADMIN_ADD_ITEM("admin.additem", "Adds items in-game to a prize in a crate."),
     CRAZY_CRATES_ADMIN_PREVIEW("admin.preview", "Opens the preview of any crate for a player."),
-    CRAZY_CRATES_ADMIN_LIST("admin.list", "Displays a list of all available crates"),
+    CRAZY_CRATES_ADMIN_LIST("admin.list", "Displays a list of all available crates."),
     CRAZY_CRATES_ADMIN_OPEN("admin.open", "Tries to open a crate for the player if they have a key."),
     CRAZY_CRATES_ADMIN_OPEN_OTHER("admin.open.others", "Tries to open a crate for a player if they have a key."),
     CRAZY_CRATES_ADMIN_FORCE_OPEN("admin.forceopen", "Opens a crate for a player for free."),
@@ -25,7 +27,7 @@ public enum Permissions {
     CRAZY_CRATES_ADMIN_RELOAD("admin.reload", "Reloads the entire plugin."),
     CRAZY_CRATES_ADMIN_DEBUG("admin.debug", "Debugs the plugin."),
     CRAZY_CRATES_ADMIN_CONVERT("admin.convert", "Converts data from other supported crate plugins into crazy crates."),
-    CRAZY_CRATES_ADMIN_SCHEMATIC("admin.schematic.*", "Gives all permissions related to schematics"),
+    CRAZY_CRATES_ADMIN_SCHEMATIC("admin.schematic.*", "Gives all permissions related to schematics."),
     CRAZY_CRATES_ADMIN_SCHEMATIC_SET("admin.schematic.set", "Sets the positions #1 or #2 when making a new schematic for quadcrates."),
     CRAZY_CRATES_ADMIN_SCHEMATIC_SAVE("admin.schematic.save", "Saves the new schematic file to the schematics folder.");
 
