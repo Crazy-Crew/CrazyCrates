@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.EventLogger;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
@@ -38,6 +39,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,6 +55,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     private ChestStateHandler chestStateHandler;
 
+    private EventLogger eventLogger;
+
     private boolean isEnabled = false;
 
     BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
@@ -65,6 +70,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             fileManager = new FileManager();
 
             crazyManager = new CrazyManager();
+
+            eventLogger = new EventLogger();
 
             chestStateHandler = new ChestStateHandler();
 
@@ -124,6 +131,12 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         QuickCrate.removeAllRewards();
 
         if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
+
+        try {
+            getEventLogger().unload();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 
     @EventHandler
@@ -211,8 +224,13 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         });
 
         manager.registerCommand(new BaseKeyCommand());
-
         manager.registerCommand(new CrateBaseCommand());
+
+        try {
+            getEventLogger().load();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 
     public final List<String> KEYS = List.of("virtual", "v", "physical", "p");
@@ -228,6 +246,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public FileManager getFileManager() {
         return fileManager;
     }
+    public EventLogger getEventLogger() { return eventLogger; }
 
     public ChestStateHandler getChestStateHandler() {
         return chestStateHandler;

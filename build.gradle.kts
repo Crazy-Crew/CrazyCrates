@@ -26,9 +26,6 @@ repositories {
     // Triumph Team
     maven("https://repo.triumphteam.dev/snapshots/")
 
-    // Our Repo
-    maven("https://repo.badbones69.com/releases/")
-
     // Vault API
     maven("https://jitpack.io/")
 
