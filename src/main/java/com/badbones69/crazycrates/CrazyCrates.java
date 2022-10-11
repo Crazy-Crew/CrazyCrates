@@ -55,7 +55,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     private ChestStateHandler chestStateHandler;
 
-    private EventLogger eventLogger;
+    private EventLogger eventLogger = new EventLogger();
 
     private boolean isEnabled = false;
 
@@ -71,7 +71,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
             crazyManager = new CrazyManager();
 
-            eventLogger = new EventLogger();
+
 
             chestStateHandler = new ChestStateHandler();
 
@@ -118,8 +118,14 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         }
 
         enable();
-
         isEnabled = true;
+
+        try {
+            eventLogger.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
@@ -132,11 +138,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeAllHolograms();
 
-        try {
-            getEventLogger().unload();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
     }
 
     @EventHandler
@@ -225,12 +226,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         manager.registerCommand(new BaseKeyCommand());
         manager.registerCommand(new CrateBaseCommand());
-
-        try {
-            getEventLogger().load();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
     }
 
     public final List<String> KEYS = List.of("virtual", "v", "physical", "p");
@@ -246,9 +241,10 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public FileManager getFileManager() {
         return fileManager;
     }
-    public EventLogger getEventLogger() { return eventLogger; }
 
     public ChestStateHandler getChestStateHandler() {
         return chestStateHandler;
     }
+
+    public EventLogger getEventLogger() { return eventLogger; }
 }

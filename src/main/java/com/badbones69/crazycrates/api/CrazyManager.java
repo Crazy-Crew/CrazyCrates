@@ -40,7 +40,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CrazyManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
-    private final EventLogger eventLogger = plugin.getEventLogger();
     private final FileManager fileManager = plugin.getFileManager();
 
     // All the crates that have been loaded.
@@ -435,7 +434,7 @@ public class CrazyManager {
                 player.getServer().broadcastMessage(Methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
             }
         }
-        eventLogger.logCrateEvent(player.getName(), crate, keyType);
+        plugin.getEventLogger().logCrateEvent(player.getName(), crate, keyType);
     }
     
     /**

@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -26,23 +27,16 @@ public class EventLogger {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private File logFile;
-    private FileWriter fileWriter;
-    private BufferedWriter bufferedWriter;
+
 
     public void load() throws IOException {
-        setLogFile(new File(plugin.getDataFolder(), "events.log"));
-        setFileWriter(new FileWriter(getLogFile(), true));
-        setBufferedWriter(new BufferedWriter(getFileWriter()));
+        setLogFile(new File(CrazyCrates.getPlugin().getDataFolder(), "events.log"));
         checkLogFileExists(getLogFile());
-    }
-
-    public void unload() throws IOException {
-        getBufferedWriter().close();
     }
 
     public void logCrateEvent(String playerName, Crate crate, KeyType keyType) {
         log(setEntryData("Player: %player% | Crate Name: %crate_name% | Crate Type: %crate_type% | Key Name: %key_name% | Key Type: %key_type% | Key Item: %key_item%",
-                playerName, crate, keyType), CrateEventType.CRATE_EVENT.toString());
+                playerName, crate, keyType), CrateEventType.CRATE_EVENT.getName());
 
         System.out.println(setEntryData("Player: %player% | Crate Name: %crate_name% | Crate Type: %crate_type% | Key Name: %key_name% | Key Type: %key_type% | Key Item: %key_item%",
                 playerName, crate, keyType));
@@ -57,16 +51,27 @@ public class EventLogger {
     }
 
     private void log(String toLog, String eventType) {
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+
         try {
-            getBufferedWriter().write("[" + getDateTime() + " " + eventType + "]: " + toLog);
-            getBufferedWriter().newLine();
+            fileWriter = new FileWriter(getLogFile(), true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write("[" + getDateTime() + " " + eventType + "]: " + toLog + System.getProperty("line.separator"));
         } catch (IOException exception) {
             exception.printStackTrace();
+        } finally {
+            try {
+                bufferedWriter.close();
+                fileWriter.close();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
         }
     }
 
     private String getDateTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMMyyyy HH:mm:ss z");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss z");
         Date date = new Date(System.currentTimeMillis());
         return dateFormat.format(date);
     }
@@ -79,25 +84,9 @@ public class EventLogger {
         this.logFile = logFile;
     }
 
-    private FileWriter getFileWriter() {
-        return fileWriter;
-    }
-
-    private void setFileWriter(FileWriter fileWriter) {
-        this.fileWriter = fileWriter;
-    }
-
-    private BufferedWriter getBufferedWriter() {
-        return bufferedWriter;
-    }
-
-    private void setBufferedWriter(BufferedWriter bufferedWriter) {
-        this.bufferedWriter = bufferedWriter;
-    }
-
     private String setEntryData(String string, String playerName, Crate crate, KeyType keyType) {
         return string.replace("%player%", playerName).replace("%crate_name%", crate.getName())
-                .replace("%crate_type%", crate.getCrateType().getName()).replace("%key_name%", crate.getKey().displayName().toString())
+                .replace("%crate_type%", crate.getCrateType().getName()).replace("%key_name%", PlainTextComponentSerializer.plainText().serialize(crate.getKey().getItemMeta().displayName()))
                 .replace("%key_type%", keyType.getName()).replace("%key_item%", crate.getKey().getType().toString());
     }
 
