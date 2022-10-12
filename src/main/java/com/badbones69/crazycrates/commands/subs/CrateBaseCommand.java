@@ -271,10 +271,21 @@ public class CrateBaseCommand extends BaseCommand {
         }
     }
 
+    @SubCommand("open-others")
+    @Permission(value = "crazycrates.command.admin.open.others", def = PermissionDefault.OP)
+    public void onAdminCrateOpenOthers(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("online-players") Player player) {
+        openCrate(sender, player, crateName);
+    }
+
     @SubCommand("open")
     @Permission(value = "crazycrates.command.admin.open", def = PermissionDefault.OP)
-    public void onAdminCrateOpen(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("online-players") Player player) {
+    public void onAdminCrateOpen(Player player, @Suggestion("crates") String crateName) {
+        openCrate(player, player, crateName);
+    }
+
+    private void openCrate(CommandSender sender, Player player, String crateName) {
         for (Crate crate : crazyManager.getCrates()) {
+
             if (crate.getName().equalsIgnoreCase(crateName)) {
 
                 if (crazyManager.isInOpeningList(player)) {
