@@ -26,29 +26,40 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.util.BlockIterator;
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Methods {
 
     private static final CrazyManager crazyManager = CrazyManager.getInstance();
     private static final Random random = new Random();
-    
+
+    public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");
+
     public static String color(String message) {
+        if (ServerProtocol.isNewer(ServerProtocol.v1_15_R1)) {
+            Matcher matcher = HEX_PATTERN.matcher(message);
+            StringBuffer buffer = new StringBuffer();
+
+            while (matcher.find()) {
+                matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group()).toString());
+            }
+
+            return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
+        }
+
         return ChatColor.translateAlternateColorCodes('&', message);
     }
-    
+
     public static String sanitizeColor(String msg) {
         return sanitizeFormat(color(msg));
     }
-    
+
     public static String removeColor(String msg) {
         return ChatColor.stripColor(msg);
     }
-    
+
     public static HashMap<ItemStack, String> getItems(Player player) {
         HashMap<ItemStack, String> items = new HashMap<>();
         FileConfiguration file = crazyManager.getOpeningCrate(player).getFile();
@@ -76,7 +87,7 @@ public class Methods {
 
         return items;
     }
-    
+
     public static void fireWork(Location loc) {
         final Firework fw = loc.getWorld().spawn(loc, Firework.class);
         FireworkMeta fm = fw.getFireworkMeta();
@@ -86,7 +97,7 @@ public class Methods {
         FireworkDamageEvent.addFirework(fw);
         crazyManager.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(crazyManager.getPlugin(), fw :: detonate, 2);
     }
-    
+
     public static boolean isInt(String s) {
         try {
             Integer.parseInt(s);
@@ -95,11 +106,11 @@ public class Methods {
         }
         return true;
     }
-    
+
     public static Player getPlayer(String name) {
         return crazyManager.getPlugin().getServer().getPlayerExact(name);
     }
-    
+
     public static boolean isOnline(String name, CommandSender sender) {
         for (Player player : crazyManager.getPlugin().getServer().getOnlinePlayers()) {
             if (player.getName().equalsIgnoreCase(name)) {
@@ -110,7 +121,7 @@ public class Methods {
         sender.sendMessage(Messages.NOT_ONLINE.getMessage("%Player%", name));
         return false;
     }
-    
+
     public static void removeItem(ItemStack item, Player player) {
         try {
             if (item.getAmount() <= 1) {
@@ -120,7 +131,7 @@ public class Methods {
             }
         } catch (Exception ignored) {}
     }
-    
+
     public static boolean permCheck(CommandSender sender, String perm) {
         if (sender instanceof Player) {
             return permCheck((Player) sender, perm);
@@ -128,7 +139,7 @@ public class Methods {
             return true;
         }
     }
-    
+
     public static boolean permCheck(Player player, String perm) {
         if (player.hasPermission("crazycrates." + perm.toLowerCase()) || player.hasPermission("crazycrates.admin")) {
             return true;
@@ -137,27 +148,27 @@ public class Methods {
             return false;
         }
     }
-    
+
     public static String getPrefix() {
         return color(Files.CONFIG.getFile().getString("Settings.Prefix"));
     }
-    
+
     public static String getPrefix(String msg) {
         return color(Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
     }
-    
+
     public static List<Location> getLocations(String shem, Location loc) {
         return crazyManager.getNMSSupport().getLocations(new File(crazyManager.getPlugin().getDataFolder() + "/Schematics/" + shem), loc);
     }
-    
+
     public static boolean isInventoryFull(Player player) {
         return player.getInventory().firstEmpty() == -1;
     }
-    
+
     public static Integer randomNumber(int min, int max) {
         return min + random.nextInt(max - min);
     }
-    
+
     public static boolean isSimilar(Player player, Crate crate) {
         boolean check = isSimilar(crazyManager.getNMSSupport().getItemInMainHand(player), crate);
 
@@ -169,7 +180,7 @@ public class Methods {
 
         return check;
     }
-    
+
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
         NBTItem nbtItem = new NBTItem(itemStack);
 
@@ -177,7 +188,7 @@ public class Methods {
         itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
         isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
     }
-    
+
     private static boolean isSimilarCustom(ItemStack one, ItemStack two) {
         if (one != null && two != null) {
             if (one.getType() == two.getType()) {
@@ -224,7 +235,7 @@ public class Methods {
 
         return false;
     }
-    
+
     private static ItemStack stripNBT(ItemStack item) {
         try {
             NBTItem nbtItem = new NBTItem(item.clone());
@@ -240,11 +251,11 @@ public class Methods {
             return item;
         }
     }
-    
+
     public static Set<String> getEnchantments() {
         return getEnchantmentList().keySet();
     }
-    
+
     public static Enchantment getEnchantment(String enchantmentName) {
         HashMap<String, String> enchantments = getEnchantmentList();
         enchantmentName = stripEnchantmentName(enchantmentName);
@@ -260,7 +271,7 @@ public class Methods {
 
         return null;
     }
-    
+
     public static String getEnchantmentName(Enchantment enchantment) {
         HashMap<String, String> enchantments = getEnchantmentList();
         if (enchantments.get(enchantment.getName()) == null) {
@@ -269,11 +280,11 @@ public class Methods {
 
         return enchantments.get(enchantment.getName());
     }
-    
+
     private static String stripEnchantmentName(String enchantmentName) {
         return enchantmentName != null ? enchantmentName.replace("-", "").replace("_", "").replace(" ", "") : null;
     }
-    
+
     private static HashMap<String, String> getEnchantmentList() {
         HashMap<String, String> enchantments = new HashMap<>();
         enchantments.put("ARROW_DAMAGE", "Power");
@@ -351,11 +362,11 @@ public class Methods {
 
         return lastBlock;
     }
-    
+
     public static void failedToTakeKey(Player player, Crate crate) {
         failedToTakeKey(player, crate, null);
     }
-    
+
     public static void failedToTakeKey(Player player, Crate crate, Exception e) {
         crazyManager.getPlugin().getServer().getLogger().warning("An error has occurred while trying to take a physical key from a player");
         crazyManager.getPlugin().getServer().getLogger().warning("Player: " + player.getName());
@@ -367,7 +378,7 @@ public class Methods {
             e.printStackTrace();
         }
     }
-    
+
     public static String sanitizeFormat(String string) {
         return TextComponent.toLegacyText(TextComponent.fromLegacyText(string));
     }
