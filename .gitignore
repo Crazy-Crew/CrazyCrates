@@ -2,11 +2,6 @@
 .idea
 *.iml
 
-#Eclipse
-**.settings
-**.classpath
-**.project
-
 \.DS_Store
 
 # Gradle
