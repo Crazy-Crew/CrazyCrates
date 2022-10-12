@@ -32,10 +32,10 @@ public class QuickCrate implements Listener {
     public static HashMap<Player, Entity> rewards = new HashMap<>();
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private static final CrazyManager crazyManager = plugin.getCrazyManager();
+    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
 
-    private static final ChestStateHandler chestStateHandler = plugin.getChestStateHandler();
+    private static final ChestStateHandler chestStateHandler = plugin.getStarter().getChestStateHandler();
 
     public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
         int keys = switch (keyType) {

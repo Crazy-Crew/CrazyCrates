@@ -20,7 +20,7 @@ public class Wonder implements Listener {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private static final CrazyManager crazyManager = plugin.getCrazyManager();
+    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     
     public static void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {

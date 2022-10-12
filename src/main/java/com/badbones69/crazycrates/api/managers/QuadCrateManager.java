@@ -31,9 +31,9 @@ public class QuadCrateManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final ChestStateHandler chestStateHandler = plugin.getChestStateHandler();
+    private final ChestStateHandler chestStateHandler = plugin.getStarter().getChestStateHandler();
 
-    private final CrazyManager crazyManager = plugin.getCrazyManager();
+    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
     private static final List<QuadCrateManager> crateSessions = new ArrayList<>();
 

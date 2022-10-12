@@ -14,7 +14,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyManager crazyManager = plugin.getCrazyManager();
+    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {

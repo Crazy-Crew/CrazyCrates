@@ -331,7 +331,6 @@ public class ItemBuilder {
         ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material);
 
         if (item.getType() != Material.AIR) {
-            
             if (isHead) { // Has to go 1st due to it removing all data when finished.
                 if (isHash) { // Sauce: https://github.com/deanveloper/SkullCreator
                     if (isURL) {
@@ -499,6 +498,7 @@ public class ItemBuilder {
      */
     public ItemBuilder setName(String itemName) {
         if (itemName != null) this.itemName = Methods.color(itemName);
+
         return this;
     }
     
@@ -708,6 +708,7 @@ public class ItemBuilder {
      */
     public ItemBuilder setEnchantments(HashMap<Enchantment, Integer> enchantment) {
         if (enchantment != null) this.enchantments = enchantment;
+
         return this;
     }
     
@@ -718,7 +719,7 @@ public class ItemBuilder {
      * @param level The level of the enchantment ( Unsafe levels included )
      * @return The ItemBuilder with updated enchantments.
      */
-    public ItemBuilder addEnchantments(Enchantment enchantment, Integer level) {
+    public ItemBuilder addEnchantments(Enchantment enchantment, int level) {
         this.enchantments.put(enchantment, level);
         return this;
     }
@@ -786,6 +787,7 @@ public class ItemBuilder {
      */
     public ItemBuilder addItemFlag(ItemFlag itemFlag) {
         if (itemFlag != null) itemFlags.add(itemFlag);
+
         return this;
     }
     
@@ -815,7 +817,7 @@ public class ItemBuilder {
      */
     public ItemStack hideItemFlags(ItemStack item) {
         if (hideItemFlags) {
-            if (item != null && item.hasItemMeta()) {
+            if (item != null && item.hasItemMeta() && item.getItemMeta() != null) {
                 ItemMeta itemMeta = item.getItemMeta();
                 itemMeta.addItemFlags(ItemFlag.values());
                 item.setItemMeta(itemMeta);
@@ -893,7 +895,7 @@ public class ItemBuilder {
     public static ItemBuilder convertItemStack(ItemStack item) {
         ItemBuilder itemBuilder = new ItemBuilder().setReferenceItem(item).setAmount(item.getAmount()).setMaterial(item.getType()).setEnchantments(new HashMap<>(item.getEnchantments()));
         
-        if (item.hasItemMeta()) {
+        if (item.hasItemMeta() && item.getItemMeta() != null) {
             ItemMeta itemMeta = item.getItemMeta();
             itemBuilder.setName(itemMeta.getDisplayName()).setLore(itemMeta.getLore());
             NBTItem nbt = new NBTItem(item);
@@ -939,13 +941,11 @@ public class ItemBuilder {
                         itemBuilder.setName(value);
                         break;
                     case "amount":
-                        
                         try {
                             itemBuilder.setAmount(Integer.parseInt(value));
                         } catch (NumberFormatException e) {
                             itemBuilder.setAmount(1);
                         }
-                        
                         break;
                     case "lore":
                         itemBuilder.setLore(Arrays.asList(value.split(",")));
@@ -954,11 +954,7 @@ public class ItemBuilder {
                         itemBuilder.setPlayerName(value);
                         break;
                     case "unbreakable-item":
-                        
-                        if (value.isEmpty() || value.equalsIgnoreCase("true")) {
-                            itemBuilder.setUnbreakable(true);
-                        }
-                        
+                        if (value.isEmpty() || value.equalsIgnoreCase("true")) itemBuilder.setUnbreakable(true);
                         break;
                     default:
                         Enchantment enchantment = getEnchantment(option);
@@ -1029,7 +1025,7 @@ public class ItemBuilder {
     private void addGlow(ItemStack item) {
         if (glowing) {
             try {
-                if (item != null) {
+                if (item != null && item.getItemMeta() != null) {
                     if (item.hasItemMeta()) {
                         if (item.getItemMeta().hasEnchants()) return;
                     }

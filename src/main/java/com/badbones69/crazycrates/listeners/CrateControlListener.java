@@ -39,7 +39,7 @@ public class CrateControlListener implements Listener { // Crate Control
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private static final CrazyManager crazyManager = plugin.getCrazyManager();
+    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     
     // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
     @EventHandler

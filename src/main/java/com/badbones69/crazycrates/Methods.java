@@ -28,11 +28,12 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("deprecation")
 public class Methods {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private static final CrazyManager crazyManager = plugin.getCrazyManager();
+    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     private static final Random random = new Random();
 
     public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");
@@ -143,7 +144,7 @@ public class Methods {
         } catch (Exception ignored) {}
     }
     
-    public static boolean permCheck(CommandSender sender, Permissions permissions, Boolean tabComplete) {
+    public static boolean permCheck(CommandSender sender, Permissions permissions, boolean tabComplete) {
         if (sender instanceof ConsoleCommandSender || sender instanceof RemoteConsoleCommandSender) return true;
 
         Player player = (Player) sender;
