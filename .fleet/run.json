@@ -1,0 +1,12 @@
+{
+    "configurations": [
+      {
+        "name": "CrazyCrates [shadowJar]",
+        "type": "gradle",
+        "tasks": ["shadowJar"],
+        "args": [""],
+        "initScripts": {"flmapper":"ext.mapPath = { path -> null }"},
+        "debugJvm": "true",
+      },
+    ]
+}
