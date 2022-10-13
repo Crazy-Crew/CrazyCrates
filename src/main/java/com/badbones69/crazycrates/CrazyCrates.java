@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.EventLogger;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
@@ -38,6 +39,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +49,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     private static CrazyCrates plugin;
 
     private Starter starter;
+
+    private EventLogger eventLogger = new EventLogger();
 
     private boolean isEnabled = false;
 
@@ -104,8 +109,14 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         }
 
         enable();
-
         isEnabled = true;
+
+        try {
+            eventLogger.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
@@ -204,7 +215,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         });
 
         manager.registerCommand(new BaseKeyCommand());
-
         manager.registerCommand(new CrateBaseCommand());
     }
 
@@ -217,4 +227,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public Starter getStarter() {
         return starter;
     }
+
+    public EventLogger getEventLogger() { return eventLogger; }
 }
