@@ -5,6 +5,7 @@ paper = "1.19.2-R0.1-SNAPSHOT"
 
 # Triumph Team
 triumph-cmd-bukkit = "2.0.0-SNAPSHOT"
+triumph-gui-bukkit = "3.1.2"
 
 # Minecraft Team
 mc-brigadier = "2.2"
@@ -30,6 +31,7 @@ paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 
 # Triumph Team
 triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmd-bukkit" }
+triumph-guis = { module = "dev.triumphteam:triumph-gui", version.ref = "triumph-gui-bukkit" }
 
 # Minecraft
 mc-brigadier = { module = "me.lucko:commodore", version.ref = "mc-brigadier"}
