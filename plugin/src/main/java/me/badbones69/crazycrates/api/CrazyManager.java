@@ -87,47 +87,47 @@ public class CrazyManager {
      * List of all the broken crates.
      */
     private final ArrayList<String> brokecrates = new ArrayList<>();
-    
+
     /**
      * List of broken physical crate locations.
      */
     private final List<BrokeLocation> brokeLocations = new ArrayList<>();
-    
+
     /**
      * The crate that the player is opening.
      */
     private final HashMap<UUID, Crate> playerOpeningCrates = new HashMap<>();
-    
+
     /**
      * Keys that are being used in crates. Only needed in cosmic due to it taking the key after the player picks a prize and not in a start method.
      */
     private final HashMap<UUID, KeyType> playerKeys = new HashMap<>();
-    
+
     /**
      * A list of all current crate tasks that are running that a time. Used to force stop any crates it needs to.
      */
     private final HashMap<UUID, BukkitTask> currentTasks = new HashMap<>();
-    
+
     /**
      * A list of tasks being run by the QuadCrate type.
      */
     private final HashMap<UUID, ArrayList<BukkitTask>> currentQuadTasks = new HashMap<>();
-    
+
     /**
      * The time in seconds a quadcrate can go until afk kicks them from it.
      */
     private Integer quadCrateTimer;
-    
+
     /**
      * A list of current crate schematics for Quad Crate.
      */
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
-    
+
     /**
      * If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
      */
     private boolean giveVirtualKeysWhenInventoryFull;
-    
+
     /**
      * True if at least one crate gives new players keys and false if none give new players keys.
      */
@@ -139,12 +139,12 @@ public class CrazyManager {
     private boolean useNewMaterial;
 
     private boolean useNewSounds;
-    
+
     /**
      * The NMS version needed to be used.
      */
     private NMSSupport nmsSupport;
-    
+
     /**
      * The hologram api that is being hooked into.
      */
@@ -154,7 +154,7 @@ public class CrazyManager {
      * Schematic locations for QuadCrates
      */
     private final HashMap<UUID, Location[]> schemLocations = new HashMap<>();
-    
+
     /**
      * Gets the instance of the CrazyCrates class.
      * @return Instance of this class.
@@ -188,7 +188,7 @@ public class CrazyManager {
     public void loadPlugin(JavaPlugin plugin) {
         this.plugin = plugin;
     }
-    
+
     /**
      * Loads all the information the plugin needs to run.
      */
@@ -219,6 +219,9 @@ public class CrazyManager {
                 break;
             case v1_17_R1:
                 nmsSupport = new NMS_v1_17_R1();
+                break;
+            case v1_18_R2:
+                nmsSupport = new NMS_v1_18_R2();
                 break;
         }
 
@@ -391,7 +394,7 @@ public class CrazyManager {
         cleanDataFile();
         Preview.loadButtons();
     }
-    
+
     /**
      * If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
      * @return True if the player will get a virtual key and false if it drops on the floor.
@@ -399,7 +402,7 @@ public class CrazyManager {
     public boolean getGiveVirtualKeysWhenInventoryFull() {
         return giveVirtualKeysWhenInventoryFull;
     }
-    
+
     /**
      * This method is deigned to help clean the data.yml file of any unless info that it may have.
      */
@@ -448,7 +451,7 @@ public class CrazyManager {
             FileManager.Files.DATA.saveFile();
         }
     }
-    
+
     /**
      * Opens a crate for a player.
      * @param player The player that is having the crate opened for them.
@@ -568,7 +571,7 @@ public class CrazyManager {
             }
         }
     }
-    
+
     /**
      * This forces a crate to end and will not give out a prize. This is meant for people who leave the server to stop any errors or lag from happening.
      * @param player The player that the crate is being ended for.
@@ -579,7 +582,7 @@ public class CrazyManager {
             removeCrateTask(player);
         }
     }
-    
+
     /**
      * Ends the tasks running by a player.
      * @param player The player using the crate.
@@ -593,7 +596,7 @@ public class CrazyManager {
             currentQuadTasks.remove(player.getUniqueId());
         }
     }
-    
+
     /**
      * Add a quad crate task that is going on for a player.
      * @param player The player opening the crate.
@@ -606,7 +609,7 @@ public class CrazyManager {
 
         currentQuadTasks.get(player.getUniqueId()).add(task);
     }
-    
+
     /**
      * Checks to see if the player has a quad crate task going on.
      * @param player The player that is being checked.
@@ -615,7 +618,7 @@ public class CrazyManager {
     public boolean hasQuadCrateTask(Player player) {
         return currentQuadTasks.containsKey(player.getUniqueId());
     }
-    
+
     /**
      * Add a crate task that is going on for a player.
      * @param player The player opening the crate.
@@ -624,7 +627,7 @@ public class CrazyManager {
     public void addCrateTask(Player player, BukkitTask task) {
         currentTasks.put(player.getUniqueId(), task);
     }
-    
+
     /**
      * Remove a task from the list of current tasks.
      * @param player The player using the crate.
@@ -632,7 +635,7 @@ public class CrazyManager {
     public void removeCrateTask(Player player) {
         currentTasks.remove(player.getUniqueId());
     }
-    
+
     /**
      * Checks to see if the player has a crate task going on.
      * @param player The player that is being checked.
@@ -641,7 +644,7 @@ public class CrazyManager {
     public boolean hasCrateTask(Player player) {
         return currentTasks.containsKey(player.getUniqueId());
     }
-    
+
     /**
      * A list of all the physical crate locations.
      * @return List of locations.
@@ -649,7 +652,7 @@ public class CrazyManager {
     public ArrayList<CrateLocation> getCrateLocations() {
         return crateLocations;
     }
-    
+
     /**
      * Checks to see if the location is a physical crate.
      * @param loc The location you are checking.
@@ -664,7 +667,7 @@ public class CrazyManager {
 
         return false;
     }
-    
+
     /**
      * Gets the physical crate of the location.
      * @param loc The location you are checking.
@@ -679,7 +682,7 @@ public class CrazyManager {
 
         return null;
     }
-    
+
     /**
      * Get a list of all the broke physical crate locations.
      * @return List of broken crate locations.
@@ -687,7 +690,7 @@ public class CrazyManager {
     public List<BrokeLocation> getBrokeCrateLocations() {
         return brokeLocations;
     }
-    
+
     /**
      * Add a new physical crate location.
      * @param location The location you wish to add.
@@ -707,7 +710,7 @@ public class CrazyManager {
                 break;
             }
         }
-        
+
         locations.set("Locations." + id + ".Crate", crate.getName());
         locations.set("Locations." + id + ".World", location.getWorld().getName());
         locations.set("Locations." + id + ".X", location.getBlockX());
@@ -721,7 +724,7 @@ public class CrazyManager {
             hologramController.createHologram(location.getBlock(), crate);
         }
     }
-    
+
     /**
      * Remove a physical crate location.
      * @param id The id of the location.
@@ -746,7 +749,7 @@ public class CrazyManager {
             }
         }
     }
-    
+
     /**
      * Get a list of broken crates.
      * @return An ArrayList of all the broken crates.
@@ -754,7 +757,7 @@ public class CrazyManager {
     public ArrayList<String> getBrokeCrates() {
         return brokecrates;
     }
-    
+
     /**
      * Get a list of all the crates loaded into the plugin.
      * @return An ArrayList of all the loaded crates.
@@ -762,7 +765,7 @@ public class CrazyManager {
     public ArrayList<Crate> getCrates() {
         return crates;
     }
-    
+
     /**
      * Get a crate by its name.
      * @param name The name of the crate you wish to grab.
@@ -777,7 +780,7 @@ public class CrazyManager {
 
         return null;
     }
-    
+
     /**
      * The time in seconds a quadcrate will last before kicking the player.
      * @return The time in seconds till kick.
@@ -785,7 +788,7 @@ public class CrazyManager {
     public Integer getQuadCrateTimer() {
         return quadCrateTimer;
     }
-    
+
     /**
      * Load the crate preview of a crate.
      * @param crate The crate you wish to load the preview of.
@@ -828,7 +831,7 @@ public class CrazyManager {
 
         return inv;
     }
-    
+
     /**
      * Give a player a prize they have won.
      * @param player The player you wish to give the prize to.
@@ -907,7 +910,7 @@ public class CrazyManager {
             plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
         }
     }
-    
+
     /**
      * Give keys to an offline player.
      * @param player The offline player you wish to give keys to.
@@ -933,7 +936,7 @@ public class CrazyManager {
             return false;
         }
     }
-    
+
     /**
      * Take keys from an offline player.
      * @param player The player which you are taking keys from.
@@ -960,7 +963,7 @@ public class CrazyManager {
             return false;
         }
     }
-    
+
     /**
      * Load the offline keys of a player who has come online.
      * @param player The player which you would like to load the offline keys for.
@@ -985,7 +988,7 @@ public class CrazyManager {
             FileManager.Files.DATA.saveFile();
         }
     }
-    
+
     /**
      * Add a player to the list of players that are currently opening crates.
      * @param player The player that is opening a crate.
@@ -994,7 +997,7 @@ public class CrazyManager {
     public void addPlayerToOpeningList(Player player, Crate crate) {
         playerOpeningCrates.put(player.getUniqueId(), crate);
     }
-    
+
     /**
      * Remove a player from the list of players that are opening crates.
      * @param player The player that has finished opening a crate.
@@ -1002,7 +1005,7 @@ public class CrazyManager {
     public void removePlayerFromOpeningList(Player player) {
         playerOpeningCrates.remove(player.getUniqueId());
     }
-    
+
     /**
      * Check if a player is opening a crate.
      * @param player The player you are checking.
@@ -1011,7 +1014,7 @@ public class CrazyManager {
     public boolean isInOpeningList(Player player) {
         return playerOpeningCrates.containsKey(player.getUniqueId());
     }
-    
+
     /**
      * Get the crate the player is currently opening.
      * @param player The player you want to check.
@@ -1020,7 +1023,7 @@ public class CrazyManager {
     public Crate getOpeningCrate(Player player) {
         return playerOpeningCrates.get(player.getUniqueId());
     }
-    
+
     /**
      * Check if an item is a key for a crate.
      * @param item The item you are checking.
@@ -1029,7 +1032,7 @@ public class CrazyManager {
     public boolean isKey(ItemStack item) {
         return getCrateFromKey(item) != null;
     }
-    
+
     /**
      * Get a Crate from a key ItemStack the player.
      * @param item The key ItemStack you are checking.
@@ -1048,7 +1051,7 @@ public class CrazyManager {
 
         return null;
     }
-    
+
     /**
      * Check if a key is from a specific Crate.
      * @param item The key ItemStack you are checking.
@@ -1064,7 +1067,7 @@ public class CrazyManager {
 
         return false;
     }
-    
+
     /**
      * Set the type of key the player is opening a crate for.
      * This is only used in the Cosmic CrateType currently.
@@ -1074,7 +1077,7 @@ public class CrazyManager {
     public void addPlayerKeyType(Player player, KeyType keyType) {
         playerKeys.put(player.getUniqueId(), keyType);
     }
-    
+
     /**
      * Remove the player from the list as they have finished the crate.
      * Currently, only used in the Cosmic CrateType.
@@ -1083,7 +1086,7 @@ public class CrazyManager {
     public void removePlayerKeyType(Player player) {
         playerKeys.remove(player.getUniqueId());
     }
-    
+
     /**
      * Check if the player is in the list.
      * @param player The player you are checking.
@@ -1092,7 +1095,7 @@ public class CrazyManager {
     public boolean hasPlayerKeyType(Player player) {
         return playerKeys.containsKey(player.getUniqueId());
     }
-    
+
     /**
      * The key type the player's current crate is using.
      * @param player The player that is using the crate.
@@ -1101,7 +1104,7 @@ public class CrazyManager {
     public KeyType getPlayerKeyType(Player player) {
         return playerKeys.get(player.getUniqueId());
     }
-    
+
     /**
      * Checks to see if the player has a physical key of the crate in their main hand or inventory.
      * @param player The player being checked.
@@ -1134,7 +1137,7 @@ public class CrazyManager {
 
         return false;
     }
-    
+
     /**
      * Get a physical key from a players inventory.
      * @param player The player you are checking.
@@ -1152,7 +1155,7 @@ public class CrazyManager {
 
         return null;
     }
-    
+
     /**
      * Get the amount of virtual keys a player has.
      * @param player The player you are checking.
@@ -1167,7 +1170,7 @@ public class CrazyManager {
 
         return keys;
     }
-    
+
     /**
      * Get the amount of virtual keys a player has based on their name.
      * @param playerName The name of the player you are checking.
@@ -1187,7 +1190,7 @@ public class CrazyManager {
 
         return keys;
     }
-    
+
     /**
      * Get the locations a player sets for when creating a new schematic.
      * @return The list of locations set by players.
@@ -1195,14 +1198,14 @@ public class CrazyManager {
     public HashMap<UUID, Location[]> getSchematicLocations() {
         return schemLocations;
     }
-    
+
     /**
      * Get the amount of virtual keys a player has.
      */
     public int getVirtualKeys(Player player, Crate crate) {
         return FileManager.Files.DATA.getFile().getInt("Players." + player.getUniqueId() + "." + crate.getName());
     }
-    
+
     /**
      * Get the amount of physical keys a player has.
      */
@@ -1219,14 +1222,14 @@ public class CrazyManager {
 
         return keys;
     }
-    
+
     /**
      * Get the total amount of keys a player has.
      */
     public Integer getTotalKeys(Player player, Crate crate) {
         return getVirtualKeys(player, crate) + getPhysicalKeys(player, crate);
     }
-    
+
     /**
      * Take a key from a player.
      * @param amount The amount of keys you wish to take.
@@ -1332,7 +1335,7 @@ public class CrazyManager {
 
         return false;
     }
-    
+
     /**
      * Give a player keys to a Crate.
      * @param amount The amount of keys you are giving them.
@@ -1363,7 +1366,7 @@ public class CrazyManager {
                 break;
         }
     }
-    
+
     /**
      * Set the amount of virtual keys a player has.
      * @param amount The amount the player will have.
@@ -1376,7 +1379,7 @@ public class CrazyManager {
         FileManager.Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), amount);
         FileManager.Files.DATA.saveFile();
     }
-    
+
     /**
      * Set a new player's default amount of keys.
      * @param player The player that has just joined.
@@ -1392,7 +1395,7 @@ public class CrazyManager {
             }
         }
     }
-    
+
     /**
      * Get the NMS version being used.
      * @return Version of NMS, returns null if not found.
@@ -1400,7 +1403,7 @@ public class CrazyManager {
     public NMSSupport getNMSSupport() {
         return nmsSupport;
     }
-    
+
     /**
      * Get the hologram plugin settings that is being used.
      * @return The hologram controller for the holograms.
@@ -1426,7 +1429,7 @@ public class CrazyManager {
     public Sound getSound(String newSound, String oldSound) {
         return Sound.valueOf(useNewSounds ? newSound : oldSound);
     }
-    
+
     /**
      * Load all the schematics inside the Schematics folder.
      */
@@ -1441,7 +1444,7 @@ public class CrazyManager {
             }
         }
     }
-    
+
     /**
      * Get the list of all the schematics currently loaded onto the server.
      * @return The list of all loaded schematics.
@@ -1449,7 +1452,7 @@ public class CrazyManager {
     public List<CrateSchematic> getCrateSchematics() {
         return crateSchematics;
     }
-    
+
     /**
      * Get a schematic based on its name.
      * @param name The name of the schematic.
@@ -1464,7 +1467,7 @@ public class CrazyManager {
 
         return null;
     }
-    
+
     /**
      * Check if an entity is a display reward for a crate.
      * @param entity Entity you wish to check.
@@ -1481,7 +1484,7 @@ public class CrazyManager {
 
         return false;
     }
-    
+
     private ItemStack getKey(FileConfiguration file) {
         String name = file.getString("Crate.PhysicalKey.Name");
         List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
@@ -1494,7 +1497,7 @@ public class CrazyManager {
 
         return new ItemBuilder().setMaterial(id).setName(name).setLore(lore).setGlowing(glowing).build();
     }
-    
+
     private ItemBuilder getDisplayItem(FileConfiguration file, String prize) {
         String path = "Crate.Prizes." + prize + ".";
         ItemBuilder itemBuilder = new ItemBuilder();
@@ -1526,11 +1529,11 @@ public class CrazyManager {
             return new ItemBuilder().setMaterial("RED_TERRACOTTA", "STAINED_CLAY:14").setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
         }
     }
-    
+
     private List<ItemBuilder> getItems(FileConfiguration file, String prize) {
         return ItemBuilder.convertStringList(file.getStringList("Crate.Prizes." + prize + ".Items"), prize);
     }
-    
+
     private long pickNumber(long min, long max) {
         max++;
 
@@ -1541,5 +1544,5 @@ public class CrazyManager {
             return min;
         }
     }
-    
+
 }

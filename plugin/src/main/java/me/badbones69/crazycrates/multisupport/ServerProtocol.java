@@ -18,6 +18,7 @@ public enum ServerProtocol {
     v1_15_R1(1151),
     v1_16_R1(1161), v1_16_R2(1162),v1_16_R3(1163),
     v1_17_R1(1171),
+    v1_18_R2(1182),
     TOO_NEW(-2);
 
     private static ServerProtocol currentProtocol;

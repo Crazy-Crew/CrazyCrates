@@ -1,4 +1,4 @@
-package me.badbones69.crazycrates.multisupport.nms.v1_17_R1;
+package me.badbones69.crazycrates.multisupport.nms.v1_18_R2;
 
 import net.minecraft.core.BlockPosition;
 import net.minecraft.nbt.NBTCompressedStreamTools;
@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
