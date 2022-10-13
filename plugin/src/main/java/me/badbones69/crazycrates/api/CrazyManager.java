@@ -37,6 +37,7 @@ import me.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import me.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent.KeyReciveReason;
 import me.badbones69.crazycrates.api.interfaces.HologramController;
 import me.badbones69.crazycrates.controllers.GUIMenu;
+import me.badbones69.crazycrates.multisupport.nms.v1_18_R2.NMS_v1_18_R2;
 import me.badbones69.crazycrates.multisupport.nms.v1_8_R3.NMS_v1_8_R3;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
