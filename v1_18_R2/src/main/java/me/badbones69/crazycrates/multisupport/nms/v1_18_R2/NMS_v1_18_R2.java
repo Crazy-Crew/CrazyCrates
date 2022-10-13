@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NMS_v1_18_R2 implements NMSSupport {
+public class NMS_v1_17_R1 implements NMSSupport {
 
     @Override
     public void openChest(Block block, boolean open) {
