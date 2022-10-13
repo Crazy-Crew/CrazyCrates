@@ -31,7 +31,7 @@ public class Cosmic implements Listener {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private static final CrazyManager crazyManager = plugin.getCrazyManager();
+    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
     private static final HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();
     private static final HashMap<Player, ArrayList<Integer>> picks = new HashMap<>();

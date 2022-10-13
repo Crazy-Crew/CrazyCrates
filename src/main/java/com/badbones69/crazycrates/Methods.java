@@ -28,11 +28,12 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("deprecation")
 public class Methods {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private static final CrazyManager crazyManager = plugin.getCrazyManager();
+    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     private static final Random random = new Random();
 
     public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");
@@ -47,15 +48,15 @@ public class Methods {
 
         return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
     }
-    
+
     public static String sanitizeColor(String msg) {
         return sanitizeFormat(color(msg));
     }
-    
+
     public static String removeColor(String msg) {
         return ChatColor.stripColor(msg);
     }
-    
+
     public static HashMap<ItemStack, String> getItems(Player player) {
         HashMap<ItemStack, String> items = new HashMap<>();
         FileConfiguration file = crazyManager.getOpeningCrate(player).getFile();
@@ -84,7 +85,7 @@ public class Methods {
 
         return items;
     }
-    
+
     public static void firework(Location loc) {
         final Firework fw = loc.getWorld().spawn(loc, Firework.class);
         FireworkMeta fm = fw.getFireworkMeta();
@@ -106,7 +107,7 @@ public class Methods {
 
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, fw :: detonate, 2);
     }
-    
+
     public static boolean isInt(String s) {
         try {
             Integer.parseInt(s);
@@ -116,11 +117,11 @@ public class Methods {
 
         return true;
     }
-    
+
     public static Player getPlayer(String name) {
         return plugin.getServer().getPlayerExact(name);
     }
-    
+
     public static boolean isOnline(String name, CommandSender sender) {
 
         for (Player player : plugin.getServer().getOnlinePlayers()) {
@@ -132,7 +133,7 @@ public class Methods {
         sender.sendMessage(Messages.NOT_ONLINE.getMessage("%Player%", name));
         return false;
     }
-    
+
     public static void removeItem(ItemStack item, Player player) {
         try {
             if (item.getAmount() <= 1) {
@@ -142,8 +143,8 @@ public class Methods {
             }
         } catch (Exception ignored) {}
     }
-    
-    public static boolean permCheck(CommandSender sender, Permissions permissions, Boolean tabComplete) {
+
+    public static boolean permCheck(CommandSender sender, Permissions permissions, boolean tabComplete) {
         if (sender instanceof ConsoleCommandSender || sender instanceof RemoteConsoleCommandSender) return true;
 
         Player player = (Player) sender;
@@ -159,30 +160,30 @@ public class Methods {
             return false;
         }
     }
-    
+
     public static String getPrefix() {
         return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix"));
     }
-    
+
     public static String getPrefix(String msg) {
         return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
     }
-    
+
     public static boolean isInventoryFull(Player player) {
         return player.getInventory().firstEmpty() == -1;
     }
-    
+
     public static Integer randomNumber(int min, int max) {
         return min + random.nextInt(max - min);
     }
-    
+
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
         NBTItem nbtItem = new NBTItem(itemStack);
         return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
                 itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
                 isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
     }
-    
+
     private static boolean isSimilarCustom(ItemStack one, ItemStack two) {
         if (one != null && two != null) {
             if (one.getType() == two.getType()) {
@@ -230,7 +231,7 @@ public class Methods {
 
         return false;
     }
-    
+
     private static ItemStack stripNBT(ItemStack item) {
         try {
             NBTItem nbtItem = new NBTItem(item.clone());
@@ -246,7 +247,7 @@ public class Methods {
             return item;
         }
     }
-    
+
     public static Enchantment getEnchantment(String enchantmentName) {
         HashMap<String, String> enchantments = getEnchantmentList();
         enchantmentName = stripEnchantmentName(enchantmentName);
@@ -266,11 +267,11 @@ public class Methods {
 
         return null;
     }
-    
+
     private static String stripEnchantmentName(String enchantmentName) {
         return enchantmentName != null ? enchantmentName.replace("-", "").replace("_", "").replace(" ", "") : null;
     }
-    
+
     private static HashMap<String, String> getEnchantmentList() {
         HashMap<String, String> enchantments = new HashMap<>();
         enchantments.put("ARROW_DAMAGE", "Power");
@@ -309,7 +310,7 @@ public class Methods {
         enchantments.put("LOYALTY", "Loyalty");
         return enchantments;
     }
-    
+
     public static ItemBuilder getRandomPaneColor() {
         List<String> colors = Arrays.asList(
         Material.WHITE_STAINED_GLASS_PANE.toString(),
@@ -379,7 +380,7 @@ public class Methods {
             player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
         }
     }
-    
+
     public static void failedToTakeKey(CommandSender player, Crate crate) {
         plugin.getServer().getLogger().warning("An error has occurred while trying to take a physical key from a player");
         plugin.getServer().getLogger().warning("Player: " + player.getName());
@@ -388,67 +389,72 @@ public class Methods {
         player.sendMessage(Methods.getPrefix("&cAn issue has occurred when trying to take a key."));
         player.sendMessage(Methods.getPrefix("&cCommon reasons includes not having enough keys."));
     }
-    
+
     public static String sanitizeFormat(String string) {
         return TextComponent.toLegacyText(TextComponent.fromLegacyText(string));
     }
-    
+
     // Thanks ElectronicBoy
     public static HashMap<Integer, ItemStack> removeItemAnySlot(Inventory inventory, ItemStack... items) {
-        Validate.notNull(items, "Items cannot be null");
-        HashMap<Integer, ItemStack> leftover = new HashMap<>();
-        
-        // TODO: optimization
-        
-        for (int i = 0; i < items.length; i++) {
-            ItemStack item = items[i];
-            int toDelete = item.getAmount();
-            
-            while (true) {
-                // Paper start - Allow searching entire contents
-                ItemStack[] toSearch = inventory.getContents();
-                int first = firstFromInventory(item, false, toSearch);
-                // Paper end
-                
-                // Drat! we don't have this type in the inventory
-                if (first == -1) {
-                    item.setAmount(toDelete);
-                    leftover.put(i, item);
-                    break;
-                } else {
-                    ItemStack itemStack = inventory.getItem(first);
-                    int amount = itemStack.getAmount();
-                    
-                    if (amount <= toDelete) {
-                        toDelete -= amount;
-                        // clear the slot, all used up
-                        inventory.clear(first);
+        if (items != null) {
+            HashMap<Integer, ItemStack> leftover = new HashMap<>();
+
+            // TODO: optimization
+
+            for (int i = 0; i < items.length; i++) {
+                ItemStack item = items[i];
+                int toDelete = item.getAmount();
+
+                while (true) {
+                    // Paper start - Allow searching entire contents
+                    ItemStack[] toSearch = inventory.getContents();
+                    int first = firstFromInventory(item, false, toSearch);
+                    // Paper end
+
+                    // Drat! we don't have this type in the inventory
+                    if (first == -1) {
+                        item.setAmount(toDelete);
+                        leftover.put(i, item);
+                        break;
                     } else {
-                        // split the stack and store
-                        itemStack.setAmount(amount - toDelete);
-                        inventory.setItem(first, itemStack);
-                        toDelete = 0;
+                        ItemStack itemStack = inventory.getItem(first);
+                        int amount = itemStack.getAmount();
+
+                        if (amount <= toDelete) {
+                            toDelete -= amount;
+                            // clear the slot, all used up
+                            inventory.clear(first);
+                        } else {
+                            // split the stack and store
+                            itemStack.setAmount(amount - toDelete);
+                            inventory.setItem(first, itemStack);
+                            toDelete = 0;
+                        }
+                    }
+
+                    // Bail when done
+                    if (toDelete <= 0) {
+                        break;
                     }
                 }
-                
-                // Bail when done
-                if (toDelete <= 0) {
-                    break;
-                }
             }
+
+            return leftover;
+        } else {
+            plugin.getLogger().info("Items cannot be null.");
         }
 
-        return leftover;
+        return null;
     }
-    
+
     private static int firstFromInventory(ItemStack item, boolean withAmount, ItemStack[] inventory) {
         if (item == null) {
             return -1;
         }
-        
+
         for (int i = 0; i < inventory.length; i++) {
             if (inventory[i] == null) continue;
-            
+
             if (withAmount ? item.equals(inventory[i]) : item.isSimilar(inventory[i])) {
                 return i;
             }

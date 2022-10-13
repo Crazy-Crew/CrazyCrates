@@ -47,7 +47,7 @@ public class Crate {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final FileManager fileManager = plugin.getFileManager();
+    private final FileManager fileManager = plugin.getStarter().getFileManager();
     
     /**
      * @param name The name of the crate.

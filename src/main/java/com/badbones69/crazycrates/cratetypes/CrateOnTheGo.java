@@ -19,7 +19,7 @@ public class CrateOnTheGo implements Listener {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private static final CrazyManager crazyManager = plugin.getCrazyManager();
+    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     
     @EventHandler
     public void onCrateOpen(PlayerInteractEvent e) {

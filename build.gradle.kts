@@ -4,70 +4,84 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
+val buildNumber: String? = System.getenv("BUILD_NUMBER")
+
+val jenkinsVersion = "1.11.7-b$buildNumber"
+
+group = "com.badbones69.crazycrates"
+version = "1.11.7"
+description = "Add unlimited crates to your server with 10 different crate types to choose from!"
+
+repositories {
+
+    /**
+     * PAPI Team
+     */
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+
+    /**
+     * NBT Team
+     */
+    maven("https://repo.codemc.org/repository/maven-public/")
+
+    /**
+     * Paper Team
+     */
+    maven("https://repo.papermc.io/repository/maven-public/")
+
+    /**
+     * Triumph Team
+     */
+    maven("https://repo.triumphteam.dev/snapshots/")
+
+    /**
+     * Vault Team
+     */
+    maven("https://jitpack.io/")
+
+    /**
+     * Minecraft Team
+     */
+    maven("https://libraries.minecraft.net/")
+
+    /**
+     * Everything else we need.
+     */
+    mavenCentral()
+}
+
+dependencies {
+    implementation(libs.triumph.cmds)
+
+    implementation(libs.bukkit.bstats)
+
+    implementation(libs.nbt.api)
+
+    compileOnly(libs.holographic.displays)
+    compileOnly(libs.decent.holograms)
+
+    compileOnly(libs.placeholder.api)
+
+    compileOnly(libs.vault.api)
+
+    compileOnly(libs.paper)
+}
+
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
-group = "com.badbones69.crazycrates"
-version = "1.11.7-${System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"}"
-description = "Quality crates for free!"
-
-repositories {
-
-    // PAPI API
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-
-    // NBT API
-    maven("https://repo.codemc.org/repository/maven-public/")
-
-    // Paper API
-    maven("https://repo.papermc.io/repository/maven-public/")
-
-    // Triumph Team
-    maven("https://repo.triumphteam.dev/snapshots/")
-
-    // Vault API
-    maven("https://jitpack.io/")
-
-    mavenCentral()
-    mavenLocal()
-}
-
-dependencies {
-
-    implementation("dev.triumphteam:triumph-cmd-bukkit:2.0.0-SNAPSHOT")
-
-    implementation("org.bstats:bstats-bukkit:3.0.0")
-
-    implementation("de.tr7zw:nbt-data-api:2.10.0")
-
-    compileOnly("com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9")
-
-    compileOnly("com.github.decentsoftware-eu:decentholograms:2.7.2")
-
-    compileOnly("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT")
-
-    compileOnly("me.clip:placeholderapi:2.11.2") {
-        exclude(group = "org.spigotmc", module = "spigot")
-        exclude(group = "org.bukkit", module = "bukkit")
-    }
-
-    compileOnly("org.apache.commons:commons-text:1.9")
-
-    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
-}
-
 tasks {
-
     shadowJar {
-        minimize()
-
-        archiveFileName.set("${rootProject.name}-[v${rootProject.version}].jar")
+        if (buildNumber != null) {
+            archiveFileName.set("${rootProject.name}-[v${jenkinsVersion}].jar")
+        } else {
+            archiveFileName.set("${rootProject.name}-[v${rootProject.version}].jar")
+        }
 
         listOf(
             "de.tr7zw",
-            "org.bstats",
-            "dev.triumphteam.cmd"
+            "org.bstats"
         ).forEach {
             relocate(it, "${rootProject.group}.plugin.lib.$it")
         }

@@ -104,6 +104,6 @@ Distributed under the MIT License. See [`LICENSE`](/LICENSE) for more informatio
 [issues-shield]: https://img.shields.io/github/issues/Crazy-Crew/CrazyCrates.svg?style=for-the-badge
 [issues-url]: https://github.com/Crazy-Crew/CrazyCrates/issues
 [license-shield]: https://img.shields.io/github/license/Crazy-Crew/CrazyCrates.svg?style=for-the-badge
-[license-url]: https://github.com/Crazy-Crew/CrazyCrates/blob/master/LICENSE.MD
+[license-url]: https://github.com/Crazy-Crew/CrazyCrates/blob/master/LICENSE
 
 [codefactor-shield]: https://img.shields.io/codefactor/grade/github/crazy-crew/crazycrates/main?style=for-the-badge

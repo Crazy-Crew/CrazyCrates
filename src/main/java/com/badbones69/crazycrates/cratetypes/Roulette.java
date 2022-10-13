@@ -19,7 +19,7 @@ public class Roulette implements Listener {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private static final CrazyManager crazyManager = plugin.getCrazyManager();
+    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     
     private static void setGlass(Inventory inv) {
         for (int i = 0; i < 27; i++) {

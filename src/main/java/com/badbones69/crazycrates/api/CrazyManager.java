@@ -40,7 +40,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CrazyManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
-    private final FileManager fileManager = plugin.getFileManager();
+
+    private final FileManager fileManager = plugin.getStarter().getFileManager();
 
     // All the crates that have been loaded.
     private final ArrayList<Crate> crates = new ArrayList<>();

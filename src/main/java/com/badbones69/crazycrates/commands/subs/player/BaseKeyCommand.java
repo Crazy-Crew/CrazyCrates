@@ -18,7 +18,7 @@ public class BaseKeyCommand extends BaseCommand {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrazyManager crazyManager = plugin.getCrazyManager();
+    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
     @Default
     @Permission("crazycrates.command.player.key")
@@ -32,7 +32,12 @@ public class BaseKeyCommand extends BaseCommand {
 
     @SubCommand("view")
     @Permission("crazycrates.command.player.key.others")
-    public void viewOthers(CommandSender sender, @Suggestion ("players") @ArgName("username") Player target) {
+    public void viewOthers(CommandSender sender, @Suggestion ("online-players") Player target) {
+        if (target == sender) {
+            sender.sendMessage(Messages.SAME_PLAYER.getMessage());
+            return;
+        }
+
         String header = Messages.OTHER_PLAYER_HEADER.getMessageNoPrefix("%Player%", target.getName());
 
         String otherPlayer = Messages.OTHER_PLAYER_NO_VIRTUAL_KEYS.getMessage("%Player%", target.getName());

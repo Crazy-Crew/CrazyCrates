@@ -16,7 +16,7 @@ public class FireCracker {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private static final CrazyManager crazyManager = plugin.getCrazyManager();
+    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     
     public static void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc) {
 
