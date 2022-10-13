@@ -32,6 +32,7 @@ import dev.triumphteam.cmd.core.message.MessageKey;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -39,7 +40,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +49,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     private static CrazyCrates plugin;
 
     private Starter starter;
-
-    private EventLogger eventLogger = new EventLogger();
 
     private boolean isEnabled = false;
 
@@ -87,8 +85,18 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             // Add extra messages.
             Messages.addMissingMessages();
 
-            String metricsPath = FileManager.Files.CONFIG.getFile().getString("Settings.Toggle-Metrics");
-            boolean metricsEnabled = Files.CONFIG.getFile().getBoolean("Settings.Toggle-Metrics");
+            FileConfiguration config = Files.CONFIG.getFile();
+
+            String metricsPath = config.getString("Settings.Toggle-Metrics");
+            boolean metricsEnabled = config.getBoolean("Settings.Toggle-Metrics");
+
+            String crateActions = config.getString("Settings.Log-Crate-Actions");
+
+            if (crateActions == null) {
+                config.set("Settings.Log-Crate-Actions", false);
+
+                Files.CONFIG.saveFile();
+            }
 
             if (metricsPath != null) {
                 if (metricsEnabled) new Metrics(this, 4514);
@@ -110,13 +118,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         enable();
         isEnabled = true;
-
-        try {
-            eventLogger.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
     @Override
@@ -227,6 +228,4 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public Starter getStarter() {
         return starter;
     }
-
-    public EventLogger getEventLogger() { return eventLogger; }
 }

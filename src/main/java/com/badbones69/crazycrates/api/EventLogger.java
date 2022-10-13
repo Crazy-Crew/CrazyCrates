@@ -1,49 +1,46 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /*
-
 Command
 Key Given / Taken / Sent / Received
 Crate Opened
 
 Crate Name, Key Name, Player Name, Who sent keys, Who got keys, who gave keys.
-
  */
 
 public class EventLogger {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private File logFile;
+    public void logCrateEvent(Player player, Crate crate, KeyType keyType, boolean enabled) {
+        if (!enabled) return;
 
+        log(setEntryData("Player: %player% | Crate Name: %crate_name% | Crate Type: %crate_type% | Key Name: %key_name% | Key Type: %key_type% | Key Item: %key_item%", player, player, crate, keyType), CrateEventType.CRATE_EVENT.getName());
 
-    public void load() throws IOException {
-        setLogFile(new File(CrazyCrates.getPlugin().getDataFolder(), "events.log"));
-        checkLogFileExists(getLogFile());
+        plugin.getLogger().info(setEntryData(Methods.color("Player: %player% | Crate Name: %crate_name% | Crate Type: %crate_type% | Key Name: %key_name%&r | Key Type: %key_type% | Key Item: %key_item%"), player, player, crate, keyType));
     }
 
-    public void logCrateEvent(String playerName, Crate crate, KeyType keyType) {
-        log(setEntryData("Player: %player% | Crate Name: %crate_name% | Crate Type: %crate_type% | Key Name: %key_name% | Key Type: %key_type% | Key Item: %key_item%",
-                playerName, crate, keyType), CrateEventType.CRATE_EVENT.getName());
+    public void logKeyEvent(Player target, CommandSender sender, Crate crate, KeyType keyType, KeyEventType keyEventType, boolean enabled) {
+        if (!enabled) return;
 
-        System.out.println(setEntryData("Player: %player% | Crate Name: %crate_name% | Crate Type: %crate_type% | Key Name: %key_name% | Key Type: %key_type% | Key Item: %key_item%",
-                playerName, crate, keyType));
-    }
+        log(setEntryData("Player: %player% | Sender: %sender% | Key Name: %key_name% | Key Type: %key_type%", target, sender, crate, keyType), keyEventType.getName());
 
-    public void logKeyEvent(KeyEventType keyEventType) {
-        log("", keyEventType.getName());
+        plugin.getLogger().info(setEntryData(Methods.color("Player: %player% | Sender: %sender% | Key Name: %key_name%&r | Key Type: %key_type%"), target, sender, crate, keyType));
     }
 
     public void logCommandEvent(CommandEventType commandEventType) {
@@ -51,19 +48,18 @@ public class EventLogger {
     }
 
     private void log(String toLog, String eventType) {
-        FileWriter fileWriter = null;
         BufferedWriter bufferedWriter = null;
 
         try {
-            fileWriter = new FileWriter(getLogFile(), true);
-            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter = new BufferedWriter(new FileWriter(plugin.getDataFolder() + "/" + FileManager.Files.LOGS.getFileName(), true));
+
             bufferedWriter.write("[" + getDateTime() + " " + eventType + "]: " + toLog + System.getProperty("line.separator"));
+            bufferedWriter.flush();
         } catch (IOException exception) {
             exception.printStackTrace();
         } finally {
             try {
-                bufferedWriter.close();
-                fileWriter.close();
+                if (bufferedWriter != null) bufferedWriter.close();
             } catch (IOException exception) {
                 exception.printStackTrace();
             }
@@ -76,25 +72,11 @@ public class EventLogger {
         return dateFormat.format(date);
     }
 
-    private File getLogFile() {
-        return logFile;
-    }
-
-    private void setLogFile(File logFile) {
-        this.logFile = logFile;
-    }
-
-    private String setEntryData(String string, String playerName, Crate crate, KeyType keyType) {
-        return string.replace("%player%", playerName).replace("%crate_name%", crate.getName())
-                .replace("%crate_type%", crate.getCrateType().getName()).replace("%key_name%", PlainTextComponentSerializer.plainText().serialize(crate.getKey().getItemMeta().displayName()))
+    @SuppressWarnings("DEPRECATIONS")
+    private String setEntryData(String string, Player player, CommandSender sender, Crate crate, KeyType keyType) {
+        return string.replace("%player%", player.getName()).replace("%crate_name%", crate.getName()).replace("%sender%", sender.getName())
+                .replace("%crate_type%", crate.getCrateType().getName()).replace("%key_name%", crate.getKey().getItemMeta().getDisplayName())
                 .replace("%key_type%", keyType.getName()).replace("%key_item%", crate.getKey().getType().toString());
-    }
-
-    private boolean checkLogFileExists(File file) {
-        if(!file.exists()) {
-            return file.mkdirs();
-        }
-        return false;
     }
 
     public enum KeyEventType {
@@ -145,6 +127,4 @@ public class EventLogger {
             return commandEventName;
         }
     }
-
 }
-

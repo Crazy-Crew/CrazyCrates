@@ -3,6 +3,7 @@
 Settings:
   Prefix: '&8[&bCrazyCrates&8]: '
   Toggle-Metrics: true #Turn on and off if your server stats are sent to https://bstats.org/ - Requires a restart!
+  Log-Crate-Actions: false
   InventoryName: '&b&lCrazy &4&lCrates'
   InventorySize: 45
   KnockBack: true
