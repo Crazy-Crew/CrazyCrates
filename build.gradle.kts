@@ -52,7 +52,7 @@ repositories {
 
 dependencies {
     implementation(libs.triumph.cmds)
-    implementation(libs.triumph.guis)
+    //implementation(libs.triumph.guis)
 
     implementation(libs.bukkit.bstats)
 
@@ -83,7 +83,7 @@ tasks {
         listOf(
             "de.tr7zw",
             "org.bstats",
-            "dev.triumphteam.gui",
+            //"dev.triumphteam.gui",
             "dev.triumphteam.cmd"
         ).forEach {
             relocate(it, "${rootProject.group}.plugin.lib.$it")
