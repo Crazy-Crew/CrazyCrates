@@ -57,10 +57,9 @@
     </repositories>
 
     <dependencies>
-
         <dependency>
             <groupId>com.badbones69</groupId>
-            <artifactId>crazycrates-v1_17_R1</artifactId>
+            <artifactId>crazycrates-v1_18_R2</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
@@ -68,7 +67,7 @@
         </dependency>
         <dependency>
             <groupId>com.badbones69</groupId>
-            <artifactId>crazycrates-v1_18_R2</artifactId>
+            <artifactId>crazycrates-v1_17_R1</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
