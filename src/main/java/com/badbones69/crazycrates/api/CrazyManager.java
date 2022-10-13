@@ -436,7 +436,10 @@ public class CrazyManager {
             }
         }
 
-        plugin.getStarter().getEventLogger().logCrateEvent(player, crate, keyType, FileManager.Files.CONFIG.getFile().getBoolean("Settings.Log-Crate-Actions"));
+        boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
+        boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
+
+        plugin.getStarter().getEventLogger().logCrateEvent(player, crate, keyType, logFile, logConsole);
     }
 
     /**

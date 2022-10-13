@@ -79,7 +79,10 @@ public class CrateBaseCommand extends BaseCommand {
 
                         player.sendMessage(Messages.RECEIVED_TRANSFERRED_KEYS.getMessage(placeholders));
 
-                        eventLogger.logKeyEvent(player, sender, crate, KeyType.VIRTUAL_KEY, EventLogger.KeyEventType.KEY_EVENT_RECEIVED, FileManager.Files.CONFIG.getFile().getBoolean("Settings.Log-Crate-Actions"));
+                        boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
+                        boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
+
+                        eventLogger.logKeyEvent(player, sender, crate, KeyType.VIRTUAL_KEY, EventLogger.KeyEventType.KEY_EVENT_RECEIVED, logFile, logConsole);
                     }
                 } else {
                     sender.sendMessage(Messages.NOT_ENOUGH_KEYS.getMessage("%Crate%", crate.getName()));
@@ -344,7 +347,10 @@ public class CrateBaseCommand extends BaseCommand {
 
                         sender.sendMessage(Messages.OPENED_A_CRATE.getMessage(placeholders));
 
-                        eventLogger.logKeyEvent(player, sender, crate, keyType, EventLogger.KeyEventType.KEY_EVENT_REMOVED, FileManager.Files.CONFIG.getFile().getBoolean("Settings.Log-Crate-Actions"));
+                        boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
+                        boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
+
+                        eventLogger.logKeyEvent(player, sender, crate, keyType, EventLogger.KeyEventType.KEY_EVENT_REMOVED, logFile, logConsole);
                     } else {
                         sender.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
                     }
@@ -383,7 +389,10 @@ public class CrateBaseCommand extends BaseCommand {
 
                             sender.sendMessage(Messages.OPENED_A_CRATE.getMessage(placeholders));
 
-                            eventLogger.logKeyEvent(player, sender, crate, KeyType.FREE_KEY, EventLogger.KeyEventType.KEY_EVENT_REMOVED, FileManager.Files.CONFIG.getFile().getBoolean("Settings.Log-Crate-Actions"));
+                            boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
+                            boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
+
+                            eventLogger.logKeyEvent(player, sender, crate, KeyType.FREE_KEY, EventLogger.KeyEventType.KEY_EVENT_REMOVED, logFile, logConsole);
                         } else {
                             sender.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
                         }
@@ -483,7 +492,10 @@ public class CrateBaseCommand extends BaseCommand {
                 sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
                 target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
 
-                eventLogger.logKeyEvent(target, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, FileManager.Files.CONFIG.getFile().getBoolean("Settings.Log-Crate-Actions"));
+                boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
+                boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
+
+                eventLogger.logKeyEvent(target, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, logFile, logConsole);
             }
 
             return;
@@ -519,7 +531,10 @@ public class CrateBaseCommand extends BaseCommand {
 
                 sender.sendMessage(Messages.TAKE_A_PLAYER_KEYS.getMessage(placeholders));
 
-                eventLogger.logKeyEvent(target, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_REMOVED, FileManager.Files.CONFIG.getFile().getBoolean("Settings.Log-Crate-Actions"));
+                boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
+                boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
+
+                eventLogger.logKeyEvent(target, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_REMOVED, logFile, logConsole);
 
                 return;
             }
@@ -566,7 +581,10 @@ public class CrateBaseCommand extends BaseCommand {
 
                         crazyManager.addKeys(amount, onlinePlayer, crate, type);
 
-                        eventLogger.logKeyEvent(onlinePlayer, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, FileManager.Files.CONFIG.getFile().getBoolean("Settings.Log-Crate-Actions"));
+                        boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
+                        boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
+
+                        eventLogger.logKeyEvent(onlinePlayer, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, logFile, logConsole);
                     }
                 }
 

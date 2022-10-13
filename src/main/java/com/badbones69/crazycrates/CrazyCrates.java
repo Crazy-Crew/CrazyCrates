@@ -40,7 +40,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,10 +89,17 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             String metricsPath = config.getString("Settings.Toggle-Metrics");
             boolean metricsEnabled = config.getBoolean("Settings.Toggle-Metrics");
 
-            String crateActions = config.getString("Settings.Log-Crate-Actions");
+            String crateLogFile = config.getString("Settings.Crate-Actions.Log-File");
+            String crateLogConsole = config.getString("Settings.Crate-Actions.Log-Console");
 
-            if (crateActions == null) {
-                config.set("Settings.Log-Crate-Actions", false);
+            if (crateLogFile == null) {
+                config.set("Settings.Crate-Actions.Log-File", false);
+
+                Files.CONFIG.saveFile();
+            }
+
+            if (crateLogConsole == null) {
+                config.set("Settings.Crate-Actions.Log-Console", false);
 
                 Files.CONFIG.saveFile();
             }
