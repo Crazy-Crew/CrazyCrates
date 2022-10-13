@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.commands.subs;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.EventLogger;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
@@ -35,6 +36,8 @@ public class CrateBaseCommand extends BaseCommand {
     private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
     private final FileManager fileManager = plugin.getStarter().getFileManager();
+
+    private final EventLogger eventLogger = plugin.getStarter().getEventLogger();
 
     @Default
     @Permission(value = "crazycrates.command.player.menu", def = PermissionDefault.TRUE)
@@ -75,6 +78,8 @@ public class CrateBaseCommand extends BaseCommand {
                         placeholders.put("%Player%", sender.getName());
 
                         player.sendMessage(Messages.RECEIVED_TRANSFERRED_KEYS.getMessage(placeholders));
+
+                        eventLogger.logKeyEvent(player, sender, crate, KeyType.VIRTUAL_KEY, EventLogger.KeyEventType.KEY_EVENT_RECEIVED, FileManager.Files.CONFIG.getFile().getBoolean("Settings.Log-Crate-Actions"));
                     }
                 } else {
                     sender.sendMessage(Messages.NOT_ENOUGH_KEYS.getMessage("%Crate%", crate.getName()));
@@ -338,6 +343,8 @@ public class CrateBaseCommand extends BaseCommand {
                         placeholders.put("%Player%", player.getName());
 
                         sender.sendMessage(Messages.OPENED_A_CRATE.getMessage(placeholders));
+
+                        eventLogger.logKeyEvent(player, sender, crate, keyType, EventLogger.KeyEventType.KEY_EVENT_REMOVED, FileManager.Files.CONFIG.getFile().getBoolean("Settings.Log-Crate-Actions"));
                     } else {
                         sender.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
                     }
@@ -375,6 +382,8 @@ public class CrateBaseCommand extends BaseCommand {
                             placeholders.put("%Player%", player.getName());
 
                             sender.sendMessage(Messages.OPENED_A_CRATE.getMessage(placeholders));
+
+                            eventLogger.logKeyEvent(player, sender, crate, KeyType.FREE_KEY, EventLogger.KeyEventType.KEY_EVENT_REMOVED, FileManager.Files.CONFIG.getFile().getBoolean("Settings.Log-Crate-Actions"));
                         } else {
                             sender.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
                         }
@@ -473,6 +482,8 @@ public class CrateBaseCommand extends BaseCommand {
 
                 sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
                 target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
+
+                eventLogger.logKeyEvent(target, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, FileManager.Files.CONFIG.getFile().getBoolean("Settings.Log-Crate-Actions"));
             }
 
             return;
@@ -507,6 +518,8 @@ public class CrateBaseCommand extends BaseCommand {
                 placeholders.put("%Player%", target.getName());
 
                 sender.sendMessage(Messages.TAKE_A_PLAYER_KEYS.getMessage(placeholders));
+
+                eventLogger.logKeyEvent(target, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_REMOVED, FileManager.Files.CONFIG.getFile().getBoolean("Settings.Log-Crate-Actions"));
 
                 return;
             }
@@ -552,6 +565,8 @@ public class CrateBaseCommand extends BaseCommand {
                         }
 
                         crazyManager.addKeys(amount, onlinePlayer, crate, type);
+
+                        eventLogger.logKeyEvent(onlinePlayer, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, FileManager.Files.CONFIG.getFile().getBoolean("Settings.Log-Crate-Actions"));
                     }
                 }
 
