@@ -435,6 +435,7 @@ public class CrazyManager {
                 player.getServer().broadcastMessage(Methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
             }
         }
+        plugin.getEventLogger().logCrateEvent(player.getName(), crate, keyType);
     }
     
     /**
