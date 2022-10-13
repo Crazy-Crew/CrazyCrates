@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.DefinedStruct
 import net.minecraft.world.level.levelgen.structure.templatesystem.DefinedStructureManager;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
