@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NMS_v1_17_R1 implements NMSSupport {
+public class NMS_v1_18_R2 implements NMSSupport {
 
     @Override
     public void openChest(Block block, boolean open) {
@@ -25,11 +25,11 @@ public class NMS_v1_17_R1 implements NMSSupport {
             World world = ((CraftWorld) block.getWorld()).getHandle();
             BlockPosition position = new BlockPosition(block.getX(), block.getY(), block.getZ());
             if (block.getType() == Material.ENDER_CHEST) {
-                TileEntityEnderChest tileChest = (TileEntityEnderChest) world.getTileEntity(position);
-                world.playBlockAction(position, tileChest.getBlock().getBlock(), 1, open ? 1 : 0);
+                TileEntityEnderChest tileChest = (TileEntityEnderChest) world.getBlockEntity(position, false);
+                world.a(position, tileChest.q(), 1, open ? 1 : 0);
             } else {
-                TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
-                world.playBlockAction(position, tileChest.getBlock().getBlock(), 1, open ? 1 : 0);
+                TileEntityChest tileChest = (TileEntityChest) world.getBlockEntity(position, false);
+                world.a(position, tileChest.q(), 1, open ? 1 : 0);
             }
         }
     }
@@ -98,5 +98,4 @@ public class NMS_v1_17_R1 implements NMSSupport {
     public ItemStack getItemInMainHand(Player player) {
         return player.getInventory().getItemInMainHand();
     }
-
 }
