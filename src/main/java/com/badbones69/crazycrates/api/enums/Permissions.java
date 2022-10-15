@@ -17,6 +17,7 @@ public enum Permissions {
     CRAZY_CRATES_ADMIN_LIST("admin.list", "Displays a list of all available crates."),
     CRAZY_CRATES_ADMIN_OPEN("admin.open", "Tries to open a crate for the player if they have a key."),
     CRAZY_CRATES_ADMIN_OPEN_OTHER("admin.open.others", "Tries to open a crate for a player if they have a key."),
+    CRAZY_CRATES_ADMIN_MASS_OPEN("admin.massopen", "Used to mass open a crate without an animation."),
     CRAZY_CRATES_ADMIN_FORCE_OPEN("admin.forceopen", "Opens a crate for a player for free."),
     CRAZY_CRATES_ADMIN_TELEPORT("admin.teleport", "Teleports to a crate."),
     CRAZY_CRATES_ADMIN_GIVE_KEY("admin.givekey", "Give a key(s) to a player to use on a crate."),

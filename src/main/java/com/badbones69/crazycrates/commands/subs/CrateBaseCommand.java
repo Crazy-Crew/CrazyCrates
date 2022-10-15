@@ -9,9 +9,11 @@ import com.badbones69.crazycrates.api.enums.CrateType;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
+import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
+import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.MenuListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
@@ -362,6 +364,47 @@ public class CrateBaseCommand extends BaseCommand {
                 return;
             }
         }
+    }
+
+    @SubCommand("mass-Open")
+    @Permission(value = "crazycrates.command.admin.massopen", def = PermissionDefault.OP)
+    public void onAdminCrateMassOpen(CommandSender sender, @Suggestion("crates") String crateName) {
+        if (!(sender instanceof Player player)) return;
+
+        Crate crate = crazyManager.getCrateFromName(crateName);
+        if (crate == null) {
+            sender.sendMessage(Messages.NOT_A_CRATE.getMessage());
+            return;
+        }
+        crazyManager.addPlayerToOpeningList(player, crate);
+
+        int keys = crazyManager.getVirtualKeys(player, crate);
+        int keysUsed = 0;
+
+        if (keys == 0) {
+            player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
+            return;
+        }
+
+        for (; keys > 0; keys--) {
+            if (Methods.isInventoryFull(player)) break;
+
+            Prize prize = crate.pickPrize(player);
+            crazyManager.givePrize(player, prize);
+            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+
+            if (prize.useFireworks()) Methods.firework(((Player) sender).getLocation().clone().add(.5, 1, .5));
+
+            keysUsed++;
+        }
+
+        if (!crazyManager.takeKeys(keysUsed, player, crate, KeyType.VIRTUAL_KEY, false)) {
+            Methods.failedToTakeKey(player, crate);
+            CrateControlListener.inUse.remove(player);
+            crazyManager.removePlayerFromOpeningList(player);
+            return;
+        }
+        crazyManager.removePlayerFromOpeningList(player);
     }
 
     @SubCommand("forceopen")
