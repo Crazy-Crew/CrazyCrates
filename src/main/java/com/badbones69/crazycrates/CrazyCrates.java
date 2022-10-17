@@ -104,16 +104,13 @@ public class CrazyCrates extends JavaPlugin implements Listener {
                 Files.CONFIG.saveFile();
             }
 
-            if (metricsPath != null) {
-                if (metricsEnabled) new Metrics(this, 4514);
-            } else {
-                getLogger().warning("Metrics was automatically enabled.");
-                getLogger().warning("Please add Toggle-Metrics: false to the top of your config.yml.");
-                getLogger().warning("https://github.com/Crazy-Crew/CrazyCrates/blob/main/src/main/resources/config.yml");
-                getLogger().warning("An example if confused is linked above.");
+            if (metricsPath == null) {
+                config.set("Settings.Toggle-Metrics", false);
 
-                new Metrics(this, 4514);
+                Files.CONFIG.saveFile();
             }
+
+            if (metricsEnabled) new Metrics(this, 4514);
         } catch (Exception e) {
             e.printStackTrace();
 
