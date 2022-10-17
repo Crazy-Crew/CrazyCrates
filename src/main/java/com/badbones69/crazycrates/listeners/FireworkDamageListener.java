@@ -1,59 +1,37 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Firework;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.FireworkExplodeEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-import java.util.ArrayList;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 public class FireworkDamageListener implements Listener {
-    
-    private static final ArrayList<Entity> fireworks = new ArrayList<>();
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    /**
-     * @return All the active fireworks.
-     */
-    public static ArrayList<Entity> getFireworks() {
-        return fireworks;
-    }
-    
+    private static final NamespacedKey noDamage = new NamespacedKey(plugin, "no-damage");
+
     /**
      * @param firework The firework you want to add.
      */
     public static void addFirework(Entity firework) {
-        fireworks.add(firework);
-    }
-    
-    /**
-     * @param firework The firework you are removing.
-     */
-    public static void removeFirework(Entity firework) {
-        fireworks.remove(firework);
-    }
-    
-    @EventHandler
-    public void onFireworkDamage(EntityDamageByEntityEvent e) {
-        if (fireworks.contains(e.getDamager())) {
-            e.setCancelled(true);
-        }
-    }
-    
-    @EventHandler
-    public void onFireworkExplode(FireworkExplodeEvent e) {
-        final Entity firework = e.getEntity();
+        PersistentDataContainer container = firework.getPersistentDataContainer();
 
-        if (getFireworks().contains(firework)) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    fireworks.remove(firework);
-                }
-            }.runTaskLater(plugin, 5);
+        container.set(noDamage, PersistentDataType.STRING, "no-damage");
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerDamage(EntityDamageByEntityEvent e) {
+        if (e.getDamager() instanceof Firework firework) {
+
+            PersistentDataContainer container = firework.getPersistentDataContainer();
+
+            if (container.has(noDamage, PersistentDataType.STRING)) e.setCancelled(true);
         }
     }
 }
