@@ -44,7 +44,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
     
     @Override
     public @NotNull String getIdentifier() {
-        return "CrazyCrates";
+        return "crazycrates";
     }
     
     @Override
