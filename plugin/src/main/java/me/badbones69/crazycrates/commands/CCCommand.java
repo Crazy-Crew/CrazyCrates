@@ -547,7 +547,8 @@ public class CCCommand implements CommandExecutor {
                                 if (!event.isCancelled()) {
                                     if (Files.DATA.getFile().getBoolean("Players." + player.getUniqueId() + ".crateMessages")
                                         || !Files.DATA.getFile().contains("Players." + player.getUniqueId() + ".crateMessages")) {
-                                        player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
+                                        //player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
+                                        //this disables messaging the player that they got a key
                                     }
                                     if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
                                         player.getInventory().addItem(crate.getKey(amount));
@@ -642,7 +643,8 @@ public class CCCommand implements CommandExecutor {
                             if (Files.DATA.getFile().getBoolean("Players." + target.getUniqueId() + ".crateMessages")
                                     || !Files.DATA.getFile().contains("Players." + target.getUniqueId() + ".crateMessages")) {
                                 if (!(args.length >= 6 && args[5].equalsIgnoreCase("false"))) {
-                                    target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
+                                    //target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
+                                    //this disables messaging the player that they got a key
                                 }
                             }
                         }
