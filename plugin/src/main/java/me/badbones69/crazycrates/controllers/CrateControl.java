@@ -45,7 +45,8 @@ public class CrateControl implements Listener { //Crate Control
     public static HashMap<Player, Location> inUse = new HashMap<>();
     private final CrazyCrates cc = CrazyCrates.getInstance();
     private final List<UUID> cooldown = new ArrayList<>();
-    
+    private final List<UUID> clickCooldown = new ArrayList<>();
+
     /**
      * This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
      */
@@ -197,6 +198,10 @@ public class CrateControl implements Listener { //Crate Control
                         cc.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true);
                     } else {
                         if (crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
+                            if (clickCooldown.contains(player.getUniqueId())) {
+                                return;
+                            }
+
                             if (config.getBoolean("Settings.KnockBack")) {
                                 knockBack(player, clickedBlock.getLocation());
                             }
@@ -206,6 +211,9 @@ public class CrateControl implements Listener { //Crate Control
                                     player.playSound(player.getLocation(), sound, 1f, 1f);
                                 }
                             }
+
+                            clickCooldown.add(player.getUniqueId());
+                            Bukkit.getScheduler().runTaskLater(CrazyCrates.getInstance().getPlugin(), () -> clickCooldown.remove(player.getUniqueId()), 20L * config.getInt("Settings.Click-Cooldown"));
                             player.sendMessage(Messages.NO_KEY.getMessage("%Key%", keyName));
                         }
                     }

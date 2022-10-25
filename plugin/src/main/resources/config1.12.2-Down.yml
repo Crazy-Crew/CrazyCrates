@@ -4,6 +4,7 @@ Settings:
   InventoryName: '&b&lCrazy &4&lCrates'
   InventorySize: 45
   KnockBack: true
+  Click-Cooldown: 1 # seconds
   Update-Checker: true
   # Cooldown in seconds
   Cooldown: 5
