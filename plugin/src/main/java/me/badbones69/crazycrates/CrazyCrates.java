@@ -53,11 +53,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         // Initialize the plugin variable.
         crazyManager.loadPlugin(this);
 
-        if (ServerProtocol.isNewer(ServerProtocol.v1_17_R1)) {
-            checkVersion();
-            return;
-        }
-
         // Crate Files
         String extensions = ServerProtocol.getCurrentProtocol().isNewer(ServerProtocol.v1_12_R1) ? "nbt" : "schematic";
         String cratesFolder = ServerProtocol.getCurrentProtocol().isNewer(ServerProtocol.v1_12_R1) ? "/Crates1.13-Up" : "/Crates1.12.2-Down";
@@ -148,21 +143,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         getCommand("key").setTabCompleter(new KeyTab());
         getCommand("crazycrates").setExecutor(new CCCommand());
         getCommand("crazycrates").setTabCompleter(new CCTab());
-    }
-
-    private void checkVersion() {
-        isEnabled = false;
-        getLogger().warning("============= Crazy Crates =============");
-        getLogger().warning(" ");
-        getLogger().warning("Plugin Disabled: This server is running on an unsupported version and this version of Crazy Crates does not support those versions.");
-        getLogger().warning("Legacy only supports 1.12.2 down to 1.8.8, It will not run on 1.13+.");
-        getLogger().warning(" ");
-        getLogger().warning("Support Discord: https://discord.badbones69.com");
-        getLogger().warning("Version Integer: " + ServerProtocol.getCurrentProtocol());
-        getLogger().warning(" ");
-        getLogger().warning("============= Crazy Crates =============");
-
-        getServer().getPluginManager().disablePlugin(plugin);
     }
 
     @Override
