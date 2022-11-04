@@ -63,7 +63,8 @@ Messages:
     Per-Crate: '%crate% &7&l>&8&l> &6%keys% keys'
   Help:
     - '&e&lCrazy Crates Player Help'
-    - '&6/key [player] &7- &eCheck the number of keys a player has.'
+    - '&6/keys view [player] &7- &eCheck the number of keys a player has.'
+    - '&6/keys &7- &eShows how many keys you have.'
     - '&6/cc &7- &eOpens the menu.'
   Admin-Help:
     - '&c&lCrazy Crates Admin Help'
@@ -81,7 +82,8 @@ Messages:
     - '&6/cc set1/set2 &7- &eSets position &c#1 &eor &c#2 for when making a new schematic for QuadCrates.'
     - '&6/cc save <file name> &7- &eCreate a new nbt file in the schematics folder.'
     - ' '
-    - '&6/key [player] &7- &eCheck the number of keys a player has.'
+    - '&6/keys view [player] &7- &eCheck the number of keys a player has.'
+    - '&6/keys &7- &eShows how many keys you have.'
     - '&6/cc &7- &eOpens the menu.'
     - ' '
     - '&7You can find a list of permissions @ &ehttps://github.com/Crazy-Crew/CrazyCrates/wiki/Commands-and-Permissions'
