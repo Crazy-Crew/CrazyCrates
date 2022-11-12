@@ -10,7 +10,6 @@ import me.badbones69.crazycrates.commands.KeyCommand;
 import me.badbones69.crazycrates.commands.KeyTab;
 import me.badbones69.crazycrates.controllers.*;
 import me.badbones69.crazycrates.cratetypes.*;
-import me.badbones69.crazycrates.gui.MassOpenGUI;
 import me.badbones69.crazycrates.multisupport.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

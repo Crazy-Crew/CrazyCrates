@@ -6,6 +6,7 @@ Settings:
   KnockBack: true
   Click-Cooldown: 1 # seconds
   Update-Checker: true
+  BulkMessageDelay: 2
   # Cooldown in seconds
   Cooldown: 5
   Physical-Accepts-Virtual-Keys: true #If physical crates can accept virtual keys.

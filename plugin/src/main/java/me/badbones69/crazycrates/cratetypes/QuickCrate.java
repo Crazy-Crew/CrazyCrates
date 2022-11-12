@@ -89,37 +89,42 @@ public class QuickCrate implements Listener {
                 keysUsed++;
             }
 
-            List<String> messages = FileManager.Files.MESSAGES.getFile().getStringList("Messages.Crate-Open-Bulk");
-            boolean rewards = false;
-            for (String message : messages) {
 
-                if (message.contains("%crate_reward%")) {
-                    rewards = true;
+            int finalKeysUsed = keysUsed;
 
-                    prizes.stream().collect(Collectors.groupingBy(Prize::getName)).values().forEach(prizeList -> {
-                        prizeList.forEach(prize -> cc.givePrize(player, prize, false));
-                        final Prize prize = prizeList.get(0);
+            Bukkit.getScheduler().runTaskLater(CrazyCrates.getInstance().getPlugin(), () -> {
+                boolean rewards = false;
 
-                        final String bulkRewardMessage = prize.getBulkRewardMessage();
-                        if (bulkRewardMessage == null) {
-                            return;
-                        }
+                List<String> messages = FileManager.Files.MESSAGES.getFile().getStringList("Messages.Crate-Open-Bulk");
+                for (String message : messages) {
+                    if (message.contains("%crate_reward%")) {
+                        rewards = true;
 
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                bulkRewardMessage.replace("%amount%", Integer.toString(prizeList.size()))));
-                    });
-                    continue;
+                        prizes.stream().collect(Collectors.groupingBy(Prize::getName)).values().forEach(prizeList -> {
+                            prizeList.forEach(prize -> cc.givePrize(player, prize, false));
+                            final Prize prize = prizeList.get(0);
+
+                            final String bulkRewardMessage = prize.getBulkRewardMessage();
+                            if (bulkRewardMessage == null) {
+                                return;
+                            }
+
+                            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                    bulkRewardMessage.replace("%amount%", Integer.toString(prizeList.size()))));
+                        });
+                        continue;
+                    }
+
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            message
+                                    .replace("%crate_bulk_message%", crate.getBulkMessageDisplayName())
+                                    .replace("%keys-used%", Integer.toString(finalKeysUsed))));
                 }
 
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        message
-                                .replace("%crate_bulk_message%", crate.getBulkMessageDisplayName())
-                                .replace("%keys-used%", Integer.toString(keysUsed))));
-            }
-
-            if (!rewards) {
-                prizes.forEach(prize -> cc.givePrize(player, prize, true));
-            }
+                if (!rewards) {
+                    prizes.forEach(prize -> cc.givePrize(player, prize, true));
+                }
+            }, FileManager.Files.CONFIG.getFile().getInt("Settings.BulkMessageDelay") * 20L);
 
             if (!cc.takeKeys(keysUsed, player, crate, keyType, false)) {
                 Methods.failedToTakeKey(player, crate);
