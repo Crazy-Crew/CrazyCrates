@@ -366,14 +366,14 @@ public class CrateBaseCommand extends BaseCommand {
         }
     }
 
-    @SubCommand("mass-Open")
+    @SubCommand("mass-open")
     @Permission(value = "crazycrates.command.admin.massopen", def = PermissionDefault.OP)
-    public void onAdminCrateMassOpen(CommandSender sender, @Suggestion("crates") String crateName) {
+    public void onAdminCrateMassOpen(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount) {
         if (!(sender instanceof Player player)) return;
 
         Crate crate = crazyManager.getCrateFromName(crateName);
-        if (crate == null) {
-            sender.sendMessage(Messages.NOT_A_CRATE.getMessage());
+        if (crate == null || crateName.equalsIgnoreCase("menu")) {
+            sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", crateName));
             return;
         }
         crazyManager.addPlayerToOpeningList(player, crate);
@@ -388,6 +388,8 @@ public class CrateBaseCommand extends BaseCommand {
 
         for (; keys > 0; keys--) {
             if (Methods.isInventoryFull(player)) break;
+            if (keysUsed > amount) break;
+            if (keysUsed >= crate.getMaxMassOpen()) break;
 
             Prize prize = crate.pickPrize(player);
             crazyManager.givePrize(player, prize);
