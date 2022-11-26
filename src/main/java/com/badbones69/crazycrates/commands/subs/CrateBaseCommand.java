@@ -328,7 +328,7 @@ public class CrateBaseCommand extends BaseCommand {
                         }
 
                         player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
-                        CrateControlListener.knockBack(player, player.getTargetBlock(null, 1).getLocation().add(.5, 0, .5));
+                        if (config.getBoolean("Settings.KnockBack")) CrateControlListener.knockBack(player, player.getTargetBlock(null, 1).getLocation());
                         return;
                     }
 
