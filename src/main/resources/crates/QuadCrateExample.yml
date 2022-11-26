@@ -6,6 +6,7 @@ Crate:
   CrateName: '&bQuad Crate Preview'
   Preview-Name: '&bQuad Crate Preview'
   StartingKeys: 0
+  Max-Mass-Open: 10
   InGUI: true
   Slot: 25
   OpeningBroadCast: true

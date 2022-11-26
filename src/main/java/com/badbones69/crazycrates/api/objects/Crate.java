@@ -48,7 +48,8 @@ public class Crate {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final FileManager fileManager = plugin.getStarter().getFileManager();
-    
+    private int maxMassOpen;
+
     /**
      * @param name The name of the crate.
      * @param crateType The crate type of the crate.
@@ -56,7 +57,7 @@ public class Crate {
      * @param prizes The prizes that can be won.
      * @param file The crate file.
      */
-    public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, CrateHologram hologram) {
+    public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, int maxMassOpen, CrateHologram hologram) {
         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
         this.keyNoNBT = itemBuilder.build();
         this.key = itemBuilder.setCrateName(name).build();
@@ -68,6 +69,7 @@ public class Crate {
         this.file = file;
         this.name = name;
         this.tiers = tiers != null ? tiers : new ArrayList<>();
+        this.maxMassOpen = maxMassOpen;
         this.prizes = prizes;
         this.crateType = crateType;
         this.preview = loadPreview();
@@ -508,6 +510,11 @@ public class Crate {
     public ArrayList<Tier> getTiers() {
         return tiers;
     }
+
+    /**
+     * @return Returns the max amount that players can specify for crate mass open.
+     */
+    public int getMaxMassOpen() { return this.maxMassOpen; }
     
     /**
      * @return A CrateHologram which contains all the info about the hologram the crate uses.

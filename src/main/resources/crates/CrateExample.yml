@@ -12,6 +12,8 @@ Crate:
   Preview-Name: '&aBasic Crate Preview'
   # Starting amount of keys when the player 1st joins.
   StartingKeys: 0
+  #Max amount of crates that can be opened at once using /cc max-open
+  Max-Mass-Open: 10
   # If the crate shows in the /cc GUI.
   # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
   InGUI: true
