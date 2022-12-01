@@ -109,8 +109,9 @@ public class QuickCrate implements Listener {
                                 return;
                             }
 
-                            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                    bulkRewardMessage.replace("%amount%", Integer.toString(prizeList.size()))));
+                            Bukkit.getScheduler().runTaskLater(CrazyCrates.getInstance().getPlugin(), () -> {
+    player.sendMessage(ChatColor.translateAlternateColorCodes('&', bulkRewardMessage.replace("%amount%", Integer.toString(prizeList.size()))));
+}, 1L);
                         });
                         continue;
                     }
