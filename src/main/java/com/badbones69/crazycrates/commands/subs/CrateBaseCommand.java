@@ -481,6 +481,13 @@ public class CrateBaseCommand extends BaseCommand {
         player.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", crateName));
     }
 
+    @SubCommand("give-random")
+    @Permission(value = "crazycrates.command.admin.giverandomkey", def = PermissionDefault.OP)
+    public void onAdminCrateGiveRandom(CommandSender sender, @Suggestion("key-types") String keyType, @Suggestion("numbers") int amount, @Suggestion("online-players") Player target) {
+        Crate crate = crazyManager.getCrates().get((int) crazyManager.pickNumber(0, (crazyManager.getCrates().size() - 2)));
+        onAdminCrateGive(sender, keyType, crate.getName(), amount,  target);
+    }
+
     @SubCommand("give")
     @Permission(value = "crazycrates.command.admin.givekey", def = PermissionDefault.OP)
     public void onAdminCrateGive(CommandSender sender, @Suggestion("key-types") String keyType, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("online-players") Player target) {

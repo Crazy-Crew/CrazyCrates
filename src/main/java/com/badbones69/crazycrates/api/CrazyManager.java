@@ -1424,7 +1424,7 @@ public class CrazyManager {
         return ItemBuilder.convertStringList(file.getStringList("Crate.Prizes." + prize + ".Items"), prize);
     }
 
-    private long pickNumber(long min, long max) {
+    public long pickNumber(long min, long max) {
         max++;
 
         try {
