@@ -6,14 +6,13 @@ plugins {
 
 val buildNumber: String? = System.getenv("BUILD_NUMBER")
 
-val jenkinsVersion = "1.11.7-b$buildNumber"
+val jenkinsVersion = "1.11.8-b$buildNumber"
 
 group = "com.badbones69.crazycrates"
-version = "1.11.7"
+version = "1.11.8"
 description = "Add unlimited crates to your server with 10 different crate types to choose from!"
 
 repositories {
-
     /**
      * PAPI Team
      */
@@ -35,14 +34,14 @@ repositories {
     maven("https://repo.triumphteam.dev/snapshots/")
 
     /**
-     * Vault Team
-     */
-    maven("https://jitpack.io/")
-
-    /**
      * Minecraft Team
      */
     maven("https://libraries.minecraft.net/")
+
+    /**
+     * Vault Team
+     */
+    maven("https://jitpack.io/")
 
     /**
      * Everything else we need.
@@ -51,21 +50,24 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.triumph.cmds)
-    //implementation(libs.triumph.guis)
+    implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-SNAPSHOT")
 
-    implementation(libs.bukkit.bstats)
+    implementation("de.tr7zw", "nbt-data-api", "2.10.0")
 
-    implementation(libs.nbt.api)
+    implementation("org.bstats", "bstats-bukkit", "3.0.0")
 
-    compileOnly(libs.holographic.displays)
-    compileOnly(libs.decent.holograms)
+    compileOnly("io.papermc.paper", "paper-api", "1.19.3-R0.1-SNAPSHOT")
 
-    compileOnly(libs.placeholder.api)
+    compileOnly("me.filoghost.holographicdisplays", "holographicdisplays-api", "3.0.0")
 
-    compileOnly(libs.vault.api)
+    compileOnly("com.github.decentsoftware-eu", "decentholograms", "2.7.7")
 
-    compileOnly(libs.paper)
+    compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
+
+    compileOnly("me.clip", "placeholderapi", "2.11.2") {
+        exclude(group = "org.spigotmc", module = "spigot")
+        exclude(group = "org.bukkit", module = "bukkit")
+    }
 }
 
 java {
@@ -83,7 +85,6 @@ tasks {
         listOf(
             "de.tr7zw",
             "org.bstats",
-            //"dev.triumphteam.gui",
             "dev.triumphteam.cmd"
         ).forEach {
             relocate(it, "${rootProject.group}.plugin.lib.$it")
