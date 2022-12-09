@@ -1,9 +1,6 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.EventLogger;
 import com.badbones69.crazycrates.api.FileManager.Files;
-import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
@@ -49,84 +46,70 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     private Starter starter;
 
-    private boolean isEnabled = false;
-
     BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
 
     @Override
     public void onEnable() {
+        plugin = this;
 
-        try {
-            plugin = this;
+        starter = new Starter();
 
-            starter = new Starter();
+        starter.run();
 
-            starter.run();
+        starter.getFileManager().setLog(true)
+                .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("sea.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("soul.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
+                .registerCustomFilesFolder("/crates")
+                .registerCustomFilesFolder("/schematics")
+                .setup();
 
-            starter.getFileManager().setLog(true)
-                    .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
-                    .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("sea.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("soul.nbt", "/schematics", "/schematics")
-                    .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
-                    .registerCustomFilesFolder("/crates")
-                    .registerCustomFilesFolder("/schematics")
-                    .setup();
+        // Clean files if we have to.
+        cleanFiles();
 
-            // Clean files if we have to.
-            cleanFiles();
+        // Add extra messages.
+        Messages.addMissingMessages();
 
-            // Add extra messages.
-            Messages.addMissingMessages();
+        FileConfiguration config = Files.CONFIG.getFile();
 
-            FileConfiguration config = Files.CONFIG.getFile();
+        String metricsPath = config.getString("Settings.Toggle-Metrics");
+        boolean metricsEnabled = config.getBoolean("Settings.Toggle-Metrics");
 
-            String metricsPath = config.getString("Settings.Toggle-Metrics");
-            boolean metricsEnabled = config.getBoolean("Settings.Toggle-Metrics");
+        String crateLogFile = config.getString("Settings.Crate-Actions.Log-File");
+        String crateLogConsole = config.getString("Settings.Crate-Actions.Log-Console");
 
-            String crateLogFile = config.getString("Settings.Crate-Actions.Log-File");
-            String crateLogConsole = config.getString("Settings.Crate-Actions.Log-Console");
+        if (crateLogFile == null) {
+            config.set("Settings.Crate-Actions.Log-File", false);
 
-            if (crateLogFile == null) {
-                config.set("Settings.Crate-Actions.Log-File", false);
-
-                Files.CONFIG.saveFile();
-            }
-
-            if (crateLogConsole == null) {
-                config.set("Settings.Crate-Actions.Log-Console", false);
-
-                Files.CONFIG.saveFile();
-            }
-
-            if (metricsPath == null) {
-                config.set("Settings.Toggle-Metrics", false);
-
-                Files.CONFIG.saveFile();
-            }
-
-            if (metricsEnabled) new Metrics(this, 4514);
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            isEnabled = false;
-
-            return;
+            Files.CONFIG.saveFile();
         }
 
+        if (crateLogConsole == null) {
+            config.set("Settings.Crate-Actions.Log-Console", false);
+
+            Files.CONFIG.saveFile();
+        }
+
+        if (metricsPath == null) {
+            config.set("Settings.Toggle-Metrics", false);
+
+            Files.CONFIG.saveFile();
+        }
+
+        if (metricsEnabled) new Metrics(this, 4514);
+
         enable();
-        isEnabled = true;
     }
 
     @Override
     public void onDisable() {
-        if (!isEnabled) return;
-
         SessionManager.endCrates();
 
         QuickCrate.removeAllRewards();
