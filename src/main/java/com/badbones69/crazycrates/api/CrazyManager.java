@@ -96,16 +96,15 @@ public class CrazyManager {
         quadCrateTimer = Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
         giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
 
-        if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginLoaded()) {
-            hologramController = new HolographicSupport();
-        } else if (PluginSupport.DECENT_HOLOGRAMS.isPluginLoaded()) {
+        if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginEnabled()) {
+            //hologramController = new HolographicDisplaysSupport();
+            plugin.getLogger().warning("HolographicDisplays is not supported until HolographicDisplays boots on 1.19.X");
+        } else if (PluginSupport.DECENT_HOLOGRAMS.isPluginEnabled()) {
             hologramController = new DecentHologramsSupport();
-        }
+        } else plugin.getLogger().info("No holograms plugin were found.");
 
         // Removes all holograms so that they can be replaced.
-        if (hologramController != null) {
-            hologramController.removeAllHolograms();
-        }
+        if (hologramController != null) hologramController.removeAllHolograms();
 
         if (fileManager.isLogging()) plugin.getLogger().info("Loading all crate information...");
 
@@ -752,7 +751,7 @@ public class CrazyManager {
             for (ItemBuilder item : prize.getItemBuilders()) {
                 ItemBuilder clone = new ItemBuilder(item);
 
-                if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) {
+                if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
                     clone.setName(PlaceholderAPI.setPlaceholders(player, clone.getName()));
                     clone.setLore(PlaceholderAPI.setPlaceholders(player, clone.getLore()));
                 }
@@ -791,7 +790,7 @@ public class CrazyManager {
                     command = command.substring(0, command.length() - 1);
                 }
 
-                if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) {
+                if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
                     command = PlaceholderAPI.setPlaceholders(player, command);
                 }
 
@@ -799,7 +798,7 @@ public class CrazyManager {
             }
 
             for (String message : prize.getMessages()) {
-                if (PluginSupport.PLACEHOLDERAPI.isPluginLoaded()) {
+                if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
                     message = PlaceholderAPI.setPlaceholders(player, message);
                 }
 

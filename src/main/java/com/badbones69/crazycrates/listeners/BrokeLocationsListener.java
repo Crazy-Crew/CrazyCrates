@@ -33,7 +33,7 @@ public class BrokeLocationsListener implements Listener {
                 if (location.getWorld() != null) {
                     crazyManager.getCrateLocations().add(new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location));
 
-                    if (crazyManager.getHologramController() != null) crazyManager.getHologramController().createHologram(location.getBlock(), brokeLocation.getCrate());
+                    if (brokeLocation.getCrate().getHologram().isEnabled() && crazyManager.getHologramController() != null) crazyManager.getHologramController().createHologram(location.getBlock(), brokeLocation.getCrate());
 
                     fixedWorlds.add(brokeLocation);
                     fixedAmount++;
