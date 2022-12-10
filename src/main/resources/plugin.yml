@@ -7,7 +7,7 @@ version: ${version}
 api-version: "1.19"
 description: ${description}
 
-softdepend: [HolographicDisplays, DecentHolograms, PlaceholderAPI]
+softdepend: [CMI, HolographicDisplays, DecentHolograms, PlaceholderAPI]
 
 commands:
   crates:
