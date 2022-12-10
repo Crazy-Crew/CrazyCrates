@@ -34,6 +34,11 @@ repositories {
     maven("https://repo.triumphteam.dev/snapshots/")
 
     /**
+     * CrazyCrew Team
+     */
+    maven("https://repo.crazycrew.us/plugins/")
+
+    /**
      * Minecraft Team
      */
     maven("https://libraries.minecraft.net/")
@@ -63,6 +68,9 @@ dependencies {
     compileOnly("com.github.decentsoftware-eu", "decentholograms", "2.7.7")
 
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
+
+    compileOnly("com.Zrips.CMI", "CMI-API", "9.2.6.1")
+    compileOnly("CMILib", "CMILib", "1.2.3.7")
 
     compileOnly("me.clip", "placeholderapi", "2.11.2") {
         exclude(group = "org.spigotmc", module = "spigot")
