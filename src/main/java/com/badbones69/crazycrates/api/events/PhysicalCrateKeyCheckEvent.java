@@ -25,8 +25,8 @@ public class PhysicalCrateKeyCheckEvent extends Event implements Cancellable {
         this.crateLocation = crateLocation;
         this.isCancelled = false;
     }
-    
-    public HandlerList getHandlerList() {
+
+    public static HandlerList getHandlerList() {
         return handlers;
     }
     

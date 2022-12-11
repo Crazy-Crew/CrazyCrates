@@ -22,7 +22,7 @@ public class PlayerPrizeEvent extends Event {
         this.crateName = crateName;
     }
     
-    public HandlerList getHandlerList() {
+    public static HandlerList getHandlerList() {
         return handlers;
     }
     

@@ -24,8 +24,8 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
         this.amount = amount;
         isCancelled = false;
     }
-    
-    public HandlerList getHandlerList() {
+
+    public static HandlerList getHandlerList() {
         return handlers;
     }
     
