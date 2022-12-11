@@ -3,6 +3,7 @@
 .gradle
 .idea
 
+build
 builds
 gradle
 server
