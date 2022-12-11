@@ -1,10 +1,14 @@
-#IntelliJ
-.idea
-*.iml
-
-\.DS_Store
-
-# Gradle
-
+.fleet
+.github
 .gradle
-build
+.idea
+
+builds
+gradle
+server
+
+gradlew
+gradlew.bat
+
+build-logic/.gradle
+build-logic/build
