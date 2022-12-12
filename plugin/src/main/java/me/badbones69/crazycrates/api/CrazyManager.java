@@ -228,6 +228,11 @@ public class CrazyManager {
 
         quadCrateTimer = FileManager.Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
         giveVirtualKeysWhenInventoryFull = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
+        
+        // Removes all holograms so that they can be replaced.
+        if (hologramController != null) {
+            hologramController.removeAllHolograms();
+        }
 
         if (Support.HOLOGRAPHIC_DISPLAYS.isPluginLoaded()) {
             hologramController = new HolographicSupport();
@@ -235,11 +240,6 @@ public class CrazyManager {
             hologramController = new HologramsSupport();
         } else if (Support.DECENT_HOLOGRAMS.isPluginLoaded()) {
             hologramController = new DecentHologramsSupport();
-        }
-
-        // Removes all holograms so that they can be replaced.
-        if (hologramController != null) {
-            hologramController.removeAllHolograms();
         }
 
         if (fileManager.isLogging()) plugin.getLogger().info("Loading all crate information...");
