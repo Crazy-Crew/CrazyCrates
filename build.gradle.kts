@@ -1,6 +1,8 @@
 plugins {
     java
 
+    id("com.modrinth.minotaur") version "2.+"
+
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
@@ -99,6 +101,28 @@ tasks {
         }
     }
 
+    modrinth {
+        token.set(System.getenv("MODRINTH_TOKEN"))
+        projectId.set("crazycrates")
+        versionName.set("${rootProject.name} ${rootProject.version} Update")
+        versionNumber.set("${rootProject.version}")
+        versionType.set("release")
+        uploadFile.set(jar(rootProject.name))
+
+        gameVersions.addAll(listOf("1.19", "1.19.1", "1.19.2", "1.19.3"))
+        loaders.addAll(listOf("paper", "purpur"))
+
+        changelog.set("""
+                <h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br>
+                
+                <h2>Changes:</h2>
+                 <p>Added 1.19.3 support.</p>
+                 <p>Added a new command called /cc give-random which allows you to give random keys from your available crates.</p>
+                 <p>Added the ability to have a colored name on the glass panes in the preview menus.</p>
+                 <p>Fixed a bug where holograms would duplicate.</p>
+            """.trimIndent())
+    }
+
     compileJava {
         options.release.set(17)
     }
@@ -113,4 +137,8 @@ tasks {
             )
         }
     }
+}
+
+fun jar(name: String): RegularFile {
+    return rootProject.layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar").get();
 }
