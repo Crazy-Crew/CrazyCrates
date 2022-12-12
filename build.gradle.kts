@@ -57,7 +57,7 @@ repositories {
 dependencies {
     implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-SNAPSHOT")
 
-    implementation("de.tr7zw", "nbt-data-api", "2.10.0")
+    implementation("de.tr7zw", "nbt-data-api", "2.11.0")
 
     implementation("org.bstats", "bstats-bukkit", "3.0.0")
 
