@@ -34,6 +34,8 @@ public class Crate {
     private final boolean previewToggle;
     private final boolean borderToggle;
     private final ItemBuilder boarderItem;
+    private final String borderName;
+
     private final CrateType crateType;
     private final FileConfiguration file;
     private final ArrayList<Prize> prizes;
@@ -84,7 +86,8 @@ public class Crate {
         for (int amount = preview.size(); amount > maxSlots - (borderToggle ? 18 : maxSlots >= preview.size() ? 0 : maxSlots != 9 ? 9 : 0); amount -= maxSlots - (borderToggle ? 18 : maxSlots >= preview.size() ? 0 : maxSlots != 9 ? 9 : 0), maxPage++) ;
 
         this.crateInventoryName = file != null ? Methods.sanitizeColor(file.getString("Crate.CrateName")) : "";
-        this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(Methods.color(file.getString("Crate.Preview.Glass.Name"))) : new ItemBuilder().setMaterial(Material.AIR).setName(" ");
+        this.borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? Methods.color(file.getString("Crate.Preview.Glass.Name")) : " ";
+        this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(this.borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(this.borderName);
 
         this.hologram = hologram != null ? hologram : new CrateHologram();
 
