@@ -99,10 +99,14 @@ permissions:
   crazycrates.command.admin.givekey:
     default: op
 
+  crazycrates.command.admin.giverandomkey:
+    default: op
+
   crazycrates.command.admin.giveall:
     default: op
     children:
       crazycrates.command.admin.givekey: true
+      crazycrates.command.admin.giverandomkey: true
       crazycrates.command.admin.takekey: true
       crazycrates.command.player.transfer: true
 
