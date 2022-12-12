@@ -98,6 +98,9 @@ public class CrazyManager {
         quadCrateTimer = Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
         giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
 
+        // Removes all holograms so that they can be replaced.
+        if (hologramController != null) hologramController.removeAllHolograms();
+
         if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginEnabled()) {
             //hologramController = new HolographicDisplaysSupport();
             //plugin.getLogger().info("HolographicDisplays support has been enabled.");
@@ -109,9 +112,6 @@ public class CrazyManager {
             hologramController = new CMIHologramsSupport();
             plugin.getLogger().info("CMI Hologram support has been enabled.");
         } else plugin.getLogger().warning("No holograms plugin were found. If using CMI, make sure holograms module is enabled.");
-
-        // Removes all holograms so that they can be replaced.
-        if (hologramController != null) hologramController.removeAllHolograms();
 
         if (fileManager.isLogging()) plugin.getLogger().info("Loading all crate information...");
 
@@ -144,9 +144,7 @@ public class CrazyManager {
 
                     for (String tier : file.getStringList(path + ".Tiers")) {
                         for (Tier loadedTier : tiers) {
-                            if (loadedTier.getName().equalsIgnoreCase(tier)) {
-                                prizeTiers.add(loadedTier);
-                            }
+                            if (loadedTier.getName().equalsIgnoreCase(tier)) prizeTiers.add(loadedTier);
                         }
                     }
 
@@ -185,9 +183,7 @@ public class CrazyManager {
                 int newPlayersKeys = file.getInt("Crate.StartingKeys");
 
                 if (!giveNewPlayersKeys) {
-                    if (newPlayersKeys > 0) {
-                        giveNewPlayersKeys = true;
-                    }
+                    if (newPlayersKeys > 0) giveNewPlayersKeys = true;
                 }
 
                 CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"));
@@ -201,8 +197,10 @@ public class CrazyManager {
 
         crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, 0, null));
 
-        if (fileManager.isLogging()) plugin.getLogger().info("All crate information has been loaded.");
-        if (fileManager.isLogging()) plugin.getLogger().info("Loading all the physical crate locations.");
+        if (fileManager.isLogging()) {
+            plugin.getLogger().info("All crate information has been loaded.");
+            plugin.getLogger().info("Loading all the physical crate locations.");
+        }
 
         FileConfiguration locations = Files.LOCATIONS.getFile();
         int loadedAmount = 0;
