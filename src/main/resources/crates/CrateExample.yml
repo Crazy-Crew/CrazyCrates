@@ -42,6 +42,8 @@ Crate:
     Glass:
       # Turn the glass boarder in the preview on and off.
       Toggle: true
+      # The name of the border item.
+      Name: ' '
       # The item that shows in the boarder. Can be glass or any other item.
       Item: 'GRAY_STAINED_GLASS_PANE'
   PhysicalKey:

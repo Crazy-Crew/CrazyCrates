@@ -84,7 +84,8 @@ public class Crate {
         for (int amount = preview.size(); amount > maxSlots - (borderToggle ? 18 : maxSlots >= preview.size() ? 0 : maxSlots != 9 ? 9 : 0); amount -= maxSlots - (borderToggle ? 18 : maxSlots >= preview.size() ? 0 : maxSlots != 9 ? 9 : 0), maxPage++) ;
 
         this.crateInventoryName = file != null ? Methods.sanitizeColor(file.getString("Crate.CrateName")) : "";
-        this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(" ") : new ItemBuilder().setMaterial(Material.AIR);
+        this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(file.getString("Crate.Preview.Glass.Name")) : new ItemBuilder().setMaterial(Material.AIR).setName(" ");
+
         this.hologram = hologram != null ? hologram : new CrateHologram();
 
         if (crateType == CrateType.COSMIC) this.manager = new CosmicCrateManager(file);

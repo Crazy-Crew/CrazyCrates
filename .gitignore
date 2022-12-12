@@ -8,6 +8,9 @@ builds
 gradle
 server
 
+paper
+api
+
 gradlew
 gradlew.bat
 

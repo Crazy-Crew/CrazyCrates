@@ -23,6 +23,8 @@ Crate:
     ChestLines: 6
     Glass:
       Toggle: true
+      # The name of the border item.
+      Name: ' '
       Item: 'YELLOW_STAINED_GLASS_PANE'
   PhysicalKey:
     Name: '&e&lClassic Crate &c&lKey'
