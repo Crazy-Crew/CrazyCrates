@@ -87,9 +87,9 @@ java {
 tasks {
     shadowJar {
         if (buildNumber != null) {
-            archiveFileName.set("${rootProject.name}-[v${jenkinsVersion}].jar")
+            archiveFileName.set("${rootProject.name}-${jenkinsVersion}.jar")
         } else {
-            archiveFileName.set("${rootProject.name}-[v${rootProject.version}].jar")
+            archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
         }
 
         listOf(
@@ -140,5 +140,5 @@ tasks {
 }
 
 fun jar(name: String): RegularFile {
-    return rootProject.layout.buildDirectory.file("libs/${name}-[v${rootProject.version}].jar").get();
+    return rootProject.layout.buildDirectory.file("libs/${name}-${rootProject.version}.jar").get();
 }
