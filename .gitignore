@@ -16,3 +16,5 @@ gradlew.bat
 
 build-logic/.gradle
 build-logic/build
+
+.env
