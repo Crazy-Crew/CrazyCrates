@@ -140,5 +140,5 @@ tasks {
 }
 
 fun jar(name: String): RegularFile {
-    return rootProject.layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar").get();
+    return rootProject.layout.buildDirectory.file("libs/${name}-[v${rootProject.version}].jar").get();
 }
