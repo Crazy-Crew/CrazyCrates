@@ -8,13 +8,13 @@ builds
 gradle
 server
 
-paper
-api
-
 gradlew
 gradlew.bat
 
 build-logic/.gradle
 build-logic/build
 
+vouchers
+
+paper
 .env
