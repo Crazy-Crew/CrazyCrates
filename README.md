@@ -1,6 +1,6 @@
 <br />
 
-[![crazycrates](https://github.com/RyderBelserion/Assets/blob/main/crazycrew/old/banners/CrazyCrates.png?raw=true)](https://www.spigotmc.org/resources/crazy-crates.17599/)
+[![crazycrates](https://raw.githubusercontent.com/RyderBelserion/Assets/main/crazycrew/new/crazycrates/Banner.png)](https://modrinth.com/plugin/crazycrates)
 
 <div align="center">
 
@@ -49,9 +49,9 @@
 </details>
 
 ## Downloads
-https://www.spigotmc.org/resources/crazy-crates.17599/
+https://modrinth.com/plugin/crazycrates
 
-https://ci.badbones69.com/view/Stable/job/CrazyCrates/
+https://ci.crazycrew.us/view/Plugins/job/CrazyCrates/
 
 ## Getting Started
 
