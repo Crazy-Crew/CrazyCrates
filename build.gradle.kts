@@ -8,13 +8,9 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
-val buildNumber: String? = System.getenv("BUILD_NUMBER")
-
-group = "com.badbones69.crazycrates"
-version = "1.11.8"
-description = "Add unlimited crates to your server with 10 different crate types to choose from!"
-
-val jenkinsVersion = "${version}-b$buildNumber"
+project.group = "com.badbones69.crazycrates"
+project.version = "${extra["plugin_version"]}"
+project.description = "Add unlimited crates to your server with 10 different crate types to choose from!"
 
 repositories {
     /**
@@ -65,7 +61,7 @@ dependencies {
 
     implementation("org.bstats", "bstats-bukkit", "3.0.0")
 
-    compileOnly("io.papermc.paper", "paper-api", "1.19.3-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper", "paper-api", "${project.extra["minecraft_version"]}-R0.1-SNAPSHOT")
 
     compileOnly("me.filoghost.holographicdisplays", "holographicdisplays-api", "3.0.0")
 
@@ -86,13 +82,21 @@ java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
+// val buildNumber: String? = System.getenv("BUILD_NUMBER")
+// val buildVersion = "${version}-b$buildNumber"
+
 tasks {
     shadowJar {
-        if (buildNumber != null) {
-            archiveFileName.set("${rootProject.name}-${jenkinsVersion}.jar")
-        } else {
-            archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
-        }
+        archiveFileName.set("${rootProject.name}-${project.version}.jar")
+
+        /**
+         * Uncomment this when in the Dev Branch but make sure to comment it before making a pr to the main branch.
+         */
+        //if (buildNumber != null) {
+        //    archiveFileName.set("${rootProject.name}-${buildVersion}.jar")
+        //} else {
+        //    archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
+        //}
 
         listOf(
             "de.tr7zw",
@@ -106,23 +110,15 @@ tasks {
     modrinth {
         token.set(System.getenv("MODRINTH_TOKEN"))
         projectId.set("crazycrates")
-        versionName.set("${rootProject.name} ${rootProject.version} Update")
-        versionNumber.set("${rootProject.version}")
-        versionType.set("release")
-        uploadFile.set(jar(rootProject.name))
+        versionName.set("${rootProject.name} ${project.version} Update")
+        versionNumber.set("${project.version}")
+        versionType.set("${extra["version_type"]}")
+        uploadFile.set(jar(project.name))
 
         gameVersions.addAll(listOf("1.19", "1.19.1", "1.19.2", "1.19.3"))
         loaders.addAll(listOf("paper", "purpur"))
 
-        changelog.set("""
-                <h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br>
-                
-                <h2>Changes:</h2>
-                 <p>Added 1.19.3 support.</p>
-                 <p>Added a new command called /cc give-random which allows you to give random keys from your available crates.</p>
-                 <p>Added the ability to have a colored name on the glass panes in the preview menus.</p>
-                 <p>Fixed a bug where holograms would duplicate.</p>
-            """.trimIndent())
+        changelog.set(System.getenv("COMMIT_MESSAGE"))
     }
 
     compileJava {
@@ -133,9 +129,9 @@ tasks {
         filesMatching("plugin.yml") {
             expand(
                 "name" to rootProject.name,
-                "group" to rootProject.group,
-                "version" to rootProject.version,
-                "description" to rootProject.description
+                "group" to project.group,
+                "version" to project.version,
+                "description" to project.description
             )
         }
     }
@@ -151,14 +147,14 @@ publishing {
 
     publications {
         create<MavenPublication>("maven") {
-            groupId = "${rootProject.group}"
+            groupId = "${project.group}"
             artifactId = rootProject.name.toLowerCase()
-            version = "${rootProject.version}"
+            version = "${project.version}"
             from(components["java"])
         }
     }
 }
 
 fun jar(name: String): RegularFile {
-    return rootProject.layout.buildDirectory.file("libs/${name}-${rootProject.version}.jar").get();
+    return rootProject.layout.buildDirectory.file("libs/${name}-${project.version}.jar").get();
 }
