@@ -51,6 +51,8 @@
 ## Downloads
 https://modrinth.com/plugin/crazycrates
 
+## Snapshot Builds
+### Get the latest changes before they are uploaded to modrinth!
 https://ci.crazycrew.us/view/Plugins/job/CrazyCrates/
 
 ## Getting Started
