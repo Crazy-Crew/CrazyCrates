@@ -1,5 +1,7 @@
 plugins {
-    java
+    `java-library`
+
+    `maven-publish`
 
     id("com.modrinth.minotaur") version "2.+"
 
@@ -135,6 +137,24 @@ tasks {
                 "version" to rootProject.version,
                 "description" to rootProject.description
             )
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven("https://repo.crazycrew.us/releases") {
+            name = "crazycrew"
+            credentials(PasswordCredentials::class)
+        }
+    }
+
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "${rootProject.group}"
+            artifactId = rootProject.name.toLowerCase()
+            version = "${rootProject.version}"
+            from(components["java"])
         }
     }
 }
