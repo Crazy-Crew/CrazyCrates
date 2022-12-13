@@ -8,11 +8,11 @@ plugins {
 
 val buildNumber: String? = System.getenv("BUILD_NUMBER")
 
-val jenkinsVersion = "1.11.8-b$buildNumber"
-
 group = "com.badbones69.crazycrates"
 version = "1.11.8"
 description = "Add unlimited crates to your server with 10 different crate types to choose from!"
+
+val jenkinsVersion = "${version}-b$buildNumber"
 
 repositories {
     /**
