@@ -10,7 +10,7 @@ import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import org.bukkit.block.Block;
 import java.util.HashMap;
 
-public class HolographicSupport implements HologramController {
+public class HolographicDisplaysSupport implements HologramController {
     
     private static final HashMap<Block, Hologram> holograms = new HashMap<>();
 
