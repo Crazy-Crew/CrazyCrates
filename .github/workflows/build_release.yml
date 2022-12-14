@@ -20,6 +20,9 @@ jobs:
         shell: bash
         run: cat gradle.properties >> $GITHUB_ENV
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Shadow Jar
         run: ./gradlew shadowJar --stacktrace
 
