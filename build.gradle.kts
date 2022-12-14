@@ -82,21 +82,16 @@ java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
-// val buildNumber: String? = System.getenv("BUILD_NUMBER")
-// val buildVersion = "${version}-b$buildNumber"
+val buildNumber: String? = System.getenv("BUILD_NUMBER")
+val buildVersion = "${project.version}-b$buildNumber"
 
 tasks {
     shadowJar {
-        archiveFileName.set("${rootProject.name}-${project.version}.jar")
-
-        /**
-         * Uncomment this when in the Dev Branch but make sure to comment it before making a pr to the main branch.
-         */
-        //if (buildNumber != null) {
-        //    archiveFileName.set("${rootProject.name}-${buildVersion}.jar")
-        //} else {
-        //    archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
-        //}
+        if (buildNumber != null) {
+            archiveFileName.set("${rootProject.name}-${buildVersion}-SNAPSHOT.jar")
+        } else {
+           archiveFileName.set("${rootProject.name}-${project.version}.jar")
+        }
 
         listOf(
             "de.tr7zw",
