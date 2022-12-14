@@ -83,14 +83,14 @@ java {
 }
 
 val buildNumber: String? = System.getenv("BUILD_NUMBER")
-val buildVersion = "${project.version}-b$buildNumber"
+val buildVersion = "${project.version}-b$buildNumber-SNAPSHOT"
 
 tasks {
     shadowJar {
         if (buildNumber != null) {
-            archiveFileName.set("${rootProject.name}-${buildVersion}-SNAPSHOT.jar")
+            archiveFileName.set("${rootProject.name}-${buildVersion}.jar")
         } else {
-           archiveFileName.set("${rootProject.name}-${project.version}.jar")
+            archiveFileName.set("${rootProject.name}-${project.version}.jar")
         }
 
         listOf(
@@ -127,7 +127,7 @@ tasks {
             expand(
                 "name" to rootProject.name,
                 "group" to project.group,
-                "version" to project.version,
+                "version" to if (buildNumber != null) buildVersion else project.version,
                 "description" to project.description
             )
         }
