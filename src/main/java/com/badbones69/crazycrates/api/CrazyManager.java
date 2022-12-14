@@ -19,7 +19,7 @@ import com.badbones69.crazycrates.listeners.MenuListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
 import com.badbones69.crazycrates.support.holograms.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.DecentHologramsSupport;
-import com.badbones69.crazycrates.support.holograms.HolographicSupport;
+import com.badbones69.crazycrates.support.holograms.HolographicDisplaysSupport;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -102,9 +102,8 @@ public class CrazyManager {
         if (hologramController != null) hologramController.removeAllHolograms();
 
         if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginEnabled()) {
-            //hologramController = new HolographicDisplaysSupport();
-            //plugin.getLogger().info("HolographicDisplays support has been enabled.");
-            plugin.getLogger().warning("HolographicDisplays is not supported until HolographicDisplays boots on 1.19.X");
+            hologramController = new HolographicDisplaysSupport();
+            plugin.getLogger().info("HolographicDisplays support has been enabled.");
         } else if (PluginSupport.DECENT_HOLOGRAMS.isPluginEnabled()) {
             hologramController = new DecentHologramsSupport();
             plugin.getLogger().info("DecentHolograms support has been enabled.");
