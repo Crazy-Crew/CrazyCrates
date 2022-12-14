@@ -28,3 +28,9 @@ jobs:
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
+
+      - name: Repo Publish
+        run: ./gradlew publish --stacktrace
+        env:
+          REPOSITORY_USERNAME: ${{ secrets.REPOSITORY_USERNAME }}
+          REPOSITORY_PASSWORD: ${{ secrets.REPOSITORY_PASSWORD }}
