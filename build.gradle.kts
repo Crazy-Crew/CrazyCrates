@@ -138,7 +138,10 @@ publishing {
     repositories {
         maven("https://repo.crazycrew.us/releases") {
             name = "crazycrew"
-            credentials(PasswordCredentials::class)
+            credentials {
+                username = System.getenv("REPOSITORY_USERNAME")
+                password = System.getenv("REPOSITORY_PASSWORD")
+            }
         }
     }
 
