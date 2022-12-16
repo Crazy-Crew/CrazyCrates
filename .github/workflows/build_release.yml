@@ -35,5 +35,5 @@ jobs:
       - name: Repo Publish
         run: ./gradlew publish --stacktrace
         env:
-          REPOSITORY_USERNAME: ${{ secrets.REPOSITORY_USERNAME }}
-          REPOSITORY_PASSWORD: ${{ secrets.REPOSITORY_PASSWORD }}
+          REPOSITORY_USERNAME: ${{ secrets.CRAZYCREW_USERNAME }}
+          REPOSITORY_PASSWORD: ${{ secrets.CRAZYCREW_PASSWORD }}

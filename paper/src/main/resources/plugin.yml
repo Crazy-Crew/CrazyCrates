@@ -1,5 +1,5 @@
 name: "CrazyCrates"
-main: "${group}.CrazyCrates"
+main: "${group}"
 
 authors: [BadBones69, RyderBelserion]
 
