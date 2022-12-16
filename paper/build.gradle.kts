@@ -58,11 +58,11 @@ tasks {
 
 publishing {
     repositories {
-        maven("https://repo.crazycrew.us/releases") {
+        maven("https://repo.crazycrew.us/snapshots") {
             name = "crazycrew"
             credentials {
-                username = System.getenv("REPOSITORY_USERNAME")
-                password = System.getenv("REPOSITORY_PASSWORD")
+                username = System.getenv("CRAZYCREW_USERNAME")
+                password = System.getenv("CRAZYCREW_PASSWORD")
             }
         }
     }
