@@ -69,7 +69,7 @@ publishing {
 
     publications {
         create<MavenPublication>("maven") {
-            groupId = "${project.group}"
+            groupId = "${extra["plugin_group"]}"
             artifactId = rootProject.name.toLowerCase()
             version = "${project.version}"
             from(components["java"])

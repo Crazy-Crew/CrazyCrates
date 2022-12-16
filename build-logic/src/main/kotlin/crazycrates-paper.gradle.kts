@@ -3,7 +3,7 @@ plugins {
 }
 
 project.version = "${extra["plugin_version"]}"
-project.group = "${rootProject.group}.CrazyCrates"
+project.group = "${extra["plugin_group"]}.CrazyCrates"
 project.description = "Add unlimited crates to your server with 10 different crate types to choose from!"
 
 repositories {
