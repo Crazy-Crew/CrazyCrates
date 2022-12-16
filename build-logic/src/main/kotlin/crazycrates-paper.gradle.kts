@@ -24,15 +24,13 @@ repositories {
 }
 
 dependencies {
-    //implementation(project(":api"))
+    implementation(project(":api"))
 
     implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-SNAPSHOT")
 
     implementation("de.tr7zw", "nbt-data-api", "2.11.1")
 
     implementation("org.bstats", "bstats-bukkit", "3.0.0")
-
-    // implementation("com.mojang", "brigadier", "1.0.18")
 
     compileOnly("io.papermc.paper", "paper-api", "${project.extra["minecraft_version"]}-R0.1-SNAPSHOT")
 

@@ -11,5 +11,4 @@ pluginManagement {
 
 rootProject.name = "CrazyCrates"
 
-//include("paper", "api")
-include("paper")
+include("paper", "api")
