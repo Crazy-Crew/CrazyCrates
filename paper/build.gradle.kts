@@ -41,7 +41,11 @@ tasks {
         gameVersions.addAll(listOf("1.19", "1.19.1", "1.19.2", "1.19.3"))
         loaders.addAll(listOf("paper", "purpur"))
 
-        changelog.set(System.getenv("COMMIT_MESSAGE"))
+        //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
+        changelog.set("""
+                <h2>Changes:</h2>
+                 <p>N/A</p>
+            """.trimIndent())
     }
 
     processResources {
