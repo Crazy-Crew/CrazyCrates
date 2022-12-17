@@ -36,7 +36,7 @@ dependencies {
 
     compileOnly("me.filoghost.holographicdisplays", "holographicdisplays-api", "3.0.0")
 
-    compileOnly("com.github.decentsoftware-eu", "decentholograms", "2.7.7")
+    compileOnly("com.github.decentsoftware-eu", "decentholograms", "2.7.8")
 
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
 
