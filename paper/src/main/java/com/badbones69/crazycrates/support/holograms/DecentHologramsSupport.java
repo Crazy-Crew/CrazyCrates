@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.support.holograms;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -7,10 +8,14 @@ import com.badbones69.crazycrates.api.objects.CrateHologram;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class DecentHologramsSupport implements HologramController {
+
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final HashMap<Block, Hologram> holograms = new HashMap<>();
     
@@ -36,7 +41,25 @@ public class DecentHologramsSupport implements HologramController {
         holograms.remove(block);
         hologram.delete();
     }
-    
+
+    @Override
+    public void hideHologram(Player player, Block block) {
+        if (!holograms.containsKey(block)) return;
+
+        Hologram hologram = holograms.get(block);
+
+        if (hologram.isVisibleState()) hologram.hideAll();
+    }
+
+    @Override
+    public void showHologram(Player player, Block block) {
+        if (!holograms.containsKey(block)) return;
+
+        Hologram hologram = holograms.get(block);
+
+        if (hologram.isHideState(player)) hologram.showAll();
+    }
+
     public void removeAllHolograms() {
         holograms.forEach((key, value) -> value.delete());
         holograms.clear();

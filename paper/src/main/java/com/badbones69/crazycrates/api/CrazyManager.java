@@ -384,7 +384,7 @@ public class CrazyManager {
                         return;
                     } else {
                         CrateControlListener.inUse.put(player, location);
-                        FireCracker.startFireCracker(player, crate, keyType, location);
+                        FireCracker.startFireCracker(player, crate, keyType, location, hologramController);
                     }
                 }
             }
@@ -400,7 +400,7 @@ public class CrazyManager {
                         return;
                     } else {
                         CrateControlListener.inUse.put(player, location);
-                        QuickCrate.openCrate(player, location, crate, keyType);
+                        QuickCrate.openCrate(player, location, crate, keyType, hologramController);
                     }
                 }
             }
