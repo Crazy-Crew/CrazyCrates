@@ -12,6 +12,7 @@ import org.bukkit.util.BlockVector;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -117,7 +118,7 @@ public class StructureHandler {
     public List<Location> getNearbyBlocks(Location location) {
         getBlocks(false, location);
 
-        return preStructureBlocks;
+        return Collections.unmodifiableList(preStructureBlocks);
     }
 
     public List<Material> getBlockBlackList() {
