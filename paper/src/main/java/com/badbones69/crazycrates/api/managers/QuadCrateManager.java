@@ -121,7 +121,7 @@ public class QuadCrateManager {
         }
 
         // Check if the blocks are able to be changed.
-        List<Block> structureLocations = null;
+        List<Location> structureLocations = null;
 
         try {
             structureLocations = handler.getNearbyBlocks(spawnLocation.clone());
@@ -133,14 +133,17 @@ public class QuadCrateManager {
         // Do not open the crate if the block is not able to be changed.
         assert structureLocations != null;
 
-        for (Block block : structureLocations) {
-            if (handler.getBlockBlackList().contains(block.getType())) {
+        for (Location block : structureLocations) {
+            Location locBlock = block.toBlockLocation();
+            Block blockType = locBlock.getBlock();
+
+            if (handler.getBlockBlackList().contains(blockType.getType())) {
                 player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
                 crazyManager.removePlayerFromOpeningList(player);
                 crateSessions.remove(instance);
                 return false;
             } else {
-                oldBlocks.put(block.getLocation().clone(), block.getState());
+                oldBlocks.put(locBlock.clone(), blockType.getState());
             }
         }
 

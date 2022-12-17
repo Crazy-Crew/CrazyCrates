@@ -25,9 +25,9 @@ public class StructureHandler {
         this.file = file;
     }
 
-    private final List<Block> structureBlocks = new ArrayList<>();
+    private final List<Location> structureBlocks = new ArrayList<>();
 
-    private final List<Block> preStructureBlocks = new ArrayList<>();
+    private final List<Location> preStructureBlocks = new ArrayList<>();
 
     private StructureManager getStructureManager() {
         return plugin.getServer().getStructureManager();
@@ -55,7 +55,9 @@ public class StructureHandler {
 
     public void removeStructure() {
         structureBlocks.forEach(block -> {
-            block.getLocation().getBlock().setType(Material.AIR, false);
+            Location blockLoc = block.toBlockLocation();
+
+            blockLoc.getBlock().setType(Material.AIR, true);
         });
     }
 
@@ -83,28 +85,36 @@ public class StructureHandler {
         return 0;
     }
 
-    private void getBlocks(Boolean getStructureBlocks, Location location) {
+    private void getBlocks(boolean getStructureBlocks, Location location) {
         for (int x = 0; x < getStructureSize().getX(); x++) {
             for (int y = 0; y < getStructureSize().getY(); y++) {
                 for (int z = 0; z < getStructureSize().getZ(); z++) {
 
                     Block relativeLocation = location.getBlock().getRelative(x, y, z);
 
+                    List<Location> relativeBlocks = new ArrayList<>();
+
+                    relativeBlocks.add(relativeLocation.getLocation());
+
                     if (getStructureBlocks) {
-                        structureBlocks.add(relativeLocation);
+                        structureBlocks.addAll(relativeBlocks);
 
-                        structureBlocks.forEach(block -> block.getState().update());
+                        structureBlocks.forEach(block -> {
+                            Location blockLoc = block.toBlockLocation();
 
-                        return;
+                            blockLoc.getBlock().getState().update();
+                        });
+
+                        continue;
                     }
 
-                    preStructureBlocks.add(relativeLocation);
+                    preStructureBlocks.addAll(relativeBlocks);
                 }
             }
         }
     }
 
-    public List<Block> getNearbyBlocks(Location location) {
+    public List<Location> getNearbyBlocks(Location location) {
         getBlocks(false, location);
 
         return preStructureBlocks;
