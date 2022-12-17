@@ -27,19 +27,19 @@ public interface CrazyCrates {
     void disable();
 
     /**
-     * @return The plugin directory
+     * @return The root directory of the plugin.
      */
-    @NotNull Path getDirectory();
+    @NotNull Path getRootDirectory();
 
     /**
-     * A platform-agnostic implementation of Console Sender.
+     * Used to manage players across platforms.
      *
-     * @return The console sender
+     * @return The instance of PlayerRegistry
      */
-    @NotNull Console getConsole();
-
     @NotNull PlayerRegistry getPlayerRegistry();
 
-    @NotNull MiniMessage getMessage();
-
+    /**
+     * @return The instance of Mini-Message.
+     */
+    @NotNull MiniMessage getMiniMessage();
 }

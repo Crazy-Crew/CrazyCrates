@@ -21,6 +21,7 @@ import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import com.badbones69.crazycrates.listeners.MenuListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
+import com.badbones69.crazycrates.support.MetricsHandler;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
@@ -106,7 +107,11 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             Files.CONFIG.saveFile();
         }
 
-        if (metricsEnabled) new Metrics(this, 4514);
+        if (metricsEnabled) {
+            MetricsHandler metricsHandler = new MetricsHandler();
+
+            metricsHandler.start();
+        }
 
         enable();
     }
