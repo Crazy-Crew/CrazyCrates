@@ -45,7 +45,7 @@ public class StructureHandler {
         try {
             getNearbyBlocks(location);
 
-            getStructureManager().loadStructure(file).place(location, false, StructureRotation.NONE, Mirror.NONE, 0, 1F, new Random());
+            getStructureManager().loadStructure(file).place(location.subtract(2, 0.0, 2), false, StructureRotation.NONE, Mirror.NONE, 0, 1F, new Random());
 
             getBlocks(true, location);
         } catch (Exception e) {
