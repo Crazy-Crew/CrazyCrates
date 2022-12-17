@@ -349,8 +349,14 @@ public class CrazyManager {
             broadcast = false;
         }
 
+        FileConfiguration config = Files.CONFIG.getFile();
+
         switch (crate.getCrateType()) {
-            case MENU -> MenuListener.openGUI(player);
+            case MENU -> {
+                boolean openMenu = config.getBoolean("Settings.Disable-Crate-Menu");
+
+                if (openMenu) MenuListener.openGUI(player); else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
+            }
             case COSMIC -> Cosmic.openCosmic(player, crate, keyType, checkHand);
             case CSGO -> CSGO.openCSGO(player, crate, keyType, checkHand);
             case ROULETTE -> Roulette.openRoulette(player, crate, keyType, checkHand);

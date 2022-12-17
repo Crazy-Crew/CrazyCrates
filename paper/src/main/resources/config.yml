@@ -3,6 +3,8 @@
 Settings:
   Prefix: '&8[&bCrazyCrates&8]: '
   Toggle-Metrics: true #Turn on and off if your server stats are sent to https://bstats.org/ - Requires a restart!
+  # Whether to enable or disable the crate menu.
+  Disable-Crate-Menu: false
   # Whether to actions to file & console.
   # Includes command failures, keys taken, given, received and so on.
   # Defaults to false.
