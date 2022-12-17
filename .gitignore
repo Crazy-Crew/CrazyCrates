@@ -4,5 +4,4 @@ build-logic/.gradle
 
 paper/build
 build-logic/build
-
-api
+api/build
