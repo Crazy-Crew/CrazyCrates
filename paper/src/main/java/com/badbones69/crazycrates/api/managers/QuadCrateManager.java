@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.enums.QuadCrateParticles;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.support.structures.QuadCrateSpiralHandler;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
@@ -90,7 +91,7 @@ public class QuadCrateManager {
         this.keyType = keyType;
         this.checkHand = inHand;
 
-        this.spawnLocation = spawnLocation.getBlock().getLocation();
+        this.spawnLocation = spawnLocation;
         this.lastLocation = lastLocation;
 
         this.handler = handler;
@@ -102,7 +103,7 @@ public class QuadCrateManager {
         crateSessions.add(instance);
     }
 
-    public boolean startCrate(CrazyCrates plugin) {
+    public boolean startCrate() {
 
         // Check if it is on a block.
         if (spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
@@ -181,8 +182,8 @@ public class QuadCrateManager {
         addCrateLocations(2, 1, 0);
         addCrateLocations(0, 1, 2);
 
-        addCrateLocations(4, 1, 2);
-        addCrateLocations(2, 1, 4);
+        addCrateLocations(-2, 1, 0);
+        addCrateLocations(0, 1, -2);
 
         // Throws unopened crates in a HashMap.
         crateLocations.forEach(loc -> cratesOpened.put(loc, false));
@@ -195,8 +196,7 @@ public class QuadCrateManager {
         // Paste the structure in.
         handler.pasteStructure(spawnLocation.clone());
 
-        // Teleport player to center.
-        player.teleport(spawnLocation.clone().add(handler.getStructureX() / 2, 1.0, handler.getStructureZ() / 2));
+        player.teleport(spawnLocation.toCenterLocation().add(0, 1.0, 0));
 
         crazyManager.addQuadCrateTask(player, new BukkitRunnable() {
 
@@ -217,6 +217,7 @@ public class QuadCrateManager {
                 } else {
                     player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
                     Block chest = crateLocations.get(crateNumber).getBlock();
+
                     chest.setType(Material.CHEST);
                     chestStateHandler.rotateChest(chest, crateNumber);
 
@@ -232,7 +233,7 @@ public class QuadCrateManager {
                     }
                 }
             }
-        }.runTaskLater(plugin, 40));
+        }.runTaskTimer(plugin, 0,1));
 
         crazyManager.addCrateTask(player, new BukkitRunnable() {
             @Override
@@ -247,6 +248,7 @@ public class QuadCrateManager {
     }
 
     public void endCrate(CrazyCrates plugin) {
+        oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -276,11 +278,12 @@ public class QuadCrateManager {
                 // Remove the "instance" from the crate sessions.
                 crateSessions.remove(instance);
             }
-        }.runTaskLater(plugin, 3 * 20);
+        }.runTaskLater(plugin, 5);
     }
 
     // End the crate & remove the hologram by force.
     public void endCrateForce(boolean removeForce) {
+        oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
         crateLocations.forEach(location -> quadCrateChests.get(location).update(true, false));
         displayedRewards.forEach(Entity::remove);
         player.teleport(lastLocation);
@@ -294,7 +297,7 @@ public class QuadCrateManager {
     }
 
     // Add the crate locations.
-    public void addCrateLocations(Integer x, Integer y, Integer z) {
+    public void addCrateLocations(int x, int y, int z) {
         crateLocations.add(spawnLocation.clone().add(x, y, z));
     }
 
