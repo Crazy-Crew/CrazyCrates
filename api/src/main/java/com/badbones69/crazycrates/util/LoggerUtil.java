@@ -68,7 +68,7 @@ public class LoggerUtil {
         }
 
         public void info(String message) {
-            CrazyCrates.api().getConsole().send(AdventureUtil.parse(message));
+            //CrazyCrates.api().getConsole().send(AdventureUtil.parse(message));
         }
 
         @Override
