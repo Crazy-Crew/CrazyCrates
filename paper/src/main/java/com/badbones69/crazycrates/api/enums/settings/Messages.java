@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api.enums.settings;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.FileManager;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -39,8 +40,7 @@ public enum Messages {
     TAKE_OFFLINE_PLAYER_KEYS("Take-Offline-Player-Keys", "&7You have taken &6%amount% &7key(s) from the offline player &6%player%."),
     OPENED_A_CRATE("Opened-A-Crate", "&7You have opened the &6%crate% &7crate for &6%player%."),
     INTERNAL_ERROR("Internal-Error", "&cAn internal error has occurred. Please check the console for the full error."),
-    NOT_ENOUGH_ARGS("Not-Enough-Args", "&cYou did not supply enough arguments."),
-    TOO_MANY_ARGS("Too-Many-Args", "&cYou put more arguments then I can handle."),
+    CORRECT_USAGE("Correct-Usage", "&cThe correct usage for this command is &e%usage%"),
     UNKNOWN_COMMAND("Unknown-Command", "&cThis command is not known."),
     NO_ITEM_IN_HAND("No-Item-In-Hand", "&cYou need to have an item in your hand to add it to the crate."),
     ADDED_ITEM_WITH_EDITOR("Added-Item-With-Editor", "&7The item has been added to the %crate% Crate in prize #%prize%."),
@@ -112,6 +112,8 @@ public enum Messages {
 
         return message.toString();
     }
+
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
     
     public static void addMissingMessages() {
         FileConfiguration messages = FileManager.Files.MESSAGES.getFile();
@@ -128,9 +130,26 @@ public enum Messages {
             }
         }
 
-        if (saveFile) {
+        String tooManyArgs = messages.getString("Messages.Too-Many-Args");
+        String tooFewArgs = messages.getString("Messages.Not-Enough-Args");
+
+        if (tooManyArgs != null) {
+            plugin.getLogger().warning("Found outdated config entry: " + tooManyArgs);
+            plugin.getLogger().warning("Removing now, Please use `Correct-Usage` from now on." );
+
+            messages.set("Messages.Too-Many-Args", null);
             FileManager.Files.MESSAGES.saveFile();
         }
+
+        if (tooFewArgs != null) {
+            plugin.getLogger().warning("Found outdated config entry: " + tooFewArgs);
+            plugin.getLogger().warning("Removing now, Please use `Correct-Usage` from now on." );
+
+            messages.set("Messages.Not-Enough-Args", null);
+            FileManager.Files.MESSAGES.saveFile();
+        }
+
+        if (saveFile) FileManager.Files.MESSAGES.saveFile();
     }
     
     public static String replacePlaceholders(String placeholder, String replacement, String message) {

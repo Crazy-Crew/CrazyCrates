@@ -25,6 +25,9 @@ import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
+import dev.triumphteam.cmd.core.argument.ArgumentRegistry;
+import dev.triumphteam.cmd.core.argument.named.Argument;
+import dev.triumphteam.cmd.core.argument.named.Arguments;
 import dev.triumphteam.cmd.core.message.MessageKey;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
 import org.bstats.bukkit.Metrics;
@@ -136,7 +139,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     }
 
     private void enable() {
-
         PluginManager pluginManager = getServer().getPluginManager();
 
         pluginManager.registerEvents(new MenuListener(), this);
@@ -165,9 +167,41 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage()));
 
-        manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> sender.sendMessage(Messages.TOO_MANY_ARGS.getMessage()));
+        manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
+            String command = context.getCommand();
+            String subCommand = context.getSubCommand();
 
-        manager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> sender.sendMessage(Messages.NOT_ENOUGH_ARGS.getMessage()));
+            String commandOrder = "/" + command + " " + subCommand + " ";
+
+            String correctUsage = null;
+
+            switch (command) {
+                case "crates" -> correctUsage = getString(subCommand, commandOrder);
+                case "keys" -> {
+                    if (subCommand.equals("view")) correctUsage = "/keys " + subCommand;
+                }
+            }
+
+            if (correctUsage != null) sender.sendMessage(Messages.CORRECT_USAGE.getMessage().replace("%usage%", correctUsage));
+        });
+
+        manager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
+            String command = context.getCommand();
+            String subCommand = context.getSubCommand();
+
+            String commandOrder = "/" + command + " " + subCommand + " ";
+
+            String correctUsage = null;
+
+            switch (command) {
+                case "crates" -> correctUsage = getString(subCommand, commandOrder);
+                case "keys" -> {
+                    if (subCommand.equals("view")) correctUsage = "/keys " + subCommand + " <player-name>";
+                }
+            }
+
+            if (correctUsage != null) sender.sendMessage(Messages.CORRECT_USAGE.getMessage().replace("%usage%", correctUsage));
+        });
 
         manager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> sender.sendMessage(Messages.NOT_ONLINE.getMessage().replace("%player%", context.getTypedArgument())));
 
@@ -203,6 +237,24 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         manager.registerCommand(new BaseKeyCommand());
         manager.registerCommand(new CrateBaseCommand());
+    }
+
+    private String getString(String subCommand, String commandOrder) {
+        String correctUsage = null;
+
+        switch (subCommand) {
+            case "transfer" -> correctUsage = commandOrder + "<crate-name> " + "<player-name> " + "<amount>";
+            case "debug", "open", "set" -> correctUsage = commandOrder + "<crate-name>";
+            case "tp" -> correctUsage = commandOrder + "<id>";
+            case "additem" -> correctUsage = commandOrder + "<crate-name> " + "<prize-number>";
+            case "preview", "open-others", "forceopen" -> correctUsage = commandOrder + "<crate-name> " + "<player-name>";
+            case "mass-open" -> correctUsage = commandOrder + "<crate-name> " + "<amount>";
+            case "give-random" -> correctUsage = commandOrder + "<key-type> " + "<amount> " + "<player-name>";
+            case "give", "take" -> correctUsage = commandOrder + "<key-type> " + "<crate-name> " + "<amount> " + "<player-name>";
+            case "giveall" -> correctUsage = commandOrder + "<key-type> " + "<crate-name> " + "<amount>";
+        }
+
+        return correctUsage;
     }
 
     private final List<String> KEYS = List.of("virtual", "v", "physical", "p");
