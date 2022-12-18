@@ -31,7 +31,7 @@ tasks {
     modrinth {
         token.set(System.getenv("MODRINTH_TOKEN"))
         projectId.set("crazycrates")
-        versionName.set("${rootProject.name} ${project.version} Update")
+        versionName.set("${rootProject.name} Update ${project.version}")
         versionNumber.set("${project.version}")
         versionType.set("${extra["version_type"]}")
         uploadFile.set(shadowJar.get())
@@ -70,7 +70,7 @@ tasks {
 
 publishing {
     repositories {
-        maven("https://repo.crazycrew.us/releases") {
+        maven("https://repo.crazycrew.us/snapshots") {
             name = "crazycrew"
             //credentials(PasswordCredentials::class)
             credentials {
