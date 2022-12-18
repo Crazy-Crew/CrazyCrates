@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.support.holograms;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -11,6 +12,8 @@ import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class DecentHologramsSupport implements HologramController {
+
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final HashMap<Block, Hologram> holograms = new HashMap<>();
     
@@ -36,7 +39,7 @@ public class DecentHologramsSupport implements HologramController {
         holograms.remove(block);
         hologram.delete();
     }
-    
+
     public void removeAllHolograms() {
         holograms.forEach((key, value) -> value.delete());
         holograms.clear();

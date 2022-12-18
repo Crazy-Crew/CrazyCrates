@@ -3,7 +3,7 @@ plugins {
 }
 
 project.version = "${extra["plugin_version"]}"
-project.group = "${rootProject.group}.CrazyCrates"
+project.group = "${extra["plugin_group"]}.CrazyCrates"
 project.description = "Add unlimited crates to your server with 10 different crate types to choose from!"
 
 repositories {
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    //implementation(project(":api"))
+    implementation(project(":api"))
 
     implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-SNAPSHOT")
 
@@ -32,13 +32,11 @@ dependencies {
 
     implementation("org.bstats", "bstats-bukkit", "3.0.0")
 
-    // implementation("com.mojang", "brigadier", "1.0.18")
-
     compileOnly("io.papermc.paper", "paper-api", "${project.extra["minecraft_version"]}-R0.1-SNAPSHOT")
 
     compileOnly("me.filoghost.holographicdisplays", "holographicdisplays-api", "3.0.0")
 
-    compileOnly("com.github.decentsoftware-eu", "decentholograms", "2.7.7")
+    compileOnly("com.github.decentsoftware-eu", "decentholograms", "2.7.8")
 
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
 

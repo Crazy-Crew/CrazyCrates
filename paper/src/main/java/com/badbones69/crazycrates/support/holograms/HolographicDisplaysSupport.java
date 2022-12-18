@@ -12,9 +12,9 @@ import java.util.HashMap;
 
 public class HolographicDisplaysSupport implements HologramController {
     
-    private static final HashMap<Block, Hologram> holograms = new HashMap<>();
+    private final HashMap<Block, Hologram> holograms = new HashMap<>();
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final HolographicDisplaysAPI api = HolographicDisplaysAPI.get(plugin);
     
@@ -40,7 +40,7 @@ public class HolographicDisplaysSupport implements HologramController {
         holograms.remove(block);
         hologram.delete();
     }
-    
+
     public void removeAllHolograms() {
         holograms.forEach((key, value) -> value.delete());
         holograms.clear();

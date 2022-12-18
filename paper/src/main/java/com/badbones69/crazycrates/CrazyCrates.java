@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.FileManager.Files;
+import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
@@ -21,13 +22,13 @@ import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import com.badbones69.crazycrates.listeners.MenuListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
+import com.badbones69.crazycrates.support.MetricsHandler;
 import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
 import dev.triumphteam.cmd.core.message.MessageKey;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -79,31 +80,41 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         FileConfiguration config = Files.CONFIG.getFile();
 
-        String metricsPath = config.getString("Settings.Toggle-Metrics");
         boolean metricsEnabled = config.getBoolean("Settings.Toggle-Metrics");
 
-        String crateLogFile = config.getString("Settings.Crate-Actions.Log-File");
-        String crateLogConsole = config.getString("Settings.Crate-Actions.Log-Console");
+        String updater = config.getString("Settings.Update-Checker");
+        String version = config.getString("Settings.Config-Version");
 
-        if (crateLogFile == null) {
-            config.set("Settings.Crate-Actions.Log-File", false);
-
-            Files.CONFIG.saveFile();
-        }
-
-        if (crateLogConsole == null) {
-            config.set("Settings.Crate-Actions.Log-Console", false);
+        if (version == null) {
+            config.set("Settings.Config-Version", 1);
 
             Files.CONFIG.saveFile();
         }
 
-        if (metricsPath == null) {
-            config.set("Settings.Toggle-Metrics", false);
+        if (updater == null) {
+            config.set("Settings.Update-Checker", true);
 
             Files.CONFIG.saveFile();
         }
 
-        if (metricsEnabled) new Metrics(this, 4514);
+        int configVersion = 1;
+        if (configVersion != config.getInt("Settings.Config-Version") && version != null) {
+            plugin.getLogger().warning("========================================================================");
+            plugin.getLogger().warning("You have an outdated config, Please run the command /crates update!");
+            plugin.getLogger().warning("This will take a backup of your entire folder & update your configs.");
+            plugin.getLogger().warning("Default values will be used in place of missing options!");
+            plugin.getLogger().warning("If you have any issues, Please contact Discord Support.");
+            plugin.getLogger().warning("https://discord.gg/crazycrew");
+            plugin.getLogger().warning("========================================================================");
+        }
+
+        if (metricsEnabled) {
+            MetricsHandler metricsHandler = new MetricsHandler();
+
+            metricsHandler.start();
+        }
+
+        checkUpdate(null, true);
 
         enable();
     }
@@ -121,6 +132,44 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         starter.getCrazyManager().setNewPlayerKeys(e.getPlayer());
         starter.getCrazyManager().loadOfflinePlayersKeys(e.getPlayer());
+
+        checkUpdate(e.getPlayer(), false);
+    }
+
+    private void checkUpdate(Player player, boolean consolePrint) {
+        FileConfiguration config = Files.CONFIG.getFile();
+
+        boolean updaterEnabled = config.getBoolean("Settings.Update-Checker");
+
+        if (!updaterEnabled) return;
+
+        UpdateChecker updateChecker = new UpdateChecker(17599);
+
+        try {
+            if (updateChecker.hasUpdate()) {
+                if (consolePrint) {
+                    getLogger().warning("CrazyCrates has a new update available! New version: " + updateChecker.getNewVersion());
+                    getLogger().warning("Current Version: v" + getDescription().getVersion());
+                    getLogger().warning("Download: " + updateChecker.getResourcePage());
+
+                    return;
+                } else {
+                    if (!player.isOp() || !player.hasPermission(Permissions.CRAZY_CRATES_ADMIN_HELP.getPermission())) return;
+
+                    player.sendMessage(Methods.color("&8> &cCrazyCrates has a new update available! New version: &e&n" + updateChecker.getNewVersion()));
+                    player.sendMessage(Methods.color("&8> &cCurrent Version: &e&n" + getDescription().getVersion()));
+                    player.sendMessage(Methods.color("&8> &cDownload: &e&n" + updateChecker.getResourcePage()));
+                }
+
+                return;
+            }
+
+            getLogger().info("Plugin is up to date! - v" + getDescription().getVersion());
+        } catch (Exception exception) {
+            getLogger().severe("Could not check for updates! Stacktrace:");
+
+            exception.printStackTrace();
+        }
     }
 
     public void cleanFiles() {
@@ -136,7 +185,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     }
 
     private void enable() {
-
         PluginManager pluginManager = getServer().getPluginManager();
 
         pluginManager.registerEvents(new MenuListener(), this);
@@ -165,9 +213,41 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage()));
 
-        manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> sender.sendMessage(Messages.TOO_MANY_ARGS.getMessage()));
+        manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
+            String command = context.getCommand();
+            String subCommand = context.getSubCommand();
 
-        manager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> sender.sendMessage(Messages.NOT_ENOUGH_ARGS.getMessage()));
+            String commandOrder = "/" + command + " " + subCommand + " ";
+
+            String correctUsage = null;
+
+            switch (command) {
+                case "crates" -> correctUsage = getString(subCommand, commandOrder);
+                case "keys" -> {
+                    if (subCommand.equals("view")) correctUsage = "/keys " + subCommand;
+                }
+            }
+
+            if (correctUsage != null) sender.sendMessage(Messages.CORRECT_USAGE.getMessage().replace("%usage%", correctUsage));
+        });
+
+        manager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
+            String command = context.getCommand();
+            String subCommand = context.getSubCommand();
+
+            String commandOrder = "/" + command + " " + subCommand + " ";
+
+            String correctUsage = null;
+
+            switch (command) {
+                case "crates" -> correctUsage = getString(subCommand, commandOrder);
+                case "keys" -> {
+                    if (subCommand.equals("view")) correctUsage = "/keys " + subCommand + " <player-name>";
+                }
+            }
+
+            if (correctUsage != null) sender.sendMessage(Messages.CORRECT_USAGE.getMessage().replace("%usage%", correctUsage));
+        });
 
         manager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> sender.sendMessage(Messages.NOT_ONLINE.getMessage().replace("%player%", context.getTypedArgument())));
 
@@ -203,6 +283,24 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         manager.registerCommand(new BaseKeyCommand());
         manager.registerCommand(new CrateBaseCommand());
+    }
+
+    private String getString(String subCommand, String commandOrder) {
+        String correctUsage = null;
+
+        switch (subCommand) {
+            case "transfer" -> correctUsage = commandOrder + "<crate-name> " + "<player-name> " + "<amount>";
+            case "debug", "open", "set" -> correctUsage = commandOrder + "<crate-name>";
+            case "tp" -> correctUsage = commandOrder + "<id>";
+            case "additem" -> correctUsage = commandOrder + "<crate-name> " + "<prize-number>";
+            case "preview", "open-others", "forceopen" -> correctUsage = commandOrder + "<crate-name> " + "<player-name>";
+            case "mass-open" -> correctUsage = commandOrder + "<crate-name> " + "<amount>";
+            case "give-random" -> correctUsage = commandOrder + "<key-type> " + "<amount> " + "<player-name>";
+            case "give", "take" -> correctUsage = commandOrder + "<key-type> " + "<crate-name> " + "<amount> " + "<player-name>";
+            case "giveall" -> correctUsage = commandOrder + "<key-type> " + "<crate-name> " + "<amount>";
+        }
+
+        return correctUsage;
     }
 
     private final List<String> KEYS = List.of("virtual", "v", "physical", "p");

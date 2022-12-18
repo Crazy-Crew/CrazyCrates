@@ -1,1 +1,1 @@
-rootProject.group = "com.badbones69.crazycrates"
+rootProject.group = "${extra["plugin_group"]}"

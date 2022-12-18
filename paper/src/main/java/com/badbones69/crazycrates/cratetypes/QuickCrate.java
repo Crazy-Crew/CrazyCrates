@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
+import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
@@ -25,6 +26,11 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class QuickCrate implements Listener {
     
@@ -37,7 +43,7 @@ public class QuickCrate implements Listener {
 
     private static final ChestStateHandler chestStateHandler = plugin.getStarter().getChestStateHandler();
 
-    public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType) {
+    public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType, HologramController hologramController) {
         int keys = switch (keyType) {
             case VIRTUAL_KEY -> crazyManager.getVirtualKeys(player, crate);
             case PHYSICAL_KEY -> crazyManager.getPhysicalKeys(player, crate);
@@ -67,9 +73,8 @@ public class QuickCrate implements Listener {
                 return;
             }
 
-            endQuickCrate(player, loc);
+            endQuickCrate(player, loc, crate, hologramController, true);
         } else {
-
             if (!crazyManager.takeKeys(1, player, crate, keyType, true)) {
                 Methods.failedToTakeKey(player, crate);
                 CrateControlListener.inUse.remove(player);
@@ -85,6 +90,8 @@ public class QuickCrate implements Listener {
             nbtItem.setBoolean("crazycrates-item", true);
             displayItem = nbtItem.getItem();
             Item reward;
+
+            if (hologramController != null) hologramController.removeHologram(loc.getBlock());
 
             try {
                 reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
@@ -110,13 +117,13 @@ public class QuickCrate implements Listener {
             tasks.put(player, new BukkitRunnable() {
                 @Override
                 public void run() {
-                    endQuickCrate(player, loc);
+                    endQuickCrate(player, loc, crate, hologramController, false);
                 }
             }.runTaskLater(plugin, 5 * 20));
         }
     }
     
-    public static void endQuickCrate(Player player, Location loc) {
+    public static void endQuickCrate(Player player, Location loc, Crate crate, HologramController hologramController, boolean useQuickCrate) {
         if (tasks.containsKey(player)) {
             tasks.get(player).cancel();
             tasks.remove(player);
@@ -131,6 +138,10 @@ public class QuickCrate implements Listener {
         chestStateHandler.closeChest(loc.getBlock(), false);
         CrateControlListener.inUse.remove(player);
         crazyManager.removePlayerFromOpeningList(player);
+
+        if (!useQuickCrate) {
+            if (hologramController != null) hologramController.createHologram(loc.getBlock(), crate);
+        }
     }
     
     public static void removeAllRewards() {

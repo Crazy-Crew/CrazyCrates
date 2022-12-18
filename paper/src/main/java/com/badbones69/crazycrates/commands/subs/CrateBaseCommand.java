@@ -44,7 +44,11 @@ public class CrateBaseCommand extends BaseCommand {
     @Default
     @Permission(value = "crazycrates.command.player.menu", def = PermissionDefault.TRUE)
     public void onDefaultMenu(Player player) {
-        MenuListener.openGUI(player);
+        FileConfiguration config = FileManager.Files.CONFIG.getFile();
+
+        boolean openMenu = config.getBoolean("Settings.Disable-Crate-Menu");
+
+        if (openMenu) MenuListener.openGUI(player); else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
     }
 
     @SubCommand("help")

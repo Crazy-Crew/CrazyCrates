@@ -22,6 +22,8 @@ public class CMIHologramsSupport implements HologramController {
 
         CMI.getInstance().getHologramManager().addHologram(hologram);
 
+        hologram.update();
+
         holograms.put(block, hologram);
     }
 
