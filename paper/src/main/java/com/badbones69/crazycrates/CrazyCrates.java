@@ -19,6 +19,7 @@ import com.badbones69.crazycrates.cratetypes.Wonder;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
+import com.badbones69.crazycrates.listeners.ItemsAdderListener;
 import com.badbones69.crazycrates.listeners.MenuListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
@@ -213,7 +214,11 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         pluginManager.registerEvents(this, this);
 
-        starter.getCrazyManager().loadCrates();
+        if (PluginSupport.ITEMS_ADDER.isPluginEnabled()) {
+            getServer().getPluginManager().registerEvents(new ItemsAdderListener(), this);
+        } else {
+            starter.getCrazyManager().loadCrates();
+        }
 
         if (!starter.getCrazyManager().getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
 
@@ -291,6 +296,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         manager.registerCommand(new BaseKeyCommand());
         manager.registerCommand(new CrateBaseCommand());
+
+        printHooks();
     }
 
     private String getString(String subCommand, String commandOrder) {
@@ -315,6 +322,17 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     public static CrazyCrates getPlugin() {
         return plugin;
+    }
+
+    public void printHooks() {
+        for (PluginSupport value : PluginSupport.values()) {
+            if (value.isPluginEnabled()) {
+                plugin.getLogger().info(Methods.color("&6&l" + value.name() + "&a&lFOUND"));
+                return;
+            }
+
+            plugin.getLogger().info(Methods.color("&6&l" + value.name() + " &c&lNOT FOUND"));
+        }
     }
 
     public Starter getStarter() {

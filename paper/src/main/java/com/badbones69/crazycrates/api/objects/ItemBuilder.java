@@ -2,7 +2,9 @@ package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.support.SkullCreator;
+import com.badbones69.crazycrates.support.libs.PluginSupport;
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -30,6 +32,7 @@ public class ItemBuilder {
     private String itemName;
     private final List<String> itemLore;
     private int itemAmount;
+    private String iaNamespace;
     
     // Player
     private String player;
@@ -325,10 +328,19 @@ public class ItemBuilder {
      * @return The result of all the info that was given to the builder as an ItemStack.
      */
     public ItemStack build() {
-        
         if (nbtItem != null) referenceItem = nbtItem.getItem();
         
-        ItemStack item = referenceItem != null ? referenceItem : new ItemStack(material);
+        ItemStack item = referenceItem;
+
+        //If item is null, Check if the iaNamespace (material from config file) is a ItemsAdder CustomStack
+        //otherwise, normal behaviour
+        if (item == null && PluginSupport.ITEMS_ADDER.isPluginEnabled()) {
+            CustomStack customStack = CustomStack.getInstance(this.iaNamespace);
+
+            if (customStack != null) item = customStack.getItemStack();
+        }
+
+        if (item == null) item = new ItemStack(material);
 
         if (item.getType() != Material.AIR) {
             if (isHead) { // Has to go 1st due to it removing all data when finished.
@@ -426,6 +438,9 @@ public class ItemBuilder {
      */
     public ItemBuilder setMaterial(String material) {
         String metaData;
+
+        // Store material inside iaNamespace (e.g. ia:myblock)
+        this.iaNamespace = material;
         
         if (material.contains(":")) { // Sets the durability or another value option.
             String[] b = material.split(":");
