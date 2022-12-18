@@ -44,7 +44,15 @@ tasks {
         //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
         changelog.set("""
                 <h2>Changes:</h2>
-                 <p>N/A</p>
+                 <p>QuadCrate structures now spawn directly on the crate.</p>
+                 <p>Added a toggle so you can turn off the crate menu (/cc)</p>
+                 <p>Added more verbose messages for when you type an incorrect command</p>
+                 <p>Added the ability to hide & show holograms on QuickCrate/FireCracker crate type</p>
+                 <p>Added an updater notification in console & on join if opped or if you have the crazycrates.command.admin.help ( You can turn it off in the config.yml</p>
+                 <p>Added temporary config version system as configs including crate configs may have breaking changes</p>
+                <h2>Bug Fixes:</h2>
+                 <p>Fixed why quadcrate structures would not despawn</p>
+                 <p>Fixed why quadcrate chests would not spawn</p>
             """.trimIndent())
     }
 
@@ -62,8 +70,9 @@ tasks {
 
 publishing {
     repositories {
-        maven("https://repo.crazycrew.us/snapshots") {
+        maven("https://repo.crazycrew.us/releases") {
             name = "crazycrew"
+            //credentials(PasswordCredentials::class)
             credentials {
                 username = System.getenv("CRAZYCREW_USERNAME")
                 password = System.getenv("CRAZYCREW_PASSWORD")
