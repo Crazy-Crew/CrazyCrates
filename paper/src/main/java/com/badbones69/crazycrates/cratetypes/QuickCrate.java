@@ -73,7 +73,7 @@ public class QuickCrate implements Listener {
                 return;
             }
 
-            endQuickCrate(player, loc, crate, hologramController, false);
+            endQuickCrate(player, loc, crate, hologramController, true);
         } else {
             if (!crazyManager.takeKeys(1, player, crate, keyType, true)) {
                 Methods.failedToTakeKey(player, crate);
