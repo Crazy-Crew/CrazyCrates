@@ -85,8 +85,16 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         String updater = config.getString("Settings.Update-Checker");
         String version = config.getString("Settings.Config-Version");
 
+        String disableMenu = config.getString("Settings.Disable-Crate-Menu");
+
         if (version == null) {
             config.set("Settings.Config-Version", 1);
+
+            Files.CONFIG.saveFile();
+        }
+
+        if (disableMenu == null) {
+            config.set("Settings.Disable-Crate-Menu", false);
 
             Files.CONFIG.saveFile();
         }
