@@ -175,9 +175,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
             getLogger().info("Plugin is up to date! - v" + getDescription().getVersion());
         } catch (Exception exception) {
-            getLogger().severe("Could not check for updates! Stacktrace:");
-
-            exception.printStackTrace();
+            getLogger().warning("Could not check for updates! Perhaps the call failed or you are using a snapshot build:");
+            getLogger().warning("You can turn off the update checker in config.yml if on a snapshot build.");
         }
     }
 
