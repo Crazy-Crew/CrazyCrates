@@ -26,12 +26,8 @@ import com.badbones69.crazycrates.support.libs.PluginSupport;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
-import dev.triumphteam.cmd.core.argument.ArgumentRegistry;
-import dev.triumphteam.cmd.core.argument.named.Argument;
-import dev.triumphteam.cmd.core.argument.named.Arguments;
 import dev.triumphteam.cmd.core.message.MessageKey;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -83,28 +79,23 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         FileConfiguration config = Files.CONFIG.getFile();
 
-        String metricsPath = config.getString("Settings.Toggle-Metrics");
         boolean metricsEnabled = config.getBoolean("Settings.Toggle-Metrics");
 
-        String crateLogFile = config.getString("Settings.Crate-Actions.Log-File");
-        String crateLogConsole = config.getString("Settings.Crate-Actions.Log-Console");
-
-        if (crateLogFile == null) {
-            config.set("Settings.Crate-Actions.Log-File", false);
+        if (config.getString("Settings.Config-Version") == null) {
+            config.set("Settings.Config-Version", 1);
 
             Files.CONFIG.saveFile();
         }
 
-        if (crateLogConsole == null) {
-            config.set("Settings.Crate-Actions.Log-Console", false);
-
-            Files.CONFIG.saveFile();
-        }
-
-        if (metricsPath == null) {
-            config.set("Settings.Toggle-Metrics", false);
-
-            Files.CONFIG.saveFile();
+        int configSystemVersion = 1;
+        if (configSystemVersion != config.getInt("Settings.Config-Version") && config.getString("Settings.Config-Version") != null) {
+            plugin.getLogger().warning("========================================================================");
+            plugin.getLogger().warning("You have an outdated config, Please run the command /crates update!");
+            plugin.getLogger().warning("This will take a backup of your entire folder & update your configs.");
+            plugin.getLogger().warning("Default values will be used in place of missing options!");
+            plugin.getLogger().warning("If you have any issues, Please contact Discord Support.");
+            plugin.getLogger().warning("https://discord.gg/crazycrew");
+            plugin.getLogger().warning("========================================================================");
         }
 
         if (metricsEnabled) {
