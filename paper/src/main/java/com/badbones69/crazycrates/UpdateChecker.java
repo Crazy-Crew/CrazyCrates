@@ -82,6 +82,6 @@ public class UpdateChecker {
 
         connection.disconnect();
 
-        return spigotVersion >= currentVersion;
+        return spigotVersion > currentVersion;
     }
 }
