@@ -5,8 +5,6 @@ import com.Zrips.CMI.Modules.Holograms.CMIHologram;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -38,24 +36,6 @@ public class CMIHologramsSupport implements HologramController {
         holograms.remove(block);
 
         hologram.remove();
-    }
-
-    @Override
-    public void hideHologram(Player player, Block block) {
-        if (!holograms.containsKey(block)) return;
-
-        CMIHologram hologram = holograms.get(block);
-
-        hologram.hide();
-    }
-
-    @Override
-    public void showHologram(Player player, Block block) {
-        if (!holograms.containsKey(block)) return;
-
-        CMIHologram hologram = holograms.get(block);
-
-        hologram.update();
     }
 
     @Override

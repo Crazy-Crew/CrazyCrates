@@ -26,6 +26,11 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class QuickCrate implements Listener {
     
@@ -68,7 +73,7 @@ public class QuickCrate implements Listener {
                 return;
             }
 
-            endQuickCrate(player, loc, hologramController, false);
+            endQuickCrate(player, loc, crate, hologramController, false);
         } else {
             if (!crazyManager.takeKeys(1, player, crate, keyType, true)) {
                 Methods.failedToTakeKey(player, crate);
@@ -86,7 +91,7 @@ public class QuickCrate implements Listener {
             displayItem = nbtItem.getItem();
             Item reward;
 
-            if (hologramController != null) hologramController.hideHologram(player, loc.getBlock());
+            if (hologramController != null) hologramController.removeHologram(loc.getBlock());
 
             try {
                 reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
@@ -112,13 +117,13 @@ public class QuickCrate implements Listener {
             tasks.put(player, new BukkitRunnable() {
                 @Override
                 public void run() {
-                    endQuickCrate(player, loc, hologramController, false);
+                    endQuickCrate(player, loc, crate, hologramController, false);
                 }
             }.runTaskLater(plugin, 5 * 20));
         }
     }
     
-    public static void endQuickCrate(Player player, Location loc, HologramController hologramController, boolean useQuickCrate) {
+    public static void endQuickCrate(Player player, Location loc, Crate crate, HologramController hologramController, boolean useQuickCrate) {
         if (tasks.containsKey(player)) {
             tasks.get(player).cancel();
             tasks.remove(player);
@@ -134,9 +139,9 @@ public class QuickCrate implements Listener {
         CrateControlListener.inUse.remove(player);
         crazyManager.removePlayerFromOpeningList(player);
 
-        if (useQuickCrate) return;
-
-        if (hologramController != null) hologramController.showHologram(player, loc.getBlock());
+        if (!useQuickCrate) {
+            if (hologramController != null) hologramController.createHologram(loc.getBlock(), crate);
+        }
     }
     
     public static void removeAllRewards() {

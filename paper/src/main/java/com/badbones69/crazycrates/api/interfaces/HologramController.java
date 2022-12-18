@@ -10,9 +10,9 @@ public interface HologramController {
     
     void removeHologram(Block block);
 
-    void hideHologram(Player player, Block block);
+    //void hideHologram(Player player, Block block);
 
-    void showHologram(Player player, Block block);
+    //void showHologram(Player player, Block block);
     
     void removeAllHolograms();
     

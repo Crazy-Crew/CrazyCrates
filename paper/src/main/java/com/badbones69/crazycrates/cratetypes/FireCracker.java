@@ -26,7 +26,7 @@ public class FireCracker {
             return;
         }
 
-        if (hologramController != null) hologramController.hideHologram(player, loc.getBlock());
+        if (hologramController != null) hologramController.removeHologram(loc.getBlock());
 
         final ArrayList<Color> colors = new ArrayList<>();
         colors.add(Color.RED);
