@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.FileManager.Files;
+import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
@@ -81,14 +82,23 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         boolean metricsEnabled = config.getBoolean("Settings.Toggle-Metrics");
 
-        if (config.getString("Settings.Config-Version") == null) {
+        String updater = config.getString("Settings.Update-Checker");
+        String version = config.getString("Settings.Config-Version");
+
+        if (version == null) {
             config.set("Settings.Config-Version", 1);
 
             Files.CONFIG.saveFile();
         }
 
-        int configSystemVersion = 1;
-        if (configSystemVersion != config.getInt("Settings.Config-Version") && config.getString("Settings.Config-Version") != null) {
+        if (updater == null) {
+            config.set("Settings.Update-Checker", true);
+
+            Files.CONFIG.saveFile();
+        }
+
+        int configVersion = 1;
+        if (configVersion != config.getInt("Settings.Config-Version") && version != null) {
             plugin.getLogger().warning("========================================================================");
             plugin.getLogger().warning("You have an outdated config, Please run the command /crates update!");
             plugin.getLogger().warning("This will take a backup of your entire folder & update your configs.");
@@ -103,6 +113,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
             metricsHandler.start();
         }
+
+        checkUpdate(null, true);
 
         enable();
     }
@@ -120,6 +132,44 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         starter.getCrazyManager().setNewPlayerKeys(e.getPlayer());
         starter.getCrazyManager().loadOfflinePlayersKeys(e.getPlayer());
+
+        checkUpdate(e.getPlayer(), false);
+    }
+
+    private void checkUpdate(Player player, boolean consolePrint) {
+        FileConfiguration config = Files.CONFIG.getFile();
+
+        boolean updaterEnabled = config.getBoolean("Settings.Update-Checker");
+
+        if (!updaterEnabled) return;
+
+        UpdateChecker updateChecker = new UpdateChecker(17599);
+
+        try {
+            if (updateChecker.hasUpdate()) {
+                if (consolePrint) {
+                    getLogger().warning("CrazyCrates has a new update available! New version: " + updateChecker.getNewVersion());
+                    getLogger().warning("Current Version: v" + getDescription().getVersion());
+                    getLogger().warning("Download: " + updateChecker.getResourcePage());
+
+                    return;
+                } else {
+                    if (!player.isOp() || !player.hasPermission(Permissions.CRAZY_CRATES_ADMIN_HELP.getPermission())) return;
+
+                    player.sendMessage(Methods.color("&8> &cCrazyCrates has a new update available! New version: &e&n" + updateChecker.getNewVersion()));
+                    player.sendMessage(Methods.color("&8> &cCurrent Version: &e&n" + getDescription().getVersion()));
+                    player.sendMessage(Methods.color("&8> &cDownload: &e&n" + updateChecker.getResourcePage()));
+                }
+
+                return;
+            }
+
+            getLogger().info("Plugin is up to date! - v" + getDescription().getVersion());
+        } catch (Exception exception) {
+            getLogger().severe("Could not check for updates! Stacktrace:");
+
+            exception.printStackTrace();
+        }
     }
 
     public void cleanFiles() {
