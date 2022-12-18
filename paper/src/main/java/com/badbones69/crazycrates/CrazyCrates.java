@@ -328,10 +328,9 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         for (PluginSupport value : PluginSupport.values()) {
             if (value.isPluginEnabled()) {
                 plugin.getLogger().info(Methods.color("&6&l" + value.name() + " &a&lFOUND"));
-                return;
+            } else {
+                plugin.getLogger().info(Methods.color("&6&l" + value.name() + " &c&lNOT FOUND"));
             }
-
-            plugin.getLogger().info(Methods.color("&6&l" + value.name() + " &c&lNOT FOUND"));
         }
     }
 
