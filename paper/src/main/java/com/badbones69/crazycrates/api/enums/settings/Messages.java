@@ -61,6 +61,7 @@ public enum Messages {
     RECEIVED_TRANSFERRED_KEYS("Received-Transferred-Keys", "&7You have received %amount% %crate% keys from %player%."),
     NO_FILES_TO_CONVERT("Files-Converted.No-Files-To-Convert", "&cNo plugins that can be converted were found."),
     ERROR_CONVERTING_FILES("Files-Converted.Error-Converting-Files", "&cThere was an error while trying to convert files. Please check console for the error log."),
+    UPLOAD_CRATE_CONFIG("Upload-Config", "&7You have uploaded the &6%crate% &7crate to &6%dest%&7."),
     HELP("Help",
     Arrays.asList(
     "&e&lCrazy Crates Player Help",

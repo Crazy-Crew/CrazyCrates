@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
+import java.io.IOException;
 import java.util.HashMap;
 
 @Command(value = "crates", alias = {"crazycrates", "cc", "crate"})
@@ -649,5 +650,30 @@ public class CrateBaseCommand extends BaseCommand {
         }
 
         sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", crateName));
+    }
+
+    @SubCommand("upload-config")
+    @Permission(value = "crazycrates.command.admin.uploadconfig", def = PermissionDefault.OP)
+    public void uploadConfig(CommandSender sender, @Suggestion("crates") String crateName) {
+        HashMap<String, String> placeholders = new HashMap<>();
+
+        placeholders.put("%Crate%", crateName);
+
+        Crate crate = crazyManager.getCrateFromName(crateName);
+
+        if (crate != null) {
+
+            try {
+                placeholders.put("%Dest%", Methods.postToHastebin(crate.getFile().saveToString(), false));
+                sender.sendMessage(Messages.UPLOAD_CRATE_CONFIG.getMessage(placeholders));
+            } catch (IOException e) {
+                e.printStackTrace();
+                sender.sendMessage(Messages.INTERNAL_ERROR.getMessage());
+            }
+
+            return;
+        }
+
+        sender.sendMessage(Messages.NOT_A_CRATE.getMessage(placeholders));
     }
 }
