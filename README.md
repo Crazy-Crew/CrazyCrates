@@ -88,7 +88,7 @@ Check our public [trello board](https://trello.com/b/bzQ5TwXo) for our current p
 2. Create your Feature Branch (`git checkout -b feature/yourfeature`)
 3. Commit your Changes (`git commit -m 'your amazing feature.'`)
 4. Push to the Branch (`git push`)
-5. Open a Pull Request
+5. Open a Pull Request to add your feature/fix to the dev branch.
 
 ## License
 
