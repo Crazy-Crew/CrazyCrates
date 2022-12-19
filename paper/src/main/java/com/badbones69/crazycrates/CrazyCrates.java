@@ -155,7 +155,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         UpdateChecker updateChecker = new UpdateChecker(17599);
 
         try {
-            if (updateChecker.hasUpdate()) {
+            if (updateChecker.hasUpdate() && !getDescription().getVersion().contains("SNAPSHOT")) {
                 if (consolePrint) {
                     getLogger().warning("CrazyCrates has a new update available! New version: " + updateChecker.getNewVersion());
                     getLogger().warning("Current Version: v" + getDescription().getVersion());
@@ -173,7 +173,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
                 return;
             }
 
-            getLogger().info("Plugin is up to date! - v" + getDescription().getVersion());
+            getLogger().info("Plugin is up to date! - " + updateChecker.getNewVersion());
         } catch (Exception exception) {
             getLogger().warning("Could not check for updates! Perhaps the call failed or you are using a snapshot build:");
             getLogger().warning("You can turn off the update checker in config.yml if on a snapshot build.");
