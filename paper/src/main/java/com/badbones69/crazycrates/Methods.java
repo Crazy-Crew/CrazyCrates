@@ -49,6 +49,41 @@ public class Methods {
         return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
     }
 
+    public static void broadCastMessage(FileConfiguration crateFile, Player player) {
+        String crateBroadcast = crateFile.getString("Crate.BroadCast");
+        boolean crateBroadcastCheck = crateFile.contains("Crate.BroadCast");
+
+        if (crateBroadcastCheck && crateBroadcast != null) {
+            if (crateBroadcast.isEmpty()) return;
+
+            plugin.getServer().broadcastMessage(color(crateBroadcast
+                    .replaceAll("%prefix%", getPrefix())
+                    .replaceAll("%player%", player.getName()))
+                    .replaceAll("%Prefix%", getPrefix())
+                    .replaceAll("%Player%", player.getName()));
+        }
+    }
+
+    public static void sendMessage(CommandSender commandSender, String message, boolean prefixToggle) {
+        if (message == null || message.isEmpty()) return;
+
+        String prefix = getPrefix();
+
+        if (commandSender instanceof Player player) {
+            if (!prefix.isEmpty() && prefixToggle) player.sendMessage(color(message.replaceAll("%prefix%", prefix)).replaceAll("%Prefix%", prefix)); else player.sendMessage(color(message));
+
+            return;
+        }
+
+        if (!prefix.isEmpty() && prefixToggle) commandSender.sendMessage(color(message.replaceAll("%prefix%", prefix)).replaceAll("%Prefix%", prefix)); else commandSender.sendMessage(color(message));
+    }
+
+    public static void sendCommand(String command) {
+        ConsoleCommandSender console = plugin.getServer().getConsoleSender();
+
+        plugin.getServer().dispatchCommand(console, command);
+    }
+
     public static String sanitizeColor(String msg) {
         return sanitizeFormat(color(msg));
     }
@@ -359,7 +394,7 @@ public class Methods {
      */
     public static void pickPrize(Player player, Crate crate, Prize prize) {
         if (prize != null) {
-            crazyManager.givePrize(player, prize);
+            crazyManager.givePrize(player, prize, crate);
 
             if (prize.useFireworks()) firework(player.getLocation().add(0, 1, 0));
 
@@ -371,7 +406,7 @@ public class Methods {
 
     public static void checkPrize(Prize prize, CrazyManager crazyManager, CrazyCrates plugin, Player player, Crate crate) {
         if (prize != null) {
-            crazyManager.givePrize(player, prize);
+            crazyManager.givePrize(player, prize, crate);
 
             if (prize.useFireworks()) Methods.firework(player.getLocation().add(0, 1, 0));
 

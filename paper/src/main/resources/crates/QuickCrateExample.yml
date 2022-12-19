@@ -10,7 +10,7 @@ Crate:
   InGUI: false
   Slot: 14
   OpeningBroadCast: true
-  BroadCast: '%Prefix%&6&l%Player%&r &7is opening a &e&lClassic Chest&7.'
+  BroadCast: '%prefix%&6&l%player%&r &7is opening a &e&lClassic Chest&7.'
   Item: 'CHEST'
   Glowing: false
   Name: '&e&lClassic Chest'
@@ -53,7 +53,7 @@ Crate:
       Items:
         - 'Item:CHAINMAIL_LEGGINGS, Amount:1, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
       Messages:
-        - '&7You just won a &a&lFancy Pants&7.'
+        - '&7You just won a &r%reward%.'
     2:
       DisplayName: '&b&lClassic Sword'
       DisplayItem: 'DIAMOND_SWORD'
@@ -69,7 +69,7 @@ Crate:
       Items:
         - 'Item:DIAMOND_SWORD, Amount:1, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1'
       Messages:
-        - '&7You just won a &b&lClassic Sword&7.'
+        - '&7You just won &r%reward%.'
     3:
       DisplayName: '&e&l$100,000'
       DisplayItem: 'SUNFLOWER'
@@ -81,6 +81,6 @@ Crate:
       Chance: 20
       Firework: true
       Commands:
-        - 'eco give %Player% 100000'
+        - 'eco give %player% 100000'
       Messages:
-        - '&7You just won &a$100,000&7.'
+        - '&7You just won &r%reward%.'

@@ -340,12 +340,7 @@ public class CrazyManager {
         boolean broadcast = crate.getFile() != null && crate.getFile().getBoolean("Crate.OpeningBroadCast");
 
         if (broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {
-            if (crate.getFile().contains("Crate.BroadCast")) {
-                if (!crate.getFile().getString("Crate.BroadCast").isEmpty()) {
-                    plugin.getServer().broadcastMessage(Methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
-                }
-            }
-
+            Methods.broadCastMessage(crate.getFile(), player);
             broadcast = false;
         }
 
@@ -412,11 +407,9 @@ public class CrazyManager {
                 } else {
                     if (takeKeys(1, player, crate, keyType, true)) {
                         Prize prize = crate.pickPrize(player);
-                        givePrize(player, prize);
+                        givePrize(player, prize, crate);
 
-                        if (prize.useFireworks()) {
-                            Methods.firework(player.getLocation().add(0, 1, 0));
-                        }
+                        if (prize.useFireworks()) Methods.firework(player.getLocation().add(0, 1, 0));
 
                         removePlayerFromOpeningList(player);
                     } else {
@@ -426,11 +419,7 @@ public class CrazyManager {
             }
         }
 
-        if (broadcast) {
-            if (!crate.getFile().getString("Crate.BroadCast").isEmpty()) {
-                player.getServer().broadcastMessage(Methods.color(crate.getFile().getString("Crate.BroadCast").replaceAll("%Prefix%", Methods.getPrefix()).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())));
-            }
-        }
+        if (broadcast) Methods.broadCastMessage(crate.getFile(), player);
 
         boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
         boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
@@ -598,9 +587,7 @@ public class CrazyManager {
 
         crateLocations.add(new CrateLocation(id, crate, location));
 
-        if (hologramController != null) {
-            hologramController.createHologram(location.getBlock(), crate);
-        }
+        if (hologramController != null) hologramController.createHologram(location.getBlock(), crate);
     }
 
     /**
@@ -623,9 +610,7 @@ public class CrazyManager {
         if (location != null) {
             crateLocations.remove(location);
 
-            if (hologramController != null) {
-                hologramController.removeHologram(location.getLocation().getBlock());
-            }
+            if (hologramController != null) hologramController.removeHologram(location.getLocation().getBlock());
         }
     }
 
@@ -723,7 +708,7 @@ public class CrazyManager {
      * @param player The player you wish to give the prize to.
      * @param prize The prize the player has won.
      */
-    public void givePrize(Player player, Prize prize) {
+    public void givePrize(Player player, Prize prize, Crate crate) {
         if (prize != null) {
             prize = prize.hasBlacklistPermission(player) ? prize.getAltPrize() : prize;
 
@@ -786,11 +771,9 @@ public class CrazyManager {
                     command = command.substring(0, command.length() - 1);
                 }
 
-                if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
-                    command = PlaceholderAPI.setPlaceholders(player, command);
-                }
+                if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) command = PlaceholderAPI.setPlaceholders(player, command);
 
-                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command.replace("%Player%", player.getName()).replace("%player%", player.getName()));
+                Methods.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", prize.getDisplayItemBuilder().getUpdatedName()));
             }
 
             for (String message : prize.getMessages()) {
@@ -798,8 +781,8 @@ public class CrazyManager {
                     message = PlaceholderAPI.setPlaceholders(player, message);
                 }
 
-                player.sendMessage(Methods.color(message).replaceAll("%Player%", player.getName()).replaceAll("%player%", player.getName())
-                .replace("%displayname%", prize.getDisplayItemBuilder().getName()).replace("%DisplayName%", prize.getDisplayItemBuilder().getName()));
+                Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", prize.getDisplayItemBuilder().getName()), false);
+                Methods.broadCastMessage(crate.getFile(), player);
             }
         } else {
             plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");

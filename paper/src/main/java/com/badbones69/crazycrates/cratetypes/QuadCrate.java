@@ -67,7 +67,7 @@ public class QuadCrate implements Listener {
 
                         Crate crate = session.getCrate();
                         Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
-                        crazyManager.givePrize(player, prize);
+                        crazyManager.givePrize(player, prize, crate);
 
                         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(prize.getDisplayItem());
                         itemBuilder.addLore(new Random().nextInt(Integer.MAX_VALUE) + ""); // Makes sure items don't merge

@@ -58,7 +58,7 @@ public class QuickCrate implements Listener {
                 if (Methods.isInventoryFull(player)) break;
                 
                 Prize prize = crate.pickPrize(player);
-                crazyManager.givePrize(player, prize);
+                crazyManager.givePrize(player, prize, crate);
                 plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 
                 if (prize.useFireworks()) Methods.firework(loc.clone().add(.5, 1, .5));
@@ -83,7 +83,7 @@ public class QuickCrate implements Listener {
             }
 
             Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
-            crazyManager.givePrize(player, prize);
+            crazyManager.givePrize(player, prize, crate);
             plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
             ItemStack displayItem = prize.getDisplayItem();
             NBTItem nbtItem = new NBTItem(displayItem);

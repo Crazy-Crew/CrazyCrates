@@ -90,7 +90,7 @@ Crate:
       Items:
         - 'Item:GRASS_BLOCK, Amount:32, Name:&d&lGalactic Grass'
       Commands:
-        - 'broadcast &6&l%Player%&r &7has just won some Basic Grass.'
+        - 'broadcast &6&l%player%&r &7has just won some &r%reward%.'
     2:
       DisplayName: '&b&lCheap Helmet'
       DisplayItem: 'GOLDEN_HELMET'
@@ -124,7 +124,7 @@ Crate:
         - 'UnCommon'
         - 'Rare'
       Commands:
-        - 'eco give %Player% 1000'
+        - 'eco give %player% 1000'
     4:
       DisplayName: '&b&lCrazy &4&lSword'
       DisplayItem: 'GOLDEN_SWORD'
@@ -154,7 +154,7 @@ Crate:
       Tiers:
         - 'Rare'
       Commands:
-        - 'Eco give %Player% 1000000'
+        - 'eco give %player% 1000000'
     6:
       DisplayName: '&b&lCrazy Crate &6&lKey &7(x2)'
       DisplayItem: 'TRIPWIRE_HOOK'
@@ -171,4 +171,4 @@ Crate:
         - 'UnCommon'
         - 'Rare'
       Commands:
-        - 'cc give physical crazy 2 %Player%'
+        - 'cc give physical crazy 2 %player%'

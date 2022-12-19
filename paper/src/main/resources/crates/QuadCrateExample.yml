@@ -10,7 +10,7 @@ Crate:
   InGUI: true
   Slot: 25
   OpeningBroadCast: true
-  BroadCast: '%Prefix%&6&l%Player%&r &7is opening a &b&lQuad Crate.'
+  BroadCast: '%prefix%&6&l%player%&r &7is opening a &b&lQuad Crate.'
   Item: 'CHEST'
   Glowing: false
   Name: '&b&lQuad Crate'
@@ -68,7 +68,7 @@ Crate:
       Items:
         - 'Item:GOLDEN_SWORD, Amount:1, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1'
       Messages:
-        - '&7You just won a &b&lCrazy &4&lSword&7.'
+        - '&7You just won &r%reward%.'
     3:
       DisplayName: '&e&l$1,000,000'
       DisplayItem: 'SUNFLOWER'
@@ -80,6 +80,6 @@ Crate:
       Chance: 20
       Firework: true
       Commands:
-        - 'eco give %Player% 1000000'
+        - 'eco give %player% 1000000'
       Messages:
-        - '&7You just won &a$1,000,000&7.'
+        - '&7You just won &r%reward%.'
