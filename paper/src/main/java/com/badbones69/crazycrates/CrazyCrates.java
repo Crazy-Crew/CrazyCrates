@@ -39,6 +39,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,8 +132,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
             metricsHandler.start();
         }
-
-        checkUpdate(null, true);
+        getServer().getScheduler().runTaskAsynchronously(plugin, () -> checkUpdate(null, true));
 
         enable();
     }
@@ -150,7 +151,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         starter.getCrazyManager().setNewPlayerKeys(e.getPlayer());
         starter.getCrazyManager().loadOfflinePlayersKeys(e.getPlayer());
 
-        checkUpdate(e.getPlayer(), false);
+        getServer().getScheduler().runTaskAsynchronously(plugin, () -> checkUpdate(e.getPlayer(), false));
     }
 
     private void checkUpdate(Player player, boolean consolePrint) {
