@@ -2,7 +2,9 @@ package com.badbones69.crazycrates.support;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.enums.CrateType;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 
 public class MetricsHandler {
 
@@ -11,13 +13,15 @@ public class MetricsHandler {
     private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
     public void start() {
-        new Metrics(plugin, 4514);
+        Metrics metrics = new Metrics(plugin, 4514);
 
-        //crazyManager.getCrates().forEach(crate -> {
-        //    CrateType crateType = crate.getCrateType();
+        crazyManager.getCrates().forEach(crate -> {
+            CrateType crateType = crate.getCrateType();
 
-        //    metrics.addCustomChart(new SimplePie("crate-types", crateType::getName));
-        //});
+            SimplePie crateChart = new SimplePie("crate_types", crateType::getName);
+
+            metrics.addCustomChart(crateChart);
+        });
 
         plugin.getLogger().info("Metrics has been enabled.");
     }
