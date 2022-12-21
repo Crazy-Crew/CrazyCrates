@@ -53,7 +53,7 @@ https://modrinth.com/plugin/crazycrates
 
 ## Snapshot Builds
 ### Get the latest changes before they are uploaded to modrinth!
-https://ci.crazycrew.us/view/Plugins/job/CrazyCrates/
+https://ci.crazycrew.us/view/Snapshots/job/CrazyCrates/
 
 ## Getting Started
 
