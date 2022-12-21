@@ -47,4 +47,6 @@ dependencies {
         exclude(group = "org.spigotmc", module = "spigot")
         exclude(group = "org.bukkit", module = "bukkit")
     }
+
+    compileOnly("com.github.LoneDev6", "api-itemsadder", "3.0.0")
 }

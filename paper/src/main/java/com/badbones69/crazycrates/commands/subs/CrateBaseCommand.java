@@ -125,7 +125,7 @@ public class CrateBaseCommand extends BaseCommand {
         Crate crate = crazyManager.getCrateFromName(crateName);
 
         if (crate != null) {
-            crate.getPrizes().forEach(prize -> crazyManager.givePrize((Player) sender, prize));
+            crate.getPrizes().forEach(prize -> crazyManager.givePrize((Player) sender, prize, crate));
         } else {
             sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", crateName));
         }
@@ -396,7 +396,7 @@ public class CrateBaseCommand extends BaseCommand {
             if (keysUsed >= crate.getMaxMassOpen()) break;
 
             Prize prize = crate.pickPrize(player);
-            crazyManager.givePrize(player, prize);
+            crazyManager.givePrize(player, prize, crate);
             plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 
             if (prize.useFireworks()) Methods.firework(((Player) sender).getLocation().clone().add(.5, 1, .5));

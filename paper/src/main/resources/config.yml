@@ -8,8 +8,8 @@ Settings:
   # Requires you as a player to be opped or have the permission `crazycrates.command.admin.help`
   Update-Checker: true
   Toggle-Metrics: true #Turn on and off if your server stats are sent to https://bstats.org/ - Requires a restart!
-  # Whether to enable or disable the crate menu.
-  Disable-Crate-Menu: false
+  # Whether to enable or disable the crate menu. True if you want it enabled otherwise False
+  Enable-Crate-Menu: true
   # Whether to actions to file & console.
   # Includes command failures, keys taken, given, received and so on.
   # Defaults to false.

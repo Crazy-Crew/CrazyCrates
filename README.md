@@ -12,9 +12,9 @@
 [![Contact][discord-shield]][discord-url]
 ![CodeFactor][codefactor-shield]
 
-<a href="/#"><img src="https://raw.githubusercontent.com/intergrav/devins-badges/v2/assets/cozy/unsupported/spigot_64h.png" height="50"></a>
-<a href="/#"><img src="https://raw.githubusercontent.com/intergrav/devins-badges/v2/assets/cozy/supported/paper_64h.png" height="50"></a>
-<a href="/#"><img src="https://raw.githubusercontent.com/intergrav/devins-badges/v2/assets/cozy/supported/purpur_64h.png" height="50"></a>
+![Spigot](https://cdn.jsdelivr.net/gh/intergrav/devins-badges/assets/compact/unsupported/spigot_vector.svg)
+![Paper](https://cdn.jsdelivr.net/gh/intergrav/devins-badges/assets/compact/supported/paper_vector.svg)
+![Purpur](https://cdn.jsdelivr.net/gh/intergrav/devins-badges/assets/compact/supported/purpur_vector.svg)
 
   <p align="center">
     A crates plugin that offers quality crates with ease!
@@ -53,7 +53,7 @@ https://modrinth.com/plugin/crazycrates
 
 ## Snapshot Builds
 ### Get the latest changes before they are uploaded to modrinth!
-https://ci.crazycrew.us/view/Plugins/job/CrazyCrates/
+https://ci.crazycrew.us/view/Snapshots/job/CrazyCrates/
 
 ## Getting Started
 
@@ -94,18 +94,18 @@ Check our public [trello board](https://trello.com/b/bzQ5TwXo) for our current p
 
 Distributed under the MIT License. See [`LICENSE`](/LICENSE) for more information.
 
-[discord-shield]: https://img.shields.io/discord/182615261403283459.svg?style=for-the-badge
+[discord-shield]: https://img.shields.io/discord/182615261403283459.svg?style=flat&logo=appveyor
 [discord-url]: https://discord.gg/crazycrew
 
-[contributors-shield]: https://img.shields.io/github/contributors/Crazy-Crew/CrazyCrates.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/Crazy-Crew/CrazyCrates.svg?style=flat&logo=appveyor
 [contributors-url]: https://github.com/Crazy-Crew/CrazyCrates/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Crazy-Crew/CrazyCrates.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/Crazy-Crew/CrazyCrates.svg?style=flat&logo=appveyor
 [forks-url]: https://github.com/Crazy-Crew/CrazyCrates/network/members
-[stars-shield]: https://img.shields.io/github/stars/Crazy-Crew/CrazyCrates.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/Crazy-Crew/CrazyCrates.svg?style=flat&logo=appveyor
 [stars-url]: https://github.com/Crazy-Crew/CrazyCrates/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Crazy-Crew/CrazyCrates.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/Crazy-Crew/CrazyCrates.svg?style=flat&logo=appveyor
 [issues-url]: https://github.com/Crazy-Crew/CrazyCrates/issues
-[license-shield]: https://img.shields.io/github/license/Crazy-Crew/CrazyCrates.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/Crazy-Crew/CrazyCrates.svg?style=flat&logo=appveyor
 [license-url]: https://github.com/Crazy-Crew/CrazyCrates/blob/master/LICENSE
 
-[codefactor-shield]: https://img.shields.io/codefactor/grade/github/crazy-crew/crazycrates/main?style=for-the-badge
+[codefactor-shield]: https://img.shields.io/codefactor/grade/github/crazy-crew/crazycrates/main?style=flat&logo=appveyor

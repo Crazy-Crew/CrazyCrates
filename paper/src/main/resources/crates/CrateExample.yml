@@ -22,7 +22,7 @@ Crate:
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
-  BroadCast: '%Prefix%&6&l%Player%&r &7is opening a &7&lBasic Chest&7.'
+  BroadCast: '%prefix%&6&l%player%&r &7is opening a &7&lBasic Chest&7.'
   # Item the crate is in the GUI
   Item: 'CHEST'
   # If the crate in the main /cc GUI is glowing or not.
@@ -103,12 +103,12 @@ Crate:
       # Items: []
 
       Commands: # You can run any plugin command here.
-        - 'broadcast &6&l%Player%&r &7won a head! WOW'
+        - 'broadcast &6&l%player%&r &7won %reward%! WOW'
       # If you do not want to send commands, Set the "Commands:" to look like the line below.
       # Commands: []
 
       Messages: # Send any message you want to the player.
-        - '&cYou won a &ePlayer Head!'
+        - '&cYou won a &r%reward%!'
       # If you do not want to send messages, Set the "Messages:" to look like the line below.
       # Messages: []
 
@@ -143,10 +143,10 @@ Crate:
       Chance: 20
       Firework: true
       Commands:
-        - 'eco give %Player% 1000'
+        - 'eco give %player% 1000'
       # - 'lp user %player% permission set crazycrates.blacklist.basic.3' -> This is the line where you would give the user the permission.
       Messages:
-        - '&7You just won &a$1,000&7.'
+        - '&7You just won &r%reward%.'
       BlackListed-Permissions:
         - 'crazycrates.blacklist.basic.3'
       Alternative-Prize:

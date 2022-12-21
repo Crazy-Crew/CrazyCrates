@@ -19,6 +19,7 @@ import com.badbones69.crazycrates.cratetypes.Wonder;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
+import com.badbones69.crazycrates.listeners.ItemsAdderListener;
 import com.badbones69.crazycrates.listeners.MenuListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
@@ -85,7 +86,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         String updater = config.getString("Settings.Update-Checker");
         String version = config.getString("Settings.Config-Version");
 
-        String disableMenu = config.getString("Settings.Disable-Crate-Menu");
+        String menu = config.getString("Settings.Enable-Crate-Menu");
 
         if (version == null) {
             config.set("Settings.Config-Version", 1);
@@ -93,8 +94,16 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             Files.CONFIG.saveFile();
         }
 
-        if (disableMenu == null) {
-            config.set("Settings.Disable-Crate-Menu", false);
+        if (menu == null) {
+            String oldBoolean = config.getString("Settings.Disable-Crate-Menu");
+            boolean switchBoolean = config.getBoolean("Settings.Disable-Crate-Menu");
+
+            if (oldBoolean != null) {
+                config.set("Settings.Enable-Crate-Menu", switchBoolean);
+                config.set("Settings.Disable-Crate-Menu", null);
+            } else {
+                config.set("Settings.Enable-Crate-Menu", true);
+            }
 
             Files.CONFIG.saveFile();
         }
@@ -151,33 +160,34 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         if (!updaterEnabled) return;
 
-        UpdateChecker updateChecker = new UpdateChecker(17599);
+        getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            UpdateChecker updateChecker = new UpdateChecker(17599);
 
-        try {
-            if (updateChecker.hasUpdate()) {
-                if (consolePrint) {
-                    getLogger().warning("CrazyCrates has a new update available! New version: " + updateChecker.getNewVersion());
-                    getLogger().warning("Current Version: v" + getDescription().getVersion());
-                    getLogger().warning("Download: " + updateChecker.getResourcePage());
+            try {
+                if (updateChecker.hasUpdate() && !getDescription().getVersion().contains("SNAPSHOT")) {
+                    if (consolePrint) {
+                        getLogger().warning("CrazyCrates has a new update available! New version: " + updateChecker.getNewVersion());
+                        getLogger().warning("Current Version: v" + getDescription().getVersion());
+                        getLogger().warning("Download: " + updateChecker.getResourcePage());
+
+                        return;
+                    } else {
+                        if (!player.isOp() || !player.hasPermission(Permissions.CRAZY_CRATES_ADMIN_HELP.getPermission())) return;
+
+                        player.sendMessage(Methods.color("&8> &cCrazyCrates has a new update available! New version: &e&n" + updateChecker.getNewVersion()));
+                        player.sendMessage(Methods.color("&8> &cCurrent Version: &e&n" + getDescription().getVersion()));
+                        player.sendMessage(Methods.color("&8> &cDownload: &e&n" + updateChecker.getResourcePage()));
+                    }
 
                     return;
-                } else {
-                    if (!player.isOp() || !player.hasPermission(Permissions.CRAZY_CRATES_ADMIN_HELP.getPermission())) return;
-
-                    player.sendMessage(Methods.color("&8> &cCrazyCrates has a new update available! New version: &e&n" + updateChecker.getNewVersion()));
-                    player.sendMessage(Methods.color("&8> &cCurrent Version: &e&n" + getDescription().getVersion()));
-                    player.sendMessage(Methods.color("&8> &cDownload: &e&n" + updateChecker.getResourcePage()));
                 }
 
-                return;
+                getLogger().info("Plugin is up to date! - " + updateChecker.getNewVersion());
+            } catch (Exception exception) {
+                getLogger().warning("Could not check for updates! Perhaps the call failed or you are using a snapshot build:");
+                getLogger().warning("You can turn off the update checker in config.yml if on a snapshot build.");
             }
-
-            getLogger().info("Plugin is up to date! - v" + getDescription().getVersion());
-        } catch (Exception exception) {
-            getLogger().severe("Could not check for updates! Stacktrace:");
-
-            exception.printStackTrace();
-        }
+        });
     }
 
     public void cleanFiles() {
@@ -213,7 +223,11 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         pluginManager.registerEvents(this, this);
 
-        starter.getCrazyManager().loadCrates();
+        if (PluginSupport.ITEMS_ADDER.isPluginEnabled()) {
+            getServer().getPluginManager().registerEvents(new ItemsAdderListener(), this);
+        } else {
+            starter.getCrazyManager().loadCrates();
+        }
 
         if (!starter.getCrazyManager().getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
 
@@ -291,6 +305,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         manager.registerCommand(new BaseKeyCommand());
         manager.registerCommand(new CrateBaseCommand());
+
+        printHooks();
     }
 
     private String getString(String subCommand, String commandOrder) {
@@ -315,6 +331,16 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     public static CrazyCrates getPlugin() {
         return plugin;
+    }
+
+    public void printHooks() {
+        for (PluginSupport value : PluginSupport.values()) {
+            if (value.isPluginEnabled()) {
+                plugin.getLogger().info(Methods.color("&6&l" + value.name() + " &a&lFOUND"));
+            } else {
+                plugin.getLogger().info(Methods.color("&6&l" + value.name() + " &c&lNOT FOUND"));
+            }
+        }
     }
 
     public Starter getStarter() {

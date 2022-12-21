@@ -81,7 +81,9 @@ public class UpdateChecker {
         int spigotVersion = Integer.parseInt(apiValue.replace(".", "").replace("v", ""));
 
         connection.disconnect();
+        inputStream.close();
+        reader.close();
 
-        return spigotVersion >= currentVersion;
+        return spigotVersion > currentVersion;
     }
 }

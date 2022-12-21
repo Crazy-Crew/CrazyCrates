@@ -7,12 +7,13 @@ public enum PluginSupport {
     HOLOGRAPHIC_DISPLAYS("HolographicDisplays"),
     DECENT_HOLOGRAMS("DecentHolograms"),
     CMI("CMI"),
-    PLACEHOLDERAPI("PlaceholderAPI");
+    PLACEHOLDERAPI("PlaceholderAPI"),
+    ITEMS_ADDER("ItemsAdder");
     
     private final String name;
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
-    
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
     PluginSupport(String name) {
         this.name = name;
     }
