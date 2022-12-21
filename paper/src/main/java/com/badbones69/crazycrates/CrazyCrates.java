@@ -132,7 +132,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
             metricsHandler.start();
         }
-        getServer().getScheduler().runTaskAsynchronously(plugin, () -> checkUpdate(null, true));
+
+        checkUpdate(null, true);
 
         enable();
     }
@@ -151,7 +152,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         starter.getCrazyManager().setNewPlayerKeys(e.getPlayer());
         starter.getCrazyManager().loadOfflinePlayersKeys(e.getPlayer());
 
-        getServer().getScheduler().runTaskAsynchronously(plugin, () -> checkUpdate(e.getPlayer(), false));
+        checkUpdate(e.getPlayer(), false);
     }
 
     private void checkUpdate(Player player, boolean consolePrint) {
@@ -161,32 +162,34 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         if (!updaterEnabled) return;
 
-        UpdateChecker updateChecker = new UpdateChecker(17599);
+        getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            UpdateChecker updateChecker = new UpdateChecker(17599);
 
-        try {
-            if (updateChecker.hasUpdate() && !getDescription().getVersion().contains("SNAPSHOT")) {
-                if (consolePrint) {
-                    getLogger().warning("CrazyCrates has a new update available! New version: " + updateChecker.getNewVersion());
-                    getLogger().warning("Current Version: v" + getDescription().getVersion());
-                    getLogger().warning("Download: " + updateChecker.getResourcePage());
+            try {
+                if (updateChecker.hasUpdate() && !getDescription().getVersion().contains("SNAPSHOT")) {
+                    if (consolePrint) {
+                        getLogger().warning("CrazyCrates has a new update available! New version: " + updateChecker.getNewVersion());
+                        getLogger().warning("Current Version: v" + getDescription().getVersion());
+                        getLogger().warning("Download: " + updateChecker.getResourcePage());
+
+                        return;
+                    } else {
+                        if (!player.isOp() || !player.hasPermission(Permissions.CRAZY_CRATES_ADMIN_HELP.getPermission())) return;
+
+                        player.sendMessage(Methods.color("&8> &cCrazyCrates has a new update available! New version: &e&n" + updateChecker.getNewVersion()));
+                        player.sendMessage(Methods.color("&8> &cCurrent Version: &e&n" + getDescription().getVersion()));
+                        player.sendMessage(Methods.color("&8> &cDownload: &e&n" + updateChecker.getResourcePage()));
+                    }
 
                     return;
-                } else {
-                    if (!player.isOp() || !player.hasPermission(Permissions.CRAZY_CRATES_ADMIN_HELP.getPermission())) return;
-
-                    player.sendMessage(Methods.color("&8> &cCrazyCrates has a new update available! New version: &e&n" + updateChecker.getNewVersion()));
-                    player.sendMessage(Methods.color("&8> &cCurrent Version: &e&n" + getDescription().getVersion()));
-                    player.sendMessage(Methods.color("&8> &cDownload: &e&n" + updateChecker.getResourcePage()));
                 }
 
-                return;
+                getLogger().info("Plugin is up to date! - " + updateChecker.getNewVersion());
+            } catch (Exception exception) {
+                getLogger().warning("Could not check for updates! Perhaps the call failed or you are using a snapshot build:");
+                getLogger().warning("You can turn off the update checker in config.yml if on a snapshot build.");
             }
-
-            getLogger().info("Plugin is up to date! - " + updateChecker.getNewVersion());
-        } catch (Exception exception) {
-            getLogger().warning("Could not check for updates! Perhaps the call failed or you are using a snapshot build:");
-            getLogger().warning("You can turn off the update checker in config.yml if on a snapshot build.");
-        }
+        });
     }
 
     public void cleanFiles() {
