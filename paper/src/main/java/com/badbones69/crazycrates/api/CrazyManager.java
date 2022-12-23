@@ -39,6 +39,8 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static java.util.regex.Matcher.quoteReplacement;
+
 public class CrazyManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
@@ -771,7 +773,7 @@ public class CrazyManager {
 
                 if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) command = PlaceholderAPI.setPlaceholders(player, command);
 
-                Methods.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", prize.getDisplayItemBuilder().getUpdatedName()));
+                Methods.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getUpdatedName())));
             }
 
             for (String message : prize.getMessages()) {
@@ -779,7 +781,7 @@ public class CrazyManager {
                     message = PlaceholderAPI.setPlaceholders(player, message);
                 }
 
-                Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", prize.getDisplayItemBuilder().getName()), false);
+                Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())), false);
                 Methods.broadCastMessage(crate.getFile(), player);
             }
         } else {
