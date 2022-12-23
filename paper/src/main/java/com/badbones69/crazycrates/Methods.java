@@ -51,11 +51,10 @@ public class Methods {
 
     public static void broadCastMessage(FileConfiguration crateFile, Player player) {
         String crateBroadcast = crateFile.getString("Crate.BroadCast");
-        boolean crateBroadcastCheck = crateFile.contains("Crate.BroadCast");
-
-        if (crateBroadcastCheck && crateBroadcast != null) {
+        String containsBroad = crateFile.getString("Crate.OpeningBroadCast"):
+        boolean crateBroadcastCheck = crateFile.contains("Crate.OpeningBroadCast");
+        if (crateBroadcastCheck && containsBroad != null) {
             if (crateBroadcast.isEmpty()) return;
-
             plugin.getServer().broadcastMessage(color(crateBroadcast
                     .replaceAll("%prefix%", getPrefix())
                     .replaceAll("%player%", player.getName()))
