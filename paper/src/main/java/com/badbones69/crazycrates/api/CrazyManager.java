@@ -339,12 +339,8 @@ public class CrazyManager {
         }
 
         addPlayerToOpeningList(player, crate);
-        boolean broadcast = crate.getFile() != null && crate.getFile().getBoolean("Crate.OpeningBroadCast");
 
-        if (crate.getCrateType() != CrateType.QUAD_CRATE) {
-            Methods.broadCastMessage(crate.getFile(), player);
-            broadcast = false;
-        }
+        if (crate.getCrateType() != CrateType.QUAD_CRATE && crate.getFile() != null) Methods.broadCastMessage(crate.getFile(), player);
 
         FileConfiguration config = Files.CONFIG.getFile();
 
@@ -367,7 +363,8 @@ public class CrazyManager {
                 StructureHandler handler = new StructureHandler(crateSchematic.schematicFile());
                 CrateLocation crateLocation = getCrateLocation(location);
                 QuadCrateManager session = new QuadCrateManager(player, crate, keyType, crateLocation.getLocation(), lastLocation, checkHand, handler);
-                broadcast = session.startCrate();
+
+                session.startCrate();
             }
             case FIRE_CRACKER -> {
                 if (CrateControlListener.inUse.containsValue(location)) {
@@ -782,7 +779,6 @@ public class CrazyManager {
                 }
 
                 Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())), false);
-                Methods.broadCastMessage(crate.getFile(), player);
             }
         } else {
             plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
