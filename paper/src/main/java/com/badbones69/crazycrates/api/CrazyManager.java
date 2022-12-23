@@ -339,10 +339,10 @@ public class CrazyManager {
         addPlayerToOpeningList(player, crate);
         boolean broadcast = crate.getFile() != null && crate.getFile().getBoolean("Crate.OpeningBroadCast");
 
-        if (broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {
-            Methods.broadCastMessage(crate.getFile(), player);
-            broadcast = false;
-        }
+        // if (broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {
+        Methods.broadCastMessage(crate.getFile(), player);
+        //     broadcast = false;
+        //}
 
         FileConfiguration config = Files.CONFIG.getFile();
 
@@ -420,7 +420,7 @@ public class CrazyManager {
             }
         }
 
-        if (broadcast) Methods.broadCastMessage(crate.getFile(), player);
+        Methods.broadCastMessage(crate.getFile(), player);
 
         boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
         boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
