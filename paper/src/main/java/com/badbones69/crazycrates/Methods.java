@@ -28,6 +28,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.util.regex.Matcher.quoteReplacement;
+
 @SuppressWarnings("deprecation")
 public class Methods {
 
@@ -55,7 +57,7 @@ public class Methods {
         boolean crateBroadcastBoolean = crateFile.getBoolean("Crate.OpeningBroadCast");
         if (crateBroadcastBoolean && crateBroadcastBooleanExists != null && crateBroadcast != null) {
             if (crateBroadcast.isEmpty()) return;
-            plugin.getServer().broadcastMessage(color(crateBroadcast.replaceAll("%prefix%", getPrefix()).replaceAll("%player%", player.getName()).replaceAll("%Prefix%", getPrefix()).replaceAll("%Player%", player.getName())));
+            plugin.getServer().broadcastMessage(color(crateBroadcast.replaceAll("%prefix%", quoteReplacement(getPrefix())).replaceAll("%player%", player.getName()).replaceAll("%Prefix%", quoteReplacement(getPrefix())).replaceAll("%Player%", player.getName())));
         }
     }
 
@@ -65,12 +67,12 @@ public class Methods {
         String prefix = getPrefix();
 
         if (commandSender instanceof Player player) {
-            if (!prefix.isEmpty() && prefixToggle) player.sendMessage(color(message.replaceAll("%prefix%", prefix)).replaceAll("%Prefix%", prefix)); else player.sendMessage(color(message));
+            if (!prefix.isEmpty() && prefixToggle) player.sendMessage(color(message.replaceAll("%prefix%", quoteReplacement(prefix))).replaceAll("%Prefix%", quoteReplacement(prefix))); else player.sendMessage(color(message));
 
             return;
         }
 
-        if (!prefix.isEmpty() && prefixToggle) commandSender.sendMessage(color(message.replaceAll("%prefix%", prefix)).replaceAll("%Prefix%", prefix)); else commandSender.sendMessage(color(message));
+        if (!prefix.isEmpty() && prefixToggle) commandSender.sendMessage(color(message.replaceAll("%prefix%", quoteReplacement(prefix))).replaceAll("%Prefix%", quoteReplacement(prefix))); else commandSender.sendMessage(color(message));
     }
 
     public static void sendCommand(String command) {
