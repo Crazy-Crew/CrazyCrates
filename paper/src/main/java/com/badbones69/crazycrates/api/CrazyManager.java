@@ -346,7 +346,7 @@ public class CrazyManager {
 
         switch (crate.getCrateType()) {
             case MENU -> {
-                boolean openMenu = config.getBoolean("Settings.Disable-Crate-Menu");
+                boolean openMenu = config.getBoolean("Settings.Enable-Crate-Menu");
 
                 if (openMenu) MenuListener.openGUI(player); else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
             }
