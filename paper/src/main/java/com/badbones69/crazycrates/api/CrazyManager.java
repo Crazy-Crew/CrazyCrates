@@ -340,7 +340,7 @@ public class CrazyManager {
 
         addPlayerToOpeningList(player, crate);
 
-        if (crate.getCrateType() != CrateType.QUAD_CRATE && crate.getFile() != null) Methods.broadCastMessage(crate.getFile(), player);
+        if (crate.getFile() != null) Methods.broadCastMessage(crate.getFile(), player);
 
         FileConfiguration config = Files.CONFIG.getFile();
 

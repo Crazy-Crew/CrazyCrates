@@ -7,7 +7,6 @@ import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.enums.QuadCrateParticles;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.support.structures.QuadCrateSpiralHandler;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
@@ -103,14 +102,14 @@ public class QuadCrateManager {
         crateSessions.add(instance);
     }
 
-    public boolean startCrate() {
+    public void startCrate() {
 
         // Check if it is on a block.
         if (spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
             player.sendMessage(Messages.NOT_ON_BLOCK.getMessage());
             crazyManager.removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
-            return false;
+            return;
         }
 
         // Check if schematic folder is empty.
@@ -118,7 +117,7 @@ public class QuadCrateManager {
             player.sendMessage(Messages.NO_SCHEMATICS_FOUND.getMessage());
             crazyManager.removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
-            return false;
+            return;
         }
 
         // Check if the blocks are able to be changed.
@@ -142,7 +141,7 @@ public class QuadCrateManager {
                 player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
                 crazyManager.removePlayerFromOpeningList(player);
                 crateSessions.remove(instance);
-                return false;
+                return;
             } else {
                 oldBlocks.put(locBlock.clone(), blockType.getState());
             }
@@ -157,7 +156,7 @@ public class QuadCrateManager {
                         player.sendMessage(Messages.TO_CLOSE_TO_ANOTHER_PLAYER.getMessage("%Player%", entity.getName()));
                         crazyManager.removePlayerFromOpeningList(player);
                         crateSessions.remove(instance);
-                        return false;
+                        return;
                     }
                 }
 
@@ -170,7 +169,7 @@ public class QuadCrateManager {
 
             crazyManager.removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
-            return false;
+            return;
         }
 
         if (crazyManager.getHologramController() != null) crazyManager.getHologramController().removeHologram(spawnLocation.getBlock());
@@ -244,7 +243,6 @@ public class QuadCrateManager {
             }
         }.runTaskLater(plugin, crazyManager.getQuadCrateTimer()));
 
-        return false;
     }
 
     public void endCrate(CrazyCrates plugin) {
