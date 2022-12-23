@@ -55,7 +55,11 @@ public class Methods {
         boolean crateBroadcastCheck = crateFile.getBoolean("Crate.OpeningBroadCast");
         if (crateBroadcastCheck && containsBroad != null) {
             if (crateBroadcast.isEmpty()) return;
-            plugin.getServer().broadcastMessage(color(crateBroadcast.replaceAll("%prefix%", getPrefix())).replaceAll("%player%", player.getName());
+            plugin.getServer().broadcastMessage(color(crateBroadcast
+                    .replaceAll("%prefix%", getPrefix())
+                    .replaceAll("%player%", player.getName()))
+                    .replaceAll("%Prefix%", getPrefix())
+                    .replaceAll("%Player%", player.getName()));
         }
     }
 
