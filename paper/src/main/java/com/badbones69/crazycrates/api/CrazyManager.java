@@ -341,7 +341,7 @@ public class CrazyManager {
 
         if (crate.getCrateType() != CrateType.QUAD_CRATE) {
             Methods.broadCastMessage(crate.getFile(), player);
-            boadcast = false;
+            broadcast = false;
         }
 
         FileConfiguration config = Files.CONFIG.getFile();
