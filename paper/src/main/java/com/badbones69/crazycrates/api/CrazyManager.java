@@ -39,6 +39,8 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static java.util.regex.Matcher.quoteReplacement;
+
 public class CrazyManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
@@ -337,18 +339,14 @@ public class CrazyManager {
         }
 
         addPlayerToOpeningList(player, crate);
-        boolean broadcast = crate.getFile() != null && crate.getFile().getBoolean("Crate.OpeningBroadCast");
 
-        if (broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {
-            Methods.broadCastMessage(crate.getFile(), player);
-            broadcast = false;
-        }
+        if (crate.getFile() != null) Methods.broadCastMessage(crate.getFile(), player);
 
         FileConfiguration config = Files.CONFIG.getFile();
 
         switch (crate.getCrateType()) {
             case MENU -> {
-                boolean openMenu = config.getBoolean("Settings.Disable-Crate-Menu");
+                boolean openMenu = config.getBoolean("Settings.Enable-Crate-Menu");
 
                 if (openMenu) MenuListener.openGUI(player); else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
             }
@@ -365,7 +363,8 @@ public class CrazyManager {
                 StructureHandler handler = new StructureHandler(crateSchematic.schematicFile());
                 CrateLocation crateLocation = getCrateLocation(location);
                 QuadCrateManager session = new QuadCrateManager(player, crate, keyType, crateLocation.getLocation(), lastLocation, checkHand, handler);
-                broadcast = session.startCrate();
+
+                session.startCrate();
             }
             case FIRE_CRACKER -> {
                 if (CrateControlListener.inUse.containsValue(location)) {
@@ -418,8 +417,6 @@ public class CrazyManager {
                 }
             }
         }
-
-        if (broadcast) Methods.broadCastMessage(crate.getFile(), player);
 
         boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
         boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
@@ -773,7 +770,7 @@ public class CrazyManager {
 
                 if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) command = PlaceholderAPI.setPlaceholders(player, command);
 
-                Methods.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", prize.getDisplayItemBuilder().getUpdatedName()));
+                Methods.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getUpdatedName())));
             }
 
             for (String message : prize.getMessages()) {
@@ -781,8 +778,7 @@ public class CrazyManager {
                     message = PlaceholderAPI.setPlaceholders(player, message);
                 }
 
-                Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", prize.getDisplayItemBuilder().getName()), false);
-                Methods.broadCastMessage(crate.getFile(), player);
+                Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())), false);
             }
         } else {
             plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");

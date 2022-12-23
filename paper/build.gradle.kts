@@ -44,11 +44,10 @@ tasks {
         //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
         changelog.set("""
                 <h2>Changes:</h2>
-                 <p>Update notifications now run async & also will ignore SNAPSHOT builds.</p>
-                 <p>Improved the naming for disabling the /cc menu, It was a bit confusing before.</p>
-                 <p>Added %reward% to the commands & messages section in Crates.</p>
+                 <p>Turned on opening broadcasts for QuadCrates</p>
                 <h2>Bug Fixes:</h2>
-                 <p>N/A</p>
+                 <p>Fixed a double broadcast bug.</p>
+                 <p>Fixed why you couldn't turn off broadcasts</p>
             """.trimIndent())
     }
 
