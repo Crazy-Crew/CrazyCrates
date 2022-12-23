@@ -57,9 +57,7 @@ public class Methods {
             if (crateBroadcast.isEmpty()) return;
             plugin.getServer().broadcastMessage(color(crateBroadcast
                     .replaceAll("%prefix%", getPrefix())
-                    .replaceAll("%player%", player.getName()))
-                    .replaceAll("%Prefix%", getPrefix())
-                    .replaceAll("%Player%", player.getName()));
+                    .replaceAll("%player%", player.getName());
         }
     }
 
