@@ -419,7 +419,7 @@ public class CrazyManager {
             }
         }
 
-        if (broadcast) Methods.broadCastMessage(crate.getFile(), player);
+        //if (broadcast) Methods.broadCastMessage(crate.getFile(), player);
 
         boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
         boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
