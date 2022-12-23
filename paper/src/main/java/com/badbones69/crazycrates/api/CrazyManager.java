@@ -341,7 +341,7 @@ public class CrazyManager {
 
         if (broadcast && crate.getCrateType() != CrateType.QUAD_CRATE) {
             Methods.broadCastMessage(crate.getFile(), player);
-            //broadcast = false;
+            broadcast = false;
         }
 
         FileConfiguration config = Files.CONFIG.getFile();
@@ -365,8 +365,8 @@ public class CrazyManager {
                 StructureHandler handler = new StructureHandler(crateSchematic.schematicFile());
                 CrateLocation crateLocation = getCrateLocation(location);
                 QuadCrateManager session = new QuadCrateManager(player, crate, keyType, crateLocation.getLocation(), lastLocation, checkHand, handler);
-                //broadcast = session.startCrate();
-                session.startCrate();
+                broadcast = session.startCrate();
+                //ession.startCrate();
             }
             case FIRE_CRACKER -> {
                 if (CrateControlListener.inUse.containsValue(location)) {
@@ -420,7 +420,7 @@ public class CrazyManager {
             }
         }
 
-        //if (broadcast) Methods.broadCastMessage(crate.getFile(), player);
+        if (broadcast) Methods.broadCastMessage(crate.getFile(), player);
 
         boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
         boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
