@@ -46,6 +46,7 @@ permissions:
     children:
       crazycrates.command.admin.schematic.*: true
       crazycrates.command.admin.help: true
+      crazycrates.command.admin.version: true
       crazycrates.command.admin.convert: true
       crazycrates.command.admin.debug: true
       crazycrates.command.admin.setmenu: true

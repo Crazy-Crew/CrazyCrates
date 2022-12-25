@@ -57,6 +57,13 @@ public class CrateBaseCommand extends BaseCommand {
         sender.sendMessage(Messages.HELP.getMessage());
     }
 
+    @SubCommand(("version"))
+    @Permission(value = "crazycrates.command.admin.version", def = PermissionDefault.TRUE)
+    public void onVersion(CommandSender sender) {
+        sender.sendMessage(plugin.getDescription().getVersion());
+    }
+
+
     @SubCommand("transfer")
     @Permission(value = "crazycrates.command.player.transfer", def = PermissionDefault.OP)
     public void onPlayerTransferKeys(Player sender, @Suggestion("crates") String crateName, @Suggestion("online-players") Player player, @Suggestion("numbers") int amount) {
