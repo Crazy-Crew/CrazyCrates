@@ -12,7 +12,8 @@ public enum CrateType {
     ROULETTE("Roulette"),
     WHEEL("Wheel"),
     WONDER("Wonder"),
-    WAR("War");
+    WAR("War"),
+    PARTICLES("Particles");
     
     private final String name;
     

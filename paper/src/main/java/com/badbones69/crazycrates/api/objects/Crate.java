@@ -51,16 +51,24 @@ public class Crate {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final FileManager fileManager = plugin.getStarter().getFileManager();
-    private int maxMassOpen;
+    private final int maxMassOpen;
+
+    private final ArrayList<ParticleAnimation> particleAnimations;
 
     /**
      * @param name The name of the crate.
+     * @param previewName The title of the crate preview.
      * @param crateType The crate type of the crate.
      * @param key The key as an item stack.
      * @param prizes The prizes that can be won.
      * @param file The crate file.
+     * @param newPlayerKeys Amount of keys new players will get.
+     * @param tiers What tiers the crate has.
+     * @param particles Particle animations for specific crate type.
+     * @param maxMassOpen Max amount of a crate that can be opened at once.
+     * @param hologram Information of the hologram that will be above the crate.
      */
-    public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, int maxMassOpen, CrateHologram hologram) {
+    public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, ArrayList<ParticleAnimation> particles, int maxMassOpen, CrateHologram hologram) {
         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
         this.keyNoNBT = itemBuilder.build();
         this.key = itemBuilder.setCrateName(name).build();
@@ -72,6 +80,7 @@ public class Crate {
         this.file = file;
         this.name = name;
         this.tiers = tiers != null ? tiers : new ArrayList<>();
+        this.particleAnimations = particles != null ? particles : new ArrayList<>();
         this.maxMassOpen = maxMassOpen;
         this.prizes = prizes;
         this.crateType = crateType;
@@ -520,6 +529,11 @@ public class Crate {
      * @return Returns the max amount that players can specify for crate mass open.
      */
     public int getMaxMassOpen() { return this.maxMassOpen; }
+
+    /**
+     * @return Returns all particles that will be spawned on crate open.
+     */
+    public ArrayList<ParticleAnimation> getParticleAnimations() { return particleAnimations; }
     
     /**
      * @return A CrateHologram which contains all the info about the hologram the crate uses.

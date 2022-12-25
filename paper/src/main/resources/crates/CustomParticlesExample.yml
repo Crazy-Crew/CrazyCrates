@@ -1,0 +1,99 @@
+Crate:
+  CrateType: Particles
+  CrateName: '&6Particle Crate'
+  Preview-Name: '&6Particle Crate Preview'
+  StartingKeys: 0
+  Max-Mass-Open: 10
+  #Custom particles for the crate opening animation.
+  Particles:
+    #Particle Number
+    1:
+      #Pick the animation style.
+      #Current options are Spiral_Clockwise, Spiral_Counterclockwise and Spiral_Up. Animation defaults to Line_Up.
+      Animation: 'Spiral_Clockwise'
+      #Pick the particle to be used for the animation. https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
+      Particle: 'FLAME'
+      #If particle is set to REDSTONE, then you can use the colour section below to pick a colour for the particles.
+      #Only accepts Hex Code for colours.
+      Color: 0xFF0000
+    2:
+      Animation: 'Line_Up'
+      Particle: 'REDSTONE'
+      Color: 0xFFD700
+  InGUI: false
+  Slot: 14
+  OpeningBroadCast: true
+  BroadCast: '%prefix%&6&l%player%&r &7is opening a &e&lParticle Chest&7.'
+  Item: 'CHEST'
+  Glowing: false
+  Name: '&e&lParticle Chest'
+  Lore:
+    - '&7This crate contains classic items.'
+    - '&7You have &6%Keys% keys &7to open this crate with.'
+    - '&7&l(&e&l!&7&l) Right click to view rewards.'
+  Preview:
+    Toggle: true
+    ChestLines: 6
+    Glass:
+      Toggle: true
+      # The name of the border item.
+      Name: ' '
+      Item: 'YELLOW_STAINED_GLASS_PANE'
+  PhysicalKey:
+    Name: '&e&lParticle Crate &c&lKey'
+    Lore:
+      - '&7A special Key'
+      - '&7For a special Crate.'
+    Item: 'TRIPWIRE_HOOK'
+    Glowing: True
+  Hologram:
+    Toggle: true
+    Height: 1.5
+    Message:
+      - '&e&lParticle Chest'
+  Prizes:
+    1:
+      DisplayName: '&a&lFancy Pants'
+      DisplayItem: 'CHAINMAIL_LEGGINGS'
+      DisplayAmount: 1
+      Lore:
+        - '&7Win a fancy pair of pants.'
+        - '&6&lChance: &c&l40%'
+      DisplayEnchantments:
+        - 'PROTECTION_ENVIRONMENTAL:2'
+      MaxRange: 100
+      Chance: 40
+      Items:
+        - 'Item:CHAINMAIL_LEGGINGS, Amount:1, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
+      Messages:
+        - '&7You just won a &r%reward%.'
+    2:
+      DisplayName: '&b&lClassic Sword'
+      DisplayItem: 'DIAMOND_SWORD'
+      DisplayAmount: 1
+      Lore:
+        - '&7Win a old classic sword.'
+        - '&6&lChance: &c&l35%'
+      DisplayEnchantments:
+        - 'DAMAGE_ALL:2'
+        - 'FIRE_ASPECT:1'
+      MaxRange: 100
+      Chance: 35
+      Items:
+        - 'Item:DIAMOND_SWORD, Amount:1, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1'
+      Messages:
+        - '&7You just won &r%reward%.'
+    3:
+      DisplayName: '&e&l$100,000'
+      DisplayItem: 'SUNFLOWER'
+      DisplayAmount: 1
+      Lore:
+        - '&7Make it rain a lot of Money.'
+        - '&6&lChance: &c&l20%'
+      MaxRange: 100
+      Chance: 20
+      Firework: true
+      Commands:
+        - 'eco give %player% 100000'
+      Messages:
+        - '&7You just won &r%reward%.'

@@ -63,6 +63,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
                 .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("CustomParticlesExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
                 .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
                 .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")

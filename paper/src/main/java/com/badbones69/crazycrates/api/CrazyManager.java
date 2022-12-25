@@ -125,7 +125,15 @@ public class CrazyManager {
                 ArrayList<Prize> prizes = new ArrayList<>();
                 String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
                 ArrayList<Tier> tiers = new ArrayList<>();
+                ArrayList<ParticleAnimation> particles = new ArrayList<>();
                 int maxMassOpen =  file.contains("Crate.Max-Mass-Open") ? Integer.parseInt(file.getString("Crate.Max-Mass-Open")) : 10;
+
+                if (file.contains("Crate.Particles") && file.getConfigurationSection("Crate.Particles") != null) {
+                    for (String identifier : file.getConfigurationSection("Crate.Particles").getKeys(false)) {
+                        String path = "Crate.Particles." + identifier;
+                        particles.add(new ParticleAnimation(identifier, file.getString(path + ".Animation"), file.getString(path + ".Particle"), file.getInt(path + ".Color")));
+                    }
+                }
 
                 if (file.contains("Crate.Tiers") && file.getConfigurationSection("Crate.Tiers") != null) {
                     for (String tier : file.getConfigurationSection("Crate.Tiers").getKeys(false)) {
@@ -190,7 +198,7 @@ public class CrazyManager {
                 }
 
                 CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"));
-                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, maxMassOpen, holo));
+                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, particles , maxMassOpen, holo));
             } catch (Exception e) {
                 brokecrates.add(crateName);
                 plugin.getLogger().warning("There was an error while loading the " + crateName + ".yml file.");
@@ -198,7 +206,7 @@ public class CrazyManager {
             }
         }
 
-        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, 0, null));
+        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, null, 0, null));
 
         if (fileManager.isLogging()) {
             plugin.getLogger().info("All crate information has been loaded.");
@@ -397,6 +405,22 @@ public class CrazyManager {
                     } else {
                         CrateControlListener.inUse.put(player, location);
                         QuickCrate.openCrate(player, location, crate, keyType, hologramController);
+                    }
+                }
+            }
+            case PARTICLES -> {
+                if (CrateControlListener.inUse.containsValue(location)) {
+                    player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
+                    removePlayerFromOpeningList(player);
+                    return;
+                } else {
+                    if (virtualCrate) {
+                        player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
+                        removePlayerFromOpeningList(player);
+                        return;
+                    } else {
+                        CrateControlListener.inUse.put(player, location);
+                        Particles.openCrate(player, location, crate, keyType, hologramController);
                     }
                 }
             }
