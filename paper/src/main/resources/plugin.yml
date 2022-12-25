@@ -12,7 +12,7 @@ softdepend: [CMI, HolographicDisplays, DecentHolograms, PlaceholderAPI, ItemsAdd
 commands:
   crates:
     description: The base command for Crazy Crates
-    aliases: [crazycrates, crate, cc]
+    aliases: [crazycrates, crazycrate, crate, cc]
   keys:
     description: Views the amount of keys you/others have.
     aliases: [key]
