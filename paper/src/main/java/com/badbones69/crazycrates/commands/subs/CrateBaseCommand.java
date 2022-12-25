@@ -30,7 +30,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
 import java.util.HashMap;
 
-@Command(value = "crates", alias = {"crazycrates", "cc", "crate"})
+@Command(value = "crates", alias = {"crazycrates", "cc", "crate", "crazycrate"})
 public class CrateBaseCommand extends BaseCommand {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
