@@ -5,8 +5,6 @@ plugins {
 repositories {
     maven("https://repo.crazycrew.us/plugins/")
 
-    //maven("https://repo.crazycrew.us/snapshots/")
-
     maven("https://repo.triumphteam.dev/snapshots/")
 
     maven("https://libraries.minecraft.net/")
