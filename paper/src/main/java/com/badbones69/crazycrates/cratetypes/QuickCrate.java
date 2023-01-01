@@ -51,7 +51,8 @@ public class QuickCrate implements Listener {
             // give the player the prizes
             for (;keys > 0; keys--) {
                 if (Methods.isInventoryFull(player)) break;
-                
+                if (keysUsed >= crate.getMaxMassOpen()) break;
+
                 Prize prize = crate.pickPrize(player);
                 crazyManager.givePrize(player, prize, crate);
                 plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
