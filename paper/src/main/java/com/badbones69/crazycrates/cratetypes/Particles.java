@@ -3,10 +3,10 @@ package com.badbones69.crazycrates.cratetypes;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ParticleAnimation;
+import com.badbones69.crazycrates.enums.types.KeyType;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -36,13 +36,17 @@ public class Particles {
 
                 for (ParticleAnimation PA : crate.getParticleAnimations()) {
 
-                    switch (PA.getAnimation().toLowerCase()) {
+                    String animation = PA.getAnimation().toLowerCase().contains(":") ? PA.getAnimation().toLowerCase().split(":")[0] : PA.getAnimation().toLowerCase();
+
+                    switch (animation) {
                         case "spiral_clockwise" ->
                                 spiralClockwise(Particle.valueOf(PA.getParticle()), Color.fromRGB(PA.getColor()), loc, tickTillPrize);
                         case "spiral_counterclockwise" ->
                                 spiralCounterClockwise(Particle.valueOf(PA.getParticle()), Color.fromRGB(PA.getColor()), loc, tickTillPrize);
                         case "spiral_up" ->
                                 spiralUp(Particle.valueOf(PA.getParticle()), Color.fromRGB(PA.getColor()), loc, tickTillPrize);
+                        case "circle" ->
+                                circle(Particle.valueOf(PA.getParticle()), Color.fromRGB(PA.getColor()), loc, tickTillPrize, PA.getAnimation());
                         default ->
                                 lineUp(Particle.valueOf(PA.getParticle()), Color.fromRGB(PA.getColor()), loc, tickTillPrize);
                     }
@@ -65,6 +69,25 @@ public class Particles {
         }
     }
 
+    private static void circle(Particle particle, Color color, Location loc, int tickTillPrize, String PAAnimation) {
+
+        double angle = tickTillPrize * 6.0;
+
+        double x = Math.cos(angle);
+        double z = Math.sin(angle);
+        double y;
+
+        try {
+            y = Double.parseDouble(PAAnimation.split(":")[1]);
+        } catch (Exception e) {
+            y = 0;
+        }
+
+        Location location = loc.clone().add(.5, 0, .5).add(x, y, z);
+
+        spawnParticles(particle, color, location);
+
+    }
     private static void spiralUp(Particle particle, Color color, Location loc, int tickTillPrize) {
 
         double angle = tickTillPrize * 6.0;
@@ -146,5 +169,4 @@ public class Particles {
 
         return locations;
     }
-
 }

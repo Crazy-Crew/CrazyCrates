@@ -9,7 +9,7 @@ Crate:
     #Particle Number
     1:
       #Pick the animation style.
-      #Current options are Spiral_Clockwise, Spiral_Counterclockwise and Spiral_Up. Animation defaults to Line_Up.
+      #Current options are Spiral_Clockwise, Spiral_Counterclockwise, Spiral_Up and Circle:<height>. Animation defaults to Line_Up.
       Animation: 'Spiral_Clockwise'
       #Pick the particle to be used for the animation. https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
       Particle: 'FLAME'
