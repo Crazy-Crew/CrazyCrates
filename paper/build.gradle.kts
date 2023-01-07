@@ -33,12 +33,12 @@ tasks {
         projectId.set("crazycrates")
 
         if (isSnapshot) {
-            versionName.set("${rootProject.name} Update $buildVersion")
+            versionName.set("${rootProject.name} $buildVersion")
             versionNumber.set(buildVersion)
 
             versionType.set("beta")
         } else {
-            versionName.set("${rootProject.name} Update ${project.version}")
+            versionName.set("${rootProject.name} ${project.version}")
             versionNumber.set("${project.version}")
 
             versionType.set("release")
