@@ -44,10 +44,9 @@ tasks {
         //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
         changelog.set("""
                 <h2>Changes:</h2>
-                 <p>Turned on opening broadcasts for QuadCrates</p>
+                 <p>N/A</p>
                 <h2>Bug Fixes:</h2>
-                 <p>Fixed a double broadcast bug.</p>
-                 <p>Fixed why you couldn't turn off broadcasts</p>
+                 <p>N/A</p>
             """.trimIndent())
     }
 
@@ -65,7 +64,7 @@ tasks {
 
 publishing {
     repositories {
-        maven("https://repo.crazycrew.us/releases") {
+        maven("https://repo.crazycrew.us/snapshots") {
             name = "crazycrew"
             //credentials(PasswordCredentials::class)
             credentials {
