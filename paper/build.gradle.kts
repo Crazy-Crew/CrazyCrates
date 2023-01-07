@@ -8,12 +8,11 @@ plugins {
     `maven-publish`
 }
 
-val buildNumber: String? = System.getenv("BUILD_NUMBER")
-val buildVersion = "${project.version}-b$buildNumber-SNAPSHOT"
+val buildVersion = "${project.version}-SNAPSHOT"
 
 tasks {
     shadowJar {
-        if (buildNumber != null) {
+        if (buildVersion.contains("SNAPSHOT")) {
             archiveFileName.set("${rootProject.name}-${buildVersion}.jar")
         } else {
             archiveFileName.set("${rootProject.name}-${project.version}.jar")
@@ -44,7 +43,9 @@ tasks {
         //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
         changelog.set("""
                 <h2>Changes:</h2>
-                 <p>N/A</p>
+                 <p>Added an option to limit mass-opening in QuickCrate thanks to TrueDarkLord.</p>
+                 <p>Small preparations for multi platform support.</p>
+                 <p>Added 1.18.2 support.</p>
                 <h2>Bug Fixes:</h2>
                  <p>N/A</p>
             """.trimIndent())
@@ -55,7 +56,7 @@ tasks {
             expand(
                 "name" to rootProject.name,
                 "group" to project.group,
-                "version" to if (buildNumber != null) buildVersion else project.version,
+                "version" to if (buildVersion.contains("SNAPSHOT")) buildVersion else project.version,
                 "description" to project.description
             )
         }

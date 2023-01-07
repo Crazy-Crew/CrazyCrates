@@ -32,6 +32,11 @@ jobs:
       - name: Shadow Jar
         run: ./gradlew shadowJar --stacktrace
 
+      - name: Modrinth Publish
+        run: ./gradlew modrinth --stacktrace
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+
       - name: Repo Publish
         run: ./gradlew publish --stacktrace
         env:
