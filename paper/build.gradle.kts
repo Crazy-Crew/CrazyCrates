@@ -9,10 +9,11 @@ plugins {
 }
 
 val buildVersion = "${project.version}-SNAPSHOT"
+val isSnapshot = true
 
 tasks {
     shadowJar {
-        if (buildVersion.contains("SNAPSHOT")) {
+        if (isSnapshot) {
             archiveFileName.set("${rootProject.name}-${buildVersion}.jar")
         } else {
             archiveFileName.set("${rootProject.name}-${project.version}.jar")
@@ -30,9 +31,19 @@ tasks {
     modrinth {
         token.set(System.getenv("MODRINTH_TOKEN"))
         projectId.set("crazycrates")
-        versionName.set("${rootProject.name} Update ${project.version}")
-        versionNumber.set("${project.version}")
-        versionType.set("${extra["version_type"]}")
+
+        if (isSnapshot) {
+            versionName.set("${rootProject.name} Update $buildVersion")
+            versionNumber.set(buildVersion)
+
+            versionType.set("beta")
+        } else {
+            versionName.set("${rootProject.name} Update ${project.version}")
+            versionNumber.set("${project.version}")
+
+            versionType.set("release")
+        }
+
         uploadFile.set(shadowJar.get())
 
         autoAddDependsOn.set(true)
@@ -56,7 +67,7 @@ tasks {
             expand(
                 "name" to rootProject.name,
                 "group" to project.group,
-                "version" to if (buildVersion.contains("SNAPSHOT")) buildVersion else project.version,
+                "version" to if (isSnapshot) buildVersion else project.version,
                 "description" to project.description
             )
         }
@@ -64,8 +75,10 @@ tasks {
 }
 
 publishing {
+    val mavenExt: String = if (isSnapshot) "snapshots" else "releases"
+
     repositories {
-        maven("https://repo.crazycrew.us/snapshots") {
+        maven("https://repo.crazycrew.us/$mavenExt") {
             name = "crazycrew"
             //credentials(PasswordCredentials::class)
             credentials {
@@ -79,7 +92,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "${extra["plugin_group"]}"
             artifactId = rootProject.name.toLowerCase()
-            version = "${project.version}"
+            version = if (isSnapshot) buildVersion else "${project.version}"
             from(components["java"])
         }
     }
