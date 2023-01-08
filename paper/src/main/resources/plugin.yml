@@ -6,6 +6,7 @@ authors: [BadBones69, RyderBelserion]
 version: ${version}
 api-version: "1.18"
 description: ${description}
+website: ${website}
 
 softdepend: [CMI, HolographicDisplays, DecentHolograms, PlaceholderAPI, ItemsAdder]
 
