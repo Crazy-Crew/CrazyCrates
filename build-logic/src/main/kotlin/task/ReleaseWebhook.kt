@@ -41,6 +41,7 @@ abstract class ReleaseWebhook : DefaultTask() {
                 headers {
                     append(HttpHeaders.ContentType, ContentType.Application.Json)
                 }
+
                 setBody(extension.build())
             }
 

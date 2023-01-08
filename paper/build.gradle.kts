@@ -8,16 +8,19 @@ plugins {
     `maven-publish`
 }
 
-val buildVersion = "${project.version}-SNAPSHOT"
-val isSnapshot = true
+val isSnapshot = false
+
+fun getPluginVersion(): String {
+    return if (isSnapshot) "${project.version}-SNAPSHOT" else project.version.toString()
+}
+
+fun getPluginVersionType(): String {
+    return if (isSnapshot) "beta" else "release"
+}
 
 tasks {
     shadowJar {
-        if (isSnapshot) {
-            archiveFileName.set("${rootProject.name}-${buildVersion}.jar")
-        } else {
-            archiveFileName.set("${rootProject.name}-${project.version}.jar")
-        }
+        archiveFileName.set("${rootProject.name}-${getPluginVersion()}.jar")
 
         listOf(
             "de.tr7zw",
@@ -32,17 +35,10 @@ tasks {
         token.set(System.getenv("MODRINTH_TOKEN"))
         projectId.set("crazycrates")
 
-        if (isSnapshot) {
-            versionName.set("${rootProject.name} $buildVersion")
-            versionNumber.set(buildVersion)
+        versionName.set("${rootProject.name} ${getPluginVersion()}")
+        versionNumber.set(getPluginVersion())
 
-            versionType.set("beta")
-        } else {
-            versionName.set("${rootProject.name} ${project.version}")
-            versionNumber.set("${project.version}")
-
-            versionType.set("release")
-        }
+        versionType.set(getPluginVersionType())
 
         uploadFile.set(shadowJar.get())
 
@@ -67,7 +63,7 @@ tasks {
             expand(
                 "name" to rootProject.name,
                 "group" to project.group,
-                "version" to if (isSnapshot) buildVersion else project.version,
+                "version" to getPluginVersion(),
                 "description" to project.description
             )
         }
@@ -90,9 +86,9 @@ publishing {
 
     publications {
         create<MavenPublication>("maven") {
-            groupId = "${extra["plugin_group"]}"
+            groupId = "${project.group}"
             artifactId = rootProject.name.toLowerCase()
-            version = if (isSnapshot) buildVersion else "${project.version}"
+            version = getPluginVersion()
             from(components["java"])
         }
     }

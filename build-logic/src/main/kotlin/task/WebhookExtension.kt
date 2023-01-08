@@ -1,9 +1,7 @@
 package task
 
 import com.google.gson.annotations.SerializedName
-import org.gradle.api.GradleException
 import java.awt.Color
-import java.net.URL
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
