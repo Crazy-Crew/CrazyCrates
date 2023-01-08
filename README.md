@@ -49,11 +49,11 @@
 </details>
 
 ## Downloads
-https://modrinth.com/plugin/crazycrates
+> https://modrinth.com/plugin/crazycrates
 
-## Snapshot Builds
+## Beta Builds
 ### Get the latest changes before marked as release.
-All snapshot builds will be labeled with Beta on Modrinth.<br>
+All beta builds will be on Modrinth.<br>
 > https://modrinth.com/plugin/crazycrates/versions
 
 ## Getting Started
@@ -89,7 +89,7 @@ Check our public [trello board](https://trello.com/b/bzQ5TwXo) for our current p
 2. Create your Feature Branch (`git checkout -b feature/yourfeature`)
 3. Commit your Changes (`git commit -m 'your amazing feature.'`)
 4. Push to the Branch (`git push`)
-5. Open a Pull Request to add your feature/fix to the `beta` branch.
+5. Open a Pull Request to add your feature/fix.
 
 ## License
 
