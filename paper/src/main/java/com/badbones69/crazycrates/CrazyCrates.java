@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.FileManager.Files;
-import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
@@ -16,6 +15,7 @@ import com.badbones69.crazycrates.cratetypes.Roulette;
 import com.badbones69.crazycrates.cratetypes.War;
 import com.badbones69.crazycrates.cratetypes.Wheel;
 import com.badbones69.crazycrates.cratetypes.Wonder;
+import com.badbones69.crazycrates.enums.Permissions;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;

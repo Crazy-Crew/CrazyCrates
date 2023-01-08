@@ -4,7 +4,7 @@ main: "${group}"
 authors: [BadBones69, RyderBelserion]
 
 version: ${version}
-api-version: "1.19"
+api-version: "1.18"
 description: ${description}
 
 softdepend: [CMI, HolographicDisplays, DecentHolograms, PlaceholderAPI, ItemsAdder]
@@ -12,7 +12,7 @@ softdepend: [CMI, HolographicDisplays, DecentHolograms, PlaceholderAPI, ItemsAdd
 commands:
   crates:
     description: The base command for Crazy Crates
-    aliases: [crazycrates, crate, cc]
+    aliases: [crazycrates, crazycrate, crate, cc]
   keys:
     description: Views the amount of keys you/others have.
     aliases: [key]

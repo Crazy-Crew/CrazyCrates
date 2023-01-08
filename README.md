@@ -52,8 +52,9 @@
 https://modrinth.com/plugin/crazycrates
 
 ## Snapshot Builds
-### Get the latest changes before they are uploaded to modrinth!
-https://ci.crazycrew.us/view/Snapshots/job/CrazyCrates/
+### Get the latest changes before marked as release.
+All snapshot builds will be labeled with Beta on Modrinth.<br>
+> https://modrinth.com/plugin/crazycrates/versions
 
 ## Getting Started
 
@@ -63,7 +64,7 @@ How to get started with contributing / maintaining your own version of CrazyCrat
 
 A list of things necessary to make sure you can build CrazyCrates properly.
 * Intellij IDEA
-    * https://www.jetbrains.com/idea/download/
+    * > https://www.jetbrains.com/idea/download/
 * Gradle
 
 ### Installation
@@ -88,7 +89,7 @@ Check our public [trello board](https://trello.com/b/bzQ5TwXo) for our current p
 2. Create your Feature Branch (`git checkout -b feature/yourfeature`)
 3. Commit your Changes (`git commit -m 'your amazing feature.'`)
 4. Push to the Branch (`git push`)
-5. Open a Pull Request to add your feature/fix to the dev branch.
+5. Open a Pull Request to add your feature/fix to the `beta` branch.
 
 ## License
 

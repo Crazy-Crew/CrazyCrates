@@ -1,5 +1,5 @@
 plugins {
-    id("crazycrates-api")
+    id("crazycrates-common")
 }
 
 project.version = "${extra["plugin_version"]}"
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":api"))
+    implementation(project(":common"))
 
     implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-SNAPSHOT")
 

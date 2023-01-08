@@ -1,7 +1,6 @@
 .gradle
 .idea
-build-logic/.gradle
 
-paper/build
 build-logic/build
-api/build
+common/build
+paper/build

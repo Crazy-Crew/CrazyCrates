@@ -2,9 +2,7 @@ package com.badbones69.crazycrates.support;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.CrateType;
 import org.bstats.bukkit.Metrics;
-import org.bstats.charts.SimplePie;
 
 public class MetricsHandler {
 

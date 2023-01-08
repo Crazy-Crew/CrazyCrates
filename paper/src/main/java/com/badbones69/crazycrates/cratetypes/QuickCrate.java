@@ -3,11 +3,11 @@ package com.badbones69.crazycrates.cratetypes;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.enums.types.KeyType;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -26,11 +26,6 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class QuickCrate implements Listener {
     
@@ -56,7 +51,8 @@ public class QuickCrate implements Listener {
             // give the player the prizes
             for (;keys > 0; keys--) {
                 if (Methods.isInventoryFull(player)) break;
-                
+                if (keysUsed >= crate.getMaxMassOpen()) break;
+
                 Prize prize = crate.pickPrize(player);
                 crazyManager.givePrize(player, prize, crate);
                 plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));

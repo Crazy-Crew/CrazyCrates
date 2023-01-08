@@ -5,15 +5,15 @@ import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.EventLogger;
 import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.api.enums.CrateType;
-import com.badbones69.crazycrates.api.enums.KeyType;
-import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.enums.Permissions;
+import com.badbones69.crazycrates.enums.types.CrateType;
+import com.badbones69.crazycrates.enums.types.KeyType;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.MenuListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
@@ -30,7 +30,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
 import java.util.HashMap;
 
-@Command(value = "crates", alias = {"crazycrates", "cc", "crate"})
+@Command(value = "crates", alias = {"crazycrates", "cc", "crate", "crazycrate"})
 public class CrateBaseCommand extends BaseCommand {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();

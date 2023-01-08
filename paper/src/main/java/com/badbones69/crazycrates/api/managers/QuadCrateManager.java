@@ -3,10 +3,10 @@ package com.badbones69.crazycrates.api.managers;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.KeyType;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
-import com.badbones69.crazycrates.api.enums.QuadCrateParticles;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.enums.types.KeyType;
+import com.badbones69.crazycrates.quadcrates.CrateParticles;
 import com.badbones69.crazycrates.support.structures.QuadCrateSpiralHandler;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
@@ -78,7 +78,7 @@ public class QuadCrateManager {
 
     // Get the particles that will be used to display above the crates.
     private final Color particleColor;
-    private final QuadCrateParticles particle;
+    private final CrateParticles particle;
 
     // Get the structure handler.
     private final StructureHandler handler;
@@ -95,7 +95,7 @@ public class QuadCrateManager {
 
         this.handler = handler;
 
-        List<QuadCrateParticles> particles = Arrays.asList(QuadCrateParticles.values());
+        List<CrateParticles> particles = Arrays.asList(CrateParticles.values());
         this.particle = particles.get(new Random().nextInt(particles.size()));
         this.particleColor = getColors().get(new Random().nextInt(getColors().size()));
 
@@ -307,7 +307,7 @@ public class QuadCrateManager {
                 Color.WHITE, Color.YELLOW);
     }
 
-    private void spawnParticles(QuadCrateParticles quadCrateParticle, Color particleColor, Location location1, Location location2) {
+    private void spawnParticles(CrateParticles quadCrateParticle, Color particleColor, Location location1, Location location2) {
         Particle particle = switch (quadCrateParticle) {
             case FLAME -> Particle.FLAME;
             case VILLAGER_HAPPY -> Particle.VILLAGER_HAPPY;

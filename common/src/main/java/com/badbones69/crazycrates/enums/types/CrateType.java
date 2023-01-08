@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.enums;
+package com.badbones69.crazycrates.enums.types;
 
 public enum CrateType {
     

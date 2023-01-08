@@ -1,6 +1,6 @@
-package com.badbones69.crazycrates.api.enums;
+package com.badbones69.crazycrates.quadcrates;
 
-public enum QuadCrateParticles {
+public enum CrateParticles {
     
     FLAME("Flame"),
     VILLAGER_HAPPY("Villager Happy"),
@@ -9,7 +9,7 @@ public enum QuadCrateParticles {
     
     private final String name;
     
-    QuadCrateParticles(String name) {
+    CrateParticles(String name) {
         this.name = name;
     }
     
