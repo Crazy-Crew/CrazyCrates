@@ -16,9 +16,9 @@ webhook {
 
     this.username("Ryder Belserion")
 
-    //this.content("New version of ${project.name} is ready! <@929463441159254066>")
+    //this.content("New version of ${rootProject.name} is ready! <@929463441159254066>")
 
-    this.content("New version of ${project.name} is ready!")
+    this.content("New version of ${rootProject.name} is ready!")
 
     this.embeds {
         this.embed {
@@ -27,7 +27,7 @@ webhook {
             this.fields {
                 this.field(
                     "Version ${project.version}",
-                    "Download Link: https://modrinth.com/plugin/${project.name.toLowerCase()}/version/${project.version}"
+                    "Download Link: https://modrinth.com/plugin/${rootProject.name.toLowerCase()}/version/${project.version}"
                 )
 
                 if (isBeta) {
@@ -45,8 +45,8 @@ webhook {
             }
 
             this.author(
-                project.name,
-                "https://modrinth.com/plugin/${project.name.toLowerCase()}/versions",
+                rootProject.name,
+                "https://modrinth.com/plugin/${rootProject.name.toLowerCase()}/versions",
                 "https://cdn-raw.modrinth.com/data/r3BBZyf3/4522ef0f83143c4803473d356160a3e877c2499c.png"
             )
         }

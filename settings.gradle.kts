@@ -1,3 +1,5 @@
+rootProject.name = extra["name"] as String
+
 dependencyResolutionManagement {
     includeBuild("build-logic")
 }
