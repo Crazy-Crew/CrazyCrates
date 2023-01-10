@@ -49,11 +49,11 @@ tasks {
 
         //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
         changelog.set("""
-                <h2>Changes:</h2>
+                <h4>Changes:</h4>
                  <p>Added an option to limit mass-opening in QuickCrate thanks to TrueDarkLord.</p>
                  <p>Small preparations for multi platform support.</p>
                  <p>Added 1.18.2 support.</p>
-                <h2>Bug Fixes:</h2>
+                <h4>Bug Fixes:</h4>
                  <p>N/A</p>
             """.trimIndent())
     }
