@@ -1,5 +1,5 @@
 plugins {
-    id("crazycrates-common")
+    id("crazycrates.common-plugin")
 }
 
 dependencies {

@@ -1,5 +1,5 @@
 plugins {
-    id("crazycrates-paper")
+    id("crazycrates.paper-plugin")
 
     id("com.modrinth.minotaur") version "2.6.0"
 

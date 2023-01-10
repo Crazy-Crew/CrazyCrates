@@ -1,7 +1,7 @@
 import java.awt.Color
 
 plugins {
-    id("crazycrates.root-conventions")
+    id("crazycrates.root-plugin")
 }
 
 val legacyUpdate = Color(255, 73, 110)

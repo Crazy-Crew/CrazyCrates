@@ -1,5 +1,5 @@
 plugins {
-    id("crazycrates-common")
+    id("crazycrates.common-plugin")
 }
 
 project.description = "Add unlimited crates to your server with 10 different crate types to choose from!"
