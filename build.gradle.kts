@@ -46,7 +46,7 @@ webhook {
 
             this.author(
                 project.name,
-                "https://modrinth.com/mod/${project.name.toLowerCase()}/versions",
+                "https://modrinth.com/plugin/${project.name.toLowerCase()}/versions",
                 "https://cdn-raw.modrinth.com/data/r3BBZyf3/4522ef0f83143c4803473d356160a3e877c2499c.png"
             )
         }
