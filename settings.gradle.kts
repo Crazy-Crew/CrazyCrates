@@ -9,6 +9,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "CrazyCrates"
-
 include("paper", "common")

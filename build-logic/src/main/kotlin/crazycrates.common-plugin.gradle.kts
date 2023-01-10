@@ -15,11 +15,11 @@ repositories {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(extra["java_version"].toString()))
 }
 
 tasks {
     compileJava {
-        options.release.set(17)
+        options.release.set(extra["java_version"].toString().toInt())
     }
 }

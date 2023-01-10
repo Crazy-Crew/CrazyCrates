@@ -6,7 +6,7 @@ plugins {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(project.extra["java_version"].toString()))
 }
 
 tasks {
@@ -19,6 +19,6 @@ tasks {
     }
 
     compileJava {
-        options.release.set(17)
+        options.release.set(project.extra["java_version"].toString().toInt())
     }
 }

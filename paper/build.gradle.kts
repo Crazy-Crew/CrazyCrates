@@ -20,22 +20,22 @@ fun getPluginVersionType(): String {
 
 tasks {
     shadowJar {
-        archiveFileName.set("${rootProject.name}-${getPluginVersion()}.jar")
+        archiveFileName.set("${project.name}-${getPluginVersion()}.jar")
 
         listOf(
             "de.tr7zw",
             "org.bstats",
             "dev.triumphteam.cmd"
         ).forEach {
-            relocate(it, "${rootProject.group}.plugin.lib.$it")
+            relocate(it, "${project.group}.plugin.lib.$it")
         }
     }
 
     modrinth {
         token.set(System.getenv("MODRINTH_TOKEN"))
-        projectId.set("crazycrates")
+        projectId.set(project.name.toLowerCase())
 
-        versionName.set("${rootProject.name} ${getPluginVersion()}")
+        versionName.set("${project.name} ${getPluginVersion()}")
         versionNumber.set(getPluginVersion())
 
         versionType.set(getPluginVersionType())
@@ -61,11 +61,11 @@ tasks {
     processResources {
         filesMatching("plugin.yml") {
             expand(
-                "name" to rootProject.name,
+                "name" to project.name,
                 "group" to project.group,
                 "version" to getPluginVersion(),
                 "description" to project.description,
-                "website" to "https://modrinth.com/plugin/crazycrates"
+                "website" to "https://modrinth.com/plugin/${project.name.toLowerCase()}"
             )
         }
     }
@@ -88,7 +88,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "${project.group}"
-            artifactId = rootProject.name.toLowerCase()
+            artifactId = project.name.toLowerCase()
             version = getPluginVersion()
             from(components["java"])
         }
