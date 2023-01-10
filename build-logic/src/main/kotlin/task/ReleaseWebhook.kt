@@ -34,7 +34,7 @@ abstract class ReleaseWebhook : DefaultTask() {
     @TaskAction
     fun webhook() {
         // The webhook url configured in the gradle.properties
-        val url = project.extra["discord.webhook.url"].toString()
+        val url = System.getenv("DISCORD_WEBHOOK")
 
         runBlocking(Dispatchers.IO) {
             val response = client.post(url) {
