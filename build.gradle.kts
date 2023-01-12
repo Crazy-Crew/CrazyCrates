@@ -40,8 +40,6 @@ releaseBuild {
                     if (isBeta()) {
                         if (commitMessage != null) this.field("Commit Message", commitMessage)
 
-                        this.field("Beta", "They will be hosted on the same page labeled as `Beta`")
-
                         this.field(
                             "API Update",
                             "Version $pluginVersion has been pushed to https://repo.crazycrew.us/#/beta/"
