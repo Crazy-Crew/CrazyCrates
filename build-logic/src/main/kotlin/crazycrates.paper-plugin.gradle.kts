@@ -1,5 +1,5 @@
 plugins {
-    id("crazycrates.common-plugin")
+    id("crazycrates.root-plugin")
 }
 
 repositories {
@@ -28,7 +28,7 @@ dependencies {
 
     implementation("org.bstats", "bstats-bukkit", "3.0.0")
 
-    compileOnly("io.papermc.paper", "paper-api", "${project.extra["minecraft_version"]}-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper", "paper-api", "${project.properties["minecraft_version"]}-R0.1-SNAPSHOT")
 
     compileOnly("me.filoghost.holographicdisplays", "holographicdisplays-api", "3.0.0")
 

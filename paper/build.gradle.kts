@@ -1,96 +1,86 @@
 plugins {
+    id("com.modrinth.minotaur")
+
+    id("com.github.johnrengelman.shadow")
+
     id("crazycrates.paper-plugin")
-
-    id("com.modrinth.minotaur") version "2.6.0"
-
-    id("com.github.johnrengelman.shadow") version "7.1.2"
 
     `maven-publish`
 }
 
-val isBeta: Boolean = extra["isBeta"].toString().toBoolean()
+releaseBuild {
+    tasks {
+        shadowJar {
+            archiveFileName.set("${getProjectName()}+${getProjectVersion()}.jar")
 
-fun getPluginVersion(): String {
-    return if (isBeta) "${project.version}-BETA" else project.version.toString()
-}
-
-fun getPluginVersionType(): String {
-    return if (isBeta) "beta" else "release"
-}
-
-tasks {
-    shadowJar {
-        archiveFileName.set("${rootProject.name}-${getPluginVersion()}.jar")
-
-        listOf(
-            "de.tr7zw",
-            "org.bstats",
-            "dev.triumphteam.cmd"
-        ).forEach {
-            relocate(it, "${project.group}.plugin.lib.$it")
+            listOf(
+                "de.tr7zw",
+                "org.bstats",
+                "dev.triumphteam.cmd"
+            ).forEach { value ->
+                relocate(value, "${getProjectGroup()}.plugin.library.$value")
+            }
         }
-    }
 
-    modrinth {
-        token.set(System.getenv("MODRINTH_TOKEN"))
-        projectId.set(rootProject.name.toLowerCase())
+        modrinth {
+            token.set(System.getenv("MODRINTH_TOKEN"))
+            projectId.set(getProjectName().toLowerCase())
 
-        versionName.set("${rootProject.name} ${getPluginVersion()}")
-        versionNumber.set(getPluginVersion())
+            versionName.set("${getProjectName()}+${getProjectVersion()}")
+            versionNumber.set(getProjectVersion())
 
-        versionType.set(getPluginVersionType())
+            versionType.set(getProjectType())
 
-        uploadFile.set(shadowJar.get())
+            uploadFile.set(shadowJar.get())
 
-        autoAddDependsOn.set(true)
+            autoAddDependsOn.set(true)
 
-        gameVersions.addAll(listOf("1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "1.19.2", "1.19.3"))
-        loaders.addAll(listOf("paper", "purpur"))
+            gameVersions.addAll(listOf("1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "1.19.2", "1.19.3"))
+            loaders.addAll(listOf("paper", "purpur"))
 
-        //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
-        changelog.set("""
+            //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
+            changelog.set("""
                 <h4>Changes:</h4>
-                 <p>Added an option to limit mass-opening in QuickCrate thanks to TrueDarkLord.</p>
-                 <p>Small preparations for multi platform support.</p>
-                 <p>Added 1.18.2 support.</p>
+                 <p>N/A</p>
                 <h4>Bug Fixes:</h4>
                  <p>N/A</p>
             """.trimIndent())
-    }
-
-    processResources {
-        filesMatching("plugin.yml") {
-            expand(
-                "name" to rootProject.name,
-                "group" to project.group,
-                "version" to getPluginVersion(),
-                "description" to project.description,
-                "website" to "https://modrinth.com/plugin/${rootProject.name.toLowerCase()}"
-            )
         }
-    }
-}
 
-publishing {
-    val mavenExt: String = if (isBeta) "beta" else "releases"
-
-    repositories {
-        maven("https://repo.crazycrew.us/$mavenExt") {
-            name = "crazycrew"
-            //credentials(PasswordCredentials::class)
-            credentials {
-                username = System.getenv("REPOSITORY_USERNAME")
-                password = System.getenv("REPOSITORY_PASSWORD")
+        processResources {
+            filesMatching("plugin.yml") {
+                expand(
+                    "name" to getProjectName(),
+                    "group" to getProjectGroup(),
+                    "version" to getProjectVersion(),
+                    "description" to getProjectDescription(),
+                    "website" to "https://modrinth.com/${getExtension()}/${getProjectName().toLowerCase()}"
+                )
             }
         }
     }
 
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "${project.group}"
-            artifactId = rootProject.name.toLowerCase()
-            version = getPluginVersion()
-            from(components["java"])
+    publishing {
+        repositories {
+            maven("https://repo.crazycrew.us/libraries") {
+                name = "crazycrew"
+                // Used for locally publishing.
+                // credentials(PasswordCredentials::class)
+
+                credentials {
+                    username = System.getenv("REPOSITORY_USERNAME")
+                    password = System.getenv("REPOSITORY_PASSWORD")
+                }
+            }
+        }
+
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = getProjectGroup()
+                artifactId = "${getProjectName().toLowerCase()}-paper"
+                version = getProjectVersion()
+                from(components["java"])
+            }
         }
     }
 }

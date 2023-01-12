@@ -44,6 +44,8 @@ jobs:
           REPOSITORY_PASSWORD: ${{ secrets.CRAZYCREW_PASSWORD }}
 
       - name: Update Notification
-        run: ./gradlew releaseWebhook --stacktrace
+        run: |
+          ./gradlew releaseBuild --stacktrace
+          ./gradlew releaseWebhook --stacktrace
         env:
           DISCORD_WEBHOOK: ${{ secrets.CRAZYCREW_WEBHOOK }}
