@@ -545,8 +545,11 @@ public class CrateBaseCommand extends BaseCommand {
                 placeholders.put("%Player%", target.getName());
                 placeholders.put("%Key%", crate.getKey().getItemMeta().getDisplayName());
 
+                boolean fullMessage = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full-Message");
+                boolean inventoryCheck = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
+
                 sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
-                target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
+                if (!inventoryCheck || !fullMessage && !Methods.isInventoryFull(target)) target.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
 
                 boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
                 boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");

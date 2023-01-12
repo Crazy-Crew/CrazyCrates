@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 public enum Messages {
-    
+
     NO_TELEPORTING("No-Teleporting", "&cYou may not teleport away while opening a Crate."),
     NO_COMMANDS_WHILE_CRATE_OPENED("No-Commands-While-In-Crate", "&cYou are not allowed to use commands while opening Crates."),
     FEATURE_DISABLED("Feature-Disabled", "&cThis feature is disabled. We have no ETA on when this will function."),
@@ -33,6 +33,7 @@ public enum Messages {
     NOT_A_CRATE("Not-A-Crate", "&cThere is no crate called &6%crate%."),
     NOT_A_NUMBER("Not-A-Number", "&6%number% &cis not a number."),
     GIVEN_A_PLAYER_KEYS("Given-A-Player-Keys", "&7You have given &6%player% %amount% &7Keys."),
+    CANNOT_GIVE_PLAYER_KEYS("Cannot-Give-Player-Keys", "&7You have been given &6%amount% %key% &7virtual keys because your inventory was full."),
     OBTAINING_KEYS("Obtaining-Keys", "&7You have been given &6%amount% %key% &7Keys."),
     GIVEN_EVERYONE_KEYS("Given-Everyone-Keys", "&7You have given everyone &6%amount% &7Keys."),
     GIVEN_OFFLINE_PLAYER_KEYS("Given-Offline-Player-Keys", "&7You have given &6%amount% &7key(s) to the offline player &6%player%."),
@@ -88,21 +89,21 @@ public enum Messages {
     " ",
     "&7You can find a list of permissions @ &ehttps://github.com/Crazy-Crew/CrazyCrates/wiki/Commands-and-Permissions"
     ));
-    
+
     private final String path;
     private String defaultMessage;
     private List<String> defaultListMessage;
-    
+
     Messages(String path, String defaultMessage) {
         this.path = path;
         this.defaultMessage = defaultMessage;
     }
-    
+
     Messages(String path, List<String> defaultListMessage) {
         this.path = path;
         this.defaultListMessage = defaultListMessage;
     }
-    
+
     public static String convertList(List<String> list) {
         StringBuilder message = new StringBuilder();
 
@@ -114,7 +115,7 @@ public enum Messages {
     }
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
-    
+
     public static void addMissingMessages() {
         FileConfiguration messages = FileManager.Files.MESSAGES.getFile();
         boolean saveFile = false;
@@ -151,13 +152,13 @@ public enum Messages {
 
         if (saveFile) FileManager.Files.MESSAGES.saveFile();
     }
-    
+
     public static String replacePlaceholders(String placeholder, String replacement, String message) {
         HashMap<String, String> placeholders = new HashMap<>();
         placeholders.put(placeholder, replacement);
         return replacePlaceholders(placeholders, message);
     }
-    
+
     public static String replacePlaceholders(Map<String, String> placeholders, String message) {
         for (Entry<String, String> placeholder : placeholders.entrySet()) {
             message = message.replace(placeholder.getKey(), placeholder.getValue())
@@ -166,13 +167,13 @@ public enum Messages {
 
         return message;
     }
-    
+
     public static List<String> replacePlaceholders(String placeholder, String replacement, List<String> messageList) {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put(placeholder, replacement);
         return replacePlaceholders(placeholders, messageList);
     }
-    
+
     public static List<String> replacePlaceholders(Map<String, String> placeholders, List<String> messageList) {
         List<String> newMessageList = new ArrayList<>();
 
@@ -251,11 +252,11 @@ public enum Messages {
             }
         }
     }
-    
+
     private boolean exists() {
         return FileManager.Files.MESSAGES.getFile().contains("Messages." + path);
     }
-    
+
     private boolean isList() {
         if (FileManager.Files.MESSAGES.getFile().contains("Messages." + path)) {
             return !FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path).isEmpty();
@@ -263,15 +264,15 @@ public enum Messages {
             return defaultMessage == null;
         }
     }
-    
+
     private String getPath() {
         return path;
     }
-    
+
     private String getDefaultMessage() {
         return defaultMessage;
     }
-    
+
     private List<String> getDefaultListMessage() {
         return defaultListMessage;
     }

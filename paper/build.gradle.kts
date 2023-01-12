@@ -47,7 +47,9 @@ releaseBuild {
             //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
             changelog.set("""
                 <h4>Changes:</h4>
-                 <p>N/A</p>
+                 <p>Added the ability to send a different message if they got a virtual key due to their inventory being full.</p>
+                 <p>Give-Virtual-Keys-When-Inventory-Full-Message: true : A new option in the config.yml</p>
+                 <p>Cannot-Give-Player-Keys : A new message in messages.yml</p>
                 <h4>Bug Fixes:</h4>
                  <p>N/A</p>
             """.trimIndent())

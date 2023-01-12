@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "type": "gradle",
+            "name": "server",
+            "tasks": [
+                "paper:runServer"
+            ],
+        },
+
+    ]
+}

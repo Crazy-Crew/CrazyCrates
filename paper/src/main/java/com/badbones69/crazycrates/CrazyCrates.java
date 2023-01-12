@@ -88,6 +88,14 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         String menu = config.getString("Settings.Enable-Crate-Menu");
 
+        String full = config.getString("Settings.Give-Virtual-Keys-When-Inventory-Full-Message");
+
+        if (full == null) {
+            config.set("Settings.Give-Virtual-Keys-When-Inventory-Full-Message", false);
+
+            Files.CONFIG.saveFile();
+        }
+
         if (version == null) {
             config.set("Settings.Config-Version", 1);
 

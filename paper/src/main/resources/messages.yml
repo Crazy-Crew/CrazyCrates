@@ -23,6 +23,7 @@ Messages:
   Not-A-Crate: '&cThere is no crate called &6%crate%.'
   Not-A-Number: '&6%number% &cis not a number.'
   Given-A-Player-Keys: '&7You have given &6%player% %amount% &7Keys.'
+  Cannot-Give-Player-Keys: '&7You have been given &6%amount% %key% &7virtual keys because your inventory was full.'
   Obtaining-Keys: '&7You have been given &6%amount% %key% &7Keys.'
   Given-Everyone-Keys: '&7You have given everyone &6%amount% &7Keys.'
   Given-Offline-Player-Keys: '&7You have given &6%amount% &7key(s) to the offline player &6%player%.'

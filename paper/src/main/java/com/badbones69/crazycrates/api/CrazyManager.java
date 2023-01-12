@@ -40,7 +40,6 @@ import org.bukkit.scheduler.BukkitTask;
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class CrazyManager {
@@ -1232,21 +1231,22 @@ public class CrazyManager {
      */
     public void addKeys(int amount, Player player, Crate crate, KeyType keyType) {
         switch (keyType) {
-            case PHYSICAL_KEY:
+            case PHYSICAL_KEY -> {
                 if (Methods.isInventoryFull(player)) {
                     if (giveVirtualKeysWhenInventoryFull) {
                         addVirtualKeys(amount, player, crate);
+
+                        boolean fullMessage = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full-Message");
+
+                        if (fullMessage) player.sendMessage(Messages.CANNOT_GIVE_PLAYER_KEYS.getMessage().replaceAll("%amount%", String.valueOf(amount)).replaceAll("%key%", crate.getName()));
                     } else {
                         player.getWorld().dropItem(player.getLocation(), crate.getKey(amount));
                     }
                 } else {
                     player.getInventory().addItem(crate.getKey(amount));
                 }
-
-                break;
-            case VIRTUAL_KEY:
-                addVirtualKeys(amount, player, crate);
-                break;
+            }
+            case VIRTUAL_KEY -> addVirtualKeys(amount, player, crate);
         }
     }
 
