@@ -1,7 +1,9 @@
 plugins {
+    id("com.github.johnrengelman.shadow")
+
     id("com.modrinth.minotaur")
 
-    id("com.github.johnrengelman.shadow")
+    id("xyz.jpenilla.run-paper")
 
     id("crazycrates.paper-plugin")
 
@@ -20,6 +22,10 @@ releaseBuild {
             ).forEach { value ->
                 relocate(value, "${getProjectGroup()}.plugin.library.$value")
             }
+        }
+
+        runServer {
+            minecraftVersion("1.19.3")
         }
 
         modrinth {

@@ -1,6 +1,12 @@
 .gradle
 .idea
 
+build-logic/.gradle
 build-logic/build
-common/build
+
 paper/build
+paper/run/*
+
+!paper/run/eula.txt
+
+common/build
