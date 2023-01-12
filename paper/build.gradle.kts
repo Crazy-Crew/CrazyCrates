@@ -32,7 +32,7 @@ releaseBuild {
             token.set(System.getenv("MODRINTH_TOKEN"))
             projectId.set(getProjectName().toLowerCase())
 
-            versionName.set("${getProjectName()}+${getProjectVersion()}")
+            versionName.set("${getProjectName()} ${getProjectVersion()}")
             versionNumber.set(getProjectVersion())
 
             versionType.set(getProjectType())
@@ -70,7 +70,7 @@ releaseBuild {
 
     publishing {
         repositories {
-            maven("https://repo.crazycrew.us/libraries") {
+            maven("https://repo.crazycrew.us/beta") {
                 name = "crazycrew"
                 // Used for locally publishing.
                 // credentials(PasswordCredentials::class)
