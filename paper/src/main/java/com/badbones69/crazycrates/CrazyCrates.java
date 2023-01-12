@@ -172,7 +172,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             UpdateChecker updateChecker = new UpdateChecker(17599);
 
             try {
-                if (updateChecker.hasUpdate() && !getDescription().getVersion().contains("SNAPSHOT")) {
+                if (updateChecker.hasUpdate() && !getDescription().getVersion().contains("Beta")) {
                     if (consolePrint) {
                         getLogger().warning("CrazyCrates has a new update available! New version: " + updateChecker.getNewVersion());
                         getLogger().warning("Current Version: v" + getDescription().getVersion());
