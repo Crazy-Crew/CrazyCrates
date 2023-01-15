@@ -70,7 +70,8 @@ releaseBuild {
 
     publishing {
         repositories {
-            maven("https://repo.crazycrew.us/beta") {
+            val urlExt = if (isBeta()) "beta" else "releases"
+            maven("https://repo.crazycrew.us/$urlExt") {
                 name = "crazycrew"
                 // Used for locally publishing.
                 // credentials(PasswordCredentials::class)
