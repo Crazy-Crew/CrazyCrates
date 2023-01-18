@@ -25,7 +25,7 @@ releaseBuild {
         }
 
         runServer {
-            minecraftVersion("1.17.1")
+            minecraftVersion("1.19.3")
         }
 
         modrinth {
