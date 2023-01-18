@@ -104,6 +104,14 @@ public enum Messages {
         this.defaultListMessage = defaultListMessage;
     }
 
+    /**
+     * A method that will "convert" a StringList meaning it'll loop
+     * through the StringList then color the individual line and then
+     * returning the "converted" StringBuilder.
+     *
+     * @param list The StringList to convert
+     * @return The converted StringList
+     */
     public static String convertList(List<String> list) {
         StringBuilder message = new StringBuilder();
 
@@ -116,6 +124,9 @@ public enum Messages {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
+    /**
+     * Adds any missing messages to the Messages.yml file based on values in the Messages enum.
+     */
     public static void addMissingMessages() {
         FileConfiguration messages = FileManager.Files.MESSAGES.getFile();
         boolean saveFile = false;
@@ -153,12 +164,29 @@ public enum Messages {
         if (saveFile) FileManager.Files.MESSAGES.saveFile();
     }
 
+    /**
+     * A method which takes a placeholder, Creates a hashmap
+     * then populates the hashmap & returns a String.
+     *
+     * @param placeholder The placeholder to replace
+     * @param replacement The replacement for the placeholder
+     * @param message The message to be edited
+     * @return The edited message
+     */
     public static String replacePlaceholders(String placeholder, String replacement, String message) {
         HashMap<String, String> placeholders = new HashMap<>();
         placeholders.put(placeholder, replacement);
         return replacePlaceholders(placeholders, message);
     }
 
+    /**
+     * A method which loops through a map of placeholders to
+     * replace the placeholders in the String with the key/value
+     *
+     * @param placeholders The map of the placeholders
+     * @param message The message to be edited
+     * @return The edited message
+     */
     public static String replacePlaceholders(Map<String, String> placeholders, String message) {
         for (Entry<String, String> placeholder : placeholders.entrySet()) {
             message = message.replace(placeholder.getKey(), placeholder.getValue())
@@ -168,12 +196,29 @@ public enum Messages {
         return message;
     }
 
+    /**
+     * A method which takes a placeholder, Creates a hashmap
+     * then populates the hashmap & returns a String.
+     *
+     * @param placeholder The placeholder to replace
+     * @param replacement The replacement for the placeholder
+     * @param messageList The StringList to edit
+     * @return The edited message
+     */
     public static List<String> replacePlaceholders(String placeholder, String replacement, List<String> messageList) {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put(placeholder, replacement);
         return replacePlaceholders(placeholders, messageList);
     }
 
+    /**
+     * A method which loops through a map of placeholders to
+     * replace the placeholders in the StringList loop.
+     *
+     * @param placeholders The map of the placeholders
+     * @param messageList The StringList to be edited
+     * @return The edited StringList
+     */
     public static List<String> replacePlaceholders(Map<String, String> placeholders, List<String> messageList) {
         List<String> newMessageList = new ArrayList<>();
 
@@ -187,38 +232,90 @@ public enum Messages {
         return newMessageList;
     }
 
+    /**
+     * Get the message with a prefix.
+     *
+     * @return The completed message
+     */
     public String getMessage() {
         return getMessage(true);
     }
 
+    /**
+     * Get the message with placeholders.
+     *
+     * @param placeholder The placeholder
+     * @param replacement The replacement
+     * @return The completed message with prefix
+     */
     public String getMessage(String placeholder, String replacement) {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put(placeholder, replacement);
         return getMessage(placeholders, true);
     }
 
+    /**
+     * Get the message with placeholders but no replacement.
+     * This will be automatically handled at a later point.
+     *
+     * @param placeholders The placeholders map.
+     * @return The completed message with placeholders and prefix
+     */
     public String getMessage(Map<String, String> placeholders) {
         return getMessage(placeholders, true);
     }
 
+    /**
+     * Get the message without a prefix.
+     *
+     * @return The completed message
+     */
     public String getMessageNoPrefix() {
         return getMessage(false);
     }
 
+    /**
+     * Get the message with placeholders but no prefix.
+     *
+     * @param placeholder The placeholder
+     * @param replacement The replacement
+     * @return The completed message with placeholders
+     */
     public String getMessageNoPrefix(String placeholder, String replacement) {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put(placeholder, replacement);
         return getMessage(placeholders, false);
     }
 
+    /**
+     * Get the message with placeholders but no prefix.
+     *
+     * @param placeholders The placeholder map
+     * @return The completed message with placeholders
+     */
     public String getMessageNoPrefix(Map<String, String> placeholders) {
         return getMessage(placeholders, false);
     }
 
+    /**
+     * Get the message with prefix but empty hashmap.
+     *
+     * @param prefix Whether a prefix is included
+     * @return The completed message with empty hashmap and prefix
+     */
     private String getMessage(boolean prefix) {
         return getMessage(new HashMap<>(), prefix);
     }
 
+    /**
+     * Checks if the message exists and if the message is a list
+     * Replaces all placeholders & checks if a prefix is to be appended or not.
+     * Defaults to the defaultMessage if it does not exist.
+     *
+     * @param placeholders The placeholders map
+     * @param prefix Whether a prefix is included
+     * @return The completed message
+     */
     private String getMessage(Map<String, String> placeholders, boolean prefix) {
         String message;
         boolean isList = isList();
@@ -253,10 +350,20 @@ public enum Messages {
         }
     }
 
+    /**
+     * Checks if the file contains the String.
+     *
+     * @return True if found otherwise False
+     */
     private boolean exists() {
         return FileManager.Files.MESSAGES.getFile().contains("Messages." + path);
     }
 
+    /**
+     * Checks if the file contains the StringList.
+     *
+     * @return True if found otherwise False
+     */
     private boolean isList() {
         if (FileManager.Files.MESSAGES.getFile().contains("Messages." + path)) {
             return !FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path).isEmpty();
@@ -265,14 +372,29 @@ public enum Messages {
         }
     }
 
+    /**
+     * Get the string path.
+     *
+     * @return The path
+     */
     private String getPath() {
         return path;
     }
 
+    /**
+     * Get the default message.
+     *
+     * @return The default message
+     */
     private String getDefaultMessage() {
         return defaultMessage;
     }
 
+    /**
+     * Get the default list message.
+     *
+     * @return The default list message.
+     */
     private List<String> getDefaultListMessage() {
         return defaultListMessage;
     }
