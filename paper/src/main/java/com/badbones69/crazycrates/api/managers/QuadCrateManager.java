@@ -140,10 +140,6 @@ public class QuadCrateManager {
             }
         }
 
-        plugin.getLogger().warning(String.valueOf(oldBlocks.size()));
-
-        oldBlocks.forEach((block, state) -> plugin.getLogger().warning(block.getBlock().getType().name()));
-
         List<Entity> shovePlayers = new ArrayList<>();
 
         for (Entity entity : player.getNearbyEntities(3, 3, 3)) {
