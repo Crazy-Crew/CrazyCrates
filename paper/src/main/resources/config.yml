@@ -14,12 +14,13 @@ Settings:
   # Includes command failures, keys taken, given, received and so on.
   # Defaults to false.
   Crate-Actions:
-    Log-File: false
+    Log-File: false # Make sure to delete your log file every now & then.
     Log-Console: false
   InventoryName: '&b&lCrazy &4&lCrates'
   InventorySize: 45
   KnockBack: true
   Physical-Accepts-Virtual-Keys: true #If physical crates can accept virtual keys.
+  Physical-Accepts-Physical-Keys: true # If physical crates can accept physical keys.
   Virtual-Accepts-Physical-Keys: true #If virtual crates can accept physical keys.
   Give-Virtual-Keys-When-Inventory-Full-Message: false # If the player should be notified that it was a virtual key.
   Give-Virtual-Keys-When-Inventory-Full: false #If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.

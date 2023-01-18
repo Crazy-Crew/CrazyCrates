@@ -90,6 +90,14 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         String full = config.getString("Settings.Give-Virtual-Keys-When-Inventory-Full-Message");
 
+        String phys = config.getString("Settings.Physical-Accepts-Physical-Keys");
+
+        if (phys == null) {
+            config.set("Settings.Physical-Accepts-Physical-Keys", true);
+
+            Files.CONFIG.saveFile();
+        }
+
         if (full == null) {
             config.set("Settings.Give-Virtual-Keys-When-Inventory-Full-Message", false);
 

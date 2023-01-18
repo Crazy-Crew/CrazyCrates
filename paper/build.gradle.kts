@@ -25,7 +25,7 @@ releaseBuild {
         }
 
         runServer {
-            minecraftVersion("1.19.3")
+            minecraftVersion("1.17.1")
         }
 
         modrinth {
@@ -41,17 +41,17 @@ releaseBuild {
 
             autoAddDependsOn.set(true)
 
-            gameVersions.addAll(listOf("1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "1.19.2", "1.19.3"))
+            gameVersions.addAll(listOf("1.17", "1.17.1", "1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "1.19.2", "1.19.3"))
             loaders.addAll(listOf("paper", "purpur"))
 
             //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
             changelog.set("""
                 <h4>Changes:</h4>
-                 <p>Added the ability to send a different message if they got a virtual key due to their inventory being full.</p>
-                 <p>Give-Virtual-Keys-When-Inventory-Full-Message: true : A new option in the config.yml</p>
-                 <p>Cannot-Give-Player-Keys : A new message in messages.yml</p>
+                 <p>Added the ability to use the plugin on 1.17-1.17.1</p>
+                 <p>Added the ability to deny using physical keys on physical crates</p>
+                 <p>Added a warning comment to the log file option as the file can crash server.</p>
                 <h4>Bug Fixes:</h4>
-                 <p>N/A</p>
+                 <p>Fix quadcrates not removing blocks again, I feel like I am going insane with this one...</p>
             """.trimIndent())
         }
 
@@ -70,7 +70,9 @@ releaseBuild {
 
     publishing {
         repositories {
-            maven("https://repo.crazycrew.us/beta") {
+            val urlExt = if (isBeta()) "beta" else "releases"
+
+            maven("https://repo.crazycrew.us/$urlExt") {
                 name = "crazycrew"
                 // Used for locally publishing.
                 // credentials(PasswordCredentials::class)

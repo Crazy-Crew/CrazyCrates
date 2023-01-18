@@ -131,7 +131,7 @@ public class CrateControlListener implements Listener { // Crate Control
                     String keyName = crate.getKey().getItemMeta().getDisplayName();
                     keyName = keyName != null ? keyName : crate.getKey().getType().toString();
 
-                    if (crate.getCrateType() != CrateType.CRATE_ON_THE_GO && keyInHand && crazyManager.isKeyFromCrate(key, crate)) {
+                    if (crate.getCrateType() != CrateType.CRATE_ON_THE_GO && keyInHand && crazyManager.isKeyFromCrate(key, crate) && config.getBoolean("Settings.Physical-Accepts-Physical-Keys")) {
                         hasKey = true;
                         isPhysical = true;
                     }

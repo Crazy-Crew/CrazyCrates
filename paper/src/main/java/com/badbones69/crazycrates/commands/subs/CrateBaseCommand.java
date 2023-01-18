@@ -334,7 +334,6 @@ public class CrateBaseCommand extends BaseCommand {
                         }
 
                         player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
-                        // if (config.getBoolean("Settings.KnockBack")) CrateControlListener.knockBack(player, player.getTargetBlock(null, 1).getLocation());
                         return;
                     }
 
@@ -380,6 +379,7 @@ public class CrateBaseCommand extends BaseCommand {
             sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", crateName));
             return;
         }
+
         crazyManager.addPlayerToOpeningList(player, crate);
 
         int keys = crazyManager.getVirtualKeys(player, crate);
