@@ -21,9 +21,7 @@ releaseBuild {
 
         this.username("Ryder Belserion")
 
-        //this.content("New version of $pluginName is ready! <@&929463441159254066>")
-
-        this.content("New version of $pluginName is ready!")
+        this.content("New version of $pluginName is ready! <@&929463441159254066>")
 
         this.embeds {
             this.embed {
@@ -32,7 +30,7 @@ releaseBuild {
                 this.fields {
                     this.field(
                         "Version $pluginVersion",
-                        "Download Link: https://modrinth.com/$pageExtension/${pluginName.toLowerCase()}/version/$pluginVersion"
+                        "Download Link / Changelog: https://modrinth.com/$pageExtension/${pluginName.toLowerCase()}/version/$pluginVersion"
                     )
 
                     val urlExt = if (isBeta()) "beta" else "releases"
