@@ -27,7 +27,6 @@ public class StructureHandler {
     }
 
     private final List<Location> structureBlocks = new ArrayList<>();
-
     private final List<Location> preStructureBlocks = new ArrayList<>();
 
     private StructureManager getStructureManager() {
@@ -44,11 +43,11 @@ public class StructureHandler {
 
     public void pasteStructure(Location location) {
         try {
-            getNearbyBlocks(location);
+            getBlocks(location);
 
             getStructureManager().loadStructure(file).place(location.subtract(2, 0.0, 2), false, StructureRotation.NONE, Mirror.NONE, 0, 1F, new Random());
 
-            getBlocks(true, location);
+            getStructureBlocks(location);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,6 +61,41 @@ public class StructureHandler {
         });
     }
 
+    private void getStructureBlocks(Location location) {
+        for (int x = 0; x < getStructureX(); x++) {
+            for (int y = 0; y < getStructureY(); y++) {
+                for (int z = 0; z < getStructureZ(); z++) {
+                    Block relativeLocation = location.getBlock().getRelative(x, y, z);
+
+                    List<Location> relativeBlocks = new ArrayList<>();
+
+                    relativeBlocks.add(relativeLocation.getLocation());
+                    structureBlocks.addAll(relativeBlocks);
+
+                    structureBlocks.forEach(block -> {
+                        Location blockLoc = block.toBlockLocation();
+
+                        blockLoc.getBlock().getState().update();
+                    });
+                }
+            }
+        }
+    }
+
+    public List<Location> getBlocks(Location location) {
+        for (int x = 0; x < getStructureX(); x++) {
+            for (int y = 0; y < getStructureY(); y++) {
+                for (int z = 0; z < getStructureZ(); z++) {
+                    Block relativeLocation = location.getBlock().getRelative(x, y, z).getLocation().subtract(2, 0.0, 2).getBlock();
+
+                    preStructureBlocks.add(relativeLocation.getLocation());
+                }
+            }
+        }
+
+        return getNearbyBlocks();
+    }
+
     public void saveStructure(Location location) {
 
     }
@@ -69,6 +103,16 @@ public class StructureHandler {
     public double getStructureX() {
         try {
             return getStructureSize().getX();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public double getStructureY() {
+        try {
+            return getStructureSize().getY();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -86,38 +130,7 @@ public class StructureHandler {
         return 0;
     }
 
-    private void getBlocks(boolean getStructureBlocks, Location location) {
-        for (int x = 0; x < getStructureSize().getX(); x++) {
-            for (int y = 0; y < getStructureSize().getY(); y++) {
-                for (int z = 0; z < getStructureSize().getZ(); z++) {
-
-                    Block relativeLocation = location.getBlock().getRelative(x, y, z);
-
-                    List<Location> relativeBlocks = new ArrayList<>();
-
-                    relativeBlocks.add(relativeLocation.getLocation());
-
-                    if (getStructureBlocks) {
-                        structureBlocks.addAll(relativeBlocks);
-
-                        structureBlocks.forEach(block -> {
-                            Location blockLoc = block.toBlockLocation();
-
-                            blockLoc.getBlock().getState().update();
-                        });
-
-                        continue;
-                    }
-
-                    preStructureBlocks.addAll(relativeBlocks);
-                }
-            }
-        }
-    }
-
-    public List<Location> getNearbyBlocks(Location location) {
-        getBlocks(false, location);
-
+    public List<Location> getNearbyBlocks() {
         return Collections.unmodifiableList(preStructureBlocks);
     }
 

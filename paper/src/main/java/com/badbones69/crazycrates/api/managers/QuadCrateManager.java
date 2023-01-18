@@ -121,31 +121,28 @@ public class QuadCrateManager {
         }
 
         // Check if the blocks are able to be changed.
-        List<Location> structureLocations = null;
+        List<Location> structureLocations;
 
-        try {
-            structureLocations = handler.getNearbyBlocks(spawnLocation.clone());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        structureLocations = handler.getBlocks(spawnLocation.clone());
 
         // Loop through the blocks and check if the blacklist contains the block type.
         // Do not open the crate if the block is not able to be changed.
         assert structureLocations != null;
 
-        for (Location block : structureLocations) {
-            Location locBlock = block.toBlockLocation();
-            Block blockType = locBlock.getBlock();
-
-            if (handler.getBlockBlackList().contains(blockType.getType())) {
+        for (Location loc : structureLocations) {
+            if (handler.getBlockBlackList().contains(loc.getBlock().getType())) {
                 player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
                 crazyManager.removePlayerFromOpeningList(player);
                 crateSessions.remove(instance);
                 return;
             } else {
-                oldBlocks.put(locBlock.clone(), blockType.getState());
+                if (!loc.getBlock().getType().equals(Material.AIR)) oldBlocks.put(loc.getBlock().getLocation(), loc.getBlock().getState());
             }
         }
+
+        plugin.getLogger().warning(String.valueOf(oldBlocks.size()));
+
+        oldBlocks.forEach((block, state) -> plugin.getLogger().warning(block.getBlock().getType().name()));
 
         List<Entity> shovePlayers = new ArrayList<>();
 
@@ -242,11 +239,11 @@ public class QuadCrateManager {
                 player.sendMessage(Messages.OUT_OF_TIME.getMessage());
             }
         }.runTaskLater(plugin, crazyManager.getQuadCrateTimer()));
-
     }
 
     public void endCrate(CrazyCrates plugin) {
-        oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
+        //oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
+
         new BukkitRunnable() {
             @Override
             public void run() {
