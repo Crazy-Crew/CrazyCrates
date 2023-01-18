@@ -26,7 +26,6 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import static java.util.regex.Matcher.quoteReplacement;
 
 @SuppressWarnings("deprecation")

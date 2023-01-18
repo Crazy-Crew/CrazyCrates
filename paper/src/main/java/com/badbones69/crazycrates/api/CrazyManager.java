@@ -1131,9 +1131,8 @@ public class CrazyManager {
      */
     public boolean takeKeys(int amount, Player player, Crate crate, KeyType keyType, boolean checkHand) {
         switch (keyType) {
-            case PHYSICAL_KEY:
+            case PHYSICAL_KEY -> {
                 int takeAmount = amount;
-
                 try {
                     List<ItemStack> items = new ArrayList<>();
 
@@ -1190,24 +1189,25 @@ public class CrazyManager {
 
                 // Returns true because it was able to take some keys.
                 if (takeAmount < amount) return true;
+            }
 
-                break;
-            case VIRTUAL_KEY:
+            case VIRTUAL_KEY -> {
                 String uuid = player.getUniqueId().toString();
                 int keys = getVirtualKeys(player, crate);
                 Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
                 int newAmount = Math.max((keys - amount), 0);
-
                 if (newAmount == 0) {
                     Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), null);
                 } else {
                     Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), newAmount);
                 }
-
                 Files.DATA.saveFile();
                 return true;
-            case FREE_KEY: // Returns true because it's FREE
+            }
+
+            case FREE_KEY -> { // Returns true because it's FREE
                 return true;
+            }
         }
 
         return false;
@@ -1297,6 +1297,7 @@ public class CrazyManager {
         crateSchematics.clear();
         String[] schems = new File(plugin.getDataFolder() + "/schematics/").list();
 
+        assert schems != null;
         for (String schematicName : schems) {
             if (schematicName.endsWith(".nbt")) {
                 crateSchematics.add(new CrateSchematic(schematicName.replace(".nbt", ""), new File(plugin.getDataFolder() + "/schematics/" + schematicName)));
