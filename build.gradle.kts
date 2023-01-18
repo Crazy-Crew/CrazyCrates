@@ -8,6 +8,8 @@ val legacyUpdate = Color(255, 73, 110)
 val releaseUpdate = Color(27, 217, 106)
 val snapshotUpdate = Color(255, 163, 71)
 
+val commitMessage: String? = System.getenv("COMMIT_MESSAGE")
+
 releaseBuild {
     val pluginVersion = getProjectVersion()
     val pluginName = getProjectName()
@@ -35,11 +37,18 @@ releaseBuild {
                         "Download Link: https://modrinth.com/$pageExtension/${pluginName.toLowerCase()}/version/$pluginVersion"
                     )
 
-                    val urlExt = if (isBeta()) "beta" else "releases"
+                    if (isBeta()) {
+                        if (commitMessage != null) this.field("Commit Message", commitMessage)
 
-                    this.field(
+                        this.field(
+                            "API Update",
+                            "Version $pluginVersion has been pushed to https://repo.crazycrew.us/#/beta/"
+                        )
+                    }
+
+                    if (!isBeta()) this.field(
                         "API Update",
-                        "Version $pluginVersion has been pushed to https://repo.crazycrew.us/#/$urlExt/"
+                        "Version $pluginVersion has been pushed to https://repo.crazycrew.us/#/releases/"
                     )
                 }
 
