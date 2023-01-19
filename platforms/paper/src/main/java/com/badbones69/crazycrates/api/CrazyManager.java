@@ -22,7 +22,7 @@ import com.badbones69.crazycrates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.support.holograms.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.HolographicDisplaysSupport;
-import com.badbones69.crazycrates.support.libs.PluginSupport;
+import com.badbones69.crazycrates.support.libraries.PluginSupport;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.clip.placeholderapi.PlaceholderAPI;

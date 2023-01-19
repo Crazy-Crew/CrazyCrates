@@ -1,17 +1,11 @@
 plugins {
     `java-library`
-}
 
-repositories {
-    maven("https://repo.crazycrew.us/plugins/")
+    `maven-publish`
 
-    maven("https://repo.triumphteam.dev/snapshots/")
+    id("com.github.hierynomus.license")
 
-    maven("https://libraries.minecraft.net/")
-
-    maven("https://jitpack.io/")
-
-    mavenCentral()
+    id("com.github.johnrengelman.shadow")
 }
 
 java {

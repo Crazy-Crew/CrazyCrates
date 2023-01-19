@@ -15,7 +15,6 @@ import com.badbones69.crazycrates.cratetypes.Roulette;
 import com.badbones69.crazycrates.cratetypes.War;
 import com.badbones69.crazycrates.cratetypes.Wheel;
 import com.badbones69.crazycrates.cratetypes.Wonder;
-import com.badbones69.crazycrates.enums.Permissions;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
@@ -24,7 +23,8 @@ import com.badbones69.crazycrates.listeners.MenuListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
 import com.badbones69.crazycrates.support.MetricsHandler;
-import com.badbones69.crazycrates.support.libs.PluginSupport;
+import com.badbones69.crazycrates.support.libraries.PluginSupport;
+import com.badbones69.crazycrates.support.libraries.UpdateChecker;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
@@ -147,7 +147,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             metricsHandler.start();
         }
 
-        checkUpdate(null, true);
+        checkUpdate();
 
         enable();
     }
@@ -165,11 +165,9 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         starter.getCrazyManager().setNewPlayerKeys(e.getPlayer());
         starter.getCrazyManager().loadOfflinePlayersKeys(e.getPlayer());
-
-        checkUpdate(e.getPlayer(), false);
     }
 
-    private void checkUpdate(Player player, boolean consolePrint) {
+    private void checkUpdate() {
         FileConfiguration config = Files.CONFIG.getFile();
 
         boolean updaterEnabled = config.getBoolean("Settings.Update-Checker");
@@ -181,19 +179,9 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
             try {
                 if (updateChecker.hasUpdate() && !getDescription().getVersion().contains("Beta")) {
-                    if (consolePrint) {
-                        getLogger().warning("CrazyCrates has a new update available! New version: " + updateChecker.getNewVersion());
-                        getLogger().warning("Current Version: v" + getDescription().getVersion());
-                        getLogger().warning("Download: " + updateChecker.getResourcePage());
-
-                        return;
-                    } else {
-                        if (!player.isOp() || !player.hasPermission(Permissions.CRAZY_CRATES_ADMIN_HELP.getPermission())) return;
-
-                        player.sendMessage(Methods.color("&8> &cCrazyCrates has a new update available! New version: &e&n" + updateChecker.getNewVersion()));
-                        player.sendMessage(Methods.color("&8> &cCurrent Version: &e&n" + getDescription().getVersion()));
-                        player.sendMessage(Methods.color("&8> &cDownload: &e&n" + updateChecker.getResourcePage()));
-                    }
+                    getLogger().warning("CrazyCrates has a new update available! New version: " + updateChecker.getNewVersion());
+                    getLogger().warning("Current Version: v" + getDescription().getVersion());
+                    getLogger().warning("Download: " + updateChecker.getResourcePage());
 
                     return;
                 }

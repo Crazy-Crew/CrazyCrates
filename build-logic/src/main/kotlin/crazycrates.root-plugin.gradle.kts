@@ -4,21 +4,33 @@ import task.ReleaseWebhook
 import task.WebhookExtension
 
 plugins {
-    id("crazycrates.common-plugin")
+    id("crazycrates.base-plugin")
+}
+
+repositories {
+    maven("https://repo.triumphteam.dev/snapshots/")
+
+    maven("https://repo.crazycrew.us/plugins/")
+
+    maven("https://libraries.minecraft.net/")
+
+    maven("https://jitpack.io/")
+
+    mavenCentral()
 }
 
 tasks {
     // Creating the extension to be available on the root gradle
     val webhookExtension = extensions.create("webhook", WebhookExtension::class)
 
-    val buildExtension = extensions.create("releaseBuild", BuildExtension::class)
+    val buildExtension = extensions.create("compile", BuildExtension::class)
 
     // Register the task
-    register<ReleaseWebhook>("releaseWebhook") {
+    register<ReleaseWebhook>("webhook") {
         extension = webhookExtension
     }
 
-    register<ReleaseBuild>("releaseBuild") {
+    register<ReleaseBuild>("compile") {
         extension = buildExtension
     }
 }

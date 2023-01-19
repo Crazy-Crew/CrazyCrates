@@ -9,6 +9,8 @@ abstract class BuildExtension {
 
     private val description = System.getProperty("description")
 
+    private val github = System.getProperty("github")
+
     private val name = System.getProperty("name")
 
     private val group = System.getProperty("group")
@@ -22,6 +24,8 @@ abstract class BuildExtension {
     fun getProjectName(): String = this.name
 
     fun getProjectDescription(): String = this.description
+
+    fun getProjectGithub(): String = this.github
 
     fun getProjectGroup(): String = this.group
 

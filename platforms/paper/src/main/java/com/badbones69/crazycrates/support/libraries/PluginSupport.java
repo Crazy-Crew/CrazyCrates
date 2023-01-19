@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.support.libs;
+package com.badbones69.crazycrates.support.libraries;
 
 import com.badbones69.crazycrates.CrazyCrates;
 

@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.support.SkullCreator;
-import com.badbones69.crazycrates.support.libs.PluginSupport;
+import com.badbones69.crazycrates.support.libraries.PluginSupport;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.Color;

@@ -8,7 +8,7 @@ val legacyUpdate = Color(255, 73, 110)
 val releaseUpdate = Color(27, 217, 106)
 val betaUpdate = Color(255, 163, 71)
 
-releaseBuild {
+compile {
     val pluginVersion = getProjectVersion()
     val pluginName = getProjectName()
 
