@@ -83,6 +83,17 @@ public class QuadCrateManager {
     // Get the structure handler.
     private final StructureHandler handler;
 
+    /**
+     * A constructor to build the quad crate session
+     *
+     * @param player opening the crate
+     * @param crate the player is opening
+     * @param keyType the player has
+     * @param spawnLocation of the schematic
+     * @param lastLocation the player was at
+     * @param inHand check the hand of the player
+     * @param handler the structure handler instance
+     */
     public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler) {
         this.instance = this;
         this.player = player;
@@ -102,6 +113,9 @@ public class QuadCrateManager {
         crateSessions.add(instance);
     }
 
+    /**
+     * Start the crate session
+     */
     public void startCrate() {
 
         // Check if it is on a block.
@@ -237,9 +251,10 @@ public class QuadCrateManager {
         }.runTaskLater(plugin, crazyManager.getQuadCrateTimer()));
     }
 
-    public void endCrate(CrazyCrates plugin) {
-        //oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
-
+    /**
+     * End the crate gracefully.
+     */
+    public void endCrate() {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -272,7 +287,11 @@ public class QuadCrateManager {
         }.runTaskLater(plugin, 5);
     }
 
-    // End the crate & remove the hologram by force.
+    /**
+     * End the crate by force which cleans everything up.
+     *
+     * @param removeForce whether to stop the crate session or not
+     */
     public void endCrateForce(boolean removeForce) {
         oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
         crateLocations.forEach(location -> quadCrateChests.get(location).update(true, false));
@@ -287,11 +306,22 @@ public class QuadCrateManager {
         handler.removeStructure();
     }
 
-    // Add the crate locations.
+    /**
+     * Add a crate location
+     *
+     * @param x coordinate
+     * @param y coordinate
+     * @param z coordinate
+     */
     public void addCrateLocations(int x, int y, int z) {
         crateLocations.add(spawnLocation.clone().add(x, y, z));
     }
 
+    /**
+     * Get an arraylist of colors
+     *
+     * @return list of colors
+     */
     private List<Color> getColors() {
         return Arrays.asList(
                 Color.AQUA, Color.BLACK, Color.BLUE, Color.FUCHSIA, Color.GRAY,
@@ -300,6 +330,14 @@ public class QuadCrateManager {
                 Color.WHITE, Color.YELLOW);
     }
 
+    /**
+     * Spawn particles at 2 specific locations with a customizable color.
+     *
+     * @param quadCrateParticle the particle to spawn
+     * @param particleColor the color of the particle
+     * @param location1 the first location of the particle
+     * @param location2 the second location of the particle
+     */
     private void spawnParticles(CrateParticles quadCrateParticle, Color particleColor, Location location1, Location location2) {
         Particle particle = switch (quadCrateParticle) {
             case FLAME -> Particle.FLAME;
@@ -317,37 +355,65 @@ public class QuadCrateManager {
         }
     }
 
-    // Get the crate sessions.
+    /**
+     * Get the crate sessions
+     *
+     * @return list of crate sessions
+     */
     public static List<QuadCrateManager> getCrateSessions() {
         return crateSessions;
     }
 
-    // Get Player.
+    /**
+     * Get the player opening the crate
+     *
+     * @return the player
+     */
     public Player getPlayer() {
         return player;
     }
 
-    // Get the crate.
+    /**
+     * Get a list of crate locations.
+     *
+     * @return list of crate locations
+     */
     public List<Location> getCrateLocations() {
         return crateLocations;
     }
 
-    // Get open crates.
+    /**
+     * Get the hashmap of opened crates.
+     *
+     * @return map of opened crates
+     */
     public HashMap<Location, Boolean> getCratesOpened() {
         return cratesOpened;
     }
 
-    // Get the crate.
+    /**
+     * Get the crate object.
+     *
+     * @return the crate object
+     */
     public Crate getCrate() {
         return crate;
     }
 
-    // Get display rewards.
+    /**
+     * Get the list of display rewards.
+     *
+     * @return list of display rewards
+     */
     public List<Entity> getDisplayedRewards() {
         return displayedRewards;
     }
 
-    // Check if all crates are opened.
+    /**
+     * Check if all crates have opened.
+     *
+     * @return true if yes otherwise false
+     */
     public Boolean allCratesOpened() {
         for (Map.Entry<Location, Boolean> location : cratesOpened.entrySet()) {
             if (!location.getValue()) return false;

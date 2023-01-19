@@ -36,19 +36,41 @@ public enum Permissions {
     private final String defaultPermission;
     private final String description;
 
+    /**
+     * A constructor to build a permission
+     *
+     * @param defaultPermission the default permission
+     * @param description the permission description
+     */
     Permissions(String defaultPermission, String description) {
         this.defaultPermission = defaultPermission;
         this.description = description;
     }
 
+    /**
+     * Get a built permission with an action type.
+     *
+     * @param action the action type i.e "command"
+     * @return a completed permission
+     */
     public String getPermission(String action) {
         return "crazycrates." + action + "." + defaultPermission;
     }
 
+    /**
+     * Get a built permission with no action type.
+     *
+     * @return a completed permission
+     */
     public String getPermission() {
         return "crazycrates.command." + defaultPermission;
     }
 
+    /**
+     * Get the description of the permission.
+     *
+     * @return the description
+     */
     public String getDescription() {
         return description;
     }

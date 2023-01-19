@@ -7,11 +7,22 @@ public enum KeyType {
     FREE_KEY("Free_Key");
     
     private final String name;
-    
+
+    /**
+     * A constructor to build a key type reference.
+     *
+     * @param name of the key-type
+     */
     KeyType(String name) {
         this.name = name;
     }
-    
+
+    /**
+     * Get the key type by name.
+     *
+     * @param type the name of the key-type
+     * @return the type of key otherwise null
+     */
     public static KeyType getFromName(String type) {
         if (type.equalsIgnoreCase("virtual") || type.equalsIgnoreCase("v")) {
             return KeyType.VIRTUAL_KEY;
@@ -23,7 +34,12 @@ public enum KeyType {
 
         return null;
     }
-    
+
+    /**
+     * Get the name of the key type.
+     *
+     * @return the name of the key-type
+     */
     public String getName() {
         return name;
     }

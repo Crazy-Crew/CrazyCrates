@@ -1,5 +1,13 @@
 dependencyResolutionManagement {
     includeBuild("build-logic")
+
+    versionCatalogs {
+        create("settings") {
+            from(files("gradle/settings.versions.toml"))
+        }
+    }
+
+    repositories.gradlePluginPortal()
 }
 
 pluginManagement {
@@ -9,41 +17,38 @@ pluginManagement {
         gradlePluginPortal()
         mavenCentral()
     }
-
-    plugins {
-        id("com.modrinth.minotaur") version "2.6.0"
-        id("xyz.jpenilla.run-paper") version "2.0.0"
-    }
 }
 
+val lowerCase = rootProject.name.toLowerCase()
+
 include("core")
-project(":core").name = "${rootProject.name.toLowerCase()}-core"
+project(":core").name = "$lowerCase-core"
 
 listOf("paper").forEach(::includePlatform)
 
 fun includeProject(name: String) {
     include(name) {
-        this.name = "${rootProject.name.toLowerCase()}-$name"
+        this.name = "$lowerCase-$name"
     }
 }
 
 fun includePlatform(name: String) {
     include(name) {
-        this.name = "${rootProject.name.toLowerCase()}-platform-$name"
+        this.name = "$lowerCase-platform-$name"
         this.projectDir = file("platforms/$name")
     }
 }
 
 fun includeModule(name: String) {
     include(name) {
-        this.name = "${rootProject.name.toLowerCase()}-module-$name"
+        this.name = "$lowerCase-module-$name"
         this.projectDir = file("modules/$name")
     }
 }
 
 fun includePlatformModule(name: String, platform: String) {
     include(name) {
-        this.name = "${rootProject.name.toLowerCase()}-module-$platform-$name"
+        this.name = "$lowerCase-module-$platform-$name"
         this.projectDir = file("modules/$platform/$name")
     }
 }

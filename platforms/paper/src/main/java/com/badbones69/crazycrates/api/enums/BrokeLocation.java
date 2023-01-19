@@ -23,12 +23,12 @@ public class BrokeLocation {
      * Builds a location that represents a broken crate.
      * Usually never activates.......
      *
-     * @param locationName The location name
-     * @param crate The crate object
-     * @param x The X coordinate
-     * @param y The Y coordinate
-     * @param z The Z coordinate
-     * @param world The world name
+     * @param locationName the location name
+     * @param crate the crate object
+     * @param x the X coordinate
+     * @param y the Y coordinate
+     * @param z the Z coordinate
+     * @param world the world name
      */
     public BrokeLocation(String locationName, Crate crate, int x, int y, int z, String world) {
         this.x = x;
@@ -40,14 +40,14 @@ public class BrokeLocation {
     }
 
     /**
-     * @return The location name
+     * @return the location name
      */
     public String getLocationName() {
         return locationName;
     }
 
     /**
-     * @return The X coordinate
+     * @return the X coordinate
      */
     public int getX() {
         return x;
@@ -56,14 +56,14 @@ public class BrokeLocation {
     /**
      * Set the X coordinate.
      *
-     * @param x The new X coordinate
+     * @param x the new X coordinate
      */
     public void setX(int x) {
         this.x = x;
     }
 
     /**
-     * @return The Y coordinate
+     * @return the Y coordinate
      */
     public int getY() {
         return y;
@@ -73,14 +73,14 @@ public class BrokeLocation {
     /**
      * Set the Y coordinate.
      *
-     * @param y The new Y coordinate
+     * @param y the new Y coordinate
      */
     public void setY(int y) {
         this.y = y;
     }
 
     /**
-     * @return The Z coordinate
+     * @return the Z coordinate
      */
     public int getZ() {
         return z;
@@ -89,14 +89,14 @@ public class BrokeLocation {
     /**
      * Set the Z coordinate.
      *
-     * @param z The new Z coordinate
+     * @param z the new Z coordinate
      */
     public void setZ(int z) {
         this.z = z;
     }
 
     /**
-     * @return The world name
+     * @return the world name
      */
     public String getWorld() {
         return world;
@@ -105,14 +105,14 @@ public class BrokeLocation {
     /**
      * Set the World name.
      *
-     * @param world The world name
+     * @param world the world name
      */
     public void setWorld(String world) {
         this.world = world;
     }
 
     /**
-     * @return The crate object
+     * @return the crate object
      */
     public Crate getCrate() {
         return crate;
@@ -121,7 +121,7 @@ public class BrokeLocation {
     /**
      * Set the crate object.
      *
-     * @param crate The new crate object
+     * @param crate the new crate object
      */
     public void setCrate(Crate crate) {
         this.crate = crate;
@@ -130,7 +130,7 @@ public class BrokeLocation {
     /**
      * Get the location of the Broken Crate.
      *
-     * @return The location of the broken crate
+     * @return the location of the broken crate
      */
     public Location getLocation() {
         return new Location(plugin.getServer().getWorld(world), x, y, z);

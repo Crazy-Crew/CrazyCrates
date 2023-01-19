@@ -1,5 +1,3 @@
-import task.BuildExtension
-import task.ReleaseBuild
 import task.ReleaseWebhook
 import task.WebhookExtension
 
@@ -23,14 +21,8 @@ tasks {
     // Creating the extension to be available on the root gradle
     val webhookExtension = extensions.create("webhook", WebhookExtension::class)
 
-    val buildExtension = extensions.create("compile", BuildExtension::class)
-
     // Register the task
     register<ReleaseWebhook>("webhook") {
         extension = webhookExtension
-    }
-
-    register<ReleaseBuild>("compile") {
-        extension = buildExtension
     }
 }

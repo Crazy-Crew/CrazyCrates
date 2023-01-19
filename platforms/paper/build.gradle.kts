@@ -1,9 +1,9 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.modrinth.minotaur")
-
-    id("xyz.jpenilla.run-paper")
-
     id("crazycrates.paper-plugin")
+
+    alias(settings.plugins.minotaur)
+    alias(settings.plugins.run.paper)
 }
 
 repositories {
@@ -21,77 +21,86 @@ repositories {
 dependencies {
     api(project(":crazycrates-core"))
 
-    implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-SNAPSHOT")
+    implementation(libs.papermc)
 
-    implementation("de.tr7zw", "nbt-data-api", "2.11.1")
+    implementation(libs.triumph.cmds)
 
-    implementation("org.bstats", "bstats-bukkit", "3.0.0")
+    implementation(libs.nbt.api)
+    implementation(libs.bstats.bukkit)
 
-    compileOnly("me.filoghost.holographicdisplays", "holographicdisplays-api", "3.0.0")
+    implementation(libs.holographic.displays)
+    implementation(libs.decent.holograms)
+    implementation(libs.cmi.api)
+    implementation(libs.cmi.lib)
 
-    compileOnly("com.github.decentsoftware-eu", "decentholograms", "2.7.8")
+    implementation(libs.placeholder.api)
 
-    compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
-
-    compileOnly("com.Zrips.CMI", "CMI-API", "9.2.6.1")
-    compileOnly("net.Zrips.CMILib", "CMI-Lib", "1.2.4.1")
-
-    compileOnly("me.clip", "placeholderapi", "2.11.2") {
-        exclude(group = "org.spigotmc", module = "spigot")
-        exclude(group = "org.bukkit", module = "bukkit")
-    }
-
-    compileOnly("com.github.LoneDev6", "api-itemsadder", "3.0.0")
+    implementation(libs.itemsadder.api)
 }
 
-compile {
-    tasks {
-        shadowJar {
-            val versionString = if (isBeta()) getProjectVersion() else getProjectVersion()
-            archiveFileName.set("${getProjectName()}+$versionString.jar")
+val projectDescription = settings.versions.projectDescription.get()
+val projectGithub = settings.versions.projectGithub.get()
+val projectGroup = settings.versions.projectGroup.get()
+val projectName = settings.versions.projectName.get()
+val projectExt = settings.versions.projectExtension.get()
 
+val isBeta = settings.versions.projectBeta.get().toBoolean()
+
+val projectVersion = settings.versions.projectVersion.get()
+
+val finalVersion = if (isBeta) "$projectVersion+Beta" else projectVersion
+
+val projectNameLowerCase = projectName.toLowerCase()
+
+val repo = if (isBeta) "beta" else "releases"
+val type = if (isBeta) "beta" else "release"
+
+tasks {
+    shadowJar {
+        archiveFileName.set("${projectName}+$finalVersion.jar")
+
+        listOf(
+            "de.tr7zw",
+            "org.bstats",
+            "dev.triumphteam.cmd"
+        ).forEach { relocate(it, "$projectGroup.plugin.library.$it") }
+    }
+
+    runServer {
+        minecraftVersion("1.19.3")
+    }
+
+    modrinth {
+        token.set(System.getenv("MODRINTH_TOKEN"))
+        projectId.set(projectNameLowerCase)
+
+        versionName.set("$projectName $finalVersion")
+        versionNumber.set(finalVersion)
+
+        versionType.set(type)
+
+        uploadFile.set(shadowJar.get())
+
+        autoAddDependsOn.set(true)
+
+        gameVersions.addAll(
             listOf(
-                "de.tr7zw",
-                "org.bstats",
-                "dev.triumphteam.cmd"
-            ).forEach { relocate(it, "${getProjectGroup()}.plugin.library.$it") }
-        }
-
-        runServer {
-            minecraftVersion("1.19.3")
-        }
-
-        modrinth {
-            token.set(System.getenv("MODRINTH_TOKEN"))
-            projectId.set(getProjectName().toLowerCase())
-
-            versionName.set("${getProjectName()} ${getProjectVersion()}")
-            versionNumber.set(getProjectVersion())
-
-            versionType.set(getProjectType())
-
-            uploadFile.set(shadowJar.get())
-
-            autoAddDependsOn.set(true)
-
-            gameVersions.addAll(
-                listOf(
-                    "1.17",
-                    "1.17.1",
-                    "1.18",
-                    "1.18.1",
-                    "1.18.2",
-                    "1.19",
-                    "1.19.1",
-                    "1.19.2",
-                    "1.19.3"
-                )
+                "1.17",
+                "1.17.1",
+                "1.18",
+                "1.18.1",
+                "1.18.2",
+                "1.19",
+                "1.19.1",
+                "1.19.2",
+                "1.19.3"
             )
-            loaders.addAll(listOf("paper", "purpur"))
+        )
+        loaders.addAll(listOf("paper", "purpur"))
 
-            //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
-            changelog.set(
-                """
+        //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
+        changelog.set(
+            """
                 <h4>Changes:</h4>
                  <p>We no longer check for updates when a player joins.</p>
                  <p>Switched to Modrinth's v2 api for update checker</p>
@@ -99,78 +108,75 @@ compile {
                 <h4>Bug Fixes:</h4>
                  <p>N/A</p>
             """.trimIndent()
+        )
+    }
+
+    processResources {
+        filesMatching("plugin.yml") {
+            expand(
+                "name" to projectName,
+                "group" to projectGroup,
+                "version" to finalVersion,
+                "description" to projectDescription,
+                "website" to "https://modrinth.com/$projectExt/$projectNameLowerCase"
             )
         }
+    }
+}
 
-        processResources {
-            filesMatching("plugin.yml") {
-                expand(
-                    "name" to getProjectName(),
-                    "group" to getProjectGroup(),
-                    "version" to getProjectVersion(),
-                    "description" to getProjectDescription(),
-                    "website" to "https://modrinth.com/${getExtension()}/${getProjectName().toLowerCase()}"
-                )
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = projectGroup
+            artifactId = "$projectNameLowerCase-paper"
+            version = finalVersion
+
+            from(components["java"])
+
+            pom {
+                name.set(projectName)
+
+                description.set(projectDescription)
+                url.set(projectGithub)
+
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("https://www.opensource.org/licenses/mit-license.php")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("ryderbelserion")
+                        name.set("Ryder Belserion")
+                    }
+
+                    developer {
+                        id.set("badbones69")
+                        name.set("BadBones69")
+                    }
+                }
+
+                scm {
+                    connection.set("scm:git:git://github.com/Crazy-Crew/CrazyCrates.git")
+                    developerConnection.set("scm:git:ssh://github.com/Crazy-Crew/CrazyCrates.git")
+                    url.set(projectGithub)
+                }
             }
         }
     }
 
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = getProjectGroup()
-                artifactId = "${getProjectName().toLowerCase()}-paper"
-                version = getProjectVersion()
+    repositories {
+        maven("https://repo.crazycrew.us/$repo") {
+            name = "crazycrew"
+            // Used for locally publishing.
+            credentials(PasswordCredentials::class)
 
-                from(components["java"])
-
-                pom {
-                    name.set(getProjectName())
-
-                    description.set(getProjectDescription())
-                    url.set(getProjectGithub())
-
-                    licenses {
-                        license {
-                            name.set("MIT License")
-                            url.set("https://www.opensource.org/licenses/mit-license.php")
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id.set("ryderbelserion")
-                            name.set("Ryder Belserion")
-                        }
-
-                        developer {
-                            id.set("badbones69")
-                            name.set("BadBones69")
-                        }
-                    }
-
-                    scm {
-                        connection.set("scm:git:git://github.com/Crazy-Crew/CrazyCrates.git")
-                        developerConnection.set("scm:git:ssh://github.com/Crazy-Crew/CrazyCrates.git")
-                        url.set(getProjectGithub())
-                    }
-                }
-            }
-        }
-
-        repositories {
-            val urlExt = if (isBeta()) "beta" else "releases"
-
-            maven("https://repo.crazycrew.us/$urlExt") {
-                name = "crazycrew"
-                // Used for locally publishing.
-                credentials(PasswordCredentials::class)
-
-                // credentials {
-                //    username = System.getenv("REPOSITORY_USERNAME")
-                //    password = System.getenv("REPOSITORY_PASSWORD")
-                //}
-            }
+            // credentials {
+            //    username = System.getenv("REPOSITORY_USERNAME")
+            //    password = System.getenv("REPOSITORY_PASSWORD")
+            //}
         }
     }
 }
