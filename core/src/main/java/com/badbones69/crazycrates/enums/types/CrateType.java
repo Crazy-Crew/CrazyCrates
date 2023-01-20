@@ -38,7 +38,12 @@ public enum CrateType {
 
         return null;
     }
-    
+
+    /**
+     * Get the name of the crate.
+     *
+     * @return the crate name
+     */
     public String getName() {
         return name;
     }
