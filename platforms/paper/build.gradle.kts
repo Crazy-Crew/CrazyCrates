@@ -1,4 +1,5 @@
 @Suppress("DSL_SCOPE_VIOLATION")
+
 plugins {
     id("crazycrates.paper-plugin")
 
@@ -21,21 +22,21 @@ repositories {
 dependencies {
     api(project(":crazycrates-core"))
 
-    implementation(libs.papermc)
+    compileOnly(libs.papermc)
 
     implementation(libs.triumph.cmds)
 
     implementation(libs.nbt.api)
     implementation(libs.bstats.bukkit)
 
-    implementation(libs.holographic.displays)
-    implementation(libs.decent.holograms)
-    implementation(libs.cmi.api)
-    implementation(libs.cmi.lib)
+    compileOnly(libs.holographic.displays)
+    compileOnly(libs.decent.holograms)
+    compileOnly(libs.cmi.api)
+    compileOnly(libs.cmi.lib)
 
-    implementation(libs.placeholder.api)
+    compileOnly(libs.placeholder.api)
 
-    implementation(libs.itemsadder.api)
+    compileOnly(libs.itemsadder.api)
 }
 
 val projectDescription = settings.versions.projectDescription.get()
@@ -96,6 +97,7 @@ tasks {
                 "1.19.3"
             )
         )
+
         loaders.addAll(listOf("paper", "purpur"))
 
         //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
@@ -159,8 +161,8 @@ publishing {
                 }
 
                 scm {
-                    connection.set("scm:git:git://github.com/Crazy-Crew/CrazyCrates.git")
-                    developerConnection.set("scm:git:ssh://github.com/Crazy-Crew/CrazyCrates.git")
+                    connection.set("scm:git:git://github.com/Crazy-Crew/$projectName.git")
+                    developerConnection.set("scm:git:ssh://github.com/Crazy-Crew/$projectName.git")
                     url.set(projectGithub)
                 }
             }
@@ -171,12 +173,12 @@ publishing {
         maven("https://repo.crazycrew.us/$repo") {
             name = "crazycrew"
             // Used for locally publishing.
-            credentials(PasswordCredentials::class)
+            // credentials(PasswordCredentials::class)
 
-            // credentials {
-            //    username = System.getenv("REPOSITORY_USERNAME")
-            //    password = System.getenv("REPOSITORY_PASSWORD")
-            //}
+            credentials {
+                username = System.getenv("REPOSITORY_USERNAME")
+                password = System.getenv("REPOSITORY_PASSWORD")
+            }
         }
     }
 }

@@ -10,13 +10,13 @@ val finalVersion = if (projectBeta) "$projectVersion+beta" else projectVersion
 
 project.version = finalVersion
 
+dependencies {
+    compileOnly(libs.adventure.api)
+    compileOnly(libs.adventure.text)
+}
+
 tasks {
     shadowJar {
         archiveFileName.set("$projectName+core+$finalVersion.jar")
     }
-}
-
-dependencies {
-    implementation(libs.adventure.api)
-    implementation(libs.adventure.text)
 }

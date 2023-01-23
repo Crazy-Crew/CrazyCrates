@@ -25,7 +25,7 @@ webhook {
 
     this.username("Ryder Belserion")
 
-    this.content("New version of $projectName is ready!")
+    this.content("New version of $projectName is ready! <@&929463441159254066>")
 
     this.embeds {
         this.embed {

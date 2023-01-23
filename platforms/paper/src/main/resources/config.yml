@@ -5,7 +5,6 @@ Settings:
   # Do not change this. We use this to check if your Configs including if crate configs are outdated!
   Config-Version: 1
   # Whether you want to be notified when a new update is available.
-  # Requires you as a player to be opped or have the permission `crazycrates.command.admin.help`
   Update-Checker: true
   Toggle-Metrics: true #Turn on and off if your server stats are sent to https://bstats.org/ - Requires a restart!
   # Whether to enable or disable the crate menu. True if you want it enabled otherwise False

@@ -9,7 +9,6 @@ projectDescription = "Add unlimited crates to your server with 10 different crat
 projectGithub = "https://github.com/Crazy-Crew/CrazyCrates"
 projectBeta = "true"
 projectExtension = "plugin"
-projectJavaVersion = "17"
 
 [plugins]
 
