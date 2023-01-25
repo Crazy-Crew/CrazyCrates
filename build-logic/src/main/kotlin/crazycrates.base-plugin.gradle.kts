@@ -19,9 +19,6 @@ license {
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(project.properties["java_version"].toString()))
-
-    withSourcesJar()
-    withJavadocJar()
 }
 
 tasks {
