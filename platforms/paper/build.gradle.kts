@@ -104,11 +104,16 @@ tasks {
         changelog.set(
             """
                 <h4>Changes:</h4>
-                 <p>We no longer check for updates when a player joins.</p>
-                 <p>Switched to Modrinth's v2 api for update checker</p>
-                 <p>Update build script</p>
+                 <p>Added 1.17.1 support back.</p>
+                 <p>Added a feature https://github.com/orgs/Crazy-Crew/discussions/19</p>
+                <h4>Under the hood changes</h4>
+                 <p>Re-organized the build script for the last time.</p>
+                 <p>Cleaned up a few pieces of code.</p>
+                 <p>No longer check for updates when a player joins.</p>
+                 <p>Updated nbt-api artifact id.</p>
                 <h4>Bug Fixes:</h4>
-                 <p>N/A</p>
+                 <p>Fixed quadcrates hopefully for the last time.</p>
+                 <p>Fixed the nbt-api link.</p>
             """.trimIndent()
         )
     }
