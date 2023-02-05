@@ -17,10 +17,15 @@ repositories {
      * NBT Team
      */
     maven("https://repo.codemc.org/repository/maven-public/")
+
+    maven("https://repo.crazycrew.us/libraries/")
 }
 
 dependencies {
     api(project(":crazycrates-core"))
+
+    implementation("net.dehya.ruby:ruby-core:0.0.1")
+    implementation("net.dehya.ruby:ruby-paper:0.0.1")
 
     compileOnly(libs.papermc)
 
@@ -63,7 +68,8 @@ tasks {
         listOf(
             "de.tr7zw.changeme.nbtapi",
             "org.bstats",
-            "dev.triumphteam.cmd"
+            "dev.triumphteam.cmd",
+            "net.dehya.ruby"
         ).forEach { relocate(it, "$projectGroup.plugin.library.$it") }
     }
 
