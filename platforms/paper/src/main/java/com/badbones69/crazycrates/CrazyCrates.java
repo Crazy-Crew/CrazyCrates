@@ -11,6 +11,7 @@ import com.badbones69.crazycrates.configs.Locale;
 import com.badbones69.crazycrates.configs.convert.ConfigConversion;
 import com.badbones69.crazycrates.cratetypes.*;
 import com.badbones69.crazycrates.listeners.*;
+import com.badbones69.crazycrates.listeners.tasks.PlayerKeyTask;
 import com.badbones69.crazycrates.support.MetricsHandler;
 import com.badbones69.crazycrates.support.libraries.PluginSupport;
 import com.badbones69.crazycrates.support.libraries.UpdateChecker;
@@ -35,7 +36,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CrazyCrates extends JavaPlugin implements RubyCore, Listener {
+public class CrazyCrates extends JavaPlugin implements RubyCore {
 
     private static CrazyCrates plugin;
 
@@ -125,12 +126,6 @@ public class CrazyCrates extends JavaPlugin implements RubyCore, Listener {
         enable();
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        starter.getCrazyManager().setNewPlayerKeys(e.getPlayer());
-        starter.getCrazyManager().loadOfflinePlayersKeys(e.getPlayer());
-    }
-
     private void checkUpdate() {
         boolean updaterEnabled = Config.UPDATE_CHECKER;
 
@@ -188,7 +183,7 @@ public class CrazyCrates extends JavaPlugin implements RubyCore, Listener {
         pluginManager.registerEvents(new CrateOnTheGo(), this);
         pluginManager.registerEvents(new QuadCrate(), this);
 
-        pluginManager.registerEvents(this, this);
+        pluginManager.registerEvents(new PlayerKeyTask(), this);
 
         if (PluginSupport.ITEMS_ADDER.isPluginEnabled()) {
             getServer().getPluginManager().registerEvents(new ItemsAdderListener(), this);
