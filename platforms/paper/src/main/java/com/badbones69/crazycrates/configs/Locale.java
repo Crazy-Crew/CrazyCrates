@@ -2,22 +2,30 @@ package com.badbones69.crazycrates.configs;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import net.dehya.ruby.common.annotations.FileBuilder;
+import net.dehya.ruby.common.annotations.yaml.Header;
 import net.dehya.ruby.common.enums.FileType;
 import net.dehya.ruby.files.FileExtension;
 import java.nio.file.Path;
 
 @FileBuilder(isLogging = true, isAsync = false, isData = false, fileType = FileType.YAML)
+@Header("""
+        If you notice any translation issues, Do not hesitate to contact our Translators.
+        
+        Discord: https://discord.gg/crazycrew
+        Github: https://github.com/Crazy-Crew
+        
+        Report Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
+        Request Features/Support: https://github.com/orgs/Crazy-Crew/discussions
+        """)
 public class Locale extends FileExtension {
 
     public Locale(Path path) {
         super(Config.LOCALE_FILE, path.resolve("locale"));
     }
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    public static void reload(CrazyCrates plugin) {
+        plugin.getPaperManager().getPaperFileManager().extract("/locale", plugin.getDirectory());
 
-    private static final Locale LOCALE = new Locale(plugin.getDirectory());
-
-    public static void reload() {
-        plugin.getPaperManager().getPaperFileManager().addFile(LOCALE);
+        plugin.getPaperManager().getPaperFileManager().addFile(new Locale(plugin.getDirectory()));
     }
 }

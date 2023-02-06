@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.commands.subs.CrateBaseCommand;
 import com.badbones69.crazycrates.commands.subs.player.BaseKeyCommand;
 import com.badbones69.crazycrates.configs.Config;
+import com.badbones69.crazycrates.configs.Locale;
 import com.badbones69.crazycrates.configs.convert.ConfigConversion;
 import com.badbones69.crazycrates.cratetypes.*;
 import com.badbones69.crazycrates.listeners.*;
@@ -73,6 +74,7 @@ public class CrazyCrates extends JavaPlugin implements RubyCore, Listener {
 
         // Reload/create the config
         Config.reload(this);
+        Locale.reload(this);
     }
 
     @Override
