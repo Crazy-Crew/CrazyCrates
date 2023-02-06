@@ -51,7 +51,7 @@ public class Crate {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final FileManager fileManager = plugin.getStarter().getFileManager();
-    private int maxMassOpen;
+    private final int maxMassOpen;
 
     /**
      * @param name The name of the crate.
