@@ -86,14 +86,15 @@ public class ConfigConversion {
         yamlConfiguration.set("crate-settings.preview-menu.size", invSize);
 
         yamlConfiguration.set("crate-settings.knock-back", knockBack);
-        yamlConfiguration.set("crate-settings.physical-accepts-virtual-keys", physAcceptsVirtual);
-        yamlConfiguration.set("crate-settings.physical-accepts-physical-keys", physAcceptsPhys);
-        yamlConfiguration.set("crate-settings.virtual-accepts-physical-keys", virtualAcceptsPhys);
+        yamlConfiguration.set("crate-settings.keys.physical-accepts-virtual-keys", physAcceptsVirtual);
+        yamlConfiguration.set("crate-settings.keys.physical-accepts-physical-keys", physAcceptsPhys);
+        yamlConfiguration.set("crate-settings.keys.virtual-accepts-physical-keys", virtualAcceptsPhys);
 
-        yamlConfiguration.set("crate-settings.inventory-not-empty.give-virtual-keys-message", giveVirtualKeysInventoryMessage);
-        yamlConfiguration.set("crate-settings.inventory-not-empty.give-virtual-keys", giveVirtualKeysInventory);
+        yamlConfiguration.set("crate-settings.keys.inventory-not-empty.give-virtual-keys-message", giveVirtualKeysInventoryMessage);
+        yamlConfiguration.set("crate-settings.keys.inventory-not-empty.give-virtual-keys", giveVirtualKeysInventory);
 
-        yamlConfiguration.set("crate-settings.need-key-sound", needKeySound);
+        yamlConfiguration.set("crate-settings.keys.key-sound.name", needKeySound);
+
         yamlConfiguration.set("crate-settings.quad-crate.timer", quadCrateTimer);
 
         yamlConfiguration.set("crate-settings.disabled-worlds.worlds", disabledWorlds);
