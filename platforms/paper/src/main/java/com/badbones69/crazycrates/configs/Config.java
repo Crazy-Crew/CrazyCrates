@@ -248,11 +248,12 @@ public class Config extends FileExtension {
         add("Slot:43, Item:BLACK_STAINED_GLASS_PANE, Name: ");
         add("Slot:44, Item:BLACK_STAINED_GLASS_PANE, Name: ");
     }};
-    public Config(Path path) {
-        super("config.yml", path);
+
+    public Config() {
+        super("config.yml");
     }
 
     public static void reload(CrazyCrates plugin) {
-        plugin.getPaperManager().getPaperFileManager().addFile(new Config(plugin.getDirectory()));
+        plugin.getPaperManager().getPaperFileManager().addFile(new Config());
     }
 }
