@@ -3,17 +3,18 @@
 #
 # Report Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
 # Request Features/Support: https://github.com/orgs/Crazy-Crew/discussions
-prefix: "&8[&bCrazyCrates&8]: " # The prefix used in front of messages.
 
-# The language file to use from the locale folder.
-# Supported languages are Spanish(sp), Czech(cz) & English(en).
-locale-file: "locale-en.yml"
+settings:
+  prefix: "&8[&bCrazyCrates&8]: " # The prefix used in front of messages.
+  # The language file to use from the locale folder.
+  # Supported languages are Spanish(sp), Czech(cz) & English(en).
+  locale-file: "locale-en.yml"
 
-verbose-logging: false # Whether you want to have extra logging enabled... Currently does nothing!
+  verbose-logging: false # Whether you want to have extra logging enabled... Currently does nothing!
 
-update-checker: true # Whether you want to be notified when an update is published to Modrinth.
-toggle-metrics: true # Whether you want your server statistics to be sent to https://bstats.org/ ( Requires a restart! )
-config-version: 2 # DO NOT TOUCH THIS: We use this to identify if configs are outdated.
+  update-checker: true # Whether you want to be notified when an update is published to Modrinth.
+  toggle-metrics: true # Whether you want your server statistics to be sent to https://bstats.org/ ( Requires a restart! )
+  config-version: 2 # DO NOT TOUCH THIS: We use this to identify if configs are outdated.
 
 crate-settings:
   crate-actions:
@@ -32,18 +33,18 @@ crate-settings:
   knock-back: true
 
   keys:
+    physical-accepts-virtual-keys: true # Whether physical crates accept virtual keys or not.
+    physical-accepts-physical-keys: true # Whether physical crates accept physical keys or not.
+    virtual-accepts-physical-keys: true # Whether virtual crates accept physical keys or not.
     inventory-not-empty:
       give-virtual-keys-message: true # Whether to notify the player they were given a virtual key when inventory is not empty.
       give-virtual-keys: true # Whether to give virtual keys to a player if inventory is not empty.
     key-sound:
+      name: 'ENTITY_VILLAGER_NO' # This sound will play when a player tries to open a crate without a virtual/physical key.
       # Whether the sound should play or not.
       #
       # Warning: This will be moved to be an option per crate.
       toggle: false
-      name: 'ENTITY_VILLAGER_NO' # This sound will play when a player tries to open a crate without a virtual/physical key.
-    physical-accepts-virtual-keys: true # Whether physical crates accept virtual keys or not.
-    physical-accepts-physical-keys: true # Whether physical crates accept physical keys or not.
-    virtual-accepts-physical-keys: true # Whether virtual crates accept physical keys or not.
 
   quad-crate:
     # How long a quad crate should be open?

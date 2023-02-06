@@ -29,6 +29,7 @@ public class Config extends FileExtension {
     @Key("settings.locale-file")
     @Comment("""
             The language file to use from the locale folder.
+            
             Supported languages are Spanish(sp), Czech(cz) & English(en).
             """)
     @BlockType
@@ -51,6 +52,7 @@ public class Config extends FileExtension {
     @Comment("""
             Warning: The log file may cause your server to crash.
             It is recommended you clear it occasionally.
+            
             Option will always be set to false by default.
             """)
     @BlockType
