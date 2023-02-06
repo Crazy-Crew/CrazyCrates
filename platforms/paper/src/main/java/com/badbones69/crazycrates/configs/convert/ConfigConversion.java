@@ -11,6 +11,19 @@ public class ConfigConversion {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     public void convertConfig() {
+        /*
+        int configVersion = 2;
+
+        if (configVersion != Config.CONFIG_VERSION) {
+            plugin.getLogger().warning("========================================================================");
+            plugin.getLogger().warning("You have an outdated config, Please run the command /crates update!");
+            plugin.getLogger().warning("This will take a backup of your entire folder & update your configs.");
+            plugin.getLogger().warning("Default values will be used in place of missing options!");
+            plugin.getLogger().warning("If you have any issues, Please contact Discord Support.");
+            plugin.getLogger().warning("https://discord.gg/crazycrew");
+            plugin.getLogger().warning("========================================================================");
+        }*/
+
         File file = new File(this.plugin.getDataFolder() + "/config.yml");
 
         File secondFile = new File(this.plugin.getDataFolder() + "/config-v1.yml");

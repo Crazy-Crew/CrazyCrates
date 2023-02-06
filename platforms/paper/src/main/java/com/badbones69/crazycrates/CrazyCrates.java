@@ -24,10 +24,6 @@ import net.dehya.ruby.PaperManager;
 import net.dehya.ruby.RubyCore;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -99,20 +95,6 @@ public class CrazyCrates extends JavaPlugin implements RubyCore {
 
         // Clean files if we have to.
         cleanFiles();
-
-        // Add extra messages.
-        // Messages.addMissingMessages();
-
-        int configVersion = 2;
-        if (configVersion != Config.CONFIG_VERSION) {
-            plugin.getLogger().warning("========================================================================");
-            plugin.getLogger().warning("You have an outdated config, Please run the command /crates update!");
-            plugin.getLogger().warning("This will take a backup of your entire folder & update your configs.");
-            plugin.getLogger().warning("Default values will be used in place of missing options!");
-            plugin.getLogger().warning("If you have any issues, Please contact Discord Support.");
-            plugin.getLogger().warning("https://discord.gg/crazycrew");
-            plugin.getLogger().warning("========================================================================");
-        }
 
         if (Config.TOGGLE_METRICS) {
             MetricsHandler metricsHandler = new MetricsHandler();
