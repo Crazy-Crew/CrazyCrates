@@ -1,56 +1,92 @@
-# List of all the enchantments: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html
-# List of all the sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
-Settings:
-  Prefix: '&8[&bCrazyCrates&8]: '
-  # Do not change this. We use this to check if your Configs including if crate configs are outdated!
-  Config-Version: 1
-  # Whether you want to be notified when a new update is available.
-  Update-Checker: true
-  Toggle-Metrics: true #Turn on and off if your server stats are sent to https://bstats.org/ - Requires a restart!
-  # Whether to enable or disable the crate menu. True if you want it enabled otherwise False
-  Enable-Crate-Menu: true
-  # Whether to actions to file & console.
-  # Includes command failures, keys taken, given, received and so on.
-  # Defaults to false.
-  Crate-Actions:
-    Log-File: false # Make sure to delete your log file every now & then.
-    Log-Console: false
-  InventoryName: '&b&lCrazy &4&lCrates'
-  InventorySize: 45
-  KnockBack: true
-  Physical-Accepts-Virtual-Keys: true #If physical crates can accept virtual keys.
-  Physical-Accepts-Physical-Keys: true # If physical crates can accept physical keys.
-  Virtual-Accepts-Physical-Keys: true #If virtual crates can accept physical keys.
-  Give-Virtual-Keys-When-Inventory-Full-Message: false # If the player should be notified that it was a virtual key.
-  Give-Virtual-Keys-When-Inventory-Full: false #If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
-  Need-Key-Sound: 'ENTITY_VILLAGER_NO' #This sound plays when a player tries to open a crate with no key.
-  QuadCrate:
-    Timer: 300
-  DisabledWorlds:
-    - 'world_nether'
-  Preview:
-    Buttons:
-      Menu:
-        Item: 'COMPASS'
-        Name: '&7&l>> &c&lMenu &7&l<<'
-        Lore:
-          - '&7Return to the menu.'
-      Next:
-        Item: 'FEATHER'
-        Name: '&6&lNext >>'
-        Lore:
-          - '&7&lPage: &b%page%'
-      Back:
-        Item: 'FEATHER'
-        Name: '&6&l<< Back'
-        Lore:
-          - '&7&lPage: &b%page%'
-  Filler: #This allows you to quickly fill the GUI with one item.
-    Toggle: false #If it fills the GUI with an item.
-    Item: 'BLACK_STAINED_GLASS_PANE' #The item you wish to use.
-    Name: ' ' #The name of the item.
-    Lore: [] #The lore of the item.
-  GUI-Customizer: #Place extra items in the GUI. If you wish to not use this, remove all items and set it to GUI-Customizer: {}
+# Discord: https://discord.gg/crazycrew
+# Github: https://github.com/Crazy-Crew
+#
+# Report Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
+# Request Features/Support: https://github.com/orgs/Crazy-Crew/discussions
+prefix: "&8[&bCrazyCrates&8]: " # The prefix used in front of messages.
+
+# The language file to use from the locale folder.
+# Supported languages are Spanish(sp), Czech(cz) & English(en).
+locale-file: "locale-en.yml"
+
+verbose-logging: false # Whether you want to have extra logging enabled... Currently does nothing!
+
+update-checker: true # Whether you want to be notified when an update is published to Modrinth.
+toggle-metrics: true # Whether you want your server statistics to be sent to https://bstats.org/ ( Requires a restart! )
+config-version: 2 # DO NOT TOUCH THIS: We use this to identify if configs are outdated.
+
+crate-settings:
+  crate-actions:
+    # Warning: The log file may cause your server to crash.
+    # It is recommended you clear it occasionally.
+    # Option will always be set to false by default.
+    log-to-file: false
+    log-to-console: false # Whether you want to log to console or not.
+  preview-menu:
+    toggle: true # Whether you want /crates to open a menu or not.
+    name: "&b&lCrazy &4&lCrates" # The title of the /crates menu.
+    size: 45 # The size of the /crates menu.
+  # Whether you want crates to knock you back if you have no keys.
+  #
+  # Warning: This will be moved to be an option per crate.
+  knock-back: true
+
+  keys:
+    inventory-not-empty:
+      give-virtual-keys-message: true # Whether to notify the player they were given a virtual key when inventory is not empty.
+      give-virtual-keys: true # Whether to give virtual keys to a player if inventory is not empty.
+    key-sound:
+      # Whether the sound should play or not.
+      #
+      # Warning: This will be moved to be an option per crate.
+      toggle: false
+      name: 'ENTITY_VILLAGER_NO' # This sound will play when a player tries to open a crate without a virtual/physical key.
+    physical-accepts-virtual-keys: true # Whether physical crates accept virtual keys or not.
+    physical-accepts-physical-keys: true # Whether physical crates accept physical keys or not.
+    virtual-accepts-physical-keys: true # Whether virtual crates accept physical keys or not.
+
+  quad-crate:
+    # How long a quad crate should be open?
+    #
+    # Warning: This will be moved to be an option in QuadCrate files.
+    # Moving this will allow each quadcrate to have different timers.
+    timer: 300
+  disabled-worlds:
+    # Whether you want to deny crate usage in X world or not.
+    #
+    # Warning: This will potentially be moved to be an option per crate for more specific control.
+    toggle: true
+    worlds: # The list of worlds to deny crate usage in.
+      - 'world_nether'
+
+gui-settings:
+  buttons:
+    menu:
+      item: 'COMPASS' # The material of the Menu Button.
+      name: '&d&l>> &c&lMenu &d&l<<' # The name of the Menu Button.
+      lore: # The lore of the Menu Button.
+        - '&7Return to the menu.'
+    next:
+      item: 'FEATHER' # The material of the Next Button.
+      name: '&6&lNext >>' # The name of the Next Button.
+      lore: # The lore of the Next Button.
+        - '&7&lPage: &b%page%'
+    back:
+      item: 'FEATHER' # The material of the Back Button.
+      name: '&6&l<< Back' # The name of the Back Button.
+      lore: # The lore of the Back Button.
+        - '&7&lPage: &b%page%'
+  filler-items:
+    # Whether to fill the gui with an item.
+    #
+    # Warning: This entire section from here on including gui-customizer is subject to change.
+    toggle: false
+    item: 'BLACK_STAINED_GLASS_PANE' # The item you wish to use.
+    name: ' ' # The name of the item.
+    lore: [] # The lore of the item.
+  # Place extra items in the gui, If you simply wish to not use this.
+  # Set it to customizer: [].
+  customizer:
     - 'Slot:1, Item:BLACK_STAINED_GLASS_PANE, Name: '
     - 'Slot:2, Item:BLACK_STAINED_GLASS_PANE, Name: '
     - 'Slot:3, Item:BLACK_STAINED_GLASS_PANE, Name: '

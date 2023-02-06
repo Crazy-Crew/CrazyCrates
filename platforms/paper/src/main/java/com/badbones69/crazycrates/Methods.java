@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.configs.Config;
 import com.badbones69.crazycrates.enums.Permissions;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -192,11 +193,11 @@ public class Methods {
     }
 
     public static String getPrefix() {
-        return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix"));
+        return color(Config.PREFIX);
     }
 
     public static String getPrefix(String msg) {
-        return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
+        return color(Config.PREFIX + msg);
     }
 
     public static boolean isInventoryFull(Player player) {

@@ -11,6 +11,7 @@ import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent.KeyReceiveRea
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.api.objects.*;
+import com.badbones69.crazycrates.configs.Config;
 import com.badbones69.crazycrates.cratetypes.*;
 import com.badbones69.crazycrates.enums.types.CrateType;
 import com.badbones69.crazycrates.enums.types.KeyType;
@@ -98,8 +99,8 @@ public class CrazyManager {
         crateLocations.clear();
         crateSchematics.clear();
 
-        quadCrateTimer = Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
-        giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
+        quadCrateTimer = Config.QUAD_CRATE_TIMER * 20;
+        giveVirtualKeysWhenInventoryFull = Config.GIVE_VIRTUAL_KEYS;
 
         // Removes all holograms so that they can be replaced.
         if (hologramController != null) hologramController.removeAllHolograms();
@@ -343,13 +344,10 @@ public class CrazyManager {
 
         if (crate.getFile() != null) Methods.broadCastMessage(crate.getFile(), player);
 
-        FileConfiguration config = Files.CONFIG.getFile();
-
         switch (crate.getCrateType()) {
             case MENU -> {
-                boolean openMenu = config.getBoolean("Settings.Enable-Crate-Menu");
-
-                if (openMenu) MenuListener.openGUI(player); else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
+                if (Config.PREVIEW_MENU_TOGGLE) MenuListener.openGUI(player);
+                else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
             }
             case COSMIC -> Cosmic.openCosmic(player, crate, keyType, checkHand);
             case CSGO -> CSGO.openCSGO(player, crate, keyType, checkHand);
@@ -419,10 +417,7 @@ public class CrazyManager {
             }
         }
 
-        boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
-        boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
-
-        plugin.getStarter().getEventLogger().logCrateEvent(player, crate, keyType, logFile, logConsole);
+        plugin.getStarter().getEventLogger().logCrateEvent(player, crate, keyType, Config.LOG_TO_FILE, Config.LOG_TO_CONSOLE);
     }
 
     /**
@@ -1236,9 +1231,7 @@ public class CrazyManager {
                     if (giveVirtualKeysWhenInventoryFull) {
                         addVirtualKeys(amount, player, crate);
 
-                        boolean fullMessage = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full-Message");
-
-                        if (fullMessage) player.sendMessage(Messages.CANNOT_GIVE_PLAYER_KEYS.getMessage().replaceAll("%amount%", String.valueOf(amount)).replaceAll("%key%", crate.getName()));
+                        if (Config.GIVE_VIRTUAL_KEYS_MESSAGE) player.sendMessage(Messages.CANNOT_GIVE_PLAYER_KEYS.getMessage().replaceAll("%amount%", String.valueOf(amount)).replaceAll("%key%", crate.getName()));
                     } else {
                         player.getWorld().dropItem(player.getLocation(), crate.getKey(amount));
                     }

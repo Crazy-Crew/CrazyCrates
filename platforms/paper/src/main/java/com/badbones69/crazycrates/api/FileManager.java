@@ -325,9 +325,7 @@ public class FileManager {
 
         // ENUM_NAME("fileName.yml", "fileLocation.yml"),
         // ENUM_NAME("fileName.yml", "newFileLocation.yml", "oldFileLocation.yml"),
-        CONFIG("config.yml", "config.yml"),
         LOGS("events.log", "events.log"),
-        MESSAGES("messages.yml", "messages.yml"),
         LOCATIONS("locations.yml", "locations.yml"),
         DATA("data.yml", "data.yml");
 
