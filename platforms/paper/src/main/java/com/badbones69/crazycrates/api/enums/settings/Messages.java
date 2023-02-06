@@ -122,48 +122,6 @@ public enum Messages {
         return message.toString();
     }
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
-
-    /**
-     * Adds any missing messages to the Messages.yml file based on values in the Messages enum.
-     */
-    public static void addMissingMessages() {
-        FileConfiguration messages = FileManager.Files.MESSAGES.getFile();
-        boolean saveFile = false;
-
-        for (Messages message : values()) {
-            if (!messages.contains("Messages." + message.getPath())) {
-                saveFile = true;
-                if (message.getDefaultMessage() != null) {
-                    messages.set("Messages." + message.getPath(), message.getDefaultMessage());
-                } else {
-                    messages.set("Messages." + message.getPath(), message.getDefaultListMessage());
-                }
-            }
-        }
-
-        String tooManyArgs = messages.getString("Messages.Too-Many-Args");
-        String tooFewArgs = messages.getString("Messages.Not-Enough-Args");
-
-        if (tooManyArgs != null) {
-            plugin.getLogger().warning("Found outdated config entry: " + tooManyArgs);
-            plugin.getLogger().warning("Removing now, Please use `Correct-Usage` from now on." );
-
-            messages.set("Messages.Too-Many-Args", null);
-            FileManager.Files.MESSAGES.saveFile();
-        }
-
-        if (tooFewArgs != null) {
-            plugin.getLogger().warning("Found outdated config entry: " + tooFewArgs);
-            plugin.getLogger().warning("Removing now, Please use `Correct-Usage` from now on." );
-
-            messages.set("Messages.Not-Enough-Args", null);
-            FileManager.Files.MESSAGES.saveFile();
-        }
-
-        if (saveFile) FileManager.Files.MESSAGES.saveFile();
-    }
-
     /**
      * A method which takes a placeholder, Creates a hashmap
      * then populates the hashmap & returns a String.
@@ -323,20 +281,23 @@ public enum Messages {
 
         if (isList) {
             if (exists) {
-                message = Methods.color(convertList(FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path)));
+                message = "blah";
+                //message = Methods.color(convertList(FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path)));
             } else {
                 message = Methods.color(convertList(getDefaultListMessage()));
             }
         } else {
             if (exists) {
-                message = Methods.color(FileManager.Files.MESSAGES.getFile().getString("Messages." + path));
+                message = "blah";
+                //message = Methods.color(FileManager.Files.MESSAGES.getFile().getString("Messages." + path));
             } else {
                 message = Methods.color(getDefaultMessage());
             }
         }
 
         for (Entry<String, String> placeholder : placeholders.entrySet()) {
-            message = message.replace(placeholder.getKey(), placeholder.getValue()).replace(placeholder.getKey().toLowerCase(), placeholder.getValue());
+            message = "order";
+            //message = message.replace(placeholder.getKey(), placeholder.getValue()).replace(placeholder.getKey().toLowerCase(), placeholder.getValue());
         }
 
         if (isList) { // Don't want to add a prefix to a list of messages.
@@ -356,7 +317,8 @@ public enum Messages {
      * @return true if found otherwise false
      */
     private boolean exists() {
-        return FileManager.Files.MESSAGES.getFile().contains("Messages." + path);
+        return true;
+        //return FileManager.Files.MESSAGES.getFile().contains("Messages." + path);
     }
 
     /**
@@ -365,11 +327,12 @@ public enum Messages {
      * @return true if found otherwise false
      */
     private boolean isList() {
-        if (FileManager.Files.MESSAGES.getFile().contains("Messages." + path)) {
-            return !FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path).isEmpty();
-        } else {
-            return defaultMessage == null;
-        }
+        //if (FileManager.Files.MESSAGES.getFile().contains("Messages." + path)) {
+            //return !FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path).isEmpty();
+        //} else {
+        //    return defaultMessage == null;
+        //}
+        return defaultMessage == null;
     }
 
     /**
