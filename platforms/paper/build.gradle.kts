@@ -18,21 +18,16 @@ repositories {
      */
     maven("https://repo.codemc.org/repository/maven-public/")
 
+    /**
+     * CrazyCrew Team
+     */
     maven("https://repo.crazycrew.us/libraries/")
 }
 
 dependencies {
     api(project(":crazycrates-core"))
 
-    implementation("net.dehya.ruby:ruby-core:0.0.1")
-    implementation("net.dehya.ruby:ruby-paper:0.0.1")
-
     compileOnly(libs.papermc)
-
-    implementation(libs.triumph.cmds)
-
-    implementation(libs.nbt.api)
-    implementation(libs.bstats.bukkit)
 
     compileOnly(libs.holographic.displays)
     compileOnly(libs.decent.holograms)
@@ -42,6 +37,16 @@ dependencies {
     compileOnly(libs.placeholder.api)
 
     compileOnly(libs.itemsadder.api)
+
+    implementation(libs.triumph.cmds)
+
+    implementation(libs.nbt.api)
+    implementation(libs.bstats.bukkit)
+
+    implementation(libs.ruby.api)
+    implementation(libs.ruby.paper)
+
+    implementation(libs.yaml)
 }
 
 val projectDescription = settings.versions.projectDescription.get()
