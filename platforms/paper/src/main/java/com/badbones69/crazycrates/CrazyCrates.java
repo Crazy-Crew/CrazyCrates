@@ -6,8 +6,8 @@ import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.commands.subs.CrateBaseCommand;
 import com.badbones69.crazycrates.commands.subs.player.BaseKeyCommand;
-import com.badbones69.crazycrates.cratetypes.CSGO;
-import com.badbones69.crazycrates.cratetypes.Cosmic;
+import com.badbones69.crazycrates.configs.Config;
+import com.badbones69.crazycrates.configs.convert.ConfigConversion;
 import com.badbones69.crazycrates.cratetypes.CrateOnTheGo;
 import com.badbones69.crazycrates.cratetypes.QuadCrate;
 import com.badbones69.crazycrates.cratetypes.QuickCrate;
@@ -55,7 +55,14 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         plugin = this;
 
         starter = new Starter();
+    @Override
+    public void onLoad() {
+        Config.reload();
 
+        ConfigConversion configConversion = new ConfigConversion();
+
+        configConversion.convertConfig();
+    }
         starter.run();
 
         starter.getFileManager().setLog(true)
@@ -79,59 +86,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         // Add extra messages.
         Messages.addMissingMessages();
 
-        FileConfiguration config = Files.CONFIG.getFile();
-
-        boolean metricsEnabled = config.getBoolean("Settings.Toggle-Metrics");
-
-        String updater = config.getString("Settings.Update-Checker");
-        String version = config.getString("Settings.Config-Version");
-
-        String menu = config.getString("Settings.Enable-Crate-Menu");
-
-        String full = config.getString("Settings.Give-Virtual-Keys-When-Inventory-Full-Message");
-
-        String phys = config.getString("Settings.Physical-Accepts-Physical-Keys");
-
-        if (phys == null) {
-            config.set("Settings.Physical-Accepts-Physical-Keys", true);
-
-            Files.CONFIG.saveFile();
-        }
-
-        if (full == null) {
-            config.set("Settings.Give-Virtual-Keys-When-Inventory-Full-Message", false);
-
-            Files.CONFIG.saveFile();
-        }
-
-        if (version == null) {
-            config.set("Settings.Config-Version", 1);
-
-            Files.CONFIG.saveFile();
-        }
-
-        if (menu == null) {
-            String oldBoolean = config.getString("Settings.Disable-Crate-Menu");
-            boolean switchBoolean = config.getBoolean("Settings.Disable-Crate-Menu");
-
-            if (oldBoolean != null) {
-                config.set("Settings.Enable-Crate-Menu", switchBoolean);
-                config.set("Settings.Disable-Crate-Menu", null);
-            } else {
-                config.set("Settings.Enable-Crate-Menu", true);
-            }
-
-            Files.CONFIG.saveFile();
-        }
-
-        if (updater == null) {
-            config.set("Settings.Update-Checker", true);
-
-            Files.CONFIG.saveFile();
-        }
-
-        int configVersion = 1;
-        if (configVersion != config.getInt("Settings.Config-Version") && version != null) {
+        int configVersion = 2;
+        if (configVersion != Config.CONFIG_VERSION) {
             plugin.getLogger().warning("========================================================================");
             plugin.getLogger().warning("You have an outdated config, Please run the command /crates update!");
             plugin.getLogger().warning("This will take a backup of your entire folder & update your configs.");
@@ -141,7 +97,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             plugin.getLogger().warning("========================================================================");
         }
 
-        if (metricsEnabled) {
+        if (Config.TOGGLE_METRICS) {
             MetricsHandler metricsHandler = new MetricsHandler();
 
             metricsHandler.start();
@@ -149,6 +105,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         checkUpdate();
 
+        // Enables the rest of the plugin after the initial steps.
         enable();
     }
 
@@ -168,9 +125,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     }
 
     private void checkUpdate() {
-        FileConfiguration config = Files.CONFIG.getFile();
-
-        boolean updaterEnabled = config.getBoolean("Settings.Update-Checker");
+        boolean updaterEnabled = Config.UPDATE_CHECKER;
 
         if (!updaterEnabled) return;
 
