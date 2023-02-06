@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.configs.Config;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfigConversion {
@@ -12,18 +11,18 @@ public class ConfigConversion {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     public void convertConfig() {
-        File file = new File(plugin.getDataFolder() + "/config.yml");
+        File file = new File(this.plugin.getDataFolder() + "/config.yml");
 
-        File secondFile = new File(plugin.getDataFolder() + "/config-v1.yml");
+        File secondFile = new File(this.plugin.getDataFolder() + "/config-v1.yml");
 
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
 
         if (yamlConfiguration.getString("Settings.Config-Version") == null && !secondFile.exists()) {
-            plugin.getLogger().warning("Could not find Config-Version, I am assuming configurations have been converted.");
+            this.plugin.getLogger().warning("Could not find Config-Version, I am assuming configurations have been converted.");
             return;
         }
 
-        if (file.renameTo(secondFile)) plugin.getLogger().warning("Renamed " + file.getName() + " to config-v1.yml");
+        if (file.renameTo(secondFile)) this.plugin.getLogger().warning("Renamed " + file.getName() + " to config-v1.yml");
 
         YamlConfiguration secondConfiguration = YamlConfiguration.loadConfiguration(secondFile);
 
@@ -75,9 +74,9 @@ public class ConfigConversion {
 
         final List<String> guiCustomizer = secondConfiguration.getStringList("Settings.GUI-Customizer");
 
-        yamlConfiguration.set("prefix", prefix);
-        yamlConfiguration.set("update-checker", updateChecker);
-        yamlConfiguration.set("toggle-metrics", toggleMetrics);
+        yamlConfiguration.set("settings.prefix", prefix);
+        yamlConfiguration.set("settings.update-checker", updateChecker);
+        yamlConfiguration.set("settings.toggle-metrics", toggleMetrics);
         yamlConfiguration.set("crate-settings.crate-actions.log-to-file", crateLogFile);
         yamlConfiguration.set("crate-settings.crate-actions.log-to-console", crateLogConsole);
 
@@ -123,7 +122,5 @@ public class ConfigConversion {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        plugin.getPaperManager().getPaperFileManager().addFile(new Config(plugin.getDirectory()));
     }
 }

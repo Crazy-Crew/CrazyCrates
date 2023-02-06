@@ -11,8 +11,8 @@ val finalVersion = if (projectBeta) "$projectVersion+beta" else projectVersion
 project.version = finalVersion
 
 dependencies {
-    compileOnly(libs.adventure.api)
-    compileOnly(libs.adventure.text)
+    //compileOnly(libs.adventure.api)
+    //compileOnly(libs.adventure.text)
 }
 
 tasks {

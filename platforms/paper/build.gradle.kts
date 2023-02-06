@@ -27,9 +27,6 @@ repositories {
 dependencies {
     api(project(":crazycrates-core"))
 
-    implementation("net.dehya.ruby:ruby-core:0.0.1")
-    implementation("net.dehya.ruby:ruby-paper:0.0.1")
-
     compileOnly(libs.papermc)
 
     compileOnly(libs.holographic.displays)

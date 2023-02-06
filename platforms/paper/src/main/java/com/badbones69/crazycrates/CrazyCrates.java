@@ -38,11 +38,11 @@ public class CrazyCrates extends JavaPlugin implements RubyCore, Listener {
 
     private static CrazyCrates plugin;
 
-    private Starter starter;
+    private final Starter starter;
 
     BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
 
-    private final PaperManager paperManager = new PaperManager(this, true);
+    private final PaperManager paperManager = new PaperManager(this, true);;
 
     public CrazyCrates() {
         super();
@@ -65,11 +65,14 @@ public class CrazyCrates extends JavaPlugin implements RubyCore, Listener {
 
     @Override
     public void onLoad() {
-        Config.reload();
-
+        // Create config version instance.
         ConfigConversion configConversion = new ConfigConversion();
 
+        // Convert config if need be.
         configConversion.convertConfig();
+
+        // Reload/create the config
+        Config.reload(this);
     }
 
     @Override

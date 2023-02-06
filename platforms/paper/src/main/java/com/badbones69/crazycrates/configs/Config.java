@@ -22,11 +22,11 @@ import java.util.List;
             """)
 public class Config extends FileExtension {
 
-    @Key("prefix")
+    @Key("settings.prefix")
     @Comment("The prefix used in front of messages.")
     public static String PREFIX = "&8[&bCrazyCrates&8]: ";
 
-    @Key("locale-file")
+    @Key("settings.locale-file")
     @Comment("""
             The language file to use from the locale folder.
             Supported languages are Spanish(sp), Czech(cz) & English(en).
@@ -34,15 +34,15 @@ public class Config extends FileExtension {
     @BlockType
     public static String LOCALE_FILE = "locale-en.yml";
 
-    @Key("update-checker")
+    @Key("settings.update-checker")
     @Comment("Whether you want to be notified when an update is published to Modrinth.")
     public static boolean UPDATE_CHECKER = true;
 
-    @Key("toggle-metrics")
+    @Key("settings.toggle-metrics")
     @Comment("Whether you want your server statistics to be sent to https://bstats.org/ ( Requires a restart! )")
     public static boolean TOGGLE_METRICS = true;
 
-    @Key("config-version")
+    @Key("settings.config-version")
     @Comment("DO NOT TOUCH THIS: We use this to identify if your configs are outdated.")
     public static int CONFIG_VERSION = 2;
 
@@ -65,7 +65,7 @@ public class Config extends FileExtension {
     public static boolean PREVIEW_MENU_TOGGLE = true;
     @Key("crate-settings.preview-menu.name")
     @Comment("The title of the /crates menu.")
-    public static String PREVIEW_MENU_NAME = "";
+    public static String PREVIEW_MENU_NAME = "&d&lCrazy &5&lCrates";
     @Key("crate-settings.preview-menu.size")
     @Comment("The size of the /crates menu.")
     public static int PREVIEW_MENU_SIZE = 45;
@@ -250,11 +250,7 @@ public class Config extends FileExtension {
         super("config.yml", path);
     }
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
-
-    private static final Config CONFIG = new Config(plugin.getDirectory());
-
-    public static void reload() {
-        plugin.getPaperManager().getPaperFileManager().addFile(CONFIG);
+    public static void reload(CrazyCrates plugin) {
+        plugin.getPaperManager().getPaperFileManager().addFile(new Config(plugin.getDirectory()));
     }
 }
