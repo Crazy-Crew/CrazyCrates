@@ -8,7 +8,7 @@ import net.dehya.ruby.common.annotations.yaml.Header;
 import net.dehya.ruby.common.annotations.yaml.Key;
 import net.dehya.ruby.common.enums.FileType;
 import net.dehya.ruby.files.FileExtension;
-import java.nio.file.Path;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -253,7 +253,11 @@ public class Config extends FileExtension {
         super("config.yml");
     }
 
-    public static void reload(CrazyCrates plugin) {
-        plugin.getPaperManager().getPaperFileManager().addFile(new Config());
+    public static Config reload(CrazyCrates plugin) {
+        Config config = new Config();
+
+        plugin.getPaperManager().getPaperFileManager().addFile(config);
+
+        return config;
     }
 }
