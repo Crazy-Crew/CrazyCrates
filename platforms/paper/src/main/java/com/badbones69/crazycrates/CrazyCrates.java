@@ -145,7 +145,6 @@ public class CrazyCrates extends JavaPlugin implements RubyCore {
         }
     }
 
-    @Override
     public void enable() {
         PluginManager pluginManager = getServer().getPluginManager();
 
@@ -258,16 +257,12 @@ public class CrazyCrates extends JavaPlugin implements RubyCore {
         disable();
     }
 
-    @Override
     public void disable() {
         SessionManager.endCrates();
 
         QuickCrate.removeAllRewards();
 
         if (starter.getCrazyManager().getHologramController() != null) starter.getCrazyManager().getHologramController().removeAllHolograms();
-
-    // Only have to run this here. enable() is run when the constructor is built.
-        paperManager.disable();
     }
 
     @Override
