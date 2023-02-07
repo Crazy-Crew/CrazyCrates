@@ -22,6 +22,9 @@ adventure_text = { module = "net.kyori:adventure-text-minimessage", version.ref 
 ruby_api = { module = "net.dehya.ruby:ruby-core", version.ref = "ruby" }
 ruby_paper = { module = "net.dehya.ruby:ruby-paper", version.ref = "ruby" }
 
+# Gabber
+gabber = { module = "me.gabber235:typewriter", version = "0.0.1" }
+
 # Configurations
 
 yaml = { module = "me.carleslc.Simple-YAML:Simple-Yaml", version = "1.8.3" }
