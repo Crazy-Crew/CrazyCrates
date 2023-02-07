@@ -45,7 +45,7 @@ public class Config extends FileExtension {
 
     @Key("settings.config-version")
     @Comment("DO NOT TOUCH THIS: We use this to identify if your configs are outdated.")
-    public static int CONFIG_VERSION = 2;
+    public static double CONFIG_VERSION = 1.1;
 
     // Crate Settings
     @Key("crate-settings.crate-actions.log-to-file")
