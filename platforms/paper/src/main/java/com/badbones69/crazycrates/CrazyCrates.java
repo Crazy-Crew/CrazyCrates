@@ -27,6 +27,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import java.io.File;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -59,6 +60,10 @@ public class CrazyCrates extends JavaPlugin implements RubyCore {
         plugin = this;
 
         starter = new Starter();
+
+        File updateDir = getDirectory().resolve("updates").toFile();
+
+        if (updateDir.mkdirs()) getLogger().warning("Created the " + updateDir.getName() + " folder.");
     }
 
     @Override
