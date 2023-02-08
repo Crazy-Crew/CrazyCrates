@@ -117,11 +117,14 @@ tasks {
                 <h4>Changes:</h4>
                  <p>Added 1.17.1 support back.</p>
                  <p>Added a feature https://github.com/orgs/Crazy-Crew/discussions/19</p>
+                 <p>Updated the config file with an auto converter on start-up.</p>
+                 <p>Added multiple locale files under the locale folder with a config option to choose which language you want.</p>
                 <h4>Under the hood changes</h4>
                  <p>Re-organized the build script for the last time.</p>
                  <p>Cleaned up a few pieces of code.</p>
                  <p>No longer check for updates when a player joins.</p>
                  <p>Updated nbt-api artifact id.</p>
+                 <p>Bumped cmi api</p>
                 <h4>Bug Fixes:</h4>
                  <p>Fixed quadcrates hopefully for the last time.</p>
                  <p>Fixed the nbt-api link.</p>
