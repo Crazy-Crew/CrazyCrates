@@ -26,8 +26,6 @@ project(":core").name = "$lowerCase-core"
 
 listOf("paper").forEach(::includePlatform)
 
-listOf("typewriter-addon").forEach(::includeModule)
-
 fun includeProject(name: String) {
     include(name) {
         this.name = "$lowerCase-$name"
