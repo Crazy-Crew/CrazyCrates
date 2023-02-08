@@ -5,6 +5,8 @@ import net.dehya.ruby.common.annotations.FileBuilder;
 import net.dehya.ruby.common.annotations.yaml.Header;
 import net.dehya.ruby.common.enums.FileType;
 import net.dehya.ruby.files.FileExtension;
+import org.simpleyaml.configuration.file.YamlConfiguration;
+import java.io.File;
 import java.nio.file.Path;
 
 @FileBuilder(isLogging = true, isAsync = true, isData = false, fileType = FileType.YAML)
@@ -27,5 +29,13 @@ public class Locale extends FileExtension {
         plugin.getPaperManager().getPaperFileManager().extract("/locale", plugin.getDirectory());
 
         plugin.getPaperManager().getPaperFileManager().addFile(new Locale(plugin.getDirectory()));
+    }
+
+    public static YamlConfiguration getConfiguration(CrazyCrates plugin) {
+        return plugin.getPaperManager().getPaperFileManager().getFileConfiguration(new Locale(plugin.getDirectory()));
+    }
+
+    public static File getConfig(CrazyCrates plugin) {
+        return plugin.getPaperManager().getPaperFileManager().getFile(new Locale(plugin.getDirectory()));
     }
 }
