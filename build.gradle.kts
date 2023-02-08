@@ -23,7 +23,7 @@ val repo = if (isBeta) "beta" else "releases"
 
 webhook {
     this.avatar("https://en.gravatar.com/avatar/${WebhookExtension.Gravatar().md5Hex("no-reply@ryderbelserion.com")}.jpeg")
-    
+
     this.username("Ryder Belserion")
 
     this.content("New version of $projectName is ready! <@&929463441159254066>")

@@ -46,8 +46,9 @@ abstract class WebhookExtension {
 
         private fun hexCode(array: ByteArray): String {
             val sb = StringBuffer()
+
             for (i in array.indices) {
-                sb.append(Integer.toHexString((array[i].toInt() and 0xFF) or 0x100).substring(1, 3))
+                sb.append(Integer.toHexString(array[i].toInt() and 0xFF or 0x100).substring(1, 3))
             }
 
             return sb.toString()
