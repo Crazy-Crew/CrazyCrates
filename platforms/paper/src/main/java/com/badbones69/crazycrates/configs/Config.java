@@ -13,7 +13,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-@FileBuilder(isLogging = true, isAsync = false, isData = false, fileType = FileType.YAML)
+@FileBuilder(isLogging = true, isAsync = true, isData = false, fileType = FileType.YAML)
 @Header("""
             Discord: https://discord.gg/crazycrew
             Github: https://github.com/Crazy-Crew

@@ -7,7 +7,7 @@ import net.dehya.ruby.common.enums.FileType;
 import net.dehya.ruby.files.FileExtension;
 import java.nio.file.Path;
 
-@FileBuilder(isLogging = true, isAsync = false, isData = false, fileType = FileType.YAML)
+@FileBuilder(isLogging = true, isAsync = true, isData = false, fileType = FileType.YAML)
 @Header("""
         If you notice any translation issues, Do not hesitate to contact our Translators.
         
