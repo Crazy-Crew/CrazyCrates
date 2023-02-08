@@ -14,7 +14,7 @@ settings:
 
   update-checker: true # Whether you want to be notified when an update is published to Modrinth.
   toggle-metrics: true # Whether you want your server statistics to be sent to https://bstats.org/ ( Requires a restart! )
-  config-version: 1.1 # DO NOT TOUCH THIS: We use this to identify if configs are outdated.
+  config-version: 1.1 # DO NOT TOUCH THIS: We use this to identify if the config is outdated.
 
 crate-settings:
   crate-actions:

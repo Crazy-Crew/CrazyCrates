@@ -45,7 +45,7 @@ public class Config extends FileExtension {
     public static boolean TOGGLE_METRICS = true;
 
     @Key("settings.config-version")
-    @Comment("DO NOT TOUCH THIS: We use this to identify if your configs are outdated.")
+    @Comment("DO NOT TOUCH THIS: We use this to identify if the config is outdated.")
     public static double CONFIG_VERSION = 1.1;
 
     // Crate Settings
