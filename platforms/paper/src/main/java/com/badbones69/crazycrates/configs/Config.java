@@ -9,6 +9,7 @@ import net.dehya.ruby.common.annotations.yaml.Key;
 import net.dehya.ruby.common.enums.FileType;
 import net.dehya.ruby.files.FileExtension;
 import org.simpleyaml.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class Config extends FileExtension {
     @Comment("""
             The language file to use from the locale folder.
             
-            Supported languages are Spanish(sp), Czech(cz) & English(en).
+            Supported languages are Spanish(sp), Czech(cz), English(en).
             """)
     @BlockType
     public static String LOCALE_FILE = "locale-en.yml";

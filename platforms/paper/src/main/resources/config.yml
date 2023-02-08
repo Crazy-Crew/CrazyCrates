@@ -7,7 +7,7 @@
 settings:
   prefix: "&8[&bCrazyCrates&8]: " # The prefix used in front of messages.
   # The language file to use from the locale folder.
-  # Supported languages are Spanish(sp), Czech(cz) & English(en).
+  # Supported languages are Spanish(sp), Czech(cz), English(en).
   locale-file: "locale-en.yml"
 
   verbose-logging: false # Whether you want to have extra logging enabled... Currently does nothing!
