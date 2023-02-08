@@ -1,13 +1,10 @@
 package com.badbones69.crazycrates.configs.convert;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.configs.Config;
+import com.badbones69.crazycrates.utils.FileUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfigConversion {
@@ -65,7 +62,7 @@ public class ConfigConversion {
 
         final List<String> disabledWorlds = secondConfiguration.getStringList("Settings.DisabledWorlds");
 
-        // TODO() Move this to it's own configuration file.
+        // TODO() Move this to its own configuration file.
         final String menuName = secondConfiguration.getString("Settings.Preview.Buttons.Menu.Name");
         final String menuItem = secondConfiguration.getString("Settings.Preview.Buttons.Menu.Item");
         final List<String> menuLore = secondConfiguration.getStringList("Settings.Preview.Buttons.Menu.Lore");
@@ -130,26 +127,6 @@ public class ConfigConversion {
 
         configuration.set("gui-settings.customizer", guiCustomizer);
 
-        try {
-            if (output.exists()) {
-                File updateDir = new File(this.plugin.getDirectory() + "/updates");
-
-                String name = output.getName().replace(".yml", "").replace("v1", "");
-
-                String fileName = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
-
-                File newOutput = new File(name + fileName + ".yml");
-
-                if (output.renameTo(newOutput)) this.plugin.getLogger().warning("Successfully added time stamp to " + output.getName() + ".");
-
-                Files.move(newOutput.toPath(), Path.of(updateDir.toPath() + "/" + newOutput.getName()));
-
-                this.plugin.getLogger().warning("Successfully moved " + newOutput.getName() + " to " + updateDir.getName());
-            }
-
-            configuration.save(input);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        FileUtils.copyFile(input, output, configuration, this.plugin);
     }
 }
