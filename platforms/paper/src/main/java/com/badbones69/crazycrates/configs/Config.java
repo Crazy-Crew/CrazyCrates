@@ -8,8 +8,8 @@ import net.dehya.ruby.common.annotations.yaml.Header;
 import net.dehya.ruby.common.annotations.yaml.Key;
 import net.dehya.ruby.common.enums.FileType;
 import net.dehya.ruby.files.FileExtension;
-import org.simpleyaml.configuration.file.YamlFile;
-
+import org.simpleyaml.configuration.file.YamlConfiguration;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -258,7 +258,11 @@ public class Config extends FileExtension {
         plugin.getPaperManager().getPaperFileManager().addFile(new Config());
     }
 
-    public static YamlFile get(CrazyCrates plugin) {
+    public static YamlConfiguration getConfiguration(CrazyCrates plugin) {
+        return plugin.getPaperManager().getPaperFileManager().getFileConfiguration(new Config());
+    }
+
+    public static File getConfig(CrazyCrates plugin) {
         return plugin.getPaperManager().getPaperFileManager().getFile(new Config());
     }
 }

@@ -1,9 +1,14 @@
 package com.badbones69.crazycrates.configs.convert;
 
 import java.io.File;
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.configs.Config;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfigConversion {
@@ -11,35 +16,29 @@ public class ConfigConversion {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     public void convertConfig() {
-        /*
-        int configVersion = 2;
+        double configVersion = 1.1;
 
-        if (configVersion != Config.CONFIG_VERSION) {
-            plugin.getLogger().warning("========================================================================");
-            plugin.getLogger().warning("You have an outdated config, Please run the command /crates update!");
-            plugin.getLogger().warning("This will take a backup of your entire folder & update your configs.");
-            plugin.getLogger().warning("Default values will be used in place of missing options!");
-            plugin.getLogger().warning("If you have any issues, Please contact Discord Support.");
-            plugin.getLogger().warning("https://discord.gg/crazycrew");
-            plugin.getLogger().warning("========================================================================");
-        }*/
+        // The config.yml
+        File input = new File(plugin.getDirectory() + "/config.yml");
 
-        File file = new File(this.plugin.getDataFolder() + "/config.yml");
+        // The renamed file.
+        File output = new File(plugin.getDirectory() + "/config-v1.yml");
 
-        File secondFile = new File(this.plugin.getDataFolder() + "/config-v1.yml");
+        // The old configuration of config.yml
+        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(input);
 
-        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
-
-        if (yamlConfiguration.getString("Settings.Config-Version") == null && !secondFile.exists()) {
-            this.plugin.getLogger().warning("Could not find Config-Version, I am assuming configurations have been converted.");
+        if (yamlConfiguration.getString("Settings.Config-Version") == null && !output.exists()) {
+            this.plugin.getLogger().warning(input.getName() + " is up to date!");
             return;
         }
 
-        if (file.renameTo(secondFile)) this.plugin.getLogger().warning("Renamed " + file.getName() + " to config-v1.yml");
+        // Rename the file to the output file.
+        if (input.renameTo(output)) plugin.getLogger().warning("Renamed " + input.getName() + " to " + output.getName() + ".");
 
-        YamlConfiguration secondConfiguration = YamlConfiguration.loadConfiguration(secondFile);
+        // The configuration of the output file.
+        YamlConfiguration secondConfiguration = YamlConfiguration.loadConfiguration(output);
 
-        // Config Options
+        // All the values of the old file.
         final String prefix = secondConfiguration.getString("Settings.Prefix");
         // final int version = secondConfiguration.getInt("Settings.Config-Version");
         final boolean updateChecker = secondConfiguration.getBoolean("Settings.Update-Checker");
@@ -87,52 +86,70 @@ public class ConfigConversion {
 
         final List<String> guiCustomizer = secondConfiguration.getStringList("Settings.GUI-Customizer");
 
-        yamlConfiguration.set("settings.prefix", prefix);
-        yamlConfiguration.set("settings.update-checker", updateChecker);
-        yamlConfiguration.set("settings.toggle-metrics", toggleMetrics);
-        yamlConfiguration.set("crate-settings.crate-actions.log-to-file", crateLogFile);
-        yamlConfiguration.set("crate-settings.crate-actions.log-to-console", crateLogConsole);
+        org.simpleyaml.configuration.file.YamlConfiguration configuration = Config.getConfiguration(plugin);
+        
+        configuration.set("settings.prefix", prefix);
+        configuration.set("settings.update-checker", updateChecker);
+        configuration.set("settings.toggle-metrics", toggleMetrics);
+        configuration.set("crate-settings.crate-actions.log-to-file", crateLogFile);
+        configuration.set("crate-settings.crate-actions.log-to-console", crateLogConsole);
 
-        yamlConfiguration.set("crate-settings.preview-menu.toggle", enableCrateMenu);
-        yamlConfiguration.set("crate-settings.preview-menu.name", invName);
-        yamlConfiguration.set("crate-settings.preview-menu.size", invSize);
+        configuration.set("crate-settings.preview-menu.toggle", enableCrateMenu);
+        configuration.set("crate-settings.preview-menu.name", invName);
+        configuration.set("crate-settings.preview-menu.size", invSize);
 
-        yamlConfiguration.set("crate-settings.knock-back", knockBack);
-        yamlConfiguration.set("crate-settings.keys.physical-accepts-virtual-keys", physAcceptsVirtual);
-        yamlConfiguration.set("crate-settings.keys.physical-accepts-physical-keys", physAcceptsPhys);
-        yamlConfiguration.set("crate-settings.keys.virtual-accepts-physical-keys", virtualAcceptsPhys);
+        configuration.set("crate-settings.knock-back", knockBack);
+        configuration.set("crate-settings.keys.physical-accepts-virtual-keys", physAcceptsVirtual);
+        configuration.set("crate-settings.keys.physical-accepts-physical-keys", physAcceptsPhys);
+        configuration.set("crate-settings.keys.virtual-accepts-physical-keys", virtualAcceptsPhys);
 
-        yamlConfiguration.set("crate-settings.keys.inventory-not-empty.give-virtual-keys-message", giveVirtualKeysInventoryMessage);
-        yamlConfiguration.set("crate-settings.keys.inventory-not-empty.give-virtual-keys", giveVirtualKeysInventory);
+        configuration.set("crate-settings.keys.inventory-not-empty.give-virtual-keys-message", giveVirtualKeysInventoryMessage);
+        configuration.set("crate-settings.keys.inventory-not-empty.give-virtual-keys", giveVirtualKeysInventory);
 
-        yamlConfiguration.set("crate-settings.keys.key-sound.name", needKeySound);
+        configuration.set("crate-settings.keys.key-sound.name", needKeySound);
 
-        yamlConfiguration.set("crate-settings.quad-crate.timer", quadCrateTimer);
+        configuration.set("crate-settings.quad-crate.timer", quadCrateTimer);
 
-        yamlConfiguration.set("crate-settings.disabled-worlds.worlds", disabledWorlds);
+        configuration.set("crate-settings.disabled-worlds.worlds", disabledWorlds);
 
-        yamlConfiguration.set("gui-settings.filler-items.toggle", fillerToggle);
-        yamlConfiguration.set("gui-settings.filler-items.item", fillerItem);
-        yamlConfiguration.set("gui-settings.filler-items.name", fillerName);
-        yamlConfiguration.set("gui-settings.filler-items.lore", fillerLore);
+        configuration.set("gui-settings.filler-items.toggle", fillerToggle);
+        configuration.set("gui-settings.filler-items.item", fillerItem);
+        configuration.set("gui-settings.filler-items.name", fillerName);
+        configuration.set("gui-settings.filler-items.lore", fillerLore);
 
-        yamlConfiguration.set("gui-settings.buttons.menu.item", menuItem);
-        yamlConfiguration.set("gui-settings.buttons.menu.name", menuName);
-        yamlConfiguration.set("gui-settings.buttons.menu.lore", menuLore);
+        configuration.set("gui-settings.buttons.menu.item", menuItem);
+        configuration.set("gui-settings.buttons.menu.name", menuName);
+        configuration.set("gui-settings.buttons.menu.lore", menuLore);
 
-        yamlConfiguration.set("gui-settings.buttons.next.item", nextItem);
-        yamlConfiguration.set("gui-settings.buttons.next.name", nextName);
-        yamlConfiguration.set("gui-settings.buttons.next.lore", nextLore);
+        configuration.set("gui-settings.buttons.next.item", nextItem);
+        configuration.set("gui-settings.buttons.next.name", nextName);
+        configuration.set("gui-settings.buttons.next.lore", nextLore);
 
-        yamlConfiguration.set("gui-settings.buttons.back.item", backItem);
-        yamlConfiguration.set("gui-settings.buttons.back.name", backName);
-        yamlConfiguration.set("gui-settings.buttons.back.lore", backLore);
+        configuration.set("gui-settings.buttons.back.item", backItem);
+        configuration.set("gui-settings.buttons.back.name", backName);
+        configuration.set("gui-settings.buttons.back.lore", backLore);
 
-        yamlConfiguration.set("gui-settings.customizer", guiCustomizer);
+        configuration.set("gui-settings.customizer", guiCustomizer);
 
         try {
-            yamlConfiguration.save(file);
-        } catch (IOException e) {
+            if (output.exists()) {
+                File updateDir = new File(this.plugin.getDirectory() + "/updates");
+
+                String name = output.getName().replace(".yml", "").replace("v1", "");
+
+                String fileName = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+
+                File newOutput = new File(name + fileName + ".yml");
+
+                if (output.renameTo(newOutput)) this.plugin.getLogger().warning("Successfully added time stamp to " + output.getName() + ".");
+
+                Files.move(newOutput.toPath(), Path.of(updateDir.toPath() + "/" + newOutput.getName()));
+
+                this.plugin.getLogger().warning("Successfully moved " + newOutput.getName() + " to " + updateDir.getName());
+            }
+
+            configuration.save(input);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
