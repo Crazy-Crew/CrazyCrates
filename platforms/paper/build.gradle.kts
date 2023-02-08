@@ -21,7 +21,9 @@ repositories {
     /**
      * CrazyCrew Team
      */
-    maven("https://repo.crazycrew.us/libraries/")
+    //maven("https://repo.crazycrew.us/libraries/")
+
+    mavenLocal()
 }
 
 dependencies {
@@ -45,8 +47,6 @@ dependencies {
 
     implementation(libs.ruby.api)
     implementation(libs.ruby.paper)
-
-    implementation(libs.yaml)
 }
 
 val projectDescription = settings.versions.projectDescription.get()
