@@ -1,6 +1,8 @@
 package com.badbones69.crazycrates.configs;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.Methods;
+import com.badbones69.crazycrates.utils.ColorUtils;
 import net.dehya.ruby.common.annotations.FileBuilder;
 import net.dehya.ruby.common.annotations.yaml.Header;
 import net.dehya.ruby.common.annotations.yaml.Key;
@@ -12,7 +14,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-@FileBuilder(isLogging = true, isAsync = true, isData = false, fileType = FileType.YAML)
+@FileBuilder(isLogging = true, isAsync = false, isData = false, fileType = FileType.YAML)
 @Header("""
         If you notice any translation issues, Do not hesitate to contact our Translators.
         
@@ -244,16 +246,16 @@ public class Locale extends FileExtension {
     }
 
     public static void reload(CrazyCrates plugin) {
-        plugin.getPaperManager().getPaperFileManager().extract("/locale", plugin.getDirectory());
+        plugin.getPaperManager().getPaperFileManager().extract("/locale", plugin.getPaperManager().getDirectory());
 
-        plugin.getPaperManager().getPaperFileManager().addFile(new Locale(plugin.getDirectory()));
+        plugin.getPaperManager().getPaperFileManager().addFile(new Locale(plugin.getPaperManager().getDirectory()));
     }
 
     public static YamlConfiguration getConfiguration(CrazyCrates plugin) {
-        return plugin.getPaperManager().getPaperFileManager().getFileConfiguration(new Locale(plugin.getDirectory()));
+        return plugin.getPaperManager().getPaperFileManager().getFileConfiguration(new Locale(plugin.getPaperManager().getDirectory()));
     }
 
     public static File getConfig(CrazyCrates plugin) {
-        return plugin.getPaperManager().getPaperFileManager().getFile(new Locale(plugin.getDirectory()));
+        return plugin.getPaperManager().getPaperFileManager().getFile(new Locale(plugin.getPaperManager().getDirectory()));
     }
 }

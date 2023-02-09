@@ -9,12 +9,11 @@ import net.dehya.ruby.common.annotations.yaml.Key;
 import net.dehya.ruby.common.enums.FileType;
 import net.dehya.ruby.files.FileExtension;
 import org.simpleyaml.configuration.file.YamlConfiguration;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-@FileBuilder(isLogging = true, isAsync = true, isData = false, fileType = FileType.YAML)
+@FileBuilder(isLogging = true, isAsync = false, isData = false, fileType = FileType.YAML)
 @Header("""
             Discord: https://discord.gg/crazycrew
             Github: https://github.com/Crazy-Crew
@@ -48,6 +47,18 @@ public class Config extends FileExtension {
     @Key("settings.config-version")
     @Comment("DO NOT TOUCH THIS: We use this to identify if the config is outdated.")
     public static double CONFIG_VERSION = 1.1;
+
+    @Key("settings.use-mini-message")
+    @Comment("""
+            WARNING: If you switch this option to "true", &7 for example will no longer work.
+            
+            You will have to use https://docs.adventure.kyori.net/minimessage/format.html
+            NOTE: This option is a temporary courtesy, &7 at a point might be completely removed.
+            
+            Example of how to use MiniMessage: <gray>Hello <gold>How are you?</gold></gray>
+            """)
+    @BlockType
+    public static boolean USE_MINIMESSAGE = false;
 
     // Crate Settings
     @Key("crate-settings.crate-actions.log-to-file")

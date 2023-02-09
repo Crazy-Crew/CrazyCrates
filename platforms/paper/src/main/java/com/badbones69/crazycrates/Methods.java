@@ -1,13 +1,10 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.configs.Config;
 import com.badbones69.crazycrates.enums.Permissions;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -16,7 +13,6 @@ import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.RemoteConsoleCommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -25,11 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import static java.util.regex.Matcher.quoteReplacement;
 
-@SuppressWarnings("deprecation")
 public class Methods {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
@@ -37,85 +29,19 @@ public class Methods {
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     private static final Random random = new Random();
 
-    public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");
-
-    public static String color(String message) {
-        Matcher matcher = HEX_PATTERN.matcher(message);
-        StringBuilder buffer = new StringBuilder();
-
-        while (matcher.find()) {
-            matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group()).toString());
-        }
-
-        return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
-    }
-
-    public static void broadCastMessage(FileConfiguration crateFile, Player player) {
-        String crateBroadcast = crateFile.getString("Crate.BroadCast");
-        String crateBroadcastBooleanExists = crateFile.getString("Crate.OpeningBroadCast");
-        boolean crateBroadcastBoolean = crateFile.getBoolean("Crate.OpeningBroadCast");
-        if (crateBroadcastBoolean && crateBroadcastBooleanExists != null && crateBroadcast != null) {
-            if (crateBroadcast.isEmpty()) return;
-            plugin.getServer().broadcastMessage(color(crateBroadcast.replaceAll("%prefix%", quoteReplacement(getPrefix())).replaceAll("%player%", player.getName()).replaceAll("%Prefix%", quoteReplacement(getPrefix())).replaceAll("%Player%", player.getName())));
-        }
-    }
-
-    public static void sendMessage(CommandSender commandSender, String message, boolean prefixToggle) {
-        if (message == null || message.isEmpty()) return;
-
-        String prefix = getPrefix();
-
-        if (commandSender instanceof Player player) {
-            if (!prefix.isEmpty() && prefixToggle) player.sendMessage(color(message.replaceAll("%prefix%", quoteReplacement(prefix))).replaceAll("%Prefix%", quoteReplacement(prefix))); else player.sendMessage(color(message));
-
-            return;
-        }
-
-        if (!prefix.isEmpty() && prefixToggle) commandSender.sendMessage(color(message.replaceAll("%prefix%", quoteReplacement(prefix))).replaceAll("%Prefix%", quoteReplacement(prefix))); else commandSender.sendMessage(color(message));
-    }
-
     public static void sendCommand(String command) {
         ConsoleCommandSender console = plugin.getServer().getConsoleSender();
 
         plugin.getServer().dispatchCommand(console, command);
     }
 
-    public static String sanitizeColor(String msg) {
-        return sanitizeFormat(color(msg));
-    }
+    //public static String sanitizeColor(String msg) {
+    //    return sanitizeFormat(color(msg));
+    //}
 
-    public static String removeColor(String msg) {
-        return ChatColor.stripColor(msg);
-    }
-
-    public static HashMap<ItemStack, String> getItems(Player player) {
-        HashMap<ItemStack, String> items = new HashMap<>();
-        FileConfiguration file = crazyManager.getOpeningCrate(player).getFile();
-
-        for (String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
-            String id = file.getString("Crate.Prizes." + reward + ".DisplayItem");
-            String name = file.getString("Crate.Prizes." + reward + ".DisplayName");
-            int chance = file.getInt("Crate.Prizes." + reward + ".Chance");
-            int max = 99;
-
-            if (file.contains("Crate.Prizes." + reward + ".MaxRange")) {
-                max = file.getInt("Crate.Prizes." + reward + ".MaxRange") - 1;
-            }
-
-            try {
-                ItemStack item = new ItemBuilder().setMaterial(id).setName(name).build();
-                int num;
-
-                for (int counter = 1; counter <= 1; counter++) {
-                    num = 1 + random.nextInt(max);
-
-                    if (num >= 1 && num <= chance) items.put(item, "Crate.Prizes." + reward);
-                }
-            } catch (Exception ignored) {}
-        }
-
-        return items;
-    }
+    //public static String removeColor(String msg) {
+    //    return ChatColor.stripColor(msg);
+    //}
 
     public static void firework(Location loc) {
         final Firework fw = loc.getWorld().spawn(loc, Firework.class);
@@ -161,7 +87,7 @@ public class Methods {
             }
         }
 
-        sender.sendMessage(Messages.NOT_ONLINE.getMessage("%Player%", name));
+        //sender.sendMessage(Messages.NOT_ONLINE.getMessage("%Player%", name));
         return false;
     }
 
@@ -184,20 +110,12 @@ public class Methods {
             return true;
         } else {
             if (!tabComplete) {
-                player.sendMessage(Messages.NO_PERMISSION.getMessage());
+                //player.sendMessage(Messages.NO_PERMISSION.getMessage());
                 return false;
             }
 
             return false;
         }
-    }
-
-    public static String getPrefix() {
-        return color(Config.PREFIX);
-    }
-
-    public static String getPrefix(String msg) {
-        return color(Config.PREFIX + msg);
     }
 
     public static boolean isInventoryFull(Player player) {
@@ -268,9 +186,7 @@ public class Methods {
             NBTItem nbtItem = new NBTItem(item.clone());
 
             if (nbtItem.hasNBTData()) {
-                if (nbtItem.hasKey("CrazyCrates-Crate")) {
-                    nbtItem.removeKey("CrazyCrates-Crate");
-                }
+                if (nbtItem.hasTag("CrazyCrates-Crate")) nbtItem.removeKey("CrazyCrates-Crate");
             }
 
             return nbtItem.getItem();
@@ -285,9 +201,7 @@ public class Methods {
 
         for (Enchantment enchantment : Enchantment.values()) {
             try {
-                if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
-                    return enchantment;
-                }
+                if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) return enchantment;
 
                 if (stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null &&
                 stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
@@ -396,7 +310,7 @@ public class Methods {
 
             plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
         } else {
-            player.sendMessage(getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
+            //player.sendMessage(getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
         }
     }
 
@@ -408,7 +322,7 @@ public class Methods {
 
             plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
         } else {
-            player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
+            //player.sendMessage(Methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
         }
     }
 
@@ -417,13 +331,13 @@ public class Methods {
         plugin.getServer().getLogger().warning("Player: " + player.getName());
         plugin.getServer().getLogger().warning("Crate: " + crate.getName());
 
-        player.sendMessage(Methods.getPrefix("&cAn issue has occurred when trying to take a key."));
-        player.sendMessage(Methods.getPrefix("&cCommon reasons includes not having enough keys."));
+        //player.sendMessage(Methods.getPrefix("&cAn issue has occurred when trying to take a key."));
+        //player.sendMessage(Methods.getPrefix("&cCommon reasons includes not having enough keys."));
     }
 
-    public static String sanitizeFormat(String string) {
-        return TextComponent.toLegacyText(TextComponent.fromLegacyText(string));
-    }
+    //public static String sanitizeFormat(String string) {
+    //    return TextComponent.toLegacyText(TextComponent.fromLegacyText(string));
+    //}
 
     // Thanks ElectronicBoy
     public static HashMap<Integer, ItemStack> removeItemAnySlot(Inventory inventory, ItemStack... items) {
@@ -449,6 +363,7 @@ public class Methods {
                         break;
                     } else {
                         ItemStack itemStack = inventory.getItem(first);
+                        assert itemStack != null;
                         int amount = itemStack.getAmount();
 
                         if (amount <= toDelete) {
@@ -464,9 +379,7 @@ public class Methods {
                     }
 
                     // Bail when done
-                    if (toDelete <= 0) {
-                        break;
-                    }
+                    if (toDelete <= 0) break;
                 }
             }
 
@@ -486,9 +399,7 @@ public class Methods {
         for (int i = 0; i < inventory.length; i++) {
             if (inventory[i] == null) continue;
 
-            if (withAmount ? item.equals(inventory[i]) : item.isSimilar(inventory[i])) {
-                return i;
-            }
+            if (withAmount ? item.equals(inventory[i]) : item.isSimilar(inventory[i])) return i;
         }
 
         return -1;

@@ -13,6 +13,9 @@ misc:
   no-commands: '&cNemůžeš používat příkazy během otevírání &6%crate%.'
   no-keys: '&cPotřebuješ mít v ruce %key% &cpro otevření &6%crate%.'
   no-virtual-keys: '&cPotřebuješ %key% &cpro otevření &6%crate%.'
+  feature-disabled: '&cTato funkce je zakázána. Nemáme žádný odhadovaný čas příjezdu, kdy to bude fungovat.'
+  correct-usage: '&cSprávné použití tohoto příkazu je &e%usage%'
+
 errors:
   no-prizes-found: '&cTato bedna neobsahuje žádné odměny které by šlo vyhrát.'
   no-schematics-found: '&cNenalezena žádná schémata, prosím regeneruj je smazáním složky či zkontrolováním chyb!'
@@ -37,7 +40,7 @@ crates:
   requirements:
     not-a-crate: '&cNení zde žádná bedna s názvem &6%crate%.'
     not-a-number: '&6%number% &cnení číslice.'
-  not-a-block: '&cMusíš stát na bloku pro použití &6%crate%.'
+  not-on-block: '&cMusíš stát na bloku pro použití &6%crate%.'
   out-of-time: '&cOtevření %crate% ti zabralo &a5 Minut&c, nyní je zavřená.'
   crate-preview-disabled: '&cNáhled pro &6%crate% &7je aktuálně vypnutý.'
   crate-already-open: '&cJiž otevíráš bednu &6%crate%.'
@@ -85,29 +88,27 @@ command:
       virtual-keys-header:
         - '&8(&c!&8) &7Aktuální seznam počtu klíčů hráče &c%player%'
     crate-format: '%crate% &8»» &6%keys% klíčů.' # Related to what will show in the output above.
-  player-help:
-    - ' &2Crazy Crates Hráčská nápověda!'
-    - ''
-    - '&8» &6/key [player] &7- &eZkontroluje kolik klíčů má hráč.'
-    - '&8» &6/key &7- &eUkazuje, kolik máte klíčů.'
-    - '&8» &6/cc &7- &eOtevře menu beden.'
-  admin-help:
-    - ' &cCrazy Crates Admin Nápověda'
-    - ''
-    - '&8» &6/cc additem [crate] [prize] &7- &ePřidá itemy ve hře jako výhru do bedny.'
-    - '&8» &6/cc preview [crate] [player] &7- &eOtevře náhled bedny pro hráče.'
-    - '&8» &6/cc list &7- &eSeznam všech beden.'
-    - '&8» &6/cc open [crate] [player] &7- &ePokusí se otevřít bednu hráči, pokud má klíč.'
-    - '&8» &6/cc forceopen [crate] [player] &7- &eOtevře hráči bednu bez nutnosti mít klíč.'
-    - '&8» &6/cc tp [location] &7- &eTeleportuje k bedně.'
-    - '&8» &6/cc give [physical/virtual] [crate] [amount] [player] &7- &eUmožní ti vzít klíče od hráče.'
-    - '&8» &6/cc set [crate] &7- &eNastaví blok na který se díváš jako bednu.'
-    - '&8» &6/cc set Menu &7- &eNastaví blok na který se díváš jako /cc menu.'
-    - '&8» &6/cc reload &7- &eZnovu načte config/soubory s daty.'
-    - '&8» &6/cc set1/set2 &7- &eNastaví pozici &c#1 &enebo &c#2 při dělání nového schématu pro QuadCrates.'
-    - '&8» &6/cc save [file name] &7- &eVytvoří nový nbt soubor ve složce schematic.'
-    - ' '
-    - '&8» &6/key [player] &7- &eZkontroluje kolik klíčů má u sebe hráč.'
-    - '&8» &6/cc &7- &eOtevře menu beden.'
-    - ' '
-    - '&7Zde můžeš najít seznam oprávnění @ &ehttps://github.com/Crazy-Crew/CrazyCrates/wiki/Commands-and-Permissions'
+  player-help: |
+    &2Crazy Crates Hráčská nápověda!\n
+    
+     &8» &6/key [player] &7- &eZkontroluje kolik klíčů má hráč.
+     &8» &6/key &7- &eUkazuje, kolik máte klíčů.
+     &8» &6/cc &7- &eOtevře menu beden.
+  admin-help: |
+    &cCrazy Crates Admin Nápověda
+    
+    &8» &6/cc additem [crate] [prize] &7- &ePřidá itemy ve hře jako výhru do bedny.
+    &8» &6/cc preview [crate] [player] &7- &eOtevře náhled bedny pro hráče.
+    &8» &6/cc list &7- &eSeznam všech beden.
+    &8» &6/cc open [crate] [player] &7- &ePokusí se otevřít bednu hráči, pokud má klíč.
+    &8» &6/cc forceopen [crate] [player] &7- &eOtevře hráči bednu bez nutnosti mít klíč.
+    &8» &6/cc tp [location] &7- &eTeleportuje k bedně.
+    &8» &6/cc give [physical/virtual] [crate] [amount] [player] &7- &eUmožní ti vzít klíče od hráče.
+    &8» &6/cc set [crate] &7- &eNastaví blok na který se díváš jako bednu.
+    &8» &6/cc set Menu &7- &eNastaví blok na který se díváš jako /cc menu.
+    &8» &6/cc reload &7- &eZnovu načte config/soubory s daty.
+    &8» &6/cc set1/set2 &7- &eNastaví pozici &c#1 &enebo &c#2 při dělání nového schématu pro QuadCrates.
+    &8» &6/cc save [file name] &7- &eVytvoří nový nbt soubor ve složce schematic.
+    
+    &8» &6/key [player] &7- &eZkontroluje kolik klíčů má u sebe hráč.
+    &8» &6/cc &7- &eOtevře menu beden.

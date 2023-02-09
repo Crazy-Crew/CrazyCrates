@@ -13,7 +13,7 @@ public class LocaleConversion {
 
     public void convertMessages() {
         // The messages.yml
-        File input = new File(plugin.getDirectory() + "/messages.yml");
+        File input = new File(plugin.getPaperManager().getDirectory() + "/messages.yml");
 
         // The old configuration of messages.yml
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(input);
@@ -173,6 +173,6 @@ public class LocaleConversion {
 
         configuration.set("command.keys.crate-format", perCrate);
 
-        FileUtils.copyFile(new File(this.plugin.getDirectory() + "/locale/locale-en.yml"), input, configuration, this.plugin);
+        FileUtils.copyFile(new File(this.plugin.getPaperManager().getDirectory() + "/locale/locale-en.yml"), input, configuration, this.plugin);
     }
 }

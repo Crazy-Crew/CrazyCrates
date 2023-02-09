@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.enums.BrokeLocation;
-import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent.KeyReceiveReason;
 import com.badbones69.crazycrates.api.interfaces.HologramController;

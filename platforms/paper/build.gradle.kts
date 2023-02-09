@@ -21,9 +21,7 @@ repositories {
     /**
      * CrazyCrew Team
      */
-    //maven("https://repo.crazycrew.us/libraries/")
-
-    mavenLocal()
+    maven("https://repo.crazycrew.us/libraries/")
 }
 
 dependencies {

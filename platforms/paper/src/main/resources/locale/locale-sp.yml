@@ -13,6 +13,8 @@ misc:
   no-commands: '&cNo tienes permisos para usar comandos mientras abres &e%crate%.'
   no-keys: '&cNecesitas una %key% &cen tu mano para usar &e%crate%.'
   no-virtual-keys: '&cNecesitas una %key% &cpara abrir &e%crate%.'
+  feature-disabled: '&cEsta función está deshabilitada. No tenemos ETA sobre cuándo funcionará esto.'
+  correct-usage: '&cEl uso correcto de este comando es &e%usage%'
 
 errors:
   no-prizes-found: '&cEsta caja no tiene ningun premio que puedas ganar.'
@@ -38,7 +40,7 @@ crates:
   requirements:
     not-a-crate: '&cNo hay ninguna caja que se llame &e%crate%.'
     not-a-number: '&e%number% &cno es un numero.'
-  not-a-block: '&cDebes estar sobre un bloque para usar &e%crate%.'
+  not-on-block: '&cDebes estar sobre un bloque para usar &e%crate%.'
   out-of-time: '&cHas tardado &a5 Minutos &cpara abrir &e%crate% &cpor lo que se ha cerrado.'
   crate-preview-disabled: '&cLa previsualizacion para &e%crate% &7esta deshabilitada.'
   crate-already-open: '&cYa estas abriendo &e%crate%.'
@@ -85,31 +87,28 @@ command:
       no-virtual-keys: '&8(&e!&8) &7El jugador &c%player% &7no tiene ninguna llave.'
       virtual-keys-header:
         - '&8(&e!&8) &7Una lista de las llaves de &c%player%.'
-    # Related to what will show in the output above.
-    crate-format: '%crate% &8»» &e%keys% llaves.'
-  player-help:
-    - ' &2Crazy Crates Player Help!'
-    - ''
-    - '&8» &e/key [player] &7- &eComprueba cuantas llaves tiene un jugador.'
-    - '&8» &6/key &7- &eMuestra cuántas llaves tienes.'
-    - '&8» &e/cc &7- &eAbre el menu.'
-  admin-help:
-    - ' &cCrazy Crates Admin Help'
-    - ''
-    - '&8» &e/cc additem [crate] [prize] &7- &eAñade items in-game a los premios a una caja.'
-    - '&8» &e/cc preview [crate] [player] &7- &eAbre la previsualizacion de una caja para un jugador.'
-    - '&8» &e/cc list &7- &eLista de todas la caja.'
-    - '&8» &e/cc open [crate] [player] &7- &eIntenta abrir una caja para un jugador si tiene una llava.'
-    - '&8» &e/cc forceopen [crate] [player] &7- &eAbre una caja gratuita para un jugador.'
-    - '&8» &e/cc tp [location] &7- &eTeletransportate a una caja.'
-    - '&8» &e/cc give [physical/virtual] [crate] [amount] [player] &7- &eTe permite coger llaves de un jugador.'
-    - '&8» &e/cc set [crate] &7- &ePone el bloque que estas mirando como una caja.'
-    - '&8» &e/cc set Menu &7- &ePone el bloque que estas mirando para abrrir el /cc menu.'
-    - '&8» &e/cc reload &7- &eRecarga los archivos de cofiguracion/datos.'
-    - '&8» &e/cc set1/set2 &7- &ePone &c#1 &eo &c#2 para cuando estas haciendo un nuevo esquema para QuadCrates.'
-    - '&8» &e/cc save [file name] &7- &eCrea un nuevo archivo nbt en la carpeta de esquemas.'
-    - ' '
-    - '&8» &e/key [player] &7- &eComprueba cuantas llaves tiene un jugador.'
-    - '&8» &e/cc &7- &eAbre el crate menu.'
-    - ' '
-    - '&7Puedes encontrar la listas de permisos en &ehttps://github.com/Crazy-Crew/CrazyCrates/wiki/Commands-and-Permissions'
+    crate-format: '%crate% &8»» &e%keys% llaves.' # Related to what will show in the output above.
+  player-help: |
+    &2Crazy Crates Player Help!\n
+    
+    &8» &e/key [player] &7- &eComprueba cuantas llaves tiene un jugador.
+    &8» &6/key &7- &eMuestra cuántas llaves tienes.
+    &8» &e/cc &7- &eAbre el menu.
+  admin-help: |
+    &cCrazy Crates Admin Help
+    
+    &8» &e/cc additem [crate] [prize] &7- &eAñade items in-game a los premios a una caja.
+    &8» &e/cc preview [crate] [player] &7- &eAbre la previsualizacion de una caja para un jugador.
+    &8» &e/cc list &7- &eLista de todas la caja.
+    &8» &e/cc open [crate] [player] &7- &eIntenta abrir una caja para un jugador si tiene una llava.
+    &8» &e/cc forceopen [crate] [player] &7- &eAbre una caja gratuita para un jugador.
+    &8» &e/cc tp [location] &7- &eTeletransportate a una caja.
+    &8» &e/cc give [physical/virtual] [crate] [amount] [player] &7- &eTe permite coger llaves de un jugador.
+    &8» &e/cc set [crate] &7- &ePone el bloque que estas mirando como una caja.
+    &8» &e/cc set Menu &7- &ePone el bloque que estas mirando para abrrir el /cc menu.
+    &8» &e/cc reload &7- &eRecarga los archivos de cofiguracion/datos.
+    &8» &e/cc set1/set2 &7- &ePone &c#1 &eo &c#2 para cuando estas haciendo un nuevo esquema para QuadCrates.
+    &8» &e/cc save [file name] &7- &eCrea un nuevo archivo nbt en la carpeta de esquemas.
+    
+    &8» &e/key [player] &7- &eComprueba cuantas llaves tiene un jugador.
+    &8» &e/cc &7- &eAbre el crate menu.

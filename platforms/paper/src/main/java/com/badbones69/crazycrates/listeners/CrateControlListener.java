@@ -7,7 +7,6 @@ import com.badbones69.crazycrates.configs.Config;
 import com.badbones69.crazycrates.enums.Permissions;
 import com.badbones69.crazycrates.enums.types.CrateType;
 import com.badbones69.crazycrates.enums.types.KeyType;
-import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;

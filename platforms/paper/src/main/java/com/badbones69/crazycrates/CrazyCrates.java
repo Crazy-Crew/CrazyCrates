@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.commands.subs.CrateBaseCommand;
@@ -9,6 +8,7 @@ import com.badbones69.crazycrates.commands.subs.player.BaseKeyCommand;
 import com.badbones69.crazycrates.configs.Config;
 import com.badbones69.crazycrates.configs.Locale;
 import com.badbones69.crazycrates.configs.convert.ConfigConversion;
+import com.badbones69.crazycrates.configs.convert.LocaleConversion;
 import com.badbones69.crazycrates.cratetypes.*;
 import com.badbones69.crazycrates.listeners.*;
 import com.badbones69.crazycrates.listeners.tasks.PlayerKeyTask;
@@ -33,7 +33,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CrazyCrates extends JavaPlugin implements RubyCore {
+public class CrazyCrates extends JavaPlugin {
 
     private static CrazyCrates plugin;
 
@@ -46,22 +46,12 @@ public class CrazyCrates extends JavaPlugin implements RubyCore {
     public CrazyCrates() {
         super();
 
-        try {
-            Field api = Provider.class.getDeclaredField("api");
-            api.setAccessible(true);
-            api.set(null, this);
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            getServer().getPluginManager().disablePlugin(this);
-        }
-
         // Bind plugin variable on constructor build.
         plugin = this;
 
         starter = new Starter();
 
-        File updateDir = getDirectory().resolve("updates").toFile();
+        File updateDir = this.paperManager.getDirectory().resolve("updates").toFile();
 
         if (updateDir.mkdirs()) getLogger().warning("Created the " + updateDir.getName() + " folder.");
     }
@@ -74,9 +64,20 @@ public class CrazyCrates extends JavaPlugin implements RubyCore {
         // Convert config if need be.
         configConversion.convertConfig();
 
+        // Create locale version instance.
+        LocaleConversion localeConversion = new LocaleConversion();
+
+        // Convert messages if need be.
+        localeConversion.convertMessages();
+
         // Reload/create the config
         Config.reload(this);
         Locale.reload(this);
+
+        getLogger().warning(Config.LOCALE_FILE);
+
+        getLogger().warning(Locale.ADMIN_HELP);
+        getLogger().warning(Locale.PLAYER_HELP);
     }
 
     @Override
@@ -268,16 +269,6 @@ public class CrazyCrates extends JavaPlugin implements RubyCore {
         QuickCrate.removeAllRewards();
 
         if (starter.getCrazyManager().getHologramController() != null) starter.getCrazyManager().getHologramController().removeAllHolograms();
-    }
-
-    @Override
-    public @NotNull Path getDirectory() {
-        return getDataFolder().toPath();
-    }
-
-    @Override
-    public @NotNull Boolean isFileModuleActivated() {
-        return true;
     }
 
     public static CrazyCrates getPlugin() {

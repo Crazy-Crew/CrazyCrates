@@ -16,6 +16,14 @@ settings:
   toggle-metrics: true # Whether you want your server statistics to be sent to https://bstats.org/ ( Requires a restart! )
   config-version: 1.1 # DO NOT TOUCH THIS: We use this to identify if the config is outdated.
 
+  # WARNING: If you switch this option to "true", &7 for example will no longer work.
+  #
+  # You will have to use https://docs.adventure.kyori.net/minimessage/format.html
+  # NOTE: This option is a temporary courtesy, &7 at a point might be completely removed.
+  #
+  # Example of how to use MiniMessage: <gray>Hello <gold>How are you?</gold></gray>
+  use-mini-message: false
+
 crate-settings:
   crate-actions:
     # Warning: The log file may cause your server to crash.

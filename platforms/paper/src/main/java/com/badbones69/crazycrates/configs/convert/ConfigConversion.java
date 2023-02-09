@@ -15,10 +15,10 @@ public class ConfigConversion {
         double configVersion = 1.1;
 
         // The config.yml
-        File input = new File(plugin.getDirectory() + "/config.yml");
+        File input = new File(this.plugin.getPaperManager().getDirectory() + "/config.yml");
 
         // The renamed file.
-        File output = new File(plugin.getDirectory() + "/config-v1.yml");
+        File output = new File(this.plugin.getPaperManager().getDirectory() + "/config-v1.yml");
 
         // The old configuration of config.yml
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(input);
@@ -29,7 +29,7 @@ public class ConfigConversion {
         }
 
         // Rename the file to the output file.
-        if (input.renameTo(output)) plugin.getLogger().warning("Renamed " + input.getName() + " to " + output.getName() + ".");
+        if (input.renameTo(output)) this.plugin.getLogger().warning("Renamed " + input.getName() + " to " + output.getName() + ".");
 
         // The configuration of the output file.
         YamlConfiguration secondConfiguration = YamlConfiguration.loadConfiguration(output);
@@ -82,7 +82,7 @@ public class ConfigConversion {
 
         final List<String> guiCustomizer = secondConfiguration.getStringList("Settings.GUI-Customizer");
 
-        org.simpleyaml.configuration.file.YamlConfiguration configuration = Config.getConfiguration(plugin);
+        org.simpleyaml.configuration.file.YamlConfiguration configuration = Config.getConfiguration(this.plugin);
         
         configuration.set("settings.prefix", prefix);
         configuration.set("settings.update-checker", updateChecker);

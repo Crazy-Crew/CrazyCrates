@@ -12,7 +12,7 @@ public class FileUtils {
     public static void copyFile(File input, File output, org.simpleyaml.configuration.file.YamlConfiguration configuration, CrazyCrates plugin) {
         try {
             if (output.exists()) {
-                File updateDir = new File(plugin.getDirectory() + "/updates");
+                File updateDir = new File(plugin.getPaperManager().getDirectory() + "/updates");
 
                 String name = output.getName().replace(".yml", "").replace("v1", "");
 
