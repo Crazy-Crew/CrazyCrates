@@ -119,7 +119,7 @@ public class QuadCrateManager {
 
         // Check if it is on a block.
         if (spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
-            player.sendMessage(Messages.NOT_ON_BLOCK.getMessage());
+            //player.sendMessage(Messages.NOT_ON_BLOCK.getMessage());
             crazyManager.removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
             return;
@@ -127,7 +127,7 @@ public class QuadCrateManager {
 
         // Check if schematic folder is empty.
         if (crazyManager.getCrateSchematics().isEmpty()) {
-            player.sendMessage(Messages.NO_SCHEMATICS_FOUND.getMessage());
+            //player.sendMessage(Messages.NO_SCHEMATICS_FOUND.getMessage());
             crazyManager.removePlayerFromOpeningList(player);
             crateSessions.remove(instance);
             return;
@@ -144,7 +144,7 @@ public class QuadCrateManager {
 
         for (Location loc : structureLocations) {
             if (handler.getBlockBlackList().contains(loc.getBlock().getType())) {
-                player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
+                //player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
                 crazyManager.removePlayerFromOpeningList(player);
                 crateSessions.remove(instance);
                 return;
@@ -159,7 +159,7 @@ public class QuadCrateManager {
             if (entity instanceof Player) {
                 for (QuadCrateManager ongoingCrate : crateSessions) {
                     if (entity.getUniqueId() == ongoingCrate.player.getUniqueId()) {
-                        player.sendMessage(Messages.TO_CLOSE_TO_ANOTHER_PLAYER.getMessage("%Player%", entity.getName()));
+                        //player.sendMessage(Messages.TO_CLOSE_TO_ANOTHER_PLAYER.getMessage("%Player%", entity.getName()));
                         crazyManager.removePlayerFromOpeningList(player);
                         crateSessions.remove(instance);
                         return;
@@ -245,7 +245,7 @@ public class QuadCrateManager {
             public void run() {
                 // End the crate by force.
                 endCrateForce(true);
-                player.sendMessage(Messages.OUT_OF_TIME.getMessage());
+                //player.sendMessage(Messages.OUT_OF_TIME.getMessage());
             }
         }.runTaskLater(plugin, crazyManager.getQuadCrateTimer()));
     }

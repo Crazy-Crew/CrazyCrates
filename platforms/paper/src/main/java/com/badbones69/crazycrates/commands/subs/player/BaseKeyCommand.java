@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.commands.subs.player;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.configs.Locale;
@@ -11,6 +12,8 @@ import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,31 +27,31 @@ public class BaseKeyCommand extends BaseCommand {
     @Default
     @Permission("crazycrates.command.player.key")
     public void viewPersonal(Player player) {
-        //String header = Messages.PERSONAL_HEADER.getMessageNoPrefix();
+        //List<String> otherPlayerHeader = Locale.KEYS_OTHER_PLAYER_VIRTUAL_KEYS_HEADER;
+        //String otherPlayer = Locale.KEYS_OTHER_PLAYER_NO_VIRTUAL_KEYS;
 
-        //String noKeys = Messages.PERSONAL_NO_VIRTUAL_KEYS.getMessage();
-
-        getKeys(player, player);
+        //getKeys(player, player, Methods.convertList(otherPlayerHeader).replaceAll("%Player%", player.getName()), otherPlayer.replaceAll("%Player%", player.getName()));
     }
 
     @SubCommand("view")
     @Permission("crazycrates.command.player.key.others")
     public void viewOthers(CommandSender sender, @Suggestion ("online-players") Player target) {
         if (target == sender) {
-            ColorUtils.sendMessage(sender, Locale.TARGET_SAME_PLAYER, true);
+            //ColorUtils.sendMessage(sender, Locale.TARGET_SAME_PLAYER, true);
             return;
         }
 
-        getKeys(target, sender);
+        //List<String> otherPlayerHeader = Locale.KEYS_OTHER_PLAYER_VIRTUAL_KEYS_HEADER;
+        //String otherPlayer = Locale.KEYS_OTHER_PLAYER_NO_VIRTUAL_KEYS;
 
-        //String header = Messages.OTHER_PLAYER_HEADER.getMessageNoPrefix("%Player%", target.getName());
-
-        //String otherPlayer = Messages.OTHER_PLAYER_NO_VIRTUAL_KEYS.getMessage("%Player%", target.getName());
-
-        //getKeys(target, sender, header, otherPlayer);
+        //getKeys(target, sender, Methods.convertList(otherPlayerHeader).replaceAll("%Player%", target.getName()), otherPlayer.replaceAll("%Player%", target.getName()));
     }
 
-    private void getKeys(Player target, CommandSender sender) {
+    private void getKeys(Player target, CommandSender sender, String header, String subHeader) {
+        //List<String> message = new ArrayList<>();
+
+        //message.add(header);
+
         HashMap<Crate, Integer> keys = crazyManager.getVirtualKeys(target);
 
         boolean hasKeys = false;
@@ -56,23 +59,18 @@ public class BaseKeyCommand extends BaseCommand {
         for (Crate crate : keys.keySet()) {
             int amount = keys.get(crate);
 
-            if (amount > 0) hasKeys = true;
+            if (amount > 0) {
+                hasKeys = true;
+
+                //message.add(Locale.CRATE_FORMAT.replace("%crates%", crate.getFile().getString("Crate.Name")).replace("%keys%", amount + ""));
+            }
         }
 
-        //HashMap<String, String> placeholders = new HashMap<>();
-        //placeholders.put("%Crate%", crate.getFile().getString("Crate.Name"));
-        //placeholders.put("%Keys%", amount + "");
-        //message.add(Messages.PER_CRATE.getMessageNoPrefix(placeholders));
-
         if (hasKeys) {
-
+            //sender.sendMessage(ColorUtils.color(Methods.convertList(message)));
             return;
         }
 
-        //if (hasKeys) {
-            //sender.sendMessage(Messages.convertList(message));
-        //} else {
-            //sender.sendMessage(messageContent);
-        //}
+        //sender.sendMessage(subHeader);
     }
 }

@@ -29,13 +29,13 @@ public class MenuListener implements Listener {
     
     public static void openGUI(Player player) {
         int size = Config.PREVIEW_MENU_SIZE;
-        Inventory inv = plugin.getServer().createInventory(null, size, Methods.sanitizeColor(Config.PREVIEW_MENU_NAME));
+        //Inventory inv = plugin.getServer().createInventory(null, size, Methods.sanitizeColor(Config.PREVIEW_MENU_NAME));
 
         if (Config.FILLER_ITEMS_TOGGLE) {
-            ItemStack item = new ItemBuilder().setMaterial(Config.FILLER_ITEMS_ITEM).setName(Config.FILLER_ITEMS_NAME).setLore(Config.FILLER_ITEMS_LORE).build();
+            //ItemStack item = new ItemBuilder().setMaterial(Config.FILLER_ITEMS_ITEM).setName(Config.FILLER_ITEMS_NAME).setLore(Config.FILLER_ITEMS_LORE).build();
 
             for (int i = 0; i < size; i++) {
-                inv.setItem(i, item.clone());
+                //inv.setItem(i, item.clone());
             }
         }
 
@@ -81,7 +81,7 @@ public class MenuListener implements Listener {
             if (slot > size) continue;
 
             slot--;
-            inv.setItem(slot, itemBuilder.build());
+            //inv.setItem(slot, itemBuilder.build());
         }
 
         for (Crate crate : crazyManager.getCrates()) {
@@ -95,23 +95,23 @@ public class MenuListener implements Listener {
                     if (slot > size) continue;
 
                     slot--;
-                    inv.setItem(slot, new ItemBuilder()
-                            .setMaterial(file.getString(path + "Item"))
-                            .setName(file.getString(path + "Name"))
-                            .setLore(file.getStringList(path + "Lore"))
-                            .setCrateName(crate.getName())
-                            .setPlayerName(file.getString(path + "Player"))
-                            .setGlow(file.getBoolean(path + "Glowing"))
-                            .addLorePlaceholder("%Keys%", NumberFormat.getNumberInstance().format(crazyManager.getVirtualKeys(player, crate)))
-                            .addLorePlaceholder("%Keys_Physical%", NumberFormat.getNumberInstance().format(crazyManager.getPhysicalKeys(player, crate)))
-                            .addLorePlaceholder("%Keys_Total%", NumberFormat.getNumberInstance().format(crazyManager.getTotalKeys(player, crate)))
-                            .addLorePlaceholder("%Player%", player.getName())
-                            .build());
+                    //inv.setItem(slot, new ItemBuilder()
+                    //        .setMaterial(file.getString(path + "Item"))
+                    //        .setName(file.getString(path + "Name"))
+                    //        .setLore(file.getStringList(path + "Lore"))
+                    //        .setCrateName(crate.getName())
+                    //        .setPlayerName(file.getString(path + "Player"))
+                    //        .setGlow(file.getBoolean(path + "Glowing"))
+                    //        .addLorePlaceholder("%Keys%", NumberFormat.getNumberInstance().format(crazyManager.getVirtualKeys(player, crate)))
+                    //        .addLorePlaceholder("%Keys_Physical%", NumberFormat.getNumberInstance().format(crazyManager.getPhysicalKeys(player, crate)))
+                     //       .addLorePlaceholder("%Keys_Total%", NumberFormat.getNumberInstance().format(crazyManager.getTotalKeys(player, crate)))
+                    //        .addLorePlaceholder("%Player%", player.getName())
+                    //        .build());
                 }
             }
         }
 
-        player.openInventory(inv);
+        //player.openInventory(inv);
     }
 
     private static String getCrates(Player player, String option) {
@@ -137,7 +137,7 @@ public class MenuListener implements Listener {
                 if (crate.getCrateType() != CrateType.MENU && crate.isCrateMenu(e.getView())) return;
             }
 
-            if (e.getView().getTitle().equals(Methods.sanitizeColor(Config.PREVIEW_MENU_NAME))) {
+            //if (e.getView().getTitle().equals(Methods.sanitizeColor(Config.PREVIEW_MENU_NAME))) {
                 e.setCancelled(true);
 
                 if (e.getCurrentItem() != null) {
@@ -157,14 +157,14 @@ public class MenuListener implements Listener {
                                         PreviewListener.setPlayerInMenu(player, true);
                                         PreviewListener.openNewPreview(player, crate);
                                     } else {
-                                        player.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
+                                        //player.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
                                     }
 
                                     return;
                                 }
 
                                 if (crazyManager.isInOpeningList(player)) {
-                                    player.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
+                                    //player.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
                                     return;
                                 }
 
@@ -187,21 +187,21 @@ public class MenuListener implements Listener {
                                         player.playSound(player.getLocation(), sound, 1f, 1f);
                                     }
 
-                                    player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
+                                    //player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
                                     return;
                                 }
 
                                 if (Config.DISABLED_WORLDS_TOGGLE) {
-                                    for (String world : getDisabledWorlds()) {
+                                    for (String world : Config.DISABLED_WORLDS) {
                                         if (world.equalsIgnoreCase(player.getWorld().getName())) {
-                                            player.sendMessage(Messages.WORLD_DISABLED.getMessage("%World%", player.getWorld().getName()));
+                                            //player.sendMessage(Messages.WORLD_DISABLED.getMessage("%World%", player.getWorld().getName()));
                                             return;
                                         }
                                     }
                                 }
 
                                 if (Methods.isInventoryFull(player)) {
-                                    player.sendMessage(Messages.INVENTORY_FULL.getMessage());
+                                    //player.sendMessage(Messages.INVENTORY_FULL.getMessage());
                                     return;
                                 }
 
@@ -210,7 +210,7 @@ public class MenuListener implements Listener {
                         }
                     }
                 }
-            }
+            //}
         }
     }
     

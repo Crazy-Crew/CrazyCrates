@@ -32,22 +32,22 @@ public class Wheel implements Listener {
             return;
         }
 
-        final Inventory inv = plugin.getServer().createInventory(null, 54, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        //final Inventory inv = plugin.getServer().createInventory(null, 54, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
 
         for (int i = 0; i < 54; i++) {
-            inv.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+            //inv.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
         }
 
         HashMap<Integer, ItemStack> items = new HashMap<>();
 
         for (int i : getBorder()) {
             Prize prize = crate.pickPrize(player);
-            inv.setItem(i, prize.getDisplayItem());
+            //inv.setItem(i, prize.getDisplayItem());
             items.put(i, prize.getDisplayItem());
         }
 
         rewards.put(player, items);
-        player.openInventory(inv);
+        //player.openInventory(inv);
 
         crazyManager.addCrateTask(player, new BukkitRunnable() {
             final ArrayList<Integer> slots = getBorder();
@@ -80,7 +80,7 @@ public class Wheel implements Listener {
                             ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
 
                             for (int slot = 0; slot < 54; slot++) {
-                                if (!getBorder().contains(slot)) inv.setItem(slot, item);
+                                //if (!getBorder().contains(slot)) inv.setItem(slot, item);
                             }
 
                             slow = 0;
@@ -106,19 +106,19 @@ public class Wheel implements Listener {
                 open++;
 
                 if (open > 5) {
-                    player.openInventory(inv);
+                    //player.openInventory(inv);
                     open = 0;
                 }
             }
 
             private void checkLore() {
                 if (rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
-                    inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
+                    //inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
                 } else {
-                    inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
+                    //inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
                 }
 
-                inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
+                //inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                 i++;
                 f++;

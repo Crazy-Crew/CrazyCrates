@@ -26,7 +26,7 @@ public class ColorUtils {
     private final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");
 
     public static String prefix() {
-        return color(Config.PREFIX);
+        return color(Config.PREFIX_COMMAND);
     }
 
     public static void broadcast(FileConfiguration crateFile, Player player) {
@@ -37,13 +37,13 @@ public class ColorUtils {
         if (broadcastToggle && broadcastBoolean == null || broadcast == null || broadcast.isEmpty()) return;
 
         //noinspection deprecation
-        plugin.getServer().broadcastMessage(color(broadcast.replaceAll("%prefix%", Config.PREFIX)).replaceAll("%player%", player.getName()).replaceAll("%Prefix%", Config.PREFIX).replaceAll("%Player%", player.getName()));
+        plugin.getServer().broadcastMessage(color(broadcast.replaceAll("%prefix%", Config.PREFIX_COMMAND)).replaceAll("%player%", player.getName()).replaceAll("%Prefix%", Config.PREFIX_COMMAND).replaceAll("%Player%", player.getName()));
     }
 
     public static void sendMessage(CommandSender commandSender, String message, boolean prefixToggle) {
         if (message == null || message.isEmpty()) return;
 
-        String prefix = Config.PREFIX;
+        String prefix = Config.PREFIX_COMMAND;
 
         if (commandSender instanceof Player player) {
             if (!prefix.isEmpty() && prefixToggle) player.sendMessage(color(message.replaceAll("%prefix%", prefix).replaceAll("%Prefix%", prefix))); else player.sendMessage(color(message));

@@ -27,7 +27,7 @@ public class HolographicDisplaysSupport implements HologramController {
 
         Hologram hologram = api.createHologram(block.getLocation().add(.5, height, .5));
 
-        crateHologram.getMessages().forEach(line -> hologram.getLines().appendText(Methods.color(line)));
+        //crateHologram.getMessages().forEach(line -> hologram.getLines().appendText(Methods.color(line)));
 
         holograms.put(block, hologram);
     }

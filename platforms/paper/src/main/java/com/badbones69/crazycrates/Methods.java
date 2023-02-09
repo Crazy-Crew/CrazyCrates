@@ -7,8 +7,8 @@ import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.enums.Permissions;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
+import com.badbones69.crazycrates.utils.ColorUtils;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -33,6 +33,14 @@ public class Methods {
         ConsoleCommandSender console = plugin.getServer().getConsoleSender();
 
         plugin.getServer().dispatchCommand(console, command);
+    }
+
+    public static String convertList(List<String> list) {
+        StringBuilder message = new StringBuilder();
+
+        list.forEach(line -> message.append(ColorUtils.color(line)).append("\n"));
+
+        return message.toString();
     }
 
     //public static String sanitizeColor(String msg) {

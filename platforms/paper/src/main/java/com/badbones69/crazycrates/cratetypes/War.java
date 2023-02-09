@@ -33,10 +33,10 @@ public class War implements Listener {
     private static final HashMap<Player, Boolean> canClose = new HashMap<>();
     
     public static void openWarCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        String crateName = Methods.sanitizeColor(crate.getFile().getString(crateNameString));
-        Inventory inv = plugin.getServer().createInventory(null, 9, crateName);
-        setRandomPrizes(player, inv, crate, crateName);
-        InventoryView inventoryView = player.openInventory(inv);
+        //String crateName = Methods.sanitizeColor(crate.getFile().getString(crateNameString));
+        //Inventory inv = plugin.getServer().createInventory(null, 9, crateName);
+        //setRandomPrizes(player, inv, crate, crateName);
+        //InventoryView inventoryView = player.openInventory(inv);
         canPick.put(player, false);
         canClose.put(player, false);
 
@@ -48,7 +48,7 @@ public class War implements Listener {
             return;
         }
 
-        startWar(player, inv, crate, inventoryView.getTitle());
+        //startWar(player, inv, crate, inventoryView.getTitle());
     }
     
     private static void startWar(final Player player, final Inventory inv, final Crate crate, final String inventoryTitle) {
@@ -82,15 +82,15 @@ public class War implements Listener {
     }
     
     private static void setRandomPrizes(Player player, Inventory inv, Crate crate, String inventoryTitle) {
-        if (crazyManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(Methods.sanitizeColor(crazyManager.getOpeningCrate(player).getFile().getString(crateNameString)))) {
+        //if (crazyManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(Methods.sanitizeColor(crazyManager.getOpeningCrate(player).getFile().getString(crateNameString)))) {
             for (int i = 0; i < 9; i++) {
                 inv.setItem(i, crate.pickPrize(player).getDisplayItem());
             }
-        }
+        //}
     }
     
     private static void setRandomGlass(Player player, Inventory inv, String inventoryTitle) {
-        if (crazyManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(Methods.sanitizeColor(crazyManager.getOpeningCrate(player).getFile().getString(crateNameString)))) {
+        //if (crazyManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(Methods.sanitizeColor(crazyManager.getOpeningCrate(player).getFile().getString(crateNameString)))) {
 
             if (colorCodes == null) colorCodes = getColorCode();
 
@@ -101,7 +101,7 @@ public class War implements Listener {
             for (int i = 0; i < 9; i++) {
                 inv.setItem(i, item);
             }
-        }
+       //}
     }
     
     private static HashMap<ItemStack, String> getColorCode() {
@@ -201,11 +201,11 @@ public class War implements Listener {
 
         if (canClose.containsKey(player) && canClose.get(player)) {
             for (Crate crate : crazyManager.getCrates()) {
-                if (crate.getCrateType() == CrateType.WAR && e.getView().getTitle().equalsIgnoreCase(Methods.sanitizeColor(crate.getFile().getString(crateNameString)))) {
+                //if (crate.getCrateType() == CrateType.WAR && e.getView().getTitle().equalsIgnoreCase(Methods.sanitizeColor(crate.getFile().getString(crateNameString)))) {
                     canClose.remove(player);
 
                     if (crazyManager.hasCrateTask(player)) crazyManager.endCrate(player);
-                }
+                //}
             }
         }
     }

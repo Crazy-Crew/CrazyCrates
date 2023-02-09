@@ -23,9 +23,13 @@ import java.util.List;
             """)
 public class Config extends FileExtension {
 
-    @Key("settings.prefix")
+    @Key("settings.prefix.logger")
+    @Comment("Change how the prefix in console will look!")
+    public static String PREFIX_LOGGER = "<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>";
+
+    @Key("settings.prefix.command")
     @Comment("The prefix used in front of messages.")
-    public static String PREFIX = "&8[&bCrazyCrates&8]: ";
+    public static String PREFIX_COMMAND = "<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>";
 
     @Key("settings.locale-file")
     @Comment("""

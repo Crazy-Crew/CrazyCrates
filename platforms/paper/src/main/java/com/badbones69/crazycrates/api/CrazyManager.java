@@ -332,7 +332,7 @@ public class CrazyManager {
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
         if (crate.getCrateType() != CrateType.MENU) {
             if (!crate.canWinPrizes(player)) {
-                player.sendMessage(Messages.NO_PRIZES_FOUND.getMessage());
+                //player.sendMessage(Messages.NO_PRIZES_FOUND.getMessage());
                 removePlayerFromOpeningList(player);
                 removePlayerKeyType(player);
                 return;
@@ -341,12 +341,12 @@ public class CrazyManager {
 
         addPlayerToOpeningList(player, crate);
 
-        if (crate.getFile() != null) Methods.broadCastMessage(crate.getFile(), player);
+        //if (crate.getFile() != null) Methods.broadCastMessage(crate.getFile(), player);
 
         switch (crate.getCrateType()) {
             case MENU -> {
-                if (Config.PREVIEW_MENU_TOGGLE) MenuListener.openGUI(player);
-                else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
+                //if (Config.PREVIEW_MENU_TOGGLE) MenuListener.openGUI(player);
+                //else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
             }
             case COSMIC -> Cosmic.openCosmic(player, crate, keyType, checkHand);
             case CSGO -> CSGO.openCSGO(player, crate, keyType, checkHand);
@@ -366,12 +366,12 @@ public class CrazyManager {
             }
             case FIRE_CRACKER -> {
                 if (CrateControlListener.inUse.containsValue(location)) {
-                    player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
+                    //player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
                     removePlayerFromOpeningList(player);
                     return;
                 } else {
                     if (virtualCrate) {
-                        player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
+                        //player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
                         removePlayerFromOpeningList(player);
                         return;
                     } else {
@@ -382,12 +382,12 @@ public class CrazyManager {
             }
             case QUICK_CRATE -> {
                 if (CrateControlListener.inUse.containsValue(location)) {
-                    player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
+                    //player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
                     removePlayerFromOpeningList(player);
                     return;
                 } else {
                     if (virtualCrate && location.equals(player.getLocation())) {
-                        player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
+                        //player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
                         removePlayerFromOpeningList(player);
                         return;
                     } else {
@@ -398,7 +398,7 @@ public class CrazyManager {
             }
             case CRATE_ON_THE_GO -> {
                 if (virtualCrate) {
-                    player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
+                    //player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
                     removePlayerFromOpeningList(player);
                     return;
                 } else {
@@ -663,7 +663,8 @@ public class CrazyManager {
             slots += 9;
         }
 
-        Inventory inv = plugin.getServer().createInventory(null, slots, Methods.sanitizeColor(file.getString("Crate.Name")));
+        //Inventory inv = plugin.getServer().createInventory(null, slots, Methods.sanitizeColor(file.getString("Crate.Name")));
+        Inventory inv = plugin.getServer().createInventory(null, slots, file.getString("Crate.Name"));
 
         for (String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
             String id = file.getString("Crate.Prizes." + reward + ".DisplayItem", "Stone");
@@ -710,7 +711,7 @@ public class CrazyManager {
                     HashMap<String, String> placeholders = new HashMap<>();
                     placeholders.put("%Crate%", prize.getCrate());
                     placeholders.put("%Prize%", prize.getName());
-                    player.sendMessage(Messages.PRIZE_ERROR.getMessage(placeholders));
+                    //player.sendMessage(Messages.PRIZE_ERROR.getMessage(placeholders));
                     continue;
                 }
 
@@ -773,7 +774,7 @@ public class CrazyManager {
                     message = PlaceholderAPI.setPlaceholders(player, message);
                 }
 
-                Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())), false);
+                //Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())), false);
             }
         } else {
             plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
@@ -1230,7 +1231,7 @@ public class CrazyManager {
                     if (giveVirtualKeysWhenInventoryFull) {
                         addVirtualKeys(amount, player, crate);
 
-                        if (Config.GIVE_VIRTUAL_KEYS_MESSAGE) player.sendMessage(Messages.CANNOT_GIVE_PLAYER_KEYS.getMessage().replaceAll("%amount%", String.valueOf(amount)).replaceAll("%key%", crate.getName()));
+                        //if (Config.GIVE_VIRTUAL_KEYS_MESSAGE) player.sendMessage(Messages.CANNOT_GIVE_PLAYER_KEYS.getMessage().replaceAll("%amount%", String.valueOf(amount)).replaceAll("%key%", crate.getName()));
                     } else {
                         player.getWorld().dropItem(player.getLocation(), crate.getKey(amount));
                     }

@@ -16,12 +16,15 @@ import com.badbones69.crazycrates.support.MetricsHandler;
 import com.badbones69.crazycrates.support.libraries.PluginSupport;
 import com.badbones69.crazycrates.support.libraries.UpdateChecker;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
+import com.badbones69.crazycrates.utils.adventure.LogWrapper;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
 import dev.triumphteam.cmd.core.message.MessageKey;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
 import net.dehya.ruby.PaperManager;
 import net.dehya.ruby.RubyCore;
+import net.dehya.ruby.utils.LoggerUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -41,7 +44,7 @@ public class CrazyCrates extends JavaPlugin {
 
     BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
 
-    private final PaperManager paperManager = new PaperManager(this, true);;
+    private final PaperManager paperManager = new PaperManager(this, true, true);
 
     public CrazyCrates() {
         super();
@@ -182,7 +185,7 @@ public class CrazyCrates extends JavaPlugin {
 
         if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) new PlaceholderAPISupport().register();
 
-        manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage()));
+        //manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage()));
 
         manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
             String command = context.getCommand();
@@ -199,7 +202,7 @@ public class CrazyCrates extends JavaPlugin {
                 }
             }
 
-            if (correctUsage != null) sender.sendMessage(Messages.CORRECT_USAGE.getMessage().replace("%usage%", correctUsage));
+            //if (correctUsage != null) sender.sendMessage(Messages.CORRECT_USAGE.getMessage().replace("%usage%", correctUsage));
         });
 
         manager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
@@ -217,16 +220,16 @@ public class CrazyCrates extends JavaPlugin {
                 }
             }
 
-            if (correctUsage != null) sender.sendMessage(Messages.CORRECT_USAGE.getMessage().replace("%usage%", correctUsage));
+            //if (correctUsage != null) sender.sendMessage(Messages.CORRECT_USAGE.getMessage().replace("%usage%", correctUsage));
         });
 
-        manager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> sender.sendMessage(Messages.NOT_ONLINE.getMessage().replace("%player%", context.getTypedArgument())));
+        //manager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> sender.sendMessage(Messages.NOT_ONLINE.getMessage().replace("%player%", context.getTypedArgument())));
 
-        manager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> sender.sendMessage(Messages.NO_PERMISSION.getMessage()));
+        //manager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> sender.sendMessage(Messages.NO_PERMISSION.getMessage()));
 
-        manager.registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage()));
+        //manager.registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage()));
 
-        manager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage()));
+        //manager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage()));
 
         manager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> starter.getFileManager().getAllCratesNames(plugin).stream().toList());
 
@@ -307,11 +310,12 @@ public class CrazyCrates extends JavaPlugin {
         for (PluginSupport value : PluginSupport.values()) {
 
             if (value.isPluginEnabled()) {
-                plugin.getLogger().info(Methods.color("&6&l" + value.name() + " &a&lFOUND"));
+                LogWrapper.send(true, null, true, "<orange>" + value.getName() + "</orange> <bold><green>FOUND</green></bold>");
                 return;
             }
 
-            plugin.getLogger().info(Methods.color("&6&l" + value.name() + " &c&lNOT FOUND"));
+            //plugin.getLogger().info(Methods.color("&6&l" + value.name() + " &c&lNOT FOUND"));
+            LogWrapper.send(true, null, true, "<orange>" + value.getName() + "</orange> <bold><red>NOT FOUND</red></bold>");
         }
     }
 }

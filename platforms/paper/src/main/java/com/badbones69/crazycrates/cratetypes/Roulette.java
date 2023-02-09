@@ -29,10 +29,10 @@ public class Roulette implements Listener {
     }
     
     public static void openRoulette(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
-        setGlass(inv);
-        inv.setItem(13, crate.pickPrize(player).getDisplayItem());
-        player.openInventory(inv);
+        //Inventory inv = plugin.getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        //setGlass(inv);
+        //inv.setItem(13, crate.pickPrize(player).getDisplayItem());
+        //player.openInventory(inv);
 
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
@@ -40,7 +40,7 @@ public class Roulette implements Listener {
             return;
         }
 
-        startRoulette(player, inv, crate);
+        //startRoulette(player, inv, crate);
     }
     
     private static void startRoulette(final Player player, final Inventory inv, final Crate crate) {

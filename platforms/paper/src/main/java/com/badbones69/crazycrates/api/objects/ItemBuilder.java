@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.support.SkullCreator;
 import com.badbones69.crazycrates.support.libraries.PluginSupport;
+import com.badbones69.crazycrates.utils.ColorUtils;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.Color;
@@ -512,7 +513,7 @@ public class ItemBuilder {
      * @return The ItemBuilder with an updated name.
      */
     public ItemBuilder setName(String itemName) {
-        if (itemName != null) this.itemName = Methods.color(itemName);
+        if (itemName != null) this.itemName = ColorUtils.color(itemName);
 
         return this;
     }
@@ -560,7 +561,7 @@ public class ItemBuilder {
             this.itemLore.clear();
 
             for (String line : lore) {
-                this.itemLore.add(Methods.color(line));
+                this.itemLore.add(ColorUtils.color(line));
             }
         }
 
@@ -574,7 +575,7 @@ public class ItemBuilder {
      * @return The ItemBuilder with updated info.
      */
     public ItemBuilder addLore(String lore) {
-        if (lore != null) this.itemLore.add(Methods.color(lore));
+        if (lore != null) this.itemLore.add(ColorUtils.color(lore));
         return this;
     }
     

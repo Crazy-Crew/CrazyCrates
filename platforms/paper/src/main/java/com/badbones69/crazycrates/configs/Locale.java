@@ -1,8 +1,6 @@
 package com.badbones69.crazycrates.configs;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.utils.ColorUtils;
 import net.dehya.ruby.common.annotations.FileBuilder;
 import net.dehya.ruby.common.annotations.yaml.Header;
 import net.dehya.ruby.common.annotations.yaml.Key;
@@ -199,7 +197,7 @@ public class Locale extends FileExtension {
     public static String KEYS_OTHER_PLAYER_NO_VIRTUAL_KEYS = "&8(&c!&8) &7The player &c%player% &7does not have any keys.";
 
     @Key("command.keys.other-player.virtual-keys-header")
-    public static List<String> KEYS_OTHER_PLAYER_NO_VIRTUAL_KEYS_HEADER = new ArrayList<>() {{
+    public static List<String> KEYS_OTHER_PLAYER_VIRTUAL_KEYS_HEADER = new ArrayList<>() {{
         add("&8(&c!&8) &7A list of &c%player%''s &7current amount of keys.");
     }};
 

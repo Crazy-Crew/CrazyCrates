@@ -26,7 +26,7 @@ public class DecentHologramsSupport implements HologramController {
 
         Hologram hologram = DHAPI.createHologram(ThreadLocalRandom.current().nextInt() + "", block.getLocation().add(.5, height, .5));
 
-        crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, Methods.color(line)));
+        //crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, Methods.color(line)));
 
         holograms.put(block, hologram);
     }

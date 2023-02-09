@@ -65,17 +65,17 @@ public class CSGO implements Listener {
     }
     
     public static void openCSGO(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
-        setGlass(inv);
+        //Inventory inv = plugin.getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        //setGlass(inv);
 
         for (int i = 9; i > 8 && i < 18; i++) {
-            inv.setItem(i, crate.pickPrize(player).getDisplayItem());
+            //inv.setItem(i, crate.pickPrize(player).getDisplayItem());
         }
 
-        player.openInventory(inv);
+        //player.openInventory(inv);
 
         if (crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
-            startCSGO(player, inv, crate);
+            //startCSGO(player, inv, crate);
         } else {
             Methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);

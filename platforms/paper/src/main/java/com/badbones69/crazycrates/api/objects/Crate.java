@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.api.managers.CrateManager;
 import com.badbones69.crazycrates.enums.types.CrateType;
 import com.badbones69.crazycrates.listeners.PreviewListener;
 import com.badbones69.crazycrates.objects.CrateHologram;
+import com.badbones69.crazycrates.utils.ColorUtils;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -79,15 +80,17 @@ public class Crate {
         this.previewToggle = file != null && (!file.contains("Crate.Preview.Toggle") || file.getBoolean("Crate.Preview.Toggle"));
         this.borderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle");
         setPreviewChestLines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
-        this.previewName = Methods.sanitizeColor(previewName);
+        //this.previewName = Methods.sanitizeColor(previewName);
+        this.previewName = previewName;
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
         this.maxSlots = previewChestLines * 9;
 
         for (int amount = preview.size(); amount > maxSlots - (borderToggle ? 18 : maxSlots >= preview.size() ? 0 : maxSlots != 9 ? 9 : 0); amount -= maxSlots - (borderToggle ? 18 : maxSlots >= preview.size() ? 0 : maxSlots != 9 ? 9 : 0), maxPage++) ;
 
-        this.crateInventoryName = file != null ? Methods.sanitizeColor(file.getString("Crate.CrateName")) : "";
-        this.borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? Methods.color(file.getString("Crate.Preview.Glass.Name")) : " ";
+        // TODO() sanitize boi
+        this.crateInventoryName = file != null ? file.getString("Crate.CrateName") : "";
+        this.borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? ColorUtils.color(file.getString("Crate.Preview.Glass.Name")) : " ";
         this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(this.borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(this.borderName);
 
         this.hologram = hologram != null ? hologram : new CrateHologram();
@@ -533,7 +536,8 @@ public class Crate {
     }
     
     private boolean isInventoryNameSimilar(String inventory1, String inventory2) {
-        return Methods.removeColor(inventory1).equalsIgnoreCase(Methods.removeColor(inventory2));
+        return true;
+        //return Methods.removeColor(inventory1).equalsIgnoreCase(Methods.removeColor(inventory2));
     }
     
     /**

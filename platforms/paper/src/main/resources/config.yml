@@ -5,7 +5,12 @@
 # Request Features/Support: https://github.com/orgs/Crazy-Crew/discussions
 
 settings:
-  prefix: "&8[&bCrazyCrates&8]: " # The prefix used in front of messages.
+  prefix:
+    # Change how the prefix in console will look!
+    logger: '<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>'
+    # Change how the prefix for commands will look!
+    command: '<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>'
+
   # The language file to use from the locale folder.
   # Supported languages are Spanish(sp), Czech(cz), English(en).
   locale-file: "locale-en.yml"
