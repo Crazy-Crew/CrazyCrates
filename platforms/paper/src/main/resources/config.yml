@@ -7,7 +7,6 @@
 settings:
   prefix:
     command: "<gradient:#FE5F55:#6b55b5>[CrazyCrates]</gradient> " # The prefix used in front of messages.
-    logger: '<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>'
 
   # The language file to use from the locale folder.
   # Supported languages are Spanish(sp), Czech(cz), English(en).
