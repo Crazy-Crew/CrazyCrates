@@ -18,11 +18,12 @@ import com.badbones69.crazycrates.enums.types.KeyType;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
 import com.badbones69.crazycrates.utils.ColorUtils;
-import com.badbones69.crazycrates.utils.adventure.MsgWrapper;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.*;
 import net.dehya.ruby.RubyConfig;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -30,8 +31,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
-import org.checkerframework.checker.units.qual.C;
-
 import java.util.HashMap;
 
 @Command(value = "crates", alias = {"crazycrates", "cc", "crate", "crazycrate"})
