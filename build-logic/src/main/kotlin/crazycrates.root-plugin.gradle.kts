@@ -14,7 +14,13 @@ repositories {
 
     maven("https://jitpack.io/")
 
+    /**
+     * CrazyCrew Team
+     */
+    maven("https://repo.crazycrew.us/libraries/")
+
     mavenCentral()
+    mavenLocal()
 }
 
 tasks {
