@@ -35,7 +35,7 @@ public class UpdateChecker {
      * @return The project id.
      */
     public int getProjectID() {
-        return project;
+        return this.project;
     }
 
     /**
@@ -44,7 +44,7 @@ public class UpdateChecker {
      * @return The new version.
      */
     public String getNewVersion() {
-        return newVersion;
+        return this.newVersion;
     }
 
     /**
@@ -53,7 +53,7 @@ public class UpdateChecker {
      * @return The resource project url.
      */
     public String getResourcePage() {
-        return "https://www.spigotmc.org/resources/" + project;
+        return "https://www.spigotmc.org/resources/" + this.project;
     }
 
     /**
@@ -63,7 +63,7 @@ public class UpdateChecker {
      */
     public boolean hasUpdate() throws IOException {
         // Open the connection.
-        HttpURLConnection connection = (HttpURLConnection) apiPage.openConnection();
+        HttpURLConnection connection = (HttpURLConnection) this.apiPage.openConnection();
 
         // Set a user agent.
         connection.addRequestProperty("User-Agent", "CrazyCrew");

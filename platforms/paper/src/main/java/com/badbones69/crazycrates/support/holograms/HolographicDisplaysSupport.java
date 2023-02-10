@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.support.holograms;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.objects.CrateHologram;
@@ -29,20 +28,20 @@ public class HolographicDisplaysSupport implements HologramController {
 
         //crateHologram.getMessages().forEach(line -> hologram.getLines().appendText(Methods.color(line)));
 
-        holograms.put(block, hologram);
+        this.holograms.put(block, hologram);
     }
     
     public void removeHologram(Block block) {
-        if (!holograms.containsKey(block)) return;
+        if (!this.holograms.containsKey(block)) return;
 
-        Hologram hologram = holograms.get(block);
+        Hologram hologram = this.holograms.get(block);
 
-        holograms.remove(block);
+        this.holograms.remove(block);
         hologram.delete();
     }
 
     public void removeAllHolograms() {
-        holograms.forEach((key, value) -> value.delete());
-        holograms.clear();
+        this.holograms.forEach((key, value) -> value.delete());
+        this.holograms.clear();
     }
 }

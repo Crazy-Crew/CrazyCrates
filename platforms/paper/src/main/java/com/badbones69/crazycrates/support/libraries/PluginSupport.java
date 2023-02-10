@@ -23,6 +23,6 @@ public enum PluginSupport {
     }
 
     public boolean isPluginEnabled() {
-        return plugin.getServer().getPluginManager().isPluginEnabled(name);
+        return this.plugin.getServer().getPluginManager().isPluginEnabled(name);
     }
 }

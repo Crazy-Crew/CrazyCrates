@@ -24,23 +24,23 @@ public class CMIHologramsSupport implements HologramController {
 
         hologram.update();
 
-        holograms.put(block, hologram);
+        this.holograms.put(block, hologram);
     }
 
     @Override
     public void removeHologram(Block block) {
-        if (!holograms.containsKey(block)) return;
+        if (!this.holograms.containsKey(block)) return;
 
-        CMIHologram hologram = holograms.get(block);
+        CMIHologram hologram = this.holograms.get(block);
 
-        holograms.remove(block);
+        this.holograms.remove(block);
 
         hologram.remove();
     }
 
     @Override
     public void removeAllHolograms() {
-        holograms.forEach((key, value) -> value.remove());
-        holograms.clear();
+        this.holograms.forEach((key, value) -> value.remove());
+        this.holograms.clear();
     }
 }
