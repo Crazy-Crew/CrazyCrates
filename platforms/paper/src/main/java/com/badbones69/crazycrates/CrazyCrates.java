@@ -127,17 +127,17 @@ public class CrazyCrates extends JavaPlugin {
 
             try {
                 if (updateChecker.hasUpdate() && !getDescription().getVersion().contains("Beta")) {
-                    getLogger().warning("CrazyCrates has a new update available! New version: " + updateChecker.getNewVersion());
-                    getLogger().warning("Current Version: v" + getDescription().getVersion());
-                    getLogger().warning("Download: " + updateChecker.getResourcePage());
+                    MsgWrapper.send("<#E0115F>CrazyCrates has a new update available! New version: <#11e092>" + updateChecker.getNewVersion());
+                    MsgWrapper.send("<#E0115F>Current Version: <#11e092>v" + getDescription().getVersion());
+                    MsgWrapper.send("<#E0115F>Download: <#11e092>" + updateChecker.getResourcePage());
 
                     return;
                 }
 
-                getLogger().info("Plugin is up to date! - " + updateChecker.getNewVersion());
+                MsgWrapper.send("<#E0115F>Plugin is up to date! - <#11e092>" + updateChecker.getNewVersion());
             } catch (Exception exception) {
-                getLogger().warning("Could not check for updates! Perhaps the call failed or you are using a snapshot build:");
-                getLogger().warning("You can turn off the update checker in config.yml if on a snapshot build.");
+                MsgWrapper.send("<#E0115F>Could not check for updates! Perhaps the call failed or you are using a snapshot build:");
+                MsgWrapper.send("<#E0115F>You can turn off the update checker in config.yml if on a snapshot build.");
             }
         });
     }
@@ -310,12 +310,11 @@ public class CrazyCrates extends JavaPlugin {
         for (PluginSupport value : PluginSupport.values()) {
 
             if (value.isPluginEnabled()) {
-                LogWrapper.send(true, null, true, "<orange>" + value.getName() + "</orange> <bold><green>FOUND</green></bold>");
+                MsgWrapper.send("<#11e092>" + value.getName() + "<#E0115F> <bold><#7df060>FOUND</bold>");
                 return;
             }
 
-            //plugin.getLogger().info(Methods.color("&6&l" + value.name() + " &c&lNOT FOUND"));
-            LogWrapper.send(true, null, true, "<orange>" + value.getName() + "</orange> <bold><red>NOT FOUND</red></bold>");
+            MsgWrapper.send("<#11e092>" + value.getName() + "<#E0115F> <bold><#FE5F55>NOT FOUND</bold>");
         }
     }
 }
