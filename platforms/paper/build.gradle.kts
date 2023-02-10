@@ -17,15 +17,10 @@ repositories {
      * NBT Team
      */
     maven("https://repo.codemc.org/repository/maven-public/")
-
-    /**
-     * CrazyCrew Team
-     */
-    maven("https://repo.crazycrew.us/libraries/")
 }
 
 dependencies {
-    implementation(project(":crazycrates-core"))
+    api(project(":crazycrates-core"))
 
     compileOnly(libs.papermc)
 
@@ -43,7 +38,6 @@ dependencies {
     implementation(libs.nbt.api)
     implementation(libs.bstats.bukkit)
 
-    implementation(libs.ruby.api)
     implementation(libs.ruby.paper)
 }
 
