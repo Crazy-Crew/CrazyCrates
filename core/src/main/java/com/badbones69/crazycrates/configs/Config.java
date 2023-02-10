@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.configs;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import net.dehya.ruby.common.annotations.FileBuilder;
 import net.dehya.ruby.common.annotations.yaml.BlockType;
 import net.dehya.ruby.common.annotations.yaml.Comment;
@@ -8,8 +7,10 @@ import net.dehya.ruby.common.annotations.yaml.Header;
 import net.dehya.ruby.common.annotations.yaml.Key;
 import net.dehya.ruby.common.enums.FileType;
 import net.dehya.ruby.files.FileExtension;
+import net.dehya.ruby.files.FileManager;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +24,9 @@ import java.util.List;
             """)
 public class Config extends FileExtension {
 
-    @Key("settings.prefix.logger")
-    @Comment("Change how the prefix in console will look!")
-    public static String PREFIX_LOGGER = "<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>";
-
     @Key("settings.prefix.command")
     @Comment("The prefix used in front of messages.")
-    public static String PREFIX_COMMAND = "<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>";
+    public static String PREFIX_COMMAND = "<gradient:#FE5F55:#6b55b5>[CrazyCrates]</gradient> ";
 
     @Key("settings.locale-file")
     @Comment("""
@@ -48,21 +45,13 @@ public class Config extends FileExtension {
     @Comment("Whether you want your server statistics to be sent to https://bstats.org/ ( Requires a restart! )")
     public static boolean TOGGLE_METRICS = true;
 
+    @Key("settings.verbose")
+    @Comment("Whether you want to have an empty console or not.")
+    public static boolean VERBOSE_LOGGING = true;
+
     @Key("settings.config-version")
     @Comment("DO NOT TOUCH THIS: We use this to identify if the config is outdated.")
     public static double CONFIG_VERSION = 1.1;
-
-    @Key("settings.use-mini-message")
-    @Comment("""
-            WARNING: If you switch this option to "true", &7 for example will no longer work.
-            
-            You will have to use https://docs.adventure.kyori.net/minimessage/format.html
-            NOTE: This option is a temporary courtesy, &7 at a point might be completely removed.
-            
-            Example of how to use MiniMessage: <gray>Hello <gold>How are you?</gold></gray>
-            """)
-    @BlockType
-    public static boolean USE_MINIMESSAGE = false;
 
     // Crate Settings
     @Key("crate-settings.crate-actions.log-to-file")
@@ -270,15 +259,21 @@ public class Config extends FileExtension {
         super("config.yml");
     }
 
-    public static void reload(CrazyCrates plugin) {
-        plugin.getPaperManager().getPaperFileManager().addFile(new Config());
+    public static void reload(FileManager fileManager) {
+        fileManager.addFile(new Config());
     }
 
-    public static YamlConfiguration getConfiguration(CrazyCrates plugin) {
-        return plugin.getPaperManager().getPaperFileManager().getFileConfiguration(new Config());
+    public static YamlConfiguration getConfiguration(FileManager fileManager) {
+        try {
+            return fileManager.getFileConfiguration(new Config());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
-    public static File getConfig(CrazyCrates plugin) {
-        return plugin.getPaperManager().getPaperFileManager().getFile(new Config());
+    public static File getConfig(FileManager fileManager) {
+        return fileManager.getFile(new Config());
     }
 }

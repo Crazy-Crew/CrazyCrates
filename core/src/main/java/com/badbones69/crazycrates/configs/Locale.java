@@ -1,13 +1,15 @@
 package com.badbones69.crazycrates.configs;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import net.dehya.ruby.common.annotations.FileBuilder;
 import net.dehya.ruby.common.annotations.yaml.Header;
 import net.dehya.ruby.common.annotations.yaml.Key;
 import net.dehya.ruby.common.enums.FileType;
 import net.dehya.ruby.files.FileExtension;
+import net.dehya.ruby.files.FileManager;
+import net.dehya.ruby.utils.FileUtils;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -243,17 +245,23 @@ public class Locale extends FileExtension {
         super(Config.LOCALE_FILE, path.resolve("locale"));
     }
 
-    public static void reload(CrazyCrates plugin) {
-        plugin.getPaperManager().getPaperFileManager().extract("/locale", plugin.getPaperManager().getDirectory());
+    public static void reload(FileManager fileManager, Path directory) {
+        FileUtils.extract("/locale", directory, false);
 
-        plugin.getPaperManager().getPaperFileManager().addFile(new Locale(plugin.getPaperManager().getDirectory()));
+        fileManager.addFile(new Locale((directory)));
     }
 
-    public static YamlConfiguration getConfiguration(CrazyCrates plugin) {
-        return plugin.getPaperManager().getPaperFileManager().getFileConfiguration(new Locale(plugin.getPaperManager().getDirectory()));
+    public static YamlConfiguration getConfiguration(FileManager fileManager, Path directory) {
+        try {
+            return fileManager.getFileConfiguration(new Locale(directory));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
-    public static File getConfig(CrazyCrates plugin) {
-        return plugin.getPaperManager().getPaperFileManager().getFile(new Locale(plugin.getPaperManager().getDirectory()));
+    public static File getConfig(FileManager fileManager, Path directory) {
+        return fileManager.getFile(new Locale(directory));
     }
 }

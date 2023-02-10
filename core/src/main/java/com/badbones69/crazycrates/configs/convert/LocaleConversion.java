@@ -1,25 +1,34 @@
 package com.badbones69.crazycrates.configs.convert;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.configs.Locale;
 import com.badbones69.crazycrates.utils.FileUtils;
-import org.bukkit.configuration.file.YamlConfiguration;
+import com.badbones69.crazycrates.utils.adventure.MsgWrapper;
+import net.dehya.ruby.files.FileManager;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 public class LocaleConversion {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
-
-    public void convertMessages() {
+    public void convertMessages(FileManager fileManager, Path directory) {
         // The messages.yml
-        File input = new File(plugin.getPaperManager().getDirectory() + "/messages.yml");
+        File input = new File(directory + "/messages.yml");
 
         // The old configuration of messages.yml
-        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(input);
+        YamlConfiguration yamlConfiguration = null;
+
+        try {
+            if (input.exists()) yamlConfiguration = YamlConfiguration.loadConfiguration(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (yamlConfiguration == null) return;
 
         if (yamlConfiguration.getString("Messages.No-Teleporting") == null && !input.exists()) {
-            this.plugin.getLogger().warning(Locale.getConfig(this.plugin).getName() + " is up to date!");
+            MsgWrapper.send("<#11e092>" + Locale.getConfig(fileManager, directory).getName() + " <#E0115F>is up to date!");
             return;
         }
 
@@ -45,7 +54,9 @@ public class LocaleConversion {
 
         final String correctUsage = yamlConfiguration.getString("Messages.Correct-Usage");
 
-        org.simpleyaml.configuration.file.YamlConfiguration configuration = Locale.getConfiguration(plugin);
+        org.simpleyaml.configuration.file.YamlConfiguration configuration = Locale.getConfiguration(fileManager, directory);
+
+        if (configuration == null) return;
 
         configuration.set("misc.unknown-command", unknownCommand);
         configuration.set("misc.no-teleporting", noTeleporting);
@@ -173,6 +184,6 @@ public class LocaleConversion {
 
         configuration.set("command.keys.crate-format", perCrate);
 
-        FileUtils.copyFile(new File(this.plugin.getPaperManager().getDirectory() + "/locale/locale-en.yml"), input, configuration, this.plugin);
+        FileUtils.copyFile(new File(directory + "/locale/locale-en.yml"), input, configuration, directory);
     }
 }

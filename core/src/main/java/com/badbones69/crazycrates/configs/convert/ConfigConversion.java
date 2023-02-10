@@ -1,38 +1,53 @@
 package com.badbones69.crazycrates.configs.convert;
 
-import java.io.File;
-import java.util.List;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.configs.Config;
 import com.badbones69.crazycrates.utils.FileUtils;
-import org.bukkit.configuration.file.YamlConfiguration;
+import com.badbones69.crazycrates.utils.adventure.MsgWrapper;
+import net.dehya.ruby.files.FileManager;
+import org.simpleyaml.configuration.file.YamlConfiguration;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.List;
 
 public class ConfigConversion {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
-
-    public void convertConfig() {
+    public void convertConfig(FileManager fileManager, Path directory) {
         double configVersion = 1.1;
 
         // The config.yml
-        File input = new File(this.plugin.getPaperManager().getDirectory() + "/config.yml");
+        File input = new File(directory + "/config.yml");
 
         // The renamed file.
-        File output = new File(this.plugin.getPaperManager().getDirectory() + "/config-v1.yml");
+        File output = new File(directory + "/config-v1.yml");
 
         // The old configuration of config.yml
-        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(input);
+        YamlConfiguration yamlConfiguration = null;
+        try {
+            if (input.exists()) yamlConfiguration = YamlConfiguration.loadConfiguration(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        if (yamlConfiguration.getString("Settings.Config-Version") == null && !output.exists()) {
-            this.plugin.getLogger().warning(input.getName() + " is up to date!");
+        if (yamlConfiguration == null) return;
+
+        if (yamlConfiguration.getString("Settings.Config-Version") == null && !output.exists() && input.exists()) {
+            MsgWrapper.send("<#11e092>" + input.getName() + " <#E0115F>is up to date");
             return;
         }
 
         // Rename the file to the output file.
-        if (input.renameTo(output)) this.plugin.getLogger().warning("Renamed " + input.getName() + " to " + output.getName() + ".");
+        if (input.renameTo(output)) MsgWrapper.send("<#E0115F>Renamed " + input.getName() + " <#E0115F>to <#11e092>" + output.getName() + ".");
 
         // The configuration of the output file.
-        YamlConfiguration secondConfiguration = YamlConfiguration.loadConfiguration(output);
+        YamlConfiguration secondConfiguration = null;
+        try {
+            if (output.exists()) secondConfiguration = YamlConfiguration.loadConfiguration(output);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (secondConfiguration == null) return;
 
         // All the values of the old file.
         final String prefix = secondConfiguration.getString("Settings.Prefix");
@@ -82,7 +97,9 @@ public class ConfigConversion {
 
         final List<String> guiCustomizer = secondConfiguration.getStringList("Settings.GUI-Customizer");
 
-        org.simpleyaml.configuration.file.YamlConfiguration configuration = Config.getConfiguration(this.plugin);
+        org.simpleyaml.configuration.file.YamlConfiguration configuration = Config.getConfiguration(fileManager);
+
+        if (configuration == null) return;
         
         configuration.set("settings.prefix", prefix);
         configuration.set("settings.update-checker", updateChecker);
@@ -127,6 +144,6 @@ public class ConfigConversion {
 
         configuration.set("gui-settings.customizer", guiCustomizer);
 
-        FileUtils.copyFile(input, output, configuration, this.plugin);
+        FileUtils.copyFile(input, output, configuration, directory);
     }
 }
