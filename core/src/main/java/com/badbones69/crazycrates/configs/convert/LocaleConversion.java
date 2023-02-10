@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.configs.Locale;
 import com.badbones69.crazycrates.utils.FileUtils;
 import com.badbones69.crazycrates.utils.adventure.MsgWrapper;
 import net.dehya.ruby.files.FileManager;
-import org.simpleyaml.configuration.ConfigurationSection;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
@@ -28,174 +27,162 @@ public class LocaleConversion {
 
         if (yamlConfiguration == null) return;
 
-        ConfigurationSection msgSection = yamlConfiguration.createSection("Messages");
-
-        if (msgSection.getString("No-Teleporting") == null && !input.exists()) {
+        if (yamlConfiguration.getString("Messages.No-Teleporting") == null && !input.exists()) {
             MsgWrapper.send("<#11e092>" + Locale.getConfig(fileManager, directory).getName() + " <#E0115F>is up to date!");
             return;
         }
 
         // All the values of the old file.
-        final String unknownCommand = msgSection.getString("Unknown-Command");
-        final String noTeleporting = msgSection.getString("No-Teleporting");
+        final String unknownCommand = yamlConfiguration.getString("Messages.Unknown-Command");
+        final String noTeleporting = yamlConfiguration.getString("Messages.No-Teleporting");
 
-        final String noCommandsWhileInCrate = msgSection.getString("No-Commands-While-In-Crate");
+        final String noCommandsWhileInCrate = yamlConfiguration.getString("Messages.No-Commands-While-In-Crate");
 
-        final String noKeys = msgSection.getString("No-Key");
-        final String noVirtualKeys = msgSection.getString("No-Virtual-Key");
+        final String noKeys = yamlConfiguration.getString("Messages.No-Key");
+        final String noVirtualKeys = yamlConfiguration.getString("Messages.No-Virtual-Key");
 
-        final String noPrizesFound = msgSection.getString("No-Prizes-Found");
-        final String noSchematicsFound = msgSection.getString("No-Schematics-Found");
+        final String noPrizesFound = yamlConfiguration.getString("Messages.No-Prizes-Found");
+        final String noSchematicsFound = yamlConfiguration.getString("Messages.No-Schematics-Found");
 
-        final String internalError = msgSection.getString("Internal-Error");
+        final String internalError = yamlConfiguration.getString("Messages.Internal-Error");
 
-        final String mustBePlayer = msgSection.getString("Must-Be-A-Player");
-        final String mustBeConsole = msgSection.getString("Must-Be-A-Console-Sender");
-        final String mustBeLookingAtBlock = msgSection.getString("Must-Be-Looking-At-A-Block");
+        final String mustBePlayer = yamlConfiguration.getString("Messages.Must-Be-A-Player");
+        final String mustBeConsole = yamlConfiguration.getString("Messages.Must-Be-A-Console-Sender");
+        final String mustBeLookingAtBlock = yamlConfiguration.getString("Messages.Must-Be-Looking-At-A-Block");
 
-        final String featureDisabled = msgSection.getString("Feature-Disabled");
+        final String featureDisabled = yamlConfiguration.getString("Messages.Feature-Disabled");
 
-        final String correctUsage = msgSection.getString("Correct-Usage");
+        final String correctUsage = yamlConfiguration.getString("Messages.Correct-Usage");
 
         org.simpleyaml.configuration.file.YamlConfiguration configuration = Locale.getConfiguration(fileManager, directory);
 
         if (configuration == null) return;
 
-        ConfigurationSection miscSection = configuration.createSection("misc");
+        configuration.set("misc.unknown-command", unknownCommand);
+        configuration.set("misc.no-teleporting", noTeleporting);
+        configuration.set("misc.no-commands", noCommandsWhileInCrate);
+        configuration.set("misc.no-keys", noKeys);
+        configuration.set("misc.no-virtual-keys", noVirtualKeys);
 
-        miscSection.addDefault("unknown-command", unknownCommand);
-        miscSection.addDefault("no-teleporting", noTeleporting);
-        miscSection.addDefault("no-commands", noCommandsWhileInCrate);
-        miscSection.addDefault("no-keys", noKeys);
-        miscSection.addDefault("no-virtual-keys", noVirtualKeys);
+        configuration.set("misc.feature-disabled", featureDisabled);
+        configuration.set("misc.correct-usage", correctUsage);
 
-        miscSection.addDefault("feature-disabled", featureDisabled);
-        miscSection.addDefault("correct-usage", correctUsage);
+        configuration.set("errors.no-prizes-found", noPrizesFound);
+        configuration.set("errors.no-schematics-found", noSchematicsFound);
 
-        ConfigurationSection errorSection = configuration.createSection("errors");
+        configuration.set("errors.internal-error", internalError);
 
-        errorSection.addDefault("no-prizes-found", noPrizesFound);
-        errorSection.addDefault("no-schematics-found", noSchematicsFound);
+        configuration.set("player.requirements.must-be-player", mustBePlayer);
+        configuration.set("player.requirements.must-be-console-sender", mustBeConsole);
+        configuration.set("player.requirements.must-be-looking-at-block", mustBeLookingAtBlock);
 
-        errorSection.addDefault("internal-error", internalError);
+        final String playerNotOnline = yamlConfiguration.getString("Messages.Not-Online");
 
-        ConfigurationSection playerSection = configuration.createSection("player");
+        final String samePlayer = yamlConfiguration.getString("Messages.Same-Player");
 
-        playerSection.addDefault("requirements.must-be-player", mustBePlayer);
-        playerSection.addDefault("requirements.must-be-console-sender", mustBeConsole);
-        playerSection.addDefault("requirements.must-be-looking-at-block", mustBeLookingAtBlock);
+        final String noPermission = yamlConfiguration.getString("Messages.No-Permission");
 
-        final String playerNotOnline = msgSection.getString("Not-Online");
+        final String inventoryFull = yamlConfiguration.getString("Messages.Inventory-Full");
 
-        final String samePlayer = msgSection.getString("Same-Player");
+        final String obtainingKeys = yamlConfiguration.getString("Messages.Obtaining-Keys");
 
-        final String noPermission = msgSection.getString("No-Permission");
+        final String closeAnotherPlayer = yamlConfiguration.getString("Messages.To-Close-To-Another-Player");
 
-        final String inventoryFull = msgSection.getString("Inventory-Full");
+        configuration.set("player.target-not-online", playerNotOnline);
+        configuration.set("player.target-same-player", samePlayer);
+        configuration.set("player.no-permission", noPermission);
+        configuration.set("player.inventory-not-empty", inventoryFull);
+        configuration.set("player.obtaining-keys", obtainingKeys);
+        configuration.set("player.too-close-to-another-player", closeAnotherPlayer);
 
-        final String obtainingKeys = msgSection.getString("Obtaining-Keys");
+        final String notACrate = yamlConfiguration.getString("Messages.Not-A-Crate");
+        final String notANumber = yamlConfiguration.getString("Messages.Not-A-Number");
+        final String notOnBlock = yamlConfiguration.getString("Messages.Not-On-Block");
+        final String outOfTime = yamlConfiguration.getString("Messages.Out-Of-Time");
 
-        final String closeAnotherPlayer = msgSection.getString("To-Close-To-Another-Player");
+        final String previewDisabled = yamlConfiguration.getString("Messages.Preview-Disabled");
 
-        playerSection.addDefault("target-not-online", playerNotOnline);
-        playerSection.addDefault("target-same-player", samePlayer);
-        playerSection.addDefault("no-permission", noPermission);
-        playerSection.addDefault("inventory-not-empty", inventoryFull);
-        playerSection.addDefault("obtaining-keys", obtainingKeys);
-        playerSection.addDefault("too-close-to-another-player", closeAnotherPlayer);
+        final String crateAlreadyOpened = yamlConfiguration.getString("Messages.Crate-Already-Opened");
 
-        final String notACrate = msgSection.getString("Not-A-Crate");
-        final String notANumber = msgSection.getString("Not-A-Number");
-        final String notOnBlock = msgSection.getString("Not-On-Block");
-        final String outOfTime = msgSection.getString("Out-Of-Time");
+        final String quickCrateInUse = yamlConfiguration.getString("Messages.Quick-Crate-In-Use");
 
-        final String previewDisabled = msgSection.getString("Preview-Disabled");
+        final String cannotBeVirtualCrate = yamlConfiguration.getString("Messages.Cant-Be-A-Virtual-Crate");
+        final String needsRoom = yamlConfiguration.getString("Messages.Needs-More-Room");
 
-        final String crateAlreadyOpened = msgSection.getString("Crate-Already-Opened");
+        final String worldDisabled = yamlConfiguration.getString("Messages.World-Disabled");
 
-        final String quickCrateInUse = msgSection.getString("Quick-Crate-In-Use");
+        final List<String> createdPhysicalCrate = yamlConfiguration.getStringList("Messages.Created-Physical-Crate");
+        final String removedPhysCrate = yamlConfiguration.getString("Messages.Removed-Physical-Crate");
 
-        final String cannotBeVirtualCrate = msgSection.getString("Cant-Be-A-Virtual-Crate");
-        final String needsRoom = msgSection.getString("Needs-More-Room");
+        configuration.set("crates.requirements.not-a-crate", notACrate);
+        configuration.set("crates.requirements.not-a-number", notANumber);
+        configuration.set("crates.not-on-block", notOnBlock);
+        configuration.set("crates.out-of-time", outOfTime);
+        configuration.set("crates.crate-preview-disabled", previewDisabled);
+        configuration.set("crates.crate-already-open", crateAlreadyOpened);
+        configuration.set("crates.crate-in-use", quickCrateInUse);
+        configuration.set("crates.cannot-be-a-virtual-crate", cannotBeVirtualCrate);
+        configuration.set("crates.need-more-room", needsRoom);
+        configuration.set("crates.world-disabled", worldDisabled);
+        configuration.set("crates.physical-crate.created", createdPhysicalCrate);
+        configuration.set("crates.physical-crate.removed", removedPhysCrate);
 
-        final String worldDisabled = msgSection.getString("World-Disabled");
+        final String openedCrate = yamlConfiguration.getString("Messages.Opened-A-Crate");
 
-        final List<String> createdPhysicalCrate = msgSection.getStringList("Created-Physical-Crate");
-        final String removedPhysCrate = msgSection.getString("Removed-Physical-Crate");
+        configuration.set("command.open.opened-a-crate", openedCrate);
 
-        ConfigurationSection crateSection = configuration.createSection("crates");
+        final String givenPlayerKeys = yamlConfiguration.getString("Messages.Given-A-Player-Keys");
+        final String cannotGivePlayerKeys = yamlConfiguration.getString("Messages.Cannot-Give-Player-Keys");
+        final String givenEveryoneKeys = yamlConfiguration.getString("Messages.Given-Everyone-Keys");
+        final String givenOfflinePlayerKeys = yamlConfiguration.getString("Messages.Given-Offline-Player-Keys");
 
-        crateSection.addDefault("requirements.not-a-crate", notACrate);
-        crateSection.addDefault(".requirements.not-a-number", notANumber);
-        crateSection.addDefault(".not-on-block", notOnBlock);
-        crateSection.addDefault(".out-of-time", outOfTime);
-        crateSection.addDefault(".crate-preview-disabled", previewDisabled);
-        crateSection.addDefault("crate-already-open", crateAlreadyOpened);
-        crateSection.addDefault("crate-in-use", quickCrateInUse);
-        crateSection.addDefault("cannot-be-a-virtual-crate", cannotBeVirtualCrate);
-        crateSection.addDefault("need-more-room", needsRoom);
-        crateSection.addDefault("world-disabled", worldDisabled);
-        crateSection.addDefault("physical-crate.created", createdPhysicalCrate);
-        crateSection.addDefault("physical-crate.removed", removedPhysCrate);
+        configuration.set("command.give.given-player-keys", givenPlayerKeys);
+        configuration.set("command.give.cannot-give-player-keys-because-inventory-not-empty", cannotGivePlayerKeys);
+        configuration.set("command.give.given-everyone-keys", givenEveryoneKeys);
+        configuration.set("command.give.given-offline-player-keys", givenOfflinePlayerKeys);
 
-        final String openedCrate = msgSection.getString("Opened-A-Crate");
-        
-        ConfigurationSection commandSection = configuration.createSection("command");
+        final String takePlayerKeys = yamlConfiguration.getString("Messages.Take-A-Player-Keys");
+        final String takeOfflineKeys = yamlConfiguration.getString("Messages.Take-Offline-Player-Keys");
 
-        commandSection.addDefault("open.opened-a-crate", openedCrate);
+        configuration.set("command.take.take-player-keys", takePlayerKeys);
+        configuration.set("command.take.take-offline-player-keys", takeOfflineKeys);
 
-        final String givenPlayerKeys = msgSection.getString("Given-A-Player-Keys");
-        final String cannotGivePlayerKeys = msgSection.getString("Cannot-Give-Player-Keys");
-        final String givenEveryoneKeys = msgSection.getString("Given-Everyone-Keys");
-        final String givenOfflinePlayerKeys = msgSection.getString("Given-Offline-Player-Keys");
+        final String noItemInHand = yamlConfiguration.getString("Messages.No-Item-Hand");
+        final String addedItem = yamlConfiguration.getString("Messages.Added-Item-With-Editor");
 
-        commandSection.addDefault("give.given-player-keys", givenPlayerKeys);
-        commandSection.addDefault("give.cannot-give-player-keys-because-inventory-not-empty", cannotGivePlayerKeys);
-        commandSection.addDefault("give.given-everyone-keys", givenEveryoneKeys);
-        commandSection.addDefault("give.given-offline-player-keys", givenOfflinePlayerKeys);
+        configuration.set("command.additem.no-item-in-hand", noItemInHand);
+        configuration.set("command.additem.add-item-from-hand", addedItem);
 
-        final String takePlayerKeys = msgSection.getString("Take-A-Player-Keys");
-        final String takeOfflineKeys = msgSection.getString("Take-Offline-Player-Keys");
+        final String filesConvertedNone = yamlConfiguration.getString("Messages.Files-Converted.No-Files-To-Convert");
+        final String filesConvertedError = yamlConfiguration.getString("Messages.Files-Converted.Error-Converting-Files");
 
-        commandSection.addDefault("take.take-player-keys", takePlayerKeys);
-        commandSection.addDefault("take.take-offline-player-keys", takeOfflineKeys);
+        configuration.set("command.convert.no-files-to-convert", filesConvertedNone);
+        configuration.set("command.convert.error-converting-files", filesConvertedError);
 
-        final String noItemInHand = msgSection.getString("No-Item-Hand");
-        final String addedItem = msgSection.getString("Added-Item-With-Editor");
+        final String reload = yamlConfiguration.getString("Messages.Reload");
 
-        commandSection.addDefault("additem.no-item-in-hand", noItemInHand);
-        commandSection.addDefault("additem.add-item-from-hand", addedItem);
+        configuration.set("command.reload.reload-complete", reload);
 
-        final String filesConvertedNone = msgSection.getString("Files-Converted.No-Files-To-Convert");
-        final String filesConvertedError = msgSection.getString("Files-Converted.Error-Converting-Files");
+        final String transferKeys = yamlConfiguration.getString("Messages.Transfer-Keys.Not-Enough-Keys");
+        final String transferredKeys = yamlConfiguration.getString("Messages.Transfer-Keys.Transferred-Keys");
+        final String gotTransferKeys = yamlConfiguration.getString("Messages.Transfer-Keys.Received-Transferred-Keys");
 
-        commandSection.addDefault("convert.no-files-to-convert", filesConvertedNone);
-        commandSection.addDefault("convert.error-converting-files", filesConvertedError);
+        configuration.set("command.transfer.not-enough-keys", transferKeys);
+        configuration.set("command.transfer.transferred-keys", transferredKeys);
+        configuration.set("command.transfer.transferred-keys-received", gotTransferKeys);
 
-        final String reload = msgSection.getString("Reload");
+        final String personalNoVirtualKeys = yamlConfiguration.getString("Messages.Keys.Personal.No-Virtual-Keys");
+        final List<String> personalHeader = yamlConfiguration.getStringList("Messages.Keys.Personal.Header");
+        final String otherPlayer = yamlConfiguration.getString("Messages.Keys.Other-Player.No-Virtual-Keys");
+        final List<String> otherPlayerHeader = yamlConfiguration.getStringList("Messages.Keys.Other-Player.Header");
+        final String perCrate = yamlConfiguration.getString("Messages.Keys.Per-Crate");
 
-        commandSection.addDefault("reload.reload-complete", reload);
+        configuration.set("command.keys.personal.no-virtual-keys", personalNoVirtualKeys);
+        configuration.set("command.keys.personal.virtual-keys-header", personalHeader);
+        configuration.set("command.keys.other-player.no-virtual-keys", otherPlayer);
+        configuration.set("command.keys.other-player.virtual-keys-header", otherPlayerHeader);
 
-        final String transferKeys = msgSection.getString("Transfer-Keys.Not-Enough-Keys");
-        final String transferredKeys = msgSection.getString("Transfer-Keys.Transferred-Keys");
-        final String gotTransferKeys = msgSection.getString("Transfer-Keys.Received-Transferred-Keys");
-
-        commandSection.addDefault("transfer.not-enough-keys", transferKeys);
-        commandSection.addDefault("transfer.transferred-keys", transferredKeys);
-        commandSection.addDefault("transfer.transferred-keys-received", gotTransferKeys);
-
-        final String personalNoVirtualKeys = msgSection.getString("Keys.Personal.No-Virtual-Keys");
-        final List<String> personalHeader = msgSection.getStringList("Keys.Personal.Header");
-        final String otherPlayer = msgSection.getString("Keys.Other-Player.No-Virtual-Keys");
-        final List<String> otherPlayerHeader = msgSection.getStringList("Keys.Other-Player.Header");
-        final String perCrate = msgSection.getString("Keys.Per-Crate");
-
-        commandSection.addDefault("keys.personal.no-virtual-keys", personalNoVirtualKeys);
-        commandSection.addDefault("keys.personal.virtual-keys-header", personalHeader);
-        commandSection.addDefault("keys.other-player.no-virtual-keys", otherPlayer);
-        commandSection.addDefault("keys.other-player.virtual-keys-header", otherPlayerHeader);
-
-        commandSection.addDefault("keys.crate-format", perCrate);
+        configuration.set("command.keys.crate-format", perCrate);
 
         FileUtils.copyFile(new File(directory + "/locale/locale-en.yml"), input, configuration, directory);
     }
