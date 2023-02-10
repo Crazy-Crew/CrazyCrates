@@ -81,12 +81,12 @@ gui-settings:
       item: 'FEATHER' # The material of the Next Button.
       name: '&6&lNext >>' # The name of the Next Button.
       lore: # The lore of the Next Button.
-        - '&7&lPage: &b%page%'
+        - '&7&lPage: &b<page>'
     back:
       item: 'FEATHER' # The material of the Back Button.
       name: '&6&l<< Back' # The name of the Back Button.
       lore: # The lore of the Back Button.
-        - '&7&lPage: &b%page%'
+        - '&7&lPage: &b<page>'
   filler-items:
     # Whether to fill the gui with an item.
     #

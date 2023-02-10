@@ -9,19 +9,19 @@
 
 misc:
   unknown-command: '&cTento příkaz nebyl nalezen.'
-  no-teleporting: '&cNelze se telepertovat pryč během otevírání &6%crate%.'
-  no-commands: '&cNemůžeš používat příkazy během otevírání &6%crate%.'
-  no-keys: '&cPotřebuješ mít v ruce %key% &cpro otevření &6%crate%.'
-  no-virtual-keys: '&cPotřebuješ %key% &cpro otevření &6%crate%.'
+  no-teleporting: '&cNelze se telepertovat pryč během otevírání &6<crate>.'
+  no-commands: '&cNemůžeš používat příkazy během otevírání &6<crate>.'
+  no-keys: '&cPotřebuješ mít v ruce <key> &cpro otevření &6<crate>.'
+  no-virtual-keys: '&cPotřebuješ <key> &cpro otevření &6<crate>.'
   feature-disabled: '&cTato funkce je zakázána. Nemáme žádný odhadovaný čas příjezdu, kdy to bude fungovat.'
-  correct-usage: '&cSprávné použití tohoto příkazu je &e%usage%'
+  correct-usage: '&cSprávné použití tohoto příkazu je &e<usage>'
 
 errors:
   no-prizes-found: '&cTato bedna neobsahuje žádné odměny které by šlo vyhrát.'
   no-schematics-found: '&cNenalezena žádná schémata, prosím regeneruj je smazáním složky či zkontrolováním chyb!'
   prize-error:
-    - '&cNastala chyba při pokusu dát ti odměnu &6%prize%.'
-    - '&eChyba nastala v &6%crate%. &cProsím kontakuj majitele.'
+    - '&cNastala chyba při pokusu dát ti odměnu &6<prize>.'
+    - '&eChyba nastala v &6<crate>. &cProsím kontakuj majitele.'
   internal-error: '&cVyskytla se neočekávaná chyba. Prosím zkontroluj konzoli, pro kompletní chybu.'
 player:
   requirements:
@@ -30,64 +30,64 @@ player:
     must-be-player: '&cMusíš být hráč, pro použití tohoto příkazu.'
     must-be-console-sender: '&cMusíš být console, pro použití tohoto příkazu.'
     must-be-looking-at-block: '&cMusíš se dívat na blok.'
-  target-not-online: '&cHráč &6%player% &cnení online.'
+  target-not-online: '&cHráč &6<player> &cnení online.'
   target-same-player: '&cNemůžeš použít tento příkaz sám na sebe.'
   no-permission: '&cNemáš oprávnění pro použití tohoto příkazu!'
-  inventory-not-empty: '&cInventář není prázdný, před otevřením %crate% jej vyprázdni.'
-  obtaining-keys: '&7Obdrženo &6%amount% %key% &7Klíčů.'
+  inventory-not-empty: '&cInventář není prázdný, před otevřením <crate> jej vyprázdni.'
+  obtaining-keys: '&7Obdrženo &6<amount> <key> &7Klíčů.'
   too-close-to-another-player: '&cJsi příliš blízko hráče, který otevírá svou bednu.'
 crates:
   requirements:
-    not-a-crate: '&cNení zde žádná bedna s názvem &6%crate%.'
-    not-a-number: '&6%number% &cnení číslice.'
-  not-on-block: '&cMusíš stát na bloku pro použití &6%crate%.'
-  out-of-time: '&cOtevření %crate% ti zabralo &a5 Minut&c, nyní je zavřená.'
-  crate-preview-disabled: '&cNáhled pro &6%crate% &7je aktuálně vypnutý.'
-  crate-already-open: '&cJiž otevíráš bednu &6%crate%.'
-  crate-in-use: '&6%crate% &cje již používána! Vyčkej prosím na dokončení!'
-  cannot-be-a-virtual-crate: '&6%crate% &cnemůže být použita jako Virtuální bedna. Typ bedny je nastaven na &6%cratetype%'
+    not-a-crate: '&cNení zde žádná bedna s názvem &6<crate>.'
+    not-a-number: '&6<number> &cnení číslice.'
+  not-on-block: '&cMusíš stát na bloku pro použití &6<crate>.'
+  out-of-time: '&cOtevření <crate> ti zabralo &a5 Minut&c, nyní je zavřená.'
+  crate-preview-disabled: '&cNáhled pro &6<crate> &7je aktuálně vypnutý.'
+  crate-already-open: '&cJiž otevíráš bednu &6<crate>.'
+  crate-in-use: '&6<crate> &cje již používána! Vyčkej prosím na dokončení!'
+  cannot-be-a-virtual-crate: '&6<crate> &cnemůže být použita jako Virtuální bedna. Typ bedny je nastaven na &6<cratetype>'
   need-more-room: '&cNení zde dostatek místa pro otevření.'
-  world-disabled: '&cBedny jsou vypnuté ve světě &a%world%.'
+  world-disabled: '&cBedny jsou vypnuté ve světě &a<world>.'
   physical-crate:
     created:
-      - '&7Tento blok byl nastaven na &6%crate%.'
-      - '&7Pro odstranění &6%crate%, &7Shift a Pravý klik během creative módu.'
-    removed: '&7Odstranil jsi &6%id%.'
+      - '&7Tento blok byl nastaven na &6<crate>.'
+      - '&7Pro odstranění &6<crate>, &7Shift a Pravý klik během creative módu.'
+    removed: '&7Odstranil jsi &6<id>.'
 command:
   open:
-    opened-a-crate: '&7Otevřel jsi &6%crate% &7bednu pro hráče &6%player%.'
+    opened-a-crate: '&7Otevřel jsi &6<crate> &7bednu pro hráče &6<player>.'
   give:
-    given-player-keys: '&7Dal jsi hráči &6%player% %amount% &7Klíčů.'
-    cannot-give-player-keys-because-inventory-not-empty: '&7Bylo vám dáno &6%amount% %key% &7virtuální klíče, protože váš inventář byl plný.'
-    given-everyone-keys: '&7Dal jsi všem hráčům &6%amount% &7Klíčů.'
-    given-offline-player-keys: '&7Dal jsi &6%amount% &7klíč(ů) offline hráči &6%player%.'
+    given-player-keys: '&7Dal jsi hráči &6<player> <amount> &7Klíčů.'
+    cannot-give-player-keys-because-inventory-not-empty: '&7Bylo vám dáno &6<amount> <key> &7virtuální klíče, protože váš inventář byl plný.'
+    given-everyone-keys: '&7Dal jsi všem hráčům &6<amount> &7Klíčů.'
+    given-offline-player-keys: '&7Dal jsi &6<amount> &7klíč(ů) offline hráči &6<player>.'
   take:
-    take-player-keys: '&7Odebral jsi &6%amount% &7klíč(ů) hráči &6%player%.'
-    take-offline-player-keys: '&7Odebral jsi &6%amount% &7klíč(ů) offline hráči &6%player%.'
+    take-player-keys: '&7Odebral jsi &6<amount> &7klíč(ů) hráči &6<player>.'
+    take-offline-player-keys: '&7Odebral jsi &6<amount> &7klíč(ů) offline hráči &6<player>.'
   additem:
-    no-item-in-hand: '&cMusíš držet v ruce předmět, pro jeho přidání do &6%crate%.'
-    add-item-from-hand: '&cPředmět byl přidán do &6%crate% &cjako &6Cena #%prize%.'
+    no-item-in-hand: '&cMusíš držet v ruce předmět, pro jeho přidání do &6<crate>.'
+    add-item-from-hand: '&cPředmět byl přidán do &6<crate> &cjako &6Cena #<prize>.'
   convert:
     no-files-to-convert: '&cŽádné dostupné pluginy pro převod souborů.'
-    error-converting-files: '&cNastala chyba během převodu souborů. Nemohl být převeden soubor &a%file%&c, prosím zkontroluj consoli.'
+    error-converting-files: '&cNastala chyba během převodu souborů. Nemohl být převeden soubor &a<file>&c, prosím zkontroluj consoli.'
     successfully-converted-files: '&aPřevod pluginu byl úspěšný!'
   reload:
     confirm-reload: '&eOpravdu chceš provést reload pluginu?'
     reload-completed: '&aZnovu načtění pluginu bylo dokončeno.'
   transfer:
     not-enough-keys: '&cNemáš dostatek klíčů na převod.'
-    transferred-keys: '&7Převedl jsi &a%amount% %crate% &7klíčů hráči &c%player%.'
-    transferred-keys-received: '&7Obdržel jsi &a%amount% %crate% &7klíčů od hráče &c%player%.'
+    transferred-keys: '&7Převedl jsi &a<amount> <crate> &7klíčů hráči &c<player>.'
+    transferred-keys-received: '&7Obdržel jsi &a<amount> <crate> &7klíčů od hráče &c<player>.'
   keys:
     personal:
       no-virtual-keys: '&8(&c!&8) &7Aktuálně nemáš žádné virtuální klíče.'
       virtual-keys-header:
         - '&8(&c!&8) &7Aktuální seznam tvých virtuálních klíčů.'
     other-player:
-      no-virtual-keys: '&8(&c!&8) &7Hráč &c%player% &7nemá žádné klíče.'
+      no-virtual-keys: '&8(&c!&8) &7Hráč &c<player> &7nemá žádné klíče.'
       virtual-keys-header:
-        - '&8(&c!&8) &7Aktuální seznam počtu klíčů hráče &c%player%'
-    crate-format: '%crate% &8»» &6%keys% klíčů.' # Related to what will show in the output above.
+        - '&8(&c!&8) &7Aktuální seznam počtu klíčů hráče &c<player>'
+    crate-format: '<crate> &8»» &6<keys> klíčů.' # Related to what will show in the output above.
   player-help: |
     &2Crazy Crates Hráčská nápověda!\n
     
