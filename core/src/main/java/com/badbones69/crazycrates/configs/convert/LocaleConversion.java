@@ -22,7 +22,7 @@ public class LocaleConversion {
         try {
             if (input.exists()) yamlConfiguration = YamlConfiguration.loadConfiguration(input);
         } catch (IOException e) {
-            e.printStackTrace();
+            MsgWrapper.send(e.getMessage());
         }
 
         if (yamlConfiguration == null) return;

@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.utils;
 
 import com.badbones69.crazycrates.utils.adventure.MsgWrapper;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -28,8 +29,8 @@ public class FileUtils {
             }
 
             configuration.save(input);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            MsgWrapper.send(e.getMessage());
         }
     }
 }

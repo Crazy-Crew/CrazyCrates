@@ -44,7 +44,7 @@ public class ConfigConversion {
         try {
             if (output.exists()) secondConfiguration = YamlConfiguration.loadConfiguration(output);
         } catch (IOException e) {
-            e.printStackTrace();
+            MsgWrapper.send(e.getMessage());
         }
 
         if (secondConfiguration == null) return;
