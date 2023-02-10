@@ -95,7 +95,7 @@ command:
     &8» &6/key &7- &eShows how many keys you have.
     &8» &6/cc &7- &eOpens the crate menu.
   admin-help: |
-    &c&lCrazy Crates Admin Help
+    &c&lCrazy Crates Admin Help\n
     
     &8» &6/cc additem [crate] [prize] &7- &eAdd items in-game to a prize in a crate.
     &8» &6/cc preview [crate] [player] &7- &eOpens the preview of a crate for a player.

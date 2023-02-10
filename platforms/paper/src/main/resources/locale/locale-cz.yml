@@ -95,7 +95,7 @@ command:
      &8» &6/key &7- &eUkazuje, kolik máte klíčů.
      &8» &6/cc &7- &eOtevře menu beden.
   admin-help: |
-    &cCrazy Crates Admin Nápověda
+    &cCrazy Crates Admin Nápověda\n
     
     &8» &6/cc additem [crate] [prize] &7- &ePřidá itemy ve hře jako výhru do bedny.
     &8» &6/cc preview [crate] [player] &7- &eOtevře náhled bedny pro hráče.

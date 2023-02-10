@@ -170,7 +170,7 @@ public class Config extends FileExtension {
     @Key("gui-settings.buttons.next.lore")
     @Comment("The lore of the Next Button.")
     public static List<String> NEXT_BUTTON_LORE = new ArrayList<>() {{
-        add("&7&lPage: &b%page%");
+        add("&7&lPage: &b<page>");
     }};
 
     @Key("gui-settings.buttons.back.item")
@@ -182,7 +182,7 @@ public class Config extends FileExtension {
     @Key("gui-settings.buttons.back.lore")
     @Comment("The lore of the Back Button.")
     public static List<String> BACK_BUTTON_LORE = new ArrayList<>() {{
-        add("&7&lPage: &b%page%");
+        add("&7&lPage: &b<page>");
     }};
 
     @Key("gui-settings.filler-items.toggle")

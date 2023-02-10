@@ -31,22 +31,22 @@ public class Locale extends FileExtension {
     public static String UNKNOWN_COMMAND = "&cThis command is not known.";
 
     @Key("misc.no-teleporting")
-    public static String NO_TELEPORTING = "&cYou may not teleport away while opening &6%crate%.";
+    public static String NO_TELEPORTING = "&cYou may not teleport away while opening &6<crate>.";
 
     @Key("misc.no-commands")
-    public static String NO_COMMANDS = "&cYou are not allowed to use commands while opening &6%crate%.";
+    public static String NO_COMMANDS = "&cYou are not allowed to use commands while opening &6<crate>.";
 
     @Key("misc.no-keys")
-    public static String NO_KEYS = "&cYou need a %key% &cin your hand to use &6%crate%.";
+    public static String NO_KEYS = "&cYou need a <key> &cin your hand to use &6<crate>.";
 
     @Key("misc.no-virtual-keys")
-    public static String NO_VIRTUAL_KEYS = "&cYou need %key% &cto open &6%crate%.";
+    public static String NO_VIRTUAL_KEYS = "&cYou need <key> &cto open &6<crate>.";
     
     @Key("misc.feature-disabled")
     public static String FEATURE_DISABLED = "&cThis feature is disabled. We have no ETA on when this will function.";
     
     @Key("misc.correct-usage")
-    public static String CORRECT_USAGE = "&cThe correct usage for this command is &e%usage%";
+    public static String CORRECT_USAGE = "&cThe correct usage for this command is &e<usage>";
 
     // Errors
     @Key("errors.no-prizes-found")
@@ -57,8 +57,8 @@ public class Locale extends FileExtension {
 
     @Key("errors.prize-error")
     public static List<String> PRIZE_ERROR = new ArrayList<>() {{
-        add("&cAn error has occurred while trying to give you the prize &6%prize%.");
-        add("&eThis has occurred in &6%crate%. &ePlease notify your owner.");
+        add("&cAn error has occurred while trying to give you the prize &6<prize>.");
+        add("&eThis has occurred in &6<crate>. &ePlease notify your owner.");
     }};
 
     @Key("errors.internal-error")
@@ -81,7 +81,7 @@ public class Locale extends FileExtension {
     public static String MUST_BE_LOOKING_AT_BLOCK = "&cYou must be looking at a block.";
 
     @Key("player.target-not-online")
-    public static String TARGET_NOT_ONLINE = "&cThe player &6%player% &cis not online.";
+    public static String TARGET_NOT_ONLINE = "&cThe player &6<player> &cis not online.";
 
     @Key("player.target-same-player")
     public static String TARGET_SAME_PLAYER = "&cYou cannot use this command on yourself.";
@@ -90,84 +90,84 @@ public class Locale extends FileExtension {
     public static String NO_PERMISSION = "&cYou do not have permission to use that command!";
 
     @Key("player.inventory-not-empty")
-    public static String INVENTORY_NOT_EMPTY = "&cInventory is not empty, Please make room before opening &6%crate%.";
+    public static String INVENTORY_NOT_EMPTY = "&cInventory is not empty, Please make room before opening &6<crate>.";
 
     @Key("player.obtaining-keys")
-    public static String OBTAINING_KEYS = "&7You have been given &6%amount% %key% &7Keys.";
+    public static String OBTAINING_KEYS = "&7You have been given &6<amount> <key> &7Keys.";
 
     @Key("player.too-close-to-another-player")
     public static String TOO_CLOSE_TO_ANOTHER_PLAYER = "&cYou are too close to a player that is opening their Crate.";
 
     // Crates
     @Key("crates.requirements.not-a-crate")
-    public static String NOT_A_CRATE = "&cThere is no crate called &6%crate%.";
+    public static String NOT_A_CRATE = "&cThere is no crate called &6<crate>.";
 
     @Key("crates.requirements.not-a-number")
-    public static String NOT_A_NUMBER = "&6%number% &cis not a number.";
+    public static String NOT_A_NUMBER = "&6<number> &cis not a number.";
 
     @Key("crates.not-a-block")
-    public static String NOT_A_BLOCK = "&cYou must be standing on a block to use &6%crate%.";
+    public static String NOT_A_BLOCK = "&cYou must be standing on a block to use &6<crate>.";
 
     @Key("crates.out-of-time")
-    public static String OUT_OF_TIME = "&cYou took &a5 Minutes &cto open the &6%crate% &cso it closed.";
+    public static String OUT_OF_TIME = "&cYou took &a5 Minutes &cto open the &6<crate> &cso it closed.";
 
     @Key("crates.crate-preview-disabled")
-    public static String CRATE_PREVIEW_DISABLED = "&cThe preview for &6%crate% &cis currently disabled.";
+    public static String CRATE_PREVIEW_DISABLED = "&cThe preview for &6<crate> &cis currently disabled.";
 
     @Key("crates.crate-already-open")
-    public static String CRATES_ALREADY_OPEN = "&cYou are already opening &6%crate%.";
+    public static String CRATES_ALREADY_OPEN = "&cYou are already opening &6<crate>.";
 
     @Key("crates.crate-in-use")
-    public static String CRATES_IN_USE = "&6%crate% &cis already in use. Please wait until it finishes!";
+    public static String CRATES_IN_USE = "&6<crate> &cis already in use. Please wait until it finishes!";
 
     @Key("crates.cannot-be-a-virtual-crate")
-    public static String CANNOT_BE_A_VIRTUAL_CRATE = "&6%crate% &ccannot be used as a Virtual Crate. You have it set to &6%cratetype%.";
+    public static String CANNOT_BE_A_VIRTUAL_CRATE = "&6<crate> &ccannot be used as a Virtual Crate. You have it set to &6<cratetype>.";
 
     @Key("crates.need-more-room")
     public static String NEED_MORE_ROOM = "&cThere is not enough space to open that here.";
 
     @Key("crates.world-disabled")
-    public static String WORLD_DISABLED = "&cCrates are disabled in &a%world%.";
+    public static String WORLD_DISABLED = "&cCrates are disabled in &a<world>.";
 
     @Key("crates.physical-crate.created")
     public static List<String> PHYSICAL_CRATE_CREATED = new ArrayList<>() {{
-        add("&7You have set that block to &6%crate%.");
-        add("&7To remove &6%crate%, &7Shift Click Break in Creative to remove.");
+        add("&7You have set that block to &6<crate>.");
+        add("&7To remove &6<crate>, &7Shift Click Break in Creative to remove.");
     }};
 
     @Key("crates.physical-crate.removed")
-    public static String PHYSICAL_CRATE_REMOVED = "&7You have removed &6%id%.";
+    public static String PHYSICAL_CRATE_REMOVED = "&7You have removed &6<id>.";
 
     // Commands
     @Key("command.open.opened-a-crate")
-    public static String OPENED_A_CRAtE = "&7You have opened the &6%crate% &7crate for &6%player%.";
+    public static String OPENED_A_CRAtE = "&7You have opened the &6<crate> &7crate for &6<player>.";
 
     @Key("command.give.given-player-keys")
-    public static String GIVEN_PLAYER_KEYS = "&7You have given &6%player% %amount% Keys.";
+    public static String GIVEN_PLAYER_KEYS = "&7You have given &6<player> <amount> Keys.";
 
     @Key("command.give.given-everyone-keys")
-    public static String GIVEN_EVERYONE_KEYS = "&7You have given everyone &6%amount% Keys.";
+    public static String GIVEN_EVERYONE_KEYS = "&7You have given everyone &6<amount> Keys.";
 
     @Key("command.give.given-offline-player-keys")
-    public static String GIVEN_OFFLINE_PLAYER_KEYS = "&7You have given &6%amount% key(s) &7to the offline player &6%player%.";
+    public static String GIVEN_OFFLINE_PLAYER_KEYS = "&7You have given &6<amount> key(s) &7to the offline player &6<player>.";
 
     @Key("command.take.take-player-keys")
-    public static String TAKE_PLAYER_KEYS = "&7You have taken &6%amount% key(s) &7from &6%player%.";
+    public static String TAKE_PLAYER_KEYS = "&7You have taken &6<amount> key(s) &7from &6<player>.";
 
     @Key("command.take.take-offline-player-keys")
-    public static String TAKE_OFFLINE_PLAYER_KEYS = "&7You have taken &6%amount% key(s) &7from the offline player &6%player%.";
+    public static String TAKE_OFFLINE_PLAYER_KEYS = "&7You have taken &6<amount> key(s) &7from the offline player &6<player>.";
 
     @Key("command.additem.no-item-in-hand")
-    public static String NO_ITEM_IN_HAND = "&cYou need to have an item in your hand to add it to &6%crate%.";
+    public static String NO_ITEM_IN_HAND = "&cYou need to have an item in your hand to add it to &6<crate>.";
 
     @Key("command.additem.add-item-from-hand")
-    public static String ADD_ITEM_FROM_HAND = "&7The item has been added to &6%crate% &7as &6Prize #%prize%.";
+    public static String ADD_ITEM_FROM_HAND = "&7The item has been added to &6<crate> &7as &6Prize #<prize>.";
 
     @Key("command.convert.no-files-to-convert")
     public static String NO_FILES_TO_CONVERT = "&cNo available plugins to convert files.";
 
     @Key("command.convert.error-converting-files")
-    public static String ERROR_CONVERTING_FILES = "&cAn error has occurred while trying to convert files. We could not convert &a%file% &cso please check the console.";
+    public static String ERROR_CONVERTING_FILES = "&cAn error has occurred while trying to convert files. We could not convert &a<file> &cso please check the console.";
 
     @Key("command.convert.successfully-converted-files")
     public static String SUCCESSFULLY_CONVERTED_FILES = "&aPlugin Conversion has succeeded!";
@@ -182,10 +182,10 @@ public class Locale extends FileExtension {
     public static String TRANSFER_NOT_ENOUGH_KEYS = "&cYou do not have enough keys to transfer.";
 
     @Key("command.transfer.transferred-keys")
-    public static String TRANSFERRED_KEYS = "&7You have transferred &a%amount% %crate% &7keys to &c%player%.";
+    public static String TRANSFERRED_KEYS = "&7You have transferred &a<amount> <crate> &7keys to &c<player>.";
 
     @Key("command.transfer.transferred-keys-received")
-    public static String TRANSFERRED_KEYS_RECEIVED = "&7You have received &a%amount% %crate% &7keys from &c%player%.";
+    public static String TRANSFERRED_KEYS_RECEIVED = "&7You have received &a<amount> <crate> &7keys from &c<player>.";
 
     @Key("command.keys.personal.no-virtual-keys")
     public static String KEYS_PERSONAL_NO_VIRTUAL_KEYS = "&8(&c!&8) &7You currently do not have any virtual keys.";
@@ -196,19 +196,19 @@ public class Locale extends FileExtension {
     }};
 
     @Key("command.keys.other-player.no-virtual-keys")
-    public static String KEYS_OTHER_PLAYER_NO_VIRTUAL_KEYS = "&8(&c!&8) &7The player &c%player% &7does not have any keys.";
+    public static String KEYS_OTHER_PLAYER_NO_VIRTUAL_KEYS = "&8(&c!&8) &7The player &c<player> &7does not have any keys.";
 
     @Key("command.keys.other-player.virtual-keys-header")
     public static List<String> KEYS_OTHER_PLAYER_VIRTUAL_KEYS_HEADER = new ArrayList<>() {{
-        add("&8(&c!&8) &7A list of &c%player%''s &7current amount of keys.");
+        add("&8(&c!&8) &7A list of &c<player>''s &7current amount of keys.");
     }};
 
     @Key("command.keys.crate-format")
-    public static String CRATE_FORMAT = "%crate% &8»» &6%keys% keys.";
+    public static String CRATE_FORMAT = "<crate> &8»» &6<keys> keys.";
 
     @Key("command.player-help")
     public static String PLAYER_HELP = """
-            &2Crazy Crates Player Help!
+            &2Crazy Crates Player Help!\\n
             
             &8» &6/key [player] &7» &eCheck how many keys a player has.
             &8» &6/key &7- &eShows how many keys you have.
@@ -217,7 +217,7 @@ public class Locale extends FileExtension {
 
     @Key("command.admin-help")
     public static String ADMIN_HELP = """
-            &c&lCrazy Crates Admin Help
+            &c&lCrazy Crates Admin Help\\n
             
             &8» &6/cc additem [crate] [prize] &7- &eAdd items in-game to a prize in a crate.
             &8» &6/cc preview [crate] <player> &7- &eOpens the crate preview for player.
