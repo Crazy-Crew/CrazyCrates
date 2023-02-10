@@ -6,16 +6,14 @@
 
 settings:
   prefix:
-    # Change how the prefix in console will look!
+    command: "<gradient:#FE5F55:#6b55b5>[CrazyCrates]</gradient> " # The prefix used in front of messages.
     logger: '<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>'
-    # Change how the prefix for commands will look!
-    command: '<white>[<gradient:#FE5F55:#6b55b5>CrazyCrates</gradient>]</white>'
 
   # The language file to use from the locale folder.
   # Supported languages are Spanish(sp), Czech(cz), English(en).
   locale-file: "locale-en.yml"
 
-  verbose-logging: false # Whether you want to have extra logging enabled... Currently does nothing!
+  verbose-logging: false # Whether you want to have an empty console or not.
 
   update-checker: true # Whether you want to be notified when an update is published to Modrinth.
   toggle-metrics: true # Whether you want your server statistics to be sent to https://bstats.org/ ( Requires a restart! )
