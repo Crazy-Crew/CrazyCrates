@@ -11,15 +11,18 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.configs.Config;
+import com.badbones69.crazycrates.configs.Locale;
 import com.badbones69.crazycrates.enums.Permissions;
 import com.badbones69.crazycrates.enums.types.CrateType;
 import com.badbones69.crazycrates.enums.types.KeyType;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
 import com.badbones69.crazycrates.utils.ColorUtils;
+import com.badbones69.crazycrates.utils.adventure.MsgWrapper;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.*;
+import net.dehya.ruby.RubyConfig;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -27,6 +30,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
+import org.checkerframework.checker.units.qual.C;
+
 import java.util.HashMap;
 
 @Command(value = "crates", alias = {"crazycrates", "cc", "crate", "crazycrate"})
@@ -102,13 +107,17 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("reload")
     @Permission(value = "crazycrates.command.admin.reload", def = PermissionDefault.OP)
     public void onReload(CommandSender sender) {
+        // Save this one first
+        this.plugin.getPaperManager().getPaperFileManager().saveFile(new RubyConfig());
+
         fileManager.reloadAllFiles();
         fileManager.setup();
 
         plugin.cleanFiles();
         crazyManager.loadCrates();
 
-        //sender.sendMessage(Messages.RELOAD.getMessage());
+        this.plugin.getPaperManager().getPaperFileManager().saveFile(new Config());
+        this.plugin.getPaperManager().getPaperFileManager().saveFile(new Locale(this.plugin.getPaperManager().getDirectory()));
     }
 
     @SubCommand("debug")
