@@ -9,30 +9,38 @@ import com.badbones69.crazycrates.configs.Config;
 import com.badbones69.crazycrates.configs.Locale;
 import com.badbones69.crazycrates.configs.convert.ConfigConversion;
 import com.badbones69.crazycrates.configs.convert.LocaleConversion;
-import com.badbones69.crazycrates.cratetypes.*;
-import com.badbones69.crazycrates.listeners.*;
+import com.badbones69.crazycrates.cratetypes.CSGO;
+import com.badbones69.crazycrates.cratetypes.Cosmic;
+import com.badbones69.crazycrates.cratetypes.CrateOnTheGo;
+import com.badbones69.crazycrates.cratetypes.QuadCrate;
+import com.badbones69.crazycrates.cratetypes.QuickCrate;
+import com.badbones69.crazycrates.cratetypes.Roulette;
+import com.badbones69.crazycrates.cratetypes.War;
+import com.badbones69.crazycrates.cratetypes.Wheel;
+import com.badbones69.crazycrates.cratetypes.Wonder;
+import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
+import com.badbones69.crazycrates.listeners.CrateControlListener;
+import com.badbones69.crazycrates.listeners.FireworkDamageListener;
+import com.badbones69.crazycrates.listeners.ItemsAdderListener;
+import com.badbones69.crazycrates.listeners.MenuListener;
+import com.badbones69.crazycrates.listeners.MiscListener;
+import com.badbones69.crazycrates.listeners.PreviewListener;
 import com.badbones69.crazycrates.listeners.tasks.PlayerKeyTask;
 import com.badbones69.crazycrates.support.MetricsHandler;
 import com.badbones69.crazycrates.support.libraries.PluginSupport;
 import com.badbones69.crazycrates.support.libraries.UpdateChecker;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
-import com.badbones69.crazycrates.utils.adventure.LogWrapper;
+import com.badbones69.crazycrates.utils.adventure.MsgWrapper;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
-import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
 import dev.triumphteam.cmd.core.message.MessageKey;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
 import net.dehya.ruby.PaperManager;
-import net.dehya.ruby.RubyCore;
-import net.dehya.ruby.utils.LoggerUtils;
-import net.kyori.adventure.text.Component;
+import net.dehya.ruby.registry.RubyLogger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import java.io.File;
-import java.lang.reflect.Field;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +52,7 @@ public class CrazyCrates extends JavaPlugin {
 
     BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
 
-    private final PaperManager paperManager = new PaperManager(this, true, true);
+    private final PaperManager paperManager;
 
     public CrazyCrates() {
         super();
@@ -52,11 +60,17 @@ public class CrazyCrates extends JavaPlugin {
         // Bind plugin variable on constructor build.
         plugin = this;
 
+        this.paperManager = new PaperManager(this, true);
+
+        this.paperManager.getPaperFileManager().addFile(new Config());
+
         starter = new Starter();
+    }
 
-        File updateDir = this.paperManager.getDirectory().resolve("updates").toFile();
-
-        if (updateDir.mkdirs()) getLogger().warning("Created the " + updateDir.getName() + " folder.");
+    @Override
+    @NotNull
+    public java.util.logging.Logger getLogger() {
+        return RubyLogger.getLogger();
     }
 
     @Override
@@ -65,22 +79,17 @@ public class CrazyCrates extends JavaPlugin {
         ConfigConversion configConversion = new ConfigConversion();
 
         // Convert config if need be.
-        configConversion.convertConfig();
+        configConversion.convertConfig(this.paperManager.getPaperFileManager(), getPaperManager().getDirectory());
 
         // Create locale version instance.
         LocaleConversion localeConversion = new LocaleConversion();
 
         // Convert messages if need be.
-        localeConversion.convertMessages();
+        localeConversion.convertMessages(this.paperManager.getPaperFileManager(), getPaperManager().getDirectory());
 
-        // Reload/create the config
-        Config.reload(this);
-        Locale.reload(this);
-
-        getLogger().warning(Config.LOCALE_FILE);
-
-        getLogger().warning(Locale.ADMIN_HELP);
-        getLogger().warning(Locale.PLAYER_HELP);
+        // Reload/create the config/locale
+        Config.reload(this.paperManager.getPaperFileManager());
+        Locale.reload(this.paperManager.getPaperFileManager(), this.paperManager.getDirectory());
     }
 
     @Override
@@ -113,8 +122,7 @@ public class CrazyCrates extends JavaPlugin {
 
         checkUpdate();
 
-        // Enables the rest of the plugin after the initial steps.
-        enable();
+        this.enable();
     }
 
     private void checkUpdate() {
@@ -263,13 +271,9 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        disable();
-    }
-
-    public void disable() {
         SessionManager.endCrates();
 
-        QuickCrate.removeAllRewards();
+        //QuickCrate.removeAllRewards();
 
         if (starter.getCrazyManager().getHologramController() != null) starter.getCrazyManager().getHologramController().removeAllHolograms();
     }
