@@ -31,7 +31,19 @@ public class ConfigConversion {
 
         if (yamlConfiguration == null) return;
 
-        if (yamlConfiguration.getString("Settings.Config-Version") == null && !output.exists() && input.exists()) {
+        if (yamlConfiguration.getString("Settings.Config-Version") != null) {
+            yamlConfiguration.set("Settings.Config-Version", 1.0);
+
+            MsgWrapper.send(yamlConfiguration.getString("Settings.Config-Version"));
+
+            try {
+                yamlConfiguration.save(input);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (yamlConfiguration.getDouble("Settings.Config-Version") >= configVersion || yamlConfiguration.getDouble("settings.config-version") >= configVersion) {
             MsgWrapper.send("<#11e092>" + input.getName() + " <#E0115F>is up to date");
             return;
         }
