@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.configs;
 
+import com.badbones69.crazycrates.utils.adventure.MsgWrapper;
 import net.dehya.ruby.common.annotations.FileBuilder;
 import net.dehya.ruby.common.annotations.yaml.BlockType;
 import net.dehya.ruby.common.annotations.yaml.Comment;
@@ -261,13 +262,34 @@ public class Config extends FileExtension {
 
     public static void reload(FileManager fileManager) {
         fileManager.addFile(new Config());
+
+        YamlConfiguration config = getConfiguration(fileManager);
+
+        File file = getConfig(fileManager);
+
+        if (config != null && file.exists()) {
+            Config.BACK_BUTTON_LORE.forEach(line -> {
+                if (line.contains("%page%")) config.set("gui-settings.buttons.back.lore", line.replaceAll("%page%", "<page>"));
+            });
+
+            Config.NEXT_BUTTON_LORE.forEach(line -> {
+                if (line.contains("%page%")) config.set("gui-settings.buttons.next.lore", line.replaceAll("%page%", "<page>"));
+            });
+
+            //try {
+            //    config.save(file);
+            //    fileManager.addFile(new Config());
+            //} catch (IOException e) {
+            //    MsgWrapper.send(e.getMessage());
+            //}
+        }
     }
 
     public static YamlConfiguration getConfiguration(FileManager fileManager) {
         try {
             return fileManager.getFileConfiguration(new Config());
         } catch (IOException e) {
-            e.printStackTrace();
+            MsgWrapper.send(e.getMessage());
         }
 
         return null;

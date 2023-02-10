@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.configs;
 
+import com.badbones69.crazycrates.utils.adventure.MsgWrapper;
 import net.dehya.ruby.common.annotations.FileBuilder;
 import net.dehya.ruby.common.annotations.yaml.Header;
 import net.dehya.ruby.common.annotations.yaml.Key;
@@ -249,6 +250,24 @@ public class Locale extends FileExtension {
         FileUtils.extract("/locale", directory, false);
 
         fileManager.addFile(new Locale((directory)));
+
+        YamlConfiguration locale = getConfiguration(fileManager, directory);
+
+        File file = getConfig(fileManager, directory);
+
+        if (locale != null && file.exists()) {
+
+            locale.getConfigurationSection("").getKeys(true); {
+
+            }
+
+            //try {
+            //    locale.save(file);
+            //    fileManager.addFile(new Locale((directory)));
+            //} catch (IOException e) {
+            //    MsgWrapper.send(e.getMessage());
+            //}
+        }
     }
 
     public static YamlConfiguration getConfiguration(FileManager fileManager, Path directory) {
