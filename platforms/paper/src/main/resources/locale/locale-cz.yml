@@ -19,9 +19,9 @@ misc:
 errors:
   no-prizes-found: '&cTato bedna neobsahuje žádné odměny které by šlo vyhrát.'
   no-schematics-found: '&cNenalezena žádná schémata, prosím regeneruj je smazáním složky či zkontrolováním chyb!'
-  prize-error:
-    - '&cNastala chyba při pokusu dát ti odměnu &6<prize>.'
-    - '&eChyba nastala v &6<crate>. &cProsím kontakuj majitele.'
+  prize-error: |-
+    &cNastala chyba při pokusu dát ti odměnu &6<prize>.
+    &eChyba nastala v &6<crate>. &cProsím kontakuj majitele.
   internal-error: '&cVyskytla se neočekávaná chyba. Prosím zkontroluj konzoli, pro kompletní chybu.'
 player:
   requirements:
@@ -49,9 +49,9 @@ crates:
   need-more-room: '&cNení zde dostatek místa pro otevření.'
   world-disabled: '&cBedny jsou vypnuté ve světě &a<world>.'
   physical-crate:
-    created:
-      - '&7Tento blok byl nastaven na &6<crate>.'
-      - '&7Pro odstranění &6<crate>, &7Shift a Pravý klik během creative módu.'
+    created: |-
+      &7Tento blok byl nastaven na &6<crate>.
+      &7Pro odstranění &6<crate>, &7Shift a Pravý klik během creative módu.
     removed: '&7Odstranil jsi &6<id>.'
 command:
   open:
@@ -81,21 +81,21 @@ command:
   keys:
     personal:
       no-virtual-keys: '&8(&c!&8) &7Aktuálně nemáš žádné virtuální klíče.'
-      virtual-keys-header:
-        - '&8(&c!&8) &7Aktuální seznam tvých virtuálních klíčů.'
+      virtual-keys-header: |-
+        &8(&c!&8) &7Aktuální seznam tvých virtuálních klíčů.
     other-player:
       no-virtual-keys: '&8(&c!&8) &7Hráč &c<player> &7nemá žádné klíče.'
-      virtual-keys-header:
-        - '&8(&c!&8) &7Aktuální seznam počtu klíčů hráče &c<player>'
+      virtual-keys-header: |-
+        &8(&c!&8) &7Aktuální seznam počtu klíčů hráče &c<player>
     crate-format: '<crate> &8»» &6<keys> klíčů.' # Related to what will show in the output above.
-  player-help: |
-    &2Crazy Crates Hráčská nápověda!\n
+  player-help: |-
+    &2Crazy Crates Hráčská nápověda!
     
      &8» &6/key [player] &7- &eZkontroluje kolik klíčů má hráč.
      &8» &6/key &7- &eUkazuje, kolik máte klíčů.
      &8» &6/cc &7- &eOtevře menu beden.
-  admin-help: |
-    &cCrazy Crates Admin Nápověda\n
+  admin-help: |-
+    &cCrazy Crates Admin Nápověda
     
     &8» &6/cc additem [crate] [prize] &7- &ePřidá itemy ve hře jako výhru do bedny.
     &8» &6/cc preview [crate] [player] &7- &eOtevře náhled bedny pro hráče.

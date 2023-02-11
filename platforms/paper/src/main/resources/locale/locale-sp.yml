@@ -19,9 +19,9 @@ misc:
 errors:
   no-prizes-found: '&cEsta caja no tiene ningun premio que puedas ganar.'
   no-schematics-found: '&cNo se han encontrado esquemas, por favor regeneralos eliminando la carpeta o buscando errores.'
-  prize-error:
-    - '&cHa ocurrido un error mientras te intentabamos dar el &epremio <prize>.'
-    - '&eEsto ha ocurrido en la caja &e<crate>. &ePor favor notifica al dueño.'
+  prize-error: |-
+    &cHa ocurrido un error mientras te intentabamos dar el &epremio <prize>.
+    &eEsto ha ocurrido en la caja &e<crate>. &ePor favor notifica al dueño.
   internal-error: '&cHa ocurrido un error interno. Por favor mira la consola para ver el error completo.'
 player:
   requirements:
@@ -49,9 +49,9 @@ crates:
   need-more-room: '&cNo hay suficiente espacio para abrir eso aqui.'
   world-disabled: '&cLas cajas esta deshabilitadas en &e<world>.'
   physical-crate:
-    created:
-      - '&7Tienes que poner ese bloque como &e<crate>.'
-      - '&7Para eliminar &e<crate>, &7haz Shift Click y rompe en creativo.'
+    created: |-
+      &7Tienes que poner ese bloque como &e<crate>.
+      &7Para eliminar &e<crate>, &7haz Shift Click y rompe en creativo.
     removed: '&7Has eliminado &e<id>.'
 command:
   open:
@@ -81,21 +81,21 @@ command:
   keys:
     personal:
       no-virtual-keys: '&8(&e!&8) &7No tienes llaves virtuales.'
-      virtual-keys-header:
-        - '&8(&e!&8) &7Una lista de las cantidad de llaves que tienes.'
+      virtual-keys-header: |-
+        &8(&e!&8) &7Una lista de las cantidad de llaves que tienes.
     other-player:
       no-virtual-keys: '&8(&e!&8) &7El jugador &c<player> &7no tiene ninguna llave.'
-      virtual-keys-header:
-        - '&8(&e!&8) &7Una lista de las llaves de &c<player>.'
+      virtual-keys-header: |-
+        &8(&e!&8) &7Una lista de las llaves de &c<player>.
     crate-format: '<crate> &8»» &e<keys> llaves.' # Related to what will show in the output above.
-  player-help: |
-    &2Crazy Crates Player Help!\n
+  player-help: |-
+    &2Crazy Crates Player Help!
     
     &8» &e/key [player] &7- &eComprueba cuantas llaves tiene un jugador.
     &8» &6/key &7- &eMuestra cuántas llaves tienes.
     &8» &e/cc &7- &eAbre el menu.
-  admin-help: |
-    &cCrazy Crates Admin Help\n
+  admin-help: |-
+    &cCrazy Crates Admin Help
     
     &8» &e/cc additem [crate] [prize] &7- &eAñade items in-game a los premios a una caja.
     &8» &e/cc preview [crate] [player] &7- &eAbre la previsualizacion de una caja para un jugador.

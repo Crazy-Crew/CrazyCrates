@@ -19,9 +19,9 @@ misc:
 errors:
   no-prizes-found: '&cThis crate contains no prizes that you can win.'
   no-schematics-found: '&cNo schematic were found, Please re-generate them by deleting the folder or checking for errors!'
-  prize-error:
-    - '&cAn error has occurred while trying to give you the prize &6<prize>.'
-    - '&eThis has occurred in &6<crate>. &ePlease notify your owner.'
+  prize-error: |-
+    &cAn error has occurred while trying to give you the prize &6<prize>.
+    &eThis has occurred in &6<crate>. &ePlease notify your owner.
   internal-error: '&cAn internal error has occurred. Please check the console for the full error.'
 player:
   requirements:
@@ -49,9 +49,9 @@ crates:
   need-more-room: '&cThere is not enough space to open that here.'
   world-disabled: '&cCrates are disabled in &c<world>.'
   physical-crate:
-    created:
-      - '&7You have set that block to &6<crate>.'
-      - '&7To remove &6<crate>, &7Shift Click Break in Creative to remove.'
+    created: |-
+      &7You have set that block to &6<crate>.
+      &7To remove &6<crate>, &7Shift Click Break in Creative to remove.
     removed: '&7You have removed  &6<id>.'
 command:
   open:
@@ -81,21 +81,21 @@ command:
   keys:
     personal:
       no-virtual-keys: '&8(&6!&8) &7You currently do not have any virtual keys.'
-      virtual-keys-header:
-        - '&8(&6!&8) &7A list of your current amount of keys.'
+      virtual-keys-header: |-
+        &8(&6!&8) &7A list of your current amount of keys.
     other-player:
       no-virtual-keys: '&8(&6!&8) &7The player &c<player> &7does not have any keys.'
-      virtual-keys-header:
-        - '&8(&6!&8) &7A list of &c<player>''s &7current amount of keys.'
+      virtual-keys-header: |-
+        &8(&6!&8) &7A list of &c<player>''s &7current amount of keys.
     crate-format: '<crate> &8» &6<keys> keys.' # Related to what will show in the output above.
-  player-help: |
-    &2Crazy Crates Player Help!\n
+  player-help: |-
+    &2Crazy Crates Player Help!
     
     &8» &6/key [player] &7- &eCheck how many keys a player has.
     &8» &6/key &7- &eShows how many keys you have.
     &8» &6/cc &7- &eOpens the crate menu.
-  admin-help: |
-    &c&lCrazy Crates Admin Help\n
+  admin-help: |-
+    &c&lCrazy Crates Admin Help
     
     &8» &6/cc additem [crate] [prize] &7- &eAdd items in-game to a prize in a crate.
     &8» &6/cc preview [crate] [player] &7- &eOpens the preview of a crate for a player.
