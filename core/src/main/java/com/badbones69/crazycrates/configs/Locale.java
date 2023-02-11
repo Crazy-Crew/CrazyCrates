@@ -1,19 +1,17 @@
 package com.badbones69.crazycrates.configs;
 
-import com.badbones69.crazycrates.utils.adventure.MsgWrapper;
 import net.dehya.ruby.common.annotations.FileBuilder;
 import net.dehya.ruby.common.annotations.yaml.Header;
 import net.dehya.ruby.common.annotations.yaml.Key;
+import net.dehya.ruby.common.annotations.yaml.QuoteStylePlain;
 import net.dehya.ruby.common.enums.FileType;
 import net.dehya.ruby.files.FileExtension;
 import net.dehya.ruby.files.FileManager;
 import net.dehya.ruby.utils.FileUtils;
-import org.simpleyaml.configuration.file.YamlConfiguration;
+import org.simpleyaml.configuration.file.YamlFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 @FileBuilder(isLogging = true, isAsync = false, isData = false, fileType = FileType.YAML)
 @Header("""
@@ -25,6 +23,7 @@ import java.util.List;
         Report Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
         Request Features/Support: https://github.com/orgs/Crazy-Crew/discussions
         """)
+@QuoteStylePlain
 public class Locale extends FileExtension {
 
     // Misc
@@ -57,10 +56,10 @@ public class Locale extends FileExtension {
     public static String NO_SCHEMATICS_FOUND = "&cNo schematic were found, Please re-generate them by deleting the folder or checking for errors!";
 
     @Key("errors.prize-error")
-    public static List<String> PRIZE_ERROR = new ArrayList<>() {{
-        add("&cAn error has occurred while trying to give you the prize &6<prize>.");
-        add("&eThis has occurred in &6<crate>. &ePlease notify your owner.");
-    }};
+    public static String PRIZE_ERROR = """
+            &cAn error has occurred while trying to give you the prize &6<prize>.
+            &eThis has occurred in &6<crate>. &ePlease notify your owner.
+            """;
 
     @Key("errors.internal-error")
     public static String INTERNAL_ERROR = "&cAn internal error has occurred. Please check the console for the full error.";
@@ -131,10 +130,10 @@ public class Locale extends FileExtension {
     public static String WORLD_DISABLED = "&cCrates are disabled in &a<world>.";
 
     @Key("crates.physical-crate.created")
-    public static List<String> PHYSICAL_CRATE_CREATED = new ArrayList<>() {{
-        add("&7You have set that block to &6<crate>.");
-        add("&7To remove &6<crate>, &7Shift Click Break in Creative to remove.");
-    }};
+    public static String PHYSICAL_CRATE_CREATED = """
+        &7You have set that block to &6<crate>.
+        &7To remove &6<crate>, &7Shift Click Break in Creative to remove.
+        """;
 
     @Key("crates.physical-crate.removed")
     public static String PHYSICAL_CRATE_REMOVED = "&7You have removed &6<id>.";
@@ -192,33 +191,33 @@ public class Locale extends FileExtension {
     public static String KEYS_PERSONAL_NO_VIRTUAL_KEYS = "&8(&c!&8) &7You currently do not have any virtual keys.";
 
     @Key("command.keys.personal.virtual-keys-header")
-    public static List<String> KEYS_PERSONAL_VIRTUAL_KEYS_HEADER = new ArrayList<>() {{
-        add("&8(&c!&8) &7A list of your current amount of keys.");
-    }};
+    public static String KEYS_PERSONAL_VIRTUAL_KEYS_HEADER = """
+            &8(&c!&8) &7A list of your current amount of keys.
+            """;
 
     @Key("command.keys.other-player.no-virtual-keys")
     public static String KEYS_OTHER_PLAYER_NO_VIRTUAL_KEYS = "&8(&c!&8) &7The player &c<player> &7does not have any keys.";
 
     @Key("command.keys.other-player.virtual-keys-header")
-    public static List<String> KEYS_OTHER_PLAYER_VIRTUAL_KEYS_HEADER = new ArrayList<>() {{
-        add("&8(&c!&8) &7A list of &c<player>''s &7current amount of keys.");
-    }};
+    public static String KEYS_OTHER_PLAYER_VIRTUAL_KEYS_HEADER = """
+            &8(&c!&8) &7A list of &c<player>''s &7current amount of keys.
+            """;
 
     @Key("command.keys.crate-format")
     public static String CRATE_FORMAT = "<crate> &8»» &6<keys> keys.";
 
     @Key("command.player-help")
     public static String PLAYER_HELP = """
-            &2Crazy Crates Player Help!\\n
+            &2Crazy Crates Player Help!
             
-            &8» &6/key [player] &7» &eCheck how many keys a player has.
+            &8» &6/key [player] &7- &eCheck how many keys a player has.
             &8» &6/key &7- &eShows how many keys you have.
-            &8» &6/cc &7» &eOpens the crate menu.
+            &8» &6/cc &7- &eOpens the crate menu.
             """;
 
     @Key("command.admin-help")
     public static String ADMIN_HELP = """
-            &c&lCrazy Crates Admin Help\\n
+            &c&lCrazy Crates Admin Help
             
             &8» &6/cc additem [crate] [prize] &7- &eAdd items in-game to a prize in a crate.
             &8» &6/cc preview [crate] <player> &7- &eOpens the crate preview for player.
@@ -250,27 +249,9 @@ public class Locale extends FileExtension {
         FileUtils.extract("/locale", directory, false);
 
         fileManager.addFile(new Locale((directory)));
-
-        YamlConfiguration locale = getConfiguration(fileManager, directory);
-
-        File file = getConfig(fileManager, directory);
-
-        if (locale != null && file.exists()) {
-
-            locale.getConfigurationSection("").getKeys(true); {
-
-            }
-
-            //try {
-            //    locale.save(file);
-            //    fileManager.addFile(new Locale((directory)));
-            //} catch (IOException e) {
-            //    MsgWrapper.send(e.getMessage());
-            //}
-        }
     }
 
-    public static YamlConfiguration getConfiguration(FileManager fileManager, Path directory) {
+    public static YamlFile getConfiguration(FileManager fileManager, Path directory) {
         try {
             return fileManager.getFileConfiguration(new Locale(directory));
         } catch (IOException e) {

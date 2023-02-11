@@ -6,10 +6,11 @@ import net.dehya.ruby.common.annotations.yaml.BlockType;
 import net.dehya.ruby.common.annotations.yaml.Comment;
 import net.dehya.ruby.common.annotations.yaml.Header;
 import net.dehya.ruby.common.annotations.yaml.Key;
+import net.dehya.ruby.common.annotations.yaml.QuoteStylePlain;
 import net.dehya.ruby.common.enums.FileType;
 import net.dehya.ruby.files.FileExtension;
 import net.dehya.ruby.files.FileManager;
-import org.simpleyaml.configuration.file.YamlConfiguration;
+import org.simpleyaml.configuration.file.YamlFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.List;
             Report Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
             Request Features/Support: https://github.com/orgs/Crazy-Crew/discussions
             """)
+@QuoteStylePlain
 public class Config extends FileExtension {
 
     @Key("settings.prefix.command")
@@ -262,30 +264,9 @@ public class Config extends FileExtension {
 
     public static void reload(FileManager fileManager) {
         fileManager.addFile(new Config());
-
-        YamlConfiguration config = getConfiguration(fileManager);
-
-        File file = getConfig(fileManager);
-
-        if (config != null && file.exists()) {
-            Config.BACK_BUTTON_LORE.forEach(line -> {
-                if (line.contains("%page%")) config.set("gui-settings.buttons.back.lore", line.replaceAll("%page%", "<page>"));
-            });
-
-            Config.NEXT_BUTTON_LORE.forEach(line -> {
-                if (line.contains("%page%")) config.set("gui-settings.buttons.next.lore", line.replaceAll("%page%", "<page>"));
-            });
-
-            //try {
-            //    config.save(file);
-            //    fileManager.addFile(new Config());
-            //} catch (IOException e) {
-            //    MsgWrapper.send(e.getMessage());
-            //}
-        }
     }
 
-    public static YamlConfiguration getConfiguration(FileManager fileManager) {
+    public static YamlFile getConfiguration(FileManager fileManager) {
         try {
             return fileManager.getFileConfiguration(new Config());
         } catch (IOException e) {
