@@ -23,36 +23,26 @@ public class ConfigConversion {
 
         // The old configuration of config.yml
         YamlConfiguration yamlConfiguration = null;
+
         try {
-            if (input.exists()) yamlConfiguration = YamlConfiguration.loadConfiguration(input);
+            yamlConfiguration = YamlConfiguration.loadConfiguration(input);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         if (yamlConfiguration == null) return;
 
-        if (yamlConfiguration.getString("Settings.Config-Version") != null) {
-            yamlConfiguration.set("Settings.Config-Version", 1.0);
-
-            MsgWrapper.send(yamlConfiguration.getString("Settings.Config-Version"));
-
-            try {
-                yamlConfiguration.save(input);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (yamlConfiguration.getDouble("Settings.Config-Version") >= configVersion || yamlConfiguration.getDouble("settings.config-version") >= configVersion) {
+        if (yamlConfiguration.getString("Settings.Config-Version") == null && !output.exists()) {
             MsgWrapper.send("<#11e092>" + input.getName() + " <#E0115F>is up to date");
             return;
         }
 
         // Rename the file to the output file.
-        if (input.renameTo(output)) MsgWrapper.send("<#E0115F>Renamed " + input.getName() + " <#E0115F>to <#11e092>" + output.getName() + ".");
+        if (input.renameTo(output)) MsgWrapper.send("<#E0115F>Renamed <#11e092>" + input.getName() + " <#E0115F>to <#11e092>" + output.getName() + ".");
 
         // The configuration of the output file.
         YamlConfiguration secondConfiguration = null;
+
         try {
             if (output.exists()) secondConfiguration = YamlConfiguration.loadConfiguration(output);
         } catch (IOException e) {
@@ -96,11 +86,11 @@ public class ConfigConversion {
 
         final String nextName = secondConfiguration.getString("Settings.Preview.Buttons.Next.Name");
         final String nextItem = secondConfiguration.getString("Settings.Preview.Buttons.Next.Item");
-        final List<String> nextLore = secondConfiguration.getStringList("Settings.Preview.Buttons.Next.Lore");
+        //final List<String> nextLore = secondConfiguration.getStringList("Settings.Preview.Buttons.Next.Lore");
 
         final String backName = secondConfiguration.getString("Settings.Preview.Buttons.Back.Name");
         final String backItem = secondConfiguration.getString("Settings.Preview.Buttons.Back.Item");
-        final List<String> backLore = secondConfiguration.getStringList("Settings.Preview.Buttons.Back.Lore");
+        //final List<String> backLore = secondConfiguration.getStringList("Settings.Preview.Buttons.Back.Lore");
 
         final boolean fillerToggle = secondConfiguration.getBoolean("Settings.Filler.Toggle");
         final String fillerItem = secondConfiguration.getString("Settings.Filler.Item");
@@ -109,7 +99,7 @@ public class ConfigConversion {
 
         final List<String> guiCustomizer = secondConfiguration.getStringList("Settings.GUI-Customizer");
 
-        org.simpleyaml.configuration.file.YamlConfiguration configuration = Config.getConfiguration(fileManager);
+        org.simpleyaml.configuration.file.YamlFile configuration = Config.getConfiguration(fileManager);
 
         if (configuration == null) return;
         
@@ -140,6 +130,7 @@ public class ConfigConversion {
         configuration.set("gui-settings.filler-items.toggle", fillerToggle);
         configuration.set("gui-settings.filler-items.item", fillerItem);
         configuration.set("gui-settings.filler-items.name", fillerName);
+
         configuration.set("gui-settings.filler-items.lore", fillerLore);
 
         configuration.set("gui-settings.buttons.menu.item", menuItem);
@@ -148,14 +139,12 @@ public class ConfigConversion {
 
         configuration.set("gui-settings.buttons.next.item", nextItem);
         configuration.set("gui-settings.buttons.next.name", nextName);
-        configuration.set("gui-settings.buttons.next.lore", nextLore);
 
         configuration.set("gui-settings.buttons.back.item", backItem);
         configuration.set("gui-settings.buttons.back.name", backName);
-        configuration.set("gui-settings.buttons.back.lore", backLore);
 
         configuration.set("gui-settings.customizer", guiCustomizer);
 
-        FileUtils.copyFile(input, output, configuration, directory);
+        FileUtils.copyFile(input, output, configuration);
     }
 }
