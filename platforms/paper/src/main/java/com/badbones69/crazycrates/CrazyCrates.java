@@ -41,6 +41,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +62,10 @@ public class CrazyCrates extends JavaPlugin {
         plugin = this;
 
         this.paperManager = new PaperManager(this, true);
+
+        File locale = new File(this.getDataFolder() + "/locale");
+
+        if (locale.mkdirs()) getLogger().info("Created " + locale.getName() + " because it did not exist.");
 
         this.paperManager.getPaperFileManager().addFile(new Config());
 
