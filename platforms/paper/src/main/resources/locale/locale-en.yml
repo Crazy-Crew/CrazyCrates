@@ -8,107 +8,107 @@
 # Request Features/Support: https://github.com/orgs/Crazy-Crew/discussions
 
 misc:
-  unknown-command: '&cThis command is not known.'
-  no-teleporting: '&cYou may not teleport away while opening &6<crate>.'
-  no-commands: '&cYou are not allowed to use commands while opening &6<crate>.'
-  no-keys: '&cYou need a <key> &cin your hand to use &6<crate>.'
-  no-virtual-keys: '&cYou need <key> &cto open &6<crate>.'
-  feature-disabled: '&cThis feature is disabled. We have no ETA on when this will function.'
-  correct-usage: '&cThe correct usage for this command is &e<usage>'
+  unknown-command: '<red>This command is not known.</red>'
+  no-teleporting: '<red>You may not teleport away while opening</red> <gold>%crate%.</gold>'
+  no-commands: '<red>You are not allowed to use commands while opening</red> <gold>%crate%.</gold>'
+  no-keys: '<red>You need a %key% <red>in your hand to use</red> <gold>%crate%.</gold>'
+  no-virtual-keys: '<red>You need</red> %key% <red>to open</red> <gold>%crate%.</gold>'
+  feature-disabled: '<red>This feature is disabled. We have no ETA on when this will function.</red>'
+  correct-usage: '<red>The correct usage for this command is</red> <yellow>%usage%</yellow>'
 
 errors:
-  no-prizes-found: '&cThis crate contains no prizes that you can win.'
-  no-schematics-found: '&cNo schematic were found, Please re-generate them by deleting the folder or checking for errors!'
+  no-prizes-found: '<red>This crate contains no prizes that you can win.</red>'
+  no-schematics-found: '<red>No schematic were found, Please re-generate them by deleting the folder or checking for errors!</red>'
   prize-error: |-
-    &cAn error has occurred while trying to give you the prize &6<prize>.
-    &eThis has occurred in &6<crate>. &ePlease notify your owner.
-  internal-error: '&cAn internal error has occurred. Please check the console for the full error.'
+    <red>An error has occurred while trying to give you the prize</red> <gold>%prize%.</gold>
+    <yellow>This has occurred in</yellow> <gold>%crate%.</gold> <yellow>Please notify your owner.</yellow>
+  internal-error: '<red>An internal error has occurred. Please check the console for the full error.</red>'
 player:
   requirements:
-    too-many-args: '&cYou put more arguments then I can handle.'
-    not-enough-args: '&cYou did not supply enough arguments.'
-    must-be-player: '&cYou must be a player to use this command.'
-    must-be-console-sender: '&cYou must be using console to use this command.'
-    must-be-looking-at-block: '&cYou must be looking at a block.'
-  target-not-online: '&cThe player &6<player> &cis not online.'
-  target-same-player: '&cYou cannot use this command on yourself.'
-  no-permission: '&cYou do not have permission to use that command!'
-  inventory-not-empty: '&cInventory is not empty, Please make room before opening &6<crate>.'
-  obtaining-keys: '&7You have been given &6<amount> <key> &7Keys.'
-  too-close-to-another-player: '&cYou are too close to a player that is opening their Crate.'
+    too-many-args: '<red>You put more arguments then I can handle.</red>'
+    not-enough-args: '<red>You did not supply enough arguments.</red>'
+    must-be-player: '<red>You must be a player to use this command.</red>'
+    must-be-console-sender: '<red>You must be using console to use this command.</red>'
+    must-be-looking-at-block: '<red>You must be looking at a block.</red>'
+  target-not-online: '<red>The player</red> <gold>%player%</gold> <red>is not online.</red>'
+  target-same-player: '<red>You cannot use this command on yourself.</red>'
+  no-permission: '<red>You do not have permission to use that command!</red>'
+  inventory-not-empty: '<red>Inventory is not empty, Please make room before opening</red> <gold>%crate%.</gold>'
+  obtaining-keys: '<gray>You have been given <gold>%amount% %key%</gold> <gray>Keys.'
+  too-close-to-another-player: '<red>You are too close to a player that is opening their Crate.</red>'
 crates:
   requirements:
-    not-a-crate: '&cThere is no crate called &6<crate>.'
-    not-a-number: '&6<number> &cis not a number.'
-  not-on-block: '&cYou must be standing on a block to use &6<crate>.'
-  out-of-time: '&cYou took &a5 Minutes &cto open the &6<crate> &cso it closed.'
-  crate-preview-disabled: '&cThe preview for &6<crate> &7is currently disabled.'
-  crate-already-open: '&cYou are already opening &6<crate>.'
-  crate-in-use: ' &6<crate> &cis already in use. Please wait until it finishes!'
-  cannot-be-a-virtual-crate: '&6<crate> &ccannot be used as a Virtual Crate. You have it set to &6<cratetype>.'
-  need-more-room: '&cThere is not enough space to open that here.'
-  world-disabled: '&cCrates are disabled in &c<world>.'
+    not-a-crate: '<red>There is no crate called</red> <gold>%crate%.</gold>'
+    not-a-number: '<gold>%number%</gold> <red>is not a number.</red>'
+  not-on-block: '<red>You must be standing on a block to use</red> <gold>%crate%.</gold>'
+  out-of-time: '<red>You took</red> <green>5 Minutes</green> <red>to open the</red> <gold>%crate%</gold> <red>so it closed.</red>'
+  crate-preview-disabled: '<red>The preview for</red> <gold>%crate%</gold> <gray>is currently disabled.</gray>'
+  crate-already-open: '<red>You are already opening</red> <gold>%crate%.</gold>'
+  crate-in-use: ' <gold>%crate%</gold> <red>is already in use. Please wait until it finishes!</red>'
+  cannot-be-a-virtual-crate: '<gold>%crate%</gold> <red>cannot be used as a Virtual Crate. You have it set to <gold>%cratetype%.</gold>'
+  need-more-room: '<red>There is not enough space to open that here.</red>'
+  world-disabled: '<red>Crates are disabled in</red> <gold>%world%.</gold>'
   physical-crate:
     created: |-
-      &7You have set that block to &6<crate>.
-      &7To remove &6<crate>, &7Shift Click Break in Creative to remove.
-    removed: '&7You have removed  &6<id>.'
+      <gray>You have set that block to</gray> <gold>%crate%.</gold>
+      <gray>To remove</gray> <gold>%crate%</gold>, <gray>Shift Click Break in Creative to remove.</gray>
+    removed: '<gray>You have removed</gray> <gold>%id%.</gold>'
 command:
   open:
-    opened-a-crate: '&7You have opened the &6<crate> &7crate for &6<player>.'
+    opened-a-crate: '<gray>You have opened the</gray> <gold>%crate%</gold> <gray>crate for</gray> <gold>%player%.</gold>'
   give:
-    given-player-keys: '&7You have given &6<player> <amount> Keys.'
-    cannot-give-player-keys-because-inventory-not-empty: '&7You have been given &6<amount> <key> &7virtual keys because your inventory was full.'
-    given-everyone-keys: '&7You have given everyone &6<amount> Keys.'
-    given-offline-player-keys: '&7You have given &6<amount> key(s) &7to the offline player &6<player>.'
+    given-player-keys: '<gray>You have given</gray> <gold>%player% %amount% Keys.</gold>'
+    cannot-give-player-keys-because-inventory-not-empty: '<gray>You have been given</gray> <gold>%amount% %key%</gold> <gray>virtual keys because your inventory was full.</gray>'
+    given-everyone-keys: '<gray>You have given everyone</gray> <gold>%amount% Keys.</gold>'
+    given-offline-player-keys: '<gray>You have given</gray> <gold>%amount% key(s)</gold> <gray>to the offline player</gray> <gold>%player%.</gold>'
   take:
-    take-player-keys: '&7You have taken &6<amount> key(s) &7from  &6<player>.'
-    take-offline-player-keys: '&7You have taken &6<amount> key(s) &7from the offline player &6<player>.'
+    take-player-keys: '<gray>You have taken</gray> <gold>%amount% key(s)</gold> <gray>from</gray> <gold>%player%.</gold>'
+    take-offline-player-keys: '<gray>You have taken</gray> <gold>%amount% key(s)</gold> <gray>from the offline player</gray> <gold>%player%.</gold>'
   additem:
-    no-item-in-hand: '&cYou need to have an item in your hand to add it to &6<crate>.'
-    add-item-from-hand: '&7The item has been added to &6<crate> &7as &6Prize #<prize>.'
+    no-item-in-hand: '<red>You need to have an item in your hand to add it to</red> <gold>%crate%.</gold>'
+    add-item-from-hand: '<gray>The item has been added to</gray> <gold>%crate%</gold> <gray>as</gray> <gold>Prize #<prize>.</gold>'
   convert:
-    no-files-to-convert: '&cNo available plugins to convert files.'
-    error-converting-files: '&cAn error has occurred while trying to convert files. We could not convert &c<file> &cso please check the console.'
-    successfully-converted-files: '&aPlugin Conversion has succeeded!'
+    no-files-to-convert: '<red>No available plugins to convert files.</red>'
+    error-converting-files: '<red>An error has occurred while trying to convert files. We could not convert</red> <gold>%file%</gold> <red>so please check the console.</red>'
+    successfully-converted-files: '<green>Plugin Conversion has succeeded!</green>'
   reload:
-    confirm-reload: '&eAre you sure you want to reload the plugin?'
-    reload-completed: '&aPlugin reload has been completed.'
+    confirm-reload: '<yellow>Are you sure you want to reload the plugin?</yellow>'
+    reload-completed: '<green>Plugin reload has been completed.</green>'
   transfer:
-    not-enough-keys: '&cYou do not have enough keys to transfer.'
-    transferred-keys: '&7You have transferred &c<amount> <crate> keys &7to &c<player>.'
-    transferred-keys-received: '&7You have received &c<amount> <crate> keys &7from &c<player>.'
+    not-enough-keys: '<red>You do not have enough keys to transfer.</red>'
+    transferred-keys: '<gray>You have transferred</gray> <red>%amount% %crate%</red> <gray>keys to</gray> <red>%player%.</red>'
+    transferred-keys-received: '<gray>You have received</gray> <red>%amount% %crate%</red> <gray>keys from</gray> <red>%player%.</red>'
   keys:
     personal:
-      no-virtual-keys: '&8(&6!&8) &7You currently do not have any virtual keys.'
+      no-virtual-keys: '<dark_gray>(/dark_gray><gold>!</gold><dark_gray>)/dark_gray> <gray>You currently do not have any virtual keys.</gray>'
       virtual-keys-header: |-
-        &8(&6!&8) &7A list of your current amount of keys.
+        <dark_gray>(/dark_gray><gold>!</gold><dark_gray>)/dark_gray> <gray>A list of your current amount of keys.</gray>
     other-player:
-      no-virtual-keys: '&8(&6!&8) &7The player &c<player> &7does not have any keys.'
+      no-virtual-keys: '<dark_gray>(/dark_gray><gold>!</gold><dark_gray>)/dark_gray> <gray>The player</gray> <red>%player% <gray>does not have any keys.</gray>'
       virtual-keys-header: |-
-        &8(&6!&8) &7A list of &c<player>''s &7current amount of keys.
-    crate-format: '<crate> &8» &6<keys> keys.' # Related to what will show in the output above.
+        <dark_gray>(</dark_gray><gold>!</gold><dark_gray>)</dark_gray> <gray>A list of</gray> <red>%player%''s</red> <gray>current amount of keys.</gray>
+    crate-format: '%crate% <dark_gray>»</dark_gray> <gold>%keys% keys.</gold>' # Related to what will show in the output above.
   player-help: |-
-    &2Crazy Crates Player Help!
+    <dark_green>Crazy Crates Player Help!</dark_green>
     
-    &8» &6/key [player] &7- &eCheck how many keys a player has.
-    &8» &6/key &7- &eShows how many keys you have.
-    &8» &6/cc &7- &eOpens the crate menu.
+    <dark_gray>»</dark_gray> <gold>/key [player]</gold> <gray>-</gray> <yellow>Check how many keys a player has.</yellow>
+    <dark_gray>»</dark_gray> <gold>/key</gold> <gray>- <yellow>Shows how many keys you have.</yellow>
+    <dark_gray>»</dark_gray> <gold>/cc</gold> <gray>- <yellow>Opens the crate menu.</yellow>
   admin-help: |-
-    &c&lCrazy Crates Admin Help
+    <red>Crazy Crates Admin Help</red>
     
-    &8» &6/cc additem [crate] [prize] &7- &eAdd items in-game to a prize in a crate.
-    &8» &6/cc preview [crate] [player] &7- &eOpens the preview of a crate for a player.
-    &8» &6/cc list &7- &eLists all crates.
-    &8» &6/cc open [crate] [player] &7- &eTries to open a crate for a player if they have a key.
-    &8» &6/cc forceopen [crate] [player] &7- &eOpens a crate for a player for free.
-    &8» &6/cc tp [location] &7- &eTeleports to a Crate.
-    &8» &6/cc give [physical/virtual] [crate] [amount] [player] &7- &eAllows you to take keys from a player.
-    &8» &6/cc set [crate] &7- &eSet the block you are looking at as a crate.
-    &8» &6/cc set Menu &7- &eSet the block you are looking at to open the /cc menu.
-    &8» &6/cc reload &7- &eReloads the config/data files.
-    &8» &6/cc set1/set2 &7- &eSets position &c#1 or #2 for when making a new schematic for QuadCrates.
-    &8» &6/cc save [file name] &7- &eCreate a new nbt file in the schematics folder.
+    <dark_gray>»</dark_gray> <gold>/cc additem [crate] [prize] <gray>-</gray> <yellow>Add items in-game to a prize in a crate.</yellow>
+    <dark_gray>»</dark_gray> <gold>/cc preview [crate] [player] <gray>-</gray> <yellow>Opens the preview of a crate for a player.</yellow>
+    <dark_gray>»</dark_gray> <gold>/cc list <gray>-</gray> <yellow>Lists all crates.</yellow>
+    <dark_gray>»</dark_gray> <gold>/cc open [crate] [player] <gray>-</gray> <yellow>Tries to open a crate for a player if they have a key.</yellow>
+    <dark_gray>»</dark_gray> <gold>/cc forceopen [crate] [player] <gray>-</gray> <yellow>Opens a crate for a player for free.</yellow>
+    <dark_gray>»</dark_gray> <gold>/cc tp [location] <gray>-</gray> <yellow>Teleports to a Crate.</yellow>
+    <dark_gray>»</dark_gray> <gold>/cc give [physical/virtual] [crate] [amount] [player]</gold> <gray>- <yellow>Allows you to take keys from a player.</yellow>
+    <dark_gray>»</dark_gray> <gold>/cc set [crate]</gold> <gray>-</gray> <yellow>Set the block you are looking at as a crate.</yellow>
+    <dark_gray>»</dark_gray> <gold>/cc set Menu</gold> <gray>-</gray> <yellow>Set the block you are looking at to open the /cc menu.</yellow>
+    <dark_gray>»</dark_gray> <gold>/cc reload</gold> <gray>-</gray> <yellow>Reloads the config/data files.</yellow>
+    <dark_gray>»</dark_gray> <gold>/cc set1/set2</gold> <gray>-</gray> <yellow>Sets position</yellow> <red>#1 or #2</red> <yellow>for when making a new schematic for QuadCrates.</yellow>
+    <dark_gray>»</dark_gray> <gold>/cc save [file name]</gold> <gray>-</gray> <yellow>Create a new nbt file in the schematics folder.</yellow>
     
-    &8» &6/key [player] &7- &eCheck how many keys a player has.
-    &8» &6/cc &7- &eOpens the crate menu.
+    <dark_gray>»</dark_gray> <gold>/key [player]</gold> <gray>-</gray> <yellow>Check how many keys a player has.</yellow>
+    <dark_gray>»</dark_gray> <gold>/cc</gold> <gray>-</gray> <yellow>Opens the crate menu.</yellow>

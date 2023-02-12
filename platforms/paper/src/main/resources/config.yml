@@ -3,13 +3,15 @@
 #
 # Report Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
 # Request Features/Support: https://github.com/orgs/Crazy-Crew/discussions
+#
+# Everything supports gradients!
 
 settings:
   prefix:
     command: "<gradient:#FE5F55:#6b55b5>[CrazyCrates]</gradient> " # The prefix used in front of messages.
 
   # The language file to use from the locale folder.
-  # Supported languages are Spanish(sp), Czech(cz), English(en).
+  # Supported languages are English(en).
   locale-file: "locale-en.yml"
 
   verbose-logging: false # Whether you want to have an empty console or not.
@@ -27,7 +29,7 @@ crate-settings:
     log-to-console: false # Whether you want to log to console or not.
   preview-menu:
     toggle: true # Whether you want /crates to open a menu or not.
-    name: "&b&lCrazy &4&lCrates" # The title of the /crates menu.
+    name: "<purple>Crazy Crates</purple>" # The title of the /crates menu.
     size: 45 # The size of the /crates menu.
   # Whether you want crates to knock you back if you have no keys.
   #
@@ -66,19 +68,19 @@ gui-settings:
   buttons:
     menu:
       item: 'COMPASS' # The material of the Menu Button.
-      name: '&d&l>> &c&lMenu &d&l<<' # The name of the Menu Button.
+      name: '<purple>»</purple> <red>Menu</red> <purple>«</purple>' # The name of the Menu Button.
       lore: # The lore of the Menu Button.
-        - '&7Return to the menu.'
+        - '<gray>Return to the menu.</gray>'
     next:
       item: 'FEATHER' # The material of the Next Button.
-      name: '&6&lNext >>' # The name of the Next Button.
+      name: '<gold>Next</gold> <gray>»</gray>' # The name of the Next Button.
       lore: # The lore of the Next Button.
-        - '&7&lPage: &b<page>'
+        - '<gray>Page:</gray> <blue>%page%</blue>'
     back:
       item: 'FEATHER' # The material of the Back Button.
-      name: '&6&l<< Back' # The name of the Back Button.
+      name: '<gray>«</gray> <gold>Back</gold>' # The name of the Back Button.
       lore: # The lore of the Back Button.
-        - '&7&lPage: &b<page>'
+        - '<gray>Page:</gray> <blue>%page%</blue>'
   filler-items:
     # Whether to fill the gui with an item.
     #

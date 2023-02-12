@@ -22,6 +22,8 @@ import java.util.List;
             
             Report Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
             Request Features/Support: https://github.com/orgs/Crazy-Crew/discussions
+            
+            Everything supports gradients!
             """)
 public class Config extends FileExtension {
 
@@ -74,7 +76,7 @@ public class Config extends FileExtension {
     public static boolean PREVIEW_MENU_TOGGLE = true;
     @Key("crate-settings.preview-menu.name")
     @Comment("The title of the /crates menu.")
-    public static String PREVIEW_MENU_NAME = "&d&lCrazy &5&lCrates";
+    public static String PREVIEW_MENU_NAME = "<purple>Crazy Crates</purple>";
     @Key("crate-settings.preview-menu.size")
     @Comment("The size of the /crates menu.")
     public static int PREVIEW_MENU_SIZE = 45;
@@ -155,11 +157,11 @@ public class Config extends FileExtension {
     public static String MENU_BUTTON_ITEM = "COMPASS";
     @Key("gui-settings.buttons.menu.name")
     @Comment("The name of the Menu Button.")
-    public static String MENU_BUTTON_NAME = "&d&l>> &c&lMenu &d&l<<";
+    public static String MENU_BUTTON_NAME = "<purple>»</purple> <red>Menu</red> <purple>«</purple>";
     @Key("gui-settings.buttons.menu.lore")
     @Comment("The lore of the Menu Button.")
     public static List<String> MENU_BUTTON_LORE = new ArrayList<>() {{
-        add("&7Return to the menu.");
+        add("<gray>Return to the menu.</gray>");
     }};
 
     @Key("gui-settings.buttons.next.item")
@@ -167,11 +169,11 @@ public class Config extends FileExtension {
     public static String NEXT_BUTTON_ITEM = "FEATHER";
     @Key("gui-settings.buttons.next.name")
     @Comment("The name of the Next Button.")
-    public static String NEXT_BUTTON_NAME = "&6&lNext >>";
+    public static String NEXT_BUTTON_NAME = "<gold>Next</gold> <gray>»</gray>";
     @Key("gui-settings.buttons.next.lore")
     @Comment("The lore of the Next Button.")
     public static List<String> NEXT_BUTTON_LORE = new ArrayList<>() {{
-        add("&7&lPage: &b<page>");
+        add("<gray>Page:</gray> <blue>%page%</blue>");
     }};
 
     @Key("gui-settings.buttons.back.item")
@@ -179,11 +181,11 @@ public class Config extends FileExtension {
     public static String BACK_BUTTON_ITEM = "FEATHER";
     @Key("gui-settings.buttons.back.name")
     @Comment("The name of the Back Button.")
-    public static String BACK_BUTTON_NAME = "&6&l<< Back";
+    public static String BACK_BUTTON_NAME = "<gray>«</gray> <gold>Back</gold>";
     @Key("gui-settings.buttons.back.lore")
     @Comment("The lore of the Back Button.")
     public static List<String> BACK_BUTTON_LORE = new ArrayList<>() {{
-        add("&7&lPage: &b<page>");
+        add("<gray>Page:</gray> <blue>%page%</blue>");
     }};
 
     @Key("gui-settings.filler-items.toggle")
