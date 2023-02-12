@@ -34,6 +34,7 @@ dependencies {
     compileOnly(libs.itemsadder.api)
 
     implementation(libs.triumph.cmds)
+    //implementation(libs.triumph.gui)
 
     implementation(libs.nbt.api)
     implementation(libs.bstats.bukkit)
@@ -106,6 +107,7 @@ tasks {
         //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
         changelog.set(
             """
+                <h3>⚠️ This is a MAJOR release, Please take a backup of your CrazyCrates folder if you need to downgrade. ( I am not responsible if you didn't take one ) ⚠️<h3>
                 <h4>Changes:</h4>
                  <p>Added 1.17.1 support back.</p>
                  <p>Added a feature https://github.com/orgs/Crazy-Crew/discussions/19</p>
