@@ -22,8 +22,7 @@ import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.*;
 import net.dehya.ruby.RubyConfig;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.dehya.ruby.utils.AdventureUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -53,7 +52,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("help")
     @Permission(value = "crazycrates.command.player.help", def = PermissionDefault.TRUE)
     public void onHelp(CommandSender sender) {
-        //sender.sendMessage(Messages.HELP.getMessage());
+        sender.sendMessage(AdventureUtils.parse(Locale.PLAYER_HELP));
     }
 
     @SubCommand("transfer")
@@ -72,15 +71,15 @@ public class CrateBaseCommand extends BaseCommand {
                         crazyManager.takeKeys(amount, sender, crate, KeyType.VIRTUAL_KEY, false);
                         crazyManager.addKeys(amount, player, crate, KeyType.VIRTUAL_KEY);
 
-                        HashMap<String, String> placeholders = new HashMap<>();
+                        //HashMap<String, String> placeholders = new HashMap<>();
 
-                        placeholders.put("%Crate%", crate.getName());
-                        placeholders.put("%Amount%", amount + "");
-                        placeholders.put("%Player%", player.getName());
+                        //placeholders.put("%Crate%", crate.getName());
+                        //placeholders.put("%Amount%", amount + "");
+                        //placeholders.put("%Player%", player.getName());
 
                         //sender.sendMessage(Messages.TRANSFERRED_KEYS.getMessage(placeholders));
 
-                        placeholders.put("%Player%", sender.getName());
+                        //placeholders.put("%Player%", sender.getName());
 
                         //player.sendMessage(Messages.RECEIVED_TRANSFERRED_KEYS.getMessage(placeholders));
 
@@ -100,7 +99,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("admin-help")
     @Permission(value = "crazycrates.command.admin.help", def = PermissionDefault.OP)
     public void onAdminHelp(CommandSender sender) {
-        //sender.sendMessage(Messages.ADMIN_HELP.getMessage());
+        sender.sendMessage(AdventureUtils.parse(Locale.ADMIN_HELP));
     }
 
     @SubCommand("reload")
