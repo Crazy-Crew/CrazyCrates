@@ -45,7 +45,7 @@ public class FireCracker implements CrateManager {
                 if (l == 25) {
                     crazyManager.endCrate(player);
                     // The key type is set to free because the key has already been taken above.
-                    QuickCrate.openCrate(player, loc, crate, KeyType.FREE_KEY, hologramController);
+                    new QuickCrate().openCrate(player, crate, KeyType.FREE_KEY, checkHand);
                 }
             }
         }.runTaskTimer(plugin, 0, 2));

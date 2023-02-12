@@ -1,17 +1,21 @@
 package com.badbones69.crazycrates.api.managers;
 
+import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.enums.types.KeyType;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+
 import java.util.Collections;
 
-public class CosmicCrateManager extends CrateManager {
-    
+public class CosmicCrateManager implements CrateManager {
+
     private final FileConfiguration file;
     private final int totalPrizes;
     private final ItemBuilder mysteryCrate;
     private final ItemBuilder pickedCrate;
-    
+
     public CosmicCrateManager(FileConfiguration file) {
         this.file = file;
         String path = "Crate.Crate-Type-Settings.";
@@ -27,20 +31,25 @@ public class CosmicCrateManager extends CrateManager {
         .setLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("&7You have chosen #%slot%."));
         pickedCrate.getNBTItem().setString("Cosmic-Picked-Crate", "Picked Crate");
     }
-    
+
     public FileConfiguration getFile() {
         return file;
     }
-    
+
     public int getTotalPrizes() {
         return totalPrizes;
     }
-    
+
     public ItemBuilder getMysteryCrate() {
         return new ItemBuilder(mysteryCrate);
     }
-    
+
     public ItemBuilder getPickedCrate() {
         return pickedCrate;
     }
+
+    @Override public void openCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
+
+    }
+
 }
