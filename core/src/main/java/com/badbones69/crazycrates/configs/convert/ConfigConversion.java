@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.utils.adventure.MsgWrapper;
 import net.dehya.ruby.files.FileManager;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 import org.simpleyaml.configuration.implementation.api.QuoteStyle;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -92,11 +91,11 @@ public class ConfigConversion {
 
         final String nextName = secondConfiguration.getString("Settings.Preview.Buttons.Next.Name");
         final String nextItem = secondConfiguration.getString("Settings.Preview.Buttons.Next.Item");
-        //final List<String> nextLore = secondConfiguration.getStringList("Settings.Preview.Buttons.Next.Lore");
+        final List<String> nextLore = secondConfiguration.getStringList("Settings.Preview.Buttons.Next.Lore");
 
         final String backName = secondConfiguration.getString("Settings.Preview.Buttons.Back.Name");
         final String backItem = secondConfiguration.getString("Settings.Preview.Buttons.Back.Item");
-        //final List<String> backLore = secondConfiguration.getStringList("Settings.Preview.Buttons.Back.Lore");
+        final List<String> backLore = secondConfiguration.getStringList("Settings.Preview.Buttons.Back.Lore");
 
         final boolean fillerToggle = secondConfiguration.getBoolean("Settings.Filler.Toggle");
         final String fillerItem = secondConfiguration.getString("Settings.Filler.Item");
@@ -148,9 +147,11 @@ public class ConfigConversion {
 
         configuration.set("gui-settings.buttons.next.item", nextItem);
         configuration.set("gui-settings.buttons.next.name", nextName);
+        configuration.set("gui-settings.buttons.next.lore", nextLore);
 
         configuration.set("gui-settings.buttons.back.item", backItem);
         configuration.set("gui-settings.buttons.back.name", backName);
+        configuration.set("gui-settings.buttons.back.lore", backLore);
 
         configuration.set("gui-settings.customizer", guiCustomizer);
 
