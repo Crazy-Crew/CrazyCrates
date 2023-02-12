@@ -1,8 +1,7 @@
 package com.badbones69.crazycrates.cratetypes;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.managers.CrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.enums.types.KeyType;
@@ -13,12 +12,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Roulette implements Listener {
+public class Roulette implements CrateManager, Listener {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
-
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
-    
     private static void setGlass(Inventory inv) {
         for (int i = 0; i < 27; i++) {
             if (i != 13) {
@@ -27,8 +22,8 @@ public class Roulette implements Listener {
             }
         }
     }
-    
-    public static void openRoulette(Player player, Crate crate, KeyType keyType, boolean checkHand) {
+
+    public void openCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         //Inventory inv = plugin.getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
         //setGlass(inv);
         //inv.setItem(13, crate.pickPrize(player).getDisplayItem());
@@ -42,7 +37,7 @@ public class Roulette implements Listener {
 
         //startRoulette(player, inv, crate);
     }
-    
+
     private static void startRoulette(final Player player, final Inventory inv, final Crate crate) {
         crazyManager.addCrateTask(player, new BukkitRunnable() {
             int time = 1;
@@ -103,4 +98,5 @@ public class Roulette implements Listener {
             }
         }.runTaskTimer(plugin, 2, 2));
     }
+
 }

@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.cratetypes;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.managers.CrateManager;
 import com.badbones69.crazycrates.enums.types.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
@@ -14,15 +15,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CSGO implements Listener {
+public class CSGO implements CrateManager, Listener {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
-
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
-    
     private static void setGlass(Inventory inv) {
         HashMap<Integer, ItemStack> glass = new HashMap<>();
 
@@ -63,8 +61,8 @@ public class CSGO implements Listener {
         inv.setItem(8, item);
         inv.setItem(8 + 18, item);
     }
-    
-    public static void openCSGO(Player player, Crate crate, KeyType keyType, boolean checkHand) {
+
+    public void openCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         //Inventory inv = plugin.getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
         //setGlass(inv);
 
@@ -81,13 +79,13 @@ public class CSGO implements Listener {
             crazyManager.removePlayerFromOpeningList(player);
         }
     }
-    
+
     private static void startCSGO(final Player player, final Inventory inv, Crate crate) {
         crazyManager.addCrateTask(player, new BukkitRunnable() {
             int time = 1;
             int full = 0;
             int open = 0;
-            
+
             @Override
             public void run() {
                 if (full <= 50) { // When Spinning
@@ -137,7 +135,7 @@ public class CSGO implements Listener {
             }
         }.runTaskTimer(plugin, 1, 1));
     }
-    
+
     private static ArrayList<Integer> slowSpin() {
         ArrayList<Integer> slow = new ArrayList<>();
         int full = 120;
@@ -153,7 +151,7 @@ public class CSGO implements Listener {
 
         return slow;
     }
-    
+
     private static void moveItems(Inventory inv, Player player, Crate crate) {
         ArrayList<ItemStack> items = new ArrayList<>();
 
@@ -167,4 +165,5 @@ public class CSGO implements Listener {
             inv.setItem(i + 10, items.get(i));
         }
     }
+
 }

@@ -1,10 +1,9 @@
 package com.badbones69.crazycrates.cratetypes;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
+import com.badbones69.crazycrates.api.managers.CrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.enums.types.KeyType;
@@ -23,33 +22,34 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class QuickCrate implements Listener {
-    
+public class QuickCrate implements CrateManager, Listener {
+
     public static ArrayList<Entity> allRewards = new ArrayList<>();
     public static HashMap<Player, Entity> rewards = new HashMap<>();
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
 
     private static final ChestStateHandler chestStateHandler = plugin.getStarter().getChestStateHandler();
 
-    public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType, HologramController hologramController) {
+    public void openCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
+        Location loc = CrateControlListener.inUse.get(player);
+        HologramController hologramController = crazyManager.getHologramController();
         int keys = switch (keyType) {
             case VIRTUAL_KEY -> crazyManager.getVirtualKeys(player, crate);
             case PHYSICAL_KEY -> crazyManager.getPhysicalKeys(player, crate);
             default -> 1;
         }; // If the key is free it is set to one.
-        
+
         if (player.isSneaking() && keys > 1) {
             int keysUsed = 0;
-            
+
             // give the player the prizes
-            for (;keys > 0; keys--) {
+            for (; keys > 0; keys--) {
                 if (Methods.isInventoryFull(player)) break;
                 if (keysUsed >= crate.getMaxMassOpen()) break;
 
@@ -58,10 +58,10 @@ public class QuickCrate implements Listener {
                 plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 
                 if (prize.useFireworks()) Methods.firework(loc.clone().add(.5, 1, .5));
-                
+
                 keysUsed++;
             }
-            
+
             if (!crazyManager.takeKeys(keysUsed, player, crate, keyType, false)) {
                 Methods.failedToTakeKey(player, crate);
                 CrateControlListener.inUse.remove(player);
@@ -118,7 +118,7 @@ public class QuickCrate implements Listener {
             }.runTaskLater(plugin, 5 * 20));
         }
     }
-    
+
     public static void endQuickCrate(Player player, Location loc, Crate crate, HologramController hologramController, boolean useQuickCrate) {
         if (tasks.containsKey(player)) {
             tasks.get(player).cancel();
@@ -139,13 +139,14 @@ public class QuickCrate implements Listener {
             if (hologramController != null) hologramController.createHologram(loc.getBlock(), crate);
         }
     }
-    
+
     public static void removeAllRewards() {
         allRewards.stream().filter(Objects :: nonNull).forEach(Entity :: remove);
     }
-    
+
     @EventHandler
     public void onHopperPickUp(InventoryPickupItemEvent e) {
         if (crazyManager.isDisplayReward(e.getItem())) e.setCancelled(true);
     }
+
 }

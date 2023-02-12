@@ -1,31 +1,25 @@
 package com.badbones69.crazycrates.cratetypes;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.managers.CrateManager;
 import com.badbones69.crazycrates.enums.types.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Wheel implements Listener {
-    
-    public static Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+public class Wheel implements CrateManager, Listener {
 
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
-    
-    public static void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
+    public static Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
+
+    public void openCrate(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
@@ -58,7 +52,7 @@ public class Wheel implements Listener {
             int slower = 0;
             int open = 0;
             int slow = 0;
-            
+
             @Override
             public void run() {
 
@@ -150,4 +144,5 @@ public class Wheel implements Listener {
 
         return slots;
     }
+
 }

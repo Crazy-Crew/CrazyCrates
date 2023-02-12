@@ -19,6 +19,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -238,7 +239,7 @@ public class QuadCrateManager {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 0,1));
+        }.runTaskTimer(plugin, 0, 1));
 
         crazyManager.addCrateTask(player, new BukkitRunnable() {
             @Override
@@ -261,7 +262,7 @@ public class QuadCrateManager {
                 crateLocations.forEach(location -> quadCrateChests.get(location).update(true, false));
 
                 // Remove displayed rewards.
-                displayedRewards.forEach(Entity::remove);
+                displayedRewards.forEach(Entity :: remove);
 
                 // Teleport player to last location.
                 player.teleport(lastLocation);
@@ -294,7 +295,7 @@ public class QuadCrateManager {
     public void endCrateForce(boolean removeForce) {
         oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
         crateLocations.forEach(location -> quadCrateChests.get(location).update(true, false));
-        displayedRewards.forEach(Entity::remove);
+        displayedRewards.forEach(Entity :: remove);
         player.teleport(lastLocation);
 
         if (removeForce) {
@@ -323,10 +324,10 @@ public class QuadCrateManager {
      */
     private List<Color> getColors() {
         return Arrays.asList(
-                Color.AQUA, Color.BLACK, Color.BLUE, Color.FUCHSIA, Color.GRAY,
-                Color.GREEN, Color.LIME, Color.MAROON, Color.NAVY, Color.OLIVE,
-                Color.ORANGE, Color.PURPLE, Color.RED, Color.SILVER, Color.TEAL,
-                Color.WHITE, Color.YELLOW);
+        Color.AQUA, Color.BLACK, Color.BLUE, Color.FUCHSIA, Color.GRAY,
+        Color.GREEN, Color.LIME, Color.MAROON, Color.NAVY, Color.OLIVE,
+        Color.ORANGE, Color.PURPLE, Color.RED, Color.SILVER, Color.TEAL,
+        Color.WHITE, Color.YELLOW);
     }
 
     /**
@@ -420,4 +421,5 @@ public class QuadCrateManager {
 
         return true;
     }
+
 }

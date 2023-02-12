@@ -26,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+
 import java.util.Random;
 
 /**
@@ -166,4 +167,5 @@ public class QuadCrate implements Listener {
 
         if (sessionManager.inSession(player)) sessionManager.getSession(player).endCrate();
     }
+
 }

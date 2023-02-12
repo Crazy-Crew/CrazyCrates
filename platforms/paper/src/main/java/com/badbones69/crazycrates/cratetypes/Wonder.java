@@ -1,8 +1,7 @@
 package com.badbones69.crazycrates.cratetypes;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
-import com.badbones69.crazycrates.api.CrazyManager;
+import com.badbones69.crazycrates.api.managers.CrateManager;
 import com.badbones69.crazycrates.enums.types.KeyType;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -14,15 +13,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.ArrayList;
 
-public class Wonder implements Listener {
+public class Wonder implements CrateManager, Listener {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
-
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
-    
-    public static void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
+    public void openCrate(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
@@ -47,7 +43,7 @@ public class Wonder implements Listener {
             int slot2 = 44;
             final ArrayList<Integer> Slots = new ArrayList<>();
             Prize prize = null;
-            
+
             @Override
             public void run() {
                 if (timer >= 2 && fulltime <= 65) {
@@ -97,4 +93,5 @@ public class Wonder implements Listener {
             }
         }.runTaskTimer(plugin, 0, 2));
     }
+
 }

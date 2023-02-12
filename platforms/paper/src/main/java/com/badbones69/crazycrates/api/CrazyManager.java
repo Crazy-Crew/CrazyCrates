@@ -15,7 +15,6 @@ import com.badbones69.crazycrates.cratetypes.*;
 import com.badbones69.crazycrates.enums.types.CrateType;
 import com.badbones69.crazycrates.enums.types.KeyType;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
-import com.badbones69.crazycrates.listeners.MenuListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
 import com.badbones69.crazycrates.objects.CrateHologram;
 import com.badbones69.crazycrates.quadcrates.CrateSchematic;
@@ -37,9 +36,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
+
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class CrazyManager {
@@ -124,7 +125,7 @@ public class CrazyManager {
                 ArrayList<Prize> prizes = new ArrayList<>();
                 String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
                 ArrayList<Tier> tiers = new ArrayList<>();
-                int maxMassOpen =  file.contains("Crate.Max-Mass-Open") ? Integer.parseInt(file.getString("Crate.Max-Mass-Open")) : 10;
+                int maxMassOpen = file.contains("Crate.Max-Mass-Open") ? Integer.parseInt(file.getString("Crate.Max-Mass-Open")) : 10;
 
                 if (file.contains("Crate.Tiers") && file.getConfigurationSection("Crate.Tiers") != null) {
                     for (String tier : file.getConfigurationSection("Crate.Tiers").getKeys(false)) {
@@ -153,10 +154,10 @@ public class CrazyManager {
                     if (file.contains(path + ".Alternative-Prize")) {
                         if (file.getBoolean(path + ".Alternative-Prize.Toggle")) {
                             altPrize = new Prize("Alternative-Prize",
-                                    file.getStringList(path + ".Alternative-Prize.Messages"),
-                                    file.getStringList(path + ".Alternative-Prize.Commands"),
-                                    null, // No editor items
-                                    getItems(file, prize + ".Alternative-Prize"));
+                            file.getStringList(path + ".Alternative-Prize.Messages"),
+                            file.getStringList(path + ".Alternative-Prize.Commands"),
+                            null, // No editor items
+                            getItems(file, prize + ".Alternative-Prize"));
                         }
                     }
 
@@ -169,17 +170,17 @@ public class CrazyManager {
                     }
 
                     prizes.add(new Prize(prize, getDisplayItem(file, prize),
-                            file.getStringList(path + ".Messages"),
-                            file.getStringList(path + ".Commands"),
-                            editorItems,
-                            getItems(file, prize),
-                            crateName,
-                            file.getInt(path + ".Chance", 100),
-                            file.getInt(path + ".MaxRange", 100),
-                            file.getBoolean(path + ".Firework"),
-                            file.getStringList(path + ".BlackListed-Permissions"),
-                            prizeTiers,
-                            altPrize));
+                    file.getStringList(path + ".Messages"),
+                    file.getStringList(path + ".Commands"),
+                    editorItems,
+                    getItems(file, prize),
+                    crateName,
+                    file.getInt(path + ".Chance", 100),
+                    file.getInt(path + ".MaxRange", 100),
+                    file.getBoolean(path + ".Firework"),
+                    file.getStringList(path + ".BlackListed-Permissions"),
+                    prizeTiers,
+                    altPrize));
                 }
 
                 int newPlayersKeys = file.getInt("Crate.StartingKeys");
@@ -348,12 +349,12 @@ public class CrazyManager {
                 //if (Config.PREVIEW_MENU_TOGGLE) MenuListener.openGUI(player);
                 //else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
             }
-            case COSMIC -> Cosmic.openCosmic(player, crate, keyType, checkHand);
-            case CSGO -> CSGO.openCSGO(player, crate, keyType, checkHand);
-            case ROULETTE -> Roulette.openRoulette(player, crate, keyType, checkHand);
-            case WHEEL -> Wheel.startWheel(player, crate, keyType, checkHand);
-            case WONDER -> Wonder.startWonder(player, crate, keyType, checkHand);
-            case WAR -> War.openWarCrate(player, crate, keyType, checkHand);
+            case COSMIC -> new Cosmic().openCrate(player, crate, keyType, checkHand);
+            case CSGO -> new CSGO().openCrate(player, crate, keyType, checkHand);
+            case ROULETTE -> new Roulette().openCrate(player, crate, keyType, checkHand);
+            case WHEEL -> new Wheel().openCrate(player, crate, keyType, checkHand);
+            case WONDER -> new Wonder().openCrate(player, crate, keyType, checkHand);
+            case WAR -> new War().openCrate(player, crate, keyType, checkHand);
             case QUAD_CRATE -> {
                 Location lastLocation = player.getLocation();
                 lastLocation.setPitch(0F);
@@ -376,7 +377,7 @@ public class CrazyManager {
                         return;
                     } else {
                         CrateControlListener.inUse.put(player, location);
-                        FireCracker.startFireCracker(player, crate, keyType, location, hologramController);
+                        new FireCracker().openCrate(player, crate, keyType, checkHand);
                     }
                 }
             }
@@ -392,7 +393,7 @@ public class CrazyManager {
                         return;
                     } else {
                         CrateControlListener.inUse.put(player, location);
-                        QuickCrate.openCrate(player, location, crate, keyType, hologramController);
+                        new QuickCrate().openCrate(player, crate, keyType, checkHand);
                     }
                 }
             }
@@ -1400,4 +1401,5 @@ public class CrazyManager {
             return min;
         }
     }
+
 }
