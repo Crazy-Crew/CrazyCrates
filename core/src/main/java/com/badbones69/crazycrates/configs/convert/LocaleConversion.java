@@ -9,6 +9,7 @@ import org.simpleyaml.configuration.implementation.api.QuoteStyle;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 public class LocaleConversion {
@@ -32,6 +33,9 @@ public class LocaleConversion {
         }
 
         if (yamlConfiguration == null) return;
+
+        yamlConfiguration.options().charset(StandardCharsets.UTF_8);
+        yamlConfiguration.options().quoteStyleDefaults().setDefaultQuoteStyle(QuoteStyle.PLAIN);
 
         // All the values of the old file.
         final String unknownCommand = yamlConfiguration.getString("Messages.Unknown-Command");
@@ -64,6 +68,7 @@ public class LocaleConversion {
 
         if (configuration == null) return;
 
+        configuration.options().charset(StandardCharsets.UTF_8);
         configuration.options().quoteStyleDefaults().setDefaultQuoteStyle(QuoteStyle.PLAIN);
 
         configuration.set("misc.unknown-command", unknownCommand);

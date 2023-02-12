@@ -5,8 +5,11 @@ import com.badbones69.crazycrates.utils.FileUtils;
 import com.badbones69.crazycrates.utils.adventure.MsgWrapper;
 import net.dehya.ruby.files.FileManager;
 import org.simpleyaml.configuration.file.YamlConfiguration;
+import org.simpleyaml.configuration.implementation.api.QuoteStyle;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -50,6 +53,9 @@ public class ConfigConversion {
         }
 
         if (secondConfiguration == null) return;
+
+        secondConfiguration.options().charset(StandardCharsets.UTF_8);
+        secondConfiguration.options().quoteStyleDefaults().setDefaultQuoteStyle(QuoteStyle.PLAIN);
 
         // All the values of the old file.
         final String prefix = secondConfiguration.getString("Settings.Prefix");
@@ -102,6 +108,9 @@ public class ConfigConversion {
         org.simpleyaml.configuration.file.YamlFile configuration = Config.getConfiguration(fileManager);
 
         if (configuration == null) return;
+
+        configuration.options().charset(StandardCharsets.UTF_8);
+        configuration.options().quoteStyleDefaults().setDefaultQuoteStyle(QuoteStyle.PLAIN);
         
         configuration.set("settings.prefix", prefix);
         configuration.set("settings.update-checker", updateChecker);
