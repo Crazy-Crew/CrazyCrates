@@ -6,7 +6,6 @@ import net.dehya.ruby.common.annotations.yaml.BlockType;
 import net.dehya.ruby.common.annotations.yaml.Comment;
 import net.dehya.ruby.common.annotations.yaml.Header;
 import net.dehya.ruby.common.annotations.yaml.Key;
-import net.dehya.ruby.common.annotations.yaml.QuoteStylePlain;
 import net.dehya.ruby.common.enums.FileType;
 import net.dehya.ruby.files.FileExtension;
 import net.dehya.ruby.files.FileManager;
@@ -24,7 +23,6 @@ import java.util.List;
             Report Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
             Request Features/Support: https://github.com/orgs/Crazy-Crew/discussions
             """)
-@QuoteStylePlain
 public class Config extends FileExtension {
 
     @Key("settings.prefix.command")
