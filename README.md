@@ -48,8 +48,8 @@
   </ol>
 </details>
 
-## Downloads
-> https://modrinth.com/plugin/crazycrates
+## Download Page
+<a href="https://modrinth.com/plugin/crazycrates">![Modrinth](https://raw.githubusercontent.com/intergrav/devins-badges/v3/assets/cozy/available/modrinth_64h.png)</a>
 
 ## Beta Builds
 ### Get the latest changes before marked as release.
