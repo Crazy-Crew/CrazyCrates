@@ -3,17 +3,15 @@ plugins {
 }
 
 repositories {
-    repositories {
-        exclusiveContent {
-            forRepository {
-                maven("https://repo.papermc.io/repository/maven-public/")
-            }
+    exclusiveContent {
+        forRepository {
+            maven("https://repo.papermc.io/repository/maven-public/")
+        }
 
-            filter {
-                includeGroup("io.papermc.paper")
-                includeGroup("com.mojang")
-                includeGroup("net.md-5")
-            }
+        filter {
+            includeGroup("io.papermc.paper")
+            includeGroup("com.mojang")
+            includeGroup("net.md-5")
         }
     }
 }

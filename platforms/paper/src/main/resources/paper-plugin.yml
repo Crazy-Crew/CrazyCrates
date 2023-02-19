@@ -1,0 +1,26 @@
+name: CrazyCrates
+main: us.crazycrew.crazycrates.CrazyCrates
+
+version: ${version}
+api-version: '1.19'
+description: ${description}
+
+bootstrapper: us.crazycrew.crazycrates.CrazyCratesBootstrap
+loader: us.crazycrew.crazycrates.CrazyCratesPluginLoader
+
+dependencies:
+  - name: HolographicDisplays
+    required: false
+    bootstrap: false
+  - name: DecentHolograms
+    required: false
+    bootstrap: false
+  - name: CMI
+    required: false
+    bootstrap: false
+  - name: PlaceholderAPI
+    required: false
+    bootstrap: false
+  - name: ItemsAdder
+    required: false
+    bootstrap: false

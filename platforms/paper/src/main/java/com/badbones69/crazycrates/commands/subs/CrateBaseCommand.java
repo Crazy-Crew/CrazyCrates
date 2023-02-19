@@ -106,7 +106,7 @@ public class CrateBaseCommand extends BaseCommand {
     @Permission(value = "crazycrates.command.admin.reload", def = PermissionDefault.OP)
     public void onReload(CommandSender sender) {
         // Save this one first
-        this.plugin.getPaperManager().getPaperFileManager().saveFile(new RubyConfig());
+        this.plugin.getPaperFileManager().saveFile(new RubyConfig());
 
         fileManager.reloadAllFiles();
         fileManager.setup();
@@ -114,8 +114,8 @@ public class CrateBaseCommand extends BaseCommand {
         plugin.cleanFiles();
         crazyManager.loadCrates();
 
-        this.plugin.getPaperManager().getPaperFileManager().saveFile(new Config());
-        this.plugin.getPaperManager().getPaperFileManager().saveFile(new Locale(this.plugin.getPaperManager().getDirectory()));
+        this.plugin.getPaperFileManager().saveFile(new Config());
+        this.plugin.getPaperFileManager().saveFile(new Locale(this.plugin.getPaperRuby().getDirectory()));
     }
 
     @SubCommand("debug")

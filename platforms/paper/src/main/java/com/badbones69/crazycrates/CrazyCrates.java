@@ -34,7 +34,8 @@ import com.badbones69.crazycrates.utils.adventure.MsgWrapper;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.core.message.MessageKey;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
-import net.dehya.ruby.PaperManager;
+import net.dehya.ruby.PaperRuby;
+import net.dehya.ruby.files.PaperFileManager;
 import net.dehya.ruby.registry.RubyLogger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -53,7 +54,7 @@ public class CrazyCrates extends JavaPlugin {
 
     BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
 
-    private final PaperManager paperManager;
+    private final PaperRuby paperRuby;
 
     public CrazyCrates() {
         super();
@@ -61,13 +62,13 @@ public class CrazyCrates extends JavaPlugin {
         // Bind plugin variable on constructor build.
         plugin = this;
 
-        this.paperManager = new PaperManager(this, true);
+        this.paperRuby = new PaperRuby(this);
 
         File locale = new File(this.getDataFolder() + "/locale");
 
         if (locale.mkdirs()) getLogger().info("Created " + locale.getName() + " because it did not exist.");
 
-        this.paperManager.getPaperFileManager().addFile(new Config());
+        this.paperRuby.getPaperFileManager().addFile(new Config());
 
         starter = new Starter();
     }
@@ -84,17 +85,17 @@ public class CrazyCrates extends JavaPlugin {
         ConfigConversion configConversion = new ConfigConversion();
 
         // Convert config if need be.
-        configConversion.convertConfig(this.paperManager.getPaperFileManager(), getPaperManager().getDirectory());
+        configConversion.convertConfig(this.getPaperFileManager(), this.paperRuby.getDirectory());
 
         // Create locale version instance.
         LocaleConversion localeConversion = new LocaleConversion();
 
         // Convert messages if need be.
-        localeConversion.convertMessages(this.paperManager.getPaperFileManager(), getPaperManager().getDirectory());
+        localeConversion.convertMessages(this.getPaperFileManager(), this.paperRuby.getDirectory());
 
         // Reload/create the config/locale
-        Config.reload(this.paperManager.getPaperFileManager());
-        Locale.reload(this.paperManager.getPaperFileManager(), this.paperManager.getDirectory());
+        Config.reload(this.getPaperFileManager());
+        Locale.reload(this.getPaperFileManager(), this.paperRuby.getDirectory());
     }
 
     @Override
@@ -287,8 +288,12 @@ public class CrazyCrates extends JavaPlugin {
         return plugin;
     }
 
-    public PaperManager getPaperManager() {
-        return this.paperManager;
+    public PaperRuby getPaperRuby() {
+        return this.paperRuby;
+    }
+
+    public PaperFileManager getPaperFileManager() {
+        return this.paperRuby.getPaperFileManager();
     }
 
     public Starter getStarter() {

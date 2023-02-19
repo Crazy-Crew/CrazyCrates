@@ -20,6 +20,7 @@ repositories {
     maven("https://repo.crazycrew.us/libraries/")
 
     mavenCentral()
+
     mavenLocal()
 }
 

@@ -1,21 +1,14 @@
 package com.badbones69.crazycrates.commands.subs.player;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.configs.Locale;
-import com.badbones69.crazycrates.utils.ColorUtils;
-import com.google.common.collect.Lists;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 @Command(value = "keys", alias = {"key"})
 public class BaseKeyCommand extends BaseCommand {

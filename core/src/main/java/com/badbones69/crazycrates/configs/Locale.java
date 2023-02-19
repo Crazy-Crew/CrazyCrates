@@ -188,21 +188,14 @@ public class Locale extends FileExtension {
     @Key("command.keys.personal.no-virtual-keys")
     public static String KEYS_PERSONAL_NO_VIRTUAL_KEYS = "<dark_gray>(</dark_gray><red>!<dark_gray>)</dark_gray> <gray>You currently do not have any virtual keys.</gray>";
 
-    @Key("command.keys.personal.virtual-keys-header")
-    public static String KEYS_PERSONAL_VIRTUAL_KEYS_HEADER = """
-            <dark_gray>(</dark_gray><red>!</red><dark_gray>)</dark_gray> <gray>A list of your current amount of keys.</gray>
-            """;
-
     @Key("command.keys.other-player.no-virtual-keys")
     public static String KEYS_OTHER_PLAYER_NO_VIRTUAL_KEYS = "<dark_gray>(</dark_gray><red>!</red><dark_gray>)</dark_gray> <gray>The player</gray> <red>%player%</red> <gray>does not have any keys.</gray>";
 
-    @Key("command.keys.other-player.virtual-keys-header")
-    public static String KEYS_OTHER_PLAYER_VIRTUAL_KEYS_HEADER = """
-            <dark_gray>(</dark_gray><red>!</red><dark_gray>)</dark_gray> <gray>A list of</gray> <red>%player%''s</red> <gray>current amount of keys.</gray>
-            """;
-
     @Key("command.keys.crate-format")
-    public static String CRATE_FORMAT = "%crate% <dark_gray>»»</dark_gray> <gold>%keys% keys.</gold>";
+    public static String CRATE_FORMAT = """
+            <dark_gray>(</dark_gray><red>!</red><dark_gray>)</dark_gray> <gray>A list of <red>%player%''s</red> current amount of keys.</gray>
+            
+            %crate% <dark_gray>»»</dark_gray> <gold>%keys% keys.</gold>""";
 
     @Key("command.player-help")
     public static String PLAYER_HELP = """
