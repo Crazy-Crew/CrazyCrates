@@ -1,18 +1,23 @@
 package com.badbones69.crazycrates.cratetypes;
 
 import com.badbones69.crazycrates.Methods;
+import com.badbones69.crazycrates.api.crateoptions.WheelOptions;
 import com.badbones69.crazycrates.api.managers.CrateManager;
+import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.enums.types.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Wheel implements CrateManager, Listener {
@@ -26,27 +31,28 @@ public class Wheel implements CrateManager, Listener {
             return;
         }
 
-        //final Inventory inv = plugin.getServer().createInventory(null, 54, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        final Inventory inv = plugin.getServer().createInventory(null, 54, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
 
         for (int i = 0; i < 54; i++) {
-            //inv.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+            inv.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
         }
 
         HashMap<Integer, ItemStack> items = new HashMap<>();
 
         for (int i : getBorder()) {
             Prize prize = crate.pickPrize(player);
-            //inv.setItem(i, prize.getDisplayItem());
+            inv.setItem(i, prize.getDisplayItem());
             items.put(i, prize.getDisplayItem());
         }
 
         rewards.put(player, items);
-        //player.openInventory(inv);
+        player.openInventory(inv);
+        ItemBuilder selectorItem = ((WheelOptions) crate.getOptions()).getSelectorItem();
 
         crazyManager.addCrateTask(player, new BukkitRunnable() {
-            final ArrayList<Integer> slots = getBorder();
-            int i = 0;
-            int f = 17;
+            final List<Integer> slots = getBorder();
+            int selectedSlot = 0;
+            int resetSlot = 17;
             int full = 0;
             final int timer = Methods.randomNumber(42, 68);
             int slower = 0;
@@ -56,9 +62,9 @@ public class Wheel implements CrateManager, Listener {
             @Override
             public void run() {
 
-                if (i >= 18) i = 0;
+                if (selectedSlot >= 18) selectedSlot = 0;
 
-                if (f >= 18) f = 0;
+                if (resetSlot >= 18) resetSlot = 0;
 
                 if (full < timer) checkLore();
 
@@ -74,7 +80,7 @@ public class Wheel implements CrateManager, Listener {
                             ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
 
                             for (int slot = 0; slot < 54; slot++) {
-                                //if (!getBorder().contains(slot)) inv.setItem(slot, item);
+                                if (!getBorder().contains(slot)) inv.setItem(slot, item);
                             }
 
                             slow = 0;
@@ -84,11 +90,11 @@ public class Wheel implements CrateManager, Listener {
                     if (full >= (timer + 55 + 47)) {
                         Prize prize = null;
 
-                        if (crazyManager.isInOpeningList(player)) prize = crate.getPrize(rewards.get(player).get(slots.get(f)));
+                        if (crazyManager.isInOpeningList(player)) prize = crate.getPrize(rewards.get(player).get(getResetSlot()));
 
                         Methods.checkPrize(prize, crazyManager, plugin, player, crate);
 
-                        player.closeInventory();
+                        //player.closeInventory();
                         crazyManager.removePlayerFromOpeningList(player);
                         crazyManager.endCrate(player);
                     }
@@ -100,28 +106,43 @@ public class Wheel implements CrateManager, Listener {
                 open++;
 
                 if (open > 5) {
-                    //player.openInventory(inv);
+                    player.openInventory(inv);
                     open = 0;
                 }
             }
 
             private void checkLore() {
-                if (rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
-                    //inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
+                if (rewards.get(player).get(getSelectedSlot()).getItemMeta().hasLore()) {
+                    inv.setItem(getSelectedSlot(), selectorItem.setName(rewards.get(player).get(getSelectedSlot()).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(getSelectedSlot()).getItemMeta().getLore()).build());
                 } else {
-                    //inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
+                    inv.setItem(getSelectedSlot(), selectorItem.setName(rewards.get(player).get(getSelectedSlot()).getItemMeta().getDisplayName()).build());
                 }
-
-                //inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
+                inv.setItem(getResetSlot(), rewards.get(player).get(getResetSlot()));
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
-                i++;
-                f++;
+                selectedSlot++;
+                resetSlot++;
+            }
+
+            /**
+             * Get the slot that has the selector is now on to set it as the selector item.
+             * @return The slot for the selector.
+             */
+            private int getSelectedSlot() {
+                return slots.get(selectedSlot);
+            }
+
+            /**
+             * Get the slot the selector was just on to reset it to the price item.
+             * @return The slot the selector was on before.
+             */
+            private int getResetSlot() {
+                return slots.get(resetSlot);
             }
         }.runTaskTimer(plugin, 1, 1));
     }
 
-    private static ArrayList<Integer> getBorder() {
-        ArrayList<Integer> slots = new ArrayList<>();
+    private static List<Integer> getBorder() {
+        List<Integer> slots = new ArrayList<>();
 
         slots.add(13);
         slots.add(14);

@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.FileManager;
+import com.badbones69.crazycrates.api.crateoptions.WheelOptions;
 import com.badbones69.crazycrates.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.api.managers.CrateManager;
 import com.badbones69.crazycrates.enums.types.CrateType;
@@ -18,14 +19,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+
+import java.util.*;
 
 public class Crate {
-    
+
     private CrateManager manager;
+    private CrateOptions options;
     private final String name;
     private final ItemStack key;
     private final ItemStack keyNoNBT;
@@ -96,15 +96,26 @@ public class Crate {
         this.hologram = hologram != null ? hologram : new CrateHologram();
 
         if (crateType == CrateType.COSMIC) this.manager = new CosmicCrateManager(file);
+
+        if (crateType == CrateType.WHEEL) {
+            this.options = new WheelOptions(file);
+        }
     }
-    
+
     /**
      * Get the crate manager which contains all the settings for that crate type.
      */
     public CrateManager getManager() {
         return manager;
     }
-    
+
+    /**
+     * Get the options for each crate based on their crate type.
+     */
+    public CrateOptions getOptions() {
+        return options;
+    }
+
     /**
      * Set the preview lines for a Crate.
      * @param amount The amount of lines the preview has.
@@ -118,7 +129,7 @@ public class Crate {
 
         this.previewChestLines = finalAmount;
     }
-    
+
     /**
      * Get the amount of lines the preview will show.
      * @return The amount of lines it is set to show.
@@ -126,7 +137,7 @@ public class Crate {
     public int getPreviewChestLines() {
         return this.previewChestLines;
     }
-    
+
     /**
      * Get the max amount of slots in the preview.
      * @return The max number of slots in the preview.
@@ -134,7 +145,7 @@ public class Crate {
     public int getMaxSlots() {
         return maxSlots;
     }
-    
+
     /**
      * Check to see if a player can win a prize from a crate.
      * @param player The player you are checking.
@@ -143,7 +154,7 @@ public class Crate {
     public boolean canWinPrizes(Player player) {
         return pickPrize(player) != null;
     }
-    
+
     /**
      * Picks a random prize based on BlackList Permissions and the Chance System.
      * @param player The player that will be winning the prize.
@@ -223,7 +234,7 @@ public class Crate {
 
         return prizes.get(new Random().nextInt(prizes.size()));
     }
-    
+
     /**
      * Picks a random prize based on BlackList Permissions and the Chance System. Spawns the display item at the location.
      * @param player The player that will be winning the prize.
@@ -237,21 +248,21 @@ public class Crate {
 
         return prize;
     }
-    
+
     /**
      * @return name The name of the crate.
      */
     public String getName() {
         return this.name;
     }
-    
+
     /**
      * @return The name of the crate's preview page.
      */
     public String getPreviewName() {
         return previewName;
     }
-    
+
     /**
      * Check if the inventory the player is in is the preview menu.
      * @param view The inventory view of the inventory.
@@ -260,7 +271,7 @@ public class Crate {
     public boolean isPreview(InventoryView view) {
         return view != null && isPreview(view.getTitle());
     }
-    
+
     /**
      * Check if the inventory the player is in is the preview menu.
      * @param inventoryName The name of the inventory.
@@ -269,7 +280,7 @@ public class Crate {
     public boolean isPreview(String inventoryName) {
         return inventoryName != null && (isInventoryNameSimilar(inventoryName, previewName) || isInventoryNameSimilar(inventoryName, crateInventoryName));
     }
-    
+
     /**
      * Get if the preview is toggled on.
      * @return True if preview is on and false if not.
@@ -277,7 +288,7 @@ public class Crate {
     public boolean isPreviewEnabled() {
         return previewToggle;
     }
-    
+
     /**
      * Get if the preview has an item boarder.
      * @return True if it does and false if not.
@@ -285,7 +296,7 @@ public class Crate {
     public boolean isItemBorderEnabled() {
         return borderToggle;
     }
-    
+
     /**
      * Get the item that shows as the preview boarder if enabled.
      * @return The ItemBuilder for the boarder item.
@@ -293,7 +304,7 @@ public class Crate {
     public ItemBuilder getBoarderItem() {
         return boarderItem;
     }
-    
+
     /**
      * Get the name of the inventory the crate will have.
      * @return The name of the inventory for GUI based crate types.
@@ -301,7 +312,7 @@ public class Crate {
     public String getCrateInventoryName() {
         return crateInventoryName;
     }
-    
+
     /**
      * Check if the inventory the player is in is the crate menu.
      * @param view The inventory view of the inventory.
@@ -310,7 +321,7 @@ public class Crate {
     public boolean isCrateMenu(InventoryView view) {
         return view != null && isCrateMenu(view.getTitle());
     }
-    
+
     /**
      * Check if the inventory the player is in is the crate menu.
      * @param inventoryName The name of the inventory.
@@ -319,7 +330,7 @@ public class Crate {
     public boolean isCrateMenu(String inventoryName) {
         return inventoryName != null && isInventoryNameSimilar(inventoryName, crateInventoryName);
     }
-    
+
     /**
      * Gets the inventory of a preview of prizes for the crate.
      * @return The preview as an Inventory object.
@@ -327,7 +338,7 @@ public class Crate {
     public Inventory getPreview(Player player) {
         return getPreview(player, PreviewListener.getPage(player));
     }
-    
+
     /**
      * Gets the inventory of a preview of prizes for the crate.
      * @return The preview as an Inventory object.
@@ -348,7 +359,7 @@ public class Crate {
 
         return inventory;
     }
-    
+
     /**
      * Gets all the preview items.
      * @return A list of all the preview items.
@@ -357,21 +368,21 @@ public class Crate {
     public ArrayList<ItemStack> getPreviewItems() {
         return (ArrayList<ItemStack>) preview.clone();
     }
-    
+
     /**
      * @return The crate type of the crate.
      */
     public CrateType getCrateType() {
         return this.crateType;
     }
-    
+
     /**
      * @return The key as an item stack.
      */
     public ItemStack getKey() {
         return this.key.clone();
     }
-    
+
     /**
      * @param amount The amount of keys you want.
      * @return The key as an item stack.
@@ -381,14 +392,14 @@ public class Crate {
         key.setAmount(amount);
         return key;
     }
-    
+
     /**
      * @return The key as an item stack with no nbt tags.
      */
     public ItemStack getKeyNoNBT() {
         return this.keyNoNBT.clone();
     }
-    
+
     /**
      * @param amount The amount of keys you want.
      * @return The key as an item stack with no nbt tags.
@@ -398,7 +409,7 @@ public class Crate {
         key.setAmount(amount);
         return key;
     }
-    
+
     /**
      * Get the key that shows in the /cc admin menu.
      * @return The itemstack of the key shown in the /cc admin menu.
@@ -406,21 +417,21 @@ public class Crate {
     public ItemStack getAdminKey() {
         return adminKey;
     }
-    
+
     /**
      * @return The crates file.
      */
     public FileConfiguration getFile() {
         return this.file;
     }
-    
+
     /**
      * @return The prizes in the crate.
      */
     public ArrayList<Prize> getPrizes() {
         return this.prizes;
     }
-    
+
     /**
      * @param name Name of the prize you want.
      * @return The prize you asked for.
@@ -432,35 +443,36 @@ public class Crate {
 
         return null;
     }
-    
+
     public Prize getPrize(ItemStack item) {
         try {
             NBTItem nbt = new NBTItem(item);
 
             if (nbt.hasKey("crazycrate-prize")) return getPrize(nbt.getString("crazycrate-prize"));
-        } catch (Exception ignored) {}
-        
+        } catch (Exception ignored) {
+        }
+
         for (Prize prize : prizes) {
             if (item.isSimilar(prize.getDisplayItem())) return prize;
         }
 
         return null;
     }
-    
+
     /**
      * @return True if new players get keys and false if they do not.
      */
     public boolean doNewPlayersGetKeys() {
         return giveNewPlayerKeys;
     }
-    
+
     /**
      * @return The number of keys new players get.
      */
     public int getNewPlayerKeys() {
         return newPlayerKeys;
     }
-    
+
     /**
      * Add a new editor item to a prize in the Crate.
      * @param prize The prize the item is being added to.
@@ -504,14 +516,14 @@ public class Crate {
         file.set(path + ".Editor-Items", items);
         fileManager.saveFile(fileManager.getFile(name));
     }
-    
+
     /**
      * @return The max page for the preview.
      */
     public int getMaxPage() {
         return maxPage;
     }
-    
+
     /**
      * @return A list of the tiers for the crate. Will be empty if there are none.
      */
@@ -522,24 +534,24 @@ public class Crate {
     /**
      * @return Returns the max amount that players can specify for crate mass open.
      */
-    public int getMaxMassOpen() { return this.maxMassOpen; }
-    
+    public int getMaxMassOpen() {return this.maxMassOpen;}
+
     /**
      * @return A CrateHologram which contains all the info about the hologram the crate uses.
      */
     public CrateHologram getHologram() {
         return hologram;
     }
-    
+
     public int getAbsoluteItemPosition(int baseSlot) {
         return baseSlot + (previewChestLines > 1 ? previewChestLines - 1 : 1) * 9;
     }
-    
+
     private boolean isInventoryNameSimilar(String inventory1, String inventory2) {
         return true;
         //return Methods.removeColor(inventory1).equalsIgnoreCase(Methods.removeColor(inventory2));
     }
-    
+
     /**
      * Loads all the preview items and puts them into a list.
      * @return A list of all the preview items that were created.
@@ -553,7 +565,7 @@ public class Crate {
 
         return items;
     }
-    
+
     private List<ItemStack> getPageItems(int page) {
         List<ItemStack> list = preview;
         List<ItemStack> items = new ArrayList<>();
@@ -579,7 +591,7 @@ public class Crate {
         }
         return items;
     }
-    
+
     private void setDefaultItems(Inventory inventory, Player player) {
         if (borderToggle) {
             List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
@@ -588,7 +600,7 @@ public class Crate {
                 inventory.setItem(i, boarderItem.build());
             }
 
-            borderItems.replaceAll(this::getAbsoluteItemPosition);
+            borderItems.replaceAll(this :: getAbsoluteItemPosition);
 
             for (int i : borderItems) { // Bottom Boarder slots
                 inventory.setItem(i, boarderItem.build());
@@ -611,4 +623,5 @@ public class Crate {
             inventory.setItem(getAbsoluteItemPosition(5), PreviewListener.getNextButton(player));
         }
     }
+
 }

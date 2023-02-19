@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.enums.Permissions;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import com.badbones69.crazycrates.utils.ColorUtils;
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -21,6 +22,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Methods {
 
@@ -28,6 +31,20 @@ public class Methods {
 
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     private static final Random random = new Random();
+
+
+    public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");
+
+    public static String color(String message) {
+        Matcher matcher = HEX_PATTERN.matcher(message);
+        StringBuilder buffer = new StringBuilder();
+
+        while (matcher.find()) {
+            matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group()).toString());
+        }
+
+        return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
+    }
 
     public static void sendCommand(String command) {
         ConsoleCommandSender console = plugin.getServer().getConsoleSender();
@@ -43,13 +60,13 @@ public class Methods {
         return message.toString();
     }
 
-    //public static String sanitizeColor(String msg) {
-    //    return sanitizeFormat(color(msg));
-    //}
+    public static String sanitizeColor(String msg) {
+        return sanitizeFormat(color(msg));
+    }
 
-    //public static String removeColor(String msg) {
-    //    return ChatColor.stripColor(msg);
-    //}
+    public static String removeColor(String msg) {
+        return ChatColor.stripColor(msg);
+    }
 
     public static void firework(Location loc) {
         final Firework fw = loc.getWorld().spawn(loc, Firework.class);
@@ -343,9 +360,9 @@ public class Methods {
         //player.sendMessage(Methods.getPrefix("&cCommon reasons includes not having enough keys."));
     }
 
-    //public static String sanitizeFormat(String string) {
-    //    return TextComponent.toLegacyText(TextComponent.fromLegacyText(string));
-    //}
+    public static String sanitizeFormat(String string) {
+        return TextComponent.toLegacyText(TextComponent.fromLegacyText(string));
+    }
 
     // Thanks ElectronicBoy
     public static HashMap<Integer, ItemStack> removeItemAnySlot(Inventory inventory, ItemStack... items) {
