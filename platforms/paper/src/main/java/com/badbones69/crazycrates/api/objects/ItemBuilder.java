@@ -447,7 +447,8 @@ public class ItemBuilder {
             String[] b = material.split(":");
             material = b[0];
             metaData = b[1];
-            
+            if (Material.matchMaterial(material).name().equals("PLAYER_HEAD")) setPlayerName(metaData);
+
             if (metaData.contains("#")) { // <ID>:<Durability>#<CustomModelData>
                 String modelData = metaData.split("#")[1];
                 if (isInt(modelData)) { // Value is a number.
