@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 dependencyResolutionManagement {
     includeBuild("build-logic")
 
@@ -12,14 +14,12 @@ dependencyResolutionManagement {
 
 pluginManagement {
     repositories {
-        maven("https://papermc.io/repo/repository/maven-public/")
-
         gradlePluginPortal()
         mavenCentral()
     }
 }
 
-val lowerCase = rootProject.name.toLowerCase()
+val lowerCase = rootProject.name.lowercase()
 
 include("core")
 project(":core").name = "$lowerCase-core"
