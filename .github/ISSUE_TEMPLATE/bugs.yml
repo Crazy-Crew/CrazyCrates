@@ -7,7 +7,6 @@ assignees:
 
 body:
   - type: markdown
-    name: Description
     attributes:
       value: |
         Note: Search to see if an issue already exists for the bug you are reporting.
@@ -20,7 +19,6 @@ body:
 
         Spark Profiler > https://spark.lucko.me/download
   - type: input
-    name: Spark link
     attributes:
       label: Spark link
       description: We ask that Spark profilings are shared through a link, not a screenshot. Screenshots inhibit our ability to figure out the real cause of the issue.
@@ -28,7 +26,6 @@ body:
     validations:
       required: false
   - type: dropdown
-    name: Server Version
     id: version
     attributes:
       label: Server Version
@@ -41,8 +38,7 @@ body:
     validations:
       required: true
   - type: dropdown
-    name: Platform Type
-    id: version
+    id: platform
     attributes:
       label: Server Platform
       description: What server platform are you using?
@@ -53,7 +49,6 @@ body:
     validations:
       required: true
   - type: textarea
-    name: Bug Description
     id: bug
     attributes:
       label: Describe the bug
@@ -61,7 +56,6 @@ body:
     validations:
       required: true
   - type: textarea
-    name: Reproduction Steps
     id: steps
     attributes:
       label: Steps to reproduce
@@ -74,7 +68,6 @@ body:
     validations:
       required: true
   - type: textarea
-    name: Additional Context
     id: context
     attributes:
       label: Additional context
@@ -82,7 +75,6 @@ body:
     validations:
       required: false
   - type: checkboxes
-    name: Please agree to the following.
     attributes:
       label: Agreements
       description: Please agree to the following.
