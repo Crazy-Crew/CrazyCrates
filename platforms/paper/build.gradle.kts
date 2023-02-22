@@ -4,7 +4,6 @@ plugins {
     id("crazycrates.paper-plugin")
 
     alias(settings.plugins.minotaur)
-    alias(settings.plugins.run.paper)
 }
 
 repositories {
@@ -67,10 +66,6 @@ tasks {
             "dev.triumphteam.cmd",
             "net.dehya.ruby"
         ).forEach { relocate(it, "$projectGroup.plugin.library.$it") }
-    }
-
-    runServer {
-        minecraftVersion("1.19.3")
     }
 
     modrinth {
