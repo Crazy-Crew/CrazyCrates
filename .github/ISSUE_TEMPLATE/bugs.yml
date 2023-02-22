@@ -1,5 +1,5 @@
 name: "Bug Report"
-about: "Create a report to help us improve the plugin."
+description: "Create a report to help us improve the plugin."
 title: "[Bug Report]: "
 labels: ["bug"]
 
