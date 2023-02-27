@@ -133,7 +133,8 @@ tasks {
 
 publishing {
     repositories {
-        maven("https://repo.crazycrew.us/$type") {
+        val repo = if (isBeta) "beta" else "releases"
+        maven("https://repo.crazycrew.us/$repo") {
             name = "crazycrew"
             // Used for locally publishing.
             // credentials(PasswordCredentials::class)
@@ -148,7 +149,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = projectGroup
-            artifactId = "${projectName.lowercase()}-${projectDir.name}-api"
+            artifactId = "${projectName.lowercase()}-${projectDir.name}"
             version = finalVersion
 
             from(components["java"])
