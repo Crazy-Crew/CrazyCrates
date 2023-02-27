@@ -1,7 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 dependencyResolutionManagement {
-    includeBuild("build-logic")
+    includeBuild("build-src")
 
     versionCatalogs {
         create("settings") {
@@ -24,18 +24,13 @@ val lowerCase = rootProject.name.lowercase()
 include("core")
 project(":core").name = "$lowerCase-core"
 
+listOf("platforms").forEach(::includeProject)
+
 listOf("paper").forEach(::includePlatform)
 
 fun includeProject(name: String) {
     include(name) {
         this.name = "$lowerCase-$name"
-    }
-}
-
-fun includePlatform(name: String) {
-    include(name) {
-        this.name = "$lowerCase-platform-$name"
-        this.projectDir = file("platforms/$name")
     }
 }
 
@@ -46,10 +41,24 @@ fun includeModule(name: String) {
     }
 }
 
+fun includePlatform(name: String) {
+    include(name) {
+        this.name = "$lowerCase-$name"
+        this.projectDir = file("platforms/$name")
+    }
+}
+
 fun includePlatformModule(name: String, platform: String) {
     include(name) {
         this.name = "$lowerCase-module-$platform-$name"
         this.projectDir = file("modules/$platform/$name")
+    }
+}
+
+fun includeDiscordType(name: String) {
+    include(name) {
+        this.name = "$lowerCase-$name"
+        this.projectDir = file("platforms/discord/$name")
     }
 }
 
