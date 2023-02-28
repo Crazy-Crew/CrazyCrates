@@ -21,8 +21,8 @@ pluginManagement {
 
 val lowerCase = rootProject.name.lowercase()
 
-include("core")
-project(":core").name = "$lowerCase-core"
+include("api")
+project(":api").name = "$lowerCase-api"
 
 listOf("platforms").forEach(::includeProject)
 

@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    api(project(":crazycrates-core"))
+    api(project(":crazycrates-api"))
 
     compileOnly(libs.papermc)
 
