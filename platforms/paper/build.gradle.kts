@@ -149,7 +149,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = projectGroup
-            artifactId = "${projectName.lowercase()}-${projectDir.name}"
+            artifactId = "${projectName.lowercase()}-api"
             version = finalVersion
 
             from(components["java"])
