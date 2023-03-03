@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.listeners;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.configs.Config;
 import com.badbones69.crazycrates.enums.Permissions;
 import com.badbones69.crazycrates.enums.types.CrateType;
 import com.badbones69.crazycrates.enums.types.KeyType;
@@ -111,7 +110,7 @@ public class CrateControlListener implements Listener { // Crate Control
 
                 if (crate.getCrateType() == CrateType.MENU) {
                     //This is to stop players in QuadCrate to not be able to try and open a crate set to menu.
-                    if (!crazyManager.isInOpeningList(player) && Config.PREVIEW_MENU_TOGGLE) MenuListener.openGUI(player);
+                    //if (!crazyManager.isInOpeningList(player) && Config.PREVIEW_MENU_TOGGLE) MenuListener.openGUI(player);
 
                     return;
                 }
@@ -126,12 +125,12 @@ public class CrateControlListener implements Listener { // Crate Control
                     String keyName = crate.getKey().getItemMeta().getDisplayName();
                     keyName = keyName != null ? keyName : crate.getKey().getType().toString();
 
-                    if (crate.getCrateType() != CrateType.CRATE_ON_THE_GO && keyInHand && crazyManager.isKeyFromCrate(key, crate) && Config.PHYSICAL_ACCEPTS_PHYSICAL) {
-                        hasKey = true;
-                        isPhysical = true;
-                    }
+                    //if (crate.getCrateType() != CrateType.CRATE_ON_THE_GO && keyInHand && crazyManager.isKeyFromCrate(key, crate) && Config.PHYSICAL_ACCEPTS_PHYSICAL) {
+                    //    hasKey = true;
+                    //    isPhysical = true;
+                    //}
 
-                    if (Config.PHYSICAL_ACCEPTS_VIRTUAL && crazyManager.getVirtualKeys(player, crate) >= 1) hasKey = true;
+                    //if (Config.PHYSICAL_ACCEPTS_VIRTUAL && crazyManager.getVirtualKeys(player, crate) >= 1) hasKey = true;
 
                     if (hasKey) {
                         // Checks if the player uses the quick crate again.
@@ -167,13 +166,13 @@ public class CrateControlListener implements Listener { // Crate Control
                         crazyManager.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true);
                     } else {
                         if (crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
-                            if (Config.CRATE_KNOCK_BACK) knockBack(player, clickedBlock.getLocation());
+                            //if (Config.CRATE_KNOCK_BACK) knockBack(player, clickedBlock.getLocation());
 
-                            if (Config.KEY_SOUND_TOGGLE) {
-                                Sound sound = Sound.valueOf(Config.KEY_SOUND_NAME);
+                            //if (Config.KEY_SOUND_TOGGLE) {
+                            //    Sound sound = Sound.valueOf(Config.KEY_SOUND_NAME);
 
-                                player.playSound(player.getLocation(), sound, 1f, 1f);
-                            }
+                            //   player.playSound(player.getLocation(), sound, 1f, 1f);
+                            //}
 
                             //player.sendMessage(Messages.NO_KEY.getMessage("%Key%", keyName));
                         }

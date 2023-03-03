@@ -1,15 +1,9 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
-import com.badbones69.crazycrates.configs.Config;
 import com.badbones69.crazycrates.enums.types.CrateType;
-import com.badbones69.crazycrates.enums.types.KeyType;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
-import de.tr7zw.changeme.nbtapi.NBTItem;
-import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +13,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import java.text.NumberFormat;
+import java.util.Collections;
 import java.util.List;
 
 public class MenuListener implements Listener {
@@ -28,18 +23,18 @@ public class MenuListener implements Listener {
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     
     public static void openGUI(Player player) {
-        int size = Config.PREVIEW_MENU_SIZE;
+        //int size = Config.PREVIEW_MENU_SIZE;
         //Inventory inv = plugin.getServer().createInventory(null, size, Methods.sanitizeColor(Config.PREVIEW_MENU_NAME));
 
-        if (Config.FILLER_ITEMS_TOGGLE) {
+        //if (Config.FILLER_ITEMS_TOGGLE) {
             //ItemStack item = new ItemBuilder().setMaterial(Config.FILLER_ITEMS_ITEM).setName(Config.FILLER_ITEMS_NAME).setLore(Config.FILLER_ITEMS_LORE).build();
 
-            for (int i = 0; i < size; i++) {
+            //for (int i = 0; i < size; i++) {
                 //inv.setItem(i, item.clone());
-            }
-        }
+            //}
+        //}
 
-        for (String custom : Config.FILLER_EXTRA_ITEMS) {
+        /*for (String custom : Config.FILLER_EXTRA_ITEMS) {
             int slot = 0;
             ItemBuilder itemBuilder = new ItemBuilder();
             String[] split = custom.split(", ");
@@ -82,7 +77,7 @@ public class MenuListener implements Listener {
 
             slot--;
             //inv.setItem(slot, itemBuilder.build());
-        }
+        }*/
 
         for (Crate crate : crazyManager.getCrates()) {
             FileConfiguration file = crate.getFile();
@@ -92,7 +87,7 @@ public class MenuListener implements Listener {
                     String path = "Crate.";
                     int slot = file.getInt(path + "Slot");
 
-                    if (slot > size) continue;
+                    //if (slot > size) continue;
 
                     slot--;
                     //inv.setItem(slot, new ItemBuilder()
@@ -144,7 +139,7 @@ public class MenuListener implements Listener {
                     ItemStack item = e.getCurrentItem();
 
                     if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
-                        NBTItem nbtItem = new NBTItem(item);
+                        /*NBTItem nbtItem = new NBTItem(item);
 
                         if (nbtItem.hasNBTData() && nbtItem.hasKey("CrazyCrates-Crate")) {
                             Crate crate = crazyManager.getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
@@ -207,7 +202,7 @@ public class MenuListener implements Listener {
 
                                 crazyManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
                             }
-                        }
+                        }*/
                     }
                 }
             //}
@@ -215,6 +210,6 @@ public class MenuListener implements Listener {
     }
     
     private List<String> getDisabledWorlds() {
-        return Config.DISABLED_WORLDS;
+        return Collections.emptyList();
     }
 }

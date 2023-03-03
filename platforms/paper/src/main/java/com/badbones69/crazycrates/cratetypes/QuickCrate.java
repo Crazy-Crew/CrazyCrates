@@ -9,7 +9,6 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.enums.types.KeyType;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -22,7 +21,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -82,9 +80,9 @@ public class QuickCrate implements CrateManager, Listener {
             crazyManager.givePrize(player, prize, crate);
             plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
             ItemStack displayItem = prize.getDisplayItem();
-            NBTItem nbtItem = new NBTItem(displayItem);
-            nbtItem.setBoolean("crazycrates-item", true);
-            displayItem = nbtItem.getItem();
+            //NBTItem nbtItem = new NBTItem(displayItem);
+            //nbtItem.setBoolean("crazycrates-item", true);
+            //displayItem = nbtItem.getItem();
             Item reward;
 
             if (hologramController != null) hologramController.removeHologram(loc.getBlock());

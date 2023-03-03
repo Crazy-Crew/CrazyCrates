@@ -9,7 +9,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.enums.types.KeyType;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -20,7 +19,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -144,7 +142,7 @@ public class Cosmic implements CrateManager, Listener {
                 CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
                 int totalPrizes = manager.getTotalPrizes();
                 int pickedSlot = slot + 1;
-                NBTItem nbtItem = new NBTItem(item);
+                /*NBTItem nbtItem = new NBTItem(item);
 
                 if (nbtItem.hasNBTData()) {
                     if (nbtItem.hasKey("Cosmic-Mystery-Crate")) {
@@ -167,7 +165,7 @@ public class Cosmic implements CrateManager, Listener {
                         glass.put(player, l);
                         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                     }
-                }
+                }*/
 
                 if (glass.get(player).size() >= totalPrizes) {
                     KeyType keyType = crazyManager.getPlayerKeyType(player);

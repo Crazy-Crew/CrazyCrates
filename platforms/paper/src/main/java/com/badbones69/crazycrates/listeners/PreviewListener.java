@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
-import com.badbones69.crazycrates.configs.Config;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,19 +20,19 @@ public class PreviewListener implements Listener {
     private static ItemBuilder backButton;
 
     public static void loadButtons() {
-        menuButton = new ItemBuilder()
-        .setMaterial(Config.MENU_BUTTON_ITEM)
-        .setName(Config.MENU_BUTTON_NAME)
-        .setLore(Config.MENU_BUTTON_LORE)
-        .build();
-        nextButton = new ItemBuilder()
-        .setMaterial(Config.NEXT_BUTTON_ITEM)
-        .setName(Config.NEXT_BUTTON_NAME)
-        .setLore(Config.NEXT_BUTTON_LORE);
-        backButton = new ItemBuilder()
-        .setMaterial(Config.BACK_BUTTON_ITEM)
-        .setName(Config.BACK_BUTTON_NAME)
-        .setLore(Config.BACK_BUTTON_LORE);
+        //menuButton = new ItemBuilder()
+        //.setMaterial(Config.MENU_BUTTON_ITEM)
+        //.setName(Config.MENU_BUTTON_NAME)
+        //.setLore(Config.MENU_BUTTON_LORE)
+        //.build();
+        //nextButton = new ItemBuilder()
+        //.setMaterial(Config.NEXT_BUTTON_ITEM)
+        //.setName(Config.NEXT_BUTTON_NAME)
+        //.setLore(Config.NEXT_BUTTON_LORE);
+        //backButton = new ItemBuilder()
+        //.setMaterial(Config.BACK_BUTTON_ITEM)
+        //.setName(Config.BACK_BUTTON_NAME)
+        //.setLore(Config.BACK_BUTTON_LORE);
     }
     
     public static void openNewPreview(Player player, Crate crate) {

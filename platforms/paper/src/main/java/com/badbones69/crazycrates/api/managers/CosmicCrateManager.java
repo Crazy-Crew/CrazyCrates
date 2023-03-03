@@ -24,12 +24,12 @@ public class CosmicCrateManager implements CrateManager {
         .setMaterial(file.getString(path + "Mystery-Crate.Item", "CHEST"))
         .setName(file.getString(path + "Mystery-Crate.Name", "&f&l???"))
         .setLore(file.contains(path + "Mystery-Crate.Lore") ? file.getStringList(path + "Mystery-Crate.Lore") : Collections.singletonList("&7You may choose 4 crates."));
-        mysteryCrate.getNBTItem().setString("Cosmic-Mystery-Crate", "Mystery Crate");
+        //mysteryCrate.getNBTItem().setString("Cosmic-Mystery-Crate", "Mystery Crate");
         pickedCrate = new ItemBuilder()
         .setMaterial(file.getString(path + "Picked-Crate.Item", Material.GLASS_PANE.toString()))
         .setName(file.getString(path + "Picked-Crate.Name", "&f&l???"))
         .setLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("&7You have chosen #%slot%."));
-        pickedCrate.getNBTItem().setString("Cosmic-Picked-Crate", "Picked Crate");
+        //pickedCrate.getNBTItem().setString("Cosmic-Picked-Crate", "Picked Crate");
     }
 
     public FileConfiguration getFile() {

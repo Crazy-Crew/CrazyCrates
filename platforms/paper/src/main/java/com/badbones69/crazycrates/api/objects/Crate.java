@@ -10,7 +10,6 @@ import com.badbones69.crazycrates.enums.types.CrateType;
 import com.badbones69.crazycrates.listeners.PreviewListener;
 import com.badbones69.crazycrates.objects.CrateHologram;
 import com.badbones69.crazycrates.utils.ColorUtils;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,7 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-
 import java.util.*;
 
 public class Crate {
@@ -446,11 +444,10 @@ public class Crate {
 
     public Prize getPrize(ItemStack item) {
         try {
-            NBTItem nbt = new NBTItem(item);
+            //NBTItem nbt = new NBTItem(item);
 
-            if (nbt.hasKey("crazycrate-prize")) return getPrize(nbt.getString("crazycrate-prize"));
-        } catch (Exception ignored) {
-        }
+            //if (nbt.hasKey("crazycrate-prize")) return getPrize(nbt.getString("crazycrate-prize"));
+        } catch (Exception ignored) {}
 
         for (Prize prize : prizes) {
             if (item.isSimilar(prize.getDisplayItem())) return prize;
@@ -490,11 +487,11 @@ public class Crate {
                 if (item.getItemMeta().hasLore()) file.set(path + ".Lore", item.getItemMeta().getLore());
             }
 
-            NBTItem nbtItem = new NBTItem(item);
+            //NBTItem nbtItem = new NBTItem(item);
 
-            if (nbtItem.hasNBTData()) {
-                if (nbtItem.hasKey("Unbreakable") && nbtItem.getBoolean("Unbreakable")) file.set(path + ".Unbreakable", true);
-            }
+            //if (nbtItem.hasNBTData()) {
+            //    if (nbtItem.hasKey("Unbreakable") && nbtItem.getBoolean("Unbreakable")) file.set(path + ".Unbreakable", true);
+            //}
 
             List<String> enchantments = new ArrayList<>();
 

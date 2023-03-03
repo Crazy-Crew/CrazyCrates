@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.commands.subs;
 
+/*
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.CrazyManager;
@@ -634,3 +635,4 @@ public class CrateBaseCommand extends BaseCommand {
         //sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", crateName));
     }
 }
+ */

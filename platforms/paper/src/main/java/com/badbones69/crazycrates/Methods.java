@@ -8,7 +8,6 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.enums.Permissions;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import com.badbones69.crazycrates.utils.ColorUtils;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -152,10 +151,11 @@ public class Methods {
     }
 
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
-        NBTItem nbtItem = new NBTItem(itemStack);
-        return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
-                itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
-                isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
+        //NBTItem nbtItem = new NBTItem(itemStack);
+        return true;
+        //return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
+        //        itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
+        //        isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
     }
 
     private static boolean isSimilarCustom(ItemStack one, ItemStack two) {
@@ -208,13 +208,14 @@ public class Methods {
 
     private static ItemStack stripNBT(ItemStack item) {
         try {
-            NBTItem nbtItem = new NBTItem(item.clone());
+            //NBTItem nbtItem = new NBTItem(item.clone());
 
-            if (nbtItem.hasNBTData()) {
-                if (nbtItem.hasTag("CrazyCrates-Crate")) nbtItem.removeKey("CrazyCrates-Crate");
-            }
+            //if (nbtItem.hasNBTData()) {
+                //if (nbtItem.hasTag("CrazyCrates-Crate")) nbtItem.removeKey("CrazyCrates-Crate");
+            //}
 
-            return nbtItem.getItem();
+            //return nbtItem.getItem();
+            return item;
         } catch (Exception e) {
             return item;
         }

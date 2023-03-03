@@ -23,5 +23,4 @@ public class WheelOptions implements CrateOptions {
     public ItemBuilder getSelectorItem() {
         return new ItemBuilder(selectorItem);
     }
-
 }

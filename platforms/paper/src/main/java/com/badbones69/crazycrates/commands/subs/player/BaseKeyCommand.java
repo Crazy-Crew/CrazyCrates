@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.commands.subs.player;
 
+/*
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.CrazyManager;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -67,3 +68,4 @@ public class BaseKeyCommand extends BaseCommand {
         //sender.sendMessage(subHeader);
     }
 }
+ */

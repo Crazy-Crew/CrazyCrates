@@ -2,13 +2,6 @@ package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.managers.quadcrates.SessionManager;
-import com.badbones69.crazycrates.api.objects.CrateLocation;
-import com.badbones69.crazycrates.commands.subs.CrateBaseCommand;
-import com.badbones69.crazycrates.commands.subs.player.BaseKeyCommand;
-import com.badbones69.crazycrates.configs.Config;
-import com.badbones69.crazycrates.configs.Locale;
-import com.badbones69.crazycrates.configs.convert.ConfigConversion;
-import com.badbones69.crazycrates.configs.convert.LocaleConversion;
 import com.badbones69.crazycrates.cratetypes.CSGO;
 import com.badbones69.crazycrates.cratetypes.Cosmic;
 import com.badbones69.crazycrates.cratetypes.CrateOnTheGo;
@@ -26,24 +19,12 @@ import com.badbones69.crazycrates.listeners.MenuListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.listeners.PreviewListener;
 import com.badbones69.crazycrates.listeners.tasks.PlayerKeyTask;
-import com.badbones69.crazycrates.support.MetricsHandler;
 import com.badbones69.crazycrates.support.libraries.PluginSupport;
 import com.badbones69.crazycrates.support.libraries.UpdateChecker;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
-import com.badbones69.crazycrates.utils.adventure.MsgWrapper;
-import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
-import dev.triumphteam.cmd.core.message.MessageKey;
-import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
-import net.dehya.ruby.PaperRuby;
-import net.dehya.ruby.files.PaperFileManager;
-import net.dehya.ruby.registry.RubyLogger;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CrazyCrates extends JavaPlugin {
@@ -52,9 +33,9 @@ public class CrazyCrates extends JavaPlugin {
 
     private final Starter starter;
 
-    BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
+    //BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
 
-    private final PaperRuby paperRuby;
+    //private final PaperRuby paperRuby;
 
     public CrazyCrates() {
         super();
@@ -62,40 +43,40 @@ public class CrazyCrates extends JavaPlugin {
         // Bind plugin variable on constructor build.
         plugin = this;
 
-        this.paperRuby = new PaperRuby(this);
+        //this.paperRuby = new PaperRuby(this);
 
         File locale = new File(this.getDataFolder() + "/locale");
 
         if (locale.mkdirs()) getLogger().info("Created " + locale.getName() + " because it did not exist.");
 
-        this.paperRuby.getPaperFileManager().addFile(new Config());
+        //this.paperRuby.getPaperFileManager().addFile(new Config());
 
         starter = new Starter();
     }
 
-    @Override
-    @NotNull
-    public java.util.logging.Logger getLogger() {
-        return RubyLogger.getLogger();
-    }
+    //@Override
+    //@NotNull
+    //public java.util.logging.Logger getLogger() {
+        //return RubyLogger.getLogger();
+    //}
 
     @Override
     public void onLoad() {
         // Create config version instance.
-        ConfigConversion configConversion = new ConfigConversion();
+        //ConfigConversion configConversion = new ConfigConversion();
 
         // Convert config if need be.
-        configConversion.convertConfig(this.getPaperFileManager(), this.paperRuby.getDirectory());
+        //configConversion.convertConfig(this.getPaperFileManager(), this.paperRuby.getDirectory());
 
         // Create locale version instance.
-        LocaleConversion localeConversion = new LocaleConversion();
+        //LocaleConversion localeConversion = new LocaleConversion();
 
         // Convert messages if need be.
-        localeConversion.convertMessages(this.getPaperFileManager(), this.paperRuby.getDirectory());
+        //localeConversion.convertMessages(this.getPaperFileManager(), this.paperRuby.getDirectory());
 
         // Reload/create the config/locale
-        Config.reload(this.getPaperFileManager());
-        Locale.reload(this.getPaperFileManager(), this.paperRuby.getDirectory());
+        //Config.reload(this.getPaperFileManager());
+        //Locale.reload(this.getPaperFileManager(), this.paperRuby.getDirectory());
     }
 
     @Override
@@ -120,11 +101,11 @@ public class CrazyCrates extends JavaPlugin {
         // Clean files if we have to.
         cleanFiles();
 
-        if (Config.TOGGLE_METRICS) {
-            MetricsHandler metricsHandler = new MetricsHandler();
+        //if (Config.TOGGLE_METRICS) {
+        //    MetricsHandler metricsHandler = new MetricsHandler();
 
-            metricsHandler.start();
-        }
+        //    metricsHandler.start();
+        //}
 
         checkUpdate();
 
@@ -132,26 +113,26 @@ public class CrazyCrates extends JavaPlugin {
     }
 
     private void checkUpdate() {
-        boolean updaterEnabled = Config.UPDATE_CHECKER;
+        //boolean updaterEnabled = Config.UPDATE_CHECKER;
 
-        if (!updaterEnabled) return;
+        //if (!updaterEnabled) return;
 
         getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             UpdateChecker updateChecker = new UpdateChecker(17599);
 
             try {
                 if (updateChecker.hasUpdate() && !getDescription().getVersion().contains("Beta")) {
-                    MsgWrapper.send("<#E0115F>CrazyCrates has a new update available! New version: <#11e092>" + updateChecker.getNewVersion());
-                    MsgWrapper.send("<#E0115F>Current Version: <#11e092>v" + getDescription().getVersion());
-                    MsgWrapper.send("<#E0115F>Download: <#11e092>" + updateChecker.getResourcePage());
+                    //MsgWrapper.send("<#E0115F>CrazyCrates has a new update available! New version: <#11e092>" + updateChecker.getNewVersion());
+                    //MsgWrapper.send("<#E0115F>Current Version: <#11e092>v" + getDescription().getVersion());
+                    //MsgWrapper.send("<#E0115F>Download: <#11e092>" + updateChecker.getResourcePage());
 
                     return;
                 }
 
-                MsgWrapper.send("<#E0115F>Plugin is up to date! - <#11e092>" + updateChecker.getNewVersion());
+                //MsgWrapper.send("<#E0115F>Plugin is up to date! - <#11e092>" + updateChecker.getNewVersion());
             } catch (Exception exception) {
-                MsgWrapper.send("<#E0115F>Could not check for updates! Perhaps the call failed or you are using a snapshot build:");
-                MsgWrapper.send("<#E0115F>You can turn off the update checker in config.yml if on a snapshot build.");
+                //MsgWrapper.send("<#E0115F>Could not check for updates! Perhaps the call failed or you are using a snapshot build:");
+                //MsgWrapper.send("<#E0115F>You can turn off the update checker in config.yml if on a snapshot build.");
             }
         });
     }
@@ -201,41 +182,41 @@ public class CrazyCrates extends JavaPlugin {
 
         //manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage()));
 
-        manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
-            String command = context.getCommand();
-            String subCommand = context.getSubCommand();
+        //manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
+        //    String command = context.getCommand();
+        //    String subCommand = context.getSubCommand();
 
-            String commandOrder = "/" + command + " " + subCommand + " ";
+        //    String commandOrder = "/" + command + " " + subCommand + " ";
 
-            String correctUsage = null;
+        //    String correctUsage = null;
 
-            switch (command) {
-                case "crates" -> correctUsage = getString(subCommand, commandOrder);
-                case "keys" -> {
-                    if (subCommand.equals("view")) correctUsage = "/keys " + subCommand;
-                }
-            }
-
-            //if (correctUsage != null) sender.sendMessage(Messages.CORRECT_USAGE.getMessage().replace("%usage%", correctUsage));
-        });
-
-        manager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
-            String command = context.getCommand();
-            String subCommand = context.getSubCommand();
-
-            String commandOrder = "/" + command + " " + subCommand + " ";
-
-            String correctUsage = null;
-
-            switch (command) {
-                case "crates" -> correctUsage = getString(subCommand, commandOrder);
-                case "keys" -> {
-                    if (subCommand.equals("view")) correctUsage = "/keys " + subCommand + " <player-name>";
-                }
-            }
+        //    switch (command) {
+        //        case "crates" -> correctUsage = getString(subCommand, commandOrder);
+        //        case "keys" -> {
+        //            if (subCommand.equals("view")) correctUsage = "/keys " + subCommand;
+        //        }
+        //    }
 
             //if (correctUsage != null) sender.sendMessage(Messages.CORRECT_USAGE.getMessage().replace("%usage%", correctUsage));
-        });
+        //});
+
+        //manager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
+        //    String command = context.getCommand();
+        //    String subCommand = context.getSubCommand();
+
+        //    String commandOrder = "/" + command + " " + subCommand + " ";
+
+        //    String correctUsage = null;
+
+        //    switch (command) {
+        //        case "crates" -> correctUsage = getString(subCommand, commandOrder);
+        //        case "keys" -> {
+        //            if (subCommand.equals("view")) correctUsage = "/keys " + subCommand + " <player-name>";
+        //        }
+        //    }
+
+            //if (correctUsage != null) sender.sendMessage(Messages.CORRECT_USAGE.getMessage().replace("%usage%", correctUsage));
+        //});
 
         //manager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> sender.sendMessage(Messages.NOT_ONLINE.getMessage().replace("%player%", context.getTypedArgument())));
 
@@ -245,32 +226,32 @@ public class CrazyCrates extends JavaPlugin {
 
         //manager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage()));
 
-        manager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> starter.getFileManager().getAllCratesNames(plugin).stream().toList());
+        //manager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> starter.getFileManager().getAllCratesNames(plugin).stream().toList());
 
-        manager.registerSuggestion(SuggestionKey.of("key-types"), (sender, context) -> KEYS);
+        //manager.registerSuggestion(SuggestionKey.of("key-types"), (sender, context) -> KEYS);
 
-        manager.registerSuggestion(SuggestionKey.of("online-players"), (sender, context) -> getServer().getOnlinePlayers().stream().map(Player::getName).toList());
+        //manager.registerSuggestion(SuggestionKey.of("online-players"), (sender, context) -> getServer().getOnlinePlayers().stream().map(Player::getName).toList());
 
-        manager.registerSuggestion(SuggestionKey.of("locations"), (sender, context) -> starter.getCrazyManager().getCrateLocations().stream().map(CrateLocation::getID).toList());
+        //manager.registerSuggestion(SuggestionKey.of("locations"), (sender, context) -> starter.getCrazyManager().getCrateLocations().stream().map(CrateLocation::getID).toList());
 
-        manager.registerSuggestion(SuggestionKey.of("prizes"), (sender, context) -> {
-            List<String> numbers = new ArrayList<>();
+        //manager.registerSuggestion(SuggestionKey.of("prizes"), (sender, context) -> {
+        //    List<String> numbers = new ArrayList<>();
 
-            starter.getCrazyManager().getCrateFromName(context.getArgs().get(0)).getPrizes().forEach(prize -> numbers.add(prize.getName()));
+        //    starter.getCrazyManager().getCrateFromName(context.getArgs().get(0)).getPrizes().forEach(prize -> numbers.add(prize.getName()));
 
-            return numbers;
-        });
+        //    return numbers;
+        //});
 
-        manager.registerSuggestion(SuggestionKey.of("numbers"), (sender, context) -> {
-            List<String> numbers = new ArrayList<>();
+        //manager.registerSuggestion(SuggestionKey.of("numbers"), (sender, context) -> {
+        //    List<String> numbers = new ArrayList<>();
 
-            for (int i = 1; i <= 250; i++) numbers.add(i + "");
+        //    for (int i = 1; i <= 250; i++) numbers.add(i + "");
 
-            return numbers;
-        });
+        //    return numbers;
+        //});
 
-        manager.registerCommand(new BaseKeyCommand());
-        manager.registerCommand(new CrateBaseCommand());
+        //manager.registerCommand(new BaseKeyCommand());
+        //manager.registerCommand(new CrateBaseCommand());
 
         printHooks();
     }
@@ -288,13 +269,13 @@ public class CrazyCrates extends JavaPlugin {
         return plugin;
     }
 
-    public PaperRuby getPaperRuby() {
-        return this.paperRuby;
-    }
+    //public PaperRuby getPaperRuby() {
+        //return this.paperRuby;
+    //}
 
-    public PaperFileManager getPaperFileManager() {
-        return this.paperRuby.getPaperFileManager();
-    }
+    //public PaperFileManager getPaperFileManager() {
+        //return this.paperRuby.getPaperFileManager();
+    //}
 
     public Starter getStarter() {
         return this.starter;
@@ -324,11 +305,11 @@ public class CrazyCrates extends JavaPlugin {
         for (PluginSupport value : PluginSupport.values()) {
 
             if (value.isPluginEnabled()) {
-                MsgWrapper.send("<#11e092>" + value.getName() + "<#E0115F> <bold><#7df060>FOUND</bold>");
+                //MsgWrapper.send("<#11e092>" + value.getName() + "<#E0115F> <bold><#7df060>FOUND</bold>");
                 return;
             }
 
-            MsgWrapper.send("<#11e092>" + value.getName() + "<#E0115F> <bold><#FE5F55>NOT FOUND</bold>");
+            //MsgWrapper.send("<#11e092>" + value.getName() + "<#E0115F> <bold><#FE5F55>NOT FOUND</bold>");
         }
     }
 }

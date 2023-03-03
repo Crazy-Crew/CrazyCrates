@@ -8,7 +8,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.support.structures.blocks.ChestStateHandler;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -26,7 +25,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
 import java.util.Random;
 
 /**
@@ -73,9 +71,9 @@ public class QuadCrate implements Listener {
                         itemBuilder.addLore(new Random().nextInt(Integer.MAX_VALUE) + ""); // Makes sure items don't merge
 
                         ItemStack item = itemBuilder.build();
-                        NBTItem nbtItem = new NBTItem(item);
-                        nbtItem.setBoolean("crazycrates-item", true);
-                        item = nbtItem.getItem();
+                        //NBTItem nbtItem = new NBTItem(item);
+                        //nbtItem.setBoolean("crazycrates-item", true);
+                        //item = nbtItem.getItem();
                         Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), item);
 
                         reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(plugin, true));

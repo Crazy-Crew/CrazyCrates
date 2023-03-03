@@ -10,7 +10,6 @@ import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent.KeyReceiveRea
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.api.objects.*;
-import com.badbones69.crazycrates.configs.Config;
 import com.badbones69.crazycrates.cratetypes.*;
 import com.badbones69.crazycrates.enums.types.CrateType;
 import com.badbones69.crazycrates.enums.types.KeyType;
@@ -23,7 +22,6 @@ import com.badbones69.crazycrates.support.holograms.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.HolographicDisplaysSupport;
 import com.badbones69.crazycrates.support.libraries.PluginSupport;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -36,7 +34,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
-
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -99,8 +96,8 @@ public class CrazyManager {
         crateLocations.clear();
         crateSchematics.clear();
 
-        quadCrateTimer = Config.QUAD_CRATE_TIMER * 20;
-        giveVirtualKeysWhenInventoryFull = Config.GIVE_VIRTUAL_KEYS;
+        //quadCrateTimer = Config.QUAD_CRATE_TIMER * 20;
+        //giveVirtualKeysWhenInventoryFull = Config.GIVE_VIRTUAL_KEYS;
 
         // Removes all holograms so that they can be replaced.
         if (hologramController != null) hologramController.removeAllHolograms();
@@ -417,7 +414,7 @@ public class CrazyManager {
             }
         }
 
-        plugin.getStarter().getEventLogger().logCrateEvent(player, crate, keyType, Config.LOG_TO_FILE, Config.LOG_TO_CONSOLE);
+        //plugin.getStarter().getEventLogger().logCrateEvent(player, crate, keyType, Config.LOG_TO_FILE, Config.LOG_TO_CONSOLE);
     }
 
     /**
@@ -1335,7 +1332,8 @@ public class CrazyManager {
             ItemStack item = ((Item) entity).getItemStack();
 
             if (item.getType() != Material.AIR) {
-                return new NBTItem(item).hasKey("crazycrates-item");
+               // return new NBTItem(item).hasKey("crazycrates-item");
+                return true;
             }
         }
 
