@@ -1,5 +1,5 @@
 package com.badbones69.crazycrates.configs.convert;
-
+/*
 import com.badbones69.crazycrates.configs.Locale;
 import com.badbones69.crazycrates.utils.FileUtils;
 import com.badbones69.crazycrates.utils.adventure.MsgWrapper;
@@ -200,3 +200,4 @@ public class LocaleConversion {
         FileUtils.copyFile(new File(directory + "/locale/locale-en.yml"), input, configuration);
     }
 }
+ */

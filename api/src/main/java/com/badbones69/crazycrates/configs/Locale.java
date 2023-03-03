@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.configs;
 
+/*
 import net.dehya.ruby.common.annotations.FileBuilder;
 import net.dehya.ruby.common.annotations.yaml.Header;
 import net.dehya.ruby.common.annotations.yaml.Key;
@@ -226,12 +227,6 @@ public class Locale extends FileExtension {
             <dark_gray>»</dark_gray> <gold>/cc</gold> <gray>-</gray> <yellow>Opens the crate menu.</yellow>
             """;
 
-    /**
-     * A constructor to build our config file.
-     * The path.resolve means it's looking for a locale directory instead of just the root directory.
-     *
-     * @param path the path of the file.
-     */
     public Locale(Path path) {
         super(Config.LOCALE_FILE, path.resolve("locale"));
     }
@@ -256,3 +251,4 @@ public class Locale extends FileExtension {
         return fileManager.getFile(new Locale(directory));
     }
 }
+*/

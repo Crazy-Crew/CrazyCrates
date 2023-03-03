@@ -15,6 +15,7 @@ dependencies {
     compileOnly(libs.adventure.text)
 
     compileOnly(libs.yaml)
+    compileOnly(libs.config.me)
 
     compileOnly(libs.ruby.api)
 }

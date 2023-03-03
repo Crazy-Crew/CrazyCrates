@@ -23,6 +23,7 @@ dependencies {
 
     compileOnly(libs.papermc)
 
+    compileOnly(libs.config.me)
     compileOnly(libs.holographic.displays)
     compileOnly(libs.decent.holograms)
     compileOnly(libs.cmi.api)
