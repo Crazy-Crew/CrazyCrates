@@ -17,7 +17,7 @@ dependencies {
     compileOnly(libs.yaml)
     compileOnly(libs.config.me)
 
-    compileOnly(libs.ruby.api)
+    compileOnly(libs.crazycore.api)
 }
 
 tasks {

@@ -23,6 +23,8 @@ dependencies {
 
     compileOnly(libs.papermc)
 
+    compileOnly(libs.crazycore.paper)
+
     compileOnly(libs.config.me)
     compileOnly(libs.holographic.displays)
     compileOnly(libs.decent.holograms)
@@ -39,7 +41,6 @@ dependencies {
     implementation(libs.nbt.api)
     implementation(libs.bstats.bukkit)
 
-    implementation(libs.ruby.paper)
 }
 
 val projectDescription = settings.versions.projectDescription.get()
