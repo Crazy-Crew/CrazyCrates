@@ -25,7 +25,15 @@ dependencies {
 
     compileOnly(libs.crazycore.paper)
 
+//     implementation(libs.triumph.cmds)
+//     implementation(libs.triumph.gui)
+
     compileOnly(libs.config.me)
+
+    compileOnly(libs.vault.api) {
+        exclude("org.bukkit", "bukkit")
+    }
+
     compileOnly(libs.holographic.displays)
     compileOnly(libs.decent.holograms)
     compileOnly(libs.cmi.api)
@@ -35,12 +43,8 @@ dependencies {
 
     compileOnly(libs.itemsadder.api)
 
-    implementation(libs.triumph.cmds)
-    //implementation(libs.triumph.gui)
-
-    implementation(libs.nbt.api)
-    implementation(libs.bstats.bukkit)
-
+//    implementation(libs.nbt.api)
+//    implementation(libs.bstats.bukkit)
 }
 
 val projectDescription = settings.versions.projectDescription.get()
@@ -121,7 +125,7 @@ tasks {
     }
 
     processResources {
-        filesMatching("plugin.yml") {
+        filesMatching("paper-plugin.yml") {
             expand(
                 "name" to projectName,
                 "group" to projectGroup,

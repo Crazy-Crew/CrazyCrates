@@ -1,12 +1,12 @@
-name: CrazyCrates
+name: ${name}
 main: us.crazycrew.crazycrates.CrazyCrates
 
 version: ${version}
 api-version: '1.19'
 description: ${description}
 
-bootstrapper: us.crazycrew.crazycrates.CrazyCratesBootstrap
-loader: us.crazycrew.crazycrates.CrazyCratesPluginLoader
+bootstrapper: us.crazycrew.crazycrates.loader.CratesStarter
+loader: us.crazycrew.crazycrates.loader.CratesLoader
 
 dependencies:
   - name: HolographicDisplays
