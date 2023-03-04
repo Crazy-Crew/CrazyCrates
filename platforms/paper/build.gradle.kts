@@ -104,12 +104,13 @@ tasks {
         changelog.set(
             """
                 <h3>Warning: ⚠️ 1.18.2 support and below will shortly be dropped from the plugin. This is your warning! ⚠️</h3>
+                <h3>As always please report any bugs you find and downgrade if you have an issue.</h3>
                 <h4>Changes:</h4>
                  <p>N/A</p>
                 <h4>Under the hood changes</h4>
                  <p>N/A</p>
                 <h4>Bug Fixes:</h4>
-                 <p>Fixed offline players not being able to get keys. Will only work if the player is cached.</p>
+                 <p>Fixed offline players not being able to get keys. Will only work if the player is cached so sometimes it might error but rather not lag out the server.</p>
                  <p>Fixed the core module not being available in the dev api</p>
             """.trimIndent()
         )
