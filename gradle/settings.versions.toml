@@ -1,0 +1,16 @@
+[versions]
+
+# Project Settings
+projectVersion = "1.11.14.2"
+
+projectGroup = "com.badbones69.crazycrates"
+projectName = "CrazyCrates"
+projectDescription = "Add unlimited crates to your server with 10 different crate types to choose from!"
+projectGithub = "https://github.com/Crazy-Crew/CrazyCrates"
+projectBeta = "false"
+projectExtension = "plugin"
+
+[plugins]
+
+minotaur = { id = "com.modrinth.minotaur", version = "2.7.2" }
+run-paper = { id = "xyz.jpenilla.run-paper", version = "2.0.0" }

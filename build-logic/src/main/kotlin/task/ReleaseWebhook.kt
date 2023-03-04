@@ -15,7 +15,6 @@ import kotlinx.coroutines.runBlocking
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
-import org.gradle.kotlin.dsl.extra
 
 /** Task to send webhooks to discord. */
 abstract class ReleaseWebhook : DefaultTask() {
