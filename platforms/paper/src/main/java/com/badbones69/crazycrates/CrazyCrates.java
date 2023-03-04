@@ -307,6 +307,10 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             return numbers;
         });
 
+        manager.registerArgument(CrateBaseCommand.CustomPlayer.class, (sender, context) -> {
+            return new CrateBaseCommand.CustomPlayer(context);
+        });
+
         manager.registerCommand(new BaseKeyCommand());
         manager.registerCommand(new CrateBaseCommand());
 

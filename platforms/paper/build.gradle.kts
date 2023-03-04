@@ -103,17 +103,14 @@ tasks {
         //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
         changelog.set(
             """
+                <h3>Warning: ⚠️ 1.18.2 support and below will shortly be dropped from the plugin. This is your warning! ⚠️</h3>
                 <h4>Changes:</h4>
-                 <p>Added 1.17.1 support back.</p>
-                 <p>Added a feature https://github.com/orgs/Crazy-Crew/discussions/19</p>
+                 <p>N/A</p>
                 <h4>Under the hood changes</h4>
-                 <p>Re-organized the build script for the last time.</p>
-                 <p>Cleaned up a few pieces of code.</p>
-                 <p>No longer check for updates when a player joins.</p>
-                 <p>Updated nbt-api artifact id.</p>
+                 <p>N/A</p>
                 <h4>Bug Fixes:</h4>
-                 <p>Fixed quadcrates hopefully for the last time.</p>
-                 <p>Fixed the nbt-api link.</p>
+                 <p>Fixed offline players not being able to get keys. Will only work if the player is cached.</p>
+                 <p>Fixed the core module not being available in the dev api</p>
             """.trimIndent()
         )
     }
@@ -135,42 +132,10 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = projectGroup
-            artifactId = "$projectNameLowerCase-paper"
+            artifactId = "$projectNameLowerCase-api"
             version = finalVersion
 
             from(components["java"])
-
-            pom {
-                name.set(projectName)
-
-                description.set(projectDescription)
-                url.set(projectGithub)
-
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://www.opensource.org/licenses/mit-license.php")
-                    }
-                }
-
-                developers {
-                    developer {
-                        id.set("ryderbelserion")
-                        name.set("Ryder Belserion")
-                    }
-
-                    developer {
-                        id.set("badbones69")
-                        name.set("BadBones69")
-                    }
-                }
-
-                scm {
-                    connection.set("scm:git:git://github.com/Crazy-Crew/$projectName.git")
-                    developerConnection.set("scm:git:ssh://github.com/Crazy-Crew/$projectName.git")
-                    url.set(projectGithub)
-                }
-            }
         }
     }
 
