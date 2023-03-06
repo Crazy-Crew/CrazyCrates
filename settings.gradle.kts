@@ -19,6 +19,8 @@ pluginManagement {
     }
 }
 
+rootProject.name = "CrazyCrates"
+
 val lowerCase = rootProject.name.toLowerCase()
 
 include("core")
