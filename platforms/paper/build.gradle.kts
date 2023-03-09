@@ -68,8 +68,7 @@ tasks {
         listOf(
             "de.tr7zw.changeme.nbtapi",
             "org.bstats",
-            "dev.triumphteam.cmd",
-            "net.dehya.ruby"
+            "dev.triumphteam.cmd"
         ).forEach { relocate(it, "$projectGroup.library.$it") }
     }
 
@@ -88,11 +87,6 @@ tasks {
 
         gameVersions.addAll(
             listOf(
-                "1.17",
-                "1.17.1",
-                "1.18",
-                "1.18.1",
-                "1.18.2",
                 "1.19",
                 "1.19.1",
                 "1.19.2",
