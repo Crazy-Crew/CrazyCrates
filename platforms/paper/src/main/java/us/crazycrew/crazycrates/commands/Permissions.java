@@ -1,14 +1,13 @@
 package us.crazycrew.crazycrates.commands;
 
-import com.badbones69.crazycrates.utils.interfaces.Universal;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import us.crazycrew.crazycrates.configurations.PluginSettings;
-import us.crazycrew.crazycrates.loader.CratesStarter;
+import us.crazycrew.crazycrates.loader.CrazyStarter;
 import java.util.*;
 
-public enum Permissions implements Universal {
+public enum Permissions {
 
     CRATES_COMMAND_PLAYER_HELP("crazycrates.command.player.help", "Shows all player commands for CrazyCrates.", new HashMap<>() {{
         put(prefix + ".command.player.key", true);
@@ -104,7 +103,7 @@ public enum Permissions implements Universal {
     private final HashMap<String, Boolean> children;
     private final PermissionDefault permissionDefault;
 
-    private static final String prefix = CratesStarter.getPluginConfig().getProperty(PluginSettings.COMMAND_PERMISSION);
+    private static final String prefix = CrazyStarter.getPluginConfig().getProperty(PluginSettings.COMMAND_PERMISSION);
 
     /**
      * @param node permission node without the prefix

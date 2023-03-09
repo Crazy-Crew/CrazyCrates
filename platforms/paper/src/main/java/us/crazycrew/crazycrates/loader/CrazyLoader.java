@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
  * Description: The class path resolver where we download dependencies at run-time
  */
 @SuppressWarnings("UnstableApiUsage")
-public class CratesLoader implements PluginLoader {
+public class CrazyLoader implements PluginLoader {
 
     @Override
     public void classloader(@NotNull PluginClasspathBuilder classpathBuilder) {

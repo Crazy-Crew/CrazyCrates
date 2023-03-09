@@ -5,8 +5,8 @@ version: ${version}
 api-version: '1.19'
 description: ${description}
 
-bootstrapper: us.crazycrew.crazycrates.loader.CratesStarter
-loader: us.crazycrew.crazycrates.loader.CratesLoader
+bootstrapper: us.crazycrew.crazycrates.loader.CrazyStarter
+loader: us.crazycrew.crazycrates.loader.CrazyLoader
 
 dependencies:
   - name: HolographicDisplays

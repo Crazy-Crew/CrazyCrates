@@ -28,7 +28,7 @@ import java.util.logging.LogManager;
  * Description: The starter class that thanks to paper is run directly at server startup and allows us to pass variables through the plugin class.
  */
 @SuppressWarnings("UnstableApiUsage")
-public class CratesStarter implements PluginBootstrap {
+public class CrazyStarter implements PluginBootstrap {
 
     private PaperCore paperCore;
 
