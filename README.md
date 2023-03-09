@@ -43,7 +43,7 @@
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://discord.gg/crazycrew">Contact</a></li>
   </ol>
 </details>
 
@@ -92,6 +92,9 @@ Check our public [trello board](https://trello.com/b/bzQ5TwXo) for our current p
 ## License
 
 Distributed under the MIT License. See [`LICENSE`](/LICENSE) for more information.
+
+## Plugin Data
+[![bStats Graph Data](https://bstats.org/signatures/bukkit/CrazyCrates.svg)](https://bstats.org/plugin/bukkit/CrazyCrates/4514)
 
 [discord-shield]: https://img.shields.io/discord/182615261403283459.svg?style=flat&logo=appveyor
 [discord-url]: https://discord.gg/crazycrew
