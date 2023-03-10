@@ -13,7 +13,7 @@ import us.crazycrew.crazycore.paper.player.PaperPlayerRegistry;
 import us.crazycrew.crazycrates.CrazyCrates;
 import us.crazycrew.crazycrates.configurations.ConfigSettings;
 import us.crazycrew.crazycrates.configurations.PluginSettings;
-import us.crazycrew.crazycrates.configurations.migrations.PluginMigrationService;
+
 import java.io.File;
 import java.util.logging.LogManager;
 

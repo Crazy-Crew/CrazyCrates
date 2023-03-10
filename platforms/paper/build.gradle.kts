@@ -28,8 +28,6 @@ dependencies {
 //     implementation(libs.triumph.cmds)
 //     implementation(libs.triumph.gui)
 
-    compileOnly(libs.config.me)
-
     compileOnly(libs.vault.api) {
         exclude("org.bukkit", "bukkit")
     }

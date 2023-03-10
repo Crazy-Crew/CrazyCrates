@@ -4,6 +4,10 @@ import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
+import org.simpleyaml.configuration.file.FileConfiguration;
+import org.simpleyaml.configuration.file.YamlFile;
+import us.crazycrew.crazycore.files.interfaces.Holder;
+
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
 /**
@@ -16,7 +20,7 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
  *
  * Description: The plugin-settings.yml options.
  */
-public class PluginSettings implements SettingsHolder {
+public class PluginSettings implements Holder {
 
     // Empty constructor required by SettingsHolder
     public PluginSettings() {}
@@ -76,4 +80,17 @@ public class PluginSettings implements SettingsHolder {
             "Warning: any changes requires a restart!"
     })
     public static final Property<String> PLUGIN_ALIASES = newProperty("settings.plugin-aliases", "crazycrates:crates");
+
+    @Override
+    public void registerComments(YamlFile yamlFile) {
+        String[] header = {
+                "Support: https://discord.gg/crazycrew",
+                "Github: https://github.com/Crazy-Crew",
+                "",
+                "Issues: https://github.com/Crazy-Crew/CrazyCrates/issues",
+                "Features: https://github.com/Crazy-Crew/CrazyCrates/discussions"
+        };
+
+        yamlFile.setComment("settings");
+    }
 }

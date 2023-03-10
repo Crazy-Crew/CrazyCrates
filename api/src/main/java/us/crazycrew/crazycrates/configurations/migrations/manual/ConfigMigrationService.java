@@ -1,7 +1,6 @@
 package us.crazycrew.crazycrates.configurations.migrations.manual;
 
 import org.simpleyaml.configuration.file.YamlConfiguration;
-import org.yaml.snakeyaml.Yaml;
 import us.crazycrew.crazycore.CrazyCore;
 import java.io.File;
 import java.io.IOException;

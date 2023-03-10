@@ -1,19 +1,12 @@
 package com.badbones69.crazycrates.configs;
 
-/*
-import net.dehya.ruby.common.annotations.FileBuilder;
-import net.dehya.ruby.common.annotations.yaml.Header;
-import net.dehya.ruby.common.annotations.yaml.Key;
-import net.dehya.ruby.common.enums.FileType;
-import net.dehya.ruby.files.FileExtension;
-import net.dehya.ruby.files.FileManager;
-import net.dehya.ruby.utils.FileUtils;
-import org.simpleyaml.configuration.file.YamlFile;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
+import us.crazycrew.crazycore.files.FileExtension;
+import us.crazycrew.crazycore.files.FileManager;
+import us.crazycrew.crazycore.files.annotations.Header;
+import us.crazycrew.crazycore.files.annotations.Path;
+import us.crazycrew.crazycore.files.enums.FileType;
+import us.crazycrew.crazycore.utils.FileUtils;
 
-@FileBuilder(isLogging = true, isAsync = false, isData = false, fileType = FileType.YAML)
 @Header("""
         If you notice any translation issues, Do not hesitate to contact our Translators.
         
@@ -23,182 +16,182 @@ import java.nio.file.Path;
         Report Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
         Request Features/Support: https://github.com/orgs/Crazy-Crew/discussions
         """)
-public class Locale extends FileExtension {
+public class LocaleSettings extends FileExtension {
 
     // Misc
-    @Key("misc.unknown-command")
+    @Path("misc.unknown-command")
     public static String UNKNOWN_COMMAND = "<red>This command is not known.</red>";
 
-    @Key("misc.no-teleporting")
+    @Path("misc.no-teleporting")
     public static String NO_TELEPORTING = "<red>You may not teleport away while opening</red> <gold>%crate%.</gold>";
 
-    @Key("misc.no-commands")
+    @Path("misc.no-commands")
     public static String NO_COMMANDS = "<red>You are not allowed to use commands while opening</red> <gold>%crate%.</gold>";
 
-    @Key("misc.no-keys")
+    @Path("misc.no-keys")
     public static String NO_KEYS = "<red>You need a</red> %key% <red>in your hand to use</red> <gold>%crate%.</gold>";
 
-    @Key("misc.no-virtual-keys")
+    @Path("misc.no-virtual-keys")
     public static String NO_VIRTUAL_KEYS = "<red>You need</red> %key% <red>to open</red> <gold>%crate%.</gold>";
     
-    @Key("misc.feature-disabled")
+    @Path("misc.feature-disabled")
     public static String FEATURE_DISABLED = "<red>This feature is disabled. We have no ETA on when this will function.</red>";
     
-    @Key("misc.correct-usage")
+    @Path("misc.correct-usage")
     public static String CORRECT_USAGE = "<red>The correct usage for this command is</red> <yellow>%usage%</yellow>";
 
     // Errors
-    @Key("errors.no-prizes-found")
+    @Path("errors.no-prizes-found")
     public static String NO_PRIZES_FOUND = "<red>This crate contains no prizes that you can win.</red>";
 
-    @Key("errors.no-schematics-found")
+    @Path("errors.no-schematics-found")
     public static String NO_SCHEMATICS_FOUND = "<red>No schematic were found, Please re-generate them by deleting the folder or checking for errors!</red>";
 
-    @Key("errors.prize-error")
+    @Path("errors.prize-error")
     public static String PRIZE_ERROR = """
             <red>An error has occurred while trying to give you the prize</red> <gold>%prize%.</gold>
             <yellow>This has occurred in</yellow> <gold>%crate%.</gold> <yellow>Please notify your owner.</yellow>
             """;
 
-    @Key("errors.internal-error")
+    @Path("errors.internal-error")
     public static String INTERNAL_ERROR = "<red>An internal error has occurred. Please check the console for the full error.</red>";
 
     // Player handling
-    @Key("player.requirements.too-many-args")
+    @Path("player.requirements.too-many-args")
     public static String TOO_MANY_ARGS = "<red>You put more arguments then I can handle.</red>";
 
-    @Key("player.requirements.not-enough-args")
+    @Path("player.requirements.not-enough-args")
     public static String NOT_ENOUGH_ARGs = "<red>You did not supply enough arguments.</red>";
 
-    @Key("player.requirements.must-be-player")
+    @Path("player.requirements.must-be-player")
     public static String MUST_BE_PLAYER = "<red>You must be a player to use this command.</red>";
 
-    @Key("player.requirements.must-be-console-sender")
+    @Path("player.requirements.must-be-console-sender")
     public static String MUST_BE_CONSOLE_SENDER = "<red>You must be using console to use this command.</red>";
 
-    @Key("player.requirements.must-be-looking-at-block")
+    @Path("player.requirements.must-be-looking-at-block")
     public static String MUST_BE_LOOKING_AT_BLOCK = "<red>You must be looking at a block.</red>";
 
-    @Key("player.target-not-online")
+    @Path("player.target-not-online")
     public static String TARGET_NOT_ONLINE = "<red>The player</red> <gold>%player%</gold> <red>is not online.</red>";
 
-    @Key("player.target-same-player")
+    @Path("player.target-same-player")
     public static String TARGET_SAME_PLAYER = "<red>You cannot use this command on yourself.</red>";
 
-    @Key("player.no-permission")
+    @Path("player.no-permission")
     public static String NO_PERMISSION = "<red>You do not have permission to use that command!</red>";
 
-    @Key("player.inventory-not-empty")
+    @Path("player.inventory-not-empty")
     public static String INVENTORY_NOT_EMPTY = "<red>Inventory is not empty, Please make room before opening</red> <gold>%crate%.</gold>";
 
-    @Key("player.obtaining-keys")
+    @Path("player.obtaining-keys")
     public static String OBTAINING_KEYS = "<gray>You have been given</gray> <gold>%amount% %key%</gold> <gray>Keys.</gray>";
 
-    @Key("player.too-close-to-another-player")
+    @Path("player.too-close-to-another-player")
     public static String TOO_CLOSE_TO_ANOTHER_PLAYER = "<red>You are too close to a player that is opening their Crate.</red>";
 
     // Crates
-    @Key("crates.requirements.not-a-crate")
+    @Path("crates.requirements.not-a-crate")
     public static String NOT_A_CRATE = "<red>There is no crate called</red> <gold>%crate%.</gold>";
 
-    @Key("crates.requirements.not-a-number")
+    @Path("crates.requirements.not-a-number")
     public static String NOT_A_NUMBER = "<gold>%number%</gold> <red>is not a number.</red>";
 
-    @Key("crates.not-a-block")
+    @Path("crates.not-a-block")
     public static String NOT_A_BLOCK = "<red>You must be standing on a block to use</red> <gold>%crate%.</gold>";
 
-    @Key("crates.out-of-time")
+    @Path("crates.out-of-time")
     public static String OUT_OF_TIME = "<red>You took</red> <green>5 Minutes</green> <red>to open the</red> <gold>%crate%</gold> <red>so it closed.</red>";
 
-    @Key("crates.crate-preview-disabled")
+    @Path("crates.crate-preview-disabled")
     public static String CRATE_PREVIEW_DISABLED = "<red>The preview for</red> <gold>%crate%</gold> <red>is currently disabled.</red>";
 
-    @Key("crates.crate-already-open")
+    @Path("crates.crate-already-open")
     public static String CRATES_ALREADY_OPEN = "<red>You are already opening</red> <gold>%crate%.</gold>";
 
-    @Key("crates.crate-in-use")
+    @Path("crates.crate-in-use")
     public static String CRATES_IN_USE = "<gold>%crate%</gold> <red>is already in use. Please wait until it finishes!</red>";
 
-    @Key("crates.cannot-be-a-virtual-crate")
+    @Path("crates.cannot-be-a-virtual-crate")
     public static String CANNOT_BE_A_VIRTUAL_CRATE = "<gold>%crate%</gold> <red>cannot be used as a Virtual Crate. You have it set to</red> <gold>%cratetype%.</gold>";
 
-    @Key("crates.need-more-room")
+    @Path("crates.need-more-room")
     public static String NEED_MORE_ROOM = "<red>There is not enough space to open that here.</red>";
 
-    @Key("crates.world-disabled")
+    @Path("crates.world-disabled")
     public static String WORLD_DISABLED = "<red>Crates are disabled in</red> <green>%world%.</green>";
 
-    @Key("crates.physical-crate.created")
+    @Path("crates.physical-crate.created")
     public static String PHYSICAL_CRATE_CREATED = """
         <gray>You have set that block to</gray> <gold>%crate%.</gold>
         <gray>To remove</gray> <gold>%crate%</gold>, <gray>Shift Click Break in Creative to remove.</gray>
         """;
 
-    @Key("crates.physical-crate.removed")
+    @Path("crates.physical-crate.removed")
     public static String PHYSICAL_CRATE_REMOVED = "<gray>You have removed</gray> <gold>%id%.</gold>";
 
     // Commands
-    @Key("command.open.opened-a-crate")
+    @Path("command.open.opened-a-crate")
     public static String OPENED_A_CRAtE = "<gray>You have opened the</gray> <gold>%crate%</gold> <gray>crate for</gray> <gold>%player%.</gold>";
 
-    @Key("command.give.given-player-keys")
+    @Path("command.give.given-player-keys")
     public static String GIVEN_PLAYER_KEYS = "<gray>You have given</gray> <gold>%player% %amount% Keys.</gold>";
 
-    @Key("command.give.given-everyone-keys")
+    @Path("command.give.given-everyone-keys")
     public static String GIVEN_EVERYONE_KEYS = "<gray>You have given everyone</gray> <gold>%amount% Keys.</gold>";
 
-    @Key("command.give.given-offline-player-keys")
+    @Path("command.give.given-offline-player-keys")
     public static String GIVEN_OFFLINE_PLAYER_KEYS = "<gray>You have given</gray> <gold>%amount% key(s)</gold> <gray>to the offline player</gray> <gold>%player%.</gold>";
 
-    @Key("command.take.take-player-keys")
+    @Path("command.take.take-player-keys")
     public static String TAKE_PLAYER_KEYS = "<gray>You have taken</gray> <gold>%amount% key(s)</gold> <gray>from</gray> <gold>%player%.</gold>";
 
-    @Key("command.take.take-offline-player-keys")
+    @Path("command.take.take-offline-player-keys")
     public static String TAKE_OFFLINE_PLAYER_KEYS = "<gray>You have taken</gray> <gold>%amount% key(s)</gold> <gray>from the offline player</gray> <gold>%player%.</gold>";
 
-    @Key("command.additem.no-item-in-hand")
+    @Path("command.additem.no-item-in-hand")
     public static String NO_ITEM_IN_HAND = "<red>You need to have an item in your hand to add it to</red> <gold>%crate%.</gold>";
 
-    @Key("command.additem.add-item-from-hand")
+    @Path("command.additem.add-item-from-hand")
     public static String ADD_ITEM_FROM_HAND = "<gray>The item has been added to</gray> <gold>%crate%</gold> <gray>as</gray> <gold>Prize #%prize%.</gold>";
 
-    @Key("command.convert.no-files-to-convert")
+    @Path("command.convert.no-files-to-convert")
     public static String NO_FILES_TO_CONVERT = "<red>No available plugins to convert files.</red>";
 
-    @Key("command.convert.error-converting-files")
+    @Path("command.convert.error-converting-files")
     public static String ERROR_CONVERTING_FILES = "<red>An error has occurred while trying to convert files. We could not convert</red> <green>%file%</green> <red>so please check the console.</red>";
 
-    @Key("command.convert.successfully-converted-files")
+    @Path("command.convert.successfully-converted-files")
     public static String SUCCESSFULLY_CONVERTED_FILES = "</green>Plugin Conversion has succeeded!</green>";
 
-    @Key("command.reload.confirm-reload")
+    @Path("command.reload.confirm-reload")
     public static String CONFIRM_RELOAD = "<yellow>Are you sure you want to reload the plugin?</yellow>";
 
-    @Key("command.reload.reload-completed")
+    @Path("command.reload.reload-completed")
     public static String RELOAD_COMPLETED = "<green>Plugin reload has been completed.</green>";
 
-    @Key("command.transfer.not-enough-keys")
+    @Path("command.transfer.not-enough-keys")
     public static String TRANSFER_NOT_ENOUGH_KEYS = "<red>You do not have enough keys to transfer.</red>";
 
-    @Key("command.transfer.transferred-keys")
+    @Path("command.transfer.transferred-keys")
     public static String TRANSFERRED_KEYS = "<gray>You have transferred</gray> <green>%amount% %crate%</green> <gray>keys to</gray> <red>%player%.</red>";
 
-    @Key("command.transfer.transferred-keys-received")
+    @Path("command.transfer.transferred-keys-received")
     public static String TRANSFERRED_KEYS_RECEIVED = "<gray>You have received</gray> <green>%amount% %crate%</green> <gray>keys from</gray> <red>%player%.</red>";
 
-    @Key("command.keys.personal.no-virtual-keys")
+    @Path("command.keys.personal.no-virtual-keys")
     public static String KEYS_PERSONAL_NO_VIRTUAL_KEYS = "<dark_gray>(</dark_gray><red>!<dark_gray>)</dark_gray> <gray>You currently do not have any virtual keys.</gray>";
 
-    @Key("command.keys.other-player.no-virtual-keys")
+    @Path("command.keys.other-player.no-virtual-keys")
     public static String KEYS_OTHER_PLAYER_NO_VIRTUAL_KEYS = "<dark_gray>(</dark_gray><red>!</red><dark_gray>)</dark_gray> <gray>The player</gray> <red>%player%</red> <gray>does not have any keys.</gray>";
 
-    @Key("command.keys.crate-format")
+    @Path("command.keys.crate-format")
     public static String CRATE_FORMAT = """
             <dark_gray>(</dark_gray><red>!</red><dark_gray>)</dark_gray> <gray>A list of <red>%player%''s</red> current amount of keys.</gray>
             
             %crate% <dark_gray>»»</dark_gray> <gold>%keys% keys.</gold>""";
 
-    @Key("command.player-help")
+    @Path("command.player-help")
     public static String PLAYER_HELP = """
             <dark_green>Crazy Crates Player Help!</dark_green>
             
@@ -207,7 +200,7 @@ public class Locale extends FileExtension {
             <dark_gray>»</dark_gray> <gold>/cc</gold> <gray>-</gray> <yellow>Opens the crate menu.</yellow>
             """;
 
-    @Key("command.admin-help")
+    @Path("command.admin-help")
     public static String ADMIN_HELP = """
             <red>Crazy Crates Admin Help</red>
             
@@ -227,28 +220,13 @@ public class Locale extends FileExtension {
             <dark_gray>»</dark_gray> <gold>/cc</gold> <gray>-</gray> <yellow>Opens the crate menu.</yellow>
             """;
 
-    public Locale(Path path) {
-        super(Config.LOCALE_FILE, path.resolve("locale"));
+    public LocaleSettings(java.nio.file.Path path) {
+        super(PluginSettings.LOCALE_FILE, path.resolve("locale"), FileType.YAML);
     }
 
-    public static void reload(FileManager fileManager, Path directory) {
+    public static void reload(FileManager fileManager, java.nio.file.Path directory) {
         FileUtils.extract("/locale", directory, false);
 
-        fileManager.addFile(new Locale((directory)));
-    }
-
-    public static YamlFile getConfiguration(FileManager fileManager, Path directory) {
-        try {
-            return fileManager.getFileConfiguration(new Locale(directory));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public static File getConfig(FileManager fileManager, Path directory) {
-        return fileManager.getFile(new Locale(directory));
+        fileManager.addFile(new LocaleSettings((directory)));
     }
 }
-*/

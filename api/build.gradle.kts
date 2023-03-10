@@ -14,7 +14,6 @@ dependencies {
     compileOnly(libs.adventure.api)
     compileOnly(libs.adventure.text)
 
-    compileOnly(libs.yaml)
     compileOnly(libs.config.me)
 
     compileOnly(libs.crazycore.api)
