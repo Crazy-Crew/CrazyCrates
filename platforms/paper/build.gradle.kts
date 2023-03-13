@@ -25,6 +25,8 @@ dependencies {
 
     compileOnly(libs.crazycore.paper)
 
+    compileOnly(libs.config.me)
+
 //     implementation(libs.triumph.cmds)
 //     implementation(libs.triumph.gui)
 
@@ -45,37 +47,30 @@ dependencies {
 //    implementation(libs.bstats.bukkit)
 }
 
-val projectDescription = settings.versions.projectDescription.get()
-val projectGithub = settings.versions.projectGithub.get()
-val projectGroup = settings.versions.projectGroup.get()
-val projectName = settings.versions.projectName.get()
-val projectExt = settings.versions.projectExtension.get()
+val github = settings.versions.github.get()
+val extension = settings.versions.extension.get()
 
-val isBeta = settings.versions.projectBeta.get().toBoolean()
+val beta = settings.versions.beta.get().toBoolean()
 
-val projectVersion = settings.versions.projectVersion.get()
-
-val finalVersion = if (isBeta) "$projectVersion+beta" else projectVersion
-
-val type = if (isBeta) "beta" else "release"
+val type = if (beta) "beta" else "release"
 
 tasks {
     shadowJar {
-        archiveFileName.set("${projectName}+${projectDir.name}+$finalVersion.jar")
+        archiveFileName.set("${rootProject.name}+${projectDir.name}+${rootProject.version}.jar")
 
         listOf(
             "de.tr7zw.changeme.nbtapi",
             "org.bstats",
             "dev.triumphteam.cmd"
-        ).forEach { relocate(it, "$projectGroup.library.$it") }
+        ).forEach { relocate(it, "${rootProject.group}.library.$it") }
     }
 
     modrinth {
         token.set(System.getenv("MODRINTH_TOKEN"))
-        projectId.set(projectName.lowercase())
+        projectId.set(rootProject.name)
 
-        versionName.set("$projectName $finalVersion")
-        versionNumber.set(finalVersion)
+        versionName.set("${rootProject.name} ${rootProject.version}")
+        versionNumber.set(rootProject.version.toString())
 
         versionType.set(type)
 
@@ -119,11 +114,11 @@ tasks {
     processResources {
         filesMatching("paper-plugin.yml") {
             expand(
-                "name" to projectName,
-                "group" to projectGroup,
-                "version" to finalVersion,
-                "description" to projectDescription,
-                "website" to "https://modrinth.com/$projectExt/${projectName.lowercase()}"
+                "name" to rootProject.name,
+                "group" to rootProject.group,
+                "version" to rootProject.version,
+                "description" to rootProject.description,
+                "website" to "https://modrinth.com/$extension/${rootProject.name}"
             )
         }
     }
@@ -131,7 +126,7 @@ tasks {
 
 publishing {
     repositories {
-        val repo = if (isBeta) "beta" else "releases"
+        val repo = if (beta) "beta" else "releases"
         maven("https://repo.crazycrew.us/$repo") {
             name = "crazycrew"
             // Used for locally publishing.
@@ -146,9 +141,9 @@ publishing {
 
     publications {
         create<MavenPublication>("maven") {
-            groupId = projectGroup
-            artifactId = "${projectName.lowercase()}-api"
-            version = finalVersion
+            groupId = rootProject.group.toString()
+            artifactId = "${rootProject.name.toLowerCase()}-api"
+            version = rootProject.version.toString()
 
             from(components["java"])
         }

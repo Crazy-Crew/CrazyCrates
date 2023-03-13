@@ -1,19 +1,7 @@
 .gradle
+buildSrc/.gradle
+
 .idea
-.DS_Store
 
-build
-
-build-logic/.gradle
-build-logic/build
-
-core/build
-
+buildSrc/build
 platforms/paper/build
-platforms/paper/run/*
-
-!platforms/paper/run/eula.txt
-!platforms/paper/run/bukkit.yml
-!platforms/paper/run/spigot.yml
-!platforms/paper/run/server.properties
-!platforms/paper/run/config
