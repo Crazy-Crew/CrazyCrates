@@ -3,9 +3,10 @@ package us.crazycrew.crazycrates.commands;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
+import us.crazycrew.crazycrates.ApiLoader;
 import us.crazycrew.crazycrates.configurations.PluginSettings;
-import us.crazycrew.crazycrates.loader.CrazyStarter;
-import java.util.*;
+import java.util.EnumSet;
+import java.util.HashMap;
 
 public enum Permissions {
 
@@ -103,7 +104,7 @@ public enum Permissions {
     private final HashMap<String, Boolean> children;
     private final PermissionDefault permissionDefault;
 
-    private static final String prefix = CrazyStarter.getPluginConfig().getProperty(PluginSettings.COMMAND_PERMISSION);
+    private static final String prefix = ApiLoader.getPluginConfig().getProperty(PluginSettings.COMMAND_PERMISSION);
 
     /**
      * @param node permission node without the prefix

@@ -4,23 +4,15 @@ import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
-import org.simpleyaml.configuration.file.FileConfiguration;
-import org.simpleyaml.configuration.file.YamlFile;
-import us.crazycrew.crazycore.files.interfaces.Holder;
-
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
 /**
  * @author RyderBelserion
  * @author BadBones69
  *
- * Date: 3/1/2023
- * Time: 12:41 PM
- * Last Edited: 3/1/2023 @ 12:42 PM
- *
  * Description: The plugin-settings.yml options.
  */
-public class PluginSettings implements Holder {
+public class PluginSettings implements SettingsHolder {
 
     // Empty constructor required by SettingsHolder
     public PluginSettings() {}
@@ -45,8 +37,10 @@ public class PluginSettings implements Holder {
     })
     public static final Property<String> COMMAND_PERMISSION = newProperty("settings.permission", "crazycrates");
 
+    public static final Property<Boolean> COMMAND_PREFIX_TOGGLE = newProperty("settings.prefix.command.enabled", true);
+
     @Comment("The command prefix that is shown at the beginning of every message.")
-    public static final Property<String> COMMAND_PREFIX = newProperty("settings.prefix.command", "<red>[</red><green>CrazyCrates</green><red>]</green> ");
+    public static final Property<String> COMMAND_PREFIX = newProperty("settings.prefix.command.value", "<red>[</red><green>CrazyCrates</green><red>]</green> ");
 
     @Comment("The prefix that is shown for messages sent in console such as logging messages.")
     public static final Property<String> CONSOLE_PREFIX = newProperty("settings.prefix.console", "<gradient:#fe5f55:#6b55b5>[CrazyCrates]</gradient> ");
@@ -80,17 +74,4 @@ public class PluginSettings implements Holder {
             "Warning: any changes requires a restart!"
     })
     public static final Property<String> PLUGIN_ALIASES = newProperty("settings.plugin-aliases", "crazycrates:crates");
-
-    @Override
-    public void registerComments(YamlFile yamlFile) {
-        String[] header = {
-                "Support: https://discord.gg/crazycrew",
-                "Github: https://github.com/Crazy-Crew",
-                "",
-                "Issues: https://github.com/Crazy-Crew/CrazyCrates/issues",
-                "Features: https://github.com/Crazy-Crew/CrazyCrates/discussions"
-        };
-
-        yamlFile.setComment("settings");
-    }
 }

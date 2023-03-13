@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.enums.Permissions;
 import com.badbones69.crazycrates.listeners.FireworkDamageListener;
 import com.badbones69.crazycrates.utils.ColorUtils;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -125,21 +124,23 @@ public class Methods {
         } catch (Exception ignored) {}
     }
 
-    public static boolean permCheck(CommandSender sender, Permissions permissions, boolean tabComplete) {
+    // TODO() Perm check is disabled.
+    public static boolean permCheck(CommandSender sender, boolean tabComplete) {
         if (sender instanceof ConsoleCommandSender || sender instanceof RemoteConsoleCommandSender) return true;
 
         Player player = (Player) sender;
 
-        if (player.hasPermission(permissions.getPermission("command"))) {
-            return true;
-        } else {
-            if (!tabComplete) {
+        //if (player.hasPermission(permissions.getPermission("command"))) {
+        //    return true;
+        //} else {
+        //    if (!tabComplete) {
                 //player.sendMessage(Messages.NO_PERMISSION.getMessage());
-                return false;
-            }
+        //        return false;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
+        return true;
     }
 
     public static boolean isInventoryFull(Player player) {
@@ -150,6 +151,7 @@ public class Methods {
         return min + random.nextInt(max - min);
     }
 
+    // TODO() isSimilar shit is disabled.
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
         //NBTItem nbtItem = new NBTItem(itemStack);
         return true;

@@ -12,10 +12,6 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
  * @author RyderBelserion
  * @author BadBones69
  *
- * Date: 3/3/2023
- * Time: 1:49 PM
- * Last Edited: 3/3/2023 @ 1:49 PM
- *
  * Description: The config.yml options.
  */
 public class ConfigSettings implements SettingsHolder {

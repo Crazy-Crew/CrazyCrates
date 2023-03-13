@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.configurations.migrations.manual;
+package us.crazycrew.crazycrates.configurations.migrate;
 
 import org.simpleyaml.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycore.CrazyCore;
@@ -7,13 +7,6 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * @author RyderBelserion
- * @author BadBones69
- *
- * Date: 3/3/2023
- * Time: 2:57 PM
- * Last Edited: 3/3/2023 @ 2:57 PM
- *
  * Description: Migrate old values to new values manually.
  */
 public class ConfigMigrationService {
@@ -30,7 +23,6 @@ public class ConfigMigrationService {
         copyConfigSettings();
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void copyConfigSettings() {
         File output = new File(path + "/config-v1.yml");
 
@@ -54,11 +46,10 @@ public class ConfigMigrationService {
 
         if (config.getString(prefix + "Enable-Crate-Menu") == null && !output.exists()) return;
 
-        //noinspection ResultOfMethodCallIgnored
         input.renameTo(output);
 
         if (configV1 == null) return;
-        
+
         boolean updateChecker = configV1.getBoolean(prefix + "Update-Checker");
         boolean toggleMetrics = configV1.getBoolean(prefix + "Toggle-Metrics");
         boolean enableCrateMenu = configV1.getBoolean(prefix + "Enable-Crate-Menu");
@@ -112,8 +103,7 @@ public class ConfigMigrationService {
             e.printStackTrace();
         }
 
-        if (other == null) return;
-
+        assert other != null;
         other.set("settings.prefix", prefix);
         other.set("settings.update-checker", updateChecker);
         other.set("settings.toggle-metrics", toggleMetrics);
@@ -183,8 +173,7 @@ public class ConfigMigrationService {
             e.printStackTrace();
         }
 
-        if (config == null) return;
-
+        assert config != null;
         if (config.getString(prefix + "Prefix") == null) return;
 
         YamlConfiguration pluginSettings = null;
@@ -207,9 +196,9 @@ public class ConfigMigrationService {
         pluginSettings.set(prefix + "toggle-metrics", oldMetrics);
         pluginSettings.set(prefix + "update-checker", oldUpdate);
 
-        config.remove(prefix + "Prefix");
-        config.remove(prefix + "Toggle-Metrics");
-        config.remove(prefix + "Update-Checker");
+        config.set(prefix + "Prefix", null);
+        config.set(prefix + "Toggle-Metrics", null);
+        config.set(prefix + "Update-Checker", null);
 
         try {
             config.save(input);
