@@ -3,6 +3,12 @@ package com.badbones69.crazycrates.objects;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author RyderBelserion
+ * @author BadBones69
+ *
+ * Description: A constructor to build a hologram.
+ */
 public class CrateHologram {
     
     private final boolean enabled;

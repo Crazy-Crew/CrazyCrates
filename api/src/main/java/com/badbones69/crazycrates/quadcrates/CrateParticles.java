@@ -1,5 +1,11 @@
 package com.badbones69.crazycrates.quadcrates;
 
+/**
+ * @author RyderBelserion
+ * @author BadBones69
+ *
+ * Description: The crate particles.
+ */
 public enum CrateParticles {
     
     FLAME("Flame"),

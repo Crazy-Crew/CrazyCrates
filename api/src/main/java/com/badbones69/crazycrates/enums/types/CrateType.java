@@ -1,5 +1,11 @@
 package com.badbones69.crazycrates.enums.types;
 
+/**
+ * @author RyderBelserion
+ * @author BadBones69
+ *
+ * Description: Handles the crate types.
+ */
 public enum CrateType {
     
     MENU("Menu"),

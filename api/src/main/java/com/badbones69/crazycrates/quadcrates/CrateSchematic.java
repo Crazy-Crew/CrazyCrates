@@ -3,7 +3,10 @@ package com.badbones69.crazycrates.quadcrates;
 import java.io.File;
 
 /**
- * A constructor to build a schematic reference.
+ * @author RyderBelserion
+ * @author BadBones69
+ *
+ * Description: A constructor to build a schematic reference.
  *
  * @param schematicName the name of the schematic
  * @param schematicFile the schematic file
