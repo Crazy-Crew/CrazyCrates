@@ -3,10 +3,10 @@
 
 build
 
-build-logic/.gradle
-build-logic/build
+buildSrc/.gradle
+buildSrc/build
 
-core/build
+api/build
 
 platforms/paper/build
 platforms/paper/run/*
