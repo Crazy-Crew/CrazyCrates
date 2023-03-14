@@ -12,6 +12,7 @@
 [![Contact][discord-shield]][discord-url]
 ![CodeFactor][codefactor-shield]
 
+![Spigot](https://cdn.jsdelivr.net/gh/intergrav/devins-badges/assets/compact/unsupported/spigot_vector.svg)
 ![Paper](https://cdn.jsdelivr.net/gh/intergrav/devins-badges/assets/compact/supported/paper_vector.svg)
 ![Purpur](https://cdn.jsdelivr.net/gh/intergrav/devins-badges/assets/compact/supported/purpur_vector.svg)
 
@@ -23,9 +24,9 @@
     <br />
     <a href="https://github.com/Crazy-Crew/CrazyCrates/issues">Report Bug</a>
     ·
-    <a href="https://github.com/orgs/Crazy-Crew/discussions/categories/features?discussions_q=label%3Acrazycrates+category%3AFeatures">Request Feature</a>
+    <a href="https://github.com/Crazy-Crew/CrazyCrates/discussions/categories/feature-rquests">Request Feature</a>
     ·
-    <a href="https://github.com/orgs/Crazy-Crew/discussions/categories/support?discussions_q=label%3Acrazycrates+category%3ASupport">Get Support</a>
+    <a href="https://github.com/Crazy-Crew/CrazyCrates/discussions/categories/support">Get Support</a>
   </p>
 </div>
 
@@ -43,16 +44,17 @@
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="https://discord.gg/crazycrew">Contact</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
 
 ## Resource Page
-
-### Beta Builds
-All beta builds will be on Modrinth marked as beta.<br>
-
 <a href="https://modrinth.com/plugin/crazycrates">![Modrinth](https://raw.githubusercontent.com/intergrav/devins-badges/v3/assets/cozy/available/modrinth_64h.png)</a>
+
+## Beta Builds
+### Get the latest changes before marked as release.
+All beta builds will be on Modrinth.<br>
+> https://modrinth.com/plugin/crazycrates/versions
 
 ## Getting Started
 
@@ -87,14 +89,11 @@ Check our public [trello board](https://trello.com/b/bzQ5TwXo) for our current p
 2. Create your Feature Branch (`git checkout -b feature/yourfeature`)
 3. Commit your Changes (`git commit -m 'your amazing feature.'`)
 4. Push to the Branch (`git push`)
-5. Open a Pull Request to the dev branch to add your feature/fix.
+5. Open a Pull Request to add your feature/fix.
 
 ## License
 
 Distributed under the MIT License. See [`LICENSE`](/LICENSE) for more information.
-
-## Plugin Data
-[![bStats Graph Data](https://bstats.org/signatures/bukkit/CrazyCrates.svg)](https://bstats.org/plugin/bukkit/CrazyCrates/4514)
 
 [discord-shield]: https://img.shields.io/discord/182615261403283459.svg?style=flat&logo=appveyor
 [discord-url]: https://discord.gg/crazycrew
