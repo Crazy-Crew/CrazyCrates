@@ -66,6 +66,10 @@ tasks {
         ).forEach { relocate(it, "${rootProject.group}.library.$it") }
     }
 
+    runServer {
+        minecraftVersion("1.19.4")
+    }
+
     modrinth {
         token.set(System.getenv("MODRINTH_TOKEN"))
         projectId.set(rootProject.name.lowercase())
