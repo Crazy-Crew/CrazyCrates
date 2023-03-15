@@ -13,7 +13,7 @@ crazycore = "1.0.0.1"
 
 # Minecraft
 papermc = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
-paperlib = { module = "io.papermc:paperlib", version = "1.0.9-SNAPSHOT" }
+paperlib = { module = "io.papermc:paperlib", version = "1.0.8-SNAPSHOT" }
 
 # Adventure
 kyori = { module = "net.kyori:adventure-api", version.ref = "kyori" }
