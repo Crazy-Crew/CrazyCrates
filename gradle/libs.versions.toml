@@ -1,7 +1,7 @@
 [versions]
 
 # Minecraft
-paper = "1.19.3-R0.1-SNAPSHOT"
+paper = "1.19.4-R0.1-SNAPSHOT"
 
 # Adventure
 adventure = "4.12.0"
