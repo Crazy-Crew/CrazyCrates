@@ -5,6 +5,7 @@ import ch.jalu.configme.SettingsManagerBuilder;
 import us.crazycrew.crazycore.CrazyCore;
 import us.crazycrew.crazycrates.configurations.ConfigSettings;
 import us.crazycrew.crazycrates.configurations.PluginSettings;
+import us.crazycrew.crazycrates.configurations.migrate.ConfigMigrationService;
 import us.crazycrew.crazycrates.configurations.migrate.PluginMigrationService;
 import java.io.File;
 
@@ -14,6 +15,10 @@ public class ApiLoader {
     private static SettingsManager config;
 
     public static void load() {
+        ConfigMigrationService migrationService = new ConfigMigrationService();
+
+        migrationService.convert();
+
         pluginConfig = SettingsManagerBuilder
                 .withYamlFile(new File(CrazyCore.api().getDirectory().toFile(), "plugin-settings.yml"))
                 .configurationData(PluginSettings.class)
