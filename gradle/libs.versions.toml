@@ -4,7 +4,7 @@
 paper = "1.19.4-R0.1-SNAPSHOT"
 
 # Adventure
-adventure = "4.12.0"
+kyori = "4.13.0"
 
 # CrazyCore
 crazycore = "1.0.0.1"
@@ -13,10 +13,11 @@ crazycore = "1.0.0.1"
 
 # Minecraft
 papermc = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
+paperlib = { module = "io.papermc:paperlib", version = "1.0.9-SNAPSHOT" }
 
 # Adventure
-adventure_api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
-adventure_text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
+kyori = { module = "net.kyori:adventure-api", version.ref = "kyori" }
+kyori-mm = { module = "net.kyori:adventure-text-minimessage", version.ref = "kyori" }
 
 # CrazyCore
 crazycore_api = { module = "us.crazycrew.crazycore:crazycore-api", version.ref = "crazycore" }
