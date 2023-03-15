@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    compileOnly(libs.adventure.api)
-    compileOnly(libs.adventure.text)
+    compileOnly(libs.kyori)
+    compileOnly(libs.kyori.mm)
 }
 
 tasks {
