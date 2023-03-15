@@ -116,25 +116,6 @@ public class CrazyCrates extends JavaPlugin {
         //boolean updaterEnabled = Config.UPDATE_CHECKER;
 
         //if (!updaterEnabled) return;
-
-        getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            UpdateChecker updateChecker = new UpdateChecker(17599);
-
-            try {
-                if (updateChecker.hasUpdate() && !getDescription().getVersion().contains("Beta")) {
-                    //MsgWrapper.send("<#E0115F>CrazyCrates has a new update available! New version: <#11e092>" + updateChecker.getNewVersion());
-                    //MsgWrapper.send("<#E0115F>Current Version: <#11e092>v" + getDescription().getVersion());
-                    //MsgWrapper.send("<#E0115F>Download: <#11e092>" + updateChecker.getResourcePage());
-
-                    return;
-                }
-
-                //MsgWrapper.send("<#E0115F>Plugin is up to date! - <#11e092>" + updateChecker.getNewVersion());
-            } catch (Exception exception) {
-                //MsgWrapper.send("<#E0115F>Could not check for updates! Perhaps the call failed or you are using a snapshot build:");
-                //MsgWrapper.send("<#E0115F>You can turn off the update checker in config.yml if on a snapshot build.");
-            }
-        });
     }
 
     public void cleanFiles() {

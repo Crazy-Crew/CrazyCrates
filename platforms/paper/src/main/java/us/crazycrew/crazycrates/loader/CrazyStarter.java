@@ -1,6 +1,5 @@
 package us.crazycrew.crazycrates.loader;
 
-import ch.jalu.configme.SettingsManager;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
 import io.papermc.paper.plugin.bootstrap.PluginProviderContext;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,16 +23,9 @@ public class CrazyStarter implements PluginBootstrap {
 
     private PaperCore paperCore;
 
-    private static SettingsManager pluginConfig;
-    private static SettingsManager config;
-
     @Override
     public void bootstrap(@NotNull PluginProviderContext context) {
         this.paperCore = new PaperCore(context.getConfiguration().getName(), context.getDataDirectory());
-
-        //ConfigMigrationService configMigrationService = new ConfigMigrationService();
-
-        //configMigrationService.convert();
 
         // Load specific shit.
         ApiLoader.load();
@@ -56,7 +48,7 @@ public class CrazyStarter implements PluginBootstrap {
         // Add the logger manager.
         LogManager.getLogManager().addLogger(CrazyLogger.getLogger());
 
-        return new CrazyCrates(this.paperCore);
+        return new CrazyCrates(this.paperCore, context);
     }
 
     public PaperCore getPaperCore() {

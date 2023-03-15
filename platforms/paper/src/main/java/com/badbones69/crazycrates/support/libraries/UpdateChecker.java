@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.support.libraries;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import io.papermc.paper.plugin.bootstrap.PluginProviderContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,19 +11,21 @@ import java.net.URL;
 
 public class UpdateChecker {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
-
     private final int project;
 
     private URL apiPage;
 
     private String newVersion;
 
-    public UpdateChecker(int project) {
+    private PluginProviderContext context;
+
+    public UpdateChecker(int project, PluginProviderContext context) {
         this.project = project;
 
         try {
             this.apiPage = new URL("https://api.spiget.org/v2/resources/" + project + "/versions/latest");
+
+            this.context = context;
         } catch (IOException exception) {
             exception.printStackTrace();
         }
@@ -61,7 +63,7 @@ public class UpdateChecker {
      *
      * @return True if yes otherwise false.
      */
-    public boolean hasUpdate() throws IOException {
+    public boolean update() throws IOException {
         // Open the connection.
         HttpURLConnection connection = (HttpURLConnection) this.apiPage.openConnection();
 
@@ -73,7 +75,7 @@ public class UpdateChecker {
 
         Gson gson = new Gson();
 
-        int currentVersion = Integer.parseInt(plugin.getDescription().getVersion().replace(".", "").replace("+Beta", ""));
+        int currentVersion = Integer.parseInt(context.getConfiguration().getVersion().replace(".", "").replace("+Beta", ""));
 
         String apiValue = gson.fromJson(reader, JsonObject.class).get("name").getAsString();
 
