@@ -28,6 +28,7 @@ public class CrazyCrates extends JavaPlugin {
                 String name = context.getConfiguration().getName();
                 String version = updateChecker.getNewVersion();
                 String current = context.getConfiguration().getVersion();
+                String download = updateChecker.getResourcePage();
 
                 String updateMessage = """
                         %s has a new update available. New version: %s
@@ -35,7 +36,7 @@ public class CrazyCrates extends JavaPlugin {
                         Download: %s
                         """;
 
-                CrazyLogger.info(String.format(updateMessage, name, version, current));
+                CrazyLogger.info(String.format(updateMessage, name, version, current, download));
             } catch (Exception exception) {
                 CrazyLogger.info(exception.getMessage());
             }
