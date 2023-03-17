@@ -5,3 +5,4 @@ buildSrc/.gradle
 
 buildSrc/build
 platforms/paper/build
+api/build
