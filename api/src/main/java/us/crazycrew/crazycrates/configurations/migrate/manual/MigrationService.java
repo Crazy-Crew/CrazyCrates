@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.configurations.migrate;
+package us.crazycrew.crazycrates.configurations.migrate.manual;
 
 import org.simpleyaml.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycore.CrazyCore;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Description: Migrate old values to new values manually.
  */
-public class OldMigrationService {
+public class MigrationService {
 
     private final File path = CrazyCore.api().getDirectory().toFile();
 
@@ -29,29 +29,25 @@ public class OldMigrationService {
         File input = new File(path + "/config.yml");
 
         // The old configuration of config.yml.
-        YamlConfiguration config = null;
+        YamlConfiguration config;
         YamlConfiguration configV1 = null;
 
         try {
-            if (!input.exists()) input.createNewFile();
-
             config = YamlConfiguration.loadConfiguration(input);
 
-            configV1 = YamlConfiguration.loadConfiguration(input);
+            if (config.getString(prefix + "Enable-Crate-Menu") == null && !output.exists()) return;
+
+            input.renameTo(output);
+
+            if (!input.exists()) input.createNewFile();
+
+            configV1 = YamlConfiguration.loadConfiguration(output);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if (config == null) return;
-
-        if (config.getString(prefix + "Enable-Crate-Menu") == null && !output.exists()) return;
-
-        input.renameTo(output);
-
         if (configV1 == null) return;
 
-        boolean updateChecker = configV1.getBoolean(prefix + "Update-Checker");
-        boolean toggleMetrics = configV1.getBoolean(prefix + "Toggle-Metrics");
         boolean enableCrateMenu = configV1.getBoolean(prefix + "Enable-Crate-Menu");
         boolean crateLogFile = configV1.getBoolean(prefix + "Crate-Actions.Log-File");
         boolean crateLogConsole = configV1.getBoolean(prefix + "Crate-Actions.Log-Console");
@@ -104,9 +100,6 @@ public class OldMigrationService {
         }
 
         assert other != null;
-        other.set("settings.prefix", prefix);
-        other.set("settings.update-checker", updateChecker);
-        other.set("settings.toggle-metrics", toggleMetrics);
         other.set("crate-settings.crate-actions.log-to-file", crateLogFile);
         other.set("crate-settings.crate-actions.log-to-console", crateLogConsole);
 
@@ -192,13 +185,14 @@ public class OldMigrationService {
 
         if (pluginSettings == null) return;
 
-        pluginSettings.set(prefix + "prefix.command", oldPrefix);
-        pluginSettings.set(prefix + "toggle-metrics", oldMetrics);
-        pluginSettings.set(prefix + "update-checker", oldUpdate);
+        pluginSettings.set(prefix.toLowerCase() + "prefix.command", oldPrefix);
+        pluginSettings.set(prefix.toLowerCase() + "toggle-metrics", oldMetrics);
+        pluginSettings.set(prefix.toLowerCase() + "update-checker", oldUpdate);
 
         config.set(prefix + "Prefix", null);
         config.set(prefix + "Toggle-Metrics", null);
         config.set(prefix + "Update-Checker", null);
+        config.set(prefix + "Config-Version", null);
 
         try {
             config.save(input);
