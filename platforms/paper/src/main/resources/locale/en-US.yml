@@ -1,11 +1,9 @@
-#
-# If you notice any translation issues, Do not hesitate to contact our Translators.
-#
-# Discord: https://discord.gg/crazycrew
+# Support: https://discord.gg/crazycrew
 # Github: https://github.com/Crazy-Crew
 #
-# Report Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
-# Request Features/Support: https://github.com/orgs/Crazy-Crew/discussions
+# Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
+# Features: https://github.com/Crazy-Crew/CrazyCrates/discussions
+# Translations: https://github.com/Crazy-Crew/CrazyCrates/discussions/categories/translations
 
 misc:
   unknown-command: '<red>This command is not known.</red>'
@@ -19,9 +17,9 @@ misc:
 errors:
   no-prizes-found: '<red>This crate contains no prizes that you can win.</red>'
   no-schematics-found: '<red>No schematic were found, Please re-generate them by deleting the folder or checking for errors!</red>'
-  prize-error: |-
-    <red>An error has occurred while trying to give you the prize</red> <gold>%prize%.</gold>
-    <yellow>This has occurred in</yellow> <gold>%crate%.</gold> <yellow>Please notify your owner.</yellow>
+  prize-error:
+    - '<red>An error has occurred while trying to give you the prize</red> <gold>%prize%.</gold>'
+    - '<yellow>This has occurred in</yellow> <gold>%crate%.</gold> <yellow>Please notify your owner.</yellow>'
   internal-error: '<red>An internal error has occurred. Please check the console for the full error.</red>'
 player:
   requirements:
@@ -49,9 +47,9 @@ crates:
   need-more-room: '<red>There is not enough space to open that here.</red>'
   world-disabled: '<red>Crates are disabled in</red> <gold>%world%.</gold>'
   physical-crate:
-    created: |-
-      <gray>You have set that block to</gray> <gold>%crate%.</gold>
-      <gray>To remove</gray> <gold>%crate%</gold>, <gray>Shift Click Break in Creative to remove.</gray>
+    created:
+      - '<gray>You have set that block to</gray> <gold>%crate%.</gold>'
+      - '<gray>To remove</gray> <gold>%crate%</gold>, <gray>Shift Click Break in Creative to remove.</gray>'
     removed: '<gray>You have removed</gray> <gold>%id%.</gold>'
 command:
   open:
@@ -81,34 +79,10 @@ command:
   keys:
     personal:
       no-virtual-keys: '<dark_gray>(/dark_gray><gold>!</gold><dark_gray>)/dark_gray> <gray>You currently do not have any virtual keys.</gray>'
-      virtual-keys-header: |-
-        <dark_gray>(/dark_gray><gold>!</gold><dark_gray>)/dark_gray> <gray>A list of your current amount of keys.</gray>
+      virtual-keys-header:
+        - '<dark_gray>(/dark_gray><gold>!</gold><dark_gray>)/dark_gray> <gray>A list of your current amount of keys.</gray>'
     other-player:
       no-virtual-keys: '<dark_gray>(/dark_gray><gold>!</gold><dark_gray>)/dark_gray> <gray>The player</gray> <red>%player% <gray>does not have any keys.</gray>'
-      virtual-keys-header: |-
-        <dark_gray>(</dark_gray><gold>!</gold><dark_gray>)</dark_gray> <gray>A list of</gray> <red>%player%''s</red> <gray>current amount of keys.</gray>
+      virtual-keys-header:
+        - '<dark_gray>(</dark_gray><gold>!</gold><dark_gray>)</dark_gray> <gray>A list of</gray> <red>%player%''s</red> <gray>current amount of keys.</gray>'
     crate-format: '%crate% <dark_gray>»</dark_gray> <gold>%keys% keys.</gold>' # Related to what will show in the output above.
-  player-help: |-
-    <dark_green>Crazy Crates Player Help!</dark_green>
-    
-    <dark_gray>»</dark_gray> <gold>/key [player]</gold> <gray>-</gray> <yellow>Check how many keys a player has.</yellow>
-    <dark_gray>»</dark_gray> <gold>/key</gold> <gray>- <yellow>Shows how many keys you have.</yellow>
-    <dark_gray>»</dark_gray> <gold>/cc</gold> <gray>- <yellow>Opens the crate menu.</yellow>
-  admin-help: |-
-    <red>Crazy Crates Admin Help</red>
-    
-    <dark_gray>»</dark_gray> <gold>/cc additem [crate] [prize] <gray>-</gray> <yellow>Add items in-game to a prize in a crate.</yellow>
-    <dark_gray>»</dark_gray> <gold>/cc preview [crate] [player] <gray>-</gray> <yellow>Opens the preview of a crate for a player.</yellow>
-    <dark_gray>»</dark_gray> <gold>/cc list <gray>-</gray> <yellow>Lists all crates.</yellow>
-    <dark_gray>»</dark_gray> <gold>/cc open [crate] [player] <gray>-</gray> <yellow>Tries to open a crate for a player if they have a key.</yellow>
-    <dark_gray>»</dark_gray> <gold>/cc forceopen [crate] [player] <gray>-</gray> <yellow>Opens a crate for a player for free.</yellow>
-    <dark_gray>»</dark_gray> <gold>/cc tp [location] <gray>-</gray> <yellow>Teleports to a Crate.</yellow>
-    <dark_gray>»</dark_gray> <gold>/cc give [physical/virtual] [crate] [amount] [player]</gold> <gray>- <yellow>Allows you to take keys from a player.</yellow>
-    <dark_gray>»</dark_gray> <gold>/cc set [crate]</gold> <gray>-</gray> <yellow>Set the block you are looking at as a crate.</yellow>
-    <dark_gray>»</dark_gray> <gold>/cc set Menu</gold> <gray>-</gray> <yellow>Set the block you are looking at to open the /cc menu.</yellow>
-    <dark_gray>»</dark_gray> <gold>/cc reload</gold> <gray>-</gray> <yellow>Reloads the config/data files.</yellow>
-    <dark_gray>»</dark_gray> <gold>/cc set1/set2</gold> <gray>-</gray> <yellow>Sets position</yellow> <red>#1 or #2</red> <yellow>for when making a new schematic for QuadCrates.</yellow>
-    <dark_gray>»</dark_gray> <gold>/cc save [file name]</gold> <gray>-</gray> <yellow>Create a new nbt file in the schematics folder.</yellow>
-    
-    <dark_gray>»</dark_gray> <gold>/key [player]</gold> <gray>-</gray> <yellow>Check how many keys a player has.</yellow>
-    <dark_gray>»</dark_gray> <gold>/cc</gold> <gray>-</gray> <yellow>Opens the crate menu.</yellow>

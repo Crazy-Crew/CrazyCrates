@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.configurations;
+package us.crazycrew.crazycrates.configurations.sections;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
