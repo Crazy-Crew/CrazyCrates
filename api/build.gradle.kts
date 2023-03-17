@@ -12,9 +12,3 @@ dependencies {
 
     compileOnly(libs.crazycore.api)
 }
-
-tasks {
-    shadowJar {
-        archiveFileName.set("${rootProject.name}+API+${rootProject.version}.jar")
-    }
-}

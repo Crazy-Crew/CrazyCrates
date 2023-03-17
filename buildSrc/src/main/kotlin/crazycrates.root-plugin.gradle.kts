@@ -57,4 +57,8 @@ tasks {
             javaParameters = true
         }
     }
+
+    shadowJar {
+        archiveClassifier.set("")
+    }
 }

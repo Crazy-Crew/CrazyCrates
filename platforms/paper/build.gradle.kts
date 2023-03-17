@@ -57,13 +57,13 @@ val type = if (beta) "beta" else "release"
 
 tasks {
     shadowJar {
-        archiveFileName.set("${rootProject.name}+Paper+${rootProject.version}.jar")
+        archiveBaseName.set("${rootProject.name}-Paper")
 
         listOf(
             "de.tr7zw.changeme.nbtapi",
             "org.bstats",
             "dev.triumphteam.cmd"
-        ).forEach { relocate(it, "${rootProject.group}.library.$it") }
+        ).forEach { pack -> relocate(pack, "${rootProject.group}.$pack") }
     }
 
     runServer {
