@@ -12,13 +12,26 @@ public class CrazyCrates extends JavaPlugin {
 
     private final PaperCore paperCore;
 
+    private final PluginProviderContext context;
+
     private static CrazyCrates plugin;
 
     public CrazyCrates(PaperCore paperCore, PluginProviderContext context) {
         this.paperCore = paperCore;
 
-        plugin = this;
+        this.context = context;
 
+        plugin = this;
+    }
+
+    @Override
+    @NotNull
+    public java.util.logging.Logger getLogger() {
+        return CrazyLogger.getLogger();
+    }
+
+    @Override
+    public void onEnable() {
         getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             UpdateChecker updateChecker = new UpdateChecker(17599, context);
 
@@ -41,16 +54,7 @@ public class CrazyCrates extends JavaPlugin {
                 CrazyLogger.info(exception.getMessage());
             }
         });
-    }
 
-    @Override
-    @NotNull
-    public java.util.logging.Logger getLogger() {
-        return CrazyLogger.getLogger();
-    }
-
-    @Override
-    public void onEnable() {
         Permissions.register(this.getServer().getPluginManager());
     }
 
