@@ -13,13 +13,15 @@ public class CrazyCrates extends JavaPlugin {
     private final PaperCore paperCore;
 
     private final PluginProviderContext context;
+    private final ApiLoader apiLoader;
 
     private static CrazyCrates plugin;
 
-    public CrazyCrates(PaperCore paperCore, PluginProviderContext context) {
+    public CrazyCrates(PaperCore paperCore, PluginProviderContext context, ApiLoader apiLoader) {
         this.paperCore = paperCore;
 
         this.context = context;
+        this.apiLoader = apiLoader;
 
         plugin = this;
     }
@@ -69,5 +71,9 @@ public class CrazyCrates extends JavaPlugin {
 
     public PaperCore getCrazyCore() {
         return this.paperCore;
+    }
+
+    public ApiLoader getApiLoader() {
+        return this.apiLoader;
     }
 }

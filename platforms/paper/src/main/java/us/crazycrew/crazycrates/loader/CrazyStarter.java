@@ -10,7 +10,7 @@ import us.crazycrew.crazycore.paper.PaperCore;
 import us.crazycrew.crazycore.paper.player.PaperPlayerRegistry;
 import us.crazycrew.crazycrates.ApiLoader;
 import us.crazycrew.crazycrates.CrazyCrates;
-import us.crazycrew.crazycrates.configurations.PluginSettings;
+import us.crazycrew.crazycrates.configurations.sections.PluginSettings;
 import java.util.logging.LogManager;
 
 /**
@@ -22,13 +22,16 @@ import java.util.logging.LogManager;
 public class CrazyStarter implements PluginBootstrap {
 
     private PaperCore paperCore;
+    private ApiLoader apiLoader;
 
     @Override
     public void bootstrap(@NotNull PluginProviderContext context) {
         this.paperCore = new PaperCore(context.getConfiguration().getName(), context.getDataDirectory());
 
         // Load specific shit.
-        ApiLoader.load();
+        apiLoader = new ApiLoader();
+
+        apiLoader.load();
     }
 
     @Override
@@ -40,7 +43,7 @@ public class CrazyStarter implements PluginBootstrap {
         this.paperCore.setPaperConsole(new PaperConsole());
 
         // Set the project prefix.
-        this.paperCore.setProjectPrefix(ApiLoader.getPluginConfig().getProperty(PluginSettings.CONSOLE_PREFIX));
+        this.paperCore.setProjectPrefix(apiLoader.getPluginConfig().getProperty(PluginSettings.CONSOLE_PREFIX));
 
         // Set the logger name and create it.
         CrazyLogger.setName(this.paperCore.getProjectName());
@@ -48,10 +51,6 @@ public class CrazyStarter implements PluginBootstrap {
         // Add the logger manager.
         LogManager.getLogManager().addLogger(CrazyLogger.getLogger());
 
-        return new CrazyCrates(this.paperCore, context);
-    }
-
-    public PaperCore getPaperCore() {
-        return this.paperCore;
+        return new CrazyCrates(this.paperCore, context, this.apiLoader);
     }
 }
