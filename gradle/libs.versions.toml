@@ -7,13 +7,18 @@ paper = "1.19.4-R0.1-SNAPSHOT"
 kyori = "4.13.0"
 
 # CrazyCore
-crazycore = "1.0.0.1"
+crazycore = "1.0.1.1"
+
+# Kotlin
+ktor = "2.2.4"
+kotlin = "1.8.20-RC"
 
 [libraries]
 
 # Minecraft
 papermc = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 paperlib = { module = "io.papermc:paperlib", version = "1.0.8-SNAPSHOT" }
+paperweight = { module = "io.papermc.paperweight:paperweight-userdev", version = "1.5.3" }
 
 # Adventure
 kyori = { module = "net.kyori:adventure-api", version.ref = "kyori" }
@@ -50,3 +55,16 @@ placeholder_api = { module = "me.clip:placeholderapi", version = "2.11.2" }
 
 # Item Plugins
 itemsadder_api = { module = "com.github.LoneDev6:api-itemsadder", version = "3.0.0" }
+
+# Kotlin
+ktor-core = { module = "io.ktor:ktor-client-core-jvm", version.ref = "ktor" }
+ktor-cio = { module = "io.ktor:ktor-client-cio-jvm", version.ref = "ktor" }
+ktor-content = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-gson = { module = "io.ktor:ktor-serialization-gson", version.ref = "ktor"}
+
+kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin"}
+
+kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version = "1.6.4" }
+
+shadow = { module = "com.github.johnrengelman:shadow", version = "8.1.0" }

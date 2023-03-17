@@ -3,12 +3,12 @@ import task.WebhookExtension
 
 plugins {
     `java-library`
-
     `maven-publish`
 
-    id("com.github.hierynomus.license")
-
     id("com.github.johnrengelman.shadow")
+
+    kotlin("plugin.serialization")
+    kotlin("jvm")
 }
 
 repositories {
@@ -23,12 +23,19 @@ repositories {
     maven("https://jitpack.io/")
 
     mavenCentral()
-
     mavenLocal()
+}
+
+dependencies {
+    compileOnly(kotlin("stdlib"))
 }
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of("17"))
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 tasks {
@@ -43,13 +50,11 @@ tasks {
     compileJava {
         options.release.set(17)
     }
-}
 
-license {
-    header = rootProject.file("LICENSE")
-    encoding = "UTF-8"
-
-    mapping("java", "JAVADOC_STYLE")
-
-    include("**/*.java")
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "17"
+            javaParameters = true
+        }
+    }
 }
