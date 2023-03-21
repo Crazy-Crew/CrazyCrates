@@ -1,6 +1,6 @@
-dependencyResolutionManagement {
-    includeBuild("build-logic")
+@file:Suppress("UnstableApiUsage")
 
+dependencyResolutionManagement {
     versionCatalogs {
         create("settings") {
             from(files("gradle/settings.versions.toml"))
@@ -12,19 +12,14 @@ dependencyResolutionManagement {
 
 pluginManagement {
     repositories {
-        maven("https://papermc.io/repo/repository/maven-public/")
-
         gradlePluginPortal()
         mavenCentral()
     }
 }
 
-rootProject.name = "CrazyCrates"
+val lowerCase = rootProject.name.lowercase()
 
-val lowerCase = rootProject.name.toLowerCase()
-
-include("core")
-project(":core").name = "$lowerCase-core"
+listOf("api").forEach(::includeProject)
 
 listOf("paper").forEach(::includePlatform)
 
@@ -34,17 +29,17 @@ fun includeProject(name: String) {
     }
 }
 
-fun includePlatform(name: String) {
-    include(name) {
-        this.name = "$lowerCase-platform-$name"
-        this.projectDir = file("platforms/$name")
-    }
-}
-
 fun includeModule(name: String) {
     include(name) {
         this.name = "$lowerCase-module-$name"
         this.projectDir = file("modules/$name")
+    }
+}
+
+fun includePlatform(name: String) {
+    include(name) {
+        this.name = "$lowerCase-$name"
+        this.projectDir = file("platforms/$name")
     }
 }
 
