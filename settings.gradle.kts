@@ -17,6 +17,8 @@ pluginManagement {
     }
 }
 
+rootProject.name = "CrazyCrates"
+
 val lowerCase = rootProject.name.lowercase()
 
 listOf("api").forEach(::includeProject)
