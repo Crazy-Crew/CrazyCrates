@@ -1,8 +1,8 @@
 <br />
 
-[![crazycrates](https://git.crazycrew.us/ryderbelserion/Assets/raw/branch/main/crazycrew/webp/CrazyCratesBanner.webp)](https://modrinth.com/plugin/crazycrates)
-
 <div align="center">
+
+[![crazycrates](https://raw.githubusercontent.com/RyderBelserion/Assets/main/crazycrew/webp/CrazyCratesBanner.webp)](https://modrinth.com/plugin/crazycrates)
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
