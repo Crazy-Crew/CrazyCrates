@@ -8,6 +8,7 @@ plugins {
 
 val releaseUpdate = Color(27, 217, 106)
 val betaUpdate = Color(255, 163, 71)
+val changeLogs = Color(37, 137, 204)
 
 val beta = settings.versions.beta.get().toBoolean()
 val extension = settings.versions.extension.get()
@@ -50,6 +51,17 @@ webhook {
                 url,
                 "https://git.crazycrew.us/ryderbelserion/assets/raw/branch/main/crazycrew/png/${rootProject.name}Website.png"
             )
+        }
+
+        this.embed {
+            this.color(changeLogs)
+
+            this.title("What changed?")
+
+            this.description("""
+                Changes:
+                » N/A
+            """.trimIndent())
         }
     }
 }
