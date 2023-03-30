@@ -118,8 +118,8 @@ publishing {
         val repo = if (beta) "beta" else "releases"
         maven("https://repo.crazycrew.us/$repo") {
             name = "crazycrew"
-            // Used for locally publishing.
-            // credentials(PasswordCredentials::class)
+
+            credentials(PasswordCredentials::class)
 
             credentials {
                 username = System.getenv("REPOSITORY_USERNAME")
