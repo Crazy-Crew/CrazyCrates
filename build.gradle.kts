@@ -41,7 +41,7 @@ webhook {
 
                 this.field(
                     "API Update",
-                    "Version ${rootProject.version} has been pushed to https://repo.crazycrew.us/#/$repo"
+                    "Version **${rootProject.version}** has been pushed to https://repo.crazycrew.us/#/$repo"
                 )
             }
 
