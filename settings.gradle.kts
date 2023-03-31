@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 dependencyResolutionManagement {
     versionCatalogs {
         create("settings") {
