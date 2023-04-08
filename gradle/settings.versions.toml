@@ -1,7 +1,7 @@
 [versions]
 
 github = "https://github.com/Crazy-Crew/CrazyCrates"
-beta = "true"
+beta = "false"
 extension = "plugin"
 
 [plugins]
