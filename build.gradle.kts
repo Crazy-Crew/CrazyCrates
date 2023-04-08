@@ -5,7 +5,7 @@ import java.awt.Color
 plugins {
     id("crazycrates.root-plugin")
 
-    id("featherpatcher") version "8ef64e4"
+    id("featherpatcher") version "0.0.0.2"
 }
 
 val releaseUpdate = Color(27, 217, 106)
