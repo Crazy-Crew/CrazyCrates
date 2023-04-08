@@ -1,12 +1,6 @@
-import task.ReleaseWebhook
-import task.WebhookExtension
-
 plugins {
     `java-library`
-
     `maven-publish`
-
-    id("com.github.hierynomus.license")
 
     id("com.github.johnrengelman.shadow")
 }
@@ -14,14 +8,11 @@ plugins {
 repositories {
     maven("https://repo.triumphteam.dev/snapshots/")
 
-    maven("https://libraries.minecraft.net/")
-
     maven("https://repo.crazycrew.us/api/")
 
     maven("https://jitpack.io/")
 
     mavenCentral()
-    mavenLocal()
 }
 
 java {
@@ -29,24 +20,16 @@ java {
 }
 
 tasks {
-    // Creating the extension to be available on the root gradle
-    val webhookExtension = extensions.create("webhook", WebhookExtension::class)
-
-    // Register the task
-    register<ReleaseWebhook>("webhook") {
-        extension = webhookExtension
-    }
-
     compileJava {
+        options.encoding = Charsets.UTF_8.name()
         options.release.set(17)
     }
-}
 
-license {
-    header = rootProject.file("LICENSE")
-    encoding = "UTF-8"
+    javadoc {
+        options.encoding = Charsets.UTF_8.name()
+    }
 
-    mapping("java", "JAVADOC_STYLE")
-
-    include("**/*.java")
+    processResources {
+        filteringCharset = Charsets.UTF_8.name()
+    }
 }

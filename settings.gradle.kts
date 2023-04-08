@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 dependencyResolutionManagement {
     versionCatalogs {
         create("settings") {
@@ -14,8 +12,13 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
+
+        maven("https://repo.papermc.io/repository/maven-public/")
+        maven("https://repo.crazycrew.us/api/")
     }
 }
+
+rootProject.name = "CrazyCrates"
 
 val lowerCase = rootProject.name.lowercase()
 

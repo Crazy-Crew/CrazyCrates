@@ -1,10 +1,10 @@
 [versions]
 
 github = "https://github.com/Crazy-Crew/CrazyCrates"
-beta = "false"
+beta = "true"
 extension = "plugin"
 
 [plugins]
 
-minotaur = { id = "com.modrinth.minotaur", version = "2.7.2" }
+minotaur = { id = "com.modrinth.minotaur", version = "2.7.5" }
 run-paper = { id = "xyz.jpenilla.run-paper", version = "2.0.1" }
