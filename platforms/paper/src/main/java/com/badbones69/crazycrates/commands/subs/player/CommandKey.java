@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Command(value = "keys", alias = {"key"})
-public class BaseKeyCommand extends BaseCommand {
+public class CommandKey extends BaseCommand {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
