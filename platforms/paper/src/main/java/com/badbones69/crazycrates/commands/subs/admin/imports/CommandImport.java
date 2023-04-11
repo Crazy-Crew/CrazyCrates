@@ -1,28 +1,21 @@
 package com.badbones69.crazycrates.commands.subs.admin.imports;
 
-import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.commands.enums.CrateImportOptions;
 import com.badbones69.crazycrates.commands.subs.CommandManager;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotation.SubCommand;
 import dev.triumphteam.cmd.core.annotation.Suggestion;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -34,19 +27,19 @@ public class CommandImport extends CommandManager {
     public void importCrates(CommandSender sender, @Suggestion("import-options") CrateImportOptions crateImportOptions) {
         switch (crateImportOptions.getName()) {
             case "advanced_crates" -> {
-                File cratesFolder = new File(plugin.getServer().getPluginsFolder() + "/AdvancedCrates");
+                File advancedCratesDir = new File(plugin.getServer().getPluginsFolder() + "/AdvancedCrates");
 
-                if (cratesFolder.exists()) {
-                    File cratesDir = new File(cratesFolder + "/Crates");
+                File advancedCratesOldDir = new File(advancedCratesDir + "/Crates");
+                File crazyCratesDirectory = new File(plugin.getDataFolder() + "/crates");
 
-                    File myCratesDir = new File(plugin.getDataFolder() + "/crates");
+                if (advancedCratesDir.exists()) {
+                    for (File file : Objects.requireNonNull(advancedCratesOldDir.listFiles())) {
 
-                    for (File file : Objects.requireNonNull(cratesDir.listFiles())) {
-
-                        File oldFile = new File(cratesDir + "/" + file.getName());
+                        // The file to import.
+                        File oldFile = new File(advancedCratesOldDir + "/" + file.getName());
 
                         // Create the new files in our crates directory.
-                        File newFile = new File(myCratesDir + "/" + file.getName());
+                        File newFile = new File(crazyCratesDirectory + "/" + file.getName());
 
                         if (!newFile.exists()) {
                             try {
@@ -70,231 +63,213 @@ public class CommandImport extends CommandManager {
                             String cratePreviewName = configuration.getString("RewardsPreviewGUITitle");
                             boolean cratePreviewEnabled = configuration.getBoolean("RewardPreviewEnabled");
 
+                            // Key shit.
                             String crateKeyName = configuration.getString("KeyCrate.Name");
                             List<String> crateKeyLore = configuration.getStringList("KeyCrate.Lores");
-
                             String crateKeyItem = configuration.getString("KeyCrate.Material");
-
                             boolean crateKeyGlowing = configuration.getBoolean("KeyCrate.Glow");
+                            String crateKeyModelData = configuration.getString("KeyCrate.CustomModelData");
 
-                            YamlConfiguration myConfig = YamlConfiguration.loadConfiguration(newFile);
+                            YamlConfiguration crazyConfig = YamlConfiguration.loadConfiguration(newFile);
 
                             configuration.getConfigurationSection("Prizes").getKeys(false).forEach(prize -> {
                                 int prizeNumber = 0;
-                                
+
                                 String path = "Prizes." + prize;
 
                                 String material = configuration.getString(path + ".Material");
-                                boolean glowing = configuration.getBoolean(path +  ".Glow");
                                 String name = configuration.getString(path +  ".Name");
-                                List<String> lore = configuration.getStringList(path +  ".PreviewLores");
+                                String nbt = configuration.getString(path +  ".NBTtags");
+                                String base64 = configuration.getString(path + ".Base64Texture");
+                                int customModelData = configuration.getInt(path + ".CustomModelData");
+
+                                List<String> blackListedPerms = configuration.getStringList(path + ".BlacklistedPerms");
+
+                                List<String> playerMessages = configuration.getStringList(path + ".MessagesToPlayer");
+
+                                List<String> broadcasts = configuration.getStringList(path + ".BroadcastMessagesToPlayers");
 
                                 List<String> commands = configuration.getStringList(path +  ".Commands");
 
                                 List<String> enchantments = configuration.getStringList(path +  ".Enchantments");
 
-                                String nbt = configuration.getString(path +  ".NBTtags");
+                                List<String> itemFlags = configuration.getStringList(path + ".ItemFlags");
+                                List<String> lore = configuration.getStringList(path +  ".PreviewLores");
 
                                 int chance = (int) configuration.getDouble(path +  ".Chance");
 
                                 int amount = configuration.getInt(path +  ".Amount");
 
+                                boolean glowing = configuration.getBoolean(path +  ".Glow");
+
                                 prizeNumber++;
 
-                                String myPrize = "Crate.Prizes." + prizeNumber;
-                                
-                                if (material != null) {
-                                    plugin.getLogger().severe(material);
+                                String crazyPrize = "Crate.Prizes." + prizeNumber;
 
-                                    if (nbt != null) {
-                                        if (!nbt.isEmpty()) {
-                                            HashMap<Enchantment, Integer> hashMap = new HashMap<>();
+                                if (configuration.contains(path + ".Material")) {
+                                    if (material != null) {
+                                        ItemBuilder itemStack = new ItemBuilder()
+                                                .setMaterial(material)
+                                                .setName(name)
+                                                .setLore(lore)
+                                                .setAmount(amount);
 
-                                            enchantments.forEach(enchant -> {
-                                                String[] split = enchant.split(";");
+                                        if (configuration.contains(path + ".NBTtags")) {
 
-                                                for (String value : split) {
-                                                    boolean exists = isInteger(value);
-                                                    String enchantment = "";
-                                                    int level = 0;
-
-                                                    if (exists) {
-                                                        level = Integer.parseInt(value);
-                                                    } else {
-                                                        enchantment = value;
-                                                    }
-
-                                                    hashMap.put(Enchantment.getByKey(NamespacedKey.fromString(enchantment)), level);
-                                                }
-                                            });
-
-                                            ItemStack itemStack = new ItemBuilder()
-                                                    .setMaterial(material)
-                                                    .setName(name)
-                                                    .setLore(lore)
-                                                    .setAmount(amount)
-                                                    .setEnchantments(hashMap)
-                                                    .build();
-
-                                            //myConfig.set(myPrize + ".DisplayMaterial", material);
+                                        } else {
+                                            itemStack.setEnchantments(getEnchantments(enchantments));
                                         }
+
+                                        if (configuration.contains(path + ".CustomModelData")) itemStack.setCustomModelData(customModelData);
+
+                                        addEditorItem(
+                                                configuration,
+                                                String.valueOf(prizeNumber),
+                                                itemStack.build(),
+                                                chance,
+                                                base64,
+                                                customModelData);
                                     }
-
-                                    myConfig.set(myPrize + ".DisplayMaterial", material);
                                 }
 
-                                if (String.valueOf(glowing).isEmpty()) {
-                                    plugin.getLogger().severe(String.valueOf(glowing));
-
-                                    //myConfig.set(myPrize + ".Glowing", glowing);
+                                // Lists
+                                if (configuration.contains(path + ".ItemFlags") && !itemFlags.isEmpty()) {
+                                    //crazyConfig.set(crazyPrize + ".Flags", itemFlags);
                                 }
 
-                                if (name != null) {
-                                    plugin.getLogger().severe(name);
-
-                                    //myConfig.set(myPrize + ".DisplayName", name);
+                                if (configuration.contains(path + ".BlacklistedPerms") && !blackListedPerms.isEmpty()) {
+                                    //crazyConfig.set(crazyPrize + ".BlackListed-Permissions", blackListedPerms);
                                 }
 
-                                if (!lore.isEmpty()) {
-                                    plugin.getLogger().severe(lore.toString());
-
-                                    //myConfig.set(myPrize + ".DisplayLore", lore);
-                                }
-
-                                if (!enchantments.isEmpty()) {
-                                    plugin.getLogger().severe(enchantments.toString());
-
+                                //if (configuration.contains(path + ".Enchantments") && !enchantments.isEmpty()) {
                                     //enchantments.forEach(enchant -> {
-                                    //    myConfig.set(myPrize + ".DisplayEnchantments", enchant.replaceAll(";", ":"));
+                                    //    crazyConfig.set(crazyPrize + ".DisplayEnchantments", enchant.replaceAll(";", ":"));
                                     //});
+                                //}
+
+                                if (configuration.contains(path + ".Commands") && !commands.isEmpty()) {
+                                    //crazyConfig.set(crazyPrize + ".Commands", commands);
                                 }
 
-                                if (!commands.isEmpty()) {
-                                    plugin.getLogger().severe(commands.toString());
-
-                                    //myConfig.set(myPrize + ".Commands", commands);
+                                if (configuration.contains(path + ".MessagesToPlayer") && !lore.isEmpty()) {
+                                    //crazyConfig.set(crazyPrize + ".DisplayLore", lore);
                                 }
 
-                                if (!String.valueOf(chance).isEmpty()) {
-                                    plugin.getLogger().severe(String.valueOf(chance));
-
-                                    //myConfig.set(myPrize + ".Chance", chance);
+                                if (configuration.contains(path + ".MessagesToPlayer") && !playerMessages.isEmpty()) {
+                                    //crazyConfig.set(crazyPrize + ".Messages", playerMessages);
                                 }
 
-                                if (!String.valueOf(amount).isEmpty()) {
-                                    plugin.getLogger().severe(String.valueOf(amount));
-
-                                    //myConfig.set(myPrize + ".DisplayAmount", amount);
+                                if (configuration.contains(path + ".BroadcastMessagesToPlayers") && !broadcasts.isEmpty()) {
+                                    //broadcasts.forEach(line -> crazyConfig.set(crazyPrize + ".Commands", "broadcast " + line));
                                 }
 
-                                //myConfig.set(myPrize + ".MaxRange", 100);
+                                // Booleans
+                                if (configuration.contains(path + ".Glow") && String.valueOf(glowing).isEmpty()) {
+                                    //crazyConfig.set(crazyPrize + ".Glowing", glowing);
+                                }
+
+                                // Strings
+                                //if (name != null) {
+                                //    //crazyConfig.set(crazyPrize + ".DisplayName", name);
+                                //}
+
+                                //if (base64 != null) {
+                                //    crazyConfig.set(crazyPrize + ".Player", base64);
+
+                                //    crazyConfig.set(crazyPrize + ".DisplayItem", "PLAYER_HEAD");
+                                //} else {
+                                //    if (configuration.contains(path + ".CustomModelData") != null) {
+                                //        crazyConfig.set(crazyPrize + ".DisplayItem", material + "#" + customModelData);
+                                //    } else {
+                                //        crazyConfig.set(crazyPrize + ".DisplayItem", material);
+                                //    }
+                                //}
+
+                                // Integers
+                                //if (configuration.contains(path + ".Chance") != null) {
+                                //    //crazyConfig.set(crazyPrize + ".Chance", chance);
+                                //}
+
+                                //if (configuration.contains(path + ".Amount") != null) {
+                                //    //crazyConfig.set(crazyPrize + ".DisplayAmount", amount);
+                                //}
+
+                                //crazyConfig.set(crazyPrize + ".MaxRange", 100);
                             });
 
-                            if (crateName != null) {
-                                plugin.getLogger().warning(oldFile.getName() + " : Crate Name ->" + crateName);
+                            crazyConfig.set("Crate.CrateName", Objects.requireNonNullElse(crateName, "Default Crate Name"));
 
-                                myConfig.set("Crate.CrateName", crateName);
+                            if (configuration.contains("RewardHologram") && !crateHolo.isEmpty()) {
+                                crazyConfig.set("Crate.Hologram.Message", crateHolo);
                             } else {
-                                myConfig.set("Crate.CrateName", "Default Crate Name");
+                                crazyConfig.set("Crate.Hologram.Message", List.of("Example Crate Hologram"));
                             }
 
-                            if (!crateHolo.isEmpty()) {
-                                plugin.getLogger().warning(oldFile.getName() + " : Crate Holo ->" + crateHolo);
-
-                                myConfig.set("Crate.Hologram.Message", crateHolo);
+                            if (configuration.contains("Lores") && !crateLore.isEmpty()) {
+                                crazyConfig.set("Crate.Lore", crateLore);
                             } else {
-                                myConfig.set("Crate.Hologram.Message", List.of("Example Crate Hologram"));
+                                crazyConfig.set("Crate.Lore", List.of("Example Crate Lore"));
                             }
 
-                            if (!crateLore.isEmpty()) {
-                                plugin.getLogger().warning(oldFile.getName() + " : Crate Lore ->" + crateLore);
+                            crazyConfig.set("Crate.Preview.Name", Objects.requireNonNullElse(cratePreviewName, "Example Crate Name"));
 
-                                myConfig.set("Crate.Lore", crateLore);
+                            if (configuration.contains("RewardPreviewEnabled")) {
+                                crazyConfig.set("Crate.Preview.Toggle", cratePreviewEnabled);
                             } else {
-                                myConfig.set("Crate.Lore", List.of("Example Crate Lore"));
+                                crazyConfig.set("Crate.Preview.Toggle", true);
                             }
 
-                            if (cratePreviewName != null) {
-                                plugin.getLogger().warning(oldFile.getName() + " : Crate Preview Name ->" + cratePreviewName);
+                            crazyConfig.set("Crate.PhysicalKey.Item", Objects.requireNonNullElse(crateKeyItem, "TRIPWIRE_HOOK"));
 
-                                myConfig.set("Crate.Preview.Name", cratePreviewName);
+                            crazyConfig.set("Crate.PhysicalKey.Name", Objects.requireNonNullElse(crateKeyName, "Example Key Name"));
+
+                            if (configuration.contains("KeyCrate.Lores") && !crateKeyLore.isEmpty()) {
+                                crazyConfig.set("Crate.PhysicalKey.Lore", crateKeyLore);
                             } else {
-                                myConfig.set("Crate.Preview.Name", "Example Crate Name");
+                                crazyConfig.set("Crate.PhysicalKey.Lore", "Example Key Lore");
                             }
 
-                            if (!String.valueOf(cratePreviewEnabled).isEmpty()) {
-                                plugin.getLogger().warning(oldFile.getName() + " : Crate Preview Enabled ->" + cratePreviewEnabled);
-
-                                myConfig.set("Crate.Preview.Toggle", cratePreviewEnabled);
+                            if (configuration.contains("KeyCrate.Glow")) {
+                                crazyConfig.set("Crate.PhysicalKey.Glowing", crateKeyGlowing);
                             } else {
-                                myConfig.set("Crate.Preview.Toggle", true);
-                            }
-
-                            if (crateKeyItem != null) {
-                                myConfig.set("Crate.PhysicalKey.Item", crateKeyItem);
-                            } else {
-                                myConfig.set("Crate.PhysicalKey.Item", "TRIPWIRE_HOOK");
-                            }
-
-                            if (crateKeyName != null) {
-                                plugin.getLogger().warning(oldFile.getName() + " : Crate Key Name ->" + crateKeyName);
-
-                                myConfig.set("Crate.PhysicalKey.Name", crateKeyName);
-                            } else {
-                                myConfig.set("Crate.PhysicalKey.Name", "Example Key Name");
-                            }
-
-                            if (!crateKeyLore.isEmpty()) {
-                                plugin.getLogger().warning(oldFile.getName() + " : Crate Key Lore ->" + crateKeyLore);
-
-                                myConfig.set("Crate.PhysicalKey.Lore", crateKeyLore);
-                            } else {
-                                myConfig.set("Crate.PhysicalKey.Lore", "Example Key Lore");
-                            }
-
-                            if (!String.valueOf(crateKeyGlowing).isEmpty()) {
-                                plugin.getLogger().warning(oldFile.getName() + " : Crate Key Glowing ->" + crateKeyGlowing);
-
-                                myConfig.set("Crate.PhysicalKey.Glowing", crateKeyGlowing);
-                            } else {
-                                myConfig.set("Crate.PhysicalKey.Glowing", false);
+                                crazyConfig.set("Crate.PhysicalKey.Glowing", false);
                             }
 
                             // Options with nothing we can convert, or it's just impossible to do.
-                            myConfig.set("Crate.Preview.ChestLines", 6);
-                            myConfig.set("Crate.Preview.Glass.Toggle", true);
-                            myConfig.set("Crate.Preview.Glass.Name", " ");
-                            myConfig.set("Crate.Preview.Glass.Item", "PURPLE_STAINED_GLASS_PANE");
+                            crazyConfig.set("Crate.Preview.ChestLines", 6);
+                            crazyConfig.set("Crate.Preview.Glass.Toggle", true);
+                            crazyConfig.set("Crate.Preview.Glass.Name", " ");
+                            crazyConfig.set("Crate.Preview.Glass.Item", "PURPLE_STAINED_GLASS_PANE");
 
-                            myConfig.set("Crate.CrateType", "CSGO");
-                            myConfig.set("Crate.StartingKeys", 0);
-                            myConfig.set("Crate.Max-Mass-Open", 10);
-                            myConfig.set("Crate.InGUI", true);
-                            myConfig.set("Crate.Slot", 10);
-                            myConfig.set("Crate.OpeningBroadCast", true);
-                            myConfig.set("Crate.BroadCast", "You should change this inside each crate file. BroadCast Option");
-                            myConfig.set("Crate.Item", "ENDER_CHEST");
-                            myConfig.set("Crate.Glowing", false);
+                            crazyConfig.set("Crate.CrateType", "CSGO");
+                            crazyConfig.set("Crate.StartingKeys", 0);
+                            crazyConfig.set("Crate.Max-Mass-Open", 10);
+                            crazyConfig.set("Crate.InGUI", true);
+                            crazyConfig.set("Crate.Slot", 10);
+                            crazyConfig.set("Crate.OpeningBroadCast", true);
+                            crazyConfig.set("Crate.BroadCast", "You should change this inside each crate file. BroadCast Option");
+                            crazyConfig.set("Crate.Item", "ENDER_CHEST");
+                            crazyConfig.set("Crate.Glowing", false);
 
-                            myConfig.set("Crate.Hologram.Toggle", true);
-                            myConfig.set("Crate.Hologram.Height", 1.5);
+                            crazyConfig.set("Crate.Hologram.Toggle", true);
+                            crazyConfig.set("Crate.Hologram.Height", 1.5);
 
                             if (newFile.exists()) {
                                 try {
-                                    myConfig.save(newFile);
+                                    crazyConfig.save(newFile);
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
                             }
                         }
 
-                        Bukkit.getLogger().warning("Set crate slot to 10. You will need to go into each file inside the crates folder and change this.");
+                        //Bukkit.getLogger().warning("Set crate slot to 10. You will need to go into each file inside the crates folder and change this.");
                     }
 
                     return;
                 }
 
-                sender.sendMessage("Can't import as " + cratesFolder.getName() + " does not exist.");
+                sender.sendMessage("Can't import as " + advancedCratesDir.getName() + " does not exist.");
             }
 
             case "specialized_crates" -> {
@@ -302,14 +277,90 @@ public class CommandImport extends CommandManager {
             }
         }
     }
+    
+    private HashMap<Enchantment, Integer> getEnchantments(List<String> enchantments) {
+        HashMap<Enchantment, Integer> hashMap = new HashMap<>();
 
-    private boolean isInteger(String s) {
-        try {
-            Integer.parseInt(s);
-        } catch(NumberFormatException | NullPointerException e) {
-            return false;
+        enchantments.forEach(enchant -> {
+            String enchantName = enchant.substring(0, enchant.indexOf(";"));
+            int level = Integer.parseInt(enchant.substring(enchant.indexOf(';') + 1));
+
+            switch (enchantName.toLowerCase()) {
+                case "protection_projectile" -> enchantName = "projectile_protection";
+                case "protection_environmental" -> enchantName = "protection";
+                case "protection_fall" -> enchantName = "feather_falling";
+                case "protection_explosions" -> enchantName = "blast_protection";
+                case "protection_fire" -> enchantName = "fire_protection";
+                case "durability" -> enchantName = "unbreaking";
+                case "damage_all" -> enchantName = "sharpness";
+                case "arrow_infinite" -> enchantName = "infinity";
+                case "arrow_damage" -> enchantName = "power";
+                case "arrow_knockback" -> enchantName = "punch";
+                case "loot_bonus_blocks" -> enchantName = "fortune";
+                case "loot_bonus_mobs" -> enchantName = "looting";
+                case "damage_undead" -> enchantName = "smite";
+                case "damage_arthropods" -> enchantName = "bane_of_arthropods";
+                case "dig_speed" -> enchantName = "efficiency";
+                case "luck" -> enchantName = "luck_of_the_sea";
+                case "water_worker" -> enchantName = "aqua_affinity";
+                case "oxygen" -> enchantName = "respiration";
+                case "sweeping_edge" -> enchantName = "sweeping";
+            }
+
+            NamespacedKey key = NamespacedKey.fromString(enchantName);
+
+            if (key != null) hashMap.put(Enchantment.getByKey(key), level);
+        });
+        
+        return hashMap;
+    }
+
+    private void addEditorItem(YamlConfiguration file, String prize, ItemStack item, int chance, String base64, int customModelData) {
+        ArrayList<ItemStack> items = new ArrayList<>();
+        items.add(item);
+        String path = "Crate.Prizes." + prize;
+
+        if (!file.contains(path)) {
+
+            if (item.hasItemMeta()) {
+                if (item.getItemMeta().hasDisplayName()) file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
+                if (item.getItemMeta().hasLore()) file.set(path + ".Lore", item.getItemMeta().getLore());
+            }
+
+            NBTItem nbtItem = new NBTItem(item);
+
+            if (nbtItem.hasNBTData()) {
+                if (nbtItem.hasKey("Unbreakable") && nbtItem.getBoolean("Unbreakable")) file.set(path + ".Unbreakable", true);
+            }
+
+            List<String> enchantments = new ArrayList<>();
+
+            for (Enchantment enchantment : item.getEnchantments().keySet()) {
+                enchantments.add((enchantment.getKey().getKey() + ":" + item.getEnchantmentLevel(enchantment)));
+            }
+
+            if (!enchantments.isEmpty()) file.set(path + ".DisplayEnchantments", enchantments);
+
+            if (base64 != null && !base64.isEmpty()) {
+                file.set(prize + ".Player", base64);
+
+                file.set(prize + ".DisplayItem", "PLAYER_HEAD");
+            } else {
+                if (file.contains(path + ".CustomModelData")) {
+                    file.set(prize + ".DisplayItem", item.getType().name() + "#" + customModelData);
+                } else {
+                    file.set(prize + ".DisplayItem", item.getType().name());
+                }
+            }
+
+            file.set(path + ".DisplayAmount", item.getAmount());
+            file.set(path + ".MaxRange", 100);
+            file.set(path + ".Chance", chance);
+        } else {
+            // Must be checked as getList will return null if nothing is found.
+            if (file.contains(path + ".Editor-Items")) file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
         }
 
-        return true;
+        file.set(path + ".Editor-Items", items);
     }
 }
