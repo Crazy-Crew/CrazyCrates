@@ -95,7 +95,7 @@ Check our public [trello board](https://trello.com/b/bzQ5TwXo) for our current p
 Distributed under the MIT License. See [`LICENSE`](/LICENSE) for more information.
 
 [discord-shield]: https://img.shields.io/discord/182615261403283459.svg?style=flat&logo=appveyor
-[discord-url]: https://discord.gg/crazycrew
+[discord-url]: https://discord.gg/badbones-s-live-chat-182615261403283459
 
 [contributors-shield]: https://img.shields.io/github/contributors/Crazy-Crew/CrazyCrates.svg?style=flat&logo=appveyor
 [contributors-url]: https://github.com/Crazy-Crew/CrazyCrates/graphs/contributors
