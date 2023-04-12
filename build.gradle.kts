@@ -18,18 +18,15 @@ val extension = settings.versions.extension.get()
 val color = if (beta) betaUpdate else releaseUpdate
 val repo = if (beta) "beta" else "releases"
 
-val download = if (beta) "https://ci.crazycrew.us/job/${rootProject.name}/" else "https://modrinth.com/$extension/${rootProject.name.lowercase()}/version/${rootProject.version}"
+val download = "https://modrinth.com/$extension/${rootProject.name.lowercase()}/version/${rootProject.version}"
 
-val msg = if (beta) "New version of ${rootProject.name} is ready!" else "New version of ${rootProject.name} is ready! <@&929463441159254066>"
+val msg = "New version of ${rootProject.name} is ready! <@&929463441159254066>"
 
 val hash = shellRun("git", listOf("rev-parse", "--short", "HEAD"))
 
-rootProject.version = if (beta) hash else "1.11.14.3"
+rootProject.version = "1.11.15.3"
 
-val desc = if (beta) """
-    Changes:
-    » N/A
-""".trimIndent() else "https://modrinth.com/$extension/${rootProject.name.lowercase()}/version/${rootProject.version}"
+val desc = "https://modrinth.com/$extension/${rootProject.name.lowercase()}/version/${rootProject.version}"
 
 webhook {
     this.avatar("https://en.gravatar.com/avatar/${WebhookExtension.Gravatar().md5Hex("no-reply@ryderbelserion.com")}.jpeg")
@@ -66,7 +63,15 @@ webhook {
 
             this.title("What changed?")
 
-            this.description(desc)
+            this.description("""
+                > Add the ability to import other plugins.
+                 > /crazycrates import <plugin>
+                
+                > The importer is not 100%, Please manually check your configs and tweak things accordingly
+                > You might have to switch some things over to using commands if it could not be converted.
+                
+                Full Changelog -> $desc
+            """.trimIndent())
         }
     }
 
