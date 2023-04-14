@@ -120,6 +120,8 @@ entities:
     zombie-villager-infection-chance: -1.0
     zombies-target-turtle-eggs: true
   entities-target-with-follow-range: false
+  markers:
+    tick: true
   mob-effects:
     immune-to-wither-effect:
       wither: true

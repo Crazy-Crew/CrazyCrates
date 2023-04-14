@@ -3,14 +3,18 @@ package com.badbones69.crazycrates.commands.subs.admin.imports;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.commands.enums.CrateImportOptions;
 import com.badbones69.crazycrates.commands.subs.CommandManager;
+import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotation.SubCommand;
 import dev.triumphteam.cmd.core.annotation.Suggestion;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
 import java.io.File;
@@ -19,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CommandImport extends CommandManager {
 
@@ -115,20 +121,26 @@ public class CommandImport extends CommandManager {
                                                 .setAmount(amount);
 
                                         if (configuration.contains(path + ".NBTtags")) {
+                                            if (nbt != null) {
 
+                                            }
                                         } else {
                                             itemStack.setEnchantments(getEnchantments(enchantments));
                                         }
 
                                         if (configuration.contains(path + ".CustomModelData")) itemStack.setCustomModelData(customModelData);
 
-                                        addEditorItem(
-                                                configuration,
-                                                String.valueOf(prizeNumber),
-                                                itemStack.build(),
-                                                chance,
-                                                base64,
-                                                customModelData);
+                                        //addEditorItem(
+                                        //        configuration,
+                                        //        String.valueOf(prizeNumber),
+                                        //        itemStack.build(),
+                                        //        chance,
+                                        //        base64,
+                                        //        customModelData);
+
+                                        //Player player = (Player) sender;
+
+                                        //player.getWorld().dropItem(player.getLocation(), itemStack.build());
                                     }
                                 }
 
@@ -262,8 +274,6 @@ public class CommandImport extends CommandManager {
                                 }
                             }
                         }
-
-                        //Bukkit.getLogger().warning("Set crate slot to 10. You will need to go into each file inside the crates folder and change this.");
                     }
 
                     return;
