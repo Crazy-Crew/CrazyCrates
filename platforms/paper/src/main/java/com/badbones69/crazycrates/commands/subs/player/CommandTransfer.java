@@ -35,7 +35,7 @@ public class CommandTransfer extends CommandManager {
                         HashMap<String, String> placeholders = new HashMap<>();
 
                         placeholders.put("%Crate%", crate.getName());
-                        placeholders.put("%Amount%", amount + "");
+                        placeholders.put("%Amount%", String.valueOf(amount));
                         placeholders.put("%Player%", player.getName());
 
                         sender.sendMessage(Messages.TRANSFERRED_KEYS.getMessage(placeholders));

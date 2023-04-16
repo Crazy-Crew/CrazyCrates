@@ -4,10 +4,8 @@ import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.Universal;
 import com.badbones69.crazycrates.api.enums.settings.Messages;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
-import com.badbones69.crazycrates.commands.enums.CrateImportOptions;
 import com.badbones69.crazycrates.commands.subs.admin.*;
 import com.badbones69.crazycrates.commands.subs.admin.crates.*;
-import com.badbones69.crazycrates.commands.subs.admin.imports.CommandImport;
 import com.badbones69.crazycrates.commands.subs.player.CommandKey;
 import com.badbones69.crazycrates.commands.subs.player.CommandTransfer;
 import com.badbones69.crazycrates.listeners.MenuListener;
@@ -119,16 +117,6 @@ public class CommandManager extends BaseCommand implements Universal {
             return numbers;
         });
 
-        commandManager.registerSuggestion(SuggestionKey.of("import-options"), (sender, context) -> {
-            ArrayList<String> values = new ArrayList<>();
-
-            for (CrateImportOptions value : CrateImportOptions.values()) {
-                values.add(value.getName());
-            }
-
-            return values;
-        });
-
         commandManager.registerArgument(CustomPlayer.class, (sender, context) -> new CustomPlayer(context));
 
         commandManager.registerSuggestion(SuggestionKey.of("booleans"), ((sender, context) -> List.of("true", "false")));
@@ -152,8 +140,6 @@ public class CommandManager extends BaseCommand implements Universal {
         commandManager.registerCommand(new CommandSet());
         commandManager.registerCommand(new CommandTake());
         commandManager.registerCommand(new CommandTeleport());
-
-        commandManager.registerCommand(new CommandImport());
 
         // Player Commands.
         commandManager.registerCommand(new CommandKey());

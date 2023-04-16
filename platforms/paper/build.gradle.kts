@@ -29,6 +29,8 @@ dependencies {
     implementation(libs.nbt.api)
     implementation(libs.bstats.bukkit)
 
+    //implementation("me.PM2.AdvancedCrates.MonthlyCrate:advancedcrates:3.8.8")
+
     compileOnly(libs.holographic.displays)
     compileOnly(libs.decent.holograms)
     compileOnly(libs.cmi.api)

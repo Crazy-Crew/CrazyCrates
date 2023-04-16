@@ -61,7 +61,7 @@ public class CommandKey extends BaseCommand {
                 hasKeys = true;
                 HashMap<String, String> placeholders = new HashMap<>();
                 placeholders.put("%Crate%", crate.getFile().getString("Crate.Name"));
-                placeholders.put("%Keys%", amount + "");
+                placeholders.put("%Keys%", String.valueOf(amount));
                 message.add(Messages.PER_CRATE.getMessageNoPrefix(placeholders));
             }
         }
