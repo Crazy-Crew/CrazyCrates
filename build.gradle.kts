@@ -7,7 +7,6 @@ plugins {
 
 dependencies {
     api(project(":crazycrates-api"))
-    api(libs.crazycore)
 
     compileOnly(libs.holographic.displays)
     compileOnly(libs.decent.holograms)
@@ -15,16 +14,14 @@ dependencies {
     compileOnly(libs.placeholder.api)
     compileOnly(libs.itemsadder.api)
 
-    compileOnly(libs.bstats.bukkit)
+    implementation(libs.bstats.bukkit)
 
-    compileOnly(libs.triumph.cmds)
+    implementation(libs.triumph.cmds)
+
+    implementation(libs.nbt.api)
 
     compileOnly(libs.cmi.api)
     compileOnly(libs.cmi.lib)
-    compileOnly(libs.nbt.api)
-
-    compileOnly("co.aikar:acf-paper:0.5.1-SNAPSHOT")
-    compileOnly("ch.jalu:configme:1.3.0")
 }
 
 tasks {
@@ -38,5 +35,17 @@ tasks {
 
     runServer {
         minecraftVersion("1.19.4")
+    }
+
+    processResources {
+        filesMatching("plugin.yml") {
+            expand(
+                "name" to rootProject.name,
+                "group" to rootProject.group,
+                "version" to rootProject.version,
+                "description" to rootProject.description,
+                "website" to "https://modrinth.com/plugin/${rootProject.name.lowercase()}"
+            )
+        }
     }
 }
