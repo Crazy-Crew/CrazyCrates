@@ -23,9 +23,9 @@
     <br />
     <a href="https://github.com/Crazy-Crew/CrazyCrates/issues">Report Bug</a>
     ·
-    <a href="https://github.com/Crazy-Crew/CrazyCrates/discussions/categories/feature-rquests">Request Feature</a>
+    <a href="https://github.com/Crazy-Crew/CrazyCrates/discussions/categories/features">Request Feature</a>
     ·
-    <a href="https://github.com/Crazy-Crew/CrazyCrates/discussions/categories/support">Get Support</a>
+    <a href="https://discord.gg/badbones-s-live-chat-182615261403283459">Get Support</a>
   </p>
 </div>
 
@@ -50,11 +50,6 @@
 ### Resource Page
 <a href="https://modrinth.com/plugin/crazycrates">![Modrinth](https://raw.githubusercontent.com/intergrav/devins-badges/v3/assets/compact/available/modrinth_46h.png)</a>
 
-### Beta Builds
-<p>Get the latest changes before marked as release.</p>
-
-> https://ci.crazycrew.us/job/CrazyCrates/
-
 ## Getting Started
 
 How to get started with contributing / maintaining your own version of CrazyCrates!
@@ -73,9 +68,9 @@ A list of things necessary to make sure you can build CrazyCrates properly.
    git clone https://github.com/Crazy-Crew/CrazyCrates.git
    ```
 2. Open the repository using Intellij IDEA & wait until it finishes downloading/indexing.
-3. Run the shadowJar task.
+3. Run the build task.
    ```gradle
-   ./gradlew shadowJar
+   ./gradlew build
    ```
 
 ## Roadmap
@@ -88,14 +83,14 @@ Check our public [trello board](https://trello.com/b/bzQ5TwXo) for our current p
 2. Create your Feature Branch (`git checkout -b feature/yourfeature`)
 3. Commit your Changes (`git commit -m 'your amazing feature.'`)
 4. Push to the Branch (`git push`)
-5. Open a Pull Request to add your feature/fix.
+5. Open a Pull Request to the `main` branch to add your feature/fix.
 
 ## License
 
 Distributed under the MIT License. See [`LICENSE`](/LICENSE) for more information.
 
 [discord-shield]: https://img.shields.io/discord/182615261403283459.svg?style=flat&logo=appveyor
-[discord-url]: https://discord.gg/badbones-s-live-chat-182615261403283459
+[discord-url]: https://discord.gg/crazycrew
 
 [contributors-shield]: https://img.shields.io/github/contributors/Crazy-Crew/CrazyCrates.svg?style=flat&logo=appveyor
 [contributors-url]: https://github.com/Crazy-Crew/CrazyCrates/graphs/contributors

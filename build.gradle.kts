@@ -1,74 +1,42 @@
-import com.lordcodes.turtle.shellRun
-import task.WebhookExtension
-import java.awt.Color
-
 plugins {
-    id("crazycrates.root-plugin")
+    id("paper-plugin")
+    id("library-plugin")
 
-    id("featherpatcher") version "0.0.0.2"
+    id("xyz.jpenilla.run-paper") version "2.0.1"
 }
 
-val releaseUpdate = Color(27, 217, 106)
-val betaUpdate = Color(255, 163, 71)
-val changeLogs = Color(37, 137, 204)
+dependencies {
+    api(project(":crazycrates-api"))
+    api(libs.crazycore)
 
-val beta = settings.versions.beta.get().toBoolean()
-val extension = settings.versions.extension.get()
+    compileOnly(libs.holographic.displays)
+    compileOnly(libs.decent.holograms)
 
-val color = if (beta) betaUpdate else releaseUpdate
-val repo = if (beta) "beta" else "releases"
+    compileOnly(libs.placeholder.api)
+    compileOnly(libs.itemsadder.api)
 
-val download = if (beta) "https://ci.crazycrew.us/job/${rootProject.name}/" else "https://modrinth.com/$extension/${rootProject.name.lowercase()}/version/${rootProject.version}"
+    compileOnly(libs.bstats.bukkit)
 
-val msg = if (beta) "New version of ${rootProject.name} is ready!" else "New version of ${rootProject.name} is ready! <@&929463441159254066>"
+    compileOnly(libs.triumph.cmds)
 
-val hash = shellRun("git", listOf("rev-parse", "--short", "HEAD"))
+    compileOnly(libs.cmi.api)
+    compileOnly(libs.cmi.lib)
+    compileOnly(libs.nbt.api)
 
-rootProject.version = if (beta) hash else "1.11.14.3"
+    compileOnly("co.aikar:acf-paper:0.5.1-SNAPSHOT")
+    compileOnly("ch.jalu:configme:1.3.0")
+}
 
-val desc = if (beta) """
-    Changes:
-    » N/A
-""".trimIndent() else "https://modrinth.com/$extension/${rootProject.name.lowercase()}/version/${rootProject.version}"
+tasks {
+    reobfJar {
+        val file = File("$rootDir/jars")
 
-webhook {
-    this.avatar("https://en.gravatar.com/avatar/${WebhookExtension.Gravatar().md5Hex("no-reply@ryderbelserion.com")}.jpeg")
+        if (!file.exists()) file.mkdirs()
 
-    this.username("Ryder Belserion")
-
-    this.content(msg)
-
-    this.embeds {
-        this.embed {
-            this.color(color)
-
-            this.fields {
-                this.field(
-                    "Download: ",
-                    download
-                )
-
-                this.field(
-                    "API: ",
-                    "https://repo.crazycrew.us/#/$repo/${rootProject.group.toString().replace(".", "/")}/${rootProject.name.lowercase()}-api/${rootProject.version}"
-                )
-            }
-
-            this.author(
-                "${rootProject.name} | Version ${rootProject.version}",
-                download,
-                "https://raw.githubusercontent.com/RyderBelserion/assets/main/crazycrew/png/${rootProject.name}Website.png"
-            )
-        }
-
-        this.embed {
-            this.color(changeLogs)
-
-            this.title("What changed?")
-
-            this.description(desc)
-        }
+        outputJar.set(layout.buildDirectory.file("$file/${rootProject.name}-${rootProject.version}.jar"))
     }
 
-    this.url("DISCORD_WEBHOOK")
+    runServer {
+        minecraftVersion("1.19.4")
+    }
 }
