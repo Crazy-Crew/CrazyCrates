@@ -91,13 +91,8 @@ tasks {
         //<h3>The first release for CrazyCrates on Modrinth! 🎉🎉🎉🎉🎉<h3><br> If we want a header.
         changelog.set(
             """
-                <h4>Changes:</h4>
-                 <p>Added 1.19.4 support</p>
-                 <p>Removed 1.18.2 and below support</p>
-                <h4>Under the hood changes</h4>
-                 <p>Simplified build script</p>
                 <h4>Bug Fixes:</h4>
-                 <p>N/A</p>
+                 <p>Fixed a bug where starter keys weren't applying correctly.</p>
             """.trimIndent()
         )
     }

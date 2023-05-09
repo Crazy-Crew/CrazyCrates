@@ -24,11 +24,11 @@ val msg = if (beta) "New version of ${rootProject.name} is ready!" else "New ver
 
 val hash = shellRun("git", listOf("rev-parse", "--short", "HEAD"))
 
-rootProject.version = if (beta) hash else "1.11.14.3"
+rootProject.version = if (beta) hash else "1.11.14.4"
 
 val desc = if (beta) """
-    Changes:
-    » N/A
+    Bug Fix:
+    » Fixed a bug where starter keys weren't applying correctly.
 """.trimIndent() else "https://modrinth.com/$extension/${rootProject.name.lowercase()}/version/${rootProject.version}"
 
 webhook {
