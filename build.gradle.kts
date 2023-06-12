@@ -1,12 +1,20 @@
 plugins {
     id("paper-plugin")
-    id("library-plugin")
 
     id("xyz.jpenilla.run-paper") version "2.0.1"
 }
 
+repositories {
+    flatDir {
+        dirs("libs")
+    }
+}
+
 dependencies {
     api(project(":crazycrates-api"))
+
+    compileOnly("cmi-api:CMI-API")
+    compileOnly("cmi-lib:CMILib")
 
     compileOnly(libs.holographic.displays)
     compileOnly(libs.decent.holograms)
@@ -19,9 +27,6 @@ dependencies {
     implementation(libs.triumph.cmds)
 
     implementation(libs.nbt.api)
-
-    compileOnly(libs.cmi.api)
-    compileOnly(libs.cmi.lib)
 }
 
 tasks {
