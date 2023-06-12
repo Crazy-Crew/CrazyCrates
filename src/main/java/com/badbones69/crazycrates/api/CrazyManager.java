@@ -1276,7 +1276,10 @@ public class CrazyManager {
             if (!player.hasPlayedBefore()) {
                 crates.stream()
                 .filter(Crate :: doNewPlayersGetKeys)
-                .forEach(crate -> Files.DATA.getFile().set("Player." + uuid + "." + crate, crate.getNewPlayerKeys()));
+                .forEach(crate -> {
+                    Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
+                    Files.DATA.saveFile();
+                });
             }
         }
     }
