@@ -1,12 +1,12 @@
-name: CrazyCrates
-main: ${group}.CrazyCrates
+name: 'CrazyCrates'
+main: '${group}.CrazyCrates'
 
 authors: [BadBones69, RyderBelserion]
 
-version: ${version}
-api-version: '1.19'
-description: ${description}
-website: ${website}
+version: '${version}'
+api-version: '1.20'
+description: '${description}'
+website: '${website}'
 
 softdepend: [CMI, HolographicDisplays, DecentHolograms, PlaceholderAPI, ItemsAdder]
 

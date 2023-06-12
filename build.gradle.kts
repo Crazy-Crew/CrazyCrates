@@ -1,7 +1,8 @@
 plugins {
     id("paper-plugin")
+    id("publish-task")
 
-    id("xyz.jpenilla.run-paper") version "2.0.1"
+    id("xyz.jpenilla.run-paper") version "2.1.0"
 }
 
 repositories {
@@ -16,8 +17,9 @@ dependencies {
     compileOnly("cmi-api:CMI-API")
     compileOnly("cmi-lib:CMILib")
 
-    compileOnly(libs.holographic.displays)
     compileOnly(libs.decent.holograms)
+    compileOnly(libs.fancy.holograms)
+    compileOnly(libs.fancy.npcs)
 
     compileOnly(libs.placeholder.api)
     compileOnly(libs.itemsadder.api)
@@ -38,8 +40,16 @@ tasks {
         outputJar.set(layout.buildDirectory.file("$file/${rootProject.name}-${rootProject.version}.jar"))
     }
 
+    shadowJar {
+        listOf(
+            "de.tr7zw.changeme.nbtapi",
+            "dev.triumphteam",
+            "org.bstats"
+        ).forEach { pack -> relocate(pack, "${rootProject.group}.$pack") }
+    }
+
     runServer {
-        minecraftVersion("1.19.4")
+        minecraftVersion("1.20")
     }
 
     processResources {

@@ -21,7 +21,7 @@ import com.badbones69.crazycrates.objects.CrateHologram;
 import com.badbones69.crazycrates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.support.holograms.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.DecentHologramsSupport;
-import com.badbones69.crazycrates.support.holograms.HolographicDisplaysSupport;
+import com.badbones69.crazycrates.support.holograms.FancyHologramSupport;
 import com.badbones69.crazycrates.support.libraries.PluginSupport;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -104,9 +104,9 @@ public class CrazyManager {
         // Removes all holograms so that they can be replaced.
         if (hologramController != null) hologramController.removeAllHolograms();
 
-        if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginEnabled()) {
-            hologramController = new HolographicDisplaysSupport();
-            plugin.getLogger().info("HolographicDisplays support has been enabled.");
+        if (PluginSupport.FANCY_HOLOGRAMS.isPluginEnabled()) {
+            hologramController = new FancyHologramSupport();
+            plugin.getLogger().info("FancyHolograms support has been enabled.");
         } else if (PluginSupport.DECENT_HOLOGRAMS.isPluginEnabled()) {
             hologramController = new DecentHologramsSupport();
             plugin.getLogger().info("DecentHolograms support has been enabled.");

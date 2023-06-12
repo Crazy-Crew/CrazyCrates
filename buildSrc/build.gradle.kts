@@ -14,8 +14,9 @@ repositories {
 
 dependencies {
     implementation(libs.paperweight)
+    implementation(libs.featherweight)
 
-    //implementation(libs.minotaur)
+    implementation(libs.minotaur)
     //implementation(libs.hangar)
 
     implementation(libs.shadow)
