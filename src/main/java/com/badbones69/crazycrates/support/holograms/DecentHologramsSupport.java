@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.support.holograms;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.api.interfaces.HologramController;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -9,11 +8,9 @@ import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.block.Block;
 import java.util.HashMap;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.UUID;
 
 public class DecentHologramsSupport implements HologramController {
-
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final HashMap<Block, Hologram> holograms = new HashMap<>();
     
@@ -24,7 +21,7 @@ public class DecentHologramsSupport implements HologramController {
 
         double height = crateHologram.getHeight();
 
-        Hologram hologram = DHAPI.createHologram(ThreadLocalRandom.current().nextInt() + "", block.getLocation().add(.5, height, .5));
+        Hologram hologram = DHAPI.createHologram("CrazyCrates-" + UUID.randomUUID(), block.getLocation().add(.5, height, .5));
 
         crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, Methods.color(line)));
 
