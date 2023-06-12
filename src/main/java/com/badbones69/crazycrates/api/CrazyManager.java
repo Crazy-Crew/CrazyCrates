@@ -104,10 +104,10 @@ public class CrazyManager {
         // Removes all holograms so that they can be replaced.
         if (hologramController != null) hologramController.removeAllHolograms();
 
-        if (PluginSupport.FANCY_HOLOGRAMS.isPluginEnabled()) {
-            hologramController = new FancyHologramSupport();
-            plugin.getLogger().info("FancyHolograms support has been enabled.");
-        } else if (PluginSupport.DECENT_HOLOGRAMS.isPluginEnabled()) {
+        //if (PluginSupport.FANCY_HOLOGRAMS.isPluginEnabled()) {
+        //hologramController = new FancyHologramSupport();
+        //plugin.getLogger().info("FancyHolograms support has been enabled.");
+        if (PluginSupport.DECENT_HOLOGRAMS.isPluginEnabled()) {
             hologramController = new DecentHologramsSupport();
             plugin.getLogger().info("DecentHolograms support has been enabled.");
         } else if (PluginSupport.CMI.isPluginEnabled() && CMIModule.holograms.isEnabled()) {
