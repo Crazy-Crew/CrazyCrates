@@ -28,9 +28,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Command(value = "crates", alias = {"crazycrates", "cc", "crate", "crazycrate"})
 public class CrateBaseCommand extends BaseCommand {
@@ -498,10 +500,14 @@ public class CrateBaseCommand extends BaseCommand {
     public record CustomPlayer(String name) {
         private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-        public UUID getUUID() {
-            Player player = plugin.getServer().getPlayer(name);
+        public @NotNull OfflinePlayer getOfflinePlayer() {
+            CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> Bukkit.getServer().getOfflinePlayer(name)).thenApply(OfflinePlayer::getUniqueId);
 
-            return (player != null && player.isOnline()) ? player.getUniqueId() : Objects.requireNonNull(Bukkit.getOfflinePlayerIfCached(name)).getUniqueId();
+            return plugin.getServer().getOfflinePlayer(future.join());
+        }
+
+        public Player getPlayer() {
+            return plugin.getServer().getPlayer(name);
         }
     }
 
@@ -511,14 +517,8 @@ public class CrateBaseCommand extends BaseCommand {
         KeyType type = KeyType.getFromName(keyType);
         Crate crate = crazyManager.getCrateFromName(crateName);
 
-        Player player = plugin.getServer().getPlayer(target.getUUID());
-        OfflinePlayer offlinePlayer = plugin.getServer().getOfflinePlayer(target.getUUID());
-
-        Player person;
-
-        if (player != null) person = player; else person = offlinePlayer.getPlayer();
-
-        String name;
+        Player person = target.getPlayer();
+        String playerName = target.name;
 
         if (type == null || type == KeyType.FREE_KEY) {
             sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease use Virtual/V or Physical/P for a Key type."));
@@ -542,15 +542,22 @@ public class CrateBaseCommand extends BaseCommand {
                     if (person != null && person.isOnline()) {
                         crazyManager.addKeys(amount, person, crate, type);
                     } else {
+                        OfflinePlayer offlinePlayer = target.getOfflinePlayer();
+
                         if (!crazyManager.addOfflineKeys(offlinePlayer.getName(), crate, amount)) {
                             sender.sendMessage(Messages.INTERNAL_ERROR.getMessage());
                         } else {
                             HashMap<String, String> placeholders = new HashMap<>();
 
-                            placeholders.put("%Amount%", amount + "");
+                            placeholders.put("%Amount%", String.valueOf(amount));
                             placeholders.put("%Player%", offlinePlayer.getName());
 
                             sender.sendMessage(Messages.GIVEN_OFFLINE_PLAYER_KEYS.getMessage(placeholders));
+
+                            boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
+                            boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
+
+                            eventLogger.logKeyEvent(offlinePlayer, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, logFile, logConsole);
                         }
 
                         return;
@@ -559,20 +566,21 @@ public class CrateBaseCommand extends BaseCommand {
 
                 HashMap<String, String> placeholders = new HashMap<>();
 
-                placeholders.put("%Amount%", amount + "");
-                placeholders.put("%Player%", player.getName());
+                placeholders.put("%Amount%", String.valueOf(amount));
+
+                placeholders.put("%Player%", playerName);
                 placeholders.put("%Key%", crate.getKey().getItemMeta().getDisplayName());
 
                 boolean fullMessage = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full-Message");
                 boolean inventoryCheck = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
 
                 sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
-                if (!inventoryCheck || !fullMessage && !Methods.isInventoryFull(player) && player.isOnline()) player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
+                if (!inventoryCheck || !fullMessage && !Methods.isInventoryFull(person) && person.isOnline()) person.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
 
                 boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
                 boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
 
-                eventLogger.logKeyEvent(player, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, logFile, logConsole);
+                eventLogger.logKeyEvent(person, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, logFile, logConsole);
             }
 
             return;
