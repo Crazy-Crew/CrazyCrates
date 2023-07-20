@@ -34,7 +34,6 @@ public class Methods {
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
-    private static final Random random = new Random();
 
     public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");
 
@@ -106,9 +105,9 @@ public class Methods {
                 int num;
 
                 for (int counter = 1; counter <= 1; counter++) {
-                    num = 1 + random.nextInt(max);
+                    num = 1 + new Random().nextInt(max);
 
-                    if (num >= 1 && num <= chance) items.put(item, "Crate.Prizes." + reward);
+                    if (num <= chance) items.put(item, "Crate.Prizes." + reward);
                 }
             } catch (Exception ignored) {}
         }
@@ -204,7 +203,7 @@ public class Methods {
     }
 
     public static Integer randomNumber(int min, int max) {
-        return min + random.nextInt(max - min);
+        return min + new Random().nextInt(max - min);
     }
 
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
@@ -359,7 +358,7 @@ public class Methods {
         Material.RED_STAINED_GLASS_PANE.toString(),
         Material.BLACK_STAINED_GLASS_PANE.toString(),
         Material.LIGHT_GRAY_STAINED_GLASS_PANE.toString());
-        return new ItemBuilder().setMaterial(colors.get(random.nextInt(colors.size())));
+        return new ItemBuilder().setMaterial(colors.get(new Random().nextInt(colors.size())));
     }
 
     /**
