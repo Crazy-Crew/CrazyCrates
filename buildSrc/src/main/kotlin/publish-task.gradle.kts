@@ -1,3 +1,4 @@
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 plugins {
@@ -11,18 +12,19 @@ val isSnapshot = rootProject.version.toString().contains("snapshot")
 val type = if (isSnapshot) "beta" else "release"
 
 // The commit id for the "main" branch prior to merging a pull request.
-//val start = "ddeb4f3"
+val start = "fd4347a"
 
 // The commit id BEFORE merging the pull request so before "Merge pull request #30"
-//val end = "5ffdca7"
+val end = "32a254c"
 
-//val commitLog = getGitHistory().joinToString(separator = "") { formatGitLog(it) }
+val commitLog = getGitHistory().joinToString(separator = "") { formatGitLog(it) }
 
 val desc = """
 ## Changes:
  * Fixed a bug with giving keys to offline players.
  * Allow logging for giving keys to offline players.
- * Crate chances will behave differently now.
+ * Remove the static random variable and just have a new random generate each time.
+  * A static random in turn makes it less random because the seed is re-used for everything.
 
 ## API:
  * N/A
@@ -30,15 +32,23 @@ val desc = """
 ## Bugs:
  * Submit any bugs @ https://github.com/Crazy-Crew/${rootProject.name}/issues 
             
+<details>
+
+## Commits:     
+<summary>Other</summary>
+
+$commitLog
+            
 </details>
 
 """.trimIndent()
 
 val versions = listOf(
+    "1.20.1",
     "1.20"
 )
 
-/*fun getGitHistory(): List<String> {
+fun getGitHistory(): List<String> {
     val output: String = ByteArrayOutputStream().use { outputStream ->
         project.exec {
             executable("git")
@@ -56,7 +66,7 @@ fun formatGitLog(commitLog: String): String {
     val hash = commitLog.take(7)
     val message = commitLog.substring(8) // Get message after commit hash + space between
     return "[$hash](https://github.com/Crazy-Crew/${rootProject.name}/commit/$hash) $message<br>"
-}*/
+}
 
 val javaComponent: SoftwareComponent = components["java"]
 
