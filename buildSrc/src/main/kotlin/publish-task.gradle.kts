@@ -20,7 +20,9 @@ val type = if (isSnapshot) "beta" else "release"
 
 val desc = """
 ## Changes:
- * Added 1.20 support.
+ * Fixed a bug with giving keys to offline players.
+ * Allow logging for giving keys to offline players.
+ * Crate chances will behave differently now.
 
 ## API:
  * N/A
