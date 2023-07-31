@@ -1,5 +1,3 @@
-import gradle.kotlin.dsl.accessors._f6acae21344895796acf3ef56297d241.publishing
-
 plugins {
     id("paper-plugin")
     id("publish-task")
