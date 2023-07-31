@@ -1,3 +1,5 @@
+import gradle.kotlin.dsl.accessors._f6acae21344895796acf3ef56297d241.publishing
+
 plugins {
     id("paper-plugin")
     id("publish-task")
@@ -34,6 +36,9 @@ dependencies {
 val buildNumber: String? = System.getenv("BUILD_NUMBER")
 val buildVersion = "${rootProject.version}-b$buildNumber"
 
+val isSnapshot = rootProject.version.toString().contains("snapshot") || rootProject.version.toString().contains("b$buildNumber")
+val javaComponent: SoftwareComponent = components["java"]
+
 rootProject.version = if (buildNumber != null) buildVersion else rootProject.version
 
 tasks {
@@ -66,6 +71,35 @@ tasks {
                 "description" to rootProject.description,
                 "website" to "https://modrinth.com/plugin/${rootProject.name.lowercase()}"
             )
+        }
+    }
+
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = rootProject.group.toString()
+                artifactId = "${rootProject.name.lowercase()}-api"
+
+                version = if (buildNumber != null) "${rootProject.version}-b$buildNumber" else rootProject.version.toString()
+
+                from(javaComponent)
+            }
+        }
+
+        repositories {
+            maven {
+                credentials {
+                    this.username = System.getenv("gradle_username")
+                    this.password = System.getenv("gradle_password")
+                }
+
+                if (isSnapshot) {
+                    url = uri("https://repo.crazycrew.us/snapshots/")
+                    return@maven
+                }
+
+                url = uri("https://repo.crazycrew.us/releases/")
+            }
         }
     }
 }

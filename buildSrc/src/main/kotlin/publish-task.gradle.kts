@@ -6,12 +6,7 @@ plugins {
     id("com.modrinth.minotaur")
 }
 
-val buildNumber: String? = System.getenv("BUILD_NUMBER")
-val isSnapshot = rootProject.version.toString().contains("snapshot") || buildNumber?.let {
-    rootProject.version.toString().contains(
-        it
-    )
-} == true
+val isSnapshot = rootProject.version.toString().contains("snapshot")
 val type = if (isSnapshot) "beta" else "release"
 
 val desc = """
@@ -33,8 +28,6 @@ val versions = listOf(
     "1.20.1",
     "1.20"
 )
-
-val javaComponent: SoftwareComponent = components["java"]
 
 tasks {
     modrinth {
@@ -58,34 +51,5 @@ tasks {
         loaders.addAll(listOf("paper", "purpur"))
 
         changelog.set(desc)
-    }
-
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = rootProject.group.toString()
-                artifactId = "${rootProject.name.lowercase()}-api"
-
-                version = if (buildNumber != null) "${rootProject.version}-b$buildNumber" else rootProject.version.toString()
-
-                from(javaComponent)
-            }
-        }
-
-        repositories {
-            maven {
-                credentials {
-                    this.username = System.getenv("gradle_username")
-                    this.password = System.getenv("gradle_password")
-                }
-
-                if (isSnapshot) {
-                    url = uri("https://repo.crazycrew.us/snapshots/")
-                    return@maven
-                }
-
-                url = uri("https://repo.crazycrew.us/releases/")
-            }
-        }
     }
 }
