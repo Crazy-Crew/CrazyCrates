@@ -64,7 +64,7 @@ modrinth {
 
     token.set(System.getenv("MODRINTH_TOKEN"))
 
-    projectId.set("crafty-was-taken")
+    projectId.set(rootProject.name.lowercase())
 
     versionName.set("${rootProject.name} ${rootProject.version}")
     versionNumber.set("${rootProject.version}")
