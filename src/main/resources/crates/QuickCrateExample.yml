@@ -56,7 +56,7 @@ Crate:
       MaxRange: 100
       Chance: 40
       Items:
-        - 'Item:CHAINMAIL_LEGGINGS, Amount:1, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
+        - 'Item:CHAINMAIL_LEGGINGS, Amount:1, Trim-Pattern:SENTRY, Trim-Material:LAPIS, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
       Messages:
         - '&7You just won a &r%reward%.'
     2:

@@ -653,55 +653,6 @@ public class CrazyManager {
     }
 
     /**
-     * Load the crate preview of a crate.
-     *
-     * @param crate The crate you wish to load the preview of.
-     * @return An Inventory object of the preview.
-     */
-    public Inventory loadPreview(Crate crate) {
-        FileConfiguration file = crate.getFile();
-        int slots = 9;
-
-        for (int size = file.getConfigurationSection("Crate.Prizes").getKeys(false).size(); size > 9 && slots < crate.getMaxSlots(); size -= 9) {
-            slots += 9;
-        }
-
-        Inventory inv = plugin.getServer().createInventory(null, slots, Methods.sanitizeColor(file.getString("Crate.Name")));
-
-        for (String reward : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
-            String id = file.getString("Crate.Prizes." + reward + ".DisplayItem", "Stone");
-            String name = file.getString("Crate.Prizes." + reward + ".DisplayName", "");
-            List<String> lore = file.getStringList("Crate.Prizes." + reward + ".Lore");
-            HashMap<Enchantment, Integer> enchantments = new HashMap<>();
-            String player = file.getString("Crate.Prizes." + reward + ".Player", "");
-            boolean glowing = file.getBoolean("Crate.Prizes." + reward + ".Glowing");
-            int amount = file.getInt("Crate.Prizes." + reward + ".DisplayAmount", 1);
-            boolean unbreakable = file.getBoolean("Crate.Prizes." + reward + ".Unbreakable", false);
-            boolean hideItemFlags = file.getBoolean("Crate.Prizes." + reward + ".HideItemsFlags", false);
-
-            String trimMaterial = file.getString("Crate.Prizes." + reward + ".DisplayTrim.Material", "");
-            String trimPattern = file.getString("Crate.Prizes." + reward + ".DisplayTrim.Pattern", "");
-
-            for (String enchantmentName : file.getStringList("Crate.Prizes." + reward + ".DisplayEnchantments")) {
-                Enchantment enchantment = Methods.getEnchantment(enchantmentName.split(":")[0]);
-
-                if (enchantment != null) {
-                    enchantments.put(enchantment, Integer.parseInt(enchantmentName.split(":")[1]));
-                }
-            }
-
-            try {
-                inv.setItem(inv.firstEmpty(), new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setUnbreakable(unbreakable).hideItemFlags(hideItemFlags).setEnchantments(enchantments).setGlow(glowing).setPlayerName(player)
-                        .setTrim(Registry.TRIM_MATERIAL.get(NamespacedKey.minecraft(trimMaterial.toLowerCase())), Registry.TRIM_PATTERN.get(NamespacedKey.minecraft(trimPattern.toLowerCase()))).build());
-            } catch (Exception e) {
-                inv.addItem(new ItemBuilder().setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + reward)).build());
-            }
-        }
-
-        return inv;
-    }
-
-    /**
      * Give a player a prize they have won.
      *
      * @param player The player you wish to give the prize to.
@@ -1380,6 +1331,14 @@ public class CrazyManager {
             .addItemFlags(file.getStringList(path + "Flags"))
             .addPatterns(file.getStringList(path + "Patterns"))
             .setPlayerName(file.getString(path + "Player"));
+
+            if (file.contains(path + "DisplayTrim.Pattern")) {
+                itemBuilder.setTrimPattern(Registry.TRIM_PATTERN.get(NamespacedKey.minecraft(file.getString(path + "DisplayTrim.Pattern").toLowerCase())));
+            }
+
+            if (file.contains(path + "DisplayTrim.Material")) {
+                itemBuilder.setTrimMaterial(Registry.TRIM_MATERIAL.get(NamespacedKey.minecraft(file.getString(path + "DisplayTrim.Material").toLowerCase())));
+            }
 
             if (file.contains(path + "DisplayEnchantments")) {
                 for (String enchantmentName : file.getStringList(path + "DisplayEnchantments")) {

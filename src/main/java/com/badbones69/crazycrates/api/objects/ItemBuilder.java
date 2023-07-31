@@ -3,9 +3,7 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.Methods;
 import com.badbones69.crazycrates.support.SkullCreator;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Banner;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
@@ -29,7 +27,6 @@ public class ItemBuilder {
 
     // Item Data
     private Material material;
-    private boolean isArmor;
     private TrimMaterial trimMaterial;
     private TrimPattern trimPattern;
     private int damage;
@@ -126,8 +123,6 @@ public class ItemBuilder {
 
         this.isShield = false;
 
-        this.isArmor = false;
-
         this.isBanner = false;
         this.patterns = new ArrayList<>();
 
@@ -178,8 +173,6 @@ public class ItemBuilder {
 
         this.armorColor = itemBuilder.armorColor;
         this.isLeatherArmor = itemBuilder.isLeatherArmor;
-
-        this.isArmor = itemBuilder.isArmor;
 
         this.isShield = itemBuilder.isShield;
 
@@ -340,6 +333,12 @@ public class ItemBuilder {
         return newName;
     }
 
+    private boolean isArmor() {
+        String name = this.material.name();
+
+        return name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE") || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS");
+    }
+
     /**
      * Builder the item from all the information that was given to the builder.
      *
@@ -363,16 +362,14 @@ public class ItemBuilder {
                 }
             }
 
-            if (this.isArmor) {
-                if (this.trimMaterial != null && this.trimPattern != null) {
-                    ((ArmorMeta) item.getItemMeta()).setTrim(new ArmorTrim(this.trimMaterial, this.trimPattern));
-                }
-            }
-
             item.setAmount(itemAmount);
             ItemMeta itemMeta = item.getItemMeta();
             itemMeta.setDisplayName(getUpdatedName());
             itemMeta.setLore(getUpdatedLore());
+
+            if (isArmor()) {
+                ((ArmorMeta) itemMeta).setTrim(new ArmorTrim(this.trimMaterial, this.trimPattern));
+            }
 
             if (itemMeta instanceof org.bukkit.inventory.meta.Damageable) ((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(damage);
 
@@ -446,8 +443,13 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder setTrim(TrimMaterial trimMaterial, TrimPattern trimPattern) {
+    public ItemBuilder setTrimMaterial(TrimMaterial trimMaterial) {
         this.trimMaterial = trimMaterial;
+
+        return this;
+    }
+
+    public ItemBuilder setTrimPattern(TrimPattern trimPattern) {
         this.trimPattern = trimPattern;
 
         return this;
@@ -506,10 +508,6 @@ public class ItemBuilder {
             case "BANNER" -> this.isBanner = true;
             case "SHIELD" -> this.isShield = true;
         }
-
-        String name = this.material.name();
-
-        this.isArmor = name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE") || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS");
 
         if (this.material.name().contains("BANNER")) this.isBanner = true;
 
@@ -986,6 +984,12 @@ public class ItemBuilder {
                     case "player" -> itemBuilder.setPlayerName(value);
                     case "unbreakable-item" -> {
                         if (value.isEmpty() || value.equalsIgnoreCase("true")) itemBuilder.setUnbreakable(true);
+                    }
+                    case "trim-pattern" -> {
+                        if (!value.isEmpty()) itemBuilder.setTrimPattern(Registry.TRIM_PATTERN.get(NamespacedKey.minecraft(value.toLowerCase())));
+                    }
+                    case "trim-material" -> {
+                        if (!value.isEmpty()) itemBuilder.setTrimMaterial(Registry.TRIM_MATERIAL.get(NamespacedKey.minecraft(value.toLowerCase())));
                     }
                     default -> {
                         Enchantment enchantment = getEnchantment(option);

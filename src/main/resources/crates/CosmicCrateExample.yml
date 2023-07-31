@@ -113,7 +113,7 @@ Crate:
         - 'UnCommon'
         - 'Rare'
       Items:
-        - 'Item:GOLDEN_HELMET, Amount:1, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
+        - 'Item:GOLDEN_HELMET, Amount:1, Trim-Pattern:SENTRY, Trim-Material:DIAMOND, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
     3:
       DisplayName: '&e&l$1,000'
       DisplayItem: 'SUNFLOWER'

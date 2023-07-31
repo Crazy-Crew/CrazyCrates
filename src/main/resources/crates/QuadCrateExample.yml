@@ -57,7 +57,7 @@ Crate:
       MaxRange: 100
       Chance: 40
       Items:
-        - 'Item:DIAMOND_CHESTPLATE, Amount:1, Name:&3Rare ChestPlate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3'
+        - 'Item:DIAMOND_CHESTPLATE, Amount:1, Trim-Pattern:SENTRY, Trim-Material:EMERALD, Name:&3Rare ChestPlate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3'
     2:
       DisplayName: '&b&lCrazy &4&lSword'
       DisplayItem: 'GOLDEN_SWORD'

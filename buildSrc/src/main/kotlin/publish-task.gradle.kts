@@ -11,10 +11,7 @@ val type = if (isSnapshot) "beta" else "release"
 
 val desc = """
 ## Changes:
- * Fixed a bug with giving keys to offline players.
- * Allow logging for giving keys to offline players.
- * Remove the static random variable and just have a new random generate each time.
-  * A static random in turn makes it less random because the seed is re-used for everything.
+ * Trim support has been added so you can display trims or give trim prizes via Items:
 
 ## API:
  * N/A
