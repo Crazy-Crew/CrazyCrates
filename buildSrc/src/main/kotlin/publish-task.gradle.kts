@@ -1,23 +1,13 @@
-import java.io.ByteArrayOutputStream
 import java.io.File
 
 plugins {
     id("root-plugin")
 
-    id("featherpatcher")
     id("com.modrinth.minotaur")
 }
 
 val isSnapshot = rootProject.version.toString().contains("snapshot")
 val type = if (isSnapshot) "beta" else "release"
-
-// The commit id for the "main" branch prior to merging a pull request.
-val start = "fd4347a"
-
-// The commit id BEFORE merging the pull request so before "Merge pull request #30"
-val end = "32a254c"
-
-val commitLog = getGitHistory().joinToString(separator = "") { formatGitLog(it) }
 
 val desc = """
 ## Changes:
@@ -31,15 +21,6 @@ val desc = """
 
 ## Bugs:
  * Submit any bugs @ https://github.com/Crazy-Crew/${rootProject.name}/issues 
-            
-<details>
-
-## Commits:     
-<summary>Other</summary>
-
-$commitLog
-            
-</details>
 
 """.trimIndent()
 
@@ -47,26 +28,6 @@ val versions = listOf(
     "1.20.1",
     "1.20"
 )
-
-fun getGitHistory(): List<String> {
-    val output: String = ByteArrayOutputStream().use { outputStream ->
-        project.exec {
-            executable("git")
-            args("log",  "$start..$end", "--format=format:%h %s")
-            standardOutput = outputStream
-        }
-
-        outputStream.toString()
-    }
-
-    return output.split("\n")
-}
-
-fun formatGitLog(commitLog: String): String {
-    val hash = commitLog.take(7)
-    val message = commitLog.substring(8) // Get message after commit hash + space between
-    return "[$hash](https://github.com/Crazy-Crew/${rootProject.name}/commit/$hash) $message<br>"
-}
 
 val javaComponent: SoftwareComponent = components["java"]
 
