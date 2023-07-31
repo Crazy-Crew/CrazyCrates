@@ -34,7 +34,7 @@ dependencies {
 val buildNumber: String? = System.getenv("BUILD_NUMBER")
 val buildVersion = "${rootProject.version}-b$buildNumber"
 
-val isSnapshot = rootProject.version.toString().contains("snapshot") || rootProject.version.toString().contains("b$buildNumber")
+val isSnapshot = rootProject.version.toString().contains("snapshot") || rootProject.version.toString() == buildVersion
 val javaComponent: SoftwareComponent = components["java"]
 
 rootProject.version = if (buildNumber != null) buildVersion else rootProject.version
@@ -78,7 +78,7 @@ tasks {
                 groupId = rootProject.group.toString()
                 artifactId = "${rootProject.name.lowercase()}-api"
 
-                version = if (buildNumber != null) "${rootProject.version}-b$buildNumber" else rootProject.version.toString()
+                version = rootProject.version.toString()
 
                 from(javaComponent)
             }
