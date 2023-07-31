@@ -34,10 +34,10 @@ dependencies {
 val buildNumber: String? = System.getenv("BUILD_NUMBER")
 val buildVersion = "${rootProject.version}-b$buildNumber"
 
+rootProject.version = if (buildNumber != null) buildVersion else rootProject.version
+
 val isSnapshot = rootProject.version.toString().contains("snapshot") || rootProject.version.toString() == buildVersion
 val javaComponent: SoftwareComponent = components["java"]
-
-rootProject.version = if (buildNumber != null) buildVersion else rootProject.version
 
 tasks {
     reobfJar {
