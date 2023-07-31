@@ -6,7 +6,12 @@ plugins {
     id("com.modrinth.minotaur")
 }
 
-val isSnapshot = rootProject.version.toString().contains("snapshot")
+val build: String? = System.getenv("BUILD_NUMBER")
+val isSnapshot = rootProject.version.toString().contains("snapshot") || build?.let {
+    rootProject.version.toString().contains(
+        it
+    )
+} == true
 val type = if (isSnapshot) "beta" else "release"
 
 val desc = """

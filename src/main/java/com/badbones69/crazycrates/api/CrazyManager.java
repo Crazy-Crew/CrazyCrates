@@ -21,14 +21,11 @@ import com.badbones69.crazycrates.objects.CrateHologram;
 import com.badbones69.crazycrates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.support.holograms.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.DecentHologramsSupport;
-import com.badbones69.crazycrates.support.holograms.FancyHologramSupport;
 import com.badbones69.crazycrates.support.libraries.PluginSupport;
 import com.badbones69.crazycrates.support.structures.StructureHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -682,6 +679,9 @@ public class CrazyManager {
             boolean unbreakable = file.getBoolean("Crate.Prizes." + reward + ".Unbreakable", false);
             boolean hideItemFlags = file.getBoolean("Crate.Prizes." + reward + ".HideItemsFlags", false);
 
+            String trimMaterial = file.getString("Crate.Prizes." + reward + ".DisplayTrim.Material", "");
+            String trimPattern = file.getString("Crate.Prizes." + reward + ".DisplayTrim.Pattern", "");
+
             for (String enchantmentName : file.getStringList("Crate.Prizes." + reward + ".DisplayEnchantments")) {
                 Enchantment enchantment = Methods.getEnchantment(enchantmentName.split(":")[0]);
 
@@ -691,7 +691,8 @@ public class CrazyManager {
             }
 
             try {
-                inv.setItem(inv.firstEmpty(), new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setUnbreakable(unbreakable).hideItemFlags(hideItemFlags).setEnchantments(enchantments).setGlow(glowing).setPlayerName(player).build());
+                inv.setItem(inv.firstEmpty(), new ItemBuilder().setMaterial(id).setAmount(amount).setName(name).setLore(lore).setUnbreakable(unbreakable).hideItemFlags(hideItemFlags).setEnchantments(enchantments).setGlow(glowing).setPlayerName(player)
+                        .setTrim(Registry.TRIM_MATERIAL.get(NamespacedKey.minecraft(trimMaterial.toLowerCase())), Registry.TRIM_PATTERN.get(NamespacedKey.minecraft(trimPattern.toLowerCase()))).build());
             } catch (Exception e) {
                 inv.addItem(new ItemBuilder().setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + reward)).build());
             }

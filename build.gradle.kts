@@ -31,13 +31,18 @@ dependencies {
     implementation(libs.nbt.api)
 }
 
+val build: String? = System.getenv("BUILD_NUMBER")
+val buildVersion = "${rootProject.version}-b$build"
+
+rootProject.version = if (build == null) rootProject.version else rootProject.version = buildVersion
+
 tasks {
     reobfJar {
         val file = File("$rootDir/jars")
 
         if (!file.exists()) file.mkdirs()
 
-        outputJar.set(layout.buildDirectory.file("$file/${rootProject.name}-${rootProject.version}.jar"))
+        outputJar.set(layout.buildDirectory.file("$file/${rootProject.name}-${project.version}.jar"))
     }
 
     shadowJar {
@@ -57,7 +62,7 @@ tasks {
             expand(
                 "name" to rootProject.name,
                 "group" to rootProject.group,
-                "version" to rootProject.version,
+                "version" to project.version,
                 "description" to rootProject.description,
                 "website" to "https://modrinth.com/plugin/${rootProject.name.lowercase()}"
             )

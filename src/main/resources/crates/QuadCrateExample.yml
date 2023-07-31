@@ -42,6 +42,11 @@ Crate:
     1:
       DisplayName: '&3&lRare ChestPlate'
       DisplayItem: 'DIAMOND_CHESTPLATE'
+      DisplayTrim:
+        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
+        Material: 'QUARTZ'
+        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
+        Pattern: 'SENTRY'
       DisplayAmount: 1
       Lore:
         - '&7Win a very rare chest plate.'
