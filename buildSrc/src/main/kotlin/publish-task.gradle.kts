@@ -66,7 +66,7 @@ tasks {
                 groupId = rootProject.group.toString()
                 artifactId = "${rootProject.name.lowercase()}-api"
 
-                version = if (buildNumber != null) "${rootProject.version}-b$build" else rootProject.version.toString()
+                version = if (buildNumber != null) "${rootProject.version}-b$buildNumber" else rootProject.version.toString()
 
                 from(javaComponent)
             }

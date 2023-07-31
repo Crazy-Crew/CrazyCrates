@@ -31,10 +31,10 @@ dependencies {
     implementation(libs.nbt.api)
 }
 
-val build: String? = System.getenv("BUILD_NUMBER")
-val buildVersion = "${rootProject.version}-b$build"
+val buildNumber: String? = System.getenv("BUILD_NUMBER")
+val buildVersion = "${rootProject.version}-b$buildNumber"
 
-rootProject.version = if (build == null) rootProject.version else rootProject.version = buildVersion
+rootProject.version = if (buildNumber != null) buildVersion else rootProject.version
 
 tasks {
     reobfJar {
