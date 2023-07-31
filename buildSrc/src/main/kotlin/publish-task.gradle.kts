@@ -6,8 +6,8 @@ plugins {
     id("com.modrinth.minotaur")
 }
 
-val build: String? = System.getenv("BUILD_NUMBER")
-val isSnapshot = rootProject.version.toString().contains("snapshot") || build?.let {
+val buildNumber: String? = System.getenv("BUILD_NUMBER")
+val isSnapshot = rootProject.version.toString().contains("snapshot") || buildNumber?.let {
     rootProject.version.toString().contains(
         it
     )
@@ -65,7 +65,8 @@ tasks {
             create<MavenPublication>("maven") {
                 groupId = rootProject.group.toString()
                 artifactId = "${rootProject.name.lowercase()}-api"
-                version = rootProject.version.toString()
+
+                version = if (buildNumber != null) "${rootProject.version}-b$build" else rootProject.version.toString()
 
                 from(javaComponent)
             }
