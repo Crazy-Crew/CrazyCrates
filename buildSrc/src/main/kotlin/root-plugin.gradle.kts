@@ -1,8 +1,11 @@
+import gradle.kotlin.dsl.accessors._3060c13235291a72581396bc01940dbe.publishing
 import org.gradle.kotlin.dsl.maven
 
 plugins {
     `java-library`
     `maven-publish`
+
+    id("com.github.johnrengelman.shadow")
 }
 
 repositories {
@@ -13,10 +16,6 @@ repositories {
     maven("https://repo.aikar.co/content/groups/aikar/")
 
     maven("https://repo.triumphteam.dev/snapshots/")
-
-    maven("https://repo.fancyplugins.de/snapshots/")
-
-    maven("https://repo.fancyplugins.de/releases/")
 
     maven("https://repo.crazycrew.us/first-party/")
 
@@ -29,6 +28,26 @@ repositories {
     mavenCentral()
 }
 
+val isSnapshot = rootProject.version.toString().contains("snapshot")
+
+publishing {
+    repositories {
+        maven {
+            credentials {
+                this.username = System.getenv("gradle_username")
+                this.password = System.getenv("gradle_password")
+            }
+
+            if (isSnapshot) {
+                url = uri("https://repo.crazycrew.us/snapshots/")
+                return@maven
+            }
+
+            url = uri("https://repo.crazycrew.us/releases/")
+        }
+    }
+}
+
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of("17"))
 }
@@ -37,7 +56,5 @@ tasks {
     compileJava {
         options.encoding = Charsets.UTF_8.name()
         options.release.set(17)
-
-        options.compilerArgs = listOf("-parameters")
     }
 }

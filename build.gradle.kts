@@ -1,102 +1,100 @@
+import io.papermc.hangarpublishplugin.model.Platforms
+
 plugins {
-    id("paper-plugin")
-    id("publish-task")
+    id("root-plugin")
 
-    id("xyz.jpenilla.run-paper") version "2.1.0"
+    id("com.modrinth.minotaur") version "2.8.2"
+    id("io.papermc.hangar-publish-plugin") version "0.0.5"
 }
 
-repositories {
-    flatDir {
-        dirs("libs")
-    }
+defaultTasks("build")
+
+rootProject.group = "com.badbones69.crazycrates"
+rootProject.description = "Add unlimited crates to your server with 10 different crate types to choose from!"
+rootProject.version = "1.11.7"
+
+val combine by tasks.registering(Jar::class) {
+    dependsOn("build")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from(files(subprojects.map {
+        it.layout.buildDirectory.file("libs/${rootProject.name}-${it.name}-${it.version}.jar").get()
+    }).filter { it.name != "MANIFEST.MF" }.map { if (it.isDirectory) it else zipTree(it) })
 }
-
-dependencies {
-    api(project(":crazycrates-api"))
-
-    compileOnly("cmi-api:CMI-API")
-    compileOnly("cmi-lib:CMILib")
-
-    compileOnly(libs.decent.holograms)
-    compileOnly(libs.fancy.holograms)
-    compileOnly(libs.fancy.npcs)
-
-    compileOnly(libs.placeholder.api)
-    compileOnly(libs.itemsadder.api)
-
-    implementation(libs.bstats.bukkit)
-
-    implementation(libs.triumph.cmds)
-
-    implementation(libs.nbt.api)
-}
-
-val buildNumber: String? = System.getenv("BUILD_NUMBER")
-val buildVersion = "${rootProject.version}-b$buildNumber"
-
-rootProject.version = if (buildNumber != null) buildVersion else rootProject.version
-
-val isSnapshot = rootProject.version.toString().contains("snapshot") || rootProject.version.toString() == buildVersion
-val javaComponent: SoftwareComponent = components["java"]
 
 tasks {
-    reobfJar {
-        val file = File("$rootDir/jars")
-
-        if (!file.exists()) file.mkdirs()
-
-        outputJar.set(layout.buildDirectory.file("$file/${rootProject.name}-${rootProject.version}.jar"))
-    }
-
-    shadowJar {
-        listOf(
-            "de.tr7zw.changeme.nbtapi",
-            "dev.triumphteam",
-            "org.bstats"
-        ).forEach { pack -> relocate(pack, "${rootProject.group}.$pack") }
-    }
-
-    runServer {
-        minecraftVersion("1.20")
-    }
-
-    processResources {
-        filesMatching("plugin.yml") {
-            expand(
-                "name" to rootProject.name,
-                "group" to rootProject.group,
-                "version" to rootProject.version,
-                "description" to rootProject.description,
-                "website" to "https://modrinth.com/plugin/${rootProject.name.lowercase()}"
-            )
-        }
-    }
-
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = rootProject.group.toString()
-                artifactId = "${rootProject.name.lowercase()}-api"
-
-                version = rootProject.version.toString()
-
-                from(javaComponent)
-            }
+    assemble {
+        subprojects.forEach {
+            dependsOn(":${it.project.name}:build")
         }
 
-        repositories {
-            maven {
-                credentials {
-                    this.username = System.getenv("gradle_username")
-                    this.password = System.getenv("gradle_password")
-                }
+        finalizedBy(combine)
+    }
+}
 
-                if (isSnapshot) {
-                    url = uri("https://repo.crazycrew.us/snapshots/")
-                    return@maven
-                }
+val description = """
+    ## New Features:
+    * Armor Trims with all pattern/material support has been added. View how to use it below!
+      * https://docs.crazycrew.us/crazycrates/prizes/armor-trims
+     
+    ## Api Changes:
+    * `com.badbones69.crazycrates:crazycrates-api:1.11.16` from this point on is outdated.
+      * Please update your dependencies to match this version accordingly before updating!
+    * `crazycrates-api` has been split into `crazycrates-core-api` and `crazycrates-paper-api` due to future plans for CrazyCrates
+    * https://repo.crazycrew.us/#/releases/com/badbones69/crazycrates You can browse the new section here.
+    
+    ## Other:
+    * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/discussions/categories/features)
+    * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
+""".trimIndent()
 
-                url = uri("https://repo.crazycrew.us/releases/")
+val versions = listOf(
+    "1.20",
+    "1.20.1"
+)
+
+val isSnapshot = rootProject.version.toString().contains("snapshot")
+val type = if (isSnapshot) "beta" else "release"
+val hangar = if (isSnapshot) "Beta" else "Release"
+
+val builtJar: RegularFile = rootProject.layout.buildDirectory.file("libs/${rootProject.name}-${project.version}.jar").get()
+
+modrinth {
+    autoAddDependsOn.set(false)
+
+    token.set(System.getenv("MODRINTH_TOKEN"))
+
+    projectId.set("crafty-was-taken")
+
+    versionName.set("${rootProject.name} ${rootProject.version}")
+    versionNumber.set("${rootProject.version}")
+
+    uploadFile = builtJar
+
+    gameVersions.addAll(versions)
+
+    changelog.set(description)
+
+    loaders.addAll("paper", "purpur")
+}
+
+hangarPublish {
+    publications.register("plugin") {
+        version.set("${rootProject.version}")
+
+        namespace("CrazyCrew", rootProject.name)
+
+        channel.set(hangar)
+
+        apiKey.set(System.getenv("hangar_key"))
+
+        changelog.set(description)
+
+        platforms {
+            register(Platforms.PAPER) {
+                jar.set(builtJar)
+
+                platformVersions.set(versions)
             }
         }
     }
