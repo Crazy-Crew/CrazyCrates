@@ -3,6 +3,7 @@ Crate:
   CrateName: '&dCosmic Crate'
   Preview-Name: '&dCosmic Crate Preview'
   StartingKeys: 0
+  RequiredKeys: 0
   Max-Mass-Open: 10
   InGUI: true
   Slot: 23

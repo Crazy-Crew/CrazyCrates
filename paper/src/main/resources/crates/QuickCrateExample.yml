@@ -6,6 +6,7 @@ Crate:
   CrateName: '&eClassic Crate'
   Preview-Name: '&eClassic Crate Preview'
   StartingKeys: 0
+  RequiredKeys: 0
   Max-Mass-Open: 10
   InGUI: false
   Slot: 14
