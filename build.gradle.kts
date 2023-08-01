@@ -79,7 +79,7 @@ modrinth {
     versionName.set("${rootProject.name} ${rootProject.version}")
     versionNumber.set("${rootProject.version}")
 
-    uploadFile.set(file("$buildDir/libs/${rootProject.name}-${project.version}.jar"))
+    uploadFile.set(combine.get())
 
     gameVersions.addAll(versions)
 
