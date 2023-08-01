@@ -2,8 +2,6 @@
 # List of all the sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
 Settings:
   Prefix: '&8[&bCrazyCrates&8]: '
-  # Do not change this. We use this to check if your Configs including if crate configs are outdated!
-  Config-Version: 1
   Toggle-Metrics: true #Turn on and off if your server stats are sent to https://bstats.org/ - Requires a restart!
   # Whether to enable or disable the crate menu. True if you want it enabled otherwise False
   Enable-Crate-Menu: true

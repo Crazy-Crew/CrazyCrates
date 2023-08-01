@@ -81,9 +81,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         boolean metricsEnabled = config.getBoolean("Settings.Toggle-Metrics");
 
-        String updater = config.getString("Settings.Update-Checker");
-        String version = config.getString("Settings.Config-Version");
-
         String menu = config.getString("Settings.Enable-Crate-Menu");
 
         String full = config.getString("Settings.Give-Virtual-Keys-When-Inventory-Full-Message");
@@ -102,12 +99,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             Files.CONFIG.saveFile();
         }
 
-        if (version == null) {
-            config.set("Settings.Config-Version", 1);
-
-            Files.CONFIG.saveFile();
-        }
-
         if (menu == null) {
             String oldBoolean = config.getString("Settings.Disable-Crate-Menu");
             boolean switchBoolean = config.getBoolean("Settings.Disable-Crate-Menu");
@@ -120,17 +111,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             }
 
             Files.CONFIG.saveFile();
-        }
-
-        int configVersion = 1;
-        if (configVersion != config.getInt("Settings.Config-Version") && version != null) {
-            plugin.getLogger().warning("========================================================================");
-            plugin.getLogger().warning("You have an outdated config, Please run the command /crates update!");
-            plugin.getLogger().warning("This will take a backup of your entire folder & update your configs.");
-            plugin.getLogger().warning("Default values will be used in place of missing options!");
-            plugin.getLogger().warning("If you have any issues, Please contact Discord Support.");
-            plugin.getLogger().warning("https://discord.gg/crazycrew");
-            plugin.getLogger().warning("========================================================================");
         }
 
         if (metricsEnabled) {

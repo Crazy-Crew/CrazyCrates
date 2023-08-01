@@ -40,6 +40,7 @@ Messages:
   No-Prizes-Found: '&cThis crate contains no prizes that you can win.'
   Same-Player: '&cYou can''t use this command on yourself.'
   Prize-Error: '&cAn error has occurred while trying to give you the prize called &6%prize%&c in crate called &6%crate%&c. Please contact the server owner and show them this error.'
+  Required-Keys: '&7You need &c%key-amount% &7keys to open &c%crate%. &7You have &c%amount%.'
   Transfer-Keys:
     Not-Enough-Keys: '&cYou do not have enough keys to transfer.'
     Transferred-Keys: '&7You have transferred %amount% %crate% keys to %player%.'

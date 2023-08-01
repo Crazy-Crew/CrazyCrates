@@ -120,7 +120,8 @@ public class CrazyManager {
                 ArrayList<Prize> prizes = new ArrayList<>();
                 String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
                 ArrayList<Tier> tiers = new ArrayList<>();
-                int maxMassOpen =  file.contains("Crate.Max-Mass-Open") ? Integer.parseInt(file.getString("Crate.Max-Mass-Open")) : 10;
+                int maxMassOpen =  file.contains("Crate.Max-Mass-Open") ? file.getInt("Crate.Max-Mass-Open") : 10;
+                int requiredKeys = file.contains("Crate.RequiredKeys") ? file.getInt("Crate.RequiredKeys") : 0;
 
                 if (file.contains("Crate.Tiers") && file.getConfigurationSection("Crate.Tiers") != null) {
                     for (String tier : file.getConfigurationSection("Crate.Tiers").getKeys(false)) {
@@ -185,7 +186,7 @@ public class CrazyManager {
                 }
 
                 CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"));
-                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, maxMassOpen, holo));
+                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, holo));
             } catch (Exception e) {
                 brokecrates.add(crateName);
                 plugin.getLogger().warning("There was an error while loading the " + crateName + ".yml file.");
@@ -193,7 +194,7 @@ public class CrazyManager {
             }
         }
 
-        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, 0, null));
+        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, 0, 0, Collections.emptyList(), null));
 
         if (fileManager.isLogging()) {
             plugin.getLogger().info("All crate information has been loaded.");
