@@ -1,10 +1,7 @@
-import io.papermc.hangarpublishplugin.model.Platforms
-
 plugins {
     id("root-plugin")
 
     id("com.modrinth.minotaur") version "2.8.2"
-    id("io.papermc.hangar-publish-plugin") version "0.0.5"
 }
 
 defaultTasks("build")
@@ -55,7 +52,6 @@ val versions = listOf(
 
 val isSnapshot = rootProject.version.toString().contains("snapshot")
 val type = if (isSnapshot) "beta" else "release"
-val hangar = if (isSnapshot) "Beta" else "Release"
 
 val builtJar: RegularFile = rootProject.layout.buildDirectory.file("libs/${rootProject.name}-${project.version}.jar").get()
 
@@ -76,26 +72,4 @@ modrinth {
     changelog.set(description)
 
     loaders.addAll("paper", "purpur")
-}
-
-hangarPublish {
-    publications.register("plugin") {
-        version.set("${rootProject.version}")
-
-        namespace("CrazyCrew", rootProject.name)
-
-        channel.set(hangar)
-
-        apiKey.set(System.getenv("hangar_key"))
-
-        changelog.set(description)
-
-        platforms {
-            register(Platforms.PAPER) {
-                jar.set(builtJar)
-
-                platformVersions.set(versions)
-            }
-        }
-    }
 }
