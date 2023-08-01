@@ -69,8 +69,6 @@ val versions = listOf(
 val isSnapshot = rootProject.version.toString().contains("snapshot")
 val type = if (isSnapshot) "beta" else "release"
 
-val builtJar: RegularFile = rootProject.layout.buildDirectory.file("libs/${rootProject.name}-${project.version}.jar").get()
-
 modrinth {
     autoAddDependsOn.set(false)
 
@@ -81,7 +79,7 @@ modrinth {
     versionName.set("${rootProject.name} ${rootProject.version}")
     versionNumber.set("${rootProject.version}")
 
-    uploadFile = builtJar
+    uploadFile.set(file("$buildDir/libs/${rootProject.name}-${project.version}.jar"))
 
     gameVersions.addAll(versions)
 
