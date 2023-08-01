@@ -10,19 +10,22 @@ rootProject.group = "com.badbones69.crazycrates"
 rootProject.description = "Add unlimited crates to your server with 10 different crate types to choose from!"
 rootProject.version = "1.13"
 
-val combine by tasks.registering(Jar::class) {
-    dependsOn("build")
+val combine = tasks.register<Jar>("combine") {
+    mustRunAfter("build")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    val jarFiles = subprojects.flatMap { subproject ->
+        files(subproject.layout.buildDirectory.file("libs/${rootProject.name}-${subproject.name}-${subproject.version}.jar").get())
+    }.filter { it.name != "MANIFEST.MF" }.map { file ->
+        if (file.isDirectory) file else zipTree(file)
+    }
 
-    from(files(subprojects.map {
-        it.layout.buildDirectory.file("libs/${rootProject.name}-${it.name}-${it.version}.jar").get()
-    }).filter { it.name != "MANIFEST.MF" }.map { if (it.isDirectory) it else zipTree(it) })
+    from(jarFiles)
 }
 
 tasks {
     assemble {
-        subprojects.forEach {
-            dependsOn(":${it.project.name}:build")
+        subprojects.forEach { project ->
+            dependsOn(":${project.name}:build")
         }
 
         finalizedBy(combine)

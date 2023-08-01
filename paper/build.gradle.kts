@@ -3,7 +3,6 @@ plugins {
 }
 
 group = "${rootProject.group}.paper"
-version = rootProject.version
 
 base {
     archivesName.set("${rootProject.name}-${project.name}")
@@ -36,7 +35,7 @@ tasks {
             create<MavenPublication>("maven") {
                 groupId = rootProject.group.toString()
                 artifactId = "${rootProject.name.lowercase()}-${project.name.lowercase()}-api"
-                version = project.version.toString()
+                version = rootProject.version.toString()
 
                 from(component)
             }
@@ -65,7 +64,7 @@ tasks {
         val props = mapOf(
             "name" to rootProject.name,
             "group" to project.group,
-            "version" to project.version,
+            "version" to rootProject.version,
             "description" to rootProject.description,
             "authors" to rootProject.properties["authors"],
             "apiVersion" to "1.20",
