@@ -58,6 +58,7 @@ public enum Messages {
     SAME_PLAYER("Same-Player", "&cYou can't use this command on yourself."),
     PRIZE_ERROR("Prize-Error", "&cAn error has occurred while trying to give you the prize called &6%prize%&c in crate called &6%crate%&c. Please contact the server owner and show them this error."),
     NOT_ENOUGH_KEYS("Not-Enough-Keys", "&cYou do not have enough keys to transfer."),
+    REQUIRED_KEYS("Required-Keys", "&7You need &c%key-amount% &7keys to open &c%crate%. &7You have &c%amount%."),
     TRANSFERRED_KEYS("Transferred-Keys", "&7You have transferred %amount% %crate% keys to %player%."),
     RECEIVED_TRANSFERRED_KEYS("Received-Transferred-Keys", "&7You have received %amount% %crate% keys from %player%."),
     NO_FILES_TO_CONVERT("Files-Converted.No-Files-To-Convert", "&cNo plugins that can be converted were found."),

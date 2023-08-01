@@ -12,6 +12,8 @@ Crate:
   Preview-Name: '&aBasic Crate Preview'
   # Starting amount of keys when the player 1st joins.
   StartingKeys: 0
+  # The amount of keys required to use the crate.
+  RequiredKeys: 0
   #Max amount of crates that can be opened at once using /cc max-open
   Max-Mass-Open: 10
   # If the crate shows in the /cc GUI.
@@ -23,6 +25,10 @@ Crate:
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
   BroadCast: '%prefix%&6&l%player%&r &7is opening a &7&lBasic Chest&7.'
+  # A default message if the prize doesn't have any Messages
+  # i.e Messages: [] or the value isn't there.
+  Prize-Message:
+    - '&7You have won &c%reward% &7from &c%crate%.'
   # Item the crate is in the GUI
   Item: 'CHEST'
   # If the crate in the main /cc GUI is glowing or not.

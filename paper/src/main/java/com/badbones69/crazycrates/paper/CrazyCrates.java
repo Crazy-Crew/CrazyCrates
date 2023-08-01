@@ -23,7 +23,6 @@ import com.badbones69.crazycrates.paper.listeners.MiscListener;
 import com.badbones69.crazycrates.paper.listeners.PreviewListener;
 import com.badbones69.crazycrates.paper.support.MetricsHandler;
 import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
-import com.badbones69.crazycrates.paper.support.libraries.UpdateChecker;
 import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISupport;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
@@ -82,9 +81,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         boolean metricsEnabled = config.getBoolean("Settings.Toggle-Metrics");
 
-        String updater = config.getString("Settings.Update-Checker");
-        String version = config.getString("Settings.Config-Version");
-
         String menu = config.getString("Settings.Enable-Crate-Menu");
 
         String full = config.getString("Settings.Give-Virtual-Keys-When-Inventory-Full-Message");
@@ -103,12 +99,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             Files.CONFIG.saveFile();
         }
 
-        if (version == null) {
-            config.set("Settings.Config-Version", 1);
-
-            Files.CONFIG.saveFile();
-        }
-
         if (menu == null) {
             String oldBoolean = config.getString("Settings.Disable-Crate-Menu");
             boolean switchBoolean = config.getBoolean("Settings.Disable-Crate-Menu");
@@ -123,30 +113,11 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             Files.CONFIG.saveFile();
         }
 
-        if (updater == null) {
-            config.set("Settings.Update-Checker", true);
-
-            Files.CONFIG.saveFile();
-        }
-
-        int configVersion = 1;
-        if (configVersion != config.getInt("Settings.Config-Version") && version != null) {
-            plugin.getLogger().warning("========================================================================");
-            plugin.getLogger().warning("You have an outdated config, Please run the command /crates update!");
-            plugin.getLogger().warning("This will take a backup of your entire folder & update your configs.");
-            plugin.getLogger().warning("Default values will be used in place of missing options!");
-            plugin.getLogger().warning("If you have any issues, Please contact Discord Support.");
-            plugin.getLogger().warning("https://discord.gg/crazycrew");
-            plugin.getLogger().warning("========================================================================");
-        }
-
         if (metricsEnabled) {
             MetricsHandler metricsHandler = new MetricsHandler();
 
             metricsHandler.start();
         }
-
-        checkUpdate();
 
         enable();
     }
@@ -164,33 +135,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         starter.getCrazyManager().setNewPlayerKeys(e.getPlayer());
         starter.getCrazyManager().loadOfflinePlayersKeys(e.getPlayer());
-    }
-
-    private void checkUpdate() {
-        FileConfiguration config = Files.CONFIG.getFile();
-
-        boolean updaterEnabled = config.getBoolean("Settings.Update-Checker");
-
-        if (!updaterEnabled) return;
-
-        getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            UpdateChecker updateChecker = new UpdateChecker(17599);
-
-            try {
-                if (updateChecker.hasUpdate() && !getDescription().getVersion().contains("Beta")) {
-                    getLogger().warning("CrazyCrates has a new update available! New version: " + updateChecker.getNewVersion());
-                    getLogger().warning("Current Version: v" + getDescription().getVersion());
-                    getLogger().warning("Download: " + updateChecker.getResourcePage());
-
-                    return;
-                }
-
-                getLogger().info("Plugin is up to date! - " + updateChecker.getNewVersion());
-            } catch (Exception exception) {
-                getLogger().warning("Could not check for updates! Perhaps the call failed or you are using a snapshot build:");
-                getLogger().warning("You can turn off the update checker in config.yml if on a snapshot build.");
-            }
-        });
     }
 
     public void cleanFiles() {

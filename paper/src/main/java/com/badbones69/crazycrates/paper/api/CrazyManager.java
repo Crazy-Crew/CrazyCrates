@@ -120,7 +120,8 @@ public class CrazyManager {
                 ArrayList<Prize> prizes = new ArrayList<>();
                 String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
                 ArrayList<Tier> tiers = new ArrayList<>();
-                int maxMassOpen =  file.contains("Crate.Max-Mass-Open") ? Integer.parseInt(file.getString("Crate.Max-Mass-Open")) : 10;
+                int maxMassOpen =  file.contains("Crate.Max-Mass-Open") ? file.getInt("Crate.Max-Mass-Open") : 10;
+                int requiredKeys = file.contains("Crate.RequiredKeys") ? file.getInt("Crate.RequiredKeys") : 0;
 
                 if (file.contains("Crate.Tiers") && file.getConfigurationSection("Crate.Tiers") != null) {
                     for (String tier : file.getConfigurationSection("Crate.Tiers").getKeys(false)) {
@@ -184,8 +185,10 @@ public class CrazyManager {
                     if (newPlayersKeys > 0) giveNewPlayersKeys = true;
                 }
 
+                List<String> prizeMessage = file.contains("Crate.Prize-Message") ? file.getStringList("Crate.Prize-Message") : Collections.emptyList();
+
                 CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"));
-                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, maxMassOpen, holo));
+                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, holo));
             } catch (Exception e) {
                 brokecrates.add(crateName);
                 plugin.getLogger().warning("There was an error while loading the " + crateName + ".yml file.");
@@ -193,7 +196,7 @@ public class CrazyManager {
             }
         }
 
-        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, 0, null));
+        crates.add(new Crate("Menu", "Menu", CrateType.MENU, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, 0, 0, Collections.emptyList(), null));
 
         if (fileManager.isLogging()) {
             plugin.getLogger().info("All crate information has been loaded.");
@@ -722,7 +725,19 @@ public class CrazyManager {
 
                 if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) command = PlaceholderAPI.setPlaceholders(player, command);
 
-                Methods.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getUpdatedName())));
+                Methods.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getUpdatedName())).replaceAll("%crate%", crate.getPreviewName()));
+            }
+
+            if (!crate.getPrizeMessage().isEmpty() && prize.getMessages().isEmpty()) {
+                for (String message : crate.getPrizeMessage()) {
+                    if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
+                        message = PlaceholderAPI.setPlaceholders(player, message);
+                    }
+
+                    Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getPreviewName()), false);
+                }
+
+                return;
             }
 
             for (String message : prize.getMessages()) {
@@ -730,7 +745,7 @@ public class CrazyManager {
                     message = PlaceholderAPI.setPlaceholders(player, message);
                 }
 
-                Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())), false);
+                Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getPreviewName()), false);
             }
         } else {
             plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
