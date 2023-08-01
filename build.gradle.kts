@@ -54,7 +54,7 @@ val description = """
      * Any current iterations of %crate% return the Preview Name. I might've missed one though lol..
     
     ## Misc:
-    * Removed auto update * config version as it's useless, You can remove it from your config.
+    * Removed auto update config version as it's useless, You can remove it from your config.
     
     ## Other:
     * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/discussions/categories/features)
