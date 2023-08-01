@@ -1,6 +1,3 @@
-import gradle.kotlin.dsl.accessors._3060c13235291a72581396bc01940dbe.publishing
-import org.gradle.kotlin.dsl.maven
-
 plugins {
     `java-library`
     `maven-publish`
