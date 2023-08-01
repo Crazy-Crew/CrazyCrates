@@ -144,7 +144,11 @@ public class Crate {
     public boolean canWinPrizes(Player player) {
         return pickPrize(player) != null;
     }
-    
+
+    public List<String> getPrizeMessage() {
+        return this.prizeMessage;
+    }
+
     /**
      * Picks a random prize based on BlackList Permissions and the Chance System.
      * @param player The player that will be winning the prize.

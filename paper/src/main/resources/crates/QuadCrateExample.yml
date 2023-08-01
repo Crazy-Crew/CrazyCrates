@@ -12,6 +12,8 @@ Crate:
   Slot: 25
   OpeningBroadCast: true
   BroadCast: '%prefix%&6&l%player%&r &7is opening a &b&lQuad Crate.'
+  Prize-Message:
+    - '&7You have won &c%reward% &7from &c%crate%.'
   Item: 'CHEST'
   Glowing: false
   Name: '&b&lQuad Crate'

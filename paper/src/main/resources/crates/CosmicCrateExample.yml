@@ -4,6 +4,8 @@ Crate:
   Preview-Name: '&dCosmic Crate Preview'
   StartingKeys: 0
   RequiredKeys: 0
+  Prize-Message:
+    - '&7You have won &c%reward% &7from &c%crate%.'
   Max-Mass-Open: 10
   InGUI: true
   Slot: 23
