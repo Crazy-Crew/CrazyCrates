@@ -25,8 +25,5 @@ tasks {
 
     assemble {
         dependsOn(shadowJar)
-        doLast {
-            delete(fileTree(baseDir = "$buildDir").include("**/*-dev*.jar"))
-        }
     }
 }
