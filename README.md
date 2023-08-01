@@ -18,7 +18,7 @@
   <p align="center">
     A crates plugin that offers quality crates with ease!
     <br />
-    <a href="https://github.com/Crazy-Crew/CrazyCrates/wiki"><strong>Explore the docs »</strong></a>
+    <a href="https://docs.crazycrew.us/crazycrates/home"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/Crazy-Crew/CrazyCrates/issues">Report Bug</a>
