@@ -47,6 +47,20 @@ tasks {
         outputJar.set(file("$buildDir/libs/${rootProject.name}-${project.name}-${project.version}.jar"))
     }
 
+    shadowJar {
+        archiveBaseName.set("${rootProject.name}-${project.name}")
+        archiveClassifier.set("")
+        mergeServiceFiles()
+
+        listOf(
+            "dev.triumphteam",
+            "org.bstats",
+            "de.tr7zw"
+        ).forEach {
+            relocate(it, "libs.$it")
+        }
+    }
+
     processResources {
         val props = mapOf(
             "name" to rootProject.name,

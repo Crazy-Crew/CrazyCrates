@@ -30,18 +30,4 @@ tasks {
             delete(fileTree(baseDir = "$buildDir").include("**/*-dev*.jar"))
         }
     }
-
-    shadowJar {
-        archiveBaseName.set("${rootProject.name}-${project.name}")
-        archiveClassifier.set("")
-        mergeServiceFiles()
-
-        listOf(
-            "dev.triumphteam",
-            "org.bstats",
-            "de.tr7zw"
-        ).forEach {
-            relocate(it, "libs.$it")
-        }
-    }
 }
