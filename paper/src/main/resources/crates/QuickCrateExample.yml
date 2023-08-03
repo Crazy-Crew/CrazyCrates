@@ -45,6 +45,12 @@ Crate:
     1:
       DisplayName: '&a&lFancy Pants'
       DisplayItem: 'CHAINMAIL_LEGGINGS'
+      # Only works on items with durability. This will make the item appear more damaged. Durability - Damage
+      # Durability-Damage
+      # It does not set the durability but subtracts this number from the durability
+      # Durability is 100, It subtracts 75.
+      # It cannot be 0.
+      DisplayDamage: 75
       DisplayTrim:
         # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
         Material: 'QUARTZ'
@@ -59,12 +65,18 @@ Crate:
       MaxRange: 100
       Chance: 40
       Items:
-        - 'Item:CHAINMAIL_LEGGINGS, Amount:1, Trim-Pattern:SENTRY, Trim-Material:LAPIS, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
+        - 'Item:CHAINMAIL_LEGGINGS, Amount:1, Damage:75, Trim-Pattern:SENTRY, Trim-Material:LAPIS, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2'
       Messages:
         - '&7You just won a &r%reward%.'
     2:
       DisplayName: '&b&lClassic Sword'
       DisplayItem: 'DIAMOND_SWORD'
+      # Only works on items with durability. This will make the item appear more damaged. Durability - Damage
+      # Durability-Damage
+      # It does not set the durability but subtracts this number from the durability
+      # Durability is 100, It subtracts 7.
+      # It cannot be 0.
+      DisplayDamage: 7
       DisplayAmount: 1
       Lore:
         - '&7Win a old classic sword.'
@@ -75,7 +87,7 @@ Crate:
       MaxRange: 100
       Chance: 35
       Items:
-        - 'Item:DIAMOND_SWORD, Amount:1, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1'
+        - 'Item:DIAMOND_SWORD, Amount:1, Damage:7, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1'
       Messages:
         - '&7You just won &r%reward%.'
     3:

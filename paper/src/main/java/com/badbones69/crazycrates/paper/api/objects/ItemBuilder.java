@@ -373,7 +373,15 @@ public class ItemBuilder {
                 }
             }
 
-            if (itemMeta instanceof org.bukkit.inventory.meta.Damageable) ((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(damage);
+            if (itemMeta instanceof Damageable) {
+                if (damage >= 1) {
+                    if (damage >= item.getType().getMaxDurability()) {
+                        ((Damageable) itemMeta).setDamage(item.getType().getMaxDurability());
+                    } else {
+                        ((Damageable) itemMeta).setDamage(damage);
+                    }
+                }
+            }
 
             if (isPotion && (potionType != null || potionColor != null)) {
                 PotionMeta potionMeta = (PotionMeta) itemMeta;
@@ -980,6 +988,13 @@ public class ItemBuilder {
                             itemBuilder.setAmount(Integer.parseInt(value));
                         } catch (NumberFormatException e) {
                             itemBuilder.setAmount(1);
+                        }
+                    }
+                    case "damage" -> {
+                        try {
+                            itemBuilder.setDamage(Integer.parseInt(value));
+                        } catch (NumberFormatException e) {
+                            itemBuilder.setDamage(itemBuilder.material.getMaxDurability());
                         }
                     }
                     case "lore" -> itemBuilder.setLore(Arrays.asList(value.split(",")));

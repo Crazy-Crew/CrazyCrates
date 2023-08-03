@@ -1346,6 +1346,10 @@ public class CrazyManager {
             .addPatterns(file.getStringList(path + "Patterns"))
             .setPlayerName(file.getString(path + "Player"));
 
+            if (file.contains(path + "DisplayDamage") && file.getInt(path + "DisplayDamage") >= 1) {
+                itemBuilder.setDamage(file.getInt(path + "DisplayDamage"));
+            }
+
             if (file.contains(path + "DisplayTrim.Pattern")) {
                 itemBuilder.setTrimPattern(Registry.TRIM_PATTERN.get(NamespacedKey.minecraft(file.getString(path + "DisplayTrim.Pattern").toLowerCase())));
             }

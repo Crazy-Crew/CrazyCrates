@@ -8,7 +8,7 @@ defaultTasks("build")
 
 rootProject.group = "com.badbones69.crazycrates"
 rootProject.description = "Add unlimited crates to your server with 10 different crate types to choose from!"
-rootProject.version = "1.13.1"
+rootProject.version = "1.14"
 
 val combine = tasks.register<Jar>("combine") {
     mustRunAfter("build")

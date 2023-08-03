@@ -45,6 +45,12 @@ Crate:
     1:
       DisplayName: '&3&lRare ChestPlate'
       DisplayItem: 'DIAMOND_CHESTPLATE'
+      # Only works on items with durability. This will make the item appear more damaged. Durability - Damage
+      # Durability-Damage
+      # It does not set the durability but subtracts this number from the durability
+      # Durability is 100, It subtracts 25.
+      # It cannot be 0.
+      DisplayDamage: 25
       DisplayTrim:
         # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
         Material: 'QUARTZ'
@@ -60,10 +66,15 @@ Crate:
       MaxRange: 100
       Chance: 40
       Items:
-        - 'Item:DIAMOND_CHESTPLATE, Amount:1, Trim-Pattern:SENTRY, Trim-Material:EMERALD, Name:&3Rare ChestPlate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3'
+        - 'Item:DIAMOND_CHESTPLATE, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:EMERALD, Name:&3Rare ChestPlate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3'
     2:
       DisplayName: '&b&lCrazy &4&lSword'
       DisplayItem: 'GOLDEN_SWORD'
+      # Only works on items with durability. This will make the item appear more damaged. Durability - Damage
+      # Durability-Damage
+      # It does not set the durability but subtracts this number from the durability
+      # Durability is 100, It subtracts 13.
+      DisplayDamage: 13
       DisplayAmount: 1
       Lore:
         - '&7Win a crazy cool sword.'
@@ -74,7 +85,7 @@ Crate:
       MaxRange: 100
       Chance: 35
       Items:
-        - 'Item:GOLDEN_SWORD, Amount:1, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1'
+        - 'Item:GOLDEN_SWORD, Amount:1, Damage:13, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1'
       Messages:
         - '&7You just won &r%reward%.'
     3:
