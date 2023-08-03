@@ -33,12 +33,32 @@ tasks {
 }
 
 val description = """
-    ## Fix:
-     * I was using the preview name instead of the crate name. It now uses the Crate Name.
+## New Features:
+ * Added the ability for an item to have damage applied to it.
+ ```yml
+    2:
+      DisplayName: '&b&lCheap Helmet'
+      DisplayItem: 'GOLDEN_HELMET'
+      # Only works on items with durability. This will make the item appear more damaged. Durability - Damage
+      # Durability-Damage
+      # It does not set the durability but subtracts this number from the durability
+      # Durability is 100, It subtracts 50.
+      DisplayDamage: 50
+      DisplayAmount: 1
+      Lore:
+        - '&7Win a cheap helmet.'
+        - '&6&lChance: &c&l60%'
+      MaxRange: 100
+      Chance: 60
+      Items:
+        - 'Item:GOLDEN_HELMET, Amount:1, Damage:50, Trim-Pattern:SENTRY, Trim-Material:QUARTZ, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
+ ```
+## Fix:
+ * I was using the preview name instead of the crate name. It now uses the Crate Name.
     
-    ## Other:
-    * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/discussions/categories/features)
-    * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
+## Other:
+ * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/discussions/categories/features)
+ * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
 """.trimIndent()
 
 val versions = listOf(

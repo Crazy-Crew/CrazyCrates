@@ -45,8 +45,7 @@ Crate:
     1:
       DisplayName: '&3&lRare ChestPlate'
       DisplayItem: 'DIAMOND_CHESTPLATE'
-      # Only works on items with durability. This will make the item appear more damaged. Durability - Damage
-      # Durability-Damage
+      # Only works on items with durability. This will make the item appear more damaged.
       # It does not set the durability but subtracts this number from the durability
       # Durability is 100, It subtracts 25.
       # It cannot be 0.
@@ -70,8 +69,7 @@ Crate:
     2:
       DisplayName: '&b&lCrazy &4&lSword'
       DisplayItem: 'GOLDEN_SWORD'
-      # Only works on items with durability. This will make the item appear more damaged. Durability - Damage
-      # Durability-Damage
+      # Only works on items with durability. This will make the item appear more damaged.
       # It does not set the durability but subtracts this number from the durability
       # Durability is 100, It subtracts 13.
       DisplayDamage: 13

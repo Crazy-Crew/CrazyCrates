@@ -97,8 +97,7 @@ Crate:
     2:
       DisplayName: '&b&lCheap Helmet'
       DisplayItem: 'GOLDEN_HELMET'
-      # Only works on items with durability. This will make the item appear more damaged. Durability - Damage
-      # Durability-Damage
+      # Only works on items with durability. This will make the item appear more damaged.
       # It does not set the durability but subtracts this number from the durability
       # Durability is 100, It subtracts 5.
       # It cannot be 0.
@@ -142,8 +141,7 @@ Crate:
     4:
       DisplayName: '&b&lCrazy &4&lSword'
       DisplayItem: 'GOLDEN_SWORD'
-      # Only works on items with durability. This will make the item appear more damaged. Durability - Damage
-      # Durability-Damage
+      # Only works on items with durability. This will make the item appear more damaged.
       # It does not set the durability but subtracts this number from the durability
       # Durability is 100, It subtracts 12.
       DisplayDamage: 12
