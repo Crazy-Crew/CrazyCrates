@@ -725,7 +725,7 @@ public class CrazyManager {
 
                 if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) command = PlaceholderAPI.setPlaceholders(player, command);
 
-                Methods.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getUpdatedName())).replaceAll("%crate%", crate.getPreviewName()));
+                Methods.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getUpdatedName())).replaceAll("%crate%", crate.getCrateInventoryName()));
             }
 
             if (!crate.getPrizeMessage().isEmpty() && prize.getMessages().isEmpty()) {
@@ -734,7 +734,7 @@ public class CrazyManager {
                         message = PlaceholderAPI.setPlaceholders(player, message);
                     }
 
-                    Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getPreviewName()), false);
+                    Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getCrateInventoryName()), false);
                 }
 
                 return;
@@ -745,7 +745,7 @@ public class CrazyManager {
                     message = PlaceholderAPI.setPlaceholders(player, message);
                 }
 
-                Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getPreviewName()), false);
+                Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getCrateInventoryName()), false);
             }
         } else {
             plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
@@ -1345,6 +1345,10 @@ public class CrazyManager {
             .addItemFlags(file.getStringList(path + "Flags"))
             .addPatterns(file.getStringList(path + "Patterns"))
             .setPlayerName(file.getString(path + "Player"));
+
+            if (file.contains(path + "DisplayDamage") && file.getInt(path + "DisplayDamage") >= 1) {
+                itemBuilder.setDamage(file.getInt(path + "DisplayDamage"));
+            }
 
             if (file.contains(path + "DisplayTrim.Pattern")) {
                 itemBuilder.setTrimPattern(Registry.TRIM_PATTERN.get(NamespacedKey.minecraft(file.getString(path + "DisplayTrim.Pattern").toLowerCase())));

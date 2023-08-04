@@ -8,7 +8,7 @@ defaultTasks("build")
 
 rootProject.group = "com.badbones69.crazycrates"
 rootProject.description = "Add unlimited crates to your server with 10 different crate types to choose from!"
-rootProject.version = "1.13"
+rootProject.version = "1.14"
 
 val combine = tasks.register<Jar>("combine") {
     mustRunAfter("build")
@@ -33,35 +33,32 @@ tasks {
 }
 
 val description = """
-    ## New Features:
-    * You can now require a player have a custom amount of keys to open a crate.
-     * It will default to 0 if the option isn't added.
-     * Add it to your crate config like below.
-     ```yml
-     Crate:
-       # The amount of keys required to use the crate.
-       RequiredKeys: 0
-     ```
-    * You can now define a default prize message in each crate instead of having to manually configure each prize.
-     * It will do nothing until you add it.
-     * This is an example of how to add it.
-     ```yml
-     Crate:
-      # A default message if the prize doesn't have any Messages
-      # i.e Messages: [] or the value isn't there.
-      # Warning, this will override all values in Messages: for each prize.
-      Prize-Message:
-      - '&7You have won &c%reward% &7from &c%crate%.'
-    ```
-    * Added an extra placeholder called %crate% which simply returns the Preview Name.
-     * Any current iterations of %crate% return the Preview Name. I might've missed one though lol..
+## New Features:
+ * Added the ability for an item to have damage applied to it.
+ ```yml
+    2:
+      DisplayName: '&b&lCheap Helmet'
+      DisplayItem: 'GOLDEN_HELMET'
+      # Only works on items with durability. This will make the item appear more damaged. Durability - Damage
+      # Durability-Damage
+      # It does not set the durability but subtracts this number from the durability
+      # Durability is 100, It subtracts 50.
+      DisplayDamage: 50
+      DisplayAmount: 1
+      Lore:
+        - '&7Win a cheap helmet.'
+        - '&6&lChance: &c&l60%'
+      MaxRange: 100
+      Chance: 60
+      Items:
+        - 'Item:GOLDEN_HELMET, Amount:1, Damage:50, Trim-Pattern:SENTRY, Trim-Material:QUARTZ, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
+ ```
+## Fix:
+ * I was using the preview name instead of the crate name. It now uses the Crate Name.
     
-    ## Misc:
-    * Removed auto update config version as it's useless, You can remove it from your config.
-    
-    ## Other:
-    * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/discussions/categories/features)
-    * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
+## Other:
+ * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/discussions/categories/features)
+ * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
 """.trimIndent()
 
 val versions = listOf(
