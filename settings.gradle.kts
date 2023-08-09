@@ -18,3 +18,4 @@ rootProject.name = "CrazyCrates"
 
 include("core")
 include("paper")
+include("fabric")

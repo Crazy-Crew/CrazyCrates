@@ -1,0 +1,9 @@
+[versions]
+shadow = "8.1.1"
+userdev = "1.5.5"
+loom = "1.3-SNAPSHOT"
+
+[plugins]
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
+loom = { id = "fabric-loom", version.ref = "loom" }
+userdev = { id = "io.papermc.paperweight.userdev", version.ref = "userdev" }
