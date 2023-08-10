@@ -31,6 +31,7 @@ tasks {
         mergeServiceFiles()
 
         listOf(
+            "com.ryderbelserion.lexicon",
             "dev.triumphteam",
             "org.bstats",
             "de.tr7zw"

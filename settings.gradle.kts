@@ -14,7 +14,7 @@ pluginManagement {
 rootProject.name = "CrazyCrates"
 
 listOf(
-    "api",
+    "core",
 
     // Bukkit
     "paper",

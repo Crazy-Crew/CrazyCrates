@@ -30,11 +30,15 @@ subprojects {
     repositories {
         maven("https://repo.codemc.org/repository/maven-public/")
 
+        maven("https://repo.triumphteam.dev/snapshots/")
+
         maven("https://repo.crazycrew.us/first-party/")
 
         maven("https://repo.crazycrew.us/third-party/")
 
         maven("https://repo.crazycrew.us/releases/")
+
+        maven("https://maven.fabricmc.net/")
 
         maven("https://jitpack.io")
 
@@ -43,29 +47,25 @@ subprojects {
     }
 
     listOf(
-        ":api",
-        ":paper",
-        ":fabric"
+        ":core",
+        ":paper"
     ).forEach {
         project(it) {
             group = "${rootProject.group}.${this.name}"
             version = rootProject.version
 
-            if (this.name == "fabric") {
-                repositories {
-                    maven("https://libraries.minecraft.net/")
-
-                    maven("https://maven.fabricmc.net/")
-                }
-            }
-
             if (this.name == "paper") {
                 repositories {
                     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-
-                    maven("https://repo.triumphteam.dev/snapshots/")
                 }
             }
+        }
+
+        dependencies {
+            implementation("de.tr7zw", "item-nbt-api", "2.11.3")
+            implementation("org.bstats", "bstats-bukkit", "3.0.2")
+
+            implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-SNAPSHOT")
         }
     }
 

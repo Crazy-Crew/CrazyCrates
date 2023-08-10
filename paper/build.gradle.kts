@@ -11,20 +11,15 @@ repositories {
 }
 
 dependencies {
-    api(project(":api"))
-
-    paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
-
-    implementation("de.tr7zw", "item-nbt-api", "2.11.3")
-    implementation("org.bstats", "bstats-bukkit", "3.0.2")
-
-    implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-SNAPSHOT")
+    compileOnly(project(":core"))
 
     compileOnly(fileTree("libs").include("*.jar"))
 
     compileOnly("me.clip", "placeholderapi", "2.11.3")
 
     compileOnly("com.github.decentsoftware-eu", "decentholograms","2.8.3")
+
+    paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
 }
 
 val component: SoftwareComponent = components["java"]
