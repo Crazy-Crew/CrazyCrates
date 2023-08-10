@@ -1,20 +1,22 @@
-dependencyResolutionManagement {
-    repositories.gradlePluginPortal()
-}
-
 pluginManagement {
     repositories {
-        gradlePluginPortal()
-        mavenCentral()
+        maven("https://maven.fabricmc.net/")
+
+        maven("https://maven.minecraftforge.net/")
 
         maven("https://repo.papermc.io/repository/maven-public/")
 
-        maven("https://repo.crazycrew.us/first-party/")
-        maven("https://repo.crazycrew.us/third-party/")
+        gradlePluginPortal()
+        mavenCentral()
     }
 }
 
 rootProject.name = "CrazyCrates"
 
-include("core")
-include("paper")
+listOf(
+    "core",
+
+    "paper",
+).forEach {
+    include(it)
+}

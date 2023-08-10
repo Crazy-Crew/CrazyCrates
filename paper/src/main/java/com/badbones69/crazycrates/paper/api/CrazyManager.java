@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.api;
 
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
+import com.badbones69.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
@@ -12,13 +13,12 @@ import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.*;
 import com.badbones69.crazycrates.paper.cratetypes.*;
-import com.badbones69.crazycrates.enums.types.CrateType;
-import com.badbones69.crazycrates.enums.types.KeyType;
+import com.badbones69.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
 import com.badbones69.crazycrates.paper.listeners.MenuListener;
 import com.badbones69.crazycrates.paper.listeners.PreviewListener;
-import com.badbones69.crazycrates.core.objects.CrateHologram;
-import com.badbones69.crazycrates.core.quadcrates.CrateSchematic;
+import com.badbones69.crazycrates.api.objects.CrateHologram;
+import com.badbones69.crazycrates.api.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.paper.support.holograms.CMIHologramsSupport;
 import com.badbones69.crazycrates.paper.support.holograms.DecentHologramsSupport;
 import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;

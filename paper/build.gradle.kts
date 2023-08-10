@@ -1,11 +1,13 @@
 plugins {
-    id("paper-plugin")
+    alias(libs.plugins.shadow)
+    alias(libs.plugins.userdev)
+    alias(libs.plugins.modrinth)
 }
 
-group = "${rootProject.group}.paper"
+val projectName = "${rootProject.name}-${project.name.substring(0, 1).uppercase() + project.name.substring(1)}"
 
 base {
-    archivesName.set("${rootProject.name}-${project.name}")
+    archivesName.set(projectName)
 }
 
 repositories {
@@ -25,6 +27,8 @@ dependencies {
     compileOnly("me.clip", "placeholderapi", "2.11.3")
 
     compileOnly("com.github.decentsoftware-eu", "decentholograms","2.8.3")
+
+    paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
 }
 
 val component: SoftwareComponent = components["java"]
@@ -33,26 +37,24 @@ tasks {
     publishing {
         publications {
             create<MavenPublication>("maven") {
-                groupId = rootProject.group.toString()
+                groupId = project.group.toString()
                 artifactId = "${rootProject.name.lowercase()}-${project.name.lowercase()}-api"
-                version = rootProject.version.toString()
+                version = project.version.toString()
 
                 from(component)
             }
         }
     }
 
-    reobfJar {
-        outputJar.set(file("$buildDir/libs/${rootProject.name}-${project.name}-${project.version}.jar"))
-    }
-
     shadowJar {
-        archiveBaseName.set("${rootProject.name}-${project.name}")
+        archiveBaseName.set(projectName)
         archiveClassifier.set("")
-        mergeServiceFiles()
+
+        exclude("META-INF/**")
 
         listOf(
             "dev.triumphteam",
+            "org.jetbrains",
             "org.bstats",
             "de.tr7zw"
         ).forEach {
@@ -60,11 +62,19 @@ tasks {
         }
     }
 
+    reobfJar {
+        outputJar.set(file("$buildDir/libs/$projectName-${project.version}.jar"))
+    }
+
+    assemble {
+        dependsOn(reobfJar)
+    }
+
     processResources {
         val props = mapOf(
             "name" to rootProject.name,
             "group" to project.group,
-            "version" to rootProject.version,
+            "version" to project.version,
             "description" to rootProject.description,
             "authors" to rootProject.properties["authors"],
             "apiVersion" to "1.20",
@@ -75,4 +85,43 @@ tasks {
             expand(props)
         }
     }
+}
+
+val file = file("${rootProject.rootDir}/jars/$projectName-${project.version}.jar")
+
+val description = """
+## New Features:
+* N/A
+
+## Fix:
+* N/A
+    
+## Other:
+* [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/discussions/categories/features)
+* [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
+""".trimIndent()
+
+val versions = listOf(
+    "1.20",
+    "1.20.1",
+    "1.20.2"
+)
+
+modrinth {
+    autoAddDependsOn.set(false)
+
+    token.set(System.getenv("MODRINTH_TOKEN"))
+
+    projectId.set(rootProject.name.lowercase())
+
+    versionName.set("${rootProject.name} ${project.version}")
+    versionNumber.set("${project.version}")
+
+    uploadFile.set(file)
+
+    gameVersions.addAll(versions)
+
+    changelog.set(description)
+
+    loaders.addAll("paper", "purpur")
 }
