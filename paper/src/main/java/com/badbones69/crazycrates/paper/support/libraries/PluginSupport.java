@@ -4,11 +4,9 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 
 public enum PluginSupport {
 
-    HOLOGRAPHIC_DISPLAYS("HolographicDisplays"),
     DECENT_HOLOGRAMS("DecentHolograms"),
     CMI("CMI"),
-    PLACEHOLDERAPI("PlaceholderAPI"),
-    ITEMS_ADDER("ItemsAdder");
+    PLACEHOLDERAPI("PlaceholderAPI");
     
     private final String name;
 
