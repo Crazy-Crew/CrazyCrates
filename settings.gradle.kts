@@ -16,11 +16,7 @@ rootProject.name = "CrazyCrates"
 listOf(
     "core",
 
-    // Bukkit
     "paper",
-
-    // Fabric
-    "fabric"
 ).forEach {
     include(it)
 }

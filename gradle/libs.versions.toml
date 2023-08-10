@@ -2,8 +2,10 @@
 shadow = "8.1.1"
 userdev = "1.5.5"
 loom = "1.3-SNAPSHOT"
+rinth = "2.8.2"
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
 loom = { id = "fabric-loom", version.ref = "loom" }
 userdev = { id = "io.papermc.paperweight.userdev", version.ref = "userdev" }
+modrinth = { id = "com.modrinth.minotaur", version.ref = "rinth" }

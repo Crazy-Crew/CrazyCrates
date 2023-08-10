@@ -2,8 +2,10 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
+val projectName = "${rootProject.name}-${project.name.substring(0, 1).uppercase() + project.name.substring(1)}"
+
 base {
-    archivesName.set("${rootProject.name}-${project.name}")
+    archivesName.set(projectName)
 }
 
 val component: SoftwareComponent = components["java"]
@@ -12,9 +14,9 @@ tasks {
     publishing {
         publications {
             create<MavenPublication>("maven") {
-                groupId = rootProject.group.toString()
+                groupId = project.group.toString()
                 artifactId = "${rootProject.name.lowercase()}-${project.name.lowercase()}-api"
-                version = rootProject.version.toString()
+                version = project.version.toString()
 
                 from(component)
             }
@@ -23,20 +25,5 @@ tasks {
 
     assemble {
         dependsOn(shadowJar)
-    }
-
-    shadowJar {
-        archiveBaseName.set("${rootProject.name}-${project.name}")
-        archiveClassifier.set("")
-        mergeServiceFiles()
-
-        listOf(
-            "com.ryderbelserion.lexicon",
-            "dev.triumphteam",
-            "org.bstats",
-            "de.tr7zw"
-        ).forEach {
-            relocate(it, "libs.$it")
-        }
     }
 }
