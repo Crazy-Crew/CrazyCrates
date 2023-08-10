@@ -18,7 +18,7 @@
   "environment": "*",
   "entrypoints": {
     "server": [
-      "${group}.server.CrazyCrates"
+      "com.badbones69.crazycrates.fabric.server.CrazyCrates"
     ]
   },
   "mixins": [],

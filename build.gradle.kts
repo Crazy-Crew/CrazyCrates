@@ -1,5 +1,6 @@
 plugins {
-    id("root-plugin")
+    `maven-publish`
+    `java-library`
 
     id("com.modrinth.minotaur") version "2.8.2"
 }
@@ -22,6 +23,64 @@ val combine = tasks.register<Jar>("combine") {
     from(jarFiles)
 }
 
+subprojects {
+    apply(plugin = "maven-publish")
+    apply(plugin = "java-library")
+
+    repositories {
+        maven("https://repo.codemc.org/repository/maven-public/")
+
+        maven("https://repo.crazycrew.us/first-party/")
+
+        maven("https://repo.crazycrew.us/third-party/")
+
+        maven("https://repo.crazycrew.us/releases/")
+
+        maven("https://jitpack.io")
+
+        mavenCentral()
+        mavenLocal()
+    }
+
+    listOf(
+        ":api",
+        ":paper",
+        ":fabric"
+    ).forEach {
+        project(it) {
+            group = "${rootProject.group}.${this.name}"
+            version = rootProject.version
+
+            if (this.name == "fabric") {
+                repositories {
+                    maven("https://libraries.minecraft.net/")
+
+                    maven("https://maven.fabricmc.net/")
+                }
+            }
+
+            if (this.name == "paper") {
+                repositories {
+                    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+
+                    maven("https://repo.triumphteam.dev/snapshots/")
+                }
+            }
+        }
+    }
+
+    java {
+        toolchain.languageVersion.set(JavaLanguageVersion.of("17"))
+    }
+
+    tasks {
+        compileJava {
+            options.encoding = Charsets.UTF_8.name()
+            options.release.set(17)
+        }
+    }
+}
+
 tasks {
     assemble {
         subprojects.forEach { project ->
@@ -34,27 +93,9 @@ tasks {
 
 val description = """
 ## New Features:
- * Added the ability for an item to have damage applied to it.
- ```yml
-    2:
-      DisplayName: '&b&lCheap Helmet'
-      DisplayItem: 'GOLDEN_HELMET'
-      # Only works on items with durability. This will make the item appear more damaged. Durability - Damage
-      # Durability-Damage
-      # It does not set the durability but subtracts this number from the durability
-      # Durability is 100, It subtracts 50.
-      DisplayDamage: 50
-      DisplayAmount: 1
-      Lore:
-        - '&7Win a cheap helmet.'
-        - '&6&lChance: &c&l60%'
-      MaxRange: 100
-      Chance: 60
-      Items:
-        - 'Item:GOLDEN_HELMET, Amount:1, Damage:50, Trim-Pattern:SENTRY, Trim-Material:QUARTZ, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
- ```
+ * N/A
 ## Fix:
- * I was using the preview name instead of the crate name. It now uses the Crate Name.
+ * N/A
     
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/discussions/categories/features)
@@ -68,6 +109,24 @@ val versions = listOf(
 
 val isSnapshot = rootProject.version.toString().contains("snapshot")
 val type = if (isSnapshot) "beta" else "release"
+
+publishing {
+    repositories {
+        maven {
+            credentials {
+                this.username = System.getenv("gradle_username")
+                this.password = System.getenv("gradle_password")
+            }
+
+            if (isSnapshot) {
+                url = uri("https://repo.crazycrew.us/snapshots/")
+                return@maven
+            }
+
+            url = uri("https://repo.crazycrew.us/releases/")
+        }
+    }
+}
 
 modrinth {
     autoAddDependsOn.set(false)

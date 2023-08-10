@@ -2,10 +2,8 @@ plugins {
     alias(libs.plugins.loom)
 }
 
-repositories {
-    maven("https://maven.fabricmc.net/")
-
-    maven("https://libraries.minecraft.net/")
+base {
+    archivesName.set("${rootProject.name}-${project.name}")
 }
 
 dependencies {
@@ -18,12 +16,26 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api", "fabric-api", "${project.properties["fabricApiVersion"]}")
 }
 
+val component: SoftwareComponent = components["java"]
+
 tasks {
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = rootProject.group.toString()
+                artifactId = "${rootProject.name.lowercase()}-${project.name.lowercase()}-api"
+                version = rootProject.version.toString()
+
+                from(component)
+            }
+        }
+    }
+
     processResources {
         val props = mapOf(
             "name" to rootProject.name,
             "group" to project.group,
-            "version" to project.version,
+            "version" to rootProject.version.toString(),
             "description" to project.properties["description"],
             "fabricApiVersion" to project.properties["fabricApiVersion"],
             "fabricLoaderVersion" to project.properties["fabricLoaderVersion"],

@@ -1,8 +1,6 @@
 plugins {
-    id("paper-plugin")
+    alias(libs.plugins.shadow)
 }
-
-group = "${rootProject.group}.core"
 
 base {
     archivesName.set("${rootProject.name}-${project.name}")
@@ -25,5 +23,19 @@ tasks {
 
     assemble {
         dependsOn(shadowJar)
+    }
+
+    shadowJar {
+        archiveBaseName.set("${rootProject.name}-${project.name}")
+        archiveClassifier.set("")
+        mergeServiceFiles()
+
+        listOf(
+            "dev.triumphteam",
+            "org.bstats",
+            "de.tr7zw"
+        ).forEach {
+            relocate(it, "libs.$it")
+        }
     }
 }

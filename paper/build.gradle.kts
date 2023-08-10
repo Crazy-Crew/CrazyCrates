@@ -1,8 +1,6 @@
 plugins {
-    id("paper-plugin")
+    alias(libs.plugins.userdev)
 }
-
-group = "${rootProject.group}.paper"
 
 base {
     archivesName.set("${rootProject.name}-${project.name}")
@@ -13,7 +11,9 @@ repositories {
 }
 
 dependencies {
-    api(project(":core"))
+    api(project(":api"))
+
+    paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
 
     implementation("de.tr7zw", "item-nbt-api", "2.11.3")
     implementation("org.bstats", "bstats-bukkit", "3.0.2")
@@ -46,18 +46,8 @@ tasks {
         outputJar.set(file("$buildDir/libs/${rootProject.name}-${project.name}-${project.version}.jar"))
     }
 
-    shadowJar {
-        archiveBaseName.set("${rootProject.name}-${project.name}")
-        archiveClassifier.set("")
-        mergeServiceFiles()
-
-        listOf(
-            "dev.triumphteam",
-            "org.bstats",
-            "de.tr7zw"
-        ).forEach {
-            relocate(it, "libs.$it")
-        }
+    assemble {
+        dependsOn(reobfJar)
     }
 
     processResources {
