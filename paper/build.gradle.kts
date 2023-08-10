@@ -50,8 +50,11 @@ tasks {
         archiveBaseName.set(projectName)
         archiveClassifier.set("")
 
+        exclude("META-INF/**")
+
         listOf(
             "dev.triumphteam",
+            "org.jetbrains",
             "org.bstats",
             "de.tr7zw"
         ).forEach {
