@@ -1,16 +1,33 @@
+import io.papermc.hangarpublishplugin.model.Platforms
+
 plugins {
-    alias(libs.plugins.shadow)
-    alias(libs.plugins.userdev)
     alias(libs.plugins.modrinth)
+    alias(libs.plugins.hangar)
+
+    id("paper-plugin")
 }
 
-val projectName = "${rootProject.name}-${project.name.substring(0, 1).uppercase() + project.name.substring(1)}"
-
-base {
-    archivesName.set(projectName)
-}
+project.group = "${rootProject.group}.paper"
 
 repositories {
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+
+    maven("https://repo.codemc.org/repository/maven-public/")
+
+    maven("https://repo.aikar.co/content/groups/aikar/")
+
+    maven("https://repo.triumphteam.dev/snapshots/")
+
+    maven("https://repo.crazycrew.us/first-party/")
+
+    maven("https://repo.crazycrew.us/third-party/")
+
+    maven("https://repo.crazycrew.us/releases/")
+
+    maven("https://jitpack.io/")
+
+    mavenCentral()
+
     flatDir { dirs("libs") }
 }
 
@@ -27,8 +44,6 @@ dependencies {
     compileOnly("me.clip", "placeholderapi", "2.11.3")
 
     compileOnly("com.github.decentsoftware-eu", "decentholograms","2.8.3")
-
-    paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
 }
 
 val component: SoftwareComponent = components["java"]
@@ -39,7 +54,7 @@ tasks {
             create<MavenPublication>("maven") {
                 groupId = project.group.toString()
                 artifactId = "${rootProject.name.lowercase()}-${project.name.lowercase()}-api"
-                version = project.version.toString()
+                version = rootProject.version.toString()
 
                 from(component)
             }
@@ -47,34 +62,19 @@ tasks {
     }
 
     shadowJar {
-        archiveBaseName.set(projectName)
-        archiveClassifier.set("")
-
-        exclude("META-INF/**")
-
         listOf(
-            "dev.triumphteam",
-            "org.jetbrains",
-            "org.bstats",
-            "de.tr7zw"
+            "de.tr7zw",
+            "org.bstats"
         ).forEach {
             relocate(it, "libs.$it")
         }
     }
 
-    reobfJar {
-        outputJar.set(file("$buildDir/libs/$projectName-${project.version}.jar"))
-    }
-
-    assemble {
-        dependsOn(reobfJar)
-    }
-
     processResources {
         val props = mapOf(
             "name" to rootProject.name,
-            "group" to project.group,
-            "version" to project.version,
+            "group" to project.group.toString(),
+            "version" to rootProject.version,
             "description" to rootProject.description,
             "authors" to rootProject.properties["authors"],
             "apiVersion" to "1.20",
@@ -87,24 +87,22 @@ tasks {
     }
 }
 
-val file = file("${rootProject.rootDir}/jars/$projectName-${project.version}.jar")
+val isSnapshot = rootProject.version.toString().contains("snapshot")
+val type = if (isSnapshot) "beta" else "release"
+val other = if (isSnapshot) "Beta" else "Release"
+
+val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.version}.jar")
 
 val description = """
-## New Features:
-* N/A
-
-## Fix:
-* N/A
-    
 ## Other:
-* [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
-* [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
+ * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
+ * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
 """.trimIndent()
 
 val versions = listOf(
     "1.20",
     "1.20.1",
-    "1.20.2"
+    //"1.20.2"
 )
 
 modrinth {
@@ -114,8 +112,10 @@ modrinth {
 
     projectId.set(rootProject.name.lowercase())
 
-    versionName.set("${rootProject.name} ${project.version}")
-    versionNumber.set("${project.version}")
+    versionName.set("${rootProject.name} ${rootProject.version}")
+    versionNumber.set("${rootProject.version}")
+
+    versionType.set(type)
 
     uploadFile.set(file)
 
@@ -124,4 +124,22 @@ modrinth {
     changelog.set(description)
 
     loaders.addAll("paper", "purpur")
+}
+
+hangarPublish {
+    publications.register("plugin") {
+        version.set(rootProject.version as String)
+        namespace("CrazyCrew", rootProject.name)
+        channel.set(other)
+        changelog.set(description)
+
+        apiKey.set(System.getenv("hangar_key"))
+
+        platforms {
+            register(Platforms.PAPER) {
+                jar.set(file)
+                platformVersions.set(versions)
+            }
+        }
+    }
 }

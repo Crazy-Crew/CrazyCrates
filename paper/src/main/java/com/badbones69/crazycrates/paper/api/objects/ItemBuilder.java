@@ -514,7 +514,6 @@ public class ItemBuilder {
                 this.armorColor = getColor(metaData);
                 this.mapColor = getColor(metaData);
             }
-
         } else if (material.contains("#")) {
             String[] b = material.split("#");
             material = b[0];
