@@ -94,6 +94,10 @@ val other = if (isSnapshot) "Beta" else "Release"
 val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.version}.jar")
 
 val description = """
+## New Features:
+ * Added the ability to color maps.
+   * https://docs.crazycrew.us/crazycrates/info/prizes/items/colored-map
+    
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
  * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
