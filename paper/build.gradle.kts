@@ -97,7 +97,7 @@ val description = """
 * N/A
     
 ## Other:
-* [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/discussions/categories/features)
+* [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
 * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
 """.trimIndent()
 
