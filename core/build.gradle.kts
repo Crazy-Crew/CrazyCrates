@@ -1,12 +1,8 @@
 plugins {
-    alias(libs.plugins.shadow)
+    id("paper-plugin")
 }
 
-val projectName = "${rootProject.name}-${project.name.substring(0, 1).uppercase() + project.name.substring(1)}"
-
-base {
-    archivesName.set(projectName)
-}
+project.group = "${rootProject.group}.core"
 
 val component: SoftwareComponent = components["java"]
 
@@ -21,9 +17,5 @@ tasks {
                 from(component)
             }
         }
-    }
-
-    assemble {
-        dependsOn(shadowJar)
     }
 }

@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.*;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
+import org.bukkit.map.MapView;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
@@ -73,6 +74,10 @@ public class ItemBuilder {
     private boolean isBanner;
     private List<Pattern> patterns;
 
+    // Maps
+    private boolean isMap;
+    private Color mapColor;
+
     // Placeholders
     private HashMap<String, String> namePlaceholders;
     private HashMap<String, String> lorePlaceholders;
@@ -126,6 +131,9 @@ public class ItemBuilder {
         this.isBanner = false;
         this.patterns = new ArrayList<>();
 
+        this.isMap = false;
+        this.mapColor = Color.RED;
+
         this.namePlaceholders = new HashMap<>();
         this.lorePlaceholders = new HashMap<>();
 
@@ -178,6 +186,9 @@ public class ItemBuilder {
 
         this.isBanner = itemBuilder.isBanner;
         this.patterns = new ArrayList<>(itemBuilder.patterns);
+
+        this.isMap = itemBuilder.isMap;
+        this.mapColor = itemBuilder.mapColor;
 
         this.namePlaceholders = new HashMap<>(itemBuilder.namePlaceholders);
         this.lorePlaceholders = new HashMap<>(itemBuilder.lorePlaceholders);
@@ -373,6 +384,12 @@ public class ItemBuilder {
                 }
             }
 
+            if (isMap) {
+                MapMeta mapMeta = (MapMeta) itemMeta;
+
+                if (mapColor != null) mapMeta.setColor(mapColor);
+            }
+
             if (itemMeta instanceof Damageable) {
                 if (damage >= 1) {
                     if (damage >= item.getType().getMaxDurability()) {
@@ -495,8 +512,8 @@ public class ItemBuilder {
                 this.potionType = getPotionType(PotionEffectType.getByName(metaData));
                 this.potionColor = getColor(metaData);
                 this.armorColor = getColor(metaData);
+                this.mapColor = getColor(metaData);
             }
-
         } else if (material.contains("#")) {
             String[] b = material.split("#");
             material = b[0];
@@ -517,6 +534,7 @@ public class ItemBuilder {
             case "LEATHER_HELMET", "LEATHER_CHESTPLATE", "LEATHER_LEGGINGS", "LEATHER_BOOTS", "LEATHER_HORSE_ARMOR" -> this.isLeatherArmor = true;
             case "BANNER" -> this.isBanner = true;
             case "SHIELD" -> this.isShield = true;
+            case "MAP", "FILLED_MAP" -> this.isMap = true;
         }
 
         if (this.material.name().contains("BANNER")) this.isBanner = true;
