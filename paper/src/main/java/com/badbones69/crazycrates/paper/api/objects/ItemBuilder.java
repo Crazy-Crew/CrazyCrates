@@ -18,7 +18,6 @@ import org.bukkit.inventory.meta.*;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
-import org.bukkit.map.MapView;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
@@ -37,8 +36,7 @@ public class ItemBuilder {
     private String itemName;
     private final List<String> itemLore;
     private int itemAmount;
-    private String iaNamespace;
-    private String oraxenNamespace;
+    private String customMaterial;
 
     // Player
     private String player;
@@ -367,11 +365,11 @@ public class ItemBuilder {
 
         if (item == null) {
             if (PluginSupport.ITEMS_ADDER.isPluginEnabled()) {
-                CustomStack customStack = CustomStack.getInstance("ia:" + this.iaNamespace);
+                CustomStack customStack = CustomStack.getInstance("ia:" + this.customMaterial);
 
                 if (customStack != null) item = customStack.getItemStack();
             } else if (PluginSupport.ORAXEN.isPluginEnabled()) {
-                io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.oraxenNamespace);
+                io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
 
                 if (oraxenItem != null) item = oraxenItem.build();
             }
@@ -508,8 +506,7 @@ public class ItemBuilder {
     public ItemBuilder setMaterial(String material) {
         String metaData;
         //Store material inside iaNamespace (e.g. ia:myblock)
-        this.iaNamespace = material;
-        this.oraxenNamespace = material;
+        this.customMaterial = material;
 
         if (material.contains(":")) { // Sets the durability or another value option.
             String[] b = material.split(":");
