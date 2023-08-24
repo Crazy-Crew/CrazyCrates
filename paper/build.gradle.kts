@@ -99,6 +99,8 @@ val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.v
 
 val description = """
 ## New Features:
+ * Added direct support for Oraxen/ItemsAdder
+   * https://docs.crazycrew.us/crazycrates/info/prizes/options#custom-items
  * Added the ability to color maps.
    * https://docs.crazycrew.us/crazycrates/info/prizes/items/colored-map
     
