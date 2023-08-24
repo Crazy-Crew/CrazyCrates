@@ -6,7 +6,9 @@ public enum PluginSupport {
 
     DECENT_HOLOGRAMS("DecentHolograms"),
     CMI("CMI"),
-    PLACEHOLDERAPI("PlaceholderAPI");
+    PLACEHOLDERAPI("PlaceholderAPI"),
+    ORAXEN("Oraxen"),
+    ITEMS_ADDER("ItemsAdder");
     
     private final String name;
 

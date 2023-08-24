@@ -44,6 +44,10 @@ dependencies {
     compileOnly("me.clip", "placeholderapi", "2.11.3")
 
     compileOnly("com.github.decentsoftware-eu", "decentholograms","2.8.3")
+
+    compileOnly("com.github.LoneDev6", "API-ItemsAdder", "3.5.0b")
+
+    compileOnly("com.github.oraxen", "oraxen", "1.160.0")
 }
 
 val component: SoftwareComponent = components["java"]
