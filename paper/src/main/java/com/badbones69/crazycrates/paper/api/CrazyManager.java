@@ -21,6 +21,7 @@ import com.badbones69.crazycrates.api.objects.CrateHologram;
 import com.badbones69.crazycrates.api.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.paper.support.holograms.CMIHologramsSupport;
 import com.badbones69.crazycrates.paper.support.holograms.DecentHologramsSupport;
+import com.badbones69.crazycrates.paper.support.holograms.HolographicDisplaysSupport;
 import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
 import com.badbones69.crazycrates.paper.support.structures.StructureHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -100,15 +101,15 @@ public class CrazyManager {
         // Removes all holograms so that they can be replaced.
         if (hologramController != null) hologramController.removeAllHolograms();
 
-        //if (PluginSupport.FANCY_HOLOGRAMS.isPluginEnabled()) {
-        //hologramController = new FancyHologramSupport();
-        //plugin.getLogger().info("FancyHolograms support has been enabled.");
         if (PluginSupport.DECENT_HOLOGRAMS.isPluginEnabled()) {
             hologramController = new DecentHologramsSupport();
             plugin.getLogger().info("DecentHolograms support has been enabled.");
         } else if (PluginSupport.CMI.isPluginEnabled() && CMIModule.holograms.isEnabled()) {
             hologramController = new CMIHologramsSupport();
             plugin.getLogger().info("CMI Hologram support has been enabled.");
+        } else if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginEnabled()) {
+            hologramController = new HolographicDisplaysSupport();
+            plugin.getLogger().info("Holographic Displays support has been enabled.");
         } else plugin.getLogger().warning("No holograms plugin were found. If using CMI, make sure holograms module is enabled.");
 
         if (fileManager.isLogging()) plugin.getLogger().info("Loading all crate information...");

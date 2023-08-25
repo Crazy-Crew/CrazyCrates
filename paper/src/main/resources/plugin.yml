@@ -8,7 +8,7 @@ api-version: '${apiVersion}'
 description: '${description}'
 website: '${website}'
 
-softdepend: [CMI, DecentHolograms, PlaceholderAPI, ItemsAdder, Oraxen]
+softdepend: [CMI, DecentHolograms, HolographicDisplays, PlaceholderAPI, ItemsAdder, Oraxen]
 
 commands:
   crates:

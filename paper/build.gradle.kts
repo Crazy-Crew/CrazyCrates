@@ -41,13 +41,15 @@ dependencies {
 
     compileOnly(fileTree("libs").include("*.jar"))
 
-    compileOnly("me.clip", "placeholderapi", "2.11.3")
+    compileOnly("me.filoghost.holographicdisplays", "holographicdisplays-api", "3.0.0")
 
     compileOnly("com.github.decentsoftware-eu", "decentholograms","2.8.3")
 
     compileOnly("com.github.LoneDev6", "API-ItemsAdder", "3.5.0b")
 
     compileOnly("com.github.oraxen", "oraxen", "1.160.0")
+
+    compileOnly("me.clip", "placeholderapi", "2.11.3")
 }
 
 val component: SoftwareComponent = components["java"]
