@@ -101,6 +101,7 @@ val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.v
 
 val description = """
 ## New Features:
+ * Added back HolographicDisplays support as filoghost has updated it to 1.20.1
  * Added direct support for Oraxen/ItemsAdder
    * https://docs.crazycrew.us/crazycrates/info/prizes/options#custom-items
  * Added the ability to color maps.
