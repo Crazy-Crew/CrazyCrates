@@ -16,10 +16,8 @@ public class SessionManager {
     }
 
     public QuadCrateManager getSession(Player player) {
-        if (!QuadCrateManager.getCrateSessions().isEmpty()) {
-            for (QuadCrateManager quadCrateManager : QuadCrateManager.getCrateSessions()) {
-                if (quadCrateManager.getPlayer() == player) return quadCrateManager;
-            }
+        for (QuadCrateManager quadCrateManager : QuadCrateManager.getCrateSessions()) {
+            if (quadCrateManager.getPlayer() == player) return quadCrateManager;
         }
 
         return null;
