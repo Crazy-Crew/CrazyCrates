@@ -2,7 +2,7 @@ plugins {
     id("paper-plugin")
 }
 
-project.group = "${rootProject.group}.core"
+project.group = "${rootProject.group}.api"
 
 val component: SoftwareComponent = components["java"]
 
