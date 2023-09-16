@@ -341,7 +341,8 @@ public class CrazyManager {
 
         if (!(player.hasPermission("crazycrates.open." + crate.getName()) || player.hasPermission("crazycrates.open.*"))) {
             player.sendMessage(Messages.NO_CRATE_PERMISSION.getMessage());
-            if (CrateControlListener.inUse.containsValue(location)) CrateControlListener.inUse.remove(player);
+            removePlayerFromOpeningList(player);
+            CrateControlListener.inUse.remove(player);
             return;
         }
 
