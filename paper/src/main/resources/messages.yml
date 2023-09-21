@@ -11,6 +11,7 @@ Messages:
   Reload: '&3You have reloaded the Config and Data Files.'
   Not-Online: '&cThe player &6%player% &cis not online.'
   No-Permission: '&cYou do not have permission to use that command!'
+  No-Crate-Permission: "&cYou do not have permission to use that crate."
   Crate-Already-Opened: '&cYou are already opening a Crate.'
   Cant-Be-A-Virtual-Crate: '&cThat Crate type cannot be used as a Virtual Crate.'
   Inventory-Full: '&cYour inventory is full, Please make room before opening a Crate.'
