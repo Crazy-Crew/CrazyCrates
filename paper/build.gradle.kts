@@ -12,21 +12,9 @@ project.group = "${rootProject.group}.paper"
 repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 
-    maven("https://repo.codemc.org/repository/maven-public/")
-
     maven("https://repo.aikar.co/content/groups/aikar/")
 
     maven("https://repo.triumphteam.dev/snapshots/")
-
-    maven("https://repo.crazycrew.us/first-party/")
-
-    maven("https://repo.crazycrew.us/third-party/")
-
-    maven("https://repo.crazycrew.us/releases/")
-
-    maven("https://jitpack.io/")
-
-    mavenCentral()
 
     flatDir { dirs("libs") }
 }
@@ -34,8 +22,9 @@ repositories {
 dependencies {
     api(project(":core"))
 
-    implementation("de.tr7zw", "item-nbt-api", "2.11.3")
     implementation("org.bstats", "bstats-bukkit", "3.0.2")
+
+    implementation("de.tr7zw", "item-nbt-api", "2.11.3")
 
     implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-SNAPSHOT")
 
@@ -100,12 +89,11 @@ val other = if (isSnapshot) "Beta" else "Release"
 val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.version}.jar")
 
 val description = """
+## Changes:
+ * Added 1.20.2 support.
+
 ## New Features:
- * Added back HolographicDisplays support as filoghost has updated it to 1.20.1
- * Added direct support for Oraxen/ItemsAdder
-   * https://docs.crazycrew.us/crazycrates/info/prizes/options#custom-items
- * Added the ability to color maps.
-   * https://docs.crazycrew.us/crazycrates/info/prizes/items/colored-map
+ * N/A
     
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
@@ -115,7 +103,7 @@ val description = """
 val versions = listOf(
     "1.20",
     "1.20.1",
-    //"1.20.2"
+    "1.20.2"
 )
 
 modrinth {
@@ -142,8 +130,11 @@ modrinth {
 hangarPublish {
     publications.register("plugin") {
         version.set(rootProject.version as String)
-        namespace("CrazyCrew", rootProject.name)
-        channel.set(other)
+
+        id.set(rootProject.name)
+
+        channel.set(if (isSnapshot) "Beta" else "Release")
+
         changelog.set(description)
 
         apiKey.set(System.getenv("hangar_key"))

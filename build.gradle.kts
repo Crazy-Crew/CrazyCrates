@@ -21,7 +21,7 @@ tasks {
 
                 if (project.name == "core") return@doLast
 
-                val file = file("${project.buildDir}/libs/${rootProject.name}-${rootProject.version}.jar")
+                val file = file("${project.layout.buildDirectory.get()}/libs/${rootProject.name}-${rootProject.version}.jar")
 
                 copy {
                     from(file)
