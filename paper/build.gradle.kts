@@ -91,6 +91,7 @@ val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.v
 val description = """
 ## Changes:
  * Added 1.20.2 support.
+ * Bumped nbt-api.
 
 ## New Features:
  * N/A
