@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.enums.types;
+package us.crazycrew.crazycrates.api.enums.types;
 
 public enum KeyType {
     

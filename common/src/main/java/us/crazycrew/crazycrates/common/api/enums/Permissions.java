@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.enums;
+package us.crazycrew.crazycrates.common.api.enums;
 
 public enum Permissions {
 

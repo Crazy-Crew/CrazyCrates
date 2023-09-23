@@ -37,7 +37,7 @@ import java.util.concurrent.CompletableFuture;
 @Command(value = "crates", alias = {"crazycrates", "cc", "crate", "crazycrate"})
 public class CrateBaseCommand extends BaseCommand {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 

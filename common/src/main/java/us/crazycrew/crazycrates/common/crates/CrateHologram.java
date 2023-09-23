@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.objects;
+package us.crazycrew.crazycrates.common.crates;
 
 import java.util.ArrayList;
 import java.util.List;

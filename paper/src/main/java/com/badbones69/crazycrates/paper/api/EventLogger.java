@@ -21,7 +21,7 @@ Crate Name, Key Name, Player Name, Who sent keys, Who got keys, who gave keys.
 
 public class EventLogger {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     public void logCrateEvent(Player player, Crate crate, KeyType keyType, boolean logFile, boolean logConsole) {
         if (logFile) log(setEntryData("Player: %player% | Crate Name: %crate_name% | Crate Type: %crate_type% | Key Name: %key_name% | Key Type: %key_type% | Key Item: %key_item%", player, player, crate, keyType), CrateEventType.CRATE_EVENT.getName());

@@ -5,7 +5,7 @@ import org.bstats.bukkit.Metrics;
 
 public class MetricsHandler {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     public void start() {
         new Metrics(plugin, 4514);

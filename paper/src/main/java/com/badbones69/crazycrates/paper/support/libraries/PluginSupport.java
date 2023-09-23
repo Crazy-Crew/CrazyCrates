@@ -13,7 +13,7 @@ public enum PluginSupport {
     
     private final String name;
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     PluginSupport(String name) {
         this.name = name;

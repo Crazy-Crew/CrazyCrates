@@ -10,9 +10,9 @@ pluginManagement {
 rootProject.name = "CrazyCrates"
 
 listOf(
-    "core",
-
+    "api",
     "paper",
+    "common",
 ).forEach {
     include(it)
 }

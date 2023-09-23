@@ -20,11 +20,15 @@ repositories {
 }
 
 dependencies {
-    api(project(":core"))
+    implementation(project(":common"))
 
     implementation("org.bstats", "bstats-bukkit", "3.0.2")
 
     implementation("de.tr7zw", "item-nbt-api", "2.12.0")
+
+    implementation(libs.cluster.bukkit.api) {
+        exclude("com.ryderbelserion.cluster", "cluster-api")
+    }
 
     implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-SNAPSHOT")
 

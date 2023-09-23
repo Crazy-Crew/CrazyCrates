@@ -3,6 +3,9 @@ package com.badbones69.crazycrates.paper.api;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,7 +15,7 @@ import java.util.HashMap;
 
 public class FileManager {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private boolean log = false;
 
@@ -33,7 +36,7 @@ public class FileManager {
         customFiles.clear();
         configurations.clear();
 
-        // Loads all the normal static files.
+        // Loads all the normal files.
         for (Files file : Files.values()) {
             File newFile = new File(plugin.getDataFolder(), file.getFileLocation());
 
@@ -291,10 +294,10 @@ public class FileManager {
         }
     }
 
-    public ArrayList<String> getAllCratesNames(CrazyCrates plugin) {
+    public ArrayList<String> getAllCratesNames() {
         ArrayList<String> files = new ArrayList<>();
 
-        String[] file = new File(plugin.getDataFolder(), "/crates").list();
+        String[] file = new File(this.plugin.getDataFolder(), "/crates").list();
 
         if (file != null) {
             for (String name : file) {
@@ -335,7 +338,7 @@ public class FileManager {
         private final String fileJar;
         private final String fileLocation;
 
-        private final CrazyCrates plugin = CrazyCrates.getPlugin();
+        private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
         private final FileManager fileManager = plugin.getStarter().getFileManager();
 
@@ -414,7 +417,7 @@ public class FileManager {
         private final String homeFolder;
         private FileConfiguration file;
 
-        private final CrazyCrates plugin = CrazyCrates.getPlugin();
+        private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
         /**
          * A custom file that is being made.

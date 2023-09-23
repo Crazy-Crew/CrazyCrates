@@ -5,8 +5,8 @@ build
 buildSrc/.gradle
 buildSrc/build
 
-core/.gradle
-core/build
+common/.gradle
+common/build
 
 api/.gradle
 api/build

@@ -35,7 +35,7 @@ import java.util.Random;
  */
 public class QuadCrate implements Listener {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 

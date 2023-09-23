@@ -17,7 +17,7 @@ public class BrokeLocation {
     /**
      * Fetch the plugin instance.
      */
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     /**
      * Builds a location that represents a broken crate.

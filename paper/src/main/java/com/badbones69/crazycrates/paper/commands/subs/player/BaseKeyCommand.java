@@ -16,7 +16,7 @@ import java.util.List;
 @Command(value = "keys", alias = {"key"})
 public class BaseKeyCommand extends BaseCommand {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
