@@ -6,7 +6,9 @@ import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
-import com.badbones69.crazycrates.api.enums.types.CrateType;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,38 +16,41 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
 
 public class CrateOnTheGo implements Listener {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final @NotNull Methods methods = this.crazyHandler.getMethods();
 
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
-    
+    private final @NotNull CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+
     @EventHandler
-    public void onCrateOpen(PlayerInteractEvent e) {
-        Player player = e.getPlayer();
+    public void onCrateOpen(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
 
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            ItemStack item = player.getInventory().getItemInMainHand();
-            
-            if (item == null || item.getType() == Material.AIR) return;
-            
-            for (Crate crate : crazyManager.getCrates()) {
-                if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO && Methods.isSimilar(item, crate)) {
-                    e.setCancelled(true);
-                    crazyManager.addPlayerToOpeningList(player, crate);
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
-                    Methods.removeItem(item, player);
+        ItemStack item = player.getInventory().getItemInMainHand();
 
-                    Prize prize = crate.pickPrize(player);
+        if (item.getType() == Material.AIR) return;
 
-                    crazyManager.givePrize(player, prize, crate);
-                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crazyManager.getOpeningCrate(player).getName(), prize));
+        for (Crate crate : this.crazyManager.getCrates()) {
+            if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO && this.methods.isSimilar(item, crate)) {
+                event.setCancelled(true);
+                this.crazyManager.addPlayerToOpeningList(player, crate);
 
-                    if (prize.useFireworks()) Methods.firework(player.getLocation().add(0, 1, 0));
+                this.methods.removeItem(item, player);
 
-                    crazyManager.removePlayerFromOpeningList(player);
-                }
+                Prize prize = crate.pickPrize(player);
+
+                this.crazyManager.givePrize(player, prize, crate);
+                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, this.crazyManager.getOpeningCrate(player).getName(), prize));
+
+                if (prize.useFireworks()) this.methods.firework(player.getLocation().add(0, 1, 0));
+
+                this.crazyManager.removePlayerFromOpeningList(player);
             }
         }
     }

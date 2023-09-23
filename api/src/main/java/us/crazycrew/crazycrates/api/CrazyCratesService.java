@@ -5,9 +5,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class CrazyCratesService {
 
-    private static CrazyCrates plugin = null;
+    private CrazyCrates plugin = null;
 
-    public static @NotNull CrazyCrates get() {
+    public @NotNull CrazyCrates get() {
         CrazyCrates instance = CrazyCratesService.plugin;
 
         if (instance == null) {
@@ -23,14 +23,14 @@ public class CrazyCratesService {
     }
 
     @ApiStatus.Internal
-    public static void setService(CrazyCrates plugin) {
+    public void setService(CrazyCrates plugin) {
         if (CrazyCratesService.plugin != null) return;
 
         CrazyCratesService.plugin = plugin;
     }
 
     @ApiStatus.Internal
-    public static void stopService() {
+    public void stopService() {
         if (CrazyCratesService.plugin == null) return;
 
         CrazyCratesService.plugin = null;

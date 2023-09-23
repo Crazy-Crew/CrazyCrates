@@ -18,6 +18,6 @@ public class MetricsHandler {
         //    metrics.addCustomChart(crateChart);
         //});
 
-        plugin.getLogger().info("Metrics has been enabled.");
+        LegacyLogger.info("Metrics has been enabled.");
     }
 }

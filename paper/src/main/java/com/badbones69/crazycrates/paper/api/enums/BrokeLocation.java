@@ -3,6 +3,8 @@ package com.badbones69.crazycrates.paper.api.enums;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.Location;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public class BrokeLocation {
 
@@ -14,9 +16,6 @@ public class BrokeLocation {
     private final String locationName;
     private Crate crate;
 
-    /**
-     * Fetch the plugin instance.
-     */
     private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     /**
@@ -43,14 +42,14 @@ public class BrokeLocation {
      * @return the location name
      */
     public String getLocationName() {
-        return locationName;
+        return this.locationName;
     }
 
     /**
      * @return the X coordinate
      */
     public int getX() {
-        return x;
+        return this.x;
     }
 
     /**
@@ -66,7 +65,7 @@ public class BrokeLocation {
      * @return the Y coordinate
      */
     public int getY() {
-        return y;
+        return this.y;
     }
 
 
@@ -83,7 +82,7 @@ public class BrokeLocation {
      * @return the Z coordinate
      */
     public int getZ() {
-        return z;
+        return this.z;
     }
 
     /**
@@ -99,7 +98,7 @@ public class BrokeLocation {
      * @return the world name
      */
     public String getWorld() {
-        return world;
+        return this.world;
     }
 
     /**
@@ -115,7 +114,7 @@ public class BrokeLocation {
      * @return the crate object
      */
     public Crate getCrate() {
-        return crate;
+        return this.crate;
     }
 
     /**
@@ -133,6 +132,6 @@ public class BrokeLocation {
      * @return the location of the broken crate
      */
     public Location getLocation() {
-        return new Location(plugin.getServer().getWorld(world), x, y, z);
+        return new Location(this.plugin.getServer().getWorld(this.world), this.x, this.y, this.z);
     }
 }

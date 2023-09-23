@@ -4,14 +4,12 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
-import com.badbones69.crazycrates.api.enums.Permissions;
-import com.badbones69.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.cratetypes.QuickCrate;
+import com.ryderbelserion.cluster.bukkit.utils.LegacyUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -29,22 +27,32 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.common.api.enums.Permissions;
+import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class CrateControlListener implements Listener { // Crate Control
     
     // A list of crate locations that are in use.
-    public static HashMap<Player, Location> inUse = new HashMap<>();
+    public HashMap<UUID, Location> inUse = new HashMap<>();
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final @NotNull Methods methods = this.crazyHandler.getMethods();
 
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+
+    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
     
     // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
     @EventHandler
     public void onCrateInventoryClick(InventoryClickEvent event) {
-        for (Crate crate : crazyManager.getCrates()) {
+        for (Crate crate : this.crazyManager.getCrates()) {
             if (crate.getCrateType() != CrateType.MENU && crate.isCrateMenu(event.getView())) event.setCancelled(true);
         }
     }
@@ -58,7 +66,7 @@ public class CrateControlListener implements Listener { // Crate Control
         FileConfiguration config = Files.CONFIG.getFile();
 
         if (e.getHand() == EquipmentSlot.OFF_HAND) {
-            if (crazyManager.isKey(player.getInventory().getItemInOffHand())) {
+            if (this.crazyManager.isKey(player.getInventory().getItemInOffHand())) {
                 e.setCancelled(true);
                 player.updateInventory();
             }
@@ -165,7 +173,7 @@ public class CrateControlListener implements Listener { // Crate Control
                             }
                         }
 
-                        if (Methods.isInventoryFull(player)) {
+                        if (this.methods.isInventoryFull(player)) {
                             player.sendMessage(Messages.INVENTORY_FULL.getMessage());
                             return;
                         }
@@ -186,7 +194,7 @@ public class CrateControlListener implements Listener { // Crate Control
                             if (config.contains("Settings.Need-Key-Sound")) {
                                 Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
 
-                                if (sound != null) player.playSound(player.getLocation(), sound, 1f, 1f);
+                                player.playSound(player.getLocation(), sound, 1f, 1f);
                             }
 
                             player.sendMessage(Messages.NO_KEY.getMessage("%Key%", keyName));
@@ -202,10 +210,10 @@ public class CrateControlListener implements Listener { // Crate Control
         Inventory inv = e.getInventory();
         Player player = (Player) e.getWhoClicked();
 
-        if (inv != null && e.getView().getTitle().equals(Methods.sanitizeColor("&4&lAdmin Keys"))) {
+        if (e.getView().getTitle().equals(this.methods.sanitizeColor("&4&lAdmin Keys"))) {
             e.setCancelled(true);
 
-            if (!Methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
+            if (!this.methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
                 player.closeInventory();
                 return;
             }
@@ -225,7 +233,7 @@ public class CrateControlListener implements Listener { // Crate Control
 
                         if (key.hasItemMeta() && key.getItemMeta().hasDisplayName()) name = key.getItemMeta().getDisplayName();
 
-                        player.sendMessage(Methods.getPrefix() + Methods.color("&a&l+1 " + (name != null ? name : crate.getName())));
+                        player.sendMessage(this.methods.getPrefix() + LegacyUtils.color(("&a&l+1 " + (name != null ? name : crate.getName()))));
                     }
                 }
             }
@@ -243,7 +251,7 @@ public class CrateControlListener implements Listener { // Crate Control
         if (crazyManager.isInOpeningList(player)) crazyManager.removePlayerFromOpeningList(player);
     }
     
-    public static void knockBack(Player player, Location location) {
+    public void knockBack(Player player, Location location) {
         Vector vector = player.getLocation().toVector().subtract(location.toVector()).normalize().multiply(1).setY(.1);
 
         if (player.isInsideVehicle() && player.getVehicle() != null) {

@@ -1,12 +1,12 @@
 package com.badbones69.crazycrates.paper.support.holograms;
 
-import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.CrateHologram;
+import com.ryderbelserion.cluster.bukkit.utils.LegacyUtils;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.block.Block;
+import us.crazycrew.crazycrates.common.crates.CrateHologram;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -23,22 +23,22 @@ public class DecentHologramsSupport implements HologramController {
 
         Hologram hologram = DHAPI.createHologram("CrazyCrates-" + UUID.randomUUID(), block.getLocation().add(.5, height, .5));
 
-        crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, Methods.color(line)));
+        crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, LegacyUtils.color((line))));
 
-        holograms.put(block, hologram);
+        this.holograms.put(block, hologram);
     }
     
     public void removeHologram(Block block) {
-        if (!holograms.containsKey(block)) return;
+        if (!this.holograms.containsKey(block)) return;
 
-        Hologram hologram = holograms.get(block);
+        Hologram hologram = this.holograms.get(block);
 
-        holograms.remove(block);
+        this.holograms.remove(block);
         hologram.delete();
     }
 
     public void removeAllHolograms() {
-        holograms.forEach((key, value) -> value.delete());
-        holograms.clear();
+        this.holograms.forEach((key, value) -> value.delete());
+        this.holograms.clear();
     }
 }

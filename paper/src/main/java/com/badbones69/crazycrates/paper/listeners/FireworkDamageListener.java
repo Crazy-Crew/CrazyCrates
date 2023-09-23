@@ -1,8 +1,6 @@
 package com.badbones69.crazycrates.paper.listeners;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
-import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Entity;
+import com.badbones69.crazycrates.paper.api.enums.DataKeys;
 import org.bukkit.entity.Firework;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,26 +10,13 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class FireworkDamageListener implements Listener {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
-
-    private static final NamespacedKey noDamage = new NamespacedKey(plugin, "no-damage");
-
-    /**
-     * @param firework The firework you want to add.
-     */
-    public static void addFirework(Entity firework) {
-        PersistentDataContainer container = firework.getPersistentDataContainer();
-
-        container.set(noDamage, PersistentDataType.STRING, "no-damage");
-    }
-
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerDamage(EntityDamageByEntityEvent e) {
-        if (e.getDamager() instanceof Firework firework) {
+    public void onPlayerDamage(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Firework firework) {
 
             PersistentDataContainer container = firework.getPersistentDataContainer();
 
-            if (container.has(noDamage, PersistentDataType.STRING)) e.setCancelled(true);
+            if (container.has(DataKeys.NO_FIREWORK_DAMAGE.getKey(), PersistentDataType.BOOLEAN)) event.setCancelled(true);
         }
     }
 }

@@ -3,7 +3,11 @@ package com.badbones69.crazycrates.paper.api.enums.settings;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.FileManager;
+import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
+import com.ryderbelserion.cluster.bukkit.utils.LegacyUtils;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -114,22 +118,22 @@ public enum Messages {
      * @param list to convert
      * @return the converted StringList
      */
-    public static String convertList(List<String> list) {
+    public String convertList(List<String> list) {
         StringBuilder message = new StringBuilder();
 
         for (String line : list) {
-            message.append(Methods.color(line)).append("\n");
+            message.append(LegacyUtils.color(line)).append("\n");
         }
 
         return message.toString();
     }
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     /**
      * Adds any missing messages to the Messages.yml file based on values in the Messages enum.
      */
-    public static void addMissingMessages() {
+    public void addMissingMessages() {
         FileConfiguration messages = FileManager.Files.MESSAGES.getFile();
         boolean saveFile = false;
 
@@ -148,16 +152,16 @@ public enum Messages {
         String tooFewArgs = messages.getString("Messages.Not-Enough-Args");
 
         if (tooManyArgs != null) {
-            plugin.getLogger().warning("Found outdated config entry: " + tooManyArgs);
-            plugin.getLogger().warning("Removing now, Please use `Correct-Usage` from now on." );
+            LegacyLogger.warn("Found outdated config entry: " + tooManyArgs);
+            LegacyLogger.warn("Removing now, Please use `Correct-Usage` from now on." );
 
             messages.set("Messages.Too-Many-Args", null);
             FileManager.Files.MESSAGES.saveFile();
         }
 
         if (tooFewArgs != null) {
-            plugin.getLogger().warning("Found outdated config entry: " + tooFewArgs);
-            plugin.getLogger().warning("Removing now, Please use `Correct-Usage` from now on." );
+            LegacyLogger.warn("Found outdated config entry: " + tooFewArgs);
+            LegacyLogger.warn("Removing now, Please use `Correct-Usage` from now on." );
 
             messages.set("Messages.Not-Enough-Args", null);
             FileManager.Files.MESSAGES.saveFile();
@@ -175,7 +179,7 @@ public enum Messages {
      * @param message to be edited
      * @return the edited message
      */
-    public static String replacePlaceholders(String placeholder, String replacement, String message) {
+    public String replacePlaceholders(String placeholder, String replacement, String message) {
         HashMap<String, String> placeholders = new HashMap<>();
         placeholders.put(placeholder, replacement);
         return replacePlaceholders(placeholders, message);
@@ -189,7 +193,7 @@ public enum Messages {
      * @param message to be edited
      * @return the edited message
      */
-    public static String replacePlaceholders(Map<String, String> placeholders, String message) {
+    public String replacePlaceholders(Map<String, String> placeholders, String message) {
         for (Entry<String, String> placeholder : placeholders.entrySet()) {
             message = message.replace(placeholder.getKey(), placeholder.getValue())
             .replace(placeholder.getKey().toLowerCase(), placeholder.getValue());
@@ -207,7 +211,7 @@ public enum Messages {
      * @param messageList the StringList to edit
      * @return the edited message
      */
-    public static List<String> replacePlaceholders(String placeholder, String replacement, List<String> messageList) {
+    public List<String> replacePlaceholders(String placeholder, String replacement, List<String> messageList) {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put(placeholder, replacement);
         return replacePlaceholders(placeholders, messageList);
@@ -221,7 +225,7 @@ public enum Messages {
      * @param messageList the StringList to be edited
      * @return the edited StringList
      */
-    public static List<String> replacePlaceholders(Map<String, String> placeholders, List<String> messageList) {
+    public List<String> replacePlaceholders(Map<String, String> placeholders, List<String> messageList) {
         List<String> newMessageList = new ArrayList<>();
 
         for (String message : messageList) {
@@ -325,15 +329,15 @@ public enum Messages {
 
         if (isList) {
             if (exists) {
-                message = Methods.color(convertList(FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path)));
+                message = LegacyUtils.color(convertList(FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path)));
             } else {
-                message = Methods.color(convertList(getDefaultListMessage()));
+                message = LegacyUtils.color(convertList(getDefaultListMessage()));
             }
         } else {
             if (exists) {
-                message = Methods.color(FileManager.Files.MESSAGES.getFile().getString("Messages." + path));
+                message = LegacyUtils.color(FileManager.Files.MESSAGES.getFile().getString("Messages." + path));
             } else {
-                message = Methods.color(getDefaultMessage());
+                message = LegacyUtils.color(getDefaultMessage());
             }
         }
 
@@ -342,12 +346,12 @@ public enum Messages {
         }
 
         if (isList) { // Don't want to add a prefix to a list of messages.
-            return Methods.color(message);
+            return LegacyUtils.color(message);
         } else { // If the message isn't a list.
             if (prefix) { // If the message needs a prefix.
                 return Methods.getPrefix(message);
             } else { // If the message doesn't need a prefix.
-                return Methods.color(message);
+                return LegacyUtils.color(message);
             }
         }
     }

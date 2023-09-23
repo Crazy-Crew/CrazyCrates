@@ -1,6 +1,7 @@
 package us.crazycrew.crazycrates.paper.api.plugin;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +19,8 @@ public class CrazyHandler extends CrazyCratesPlugin {
     private MetricsHandler metrics;
     private FileManager fileManager;
 
+    private Methods methods;
+
     public CrazyHandler(File dataFolder) {
         super(dataFolder);
     }
@@ -29,6 +32,8 @@ public class CrazyHandler extends CrazyCratesPlugin {
         //super.enable();
 
         //LegacyLogger.setName(getConfigManager().getConfig().getProperty(Config.console_prefix));
+
+        this.methods = new Methods();
 
         this.fileManager = new FileManager();
         this.fileManager
@@ -60,6 +65,10 @@ public class CrazyHandler extends CrazyCratesPlugin {
     @Override
     public @NotNull ConfigManager getConfigManager() {
         return super.getConfigManager();
+    }
+
+    public @NotNull Methods getMethods() {
+        return this.methods;
     }
 
     public @NotNull FileManager getFileManager() {

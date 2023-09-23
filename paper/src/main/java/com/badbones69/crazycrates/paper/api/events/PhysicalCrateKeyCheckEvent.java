@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class PhysicalCrateKeyCheckEvent extends Event implements Cancellable {
     
-    private static final HandlerList handlers = new HandlerList();
+    private final HandlerList handlers = new HandlerList();
     private final Player player;
     private final CrateLocation crateLocation;
     private boolean isCancelled;
@@ -27,7 +27,7 @@ public class PhysicalCrateKeyCheckEvent extends Event implements Cancellable {
         this.isCancelled = false;
     }
 
-    public static HandlerList getHandlerList() {
+    public HandlerList getHandlerList() {
         return handlers;
     }
     
@@ -36,16 +36,16 @@ public class PhysicalCrateKeyCheckEvent extends Event implements Cancellable {
     }
     
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
     
     public CrateLocation getCrateLocation() {
-        return crateLocation;
+        return this.crateLocation;
     }
     
     @Override
     public boolean isCancelled() {
-        return isCancelled;
+        return this.isCancelled;
     }
     
     @Override

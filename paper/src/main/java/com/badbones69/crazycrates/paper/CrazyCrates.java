@@ -72,7 +72,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         cleanFiles();
 
         // Add extra messages.
-        Messages.addMissingMessages();
+        //Messages.addMissingMessages();
 
         FileConfiguration config = Files.CONFIG.getFile();
 
@@ -130,6 +130,14 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         if (starter.getCrazyManager().getHologramController() != null) starter.getCrazyManager().getHologramController().removeAllHolograms();
 
         this.crazyHandler.uninstall();
+    }
+
+    public CrazyHandler getCrazyHandler() {
+        return this.crazyHandler;
+    }
+
+    public boolean isLogging() {
+        return true;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -280,9 +288,9 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void printHooks() {
         for (PluginSupport value : PluginSupport.values()) {
             if (value.isPluginEnabled()) {
-                //getLogger().info(Methods.color("&6&l" + value.name() + " &a&lFOUND"));
+                //getLogger().info(LegacyUtils.color(("&6&l" + value.name() + " &a&lFOUND"));
             } else {
-                //getLogger().info(Methods.color("&6&l" + value.name() + " &c&lNOT FOUND"));
+                //getLogger().info(LegacyUtils.color(("&6&l" + value.name() + " &c&lNOT FOUND"));
             }
         }
     }

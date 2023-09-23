@@ -7,8 +7,10 @@ import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
-import com.badbones69.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
+import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.support.structures.blocks.ChestStateHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
@@ -23,22 +25,27 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.UUID;
 
 public class QuickCrate implements Listener {
+
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final @NotNull Methods methods = this.crazyHandler.getMethods();
+
+    private final @NotNull CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+
+    private final @NotNull ChestStateHandler chestStateHandler = plugin.getStarter().getChestStateHandler();
     
-    public static ArrayList<Entity> allRewards = new ArrayList<>();
-    public static HashMap<Player, Entity> rewards = new HashMap<>();
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final ArrayList<Entity> allRewards = new ArrayList<>();
+    private final HashMap<UUID, Entity> rewards = new HashMap<>();
+    private final HashMap<UUID, BukkitTask> tasks = new HashMap<>();
 
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
-    private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
-
-    private static final ChestStateHandler chestStateHandler = plugin.getStarter().getChestStateHandler();
-
-    public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType, HologramController hologramController) {
+    public void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType, HologramController hologramController) {
         int keys = switch (keyType) {
             case VIRTUAL_KEY -> crazyManager.getVirtualKeys(player, crate);
             case PHYSICAL_KEY -> crazyManager.getPhysicalKeys(player, crate);
@@ -50,37 +57,39 @@ public class QuickCrate implements Listener {
             
             // give the player the prizes
             for (;keys > 0; keys--) {
-                if (Methods.isInventoryFull(player)) break;
+                if (this.methods.isInventoryFull(player)) break;
                 if (keysUsed >= crate.getMaxMassOpen()) break;
 
                 Prize prize = crate.pickPrize(player);
                 crazyManager.givePrize(player, prize, crate);
                 plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 
-                if (prize.useFireworks()) Methods.firework(loc.clone().add(.5, 1, .5));
+                if (prize.useFireworks()) this.methods.firework(loc.clone().add(.5, 1, .5));
                 
                 keysUsed++;
             }
             
             if (!crazyManager.takeKeys(keysUsed, player, crate, keyType, false)) {
-                Methods.failedToTakeKey(player, crate);
-                CrateControlListener.inUse.remove(player);
-                crazyManager.removePlayerFromOpeningList(player);
+                this.methods.failedToTakeKey(player, crate);
+                //TODO() Unstatic this.
+                //CrateControlListener.inUse.remove(player);
+                this.crazyManager.removePlayerFromOpeningList(player);
                 return;
             }
 
             endQuickCrate(player, loc, crate, hologramController, true);
         } else {
-            if (!crazyManager.takeKeys(1, player, crate, keyType, true)) {
-                Methods.failedToTakeKey(player, crate);
-                CrateControlListener.inUse.remove(player);
-                crazyManager.removePlayerFromOpeningList(player);
+            if (!this.crazyManager.takeKeys(1, player, crate, keyType, true)) {
+                this.methods.failedToTakeKey(player, crate);
+                //TODO() Unstatic this.
+                //CrateControlListener.inUse.remove(player);
+                this.crazyManager.removePlayerFromOpeningList(player);
                 return;
             }
 
             Prize prize = crate.pickPrize(player, loc.clone().add(.5, 1.3, .5));
-            crazyManager.givePrize(player, prize, crate);
-            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+            this.crazyManager.givePrize(player, prize, crate);
+            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
             ItemStack displayItem = prize.getDisplayItem();
             NBTItem nbtItem = new NBTItem(displayItem);
             nbtItem.setBoolean("crazycrates-item", true);
@@ -91,61 +100,60 @@ public class QuickCrate implements Listener {
 
             try {
                 reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
-            } catch (IllegalArgumentException e) {
-                plugin.getServer().getLogger().warning("A prize could not be given due to an invalid display item for this prize. ");
-                plugin.getServer().getLogger().warning("Crate: " + prize.getCrate() + " Prize: " + prize.getName());
-
-                e.printStackTrace();
+            } catch (IllegalArgumentException exception) {
+                LegacyLogger.warn("A prize could not be given due to an invalid display item for this prize.", exception);
+                LegacyLogger.warn("Crate: " + prize.getCrate() + " Prize: " + prize.getName());
                 return;
             }
 
-            reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(plugin, true));
+            reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(this.plugin, true));
             reward.setVelocity(new Vector(0, .2, 0));
             reward.setCustomName(displayItem.getItemMeta().getDisplayName());
             reward.setCustomNameVisible(true);
             reward.setPickupDelay(Integer.MAX_VALUE);
-            rewards.put(player, reward);
-            allRewards.add(reward);
-            chestStateHandler.openChest(loc.getBlock(), true);
+            this.rewards.put(player.getUniqueId(), reward);
+            this.allRewards.add(reward);
+            this.chestStateHandler.openChest(loc.getBlock(), true);
 
-            if (prize.useFireworks()) Methods.firework(loc.clone().add(.5, 1, .5));
+            if (prize.useFireworks()) this.methods.firework(loc.clone().add(.5, 1, .5));
 
-            tasks.put(player, new BukkitRunnable() {
+            this.tasks.put(player.getUniqueId(), new BukkitRunnable() {
                 @Override
                 public void run() {
                     endQuickCrate(player, loc, crate, hologramController, false);
                 }
-            }.runTaskLater(plugin, 5 * 20));
+            }.runTaskLater(this.plugin, 5 * 20));
         }
     }
     
-    public static void endQuickCrate(Player player, Location loc, Crate crate, HologramController hologramController, boolean useQuickCrate) {
-        if (tasks.containsKey(player)) {
-            tasks.get(player).cancel();
-            tasks.remove(player);
+    public void endQuickCrate(Player player, Location loc, Crate crate, HologramController hologramController, boolean useQuickCrate) {
+        if (this.tasks.containsKey(player.getUniqueId())) {
+            this.tasks.get(player.getUniqueId()).cancel();
+            this.tasks.remove(player.getUniqueId());
         }
 
-        if (rewards.get(player) != null) {
-            allRewards.remove(rewards.get(player));
-            rewards.get(player).remove();
-            rewards.remove(player);
+        if (this.rewards.get(player.getUniqueId()) != null) {
+            this.allRewards.remove(this.rewards.get(player.getUniqueId()));
+            this.rewards.get(player.getUniqueId()).remove();
+            this.rewards.remove(player.getUniqueId());
         }
 
-        chestStateHandler.closeChest(loc.getBlock(), false);
-        CrateControlListener.inUse.remove(player);
-        crazyManager.removePlayerFromOpeningList(player);
+        this.chestStateHandler.closeChest(loc.getBlock(), false);
+        //TODO() Unstatic this
+        //CrateControlListener.inUse.remove(player);
+        this.crazyManager.removePlayerFromOpeningList(player);
 
         if (!useQuickCrate) {
             if (hologramController != null) hologramController.createHologram(loc.getBlock(), crate);
         }
     }
     
-    public static void removeAllRewards() {
-        allRewards.stream().filter(Objects :: nonNull).forEach(Entity :: remove);
+    public void removeAllRewards() {
+        this.allRewards.stream().filter(Objects :: nonNull).forEach(Entity :: remove);
     }
     
-    @EventHandler
-    public void onHopperPickUp(InventoryPickupItemEvent e) {
-        if (crazyManager.isDisplayReward(e.getItem())) e.setCancelled(true);
+    @EventHandler(ignoreCancelled = true)
+    public void onHopperPickUp(InventoryPickupItemEvent event) {
+        if (this.crazyManager.isDisplayReward(event.getItem())) event.setCancelled(true);
     }
 }

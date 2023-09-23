@@ -1,13 +1,16 @@
 package com.badbones69.crazycrates.paper.support.holograms;
 
-import com.badbones69.crazycrates.api.objects.CrateHologram;
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.ryderbelserion.cluster.bukkit.utils.LegacyUtils;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import org.bukkit.block.Block;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.common.crates.CrateHologram;
+
 import java.util.HashMap;
 
 public class HolographicDisplaysSupport implements HologramController {
@@ -16,7 +19,7 @@ public class HolographicDisplaysSupport implements HologramController {
 
     private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final HolographicDisplaysAPI api = HolographicDisplaysAPI.get(plugin);
+    private final HolographicDisplaysAPI api = HolographicDisplaysAPI.get(this.plugin);
 
     @Override
     public void createHologram(Block block, Crate crate) {
@@ -26,26 +29,26 @@ public class HolographicDisplaysSupport implements HologramController {
 
         double height = crateHologram.getHeight();
 
-        Hologram hologram = api.createHologram(block.getLocation().add(.5, height, .5));
+        Hologram hologram = this.api.createHologram(block.getLocation().add(.5, height, .5));
 
-        crateHologram.getMessages().forEach(line -> hologram.getLines().appendText(Methods.color(line)));
+        crateHologram.getMessages().forEach(line -> hologram.getLines().appendText(LegacyUtils.color((line))));
 
-        holograms.put(block, hologram);
+        this.holograms.put(block, hologram);
     }
 
     @Override
     public void removeHologram(Block block) {
-        if (!holograms.containsKey(block)) return;
+        if (!this.holograms.containsKey(block)) return;
 
-        Hologram hologram = holograms.get(block);
+        Hologram hologram = this.holograms.get(block);
 
-        holograms.remove(block);
+        this.holograms.remove(block);
         hologram.delete();
     }
 
     @Override
     public void removeAllHolograms() {
-        holograms.forEach((key, value) -> value.delete());
-        holograms.clear();
+        this.holograms.forEach((key, value) -> value.delete());
+        this.holograms.clear();
     }
 }

@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class PlayerPrizeEvent extends Event {
     
-    private static final HandlerList handlers = new HandlerList();
+    private final HandlerList handlers = new HandlerList();
     private final Player player;
     private final Crate crate;
     private final Prize prize;
@@ -22,7 +22,7 @@ public class PlayerPrizeEvent extends Event {
         this.crateName = crateName;
     }
     
-    public static HandlerList getHandlerList() {
+    public HandlerList getHandlerList() {
         return handlers;
     }
     
@@ -31,18 +31,18 @@ public class PlayerPrizeEvent extends Event {
     }
     
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
     
     public Crate getCrate() {
-        return crate;
+        return this.crate;
     }
     
     public String getCrateName() {
-        return crateName;
+        return this.crateName;
     }
     
     public Prize getPrize() {
-        return prize;
+        return this.prize;
     }
 }

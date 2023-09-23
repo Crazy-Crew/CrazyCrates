@@ -5,9 +5,8 @@ import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.managers.CrateManager;
-import com.badbones69.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.paper.listeners.PreviewListener;
-import com.badbones69.crazycrates.api.objects.CrateHologram;
+import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,6 +16,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import us.crazycrew.crazycrates.common.crates.CrateHologram;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +38,7 @@ public class Crate {
     private final String previewName;
     private final boolean previewToggle;
     private final boolean borderToggle;
-    private final ItemBuilder boarderItem;
+    private final ItemBuilder borderItem;
     private final String borderName;
 
     private final CrateType crateType;
@@ -51,9 +55,9 @@ public class Crate {
     private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final FileManager fileManager = plugin.getStarter().getFileManager();
-    private int maxMassOpen;
-    private int requiredKeys;
-    private List<String> prizeMessage;
+    private final int maxMassOpen;
+    private final int requiredKeys;
+    private final List<String> prizeMessage;
 
     /**
      * @param name The name of the crate.
@@ -83,16 +87,16 @@ public class Crate {
         this.previewToggle = file != null && (!file.contains("Crate.Preview.Toggle") || file.getBoolean("Crate.Preview.Toggle"));
         this.borderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle");
         setPreviewChestLines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
-        this.previewName = Methods.sanitizeColor(previewName);
+        this.previewName = this.methods.sanitizeColor(previewName);
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
         this.maxSlots = previewChestLines * 9;
 
-        for (int amount = preview.size(); amount > maxSlots - (borderToggle ? 18 : maxSlots >= preview.size() ? 0 : maxSlots != 9 ? 9 : 0); amount -= maxSlots - (borderToggle ? 18 : maxSlots >= preview.size() ? 0 : maxSlots != 9 ? 9 : 0), maxPage++) ;
+        for (int amount = this.preview.size(); amount > this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0); amount -= this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0), this.maxPage++) ;
 
-        this.crateInventoryName = file != null ? Methods.sanitizeColor(file.getString("Crate.CrateName")) : "";
-        this.borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? Methods.color(file.getString("Crate.Preview.Glass.Name")) : " ";
-        this.boarderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(this.borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(this.borderName);
+        this.crateInventoryName = file != null ? this.methods.sanitizeColor(file.getString("Crate.CrateName")) : "";
+        this.borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? LegacyUtils.color((file.getString("Crate.Preview.Glass.Name")) : " ";
+        this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(this.borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(this.borderName);
 
         this.hologram = hologram != null ? hologram : new CrateHologram();
 
@@ -113,7 +117,7 @@ public class Crate {
     public void setPreviewChestLines(int amount) {
         int finalAmount;
 
-        if (amount < 3 && borderToggle) {
+        if (amount < 3 && this.borderToggle) {
             finalAmount = 3;
         } else finalAmount = Math.min(amount, 6);
 
@@ -133,7 +137,7 @@ public class Crate {
      * @return The max number of slots in the preview.
      */
     public int getMaxSlots() {
-        return maxSlots;
+        return this.maxSlots;
     }
     
     /**
@@ -177,13 +181,13 @@ public class Crate {
         try {
             return prizes.get(new Random().nextInt(prizes.size()));
         } catch (IllegalArgumentException e) {
-            plugin.getLogger().warning("Failed to find prize from the " + name + " crate for player " + player.getName() + ".");
+            LegacyLogger.warn("Failed to find prize from the " + name + " crate for player " + player.getName() + ".");
             return null;
         }
     }
 
     private void chanceCheck(ArrayList<Prize> prizes, ArrayList<Prize> usablePrizes) {
-        for (int stop = 0; prizes.size() == 0 && stop <= 2000; stop++) {
+        for (int stop = 0; prizes.isEmpty() && stop <= 2000; stop++) {
             for (Prize prize : usablePrizes) {
                 int max = prize.getMaxRange();
                 int chance = prize.getChance();
@@ -238,7 +242,7 @@ public class Crate {
     public Prize pickPrize(Player player, Location location) {
         Prize prize = pickPrize(player);
 
-        if (prize.useFireworks()) Methods.firework(location);
+        if (prize.useFireworks()) this.methods.firework(location);
 
         return prize;
     }
@@ -254,7 +258,7 @@ public class Crate {
      * @return The name of the crate's preview page.
      */
     public String getPreviewName() {
-        return previewName;
+        return this.previewName;
     }
     
     /**
@@ -272,7 +276,7 @@ public class Crate {
      * @return True if it is the preview menu and false if not.
      */
     public boolean isPreview(String inventoryName) {
-        return inventoryName != null && (isInventoryNameSimilar(inventoryName, previewName) || isInventoryNameSimilar(inventoryName, crateInventoryName));
+        return inventoryName != null && (isInventoryNameSimilar(inventoryName, this.previewName) || isInventoryNameSimilar(inventoryName, this.crateInventoryName));
     }
     
     /**
@@ -280,7 +284,7 @@ public class Crate {
      * @return True if preview is on and false if not.
      */
     public boolean isPreviewEnabled() {
-        return previewToggle;
+        return this.previewToggle;
     }
     
     /**
@@ -288,15 +292,15 @@ public class Crate {
      * @return True if it does and false if not.
      */
     public boolean isItemBorderEnabled() {
-        return borderToggle;
+        return this.borderToggle;
     }
     
     /**
      * Get the item that shows as the preview boarder if enabled.
      * @return The ItemBuilder for the boarder item.
      */
-    public ItemBuilder getBoarderItem() {
-        return boarderItem;
+    public ItemBuilder getBorderItem() {
+        return this.borderItem;
     }
     
     /**
@@ -304,7 +308,7 @@ public class Crate {
      * @return The name of the inventory for GUI based crate types.
      */
     public String getCrateInventoryName() {
-        return crateInventoryName;
+        return this.crateInventoryName;
     }
     
     /**
@@ -322,7 +326,7 @@ public class Crate {
      * @return True if it is the crate menu and false if not.
      */
     public boolean isCrateMenu(String inventoryName) {
-        return inventoryName != null && isInventoryNameSimilar(inventoryName, crateInventoryName);
+        return inventoryName != null && isInventoryNameSimilar(inventoryName, this.crateInventoryName);
     }
     
     /**
@@ -338,7 +342,7 @@ public class Crate {
      * @return The preview as an Inventory object.
      */
     public Inventory getPreview(Player player, int page) {
-        Inventory inventory = player.getServer().createInventory(null, !borderToggle && (PreviewListener.playerInMenu(player) || maxPage > 1) && maxSlots == 9 ? maxSlots + 9 : maxSlots, previewName);
+        Inventory inventory = player.getServer().createInventory(null, !this.borderToggle && (PreviewListener.playerInMenu(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, this.previewName);
         setDefaultItems(inventory, player);
 
         for (ItemStack item : getPageItems(page)) {
@@ -360,7 +364,7 @@ public class Crate {
      */
     @SuppressWarnings("unchecked")
     public ArrayList<ItemStack> getPreviewItems() {
-        return (ArrayList<ItemStack>) preview.clone();
+        return (ArrayList<ItemStack>) this.preview.clone();
     }
     
     /**
@@ -409,7 +413,7 @@ public class Crate {
      * @return The itemstack of the key shown in the /cc admin menu.
      */
     public ItemStack getAdminKey() {
-        return adminKey;
+        return this.adminKey;
     }
     
     /**
@@ -431,7 +435,7 @@ public class Crate {
      * @return The prize you asked for.
      */
     public Prize getPrize(String name) {
-        for (Prize prize : prizes) {
+        for (Prize prize : this.prizes) {
             if (prize.getName().equalsIgnoreCase(name)) return prize;
         }
 
@@ -442,10 +446,9 @@ public class Crate {
         try {
             NBTItem nbt = new NBTItem(item);
 
-            if (nbt.hasKey("crazycrate-prize")) return getPrize(nbt.getString("crazycrate-prize"));
+            if (nbt.hasTag("crazycrate-prize")) return getPrize(nbt.getString("crazycrate-prize"));
         } catch (Exception ignored) {}
-        
-        for (Prize prize : prizes) {
+        for (Prize prize : this.prizes) {
             if (item.isSimilar(prize.getDisplayItem())) return prize;
         }
 
@@ -456,14 +459,14 @@ public class Crate {
      * @return True if new players get keys and false if they do not.
      */
     public boolean doNewPlayersGetKeys() {
-        return giveNewPlayerKeys;
+        return this.giveNewPlayerKeys;
     }
     
     /**
      * @return The number of keys new players get.
      */
     public int getNewPlayerKeys() {
-        return newPlayerKeys;
+        return this.newPlayerKeys;
     }
     
     /**
@@ -476,17 +479,17 @@ public class Crate {
         items.add(item);
         String path = "Crate.Prizes." + prize;
 
-        if (!file.contains(path)) {
+        if (!this.file.contains(path)) {
 
             if (item.hasItemMeta()) {
-                if (item.getItemMeta().hasDisplayName()) file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
-                if (item.getItemMeta().hasLore()) file.set(path + ".Lore", item.getItemMeta().getLore());
+                if (item.getItemMeta().hasDisplayName()) this.file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
+                if (item.getItemMeta().hasLore()) this.file.set(path + ".Lore", item.getItemMeta().getLore());
             }
 
             NBTItem nbtItem = new NBTItem(item);
 
             if (nbtItem.hasNBTData()) {
-                if (nbtItem.hasKey("Unbreakable") && nbtItem.getBoolean("Unbreakable")) file.set(path + ".Unbreakable", true);
+                if (nbtItem.hasTag("Unbreakable") && nbtItem.getBoolean("Unbreakable")) this.file.set(path + ".Unbreakable", true);
             }
 
             List<String> enchantments = new ArrayList<>();
@@ -495,33 +498,33 @@ public class Crate {
                 enchantments.add((enchantment.getKey().getKey() + ":" + item.getEnchantmentLevel(enchantment)));
             }
 
-            if (!enchantments.isEmpty()) file.set(path + ".DisplayEnchantments", enchantments);
+            if (!enchantments.isEmpty()) this.file.set(path + ".DisplayEnchantments", enchantments);
 
-            file.set(path + ".DisplayItem", item.getType().name());
-            file.set(path + ".DisplayAmount", item.getAmount());
-            file.set(path + ".MaxRange", 100);
-            file.set(path + ".Chance", 50);
+            this.file.set(path + ".DisplayItem", item.getType().name());
+            this.file.set(path + ".DisplayAmount", item.getAmount());
+            this.file.set(path + ".MaxRange", 100);
+            this.file.set(path + ".Chance", 50);
         } else {
             // Must be checked as getList will return null if nothing is found.
-            if (file.contains(path + ".Editor-Items")) file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
+            if (this.file.contains(path + ".Editor-Items")) this.file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
         }
 
-        file.set(path + ".Editor-Items", items);
-        fileManager.saveFile(fileManager.getFile(name));
+        this.file.set(path + ".Editor-Items", items);
+        this.fileManager.saveFile(this.fileManager.getFile(this.name));
     }
     
     /**
      * @return The max page for the preview.
      */
     public int getMaxPage() {
-        return maxPage;
+        return this.maxPage;
     }
     
     /**
      * @return A list of the tiers for the crate. Will be empty if there are none.
      */
     public ArrayList<Tier> getTiers() {
-        return tiers;
+        return this.tiers;
     }
 
     /**
@@ -539,11 +542,11 @@ public class Crate {
      * @return A CrateHologram which contains all the info about the hologram the crate uses.
      */
     public CrateHologram getHologram() {
-        return hologram;
+        return this.hologram;
     }
     
     public int getAbsoluteItemPosition(int baseSlot) {
-        return baseSlot + (previewChestLines > 1 ? previewChestLines - 1 : 1) * 9;
+        return baseSlot + (this.previewChestLines > 1 ? this.previewChestLines - 1 : 1) * 9;
     }
     
     private boolean isInventoryNameSimilar(String inventory1, String inventory2) {
@@ -565,12 +568,12 @@ public class Crate {
     }
     
     private List<ItemStack> getPageItems(int page) {
-        List<ItemStack> list = preview;
+        List<ItemStack> list = this.preview;
         List<ItemStack> items = new ArrayList<>();
 
         if (page <= 0) page = 1;
 
-        int max = maxSlots - (borderToggle ? 18 : maxSlots >= preview.size() ? 0 : maxSlots != 9 ? 9 : 0);
+        int max = this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0);
         int index = page * max - max;
         int endIndex = index >= list.size() ? list.size() - 1 : index + max;
 
@@ -591,17 +594,17 @@ public class Crate {
     }
     
     private void setDefaultItems(Inventory inventory, Player player) {
-        if (borderToggle) {
+        if (this.borderToggle) {
             List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
 
             for (int i : borderItems) { // Top Boarder slots
-                inventory.setItem(i, boarderItem.build());
+                inventory.setItem(i, this.borderItem.build());
             }
 
             borderItems.replaceAll(this::getAbsoluteItemPosition);
 
             for (int i : borderItems) { // Bottom Boarder slots
-                inventory.setItem(i, boarderItem.build());
+                inventory.setItem(i, this.borderItem.build());
             }
         }
 
@@ -610,13 +613,13 @@ public class Crate {
         if (PreviewListener.playerInMenu(player)) inventory.setItem(getAbsoluteItemPosition(4), PreviewListener.getMenuButton());
 
         if (page == 1) {
-            if (borderToggle) inventory.setItem(getAbsoluteItemPosition(3), boarderItem.build());
+            if (this.borderToggle) inventory.setItem(getAbsoluteItemPosition(3), this.borderItem.build());
         } else {
             inventory.setItem(getAbsoluteItemPosition(3), PreviewListener.getBackButton(player));
         }
 
-        if (page == maxPage) {
-            if (borderToggle) inventory.setItem(getAbsoluteItemPosition(5), boarderItem.build());
+        if (page == this.maxPage) {
+            if (this.borderToggle) inventory.setItem(getAbsoluteItemPosition(5), this.borderItem.build());
         } else {
             inventory.setItem(getAbsoluteItemPosition(5), PreviewListener.getNextButton(player));
         }

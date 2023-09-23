@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
@@ -12,6 +13,7 @@ import com.badbones69.crazycrates.paper.support.structures.blocks.ChestStateHand
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -25,8 +27,12 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
+
 import java.util.Random;
 
 /**
@@ -36,98 +42,101 @@ import java.util.Random;
 public class QuadCrate implements Listener {
 
     private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final @NotNull Methods methods = this.crazyHandler.getMethods();
 
-    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+    private final @NotNull CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
 
-    private final ChestStateHandler chestStateHandler = plugin.getStarter().getChestStateHandler();
+    private final @NotNull ChestStateHandler chestStateHandler = this.plugin.getStarter().getChestStateHandler();
 
     private final SessionManager sessionManager = new SessionManager();
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent e) {
-        if (sessionManager.inSession(e.getPlayer())) e.setCancelled(true);
+    public void onBlockBreak(BlockBreakEvent event) {
+        if (this.sessionManager.inSession(event.getPlayer())) event.setCancelled(true);
     }
 
     @EventHandler
-    public void onChestClick(PlayerInteractEvent e) {
-        Player player = e.getPlayer();
+    public void onChestClick(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
 
-        if (sessionManager.inSession(player)) {
-            QuadCrateManager session = sessionManager.getSession(player);
+        if (!this.sessionManager.inSession(player)) return;
 
-            if (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-                Block block = e.getClickedBlock();
+        QuadCrateManager session = this.sessionManager.getSession(player);
 
-                if (session.getCrateLocations().contains(block.getLocation())) {
-                    e.setCancelled(true);
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getAction() != Action.LEFT_CLICK_BLOCK) return;
 
-                    if (!session.getCratesOpened().get(block.getLocation())) {
+        Block block = event.getClickedBlock();
 
-                        chestStateHandler.openChest(block, true);
+        if (block == null) return;
 
-                        Crate crate = session.getCrate();
-                        Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
-                        crazyManager.givePrize(player, prize, crate);
+        if (!session.getCrateLocations().contains(block.getLocation())) return;
 
-                        ItemBuilder itemBuilder = ItemBuilder.convertItemStack(prize.getDisplayItem());
-                        itemBuilder.addLore(new Random().nextInt(Integer.MAX_VALUE) + ""); // Makes sure items don't merge
+        event.setCancelled(true);
 
-                        ItemStack item = itemBuilder.build();
-                        NBTItem nbtItem = new NBTItem(item);
-                        nbtItem.setBoolean("crazycrates-item", true);
-                        item = nbtItem.getItem();
-                        Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), item);
+        if (session.getCratesOpened().get(block.getLocation())) return;
 
-                        reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(plugin, true));
-                        reward.setVelocity(new Vector(0, .2, 0));
+        this.chestStateHandler.openChest(block, true);
 
-                        reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
-                        reward.setCustomNameVisible(true);
-                        reward.setPickupDelay(Integer.MAX_VALUE);
+        Crate crate = session.getCrate();
+        Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
+        this.crazyManager.givePrize(player, prize, crate);
 
-                        session.getCratesOpened().put(block.getLocation(), true);
+        ItemBuilder itemBuilder = ItemBuilder.convertItemStack(prize.getDisplayItem());
+        itemBuilder.addLore(new Random().nextInt(Integer.MAX_VALUE) + ""); // Makes sure items don't merge
 
-                        session.getDisplayedRewards().add(reward);
+        ItemStack item = itemBuilder.build();
+        NBTItem nbtItem = new NBTItem(item);
+        nbtItem.setBoolean("crazycrates-item", true);
+        item = nbtItem.getItem();
+        Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), item);
 
-                        if (session.allCratesOpened()) { // All 4 crates have been opened
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    session.endCrate();
-                                    player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
-                                }
-                            }.runTaskLater(plugin, 60);
-                        }
-                    }
+        reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(this.plugin, true));
+        reward.setVelocity(new Vector(0, .2, 0));
+
+        reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
+        reward.setCustomNameVisible(true);
+        reward.setPickupDelay(Integer.MAX_VALUE);
+
+        session.getCratesOpened().put(block.getLocation(), true);
+
+        session.getDisplayedRewards().add(reward);
+
+        if (session.allCratesOpened()) { // All 4 crates have been opened
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    session.endCrate();
+                    player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, SoundCategory.BLOCKS, 1f, 1f);
                 }
-            }
+            }.runTaskLater(this.plugin, 60);
         }
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent e) {
-        Player player = e.getPlayer();
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
 
-        if (sessionManager.inSession(player)) { // Player tries to walk away from the crate area
-            Location from = e.getFrom();
-            Location to = e.getTo();
+        if (this.sessionManager.inSession(player)) { // Player tries to walk away from the crate area
+            Location from = event.getFrom();
+            Location to = event.getTo();
 
             if (from.getBlockX() != to.getBlockX() || from.getBlockZ() != to.getBlockZ()) {
-                e.setCancelled(true);
+                event.setCancelled(true);
                 player.teleport(from);
                 return;
             }
         }
 
-        for (Entity en : player.getNearbyEntities(2, 2, 2)) { // Someone tries to enter the crate area
-            if (en instanceof Player p) {
-                if (sessionManager.inSession(p)) {
-                    Vector v = player.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().setY(1);
+        for (Entity entity : player.getNearbyEntities(2, 2, 2)) { // Someone tries to enter the crate area
+            if (entity instanceof Player entityPlayer) {
+                if (this.sessionManager.inSession(entityPlayer)) {
+                    Vector vector = player.getLocation().toVector().subtract(entityPlayer.getLocation().toVector()).normalize().setY(1);
 
                     if (player.isInsideVehicle() && player.getVehicle() != null) {
-                        player.getVehicle().setVelocity(v);
+                        player.getVehicle().setVelocity(vector);
                     } else {
-                        player.setVelocity(v);
+                        player.setVelocity(vector);
                     }
 
                     break;
@@ -137,34 +146,34 @@ public class QuadCrate implements Listener {
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent e) {
-        if (sessionManager.inSession(e.getPlayer())) e.setCancelled(true);
+    public void onBlockPlace(BlockPlaceEvent event) {
+        if (this.sessionManager.inSession(event.getPlayer())) event.setCancelled(true);
     }
 
     @EventHandler
-    public void onCMD(PlayerCommandPreprocessEvent e) {
-        Player player = e.getPlayer();
+    public void onPreProcess(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
 
-        if (sessionManager.inSession(player) && !player.hasPermission("crazycrates.admin")) {
-            e.setCancelled(true);
-            player.sendMessage(Messages.NO_COMMANDS_WHILE_CRATE_OPENED.getMessage("%Player%", player.getName()));
-        }
+        if (!this.sessionManager.inSession(player) && player.hasPermission("crazycrates.admin")) return;
+
+        event.setCancelled(true);
+        player.sendMessage(Messages.NO_COMMANDS_WHILE_CRATE_OPENED.getMessage("%Player%", player.getName()));
     }
 
     @EventHandler
-    public void onTeleport(PlayerTeleportEvent e) {
-        Player player = e.getPlayer();
+    public void onTeleport(PlayerTeleportEvent event) {
+        Player player = event.getPlayer();
 
-        if (sessionManager.inSession(player) && e.getCause() == TeleportCause.ENDER_PEARL) {
-            e.setCancelled(true);
-            player.sendMessage(Messages.NO_TELEPORTING.getMessage("%Player%", player.getName()));
-        }
+        if (!this.sessionManager.inSession(player) && event.getCause() == TeleportCause.ENDER_PEARL) return;
+
+        event.setCancelled(true);
+        player.sendMessage(Messages.NO_TELEPORTING.getMessage("%Player%", player.getName()));
     }
 
     @EventHandler
-    public void onLeave(PlayerQuitEvent e) {
-        Player player = e.getPlayer();
+    public void onLeave(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
 
-        if (sessionManager.inSession(player)) sessionManager.getSession(player).endCrate();
+        if (this.sessionManager.inSession(player)) this.sessionManager.getSession(player).endCrate();
     }
 }

@@ -5,47 +5,52 @@ import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
-import com.badbones69.crazycrates.api.enums.types.KeyType;
+import org.bukkit.SoundCategory;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
 import org.bukkit.scheduler.BukkitRunnable;
+import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
 
 public class Roulette implements Listener {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final @NotNull Methods methods = this.crazyHandler.getMethods();
 
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+    private final @NotNull CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
     
-    private static void setGlass(Inventory inv) {
+    private void setGlass(Inventory inventory) {
         for (int i = 0; i < 27; i++) {
             if (i != 13) {
-                ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
-                inv.setItem(i, item);
+                ItemStack item = this.methods.getRandomPaneColor().setName(" ").build();
+                inventory.setItem(i, item);
             }
         }
     }
     
-    public static void openRoulette(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
-        setGlass(inv);
-        inv.setItem(13, crate.pickPrize(player).getDisplayItem());
-        player.openInventory(inv);
+    public void openRoulette(Player player, Crate crate, KeyType keyType, boolean checkHand) {
+        Inventory inventory = plugin.getServer().createInventory(null, 27, this.methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        setGlass(inventory);
+        inventory.setItem(13, crate.pickPrize(player).getDisplayItem());
+        player.openInventory(inventory);
 
-        if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
-            Methods.failedToTakeKey(player, crate);
-            crazyManager.removePlayerFromOpeningList(player);
+        if (!this.crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
+            this.methods.failedToTakeKey(player, crate);
+            this.crazyManager.removePlayerFromOpeningList(player);
             return;
         }
 
-        startRoulette(player, inv, crate);
+        startRoulette(player, inventory, crate);
     }
     
-    private static void startRoulette(final Player player, final Inventory inv, final Crate crate) {
-        crazyManager.addCrateTask(player, new BukkitRunnable() {
+    private void startRoulette(final Player player, final Inventory inventory, final Crate crate) {
+        this.crazyManager.addCrateTask(player, new BukkitRunnable() {
             int time = 1;
             int even = 0;
             int full = 0;
@@ -54,21 +59,21 @@ public class Roulette implements Listener {
             @Override
             public void run() {
                 if (full <= 15) {
-                    inv.setItem(13, crate.pickPrize(player).getDisplayItem());
-                    setGlass(inv);
+                    inventory.setItem(13, crate.pickPrize(player).getDisplayItem());
+                    setGlass(inventory);
                     player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                     even++;
 
                     if (even >= 4) {
                         even = 0;
-                        inv.setItem(13, crate.pickPrize(player).getDisplayItem());
+                        inventory.setItem(13, crate.pickPrize(player).getDisplayItem());
                     }
                 }
 
                 open++;
 
                 if (open >= 5) {
-                    player.openInventory(inv);
+                    player.openInventory(inventory);
                     open = 0;
                 }
 
@@ -76,32 +81,32 @@ public class Roulette implements Listener {
 
                 if (full > 16) {
 
-                    if (Methods.slowSpin().contains(time)) {
-                        setGlass(inv);
-                        inv.setItem(13, crate.pickPrize(player).getDisplayItem());
-                        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+                    if (methods.slowSpin().contains(time)) {
+                        setGlass(inventory);
+                        inventory.setItem(13, crate.pickPrize(player).getDisplayItem());
+                        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS,1f, 1f);
                     }
 
                     time++;
 
                     if (time >= 23) {
-                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 1f);
                         crazyManager.endCrate(player);
-                        Prize prize = crate.getPrize(inv.getItem(13));
+                        Prize prize = crate.getPrize(inventory.getItem(13));
 
-                        Methods.checkPrize(prize, crazyManager, plugin, player, crate);
+                        methods.checkPrize(prize, crazyManager, plugin, player, crate);
 
                         crazyManager.removePlayerFromOpeningList(player);
 
                         new BukkitRunnable() {
                             @Override
                             public void run() {
-                                if (player.getOpenInventory().getTopInventory().equals(inv)) player.closeInventory();
+                                if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory();
                             }
                         }.runTaskLater(plugin, 40);
                     }
                 }
             }
-        }.runTaskTimer(plugin, 2, 2));
+        }.runTaskTimer(this.plugin, 2, 2));
     }
 }
