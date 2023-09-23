@@ -36,7 +36,7 @@ public class Methods {
 
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
-    public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");
+    private static final Pattern HEX_PATTERN = Pattern.compile("&?#[a-f\\d]{6}", Pattern.CASE_INSENSITIVE);
 
     public static String color(String message) {
         Matcher matcher = HEX_PATTERN.matcher(message);
