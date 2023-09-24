@@ -26,14 +26,6 @@ public class PhysicalCrateKeyCheckEvent extends Event implements Cancellable {
         this.crateLocation = crateLocation;
         this.isCancelled = false;
     }
-
-    public HandlerList getHandlerList() {
-        return handlers;
-    }
-    
-    public @NotNull HandlerList getHandlers() {
-        return handlers;
-    }
     
     public Player getPlayer() {
         return this.player;
@@ -51,5 +43,10 @@ public class PhysicalCrateKeyCheckEvent extends Event implements Cancellable {
     @Override
     public void setCancelled(boolean isCancelled) {
         this.isCancelled = isCancelled;
+    }
+
+    @Override
+    public @NotNull HandlerList getHandlers() {
+        return this.handlers;
     }
 }

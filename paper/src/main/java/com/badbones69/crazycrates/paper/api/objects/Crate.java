@@ -20,7 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.common.crates.CrateHologram;
-
+import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,8 +53,10 @@ public class Crate {
     private final CrateHologram hologram;
 
     private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final @NotNull Methods methods = this.crazyHandler.getMethods();
+    private final @NotNull FileManager fileManager = this.plugin.getStarter().getFileManager();
 
-    private final FileManager fileManager = plugin.getStarter().getFileManager();
     private final int maxMassOpen;
     private final int requiredKeys;
     private final List<String> prizeMessage;
@@ -480,7 +482,6 @@ public class Crate {
         String path = "Crate.Prizes." + prize;
 
         if (!this.file.contains(path)) {
-
             if (item.hasItemMeta()) {
                 if (item.getItemMeta().hasDisplayName()) this.file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
                 if (item.getItemMeta().hasLore()) this.file.set(path + ".Lore", item.getItemMeta().getLore());
@@ -550,7 +551,7 @@ public class Crate {
     }
     
     private boolean isInventoryNameSimilar(String inventory1, String inventory2) {
-        return Methods.removeColor(inventory1).equalsIgnoreCase(Methods.removeColor(inventory2));
+        return this.methods.removeColor(inventory1).equalsIgnoreCase(this.methods.removeColor(inventory2));
     }
     
     /**
@@ -608,20 +609,21 @@ public class Crate {
             }
         }
 
-        int page = PreviewListener.getPage(player);
+        //int page = PreviewListener.getPage(player);
+        int page = 1;
 
-        if (PreviewListener.playerInMenu(player)) inventory.setItem(getAbsoluteItemPosition(4), PreviewListener.getMenuButton());
+        //if (PreviewListener.playerInMenu(player)) inventory.setItem(getAbsoluteItemPosition(4), PreviewListener.getMenuButton());
 
         if (page == 1) {
             if (this.borderToggle) inventory.setItem(getAbsoluteItemPosition(3), this.borderItem.build());
         } else {
-            inventory.setItem(getAbsoluteItemPosition(3), PreviewListener.getBackButton(player));
+            //inventory.setItem(getAbsoluteItemPosition(3), PreviewListener.getBackButton(player));
         }
 
         if (page == this.maxPage) {
             if (this.borderToggle) inventory.setItem(getAbsoluteItemPosition(5), this.borderItem.build());
         } else {
-            inventory.setItem(getAbsoluteItemPosition(5), PreviewListener.getNextButton(player));
+            //inventory.setItem(getAbsoluteItemPosition(5), PreviewListener.getNextButton(player));
         }
     }
 }

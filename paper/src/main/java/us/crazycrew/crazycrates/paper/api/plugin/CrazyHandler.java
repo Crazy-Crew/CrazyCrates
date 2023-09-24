@@ -29,20 +29,27 @@ public class CrazyHandler extends CrazyCratesPlugin {
         this.bukkitPlugin = new BukkitPlugin(this.plugin);
         this.bukkitPlugin.enable();
 
-        //super.enable();
+        //Enable crazycrates api.
+        super.enable();
 
         //LegacyLogger.setName(getConfigManager().getConfig().getProperty(Config.console_prefix));
 
         this.methods = new Methods();
 
         this.fileManager = new FileManager();
-        this.fileManager
-                .registerDefaultGenerateFiles("Example.yml", "/vouchers", "/vouchers")
-                .registerDefaultGenerateFiles("Example-Arg.yml", "/vouchers", "/vouchers")
-                .registerDefaultGenerateFiles("PlayerHead.yml", "/vouchers", "/vouchers")
-                .registerDefaultGenerateFiles("Starter-Money.yml", "/codes", "/codes")
-                .registerCustomFilesFolder("/vouchers")
-                .registerCustomFilesFolder("/codes")
+        this.fileManager.setLog(true)
+                .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("sea.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("soul.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
+                .registerCustomFilesFolder("/crates")
+                .registerCustomFilesFolder("/schematics")
                 .setup();
 
         //boolean metrics = getConfigManager().getConfig().getProperty(Config.toggle_metrics);
@@ -52,8 +59,8 @@ public class CrazyHandler extends CrazyCratesPlugin {
     }
 
     public void uninstall() {
-        // Disable crazyenvoys api.
-        //super.disable();
+        // Disable crazycrates api.
+        super.disable();
 
         // Disable cluster bukkit api.
         this.bukkitPlugin.disable();

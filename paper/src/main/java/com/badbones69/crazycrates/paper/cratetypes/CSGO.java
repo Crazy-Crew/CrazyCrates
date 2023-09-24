@@ -29,45 +29,45 @@ public class CSGO implements Listener {
 
     private final @NotNull CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
     
-    private void setGlass(Inventory inv) {
+    private void setGlass(Inventory inventory) {
         HashMap<Integer, ItemStack> glass = new HashMap<>();
 
         for (int i = 0; i < 10; i++) {
-            if (i < 9 && i != 3) glass.put(i, inv.getItem(i));
+            if (i < 9 && i != 3) glass.put(i, inventory.getItem(i));
         }
 
         for (int i : glass.keySet()) {
-            if (inv.getItem(i) == null) {
+            if (inventory.getItem(i) == null) {
                 ItemStack item = this.methods.getRandomPaneColor().setName(" ").build();
-                inv.setItem(i, item);
-                inv.setItem(i + 18, item);
+                inventory.setItem(i, item);
+                inventory.setItem(i + 18, item);
             }
         }
 
         for (int i = 1; i < 10; i++) {
-            if (i < 9 && i != 4) glass.put(i, inv.getItem(i));
+            if (i < 9 && i != 4) glass.put(i, inventory.getItem(i));
         }
 
         ItemStack item = this.methods.getRandomPaneColor().setName(" ").build();
 
-        inv.setItem(0, glass.get(1));
-        inv.setItem(18, glass.get(1));
-        inv.setItem(1, glass.get(2));
-        inv.setItem(1 + 18, glass.get(2));
-        inv.setItem(2, glass.get(3));
-        inv.setItem(2 + 18, glass.get(3));
-        inv.setItem(3, glass.get(5));
-        inv.setItem(3 + 18, glass.get(5));
-        inv.setItem(4, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
-        inv.setItem(4 + 18, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
-        inv.setItem(5, glass.get(6));
-        inv.setItem(5 + 18, glass.get(6));
-        inv.setItem(6, glass.get(7));
-        inv.setItem(6 + 18, glass.get(7));
-        inv.setItem(7, glass.get(8));
-        inv.setItem(7 + 18, glass.get(8));
-        inv.setItem(8, item);
-        inv.setItem(8 + 18, item);
+        inventory.setItem(0, glass.get(1));
+        inventory.setItem(18, glass.get(1));
+        inventory.setItem(1, glass.get(2));
+        inventory.setItem(1 + 18, glass.get(2));
+        inventory.setItem(2, glass.get(3));
+        inventory.setItem(2 + 18, glass.get(3));
+        inventory.setItem(3, glass.get(5));
+        inventory.setItem(3 + 18, glass.get(5));
+        inventory.setItem(4, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+        inventory.setItem(4 + 18, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+        inventory.setItem(5, glass.get(6));
+        inventory.setItem(5 + 18, glass.get(6));
+        inventory.setItem(6, glass.get(7));
+        inventory.setItem(6 + 18, glass.get(7));
+        inventory.setItem(7, glass.get(8));
+        inventory.setItem(7 + 18, glass.get(8));
+        inventory.setItem(8, item);
+        inventory.setItem(8 + 18, item);
     }
     
     public void openCSGO(Player player, Crate crate, KeyType keyType, boolean checkHand) {

@@ -61,7 +61,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import  java.util.regex.Matcher.quoteReplacement;
+
+import static java.util.regex.Matcher.quoteReplacement;
 
 public class CrazyManager {
 
@@ -296,7 +297,8 @@ public class CrazyManager {
         if (this.plugin.isLogging()) LegacyLogger.info("All schematics were found and loaded.");
 
         cleanDataFile();
-        PreviewListener.loadButtons();
+        //TODO() Static abuse
+        //PreviewListener.loadButtons();
     }
 
     /**
@@ -371,7 +373,8 @@ public class CrazyManager {
         if (!(player.hasPermission("crazycrates.open." + crate.getName()) || !player.hasPermission("crazycrates.open.*"))) {
             player.sendMessage(Messages.NO_CRATE_PERMISSION.getMessage());
             removePlayerFromOpeningList(player);
-            CrateControlListener.inUse.remove(player);
+            //TODO() Static abuse
+            //CrateControlListener.inUse.remove(player);
             return;
         }
 
@@ -414,12 +417,14 @@ public class CrazyManager {
                         removePlayerFromOpeningList(player);
                         return;
                     } else {
-                        CrateControlListener.inUse.put(player, location);
-                        FireCracker.startFireCracker(player, crate, keyType, location, hologramController);
+                        //TODO() static shit
+                        //CrateControlListener.inUse.put(player, location);
+                        //FireCracker.startFireCracker(player, crate, keyType, location, hologramController);
                     }
                 }
             }
             case QUICK_CRATE -> {
+                //TODO() static shit
                 if (CrateControlListener.inUse.containsValue(location)) {
                     player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
                     removePlayerFromOpeningList(player);
@@ -430,8 +435,9 @@ public class CrazyManager {
                         removePlayerFromOpeningList(player);
                         return;
                     } else {
-                        CrateControlListener.inUse.put(player, location);
-                        QuickCrate.openCrate(player, location, crate, keyType, hologramController);
+                        //TODO() static shit
+                        //CrateControlListener.inUse.put(player, location);
+                        //QuickCrate.openCrate(player, location, crate, keyType, hologramController);
                     }
                 }
             }
@@ -762,7 +768,7 @@ public class CrazyManager {
 
                 if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) command = PlaceholderAPI.setPlaceholders(player, command);
 
-                Methods.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getUpdatedName())).replaceAll("%crate%", crate.getCrateInventoryName()));
+                //Methods.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getUpdatedName())).replaceAll("%crate%", crate.getCrateInventoryName()));
             }
 
             if (!crate.getPrizeMessage().isEmpty() && prize.getMessages().isEmpty()) {

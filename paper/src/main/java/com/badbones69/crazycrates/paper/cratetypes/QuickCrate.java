@@ -61,15 +61,15 @@ public class QuickCrate implements Listener {
                 if (keysUsed >= crate.getMaxMassOpen()) break;
 
                 Prize prize = crate.pickPrize(player);
-                crazyManager.givePrize(player, prize, crate);
-                plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+                this.crazyManager.givePrize(player, prize, crate);
+                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 
                 if (prize.useFireworks()) this.methods.firework(loc.clone().add(.5, 1, .5));
                 
                 keysUsed++;
             }
             
-            if (!crazyManager.takeKeys(keysUsed, player, crate, keyType, false)) {
+            if (!this.crazyManager.takeKeys(keysUsed, player, crate, keyType, false)) {
                 this.methods.failedToTakeKey(player, crate);
                 //TODO() Unstatic this.
                 //CrateControlListener.inUse.remove(player);

@@ -11,7 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +19,7 @@ public class BrokeLocationsListener implements Listener {
 
     private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
-
-    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final @NotNull CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
     
     @EventHandler
     public void onWorldLoad(WorldLoadEvent event) {

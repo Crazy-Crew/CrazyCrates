@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.api;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -61,7 +62,7 @@ public class FileManager {
         }
 
         // Starts to load all the custom files.
-        if (homeFolders.size() > 0) {
+        if (!homeFolders.isEmpty()) {
             if (isLogging()) LegacyLogger.info("Loading custom files.");
 
             for (String homeFolder : homeFolders) {

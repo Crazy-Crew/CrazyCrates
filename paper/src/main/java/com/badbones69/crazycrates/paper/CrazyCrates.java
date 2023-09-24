@@ -53,21 +53,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         starter.run();
 
-        starter.getFileManager().setLog(true)
-                .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("sea.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("soul.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
-                .registerCustomFilesFolder("/crates")
-                .registerCustomFilesFolder("/schematics")
-                .setup();
-
         // Clean files if we have to.
         cleanFiles();
 
@@ -75,8 +60,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         //Messages.addMissingMessages();
 
         FileConfiguration config = Files.CONFIG.getFile();
-
-        boolean metricsEnabled = config.getBoolean("Settings.Toggle-Metrics");
 
         String menu = config.getString("Settings.Enable-Crate-Menu");
 
@@ -110,12 +93,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             Files.CONFIG.saveFile();
         }
 
-        if (metricsEnabled) {
-            MetricsHandler metricsHandler = new MetricsHandler();
-
-            metricsHandler.start();
-        }
-
         enable();
 
         starter.getCrazyManager().loadCrates();
@@ -123,9 +100,9 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        SessionManager.endCrates();
+        //SessionManager.endCrates();
 
-        QuickCrate.removeAllRewards();
+        //QuickCrate.removeAllRewards();
 
         if (starter.getCrazyManager().getHologramController() != null) starter.getCrazyManager().getHologramController().removeAllHolograms();
 

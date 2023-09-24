@@ -31,7 +31,7 @@ public enum CrateType {
      * @param name of the crate
      * @return crate object otherwise null
      */
-    public CrateType getFromName(String name) {
+    public static CrateType getFromName(String name) {
         for (CrateType crate : CrateType.values()) {
             if (crate.getName().equalsIgnoreCase(name)) return crate;
         }

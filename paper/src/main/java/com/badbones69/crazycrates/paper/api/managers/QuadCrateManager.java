@@ -175,7 +175,8 @@ public class QuadCrateManager {
         }
 
         if (!crazyManager.takeKeys(1, this.player, this.crate, this.keyType, this.checkHand)) {
-            this.methods.failedToTakeKey(this.player, this.crate);
+            //TODO() Null methods
+            //this.methods.failedToTakeKey(this.player, this.crate);
 
             this.crazyManager.removePlayerFromOpeningList(this.player);
             crateSessions.remove(instance);

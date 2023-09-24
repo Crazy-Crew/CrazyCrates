@@ -42,10 +42,10 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
     public boolean persist() {
         return true;
     }
-    
+
     @Override
     public @NotNull String getIdentifier() {
-        return "crazycrates";
+        return this.plugin.getName().toLowerCase();
     }
     
     @Override

@@ -35,7 +35,7 @@ public class Roulette implements Listener {
     }
     
     public void openRoulette(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inventory = plugin.getServer().createInventory(null, 27, this.methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        Inventory inventory = this.plugin.getServer().createInventory(null, 27, this.methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
         setGlass(inventory);
         inventory.setItem(13, crate.pickPrize(player).getDisplayItem());
         player.openInventory(inventory);

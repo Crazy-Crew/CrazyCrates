@@ -41,22 +41,22 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
         return this.reason;
     }
     
+    public int getAmount() {
+        return this.amount;
+    }
+
     @Override
     public boolean isCancelled() {
         return this.isCancelled;
     }
-    
+
     @Override
     public void setCancelled(boolean cancel) {
         this.isCancelled = cancel;
     }
-    
+
     public @NotNull HandlerList getHandlers() {
         return handlers;
-    }
-    
-    public int getAmount() {
-        return this.amount;
     }
     
     public enum KeyReceiveReason {

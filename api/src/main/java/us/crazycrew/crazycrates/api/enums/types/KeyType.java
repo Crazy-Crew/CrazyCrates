@@ -23,7 +23,7 @@ public enum KeyType {
      * @param type the name of the key-type
      * @return the type of key otherwise null
      */
-    public KeyType getFromName(String type) {
+    public static KeyType getFromName(String type) {
         if (type.equalsIgnoreCase("virtual") || type.equalsIgnoreCase("v")) {
             return KeyType.VIRTUAL_KEY;
         } else if (type.equalsIgnoreCase("physical") || type.equalsIgnoreCase("p")) {

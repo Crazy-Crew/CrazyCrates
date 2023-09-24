@@ -10,6 +10,9 @@ import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -67,7 +70,7 @@ public class BaseKeyCommand extends BaseCommand {
         }
 
         if (hasKeys) {
-            sender.sendMessage(Messages.convertList(message));
+            //sender.sendMessage(Messages.convertList(message));
         } else {
             sender.sendMessage(messageContent);
         }

@@ -7,6 +7,7 @@ import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
 import com.ryderbelserion.cluster.bukkit.utils.LegacyUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -349,7 +350,8 @@ public enum Messages {
             return LegacyUtils.color(message);
         } else { // If the message isn't a list.
             if (prefix) { // If the message needs a prefix.
-                return Methods.getPrefix(message);
+                //return Methods.getPrefix(message);
+                return "";
             } else { // If the message doesn't need a prefix.
                 return LegacyUtils.color(message);
             }

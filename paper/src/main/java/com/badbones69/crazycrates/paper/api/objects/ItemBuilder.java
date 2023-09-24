@@ -384,9 +384,9 @@ public class ItemBuilder {
             if (this.isHead) { // Has to go 1st due to it removing all data when finished.
                 if (this.isHash) { // Sauce: https://github.com/deanveloper/SkullCreator
                     if (this.isURL) {
-                        SkullCreator.itemWithUrl(item, this.player);
+                        //SkullCreator.itemWithUrl(item, this.player);
                     } else {
-                        SkullCreator.itemWithBase64(item, this.player);
+                        //SkullCreator.itemWithBase64(item, this.player);
                     }
                 }
             }
@@ -1079,7 +1079,7 @@ public class ItemBuilder {
      * @param placeholder The placeholder for errors.
      * @return The list of ItemBuilders.
      */
-    public List<ItemBuilder> convertStringList(List<String> itemStrings, String placeholder) {
+    public static List<ItemBuilder> convertStringList(List<String> itemStrings, String placeholder) {
         return itemStrings.stream().map(itemString -> convertString(itemString, placeholder)).collect(Collectors.toList());
     }
 
