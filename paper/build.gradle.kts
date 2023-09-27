@@ -34,7 +34,7 @@ repositories {
 dependencies {
     api(project(":core"))
 
-    implementation("de.tr7zw", "item-nbt-api", "2.11.3")
+    implementation("de.tr7zw", "item-nbt-api", "2.12.0")
     implementation("org.bstats", "bstats-bukkit", "3.0.2")
 
     implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-SNAPSHOT")
@@ -69,7 +69,7 @@ tasks {
 
     shadowJar {
         listOf(
-            "de.tr7zw",
+            "de.tr7zw.changeme.nbtapi",
             "org.bstats"
         ).forEach {
             relocate(it, "libs.$it")
@@ -106,6 +106,9 @@ val description = """
    * https://docs.crazycrew.us/crazycrates/info/prizes/options#custom-items
  * Added the ability to color maps.
    * https://docs.crazycrew.us/crazycrates/info/prizes/items/colored-map
+
+## Fix
+ * NBT API being outdated.
     
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
