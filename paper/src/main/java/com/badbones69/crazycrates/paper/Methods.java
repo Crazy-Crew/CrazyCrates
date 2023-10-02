@@ -11,6 +11,7 @@ import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
 import com.ryderbelserion.cluster.bukkit.utils.LegacyUtils;
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import io.th0rgal.oraxen.shaded.jetbrains.annotations.NotNull;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Color;
@@ -38,7 +39,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import  java.util.regex.Matcher.quoteReplacement;
 
 public class Methods {
 
