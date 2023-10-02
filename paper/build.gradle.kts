@@ -47,21 +47,7 @@ dependencies {
     compileOnly("me.clip", "placeholderapi", "2.11.4")
 }
 
-val component: SoftwareComponent = components["java"]
-
 tasks {
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = project.group.toString()
-                artifactId = "${rootProject.name.lowercase()}-${project.name.lowercase()}-api"
-                version = rootProject.version.toString()
-
-                from(component)
-            }
-        }
-    }
-
     shadowJar {
         listOf(
             "de.tr7zw",
