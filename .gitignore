@@ -15,3 +15,5 @@ jars
 
 paper/.gradle
 paper/build
+
+paper/run
