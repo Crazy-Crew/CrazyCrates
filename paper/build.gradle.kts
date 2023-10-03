@@ -120,13 +120,13 @@ val description = """
 val versions = listOf(
     "1.20",
     "1.20.1",
-    //"1.20.2"
+    "1.20.2"
 )
 
 modrinth {
     autoAddDependsOn.set(false)
 
-    token.set(System.getenv("MODRINTH_TOKEN"))
+    token.set(System.getenv("modrinth_token"))
 
     projectId.set(rootProject.name.lowercase())
 
@@ -135,7 +135,7 @@ modrinth {
 
     versionType.set(type)
 
-    uploadFile.set(file)
+    uploadFile.set(file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.version}.jar"))
 
     gameVersions.addAll(versions)
 
@@ -147,15 +147,18 @@ modrinth {
 hangarPublish {
     publications.register("plugin") {
         version.set(rootProject.version as String)
-        namespace("CrazyCrew", rootProject.name)
-        channel.set(other)
+
+        id.set(rootProject.name)
+
+        channel.set(if (isSnapshot) "Beta" else "Release")
+
         changelog.set(description)
 
         apiKey.set(System.getenv("hangar_key"))
 
         platforms {
             register(Platforms.PAPER) {
-                jar.set(file)
+                jar.set(file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.version}.jar"))
                 platformVersions.set(versions)
             }
         }

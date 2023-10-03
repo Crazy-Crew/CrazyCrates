@@ -31,7 +31,7 @@ permissions:
     default: true
 
   crazycrates.command.player.key:
-    default: op
+    default: true
 
   crazycrates.command.player.key.others:
     default: op
