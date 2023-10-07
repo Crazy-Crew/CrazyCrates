@@ -66,7 +66,8 @@ import static java.util.regex.Matcher.quoteReplacement;
 
 public class CrazyManager {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
     
     private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
     

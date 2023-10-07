@@ -46,9 +46,6 @@ Messages:
     Not-Enough-Keys: '&cYou do not have enough keys to transfer.'
     Transferred-Keys: '&7You have transferred %amount% %crate% keys to %player%.'
     Received-Transferred-Keys: '&7You have received %amount% %crate% keys from %player%.'
-  Files-Converted:
-    No-Files-To-Convert: '&cNo plugins that can be converted were found.'
-    Error-Converting-Files: '&cThere was an error while trying to convert files. Please check console for the error log.'
   Created-Physical-Crate:
     - '%prefix%&7You have set that block to %crate%.'
     - '&7To remove the crate shift break in creative to remove.'

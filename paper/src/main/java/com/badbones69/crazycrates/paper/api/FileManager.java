@@ -16,7 +16,8 @@ import java.util.HashMap;
 
 public class FileManager {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private boolean log = false;
 
@@ -339,7 +340,8 @@ public class FileManager {
         private final String fileJar;
         private final String fileLocation;
 
-        private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+        @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
         private final FileManager fileManager = plugin.getStarter().getFileManager();
 
@@ -418,7 +420,8 @@ public class FileManager {
         private final String homeFolder;
         private FileConfiguration file;
 
-        private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+        @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
         /**
          * A custom file that is being made.

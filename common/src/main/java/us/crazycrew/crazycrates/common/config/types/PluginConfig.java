@@ -20,7 +20,7 @@ public class PluginConfig implements SettingsHolder {
             "Submit your finalized config using https://bin.bloom.host/ and send it to us in https://discord.gg/badbones-s-live-chat-182615261403283459",
             ""
     })
-    public static final Property<String> plugin_locale = PropertyInitializer.newProperty("plugin_locale", "en-US");
+    public static final Property<String> locale_file = PropertyInitializer.newProperty("plugin_locale", "en-US");
 
     @Comment("Whether you want CrazyCrates to shut up or not, This option is ignored by errors.")
     public static final Property<Boolean> verbose_logging = PropertyInitializer.newProperty("verbose_logging", true);

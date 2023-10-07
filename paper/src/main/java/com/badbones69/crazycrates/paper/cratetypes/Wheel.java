@@ -26,7 +26,8 @@ import java.util.UUID;
 public class Wheel implements Listener {
     
     private final Map<UUID, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
     private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
     private final @NotNull Methods methods = this.crazyHandler.getMethods();
 

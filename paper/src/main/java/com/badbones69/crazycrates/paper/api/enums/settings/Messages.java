@@ -129,7 +129,8 @@ public enum Messages {
         return message.toString();
     }
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     /**
      * Adds any missing messages to the Messages.yml file based on values in the Messages enum.

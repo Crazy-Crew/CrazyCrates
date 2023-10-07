@@ -22,7 +22,8 @@ public class StructureHandler {
 
     private final File file;
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     public StructureHandler(File file) {
         this.file = file;

@@ -32,7 +32,8 @@ import java.util.Random;
 
 public class QuadCrateManager {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final ChestStateHandler chestStateHandler = this.plugin.getStarter().getChestStateHandler();
 

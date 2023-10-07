@@ -23,14 +23,14 @@ public class CrazyCratesService {
     }
 
     @ApiStatus.Internal
-    public void setService(CrazyCrates plugin) {
+    public static void setService(CrazyCrates plugin) {
         if (CrazyCratesService.plugin != null) return;
 
         CrazyCratesService.plugin = plugin;
     }
 
     @ApiStatus.Internal
-    public void stopService() {
+    public static void stopService() {
         if (CrazyCratesService.plugin == null) return;
 
         CrazyCratesService.plugin = null;

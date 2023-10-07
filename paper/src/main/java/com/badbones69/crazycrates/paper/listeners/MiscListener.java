@@ -11,7 +11,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class MiscListener implements Listener {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final @NotNull CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
 

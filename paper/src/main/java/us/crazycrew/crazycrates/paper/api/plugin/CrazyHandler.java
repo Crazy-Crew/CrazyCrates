@@ -6,14 +6,19 @@ import com.badbones69.crazycrates.paper.api.FileManager;
 import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import us.crazycrew.crazycrates.api.platforms.Platform;
 import us.crazycrew.crazycrates.common.CrazyCratesPlugin;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
+import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.paper.api.MetricsHandler;
+import us.crazycrew.crazycrates.paper.api.plugin.migration.MigrationService;
 import java.io.File;
 
 public class CrazyHandler extends CrazyCratesPlugin {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private BukkitPlugin bukkitPlugin;
     private MetricsHandler metrics;
@@ -22,15 +27,21 @@ public class CrazyHandler extends CrazyCratesPlugin {
     private Methods methods;
 
     public CrazyHandler(File dataFolder) {
-        super(dataFolder);
+        super(dataFolder, Platform.type.paper);
     }
 
     public void install() {
+        // Enable cluster bukkit api
         this.bukkitPlugin = new BukkitPlugin(this.plugin);
         this.bukkitPlugin.enable();
 
-        //Enable crazycrates api.
-        super.enable();
+        // Run migration checks
+        // The migration check will only stay until 2.5
+        MigrationService service = new MigrationService();
+        service.migrate();
+
+        // Enable crazycrates api
+        super.enable(this.plugin.getServer().getConsoleSender());
 
         //LegacyLogger.setName(getConfigManager().getConfig().getProperty(Config.console_prefix));
 
@@ -52,10 +63,10 @@ public class CrazyHandler extends CrazyCratesPlugin {
                 .registerCustomFilesFolder("/schematics")
                 .setup();
 
-        //boolean metrics = getConfigManager().getConfig().getProperty(Config.toggle_metrics);
+        boolean metrics = this.plugin.getCrazyHandler().getConfigManager().getPluginConfig().getProperty(PluginConfig.toggle_metrics);
 
-        //this.metrics = new MetricsHandler();
-        //if (metrics) this.metrics.start();
+        this.metrics = new MetricsHandler();
+        if (metrics) this.metrics.start();
     }
 
     public void uninstall() {
@@ -66,23 +77,42 @@ public class CrazyHandler extends CrazyCratesPlugin {
         this.bukkitPlugin.disable();
     }
 
+    @Override
+    @Nullable
+    public String identifyClassLoader(ClassLoader classLoader) throws Exception {
+        Class<?> classLoaderClass = Class.forName("org.bukkit.plugin.java.PluginClassLoader");
+
+        if (classLoaderClass.isInstance(classLoader)) {
+            return this.plugin.getName();
+        }
+
+        return null;
+    }
+
     /**
      * Inherited methods.
      */
     @Override
-    public @NotNull ConfigManager getConfigManager() {
+    @NotNull
+    public ConfigManager getConfigManager() {
         return super.getConfigManager();
     }
 
-    public @NotNull Methods getMethods() {
+    /**
+     * Internal methods.
+     */
+    @NotNull
+    public Methods getMethods() {
         return this.methods;
     }
 
-    public @NotNull FileManager getFileManager() {
+    @NotNull
+    public FileManager getFileManager() {
         return this.fileManager;
     }
 
-    public @NotNull MetricsHandler getMetrics() {
+    @NotNull
+    public MetricsHandler getMetrics() {
         return this.metrics;
     }
 }

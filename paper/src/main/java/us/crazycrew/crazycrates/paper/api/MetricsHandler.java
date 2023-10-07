@@ -8,7 +8,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class MetricsHandler {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private Metrics metrics;
 
