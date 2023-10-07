@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.managers.CrateManager;
 import com.badbones69.crazycrates.paper.listeners.PreviewListener;
 import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
+import com.ryderbelserion.cluster.bukkit.utils.LegacyUtils;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -97,7 +98,7 @@ public class Crate {
         for (int amount = this.preview.size(); amount > this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0); amount -= this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0), this.maxPage++) ;
 
         this.crateInventoryName = file != null ? this.methods.sanitizeColor(file.getString("Crate.CrateName")) : "";
-        this.borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? LegacyUtils.color((file.getString("Crate.Preview.Glass.Name")) : " ";
+        this.borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? LegacyUtils.color((file.getString("Crate.Preview.Glass.Name"))) : " ";
         this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(this.borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(this.borderName);
 
         this.hologram = hologram != null ? hologram : new CrateHologram();

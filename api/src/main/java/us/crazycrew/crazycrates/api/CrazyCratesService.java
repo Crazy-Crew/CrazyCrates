@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CrazyCratesService {
 
-    private CrazyCrates plugin = null;
+    private static CrazyCrates plugin = null;
 
     public @NotNull CrazyCrates get() {
         CrazyCrates instance = CrazyCratesService.plugin;
