@@ -6,27 +6,30 @@ import org.bukkit.entity.Player;
 public class SessionManager {
 
     public boolean inSession(Player player) {
-        if (QuadCrateManager.getCrateSessions().isEmpty()) return false;
+        //TODO()
+        //if (QuadCrateManager.getCrateSessions().isEmpty()) return false;
 
-        for (QuadCrateManager quadCrateManager : QuadCrateManager.getCrateSessions()) {
-            if (quadCrateManager.getPlayer() == player) return true;
-        }
+        //for (QuadCrateManager quadCrateManager : QuadCrateManager.getCrateSessions()) {
+        //    if (quadCrateManager.getPlayer() == player) return true;
+        //}
 
         return false;
     }
 
     public QuadCrateManager getSession(Player player) {
-        for (QuadCrateManager quadCrateManager : QuadCrateManager.getCrateSessions()) {
-            if (quadCrateManager.getPlayer() == player) return quadCrateManager;
-        }
+        //TODO()
+        //for (QuadCrateManager quadCrateManager : QuadCrateManager.getCrateSessions()) {
+        //    if (quadCrateManager.getPlayer() == player) return quadCrateManager;
+        //}
 
         return null;
     }
 
     public void endCrates() {
-        if (!QuadCrateManager.getCrateSessions().isEmpty()) {
-            QuadCrateManager.getCrateSessions().forEach(session -> session.endCrateForce(false));
-            QuadCrateManager.getCrateSessions().clear();
-        }
+        //TODO()
+        //if (!QuadCrateManager.getCrateSessions().isEmpty()) {
+        //    QuadCrateManager.getCrateSessions().forEach(session -> session.endCrateForce(false));
+        //    QuadCrateManager.getCrateSessions().clear();
+        //}
     }
 }

@@ -57,7 +57,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         cleanFiles();
 
         // Add extra messages.
-        //Messages.addMissingMessages();
+        Messages.addMissingMessages();
 
         FileConfiguration config = Files.CONFIG.getFile();
 

@@ -134,7 +134,7 @@ public enum Messages {
     /**
      * Adds any missing messages to the Messages.yml file based on values in the Messages enum.
      */
-    public void addMissingMessages() {
+    public static void addMissingMessages() {
         FileConfiguration messages = FileManager.Files.MESSAGES.getFile();
         boolean saveFile = false;
 

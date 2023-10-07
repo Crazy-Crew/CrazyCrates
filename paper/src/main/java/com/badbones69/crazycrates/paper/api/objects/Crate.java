@@ -337,7 +337,9 @@ public class Crate {
      * @return The preview as an Inventory object.
      */
     public Inventory getPreview(Player player) {
-        return getPreview(player, PreviewListener.getPage(player));
+        //TODO()
+        //return getPreview(player, PreviewListener.getPage(player));
+        return player.getInventory();
     }
     
     /**
@@ -345,20 +347,21 @@ public class Crate {
      * @return The preview as an Inventory object.
      */
     public Inventory getPreview(Player player, int page) {
-        Inventory inventory = player.getServer().createInventory(null, !this.borderToggle && (PreviewListener.playerInMenu(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, this.previewName);
-        setDefaultItems(inventory, player);
+        //TODO()
+        //Inventory inventory = player.getServer().createInventory(null, !this.borderToggle && (PreviewListener.playerInMenu(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, this.previewName);
+        //setDefaultItems(inventory, player);
 
-        for (ItemStack item : getPageItems(page)) {
-            int nextSlot = inventory.firstEmpty();
+        //for (ItemStack item : getPageItems(page)) {
+        //    int nextSlot = inventory.firstEmpty();
 
-            if (nextSlot >= 0) {
-                inventory.setItem(nextSlot, item);
-            } else {
-                break;
-            }
-        }
+        //    if (nextSlot >= 0) {
+        //        inventory.setItem(nextSlot, item);
+        //    } else {
+        //        break;
+        //    }
+        //}
 
-        return inventory;
+        return player.getInventory();
     }
     
     /**

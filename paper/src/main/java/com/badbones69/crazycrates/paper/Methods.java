@@ -40,6 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import static java.util.regex.Matcher.quoteReplacement;
+
 public class Methods {
 
     private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);

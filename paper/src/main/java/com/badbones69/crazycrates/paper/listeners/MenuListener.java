@@ -174,8 +174,9 @@ public class MenuListener implements Listener {
         if (event.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
             if (crate.isPreviewEnabled()) {
                 player.closeInventory();
-                PreviewListener.setPlayerInMenu(player, true);
-                PreviewListener.openNewPreview(player, crate);
+                //TODO()
+                //PreviewListener.setPlayerInMenu(player, true);
+                //PreviewListener.openNewPreview(player, crate);
             } else {
                 player.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
             }

@@ -380,7 +380,7 @@ public class CrazyManager {
 
         addPlayerToOpeningList(player, crate);
 
-        if (crate.getFile() != null) Methods.broadCastMessage(crate.getFile(), player);
+        if (crate.getFile() != null) this.methods.broadCastMessage(crate.getFile(), player);
 
         FileConfiguration config = Files.CONFIG.getFile();
 
@@ -388,14 +388,33 @@ public class CrazyManager {
             case MENU -> {
                 boolean openMenu = config.getBoolean("Settings.Enable-Crate-Menu");
 
-                if (openMenu) MenuListener.openGUI(player); else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
+                //TODO()
+                //if (openMenu) MenuListener.openGUI(player); else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
             }
-            case COSMIC -> Cosmic.openCosmic(player, crate, keyType, checkHand);
-            case CSGO -> CSGO.openCSGO(player, crate, keyType, checkHand);
-            case ROULETTE -> Roulette.openRoulette(player, crate, keyType, checkHand);
-            case WHEEL -> Wheel.startWheel(player, crate, keyType, checkHand);
-            case WONDER -> Wonder.startWonder(player, crate, keyType, checkHand);
-            case WAR -> War.openWarCrate(player, crate, keyType, checkHand);
+            case COSMIC -> {
+                //TODO()
+                //Cosmic.openCosmic(player, crate, keyType, checkHand);
+            }
+            case CSGO -> {
+                //TODO()
+                //CSGO.openCSGO(player, crate, keyType, checkHand);
+            }
+            case ROULETTE -> {
+                //TODO()
+                //Roulette.openRoulette(player, crate, keyType, checkHand);
+            }
+            case WHEEL -> {
+                //TODO()
+                //Wheel.startWheel(player, crate, keyType, checkHand);
+            }
+            case WONDER -> {
+                //TODO()
+                //Wonder.startWonder(player, crate, keyType, checkHand);
+            }
+            case WAR -> {
+                //TODO()
+                //War.openWarCrate(player, crate, keyType, checkHand);
+            }
             case QUAD_CRATE -> {
                 Location lastLocation = player.getLocation();
                 lastLocation.setPitch(0F);
@@ -407,7 +426,7 @@ public class CrazyManager {
                 session.startCrate();
             }
             case FIRE_CRACKER -> {
-                if (CrateControlListener.inUse.containsValue(location)) {
+                /*if (CrateControlListener.inUse.containsValue(location)) {
                     player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
                     removePlayerFromOpeningList(player);
                     return;
@@ -421,10 +440,11 @@ public class CrazyManager {
                         //CrateControlListener.inUse.put(player, location);
                         //FireCracker.startFireCracker(player, crate, keyType, location, hologramController);
                     }
-                }
+                }*/
             }
             case QUICK_CRATE -> {
-                //TODO() static shit
+                //TODO()
+                /*//TODO() static shit
                 if (CrateControlListener.inUse.containsValue(location)) {
                     player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
                     removePlayerFromOpeningList(player);
@@ -439,7 +459,7 @@ public class CrazyManager {
                         //CrateControlListener.inUse.put(player, location);
                         //QuickCrate.openCrate(player, location, crate, keyType, hologramController);
                     }
-                }
+                }*/
             }
             case CRATE_ON_THE_GO -> {
                 if (virtualCrate) {

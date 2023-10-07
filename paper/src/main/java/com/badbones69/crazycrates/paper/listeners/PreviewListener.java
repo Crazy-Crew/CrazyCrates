@@ -127,7 +127,8 @@ public class PreviewListener implements Listener {
         if (event.getCurrentItem() == null) return;
 
         if (event.getRawSlot() == crate.getAbsoluteItemPosition(4)) { // Clicked the menu button.
-            if (playerInMenu(player)) MenuListener.openGUI(player);
+            //TODO()
+            //if (playerInMenu(player)) MenuListener.openGUI(player);
         } else if (event.getRawSlot() == crate.getAbsoluteItemPosition(5)) { // Clicked the next button.
 
             if (getPage(player) < crate.getMaxPage()) {

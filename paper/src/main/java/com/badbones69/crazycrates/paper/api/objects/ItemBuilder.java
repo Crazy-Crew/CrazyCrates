@@ -986,7 +986,7 @@ public class ItemBuilder {
      * @param placeHolder The placeholder to use if there is an error.
      * @return The String as an ItemBuilder.
      */
-    public ItemBuilder convertString(String itemString, String placeHolder) {
+    public static ItemBuilder convertString(String itemString, String placeHolder) {
         ItemBuilder itemBuilder = new ItemBuilder();
 
         try {
@@ -1154,7 +1154,7 @@ public class ItemBuilder {
      * @param enchantmentName The string of the enchantment.
      * @return The enchantment from the string.
      */
-    private Enchantment getEnchantment(String enchantmentName) {
+    private static Enchantment getEnchantment(String enchantmentName) {
         enchantmentName = stripEnchantmentName(enchantmentName);
         for (Enchantment enchantment : Enchantment.values()) {
             try {
@@ -1179,7 +1179,7 @@ public class ItemBuilder {
      * @param enchantmentName The enchantment name.
      * @return The stripped enchantment name.
      */
-    private String stripEnchantmentName(String enchantmentName) {
+    private static String stripEnchantmentName(String enchantmentName) {
         return enchantmentName != null ? enchantmentName.replace("-", "").replace("_", "").replace(" ", "") : null;
     }
 
@@ -1188,7 +1188,7 @@ public class ItemBuilder {
      *
      * @return The list of enchantments and their in-Game names.
      */
-    private HashMap<String, String> getEnchantmentList() {
+    private static HashMap<String, String> getEnchantmentList() {
         HashMap<String, String> enchantments = new HashMap<>();
         enchantments.put("ARROW_DAMAGE", "Power");
         enchantments.put("ARROW_FIRE", "Flame");

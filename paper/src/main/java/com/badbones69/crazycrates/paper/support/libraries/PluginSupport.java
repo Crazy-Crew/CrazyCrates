@@ -1,6 +1,8 @@
 package com.badbones69.crazycrates.paper.support.libraries;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public enum PluginSupport {
 

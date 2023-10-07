@@ -1,7 +1,10 @@
 package com.badbones69.crazycrates.paper.support;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public class MetricsHandler {
 
