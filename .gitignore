@@ -1,6 +1,7 @@
 .gradle
 .idea
 build
+jars
 
 buildSrc/.gradle
 buildSrc/build
@@ -10,8 +11,6 @@ common/build
 
 api/.gradle
 api/build
-
-jars
 
 paper/.gradle
 paper/build
