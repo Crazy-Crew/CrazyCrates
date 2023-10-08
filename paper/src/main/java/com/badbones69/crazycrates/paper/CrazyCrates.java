@@ -49,53 +49,19 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         this.crazyHandler = new CrazyHandler(getDataFolder());
         this.crazyHandler.install();
 
-        starter = new Starter();
+        //starter = new Starter();
 
-        starter.run();
+        //starter.run();
 
         // Clean files if we have to.
-        cleanFiles();
+        //cleanFiles();
 
         // Add extra messages.
-        Messages.addMissingMessages();
+        //Messages.addMissingMessages();
 
-        FileConfiguration config = Files.CONFIG.getFile();
+        //enable();
 
-        String menu = config.getString("Settings.Enable-Crate-Menu");
-
-        String full = config.getString("Settings.Give-Virtual-Keys-When-Inventory-Full-Message");
-
-        String phys = config.getString("Settings.Physical-Accepts-Physical-Keys");
-
-        if (phys == null) {
-            config.set("Settings.Physical-Accepts-Physical-Keys", true);
-
-            Files.CONFIG.saveFile();
-        }
-
-        if (full == null) {
-            config.set("Settings.Give-Virtual-Keys-When-Inventory-Full-Message", false);
-
-            Files.CONFIG.saveFile();
-        }
-
-        if (menu == null) {
-            String oldBoolean = config.getString("Settings.Disable-Crate-Menu");
-            boolean switchBoolean = config.getBoolean("Settings.Disable-Crate-Menu");
-
-            if (oldBoolean != null) {
-                config.set("Settings.Enable-Crate-Menu", switchBoolean);
-                config.set("Settings.Disable-Crate-Menu", null);
-            } else {
-                config.set("Settings.Enable-Crate-Menu", true);
-            }
-
-            Files.CONFIG.saveFile();
-        }
-
-        enable();
-
-        starter.getCrazyManager().loadCrates();
+        //starter.getCrazyManager().loadCrates();
     }
 
     @Override
@@ -104,7 +70,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         //QuickCrate.removeAllRewards();
 
-        if (starter.getCrazyManager().getHologramController() != null) starter.getCrazyManager().getHologramController().removeAllHolograms();
+        //if (starter.getCrazyManager().getHologramController() != null) starter.getCrazyManager().getHologramController().removeAllHolograms();
 
         this.crazyHandler.uninstall();
     }

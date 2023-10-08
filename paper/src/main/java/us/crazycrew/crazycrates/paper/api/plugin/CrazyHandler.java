@@ -45,7 +45,7 @@ public class CrazyHandler extends CrazyCratesPlugin {
 
         //LegacyLogger.setName(getConfigManager().getConfig().getProperty(Config.console_prefix));
 
-        this.methods = new Methods();
+        /*this.methods = new Methods();
 
         this.fileManager = new FileManager();
         this.fileManager.setLog(true)
@@ -66,7 +66,7 @@ public class CrazyHandler extends CrazyCratesPlugin {
         boolean metrics = this.plugin.getCrazyHandler().getConfigManager().getPluginConfig().getProperty(PluginConfig.toggle_metrics);
 
         this.metrics = new MetricsHandler();
-        if (metrics) this.metrics.start();
+        if (metrics) this.metrics.start();*/
     }
 
     public void uninstall() {
