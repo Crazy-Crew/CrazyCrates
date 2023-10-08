@@ -220,7 +220,7 @@ public class CrateControlListener implements Listener { // Crate Control
 
         event.setCancelled(true);
 
-        if (!this.methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
+        if (!this.methods.permCheck(player, Permissions.crazy_crates_admin_access, false)) {
             player.closeInventory();
             return;
         }

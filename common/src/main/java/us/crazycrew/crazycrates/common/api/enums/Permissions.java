@@ -2,36 +2,32 @@ package us.crazycrew.crazycrates.common.api.enums;
 
 public enum Permissions {
 
-    CRAZY_CRATES_PLAYER_KEY("player.key", "Check the number of keys you have."),
-    CRAZY_CRATES_PLAYER_KEY_OTHERS("player.key.others", "Check the number of keys a player has."),
-    CRAZY_CRATES_PLAYER_TRANSFER_KEYS("player.transfer", "Allows players to send virtual keys to another player."),
-    CRAZY_CRATES_PLAYER_MENU("player.menu", "Opens the primary crate menu."),
-    CRAZY_CRATES_PLAYER_HELP("player.help", "Shows the help menu for Crazy Crates."),
-
-    CRAZY_CRATES_PLAYER_EXCLUDE_GIVE_ALL("exclude.player.giveall", "Permission to prevent a player from getting keys from /GiveAll."),
-
-    CRAZY_CRATES_ADMIN_HELP("admin.help", "Shows the help menu for admins."),
-    CRAZY_CRATES_ADMIN_ACCESS("admin.access", "General purpose access for admins."),
-    CRAZY_CRATES_ADMIN_ADD_ITEM("admin.additem", "Adds items in-game to a prize in a crate."),
-    CRAZY_CRATES_ADMIN_PREVIEW("admin.preview", "Opens the preview of any crate for a player."),
-    CRAZY_CRATES_ADMIN_LIST("admin.list", "Displays a list of all available crates."),
-    CRAZY_CRATES_ADMIN_OPEN("admin.open", "Tries to open a crate for the player if they have a key."),
-    CRAZY_CRATES_ADMIN_OPEN_OTHER("admin.open.others", "Tries to open a crate for a player if they have a key."),
-    CRAZY_CRATES_ADMIN_MASS_OPEN("admin.massopen", "Used to mass open a crate without an animation."),
-    CRAZY_CRATES_ADMIN_FORCE_OPEN("admin.forceopen", "Opens a crate for a player for free."),
-    CRAZY_CRATES_ADMIN_TELEPORT("admin.teleport", "Teleports to a crate."),
-    CRAZY_CRATES_ADMIN_GIVE_KEY("admin.givekey", "Give a key(s) to a player to use on a crate."),
-    CRAZY_CRATES_ADMIN_GIVE_RANDOM_KEY("admin.giverandomkey", "Give a random key(s) to a player to use on a crate."),
-    CRAZY_CRATES_ADMIN_GIVE_ALL("admin.giveall", "Gives all online players keys to use on crates."),
-    CRAZY_CRATES_ADMIN_TAKE_KEY("admin.takekey", "Allows you to take keys from a player."),
-    CRAZY_CRATES_ADMIN_SET_CRATE("admin.set", "Set the block you are looking at as the specified crate."),
-    CRAZY_CRATES_ADMIN_SET_MENU("admin.setmenu", "Sets the block you are looking at to open the (/cc) crate menu."),
-    CRAZY_CRATES_ADMIN_RELOAD("admin.reload", "Reloads the entire plugin."),
-    CRAZY_CRATES_ADMIN_DEBUG("admin.debug", "Debugs the plugin."),
-    CRAZY_CRATES_ADMIN_CONVERT("admin.convert", "Converts data from other supported crate plugins into crazy crates."),
-    CRAZY_CRATES_ADMIN_SCHEMATIC("admin.schematic.*", "Gives all permissions related to schematics."),
-    CRAZY_CRATES_ADMIN_SCHEMATIC_SET("admin.schematic.set", "Sets the positions #1 or #2 when making a new schematic for quadcrates."),
-    CRAZY_CRATES_ADMIN_SCHEMATIC_SAVE("admin.schematic.save", "Saves the new schematic file to the schematics folder.");
+    crazy_crates_player_key("key", "Check the number of keys you have."),
+    crazy_crates_player_key_others("key-others", "Check the number of keys a player has."),
+    crazy_crates_player_transfer_keys("transfer", "Allows players to send virtual keys to another player."),
+    crazy_crates_player_menu("crate-menu", "Opens the primary crate menu."),
+    crazy_crates_player_help("help", "Shows the help menu for Crazy Crates."),
+    crazy_crates_player_exclude_give_all("exclude-player-give-all", "Permission to prevent a player from getting keys from /GiveAll."),
+    crazy_crates_admin_access("admin-access", "General purpose access for admins."),
+    crazy_crates_admin_add_item("additem", "Adds items in-game to a prize in a crate."),
+    crazy_crates_admin_preview("preview", "Opens the preview of any crate for a player."),
+    crazy_crates_admin_list("list", "Displays a list of all available crates."),
+    crazy_crates_admin_open("open", "Tries to open a crate for the player if they have a key."),
+    crazy_crates_admin_open_other("open-others", "Tries to open a crate for a player if they have a key."),
+    crazy_crates_admin_mass_open("mass-open", "Used to mass open a crate without an animation."),
+    crazy_crates_admin_force_open("force-open", "Opens a crate for a player for free."),
+    crazy_crates_admin_teleport("teleport", "Teleports to a crate."),
+    crazy_crates_admin_give_key("give-key", "Give a key(s) to a player to use on a crate."),
+    crazy_crates_admin_give_random_key("give-random-key", "Give a random key(s) to a player to use on a crate."),
+    crazy_crates_admin_give_all("give-all", "Gives all online players keys to use on crates."),
+    crazy_crates_admin_take_key("take-key", "Allows you to take keys from a player."),
+    crazy_crates_admin_set_crate("set-crate", "Set a block you are looking at as the specified crate."),
+    crazy_crates_admin_reload("reload", "Reloads the entire plugin."),
+    crazy_crates_admin_debug("debug", "Debugs the plugin."),
+    crazy_crates_admin_convert("convert", "Converts data from other supported crate plugins into crazy crates."),
+    crazy_crates_admin_schematic("schematic.*", "Gives all permissions related to schematics."),
+    crazy_crates_admin_schematic_set("schematic-set", "Sets the positions #1 or #2 when making a new schematic for quadcrates."),
+    crazy_crates_admin_schematic_save("schematic-save", "Saves the new schematic file to the schematics folder.");
 
     private final String defaultPermission;
     private final String description;
@@ -54,7 +50,7 @@ public enum Permissions {
      * @return a completed permission
      */
     public String getPermission(String action) {
-        return "crazycrates." + action + "." + defaultPermission;
+        return "crazycrates." + action + "." + this.defaultPermission;
     }
 
     /**
@@ -63,7 +59,7 @@ public enum Permissions {
      * @return a completed permission
      */
     public String getPermission() {
-        return "crazycrates.command." + defaultPermission;
+        return "crazycrates." + this.defaultPermission;
     }
 
     /**
@@ -72,6 +68,6 @@ public enum Permissions {
      * @return the description
      */
     public String getDescription() {
-        return description;
+        return this.description;
     }
 }
