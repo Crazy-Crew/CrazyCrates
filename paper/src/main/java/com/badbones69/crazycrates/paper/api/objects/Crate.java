@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.paper.api.objects;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.FileManager;
+import com.badbones69.crazycrates.paper.api.builder.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.managers.CrateManager;
 import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;

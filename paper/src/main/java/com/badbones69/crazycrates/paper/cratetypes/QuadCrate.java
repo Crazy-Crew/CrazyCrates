@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builder.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.support.structures.blocks.ChestManager;
 import de.tr7zw.changeme.nbtapi.NBTItem;

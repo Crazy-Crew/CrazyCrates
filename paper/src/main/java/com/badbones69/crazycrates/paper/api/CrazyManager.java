@@ -10,7 +10,7 @@ import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
-import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builder.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.badbones69.crazycrates.paper.api.users.BukkitUserManager;
@@ -41,7 +41,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
-import us.crazycrew.crazycrates.common.config.types.menus.CrateMainMenu;
+import us.crazycrew.crazycrates.common.config.types.menus.MainMenuConfig;
 import us.crazycrew.crazycrates.common.crates.CrateHologram;
 import us.crazycrew.crazycrates.common.crates.quadcrates.CrateSchematic;
 import us.crazycrew.crazycrates.paper.api.MetricsHandler;
@@ -392,7 +392,7 @@ public class CrazyManager {
 
         switch (crate.getCrateType()) {
             case MENU -> {
-                boolean openMenu = this.menuConfig.getProperty(CrateMainMenu.crate_menu_toggle);
+                boolean openMenu = this.menuConfig.getProperty(MainMenuConfig.crate_menu_toggle);
 
                 //TODO() Update messages enum
                 //if (openMenu) MenuListener.openGUI(player); else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());

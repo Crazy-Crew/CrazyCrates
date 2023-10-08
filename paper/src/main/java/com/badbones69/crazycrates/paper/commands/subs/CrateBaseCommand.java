@@ -42,7 +42,6 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.api.enums.Permissions;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.Config;
-import us.crazycrew.crazycrates.common.config.types.menus.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
 import java.util.HashMap;
 import java.util.UUID;

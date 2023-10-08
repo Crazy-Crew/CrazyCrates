@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.common.config.types.Messages;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
-import us.crazycrew.crazycrates.common.config.types.menus.CrateMainMenu;
-import us.crazycrew.crazycrates.common.config.types.menus.CratePreviewMenu;
+import us.crazycrew.crazycrates.common.config.types.menus.MainMenuConfig;
+import us.crazycrew.crazycrates.common.config.types.menus.PreviewMenuConfig;
 import java.io.File;
 
 public class ConfigManager {
@@ -62,7 +62,7 @@ public class ConfigManager {
         this.mainMenuConfig = SettingsManagerBuilder
                 .withYamlFile(mainMenuFile)
                 .useDefaultMigrationService()
-                .configurationData(ConfigurationDataBuilder.createConfiguration(CrateMainMenu.class))
+                .configurationData(ConfigurationDataBuilder.createConfiguration(MainMenuConfig.class))
                 .create();
 
         File previewMenuFile = new File(this.dataFolder, "/menus/preview-menu.yml");
@@ -70,7 +70,7 @@ public class ConfigManager {
         this.previewMenuConfig = SettingsManagerBuilder
                 .withYamlFile(previewMenuFile)
                 .useDefaultMigrationService()
-                .configurationData(ConfigurationDataBuilder.createConfiguration(CratePreviewMenu.class))
+                .configurationData(ConfigurationDataBuilder.createConfiguration(PreviewMenuConfig.class))
                 .create();
     }
 

@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.paper;
 
-import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.commands.subs.CrateBaseCommand;
 import com.badbones69.crazycrates.paper.commands.subs.player.BaseKeyCommand;
@@ -14,8 +13,8 @@ import com.badbones69.crazycrates.paper.cratetypes.War;
 import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import com.badbones69.crazycrates.paper.cratetypes.Wonder;
 import com.badbones69.crazycrates.paper.listeners.*;
-import com.badbones69.crazycrates.paper.listeners.gui.MenuListener;
-import com.badbones69.crazycrates.paper.listeners.gui.PreviewListener;
+import com.badbones69.crazycrates.paper.listeners.gui.CrateMenuListener;
+import com.badbones69.crazycrates.paper.listeners.gui.CratePreviewListener;
 import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
 import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISupport;
 import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
@@ -76,8 +75,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     private void enable() {
         PluginManager pluginManager = getServer().getPluginManager();
 
-        pluginManager.registerEvents(new MenuListener(), this);
-        pluginManager.registerEvents(new PreviewListener(), this);
+        pluginManager.registerEvents(new CrateMenuListener(), this);
+        pluginManager.registerEvents(new CratePreviewListener(), this);
         pluginManager.registerEvents(new FireworkDamageListener(), this);
         pluginManager.registerEvents(new CrateControlListener(), this);
         pluginManager.registerEvents(new MiscListener(), this);

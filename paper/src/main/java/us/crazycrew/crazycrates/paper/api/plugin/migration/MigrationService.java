@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.common.config.types.Messages;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
-import us.crazycrew.crazycrates.common.config.types.menus.CrateMainMenu;
-import us.crazycrew.crazycrates.common.config.types.menus.CratePreviewMenu;
+import us.crazycrew.crazycrates.common.config.types.menus.MainMenuConfig;
+import us.crazycrew.crazycrates.common.config.types.menus.PreviewMenuConfig;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -140,7 +140,7 @@ public class MigrationService {
         SettingsManager crateMainMenu = SettingsManagerBuilder
                 .withYamlFile(mainMenuFile)
                 .useDefaultMigrationService()
-                .configurationData(CrateMainMenu.class)
+                .configurationData(MainMenuConfig.class)
                 .create();
 
         File previewMenuFile = new File(this.plugin.getDataFolder(), "/menus/preview-menu.yml");
@@ -149,7 +149,7 @@ public class MigrationService {
         SettingsManager cratePreviewMenu = SettingsManagerBuilder
                 .withYamlFile(previewMenuFile)
                 .useDefaultMigrationService()
-                .configurationData(CratePreviewMenu.class)
+                .configurationData(PreviewMenuConfig.class)
                 .create();
 
         config.setProperty(Config.log_to_file, crateActionsLogFile);
@@ -177,29 +177,29 @@ public class MigrationService {
         config.setProperty(Config.customizer_toggle, !customizer.isEmpty());
         config.setProperty(Config.customizer_item_list, convert(customizer, false));
 
-        if (inventoryName != null) crateMainMenu.setProperty(CrateMainMenu.crate_menu_title, convert(inventoryName));
-        crateMainMenu.setProperty(CrateMainMenu.crate_menu_toggle, enableCrateMenu);
-        crateMainMenu.setProperty(CrateMainMenu.crate_menu_size, inventorySize);
+        if (inventoryName != null) crateMainMenu.setProperty(MainMenuConfig.crate_menu_title, convert(inventoryName));
+        crateMainMenu.setProperty(MainMenuConfig.crate_menu_toggle, enableCrateMenu);
+        crateMainMenu.setProperty(MainMenuConfig.crate_menu_size, inventorySize);
 
-        crateMainMenu.setProperty(CrateMainMenu.crate_menu_filler_toggle, fillerToggle);
-        if (fillerItem != null) crateMainMenu.setProperty(CrateMainMenu.crate_menu_filler_item, fillerItem);
-        if (fillerName != null) crateMainMenu.setProperty(CrateMainMenu.crate_menu_filler_name, convert(fillerName));
-        crateMainMenu.setProperty(CrateMainMenu.crate_menu_filler_lore, convert(fillerLore, false));
+        crateMainMenu.setProperty(MainMenuConfig.crate_menu_filler_toggle, fillerToggle);
+        if (fillerItem != null) crateMainMenu.setProperty(MainMenuConfig.crate_menu_filler_item, fillerItem);
+        if (fillerName != null) crateMainMenu.setProperty(MainMenuConfig.crate_menu_filler_name, convert(fillerName));
+        crateMainMenu.setProperty(MainMenuConfig.crate_menu_filler_lore, convert(fillerLore, false));
 
-        if (previewButtonMenuItem != null) cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_menu_button_material, previewButtonMenuItem);
-        if (previewButtonMenuName!= null) cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_menu_button_name, convert(previewButtonMenuName));
+        if (previewButtonMenuItem != null) cratePreviewMenu.setProperty(PreviewMenuConfig.crate_preview_menu_button_material, previewButtonMenuItem);
+        if (previewButtonMenuName!= null) cratePreviewMenu.setProperty(PreviewMenuConfig.crate_preview_menu_button_name, convert(previewButtonMenuName));
 
-        cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_menu_button_lore, convert(previewButtonMenuLore, false));
+        cratePreviewMenu.setProperty(PreviewMenuConfig.crate_preview_menu_button_lore, convert(previewButtonMenuLore, false));
 
-        if (previewButtonNextItem != null) cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_next_button_material, previewButtonNextItem);
-        if (previewButtonNextName != null) cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_next_button_name, convert(previewButtonNextName));
+        if (previewButtonNextItem != null) cratePreviewMenu.setProperty(PreviewMenuConfig.crate_preview_next_button_material, previewButtonNextItem);
+        if (previewButtonNextName != null) cratePreviewMenu.setProperty(PreviewMenuConfig.crate_preview_next_button_name, convert(previewButtonNextName));
 
-        cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_next_button_lore, convert(previewButtonNextLore, false));
+        cratePreviewMenu.setProperty(PreviewMenuConfig.crate_preview_next_button_lore, convert(previewButtonNextLore, false));
 
-        if (previewButtonBackItem != null) cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_back_button_material, previewButtonBackItem);
-        if (previewButtonBackName != null) cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_back_button_name, convert(previewButtonBackName));
+        if (previewButtonBackItem != null) cratePreviewMenu.setProperty(PreviewMenuConfig.crate_preview_back_button_material, previewButtonBackItem);
+        if (previewButtonBackName != null) cratePreviewMenu.setProperty(PreviewMenuConfig.crate_preview_back_button_name, convert(previewButtonBackName));
 
-        cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_back_button_lore, convert(previewButtonBackLore, false));
+        cratePreviewMenu.setProperty(PreviewMenuConfig.crate_preview_back_button_lore, convert(previewButtonBackLore, false));
 
         // Save new config.
         config.save();

@@ -4,7 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builder.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.users.BukkitUserManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -15,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.Config;
-import us.crazycrew.crazycrates.common.config.types.menus.CrateMainMenu;
-import us.crazycrew.crazycrates.common.config.types.menus.CratePreviewMenu;
+import us.crazycrew.crazycrates.common.config.types.menus.MainMenuConfig;
+import us.crazycrew.crazycrates.common.config.types.menus.PreviewMenuConfig;
 import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
 import java.text.NumberFormat;
 import java.util.Collections;
@@ -58,18 +58,18 @@ public class MenuManager {
 
     public void loadButtons() {
         this.menuButton = new ItemBuilder()
-                .setMaterial(this.previewMenuConfig.getProperty(CratePreviewMenu.crate_preview_menu_button_material))
-                .setName(this.previewMenuConfig.getProperty(CratePreviewMenu.crate_preview_menu_button_name))
-                .setLore(this.previewMenuConfig.getProperty(CratePreviewMenu.crate_preview_menu_button_lore))
+                .setMaterial(this.previewMenuConfig.getProperty(PreviewMenuConfig.crate_preview_menu_button_material))
+                .setName(this.previewMenuConfig.getProperty(PreviewMenuConfig.crate_preview_menu_button_name))
+                .setLore(this.previewMenuConfig.getProperty(PreviewMenuConfig.crate_preview_menu_button_lore))
                 .build();
         this.nextButton = new ItemBuilder()
-                .setMaterial(this.previewMenuConfig.getProperty(CratePreviewMenu.crate_preview_next_button_material))
-                .setName(this.previewMenuConfig.getProperty(CratePreviewMenu.crate_preview_next_button_name))
-                .setLore(this.previewMenuConfig.getProperty(CratePreviewMenu.crate_preview_next_button_lore));
+                .setMaterial(this.previewMenuConfig.getProperty(PreviewMenuConfig.crate_preview_next_button_material))
+                .setName(this.previewMenuConfig.getProperty(PreviewMenuConfig.crate_preview_next_button_name))
+                .setLore(this.previewMenuConfig.getProperty(PreviewMenuConfig.crate_preview_next_button_lore));
         this.backButton = new ItemBuilder()
-                .setMaterial(this.previewMenuConfig.getProperty(CratePreviewMenu.crate_preview_back_button_material))
-                .setName(this.previewMenuConfig.getProperty(CratePreviewMenu.crate_preview_back_button_name))
-                .setLore(this.previewMenuConfig.getProperty(CratePreviewMenu.crate_preview_back_button_lore));
+                .setMaterial(this.previewMenuConfig.getProperty(PreviewMenuConfig.crate_preview_back_button_material))
+                .setName(this.previewMenuConfig.getProperty(PreviewMenuConfig.crate_preview_back_button_name))
+                .setLore(this.previewMenuConfig.getProperty(PreviewMenuConfig.crate_preview_back_button_lore));
     }
 
     public void openNewPreview(Player player, Crate crate) {
@@ -140,13 +140,13 @@ public class MenuManager {
     }
 
     public void openMainMenu(Player player) {
-        int size = this.mainMenuConfig.getProperty(CrateMainMenu.crate_menu_size);
-        Inventory inv = this.plugin.getServer().createInventory(null, size, this.mainMenuConfig.getProperty(CrateMainMenu.crate_menu_title));
+        int size = this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_size);
+        Inventory inv = this.plugin.getServer().createInventory(null, size, this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_title));
 
-        if (!this.mainMenuConfig.getProperty(CrateMainMenu.crate_menu_filler_toggle)) {
-            String id = this.mainMenuConfig.getProperty(CrateMainMenu.crate_menu_filler_item);
-            String name = this.mainMenuConfig.getProperty(CrateMainMenu.crate_menu_filler_name);
-            List<String> lore = this.mainMenuConfig.getProperty(CrateMainMenu.crate_menu_filler_lore);
+        if (!this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_filler_toggle)) {
+            String id = this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_filler_item);
+            String name = this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_filler_name);
+            List<String> lore = this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_filler_lore);
             ItemStack item = new ItemBuilder().setMaterial(id).setName(name).setLore(lore).build();
 
             for (int i = 0; i < size; i++) {

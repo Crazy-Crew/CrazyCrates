@@ -24,7 +24,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
@@ -34,7 +33,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.api.enums.Permissions;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.Config;
-import us.crazycrew.crazycrates.common.config.types.menus.CrateMainMenu;
+import us.crazycrew.crazycrates.common.config.types.menus.MainMenuConfig;
 import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
 import java.util.HashMap;
 import java.util.UUID;
@@ -130,7 +129,7 @@ public class CrateControlListener implements Listener { // Crate Control
                 event.setCancelled(true);
 
                 if (crate.getCrateType() == CrateType.MENU) {
-                    boolean openMenu = this.menuConfig.getProperty(CrateMainMenu.crate_menu_toggle);
+                    boolean openMenu = this.menuConfig.getProperty(MainMenuConfig.crate_menu_toggle);
 
                     if (!this.crazyManager.isInOpeningList(player) && openMenu) this.menuManager.openMainMenu(player);
 
