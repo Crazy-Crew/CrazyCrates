@@ -44,7 +44,7 @@ public class ConfigManager {
 
         if (!localeDir.exists()) localeDir.mkdirs();
 
-        File messagesFile = new File(localeDir, this.config.getProperty(PluginConfig.locale_file) + ".yml");
+        File messagesFile = new File(localeDir, this.pluginConfig.getProperty(PluginConfig.locale_file) + ".yml");
 
         this.messages = SettingsManagerBuilder
                 .withYamlFile(messagesFile)
