@@ -189,6 +189,6 @@ public class Messages implements SettingsHolder {
             " &8» &e/key [player] &7- &6Check how many keys a player has.",
             " &8» &e/cc &7- &6Opens the crate menu.",
             " ",
-            "&7You can find a list of permissions @ &6https://docs.crazycrew.us/crazycrates/info/commands/v2/permissions"
+            "&7You can find a list of permissions @ &6https://docs.crazycrew.us/crazycrates/info/commands/permissions"
     ));
 }
