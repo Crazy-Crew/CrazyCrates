@@ -7,7 +7,7 @@ import ch.jalu.configme.properties.PropertyInitializer;
 
 import java.util.List;
 
-public class CratePreviewMenu implements SettingsHolder {
+public class PreviewMenuConfig implements SettingsHolder {
 
     @Comment("The material the main menu button will be.")
     public static final Property<String> crate_preview_menu_button_material = PropertyInitializer.newProperty("settings.preview-buttons.menu-button.material", "COMPASS");

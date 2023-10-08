@@ -4,12 +4,11 @@ import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.properties.Property;
 import ch.jalu.configme.properties.PropertyInitializer;
-
 import java.util.List;
 
-public class CrateMainMenu implements SettingsHolder {
+public class MainMenuConfig implements SettingsHolder {
 
-    protected CrateMainMenu() {}
+    protected MainMenuConfig() {}
 
     @Comment("If the menu should be enabled or not.")
     public static final Property<Boolean> crate_menu_toggle = PropertyInitializer.newProperty("settings.crate-menu.toggle", true);
