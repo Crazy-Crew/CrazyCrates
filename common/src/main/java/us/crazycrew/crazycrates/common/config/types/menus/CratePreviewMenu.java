@@ -17,7 +17,7 @@ public class CratePreviewMenu implements SettingsHolder {
 
     @Comment("The lore for the main menu button.")
     public static final Property<List<String>> crate_preview_menu_button_lore = PropertyInitializer.newListProperty("settings.preview-buttons.menu-button.lore", List.of(
-            "<purple>Return to the menu.</purple>"
+            "&dReturn to the menu."
     ));
 
     @Comment("The material the next button will be.")
@@ -28,7 +28,7 @@ public class CratePreviewMenu implements SettingsHolder {
 
     @Comment("The lore for the next button.")
     public static final Property<List<String>> crate_preview_next_button_lore = PropertyInitializer.newListProperty("settings.preview-buttons.next-button.lore", List.of(
-            "<purple><bold>Page:</bold></purple> <blue>{page}</blue>"
+            "&d&lPage:&b &b{page}"
     ));
 
     @Comment("The material the back button will be.")
