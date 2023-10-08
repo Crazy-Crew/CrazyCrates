@@ -9,8 +9,7 @@ public enum DataKeys {
 
     NO_FIREWORK_DAMAGE("crate_firework", Boolean.class);
 
-    @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final String nameSpaceKey;
 

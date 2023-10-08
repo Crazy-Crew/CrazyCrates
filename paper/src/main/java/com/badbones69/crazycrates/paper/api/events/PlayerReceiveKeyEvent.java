@@ -1,62 +1,73 @@
 package com.badbones69.crazycrates.paper.api.events;
 
+import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import java.util.UUID;
 
 public class PlayerReceiveKeyEvent extends Event implements Cancellable {
-    
-    private final HandlerList handlers = new HandlerList();
-    
+
+    private static final HandlerList handlers = new HandlerList();
+
+    private final UUID uuid;
     private final Player player;
     private final Crate crate;
     private final KeyReceiveReason reason;
     private final int amount;
     private boolean isCancelled;
     
-    public PlayerReceiveKeyEvent(Player player, Crate crate, KeyReceiveReason reason, int amount) {
-        this.player = player;
+    public PlayerReceiveKeyEvent(UUID uuid, Crate crate, KeyReceiveReason reason, int amount) {
+        this.uuid = uuid;
+        @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+        this.player = plugin.getServer().getPlayer(uuid);
         this.crate = crate;
         this.reason = reason;
         this.amount = amount;
         isCancelled = false;
     }
 
-    public HandlerList getHandlerList() {
+    public static HandlerList getHandlerList() {
         return handlers;
     }
-    
+
+
+    public UUID getUuid() {
+        return this.uuid;
+    }
+
     public Player getPlayer() {
         return this.player;
     }
     
     public Crate getCrate() {
-        return this.crate;
+        return crate;
     }
     
     public KeyReceiveReason getReason() {
-        return this.reason;
+        return reason;
+    }
+    
+    @Override
+    public boolean isCancelled() {
+        return isCancelled;
+    }
+    
+    @Override
+    public void setCancelled(boolean cancel) {
+        isCancelled = cancel;
+    }
+    
+    public @NotNull HandlerList getHandlers() {
+        return handlers;
     }
     
     public int getAmount() {
-        return this.amount;
-    }
-
-    @Override
-    public boolean isCancelled() {
-        return this.isCancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancel) {
-        this.isCancelled = cancel;
-    }
-
-    public @NotNull HandlerList getHandlers() {
-        return handlers;
+        return amount;
     }
     
     public enum KeyReceiveReason {

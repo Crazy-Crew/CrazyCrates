@@ -8,8 +8,8 @@ import java.io.File;
 
 public interface CrazyCrates {
 
-    //@NotNull
-    //UserManager getUserManager();
+    @NotNull
+    UserManager getUserManager();
 
     @NotNull
     Platform.type getPlatform();

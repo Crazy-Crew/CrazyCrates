@@ -24,7 +24,7 @@ public class CosmicCrateManager extends CrateManager {
         this.pickedCrate = new ItemBuilder()
         .setMaterial(file.getString(path + "Picked-Crate.Item", Material.GLASS_PANE.toString()))
         .setName(file.getString(path + "Picked-Crate.Name", "&f&l???"))
-        .setLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("&7You have chosen #%slot%."));
+        .setLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("&7You have chosen #{slot}."));
         this.pickedCrate.getNBTItem().setString("Cosmic-Picked-Crate", "Picked Crate");
     }
     

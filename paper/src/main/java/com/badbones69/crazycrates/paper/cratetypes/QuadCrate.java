@@ -1,15 +1,13 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
-import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
-import com.badbones69.crazycrates.paper.support.structures.blocks.ChestStateHandler;
+import com.badbones69.crazycrates.paper.support.structures.blocks.ChestManager;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -32,7 +30,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
-
 import java.util.Random;
 
 /**
@@ -41,17 +38,11 @@ import java.util.Random;
  */
 public class QuadCrate implements Listener {
 
-    @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-    @NotNull
-    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
-
-    @NotNull
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
-
-    private final @NotNull ChestStateHandler chestStateHandler = this.plugin.getStarter().getChestStateHandler();
-
-    private final SessionManager sessionManager = new SessionManager();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final @NotNull CrazyManager crazyManager = this.crazyHandler.getCrazyManager();
+    private final @NotNull ChestManager chestManager = this.crazyHandler.getChestManager();
+    private final @NotNull SessionManager sessionManager = new SessionManager();
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
@@ -78,7 +69,7 @@ public class QuadCrate implements Listener {
 
         if (session.getCratesOpened().get(block.getLocation())) return;
 
-        this.chestStateHandler.openChest(block, true);
+        this.chestManager.openChest(block, true);
 
         Crate crate = session.getCrate();
         Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
@@ -159,7 +150,9 @@ public class QuadCrate implements Listener {
         if (!this.sessionManager.inSession(player) && player.hasPermission("crazycrates.admin")) return;
 
         event.setCancelled(true);
-        player.sendMessage(Messages.NO_COMMANDS_WHILE_CRATE_OPENED.getMessage("%Player%", player.getName()));
+
+        //TODO() Update message enum.
+        //player.sendMessage(Messages.NO_COMMANDS_WHILE_CRATE_OPENED.getMessage("{player}", player.getName()));
     }
 
     @EventHandler
@@ -169,7 +162,9 @@ public class QuadCrate implements Listener {
         if (!this.sessionManager.inSession(player) && event.getCause() == TeleportCause.ENDER_PEARL) return;
 
         event.setCancelled(true);
-        player.sendMessage(Messages.NO_TELEPORTING.getMessage("%Player%", player.getName()));
+
+        //TODO() Update message enum.
+        //player.sendMessage(Messages.NO_TELEPORTING.getMessage("{player}", player.getName()));
     }
 
     @EventHandler

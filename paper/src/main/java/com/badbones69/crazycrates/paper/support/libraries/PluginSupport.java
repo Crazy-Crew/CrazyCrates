@@ -15,18 +15,17 @@ public enum PluginSupport {
     
     private final String name;
 
-    @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     PluginSupport(String name) {
         this.name = name;
     }
     
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public boolean isPluginEnabled() {
-        return plugin.getServer().getPluginManager().isPluginEnabled(name);
+        return this.plugin.getServer().getPluginManager().isPluginEnabled(this.name);
     }
 }

@@ -7,12 +7,12 @@ public class CrateLocation {
     
     private final String id;
     private final Crate crate;
-    private final Location loc;
+    private final Location location;
     
-    public CrateLocation(String id, Crate crate, Location loc) {
+    public CrateLocation(String id, Crate crate, Location location) {
         this.id = id;
         this.crate = crate;
-        this.loc = loc;
+        this.location = location;
     }
     
     /**
@@ -44,6 +44,6 @@ public class CrateLocation {
      * @return The location of the crate.
      */
     public Location getLocation() {
-        return this.loc;
+        return this.location;
     }
 }

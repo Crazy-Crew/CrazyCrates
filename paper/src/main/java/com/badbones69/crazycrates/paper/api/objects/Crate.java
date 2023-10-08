@@ -52,13 +52,10 @@ public class Crate {
     private final ArrayList<Tier> tiers;
     private final CrateHologram hologram;
 
-    @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-    @NotNull
-    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
-    @NotNull
-    private final Methods methods = this.crazyHandler.getMethods();
-    private final @NotNull FileManager fileManager = this.plugin.getStarter().getFileManager();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final @NotNull Methods methods = this.crazyHandler.getMethods();
+    private final @NotNull FileManager fileManager = this.crazyHandler.getFileManager();
 
     private final int maxMassOpen;
     private final int requiredKeys;

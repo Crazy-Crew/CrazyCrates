@@ -2,7 +2,13 @@ package us.crazycrew.crazycrates.paper.api.plugin;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
+import com.badbones69.crazycrates.paper.api.CrazyManager;
+import com.badbones69.crazycrates.paper.api.EventLogger;
 import com.badbones69.crazycrates.paper.api.FileManager;
+import com.badbones69.crazycrates.paper.api.FileManager.Files;
+import com.badbones69.crazycrates.paper.api.managers.MenuManager;
+import com.badbones69.crazycrates.paper.api.users.BukkitUserManager;
+import com.badbones69.crazycrates.paper.support.structures.blocks.ChestManager;
 import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
 import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,9 +27,16 @@ public class CrazyHandler extends CrazyCratesPlugin {
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
+    private BukkitUserManager userManager;
+
     private BukkitPlugin bukkitPlugin;
     private MetricsHandler metrics;
+
+    private ChestManager chestManager;
+    private CrazyManager crazyManager;
     private FileManager fileManager;
+    private MenuManager menuManager;
+    private EventLogger eventLogger;
 
     private Methods methods;
 
@@ -46,10 +59,10 @@ public class CrazyHandler extends CrazyCratesPlugin {
 
         LegacyLogger.setName(getConfigManager().getPluginConfig().getProperty(PluginConfig.console_prefix));
 
-        /*this.methods = new Methods();
+        this.methods = new Methods();
 
         this.fileManager = new FileManager();
-        this.fileManager.setLog(true)
+        this.fileManager
                 .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
@@ -66,8 +79,31 @@ public class CrazyHandler extends CrazyCratesPlugin {
 
         boolean metrics = this.plugin.getCrazyHandler().getConfigManager().getPluginConfig().getProperty(PluginConfig.toggle_metrics);
 
+        this.crazyManager = new CrazyManager();
+        this.userManager = new BukkitUserManager();
+
+        this.crazyManager.load(true);
+
+        this.menuManager = new MenuManager();
+        this.menuManager.loadButtons();
+
         this.metrics = new MetricsHandler();
-        if (metrics) this.metrics.start();*/
+        if (metrics) this.metrics.start();
+
+        this.chestManager = new ChestManager();
+        this.eventLogger = new EventLogger();
+    }
+
+    public static void janitor() {
+        if (!Files.LOCATIONS.getFile().contains("Locations")) {
+            Files.LOCATIONS.getFile().set("Locations.Clear", null);
+            Files.LOCATIONS.saveFile();
+        }
+
+        if (!Files.DATA.getFile().contains("Players")) {
+            Files.DATA.getFile().set("Players.Clear", null);
+            Files.DATA.saveFile();
+        }
     }
 
     public void uninstall() {
@@ -99,6 +135,12 @@ public class CrazyHandler extends CrazyCratesPlugin {
         return super.getConfigManager();
     }
 
+    @Override
+    @NotNull
+    public BukkitUserManager getUserManager() {
+        return this.userManager;
+    }
+
     /**
      * Internal methods.
      */
@@ -113,7 +155,26 @@ public class CrazyHandler extends CrazyCratesPlugin {
     }
 
     @NotNull
+    public CrazyManager getCrazyManager() {
+        return this.crazyManager;
+    }
+    @NotNull
+    public MenuManager getMenuManager() {
+        return this.menuManager;
+    }
+
+    @NotNull
     public MetricsHandler getMetrics() {
         return this.metrics;
+    }
+
+    @NotNull
+    public ChestManager getChestManager() {
+        return this.chestManager;
+    }
+
+    @NotNull
+    public EventLogger getEventLogger() {
+        return this.eventLogger;
     }
 }

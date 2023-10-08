@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.paper.cratetypes;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
+import com.badbones69.crazycrates.paper.api.users.BukkitUserManager;
 import org.bukkit.SoundCategory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -29,15 +30,11 @@ import java.util.UUID;
 
 public class War implements Listener {
 
-    @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-    @NotNull
-    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
-    @NotNull
-    private final Methods methods = this.crazyHandler.getMethods();
-
-    @NotNull
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final @NotNull BukkitUserManager userManager = this.crazyHandler.getUserManager();
+    private final @NotNull Methods methods = this.crazyHandler.getMethods();
+    private final @NotNull CrazyManager crazyManager = this.crazyHandler.getCrazyManager();
 
     
     private final String crateNameString = "Crate.CrateName";
@@ -53,8 +50,8 @@ public class War implements Listener {
         this.canPick.put(player.getUniqueId(), false);
         this.canClose.put(player.getUniqueId(), false);
 
-        if (!this.crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
-            this.methods.failedToTakeKey(player, crate);
+        if (!this.userManager.takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
+            this.methods.failedToTakeKey(player.getName(), crate);
             this.crazyManager.removePlayerFromOpeningList(player);
             this.canClose.remove(player.getUniqueId());
             this.canPick.remove(player.getUniqueId());
@@ -64,7 +61,7 @@ public class War implements Listener {
         startWar(player, inventory, crate, inventoryView.getTitle());
     }
     
-    private void startWar(final Player player, final Inventory inv, final Crate crate, final String inventoryTitle) {
+    private void startWar(Player player, Inventory inventory, Crate crate, String inventoryTitle) {
         this.crazyManager.addCrateTask(player, new BukkitRunnable() {
             int full = 0;
             int open = 0;
@@ -72,14 +69,14 @@ public class War implements Listener {
             @Override
             public void run() {
                 if (full < 25) {
-                    setRandomPrizes(player, inv, crate, inventoryTitle);
+                    setRandomPrizes(player, inventory, crate, inventoryTitle);
                     player.playSound(player.getLocation(), Sound.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 1f, 1f);
                 }
 
                 open++;
 
                 if (open >= 3) {
-                    player.openInventory(inv);
+                    player.openInventory(inventory);
                     open = 0;
                 }
 
@@ -87,7 +84,7 @@ public class War implements Listener {
 
                 if (full == 26) { // Finished Rolling
                     player.playSound(player.getLocation(), Sound.BLOCK_LAVA_POP, SoundCategory.BLOCKS,1f, 1f);
-                    setRandomGlass(player, inv, inventoryTitle);
+                    setRandomGlass(player, inventory, inventoryTitle);
                     canPick.put(player.getUniqueId(), true);
                 }
             }
@@ -170,7 +167,7 @@ public class War implements Listener {
 
         if (prize.useFireworks()) this.methods.firework(player.getLocation().add(0, 1, 0));
 
-        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player.getUniqueId(), crate, crate.getName(), prize));
         this.crazyManager.removePlayerFromOpeningList(player);
         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 1f, 1f);
         // Sets all other non-picked prizes to show what they could have been.

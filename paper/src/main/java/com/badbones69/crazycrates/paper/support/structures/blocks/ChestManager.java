@@ -9,7 +9,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.EnderChest;
 import org.bukkit.block.data.Directional;
 
-public class ChestStateHandler implements ChestControl {
+public class ChestManager implements ChestControl {
     @Override
     public void openChest(Block block, boolean forceUpdate) {
         if (block.getType() != Material.CHEST || block.getType() != Material.TRAPPED_CHEST || block.getType() != Material.ENDER_CHEST) return;

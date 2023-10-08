@@ -23,8 +23,7 @@ import java.util.UUID;
  */
 public class SkullCreator {
 
-    @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
     
     /**
      * Creates a player skull based on a player's name.

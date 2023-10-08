@@ -44,9 +44,6 @@ public class Config implements SettingsHolder {
         conf.setComment("gui-settings.customizer", deprecation);
     }
 
-    @Comment("Whether /crates pops up with a gui.")
-    public static final Property<Boolean> crate_menu_toggle = newProperty("crate-settings.enable-crate-menu", true);
-
     @Comment({
             "Warning: The log file as is may cause your server to crash.",
             "It is recommended to clear it occasionally.",

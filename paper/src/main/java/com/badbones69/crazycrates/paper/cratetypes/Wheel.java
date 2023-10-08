@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.paper.cratetypes;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
+import com.badbones69.crazycrates.paper.api.users.BukkitUserManager;
 import org.bukkit.SoundCategory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -24,21 +25,18 @@ import java.util.Map;
 import java.util.UUID;
 
 public class Wheel implements Listener {
+
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final @NotNull BukkitUserManager userManager = this.crazyHandler.getUserManager();
+    private final @NotNull Methods methods = this.crazyHandler.getMethods();
+    private final @NotNull CrazyManager crazyManager = this.crazyHandler.getCrazyManager();
     
     private final Map<UUID, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
-    @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-    @NotNull
-    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
-    @NotNull
-    private final Methods methods = this.crazyHandler.getMethods();
-
-    @NotNull
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
     
-    public void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        if (!this.crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
-            this.methods.failedToTakeKey(player, crate);
+    public void startWheel(Player player, Crate crate, KeyType keyType, boolean checkHand) {
+        if (!this.userManager.takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
+            this.methods.failedToTakeKey(player.getName(), crate);
             this.crazyManager.removePlayerFromOpeningList(player);
             return;
         }

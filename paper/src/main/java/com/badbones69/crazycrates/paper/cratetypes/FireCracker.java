@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.paper.cratetypes;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
+import com.badbones69.crazycrates.paper.api.users.BukkitUserManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -18,19 +19,15 @@ import java.util.Random;
 
 public class FireCracker {
 
-    @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-    @NotNull
-    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
-    @NotNull
-    private final Methods methods = this.crazyHandler.getMethods();
-
-    @NotNull
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final @NotNull BukkitUserManager userManager = this.crazyHandler.getUserManager();
+    private final @NotNull Methods methods = this.crazyHandler.getMethods();
+    private final @NotNull CrazyManager crazyManager = this.crazyHandler.getCrazyManager();
     
-    public void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location blockLocation, HologramController hologramController) {
-        if (!this.crazyManager.takeKeys(1, player, crate, keyType, true)) {
-            this.methods.failedToTakeKey(player, crate);
+    public void startFireCracker(Player player, Crate crate, KeyType keyType, Location blockLocation, HologramController hologramController) {
+        if (!this.userManager.takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
+            this.methods.failedToTakeKey(player.getName(), crate);
             this.crazyManager.removePlayerFromOpeningList(player);
             return;
         }

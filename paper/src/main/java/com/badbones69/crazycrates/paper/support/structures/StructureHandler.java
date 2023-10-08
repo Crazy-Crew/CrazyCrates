@@ -22,8 +22,7 @@ public class StructureHandler {
 
     private final File file;
 
-    @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     public StructureHandler(File file) {
         this.file = file;
@@ -33,12 +32,12 @@ public class StructureHandler {
     private final List<Location> preStructureBlocks = new ArrayList<>();
 
     private StructureManager getStructureManager() {
-        return plugin.getServer().getStructureManager();
+        return this.plugin.getServer().getStructureManager();
     }
 
     private BlockVector getStructureSize() {
         try {
-            return getStructureManager().loadStructure(file).getSize();
+            return getStructureManager().loadStructure(this.file).getSize();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -48,7 +47,7 @@ public class StructureHandler {
         try {
             getBlocks(location);
 
-            getStructureManager().loadStructure(file).place(location.subtract(2, 0.0, 2), false, StructureRotation.NONE, Mirror.NONE, 0, 1F, new Random());
+            getStructureManager().loadStructure(this.file).place(location.subtract(2, 0.0, 2), false, StructureRotation.NONE, Mirror.NONE, 0, 1F, new Random());
 
             getStructureBlocks(location);
         } catch (Exception e) {
@@ -57,7 +56,7 @@ public class StructureHandler {
     }
 
     public void removeStructure() {
-        structureBlocks.forEach(block -> {
+        this.structureBlocks.forEach(block -> {
             Location blockLoc = block.toBlockLocation();
 
             blockLoc.getBlock().setType(Material.AIR, true);
@@ -73,9 +72,9 @@ public class StructureHandler {
                     List<Location> relativeBlocks = new ArrayList<>();
 
                     relativeBlocks.add(relativeLocation.getLocation());
-                    structureBlocks.addAll(relativeBlocks);
+                    this.structureBlocks.addAll(relativeBlocks);
 
-                    structureBlocks.forEach(block -> {
+                    this.structureBlocks.forEach(block -> {
                         Location blockLoc = block.toBlockLocation();
 
                         blockLoc.getBlock().getState().update();
@@ -91,7 +90,7 @@ public class StructureHandler {
                 for (int z = 0; z < getStructureZ(); z++) {
                     Block relativeLocation = location.getBlock().getRelative(x, y, z).getLocation().subtract(2, 0.0, 2).getBlock();
 
-                    preStructureBlocks.add(relativeLocation.getLocation());
+                    this.preStructureBlocks.add(relativeLocation.getLocation());
                 }
             }
         }
@@ -134,7 +133,7 @@ public class StructureHandler {
     }
 
     public List<Location> getNearbyBlocks() {
-        return Collections.unmodifiableList(preStructureBlocks);
+        return Collections.unmodifiableList(this.preStructureBlocks);
     }
 
     public List<Material> getBlockBlackList() {

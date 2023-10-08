@@ -20,15 +20,10 @@ import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
 
 public class CrateOnTheGo implements Listener {
 
-    @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-    @NotNull
-    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
-    @NotNull
-    private final Methods methods = this.crazyHandler.getMethods();
-
-    @NotNull
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final @NotNull Methods methods = this.crazyHandler.getMethods();
+    private final @NotNull CrazyManager crazyManager = this.crazyHandler.getCrazyManager();
 
     @EventHandler
     public void onCrateOpen(PlayerInteractEvent event) {
@@ -50,7 +45,7 @@ public class CrateOnTheGo implements Listener {
                 Prize prize = crate.pickPrize(player);
 
                 this.crazyManager.givePrize(player, prize, crate);
-                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, this.crazyManager.getOpeningCrate(player).getName(), prize));
+                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player.getUniqueId(), crate, this.crazyManager.getOpeningCrate(player).getName(), prize));
 
                 if (prize.useFireworks()) this.methods.firework(player.getLocation().add(0, 1, 0));
 

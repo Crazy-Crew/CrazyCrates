@@ -152,7 +152,6 @@ public class MigrationService {
                 .configurationData(CratePreviewMenu.class)
                 .create();
 
-        config.setProperty(Config.crate_menu_toggle, enableCrateMenu);
         config.setProperty(Config.log_to_file, crateActionsLogFile);
         config.setProperty(Config.log_to_console, crateActionsLogConsole);
 

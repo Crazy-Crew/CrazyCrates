@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
+import com.badbones69.crazycrates.paper.api.users.BukkitUserManager;
 import org.bukkit.SoundCategory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -19,15 +20,11 @@ import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
 
 public class Roulette implements Listener {
 
-    @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-    @NotNull
-    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
-    @NotNull
-    private final Methods methods = this.crazyHandler.getMethods();
-
-    @NotNull
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final @NotNull BukkitUserManager userManager = this.crazyHandler.getUserManager();
+    private final @NotNull Methods methods = this.crazyHandler.getMethods();
+    private final @NotNull CrazyManager crazyManager = this.crazyHandler.getCrazyManager();
     
     private void setGlass(Inventory inventory) {
         for (int i = 0; i < 27; i++) {
@@ -44,8 +41,8 @@ public class Roulette implements Listener {
         inventory.setItem(13, crate.pickPrize(player).getDisplayItem());
         player.openInventory(inventory);
 
-        if (!this.crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
-            this.methods.failedToTakeKey(player, crate);
+        if (!this.userManager.takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
+            this.methods.failedToTakeKey(player.getName(), crate);
             this.crazyManager.removePlayerFromOpeningList(player);
             return;
         }
@@ -53,7 +50,7 @@ public class Roulette implements Listener {
         startRoulette(player, inventory, crate);
     }
     
-    private void startRoulette(final Player player, final Inventory inventory, final Crate crate) {
+    private void startRoulette(Player player, Inventory inventory, Crate crate) {
         this.crazyManager.addCrateTask(player, new BukkitRunnable() {
             int time = 1;
             int even = 0;

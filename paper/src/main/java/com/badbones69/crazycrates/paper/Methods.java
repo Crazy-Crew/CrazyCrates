@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.paper;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.enums.DataKeys;
-import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
@@ -34,21 +33,22 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.common.api.enums.Permissions;
+import us.crazycrew.crazycrates.common.config.ConfigManager;
+import us.crazycrew.crazycrates.common.config.types.PluginConfig;
+import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class Methods {
 
-    @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-
-    @NotNull
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final @NotNull ConfigManager configManager = this.crazyHandler.getConfigManager();
+    private final @NotNull CrazyManager crazyManager = this.crazyHandler.getCrazyManager();
 
     public void broadCastMessage(FileConfiguration crateFile, Player player) {
         String crateBroadcast = crateFile.getString("Crate.BroadCast");
@@ -121,7 +121,8 @@ public class Methods {
             }
         }
 
-        sender.sendMessage(Messages.NOT_ONLINE.getMessage("%Player%", name));
+        //TODO() Update message enum.
+        //sender.sendMessage(Messages.NOT_ONLINE.getMessage("{player}", name));
         return false;
     }
 
@@ -153,7 +154,8 @@ public class Methods {
             return true;
         } else {
             if (!tabComplete) {
-                player.sendMessage(Messages.NO_PERMISSION.getMessage());
+                //TODO() Update message enum.
+                //player.sendMessage(Messages.NO_PERMISSION.getMessage());
                 return false;
             }
 
@@ -162,11 +164,11 @@ public class Methods {
     }
 
     public String getPrefix() {
-        return LegacyUtils.color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix"));
+        return LegacyUtils.color(this.configManager.getPluginConfig().getProperty(PluginConfig.command_prefix));
     }
 
     public String getPrefix(String msg) {
-        return LegacyUtils.color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
+        return LegacyUtils.color(this.configManager.getPluginConfig().getProperty(PluginConfig.command_prefix) + msg);
     }
 
     public boolean isInventoryFull(Player player) {
@@ -363,7 +365,7 @@ public class Methods {
 
             if (prize.useFireworks()) firework(player.getLocation().add(0, 1, 0));
 
-            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player.getUniqueId(), crate, crate.getName(), prize));
         } else {
             player.sendMessage(getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
         }
@@ -375,21 +377,18 @@ public class Methods {
 
             if (prize.useFireworks()) firework(player.getLocation().add(0, 1, 0));
 
-            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player.getUniqueId(), crate, crate.getName(), prize));
         } else {
             player.sendMessage(getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
         }
     }
 
-    public void failedToTakeKey(CommandSender player, Crate crate) {
+    public void failedToTakeKey(String name, Crate crate) {
         List.of(
                 "An error has occurred while trying to take a physical key from a player.",
-                "Player: " + player.getName(),
-                "Crate:" + crate.getName()
-        ).forEach(LegacyLogger::warn);
-
-        player.sendMessage(getPrefix("&cAn issue has occurred when trying to take a key."));
-        player.sendMessage(getPrefix("&cCommon reasons includes not having enough keys."));
+                "Player: " + name,
+                "Crate: " + crate.getName()
+        ).forEach(LegacyLogger::error);
     }
 
     public String sanitizeFormat(String string) {
