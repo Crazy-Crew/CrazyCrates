@@ -1,29 +1,29 @@
 # List of all the enchantments: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html
 # List of all the sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
 Settings:
-  Prefix: '&8[&bCrazyCrates&8]: '
-  Toggle-Metrics: true #Turn on and off if your server stats are sent to https://bstats.org/ - Requires a restart!
+  Prefix: '&8[&bCrazy&dCrates&8]: '
+  Toggle-Metrics: false #Turn on and off if your server stats are sent to https://bstats.org/ - Requires a restart!
   # Whether to enable or disable the crate menu. True if you want it enabled otherwise False
-  Enable-Crate-Menu: true
+  Enable-Crate-Menu: false
   # Whether to actions to file & console.
   # Includes command failures, keys taken, given, received and so on.
   # Defaults to false.
   Crate-Actions:
-    Log-File: false # Make sure to delete your log file every now & then.
-    Log-Console: false
+    Log-File: true # Make sure to delete your log file every now & then.
+    Log-Console: true
   InventoryName: '&b&lCrazy &4&lCrates'
   InventorySize: 45
-  KnockBack: true
-  Physical-Accepts-Virtual-Keys: true #If physical crates can accept virtual keys.
-  Physical-Accepts-Physical-Keys: true # If physical crates can accept physical keys.
-  Virtual-Accepts-Physical-Keys: true #If virtual crates can accept physical keys.
-  Give-Virtual-Keys-When-Inventory-Full-Message: false # If the player should be notified that it was a virtual key.
-  Give-Virtual-Keys-When-Inventory-Full: false #If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
-  Need-Key-Sound: 'ENTITY_VILLAGER_NO' #This sound plays when a player tries to open a crate with no key.
+  KnockBack: false
+  Physical-Accepts-Virtual-Keys: false #If physical crates can accept virtual keys.
+  Physical-Accepts-Physical-Keys: false # If physical crates can accept physical keys.
+  Virtual-Accepts-Physical-Keys: false #If virtual crates can accept physical keys.
+  Give-Virtual-Keys-When-Inventory-Full-Message: true # If the player should be notified that it was a virtual key.
+  Give-Virtual-Keys-When-Inventory-Full: true #If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
+  Need-Key-Sound: 'ENTITY_VILLAGER_YES' #This sound plays when a player tries to open a crate with no key.
   QuadCrate:
-    Timer: 300
+    Timer: 3003
   DisabledWorlds:
-    - 'world_nether'
+    - 'world_nethers'
   Preview:
     Buttons:
       Menu:
@@ -47,7 +47,7 @@ Settings:
     Name: ' ' #The name of the item.
     Lore: [] #The lore of the item.
   GUI-Customizer: #Place extra items in the GUI. If you wish to not use this, remove all items and set it to GUI-Customizer: {}
-    - 'Slot:1, Item:BLACK_STAINED_GLASS_PANE, Name: '
+    - 'Slot:30, Item:BLACK_STAINED_GLASS_PANE, Name: '
     - 'Slot:2, Item:BLACK_STAINED_GLASS_PANE, Name: '
     - 'Slot:3, Item:BLACK_STAINED_GLASS_PANE, Name: '
     - 'Slot:4, Item:BLACK_STAINED_GLASS_PANE, Name: '
@@ -76,7 +76,7 @@ Settings:
     - 'Slot:24, Item:WHITE_STAINED_GLASS_PANE, Name: '
     - 'Slot:26, Item:WHITE_STAINED_GLASS_PANE, Name: '
     - 'Slot:29, Item:WHITE_STAINED_GLASS_PANE, Name: '
-    - 'Slot:30, Item:WHITE_STAINED_GLASS_PANE, Name: '
+    - 'Slot:1, Item:WHITE_STAINED_GLASS_PANE, Name: '
     - 'Slot:31, Item:WHITE_STAINED_GLASS_PANE, Name: '
     - 'Slot:32, Item:WHITE_STAINED_GLASS_PANE, Name: '
     - 'Slot:33, Item:WHITE_STAINED_GLASS_PANE, Name: '
@@ -88,4 +88,4 @@ Settings:
     - 'Slot:41, Item:BLACK_STAINED_GLASS_PANE, Name: '
     - 'Slot:42, Item:BLACK_STAINED_GLASS_PANE, Name: '
     - 'Slot:43, Item:BLACK_STAINED_GLASS_PANE, Name: '
-    - 'Slot:44, Item:BLACK_STAINED_GLASS_PANE, Name: '
+    - 'Slot:46, Item:BLACK_STAINED_GLASS_PANE, Name: '
