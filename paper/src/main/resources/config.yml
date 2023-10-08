@@ -27,25 +27,30 @@ Settings:
   Preview:
     Buttons:
       Menu:
-        Item: 'COMPASS'
-        Name: '&7&l>> &c&lMenu &7&l<<'
+        Item: 'COMPASSe'
+        Name: '&7&l>> &c&lmenu &7&l<<'
         Lore:
-          - '&7Return to the menu.'
+          - '&7returnf to the menu.'
       Next:
-        Item: 'FEATHER'
-        Name: '&6&lNext >>'
+        Item: 'FEATHERs'
+        Name: '&6&lNextferer >>'
         Lore:
-          - '&7&lPage: &b%page%'
+          - '&7&lPagef: &b%page%'
       Back:
-        Item: 'FEATHER'
-        Name: '&6&l<< Back'
+        Item: 'FEATHERsss'
+        Name: '&6&l<< Badsdsdck'
         Lore:
-          - '&7&lPage: &b%page%'
+          - '&7&lPage: &sdsdsdb%page%'
   Filler: #This allows you to quickly fill the GUI with one item.
-    Toggle: false #If it fills the GUI with an item.
-    Item: 'BLACK_STAINED_GLASS_PANE' #The item you wish to use.
-    Name: ' ' #The name of the item.
-    Lore: [] #The lore of the item.
+    Toggle: true #If it fills the GUI with an item.
+    Item: 'GRAY_STAINED_GLASS_PANE' #The item you wish to use.
+    Name: 'dasdasdasdasd' #The name of the item.
+    Lore:
+    - 'sfoaskfaoskfsa'
+    - 'dosafkosafksaf'
+    - 'sfdoaksfosakf'
+    - 'sdosakd'
+    - dosakdosakds
   GUI-Customizer: #Place extra items in the GUI. If you wish to not use this, remove all items and set it to GUI-Customizer: {}
     - 'Slot:30, Item:BLACK_STAINED_GLASS_PANE, Name: '
     - 'Slot:2, Item:BLACK_STAINED_GLASS_PANE, Name: '
