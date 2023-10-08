@@ -129,6 +129,32 @@ public class MigrationService {
                 .configurationData(Config.class)
                 .create();
 
+        config.setProperty(Config.crate_menu_toggle, enableCrateMenu);
+        config.setProperty(Config.log_to_file, crateActionsLogFile);
+        config.setProperty(Config.log_to_console, crateActionsLogConsole);
+
+        config.setProperty(Config.crate_knock_back, knockBack);
+
+        config.setProperty(Config.physical_accepts_virtual, physicalAcceptsVirtual);
+        config.setProperty(Config.physical_accepts_physical, physicalAcceptsPhysical);
+        config.setProperty(Config.virtual_accepts_physical_keys, virtualAcceptsPhysical);
+
+        config.setProperty(Config.give_virtual_keys, giveVirtualKeysFullInv);
+        config.setProperty(Config.give_virtual_keys_message, giveVirtualKeysFullInvMessage);
+
+        if (needKeySound != null) {
+            config.setProperty(Config.key_sound_toggle, !needKeySound.isBlank());
+            config.setProperty(Config.key_sound_name, needKeySound);
+        }
+
+        config.setProperty(Config.quad_crate_timer, quadCrateTimer);
+
+        config.setProperty(Config.disabled_worlds_toggle, !disabledWorlds.isEmpty());
+        config.setProperty(Config.disabled_worlds, disabledWorlds);
+
+        config.setProperty(Config.customizer_toggle, !customizer.isEmpty());
+        config.setProperty(Config.customizer_item_list, customizer);
+
         // Save new config.
         config.save();
 
@@ -151,7 +177,6 @@ public class MigrationService {
         String noKey = convert("{prefix}" + file.getString("Messages.No-Key"));
         String noVirtualKey = convert("{prefix}" + file.getString("Messages.No-Virtual-Key"));
         String notOnBlock = convert("{prefix}" + file.getString("Messages.Not-On-Block"));
-        String alreadyOpeningCrate = convert("{prefix}" + file.getString("Messages.Already-Opening-Crate"));
         String quickCrateInUse = convert("{prefix}" + file.getString("Messages.Quick-Crate-In-Use"));
         String worldDisabled = convert("{prefix}" + file.getString("Messages.World-Disabled"));
         String reload = convert("{prefix}" + file.getString("Messages.Reload"));
@@ -210,7 +235,10 @@ public class MigrationService {
         String perCrate = convert(file.getString("Messages.Keys.Per-Crate"));
 
         List<String> help = file.getStringList("Messages.Help");
-        List<String> adminHelp = file.getStringList("Messages.Admin-Help");
+
+        ArrayList<String> adminHelp = new ArrayList<>();
+
+        file.getStringList("Messages.Admin-Help").forEach(line -> adminHelp.add(convert(line)));
 
         // Check if directory exists and create it if not.
         File localeDir = new File(this.plugin.getDataFolder(), "locale");
@@ -231,7 +259,6 @@ public class MigrationService {
         messages.setProperty(Messages.no_keys, noKey);
         messages.setProperty(Messages.no_virtual_keys, noVirtualKey);
         messages.setProperty(Messages.crate_requirements_not_on_block, notOnBlock);
-        messages.setProperty(Messages.crate_requirements_already_open, alreadyOpeningCrate);
         messages.setProperty(Messages.crate_requirements_in_use, quickCrateInUse);
         messages.setProperty(Messages.crate_requirements_world_disabled,worldDisabled);
         messages.setProperty(Messages.command_reload_completed, reload);
@@ -274,6 +301,8 @@ public class MigrationService {
 
         messages.setProperty(Messages.crates_physical_crate_removed, removedPhysicalCrate);
 
+        messages.setProperty(Messages.crate_requirements_already_open, crateAlreadyOpened);
+
         messages.setProperty(Messages.command_keys_personal_no_virtual_keys, keysPersonalNoVirtualKeys);
         messages.setProperty(Messages.command_keys_personal_virtual_keys_header, keysPersonalNoVirtualKeysHeader);
 
@@ -307,6 +336,7 @@ public class MigrationService {
                 .replaceAll("%prefix%", "")
                 .replaceAll("%Prefix%", "")
                 .replaceAll("%id%", "{id}")
-                .replaceAll("%keys%", "{keys}");
+                .replaceAll("%keys%", "{keys}")
+                .replaceAll("https://github.com/Crazy-Crew/CrazyCrates/wiki/Commands-and-Permissions", "https://docs.crazycrew.us/crazycrates/info/commands/permissions");
     }
 }
