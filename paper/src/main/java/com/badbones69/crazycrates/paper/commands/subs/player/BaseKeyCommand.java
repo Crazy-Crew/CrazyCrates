@@ -10,6 +10,7 @@ import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,8 +27,8 @@ public class BaseKeyCommand extends BaseCommand {
     private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
 
     @Default
-    @Permission("crazycrates.command.player.key")
-    public void viewPersonal(Player player) {
+    @Permission(value = "crazycrates.key", def = PermissionDefault.TRUE)
+    public void viewPersonalKeys(Player player) {
         String header = Messages.PERSONAL_HEADER.getMessageNoPrefix();
 
         String noKeys = Messages.PERSONAL_NO_VIRTUAL_KEYS.getMessage();
@@ -36,8 +37,8 @@ public class BaseKeyCommand extends BaseCommand {
     }
 
     @SubCommand("view")
-    @Permission("crazycrates.command.player.key.others")
-    public void viewOthers(CommandSender sender, @Suggestion ("online-players") Player target) {
+    @Permission(value = "crazycrates.key-others", def = PermissionDefault.TRUE)
+    public void viewOthersKeys(CommandSender sender, @Suggestion ("online-players") Player target) {
         if (target == sender) {
             sender.sendMessage(Messages.SAME_PLAYER.getMessage());
             return;
