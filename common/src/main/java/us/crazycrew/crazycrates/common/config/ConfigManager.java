@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.common.config.types.Messages;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
+import us.crazycrew.crazycrates.common.config.types.menus.CrateMainMenu;
+import us.crazycrew.crazycrates.common.config.types.menus.CratePreviewMenu;
 import java.io.File;
 
 public class ConfigManager {
@@ -20,6 +22,9 @@ public class ConfigManager {
     private SettingsManager pluginConfig;
     private SettingsManager messages;
     private SettingsManager config;
+
+    private SettingsManager mainMenuConfig;
+    private SettingsManager previewMenuConfig;
 
     public void load() {
         // Create the plugin-config.yml file.
@@ -51,6 +56,22 @@ public class ConfigManager {
                 .useDefaultMigrationService()
                 .configurationData(Messages.class)
                 .create();
+
+        File mainMenuFile = new File(this.dataFolder, "/menus/crate-menu.yml");
+
+        this.mainMenuConfig = SettingsManagerBuilder
+                .withYamlFile(mainMenuFile)
+                .useDefaultMigrationService()
+                .configurationData(ConfigurationDataBuilder.createConfiguration(CrateMainMenu.class))
+                .create();
+
+        File previewMenuFile = new File(this.dataFolder, "/menus/preview-menu.yml");
+
+        this.previewMenuConfig = SettingsManagerBuilder
+                .withYamlFile(previewMenuFile)
+                .useDefaultMigrationService()
+                .configurationData(ConfigurationDataBuilder.createConfiguration(CratePreviewMenu.class))
+                .create();
     }
 
     public void reload() {
@@ -62,6 +83,12 @@ public class ConfigManager {
 
         // Reload messages.yml
         this.messages.reload();
+
+        // Reload crate-menu.yml
+        this.mainMenuConfig.reload();
+
+        // Reload preview-menu.yml
+        this.previewMenuConfig.reload();
     }
 
     @NotNull
@@ -77,5 +104,15 @@ public class ConfigManager {
     @NotNull
     public SettingsManager getMessages() {
         return this.messages;
+    }
+
+    @NotNull
+    public SettingsManager getMainMenuConfig() {
+        return this.mainMenuConfig;
+    }
+
+    @NotNull
+    public SettingsManager getPreviewMenuConfig() {
+        return this.previewMenuConfig;
     }
 }
