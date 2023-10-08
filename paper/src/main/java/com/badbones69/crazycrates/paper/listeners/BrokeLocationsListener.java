@@ -20,7 +20,8 @@ public class BrokeLocationsListener implements Listener {
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final @NotNull CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+    @NotNull
+    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
     
     @EventHandler
     public void onWorldLoad(WorldLoadEvent event) {

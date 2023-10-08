@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.managers.CrateManager;
-import com.badbones69.crazycrates.paper.listeners.PreviewListener;
 import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
 import com.ryderbelserion.cluster.bukkit.utils.LegacyUtils;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -55,8 +54,10 @@ public class Crate {
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
-    private final @NotNull Methods methods = this.crazyHandler.getMethods();
+    @NotNull
+    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    @NotNull
+    private final Methods methods = this.crazyHandler.getMethods();
     private final @NotNull FileManager fileManager = this.plugin.getStarter().getFileManager();
 
     private final int maxMassOpen;

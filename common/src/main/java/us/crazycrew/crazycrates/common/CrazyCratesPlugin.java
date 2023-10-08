@@ -1,13 +1,9 @@
 package us.crazycrew.crazycrates.common;
 
-import com.ryderbelserion.cluster.api.RootPlugin;
-import com.ryderbelserion.cluster.api.adventure.FancyLogger;
-import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.platforms.Platform;
 import us.crazycrew.crazycrates.common.api.AbstractPlugin;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
-import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import java.io.File;
 
 public abstract class CrazyCratesPlugin extends AbstractPlugin {
@@ -18,14 +14,11 @@ public abstract class CrazyCratesPlugin extends AbstractPlugin {
         super(dataFolder, platform);
     }
 
-    public void enable(Audience audience) {
+    public void enable() {
         super.enablePlugin();
 
         this.configManager = new ConfigManager(getDataFolder());
         this.configManager.load();
-
-        RootPlugin.setConsole(audience);
-        FancyLogger.setName(this.configManager.getPluginConfig().getProperty(PluginConfig.console_prefix));
 
         super.apiWasLoadedByOurPlugin();
     }

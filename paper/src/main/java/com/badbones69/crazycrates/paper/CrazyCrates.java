@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.paper;
 
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
-import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.commands.subs.CrateBaseCommand;
 import com.badbones69.crazycrates.paper.commands.subs.player.BaseKeyCommand;
@@ -16,7 +15,8 @@ import com.badbones69.crazycrates.paper.cratetypes.War;
 import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import com.badbones69.crazycrates.paper.cratetypes.Wonder;
 import com.badbones69.crazycrates.paper.listeners.*;
-import com.badbones69.crazycrates.paper.support.MetricsHandler;
+import com.badbones69.crazycrates.paper.listeners.gui.MenuListener;
+import com.badbones69.crazycrates.paper.listeners.gui.PreviewListener;
 import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
 import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISupport;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
@@ -24,7 +24,6 @@ import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
 import dev.triumphteam.cmd.core.message.MessageKey;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -32,6 +31,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,13 +80,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     }
 
     public boolean isLogging() {
-        return true;
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        starter.getCrazyManager().setNewPlayerKeys(e.getPlayer());
-        starter.getCrazyManager().loadOfflinePlayersKeys(e.getPlayer());
+        return this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.verbose_logging);
     }
 
     public void cleanFiles() {

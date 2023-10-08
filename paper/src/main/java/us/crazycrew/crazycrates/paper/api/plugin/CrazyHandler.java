@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
+import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,9 +42,9 @@ public class CrazyHandler extends CrazyCratesPlugin {
         service.migrate();
 
         // Enable crazycrates api
-        super.enable(this.plugin.getServer().getConsoleSender());
+        super.enable();
 
-        //LegacyLogger.setName(getConfigManager().getConfig().getProperty(Config.console_prefix));
+        LegacyLogger.setName(getConfigManager().getPluginConfig().getProperty(PluginConfig.console_prefix));
 
         /*this.methods = new Methods();
 

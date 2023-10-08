@@ -47,7 +47,8 @@ public class Methods {
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final @NotNull CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+    @NotNull
+    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
 
     public void broadCastMessage(FileConfiguration crateFile, Player player) {
         String crateBroadcast = crateFile.getString("Crate.BroadCast");

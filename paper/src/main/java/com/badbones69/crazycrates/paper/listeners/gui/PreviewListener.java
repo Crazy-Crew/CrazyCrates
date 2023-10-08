@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.paper.listeners;
+package com.badbones69.crazycrates.paper.listeners.gui;
 
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.objects.Crate;

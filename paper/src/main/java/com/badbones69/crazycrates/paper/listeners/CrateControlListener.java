@@ -8,7 +8,6 @@ import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
-import com.badbones69.crazycrates.paper.cratetypes.QuickCrate;
 import com.ryderbelserion.cluster.bukkit.utils.LegacyUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -45,10 +44,13 @@ public class CrateControlListener implements Listener { // Crate Control
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
-    private final @NotNull Methods methods = this.crazyHandler.getMethods();
+    @NotNull
+    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    @NotNull
+    private final Methods methods = this.crazyHandler.getMethods();
 
-    private final @NotNull CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+    @NotNull
+    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
     
     // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
     @EventHandler

@@ -20,10 +20,13 @@ public class FireCracker {
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
-    private final @NotNull Methods methods = this.crazyHandler.getMethods();
+    @NotNull
+    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    @NotNull
+    private final Methods methods = this.crazyHandler.getMethods();
 
-    private final @NotNull CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+    @NotNull
+    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
     
     public void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location blockLocation, HologramController hologramController) {
         if (!this.crazyManager.takeKeys(1, player, crate, keyType, true)) {

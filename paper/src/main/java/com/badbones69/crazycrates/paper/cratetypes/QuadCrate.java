@@ -43,9 +43,11 @@ public class QuadCrate implements Listener {
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    @NotNull
+    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
 
-    private final @NotNull CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+    @NotNull
+    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
 
     private final @NotNull ChestStateHandler chestStateHandler = this.plugin.getStarter().getChestStateHandler();
 

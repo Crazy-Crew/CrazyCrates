@@ -15,17 +15,6 @@ import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import com.badbones69.crazycrates.paper.cratetypes.CSGO;
-import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
-import com.badbones69.crazycrates.paper.cratetypes.FireCracker;
-import com.badbones69.crazycrates.paper.cratetypes.QuickCrate;
-import com.badbones69.crazycrates.paper.cratetypes.Roulette;
-import com.badbones69.crazycrates.paper.cratetypes.War;
-import com.badbones69.crazycrates.paper.cratetypes.Wheel;
-import com.badbones69.crazycrates.paper.cratetypes.Wonder;
-import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
-import com.badbones69.crazycrates.paper.listeners.MenuListener;
-import com.badbones69.crazycrates.paper.listeners.PreviewListener;
 import com.badbones69.crazycrates.paper.support.holograms.CMIHologramsSupport;
 import com.badbones69.crazycrates.paper.support.holograms.DecentHologramsSupport;
 import com.badbones69.crazycrates.paper.support.holograms.HolographicDisplaysSupport;
@@ -69,9 +58,11 @@ public class CrazyManager {
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
     
-    private final @NotNull CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    @NotNull
+    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
     
-    private final @NotNull Methods methods = this.crazyHandler.getMethods();
+    @NotNull
+    private final Methods methods = this.crazyHandler.getMethods();
 
     private final @NotNull FileManager fileManager = this.crazyHandler.getFileManager();
 
