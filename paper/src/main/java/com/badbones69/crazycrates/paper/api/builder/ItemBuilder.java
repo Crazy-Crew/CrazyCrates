@@ -1,7 +1,5 @@
-package com.badbones69.crazycrates.paper.api.objects;
+package com.badbones69.crazycrates.paper.api.builder;
 
-import com.badbones69.crazycrates.paper.Methods;
-import com.badbones69.crazycrates.paper.support.SkullCreator;
 import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
 import com.ryderbelserion.cluster.bukkit.items.utils.DyeUtils;
 import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
