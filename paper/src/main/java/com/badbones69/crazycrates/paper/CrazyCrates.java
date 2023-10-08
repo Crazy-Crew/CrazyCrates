@@ -41,26 +41,10 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onEnable() {
         this.crazyHandler = new CrazyHandler(getDataFolder());
         this.crazyHandler.install();
-
-        // Clean files if we have to.
-        //cleanFiles();
-
-        // Add extra messages.
-        //Messages.addMissingMessages();
-
-        //enable();
-
-        //starter.getCrazyManager().loadCrates();
     }
 
     @Override
     public void onDisable() {
-        //SessionManager.endCrates();
-
-        //QuickCrate.removeAllRewards();
-
-        //if (starter.getCrazyManager().getHologramController() != null) starter.getCrazyManager().getHologramController().removeAllHolograms();
-
         this.crazyHandler.uninstall();
     }
 
