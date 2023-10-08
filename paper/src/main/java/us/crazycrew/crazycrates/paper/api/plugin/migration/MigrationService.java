@@ -6,10 +6,11 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.common.config.types.Messages;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
+import us.crazycrew.crazycrates.common.config.types.menus.CrateMainMenu;
+import us.crazycrew.crazycrates.common.config.types.menus.CratePreviewMenu;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +31,10 @@ public class MigrationService {
         copyConfig();
 
         copyMessages();
+
+        // Rename file if found.
+        File file = new File(this.plugin.getDataFolder(), "data.yml");
+        if (file.exists()) file.renameTo(new File(this.plugin.getDataFolder(), "users.yml"));
     }
 
     private void copyPluginConfig() {
@@ -75,7 +80,11 @@ public class MigrationService {
     private void copyConfig() {
         File input = new File(this.plugin.getDataFolder(), "config.yml");
 
-        YamlConfiguration file = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(input)).join();
+        // Rename config.yml to this.
+        File backupFile = new File(this.plugin.getDataFolder(), "Config-Backup.yml");
+        input.renameTo(backupFile);
+
+        YamlConfiguration file = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(backupFile)).join();
 
         boolean enableCrateMenu = file.getBoolean("Settings.Enable-Crate-Menu");
         boolean crateActionsLogFile = file.getBoolean("Settings.Crate-Actions.Log-File");
@@ -118,15 +127,29 @@ public class MigrationService {
 
         List<String> customizer = file.getStringList("Settings.GUI-Customizer");
 
-        // Rename config.yml to this.
-        File backupFile = new File(this.plugin.getDataFolder(), "Config-Backup.yml");
-        input.renameTo(backupFile);
+        File mainMenuFile = new File(this.plugin.getDataFolder(), "/menus/crate-menu.yml");
 
         // Bind it to settings manager
         SettingsManager config = SettingsManagerBuilder
                 .withYamlFile(input)
                 .useDefaultMigrationService()
                 .configurationData(Config.class)
+                .create();
+
+        // Bind it to settings manager
+        SettingsManager crateMainMenu = SettingsManagerBuilder
+                .withYamlFile(mainMenuFile)
+                .useDefaultMigrationService()
+                .configurationData(CrateMainMenu.class)
+                .create();
+
+        File previewMenuFile = new File(this.plugin.getDataFolder(), "/menus/preview-menu.yml");
+
+        // Bind it to settings manager
+        SettingsManager cratePreviewMenu = SettingsManagerBuilder
+                .withYamlFile(previewMenuFile)
+                .useDefaultMigrationService()
+                .configurationData(CratePreviewMenu.class)
                 .create();
 
         config.setProperty(Config.crate_menu_toggle, enableCrateMenu);
@@ -153,13 +176,36 @@ public class MigrationService {
         config.setProperty(Config.disabled_worlds, disabledWorlds);
 
         config.setProperty(Config.customizer_toggle, !customizer.isEmpty());
-        config.setProperty(Config.customizer_item_list, customizer);
+        config.setProperty(Config.customizer_item_list, convert(customizer, false));
+
+        if (inventoryName != null) crateMainMenu.setProperty(CrateMainMenu.crate_menu_title, convert(inventoryName));
+        crateMainMenu.setProperty(CrateMainMenu.crate_menu_toggle, enableCrateMenu);
+        crateMainMenu.setProperty(CrateMainMenu.crate_menu_size, inventorySize);
+
+        crateMainMenu.setProperty(CrateMainMenu.crate_menu_filler_toggle, fillerToggle);
+        if (fillerItem != null) crateMainMenu.setProperty(CrateMainMenu.crate_menu_filler_item, fillerItem);
+        if (fillerName != null) crateMainMenu.setProperty(CrateMainMenu.crate_menu_filler_name, convert(fillerName));
+        crateMainMenu.setProperty(CrateMainMenu.crate_menu_filler_lore, convert(fillerLore, false));
+
+        if (previewButtonMenuItem != null) cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_menu_button_material, previewButtonMenuItem);
+        if (previewButtonMenuName!= null) cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_menu_button_name, convert(previewButtonMenuName));
+
+        cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_menu_button_lore, convert(previewButtonMenuLore, false));
+
+        if (previewButtonNextItem != null) cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_next_button_material, previewButtonNextItem);
+        if (previewButtonNextName != null) cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_next_button_name, convert(previewButtonNextName));
+
+        cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_next_button_lore, convert(previewButtonNextLore, false));
+
+        if (previewButtonBackItem != null) cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_back_button_material, previewButtonBackItem);
+        if (previewButtonBackName != null) cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_back_button_name, convert(previewButtonBackName));
+
+        cratePreviewMenu.setProperty(CratePreviewMenu.crate_preview_back_button_lore, convert(previewButtonBackLore, false));
 
         // Save new config.
         config.save();
-
-        // Delete old file.
-        backupFile.delete();
+        crateMainMenu.save();
+        cratePreviewMenu.save();
     }
 
     private void copyMessages() {
@@ -168,8 +214,12 @@ public class MigrationService {
         // If the input does not exist, We don't need to do anything else.
         if (!input.exists()) return;
 
+        // Rename config.yml to this.
+        File backupFile = new File(this.plugin.getDataFolder(), "Messages-Backup.yml");
+        input.renameTo(backupFile);
+
         // Load configuration of input.
-        YamlConfiguration file = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(input)).join();
+        YamlConfiguration file = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(backupFile)).join();
 
         String noTeleporting = convert("{prefix}" + file.getString("Messages.No-Teleporting"));
         String noCommandsWhileInCrate = convert("{prefix}" + file.getString("Messages.No-Commands-While-In-Crate"));
@@ -218,11 +268,7 @@ public class MigrationService {
         String transferredKeys = convert("{prefix}" + file.getString("Messages.Transfer-Keys.Transferred-Keys"));
         String receivedTransferredKeys = convert("{prefix}" + file.getString("Messages.Transfer-Keys.Received-Transferred-Keys"));
 
-        ArrayList<String> createdCratelist = new ArrayList<>();
-
-        List<String> createdPhysicalCrate = file.getStringList("Messages.Created-Physical-Crate");
-
-        createdPhysicalCrate.forEach(line -> createdCratelist.add(convert("{prefix}" + line)));
+        List<String> createdPhysicalCrate = convert(file.getStringList("Messages.Created-Physical-Crate"), true);
 
         String removedPhysicalCrate = convert("{prefix}" + file.getString("Messages.Removed-Physical-Crate"));
 
@@ -232,13 +278,12 @@ public class MigrationService {
         String keysOtherNoVirtualKeys = convert("{prefix}" + file.getString("Messages.Keys.Other-Player.No-Virtual-Keys"));
         List<String> keysOtherNoVirtualKeysHeader = file.getStringList("Messages.Keys.Other-Player.No-Virtual-Keys.Header");
 
+        //noinspection DataFlowIssue
         String perCrate = convert(file.getString("Messages.Keys.Per-Crate"));
 
         List<String> help = file.getStringList("Messages.Help");
 
-        ArrayList<String> adminHelp = new ArrayList<>();
-
-        file.getStringList("Messages.Admin-Help").forEach(line -> adminHelp.add(convert(line)));
+        List<String> adminHelp = convert(file.getStringList("Messages.Admin-Help"), false);
 
         // Check if directory exists and create it if not.
         File localeDir = new File(this.plugin.getDataFolder(), "locale");
@@ -297,7 +342,7 @@ public class MigrationService {
         messages.setProperty(Messages.command_transfer_not_enough_keys, notEnoughKeys);
         messages.setProperty(Messages.command_transfer_keys_received, receivedTransferredKeys);
         messages.setProperty(Messages.command_transfer_keys, transferredKeys);
-        messages.setProperty(Messages.crates_physical_crate_created, createdCratelist);
+        messages.setProperty(Messages.crates_physical_crate_created, createdPhysicalCrate);
 
         messages.setProperty(Messages.crates_physical_crate_removed, removedPhysicalCrate);
 
@@ -316,9 +361,21 @@ public class MigrationService {
 
         // Save the file.
         messages.save();
+    }
 
-        // Delete the Messages.yml
-        input.delete();
+    private List<String> convert(List<String> list, boolean hasPrefix) {
+        List<String> newList = new ArrayList<>();
+
+        list.forEach(line -> {
+            if (hasPrefix) {
+                newList.add(convert("{prefix}" + line));
+                return;
+            }
+            
+            newList.add(convert(line));
+        });
+
+        return newList;
     }
 
     private String convert(String message) {
@@ -331,12 +388,19 @@ public class MigrationService {
                 .replaceAll("%number%", "{number}")
                 .replaceAll("%amount%", "{amount}")
                 .replaceAll("%usage%", "{usage}")
+                .replaceAll("%cratetype%", "{cratetype}")
+                .replaceAll("%slot%", "{slot}")
+                .replaceAll("%reward%", "{reward}")
+                .replaceAll("%random%", "{random}")
                 .replaceAll("%prize%", "{prize}")
                 .replaceAll("%key-amount%", "{key-amount}")
                 .replaceAll("%prefix%", "")
                 .replaceAll("%Prefix%", "")
                 .replaceAll("%id%", "{id}")
                 .replaceAll("%keys%", "{keys}")
+                .replaceAll("Slot:", "slot:")
+                .replaceAll("Item:", "item:")
+                .replaceAll("Name:", "name:")
                 .replaceAll("https://github.com/Crazy-Crew/CrazyCrates/wiki/Commands-and-Permissions", "https://docs.crazycrew.us/crazycrates/info/commands/permissions");
     }
 }
