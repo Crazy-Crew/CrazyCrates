@@ -86,6 +86,13 @@ val other = if (isSnapshot) "Beta" else "Release"
 val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.version}.jar")
 
 val description = """
+# Notice: This is considered a major update and is currently in beta, You should only use this build if you are fine with the following:    
+ * A) You will have bugs.
+ * B) None of your files can be migrated. You should only use this on a **fresh server**. Do not update if you already have a live server.
+ * C) If you do use it on a live fresh server, I am not responsible for what happens. Take backups
+
+# If you are fine with all that, You can download but please read the changelogs, Everything in this version and any version labeled beta after is subject to change a lot.
+    
 ## Changes:
  * N/A
 
