@@ -31,6 +31,7 @@ public class CrazyCrates extends JavaPlugin {
         return this.crazyHandler.getConfigManager();
     }
 
+    // Checks if we should have verbose logging.
     public boolean isLogging() {
         return this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.verbose_logging);
     }
