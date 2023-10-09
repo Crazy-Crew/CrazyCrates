@@ -10,9 +10,8 @@ import us.crazycrew.crazycrates.api.platforms.Platform;
 import us.crazycrew.crazycrates.common.CrazyCratesPlugin;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
-import us.crazycrew.crazycrates.paper.api.MetricsHandler;
 import us.crazycrew.crazycrates.paper.api.plugin.migration.MigrationService;
-import us.crazycrew.crazycrates.paper.misc.Methods;
+import us.crazycrew.crazycrates.paper.misc.FileManager;
 
 public class CrazyHandler extends CrazyCratesPlugin {
 
@@ -25,8 +24,7 @@ public class CrazyHandler extends CrazyCratesPlugin {
     }
 
     private BukkitPlugin bukkitPlugin;
-    private MetricsHandler metrics;
-    private Methods methods;
+    private FileManager fileManager;
 
     public void install() {
         // Enable cluster bukkit api
@@ -42,12 +40,24 @@ public class CrazyHandler extends CrazyCratesPlugin {
 
         LegacyLogger.setName(getConfigManager().getPluginConfig().getProperty(PluginConfig.console_prefix));
 
-        boolean metrics = this.plugin.getConfigManager().getPluginConfig().getProperty(PluginConfig.toggle_metrics);
-
-        this.methods = new Methods(this.plugin);
-
-        this.metrics = new MetricsHandler(this.plugin);
-        if (metrics) this.metrics.start();
+        this.fileManager = new FileManager(this.plugin);
+        this.fileManager
+                .addStaticFile("data.yml")
+                .addStaticFile("events.log")
+                .addStaticFile("locations.yml")
+                .addDynamicFile("crates", "CrateExample.yml")
+                .addDynamicFile("crates", "QuadCrateExample.yml")
+                .addDynamicFile("crates", "QuickCrateExample.yml")
+                .addDynamicFile("crates", "CosmicCrateExample.yml")
+                .addDynamicFile("schematics", "classic.nbt")
+                .addDynamicFile("schematics", "nether.nbt")
+                .addDynamicFile("schematics", "outdoors.nbt")
+                .addDynamicFile("schematics", "sea.nbt")
+                .addDynamicFile("schematics", "soul.nbt")
+                .addDynamicFile("schematics", "wooden.nbt")
+                .addFolder("crates")
+                .addFolder("schematics")
+                .create();
     }
 
     public void uninstall() {
@@ -85,12 +95,11 @@ public class CrazyHandler extends CrazyCratesPlugin {
         return null;
     }
 
+    /**
+     * Internal methods.
+     */
     @NotNull
-    public MetricsHandler getMetrics() {
-        return this.metrics;
-    }
-
-    public Methods getMethods() {
-        return this.methods;
+    public FileManager getFileManager() {
+        return this.fileManager;
     }
 }
