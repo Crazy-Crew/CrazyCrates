@@ -19,100 +19,109 @@ public class CrateConfig extends YamlConfiguration {
         load(this.file);
     }
 
+    public boolean isEnabled() {
+        return getBoolean("crate.enabled", true);
+    }
+
     public String getCrateType() {
-        return getString("Crate.CrateType", "CSGO");
+        return getString("crate.type", "CSGO");
     }
 
     public String getCrateName() {
-        return getString("Crate.CrateName", "");
-    }
-
-    public String getPreviewName() {
-        return getString("Crate.Preview-Name", "");
+        return getString("crate.name", "");
     }
 
     public int getStartingKeys() {
-        return getInt("Crate.StartingKeys", 0);
+        return getInt("crate.starting-keys", 0);
     }
 
     public int getRequiredKeys() {
-        return getInt("Crate.RequiredKeys", 0);
+        return getInt("crate.required-keys", 0);
     }
 
     public int getMaxMassOpen() {
-        return getInt("Crate.Max-Mass-Open", 10);
+        return getInt("crate.max-mass-open", 10);
     }
 
     public boolean isCrateInMenu() {
-        return getBoolean("Crate.InGUI", true);
+        return getBoolean("crate.gui.toggle", true);
     }
 
     public int getCrateSlot() {
-        return getInt("Crate.Slot", 1);
-    }
-
-    public boolean isOpeningBroadcast() {
-        return getBoolean("Crate.OpeningBroadCast", false);
-    }
-
-    public String getOpeningBroadcast() {
-        return getString("Crate.BroadCast", "");
-    }
-
-    public List<String> getPrizeMessages() {
-        List<String> message = getStringList("Crate.Prize-Message");
-
-        if (message.isEmpty()) return Collections.emptyList();
-
-        return message;
+        return getInt("crate.gui.slot", 1);
     }
 
     public String getCrateItem() {
-        return getString("Crate.Item", "CHEST");
+        return getString("crate.gui.item", "CHEST");
     }
 
     public boolean isCrateItemGlowing() {
-        return getBoolean("Crate.Glowing");
+        return getBoolean("crate.gui.glowing");
     }
 
     public String getCrateItemName() {
-        return getString("Crate.Name", "");
+        return getString("crate.gui.name", "");
     }
 
     public List<String> getCrateItemLore() {
-        List<String> message = getStringList("Crate.Lore");
+        List<String> message = getStringList("crate.gui.lore");
 
         if (message.isEmpty()) return Collections.emptyList();
 
         return message;
     }
 
+    public boolean isOpeningBroadcast() {
+        return getBoolean("crate.broadcast.toggle", false);
+    }
+
+    public String getOpeningBroadcast() {
+        return getString("crate.broadcast.message", "");
+    }
+
+    public boolean isPrizeMessageEnabled() {
+        return getBoolean("crate.prize-message.toggle", false);
+    }
+
+    public List<String> getPrizeMessages() {
+        List<String> message = getStringList("crate.prize-message.message");
+
+        if (message.isEmpty()) return Collections.emptyList();
+
+        return message;
+    }
+
+
     public boolean isPreviewEnabled() {
-        return getBoolean("Crate.Preview.Toggle", true);
+        return getBoolean("crate.preview.toggle", true);
+    }
+
+    public String getPreviewName() {
+        return getString("crate.preview.name", "");
     }
 
     public int getPreviewRows() {
-        return getInt("Crate.ChestLines", 6);
+        return getInt("crate.preview.rows", 6);
     }
 
     public boolean isPreviewGlassEnabled() {
-        return getBoolean("Crate.Preview.Glass.Toggle", true);
+        return getBoolean("crate.preview.glass.toggle", true);
     }
 
     public String getPreviewGlassName() {
-        return getString("Crate.Preview.Glass.Name", "");
+        return getString("crate.preview.glass.name", "");
     }
 
     public String getPreviewGlassType() {
-        return getString("Crate.Preview.Glass.Item", "TRIPWIRE_HOOK");
+        return getString("crate.preview.glass.item", "GRAY_STAINED_GLASS_PANE");
     }
 
     public String getPhysicalKeyName() {
-        return getString("Crate.PhysicalKey.Name", "");
+        return getString("crate.physical-key.name", "");
     }
 
     public List<String> getPhysicalKeyLore() {
-        List<String> message = getStringList("Crate.PhysicalKey.Lore");
+        List<String> message = getStringList("crate.physical-key.lore");
 
         if (message.isEmpty()) return Collections.emptyList();
 
@@ -120,23 +129,23 @@ public class CrateConfig extends YamlConfiguration {
     }
 
     public String getPhysicalKeyItem() {
-        return getString("Crate.PhysicalKey.Item");
+        return getString("crate.physical-key.item");
     }
 
     public boolean isPhysicalKeyGlowing() {
-        return getBoolean("Crate.PhysicalKey.Glowing", false);
+        return getBoolean("crate.physical-key.glowing", false);
     }
 
     public boolean isHologramEnabled() {
-        return getBoolean("Crate.Hologram.Toggle", false);
+        return getBoolean("crate.hologram.toggle", false);
     }
 
     public double getHologramHeight() {
-        return getDouble("Crate.Hologram.Height", 1.5);
+        return getDouble("crate.hologram.height", 1.5);
     }
 
     public List<String> getHologramMessage() {
-        List<String> message = getStringList("Crate.Hologram.Message");
+        List<String> message = getStringList("crate.hologram.message");
 
         if (message.isEmpty()) return Collections.emptyList();
 

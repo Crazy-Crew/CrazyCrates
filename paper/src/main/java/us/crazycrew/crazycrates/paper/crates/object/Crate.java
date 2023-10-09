@@ -8,10 +8,10 @@ public class Crate {
 
     private final CrazyCrates plugin;
 
+    private final boolean isEnabled;
+
     private final String crateType;
     private final String crateName;
-
-    private final String previewName;
 
     private final int startingKeys;
     private final int requiredKeys;
@@ -24,6 +24,7 @@ public class Crate {
     private final boolean isOpeningBroadcast;
     private final String openingBroadcast;
 
+    private final boolean isPrizeMessageEnabled;
     private final List<String> prizeMessages;
 
     private final String crateItemType;
@@ -32,6 +33,7 @@ public class Crate {
     private final List<String> crateItemLore;
 
     private final boolean isPreviewEnabled;
+    private final String previewName;
     private final int previewRows;
     private final boolean isPreviewGlassEnabled;
     private final String previewGlassName;
@@ -49,10 +51,10 @@ public class Crate {
     public Crate(CrazyCrates plugin, CrateConfig crateConfig) {
         this.plugin = plugin;
 
+        this.isEnabled = crateConfig.isEnabled();
+
         this.crateType = crateConfig.getCrateType();
         this.crateName = crateConfig.getCrateName();
-
-        this.previewName = crateConfig.getPreviewName();
 
         this.startingKeys = crateConfig.getStartingKeys();
         this.requiredKeys = crateConfig.getRequiredKeys();
@@ -64,6 +66,7 @@ public class Crate {
         this.isOpeningBroadcast = crateConfig.isOpeningBroadcast();
         this.openingBroadcast = crateConfig.getOpeningBroadcast();
 
+        this.isPrizeMessageEnabled = crateConfig.isPrizeMessageEnabled();
         this.prizeMessages = crateConfig.getPrizeMessages();
 
         this.crateItemType = crateConfig.getCrateItem();
@@ -72,6 +75,7 @@ public class Crate {
         this.crateItemLore = crateConfig.getCrateItemLore();
 
         this.isPreviewEnabled = crateConfig.isPreviewEnabled();
+        this.previewName = crateConfig.getPreviewName();
         this.previewRows = crateConfig.getPreviewRows();
         this.isPreviewGlassEnabled = crateConfig.isPreviewGlassEnabled();
         this.previewGlassName = crateConfig.getPreviewGlassName();
@@ -87,16 +91,16 @@ public class Crate {
         this.hologramMessages = crateConfig.getHologramMessage();
     }
 
+    public boolean isEnabled() {
+        return this.isEnabled;
+    }
+
     public String getCrateType() {
         return this.crateType;
     }
 
     public String getCrateName() {
         return this.crateName;
-    }
-
-    public String getPreviewName() {
-        return this.previewName;
     }
 
     public int getStartingKeys() {
@@ -111,24 +115,15 @@ public class Crate {
         return this.maxMassOpen;
     }
 
+    /**
+     * The crate display section.
+     */
     public boolean isCrateInMenu() {
         return this.isCrateInMenu;
     }
 
     public int getCrateMenuSlot() {
         return this.crateMenuSlot;
-    }
-
-    public boolean isOpeningBroadcast() {
-        return this.isOpeningBroadcast;
-    }
-
-    public String getOpeningBroadcast() {
-        return this.openingBroadcast;
-    }
-
-    public List<String> getPrizeMessages() {
-        return this.prizeMessages;
     }
 
     public String getCrateItemType() {
@@ -147,8 +142,37 @@ public class Crate {
         return this.crateItemLore;
     }
 
+    /**
+     * The broadcast section.
+     */
+    public boolean isOpeningBroadcast() {
+        return this.isOpeningBroadcast;
+    }
+
+    public String getOpeningBroadcast() {
+        return this.openingBroadcast;
+    }
+
+    /**
+     * The default message section.
+     */
+    public boolean isPrizeMessageEnabled() {
+        return this.isPrizeMessageEnabled;
+    }
+
+    public List<String> getPrizeMessages() {
+        return this.prizeMessages;
+    }
+
+    /**
+     * Preview section.
+     */
     public boolean isPreviewEnabled() {
         return this.isPreviewEnabled;
+    }
+
+    public String getPreviewName() {
+        return this.previewName;
     }
 
     public int getPreviewRows() {
@@ -167,6 +191,9 @@ public class Crate {
         return this.previewGlassType;
     }
 
+    /**
+     * The key section.
+     */
     public String getPhysicalKeyName() {
         return this.physicalKeyName;
     }
@@ -183,6 +210,9 @@ public class Crate {
         return this.isPhysicalKeyGlowing;
     }
 
+    /**
+     * The hologram section.
+     */
     public boolean isHologramEnabled() {
         return this.isHologramEnabled;
     }
