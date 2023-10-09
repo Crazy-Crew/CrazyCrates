@@ -4,7 +4,7 @@ plugins {
 
 defaultTasks("build")
 
-rootProject.group = "com.badbones69.crazycrates"
+rootProject.group = "us.crazycrew.crazycrates"
 rootProject.description = "Add unlimited crates to your server with 10 different crate types to choose from!"
 rootProject.version = "2.0"
 
@@ -19,7 +19,7 @@ tasks {
             doLast {
                 if (!jarsDir.exists()) jarsDir.mkdirs()
 
-                if (project.name == "core") return@doLast
+                if (project.name == "core" || project.name == "old") return@doLast
 
                 val file = file("${project.layout.buildDirectory.get()}/libs/${rootProject.name}-${rootProject.version}.jar")
 

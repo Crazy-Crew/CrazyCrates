@@ -12,6 +12,7 @@ rootProject.name = "CrazyCrates"
 listOf(
     "api",
     "paper",
+    "old",
     "common",
 ).forEach {
     include(it)
