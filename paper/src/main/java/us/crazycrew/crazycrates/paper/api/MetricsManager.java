@@ -4,11 +4,11 @@ import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
 import org.bstats.bukkit.Metrics;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 
-public class MetricsHandler {
+public class MetricsManager {
 
     private final CrazyCrates plugin;
 
-    public MetricsHandler(CrazyCrates plugin) {
+    public MetricsManager(CrazyCrates plugin) {
         this.plugin = plugin;
     }
 

@@ -1,7 +1,7 @@
-package us.crazycrew.crazycrates.paper.api.plugin.crates;
+package us.crazycrew.crazycrates.paper.crates.menus;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.api.plugin.crates.types.CrateMainMenu;
+import us.crazycrew.crazycrates.paper.crates.menus.types.CrateMainMenu;
 
 public class GuiManager {
 

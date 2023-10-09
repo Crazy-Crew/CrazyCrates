@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.api.plugin.crates.types;
+package us.crazycrew.crazycrates.paper.crates.menus.types;
 
 import dev.triumphteam.gui.guis.Gui;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
