@@ -58,11 +58,18 @@ public class CrazyHandler extends CrazyCratesPlugin {
                 .addFolder("crates")
                 .addFolder("schematics")
                 .create();
+
+        // Load crates.
+        this.crateManager = new CrateManager(this.plugin);
+        this.crateManager.load();
     }
 
     public void uninstall() {
         // Disable crazycrates api.
         super.disable();
+
+        // Unload crates.
+        this.crateManager.unload();
 
         // Disable cluster bukkit api.
         this.bukkitPlugin.disable();
