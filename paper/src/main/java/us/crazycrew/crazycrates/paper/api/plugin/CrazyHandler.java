@@ -10,7 +10,6 @@ import us.crazycrew.crazycrates.api.platforms.Platform;
 import us.crazycrew.crazycrates.common.CrazyCratesPlugin;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
-import us.crazycrew.crazycrates.paper.api.plugin.migration.MigrationService;
 import us.crazycrew.crazycrates.paper.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.misc.FileManager;
 
@@ -33,10 +32,6 @@ public class CrazyHandler extends CrazyCratesPlugin {
         this.bukkitPlugin = new BukkitPlugin(this.plugin);
         this.bukkitPlugin.enable();
 
-        // Run migration checks.
-        MigrationService service = new MigrationService(this.plugin);
-        service.migrate();
-
         // Enable crazycrates api.
         super.enable();
 
@@ -45,13 +40,14 @@ public class CrazyHandler extends CrazyCratesPlugin {
 
         // Load all the necessary files.
         this.fileManager = new FileManager(this.plugin);
-        this.fileManager.addStaticFile("data.yml")
-                .addStaticFile("events.log")
+        this.fileManager
                 .addStaticFile("locations.yml")
+                .addStaticFile("users.yml")
+                .addStaticFile("events.log")
                 .addDynamicFile("crates", "CrateExample.yml")
-                .addDynamicFile("crates", "QuadCrateExample.yml")
-                .addDynamicFile("crates", "QuickCrateExample.yml")
-                .addDynamicFile("crates", "CosmicCrateExample.yml")
+                //.addDynamicFile("crates", "QuadCrateExample.yml")
+                //.addDynamicFile("crates", "QuickCrateExample.yml")
+                //.addDynamicFile("crates", "CosmicCrateExample.yml")
                 .addDynamicFile("schematics", "classic.nbt")
                 .addDynamicFile("schematics", "nether.nbt")
                 .addDynamicFile("schematics", "outdoors.nbt")
