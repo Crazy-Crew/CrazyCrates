@@ -11,6 +11,7 @@ import us.crazycrew.crazycrates.common.CrazyCratesPlugin;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.paper.api.plugin.migration.MigrationService;
+import us.crazycrew.crazycrates.paper.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.misc.FileManager;
 
 public class CrazyHandler extends CrazyCratesPlugin {
@@ -25,24 +26,26 @@ public class CrazyHandler extends CrazyCratesPlugin {
 
     private BukkitPlugin bukkitPlugin;
     private FileManager fileManager;
+    private CrateManager crateManager;
 
     public void install() {
-        // Enable cluster bukkit api
+        // Enable cluster bukkit api.
         this.bukkitPlugin = new BukkitPlugin(this.plugin);
         this.bukkitPlugin.enable();
 
-        // Run migration checks
+        // Run migration checks.
         MigrationService service = new MigrationService(this.plugin);
         service.migrate();
 
-        // Enable crazycrates api
+        // Enable crazycrates api.
         super.enable();
 
+        // Set logger prefix.
         LegacyLogger.setName(getConfigManager().getPluginConfig().getProperty(PluginConfig.console_prefix));
 
+        // Load all the necessary files.
         this.fileManager = new FileManager(this.plugin);
-        this.fileManager
-                .addStaticFile("data.yml")
+        this.fileManager.addStaticFile("data.yml")
                 .addStaticFile("events.log")
                 .addStaticFile("locations.yml")
                 .addDynamicFile("crates", "CrateExample.yml")
