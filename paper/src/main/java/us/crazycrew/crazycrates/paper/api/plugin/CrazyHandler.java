@@ -109,4 +109,9 @@ public class CrazyHandler extends CrazyCratesPlugin {
     public FileManager getFileManager() {
         return this.fileManager;
     }
+
+    @NotNull
+    public CrateManager getCrateManager() {
+        return this.crateManager;
+    }
 }
