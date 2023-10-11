@@ -19,8 +19,6 @@ tasks {
             doLast {
                 if (!jarsDir.exists()) jarsDir.mkdirs()
 
-                if (project.name == "core" || project.name == "old") return@doLast
-
                 val file = file("${project.layout.buildDirectory.get()}/libs/${rootProject.name}-${rootProject.version}.jar")
 
                 copy {

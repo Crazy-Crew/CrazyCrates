@@ -1,0 +1,30 @@
+name: '${name}'
+version: '${version}'
+main: '${group}.${name}'
+description: '${description}'
+api-version: '${apiVersion}'
+
+dependencies:
+  server:
+    Multiverse-Core:
+      load: AFTER
+      required: false
+      join-classpath: false
+    CMI:
+      load: BEFORE
+      required: false
+    DecentHolograms:
+      load: BEFORE
+      required: false
+    HolographicDisplays:
+      load: BEFORE
+      required: false
+    PlaceholderAPI:
+      load: BEFORE
+      required: false
+    ItemsAdder:
+      load: BEFORE
+      required: false
+    Oraxen:
+      load: BEFORE
+      required: false

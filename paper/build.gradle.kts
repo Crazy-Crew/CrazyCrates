@@ -73,7 +73,7 @@ tasks {
             "website" to rootProject.properties["website"],
         )
 
-        filesMatching("plugin.yml") {
+        filesMatching("paper-plugin.yml") {
             expand(props)
         }
     }
