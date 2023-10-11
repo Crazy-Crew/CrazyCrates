@@ -29,7 +29,7 @@ public class CrazyHandler extends CrazyCratesPlugin {
 
     public void install() {
         // Enable cluster bukkit api.
-        this.bukkitPlugin = new BukkitPlugin(this.plugin);
+        this.bukkitPlugin = new BukkitPlugin(this.plugin, true);
         this.bukkitPlugin.enable();
 
         // Enable crazycrates api.

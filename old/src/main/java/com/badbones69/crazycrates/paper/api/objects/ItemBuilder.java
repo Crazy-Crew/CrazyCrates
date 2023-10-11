@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.api.plugin.builder;
+package com.badbones69.crazycrates.paper.api.objects;
 
 import com.ryderbelserion.cluster.bukkit.items.utils.DyeUtils;
 import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
@@ -18,7 +18,14 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.*;
+import org.bukkit.inventory.meta.ArmorMeta;
+import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.MapMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
@@ -27,7 +34,6 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.api.enums.PluginSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -375,7 +381,7 @@ public class ItemBuilder {
 
         final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-        if (item == null) {
+        /*if (item == null) {
             if (PluginSupport.items_adder.isPluginEnabled(plugin)) {
                 CustomStack customStack = CustomStack.getInstance("ia:" + this.customMaterial);
 
@@ -385,7 +391,7 @@ public class ItemBuilder {
 
                 if (oraxenItem != null) item = oraxenItem.build();
             }
-        }
+        }*/
 
         if (item == null) item = new ItemStack(this.material);
 
@@ -854,9 +860,8 @@ public class ItemBuilder {
             try {
                 ItemFlag itemFlag = ItemFlag.valueOf(flagString.toUpperCase());
 
-                if (itemFlag != null) addItemFlag(itemFlag);
-            } catch (Exception ignored) {
-            }
+                addItemFlag(itemFlag);
+            } catch (Exception ignored) {}
         }
 
         return this;
@@ -971,8 +976,8 @@ public class ItemBuilder {
 
             if (nbt.hasTag("Unbreakable")) itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
 
-            if (itemMeta instanceof org.bukkit.inventory.meta.Damageable)
-                itemBuilder.setDamage(((org.bukkit.inventory.meta.Damageable) itemMeta).getDamage());
+            if (itemMeta instanceof Damageable)
+                itemBuilder.setDamage(((Damageable) itemMeta).getDamage());
         }
 
         return itemBuilder;

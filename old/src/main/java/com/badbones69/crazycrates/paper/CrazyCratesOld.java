@@ -15,8 +15,6 @@ import com.badbones69.crazycrates.paper.cratetypes.Wonder;
 import com.badbones69.crazycrates.paper.listeners.*;
 import com.badbones69.crazycrates.paper.listeners.gui.CrateMenuListener;
 import com.badbones69.crazycrates.paper.listeners.gui.CratePreviewListener;
-import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISupport;
-import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.core.message.MessageKey;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
