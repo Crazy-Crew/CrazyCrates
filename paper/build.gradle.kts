@@ -31,7 +31,9 @@ dependencies {
 
     implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-SNAPSHOT")
 
-    implementation("dev.triumphteam", "triumph-gui", "3.1.2")
+    implementation("dev.triumphteam", "triumph-gui", "3.1.2") {
+        exclude("net.kyori", "*")
+    }
 
     compileOnly(fileTree("libs").include("*.jar"))
 
@@ -41,9 +43,7 @@ dependencies {
 
     compileOnly("com.github.LoneDev6", "API-ItemsAdder", "3.5.0b")
 
-    compileOnly("com.github.oraxen", "oraxen", "1.160.0") {
-        exclude("*", "*")
-    }
+    compileOnly("com.github.oraxen", "oraxen", "1.160.0")
 
     compileOnly("me.clip", "placeholderapi", "2.11.4")
 }
@@ -51,10 +51,12 @@ dependencies {
 tasks {
     shadowJar {
         listOf(
+            "ch.jalu",
             "de.tr7zw",
             "org.bstats",
+            "org.jetbrains",
             "dev.triumphteam.gui",
-            "dev.triumphteam.cmd"
+            "dev.triumphteam.cmd",
         ).forEach {
             relocate(it, "libs.$it")
         }
