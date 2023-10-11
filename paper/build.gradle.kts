@@ -25,8 +25,6 @@ dependencies {
 
     implementation("org.bstats", "bstats-bukkit", "3.0.2")
 
-    implementation("de.tr7zw", "item-nbt-api", "2.12.0")
-
     implementation(libs.cluster.bukkit.api) {
         exclude("com.ryderbelserion.cluster", "cluster-api")
     }
