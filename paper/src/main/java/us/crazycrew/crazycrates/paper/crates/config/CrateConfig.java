@@ -1,11 +1,20 @@
 package us.crazycrew.crazycrates.paper.crates.config;
 
+import com.ryderbelserion.cluster.bukkit.items.ItemBuilder;
+import com.ryderbelserion.cluster.bukkit.items.ParentBuilder;
+import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
+import com.ryderbelserion.cluster.bukkit.utils.LegacyUtils;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import us.crazycrew.crazycrates.paper.crates.object.Prize;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class CrateConfig extends YamlConfiguration {
 
@@ -154,5 +163,75 @@ public class CrateConfig extends YamlConfiguration {
         if (message.isEmpty()) return Collections.emptyList();
 
         return message;
+    }
+
+    public List<Prize> getPrizes() {
+        List<Prize> prizes = new ArrayList<>();
+
+        ConfigurationSection section = getConfigurationSection("crate.prizes");
+
+        if (section == null) return prizes;
+
+        Set<String> keys = section.getKeys(false);
+
+        for (String key : keys) {
+            String path = "crate.prizes." + key + ".";
+
+            // These values are not optional when building the display item.
+            String displayItem = getString(path + "display-item");
+
+            Material material;
+
+            if (displayItem != null && !displayItem.isBlank()) {
+                material = Material.matchMaterial(displayItem);
+            } else {
+                LegacyLogger.warn("An issue with " + key + "'s material has been found.");
+                LegacyLogger.warn(displayItem + " is not a valid material.");
+
+                material = Material.STONE;
+            }
+
+            String displayName = getString(path + "display-name", material != null ? material.name() : LegacyUtils.color("&cAN error has occurred with " + key + "'s material."));
+
+            int displayAmount = getInt(path + "display-amount", 1);
+
+            List<String> displayLore = getStringList(path + "display-lore").isEmpty() ? getStringList(path + "display-lore") : Collections.emptyList();
+
+            // These values are considered optional and can be removed from the configuration. We will add contain checks for these.
+            String displayPlayer = getString(path + "player");
+
+            // These values are not optional for how the crate should function.
+            int maxRange = getInt(path + "max-range");
+            int chance = getInt(path + "chance");
+
+            // These values aren't optional, but I plan to only add a warning if both `items` and `commands` are empty.
+            List<String> items = getStringList(path + "items");
+            List<String> commands = getStringList(path + "commands");
+
+            // Messages is completely optional, We will add a contains check to this and an isEmpty check just in case.
+            List<String> messages = getStringList(path + "messages");
+
+            // This section is optional, We will add a contains check and an isEmpty check just in case.
+            List<String> blacklistedPermissions = getStringList(path + "blacklisted-permissions");
+
+            boolean isAlternativePrizeEnabled = getBoolean(path + "alternative-prize.toggle");
+
+            // These values aren't optional, but I plan to only add a warning if both `items` and `commands` are empty.
+            List<String> alternativeItems = getStringList(path + "alternative-prize.items");
+            List<String> alternativeCommands = getStringList(path + "alternative-prize.commands");
+
+            // Messages is completely optional, We will add a contains check to this and an isEmpty check just in case.
+            List<String> alternativeMessages = getStringList(path + "alternative-prize.messages");
+
+            ItemBuilder builder = ParentBuilder.of().setLegacy(true).setMaterial(material).setDisplayName(displayName).setAmount(displayAmount).setDisplayLore(displayLore);
+
+            Prize prize = new Prize(builder.build());
+
+            prizes.add(prize);
+
+            return prizes;
+        }
+
+        return prizes;
     }
 }
