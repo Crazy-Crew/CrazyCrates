@@ -4,13 +4,13 @@ import org.bukkit.inventory.ItemStack;
 
 public class Prize {
 
-    private final ItemStack display;
+    private final ItemStack displayItem;
 
-    public Prize(ItemStack display) {
-        this.display = display;
+    public Prize(ItemStack displayItem) {
+        this.displayItem = displayItem;
     }
 
-    public ItemStack getDisplay() {
-        return this.display;
+    public ItemStack getDisplayItem() {
+        return this.displayItem;
     }
 }

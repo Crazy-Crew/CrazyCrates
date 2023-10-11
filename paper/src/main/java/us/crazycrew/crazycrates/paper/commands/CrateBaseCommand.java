@@ -3,7 +3,7 @@ package us.crazycrew.crazycrates.paper.commands;
 import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.Command;
 import dev.triumphteam.cmd.core.annotation.Default;
-import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.crates.CrateManager;
 
@@ -17,7 +17,9 @@ public class CrateBaseCommand extends BaseCommand {
     }
 
     @Default
-    public void onCommand(CommandSender sender) {
-        this.crateManager.getCrate("CrateExample").getPrizes();
+    public void onCommand(Player player) {
+        this.crateManager.getCrate("CrateExample").getPrizes().forEach(prize -> {
+            player.getInventory().addItem(prize.getDisplayItem());
+        });
     }
 }
