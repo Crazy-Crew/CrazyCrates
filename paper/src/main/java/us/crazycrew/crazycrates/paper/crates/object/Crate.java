@@ -8,6 +8,8 @@ public class Crate {
 
     private final CrazyCrates plugin;
 
+    private final String fileName;
+
     private final boolean isEnabled;
 
     private final String crateType;
@@ -89,6 +91,8 @@ public class Crate {
         this.isHologramEnabled = crateConfig.isHologramEnabled();
         this.hologramHeight = crateConfig.getHologramHeight();
         this.hologramMessages = crateConfig.getHologramMessage();
+    public String getFileName() {
+        return this.fileName;
     }
 
     public boolean isEnabled() {

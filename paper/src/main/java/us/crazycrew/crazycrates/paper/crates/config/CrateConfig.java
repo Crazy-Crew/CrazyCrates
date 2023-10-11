@@ -23,6 +23,10 @@ public class CrateConfig extends YamlConfiguration {
         return getBoolean("crate.enabled", true);
     }
 
+    public File getFile() {
+        return this.file;
+    }
+
     public String getCrateType() {
         return getString("crate.type", "CSGO");
     }
