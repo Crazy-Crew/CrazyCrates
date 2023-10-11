@@ -50,8 +50,12 @@ public class Crate {
     private final double hologramHeight;
     private final List<String> hologramMessages;
 
+    private final List<Prize> prizes;
+
     public Crate(CrazyCrates plugin, CrateConfig crateConfig) {
         this.plugin = plugin;
+
+        this.fileName = crateConfig.getFile().getName().replace(".yml", "");
 
         this.isEnabled = crateConfig.isEnabled();
 
@@ -91,6 +95,10 @@ public class Crate {
         this.isHologramEnabled = crateConfig.isHologramEnabled();
         this.hologramHeight = crateConfig.getHologramHeight();
         this.hologramMessages = crateConfig.getHologramMessage();
+
+        this.prizes = crateConfig.getPrizes();
+    }
+
     public String getFileName() {
         return this.fileName;
     }
@@ -227,5 +235,9 @@ public class Crate {
 
     public List<String> getHologramMessages() {
         return this.hologramMessages;
+    }
+
+    public List<Prize> getPrizes() {
+        return this.prizes;
     }
 }
