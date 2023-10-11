@@ -67,6 +67,14 @@ public class CrateManager {
         return Collections.unmodifiableSet(this.crates);
     }
 
+    public Crate getCrate(String crateName) {
+        for (Crate crate : getCrates()) {
+            if (crateName.equalsIgnoreCase(crate.getFileName())) return crate;
+        }
+
+        return null;
+    }
+
     public File[] getCratesList() {
         File cratesDirectory = new File(this.plugin.getDataFolder(), "crates");
 
