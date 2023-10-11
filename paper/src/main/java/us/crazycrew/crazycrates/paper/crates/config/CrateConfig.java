@@ -195,7 +195,7 @@ public class CrateConfig extends YamlConfiguration {
 
             int displayAmount = getInt(path + "display-amount", 1);
 
-            List<String> displayLore = getStringList(path + "display-lore").isEmpty() ? getStringList(path + "display-lore") : Collections.emptyList();
+            List<String> displayLore = !getStringList(path + "display-lore").isEmpty() ? getStringList(path + "display-lore") : Collections.emptyList();
 
             // These values are considered optional and can be removed from the configuration. We will add contain checks for these.
             String displayPlayer = getString(path + "player");
@@ -214,7 +214,7 @@ public class CrateConfig extends YamlConfiguration {
             // This section is optional, We will add a contains check and an isEmpty check just in case.
             List<String> blacklistedPermissions = getStringList(path + "blacklisted-permissions");
 
-            boolean isAlternativePrizeEnabled = getBoolean(path + "alternative-prize.toggle");
+            boolean isAlternativePrizeEnabled = getBoolean(path + "alternative-prize.toggle", false);
 
             // These values aren't optional, but I plan to only add a warning if both `items` and `commands` are empty.
             List<String> alternativeItems = getStringList(path + "alternative-prize.items");
@@ -225,11 +225,15 @@ public class CrateConfig extends YamlConfiguration {
 
             ItemBuilder builder = ParentBuilder.of().setLegacy(true).setMaterial(material).setDisplayName(displayName).setAmount(displayAmount).setDisplayLore(displayLore);
 
-            Prize prize = new Prize(builder.build());
+            Prize alternativePrize = null;
+
+            if (contains(path + "alternative-prize")) {
+                alternativePrize = new Prize(alternativeItems, alternativeCommands, alternativeMessages);
+            }
+
+            Prize prize = new Prize(builder.build(), maxRange, chance, items, commands, messages, displayPlayer, blacklistedPermissions, alternativePrize);
 
             prizes.add(prize);
-
-            return prizes;
         }
 
         return prizes;
