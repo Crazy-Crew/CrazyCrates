@@ -47,7 +47,10 @@ public class CrateManager {
                 continue;
             }
 
-            //TODO() Add check for if a crate is disabled. New crate config option.
+            if (!config.isEnabled()) {
+                LegacyLogger.warn(config.getFile().getName() + " is currently disabled. Config Option: " + config.isEnabled());
+                return;
+            }
 
             Crate crate = new Crate(this.plugin, config);
 
