@@ -52,7 +52,6 @@ tasks {
     shadowJar {
         listOf(
             "ch.jalu",
-            "de.tr7zw",
             "org.bstats",
             "org.jetbrains",
             "dev.triumphteam.gui",
