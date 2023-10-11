@@ -48,7 +48,7 @@ public class CrateManager {
             }
 
             if (!config.isEnabled()) {
-                LegacyLogger.warn(config.getFile().getName() + " is currently disabled. Config Option: " + config.isEnabled());
+                if (this.plugin.isLogging()) LegacyLogger.warn(config.getFile().getName() + " is currently disabled. Config Option: " + config.isEnabled());
                 return;
             }
 
