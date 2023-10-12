@@ -19,8 +19,6 @@ public abstract class CrazyCratesPlugin extends AbstractPlugin {
 
         this.configManager = new ConfigManager(getDataFolder());
         this.configManager.load();
-
-        super.apiWasLoadedByOurPlugin();
     }
 
     public void disable() {
