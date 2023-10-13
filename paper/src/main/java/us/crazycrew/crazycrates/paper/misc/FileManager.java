@@ -1,7 +1,6 @@
 package us.crazycrew.crazycrates.paper.misc;
 
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
-import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import java.io.File;
 import java.util.Collections;

@@ -1,6 +1,6 @@
 package us.crazycrew.crazycrates.paper.api.plugin.builder;
 
-import com.ryderbelserion.cluster.bukkit.utils.LegacyUtils;
+import com.ryderbelserion.cluster.api.utils.ColorUtils;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
@@ -19,7 +19,7 @@ public abstract class GuiBuilder implements InventoryHolder {
         this.title = title;
         this.size = size;
 
-        this.inventory = plugin.getServer().createInventory(this, this.size, LegacyUtils.color(this.title));
+        this.inventory = plugin.getServer().createInventory(this, this.size, ColorUtils.parse(this.title));
     }
 
     public abstract GuiBuilder build();
