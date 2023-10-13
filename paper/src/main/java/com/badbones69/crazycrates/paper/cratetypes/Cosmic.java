@@ -296,8 +296,8 @@ public class Cosmic implements Listener {
         }
 
         if (crazyManager.isInOpeningList(player) && e.getView().getTitle().equals(Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"))) {
-
-            if (!glass.containsKey(player) || glass.get(player).size() < 4) {
+            CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
+            if (!glass.containsKey(player) || glass.get(player).size() < manager.getTotalPrizes()) {
                 crazyManager.removePlayerFromOpeningList(player);
                 crazyManager.removePlayerKeyType(player);
             }
