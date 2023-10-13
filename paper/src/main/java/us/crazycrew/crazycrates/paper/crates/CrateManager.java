@@ -1,6 +1,6 @@
 package us.crazycrew.crazycrates.paper.crates;
 
-import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
+import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import org.bukkit.configuration.InvalidConfigurationException;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.crates.config.CrateConfig;
@@ -28,27 +28,27 @@ public class CrateManager {
         if (!cratesDirectory.exists()) return;
 
         if (getCratesList() == null) {
-            LegacyLogger.error("Could not read from crates directory! " + cratesDirectory.getAbsolutePath());
+            FancyLogger.error("Could not read from crates directory! " + cratesDirectory.getAbsolutePath());
             return;
         }
 
         for (File file : getCratesList()) {
-            LegacyLogger.info("Loading crate: " + file.getName());
+            FancyLogger.info("Loading crate: " + file.getName());
 
             CrateConfig config = new CrateConfig(file);
 
             try {
                 config.load();
             } catch (IOException exception) {
-                LegacyLogger.error("Could not load crate file: " + file.getName(), exception);
+                FancyLogger.error("Could not load crate file: " + file.getName(), exception);
                 continue;
             } catch (InvalidConfigurationException exception) {
-                LegacyLogger.error("Crate file has invalid yaml syntax: " + file.getName(), exception);
+                FancyLogger.error("Crate file has invalid yaml syntax: " + file.getName(), exception);
                 continue;
             }
 
             if (!config.isEnabled()) {
-                if (this.plugin.isLogging()) LegacyLogger.warn(config.getFile().getName() + " is currently disabled. Config Option: " + config.isEnabled());
+                if (this.plugin.isLogging()) FancyLogger.warn(config.getFile().getName() + " is currently disabled. Config Option: " + config.isEnabled());
                 return;
             }
 

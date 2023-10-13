@@ -1,7 +1,8 @@
 package us.crazycrew.crazycrates.paper.misc;
 
-import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
-import com.ryderbelserion.cluster.bukkit.utils.LegacyUtils;
+import com.ryderbelserion.cluster.api.adventure.FancyLogger;
+import com.ryderbelserion.cluster.api.utils.ColorUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -42,19 +43,18 @@ public class Methods {
 
             Server server = this.plugin.getServer();
 
-            String message = LegacyUtils.color(value
+            Component message = ColorUtils.parse(value
                     .replaceAll("\\{prefix}", "")
                     .replaceAll("\\{player}", player.getName()));
 
-            //noinspection deprecation
-            server.broadcastMessage(message);
+            server.broadcast(message);
         }
     }
 
     public void sendMessage(CommandSender sender, String message, boolean toggle) {
         if (message == null || message.isBlank() || !toggle) return;
 
-        String newMessage = LegacyUtils.color(message.replaceAll("\\{prefix}", "your-prefix"));
+        Component newMessage = ColorUtils.parse(message.replaceAll("\\{prefix}", "your-prefix"));
 
         if (sender instanceof Player player) {
             player.sendMessage(newMessage);
@@ -133,7 +133,7 @@ public class Methods {
      */
     public void removeItemStack(Player player, ItemStack... items) {
         if (items == null) {
-            LegacyLogger.warn("Items cannot be null.");
+            FancyLogger.warn("Items cannot be null.");
             return;
         }
 

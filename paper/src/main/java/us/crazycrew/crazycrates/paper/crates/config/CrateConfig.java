@@ -1,9 +1,8 @@
 package us.crazycrew.crazycrates.paper.crates.config;
 
+import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.bukkit.items.ItemBuilder;
 import com.ryderbelserion.cluster.bukkit.items.ParentBuilder;
-import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
-import com.ryderbelserion.cluster.bukkit.utils.LegacyUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -185,13 +184,13 @@ public class CrateConfig extends YamlConfiguration {
             if (displayItem != null && !displayItem.isBlank()) {
                 material = Material.matchMaterial(displayItem);
             } else {
-                LegacyLogger.warn("An issue with " + key + "'s material has been found.");
-                LegacyLogger.warn(displayItem + " is not a valid material.");
+                FancyLogger.warn("An issue with " + key + "'s material has been found.");
+                FancyLogger.warn(displayItem + " is not a valid material.");
 
                 material = Material.STONE;
             }
 
-            String displayName = getString(path + "display-name", material != null ? material.name() : LegacyUtils.color("&cAN error has occurred with " + key + "'s material."));
+            String displayName = getString(path + "display-name", material != null ? material.name() : "<red>An error has occurred with " + key + "'s material.");
 
             int displayAmount = getInt(path + "display-amount", 1);
 
@@ -223,7 +222,7 @@ public class CrateConfig extends YamlConfiguration {
             // Messages is completely optional, We will add a contains check to this and an isEmpty check just in case.
             List<String> alternativeMessages = getStringList(path + "alternative-prize.messages");
 
-            ItemBuilder builder = ParentBuilder.of().setLegacy(true).setMaterial(material).setDisplayName(displayName).setAmount(displayAmount).setDisplayLore(displayLore);
+            ItemBuilder builder = ParentBuilder.of().setMaterial(material).setDisplayName(displayName).setAmount(displayAmount).setDisplayLore(displayLore);
 
             Prize alternativePrize = null;
 

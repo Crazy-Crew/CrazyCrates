@@ -2,7 +2,7 @@
 modrinth = "2.8.2"
 hangar = "0.1.0"
 
-cluster = "1.4"
+cluster = "1.5"
 adventure = "4.14.0"
 
 [plugins]

@@ -1,5 +1,6 @@
 package us.crazycrew.crazycrates.paper.misc;
 
+import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import java.io.File;
@@ -26,26 +27,26 @@ public class FileManager {
 
         // If folders is empty, return.
         if (this.folders.isEmpty()) {
-            LegacyLogger.debug("I seem to not have any folders to work with.");
+            FancyLogger.debug("I seem to not have any folders to work with.");
             return;
         }
 
         for (String file : this.staticFiles) {
             File newFile = new File(this.plugin.getDataFolder(), file);
 
-            if (this.plugin.isLogging()) LegacyLogger.info("Loading " + newFile.getName());
+            if (this.plugin.isLogging()) FancyLogger.info("Loading " + newFile.getName());
 
             if (!newFile.exists()) {
                 try {
                     this.plugin.saveResource(file, false);
                 } catch (Exception exception) {
-                    LegacyLogger.error("Failed to load: " + newFile.getName(), exception);
+                    FancyLogger.error("Failed to load: " + newFile.getName(), exception);
 
                     continue;
                 }
             }
 
-            if (this.plugin.isLogging()) LegacyLogger.success("Successfully loaded: " + newFile.getName());
+            if (this.plugin.isLogging()) FancyLogger.success("Successfully loaded: " + newFile.getName());
         }
 
         // Loop through folders hash-set and create folders.
@@ -59,14 +60,14 @@ public class FileManager {
                 if (list != null) {
                     for (File file : list) {
                         if (file.exists()) {
-                            if (this.plugin.isLogging()) LegacyLogger.debug("Loading file: " + file.getName());
+                            if (this.plugin.isLogging()) FancyLogger.debug("Loading file: " + file.getName());
 
                             addDynamicFile(folder, file.getName());
                         }
                     }
                 }
             } else if (newFolder.mkdir()) {
-                if (this.plugin.isLogging()) LegacyLogger.info("Created " + newFolder.getName() + " because it did not exist.");
+                if (this.plugin.isLogging()) FancyLogger.info("Created " + newFolder.getName() + " because it did not exist.");
 
                 for (String fileName : this.dynamicFiles.keySet()) {
                     if (this.dynamicFiles.get(fileName).equalsIgnoreCase(folder)) {
@@ -79,9 +80,9 @@ public class FileManager {
 
                             if (newFile.getName().toLowerCase().endsWith(".yml")) addDynamicFile(folder, newFile.getName());
 
-                            if (this.plugin.isLogging()) LegacyLogger.info("Created default file: " + newFile.getPath() + ".");
+                            if (this.plugin.isLogging()) FancyLogger.info("Created default file: " + newFile.getPath() + ".");
                         } catch (Exception exception) {
-                            LegacyLogger.error("Failed to create default file: " + folder + "/" + fileName + "!", exception);
+                            FancyLogger.error("Failed to create default file: " + folder + "/" + fileName + "!", exception);
                         }
                     }
                 }
@@ -91,7 +92,7 @@ public class FileManager {
 
     public FileManager addFolder(String folder) {
         if (this.folders.contains(folder)) {
-            LegacyLogger.warn("The folder named: " + folder + " already exists.");
+            FancyLogger.warn("The folder named: " + folder + " already exists.");
             return this;
         }
 
@@ -102,7 +103,7 @@ public class FileManager {
 
     public void removeFolder(String folder) {
         if (!this.folders.contains(folder)) {
-            LegacyLogger.warn("The folder named: " + folder + " is not known to me.");
+            FancyLogger.warn("The folder named: " + folder + " is not known to me.");
             return;
         }
 

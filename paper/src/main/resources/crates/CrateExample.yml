@@ -4,7 +4,7 @@ crate:
   # The crate type -> CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War
   type: CSGO
   # The name of the inventory.
-  name: '&aBasic Crate'
+  name: '<green>Basic Crate'
   # The amount of keys a player gets when they first join.
   starting-keys: 0
   # The amount of keys required to use the crate.
@@ -16,14 +16,14 @@ crate:
     # If it should be enabled.
     toggle: true
     # The message to broadcast.
-    message: '{prefix}&6&l{player}&r &7is opening a &7&lBasic Chest&7.'
+    message: '{prefix}<gold>{player}<r> <gray>is opening a <gray>Basic Chest.'
   # A section related to a default prize message.
   prize-message:
     # If we should send messages.
     toggle: true
     # The messages to send.
     message:
-      - '&7You have won &c{reward} &7from &c{crate}'
+      - '<gray>You have won <red>{reward} <gray>from <red>{crate}'
   # This section is related to what shows up in /cc gui.
   gui:
     # If it should be in the gui.
@@ -46,7 +46,7 @@ crate:
     # If the preview should be enabled.
     toggle: true
     # The name of the preview gui.
-    name: '&aBasic Crate Preview'
+    name: '<green>Basic Crate Preview'
     # The size of the gui.
     rows: 6
     glass:
@@ -58,11 +58,11 @@ crate:
       item: 'GRAY_STAINED_GLASS_PANE'
   physical-key:
     # The name of the item.
-    name: '&7&lBasic Crate &b&lKey'
+    name: '<bold><gray>Basic Crate <blue>Key</bold>'
     # The lore of the item.
     lore:
-      - '&7A special key'
-      - '&7for a special Crate.'
+      - '<gray>A special key'
+      - '<gray>for a special Crate.'
     # The material of the item.
     item: 'TRIPWIRE_HOOK'
     # If the item should glow.
@@ -75,8 +75,8 @@ crate:
     height: 1.5
     # The message displayed in the hologram.
     message:
-      - '&7&lBasic Chest'
-      - '&eA second line.'
+      - '<gray>Basic Chest'
+      - '<yellow>A second line.'
   prizes:
     player_head:
       # The name shown in the crate when you see this prize.
@@ -87,9 +87,9 @@ crate:
       display-amount: 1
       # The lore of the item.
       display-lore:
-        - '&7Want a player head?'
+        - '<gray>Want a player head?'
         - ''
-        - '&cChance: &e25%'
+        - '<red>Chance: <yellow>25%'
       # The max range decides the percent chance of what you win.
       #
       # Available values: 100, 1000, 10000, 100000, 1000000, 10000000
@@ -107,12 +107,12 @@ crate:
         - 'Item:PLAYER_HEAD, Player:https://textures.minecraft.net/texture/1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Amount:1'
 
       commands: # You can run any plugin command here.
-        - 'broadcast &6&l{player}&r &7won {reward}! WOW'
+        - 'broadcast <bold><gold>{player}<r> <gray>won {reward}! WOW'
       # If you do not want to send commands, Set the "Commands:" to look like the line below.
       # commands: []
 
       messages: # Send any message you want to the player.
-        - '&cYou won a &r{reward}!'
+        - '<red>You won a <r>{reward}!'
       # If you do not want to send messages, Set the "Messages:" to look like the line below.
       # messages: []
 
