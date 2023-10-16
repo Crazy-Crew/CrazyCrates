@@ -10,9 +10,6 @@ website: '${website}'
 
 softdepend: [CMI, DecentHolograms, HolographicDisplays, PlaceholderAPI, ItemsAdder, Oraxen]
 
-loadbefore:
-  - Multiverse-Core
-
 commands:
   crates:
     description: The base command for Crazy Crates
