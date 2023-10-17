@@ -10,41 +10,41 @@ import java.util.List;
 public class PreviewMenuConfig implements SettingsHolder {
 
     @Comment({"""
-            The title of /crates menu.
+            The title of the crate previews
             Available Placeholders: {crate}
             """})
-    public static final Property<String> crate_preview_menu_title = PropertyInitializer.newProperty("settings.preview.crate-menu.title","&cCrate Preview &8: &r{crate}");
+    public static final Property<String> crate_preview_menu_title = PropertyInitializer.newProperty("settings.preview.crate-menu.title","<red>Crate Preview <dark_gray>: <reset>{crate}");
 
     @Comment("The material the main menu button will be.")
     public static final Property<String> crate_preview_menu_button_material = PropertyInitializer.newProperty("settings.preview-buttons.menu-button.material", "COMPASS");
 
     @Comment("The name of the main menu button.")
-    public static final Property<String> crate_preview_menu_button_name = PropertyInitializer.newProperty("settings.preview-buttons.menu-button.name", "&7&l»» &c&lMenu &7&l««");
+    public static final Property<String> crate_preview_menu_button_name = PropertyInitializer.newProperty("settings.preview-buttons.menu-button.name", "<gray>»» <red>Menu <gray>««");
 
     @Comment("The lore for the main menu button.")
     public static final Property<List<String>> crate_preview_menu_button_lore = PropertyInitializer.newListProperty("settings.preview-buttons.menu-button.lore", List.of(
-            "&dReturn to the menu."
+            "<light_purple>Return to the menu."
     ));
 
     @Comment("The material the next button will be.")
     public static final Property<String> crate_preview_next_button_material = PropertyInitializer.newProperty("settings.preview-buttons.next-button.material", "FEATHER");
 
     @Comment("The name of the next button.")
-    public static final Property<String> crate_preview_next_button_name = PropertyInitializer.newProperty("settings.preview-buttons.next-button.name", "&6&lNext »");
+    public static final Property<String> crate_preview_next_button_name = PropertyInitializer.newProperty("settings.preview-buttons.next-button.name", "<gold>Next »");
 
     @Comment("The lore for the next button.")
     public static final Property<List<String>> crate_preview_next_button_lore = PropertyInitializer.newListProperty("settings.preview-buttons.next-button.lore", List.of(
-            "&d&lPage:&b &b{page}"
+            "<light_purple>Page: <blue>{page}"
     ));
 
     @Comment("The material the back button will be.")
     public static final Property<String> crate_preview_back_button_material = PropertyInitializer.newProperty("settings.preview-buttons.back-button.material", "FEATHER");
 
     @Comment("The name of the Back button.")
-    public static final Property<String> crate_preview_back_button_name = PropertyInitializer.newProperty("settings.preview-buttons.back-button.name", "&6&l« Back");
+    public static final Property<String> crate_preview_back_button_name = PropertyInitializer.newProperty("settings.preview-buttons.back-button.name", "<gold>« Back");
 
     @Comment("The lore for the back button.")
     public static final Property<List<String>> crate_preview_back_button_lore = PropertyInitializer.newListProperty("settings.preview-buttons.back-button.lore", List.of(
-            "&5&lPage: &b{page}"
+            "<dark_purple>Page: <blue>{page}"
     ));
 }
