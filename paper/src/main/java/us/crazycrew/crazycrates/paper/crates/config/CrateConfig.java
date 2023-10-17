@@ -1,6 +1,6 @@
 package us.crazycrew.crazycrates.paper.crates.config;
 
-import com.ryderbelserion.cluster.api.adventure.FancyLogger;
+import com.ryderbelserion.cluster.paper.items.ItemBuilder;
 import com.ryderbelserion.cluster.bukkit.items.ItemBuilder;
 import com.ryderbelserion.cluster.bukkit.items.ParentBuilder;
 import org.bukkit.Material;
@@ -184,8 +184,10 @@ public class CrateConfig extends YamlConfiguration {
             if (displayItem != null && !displayItem.isBlank()) {
                 material = Material.matchMaterial(displayItem);
             } else {
-                FancyLogger.warn("An issue with " + key + "'s material has been found.");
-                FancyLogger.warn(displayItem + " is not a valid material.");
+                List.of(
+                        "An issue with " + key + "'s material has been found.",
+                        displayItem + " is not a valid material."
+                ).forEach(line -> this.plugin.getLogger().warning(line));
 
                 material = Material.STONE;
             }

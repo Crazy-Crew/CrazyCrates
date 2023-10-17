@@ -1,6 +1,5 @@
 package us.crazycrew.crazycrates.paper.crates;
 
-import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import org.bukkit.configuration.InvalidConfigurationException;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.crates.config.CrateConfig;
@@ -10,6 +9,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 
 public class CrateManager {
 
@@ -28,27 +28,27 @@ public class CrateManager {
         if (!cratesDirectory.exists()) return;
 
         if (getCratesList() == null) {
-            FancyLogger.error("Could not read from crates directory! " + cratesDirectory.getAbsolutePath());
+            this.plugin.getLogger().severe("Could not read from crates directory! " + cratesDirectory.getAbsolutePath());
             return;
         }
 
         for (File file : getCratesList()) {
-            FancyLogger.info("Loading crate: " + file.getName());
+            this.plugin.getLogger().info("Loading crate: " + file.getName());
 
             CrateConfig config = new CrateConfig(file);
 
             try {
                 config.load();
             } catch (IOException exception) {
-                FancyLogger.error("Could not load crate file: " + file.getName(), exception);
+                this.plugin.getLogger().log(Level.SEVERE, "Could not load crate file: " + file.getName(), exception);
                 continue;
             } catch (InvalidConfigurationException exception) {
-                FancyLogger.error("Crate file has invalid yaml syntax: " + file.getName(), exception);
+                this.plugin.getLogger().log(Level.SEVERE, "Crate file has invalid yaml syntax: " + file.getName(), exception);
                 continue;
             }
 
             if (!config.isEnabled()) {
-                if (this.plugin.isLogging()) FancyLogger.warn(config.getFile().getName() + " is currently disabled. Config Option: " + config.isEnabled());
+                if (this.plugin.isLogging()) this.plugin.getLogger().warning(config.getFile().getName() + " is currently disabled. Config Option: " + config.isEnabled());
                 return;
             }
 
