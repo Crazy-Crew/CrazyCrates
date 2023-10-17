@@ -1,14 +1,17 @@
 package us.crazycrew.crazycrates.paper.api.plugin;
 
+import com.ryderbelserion.cluster.paper.AbstractPaperPlugin;
+import com.ryderbelserion.cluster.paper.files.FileManager;
+import net.kyori.adventure.text.Component;
 import us.crazycrew.crazycrates.api.users.UserManager;
+import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.platforms.Platform;
 import us.crazycrew.crazycrates.common.CrazyCratesPlugin;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
+import us.crazycrew.crazycrates.paper.api.MetricsManager;
 import us.crazycrew.crazycrates.paper.crates.CrateManager;
-import us.crazycrew.crazycrates.paper.misc.FileManager;
 
 public class CrazyHandler extends CrazyCratesPlugin {
 
@@ -20,20 +23,20 @@ public class CrazyHandler extends CrazyCratesPlugin {
         this.plugin = plugin;
     }
 
-    private BukkitPlugin bukkitPlugin;
+    private AbstractPaperPlugin paperPlugin;
     private FileManager fileManager;
     private CrateManager crateManager;
+    private MetricsManager metricsManager;
 
     public void install() {
-        // Enable cluster bukkit api.
-        this.bukkitPlugin = new BukkitPlugin(this.plugin);
-        this.bukkitPlugin.enable();
-
         // Enable crazycrates api.
-        super.enable(this.plugin.getServer());
+        super.enable();
+
+        this.paperPlugin = new AbstractPaperPlugin(this.plugin, getConfigManager().getPluginConfig().getProperty(PluginConfig.verbose_logging));
+        this.paperPlugin.enable();
 
         // Load all the necessary files.
-        this.fileManager = new FileManager(this.plugin);
+        this.fileManager = this.paperPlugin.getFileManager();
         this.fileManager
                 .addStaticFile("locations.yml")
                 .addStaticFile("users.yml")
@@ -55,6 +58,9 @@ public class CrazyHandler extends CrazyCratesPlugin {
         // Load crates.
         this.crateManager = new CrateManager(this.plugin);
         this.crateManager.load();
+
+        this.metricsManager = new MetricsManager(this.plugin);
+        this.metricsManager.start();
     }
 
     public void uninstall() {
@@ -64,8 +70,10 @@ public class CrazyHandler extends CrazyCratesPlugin {
         // Unload crates.
         this.crateManager.unload();
 
+        this.metricsManager.stop();
+
         // Disable cluster bukkit api.
-        this.bukkitPlugin.disable();
+        this.paperPlugin.disable();
     }
 
     /**
@@ -94,5 +102,10 @@ public class CrazyHandler extends CrazyCratesPlugin {
     @NotNull
     public CrateManager getCrateManager() {
         return this.crateManager;
+    }
+
+    @NotNull
+    public Component parse(String message) {
+        return this.paperPlugin.parse(message);
     }
 }

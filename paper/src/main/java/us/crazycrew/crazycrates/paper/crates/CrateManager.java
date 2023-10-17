@@ -35,7 +35,7 @@ public class CrateManager {
         for (File file : getCratesList()) {
             this.plugin.getLogger().info("Loading crate: " + file.getName());
 
-            CrateConfig config = new CrateConfig(file);
+            CrateConfig config = new CrateConfig(this.plugin, file);
 
             try {
                 config.load();

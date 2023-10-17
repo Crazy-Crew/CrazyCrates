@@ -1,12 +1,12 @@
 package us.crazycrew.crazycrates.paper.crates.config;
 
 import com.ryderbelserion.cluster.paper.items.ItemBuilder;
-import com.ryderbelserion.cluster.bukkit.items.ItemBuilder;
-import com.ryderbelserion.cluster.bukkit.items.ParentBuilder;
+import com.ryderbelserion.cluster.paper.items.ParentBuilder;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.crates.object.Prize;
 import java.io.File;
 import java.io.IOException;
@@ -17,9 +17,12 @@ import java.util.Set;
 
 public class CrateConfig extends YamlConfiguration {
 
+    private final CrazyCrates plugin;
     private final File file;
 
-    public CrateConfig(File file) {
+    public CrateConfig(CrazyCrates plugin, File file) {
+        this.plugin = plugin;
+
         this.file = file;
     }
 
@@ -224,7 +227,7 @@ public class CrateConfig extends YamlConfiguration {
             // Messages is completely optional, We will add a contains check to this and an isEmpty check just in case.
             List<String> alternativeMessages = getStringList(path + "alternative-prize.messages");
 
-            ItemBuilder builder = ParentBuilder.of().setMaterial(material).setDisplayName(displayName).setAmount(displayAmount).setDisplayLore(displayLore);
+            ItemBuilder builder = ParentBuilder.of(this.plugin).setMaterial(material).setDisplayName(displayName).setAmount(displayAmount).setDisplayLore(displayLore);
 
             Prize alternativePrize = null;
 

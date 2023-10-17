@@ -1,7 +1,5 @@
 package us.crazycrew.crazycrates.paper.misc;
 
-import com.ryderbelserion.cluster.api.adventure.FancyLogger;
-import com.ryderbelserion.cluster.api.utils.ColorUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -10,7 +8,6 @@ import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.RemoteConsoleCommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -22,6 +19,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import us.crazycrew.crazycrates.common.api.enums.Permissions;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
+import us.crazycrew.crazycrates.paper.crates.config.CrateConfig;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -54,7 +52,7 @@ public class Methods {
     public void sendMessage(CommandSender sender, String message, boolean toggle) {
         if (message == null || message.isBlank() || !toggle) return;
 
-        Component newMessage = ColorUtils.parse(message.replaceAll("\\{prefix}", "your-prefix"));
+        Component newMessage = this.plugin.getCrazyHandler().parse(message.replaceAll("\\{prefix}", "your-prefix"));
 
         if (sender instanceof Player player) {
             player.sendMessage(newMessage);
@@ -104,7 +102,7 @@ public class Methods {
     public void setEntityData(Entity entity, PersistentKeys key) {
         PersistentDataContainer entityData = entity.getPersistentDataContainer();
 
-        entityData.set(key.getNamespacedKey(), key.getType(), true);
+        entityData.set(key.getNamespacedKey(this.plugin), key.getType(), true);
     }
 
     /**
@@ -133,7 +131,7 @@ public class Methods {
      */
     public void removeItemStack(Player player, ItemStack... items) {
         if (items == null) {
-            FancyLogger.warn("Items cannot be null.");
+            this.plugin.getLogger().warning("Items cannot be null.");
             return;
         }
 
