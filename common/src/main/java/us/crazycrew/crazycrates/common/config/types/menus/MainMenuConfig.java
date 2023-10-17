@@ -18,7 +18,7 @@ public class MainMenuConfig implements SettingsHolder {
     public static final Property<String> crate_menu_title = PropertyInitializer.newProperty("settings.crate-menu.title","<red>Main Menu");
 
     @Comment({"""
-            Choose how large this menu should be. 6 is how many rows are added.
+            Choose how large this menu should be. 9 is how many rows a chest has.
             """})
     public static final Property<Integer> crate_menu_rows = PropertyInitializer.newProperty("settings.crate-menu.rows",6);
 
