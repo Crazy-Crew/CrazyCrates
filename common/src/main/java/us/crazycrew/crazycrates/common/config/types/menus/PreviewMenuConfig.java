@@ -9,6 +9,12 @@ import java.util.List;
 
 public class PreviewMenuConfig implements SettingsHolder {
 
+    @Comment({"""
+            The title of /crates menu.
+            Available Placeholders: {crate}
+            """})
+    public static final Property<String> crate_preview_menu_title = PropertyInitializer.newProperty("settings.preview.crate-menu.title","&cCrate Preview &8: &r{crate}");
+
     @Comment("The material the main menu button will be.")
     public static final Property<String> crate_preview_menu_button_material = PropertyInitializer.newProperty("settings.preview-buttons.menu-button.material", "COMPASS");
 
