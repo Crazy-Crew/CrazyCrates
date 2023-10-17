@@ -39,8 +39,10 @@ crate:
       - '<red>This chest contains mystical but powerful objects.'
       - '<red>You have <dark_red>{keys} keys <red>to open this chest with.'
       - '<red>(<dark_red>!<red>) Right click to view rewards.'
-    # The slot it is in.
-    slot: 23
+    # The row the item is in. Chest has 6 rows and each horizontal line is a column.
+    row: 3
+    # The column of the row the item is in.
+    column: 3
   # This section is related to the crate preview. (shows up when right-clicking a crate.)
   preview:
     # If the preview should be enabled.

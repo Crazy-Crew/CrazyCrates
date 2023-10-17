@@ -72,7 +72,7 @@ public class CrateMainMenu {
                 }
             });
 
-            gui.setItem(crate.getCrateMenuSlot(), guiItem);
+            gui.setItem(crate.getCrateMenuRow(), crate.getCrateMenuColumn(), guiItem);
         });
     }
 
