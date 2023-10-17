@@ -37,7 +37,7 @@ crate:
     # The lore used in the gui.
     lore:
       - '<gray>This crate contains strange objects.'
-      - '<gray>You have <gold>{keys} keys <gray>to open this crate with.'
+      - '<gray>You have <gold>{keys} keys <gray>to open this chest with.'
       - '<gray>(<yellow>!<gray>) Right click to view rewards.'
     # The slot it is in.
     slot: 21
