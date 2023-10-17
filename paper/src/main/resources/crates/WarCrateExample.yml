@@ -1,0 +1,99 @@
+crate:
+  # If the crate should be enabled.
+  enabled: true
+  # The crate type -> CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War
+  type: War
+  # The name of the inventory.
+  name: '<dark_red>War Chest'
+  # The amount of keys a player gets when they first join.
+  starting-keys: 3
+  # The amount of keys required to use the crate.
+  required-keys: 0
+  # The max amount of crates that can be opened using /cc max-open.
+  max-mass-open: 5
+  # This section is related to broadcasts
+  broadcast:
+    # If it should be enabled.
+    toggle: true
+    # The message to broadcast.
+    message: '{prefix}<dark_red>{player}<reset> <red>is opening a <dark_red>War Chest.'
+  # A section related to a default prize message.
+  prize-message:
+    # If we should send messages.
+    toggle: true
+    # The messages to send.
+    message:
+      - '<red>You have won <dark_red>{reward} <red>from <dark_red>{crate}'
+  # This section is related to what shows up in /cc gui.
+  gui:
+    # If it should be in the gui.
+    toggle: true
+    # The item that is used in the gui.
+    item: 'ENDER_CHEST'
+    # If the crate should glow.
+    glowing: false
+    # The name used in the gui.
+    name: '<dark_red>War Chest'
+    # The lore used in the gui.
+    lore:
+      - '<red>This crate contains strange objects.'
+      - '<red>You have <dark_red>{keys} keys <red>to open this crate with.'
+      - '<red>(<dark_red>!<red>) Right click to view rewards.'
+    # The slot it is in.
+    slot: 21
+  # This section is related to the crate preview. (shows up when right-clicking a crate.)
+  preview:
+    # If the preview should be enabled.
+    toggle: true
+    # The name of the preview gui.
+    name: '<dark_red>War Chest Preview'
+    # The size of the gui.
+    rows: 3
+    glass:
+      # If the border should be enabled.
+      toggle: true
+      # The name of the item in the border.
+      name: ' '
+      # The item that shows in the border.
+      item: 'RED_STAINED_GLASS_PANE'
+  physical-key:
+    # The name of the item.
+    name: '<bold><dark_red>War Chest Key</bold>'
+    # The lore of the item.
+    lore:
+      - '<red>A powerful key for the war chest'
+    # The material of the item.
+    item: 'RED_DYE'
+    # If the item should glow.
+    glowing: false
+  # This section is related to the hologram.
+  hologram:
+    # If the hologram should be enabled.
+    toggle: true
+    # The height of the hologram above the crate.
+    height: 1.5
+    # The message displayed in the hologram.
+    message:
+      - '<dark_red>War Chest'
+      - ''
+      - '<red>Get vote keys @ <dark_red>your-vote-site'
+  prizes:
+    warlocks_set:
+      display-name: '<red>Warlock''s Set'
+      display-item: 'NETHERITE_CHESTPLATE'
+      display-amount: 1
+      display-lore:
+        - '<red>A powerful but rusty set of armor'
+        - ''
+        - '<gray>Once said to be owned by the great Warlock Ala-him'
+        - '<gray>It is now a former shell of what it once was.'
+        - '<gray>Definitely suits you.'
+      max-range: 1000
+      chance: 3
+      items:
+        - 'item:NETHERITE_HELMET, amount:1, name:<red>Ala-him''s Helmet, PROTECTION:4, UNBREAKING:3'
+        - 'item:NETHERITE_CHESTPLATE, amount:1, name:<red>Ala-him''s Chestplate, PROTECTION:4, UNBREAKING:3'
+        - 'item:NETHERITE_LEGGINGS, amount:1, name:<red>Ala-him''s Leggings, PROTECTION:4, UNBREAKING:3'
+        - 'item:NETHERITE_BOOTS, amount:1, name:<red>Ala-him''s Boots, PROTECTION:4, UNBREAKING:3'
+      messages:
+        - ' <dark_red>[War Chest] <red>You have been graced with the <dark_red>Warlock''s Set!'

@@ -45,6 +45,7 @@ public class CrazyHandler extends CrazyCratesPlugin {
                 .addStaticFile("users.yml")
                 .addStaticFile("events.log")
                 .addDynamicFile("crates", "CrateExample.yml")
+                .addDynamicFile("crates", "WarCrateExample.yml")
                 //.addDynamicFile("crates", "QuadCrateExample.yml")
                 //.addDynamicFile("crates", "QuickCrateExample.yml")
                 //.addDynamicFile("crates", "CosmicCrateExample.yml")
