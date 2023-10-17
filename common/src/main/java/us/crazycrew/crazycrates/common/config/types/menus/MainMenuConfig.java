@@ -25,8 +25,6 @@ public class MainMenuConfig implements SettingsHolder {
     @Comment({"""
             Available types are CHEST, WORKBENCH, HOPPER, DISPENSER, BREWING
             Every type except CHEST ignores "crate-menu.row"
-            
-            You will have to update your row/columns in your crate configs otherwise it will error for anything other than CHEST.
             """})
     public static final Property<String> crate_menu_type = PropertyInitializer.newProperty("settings.crate-menu.type","CHEST");
 

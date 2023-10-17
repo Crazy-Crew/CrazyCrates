@@ -12,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.common.config.types.menus.MainMenuConfig;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.crates.object.Crate;
-
 import java.util.List;
 import java.util.Set;
 
@@ -72,7 +71,7 @@ public class CrateMainMenu {
                 }
             });
 
-            gui.setItem(crate.getCrateMenuRow(), crate.getCrateMenuColumn(), guiItem);
+            gui.setItem(crate.getCrateMenuSlot(), guiItem);
         });
     }
 

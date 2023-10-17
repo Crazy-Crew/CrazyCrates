@@ -39,10 +39,8 @@ crate:
       - '<gray>This crate contains strange objects.'
       - '<gray>You have <gold>{keys} keys <gray>to open this chest with.'
       - '<gray>(<yellow>!<gray>) Right click to view rewards.'
-    # The row the item is in. Chest has 9 rows and each horizontal line is a column.
-    row: 3
-    # The column of the row the item is in.
-    column: 3
+    # The slot it is in.
+    slot: 21
   # This section is related to the crate preview. (shows up when right-clicking a crate.)
   preview:
     # If the preview should be enabled.
