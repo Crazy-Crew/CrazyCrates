@@ -90,6 +90,8 @@ crate:
         - '<gray>Definitely suits you.'
       max-range: 1000
       chance: 3
+      # The slot the prize is at in the preview gui.
+      slot: 0
       items:
         - 'item:NETHERITE_HELMET, amount:1, name:<red>Ala-him''s Helmet, PROTECTION:4, UNBREAKING:3'
         - 'item:NETHERITE_CHESTPLATE, amount:1, name:<red>Ala-him''s Chestplate, PROTECTION:4, UNBREAKING:3'

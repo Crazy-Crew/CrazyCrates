@@ -12,6 +12,8 @@ public class Prize {
     private final int maxRange;
     private final int chance;
 
+    private final int slot;
+
     private final List<String> items;
     private final List<String> commands;
     private final List<String> messages;
@@ -34,12 +36,14 @@ public class Prize {
         this.alternativePrize = null;
     }
 
-    public Prize(ItemStack displayItem, int maxRange, int chance, List<String> items, List<String> commands, List<String> messages, String displayPlayer, List<String> blacklistedPermissions, Prize alternativePrize) {
+    public Prize(ItemStack displayItem, int maxRange, int chance, int slot, List<String> items, List<String> commands, List<String> messages, String displayPlayer, List<String> blacklistedPermissions, Prize alternativePrize) {
         this.displayItem = displayItem;
         this.displayPlayer = displayPlayer;
 
         this.maxRange = maxRange;
         this.chance = chance;
+
+        this.slot = slot;
 
         this.items = items != null ? items : Collections.emptyList();
         this.commands = commands != null ? commands : Collections.emptyList();
@@ -64,6 +68,10 @@ public class Prize {
 
     public int getChance() {
         return this.chance;
+    }
+
+    public int getSlot() {
+        return this.slot;
     }
 
     public List<String> getItems() {

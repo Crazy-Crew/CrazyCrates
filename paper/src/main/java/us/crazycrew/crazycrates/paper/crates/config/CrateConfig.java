@@ -208,6 +208,8 @@ public class CrateConfig extends YamlConfiguration {
             int maxRange = getInt(path + "max-range");
             int chance = getInt(path + "chance");
 
+            int slot = getInt(path + "slot");
+
             // These values aren't optional, but I plan to only add a warning if both `items` and `commands` are empty.
             List<String> items = getStringList(path + "items");
             List<String> commands = getStringList(path + "commands");
@@ -235,7 +237,7 @@ public class CrateConfig extends YamlConfiguration {
                 alternativePrize = new Prize(alternativeItems, alternativeCommands, alternativeMessages);
             }
 
-            Prize prize = new Prize(builder.build(), maxRange, chance, items, commands, messages, displayPlayer, blacklistedPermissions, alternativePrize);
+            Prize prize = new Prize(builder.build(), maxRange, chance, slot, items, commands, messages, displayPlayer, blacklistedPermissions, alternativePrize);
 
             prizes.add(prize);
         }

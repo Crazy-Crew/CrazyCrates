@@ -103,6 +103,9 @@ crate:
       # If you do not want a player to be used, Set player: to look like this. Be wary of having 2 player's in a crate config.
       # player: ''
 
+      # The slot the prize is at in the preview gui.
+      slot: 0
+
       items: # Give any item you want to the winning player & with a custom texture.
         - 'Item:PLAYER_HEAD, Player:https://textures.minecraft.net/texture/1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Amount:1'
 
