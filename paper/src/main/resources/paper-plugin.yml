@@ -6,10 +6,6 @@ api-version: '${apiVersion}'
 
 dependencies:
   server:
-    Multiverse-Core:
-      load: AFTER
-      required: false
-      join-classpath: false
     CMI:
       load: BEFORE
       required: false
