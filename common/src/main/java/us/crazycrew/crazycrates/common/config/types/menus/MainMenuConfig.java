@@ -4,6 +4,7 @@ import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.properties.Property;
 import ch.jalu.configme.properties.PropertyInitializer;
+import java.util.Collections;
 import java.util.List;
 
 public class MainMenuConfig implements SettingsHolder {
@@ -22,16 +23,10 @@ public class MainMenuConfig implements SettingsHolder {
     public static final Property<Integer> crate_menu_rows = PropertyInitializer.newProperty("settings.crate-menu.rows",6);
 
     @Comment({"""
-            Choose how large this menu should be.
-            9, 18, 27, 36, or 45 are the available options.
+            Available types are CHEST, WORKBENCH, HOPPER, DISPENSER, BREWING
+            Every type except CHEST ignores "crate-menu.row"
             """})
-    public static final Property<Integer> crate_menu_size = PropertyInitializer.newProperty("settings.crate-menu.size",45);
-
-    //@Comment({"""
-    //        Available types are CHEST, WORKBENCH, HOPPER, DISPENSER, BREWING
-    //        Every type except CHEST ignores "crate-menu.size"
-    //        """})
-    //public static final Property<String> crate_menu_type = PropertyInitializer.newProperty("settings.crate-menu.type","CHEST");
+    public static final Property<String> crate_menu_type = PropertyInitializer.newProperty("settings.crate-menu.type","CHEST");
 
     @Comment("Whether you want the filler to be enabled.")
     public static final Property<Boolean> crate_menu_filler_toggle = PropertyInitializer.newProperty("crate-menu-filler.toggle",false);
