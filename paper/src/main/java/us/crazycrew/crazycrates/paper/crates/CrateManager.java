@@ -58,6 +58,13 @@ public class CrateManager {
         }
     }
 
+    public void reload() {
+        // Unload the crates.
+        unload();
+        // Load the crates.
+        load();
+    }
+
     public void unload() {
         this.crates.forEach(crate -> {
             //TODO() Stop everything.

@@ -15,14 +15,20 @@ public class GuiManager {
 
     public void load() {
         this.crateMainMenu = new CrateMainMenu(this.plugin);
+        this.crateMainMenu.create();
     }
 
     public void unload() {
+        this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+            this.crateMainMenu.getGui().close(player, true);
 
+            //TODO() Send a message notifying why the gui closed with a toggle.
+        });
     }
 
     public void reload() {
-
+        unload();
+        load();
     }
 
     public CrateMainMenu getCrateMainMenu() {

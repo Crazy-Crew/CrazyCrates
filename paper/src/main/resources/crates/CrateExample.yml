@@ -16,7 +16,7 @@ crate:
     # If it should be enabled.
     toggle: true
     # The message to broadcast.
-    message: '{prefix}<gold>{player}<r> <gray>is opening a <gray>Basic Chest.'
+    message: '{prefix}<gold>{player}<reset> <gray>is opening a <gray>Basic Chest.'
   # A section related to a default prize message.
   prize-message:
     # If we should send messages.
@@ -33,12 +33,12 @@ crate:
     # If the crate should glow.
     glowing: false
     # The name used in the gui.
-    name: '&a&lBasic Chest'
+    name: '<green>Basic Chest'
     # The lore used in the gui.
     lore:
-      - '&7This crate contains strange objects.'
-      - '&7You have &6{keys} keys &7to open this crate with.'
-      - '&7&l(&e&l!&7&l) Right click to view rewards.'
+      - '<gray>This crate contains strange objects.'
+      - '<gray>You have <gold>{keys} keys <gray>to open this crate with.'
+      - '<gray>(<yellow>!<gray>) Right click to view rewards.'
     # The slot it is in.
     slot: 21
   # This section is related to the crate preview. (shows up when right-clicking a crate.)
@@ -107,12 +107,12 @@ crate:
         - 'Item:PLAYER_HEAD, Player:https://textures.minecraft.net/texture/1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Amount:1'
 
       commands: # You can run any plugin command here.
-        - 'broadcast <bold><gold>{player}<r> <gray>won {reward}! WOW'
+        - 'broadcast <bold><gold>{player}<reset> <gray>won {reward}! WOW'
       # If you do not want to send commands, Set the "Commands:" to look like the line below.
       # commands: []
 
       messages: # Send any message you want to the player.
-        - '<red>You won a <r>{reward}!'
+        - '<red>You won a <reset>{reward}!'
       # If you do not want to send messages, Set the "Messages:" to look like the line below.
       # messages: []
 

@@ -12,6 +12,7 @@ import us.crazycrew.crazycrates.common.CrazyCratesPlugin;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.paper.api.MetricsManager;
 import us.crazycrew.crazycrates.paper.crates.CrateManager;
+import us.crazycrew.crazycrates.paper.crates.menus.GuiManager;
 
 public class CrazyHandler extends CrazyCratesPlugin {
 
@@ -26,12 +27,14 @@ public class CrazyHandler extends CrazyCratesPlugin {
     private AbstractPaperPlugin paperPlugin;
     private FileManager fileManager;
     private CrateManager crateManager;
+    private GuiManager guiManager;
     private MetricsManager metricsManager;
 
     public void install() {
         // Enable crazycrates api.
         super.enable();
 
+        // Enable paper plugin api.
         this.paperPlugin = new AbstractPaperPlugin(this.plugin, getConfigManager().getPluginConfig().getProperty(PluginConfig.verbose_logging));
         this.paperPlugin.enable();
 
@@ -59,8 +62,23 @@ public class CrazyHandler extends CrazyCratesPlugin {
         this.crateManager = new CrateManager(this.plugin);
         this.crateManager.load();
 
+        // Load guis.
+        this.guiManager = new GuiManager(this.plugin);
+        this.guiManager.load();
+
+        // Start metrics.
         this.metricsManager = new MetricsManager(this.plugin);
         this.metricsManager.start();
+    }
+
+    public void reload() {
+        this.fileManager.create();
+
+        // Reload the crates.
+        this.crateManager.reload();
+
+        // Reload the guis.
+        this.guiManager.reload();
     }
 
     public void uninstall() {
@@ -70,9 +88,13 @@ public class CrazyHandler extends CrazyCratesPlugin {
         // Unload crates.
         this.crateManager.unload();
 
+        // Unload guis.
+        this.guiManager.unload();
+
+        // Stop metrics.
         this.metricsManager.stop();
 
-        // Disable cluster bukkit api.
+        // Disable paper plugin api.
         this.paperPlugin.disable();
     }
 
@@ -102,6 +124,11 @@ public class CrazyHandler extends CrazyCratesPlugin {
     @NotNull
     public CrateManager getCrateManager() {
         return this.crateManager;
+    }
+
+    @NotNull
+    public GuiManager getGuiManager() {
+        return this.guiManager;
     }
 
     @NotNull
