@@ -7,9 +7,7 @@ public enum PluginSupport {
     decent_holograms("DecentHolograms"),
     holographic_displays("HolographicDisplays"),
     cmi("CMI"),
-    placeholderapi("PlaceholderAPI"),
-    oraxen("Oraxen"),
-    items_adder("ItemsAdder");
+    placeholderapi("PlaceholderAPI");
     
     private final String name;
 
