@@ -89,9 +89,6 @@ public class CrazyHandler extends CrazyCratesPlugin {
         // Unload crates.
         this.crateManager.unload();
 
-        // Unload guis.
-        this.guiManager.unload();
-
         // Stop metrics.
         this.metricsManager.stop();
 
