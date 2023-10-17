@@ -41,6 +41,6 @@ public class MainMenuConfig implements SettingsHolder {
     public static final Property<String> crate_menu_filler_name = PropertyInitializer.newProperty("crate-menu-filler.name"," ");
 
     @Comment("The lore of the item.")
-    public static final Property<List<String>> crate_menu_filler_lore = PropertyInitializer.newListProperty("crate-menu-filler.lore", "");
+    public static final Property<List<String>> crate_menu_filler_lore = PropertyInitializer.newListProperty("crate-menu-filler.lore", Collections.emptyList());
 
 }
