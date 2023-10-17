@@ -104,7 +104,7 @@ public class CrazyHandler extends CrazyCratesPlugin {
         this.metricsManager.stop();
 
         // Disable paper plugin api.
-        this.paperPlugin.disable();
+        // this.paperPlugin.disable();
     }
 
     /**
