@@ -11,6 +11,7 @@ import us.crazycrew.crazycrates.api.platforms.Platform;
 import us.crazycrew.crazycrates.common.CrazyCratesPlugin;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.paper.api.MetricsManager;
+import us.crazycrew.crazycrates.paper.api.enums.Files;
 import us.crazycrew.crazycrates.paper.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.crates.menus.GuiManager;
 
@@ -73,6 +74,14 @@ public class CrazyHandler extends CrazyCratesPlugin {
     }
 
     public void reload() {
+        // Reload all custom files.
+        this.fileManager.reloadDynamicFiles();
+
+        // Reload all static files.
+        this.fileManager.reloadStaticFile(Files.users.getFileName());
+        this.fileManager.reloadStaticFile(Files.locations.getFileName());
+
+        // Re-populate everything.
         this.fileManager.create();
 
         // Reload the crates.
