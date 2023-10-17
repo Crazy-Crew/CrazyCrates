@@ -74,6 +74,8 @@ public class CrazyHandler extends CrazyCratesPlugin {
     }
 
     public void reload() {
+        getConfigManager().reload();
+
         // Reload all custom files.
         this.fileManager.reloadDynamicFiles();
 
