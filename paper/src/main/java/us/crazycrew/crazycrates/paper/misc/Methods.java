@@ -33,22 +33,22 @@ public class Methods {
         this.plugin = plugin;
     }
 
-    public void broadcastMessage(Player player, FileConfiguration crate) {
-        String value = crate.getString("Crate.BroadCast");
+    public void broadcastMessage(Player player, CrateConfig crateConfig) {
+        boolean isEnabled = crateConfig.isOpeningBroadcast();
 
-        boolean toggle = crate.getBoolean("Crate.OpeningBroadCast");
+        if (isEnabled) return;
 
-        if (toggle && value != null) {
-            if (value.isBlank()) return;
+        String value = crateConfig.getOpeningBroadcast();
 
-            Server server = this.plugin.getServer();
+        if (value.isBlank()) return;
 
-            Component message = ColorUtils.parse(value
-                    .replaceAll("\\{prefix}", "")
-                    .replaceAll("\\{player}", player.getName()));
+        Server server = this.plugin.getServer();
 
-            server.broadcast(message);
-        }
+        Component message = this.plugin.getCrazyHandler().parse(value
+                .replaceAll("\\{prefix}", "your-prefix")
+                .replaceAll("\\{player}", player.getName()));
+
+        server.broadcast(message);
     }
 
     public void sendMessage(CommandSender sender, String message, boolean toggle) {
