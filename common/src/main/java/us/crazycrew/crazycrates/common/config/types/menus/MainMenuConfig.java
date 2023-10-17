@@ -13,6 +13,9 @@ public class MainMenuConfig implements SettingsHolder {
     @Comment("If the menu should be enabled or not.")
     public static final Property<Boolean> crate_menu_toggle = PropertyInitializer.newProperty("settings.crate-menu.toggle", true);
 
+    @Comment("The title of /crates menu.")
+    public static final Property<String> crate_menu_title = PropertyInitializer.newProperty("settings.crate-menu.title","<red>Main Menu");
+
     @Comment({"""
             Choose how large this menu should be. 6 is how many rows are added.
             """})
