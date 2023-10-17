@@ -36,12 +36,14 @@ public class CrateMainMenu {
         this.crateConfigs.forEach(crate -> {
             ItemStack crateItem = ParentBuilder.of(this.plugin).setMaterial(crate.getCrateItemType()).setDisplayLore(crate.getCrateItemLore()).setDisplayName(crate.getCrateItemName()).build();
             NbtBuilder nbtItem = new NbtBuilder(this.plugin, crateItem);
-            nbtItem.setString("crazycrates_crate", crate.getCrateName());
+            nbtItem.setString("crazycrates_crate", crate.getFileName());
 
             GuiItem guiItem = ItemBuilder.from(nbtItem.getItemStack()).asGuiItem(event -> {
                 NbtBuilder clickedItem = new NbtBuilder(this.plugin, event.getCurrentItem());
 
-                if (clickedItem.hasString(crate.getCrateName())) {
+                String key = clickedItem.getString("crazycrates_crate");
+
+                if (key.equalsIgnoreCase(crate.getFileName())) {
                     event.getWhoClicked().sendMessage(crate.getCrateName());
                 }
             });
