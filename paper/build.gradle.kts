@@ -95,9 +95,22 @@ val description = """
 
 ## Changes:
  * Replaced plugin.yml with paper-plugin.yml meaning the plugin will only be recognized by paper servers.
+ * Updated the config.yml format.
+ * Updated the format of the `crates` files in the `crates` folder.
+ * Keys are no longer checked by lore or name, They are only checked by a unique and lightweight identifier attached to the keys.
 
 ## New Features:
- * N/A
+ * Added plugin-config.yml with the following options:
+   * Ability to change the plugin locale
+   * Ability to turn off verbose logging
+   * Properly shut off metrics ( requires a server start )
+   * Change the command prefix
+ * messages.yml has been moved to the `locale` folder as `en-US.yml`
+  * You can now copy and paste this file, Change it in the `plugin-config.yml`
+ ### Crates:
+  * Added the ability to set slots for prizes so you can re-organize your prizes however you want.
+  * Added extra true/false toggles to avoid confusion.
+  * Added the ability to disable the crate in each crate file.
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
