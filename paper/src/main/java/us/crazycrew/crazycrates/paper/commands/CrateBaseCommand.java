@@ -8,6 +8,7 @@ import dev.triumphteam.cmd.core.annotation.SubCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
+import us.crazycrew.crazycrates.common.config.types.menus.MainMenuConfig;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.api.plugin.CrazyHandler;
 import us.crazycrew.crazycrates.paper.crates.CrateManager;
@@ -32,11 +33,17 @@ public class CrateBaseCommand extends BaseCommand {
     @Default
     @Permission(value = "crazycrates.crate-menu", def = PermissionDefault.TRUE)
     public void onCommand(Player player) {
-        CrateMainMenu crateMainMenu = new CrateMainMenu(this.plugin, player);
+        if (this.crazyHandler.getConfigManager().getMainMenuConfig().getProperty(MainMenuConfig.crate_menu_toggle)) {
+            CrateMainMenu crateMainMenu = new CrateMainMenu(this.plugin, player);
 
-        crateMainMenu.create();
+            crateMainMenu.create();
 
-        crateMainMenu.getGui().open(player);
+            crateMainMenu.getGui().open(player);
+
+            return;
+        }
+
+        //TODO() Add disabled message.
     }
 
     @SubCommand("help")

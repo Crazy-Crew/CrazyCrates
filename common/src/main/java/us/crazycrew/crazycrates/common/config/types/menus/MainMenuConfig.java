@@ -7,9 +7,6 @@ import ch.jalu.configme.properties.PropertyInitializer;
 import java.util.Collections;
 import java.util.List;
 
-import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
-import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
-
 public class MainMenuConfig implements SettingsHolder {
 
     protected MainMenuConfig() {}
