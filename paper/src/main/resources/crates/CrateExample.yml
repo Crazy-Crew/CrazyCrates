@@ -39,8 +39,10 @@ crate:
       - '<gray>This crate contains strange objects.'
       - '<gray>You have <gold>{keys} keys <gray>to open this chest with.'
       - '<gray>(<yellow>!<gray>) Right click to view rewards.'
-    # The slot it is in.
-    slot: 21
+    # The row the crate is in.
+    row: 2
+    # The column the crate is in.
+    column: 3
   # This section is related to the crate preview. (shows up when right-clicking a crate.)
   preview:
     # If the preview should be enabled.
@@ -98,7 +100,7 @@ crate:
       # Read more on "Chance" @ https://docs.crazycrew.us/crazycrates/info/crates/chance-system
       chance: 25
       # If the material is PLAYER_HEAD, this can be used to display a player head. A name can be used as well.
-      player: 'https://textures.minecraft.net/texture/1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e'
+      player: 'Asruna'
 
       # If you do not want a player to be used, Set player: to look like this. Be wary of having 2 player's in a crate config.
       # player: ''
@@ -107,7 +109,7 @@ crate:
       slot: 0
 
       items: # Give any item you want to the winning player & with a custom texture.
-        - 'Item:PLAYER_HEAD, Player:https://textures.minecraft.net/texture/1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Amount:1'
+        - 'Item:PLAYER_HEAD, Player:Asruna, Amount:1'
 
       commands: # You can run any plugin command here.
         - 'broadcast <bold><gold>{player}<reset> <gray>won {reward}! WOW'
