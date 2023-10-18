@@ -62,8 +62,12 @@ public class CrateConfig extends YamlConfiguration {
         return getBoolean("crate.gui.toggle", true);
     }
 
-    public int getCrateSlot() {
-        return getInt("crate.gui.slot", 1);
+    public int getCrateRow() {
+        return getInt("crate.gui.row", 1);
+    }
+
+    public int getCrateColumn() {
+        return getInt("crate.gui.column", 1);
     }
 
     public String getCrateItem() {

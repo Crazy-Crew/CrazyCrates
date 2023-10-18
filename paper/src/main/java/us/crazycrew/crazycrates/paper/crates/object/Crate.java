@@ -21,7 +21,8 @@ public class Crate {
 
     private final boolean isCrateInMenu;
 
-    private final int crateMenuSlot;
+    private final int crateMenuRow;
+    private final int crateMenuColumn;
 
     private final boolean isOpeningBroadcast;
     private final String openingBroadcast;
@@ -67,7 +68,8 @@ public class Crate {
         this.maxMassOpen = crateConfig.getMaxMassOpen();
 
         this.isCrateInMenu = crateConfig.isCrateInMenu();
-        this.crateMenuSlot = crateConfig.getCrateSlot();
+        this.crateMenuRow = crateConfig.getCrateRow();
+        this.crateMenuColumn = crateConfig.getCrateColumn();
 
         this.isOpeningBroadcast = crateConfig.isOpeningBroadcast();
         this.openingBroadcast = crateConfig.getOpeningBroadcast();
@@ -134,8 +136,12 @@ public class Crate {
         return this.isCrateInMenu;
     }
 
-    public int getCrateMenuSlot() {
-        return this.crateMenuSlot;
+    public int getCrateMenuColumn() {
+        return this.crateMenuColumn;
+    }
+
+    public int getCrateMenuRow() {
+        return this.crateMenuRow;
     }
 
     public String getCrateItemType() {
