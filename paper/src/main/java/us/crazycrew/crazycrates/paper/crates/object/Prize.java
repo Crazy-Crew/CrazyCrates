@@ -28,6 +28,8 @@ public class Prize {
         this.maxRange = 100;
         this.chance = 0;
 
+        this.slot = 0;
+
         this.items = items != null ? items : Collections.emptyList();
         this.commands = commands != null ? commands : Collections.emptyList();
         this.messages = messages != null ? messages : Collections.emptyList();
