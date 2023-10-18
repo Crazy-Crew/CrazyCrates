@@ -238,7 +238,7 @@ public class CrateConfig extends YamlConfiguration {
             Prize alternativePrize = null;
 
             if (contains(path + "alternative-prize")) {
-                alternativePrize = new Prize(alternativeItems, alternativeCommands, alternativeMessages);
+                alternativePrize = new Prize(alternativeItems, alternativeCommands, alternativeMessages, isAlternativePrizeEnabled);
             }
 
             Prize prize = new Prize(builder.build(), maxRange, chance, slot, items, commands, messages, displayPlayer, blacklistedPermissions, alternativePrize);

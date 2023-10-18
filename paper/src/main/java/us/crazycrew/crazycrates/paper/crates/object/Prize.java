@@ -19,9 +19,10 @@ public class Prize {
     private final List<String> messages;
     private final List<String> blacklistedPermissions;
 
+    private final boolean isAlternativePrizeEnabled;
     private final Prize alternativePrize;
 
-    public Prize(List<String> items, List<String> commands, List<String> messages) {
+    public Prize(List<String> items, List<String> commands, List<String> messages, boolean isAlternativePrizeEnabled) {
         this.displayItem = null;
         this.displayPlayer = "";
 
@@ -35,6 +36,7 @@ public class Prize {
         this.messages = messages != null ? messages : Collections.emptyList();
         this.blacklistedPermissions = Collections.emptyList();
 
+        this.isAlternativePrizeEnabled = isAlternativePrizeEnabled;
         this.alternativePrize = null;
     }
 
@@ -53,6 +55,7 @@ public class Prize {
 
         this.blacklistedPermissions = blacklistedPermissions != null ? blacklistedPermissions : Collections.emptyList();
 
+        this.isAlternativePrizeEnabled = alternativePrize.isAlternativePrizeEnabled;
         this.alternativePrize = alternativePrize;
     }
 
@@ -90,6 +93,10 @@ public class Prize {
 
     public List<String> getBlacklistedPermissions() {
         return this.blacklistedPermissions;
+    }
+
+    public boolean isAlternativePrizeEnabled() {
+        return this.isAlternativePrizeEnabled;
     }
 
     public Prize getAlternativePrize() {
