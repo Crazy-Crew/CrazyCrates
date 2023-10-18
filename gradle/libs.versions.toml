@@ -1,6 +1,6 @@
 [versions]
-modrinth = "2.8.2"
 hangar = "0.1.0"
+modrinth = "2.8.4"
 
 cluster = "2.0.1"
 adventure = "4.14.0"

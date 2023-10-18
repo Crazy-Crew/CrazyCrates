@@ -43,7 +43,9 @@ dependencies {
 
     compileOnly("com.github.LoneDev6", "API-ItemsAdder", "3.5.0b")
 
-    compileOnly("com.github.oraxen", "oraxen", "1.160.0")
+    compileOnly("com.github.oraxen", "oraxen", "1.160.0") {
+        exclude("*", "*")
+    }
 
     compileOnly("me.clip", "placeholderapi", "2.11.4")
 }
@@ -126,7 +128,7 @@ val versions = listOf(
 modrinth {
     autoAddDependsOn.set(false)
 
-    token.set(System.getenv("MODRINTH_TOKEN"))
+    token.set(System.getenv("modrinth_token"))
 
     projectId.set(rootProject.name.lowercase())
 
@@ -135,7 +137,7 @@ modrinth {
 
     versionType.set(type)
 
-    uploadFile.set(file)
+    uploadFile.set(file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.version}.jar"))
 
     gameVersions.addAll(versions)
 
@@ -158,7 +160,7 @@ hangarPublish {
 
         platforms {
             register(Platforms.PAPER) {
-                jar.set(file)
+                jar.set(file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.version}.jar"))
                 platformVersions.set(versions)
             }
         }
