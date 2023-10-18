@@ -8,6 +8,7 @@ import dev.triumphteam.gui.components.GuiType;
 import dev.triumphteam.gui.components.util.GuiFiller;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.common.config.types.menus.MainMenuConfig;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
@@ -22,12 +23,18 @@ public class CrateMainMenu {
     private final SettingsManager mainMenuConfig;
     private final Set<Crate> crateConfigs;
 
-    public CrateMainMenu(CrazyCrates plugin) {
+    private final Player player;
+
+    public CrateMainMenu(CrazyCrates plugin, Player player) {
         this.plugin = plugin;
+
+        this.player = player;
 
         this.mainMenuConfig = this.plugin.getConfigManager().getMainMenuConfig();
 
         this.crateConfigs = this.plugin.getCrazyHandler().getCrateManager().getCrates();
+
+        this.plugin.getCrazyHandler().getGuiManager().addPlayer(this.player.getUniqueId(), this);
     }
 
     private Gui gui;
@@ -40,18 +47,83 @@ public class CrateMainMenu {
                 .rows(this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_rows))
                 .create();
 
+        this.gui.setCloseGuiAction(event -> this.plugin.getCrazyHandler().getGuiManager().removePlayer(event.getPlayer().getUniqueId()));
+
         if (this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_filler_toggle)) {
-            String item = this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_filler_item);
-            String name = this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_filler_name);
-            List<String> lore = this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_filler_lore);
+            if (!this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_filler_single_item)) {
+                List<String> items = this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_filler_items);
 
-            GuiFiller guiFiller = this.gui.getFiller();
+                items.forEach(line -> {
+                    String[] split = line.split(", ");
 
-            ItemStack itemStack = ParentBuilder.of(this.plugin).setMaterial(item).setDisplayName(name).setDisplayLore(lore).build();
+                    int row = 0;
+                    int column = 0;
 
-            GuiItem guiItem = new GuiItem(itemStack);
+                    com.ryderbelserion.cluster.paper.items.ItemBuilder itemBuilder = ParentBuilder.of(this.plugin);
 
-            guiFiller.fill(guiItem);
+                    for (String option : split) {
+                        if (option.contains("item:")) {
+                            itemBuilder.setMaterial(option.replace("item:", ""));
+                        }
+
+                        if (option.contains("name:")) {
+                            itemBuilder.setDisplayName(option.replace("name:", "").replaceAll("\\{player}", this.player.getName()));
+                        }
+
+                        if (option.contains("lore:")) {
+                            option = option.replace("lore:", "");
+
+                            String[] options = option.split(",");
+
+                            for (String value : options) {
+                                itemBuilder.addDisplayLore(value.replaceAll("\\{player}", this.player.getName()));
+                            }
+                        }
+
+                        if (option.contains("glowing:")) {
+                            itemBuilder.setGlowing(Boolean.parseBoolean(option.replace("glowing:", "")));
+                        }
+
+                        if (option.contains("player:")) {
+                            itemBuilder.setPlayer(option.replaceAll("\\{player}", player.getName()));
+                        }
+
+                        if (option.contains("row:")) {
+                            row = Integer.parseInt(option.replace("row:", ""));
+                        }
+
+                        if (option.contains("column:")) {
+                            column = Integer.parseInt(option.replace("column:", ""));
+                        }
+
+                        if (option.contains("unbreakable-item")) {
+                            itemBuilder.setUnbreakable(Boolean.parseBoolean(option.replace("unbreakable-item:", "")));
+                        }
+
+                        if (option.contains("hide-item-flags")) {
+                            itemBuilder.hideItemFlags(Boolean.parseBoolean(option.replace("hide-item-flags", "")));
+                        }
+                    }
+
+                    ItemStack itemStack = itemBuilder.build();
+
+                    GuiItem guiItem = new GuiItem(itemStack);
+
+                    this.gui.setItem(row, column, guiItem);
+                });
+            } else {
+                String item = this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_filler_item);
+                String name = this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_filler_name);
+                List<String> lore = this.mainMenuConfig.getProperty(MainMenuConfig.crate_menu_filler_lore);
+
+                GuiFiller guiFiller = this.gui.getFiller();
+
+                ItemStack itemStack = ParentBuilder.of(this.plugin).setMaterial(item).setDisplayName(name).setDisplayLore(lore).build();
+
+                GuiItem guiItem = new GuiItem(itemStack);
+
+                guiFiller.fill(guiItem);
+            }
         }
 
         if (this.crateConfigs.isEmpty()) return;
@@ -67,11 +139,18 @@ public class CrateMainMenu {
                 String key = clickedItem.getString("crazycrates_crate");
 
                 if (key.equalsIgnoreCase(crate.getFileName())) {
-                    event.getWhoClicked().sendMessage(crate.getCrateName());
+                    // Create the object.
+                    CratePreviewMenu cratePreviewMenu = new CratePreviewMenu(this.plugin, crate);
+
+                    // Create the menu.
+                    cratePreviewMenu.create();
+
+                    // Open the menu.
+                    cratePreviewMenu.getGui().open(event.getWhoClicked());
                 }
             });
 
-            gui.setItem(crate.getCrateMenuSlot(), guiItem);
+            this.gui.setItem(crate.getCrateMenuRow(), crate.getCrateMenuColumn(), guiItem);
         });
     }
 
