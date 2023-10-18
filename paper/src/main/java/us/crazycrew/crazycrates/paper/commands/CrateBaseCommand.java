@@ -64,6 +64,6 @@ public class CrateBaseCommand extends BaseCommand {
     public void onReload(CommandSender sender) {
         this.crazyHandler.reload();
 
-        sender.sendMessage("The reload has been completed.");
+        //TODO() Add proper message.
     }
 }
