@@ -129,6 +129,8 @@ public class CrateMainMenu {
         if (this.crateConfigs.isEmpty()) return;
 
         this.crateConfigs.forEach(crate -> {
+            if (!crate.isCrateInMenu()) return;
+
             ItemStack crateItem = ParentBuilder.of(this.plugin).setMaterial(crate.getCrateItemType()).setDisplayLore(crate.getCrateItemLore()).setDisplayName(crate.getCrateItemName()).build();
             NbtBuilder nbtItem = new NbtBuilder(this.plugin, crateItem);
             nbtItem.setString("crazycrates_crate", crate.getFileName());
