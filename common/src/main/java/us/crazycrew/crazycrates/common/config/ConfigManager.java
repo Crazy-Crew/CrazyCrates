@@ -3,6 +3,7 @@ package us.crazycrew.crazycrates.common.config;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.configurationdata.ConfigurationDataBuilder;
+import ch.jalu.configme.resource.YamlFileResourceOptions;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.common.config.types.Messages;
@@ -27,12 +28,14 @@ public class ConfigManager {
     private SettingsManager previewMenuConfig;
 
     public void load() {
+        YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
+
         // Create the plugin-config.yml file.
         File pluginConfigFile = new File(this.dataFolder, "plugin-config.yml");
 
         // Bind it to settings manager
         this.pluginConfig = SettingsManagerBuilder
-                .withYamlFile(pluginConfigFile)
+                .withYamlFile(pluginConfigFile, builder)
                 .useDefaultMigrationService()
                 .configurationData(PluginConfig.class)
                 .create();
@@ -40,7 +43,7 @@ public class ConfigManager {
         File configFile = new File(this.dataFolder, "config.yml");
 
         this.config = SettingsManagerBuilder
-                .withYamlFile(configFile)
+                .withYamlFile(configFile, builder)
                 .useDefaultMigrationService()
                 .configurationData(ConfigurationDataBuilder.createConfiguration(Config.class))
                 .create();
@@ -52,7 +55,7 @@ public class ConfigManager {
         File messagesFile = new File(localeDir, this.pluginConfig.getProperty(PluginConfig.locale_file) + ".yml");
 
         this.messages = SettingsManagerBuilder
-                .withYamlFile(messagesFile)
+                .withYamlFile(messagesFile, builder)
                 .useDefaultMigrationService()
                 .configurationData(Messages.class)
                 .create();
@@ -60,7 +63,7 @@ public class ConfigManager {
         File mainMenuFile = new File(this.dataFolder, "/menus/crate-menu.yml");
 
         this.mainMenuConfig = SettingsManagerBuilder
-                .withYamlFile(mainMenuFile)
+                .withYamlFile(mainMenuFile, builder)
                 .useDefaultMigrationService()
                 .configurationData(ConfigurationDataBuilder.createConfiguration(MainMenuConfig.class))
                 .create();
@@ -68,7 +71,7 @@ public class ConfigManager {
         File previewMenuFile = new File(this.dataFolder, "/menus/preview-menu.yml");
 
         this.previewMenuConfig = SettingsManagerBuilder
-                .withYamlFile(previewMenuFile)
+                .withYamlFile(previewMenuFile, builder)
                 .useDefaultMigrationService()
                 .configurationData(ConfigurationDataBuilder.createConfiguration(PreviewMenuConfig.class))
                 .create();
