@@ -102,10 +102,16 @@ val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.v
 
 val description = """
 ## New Features:
- * N/A
+ * Added the ability to require a permission to open a crate.
+   * This feature was labeled to be added a while ago but I don't know why it didn't get added. [#594](https://github.com/Crazy-Crew/CrazyCrates/pull/594)
+   * New Message: 
+     * No-Crate-Permission: '&cYou do not have permission to use that crate.'
+   * New Permissions:
+     * crazycrates.open.<crate_name>
+     * crazycrates.open.* which defaults to true.
 
 ## Fix
- * N/A
+ * Cosmic Crates should no longer error. [#599](https://github.com/Crazy-Crew/CrazyCrates/pull/599)
     
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
