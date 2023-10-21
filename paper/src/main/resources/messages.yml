@@ -58,11 +58,13 @@ Messages:
       No-Virtual-Keys: '&8&l(&4&l!&8&l) &7You currently do not have any virtual keys.'
       Header:
         - '&8&l(&6&l!&8&l) &7List of your current number of keys.'
+        - ' &e -> Total Crates Opened: &c%crates_opened%'
     Other-Player:
       No-Virtual-Keys: '&8&l(&4&l!&8&l) &7The player %player% does not have any keys.'
       Header:
         - '&8&l(&6&l!&8&l) &7List of %player%''s current number of keys.'
-    Per-Crate: '%crate% &7&l>&8&l> &6%keys% keys'
+        - ' &e -> Total Crates Opened: &c%crates_opened%'
+    Per-Crate: '%crate% &7&l>&8&l> &6%keys% keys &7: Opened &6%crate_opened% times'
   Help:
     - '&e&lCrazy Crates Player Help'
     - '&6/keys view [player] &7- &eCheck the number of keys a player has.'

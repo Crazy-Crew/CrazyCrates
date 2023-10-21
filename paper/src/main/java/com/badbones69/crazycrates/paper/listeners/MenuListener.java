@@ -114,6 +114,7 @@ public class MenuListener implements Listener {
                     .addLorePlaceholder("%Keys%", NumberFormat.getNumberInstance().format(crazyManager.getVirtualKeys(player, crate)))
                     .addLorePlaceholder("%Keys_Physical%", NumberFormat.getNumberInstance().format(crazyManager.getPhysicalKeys(player, crate)))
                     .addLorePlaceholder("%Keys_Total%", NumberFormat.getNumberInstance().format(crazyManager.getTotalKeys(player, crate)))
+                    .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(crazyManager.getCratesOpened(player, crate)))
                     .addLorePlaceholder("%Player%", player.getName())
                     .build());
                 }
@@ -128,7 +129,8 @@ public class MenuListener implements Listener {
             if (crate.getCrateType() != CrateType.MENU) {
                 option = option.replaceAll("%" + crate.getName().toLowerCase() + "%", crazyManager.getVirtualKeys(player, crate) + "")
                 .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", crazyManager.getPhysicalKeys(player, crate) + "")
-                .replaceAll("%" + crate.getName().toLowerCase() + "_total%", crazyManager.getTotalKeys(player, crate) + "");
+                .replaceAll("%" + crate.getName().toLowerCase() + "_total%", crazyManager.getTotalKeys(player, crate) + "")
+                .replaceAll("%" + crate.getName().toLowerCase() + "_opened%", crazyManager.getCratesOpened(player, crate) + "");
             }
         }
 

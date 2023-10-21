@@ -23,7 +23,7 @@ public class BaseKeyCommand extends BaseCommand {
     @Default
     @Permission("crazycrates.command.player.key")
     public void viewPersonal(Player player) {
-        String header = Messages.PERSONAL_HEADER.getMessageNoPrefix();
+        String header = Messages.PERSONAL_HEADER.getMessageNoPrefix("%crates_opened%", crazyManager.getTotalCratesOpened(player) + "");
 
         String noKeys = Messages.PERSONAL_NO_VIRTUAL_KEYS.getMessage();
 
@@ -38,7 +38,11 @@ public class BaseKeyCommand extends BaseCommand {
             return;
         }
 
-        String header = Messages.OTHER_PLAYER_HEADER.getMessageNoPrefix("%Player%", target.getName());
+        HashMap<String, String> placeholders = new HashMap<>();
+        placeholders.put("%Player%", target.getName());
+        placeholders.put("%crates_opened%", crazyManager.getTotalCratesOpened(target) + "");
+
+        String header = Messages.OTHER_PLAYER_HEADER.getMessageNoPrefix(placeholders);
 
         String otherPlayer = Messages.OTHER_PLAYER_NO_VIRTUAL_KEYS.getMessage("%Player%", target.getName());
 
@@ -62,6 +66,7 @@ public class BaseKeyCommand extends BaseCommand {
                 HashMap<String, String> placeholders = new HashMap<>();
                 placeholders.put("%Crate%", crate.getFile().getString("Crate.Name"));
                 placeholders.put("%Keys%", amount + "");
+                placeholders.put("%crate_opened%", crazyManager.getCratesOpened(target, crate) + "");
                 message.add(Messages.PER_CRATE.getMessageNoPrefix(placeholders));
             }
         }
