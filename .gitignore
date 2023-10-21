@@ -1,6 +1,6 @@
+build
 .gradle
 .idea
-build
 
 buildSrc/.gradle
 buildSrc/build
@@ -8,12 +8,15 @@ buildSrc/build
 core/.gradle
 core/build
 
-api/.gradle
-api/build
-
 jars
 
-paper/.gradle
 paper/build
+paper/.gradle
 
-paper/run
+run
+!paper/run/config
+!paper/run/spigot.yml
+!paper/run/bukkit.yml
+!paper/run/eula.txt
+!paper/run/server.properties
+!paper/run/plugins

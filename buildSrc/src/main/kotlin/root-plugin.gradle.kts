@@ -6,6 +6,10 @@ plugins {
 }
 
 repositories {
+    maven("https://repo.triumphteam.dev/snapshots/")
+
+    maven("https://repo.crazycrew.us/releases/")
+
     maven("https://jitpack.io")
 
     mavenCentral()
@@ -22,10 +26,6 @@ tasks {
     }
 
     shadowJar {
-        archiveClassifier.set("")
-
-        exclude("META-INF/**")
-
         mergeServiceFiles()
     }
 }
