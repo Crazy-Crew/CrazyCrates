@@ -115,8 +115,8 @@ val description = """
   * %crates_opened% ( Shows the total amount of crates opened and is used in the /keys header )
   * All placeholders will return `0` if data not found so that is normal.
  * Added 2 new placeholderapi placeholders
-  * %crazycrates_<crate-name>_opened ( Shows how many times a player has opened a singular crate. )
-  * %crazycrates_crates_opened% ( Shows the total amount of crates a player has opened. )
+   * %crazycrates_<crate-name>_opened ( Shows how many times a player has opened a singular crate. )
+   * %crazycrates_crates_opened% ( Shows the total amount of crates a player has opened. )
 
 ## Fix
  * Cosmic Crates should no longer error. [#599](https://github.com/Crazy-Crew/CrazyCrates/pull/599)
