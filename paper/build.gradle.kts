@@ -109,6 +109,14 @@ val description = """
    * New Permissions:
      * crazycrates.open.<crate_name>
      * crazycrates.open.* which defaults to true.
+ * Added multiple internal placeholders related to how many times a player has opened a crate or crates
+  * %crate_opened% ( Shows a singular crate, it's used in Per-Crate inside messages.yml )
+    * This placeholder can also be used in in /crates in the lore when you hover over the item.
+  * %crates_opened% ( Shows the total amount of crates opened and is used in the /keys header )
+  * All placeholders will return `0` if data not found so that is normal.
+ * Added 2 new placeholderapi placeholders
+  * %crazycrates_<crate-name>_opened ( Shows how many times a player has opened a singular crate. )
+  * %crazycrates_crates_opened% ( Shows the total amount of crates a player has opened. )
 
 ## Fix
  * Cosmic Crates should no longer error. [#599](https://github.com/Crazy-Crew/CrazyCrates/pull/599)
