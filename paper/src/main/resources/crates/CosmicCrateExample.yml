@@ -11,6 +11,14 @@ Crate:
   Slot: 23
   OpeningBroadCast: false
   BroadCast: ''
+  Opening-Command:
+    # If the commands should be sent or not.
+    Toggle: false
+    # Commands to run.
+    # Supports all placeholderapi placeholders
+    # Supports %prefix which returns our prefix, %player% which uses the player name
+    Commands:
+      - 'put your command here.'
   Item: 'ENDER_CHEST'
   Glowing: false
   Name: '&d&lCosmic Chest'

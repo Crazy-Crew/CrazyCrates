@@ -117,6 +117,18 @@ val description = """
  * Added 2 new placeholderapi placeholders
    * %crazycrates_<crate-name>_opened ( Shows how many times a player has opened a singular crate. )
    * %crazycrates_crates_opened% ( Shows the total amount of crates a player has opened. )
+ * Added the ability to run commands when a crate is opened, It defaults to false.
+   ```yml
+   Crate:
+     Opening-Command:
+         # If the commands should be sent or not.
+         Toggle: false
+         # Commands to run.
+         # Supports all placeholderapi placeholders
+         # Supports %prefix which returns our prefix, %player% which uses the player name
+         Commands:
+             - 'put your command here.'
+  ```
 
 ## Fix
  * Cosmic Crates should no longer error. [#599](https://github.com/Crazy-Crew/CrazyCrates/pull/599)

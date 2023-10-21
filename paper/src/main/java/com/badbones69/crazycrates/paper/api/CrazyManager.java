@@ -349,7 +349,11 @@ public class CrazyManager {
 
         addPlayerToOpeningList(player, crate);
 
-        if (crate.getFile() != null) Methods.broadCastMessage(crate.getFile(), player);
+        if (crate.getFile() != null) {
+            Methods.broadCastMessage(crate.getFile(), player);
+
+            Methods.runStartingCommands(crate.getFile(), player);
+        }
 
         FileConfiguration config = Files.CONFIG.getFile();
 

@@ -10,7 +10,9 @@ import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.paper.listeners.FireworkDamageListener;
+import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -57,6 +59,26 @@ public class Methods {
             if (crateBroadcast.isEmpty()) return;
             plugin.getServer().broadcastMessage(color(crateBroadcast.replaceAll("%prefix%", quoteReplacement(getPrefix())).replaceAll("%player%", player.getName()).replaceAll("%Prefix%", quoteReplacement(getPrefix())).replaceAll("%Player%", player.getName())));
         }
+    }
+
+    public static void runStartingCommands(FileConfiguration crateFile, Player player) {
+        if (!crateFile.contains("Crate.Opening-Command") || !crateFile.getBoolean("Crate.Opening-Command.Toggle", false)) return;
+
+        List<String> commands = crateFile.getStringList("Crate.Opening-Command.Commands");
+
+        if (commands.isEmpty()) return;
+
+        commands.forEach(line -> {
+            String msg;
+
+            if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
+                msg = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%prefix%", getPrefix()).replaceAll("%player%", player.getName()));
+            } else {
+                msg = line.replaceAll("%prefix%", getPrefix()).replaceAll("%player%", player.getName());
+            }
+
+            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), msg);
+        });
     }
 
     public static void sendMessage(CommandSender commandSender, String message, boolean prefixToggle) {

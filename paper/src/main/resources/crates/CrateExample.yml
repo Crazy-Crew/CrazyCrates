@@ -25,6 +25,14 @@ Crate:
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
   BroadCast: '%prefix%&6&l%player%&r &7is opening a &7&lBasic Chest&7.'
+  Opening-Command:
+    # If the commands should be sent or not.
+    Toggle: false
+    # Commands to run.
+    # Supports all placeholderapi placeholders
+    # Supports %prefix which returns our prefix, %player% which uses the player name
+    Commands:
+      - 'run your command'
   # A default message if the prize doesn't have any Messages
   # i.e Messages: [] or the value isn't there.
   Prize-Message:

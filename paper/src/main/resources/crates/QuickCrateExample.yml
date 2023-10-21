@@ -12,6 +12,14 @@ Crate:
   Slot: 14
   OpeningBroadCast: true
   BroadCast: '%prefix%&6&l%player%&r &7is opening a &e&lClassic Chest&7.'
+  Opening-Command:
+    # If the commands should be sent or not.
+    Toggle: false
+    # Commands to run.
+    # Supports all placeholderapi placeholders
+    # Supports %prefix which returns our prefix, %player% which uses the player name
+    Commands:
+      - 'put your command here.'
   Prize-Message:
     - '&7You have won &c%reward% &7from &c%crate%.'
   Item: 'CHEST'
