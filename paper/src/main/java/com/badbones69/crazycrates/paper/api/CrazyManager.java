@@ -1094,6 +1094,33 @@ public class CrazyManager {
         return getVirtualKeys(player, crate) + getPhysicalKeys(player, crate);
     }
 
+    public int getTotalCratesOpened(Player player) {
+        return Files.DATA.getFile().getInt("Players." + player.getUniqueId() + ".tracking.total-crates", 0);
+    }
+
+    public int getCratesOpened(Player player, Crate crate) {
+        return Files.DATA.getFile().getInt("Players." + player.getUniqueId() + ".tracking." + crate.getName(), 0);
+    }
+
+    public void addCrate(Player player, Crate crate) {
+        FileConfiguration data = Files.DATA.getFile();
+
+        boolean hasValue = data.contains("Players." + player.getUniqueId() + ".tracking." + crate.getName());
+
+        if (hasValue) {
+            int amount = data.getInt("Players." + player.getUniqueId() + ".tracking." + crate.getName());
+            amount++;
+
+            data.set("Players." + player.getUniqueId() + ".tracking." + crate.getName(), amount);
+            data.set("Players." + player.getUniqueId() + ".tracking.total-crates", amount);
+            Files.DATA.saveFile();
+        } else {
+            data.set("Players." + player.getUniqueId() + ".tracking.total-crates", 1);
+            data.set("Players." + player.getUniqueId() + ".tracking." + crate.getName(), 1);
+            Files.DATA.saveFile();
+        }
+    }
+
     /**
      * Take a key from a player.
      *
@@ -1132,7 +1159,11 @@ public class CrazyManager {
                                     takeAmount = 0;
                                 }
 
-                                if (takeAmount <= 0) return true;
+                                if (takeAmount <= 0) {
+                                    // Add how many times they opened the crate.
+                                    addCrate(player, crate);
+                                    return true;
+                                }
                             }
                         }
                     }
@@ -1153,7 +1184,11 @@ public class CrazyManager {
                                     takeAmount = 0;
                                 }
 
-                                if (takeAmount <= 0) return true;
+                                if (takeAmount <= 0) {
+                                    // Add how many times they opened the crate.
+                                    addCrate(player, crate);
+                                    return true;
+                                }
                             }
                         }
                     }
@@ -1163,7 +1198,11 @@ public class CrazyManager {
                 }
 
                 // Returns true because it was able to take some keys.
-                if (takeAmount < amount) return true;
+                if (takeAmount < amount) {
+                    // Add how many times they opened the crate.
+                    addCrate(player, crate);
+                    return true;
+                }
             }
 
             case VIRTUAL_KEY -> {
@@ -1176,7 +1215,11 @@ public class CrazyManager {
                 } else {
                     Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), newAmount);
                 }
+
                 Files.DATA.saveFile();
+
+                // Add how many times they opened the crate.
+                addCrate(player, crate);
                 return true;
             }
 
