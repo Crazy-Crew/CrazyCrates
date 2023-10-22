@@ -11,13 +11,14 @@ Crate:
   Slot: 23
   OpeningBroadCast: false
   BroadCast: ''
-  Opening-Command:
+  # This section is related to commands opening when a crate is opened.
+  opening-command:
     # If the commands should be sent or not.
-    Toggle: false
-    # Commands to run.
+    toggle: false
+    # The commands to run when the crate opens.
     # Supports all placeholderapi placeholders
     # Supports %prefix which returns our prefix, %player% which uses the player name
-    Commands:
+    commands:
       - 'put your command here.'
   Item: 'ENDER_CHEST'
   Glowing: false
