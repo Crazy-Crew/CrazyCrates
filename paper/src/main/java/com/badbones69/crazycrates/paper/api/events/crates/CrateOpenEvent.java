@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.api.events.crates;
 
+import com.badbones69.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -14,15 +15,20 @@ public class CrateOpenEvent extends Event implements Cancellable {
     private final JavaPlugin plugin;
     private final Player player;
     private final Crate crate;
+    private final KeyType keyType;
+    private final boolean checkHand;
     private final FileConfiguration configuration;
 
     private boolean isCancelled;
 
-    public CrateOpenEvent(JavaPlugin plugin, Player player, Crate crate, FileConfiguration configuration) {
+    public CrateOpenEvent(JavaPlugin plugin, Player player, Crate crate, KeyType keyType, boolean checkHand, FileConfiguration configuration) {
         this.plugin = plugin;
 
         this.player = player;
         this.crate = crate;
+
+        this.keyType = keyType;
+        this.checkHand = checkHand;
 
         this.configuration = configuration;
 
@@ -50,6 +56,14 @@ public class CrateOpenEvent extends Event implements Cancellable {
 
     public Crate getCrate() {
         return this.crate;
+    }
+
+    public KeyType getKeyType() {
+        return this.keyType;
+    }
+
+    public boolean isCheckHand() {
+        return this.checkHand;
     }
 
     public FileConfiguration getConfiguration() {

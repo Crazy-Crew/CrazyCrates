@@ -331,7 +331,7 @@ public class CrazyManager {
      * @param checkHand If it just checks the players hand or if it checks their inventory.
      */
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
-        CrateOpenEvent crateOpenEvent = new CrateOpenEvent(this.plugin, player, crate, crate.getFile());
+        CrateOpenEvent crateOpenEvent = new CrateOpenEvent(this.plugin, player, crate, keyType, checkHand, crate.getFile());
         crateOpenEvent.callEvent();
 
         if (crateOpenEvent.isCancelled()) {
@@ -354,7 +354,6 @@ public class CrazyManager {
 
                 if (openMenu) MenuListener.openGUI(player); else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
             }
-            case COSMIC -> Cosmic.openCosmic(player, crate, keyType, checkHand);
             case CSGO -> CSGO.openCSGO(player, crate, keyType, checkHand);
             case ROULETTE -> Roulette.openRoulette(player, crate, keyType, checkHand);
             case WHEEL -> Wheel.startWheel(player, crate, keyType, checkHand);
@@ -1153,9 +1152,15 @@ public class CrazyManager {
 
                                 if ((takeAmount - keyAmount) >= 0) {
                                     Methods.removeItemAnySlot(player.getInventory(), item);
+
+                                    if (crate.getCrateType() == CrateType.COSMIC) addCrate(player, crate);
+
                                     takeAmount -= keyAmount;
                                 } else {
                                     item.setAmount(keyAmount - takeAmount);
+
+                                    if (crate.getCrateType() == CrateType.COSMIC) addCrate(player, crate);
+
                                     takeAmount = 0;
                                 }
 
@@ -1175,8 +1180,13 @@ public class CrazyManager {
                                 if ((takeAmount - keyAmount) >= 0) {
                                     player.getEquipment().setItemInOffHand(new ItemStack(Material.AIR, 1));
                                     takeAmount -= keyAmount;
+
+                                    if (crate.getCrateType() == CrateType.COSMIC) addCrate(player, crate);
                                 } else {
                                     item.setAmount(keyAmount - takeAmount);
+
+                                    if (crate.getCrateType() == CrateType.COSMIC) addCrate(player, crate);
+
                                     takeAmount = 0;
                                 }
 
@@ -1203,6 +1213,8 @@ public class CrazyManager {
                 } else {
                     Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), newAmount);
                 }
+
+                if (crate.getCrateType() == CrateType.COSMIC) addCrate(player, crate);
 
                 Files.DATA.saveFile();
                 return true;
