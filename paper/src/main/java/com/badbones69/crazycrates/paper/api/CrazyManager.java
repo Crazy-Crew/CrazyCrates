@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent.KeyReceiveReason;
+import com.badbones69.crazycrates.paper.api.events.crates.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.*;
@@ -330,29 +331,19 @@ public class CrazyManager {
      * @param checkHand If it just checks the players hand or if it checks their inventory.
      */
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
-        if (crate.getCrateType() != CrateType.MENU) {
-            if (!crate.canWinPrizes(player)) {
-                player.sendMessage(Messages.NO_PRIZES_FOUND.getMessage());
-                removePlayerFromOpeningList(player);
-                removePlayerKeyType(player);
-                return;
-            }
-        }
+        CrateOpenEvent crateOpenEvent = new CrateOpenEvent(this.plugin, player, crate, crate.getFile());
+        crateOpenEvent.callEvent();
 
-        if (!(player.hasPermission("crazycrates.open." + crate.getName()) || player.hasPermission("crazycrates.open.*"))) {
-            player.sendMessage(Messages.NO_CRATE_PERMISSION.getMessage());
-            removePlayerFromOpeningList(player);
-            CrateControlListener.inUse.remove(player);
+        if (crateOpenEvent.isCancelled()) {
+            List.of(
+                    "Crate " + crate.getName() + " event has been cancelled.",
+                    "A few reasons for why this happened can be found below",
+                    "",
+                    " 1) No valid prizes can be found, Likely a yaml issue.",
+                    " 2) The player does not have the permission to open the crate."
+            ).forEach(this.plugin.getLogger()::warning);
 
             return;
-        }
-
-        addPlayerToOpeningList(player, crate);
-
-        if (crate.getFile() != null) {
-            Methods.broadCastMessage(crate.getFile(), player);
-
-            Methods.runStartingCommands(crate.getFile(), player);
         }
 
         FileConfiguration config = Files.CONFIG.getFile();
@@ -1163,11 +1154,7 @@ public class CrazyManager {
                                     takeAmount = 0;
                                 }
 
-                                if (takeAmount <= 0) {
-                                    // Add how many times they opened the crate.
-                                    addCrate(player, crate);
-                                    return true;
-                                }
+                                if (takeAmount <= 0) return true;
                             }
                         }
                     }
@@ -1188,11 +1175,7 @@ public class CrazyManager {
                                     takeAmount = 0;
                                 }
 
-                                if (takeAmount <= 0) {
-                                    // Add how many times they opened the crate.
-                                    addCrate(player, crate);
-                                    return true;
-                                }
+                                if (takeAmount <= 0) return true;
                             }
                         }
                     }
@@ -1202,11 +1185,7 @@ public class CrazyManager {
                 }
 
                 // Returns true because it was able to take some keys.
-                if (takeAmount < amount) {
-                    // Add how many times they opened the crate.
-                    addCrate(player, crate);
-                    return true;
-                }
+                if (takeAmount < amount) return true;
             }
 
             case VIRTUAL_KEY -> {
@@ -1221,9 +1200,6 @@ public class CrazyManager {
                 }
 
                 Files.DATA.saveFile();
-
-                // Add how many times they opened the crate.
-                addCrate(player, crate);
                 return true;
             }
 
