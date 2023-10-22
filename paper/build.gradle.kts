@@ -133,10 +133,11 @@ val description = """
 ## Changes:
  * New placeholders:
  ### Old placeholders do still work as they serve a purpose for when you don't need to supply a player.
-   * %crazycrates_<player>_opened% -> Shows the total amount of crates opened.
-   * %crazycrates_<player>_<crate>_opened% -> Shows the amount of this particular crate opened.
-   * %crazycrates_<player>_<crate>_physical% -> Shows physical keys in an online player's inventory.
-   * %crazycrates_<player>_<crate>_virtual% -> Shows virtual keys if the player is online.
+   * %crazycrates_<player>_opened% -> Returns the total amount of crates opened.
+   * %crazycrates_<player>_<crate>_opened% -> 	Returns the amount of this particular crate opened.
+   * %crazycrates_<player>_<crate>_physical% -> 	Returns the amount of physical keys a player has in their inventory.
+   * %crazycrates_<player>_<crate>_virtual% -> Returns the amount of virtual keys a player has.
+   * %crazycrates_<player>_<crate>_total% -> 	Returns the total amount of virtual and physical keys a player has.
 
 ## Fix:
  * Cosmic Crates should no longer error. [#599](https://github.com/Crazy-Crew/CrazyCrates/pull/599)
