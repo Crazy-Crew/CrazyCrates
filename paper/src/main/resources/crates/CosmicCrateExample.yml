@@ -25,7 +25,7 @@ Crate:
   Lore:
     - '&7This crate contains strange objects,'
     - '&7from somewhere beyond this planet.'
-    - '&7You have &6%Keys% keys &7to open this crate with.'
+    - '&7You have &6%keys% keys &7to open this crate with.'
     - '&7You have opened this crate: &6%crate_opened% times'
     - '&7&l(&e&l!&7&l) Right click to view rewards.'
   Preview:
