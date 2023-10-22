@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.events.crates.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
 import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
 import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -55,7 +56,7 @@ public class CrateOpenListener implements Listener {
         }
 
         this.crazyManager.addPlayerToOpeningList(player, crate);
-        this.crazyManager.addCrate(player, crate);
+        if (crate.getCrateType() != CrateType.COSMIC) this.crazyManager.addCrate(player, crate);
 
         JavaPlugin plugin = event.getPlugin();
 
@@ -66,7 +67,7 @@ public class CrateOpenListener implements Listener {
 
         if (broadcastToggle) {
             if (!broadcastMessage.isBlank()) {
-                plugin.getServer().broadcastMessage(Methods.color(broadcastMessage.replaceAll("%prefix%", Methods.getPrefix())).replaceAll("%player%", Methods.getPrefix()));
+                plugin.getServer().broadcastMessage(Methods.color(broadcastMessage.replaceAll("%prefix%", Methods.getPrefix())).replaceAll("%player%", player.getName()));
             }
         }
 
@@ -77,17 +78,21 @@ public class CrateOpenListener implements Listener {
 
             if (!commands.isEmpty()) {
                 commands.forEach(line -> {
-                    StringBuilder builder = new StringBuilder();
+                    String builder;
 
                     if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
-                        builder.append(PlaceholderAPI.setPlaceholders(player, line.replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName())));
+                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName()));
                     } else {
-                        builder.append(line.replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName()));
+                        builder = line.replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName());
                     }
 
-                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), builder.toString());
+                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), builder);
                 });
             }
+        }
+
+        if (crate.getCrateType() == CrateType.COSMIC) {
+            Cosmic.openCosmic(player, crate, event.getKeyType(), event.isCheckHand());
         }
     }
 }

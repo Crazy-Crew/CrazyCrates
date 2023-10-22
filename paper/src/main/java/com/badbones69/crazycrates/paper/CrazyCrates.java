@@ -16,6 +16,7 @@ import com.badbones69.crazycrates.paper.cratetypes.War;
 import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import com.badbones69.crazycrates.paper.cratetypes.Wonder;
 import com.badbones69.crazycrates.paper.listeners.*;
+import com.badbones69.crazycrates.paper.listeners.crates.CrateOpenListener;
 import com.badbones69.crazycrates.paper.support.MetricsHandler;
 import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
 import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISupport;
@@ -166,6 +167,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         pluginManager.registerEvents(this, this);
 
         starter.getCrazyManager().loadCrates();
+
+        pluginManager.registerEvents(new CrateOpenListener(this), this);
 
         if (!starter.getCrazyManager().getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
 
