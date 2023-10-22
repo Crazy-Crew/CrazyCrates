@@ -1102,16 +1102,21 @@ public class CrazyManager {
 
         boolean hasValue = data.contains("Players." + player.getUniqueId() + ".tracking." + crate.getName());
 
-        if (hasValue) {
-            int amount = data.getInt("Players." + player.getUniqueId() + ".tracking." + crate.getName());
-            amount++;
+        int amount;
 
-            data.set("Players." + player.getUniqueId() + ".tracking." + crate.getName(), amount);
-            data.set("Players." + player.getUniqueId() + ".tracking.total-crates", amount);
+        if (hasValue) {
+            amount = data.getInt("Players." + player.getUniqueId() + ".tracking." + crate.getName());
+
+            data.set("Players." + player.getUniqueId() + ".tracking." + crate.getName(), amount + 1);
+            data.set("Players." + player.getUniqueId() + ".tracking.total-crates", data.getInt("Players." + player.getUniqueId() + ".tracking.total-crates") + 1);
+
             Files.DATA.saveFile();
         } else {
-            data.set("Players." + player.getUniqueId() + ".tracking.total-crates", 1);
+            amount = data.contains("Players." + player.getUniqueId() + ".tracking.total-crates") ? data.getInt("Players." + player.getUniqueId() + ".tracking.total-crates") + 1 : 1;
+
+            data.set("Players." + player.getUniqueId() + ".tracking.total-crates", amount);
             data.set("Players." + player.getUniqueId() + ".tracking." + crate.getName(), 1);
+
             Files.DATA.saveFile();
         }
     }
