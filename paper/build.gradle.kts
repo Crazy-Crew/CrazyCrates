@@ -108,7 +108,7 @@ val description = """
      * No-Crate-Permission: '&cYou do not have permission to use that crate.'
    * New Permissions:
      * crazycrates.open.<crate_name>
-     * crazycrates.open.* which defaults to true.
+     * crazycrates.open.* which defaults to true. Set this to false and use the permission above to start blocking crates.
  * Added multiple internal placeholders related to how many times a player has opened a crate or crates
   * %crate_opened% ( Shows a singular crate, it's used in Per-Crate inside messages.yml )
     * This placeholder can also be used in in /crates in the lore when you hover over the item.
