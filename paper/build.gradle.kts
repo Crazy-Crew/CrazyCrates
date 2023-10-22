@@ -130,9 +130,15 @@ val description = """
              - 'put your command here.'
   ```
 
-## Fix
+## Fix:
  * Cosmic Crates should no longer error. [#599](https://github.com/Crazy-Crew/CrazyCrates/pull/599)
-    
+ * Fixed a bug where it would overwrite the total-crates in data.yml if adding a new crate and other overwriting issues. ( Found in beta testing )
+   * You should probably join the beta tester team in our discord... I like direct feedback :)
+ * Check if the crate type is cosmic before marking it as "open", We want the key to be taken before being marked as open so people can't abuse it.
+
+## Developers:
+ * Added a crate open event.
+
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
  * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
