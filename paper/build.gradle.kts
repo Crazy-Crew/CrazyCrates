@@ -120,14 +120,24 @@ val description = """
  * Added the ability to run commands when a crate is opened, It defaults to false.
    ```yml
    Crate:
-     Opening-Command:
+     opening-command:
          # If the commands should be sent or not.
-         Toggle: false
-         # Commands to run.
+         toggle: false
+         # The commands to run when the crate opens.
          # Supports all placeholderapi placeholders
          # Supports %prefix which returns our prefix, %player% which uses the player name
-         Commands:
+         commands:
              - 'put your command here.'
+  ```
+ * Added the ability to pick whether you can have random schematics or a single schematic for QuadCrates.
+   ```yml
+   Crate:
+      # This section is related to .nbt files.
+      structure:
+        # If it should randomly use an .nbt file.
+        random: true
+        # The file to use inside schematic's folder.
+        file: 'classic.nbt'
   ```
 
 ## Changes:
