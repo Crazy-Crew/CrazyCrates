@@ -115,8 +115,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         }
 
         enable();
-
-        starter.getCrazyManager().loadCrates();
     }
 
     @Override
