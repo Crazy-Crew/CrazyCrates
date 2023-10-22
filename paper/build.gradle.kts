@@ -130,6 +130,14 @@ val description = """
              - 'put your command here.'
   ```
 
+## Changes:
+ * New placeholders:
+ ### Old placeholders do still work as they serve a purpose for when you don't need to supply a player.
+   * %crazycrates_<player>_opened% -> Shows the total amount of crates opened.
+   * %crazycrates_<player>_<crate>_opened% -> Shows the amount of this particular crate opened.
+   * %crazycrates_<player>_<crate>_physical% -> Shows physical keys in an online player's inventory.
+   * %crazycrates_<player>_<crate>_virtual% -> Shows virtual keys if the player is online.
+
 ## Fix:
  * Cosmic Crates should no longer error. [#599](https://github.com/Crazy-Crew/CrazyCrates/pull/599)
  * Fixed a bug where it would overwrite the total-crates in data.yml if adding a new crate and other overwriting issues. ( Found in beta testing )
