@@ -25,6 +25,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.logging.Level;
 
 public class Cosmic implements Listener {
 
@@ -216,9 +217,8 @@ public class Cosmic implements Listener {
                                         crazyManager.endCrate(player);
                                         cancel();
                                         player.sendMessage(Methods.getPrefix("&cAn issue has occurred and so a key refund was given."));
-                                        plugin.getServer().getLogger().warning("An issue occurred when the user " + player.getName() +
-                                        " was using the " + crate.getName() + " crate and so they were issued a key refund.");
-                                        e.printStackTrace();
+                                        plugin.getServer().getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() +
+                                        " was using the " + crate.getName() + " crate and so they were issued a key refund.", e);
                                     }
 
                                     return;
