@@ -23,8 +23,8 @@ public abstract class CrazyCratesPlugin implements ICrazyCrates {
         CrazyCratesService.stopService();
     }
 
-    @Override
-    public @NotNull File getDataFolder() {
-        return this.dataFolder;
+    @NotNull
+    public ConfigManager getConfigManager() {
+        return this.configManager;
     }
 }
