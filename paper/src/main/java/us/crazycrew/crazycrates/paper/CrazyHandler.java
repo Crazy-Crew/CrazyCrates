@@ -19,6 +19,8 @@ public class CrazyHandler extends CrazyCratesPlugin {
     }
 
     public void load() {
+        super.enable();
+
         // Creates user manager instance.
         this.userManager = new BukkitUserManager();
 
@@ -33,7 +35,7 @@ public class CrazyHandler extends CrazyCratesPlugin {
     }
 
     public void unload() {
-
+        super.disable();
     }
 
     @NotNull
