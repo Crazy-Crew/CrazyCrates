@@ -113,11 +113,19 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("reload")
     @Permission(value = "crazycrates.command.admin.reload", def = PermissionDefault.OP)
     public void onReload(CommandSender sender) {
-        fileManager.reloadAllFiles();
-        fileManager.setup();
+        boolean isEnabled = this.plugin.getCrazyHandler().getConfigManager().getPluginConfig().getProperty(PluginConfig.toggle_metrics);
 
-        plugin.cleanFiles();
-        crazyManager.loadCrates();
+        if (!isEnabled) {
+            this.plugin.getCrazyHandler().getMetrics().stop();
+        } else {
+            this.plugin.getCrazyHandler().getMetrics().start();
+        }
+
+        this.fileManager.reloadAllFiles();
+        this.fileManager.setup();
+
+        this.plugin.cleanFiles();
+        this.crazyManager.loadCrates();
 
         sender.sendMessage(Messages.RELOAD.getMessage());
     }
