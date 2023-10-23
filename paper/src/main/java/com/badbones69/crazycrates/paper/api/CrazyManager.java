@@ -767,6 +767,7 @@ public class CrazyManager {
      * @param keys The amount of keys you wish to give to the player.
      * @return Returns true if it successfully gave the offline player a key and false if there was an error.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public boolean addOfflineKeys(String player, Crate crate, int keys) {
         try {
             FileConfiguration data = Files.DATA.getFile();
@@ -794,6 +795,7 @@ public class CrazyManager {
      * @param keys The amount of keys you wish to take.
      * @return Returns true if it took the keys and false if an error occurred.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public boolean takeOfflineKeys(String player, Crate crate, int keys) {
         try {
             FileConfiguration data = Files.DATA.getFile();
@@ -819,6 +821,7 @@ public class CrazyManager {
      *
      * @param player The player which you would like to load the offline keys for.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public void loadOfflinePlayersKeys(Player player) {
         FileConfiguration data = Files.DATA.getFile();
         String name = player.getName().toLowerCase();
@@ -1022,6 +1025,7 @@ public class CrazyManager {
      * @param player The player you are checking.
      * @return The amount of virtual keys they own.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public HashMap<Crate, Integer> getVirtualKeys(Player player) {
         HashMap<Crate, Integer> keys = new HashMap<>();
 
@@ -1038,6 +1042,7 @@ public class CrazyManager {
      * @param playerName The name of the player you are checking.
      * @return The amount of virtual keys the player by that name has.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public HashMap<Crate, Integer> getVirtualKeys(String playerName) {
         HashMap<Crate, Integer> keys = new HashMap<>();
         FileConfiguration data = Files.DATA.getFile();
@@ -1065,6 +1070,7 @@ public class CrazyManager {
     /**
      * Get the amount of virtual keys a player has.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public int getVirtualKeys(Player player, Crate crate) {
         return Files.DATA.getFile().getInt("Players." + player.getUniqueId() + "." + crate.getName());
     }
@@ -1072,6 +1078,7 @@ public class CrazyManager {
     /**
      * Get the amount of physical keys a player has.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public int getPhysicalKeys(Player player, Crate crate) {
         int keys = 0;
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
@@ -1088,6 +1095,7 @@ public class CrazyManager {
     /**
      * Get the total amount of keys a player has.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public Integer getTotalKeys(Player player, Crate crate) {
         return getVirtualKeys(player, crate) + getPhysicalKeys(player, crate);
     }
@@ -1134,6 +1142,7 @@ public class CrazyManager {
      * @param checkHand If it just checks the players hand or if it checks their inventory.
      * @return Returns true if successfully taken keys and false if not.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public boolean takeKeys(int amount, Player player, Crate crate, KeyType keyType, boolean checkHand) {
         switch (keyType) {
             case PHYSICAL_KEY -> {
@@ -1232,6 +1241,7 @@ public class CrazyManager {
         return false;
     }
 
+    @Deprecated(since = "1.16", forRemoval = true)
     public void addVirtualKeys(int amount, Player player, Crate crate) {
         String uuid = player.getUniqueId().toString();
         int keys = getVirtualKeys(player, crate);
@@ -1248,6 +1258,7 @@ public class CrazyManager {
      * @param crate The Crate of whose keys you are giving.
      * @param keyType The type of key you are giving to the player.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public void addKeys(int amount, Player player, Crate crate, KeyType keyType) {
         switch (keyType) {
             case PHYSICAL_KEY -> {
@@ -1276,6 +1287,7 @@ public class CrazyManager {
      * @param player The player you are setting the keys to.
      * @param crate The Crate of whose keys are being set.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public void setKeys(int amount, Player player, Crate crate) {
         String uuid = player.getUniqueId().toString();
         Files.DATA.getFile().set("Players." + uuid + ".Name", player.getName());
@@ -1288,6 +1300,7 @@ public class CrazyManager {
      *
      * @param player The player that has just joined.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public void setNewPlayerKeys(Player player) {
         if (giveNewPlayersKeys) { // Checks if any crate gives new players keys and if not then no need to do all this stuff.
             String uuid = player.getUniqueId().toString();

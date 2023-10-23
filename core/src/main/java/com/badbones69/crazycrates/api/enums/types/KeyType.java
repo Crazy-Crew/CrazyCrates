@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api.enums.types;
 
+@Deprecated(since = "1.16", forRemoval = true)
 public enum KeyType {
     
     PHYSICAL_KEY("Physical_Key"),
