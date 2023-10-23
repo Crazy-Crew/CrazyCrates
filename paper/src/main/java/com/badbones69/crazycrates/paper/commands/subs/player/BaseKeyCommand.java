@@ -10,20 +10,24 @@ import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.List;
 
 @Command(value = "keys", alias = {"key"})
 public class BaseKeyCommand extends BaseCommand {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
+    @NotNull
     private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
 
     @Default
     @Permission("crazycrates.command.player.key")
     public void viewPersonal(Player player) {
-        String header = Messages.PERSONAL_HEADER.getMessageNoPrefix("%crates_opened%", this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(player.getUniqueId()) + "");
+        String header = Messages.PERSONAL_HEADER.getMessageNoPrefix("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(player.getUniqueId())));
 
         String noKeys = Messages.PERSONAL_NO_VIRTUAL_KEYS.getMessage();
 
@@ -39,12 +43,12 @@ public class BaseKeyCommand extends BaseCommand {
         }
 
         HashMap<String, String> placeholders = new HashMap<>();
-        placeholders.put("%Player%", target.getName());
-        placeholders.put("%crates_opened%", this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(target.getUniqueId()) + "");
+        placeholders.put("%player%", target.getName());
+        placeholders.put("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(target.getUniqueId())));
 
         String header = Messages.OTHER_PLAYER_HEADER.getMessageNoPrefix(placeholders);
 
-        String otherPlayer = Messages.OTHER_PLAYER_NO_VIRTUAL_KEYS.getMessage("%Player%", target.getName());
+        String otherPlayer = Messages.OTHER_PLAYER_NO_VIRTUAL_KEYS.getMessage("%player%", target.getName());
 
         getKeys(target, sender, header, otherPlayer);
     }
@@ -68,9 +72,9 @@ public class BaseKeyCommand extends BaseCommand {
 
                 hasKeys = true;
 
-                placeholders.put("%Crate%", crate.getFile().getString("Crate.Name"));
-                placeholders.put("%Keys%", amount + "");
-                placeholders.put("%crate_opened%", this.plugin.getCrazyHandler().getUserManager().getCrateOpened(player.getUniqueId(), crate.getName()) + "");
+                placeholders.put("%crate%", crate.getFile().getString("Crate.Name"));
+                placeholders.put("%keys%", String.valueOf(amount));
+                placeholders.put("%crate_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getCrateOpened(player.getUniqueId(), crate.getName())));
                 message.add(Messages.PER_CRATE.getMessage(placeholders));
             }
         }
