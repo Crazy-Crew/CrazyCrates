@@ -30,38 +30,38 @@ public class Tier {
      * @return Name of the tier.
      */
     public String getName() {
-        return name;
+        return this.name;
     }
     
     /**
      * @return The colored name of the tier.
      */
     public String getColoredName() {
-        return coloredName;
+        return this.coloredName;
     }
     
     /**
      * @return The colored glass pane.
      */
     public ItemBuilder getColorGlass() {
-        return colorGlass;
+        return this.colorGlass;
     }
     
     /**
      * @return The chance of being picked.
      */
     public Integer getChance() {
-        return chance;
+        return this.chance;
     }
     
     /**
      * @return The range of max possible\ chances.
      */
     public Integer getMaxRange() {
-        return maxRange;
+        return this.maxRange;
     }
     
     public ItemStack getTierPane() {
-        return colorGlass.build();
+        return this.colorGlass.build();
     }
 }

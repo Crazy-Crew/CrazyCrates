@@ -23,7 +23,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -32,6 +31,7 @@ public class QuickCrate implements Listener {
     
     public static ArrayList<Entity> allRewards = new ArrayList<>();
     public static HashMap<Player, Entity> rewards = new HashMap<>();
+
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();

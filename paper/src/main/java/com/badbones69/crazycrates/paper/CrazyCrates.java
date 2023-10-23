@@ -195,7 +195,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         this.manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage()));
 
-        manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
+        this.manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
             String command = context.getCommand();
             String subCommand = context.getSubCommand();
 
@@ -213,7 +213,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             if (correctUsage != null) sender.sendMessage(Messages.CORRECT_USAGE.getMessage().replace("%usage%", correctUsage));
         });
 
-        manager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
+        this.manager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
             String command = context.getCommand();
             String subCommand = context.getSubCommand();
 
@@ -231,31 +231,31 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             if (correctUsage != null) sender.sendMessage(Messages.CORRECT_USAGE.getMessage().replace("%usage%", correctUsage));
         });
 
-        manager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> sender.sendMessage(Messages.NOT_ONLINE.getMessage().replace("%player%", context.getTypedArgument())));
+        this.manager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> sender.sendMessage(Messages.NOT_ONLINE.getMessage().replace("%player%", context.getTypedArgument())));
 
-        manager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> sender.sendMessage(Messages.NO_PERMISSION.getMessage()));
+        this.manager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> sender.sendMessage(Messages.NO_PERMISSION.getMessage()));
 
-        manager.registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage()));
+        this.manager.registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_PLAYER.getMessage()));
 
-        manager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage()));
+        this.manager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage()));
 
-        manager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> starter.getFileManager().getAllCratesNames(plugin).stream().toList());
+        this.manager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> this.starter.getFileManager().getAllCratesNames(plugin).stream().toList());
 
-        manager.registerSuggestion(SuggestionKey.of("key-types"), (sender, context) -> KEYS);
+        this.manager.registerSuggestion(SuggestionKey.of("key-types"), (sender, context) -> KEYS);
 
-        manager.registerSuggestion(SuggestionKey.of("online-players"), (sender, context) -> getServer().getOnlinePlayers().stream().map(Player::getName).toList());
+        this.manager.registerSuggestion(SuggestionKey.of("online-players"), (sender, context) -> getServer().getOnlinePlayers().stream().map(Player::getName).toList());
 
-        manager.registerSuggestion(SuggestionKey.of("locations"), (sender, context) -> starter.getCrazyManager().getCrateLocations().stream().map(CrateLocation::getID).toList());
+        this.manager.registerSuggestion(SuggestionKey.of("locations"), (sender, context) -> this.starter.getCrazyManager().getCrateLocations().stream().map(CrateLocation::getID).toList());
 
-        manager.registerSuggestion(SuggestionKey.of("prizes"), (sender, context) -> {
+        this.manager.registerSuggestion(SuggestionKey.of("prizes"), (sender, context) -> {
             List<String> numbers = new ArrayList<>();
 
-            starter.getCrazyManager().getCrateFromName(context.getArgs().get(0)).getPrizes().forEach(prize -> numbers.add(prize.getName()));
+            this.starter.getCrazyManager().getCrateFromName(context.getArgs().get(0)).getPrizes().forEach(prize -> numbers.add(prize.getName()));
 
             return numbers;
         });
 
-        manager.registerSuggestion(SuggestionKey.of("numbers"), (sender, context) -> {
+        this.manager.registerSuggestion(SuggestionKey.of("numbers"), (sender, context) -> {
             List<String> numbers = new ArrayList<>();
 
             for (int i = 1; i <= 250; i++) numbers.add(i + "");
@@ -263,12 +263,10 @@ public class CrazyCrates extends JavaPlugin implements Listener {
             return numbers;
         });
 
-        manager.registerArgument(CrateBaseCommand.CustomPlayer.class, (sender, context) -> {
-            return new CrateBaseCommand.CustomPlayer(context);
-        });
+        this.manager.registerArgument(CrateBaseCommand.CustomPlayer.class, (sender, context) -> new CrateBaseCommand.CustomPlayer(context));
 
-        manager.registerCommand(new BaseKeyCommand());
-        manager.registerCommand(new CrateBaseCommand());
+        this.manager.registerCommand(new BaseKeyCommand());
+        this.manager.registerCommand(new CrateBaseCommand());
 
         printHooks();
     }

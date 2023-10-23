@@ -62,7 +62,7 @@ public class CrateBaseCommand extends BaseCommand {
     @Default
     @Permission(value = "crazycrates.command.player.menu", def = PermissionDefault.TRUE)
     public void onDefaultMenu(Player player) {
-        boolean openMenu = config.getBoolean("Settings.Enable-Crate-Menu");
+        boolean openMenu = this.config.getBoolean("Settings.Enable-Crate-Menu");
 
         if (openMenu) MenuListener.openGUI(player);
         else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
@@ -77,7 +77,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("transfer")
     @Permission(value = "crazycrates.command.player.transfer", def = PermissionDefault.OP)
     public void onPlayerTransferKeys(Player sender, @Suggestion("crates") String crateName, @Suggestion("online-players") Player player, @Suggestion("numbers") int amount) {
-        Crate crate = crazyManager.getCrateFromName(crateName);
+        Crate crate = this.crazyManager.getCrateFromName(crateName);
 
         // If the crate is menu or null. we return
         if (crate == null || crate.getCrateType() == CrateType.menu) {

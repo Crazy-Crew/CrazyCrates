@@ -72,7 +72,7 @@ public class CrateOpenEvent extends Event implements Cancellable {
 
     @Override
     public boolean isCancelled() {
-        return isCancelled;
+        return this.isCancelled;
     }
 
     @Override

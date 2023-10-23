@@ -13,13 +13,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
 public class CrateOnTheGo implements Listener {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+    @NotNull
+    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
     
     @EventHandler
     public void onCrateOpen(PlayerInteractEvent e) {
@@ -28,23 +32,23 @@ public class CrateOnTheGo implements Listener {
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             ItemStack item = player.getInventory().getItemInMainHand();
             
-            if (item == null || item.getType() == Material.AIR) return;
+            if (item.getType() == Material.AIR) return;
             
-            for (Crate crate : crazyManager.getCrates()) {
+            for (Crate crate : this.crazyManager.getCrates()) {
                 if (crate.getCrateType() == CrateType.crate_on_the_go && Methods.isSimilar(item, crate)) {
                     e.setCancelled(true);
-                    crazyManager.addPlayerToOpeningList(player, crate);
+                    this.crazyManager.addPlayerToOpeningList(player, crate);
 
                     Methods.removeItem(item, player);
 
                     Prize prize = crate.pickPrize(player);
 
-                    crazyManager.givePrize(player, prize, crate);
-                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crazyManager.getOpeningCrate(player).getName(), prize));
+                    this.crazyManager.givePrize(player, prize, crate);
+                    this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, this.crazyManager.getOpeningCrate(player).getName(), prize));
 
                     if (prize.useFireworks()) Methods.firework(player.getLocation().add(0, 1, 0));
 
-                    crazyManager.removePlayerFromOpeningList(player);
+                    this.crazyManager.removePlayerFromOpeningList(player);
                 }
             }
         }

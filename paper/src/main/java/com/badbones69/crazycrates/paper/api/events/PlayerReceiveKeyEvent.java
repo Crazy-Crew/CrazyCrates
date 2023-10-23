@@ -30,25 +30,25 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
     }
     
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
     
     public Crate getCrate() {
-        return crate;
+        return this.crate;
     }
     
     public KeyReceiveReason getReason() {
-        return reason;
+        return this.reason;
     }
     
     @Override
     public boolean isCancelled() {
-        return isCancelled;
+        return this.isCancelled;
     }
     
     @Override
     public void setCancelled(boolean cancel) {
-        isCancelled = cancel;
+        this.isCancelled = cancel;
     }
     
     public @NotNull HandlerList getHandlers() {
@@ -56,7 +56,7 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
     }
     
     public int getAmount() {
-        return amount;
+        return this.amount;
     }
     
     public enum KeyReceiveReason {

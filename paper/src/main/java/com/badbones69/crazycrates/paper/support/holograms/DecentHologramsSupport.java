@@ -25,20 +25,20 @@ public class DecentHologramsSupport implements HologramController {
 
         crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, Methods.color(line)));
 
-        holograms.put(block, hologram);
+        this.holograms.put(block, hologram);
     }
     
     public void removeHologram(Block block) {
-        if (!holograms.containsKey(block)) return;
+        if (!this.holograms.containsKey(block)) return;
 
-        Hologram hologram = holograms.get(block);
+        Hologram hologram = this.holograms.get(block);
 
-        holograms.remove(block);
+        this.holograms.remove(block);
         hologram.delete();
     }
 
     public void removeAllHolograms() {
-        holograms.forEach((key, value) -> value.delete());
-        holograms.clear();
+        this.holograms.forEach((key, value) -> value.delete());
+        this.holograms.clear();
     }
 }

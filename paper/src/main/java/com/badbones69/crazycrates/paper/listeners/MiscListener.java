@@ -5,24 +5,28 @@ import com.badbones69.crazycrates.paper.api.CrazyManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
 public class MiscListener implements Listener {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+    @NotNull
+    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
 
     @EventHandler
     public void onPlayerPickUp(PlayerAttemptPickupItemEvent event) {
-        if (crazyManager.isDisplayReward(event.getItem())) {
+        if (this.crazyManager.isDisplayReward(event.getItem())) {
             event.setCancelled(true);
             return;
         }
 
-        if (crazyManager.isInOpeningList(event.getPlayer())) {
+        if (this.crazyManager.isInOpeningList(event.getPlayer())) {
             // DrBot Start
-            if (crazyManager.getOpeningCrate(event.getPlayer()).getCrateType().equals(CrateType.quick_crate)) return;
+            if (this.crazyManager.getOpeningCrate(event.getPlayer()).getCrateType().equals(CrateType.quick_crate)) return;
             // DrBot End
             event.setCancelled(true);
         }

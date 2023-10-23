@@ -39,15 +39,15 @@ public class FireCracker {
         colors.add(Color.PURPLE);
 
         crazyManager.addCrateTask(player, new BukkitRunnable() {
-            final Random r = new Random();
-            final int color = r.nextInt(colors.size());
+            final Random rng = new Random();
+            final int color = rng.nextInt(colors.size());
             int l = 0;
-            final Location L = loc.clone().add(.5, 25, .5);
+            final Location location = loc.clone().add(.5, 25, .5);
             
             @Override
             public void run() {
-                L.subtract(0, 1, 0);
-                Methods.firework(L, colors.get(color));
+                location.subtract(0, 1, 0);
+                Methods.firework(location, colors.get(color));
                 l++;
 
                 if (l == 25) {

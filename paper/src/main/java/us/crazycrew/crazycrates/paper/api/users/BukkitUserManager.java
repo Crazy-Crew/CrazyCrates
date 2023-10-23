@@ -58,23 +58,11 @@ public class BukkitUserManager extends UserManager {
 
         Player player = getUser(uuid);
 
-        this.plugin.getLogger().warning("Crate Name: " + crateName);
-        this.plugin.getLogger().warning("Other Name: " + crate.getName());
-
         int keys = getVirtualKeys(uuid, crate.getName());
 
         if (!this.data.contains("Players." + uuid + ".Name")) this.data.set("Players." + uuid + ".Name", player.getName());
 
-        this.plugin.getLogger().warning("New Method | Keys: " + keys);
-        this.plugin.getLogger().warning("New Method | Added Keys: " + amount);
-
-        this.plugin.getLogger().warning("New Method | Combined Keys: " + (Math.max((keys + amount), 0)));
-
-        this.plugin.getLogger().warning("New Method | Pre Keys: " + this.data.getInt("Players." + uuid + "." + crate.getName()));
-
         this.data.set("Players." + uuid + "." + crate.getName(), (Math.max((keys + amount), 0)));
-
-        this.plugin.getLogger().warning("New Method | Post Keys: " + this.data.getInt("Players." + uuid + "." + crate.getName()));
 
         Files.DATA.saveFile();
     }

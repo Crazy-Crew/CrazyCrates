@@ -7,20 +7,25 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.structure.Mirror;
 import org.bukkit.block.structure.StructureRotation;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.structure.StructureManager;
 import org.bukkit.util.BlockVector;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
 
 public class StructureHandler {
 
     private final File file;
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     public StructureHandler(File file) {
         this.file = file;
@@ -30,12 +35,12 @@ public class StructureHandler {
     private final List<Location> preStructureBlocks = new ArrayList<>();
 
     private StructureManager getStructureManager() {
-        return plugin.getServer().getStructureManager();
+        return this.plugin.getServer().getStructureManager();
     }
 
     private BlockVector getStructureSize() {
         try {
-            return getStructureManager().loadStructure(file).getSize();
+            return getStructureManager().loadStructure(this.file).getSize();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -45,16 +50,16 @@ public class StructureHandler {
         try {
             getBlocks(location);
 
-            getStructureManager().loadStructure(file).place(location.subtract(2, 0.0, 2), false, StructureRotation.NONE, Mirror.NONE, 0, 1F, new Random());
+            getStructureManager().loadStructure(this.file).place(location.subtract(2, 0.0, 2), false, StructureRotation.NONE, Mirror.NONE, 0, 1F, new Random());
 
             getStructureBlocks(location);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception exception) {
+            this.plugin.getLogger().log(Level.SEVERE, "Failed to paste structure using " + this.file.getName(), exception);
         }
     }
 
     public void removeStructure() {
-        structureBlocks.forEach(block -> {
+        this.structureBlocks.forEach(block -> {
             Location blockLoc = block.toBlockLocation();
 
             blockLoc.getBlock().setType(Material.AIR, true);
@@ -70,9 +75,9 @@ public class StructureHandler {
                     List<Location> relativeBlocks = new ArrayList<>();
 
                     relativeBlocks.add(relativeLocation.getLocation());
-                    structureBlocks.addAll(relativeBlocks);
+                    this.structureBlocks.addAll(relativeBlocks);
 
-                    structureBlocks.forEach(block -> {
+                    this.structureBlocks.forEach(block -> {
                         Location blockLoc = block.toBlockLocation();
 
                         blockLoc.getBlock().getState().update();
@@ -88,7 +93,7 @@ public class StructureHandler {
                 for (int z = 0; z < getStructureZ(); z++) {
                     Block relativeLocation = location.getBlock().getRelative(x, y, z).getLocation().subtract(2, 0.0, 2).getBlock();
 
-                    preStructureBlocks.add(relativeLocation.getLocation());
+                    this.preStructureBlocks.add(relativeLocation.getLocation());
                 }
             }
         }
@@ -104,7 +109,7 @@ public class StructureHandler {
         try {
             return getStructureSize().getX();
         } catch (Exception e) {
-            e.printStackTrace();
+            this.plugin.getLogger().warning("Failed to get structure size x");
         }
 
         return 0;
@@ -114,7 +119,7 @@ public class StructureHandler {
         try {
             return getStructureSize().getY();
         } catch (Exception e) {
-            e.printStackTrace();
+            this.plugin.getLogger().warning("Failed to get structure size y");
         }
 
         return 0;
@@ -124,14 +129,14 @@ public class StructureHandler {
         try {
             return getStructureSize().getZ();
         } catch (Exception e) {
-            e.printStackTrace();
+            this.plugin.getLogger().warning("Failed to get structure size z");
         }
 
         return 0;
     }
 
     public List<Location> getNearbyBlocks() {
-        return Collections.unmodifiableList(preStructureBlocks);
+        return Collections.unmodifiableList(this.preStructureBlocks);
     }
 
     public List<Material> getBlockBlackList() {

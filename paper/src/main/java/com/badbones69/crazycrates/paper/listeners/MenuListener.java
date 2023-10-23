@@ -33,14 +33,16 @@ public class MenuListener implements Listener {
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     
     public static void openGUI(Player player) {
-        int size = Files.CONFIG.getFile().getInt("Settings.InventorySize");
+        FileConfiguration config = Files.CONFIG.getFile();
+
+        int size = config.getInt("Settings.InventorySize");
         Inventory inv = player.getServer().createInventory(null, size, Methods.sanitizeColor(Files.CONFIG.getFile().getString("Settings.InventoryName")));
 
-        if (Files.CONFIG.getFile().contains("Settings.Filler.Toggle")) {
-            if (Files.CONFIG.getFile().getBoolean("Settings.Filler.Toggle")) {
-                String id = Files.CONFIG.getFile().getString("Settings.Filler.Item");
-                String name = Files.CONFIG.getFile().getString("Settings.Filler.Name");
-                List<String> lore = Files.CONFIG.getFile().getStringList("Settings.Filler.Lore");
+        if (config.contains("Settings.Filler.Toggle")) {
+            if (config.getBoolean("Settings.Filler.Toggle")) {
+                String id = config.getString("Settings.Filler.Item");
+                String name = config.getString("Settings.Filler.Name");
+                List<String> lore = config.getStringList("Settings.Filler.Lore");
                 ItemStack item = new ItemBuilder().setMaterial(id).setName(name).setLore(lore).build();
 
                 for (int i = 0; i < size; i++) {
@@ -49,8 +51,8 @@ public class MenuListener implements Listener {
             }
         }
 
-        if (Files.CONFIG.getFile().contains("Settings.GUI-Customizer")) {
-            for (String custom : Files.CONFIG.getFile().getStringList("Settings.GUI-Customizer")) {
+        if (config.contains("Settings.GUI-Customizer")) {
+            for (String custom : config.getStringList("Settings.GUI-Customizer")) {
                 int slot = 0;
                 ItemBuilder item = new ItemBuilder();
                 String[] split = custom.split(", ");

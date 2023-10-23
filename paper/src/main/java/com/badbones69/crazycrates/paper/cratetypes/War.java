@@ -133,7 +133,7 @@ public class War implements Listener {
         final Player player = (Player) e.getWhoClicked();
         final Inventory inv = e.getInventory();
 
-        if (inv != null && canPick.containsKey(player) && crazyManager.isInOpeningList(player)) {
+        if (canPick.containsKey(player) && crazyManager.isInOpeningList(player)) {
             Crate crate = crazyManager.getOpeningCrate(player);
 
             if (crate.getCrateType() == CrateType.war && canPick.get(player)) {

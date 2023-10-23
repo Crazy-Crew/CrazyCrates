@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.paper.api.enums.settings;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
-import com.badbones69.crazycrates.paper.api.FileManager;
+import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import org.bukkit.configuration.file.FileConfiguration;
 import java.util.*;
 import java.util.Map.Entry;
@@ -130,7 +130,7 @@ public enum Messages {
      * Adds any missing messages to the Messages.yml file based on values in the Messages enum.
      */
     public static void addMissingMessages() {
-        FileConfiguration messages = FileManager.Files.MESSAGES.getFile();
+        FileConfiguration messages = Files.MESSAGES.getFile();
         boolean saveFile = false;
 
         for (Messages message : values()) {
@@ -148,22 +148,26 @@ public enum Messages {
         String tooFewArgs = messages.getString("Messages.Not-Enough-Args");
 
         if (tooManyArgs != null) {
-            plugin.getLogger().warning("Found outdated config entry: " + tooManyArgs);
-            plugin.getLogger().warning("Removing now, Please use `Correct-Usage` from now on." );
+            if (plugin.isLogging()) {
+                plugin.getLogger().warning("Found outdated config entry: " + tooManyArgs);
+                plugin.getLogger().warning("Removing now, Please use `Correct-Usage` from now on." );
+            }
 
             messages.set("Messages.Too-Many-Args", null);
-            FileManager.Files.MESSAGES.saveFile();
+            Files.MESSAGES.saveFile();
         }
 
         if (tooFewArgs != null) {
-            plugin.getLogger().warning("Found outdated config entry: " + tooFewArgs);
-            plugin.getLogger().warning("Removing now, Please use `Correct-Usage` from now on." );
+            if (plugin.isLogging()) {
+                plugin.getLogger().warning("Found outdated config entry: " + tooFewArgs);
+                plugin.getLogger().warning("Removing now, Please use `Correct-Usage` from now on." );
+            }
 
             messages.set("Messages.Not-Enough-Args", null);
-            FileManager.Files.MESSAGES.saveFile();
+            Files.MESSAGES.saveFile();
         }
 
-        if (saveFile) FileManager.Files.MESSAGES.saveFile();
+        if (saveFile) Files.MESSAGES.saveFile();
     }
 
     /**
@@ -325,13 +329,13 @@ public enum Messages {
 
         if (isList) {
             if (exists) {
-                message = Methods.color(convertList(FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path)));
+                message = Methods.color(convertList(Files.MESSAGES.getFile().getStringList("Messages." + path)));
             } else {
                 message = Methods.color(convertList(getDefaultListMessage()));
             }
         } else {
             if (exists) {
-                message = Methods.color(FileManager.Files.MESSAGES.getFile().getString("Messages." + path));
+                message = Methods.color(Files.MESSAGES.getFile().getString("Messages." + path));
             } else {
                 message = Methods.color(getDefaultMessage());
             }
@@ -358,7 +362,7 @@ public enum Messages {
      * @return true if found otherwise false
      */
     private boolean exists() {
-        return FileManager.Files.MESSAGES.getFile().contains("Messages." + path);
+        return Files.MESSAGES.getFile().contains("Messages." + path);
     }
 
     /**
@@ -367,10 +371,10 @@ public enum Messages {
      * @return true if found otherwise false
      */
     private boolean isList() {
-        if (FileManager.Files.MESSAGES.getFile().contains("Messages." + path)) {
-            return !FileManager.Files.MESSAGES.getFile().getStringList("Messages." + path).isEmpty();
+        if (Files.MESSAGES.getFile().contains("Messages." + path)) {
+            return !Files.MESSAGES.getFile().getStringList("Messages." + path).isEmpty();
         } else {
-            return defaultMessage == null;
+            return this.defaultMessage == null;
         }
     }
 
@@ -380,7 +384,7 @@ public enum Messages {
      * @return the path
      */
     private String getPath() {
-        return path;
+        return this.path;
     }
 
     /**
@@ -389,7 +393,7 @@ public enum Messages {
      * @return the default message
      */
     private String getDefaultMessage() {
-        return defaultMessage;
+        return this.defaultMessage;
     }
 
     /**
@@ -398,6 +402,6 @@ public enum Messages {
      * @return the default list message.
      */
     private List<String> getDefaultListMessage() {
-        return defaultListMessage;
+        return this.defaultListMessage;
     }
 }
