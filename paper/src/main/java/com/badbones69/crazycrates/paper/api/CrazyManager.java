@@ -822,18 +822,39 @@ public class CrazyManager {
         String name = player.getName().toLowerCase();
 
         if (data.contains("Offline-Players." + name)) {
+            this.plugin.getLogger().warning("Deprecated | Name: " + name);
+
             for (Crate crate : getCrates()) {
                 if (data.contains("Offline-Players." + name + "." + crate.getName())) {
                     PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, KeyReceiveReason.OFFLINE_PLAYER, 1);
-                    plugin.getServer().getPluginManager().callEvent(event);
+                    this.plugin.getServer().getPluginManager().callEvent(event);
+
+                    this.plugin.getLogger().warning("Deprecated | Event: " + event.isCancelled());
 
                     if (!event.isCancelled()) {
-                        addKeys(data.getInt("Offline-Players." + name + "." + crate.getName()), player, crate, com.badbones69.crazycrates.api.enums.types.KeyType.VIRTUAL_KEY);
+                        int keys = getVirtualKeys(player, crate);
+                        int addedKeys = data.getInt("Offline-Players." + name + "." + crate.getName());
+
+                        this.plugin.getLogger().warning("Deprecated | Keys: " + keys);
+                        this.plugin.getLogger().warning("Deprecated | Added Keys: " + addedKeys);
+
+                        this.plugin.getLogger().warning("Deprecated | Combined Keys: " + (Math.max((keys + addedKeys), 0)));
+
+                        this.plugin.getLogger().warning("Deprecated | Pre Add: " + data.getInt("Players." + player.getUniqueId() + "." + crate.getName()));
+
+                        data.set("Players." + player.getUniqueId() + "." + crate.getName(), (Math.max((keys + addedKeys), 0)));
+
+                        this.plugin.getLogger().warning("Deprecated | Post Add: " + data.getInt("Players." + player.getUniqueId() + "." + crate.getName()));
+
+                        Files.DATA.saveFile();
                     }
                 }
             }
 
             data.set("Offline-Players." + name, null);
+
+            this.plugin.getLogger().warning("Deprecated | Player name set to false.");
+
             Files.DATA.saveFile();
         }
     }

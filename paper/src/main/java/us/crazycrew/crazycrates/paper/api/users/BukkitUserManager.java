@@ -58,10 +58,23 @@ public class BukkitUserManager extends UserManager {
 
         Player player = getUser(uuid);
 
+        this.plugin.getLogger().warning("Crate Name: " + crateName);
+        this.plugin.getLogger().warning("Other Name: " + crate.getName());
+
         int keys = getVirtualKeys(uuid, crate.getName());
 
-        this.data.set("Players." + uuid + ".Name", player.getName());
+        if (!this.data.contains("Players." + uuid + ".Name")) this.data.set("Players." + uuid + ".Name", player.getName());
+
+        this.plugin.getLogger().warning("New Method | Keys: " + keys);
+        this.plugin.getLogger().warning("New Method | Added Keys: " + amount);
+
+        this.plugin.getLogger().warning("New Method | Combined Keys: " + (Math.max((keys + amount), 0)));
+
+        this.plugin.getLogger().warning("New Method | Pre Keys: " + this.data.getInt("Players." + uuid + "." + crate.getName()));
+
         this.data.set("Players." + uuid + "." + crate.getName(), (Math.max((keys + amount), 0)));
+
+        this.plugin.getLogger().warning("New Method | Post Keys: " + this.data.getInt("Players." + uuid + "." + crate.getName()));
 
         Files.DATA.saveFile();
     }
@@ -392,25 +405,31 @@ public class BukkitUserManager extends UserManager {
     /**
      * Load the offline keys of a player who has come online.
      *
-     * @param uuid The player which you would like to load the offline keys for.
+     * @param player The player which you would like to load the offline keys for.
      */
-    public void loadOfflinePlayersKeys(UUID uuid, List<Crate> crates) {
-        if (!this.data.contains("Offline-Players." + uuid) || crates.isEmpty()) return;
+    public void loadOfflinePlayersKeys(Player player, List<Crate> crates) {
+        if (!this.data.contains("Offline-Players." + player.getUniqueId()) || crates.isEmpty()) return;
 
-        Player player = this.plugin.getServer().getPlayer(uuid);
+        UUID uuid = player.getUniqueId();
 
-        if (player == null) return;
+        this.plugin.getLogger().warning("New Method | The player is not null.");
 
         for (Crate crate : crates) {
             if (this.data.contains("Offline-Players." + uuid + "." + crate.getName())) {
+                this.plugin.getLogger().warning("New Method | UUID: " + uuid);
+
                 PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, 1);
                 this.plugin.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) return;
 
+                this.plugin.getLogger().warning("New Method | isCancelled: " + event.isCancelled());
+
                 int keysGiven = 0;
 
                 int amount = this.data.getInt("Offline-Players." + uuid + "." + crate.getName());
+
+                this.plugin.getLogger().warning("New Method | Current Amount: " + amount);
 
                 //TODO() Instead of dropping the keys, make it so they need to empty their inventory and prompt them to open a gui.
 
@@ -432,6 +451,7 @@ public class BukkitUserManager extends UserManager {
                     // If the inventory not full, add to inventory.
                     player.getInventory().addItem(crate.getKey(amount));
                 } else {
+                    this.plugin.getLogger().warning("New Method | Adding virtual keys");
                     // Otherwise add virtual keys.
                     addVirtualKeys(amount, uuid, crate.getName());
                 }
