@@ -2,10 +2,10 @@ package us.crazycrew.crazycrates.common.crates.quadcrates;
 
 public enum CrateParticles {
     
-    FLAME("Flame"),
-    VILLAGER_HAPPY("Villager Happy"),
-    SPELL_WITCH("Spell Witch"),
-    REDSTONE("Redstone");
+    flame("flame"),
+    villager_happy("villager happy"),
+    spell_witch("spell witch"),
+    redstone("redstone");
     
     private final String name;
 

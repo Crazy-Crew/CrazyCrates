@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.api.quadcrates.CrateParticles;
 import com.badbones69.crazycrates.paper.support.structures.QuadCrateSpiralHandler;
 import com.badbones69.crazycrates.paper.support.structures.StructureHandler;
 import com.badbones69.crazycrates.paper.support.structures.blocks.ChestStateHandler;
@@ -20,6 +19,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import us.crazycrew.crazycrates.common.crates.quadcrates.CrateParticles;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -340,9 +340,9 @@ public class QuadCrateManager {
      */
     private void spawnParticles(CrateParticles quadCrateParticle, Color particleColor, Location location1, Location location2) {
         Particle particle = switch (quadCrateParticle) {
-            case FLAME -> Particle.FLAME;
-            case VILLAGER_HAPPY -> Particle.VILLAGER_HAPPY;
-            case SPELL_WITCH -> Particle.SPELL_WITCH;
+            case flame -> Particle.FLAME;
+            case villager_happy -> Particle.VILLAGER_HAPPY;
+            case spell_witch -> Particle.SPELL_WITCH;
             default -> Particle.REDSTONE;
         };
 
