@@ -27,6 +27,8 @@ tasks {
 
     shadowJar {
         mergeServiceFiles()
+
+        exclude("META-INF/**")
     }
 }
 
