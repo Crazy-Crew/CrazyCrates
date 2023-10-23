@@ -116,8 +116,8 @@ val description = """
   * %crates_opened% ( Shows the total amount of crates opened and is used in the /keys header )
   * All placeholders will return `0` if data not found so that is normal.
  * Added 2 new placeholderapi placeholders
-   * %crazycrates_<crate-name>_opened ( Shows how many times a player has opened a singular crate. )
-   * %crazycrates_crates_opened% ( Shows the total amount of crates a player has opened. )
+   * `%crazycrates_<crate-name>_opened` ( Shows how many times a player has opened a singular crate. )
+   * `%crazycrates_crates_opened%` ( Shows the total amount of crates a player has opened. )
  * Added the ability to run commands when a crate is opened, It defaults to false.
    ```yml
    Crate:
@@ -129,7 +129,7 @@ val description = """
          # Supports %prefix which returns our prefix, %player% which uses the player name
          commands:
              - 'put your command here.'
-  ```
+   ```
  * Added the ability to pick whether you can have random schematics or a single schematic for QuadCrates.
    ```yml
    Crate:
@@ -139,20 +139,20 @@ val description = """
         random: true
         # The file to use inside schematic's folder.
         file: 'classic.nbt'
-  ```
+   ```
 
 ## Changes:
  * Added plugin-config.yml
-  * Migrated Settings.Toggle-Metrics and Settings.Prefix to plugin-config.yml, It will automatically move your old values to the new config.
- * Metrics actually shuts down when you reload the plugin after turning off metrics.
+   * Migrated Settings.Toggle-Metrics and Settings.Prefix to plugin-config.yml, It will automatically move your old values to the new config.
+   * Metrics actually shuts down when you reload the plugin after turning off metrics.
 
- * New placeholders:
- ### Old placeholders do still work as they serve a purpose for when you don't need to supply a player.
-   * %crazycrates_<player>_opened% -> Returns the total amount of crates opened.
-   * %crazycrates_<player>_<crate>_opened% -> 	Returns the amount of this particular crate opened.
-   * %crazycrates_<player>_<crate>_physical% -> 	Returns the amount of physical keys a player has in their inventory.
-   * %crazycrates_<player>_<crate>_virtual% -> Returns the amount of virtual keys a player has.
-   * %crazycrates_<player>_<crate>_total% -> 	Returns the total amount of virtual and physical keys a player has.
+ ### New placeholders:
+ #### Old placeholders do still work as they serve a purpose for when you don't need to supply a player.
+   * `%crazycrates_<player>_opened%` -> Returns the total amount of crates opened.
+   * `%crazycrates_<player>_<crate>_opened%` -> 	Returns the amount of this particular crate opened.
+   * `%crazycrates_<player>_<crate>_physical%` -> 	Returns the amount of physical keys a player has in their inventory.
+   * `%crazycrates_<player>_<crate>_virtual%` -> Returns the amount of virtual keys a player has.
+   * `%crazycrates_<player>_<crate>_total%` -> 	Returns the total amount of virtual and physical keys a player has.
 
 ## Fix:
  * Cosmic Crates should no longer error. [#599](https://github.com/Crazy-Crew/CrazyCrates/pull/599)
@@ -162,10 +162,10 @@ val description = """
 
 ## Developers:
  * Added a crate open event.
- ### Deprecation Notice:
+ #### Deprecation Notice:
   * com.badbones69.crazycrates.api inside the "core" module is marked for removal and is deprecated.
   * An alternative has been added that you can migrate to.
-   * us.crazycrew.crazycrates:crazycrates-api:1.16
+    * us.crazycrew.crazycrates:crazycrates-api:1.16
   * Backwards compatible is temporarily possible, old methods you may depend on will stay for the time being.
  * A fair bit of code cleanup.
 
