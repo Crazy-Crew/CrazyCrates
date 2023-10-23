@@ -3,8 +3,6 @@ package com.badbones69.crazycrates.paper.cratetypes;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
@@ -20,6 +18,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
+
 import java.util.HashMap;
 
 public class War implements Listener {

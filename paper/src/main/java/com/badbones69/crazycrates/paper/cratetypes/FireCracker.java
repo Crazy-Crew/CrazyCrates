@@ -3,13 +3,13 @@ package com.badbones69.crazycrates.paper.cratetypes;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.ArrayList;
 import java.util.Random;
 

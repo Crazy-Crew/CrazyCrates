@@ -12,8 +12,6 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.api.enums.Permissions;
-import com.badbones69.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
 import com.badbones69.crazycrates.paper.listeners.MenuListener;
 import com.badbones69.crazycrates.paper.listeners.PreviewListener;
@@ -29,7 +27,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
-
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;

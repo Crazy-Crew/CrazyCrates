@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
-import com.badbones69.crazycrates.api.enums.types.CrateType;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
 public class CrateOnTheGo implements Listener {
 

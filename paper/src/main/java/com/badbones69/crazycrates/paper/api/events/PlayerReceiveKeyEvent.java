@@ -22,7 +22,7 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
         this.crate = crate;
         this.reason = reason;
         this.amount = amount;
-        isCancelled = false;
+        this.isCancelled = false;
     }
 
     public static HandlerList getHandlerList() {

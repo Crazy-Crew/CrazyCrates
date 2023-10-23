@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
-import com.badbones69.crazycrates.api.enums.types.CrateType;
 import org.bukkit.Location;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
 public class CrateLocation {
     

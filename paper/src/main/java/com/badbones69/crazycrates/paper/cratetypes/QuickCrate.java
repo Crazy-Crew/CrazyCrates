@@ -7,7 +7,6 @@ import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
-import com.badbones69.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
 import com.badbones69.crazycrates.paper.support.structures.blocks.ChestStateHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -23,6 +22,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;

@@ -3,10 +3,11 @@ package com.badbones69.crazycrates.paper.api;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.api.enums.types.KeyType;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
+
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;

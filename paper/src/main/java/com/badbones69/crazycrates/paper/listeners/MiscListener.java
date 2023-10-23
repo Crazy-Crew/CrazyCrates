@@ -2,10 +2,10 @@ package com.badbones69.crazycrates.paper.listeners;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.types.CrateType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
 public class MiscListener implements Listener {
 

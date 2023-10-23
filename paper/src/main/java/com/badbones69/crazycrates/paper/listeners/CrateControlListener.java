@@ -5,8 +5,6 @@ import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.api.enums.Permissions;
-import com.badbones69.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -30,6 +28,9 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
+
 import java.util.HashMap;
 
 public class CrateControlListener implements Listener { // Crate Control
