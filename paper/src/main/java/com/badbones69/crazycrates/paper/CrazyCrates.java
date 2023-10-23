@@ -44,6 +44,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
 
+    private CrazyHandler crazyHandler;
+
     @Override
     public void onEnable() {
         plugin = this;
@@ -67,6 +69,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
                 .registerCustomFilesFolder("/schematics")
                 .setup();
 
+        this.crazyHandler = new CrazyHandler();
+        this.crazyHandler.load();
         // Clean files if we have to.
         cleanFiles();
 
@@ -270,6 +274,10 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         }
 
         return correctUsage;
+    }
+
+    public CrazyHandler getCrazyHandler() {
+        return this.crazyHandler;
     }
 
     private final List<String> KEYS = List.of("virtual", "v", "physical", "p");

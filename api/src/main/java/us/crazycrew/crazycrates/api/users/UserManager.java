@@ -94,4 +94,40 @@ public abstract class UserManager {
      */
     public abstract boolean addOfflineKeys(UUID uuid, String crateName, int keys, KeyType type);
 
+    /**
+     * Take keys from an offline player.
+     *
+     * @param uuid The uuid of the offline player you wish to take keys from.
+     * @param crateName The crate of which key you are taking from the player.
+     * @param keys The amount of keys you wish to take from the player.
+     * @return Returns true if it successfully took the key from the offline player and false if there was an error.
+     */
+    public abstract boolean takeOfflineKeys(UUID uuid, String crateName, int keys, KeyType type);
+
+    /**
+     * Gets the total amount of crates this player opened.
+     *
+     * @param uuid The uuid of the player you wish to check.
+     * @return Returns the amount of total crates opened.
+     */
+    public abstract int getTotalCratesOpened(UUID uuid);
+
+    /**
+     * Gets the amount of a specific crate this player opened.
+     *
+     * @param uuid The uuid of the player you wish to check.
+     * @param crateName The name of the crate.
+     * @return Returns the amount of times the player opened this crate.
+     */
+    public abstract int getCrateOpened(UUID uuid, String crateName);
+
+
+    /**
+     * Adds how many times a player has opened a crate.
+     *
+     * @param uuid The uuid of the player you wish to check.
+     * @param crateName The name of the crate.
+     */
+    public abstract void addOpenedCrate(UUID uuid, String crateName);
+
 }
