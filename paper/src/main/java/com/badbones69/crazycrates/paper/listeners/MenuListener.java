@@ -147,7 +147,7 @@ public class MenuListener implements Listener {
         if (inv != null) {
 
             for (Crate crate : crazyManager.getCrates()) {
-                if (crate.getCrateType() != CrateType.MENU && crate.isCrateMenu(e.getView())) return;
+                if (crate.getCrateType() != CrateType.menu && crate.isCrateMenu(e.getView())) return;
             }
 
             if (e.getView().getTitle().equals(Methods.sanitizeColor(config.getString("Settings.InventoryName")))) {
@@ -159,7 +159,7 @@ public class MenuListener implements Listener {
                     if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
                         NBTItem nbtItem = new NBTItem(item);
 
-                        if (nbtItem.hasNBTData() && nbtItem.hasKey("CrazyCrates-Crate")) {
+                        if (nbtItem.hasNBTData() && nbtItem.hasTag("CrazyCrates-Crate")) {
                             Crate crate = crazyManager.getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
 
                             if (crate != null) {
@@ -182,14 +182,14 @@ public class MenuListener implements Listener {
                                 }
 
                                 boolean hasKey = false;
-                                KeyType keyType = KeyType.VIRTUAL_KEY;
+                                KeyType keyType = KeyType.virtual_key;
 
                                 if (crazyManager.getVirtualKeys(player, crate) >= 1) {
                                     hasKey = true;
                                 } else {
                                     if (Files.CONFIG.getFile().getBoolean("Settings.Virtual-Accepts-Physical-Keys") && crazyManager.hasPhysicalKey(player, crate, false)) {
                                         hasKey = true;
-                                        keyType = KeyType.PHYSICAL_KEY;
+                                        keyType = KeyType.physical_key;
                                     }
                                 }
 

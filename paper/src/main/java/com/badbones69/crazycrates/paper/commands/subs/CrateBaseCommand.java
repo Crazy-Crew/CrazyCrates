@@ -157,7 +157,7 @@ public class CrateBaseCommand extends BaseCommand {
         Inventory inv = plugin.getServer().createInventory(null, slots, Methods.color("&4&lAdmin Keys"));
 
         for (Crate crate : crazyManager.getCrates()) {
-            if (crate.getCrateType() != CrateType.MENU) {
+            if (crate.getCrateType() != CrateType.menu) {
                 if (inv.firstEmpty() >= 0) inv.setItem(inv.firstEmpty(), crate.getAdminKey());
             }
         }
@@ -266,11 +266,10 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("preview")
     @Permission(value = "crazycrates.command.admin.preview", def = PermissionDefault.OP)
     public void onAdminCratePreview(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("online-players") Player player) {
-
         Crate crate = null;
 
         for (Crate crates : crazyManager.getCrates()) {
-            if (crates.getCrateType() != CrateType.MENU) {
+            if (crates.getCrateType() != CrateType.menu) {
                 if (crates.getName().equalsIgnoreCase(crateName)) crate = crates;
             }
         }
@@ -281,7 +280,7 @@ public class CrateBaseCommand extends BaseCommand {
                 return;
             }
 
-            if (crate.getCrateType() != CrateType.MENU) {
+            if (crate.getCrateType() != CrateType.menu) {
                 PreviewListener.setPlayerInMenu(player, false);
                 PreviewListener.openNewPreview(player, crate);
             }
@@ -316,7 +315,7 @@ public class CrateBaseCommand extends BaseCommand {
                     FileConfiguration config = FileManager.Files.CONFIG.getFile();
 
                     boolean hasKey = false;
-                    KeyType keyType = KeyType.VIRTUAL_KEY;
+                    KeyType keyType = KeyType.virtual_key;
 
                     if (crazyManager.getVirtualKeys(player, crate) >= 1) {
                         hasKey = true;
@@ -324,7 +323,7 @@ public class CrateBaseCommand extends BaseCommand {
                         if (config.getBoolean("Settings.Virtual-Accepts-Physical-Keys")) {
                             if (crazyManager.hasPhysicalKey(player, crate, false)) {
                                 hasKey = true;
-                                keyType = KeyType.PHYSICAL_KEY;
+                                keyType = KeyType.physical_key;
                             }
                         }
                     }
@@ -345,7 +344,7 @@ public class CrateBaseCommand extends BaseCommand {
                         return;
                     }
 
-                    if (type != CrateType.CRATE_ON_THE_GO && type != CrateType.QUICK_CRATE && type != CrateType.FIRE_CRACKER && type != CrateType.QUAD_CRATE) {
+                    if (type != CrateType.crate_on_the_go && type != CrateType.quick_crate && type != CrateType.fire_cracker && type != CrateType.quad_crate) {
                         crazyManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
 
                         HashMap<String, String> placeholders = new HashMap<>();
@@ -420,7 +419,7 @@ public class CrateBaseCommand extends BaseCommand {
     @Permission(value = "crazycrates.command.admin.forceopen", def = PermissionDefault.OP)
     public void onAdminForceOpen(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("online-players") Player player) {
         for (Crate crate : crazyManager.getCrates()) {
-            if (crate.getCrateType() != CrateType.MENU) {
+            if (crate.getCrateType() != CrateType.menu) {
                 if (crate.getName().equalsIgnoreCase(crateName)) {
 
                     if (crazyManager.isInOpeningList(player)) {
@@ -431,8 +430,8 @@ public class CrateBaseCommand extends BaseCommand {
                     CrateType type = crate.getCrateType();
 
                     if (type != null) {
-                        if (type != CrateType.CRATE_ON_THE_GO && type != CrateType.QUICK_CRATE && type != CrateType.FIRE_CRACKER) {
-                            crazyManager.openCrate(player, crate, KeyType.FREE_KEY, player.getLocation(), true, false);
+                        if (type != CrateType.crate_on_the_go && type != CrateType.quick_crate && type != CrateType.fire_cracker) {
+                            crazyManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), true, false);
 
                             HashMap<String, String> placeholders = new HashMap<>();
 
@@ -444,7 +443,7 @@ public class CrateBaseCommand extends BaseCommand {
                             boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
                             boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
 
-                            eventLogger.logKeyEvent(player, sender, crate, KeyType.FREE_KEY, EventLogger.KeyEventType.KEY_EVENT_REMOVED, logFile, logConsole);
+                            eventLogger.logKeyEvent(player, sender, crate, KeyType.free_key, EventLogger.KeyEventType.KEY_EVENT_REMOVED, logFile, logConsole);
                         } else {
                             sender.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
                         }
@@ -519,7 +518,7 @@ public class CrateBaseCommand extends BaseCommand {
         Player person = target.getPlayer();
         String playerName = target.name;
 
-        if (type == null || type == KeyType.FREE_KEY) {
+        if (type == null || type == KeyType.free_key) {
             sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease use Virtual/V or Physical/P for a Key type."));
             return;
         }
@@ -529,13 +528,13 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        if (crate.getCrateType() != CrateType.MENU) {
+        if (crate.getCrateType() != CrateType.menu) {
             PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(person, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
 
             plugin.getServer().getPluginManager().callEvent(event);
 
             if (!event.isCancelled()) {
-                if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
+                if (crate.getCrateType() == CrateType.crate_on_the_go) {
                     if (person != null) person.getInventory().addItem(crate.getKey(amount));
                 } else {
                     if (person != null && person.isOnline()) {
@@ -595,13 +594,13 @@ public class CrateBaseCommand extends BaseCommand {
 
         Crate crate = crazyManager.getCrateFromName(crateName);
 
-        if (type == null || type == KeyType.FREE_KEY) {
+        if (type == null || type == KeyType.free_key) {
             sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease use Virtual/V or Physical/P for a Key type."));
             return;
         }
 
         if (crate != null) {
-            if (crate.getCrateType() != CrateType.MENU) {
+            if (crate.getCrateType() != CrateType.menu) {
 
                 if (!crazyManager.takeKeys(amount, target, crate, type, false)) {
                     Methods.failedToTakeKey(sender, crate);
@@ -632,7 +631,7 @@ public class CrateBaseCommand extends BaseCommand {
     public void onAdminCrateGiveAllKeys(CommandSender sender, @Suggestion("key-types") @ArgName("key-type") String keyType, @Suggestion("crates") @ArgName("crate-name") String crateName, @Suggestion("numbers") int amount) {
         KeyType type = KeyType.getFromName(keyType);
 
-        if (type == null || type == KeyType.FREE_KEY) {
+        if (type == null || type == KeyType.free_key) {
             sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease use Virtual/V or Physical/P for a Key type."));
             return;
         }
@@ -640,7 +639,7 @@ public class CrateBaseCommand extends BaseCommand {
         Crate crate = crazyManager.getCrateFromName(crateName);
 
         if (crate != null) {
-            if (crate.getCrateType() != CrateType.MENU) {
+            if (crate.getCrateType() != CrateType.menu) {
                 HashMap<String, String> placeholders = new HashMap<>();
 
                 placeholders.put("%Amount%", amount + "");
@@ -658,7 +657,7 @@ public class CrateBaseCommand extends BaseCommand {
                     if (!event.isCancelled()) {
                         onlinePlayer.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
 
-                        if (crate.getCrateType() == CrateType.CRATE_ON_THE_GO) {
+                        if (crate.getCrateType() == CrateType.crate_on_the_go) {
                             onlinePlayer.getInventory().addItem(crate.getKey(amount));
                             return;
                         }

@@ -24,18 +24,21 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class CrateOpenListener implements Listener {
 
-    private final CrazyManager crazyManager;
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    public CrateOpenListener(CrazyCrates plugin) {
-        this.crazyManager = plugin.getStarter().getCrazyManager();
-    }
+    @NotNull
+    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+
+    @NotNull
+    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onCrateOpen(CrateOpenEvent event) {
         Player player = event.getPlayer();
         Crate crate = event.getCrate();
 
-        if (crate.getCrateType() != CrateType.MENU) {
+        if (crate.getCrateType() != CrateType.menu) {
             if (!crate.canWinPrizes(player)) {
                 player.sendMessage(Messages.NO_PRIZES_FOUND.getMessage());
                 this.crazyManager.removePlayerFromOpeningList(player);
@@ -58,7 +61,7 @@ public class CrateOpenListener implements Listener {
         }
 
         this.crazyManager.addPlayerToOpeningList(player, crate);
-        if (crate.getCrateType() != CrateType.COSMIC) this.crazyManager.addCrate(player, crate);
+        if (crate.getCrateType() != CrateType.cosmic) this.crazyHandler.getUserManager().addOpenedCrate(player.getUniqueId(), crate.getName());
 
         JavaPlugin plugin = event.getPlugin();
 
@@ -93,7 +96,7 @@ public class CrateOpenListener implements Listener {
             }
         }
 
-        if (crate.getCrateType() == CrateType.COSMIC) {
+        if (crate.getCrateType() == CrateType.cosmic) {
             Cosmic.openCosmic(player, crate, event.getKeyType(), event.isCheckHand());
         }
     }

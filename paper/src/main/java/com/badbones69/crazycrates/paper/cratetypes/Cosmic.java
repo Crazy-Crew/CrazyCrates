@@ -178,7 +178,7 @@ public class Cosmic implements Listener {
                     if (glass.get(player).size() >= totalPrizes) {
                         KeyType keyType = crazyManager.getPlayerKeyType(player);
 
-                        if (keyType == KeyType.PHYSICAL_KEY && !crazyManager.hasPhysicalKey(player, crate, checkHands.get(player))) {
+                        if (keyType == KeyType.physical_key && !crazyManager.hasPhysicalKey(player, crate, checkHands.get(player))) {
                             player.closeInventory();
                             player.sendMessage(Messages.NO_KEY.getMessage());
 

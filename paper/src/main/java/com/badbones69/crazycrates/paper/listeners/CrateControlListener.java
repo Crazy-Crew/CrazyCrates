@@ -46,7 +46,7 @@ public class CrateControlListener implements Listener { // Crate Control
     @EventHandler
     public void onCrateInventoryClick(InventoryClickEvent event) {
         for (Crate crate : crazyManager.getCrates()) {
-            if (crate.getCrateType() != CrateType.MENU && crate.isCrateMenu(event.getView())) event.setCancelled(true);
+            if (crate.getCrateType() != CrateType.menu && crate.isCrateMenu(event.getView())) event.setCancelled(true);
         }
     }
     
@@ -84,7 +84,7 @@ public class CrateControlListener implements Listener { // Crate Control
 
                     e.setCancelled(true);
 
-                    if (loc.getCrateType() != CrateType.MENU) {
+                    if (loc.getCrateType() != CrateType.menu) {
                         if (loc.getCrate().isPreviewEnabled()) {
                             PreviewListener.setPlayerInMenu(player, false);
                             PreviewListener.openNewPreview(player, loc.getCrate());
@@ -113,7 +113,7 @@ public class CrateControlListener implements Listener { // Crate Control
                 Crate crate = crateLocation.getCrate();
                 e.setCancelled(true);
 
-                if (crate.getCrateType() == CrateType.MENU) {
+                if (crate.getCrateType() == CrateType.menu) {
                     boolean openMenu = config.getBoolean("Settings.Enable-Crate-Menu");
 
                     //This is to stop players in QuadCrate to not be able to try and open a crate set to menu.
@@ -141,7 +141,7 @@ public class CrateControlListener implements Listener { // Crate Control
                         return;
                     }
 
-                    if (crate.getCrateType() != CrateType.CRATE_ON_THE_GO && keyInHand && crazyManager.isKeyFromCrate(key, crate) && config.getBoolean("Settings.Physical-Accepts-Physical-Keys")) {
+                    if (crate.getCrateType() != CrateType.crate_on_the_go && keyInHand && crazyManager.isKeyFromCrate(key, crate) && config.getBoolean("Settings.Physical-Accepts-Physical-Keys")) {
                         hasKey = true;
                         isPhysical = true;
                     }
@@ -150,7 +150,7 @@ public class CrateControlListener implements Listener { // Crate Control
 
                     if (hasKey) {
                         // Checks if the player uses the quick crate again.
-                        if (crazyManager.isInOpeningList(player) && crazyManager.getOpeningCrate(player).getCrateType() == CrateType.QUICK_CRATE && inUse.containsKey(player) && inUse.get(player).equals(crateLocation.getLocation())) {
+                        if (crazyManager.isInOpeningList(player) && crazyManager.getOpeningCrate(player).getCrateType() == CrateType.quick_crate && inUse.containsKey(player) && inUse.get(player).equals(crateLocation.getLocation())) {
                             useQuickCrateAgain = true;
                         }
 
@@ -173,15 +173,15 @@ public class CrateControlListener implements Listener { // Crate Control
 
                         if (useQuickCrateAgain) QuickCrate.endQuickCrate(player, crateLocation.getLocation(), crate, crazyManager.getHologramController(), true);
 
-                        KeyType keyType = isPhysical ? KeyType.PHYSICAL_KEY : KeyType.VIRTUAL_KEY;
+                        KeyType keyType = isPhysical ? KeyType.physical_key : KeyType.virtual_key;
 
                         // Only cosmic crate type uses this method.
-                        if (crate.getCrateType() == CrateType.COSMIC) crazyManager.addPlayerKeyType(player, keyType);
+                        if (crate.getCrateType() == CrateType.cosmic) crazyManager.addPlayerKeyType(player, keyType);
 
                         crazyManager.addPlayerToOpeningList(player, crate);
                         crazyManager.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true);
                     } else {
-                        if (crate.getCrateType() != CrateType.CRATE_ON_THE_GO) {
+                        if (crate.getCrateType() != CrateType.crate_on_the_go) {
                             if (config.getBoolean("Settings.KnockBack")) knockBack(player, clickedBlock.getLocation());
 
                             if (config.contains("Settings.Need-Key-Sound")) {

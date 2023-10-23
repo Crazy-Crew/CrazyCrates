@@ -136,7 +136,7 @@ public class War implements Listener {
         if (inv != null && canPick.containsKey(player) && crazyManager.isInOpeningList(player)) {
             Crate crate = crazyManager.getOpeningCrate(player);
 
-            if (crate.getCrateType() == CrateType.WAR && canPick.get(player)) {
+            if (crate.getCrateType() == CrateType.war && canPick.get(player)) {
                 ItemStack item = e.getCurrentItem();
 
                 if (item != null && item.getType().toString().contains(Material.GLASS_PANE.toString())) {
@@ -202,7 +202,7 @@ public class War implements Listener {
 
         if (canClose.containsKey(player) && canClose.get(player)) {
             for (Crate crate : crazyManager.getCrates()) {
-                if (crate.getCrateType() == CrateType.WAR && e.getView().getTitle().equalsIgnoreCase(Methods.sanitizeColor(crate.getFile().getString(crateNameString)))) {
+                if (crate.getCrateType() == CrateType.war && e.getView().getTitle().equalsIgnoreCase(Methods.sanitizeColor(crate.getFile().getString(crateNameString)))) {
                     canClose.remove(player);
 
                     if (crazyManager.hasCrateTask(player)) crazyManager.endCrate(player);

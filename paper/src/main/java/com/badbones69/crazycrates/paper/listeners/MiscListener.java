@@ -22,7 +22,7 @@ public class MiscListener implements Listener {
 
         if (crazyManager.isInOpeningList(event.getPlayer())) {
             // DrBot Start
-            if (crazyManager.getOpeningCrate(event.getPlayer()).getCrateType().equals(CrateType.QUICK_CRATE)) return;
+            if (crazyManager.getOpeningCrate(event.getPlayer()).getCrateType().equals(CrateType.quick_crate)) return;
             // DrBot End
             event.setCancelled(true);
         }

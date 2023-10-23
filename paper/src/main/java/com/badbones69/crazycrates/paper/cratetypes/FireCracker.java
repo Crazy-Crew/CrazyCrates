@@ -53,7 +53,7 @@ public class FireCracker {
                 if (l == 25) {
                     crazyManager.endCrate(player);
                     // The key type is set to free because the key has already been taken above.
-                    QuickCrate.openCrate(player, loc, crate, KeyType.FREE_KEY, hologramController);
+                    QuickCrate.openCrate(player, loc, crate, KeyType.free_key, hologramController);
                 }
             }
         }.runTaskTimer(plugin, 0, 2));
