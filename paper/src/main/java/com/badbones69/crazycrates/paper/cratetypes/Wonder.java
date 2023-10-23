@@ -23,7 +23,7 @@ public class Wonder implements Listener {
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     
     public static void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
+        if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             return;

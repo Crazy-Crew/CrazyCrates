@@ -63,7 +63,7 @@ public class QuickCrate implements Listener {
                 keysUsed++;
             }
             
-            if (!crazyManager.takeKeys(keysUsed, player, crate, keyType, false)) {
+            if (!plugin.getCrazyHandler().getUserManager().takeKeys(keysUsed, player.getUniqueId(), crate.getName(), keyType, false)) {
                 Methods.failedToTakeKey(player, crate);
                 CrateControlListener.inUse.remove(player);
                 crazyManager.removePlayerFromOpeningList(player);
@@ -72,7 +72,7 @@ public class QuickCrate implements Listener {
 
             endQuickCrate(player, loc, crate, hologramController, true);
         } else {
-            if (!crazyManager.takeKeys(1, player, crate, keyType, true)) {
+            if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
                 Methods.failedToTakeKey(player, crate);
                 CrateControlListener.inUse.remove(player);
                 crazyManager.removePlayerFromOpeningList(player);

@@ -23,7 +23,7 @@ public class BaseKeyCommand extends BaseCommand {
     @Default
     @Permission("crazycrates.command.player.key")
     public void viewPersonal(Player player) {
-        String header = Messages.PERSONAL_HEADER.getMessageNoPrefix("%crates_opened%", crazyManager.getTotalCratesOpened(player) + "");
+        String header = Messages.PERSONAL_HEADER.getMessageNoPrefix("%crates_opened%", this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(player.getUniqueId()) + "");
 
         String noKeys = Messages.PERSONAL_NO_VIRTUAL_KEYS.getMessage();
 
@@ -40,7 +40,7 @@ public class BaseKeyCommand extends BaseCommand {
 
         HashMap<String, String> placeholders = new HashMap<>();
         placeholders.put("%Player%", target.getName());
-        placeholders.put("%crates_opened%", crazyManager.getTotalCratesOpened(target) + "");
+        placeholders.put("%crates_opened%", this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(target.getUniqueId()) + "");
 
         String header = Messages.OTHER_PLAYER_HEADER.getMessageNoPrefix(placeholders);
 
@@ -49,12 +49,14 @@ public class BaseKeyCommand extends BaseCommand {
         getKeys(target, sender, header, otherPlayer);
     }
 
-    private void getKeys(Player target, CommandSender sender, String header, String messageContent) {
+    private void getKeys(Player player, CommandSender sender, String header, String messageContent) {
         List<String> message = Lists.newArrayList();
 
         message.add(header);
 
-        HashMap<Crate, Integer> keys = crazyManager.getVirtualKeys(target);
+        HashMap<Crate, Integer> keys = new HashMap<>();
+
+        this.crazyManager.getCrates().forEach(crate -> keys.put(crate, this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName())));
 
         boolean hasKeys = false;
 
@@ -62,12 +64,14 @@ public class BaseKeyCommand extends BaseCommand {
             int amount = keys.get(crate);
 
             if (amount > 0) {
-                hasKeys = true;
                 HashMap<String, String> placeholders = new HashMap<>();
+
+                hasKeys = true;
+
                 placeholders.put("%Crate%", crate.getFile().getString("Crate.Name"));
                 placeholders.put("%Keys%", amount + "");
-                placeholders.put("%crate_opened%", crazyManager.getCratesOpened(target, crate) + "");
-                message.add(Messages.PER_CRATE.getMessageNoPrefix(placeholders));
+                placeholders.put("%crate_opened%", this.plugin.getCrazyHandler().getUserManager().getCrateOpened(player.getUniqueId(), crate.getName()) + "");
+                message.add(Messages.PER_CRATE.getMessage(placeholders));
             }
         }
 

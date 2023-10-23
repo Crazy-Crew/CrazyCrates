@@ -134,7 +134,7 @@ public class CrateControlListener implements Listener { // Crate Control
 
                     int requiredKeys = crazyManager.getCrateFromName(crate.getName()).getRequiredKeys();
 
-                    int totalKeys = crazyManager.getTotalKeys(player, crate);
+                    int totalKeys = plugin.getCrazyHandler().getUserManager().getTotalKeys(player.getUniqueId(), crate.getName());
 
                     if (requiredKeys > 0 && totalKeys < requiredKeys) {
                         player.sendMessage(Messages.REQUIRED_KEYS.getMessage().replaceAll("%key-amount%", String.valueOf(requiredKeys)).replaceAll("%crate%", crate.getPreviewName()).replaceAll("%amount%", String.valueOf(totalKeys)));
@@ -146,7 +146,7 @@ public class CrateControlListener implements Listener { // Crate Control
                         isPhysical = true;
                     }
 
-                    if (config.getBoolean("Settings.Physical-Accepts-Virtual-Keys") && crazyManager.getVirtualKeys(player, crate) >= 1) hasKey = true;
+                    if (config.getBoolean("Settings.Physical-Accepts-Virtual-Keys") && plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) hasKey = true;
 
                     if (hasKey) {
                         // Checks if the player uses the quick crate again.
@@ -220,7 +220,7 @@ public class CrateControlListener implements Listener { // Crate Control
                     if (e.getAction() == InventoryAction.PICKUP_ALL) {
                         player.getInventory().addItem(crate.getKey());
                     } else if (e.getAction() == InventoryAction.PICKUP_HALF) {
-                        crazyManager.addKeys(1, player, crate, KeyType.VIRTUAL_KEY);
+                        plugin.getCrazyHandler().getUserManager().addKeys(1, player.getUniqueId(), crate.getName(), KeyType.virtual_key);
                         String name = null;
                         ItemStack key = crate.getKey();
 

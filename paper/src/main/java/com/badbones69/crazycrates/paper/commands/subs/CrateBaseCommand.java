@@ -68,13 +68,13 @@ public class CrateBaseCommand extends BaseCommand {
         if (crate != null) {
             if (!player.getName().equalsIgnoreCase(sender.getName())) {
 
-                if (crazyManager.getVirtualKeys(sender, crate) >= amount) {
+                if (plugin.getCrazyHandler().getUserManager().getVirtualKeys(sender.getUniqueId(), crate.getName()) >= amount) {
                     PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.TRANSFER, amount);
                     plugin.getServer().getPluginManager().callEvent(event);
 
                     if (!event.isCancelled()) {
-                        crazyManager.takeKeys(amount, sender, crate, KeyType.VIRTUAL_KEY, false);
-                        crazyManager.addKeys(amount, player, crate, KeyType.VIRTUAL_KEY);
+                        plugin.getCrazyHandler().getUserManager().takeKeys(amount, sender.getUniqueId(), crate.getName(), KeyType.virtual_key, false);
+                        plugin.getCrazyHandler().getUserManager().addKeys(amount, player.getUniqueId(), crate.getName(), KeyType.virtual_key);
 
                         HashMap<String, String> placeholders = new HashMap<>();
 
@@ -91,7 +91,7 @@ public class CrateBaseCommand extends BaseCommand {
                         boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
                         boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
 
-                        eventLogger.logKeyEvent(player, sender, crate, KeyType.VIRTUAL_KEY, EventLogger.KeyEventType.KEY_EVENT_RECEIVED, logFile, logConsole);
+                        eventLogger.logKeyEvent(player, sender, crate, KeyType.virtual_key, EventLogger.KeyEventType.KEY_EVENT_RECEIVED, logFile, logConsole);
                     }
                 } else {
                     sender.sendMessage(Messages.NOT_ENOUGH_KEYS.getMessage("%Crate%", crate.getName()));
@@ -181,7 +181,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         sender.sendMessage(Methods.color("&e&lCrates:&f " + crates));
 
-        if (brokecrates.length() > 0) sender.sendMessage(Methods.color("&6&lBroken Crates:&f " + brokecrates.substring(0, brokecrates.length() - 2)));
+        if (!brokecrates.isEmpty()) sender.sendMessage(Methods.color("&6&lBroken Crates:&f " + brokecrates.substring(0, brokecrates.length() - 2)));
 
         sender.sendMessage(Methods.color("&e&lAll Crate Locations:"));
         sender.sendMessage(Methods.color("&c[ID]&8, &c[Crate]&8, &c[World]&8, &c[X]&8, &c[Y]&8, &c[Z]"));
@@ -203,7 +203,6 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("tp")
     @Permission(value = "crazycrates.command.admin.teleport", def = PermissionDefault.OP)
     public void onAdminTeleport(Player player, @Suggestion("locations") String id) {
-
         if (!FileManager.Files.LOCATIONS.getFile().contains("Locations")) {
             FileManager.Files.LOCATIONS.getFile().set("Locations.Clear", null);
             FileManager.Files.LOCATIONS.saveFile();
@@ -242,9 +241,7 @@ public class CrateBaseCommand extends BaseCommand {
                 try {
                     crate.addEditorItem(prize, item);
                 } catch (Exception e) {
-                    plugin.getServer().getLogger().warning("Failed to add a new prize to the " + crate.getName() + " crate.");
-
-                    e.printStackTrace();
+                    this.plugin.getServer().getLogger().warning("Failed to add a new prize to the " + crate.getName() + " crate.");
                 }
 
                 crazyManager.loadCrates();
@@ -317,7 +314,7 @@ public class CrateBaseCommand extends BaseCommand {
                     boolean hasKey = false;
                     KeyType keyType = KeyType.virtual_key;
 
-                    if (crazyManager.getVirtualKeys(player, crate) >= 1) {
+                    if (this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
                         hasKey = true;
                     } else {
                         if (config.getBoolean("Settings.Virtual-Accepts-Physical-Keys")) {
@@ -384,7 +381,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         crazyManager.addPlayerToOpeningList(player, crate);
 
-        int keys = crazyManager.getVirtualKeys(player, crate);
+        int keys = this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName());
         int keysUsed = 0;
 
         if (keys == 0) {
@@ -406,7 +403,7 @@ public class CrateBaseCommand extends BaseCommand {
             keysUsed++;
         }
 
-        if (!crazyManager.takeKeys(keysUsed, player, crate, KeyType.VIRTUAL_KEY, false)) {
+        if (!this.plugin.getCrazyHandler().getUserManager().takeKeys(keysUsed, player.getUniqueId(), crate.getName(), KeyType.virtual_key, false)) {
             Methods.failedToTakeKey(player, crate);
             CrateControlListener.inUse.remove(player);
             crazyManager.removePlayerFromOpeningList(player);
@@ -538,11 +535,11 @@ public class CrateBaseCommand extends BaseCommand {
                     if (person != null) person.getInventory().addItem(crate.getKey(amount));
                 } else {
                     if (person != null && person.isOnline()) {
-                        crazyManager.addKeys(amount, person, crate, type);
+                        this.plugin.getCrazyHandler().getUserManager().addKeys(amount, person.getUniqueId(), crate.getName(), type);
                     } else {
                         OfflinePlayer offlinePlayer = target.getOfflinePlayer();
 
-                        if (!crazyManager.addOfflineKeys(offlinePlayer.getName(), crate, amount)) {
+                        if (!this.plugin.getCrazyHandler().getUserManager().addOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), amount, type)) {
                             sender.sendMessage(Messages.INTERNAL_ERROR.getMessage());
                         } else {
                             HashMap<String, String> placeholders = new HashMap<>();
@@ -602,7 +599,7 @@ public class CrateBaseCommand extends BaseCommand {
         if (crate != null) {
             if (crate.getCrateType() != CrateType.menu) {
 
-                if (!crazyManager.takeKeys(amount, target, crate, type, false)) {
+                if (!this.plugin.getCrazyHandler().getUserManager().takeKeys(amount, target.getUniqueId(), crate.getName(), type, false)) {
                     Methods.failedToTakeKey(sender, crate);
                     return;
                 }
@@ -648,7 +645,6 @@ public class CrateBaseCommand extends BaseCommand {
                 sender.sendMessage(Messages.GIVEN_EVERYONE_KEYS.getMessage(placeholders));
 
                 for (Player onlinePlayer : plugin.getServer().getOnlinePlayers()) {
-
                     if (Methods.permCheck(onlinePlayer, Permissions.CRAZY_CRATES_PLAYER_EXCLUDE_GIVE_ALL, true)) continue;
 
                     PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(onlinePlayer, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_ALL_COMMAND, amount);
@@ -662,7 +658,7 @@ public class CrateBaseCommand extends BaseCommand {
                             return;
                         }
 
-                        crazyManager.addKeys(amount, onlinePlayer, crate, type);
+                        this.plugin.getCrazyHandler().getUserManager().addKeys(amount, onlinePlayer.getUniqueId(), crate.getName(), type);
 
                         boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
                         boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");

@@ -34,7 +34,7 @@ public class Roulette implements Listener {
         inv.setItem(13, crate.pickPrize(player).getDisplayItem());
         player.openInventory(inv);
 
-        if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
+        if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             return;

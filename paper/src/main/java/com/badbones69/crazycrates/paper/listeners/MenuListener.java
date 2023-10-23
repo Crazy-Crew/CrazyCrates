@@ -28,6 +28,8 @@ public class MenuListener implements Listener {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
+    private static final CrazyHandler crazyHandler = plugin.getCrazyHandler();
+
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     
     public static void openGUI(Player player) {
@@ -112,10 +114,10 @@ public class MenuListener implements Listener {
                     .setCrateName(crate.getName())
                     .setPlayerName(file.getString(path + "Player"))
                     .setGlow(file.getBoolean(path + "Glowing"))
-                    .addLorePlaceholder("%Keys%", NumberFormat.getNumberInstance().format(crazyManager.getVirtualKeys(player, crate)))
-                    .addLorePlaceholder("%Keys_Physical%", NumberFormat.getNumberInstance().format(crazyManager.getPhysicalKeys(player, crate)))
-                    .addLorePlaceholder("%Keys_Total%", NumberFormat.getNumberInstance().format(crazyManager.getTotalKeys(player, crate)))
-                    .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(crazyManager.getCratesOpened(player, crate)))
+                    .addLorePlaceholder("%Keys%", NumberFormat.getNumberInstance().format(crazyHandler.getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName())))
+                    .addLorePlaceholder("%Keys_Physical%", NumberFormat.getNumberInstance().format(crazyHandler.getUserManager().getPhysicalKeys(player.getUniqueId(), crate.getName())))
+                    .addLorePlaceholder("%Keys_Total%", NumberFormat.getNumberInstance().format(crazyHandler.getUserManager().getTotalKeys(player.getUniqueId(), crate.getName())))
+                    .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(crazyHandler.getUserManager().getCrateOpened(player.getUniqueId(), crate.getName())))
                     .addLorePlaceholder("%Player%", player.getName())
                     .build());
                 }
@@ -127,11 +129,11 @@ public class MenuListener implements Listener {
 
     private static String getCrates(Player player, String option) {
         for (Crate crate : crazyManager.getCrates()) {
-            if (crate.getCrateType() != CrateType.MENU) {
-                option = option.replaceAll("%" + crate.getName().toLowerCase() + "%", crazyManager.getVirtualKeys(player, crate) + "")
-                .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", crazyManager.getPhysicalKeys(player, crate) + "")
-                .replaceAll("%" + crate.getName().toLowerCase() + "_total%", crazyManager.getTotalKeys(player, crate) + "")
-                .replaceAll("%" + crate.getName().toLowerCase() + "_opened%", crazyManager.getCratesOpened(player, crate) + "");
+            if (crate.getCrateType() != CrateType.menu) {
+                option = option.replaceAll("%" + crate.getName().toLowerCase() + "%", crazyHandler.getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) + "")
+                .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", crazyHandler.getUserManager().getPhysicalKeys(player.getUniqueId(), crate.getName()) + "")
+                .replaceAll("%" + crate.getName().toLowerCase() + "_total%", crazyHandler.getUserManager().getTotalKeys(player.getUniqueId(), crate.getName()) + "")
+                .replaceAll("%" + crate.getName().toLowerCase() + "_opened%", crazyHandler.getUserManager().getCrateOpened(player.getUniqueId(), crate.getName()) + "");
             }
         }
 
@@ -184,7 +186,7 @@ public class MenuListener implements Listener {
                                 boolean hasKey = false;
                                 KeyType keyType = KeyType.virtual_key;
 
-                                if (crazyManager.getVirtualKeys(player, crate) >= 1) {
+                                if (plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
                                     hasKey = true;
                                 } else {
                                     if (Files.CONFIG.getFile().getBoolean("Settings.Virtual-Accepts-Physical-Keys") && crazyManager.hasPhysicalKey(player, crate, false)) {

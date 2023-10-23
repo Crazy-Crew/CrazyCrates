@@ -20,7 +20,7 @@ public class FireCracker {
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     
     public static void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc, HologramController hologramController) {
-        if (!crazyManager.takeKeys(1, player, crate, keyType, true)) {
+        if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
             Methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             return;

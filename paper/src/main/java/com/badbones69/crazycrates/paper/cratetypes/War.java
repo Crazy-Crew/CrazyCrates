@@ -41,7 +41,7 @@ public class War implements Listener {
         canPick.put(player, false);
         canClose.put(player, false);
 
-        if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
+        if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             canClose.remove(player);

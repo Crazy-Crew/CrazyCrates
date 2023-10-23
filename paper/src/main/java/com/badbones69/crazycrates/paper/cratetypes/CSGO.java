@@ -75,7 +75,7 @@ public class CSGO implements Listener {
 
         player.openInventory(inv);
 
-        if (crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
+        if (plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
             startCSGO(player, inv, crate);
         } else {
             Methods.failedToTakeKey(player, crate);

@@ -171,7 +171,7 @@ public class QuadCrateManager {
             }
         }
 
-        if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
+        if (!this.plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
             Methods.failedToTakeKey(player, crate);
 
             crazyManager.removePlayerFromOpeningList(player);

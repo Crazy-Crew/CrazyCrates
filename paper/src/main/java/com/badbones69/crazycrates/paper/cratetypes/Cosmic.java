@@ -192,7 +192,7 @@ public class Cosmic implements Listener {
                             return;
                         }
 
-                        if (crazyManager.hasPlayerKeyType(player) && !crazyManager.takeKeys(1, player, crate, keyType, checkHands.get(player))) {
+                        if (crazyManager.hasPlayerKeyType(player) && !plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHands.get(player))) {
                             Methods.failedToTakeKey(player, crate);
                             crazyManager.removePlayerFromOpeningList(player);
                             crazyManager.removePlayerKeyType(player);
@@ -213,7 +213,7 @@ public class Cosmic implements Listener {
                                     plugin.getServer().getPluginManager().callEvent(event);
 
                                     if (!event.isCancelled()) {
-                                        crazyManager.addKeys(1, player, crate, keyType);
+                                        plugin.getCrazyHandler().getUserManager().addKeys(1, player.getUniqueId(), crate.getName(), keyType);
                                         crazyManager.endCrate(player);
                                         cancel();
                                         player.sendMessage(Methods.getPrefix("&cAn issue has occurred and so a key refund was given."));

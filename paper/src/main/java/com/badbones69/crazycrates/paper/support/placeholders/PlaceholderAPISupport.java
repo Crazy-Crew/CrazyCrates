@@ -17,9 +17,17 @@ import java.text.NumberFormat;
 @SuppressWarnings("deprecation")
 public class PlaceholderAPISupport extends PlaceholderExpansion {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+    @NotNull
+    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+
+    @NotNull
+    private final BukkitUserManager userManager = this.crazyHandler.getUserManager();
+
+    @NotNull
+    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
     
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {
@@ -31,25 +39,25 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         Player human = (Player) player;
 
         for (Crate crate : this.crazyManager.getCrates()) {
-            if (crate.getCrateType() != CrateType.MENU) {
+            if (crate.getCrateType() != CrateType.menu) {
                 if (identifier.equalsIgnoreCase(crate.getName())) {
-                    return NumberFormat.getNumberInstance().format(this.crazyManager.getVirtualKeys(human, crate));
+                    return NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(human.getUniqueId(), crate.getName()));
                 }
 
                 if (identifier.equalsIgnoreCase(crate.getName() + "_physical")) {
-                    return NumberFormat.getNumberInstance().format(this.crazyManager.getPhysicalKeys(human, crate));
+                    return NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(human.getUniqueId(), crate.getName()));
                 }
 
                 if (identifier.equalsIgnoreCase(crate.getName() + "_total")) {
-                    return NumberFormat.getNumberInstance().format(this.crazyManager.getTotalKeys(human, crate));
+                    return NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(human.getUniqueId(), crate.getName()));
                 }
 
                 if (identifier.equalsIgnoreCase(crate.getName() + "_opened")) {
-                    return NumberFormat.getNumberInstance().format(this.crazyManager.getCratesOpened(human, crate));
+                    return NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(human.getUniqueId(), crate.getName()));
                 }
 
                 if (identifier.equalsIgnoreCase("crates_opened")) {
-                    return NumberFormat.getNumberInstance().format(this.crazyManager.getTotalCratesOpened(human));
+                    return NumberFormat.getNumberInstance().format(this.userManager.getTotalCratesOpened(human.getUniqueId()));
                 }
             }
         }
@@ -65,7 +73,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         }
 
         if (identifier.equalsIgnoreCase(target.getName() + "_opened")) { // %crazycrates_<player>_opened%
-            return NumberFormat.getNumberInstance().format(this.crazyManager.getTotalCratesOpened(target));
+            return NumberFormat.getNumberInstance().format(this.userManager.getTotalCratesOpened(human.getUniqueId()));
         }
 
         // Get the crate name i.e <crate>
@@ -79,19 +87,19 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         }
 
         if (identifier.equalsIgnoreCase(target.getName() + "_" + crate.getName() + "_total")) { // %crazycrates_<player>_<crate>_total%
-            return NumberFormat.getNumberInstance().format(this.crazyManager.getTotalKeys(target, crate));
+            return NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(target.getUniqueId(), crate.getName()));
         }
 
         if (identifier.equalsIgnoreCase(target.getName() + "_" + crate.getName() + "_physical")) { // %crazycrates_<player>_<crate>_physical%
-            return NumberFormat.getNumberInstance().format(this.crazyManager.getPhysicalKeys(target, crate));
+            return NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(target.getUniqueId(), crate.getName()));
         }
 
         if (identifier.equalsIgnoreCase(target.getName() + "_" + crate.getName() + "_virtual")) { // %crazycrates_<player>_<crate>_virtual%
-            return NumberFormat.getNumberInstance().format(this.crazyManager.getVirtualKeys(target, crate));
+            return NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(target.getUniqueId(), crate.getName()));
         }
 
         if (identifier.equalsIgnoreCase(target.getName() + "_" + crate.getName() + "_opened")) { // %crazycrates_<player>_<crate>_opened%
-            return NumberFormat.getNumberInstance().format(this.crazyManager.getCratesOpened(target, crate));
+            return NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(target.getUniqueId(), crate.getName()));
         }
 
         return "N/A";
