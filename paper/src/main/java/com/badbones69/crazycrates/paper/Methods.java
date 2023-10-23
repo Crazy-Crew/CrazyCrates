@@ -23,6 +23,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+import us.crazycrew.crazycrates.common.config.types.PluginConfig;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -142,7 +144,6 @@ public class Methods {
     }
 
     public static boolean isOnline(String name, CommandSender sender) {
-
         for (Player player : plugin.getServer().getOnlinePlayers()) {
             if (player.getName().equalsIgnoreCase(name)) {
                 return true;
@@ -181,11 +182,11 @@ public class Methods {
     }
 
     public static String getPrefix() {
-        return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix"));
+        return color(plugin.getCrazyHandler().getConfigManager().getPluginConfig().getProperty(PluginConfig.command_prefix));
     }
 
     public static String getPrefix(String msg) {
-        return color(FileManager.Files.CONFIG.getFile().getString("Settings.Prefix") + msg);
+        return color(getPrefix() + msg);
     }
 
     public static boolean isInventoryFull(Player player) {
