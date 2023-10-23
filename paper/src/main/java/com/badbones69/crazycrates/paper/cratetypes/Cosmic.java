@@ -153,7 +153,7 @@ public class Cosmic implements Listener {
                     NBTItem nbtItem = new NBTItem(item);
 
                     if (nbtItem.hasNBTData()) {
-                        if (nbtItem.hasKey("Cosmic-Mystery-Crate")) {
+                        if (nbtItem.hasTag("Cosmic-Mystery-Crate")) {
                             if (!glass.containsKey(player)) glass.put(player, new ArrayList<>());
 
                             if (glass.get(player).size() < totalPrizes) {
@@ -162,7 +162,7 @@ public class Cosmic implements Listener {
                             }
 
                             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
-                        } else if (nbtItem.hasKey("Cosmic-Picked-Crate")) {
+                        } else if (nbtItem.hasTag("Cosmic-Picked-Crate")) {
                             if (!glass.containsKey(player)) glass.put(player, new ArrayList<>());
 
                             e.setCurrentItem(manager.getMysteryCrate().setAmount(pickedSlot).addNamePlaceholder("%Slot%", pickedSlot + "").addLorePlaceholder("%Slot%", pickedSlot + "").build());

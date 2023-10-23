@@ -486,7 +486,7 @@ public class Crate {
             NBTItem nbtItem = new NBTItem(item);
 
             if (nbtItem.hasNBTData()) {
-                if (nbtItem.hasKey("Unbreakable") && nbtItem.getBoolean("Unbreakable")) file.set(path + ".Unbreakable", true);
+                if (nbtItem.hasTag("Unbreakable") && nbtItem.getBoolean("Unbreakable")) file.set(path + ".Unbreakable", true);
             }
 
             List<String> enchantments = new ArrayList<>();

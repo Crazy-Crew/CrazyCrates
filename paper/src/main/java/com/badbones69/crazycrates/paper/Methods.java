@@ -200,7 +200,7 @@ public class Methods {
         NBTItem nbtItem = new NBTItem(itemStack);
         return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) ||
                 itemStack.isSimilar(crate.getAdminKey()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
-                isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasKey("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
+                isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasTag("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
     }
 
     private static boolean isSimilarCustom(ItemStack one, ItemStack two) {
@@ -256,7 +256,7 @@ public class Methods {
             NBTItem nbtItem = new NBTItem(item.clone());
 
             if (nbtItem.hasNBTData()) {
-                if (nbtItem.hasKey("CrazyCrates-Crate")) {
+                if (nbtItem.hasTag("CrazyCrates-Crate")) {
                     nbtItem.removeKey("CrazyCrates-Crate");
                 }
             }
