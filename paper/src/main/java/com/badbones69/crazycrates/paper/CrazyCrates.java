@@ -50,6 +50,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        plugin = this;
+
         this.starter = new Starter();
         this.starter.run();
 
@@ -68,10 +70,8 @@ public class CrazyCrates extends JavaPlugin implements Listener {
                 .registerCustomFilesFolder("/schematics")
                 .setup();
 
-        this.crazyHandler = new CrazyHandler();
+        this.crazyHandler = new CrazyHandler(getDataFolder());
         this.crazyHandler.load();
-
-        plugin = this;
 
         // Clean files if we have to.
         cleanFiles();
