@@ -1376,7 +1376,7 @@ public class CrazyManager {
             ItemStack item = ((Item) entity).getItemStack();
 
             if (item.getType() != Material.AIR) {
-                return new NBTItem(item).hasKey("crazycrates-item");
+                return new NBTItem(item).hasTag("crazycrates-item");
             }
         }
 
