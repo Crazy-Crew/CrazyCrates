@@ -9,32 +9,37 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 // Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
 public class BrokeLocationsListener implements Listener {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+    @NotNull
+    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
 
-    private static final FileManager fileManager = plugin.getStarter().getFileManager();
+    @NotNull
+    private final FileManager fileManager = this.plugin.getStarter().getFileManager();
     
     @EventHandler
     public void onWorldLoad(WorldLoadEvent event) {
-        if (!crazyManager.getBrokeCrateLocations().isEmpty()) {
+        if (!this.crazyManager.getBrokeCrateLocations().isEmpty()) {
             int fixedAmount = 0;
             List<BrokeLocation> fixedWorlds = new ArrayList<>();
 
-            for (BrokeLocation brokeLocation : crazyManager.getBrokeCrateLocations()) {
+            for (BrokeLocation brokeLocation : this.crazyManager.getBrokeCrateLocations()) {
                 Location location = brokeLocation.getLocation();
 
                 if (location.getWorld() != null) {
                     if (brokeLocation.getCrate() != null) {
-                        crazyManager.getCrateLocations().add(new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location));
+                        this.crazyManager.getCrateLocations().add(new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location));
 
-                        if (brokeLocation.getCrate().getHologram().isEnabled() && crazyManager.getHologramController() != null) crazyManager.getHologramController().createHologram(location.getBlock(), brokeLocation.getCrate());
+                        if (brokeLocation.getCrate().getHologram().isEnabled() && this.crazyManager.getHologramController() != null) this.crazyManager.getHologramController().createHologram(location.getBlock(), brokeLocation.getCrate());
 
                         fixedWorlds.add(brokeLocation);
                         fixedAmount++;
@@ -42,12 +47,12 @@ public class BrokeLocationsListener implements Listener {
                 }
             }
 
-            crazyManager.getBrokeCrateLocations().removeAll(fixedWorlds);
+            this.crazyManager.getBrokeCrateLocations().removeAll(fixedWorlds);
 
-            if (fileManager.isLogging()) {
-                plugin.getLogger().warning("Fixed " + fixedAmount + " broken crate locations.");
+            if (this.fileManager.isLogging()) {
+                this.plugin.getLogger().warning("Fixed " + fixedAmount + " broken crate locations.");
 
-                if (crazyManager.getBrokeCrateLocations().isEmpty()) plugin.getLogger().warning("All broken crate locations have been fixed.");
+                if (this.crazyManager.getBrokeCrateLocations().isEmpty()) this.plugin.getLogger().warning("All broken crate locations have been fixed.");
             }
         }
     }
