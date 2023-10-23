@@ -309,7 +309,7 @@ public class CrazyManager {
                 }
             }
 
-            if (removePlayers.size() > 0) {
+            if (!removePlayers.isEmpty()) {
                 if (logging) plugin.getLogger().info(removePlayers.size() + " player's data has been marked to be removed.");
 
                 removePlayers.forEach(uuid -> data.set("Players." + uuid, null));
