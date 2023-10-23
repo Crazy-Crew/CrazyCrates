@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.managers.CrateManager;
 import com.badbones69.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.paper.listeners.PreviewListener;
-import com.badbones69.crazycrates.api.objects.CrateHologram;
+import us.crazycrew.crazycrates.common.crates.CrateHologram;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
