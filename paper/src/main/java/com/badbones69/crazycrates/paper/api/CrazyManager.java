@@ -367,7 +367,7 @@ public class CrazyManager {
 
                 CrateSchematic schematic = isRandom ? getCrateSchematic(crate.getFile().getString("Crate.structure.file")) : getCrateSchematics().get(new Random().nextInt(getCrateSchematics().size()));
 
-                StructureHandler handler = new StructureHandler(schematic.schematicFile());
+                StructureHandler handler = new StructureHandler(schematic.getSchematicFile());
                 CrateLocation crateLocation = getCrateLocation(location);
                 QuadCrateManager session = new QuadCrateManager(player, crate, keyType, crateLocation.getLocation(), lastLocation, checkHand, handler);
 
@@ -1357,7 +1357,7 @@ public class CrazyManager {
      */
     public CrateSchematic getCrateSchematic(String name) {
         for (CrateSchematic schematic : crateSchematics) {
-            if (schematic.schematicName().equalsIgnoreCase(name)) {
+            if (schematic.getSchematicName().equalsIgnoreCase(name)) {
                 return schematic;
             }
         }
