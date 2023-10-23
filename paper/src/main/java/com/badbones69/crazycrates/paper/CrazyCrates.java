@@ -56,7 +56,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         this.starter = new Starter();
         this.starter.run();
 
-        this.starter.getFileManager().setLog(true)
+        this.starter.getFileManager()
                 .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
