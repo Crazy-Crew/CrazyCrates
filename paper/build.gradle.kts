@@ -142,6 +142,10 @@ val description = """
   ```
 
 ## Changes:
+ * Added plugin-config.yml
+  * Migrated Settings.Toggle-Metrics and Settings.Prefix to plugin-config.yml, It will automatically move your old values to the new config.
+ * Metrics actually shuts down when you reload the plugin after turning off metrics.
+
  * New placeholders:
  ### Old placeholders do still work as they serve a purpose for when you don't need to supply a player.
    * %crazycrates_<player>_opened% -> Returns the total amount of crates opened.
