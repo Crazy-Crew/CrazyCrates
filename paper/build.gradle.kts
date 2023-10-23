@@ -163,6 +163,7 @@ val description = """
   * com.badbones69.crazycrates.api inside the "core" module is marked for removal and is deprecated.
   * An alternative has been added that you can migrate to.
    * us.crazycrew.crazycrates:crazycrates-api:1.16
+  * Backwards compatible is temporarily possible, old methods you may depend on will stay for the time being.
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
