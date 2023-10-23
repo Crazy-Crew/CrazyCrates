@@ -17,6 +17,7 @@ import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import com.badbones69.crazycrates.paper.cratetypes.Wonder;
 import com.badbones69.crazycrates.paper.listeners.*;
 import com.badbones69.crazycrates.paper.listeners.crates.CrateOpenListener;
+import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.paper.api.support.metrics.MetricsWrapper;
 import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.api.support.placeholders.PlaceholderAPISupport;
@@ -306,5 +307,9 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     public Starter getStarter() {
         return this.starter;
+    }
+
+    public boolean isLogging() {
+        return this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.verbose_logging);
     }
 }
