@@ -8,8 +8,5 @@ project.version = "${rootProject.version}"
 dependencies {
     api(project(":api"))
 
-    compileOnly(libs.minimessage)
-    compileOnly(libs.adventure)
-
     compileOnly(libs.annotations)
 }

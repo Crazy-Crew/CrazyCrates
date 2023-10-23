@@ -6,8 +6,9 @@ project.group = "${rootProject.group}"
 project.version = rootProject.version
 
 dependencies {
-    compileOnly(libs.minimessage)
-    compileOnly(libs.adventure)
+    //compileOnlyApi(libs.minimessage)
+
+    compileOnlyApi(libs.adventure)
 
     compileOnly(libs.annotations)
 }
