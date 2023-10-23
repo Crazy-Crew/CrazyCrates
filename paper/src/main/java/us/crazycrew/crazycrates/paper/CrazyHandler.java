@@ -1,16 +1,12 @@
-package us.crazycrew.crazycrates.paper.api;
+package us.crazycrew.crazycrates.paper;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.CrazyCratesPlugin;
+import us.crazycrew.crazycrates.paper.api.MigrationService;
 import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
 import java.io.File;
 
 public class CrazyHandler extends CrazyCratesPlugin {
-
-    @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private BukkitUserManager userManager;
 
@@ -19,7 +15,12 @@ public class CrazyHandler extends CrazyCratesPlugin {
     }
 
     public void load() {
+        // Creates user manager instance.
         this.userManager = new BukkitUserManager();
+
+        // Migrates 2 config.yml settings to plugin-config.yml
+        MigrationService service = new MigrationService();
+        service.migrate();
     }
 
     public void unload() {
