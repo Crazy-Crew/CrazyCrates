@@ -157,6 +157,10 @@ val description = """
 
 ## Developers:
  * Added a crate open event.
+ ### Deprecation Notice:
+  * com.badbones69.crazycrates.api inside the "core" module is marked for removal and is deprecated.
+  * An alternative has been added that you can migrate to.
+   * us.crazycrew.crazycrates:crazycrates-api:1.16
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
