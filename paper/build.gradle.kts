@@ -26,6 +26,8 @@ repositories {
 }
 
 dependencies {
+    api(project(":common"))
+
     api(project(":core"))
 
     implementation(libs.triumphcmds)
