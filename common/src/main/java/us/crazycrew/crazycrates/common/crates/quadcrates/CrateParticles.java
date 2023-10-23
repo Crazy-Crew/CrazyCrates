@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.quadcrates;
+package us.crazycrew.crazycrates.common.crates.quadcrates;
 
 public enum CrateParticles {
     
@@ -22,6 +22,6 @@ public enum CrateParticles {
      * @return the particle name
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 }
