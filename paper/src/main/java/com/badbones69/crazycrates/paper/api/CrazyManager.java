@@ -39,7 +39,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.common.crates.quadcrates.CrateSchematic;
-import us.crazycrew.crazycrates.paper.api.CrazyHandler;
 
 import java.io.File;
 import java.util.*;

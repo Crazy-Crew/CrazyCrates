@@ -1,11 +1,11 @@
 package us.crazycrew.crazycrates.common;
 
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.CrazyCrates;
+import us.crazycrew.crazycrates.api.ICrazyCrates;
 import us.crazycrew.crazycrates.api.CrazyCratesService;
 import java.io.File;
 
-public abstract class CrazyCratesPlugin implements CrazyCrates {
+public abstract class CrazyCratesPlugin implements ICrazyCrates {
 
     private final File dataFolder;
 

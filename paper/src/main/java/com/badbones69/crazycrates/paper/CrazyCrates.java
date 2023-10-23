@@ -17,9 +17,9 @@ import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import com.badbones69.crazycrates.paper.cratetypes.Wonder;
 import com.badbones69.crazycrates.paper.listeners.*;
 import com.badbones69.crazycrates.paper.listeners.crates.CrateOpenListener;
-import com.badbones69.crazycrates.paper.metrics.MetricsWrapper;
+import us.crazycrew.crazycrates.paper.api.support.metrics.MetricsWrapper;
 import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
-import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISupport;
+import us.crazycrew.crazycrates.paper.api.support.placeholders.PlaceholderAPISupport;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
 import dev.triumphteam.cmd.core.message.MessageKey;
@@ -33,7 +33,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import us.crazycrew.crazycrates.paper.api.CrazyHandler;
+import us.crazycrew.crazycrates.paper.CrazyHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     private Starter starter;
 
-    BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
+    private final BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
 
     private CrazyHandler crazyHandler;
 
@@ -305,6 +305,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     }
 
     public Starter getStarter() {
-        return starter;
+        return this.starter;
     }
 }

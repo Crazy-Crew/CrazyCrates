@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.paper.support.placeholders;
+package us.crazycrew.crazycrates.paper.api.support.placeholders;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
@@ -9,9 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import us.crazycrew.crazycrates.paper.api.CrazyHandler;
+import us.crazycrew.crazycrates.paper.CrazyHandler;
 import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
-
 import java.text.NumberFormat;
 
 @SuppressWarnings("deprecation")

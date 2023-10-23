@@ -1,11 +1,14 @@
-package com.badbones69.crazycrates.paper.metrics;
+package us.crazycrew.crazycrates.paper.api.support.metrics;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public class MetricsWrapper {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     public void start() {
         new Metrics(this.plugin, 4514);

@@ -19,7 +19,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.paper.api.CrazyHandler;
+import us.crazycrew.crazycrates.paper.CrazyHandler;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;

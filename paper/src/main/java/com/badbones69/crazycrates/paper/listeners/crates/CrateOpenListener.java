@@ -18,7 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import us.crazycrew.crazycrates.paper.api.CrazyHandler;
+import us.crazycrew.crazycrates.paper.CrazyHandler;
 import java.util.List;
 
 @SuppressWarnings("deprecation")

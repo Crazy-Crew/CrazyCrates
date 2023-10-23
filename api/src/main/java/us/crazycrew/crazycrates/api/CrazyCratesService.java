@@ -5,10 +5,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class CrazyCratesService {
 
-    private static CrazyCrates plugin = null;
+    private static ICrazyCrates plugin = null;
 
-    public static @NotNull CrazyCrates get() {
-        CrazyCrates instance = CrazyCratesService.plugin;
+    public static @NotNull ICrazyCrates get() {
+        ICrazyCrates instance = CrazyCratesService.plugin;
 
         if (instance == null) {
             throw new RuntimeException("CrazyCrates service method not set. Please call the method setService before you try to use it!");
@@ -23,7 +23,7 @@ public class CrazyCratesService {
     }
 
     @ApiStatus.Internal
-    public static void setService(CrazyCrates plugin) {
+    public static void setService(ICrazyCrates plugin) {
         if (CrazyCratesService.plugin != null) return;
 
         CrazyCratesService.plugin = plugin;
