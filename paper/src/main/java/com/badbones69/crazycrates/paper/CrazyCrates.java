@@ -130,13 +130,19 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         QuickCrate.removeAllRewards();
 
-        if (starter.getCrazyManager().getHologramController() != null) starter.getCrazyManager().getHologramController().removeAllHolograms();
+        if (this.starter.getCrazyManager().getHologramController() != null) this.starter.getCrazyManager().getHologramController().removeAllHolograms();
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent e) {
-        starter.getCrazyManager().setNewPlayerKeys(e.getPlayer());
-        starter.getCrazyManager().loadOfflinePlayersKeys(e.getPlayer());
+        // Set new keys if we have to.
+        this.starter.getCrazyManager().setNewPlayerKeys(e.getPlayer());
+
+        // Just in case any old data is in there.
+        this.starter.getCrazyManager().loadOfflinePlayersKeys(e.getPlayer());
+
+        // Also add the new data.
+        this.crazyHandler.getUserManager().loadOfflinePlayersKeys(e.getPlayer().getUniqueId(), this.starter.getCrazyManager().getCrates());
     }
 
     public void cleanFiles() {
