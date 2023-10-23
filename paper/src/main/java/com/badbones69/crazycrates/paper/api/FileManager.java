@@ -3,16 +3,21 @@ package com.badbones69.crazycrates.paper.api;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 public class FileManager {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private boolean log = false;
 
@@ -335,7 +340,8 @@ public class FileManager {
         private final String fileJar;
         private final String fileLocation;
 
-        private final CrazyCrates plugin = CrazyCrates.getPlugin();
+        @NotNull
+        private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
         private final FileManager fileManager = plugin.getStarter().getFileManager();
 
@@ -414,7 +420,8 @@ public class FileManager {
         private final String homeFolder;
         private FileConfiguration file;
 
-        private final CrazyCrates plugin = CrazyCrates.getPlugin();
+        @NotNull
+        private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
         /**
          * A custom file that is being made.
@@ -494,8 +501,7 @@ public class FileManager {
 
                     return true;
                 } catch (Exception e) {
-                    plugin.getLogger().warning("Could not save " + fileName + "!");
-                    e.printStackTrace();
+                    plugin.getLogger().log(Level.WARNING, "Could not save " + fileName + "!", e);
                     return false;
                 }
             } else {
@@ -509,20 +515,19 @@ public class FileManager {
          * Overrides the loaded state file and loads the filesystems file.
          * @return True if it reloaded correct and false if the file wasn't found or error.
          */
-        public Boolean reloadFile() {
-            if (file != null) {
+        public boolean reloadFile() {
+            if (this.file != null) {
                 try {
-                    file = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "/" + homeFolder + "/" + fileName));
+                    this.file = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "/" + this.homeFolder + "/" + this.fileName));
 
-                    if (isLogging()) plugin.getLogger().info("Successfully reloaded the " + fileName + ".");
+                    if (isLogging()) this.plugin.getLogger().info("Successfully reloaded the " + this.fileName + ".");
 
                     return true;
                 } catch (Exception e) {
-                    plugin.getLogger().warning("Could not reload the " + fileName + "!");
-                    e.printStackTrace();
+                    this.plugin.getLogger().log(Level.SEVERE, "Could not reload the " + this.fileName + "!", e);
                 }
             } else {
-                if (isLogging()) plugin.getLogger().warning("There was a null custom file that was not found!");
+                if (isLogging()) this.plugin.getLogger().warning("There was a null custom file that was not found!");
             }
 
             return false;

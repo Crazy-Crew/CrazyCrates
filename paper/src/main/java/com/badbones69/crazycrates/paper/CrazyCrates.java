@@ -50,13 +50,10 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        plugin = this;
+        this.starter = new Starter();
+        this.starter.run();
 
-        starter = new Starter();
-
-        starter.run();
-
-        starter.getFileManager().setLog(true)
+        this.starter.getFileManager().setLog(true)
                 .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
@@ -73,6 +70,9 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         this.crazyHandler = new CrazyHandler();
         this.crazyHandler.load();
+
+        plugin = this;
+
         // Clean files if we have to.
         cleanFiles();
 
@@ -178,15 +178,15 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         pluginManager.registerEvents(this, this);
 
-        starter.getCrazyManager().loadCrates();
+        this.starter.getCrazyManager().loadCrates();
 
-        pluginManager.registerEvents(new CrateOpenListener(this), this);
+        pluginManager.registerEvents(new CrateOpenListener(), this);
 
-        if (!starter.getCrazyManager().getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
+        if (!this.starter.getCrazyManager().getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
 
         if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) new PlaceholderAPISupport().register();
 
-        manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage()));
+        this.manager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> sender.sendMessage(Messages.UNKNOWN_COMMAND.getMessage()));
 
         manager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
             String command = context.getCommand();

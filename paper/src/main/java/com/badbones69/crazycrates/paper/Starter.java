@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.paper.api.EventLogger;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.support.structures.blocks.ChestStateHandler;
 
+@Deprecated(since = "1.16", forRemoval = true)
 public class Starter {
 
     private FileManager fileManager;
@@ -16,27 +17,27 @@ public class Starter {
     private EventLogger eventLogger;
 
     public void run() {
-        fileManager = new FileManager();
-        crazyManager = new CrazyManager();
+        this.fileManager = new FileManager();
+        this.crazyManager = new CrazyManager();
 
-        chestStateHandler = new ChestStateHandler();
+        this.chestStateHandler = new ChestStateHandler();
 
-        eventLogger = new EventLogger();
+        this.eventLogger = new EventLogger();
     }
 
     public FileManager getFileManager() {
-        return fileManager;
+        return this.fileManager;
     }
 
     public CrazyManager getCrazyManager() {
-        return crazyManager;
+        return this.crazyManager;
     }
 
     public ChestStateHandler getChestStateHandler() {
-        return chestStateHandler;
+        return this.chestStateHandler;
     }
 
     public EventLogger getEventLogger() {
-        return eventLogger;
+        return this.eventLogger;
     }
 }
