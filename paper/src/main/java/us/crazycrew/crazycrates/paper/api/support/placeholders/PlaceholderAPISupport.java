@@ -78,7 +78,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         // Get the crate name i.e <crate>
         String crateName = identifier.split("_")[1];
 
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
 
         if (crate == null) {
             this.plugin.getLogger().warning("Crate: " + crateName + " is not a valid crate name.");

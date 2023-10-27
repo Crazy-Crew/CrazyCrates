@@ -164,7 +164,7 @@ public class MenuListener implements Listener {
                         NBTItem nbtItem = new NBTItem(item);
 
                         if (nbtItem.hasNBTData() && nbtItem.hasTag("CrazyCrates-Crate")) {
-                            Crate crate = crazyManager.getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
+                            Crate crate = plugin.getCrateManager().getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
 
                             if (crate != null) {
                                 if (e.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item

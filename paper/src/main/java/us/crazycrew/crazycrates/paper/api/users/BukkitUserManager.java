@@ -2,7 +2,6 @@ package us.crazycrew.crazycrates.paper.api.users;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
@@ -26,7 +25,6 @@ import java.util.logging.Level;
 public class BukkitUserManager extends UserManager {
 
     private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-    private final @NotNull CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
 
     private final @NotNull FileConfiguration data = Files.DATA.getFile();
     
@@ -54,7 +52,7 @@ public class BukkitUserManager extends UserManager {
             return;
         }
 
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
 
         Player player = getUser(uuid);
 
@@ -81,7 +79,7 @@ public class BukkitUserManager extends UserManager {
 
         Player player = getUser(uuid);
 
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
 
         this.data.set("Players." + player.getUniqueId() + ".Name", player.getName());
         this.data.set("Players." + player.getUniqueId() + "." + crate.getName(), amount);
@@ -106,7 +104,7 @@ public class BukkitUserManager extends UserManager {
 
         Player player = getUser(uuid);
 
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
 
         switch (keyType) {
             case physical_key -> {
@@ -155,7 +153,7 @@ public class BukkitUserManager extends UserManager {
         
         int keys = 0;
 
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
 
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
             if (item == null || item.getType() == Material.AIR) continue;
@@ -180,7 +178,7 @@ public class BukkitUserManager extends UserManager {
 
         Player player = getUser(uuid);
 
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
 
         switch (keyType) {
             case physical_key -> {
@@ -292,7 +290,7 @@ public class BukkitUserManager extends UserManager {
 
         Player player = getUser(uuid);
 
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
 
         List<ItemStack> items = new ArrayList<>();
 
@@ -339,7 +337,7 @@ public class BukkitUserManager extends UserManager {
             return false;
         }
 
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
 
         try {
             if (keyType == KeyType.physical_key) {
@@ -370,7 +368,7 @@ public class BukkitUserManager extends UserManager {
             return false;
         }
 
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
 
         try {
             if (keyType == KeyType.physical_key) {
@@ -513,7 +511,7 @@ public class BukkitUserManager extends UserManager {
             return;
         }
 
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
         
         boolean hasValue = this.data.contains("Players." + uuid + ".tracking." + crate.getName());
         
@@ -537,6 +535,6 @@ public class BukkitUserManager extends UserManager {
     }
     
     private boolean isCrateInvalid(String crateName) {
-        return crateName.isBlank() || this.crazyManager.getCrateFromName(crateName) == null;
+        return crateName.isBlank() || this.plugin.getCrateManager().getCrateFromName(crateName) == null;
     }
 }

@@ -8,8 +8,6 @@ import com.badbones69.crazycrates.paper.support.structures.blocks.ChestStateHand
 @Deprecated(since = "1.16", forRemoval = true)
 public class Starter {
 
-    private FileManager fileManager;
-
     private CrazyManager crazyManager;
 
     private ChestStateHandler chestStateHandler;
@@ -17,16 +15,11 @@ public class Starter {
     private EventLogger eventLogger;
 
     public void run() {
-        this.fileManager = new FileManager();
         this.crazyManager = new CrazyManager();
 
         this.chestStateHandler = new ChestStateHandler();
 
         this.eventLogger = new EventLogger();
-    }
-
-    public FileManager getFileManager() {
-        return this.fileManager;
     }
 
     public CrazyManager getCrazyManager() {

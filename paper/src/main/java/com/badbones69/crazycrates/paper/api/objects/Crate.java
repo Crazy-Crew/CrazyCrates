@@ -51,7 +51,7 @@ public class Crate {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final FileManager fileManager = plugin.getStarter().getFileManager();
+    private final FileManager fileManager = this.plugin.getFileManager();
     private int maxMassOpen;
     private int requiredKeys;
     private List<String> prizeMessage;

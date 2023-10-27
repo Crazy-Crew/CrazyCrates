@@ -2,8 +2,8 @@ plugins {
     id("root-plugin")
 }
 
-project.group = "${rootProject.group}"
-project.version = rootProject.version
+project.group = "us.crazycrew.crazycrates"
+project.version = "0.1"
 
 dependencies {
     //compileOnlyApi(libs.minimessage)

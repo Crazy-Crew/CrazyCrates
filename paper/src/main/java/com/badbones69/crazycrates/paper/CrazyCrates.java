@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper;
 
+import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
@@ -17,7 +18,9 @@ import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import com.badbones69.crazycrates.paper.cratetypes.Wonder;
 import com.badbones69.crazycrates.paper.listeners.*;
 import com.badbones69.crazycrates.paper.listeners.crates.CrateOpenListener;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.support.metrics.MetricsWrapper;
 import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.api.support.placeholders.PlaceholderAPISupport;
@@ -53,26 +56,11 @@ public class CrazyCrates extends JavaPlugin implements Listener {
     public void onEnable() {
         plugin = this;
 
-        this.starter = new Starter();
-        this.starter.run();
-
-        this.starter.getFileManager()
-                .registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("sea.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("soul.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
-                .registerCustomFilesFolder("/crates")
-                .registerCustomFilesFolder("/schematics")
-                .setup();
-
         this.crazyHandler = new CrazyHandler(getDataFolder());
         this.crazyHandler.load();
+
+        this.starter = new Starter();
+        this.starter.run();
 
         // Clean files if we have to.
         cleanFiles();
@@ -239,7 +227,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         this.manager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage()));
 
-        this.manager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> this.starter.getFileManager().getAllCratesNames(plugin).stream().toList());
+        this.manager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> this.crazyHandler.getFileManager().getAllCratesNames(plugin).stream().toList());
 
         this.manager.registerSuggestion(SuggestionKey.of("key-types"), (sender, context) -> KEYS);
 
@@ -250,7 +238,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         this.manager.registerSuggestion(SuggestionKey.of("prizes"), (sender, context) -> {
             List<String> numbers = new ArrayList<>();
 
-            this.starter.getCrazyManager().getCrateFromName(context.getArgs().get(0)).getPrizes().forEach(prize -> numbers.add(prize.getName()));
+            this.crazyHandler.getCrateManager().getCrateFromName(context.getArgs().get(0)).getPrizes().forEach(prize -> numbers.add(prize.getName()));
 
             return numbers;
         });
@@ -299,7 +287,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         return plugin;
     }
 
-    public void printHooks() {
+    private void printHooks() {
         for (PluginSupport value : PluginSupport.values()) {
             if (value.isPluginEnabled()) {
                 plugin.getLogger().info(Methods.color("&6&l" + value.name() + " &a&lFOUND"));
@@ -311,6 +299,16 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
     public Starter getStarter() {
         return this.starter;
+    }
+
+    @NotNull
+    public FileManager getFileManager() {
+        return this.crazyHandler.getFileManager();
+    }
+
+    @NotNull
+    public CrateManager getCrateManager() {
+        return this.crazyHandler.getCrateManager();
     }
 
     public boolean isLogging() {

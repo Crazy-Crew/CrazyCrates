@@ -135,7 +135,7 @@ public class CrateControlListener implements Listener { // Crate Control
                     String keyName = crate.getKey().getItemMeta().getDisplayName();
                     keyName = keyName != null ? keyName : crate.getKey().getType().toString();
 
-                    int requiredKeys = this.crazyManager.getCrateFromName(crate.getName()).getRequiredKeys();
+                    int requiredKeys = this.plugin.getCrateManager().getCrateFromName(crate.getName()).getRequiredKeys();
 
                     int totalKeys = this.plugin.getCrazyHandler().getUserManager().getTotalKeys(player.getUniqueId(), crate.getName());
 

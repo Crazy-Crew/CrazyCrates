@@ -51,10 +51,7 @@ public class CrazyManager {
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     @NotNull
-    private final FileManager fileManager = plugin.getStarter().getFileManager();
-
-    // All the crates that have been loaded.
-    private final ArrayList<Crate> crates = new ArrayList<>();
+    private final FileManager fileManager = this.plugin.getFileManager();
 
     // A list of all the physical crate locations.
     private final ArrayList<CrateLocation> crateLocations = new ArrayList<>();
@@ -98,7 +95,9 @@ public class CrazyManager {
     // Loads all the information the plugin needs to run.
     public void loadCrates() {
         this.giveNewPlayersKeys = false;
-        this.crates.clear();
+
+        this.plugin.getCrateManager().clearCrates();
+
         this.brokecrates.clear();
         this.crateLocations.clear();
         this.crateSchematics.clear();
@@ -197,14 +196,14 @@ public class CrazyManager {
                 List<String> prizeMessage = file.contains("Crate.Prize-Message") ? file.getStringList("Crate.Prize-Message") : Collections.emptyList();
 
                 CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"));
-                crates.add(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, holo));
+                this.plugin.getCrateManager().addCrate(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, holo));
             } catch (Exception exception) {
                 this.brokecrates.add(crateName);
                 this.plugin.getLogger().log(Level.WARNING, "There was an error while loading the " + crateName + ".yml file.", exception);
             }
         }
 
-        this.crates.add(new Crate("Menu", "Menu", CrateType.menu, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, 0, 0, Collections.emptyList(), null));
+        this.plugin.getCrateManager().addCrate(new Crate("Menu", "Menu", CrateType.menu, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, 0, 0, Collections.emptyList(), null));
 
         if (this.plugin.isLogging()) {
             List.of(
@@ -226,7 +225,7 @@ public class CrazyManager {
                     int y = locations.getInt("Locations." + locationName + ".Y");
                     int z = locations.getInt("Locations." + locationName + ".Z");
                     Location location = new Location(world, x, y, z);
-                    Crate crate = getCrateFromName(locations.getString("Locations." + locationName + ".Crate"));
+                    Crate crate = this.plugin.getCrateManager().getCrateFromName(locations.getString("Locations." + locationName + ".Crate"));
 
                     if (world != null && crate != null) {
                         this.crateLocations.add(new CrateLocation(locationName, crate, location));
@@ -638,8 +637,8 @@ public class CrazyManager {
      *
      * @return An ArrayList of all the loaded crates.
      */
-    public ArrayList<Crate> getCrates() {
-        return this.crates;
+    public List<Crate> getCrates() {
+        return this.plugin.getCrateManager().getCrates();
     }
 
     /**
@@ -648,14 +647,9 @@ public class CrazyManager {
      * @param name The name of the crate you wish to grab.
      * @return Returns a Crate object of the crate it found and if none are found it returns null.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public Crate getCrateFromName(String name) {
-        for (Crate crate : getCrates()) {
-            if (crate.getName().equalsIgnoreCase(name)) {
-                return crate;
-            }
-        }
-
-        return null;
+        return this.plugin.getCrateManager().getCrateFromName(name);
     }
 
     /**
@@ -663,7 +657,7 @@ public class CrazyManager {
      *
      * @return The time in seconds till kick.
      */
-    public Integer getQuadCrateTimer() {
+    public int getQuadCrateTimer() {
         return this.quadCrateTimer;
     }
 
@@ -1151,7 +1145,7 @@ public class CrazyManager {
             String uuid = player.getUniqueId().toString();
 
             if (!player.hasPlayedBefore()) {
-                this.crates.stream()
+                this.plugin.getCrateManager().getCrates().stream()
                 .filter(Crate :: doNewPlayersGetKeys)
                 .forEach(crate -> {
                     Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());

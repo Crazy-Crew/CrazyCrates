@@ -1,7 +1,6 @@
 package us.crazycrew.crazycrates.paper.api.support.metrics;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,9 +12,6 @@ public class MetricsWrapper {
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    @NotNull
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
-
     private Metrics metrics;
 
     public void start() {
@@ -26,7 +22,7 @@ public class MetricsWrapper {
 
         this.metrics = new Metrics(this.plugin, 4514);
 
-        this.crazyManager.getCrates().forEach(crate -> {
+        this.plugin.getCrateManager().getCrates().forEach(crate -> {
             CrateType crateType = crate.getCrateType();
 
             SimplePie chart = new SimplePie("crate_types", crateType::getName);

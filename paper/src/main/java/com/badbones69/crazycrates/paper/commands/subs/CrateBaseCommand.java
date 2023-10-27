@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
@@ -43,15 +44,18 @@ public class CrateBaseCommand extends BaseCommand {
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    
+    @NotNull
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @NotNull
-    private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
 
     @NotNull
-    private final FileManager fileManager = plugin.getStarter().getFileManager();
+    private final FileManager fileManager = this.plugin.getFileManager();
 
     @NotNull
-    private final EventLogger eventLogger = plugin.getStarter().getEventLogger();
+    private final EventLogger eventLogger = this.plugin.getStarter().getEventLogger();
 
     @NotNull
     private final FileConfiguration config = Files.CONFIG.getFile();
@@ -77,7 +81,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("transfer")
     @Permission(value = "crazycrates.command.player.transfer", def = PermissionDefault.OP)
     public void onPlayerTransferKeys(Player sender, @Suggestion("crates") String crateName, @Suggestion("online-players") Player player, @Suggestion("numbers") int amount) {
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         // If the crate is menu or null. we return
         if (crate == null || crate.getCrateType() == CrateType.menu) {
@@ -153,7 +157,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("debug")
     @Permission(value = "crazycrates.command.admin.debug", def = PermissionDefault.OP)
     public void onDebug(CommandSender sender, @Suggestion("crates") String crateName) {
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null) {
             sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", crateName));
@@ -268,7 +272,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null) {
             player.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", crateName));
@@ -297,7 +301,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("preview")
     @Permission(value = "crazycrates.command.admin.preview", def = PermissionDefault.OP)
     public void onAdminCratePreview(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("online-players") Player player) {
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
             player.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", crateName));
@@ -326,7 +330,7 @@ public class CrateBaseCommand extends BaseCommand {
     }
 
     private void openCrate(CommandSender sender, Player player, String crateName) {
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
             player.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", crateName));
@@ -401,7 +405,7 @@ public class CrateBaseCommand extends BaseCommand {
     public void onAdminCrateMassOpen(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount) {
         if (!(sender instanceof Player player)) return;
 
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
             sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", crateName));
@@ -445,7 +449,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("forceopen")
     @Permission(value = "crazycrates.command.admin.forceopen", def = PermissionDefault.OP)
     public void onAdminForceOpen(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("online-players") Player player) {
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
             player.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", crateName));
@@ -488,7 +492,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("set")
     @Permission(value = "crazycrates.command.admin.set", def = PermissionDefault.OP)
     public void onAdminCrateSet(Player player, @Suggestion("crates") String crateName) {
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
             player.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", crateName));
@@ -538,7 +542,7 @@ public class CrateBaseCommand extends BaseCommand {
     @Permission(value = "crazycrates.command.admin.givekey", def = PermissionDefault.OP)
     public void onAdminCrateGive(CommandSender sender, @Suggestion("key-types") String keyType, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("online-players") CustomPlayer target) {
         KeyType type = KeyType.getFromName(keyType);
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (type == null || type == KeyType.free_key) {
             sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease use Virtual/V or Physical/P for a Key type."));
@@ -616,7 +620,7 @@ public class CrateBaseCommand extends BaseCommand {
     public void onAdminCrateTake(CommandSender sender, @Suggestion("key-types") String keyType, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("online-players") CustomPlayer target) {
         KeyType type = KeyType.getFromName(keyType);
 
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (type == null || type == KeyType.free_key) {
             sender.sendMessage(Methods.color(Methods.getPrefix() + "&cPlease use Virtual/V or Physical/P for a Key type."));
@@ -676,7 +680,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        Crate crate = this.crazyManager.getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
             sender.sendMessage(Messages.NOT_A_CRATE.getMessage("%Crate%", crateName));
