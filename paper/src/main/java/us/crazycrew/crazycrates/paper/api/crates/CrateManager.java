@@ -30,12 +30,6 @@ public class CrateManager {
         return Collections.unmodifiableList(this.crates);
     }
 
-    /**
-     * Get a crate by its name.
-     *
-     * @param name The name of the crate you wish to grab.
-     * @return Returns a Crate object of the crate it found and if none are found it returns null.
-     */
     public Crate getCrateFromName(String name) {
         for (Crate crate : getCrates()) {
             if (crate.getName().equalsIgnoreCase(name)) {

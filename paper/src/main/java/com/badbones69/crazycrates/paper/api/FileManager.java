@@ -269,10 +269,10 @@ public class FileManager {
         }
     }
 
-    public ArrayList<String> getAllCratesNames(CrazyCrates plugin) {
+    public ArrayList<String> getAllCratesNames() {
         ArrayList<String> files = new ArrayList<>();
 
-        String[] file = new File(plugin.getDataFolder(), "/crates").list();
+        String[] file = new File(this.plugin.getDataFolder(), "/crates").list();
 
         if (file != null) {
             for (String name : file) {

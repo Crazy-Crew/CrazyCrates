@@ -121,7 +121,7 @@ public class CrazyManager {
 
         if (this.plugin.isLogging()) this.plugin.getLogger().info("Loading all crate information...");
 
-        for (String crateName : this.fileManager.getAllCratesNames(this.plugin)) {
+        for (String crateName : this.fileManager.getAllCratesNames()) {
             try {
                 FileConfiguration file = this.fileManager.getFile(crateName).getFile();
                 CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));

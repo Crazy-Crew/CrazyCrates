@@ -227,7 +227,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
 
         this.manager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> sender.sendMessage(Messages.MUST_BE_A_CONSOLE_SENDER.getMessage()));
 
-        this.manager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> this.crazyHandler.getFileManager().getAllCratesNames(plugin).stream().toList());
+        this.manager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> this.crazyHandler.getFileManager().getAllCratesNames().stream().toList());
 
         this.manager.registerSuggestion(SuggestionKey.of("key-types"), (sender, context) -> KEYS);
 
