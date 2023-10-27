@@ -80,17 +80,11 @@ public class CrazyManager {
     // A list of current crate schematics for Quad Crate.
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
 
-    // If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
-    private boolean giveVirtualKeysWhenInventoryFull;
-
     // True if at least one crate gives new players keys and false if none give new players keys.
     private boolean giveNewPlayersKeys;
 
     // The hologram api that is being hooked into.
     private HologramController hologramController;
-
-    // Schematic locations for 1.13+.
-    private final HashMap<UUID, Location[]> schemLocations = new HashMap<>();
 
     // Loads all the information the plugin needs to run.
     public void loadCrates() {
@@ -103,7 +97,6 @@ public class CrazyManager {
         this.crateSchematics.clear();
 
         this.quadCrateTimer = Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
-        this.giveVirtualKeysWhenInventoryFull = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
 
         // Removes all holograms so that they can be replaced.
         if (this.hologramController != null) this.hologramController.removeAllHolograms();
@@ -240,9 +233,7 @@ public class CrazyManager {
                         brokeAmount++;
                     }
 
-                } catch (Exception exception) {
-
-                }
+                } catch (Exception ignored) {}
             }
         }
 
@@ -263,11 +254,13 @@ public class CrazyManager {
         // Loading schematic files
         String[] schems = new File(this.plugin.getDataFolder() + "/schematics/").list();
 
-        for (String schematicName : schems) {
-            if (schematicName.endsWith(".nbt")) {
-                this.crateSchematics.add(new CrateSchematic(schematicName, new File(plugin.getDataFolder() + "/schematics/" + schematicName)));
+        if (schems != null) {
+            for (String schematicName : schems) {
+                if (schematicName.endsWith(".nbt")) {
+                    this.crateSchematics.add(new CrateSchematic(schematicName, new File(plugin.getDataFolder() + "/schematics/" + schematicName)));
 
-                if (this.plugin.isLogging()) this.plugin.getLogger().info(schematicName + " was successfully found and loaded.");
+                    if (this.plugin.isLogging()) this.plugin.getLogger().info(schematicName + " was successfully found and loaded.");
+                }
             }
         }
 
@@ -275,15 +268,6 @@ public class CrazyManager {
 
         cleanDataFile();
         PreviewListener.loadButtons();
-    }
-
-    /**
-     * If the player's inventory is full when given a physical key it will instead give them virtual keys. If false it will drop the keys on the ground.
-     *
-     * @return True if the player will get a virtual key and false if it drops on the floor.
-     */
-    public boolean getGiveVirtualKeysWhenInventoryFull() {
-        return this.giveVirtualKeysWhenInventoryFull;
     }
 
     // This method is deigned to help clean the data.yml file of any unless info that it may have.
@@ -1053,15 +1037,6 @@ public class CrazyManager {
     }
 
     /**
-     * Get the locations a player sets for when creating a new schematic.
-     *
-     * @return The list of locations set by players.
-     */
-    public HashMap<UUID, Location[]> getSchematicLocations() {
-        return this.schemLocations;
-    }
-
-    /**
      * Get the amount of virtual keys a player has.
      */
     @Deprecated(since = "1.16", forRemoval = true)
@@ -1162,21 +1137,6 @@ public class CrazyManager {
      */
     public HologramController getHologramController() {
         return this.hologramController;
-    }
-
-    /**
-     * Load all the schematics inside the Schematics folder.
-     */
-    public void loadSchematics() {
-        this.crateSchematics.clear();
-        String[] schems = new File(this.plugin.getDataFolder() + "/schematics/").list();
-
-        assert schems != null;
-        for (String schematicName : schems) {
-            if (schematicName.endsWith(".nbt")) {
-                this.crateSchematics.add(new CrateSchematic(schematicName, new File(this.plugin.getDataFolder() + "/schematics/" + schematicName)));
-            }
-        }
     }
 
     /**
