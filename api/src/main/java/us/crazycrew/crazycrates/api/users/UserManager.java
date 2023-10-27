@@ -8,13 +8,17 @@ public abstract class UserManager {
 
     /**
      * Get the player
-     * @param uuid uuid of player
+     *
+     * @param uuid The uuid of the player
      * @return player
      */
     public abstract Audience getUser(UUID uuid);
 
     /**
      * Get the amount of virtual keys a player has.
+     *
+     * @param uuid The uuid of the player
+     * @param crateName The name of the crate
      */
     public abstract int getVirtualKeys(UUID uuid, String crateName);
 

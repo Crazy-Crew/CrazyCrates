@@ -32,7 +32,6 @@ tasks {
     }
 }
 
-
 val isSnapshot = rootProject.version.toString().contains("snapshot")
 
 publishing {

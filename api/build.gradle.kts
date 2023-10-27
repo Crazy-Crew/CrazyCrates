@@ -13,6 +13,11 @@ dependencies {
     compileOnly(libs.annotations)
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
 val component: SoftwareComponent = components["java"]
 
 tasks {
