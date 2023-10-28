@@ -11,7 +11,7 @@ import us.crazycrew.crazycrates.paper.api.events.crates.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.*;
-import com.badbones69.crazycrates.paper.commands.subs.CrateBaseCommand;
+import us.crazycrew.crazycrates.paper.commands.subs.CrateBaseCommand;
 import com.badbones69.crazycrates.paper.cratetypes.*;
 import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
 import com.badbones69.crazycrates.paper.listeners.MenuListener;

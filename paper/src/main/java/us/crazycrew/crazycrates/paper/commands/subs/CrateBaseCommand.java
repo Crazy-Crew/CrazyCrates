@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.paper.commands.subs;
+package us.crazycrew.crazycrates.paper.commands.subs;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
