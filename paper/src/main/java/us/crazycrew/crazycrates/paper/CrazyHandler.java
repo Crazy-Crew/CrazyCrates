@@ -1,5 +1,6 @@
 package us.crazycrew.crazycrates.paper;
 
+import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +22,8 @@ public class CrazyHandler extends CrazyCratesPlugin {
     private FileManager fileManager;
 
     private MetricsWrapper metrics;
+
+    private Methods methods;
 
     public CrazyHandler(File dataFolder) {
         super(dataFolder);
@@ -44,6 +47,8 @@ public class CrazyHandler extends CrazyCratesPlugin {
                 .registerCustomFilesFolder("/schematics")
                 .setup();
 
+        this.methods = new Methods();
+
         this.crateManager = new CrateManager();
 
         // Creates user manager instance.
@@ -66,6 +71,11 @@ public class CrazyHandler extends CrazyCratesPlugin {
     @NotNull
     public MetricsWrapper getMetrics() {
         return this.metrics;
+    }
+
+    @NotNull
+    public Methods getMethods() {
+        return this.methods;
     }
 
     @NotNull

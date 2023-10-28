@@ -118,7 +118,7 @@ public enum Messages {
         StringBuilder message = new StringBuilder();
 
         for (String line : list) {
-            message.append(Methods.color(line)).append("\n");
+            message.append(plugin.getCrazyHandler().getMethods().color(line)).append("\n");
         }
 
         return message.toString();
@@ -329,15 +329,15 @@ public enum Messages {
 
         if (isList) {
             if (exists) {
-                message = Methods.color(convertList(Files.MESSAGES.getFile().getStringList("Messages." + path)));
+                message = plugin.getCrazyHandler().getMethods().color(convertList(Files.MESSAGES.getFile().getStringList("Messages." + path)));
             } else {
-                message = Methods.color(convertList(getDefaultListMessage()));
+                message = plugin.getCrazyHandler().getMethods().color(convertList(getDefaultListMessage()));
             }
         } else {
             if (exists) {
-                message = Methods.color(Files.MESSAGES.getFile().getString("Messages." + path));
+                message = plugin.getCrazyHandler().getMethods().color(Files.MESSAGES.getFile().getString("Messages." + path));
             } else {
-                message = Methods.color(getDefaultMessage());
+                message = plugin.getCrazyHandler().getMethods().color(getDefaultMessage());
             }
         }
 
@@ -346,12 +346,12 @@ public enum Messages {
         }
 
         if (isList) { // Don't want to add a prefix to a list of messages.
-            return Methods.color(message);
+            return plugin.getCrazyHandler().getMethods().color(message);
         } else { // If the message isn't a list.
             if (prefix) { // If the message needs a prefix.
-                return Methods.getPrefix(message);
+                return plugin.getCrazyHandler().getMethods().getPrefix(message);
             } else { // If the message doesn't need a prefix.
-                return Methods.color(message);
+                return plugin.getCrazyHandler().getMethods().color(message);
             }
         }
     }

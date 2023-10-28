@@ -24,6 +24,9 @@ public class CrateOnTheGo implements Listener {
 
     @NotNull
     private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+
+    @NotNull
+    private final Methods methods = this.plugin.getCrazyHandler().getMethods();
     
     @EventHandler
     public void onCrateOpen(PlayerInteractEvent e) {
@@ -35,18 +38,18 @@ public class CrateOnTheGo implements Listener {
             if (item.getType() == Material.AIR) return;
             
             for (Crate crate : this.crazyManager.getCrates()) {
-                if (crate.getCrateType() == CrateType.crate_on_the_go && Methods.isSimilar(item, crate)) {
+                if (crate.getCrateType() == CrateType.crate_on_the_go && this.methods.isSimilar(item, crate)) {
                     e.setCancelled(true);
                     this.crazyManager.addPlayerToOpeningList(player, crate);
 
-                    Methods.removeItem(item, player);
+                    this.methods.removeItem(item, player);
 
                     Prize prize = crate.pickPrize(player);
 
                     this.crazyManager.givePrize(player, prize, crate);
                     this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, this.crazyManager.getOpeningCrate(player).getName(), prize));
 
-                    if (prize.useFireworks()) Methods.firework(player.getLocation().add(0, 1, 0));
+                    if (prize.useFireworks()) this.methods.firework(player.getLocation().add(0, 1, 0));
 
                     this.crazyManager.removePlayerFromOpeningList(player);
                 }

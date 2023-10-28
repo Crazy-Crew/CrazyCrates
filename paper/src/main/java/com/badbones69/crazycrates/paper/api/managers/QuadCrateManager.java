@@ -177,7 +177,7 @@ public class QuadCrateManager {
         }
 
         if (!this.plugin.getCrazyHandler().getUserManager().takeKeys(1, this.player.getUniqueId(), this.crate.getName(), this.keyType, this.checkHand)) {
-            Methods.failedToTakeKey(this.player, this.crate);
+            this.plugin.getCrazyHandler().getMethods().failedToTakeKey(this.player, this.crate);
 
             this.crazyManager.removePlayerFromOpeningList(this.player);
             crateSessions.remove(this.instance);

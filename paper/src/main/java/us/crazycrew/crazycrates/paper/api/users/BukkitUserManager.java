@@ -24,7 +24,11 @@ import java.util.logging.Level;
 
 public class BukkitUserManager extends UserManager {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
+    @NotNull
+    private final Methods methods = this.plugin.getCrazyHandler().getMethods();
 
     private final @NotNull FileConfiguration data = Files.DATA.getFile();
     
@@ -108,7 +112,7 @@ public class BukkitUserManager extends UserManager {
 
         switch (keyType) {
             case physical_key -> {
-                if (!Methods.isInventoryFull(player)) {
+                if (!this.methods.isInventoryFull(player)) {
                     player.getInventory().addItem(crate.getKey(amount));
                     return;
                 }
@@ -158,7 +162,7 @@ public class BukkitUserManager extends UserManager {
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
             if (item == null || item.getType() == Material.AIR) continue;
 
-            if (Methods.isSimilar(item, crate)) keys += item.getAmount();
+            if (this.methods.isSimilar(item, crate)) keys += item.getAmount();
         }
 
         return keys;
@@ -201,7 +205,7 @@ public class BukkitUserManager extends UserManager {
                                 int keyAmount = item.getAmount();
 
                                 if ((takeAmount - keyAmount) >= 0) {
-                                    Methods.removeItemAnySlot(player.getInventory(), item);
+                                    this.methods.removeItemAnySlot(player.getInventory(), item);
 
                                     if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), crate.getName());
 
@@ -243,7 +247,7 @@ public class BukkitUserManager extends UserManager {
                         }
                     }
                 } catch (Exception exception) {
-                    Methods.failedToTakeKey(player, crate);
+                    this.methods.failedToTakeKey(player, crate);
                     return false;
                 }
             }
@@ -272,7 +276,7 @@ public class BukkitUserManager extends UserManager {
             }
         }
 
-        Methods.failedToTakeKey(player, crate);
+        this.methods.failedToTakeKey(player, crate);
         return false;
     }
 
@@ -323,7 +327,7 @@ public class BukkitUserManager extends UserManager {
     private boolean isKeyFromCrate(ItemStack item, Crate crate) {
         if (crate.getCrateType() != CrateType.menu) {
             if (item != null && item.getType() != Material.AIR) {
-                return Methods.isSimilar(item, crate);
+                return this.methods.isSimilar(item, crate);
             }
         }
 
@@ -398,24 +402,17 @@ public class BukkitUserManager extends UserManager {
 
         UUID uuid = player.getUniqueId();
 
-        this.plugin.getLogger().warning("New Method | The player is not null.");
-
         for (Crate crate : crates) {
             if (this.data.contains("Offline-Players." + uuid + "." + crate.getName())) {
-                this.plugin.getLogger().warning("New Method | UUID: " + uuid);
 
                 PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, 1);
                 this.plugin.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) return;
 
-                this.plugin.getLogger().warning("New Method | isCancelled: " + event.isCancelled());
-
                 int keysGiven = 0;
 
                 int amount = this.data.getInt("Offline-Players." + uuid + "." + crate.getName());
-
-                this.plugin.getLogger().warning("New Method | Current Amount: " + amount);
 
                 //TODO() Instead of dropping the keys, make it so they need to empty their inventory and prompt them to open a gui.
 
@@ -423,7 +420,7 @@ public class BukkitUserManager extends UserManager {
                     // If the inventory is full, drop the remaining keys then stop.
                     if (crate.getCrateType() == CrateType.crate_on_the_go) {
                         // If the inventory is full, drop the items then stop.
-                        if (Methods.isInventoryFull(player)) {
+                        if (this.methods.isInventoryFull(player)) {
                             player.getWorld().dropItemNaturally(player.getLocation(), crate.getKey(amount));
                             break;
                         }
@@ -437,7 +434,6 @@ public class BukkitUserManager extends UserManager {
                     // If the inventory not full, add to inventory.
                     player.getInventory().addItem(crate.getKey(amount));
                 } else {
-                    this.plugin.getLogger().warning("New Method | Adding virtual keys");
                     // Otherwise add virtual keys.
                     addVirtualKeys(amount, uuid, crate.getName());
                 }
@@ -458,7 +454,7 @@ public class BukkitUserManager extends UserManager {
 
                 while (keysGiven < amount) {
                     // If the inventory is full, drop the remaining keys then stop.
-                    if (Methods.isInventoryFull(player)) {
+                    if (this.methods.isInventoryFull(player)) {
                         player.getWorld().dropItemNaturally(player.getLocation(), crate.getKey(amount-keysGiven));
                         break;
                     }

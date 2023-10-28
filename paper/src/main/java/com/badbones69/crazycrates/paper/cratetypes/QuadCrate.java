@@ -29,7 +29,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.Random;
 
 /**
@@ -47,7 +46,6 @@ public class QuadCrate implements Listener {
     @NotNull
     private final ChestStateHandler chestStateHandler = this.plugin.getStarter().getChestStateHandler();
 
-    @NotNull
     private final SessionManager sessionManager = new SessionManager();
 
     @EventHandler

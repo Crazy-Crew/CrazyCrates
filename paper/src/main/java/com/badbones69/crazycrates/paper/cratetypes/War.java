@@ -29,12 +29,15 @@ public class War implements Listener {
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+
+    private static final Methods methods = plugin.getCrazyHandler().getMethods();
+
     private static HashMap<ItemStack, String> colorCodes;
     private static final HashMap<Player, Boolean> canPick = new HashMap<>();
     private static final HashMap<Player, Boolean> canClose = new HashMap<>();
     
     public static void openWarCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        String crateName = Methods.sanitizeColor(crate.getFile().getString(crateNameString));
+        String crateName = methods.sanitizeColor(crate.getFile().getString(crateNameString));
         Inventory inv = plugin.getServer().createInventory(null, 9, crateName);
         setRandomPrizes(player, inv, crate, crateName);
         InventoryView inventoryView = player.openInventory(inv);
@@ -42,7 +45,7 @@ public class War implements Listener {
         canClose.put(player, false);
 
         if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
-            Methods.failedToTakeKey(player, crate);
+            methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             canClose.remove(player);
             canPick.remove(player);
@@ -83,7 +86,7 @@ public class War implements Listener {
     }
     
     private static void setRandomPrizes(Player player, Inventory inv, Crate crate, String inventoryTitle) {
-        if (crazyManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(Methods.sanitizeColor(crazyManager.getOpeningCrate(player).getFile().getString(crateNameString)))) {
+        if (crazyManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(methods.sanitizeColor(crazyManager.getOpeningCrate(player).getFile().getString(crateNameString)))) {
             for (int i = 0; i < 9; i++) {
                 inv.setItem(i, crate.pickPrize(player).getDisplayItem());
             }
@@ -91,11 +94,11 @@ public class War implements Listener {
     }
     
     private static void setRandomGlass(Player player, Inventory inv, String inventoryTitle) {
-        if (crazyManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(Methods.sanitizeColor(crazyManager.getOpeningCrate(player).getFile().getString(crateNameString)))) {
+        if (crazyManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(methods.sanitizeColor(crazyManager.getOpeningCrate(player).getFile().getString(crateNameString)))) {
 
             if (colorCodes == null) colorCodes = getColorCode();
 
-            ItemBuilder itemBuilder = Methods.getRandomPaneColor();
+            ItemBuilder itemBuilder = methods.getRandomPaneColor();
             itemBuilder.setName("&" + colorCodes.get(itemBuilder.build()) + "&l???");
             ItemStack item = itemBuilder.build();
 
@@ -150,7 +153,7 @@ public class War implements Listener {
                     canClose.put(player, true);
                     crazyManager.givePrize(player, prize, crate);
 
-                    if (prize.useFireworks()) Methods.firework(player.getLocation().add(0, 1, 0));
+                    if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 
                     plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                     crazyManager.removePlayerFromOpeningList(player);
@@ -202,7 +205,7 @@ public class War implements Listener {
 
         if (canClose.containsKey(player) && canClose.get(player)) {
             for (Crate crate : crazyManager.getCrates()) {
-                if (crate.getCrateType() == CrateType.war && e.getView().getTitle().equalsIgnoreCase(Methods.sanitizeColor(crate.getFile().getString(crateNameString)))) {
+                if (crate.getCrateType() == CrateType.war && e.getView().getTitle().equalsIgnoreCase(methods.sanitizeColor(crate.getFile().getString(crateNameString)))) {
                     canClose.remove(player);
 
                     if (crazyManager.hasCrateTask(player)) crazyManager.endCrate(player);

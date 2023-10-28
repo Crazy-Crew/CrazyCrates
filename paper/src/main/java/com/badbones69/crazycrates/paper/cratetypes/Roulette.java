@@ -18,24 +18,26 @@ public class Roulette implements Listener {
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+
+    private static final Methods methods = plugin.getCrazyHandler().getMethods();
     
     private static void setGlass(Inventory inv) {
         for (int i = 0; i < 27; i++) {
             if (i != 13) {
-                ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+                ItemStack item = methods.getRandomPaneColor().setName(" ").build();
                 inv.setItem(i, item);
             }
         }
     }
     
     public static void openRoulette(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        Inventory inv = plugin.getServer().createInventory(null, 27, methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
         setGlass(inv);
         inv.setItem(13, crate.pickPrize(player).getDisplayItem());
         player.openInventory(inv);
 
         if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
-            Methods.failedToTakeKey(player, crate);
+            methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             return;
         }
@@ -75,7 +77,7 @@ public class Roulette implements Listener {
 
                 if (full > 16) {
 
-                    if (Methods.slowSpin().contains(time)) {
+                    if (methods.slowSpin().contains(time)) {
                         setGlass(inv);
                         inv.setItem(13, crate.pickPrize(player).getDisplayItem());
                         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
@@ -88,7 +90,7 @@ public class Roulette implements Listener {
                         crazyManager.endCrate(player);
                         Prize prize = crate.getPrize(inv.getItem(13));
 
-                        Methods.checkPrize(prize, crazyManager, plugin, player, crate);
+                        methods.checkPrize(prize, crazyManager, plugin, player, crate);
 
                         crazyManager.removePlayerFromOpeningList(player);
 

@@ -19,6 +19,7 @@ import com.badbones69.crazycrates.paper.cratetypes.Wonder;
 import com.badbones69.crazycrates.paper.listeners.*;
 import com.badbones69.crazycrates.paper.listeners.crates.CrateOpenListener;
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
@@ -39,9 +40,11 @@ import java.util.List;
 
 public class CrazyCrates extends JavaPlugin {
 
+    // Deprecated Start
     private static CrazyCrates plugin;
 
     private Starter starter;
+    // Deprecated End
 
     private final BukkitCommandManager<CommandSender> manager = BukkitCommandManager.create(this);
 
@@ -54,8 +57,10 @@ public class CrazyCrates extends JavaPlugin {
         this.crazyHandler = new CrazyHandler(getDataFolder());
         this.crazyHandler.load();
 
+        // Deprecated Start
         this.starter = new Starter();
         this.starter.run();
+        // Deprecated End
 
         // Clean files if we have to.
         cleanFiles();
@@ -106,7 +111,9 @@ public class CrazyCrates extends JavaPlugin {
 
         QuickCrate.removeAllRewards();
 
+        // Deprecated Start
         if (this.starter.getCrazyManager().getHologramController() != null) this.starter.getCrazyManager().getHologramController().removeAllHolograms();
+        // Deprecated End
 
         this.crazyHandler.unload();
     }
@@ -144,11 +151,15 @@ public class CrazyCrates extends JavaPlugin {
 
         pluginManager.registerEvents(new PlayerJoinEvent(), this);
 
+        // Deprecated Start
         this.starter.getCrazyManager().loadCrates();
+        // Deprecated End
 
         pluginManager.registerEvents(new CrateOpenListener(), this);
 
+        // Deprecated Start
         if (!this.starter.getCrazyManager().getBrokeCrateLocations().isEmpty()) pluginManager.registerEvents(new BrokeLocationsListener(), this);
+        // Deprecated End
 
         if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) new PlaceholderAPISupport().register();
 
@@ -200,11 +211,13 @@ public class CrazyCrates extends JavaPlugin {
 
         this.manager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> this.crazyHandler.getFileManager().getAllCratesNames().stream().toList());
 
-        this.manager.registerSuggestion(SuggestionKey.of("key-types"), (sender, context) -> KEYS);
+        this.manager.registerSuggestion(SuggestionKey.of("key-types"), (sender, context) -> List.of("virtual", "v", "physical", "p"));
 
         this.manager.registerSuggestion(SuggestionKey.of("online-players"), (sender, context) -> getServer().getOnlinePlayers().stream().map(Player::getName).toList());
 
+        // Deprecated Start
         this.manager.registerSuggestion(SuggestionKey.of("locations"), (sender, context) -> this.starter.getCrazyManager().getCrateLocations().stream().map(CrateLocation::getID).toList());
+        // Deprecated End
 
         this.manager.registerSuggestion(SuggestionKey.of("prizes"), (sender, context) -> {
             List<String> numbers = new ArrayList<>();
@@ -248,41 +261,47 @@ public class CrazyCrates extends JavaPlugin {
         return correctUsage;
     }
 
-    public CrazyHandler getCrazyHandler() {
-        return this.crazyHandler;
-    }
-
-    private final List<String> KEYS = List.of("virtual", "v", "physical", "p");
-
+    // Deprecated Start
     public static CrazyCrates getPlugin() {
         return plugin;
-    }
-
-    private void printHooks() {
-        for (PluginSupport value : PluginSupport.values()) {
-            if (value.isPluginEnabled()) {
-                plugin.getLogger().info(Methods.color("&6&l" + value.name() + " &a&lFOUND"));
-            } else {
-                plugin.getLogger().info(Methods.color("&6&l" + value.name() + " &c&lNOT FOUND"));
-            }
-        }
     }
 
     public Starter getStarter() {
         return this.starter;
     }
+    // Deprecated End
+
+    @NotNull
+    public CrazyHandler getCrazyHandler() {
+        return this.crazyHandler;
+    }
+
+    private void printHooks() {
+        for (PluginSupport value : PluginSupport.values()) {
+            if (value.isPluginEnabled()) {
+                getLogger().info(getCrazyHandler().getMethods().color("&6&l" + value.name() + " &a&lFOUND"));
+            } else {
+                getLogger().info(getCrazyHandler().getMethods().color("&6&l" + value.name() + " &c&lNOT FOUND"));
+            }
+        }
+    }
+
+    @NotNull
+    public ConfigManager getConfigManager() {
+        return getCrazyHandler().getConfigManager();
+    }
 
     @NotNull
     public FileManager getFileManager() {
-        return this.crazyHandler.getFileManager();
+        return getCrazyHandler().getFileManager();
     }
 
     @NotNull
     public CrateManager getCrateManager() {
-        return this.crazyHandler.getCrateManager();
+        return getCrazyHandler().getCrateManager();
     }
 
     public boolean isLogging() {
-        return this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.verbose_logging);
+        return getConfigManager().getPluginConfig().getProperty(PluginConfig.verbose_logging);
     }
 }

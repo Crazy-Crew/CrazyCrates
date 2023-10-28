@@ -31,6 +31,9 @@ public class CrateOpenListener implements Listener {
     private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
 
     @NotNull
+    private final Methods methods = this.crazyHandler.getMethods();
+
+    @NotNull
     private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -72,7 +75,7 @@ public class CrateOpenListener implements Listener {
 
         if (broadcastToggle) {
             if (!broadcastMessage.isBlank()) {
-                plugin.getServer().broadcastMessage(Methods.color(broadcastMessage.replaceAll("%prefix%", Methods.getPrefix())).replaceAll("%player%", player.getName()));
+                plugin.getServer().broadcastMessage(this.methods.color(broadcastMessage.replaceAll("%prefix%", this.methods.getPrefix())).replaceAll("%player%", player.getName()));
             }
         }
 
@@ -86,12 +89,12 @@ public class CrateOpenListener implements Listener {
                     String builder;
 
                     if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
-                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName()));
+                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%prefix%", this.methods.getPrefix()).replaceAll("%player%", player.getName()));
                     } else {
-                        builder = line.replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName());
+                        builder = line.replaceAll("%prefix%", this.methods.getPrefix()).replaceAll("%player%", player.getName());
                     }
 
-                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), builder);
+                    this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), builder);
                 });
             }
         }

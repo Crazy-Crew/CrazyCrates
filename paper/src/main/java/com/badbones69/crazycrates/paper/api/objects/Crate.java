@@ -84,15 +84,15 @@ public class Crate {
         this.previewToggle = file != null && (!file.contains("Crate.Preview.Toggle") || file.getBoolean("Crate.Preview.Toggle"));
         this.borderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle");
         setPreviewChestLines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
-        this.previewName = Methods.sanitizeColor(previewName);
+        this.previewName = this.plugin.getCrazyHandler().getMethods().sanitizeColor(previewName);
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
         this.maxSlots = this.previewChestLines * 9;
 
         for (int amount = this.preview.size(); amount > this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0); amount -= this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0), this.maxPage++) ;
 
-        this.crateInventoryName = file != null ? Methods.sanitizeColor(file.getString("Crate.CrateName")) : "";
-        this.borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? Methods.color(file.getString("Crate.Preview.Glass.Name")) : " ";
+        this.crateInventoryName = file != null ? this.plugin.getCrazyHandler().getMethods().sanitizeColor(file.getString("Crate.CrateName")) : "";
+        this.borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? this.plugin.getCrazyHandler().getMethods().color(file.getString("Crate.Preview.Glass.Name")) : " ";
         this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(this.borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(this.borderName);
 
         this.hologram = hologram != null ? hologram : new CrateHologram();
@@ -241,7 +241,7 @@ public class Crate {
     public Prize pickPrize(Player player, Location location) {
         Prize prize = pickPrize(player);
 
-        if (prize.useFireworks()) Methods.firework(location);
+        if (prize.useFireworks()) this.plugin.getCrazyHandler().getMethods().firework(location);
 
         return prize;
     }
@@ -549,7 +549,7 @@ public class Crate {
     }
     
     private boolean isInventoryNameSimilar(String inventory1, String inventory2) {
-        return Methods.removeColor(inventory1).equalsIgnoreCase(Methods.removeColor(inventory2));
+        return this.plugin.getCrazyHandler().getMethods().removeColor(inventory1).equalsIgnoreCase(this.plugin.getCrazyHandler().getMethods().removeColor(inventory2));
     }
     
     /**

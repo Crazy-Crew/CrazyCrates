@@ -404,11 +404,11 @@ public class CrazyManager {
                         Prize prize = crate.pickPrize(player);
                         givePrize(player, prize, crate);
 
-                        if (prize.useFireworks()) Methods.firework(player.getLocation().add(0, 1, 0));
+                        if (prize.useFireworks()) this.plugin.getCrazyHandler().getMethods().firework(player.getLocation().add(0, 1, 0));
 
                         removePlayerFromOpeningList(player);
                     } else {
-                        Methods.failedToTakeKey(player, crate);
+                        this.plugin.getCrazyHandler().getMethods().failedToTakeKey(player, crate);
                     }
                 }
             }
@@ -668,7 +668,7 @@ public class CrazyManager {
                 continue;
             }
 
-            if (!Methods.isInventoryFull(player)) {
+            if (!this.plugin.getCrazyHandler().getMethods().isInventoryFull(player)) {
                 player.getInventory().addItem(item);
             } else {
                 player.getWorld().dropItemNaturally(player.getLocation(), item);
@@ -683,7 +683,7 @@ public class CrazyManager {
                 clone.setLore(PlaceholderAPI.setPlaceholders(player, clone.getLore()));
             }
 
-            if (!Methods.isInventoryFull(player)) {
+            if (!this.plugin.getCrazyHandler().getMethods().isInventoryFull(player)) {
                 player.getInventory().addItem(clone.build());
             } else {
                 player.getWorld().dropItemNaturally(player.getLocation(), clone.build());
@@ -719,7 +719,7 @@ public class CrazyManager {
 
             if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) command = PlaceholderAPI.setPlaceholders(player, command);
 
-            Methods.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getUpdatedName())).replaceAll("%crate%", crate.getCrateInventoryName()));
+            this.plugin.getCrazyHandler().getMethods().sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getUpdatedName())).replaceAll("%crate%", crate.getCrateInventoryName()));
         }
 
         if (!crate.getPrizeMessage().isEmpty() && prize.getMessages().isEmpty()) {
@@ -728,7 +728,7 @@ public class CrazyManager {
                     message = PlaceholderAPI.setPlaceholders(player, message);
                 }
 
-                Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getCrateInventoryName()), false);
+                this.plugin.getCrazyHandler().getMethods().sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getCrateInventoryName()), false);
             }
 
             return;
@@ -739,7 +739,7 @@ public class CrazyManager {
                 message = PlaceholderAPI.setPlaceholders(player, message);
             }
 
-            Methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getCrateInventoryName()), false);
+            this.plugin.getCrazyHandler().getMethods().sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getCrateInventoryName()), false);
         }
     }
 
@@ -900,7 +900,7 @@ public class CrazyManager {
     public boolean isKeyFromCrate(ItemStack item, Crate crate) {
         if (crate.getCrateType() != CrateType.menu) {
             if (item != null && item.getType() != Material.AIR) {
-                return Methods.isSimilar(item, crate);
+                return this.plugin.getCrazyHandler().getMethods().isSimilar(item, crate);
             }
         }
 
@@ -989,7 +989,7 @@ public class CrazyManager {
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
             if (item == null || item.getType() == Material.AIR) continue;
 
-            if (Methods.isSimilar(item, crate)) {
+            if (this.plugin.getCrazyHandler().getMethods().isSimilar(item, crate)) {
                 return item;
             }
         }
@@ -1225,7 +1225,7 @@ public class CrazyManager {
 
             if (file.contains(path + "DisplayEnchantments")) {
                 for (String enchantmentName : file.getStringList(path + "DisplayEnchantments")) {
-                    Enchantment enchantment = Methods.getEnchantment(enchantmentName.split(":")[0]);
+                    Enchantment enchantment = this.plugin.getCrazyHandler().getMethods().getEnchantment(enchantmentName.split(":")[0]);
 
                     if (enchantment != null) {
                         itemBuilder.addEnchantments(enchantment, Integer.parseInt(enchantmentName.split(":")[1]));

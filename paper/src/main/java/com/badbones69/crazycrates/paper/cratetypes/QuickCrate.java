@@ -28,16 +28,18 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class QuickCrate implements Listener {
-    
+
+    private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
     public static ArrayList<Entity> allRewards = new ArrayList<>();
     public static HashMap<Player, Entity> rewards = new HashMap<>();
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
-    private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
 
     private static final ChestStateHandler chestStateHandler = plugin.getStarter().getChestStateHandler();
+
+    private static final Methods methods = plugin.getCrazyHandler().getMethods();
 
     public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType, HologramController hologramController) {
         int keys = switch (keyType) {
@@ -51,20 +53,20 @@ public class QuickCrate implements Listener {
             
             // give the player the prizes
             for (;keys > 0; keys--) {
-                if (Methods.isInventoryFull(player)) break;
+                if (methods.isInventoryFull(player)) break;
                 if (keysUsed >= crate.getMaxMassOpen()) break;
 
                 Prize prize = crate.pickPrize(player);
                 crazyManager.givePrize(player, prize, crate);
                 plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 
-                if (prize.useFireworks()) Methods.firework(loc.clone().add(.5, 1, .5));
+                if (prize.useFireworks()) methods.firework(loc.clone().add(.5, 1, .5));
                 
                 keysUsed++;
             }
             
             if (!plugin.getCrazyHandler().getUserManager().takeKeys(keysUsed, player.getUniqueId(), crate.getName(), keyType, false)) {
-                Methods.failedToTakeKey(player, crate);
+                methods.failedToTakeKey(player, crate);
                 CrateControlListener.inUse.remove(player);
                 crazyManager.removePlayerFromOpeningList(player);
                 return;
@@ -73,7 +75,7 @@ public class QuickCrate implements Listener {
             endQuickCrate(player, loc, crate, hologramController, true);
         } else {
             if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
-                Methods.failedToTakeKey(player, crate);
+                methods.failedToTakeKey(player, crate);
                 CrateControlListener.inUse.remove(player);
                 crazyManager.removePlayerFromOpeningList(player);
                 return;
@@ -109,7 +111,7 @@ public class QuickCrate implements Listener {
             allRewards.add(reward);
             chestStateHandler.openChest(loc.getBlock(), true);
 
-            if (prize.useFireworks()) Methods.firework(loc.clone().add(.5, 1, .5));
+            if (prize.useFireworks()) methods.firework(loc.clone().add(.5, 1, .5));
 
             tasks.put(player, new BukkitRunnable() {
                 @Override

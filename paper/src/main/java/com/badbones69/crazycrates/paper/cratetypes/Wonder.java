@@ -21,10 +21,12 @@ public class Wonder implements Listener {
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+
+    private static final Methods methods = plugin.getCrazyHandler().getMethods();
     
     public static void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
-            Methods.failedToTakeKey(player, crate);
+            methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             return;
         }
@@ -41,7 +43,7 @@ public class Wonder implements Listener {
         player.openInventory(inv);
 
         crazyManager.addCrateTask(player, new BukkitRunnable() {
-            int fulltime = 0;
+            int fullTime = 0;
             int timer = 0;
             int slot1 = 0;
             int slot2 = 44;
@@ -50,7 +52,7 @@ public class Wonder implements Listener {
             
             @Override
             public void run() {
-                if (timer >= 2 && fulltime <= 65) {
+                if (timer >= 2 && fullTime <= 65) {
                     slots.remove(slot1 + "");
                     slots.remove(slot2 + "");
                     Slots.add(slot1);
@@ -67,8 +69,8 @@ public class Wonder implements Listener {
                     slot2--;
                 }
 
-                if (fulltime > 67) {
-                    ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+                if (fullTime > 67) {
+                    ItemStack item = methods.getRandomPaneColor().setName(" ").build();
 
                     for (int slot : Slots) {
                         inv.setItem(slot, item);
@@ -77,12 +79,12 @@ public class Wonder implements Listener {
 
                 player.openInventory(inv);
 
-                if (fulltime > 100) {
+                if (fullTime > 100) {
                     crazyManager.endCrate(player);
                     player.closeInventory();
                     crazyManager.givePrize(player, prize, crate);
 
-                    if (prize.useFireworks()) Methods.firework(player.getLocation().add(0, 1, 0));
+                    if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 
                     plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                     crazyManager.removePlayerFromOpeningList(player);
@@ -90,7 +92,7 @@ public class Wonder implements Listener {
                     return;
                 }
 
-                fulltime++;
+                fullTime++;
                 timer++;
 
                 if (timer > 2) timer = 0;

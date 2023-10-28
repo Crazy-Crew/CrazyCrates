@@ -20,6 +20,9 @@ public class HolographicDisplaysSupport implements HologramController {
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     @NotNull
+    private final Methods methods = this.plugin.getCrazyHandler().getMethods();
+
+    @NotNull
     private final HolographicDisplaysAPI api = HolographicDisplaysAPI.get(this.plugin);
 
     @Override
@@ -32,7 +35,7 @@ public class HolographicDisplaysSupport implements HologramController {
 
         Hologram hologram = this.api.createHologram(block.getLocation().add(.5, height, .5));
 
-        crateHologram.getMessages().forEach(line -> hologram.getLines().appendText(Methods.color(line)));
+        crateHologram.getMessages().forEach(line -> hologram.getLines().appendText(this.methods.color(line)));
 
         this.holograms.put(block, hologram);
     }

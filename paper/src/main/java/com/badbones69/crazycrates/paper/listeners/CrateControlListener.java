@@ -43,6 +43,9 @@ public class CrateControlListener implements Listener { // Crate Control
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     @NotNull
+    private final Methods methods = this.plugin.getCrazyHandler().getMethods();
+
+    @NotNull
     private final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
     
     // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
@@ -169,7 +172,7 @@ public class CrateControlListener implements Listener { // Crate Control
                             }
                         }
 
-                        if (Methods.isInventoryFull(player)) {
+                        if (this.methods.isInventoryFull(player)) {
                             player.sendMessage(Messages.INVENTORY_FULL.getMessage());
                             return;
                         }
@@ -206,10 +209,10 @@ public class CrateControlListener implements Listener { // Crate Control
         Inventory inv = e.getInventory();
         Player player = (Player) e.getWhoClicked();
 
-        if (inv != null && e.getView().getTitle().equals(Methods.sanitizeColor("&4&lAdmin Keys"))) {
+        if (inv != null && e.getView().getTitle().equals(this.methods.sanitizeColor("&4&lAdmin Keys"))) {
             e.setCancelled(true);
 
-            if (!Methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
+            if (!this.methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
                 player.closeInventory();
                 return;
             }
@@ -229,7 +232,7 @@ public class CrateControlListener implements Listener { // Crate Control
 
                         if (key.hasItemMeta() && key.getItemMeta().hasDisplayName()) name = key.getItemMeta().getDisplayName();
 
-                        player.sendMessage(Methods.getPrefix() + Methods.color("&a&l+1 " + (name != null ? name : crate.getName())));
+                        player.sendMessage(this.methods.getPrefix() + this.methods.color("&a&l+1 " + (name != null ? name : crate.getName())));
                     }
                 }
             }

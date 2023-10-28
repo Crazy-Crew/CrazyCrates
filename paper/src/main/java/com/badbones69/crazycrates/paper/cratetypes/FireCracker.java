@@ -18,10 +18,12 @@ public class FireCracker {
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+
+    private static final Methods methods = plugin.getCrazyHandler().getMethods();
     
     public static void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc, HologramController hologramController) {
         if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
-            Methods.failedToTakeKey(player, crate);
+            methods.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             return;
         }
@@ -47,7 +49,7 @@ public class FireCracker {
             @Override
             public void run() {
                 location.subtract(0, 1, 0);
-                Methods.firework(location, colors.get(color));
+                methods.firework(location, colors.get(color));
                 l++;
 
                 if (l == 25) {

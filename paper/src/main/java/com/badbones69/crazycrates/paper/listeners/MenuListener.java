@@ -31,12 +31,14 @@ public class MenuListener implements Listener {
     private static final CrazyHandler crazyHandler = plugin.getCrazyHandler();
 
     private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+
+    private static final Methods methods = crazyHandler.getMethods();
     
     public static void openGUI(Player player) {
         FileConfiguration config = Files.CONFIG.getFile();
 
         int size = config.getInt("Settings.InventorySize");
-        Inventory inv = player.getServer().createInventory(null, size, Methods.sanitizeColor(Files.CONFIG.getFile().getString("Settings.InventoryName")));
+        Inventory inv = player.getServer().createInventory(null, size, plugin.getCrazyHandler().getMethods().sanitizeColor(Files.CONFIG.getFile().getString("Settings.InventoryName")));
 
         if (config.contains("Settings.Filler.Toggle")) {
             if (config.getBoolean("Settings.Filler.Toggle")) {
@@ -154,7 +156,7 @@ public class MenuListener implements Listener {
                 if (crate.getCrateType() != CrateType.menu && crate.isCrateMenu(e.getView())) return;
             }
 
-            if (e.getView().getTitle().equals(Methods.sanitizeColor(config.getString("Settings.InventoryName")))) {
+            if (e.getView().getTitle().equals(methods.sanitizeColor(config.getString("Settings.InventoryName")))) {
                 e.setCancelled(true);
 
                 if (e.getCurrentItem() != null) {
@@ -215,7 +217,7 @@ public class MenuListener implements Listener {
                                     }
                                 }
 
-                                if (Methods.isInventoryFull(player)) {
+                                if (methods.isInventoryFull(player)) {
                                     player.sendMessage(Messages.INVENTORY_FULL.getMessage());
                                     return;
                                 }
