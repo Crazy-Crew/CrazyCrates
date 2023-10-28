@@ -17,7 +17,7 @@ import com.badbones69.crazycrates.paper.cratetypes.War;
 import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import com.badbones69.crazycrates.paper.cratetypes.Wonder;
 import com.badbones69.crazycrates.paper.listeners.*;
-import com.badbones69.crazycrates.paper.listeners.crates.CrateOpenListener;
+import us.crazycrew.crazycrates.paper.listeners.crates.CrateOpenListener;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;

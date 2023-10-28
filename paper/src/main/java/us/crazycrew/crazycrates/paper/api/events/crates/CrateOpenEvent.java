@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.paper.api.events.crates;
+package us.crazycrew.crazycrates.paper.api.events.crates;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.configuration.file.FileConfiguration;

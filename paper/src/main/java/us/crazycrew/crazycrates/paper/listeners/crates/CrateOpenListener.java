@@ -1,10 +1,10 @@
-package com.badbones69.crazycrates.paper.listeners.crates;
+package us.crazycrew.crazycrates.paper.listeners.crates;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
-import com.badbones69.crazycrates.paper.api.events.crates.CrateOpenEvent;
+import us.crazycrew.crazycrates.paper.api.events.crates.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
 import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
