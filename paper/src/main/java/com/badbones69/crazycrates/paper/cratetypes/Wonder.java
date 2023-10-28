@@ -82,7 +82,7 @@ public class Wonder implements Listener {
                 if (fullTime > 100) {
                     crazyManager.endCrate(player);
                     player.closeInventory();
-                    crazyManager.givePrize(player, prize, crate);
+                    plugin.getCrazyHandler().givePrize(player, prize, crate);
 
                     if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 

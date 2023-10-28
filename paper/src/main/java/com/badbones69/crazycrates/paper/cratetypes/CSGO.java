@@ -121,7 +121,7 @@ public class CSGO implements Listener {
                         crazyManager.endCrate(player);
                         Prize prize = crate.getPrize(inv.getItem(13));
 
-                        methods.checkPrize(prize, crazyManager, plugin, player, crate);
+                        plugin.getCrazyHandler().checkPrize(prize, player, crate);
 
                         crazyManager.removePlayerFromOpeningList(player);
                         cancel();

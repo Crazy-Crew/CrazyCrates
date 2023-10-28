@@ -126,7 +126,7 @@ public class Cosmic implements Listener {
                             }
 
                             if (prize != null) {
-                                crazyManager.givePrize(player, prize, crate);
+                                plugin.getCrazyHandler().givePrize(player, prize, crate);
                                 plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crazyManager.getOpeningCrate(player).getName(), prize));
                                 e.setCurrentItem(prize.getDisplayItem());
                                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
@@ -278,7 +278,7 @@ public class Cosmic implements Listener {
                             prize = crate.pickPrize(player, tier);
                         }
 
-                        crazyManager.givePrize(player, prize, crate);
+                        plugin.getCrazyHandler().givePrize(player, prize, crate);
                         playSound = true;
                     }
                 }

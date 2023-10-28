@@ -3,10 +3,8 @@ package com.badbones69.crazycrates.paper;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
-import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
-import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.listeners.FireworkDamageListener;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -34,9 +32,6 @@ public class Methods {
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-
-    @NotNull
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
 
     public String color(String message) {
         Matcher matcher = Pattern.compile("#[a-fA-F\\d]{6}").matcher(message);
@@ -318,36 +313,6 @@ public class Methods {
         }
 
         return slow;
-    }
-
-    /**
-     * Picks the prize for the player.
-     * @param player - The player who the prize is for.
-     * @param crate - The crate the player is opening.
-     * @param prize - The prize the player is being given.
-     */
-    public void pickPrize(Player player, Crate crate, Prize prize) {
-        if (prize != null) {
-            this.crazyManager.givePrize(player, prize, crate);
-
-            if (prize.useFireworks()) firework(player.getLocation().add(0, 1, 0));
-
-            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-        } else {
-            player.sendMessage(getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
-        }
-    }
-
-    public void checkPrize(Prize prize, CrazyManager crazyManager, CrazyCrates plugin, Player player, Crate crate) {
-        if (prize != null) {
-            crazyManager.givePrize(player, prize, crate);
-
-            if (prize.useFireworks()) firework(player.getLocation().add(0, 1, 0));
-
-            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-        } else {
-            player.sendMessage(getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
-        }
     }
 
     public void failedToTakeKey(CommandSender player, Crate crate) {

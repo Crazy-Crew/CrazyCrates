@@ -401,7 +401,7 @@ public class CrazyManager {
                 } else {
                     if (this.plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
                         Prize prize = crate.pickPrize(player);
-                        givePrize(player, prize, crate);
+                        this.plugin.getCrazyHandler().givePrize(player, prize, crate);
 
                         if (prize.useFireworks()) this.plugin.getCrazyHandler().getMethods().firework(player.getLocation().add(0, 1, 0));
 
@@ -642,104 +642,6 @@ public class CrazyManager {
      */
     public int getQuadCrateTimer() {
         return this.quadCrateTimer;
-    }
-
-    /**
-     * Give a player a prize they have won.
-     *
-     * @param player The player you wish to give the prize to.
-     * @param prize The prize the player has won.
-     */
-    public void givePrize(Player player, Prize prize, Crate crate) {
-        if (prize == null) {
-            this.plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
-            return;
-        }
-
-        prize = prize.hasBlacklistPermission(player) ? prize.getAltPrize() : prize;
-
-        for (ItemStack item : prize.getItems()) {
-            if (item == null) {
-                HashMap<String, String> placeholders = new HashMap<>();
-                placeholders.put("%Crate%", prize.getCrate());
-                placeholders.put("%Prize%", prize.getName());
-                player.sendMessage(Messages.PRIZE_ERROR.getMessage(placeholders));
-                continue;
-            }
-
-            if (!this.plugin.getCrazyHandler().getMethods().isInventoryFull(player)) {
-                player.getInventory().addItem(item);
-            } else {
-                player.getWorld().dropItemNaturally(player.getLocation(), item);
-            }
-        }
-
-        for (ItemBuilder item : prize.getItemBuilders()) {
-            ItemBuilder clone = new ItemBuilder(item);
-
-            if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
-                clone.setName(PlaceholderAPI.setPlaceholders(player, clone.getName()));
-                clone.setLore(PlaceholderAPI.setPlaceholders(player, clone.getLore()));
-            }
-
-            if (!this.plugin.getCrazyHandler().getMethods().isInventoryFull(player)) {
-                player.getInventory().addItem(clone.build());
-            } else {
-                player.getWorld().dropItemNaturally(player.getLocation(), clone.build());
-            }
-        }
-
-        for (String command : prize.getCommands()) { // /give %player% iron %random%:1-64
-            if (command.contains("%random%:")) {
-                String cmd = command;
-                StringBuilder commandBuilder = new StringBuilder();
-
-                for (String word : cmd.split(" ")) {
-                    if (word.startsWith("%random%:")) {
-                        word = word.replace("%random%:", "");
-
-                        try {
-                            long min = Long.parseLong(word.split("-")[0]);
-                            long max = Long.parseLong(word.split("-")[1]);
-                            commandBuilder.append(pickNumber(min, max)).append(" ");
-                        } catch (Exception e) {
-                            commandBuilder.append("1 ");
-                            plugin.getLogger().warning("The prize " + prize.getName() + " in the " + prize.getCrate() + " crate has caused an error when trying to run a command.");
-                            plugin.getLogger().warning("Command: " + cmd);
-                        }
-                    } else {
-                        commandBuilder.append(word).append(" ");
-                    }
-                }
-
-                command = commandBuilder.toString();
-                command = command.substring(0, command.length() - 1);
-            }
-
-            if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) command = PlaceholderAPI.setPlaceholders(player, command);
-
-            this.plugin.getCrazyHandler().getMethods().sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getUpdatedName())).replaceAll("%crate%", crate.getCrateInventoryName()));
-        }
-
-        if (!crate.getPrizeMessage().isEmpty() && prize.getMessages().isEmpty()) {
-            for (String message : crate.getPrizeMessage()) {
-                if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
-                    message = PlaceholderAPI.setPlaceholders(player, message);
-                }
-
-                this.plugin.getCrazyHandler().getMethods().sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getCrateInventoryName()), false);
-            }
-
-            return;
-        }
-
-        for (String message : prize.getMessages()) {
-            if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
-                message = PlaceholderAPI.setPlaceholders(player, message);
-            }
-
-            this.plugin.getCrazyHandler().getMethods().sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getCrateInventoryName()), false);
-        }
     }
 
     /**
@@ -1240,16 +1142,5 @@ public class CrazyManager {
 
     private List<ItemBuilder> getItems(FileConfiguration file, String prize) {
         return ItemBuilder.convertStringList(file.getStringList("Crate.Prizes." + prize + ".Items"), prize);
-    }
-
-    public long pickNumber(long min, long max) {
-        max++;
-
-        try {
-            // new Random() does not have a nextLong(long bound) method.
-            return min + ThreadLocalRandom.current().nextLong(max - min);
-        } catch (IllegalArgumentException e) {
-            return min;
-        }
     }
 }

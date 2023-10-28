@@ -151,7 +151,7 @@ public class War implements Listener {
 
                     canPick.remove(player);
                     canClose.put(player, true);
-                    crazyManager.givePrize(player, prize, crate);
+                    plugin.getCrazyHandler().givePrize(player, prize, crate);
 
                     if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
 
