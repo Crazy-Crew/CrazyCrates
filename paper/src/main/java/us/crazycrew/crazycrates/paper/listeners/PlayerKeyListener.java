@@ -11,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
 
-public class PlayerJoinEvent implements Listener {
+public class PlayerKeyListener implements Listener {
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);

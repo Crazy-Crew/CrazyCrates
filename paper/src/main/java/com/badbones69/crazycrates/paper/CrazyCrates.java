@@ -34,7 +34,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
-import us.crazycrew.crazycrates.paper.listeners.PlayerJoinEvent;
+import us.crazycrew.crazycrates.paper.listeners.PlayerKeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -149,7 +149,7 @@ public class CrazyCrates extends JavaPlugin {
         pluginManager.registerEvents(new CrateOnTheGo(), this);
         pluginManager.registerEvents(new QuadCrate(), this);
 
-        pluginManager.registerEvents(new PlayerJoinEvent(), this);
+        pluginManager.registerEvents(new PlayerKeyListener(), this);
 
         // Deprecated Start
         this.starter.getCrazyManager().loadCrates();
