@@ -1,7 +1,6 @@
 package us.crazycrew.crazycrates.paper.api.support.placeholders;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
@@ -13,7 +12,6 @@ import us.crazycrew.crazycrates.paper.CrazyHandler;
 import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
 import java.text.NumberFormat;
 
-@SuppressWarnings("deprecation")
 public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     @NotNull
@@ -24,9 +22,6 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     @NotNull
     private final BukkitUserManager userManager = this.crazyHandler.getUserManager();
-
-    @NotNull
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
     
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {
@@ -37,7 +32,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         // The player who sees the placeholder.
         Player human = (Player) player;
 
-        for (Crate crate : this.crazyManager.getCrates()) {
+        for (Crate crate : this.crazyHandler.getCrateManager().getCrates()) {
             if (crate.getCrateType() != CrateType.menu) {
                 if (identifier.equalsIgnoreCase(crate.getName())) {
                     return NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(human.getUniqueId(), crate.getName()));
