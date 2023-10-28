@@ -31,18 +31,14 @@ import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
-
+import us.crazycrew.crazycrates.paper.listeners.PlayerJoinEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CrazyCrates extends JavaPlugin implements Listener {
+public class CrazyCrates extends JavaPlugin {
 
     private static CrazyCrates plugin;
 
@@ -124,22 +120,6 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         this.crazyHandler.unload();
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        Player player = e.getPlayer();
-
-        // Set new keys if we have to.
-        this.starter.getCrazyManager().setNewPlayerKeys(player);
-
-        // Just in case any old data is in there.
-        this.starter.getCrazyManager().loadOfflinePlayersKeys(player);
-
-        // Also add the new data.
-        this.crazyHandler.getUserManager().loadOfflinePlayersKeys(player, this.starter.getCrazyManager().getCrates());
-
-        Files.DATA.saveFile();
-    }
-
     public void cleanFiles() {
         if (!Files.LOCATIONS.getFile().contains("Locations")) {
             Files.LOCATIONS.getFile().set("Locations.Clear", null);
@@ -171,7 +151,7 @@ public class CrazyCrates extends JavaPlugin implements Listener {
         pluginManager.registerEvents(new CrateOnTheGo(), this);
         pluginManager.registerEvents(new QuadCrate(), this);
 
-        pluginManager.registerEvents(this, this);
+        pluginManager.registerEvents(new PlayerJoinEvent(), this);
 
         this.starter.getCrazyManager().loadCrates();
 
