@@ -21,7 +21,6 @@ import com.badbones69.crazycrates.paper.listeners.crates.CrateOpenListener;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
-import us.crazycrew.crazycrates.paper.api.support.metrics.MetricsWrapper;
 import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.api.support.placeholders.PlaceholderAPISupport;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
@@ -66,8 +65,6 @@ public class CrazyCrates extends JavaPlugin {
 
         FileConfiguration config = Files.CONFIG.getFile();
 
-        boolean metricsEnabled = config.getBoolean("Settings.Toggle-Metrics");
-
         String menu = config.getString("Settings.Enable-Crate-Menu");
 
         String full = config.getString("Settings.Give-Virtual-Keys-When-Inventory-Full-Message");
@@ -98,12 +95,6 @@ public class CrazyCrates extends JavaPlugin {
             }
 
             Files.CONFIG.saveFile();
-        }
-
-        if (metricsEnabled) {
-            MetricsWrapper metricsWrapper = new MetricsWrapper();
-
-            metricsWrapper.start();
         }
 
         enable();
