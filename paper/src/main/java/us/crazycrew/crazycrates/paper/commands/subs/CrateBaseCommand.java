@@ -56,7 +56,7 @@ public class CrateBaseCommand extends BaseCommand {
     private final FileManager fileManager = this.plugin.getFileManager();
 
     @NotNull
-    private final EventLogger eventLogger = this.plugin.getCrazyCrates().getStarter().getEventLogger();
+    private final EventLogger eventLogger = new EventLogger();
 
     @NotNull
     private final FileConfiguration config = Files.CONFIG.getFile();
@@ -183,14 +183,14 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("admin")
     @Permission(value = "crazycrates.command.admin.access", def = PermissionDefault.OP)
     public void onAdminMenu(Player player) {
-        int size = this.crazyManager.getCrates().size();
+        int size = this.crateManager.getCrates().size();
         int slots = 9;
 
         for (; size > 9; size -= 9) slots += 9;
 
         Inventory inv = this.plugin.getServer().createInventory(null, slots, MsgUtils.color("&4&lAdmin Keys"));
 
-        for (Crate crate : this.crazyManager.getCrates()) {
+        for (Crate crate : this.crateManager.getCrates()) {
             if (crate.getCrateType() != CrateType.menu) {
                 if (inv.firstEmpty() >= 0) inv.setItem(inv.firstEmpty(), crate.getAdminKey());
             }
@@ -205,11 +205,11 @@ public class CrateBaseCommand extends BaseCommand {
         StringBuilder crates = new StringBuilder();
         String brokecrates;
 
-        this.crazyManager.getCrates().forEach(crate -> crates.append("&a").append(crate.getName()).append("&8, "));
+        this.crateManager.getCrates().forEach(crate -> crates.append("&a").append(crate.getName()).append("&8, "));
 
         StringBuilder brokecratesBuilder = new StringBuilder();
 
-        this.crazyManager.getBrokeCrates().forEach(crate -> brokecratesBuilder.append("&c").append(crate).append(".yml&8,"));
+        this.crateManager.getBrokeCrates().forEach(crate -> brokecratesBuilder.append("&c").append(crate).append(".yml&8,"));
 
         brokecrates = brokecratesBuilder.toString();
 
@@ -222,7 +222,7 @@ public class CrateBaseCommand extends BaseCommand {
         sender.sendMessage(MsgUtils.color("&c[ID]&8, &c[Crate]&8, &c[World]&8, &c[X]&8, &c[Y]&8, &c[Z]"));
         int line = 1;
 
-        for (CrateLocation loc : this.crazyManager.getCrateLocations()) {
+        for (CrateLocation loc : this.crateManager.getCrateLocations()) {
             Crate crate = loc.getCrate();
             String world = loc.getLocation().getWorld().getName();
 
@@ -359,7 +359,7 @@ public class CrateBaseCommand extends BaseCommand {
             hasKey = true;
         } else {
             if (this.config.getBoolean("Settings.Virtual-Accepts-Physical-Keys")) {
-                if (this.crazyManager.hasPhysicalKey(player, crate, false)) {
+                if (this.plugin.getCrazyHandler().getUserManager().hasPhysicalKey(player.getUniqueId(), crate.getName(), false)) {
                     hasKey = true;
                     keyType = KeyType.physical_key;
                 }
@@ -508,7 +508,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        this.crazyManager.addCrateLocation(block.getLocation(), crate);
+        this.crateManager.addCrateLocation(block.getLocation(), crate);
 
         HashMap<String, String> placeholders = new HashMap<>();
 

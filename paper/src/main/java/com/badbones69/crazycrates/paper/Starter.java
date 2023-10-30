@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.paper;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.EventLogger;
 
-@Deprecated(since = "1.16", forRemoval = true)
 public class Starter {
 
     private CrazyManager crazyManager;
@@ -16,10 +15,12 @@ public class Starter {
         this.eventLogger = new EventLogger();
     }
 
+    @Deprecated(since = "1.16", forRemoval = true)
     public CrazyManager getCrazyManager() {
         return this.crazyManager;
     }
 
+    @Deprecated(since = "1.16", forRemoval = true)
     public EventLogger getEventLogger() {
         return this.eventLogger;
     }

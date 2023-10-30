@@ -4,9 +4,10 @@ import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
+import us.crazycrew.crazycrates.paper.CrazyHandler;
 import us.crazycrew.crazycrates.paper.api.support.structures.QuadCrateSpiralHandler;
 import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
-import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestStateHandler;
+import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestManager;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -36,7 +37,10 @@ public class QuadCrateManager {
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     @NotNull
-    private final ChestStateHandler chestStateHandler = this.plugin.getCrazyHandler().getChestStateHandler();
+    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+
+    @NotNull
+    private final ChestManager chestManager = this.crazyHandler.getChestManager();
 
     @NotNull
     private final CrazyManager crazyManager = this.plugin.getCrazyManager();
@@ -133,7 +137,7 @@ public class QuadCrateManager {
         }
 
         // Check if schematic folder is empty.
-        if (this.crazyManager.getCrateSchematics().isEmpty()) {
+        if (this.plugin.getCrateManager().getCrateSchematics().isEmpty()) {
             this.player.sendMessage(Messages.NO_SCHEMATICS_FOUND.getMessage());
             this.crazyManager.removePlayerFromOpeningList(this.player);
             crateSessions.remove(this.instance);
@@ -185,7 +189,7 @@ public class QuadCrateManager {
             return;
         }
 
-        if (this.crazyManager.getHologramController() != null) this.crazyManager.getHologramController().removeHologram(this.spawnLocation.getBlock());
+        if (this.plugin.getCrateManager().getHolograms() != null) this.plugin.getCrateManager().getHolograms().removeHologram(this.spawnLocation.getBlock());
 
         // Shove other players away from the player opening the crate.
         shovePlayers.forEach(entity -> entity.getLocation().toVector().subtract(this.spawnLocation.clone().toVector()).normalize().setY(1));
@@ -231,7 +235,7 @@ public class QuadCrateManager {
                     Block chest = crateLocations.get(crateNumber).getBlock();
 
                     chest.setType(Material.CHEST);
-                    chestStateHandler.rotateChest(chest, crateNumber);
+                    chestManager.rotateChest(chest, crateNumber);
 
                     if (this.crateNumber == 3) { // Last crate has spawned.
                         crazyManager.endQuadCrate(player); // Cancelled when method is called.
@@ -279,7 +283,7 @@ public class QuadCrateManager {
                 // Restore the old blocks.
                 oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
 
-                if (crate.getHologram().isEnabled() && crazyManager.getHologramController() != null) crazyManager.getHologramController().createHologram(spawnLocation.getBlock(), crate);
+                if (crate.getHologram().isEnabled() && plugin.getCrateManager().getHolograms() != null) plugin.getCrateManager().getHolograms().createHologram(spawnLocation.getBlock(), crate);
 
                 // End the crate.
                 crazyManager.endCrate(player);

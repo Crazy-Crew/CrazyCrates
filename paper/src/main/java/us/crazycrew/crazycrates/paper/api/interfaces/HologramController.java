@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.paper.api.interfaces;
+package us.crazycrew.crazycrates.paper.api.interfaces;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.block.Block;

@@ -20,8 +20,6 @@ public class CrazyCrates extends JavaPlugin {
 
     private final BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(this);
 
-    private com.badbones69.crazycrates.paper.CrazyCrates crazyCrates;
-
     private CrazyHandler crazyHandler;
     private CrazyManager crazyManager;
 
@@ -35,8 +33,7 @@ public class CrazyCrates extends JavaPlugin {
         this.crazyManager = new CrazyManager();
 
         // Load deprecated version 1 to not break plugins that might use old api's
-        this.crazyCrates = new com.badbones69.crazycrates.paper.CrazyCrates();
-        this.crazyCrates.enable();
+        new com.badbones69.crazycrates.paper.CrazyCrates().enable();
 
         // Register listeners
         PluginManager pluginManager = getServer().getPluginManager();
@@ -61,15 +58,10 @@ public class CrazyCrates extends JavaPlugin {
         QuickCrate.removeAllRewards();
 
         // Purge holograms.
-        if (this.crazyManager.getHologramController() != null) this.crazyManager.getHologramController().removeAllHolograms();
+        if (this.crazyHandler.getCrateManager().getHolograms() != null) this.crazyHandler.getCrateManager().getHolograms().removeAllHolograms();
 
         // Unload the plugin.
         this.crazyHandler.unload();
-    }
-
-    @NotNull
-    public com.badbones69.crazycrates.paper.CrazyCrates getCrazyCrates() {
-        return this.crazyCrates;
     }
 
     @NotNull

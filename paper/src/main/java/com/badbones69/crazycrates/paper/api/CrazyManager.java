@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent.KeyReceiveReason;
 import us.crazycrew.crazycrates.paper.api.events.crates.CrateOpenEvent;
-import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
+import us.crazycrew.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.*;
 import us.crazycrew.crazycrates.paper.commands.subs.CrateBaseCommand;
@@ -27,7 +27,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.common.crates.quadcrates.CrateSchematic;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
-
 import java.util.*;
 import java.util.logging.Level;
 
@@ -35,18 +34,6 @@ public class CrazyManager {
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-
-    @NotNull
-    private final FileManager fileManager = this.plugin.getFileManager();
-
-    // A list of all the physical crate locations.
-    private final ArrayList<CrateLocation> crateLocations = new ArrayList<>();
-
-    // List of all the broken crates.
-    private final ArrayList<String> brokecrates = new ArrayList<>();
-
-    // List of broken physical crate locations.
-    private final List<BrokeLocation> brokeLocations = new ArrayList<>();
 
     // The crate that the player is opening.
     private final HashMap<UUID, Crate> playerOpeningCrates = new HashMap<>();
@@ -61,13 +48,7 @@ public class CrazyManager {
     private final HashMap<UUID, ArrayList<BukkitTask>> currentQuadTasks = new HashMap<>();
 
     // The time in seconds a quadcrate can go until afk kicks them from it.
-    private Integer quadCrateTimer;
-
-    // A list of current crate schematics for Quad Crate.
-    private final List<CrateSchematic> crateSchematics = new ArrayList<>();
-
-    // True if at least one crate gives new players keys and false if none give new players keys.
-    private boolean giveNewPlayersKeys;
+    private int quadCrateTimer;
 
     // The hologram api that is being hooked into.
     private HologramController hologramController;
@@ -175,10 +156,10 @@ public class CrazyManager {
             }
         }
 
-        boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
-        boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
+        //boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
+        //boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
 
-        this.plugin.getCrazyCrates().getStarter().getEventLogger().logCrateEvent(player, crate, keyType, logFile, logConsole);
+        //this.plugin.getCrazyCrates().getStarter().getEventLogger().logCrateEvent(player, crate, keyType, logFile, logConsole);
     }
 
     /**
@@ -259,72 +240,6 @@ public class CrazyManager {
      */
     public boolean hasCrateTask(Player player) {
         return this.currentTasks.containsKey(player.getUniqueId());
-    }
-
-    /**
-     * Get a list of all the broke physical crate locations.
-     *
-     * @return List of broken crate locations.
-     */
-    public List<BrokeLocation> getBrokeCrateLocations() {
-        return this.brokeLocations;
-    }
-
-    /**
-     * Add a new physical crate location.
-     *
-     * @param location The location you wish to add.
-     * @param crate The crate which you would like to set it to.
-     */
-    public void addCrateLocation(Location location, Crate crate) {
-        FileConfiguration locations = Files.LOCATIONS.getFile();
-        String id = "1"; // Location ID
-
-        for (int i = 1; locations.contains("Locations." + i); i++) {
-            id = (i + 1) + "";
-        }
-
-        for (CrateLocation crateLocation : getCrateLocations()) {
-            if (crateLocation.getLocation().equals(location)) {
-                id = crateLocation.getID();
-                break;
-            }
-        }
-
-        locations.set("Locations." + id + ".Crate", crate.getName());
-        locations.set("Locations." + id + ".World", location.getWorld().getName());
-        locations.set("Locations." + id + ".X", location.getBlockX());
-        locations.set("Locations." + id + ".Y", location.getBlockY());
-        locations.set("Locations." + id + ".Z", location.getBlockZ());
-        Files.LOCATIONS.saveFile();
-
-        this.crateLocations.add(new CrateLocation(id, crate, location));
-
-        if (this.hologramController != null) this.hologramController.createHologram(location.getBlock(), crate);
-    }
-
-    /**
-     * Remove a physical crate location.
-     *
-     * @param id The id of the location.
-     */
-    public void removeCrateLocation(String id) {
-        Files.LOCATIONS.getFile().set("Locations." + id, null);
-        Files.LOCATIONS.saveFile();
-        CrateLocation location = null;
-
-        for (CrateLocation crateLocation : getCrateLocations()) {
-            if (crateLocation.getID().equalsIgnoreCase(id)) {
-                location = crateLocation;
-                break;
-            }
-        }
-
-        if (location != null) {
-            this.crateLocations.remove(location);
-
-            if (this.hologramController != null) this.hologramController.removeHologram(location.getLocation().getBlock());
-        }
     }
 
     /**
@@ -414,6 +329,37 @@ public class CrazyManager {
      */
     public int getQuadCrateTimer() {
         return this.quadCrateTimer;
+    }
+
+    /**
+     * Add a new physical crate location.
+     *
+     * @param location The location you wish to add.
+     * @param crate The crate which you would like to set it to.
+     */
+    @Deprecated(since = "1.16", forRemoval = true)
+    public void addCrateLocation(Location location, Crate crate) {
+        this.plugin.getCrateManager().addCrateLocation(location, crate);
+    }
+
+    /**
+     * Remove a physical crate location.
+     *
+     * @param id The id of the location.
+     */
+    @Deprecated(since = "1.16", forRemoval = true)
+    public void removeCrateLocation(String id) {
+        this.plugin.getCrateManager().removeCrateLocation(id);
+    }
+
+    /**
+     * Get a list of all the broke physical crate locations.
+     *
+     * @return List of broken crate locations.
+     */
+    @Deprecated(since = "1.16", forRemoval = true)
+    public List<BrokeLocation> getBrokeCrateLocations() {
+        return this.plugin.getCrazyManager().getBrokeCrateLocations();
     }
 
     @Deprecated(since = "1.16", forRemoval = true)

@@ -2,8 +2,9 @@ package us.crazycrew.crazycrates.paper.api.crates;
 
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.paper.api.FileManager;
+import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
-import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
+import us.crazycrew.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
@@ -59,6 +60,7 @@ public class CrateManager {
 
     private boolean giveNewPlayersKeys;
 
+    // Loads the crates.
     public void loadCrates() {
         this.giveNewPlayersKeys = false;
 
@@ -238,46 +240,6 @@ public class CrateManager {
         PreviewListener.loadButtons();
     }
 
-    private void cleanDataFile() {
-        FileConfiguration data = FileManager.Files.DATA.getFile();
-
-        if (!data.contains("Players")) return;
-
-        if (this.plugin.isLogging()) this.plugin.getLogger().info("Cleaning up the data.yml file.");
-
-        List<String> removePlayers = new ArrayList<>();
-
-        for (String uuid : data.getConfigurationSection("Players").getKeys(false)) {
-            boolean hasKeys = false;
-            List<String> noKeys = new ArrayList<>();
-
-            for (Crate crate : getCrates()) {
-                if (data.getInt("Players." + uuid + "." + crate.getName()) <= 0) {
-                    noKeys.add(crate.getName());
-                } else {
-                    hasKeys = true;
-                }
-            }
-
-            if (hasKeys) {
-                noKeys.forEach(crate -> data.set("Players." + uuid + "." + crate, null));
-            } else {
-                removePlayers.add(uuid);
-            }
-        }
-
-        if (!removePlayers.isEmpty()) {
-            if (this.plugin.isLogging()) this.plugin.getLogger().info(removePlayers.size() + " player's data has been marked to be removed.");
-
-            removePlayers.forEach(uuid -> data.set("Players." + uuid, null));
-
-            if (this.plugin.isLogging()) this.plugin.getLogger().info("All empty player data has been removed.");
-        }
-
-        if (this.plugin.isLogging()) this.plugin.getLogger().info("The data.yml file has been cleaned.");
-        FileManager.Files.DATA.saveFile();
-    }
-
     /**
      * Nukes all data.
      */
@@ -317,6 +279,10 @@ public class CrateManager {
         if (!hasCrate(crate)) this.crates.add(crate);
     }
 
+    public void addLocation(CrateLocation crateLocation) {
+        this.crateLocations.add(crateLocation);
+    }
+
     /**
      * Removes a crate from the arraylist
      *
@@ -331,6 +297,63 @@ public class CrateManager {
      */
     public boolean hasCrate(Crate crate) {
         return this.crates.contains(crate);
+    }
+
+    /**
+     * Add a new physical crate location.
+     *
+     * @param location The location you wish to add.
+     * @param crate The crate which you would like to set it to.
+     */
+    public void addCrateLocation(Location location, Crate crate) {
+        FileConfiguration locations = Files.LOCATIONS.getFile();
+        String id = "1"; // Location ID
+
+        for (int i = 1; locations.contains("Locations." + i); i++) {
+            id = (i + 1) + "";
+        }
+
+        for (CrateLocation crateLocation : getCrateLocations()) {
+            if (crateLocation.getLocation().equals(location)) {
+                id = crateLocation.getID();
+                break;
+            }
+        }
+
+        locations.set("Locations." + id + ".Crate", crate.getName());
+        locations.set("Locations." + id + ".World", location.getWorld().getName());
+        locations.set("Locations." + id + ".X", location.getBlockX());
+        locations.set("Locations." + id + ".Y", location.getBlockY());
+        locations.set("Locations." + id + ".Z", location.getBlockZ());
+        Files.LOCATIONS.saveFile();
+
+        addLocation(new CrateLocation(id, crate, location));
+
+        if (this.holograms != null) this.holograms.createHologram(location.getBlock(), crate);
+    }
+
+    /**
+     * Remove a physical crate location.
+     *
+     * @param id The id of the location.
+     */
+    public void removeCrateLocation(String id) {
+        Files.LOCATIONS.getFile().set("Locations." + id, null);
+        Files.LOCATIONS.saveFile();
+        CrateLocation location = null;
+
+        for (CrateLocation crateLocation : getCrateLocations()) {
+            if (crateLocation.getID().equalsIgnoreCase(id)) {
+                location = crateLocation;
+                break;
+            }
+        }
+
+        if (location != null) {
+            removeLocation(location);
+
+            if (this.holograms != null) this.holograms.removeHologram(location.getLocation().getBlock());
+        }
     }
 
     /**
@@ -469,6 +492,10 @@ public class CrateManager {
         return false;
     }
 
+    public HologramController getHolograms() {
+        return this.holograms;
+    }
+
     /**
      * @return An unmodifiable list of crate locations.
      */
@@ -476,18 +503,36 @@ public class CrateManager {
         return Collections.unmodifiableList(this.crateLocations);
     }
 
+    public void removeLocation(CrateLocation crateLocation) {
+        this.crateLocations.remove(crateLocation);
+    }
+
+    /**
+     * @return An unmodifiable list of broke crates.
+     */
     public List<String> getBrokeCrates() {
         return Collections.unmodifiableList(this.brokeCrates);
     }
 
+    /**
+     * @return An unmodifiable list of broken crate locations.
+     */
     public List<BrokeLocation> getBrokeLocations() {
         return Collections.unmodifiableList(this.brokeLocations);
     }
 
+    public void removeBrokeLocation(ArrayList<BrokeLocation> crateLocation) {
+        this.brokeLocations.removeAll(crateLocation);
+    }
+
+    /**
+     * @return An unmodifiable list of crate schematics.
+     */
     public List<CrateSchematic> getCrateSchematics() {
         return Collections.unmodifiableList(this.crateSchematics);
     }
 
+    // Internal methods.
     private ItemStack getKey(FileConfiguration file) {
         String name = file.getString("Crate.PhysicalKey.Name");
         List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
@@ -543,6 +588,47 @@ public class CrateManager {
         } catch (Exception e) {
             return new ItemBuilder().setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
         }
+    }
+
+    // Cleans the data file.
+    private void cleanDataFile() {
+        FileConfiguration data = FileManager.Files.DATA.getFile();
+
+        if (!data.contains("Players")) return;
+
+        if (this.plugin.isLogging()) this.plugin.getLogger().info("Cleaning up the data.yml file.");
+
+        List<String> removePlayers = new ArrayList<>();
+
+        for (String uuid : data.getConfigurationSection("Players").getKeys(false)) {
+            boolean hasKeys = false;
+            List<String> noKeys = new ArrayList<>();
+
+            for (Crate crate : getCrates()) {
+                if (data.getInt("Players." + uuid + "." + crate.getName()) <= 0) {
+                    noKeys.add(crate.getName());
+                } else {
+                    hasKeys = true;
+                }
+            }
+
+            if (hasKeys) {
+                noKeys.forEach(crate -> data.set("Players." + uuid + "." + crate, null));
+            } else {
+                removePlayers.add(uuid);
+            }
+        }
+
+        if (!removePlayers.isEmpty()) {
+            if (this.plugin.isLogging()) this.plugin.getLogger().info(removePlayers.size() + " player's data has been marked to be removed.");
+
+            removePlayers.forEach(uuid -> data.set("Players." + uuid, null));
+
+            if (this.plugin.isLogging()) this.plugin.getLogger().info("All empty player data has been removed.");
+        }
+
+        if (this.plugin.isLogging()) this.plugin.getLogger().info("The data.yml file has been cleaned.");
+        FileManager.Files.DATA.saveFile();
     }
 
     private List<ItemBuilder> getItems(FileConfiguration file, String prize) {

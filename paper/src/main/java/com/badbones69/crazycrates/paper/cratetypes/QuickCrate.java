@@ -2,11 +2,11 @@ package com.badbones69.crazycrates.paper.cratetypes;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
-import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
+import us.crazycrew.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
-import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestStateHandler;
+import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestManager;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -34,7 +34,7 @@ public class QuickCrate implements Listener {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
-    private static final ChestStateHandler chestStateHandler = plugin.getCrazyHandler().getChestStateHandler();
+    private static final ChestManager CHEST_MANAGER = plugin.getCrazyHandler().getChestManager();
 
     public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType, HologramController hologramController) {
         int keys = switch (keyType) {
@@ -104,7 +104,7 @@ public class QuickCrate implements Listener {
             reward.setPickupDelay(Integer.MAX_VALUE);
             rewards.put(player, reward);
             allRewards.add(reward);
-            chestStateHandler.openChest(loc.getBlock(), true);
+            CHEST_MANAGER.openChest(loc.getBlock(), true);
 
             if (prize.useFireworks()) MiscUtils.spawnFirework(loc.clone().add(.5, 1, .5), null);
 
@@ -129,7 +129,7 @@ public class QuickCrate implements Listener {
             rewards.remove(player);
         }
 
-        chestStateHandler.closeChest(loc.getBlock(), false);
+        CHEST_MANAGER.closeChest(loc.getBlock(), false);
         CrateControlListener.inUse.remove(player);
         plugin.getCrazyManager().removePlayerFromOpeningList(player);
 

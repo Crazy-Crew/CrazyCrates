@@ -10,6 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,36 +22,40 @@ public class BrokeLocationsListener implements Listener {
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     @NotNull
+    private final CrateManager crateManager = this.plugin.getCrateManager();
+
+    @NotNull
     private final CrazyManager crazyManager = this.plugin.getCrazyManager();
     
     @EventHandler
     public void onWorldLoad(WorldLoadEvent event) {
-        if (!this.crazyManager.getBrokeCrateLocations().isEmpty()) {
-            int fixedAmount = 0;
-            List<BrokeLocation> fixedWorlds = new ArrayList<>();
+        if (this.crateManager.getBrokeLocations().isEmpty()) return;
 
-            for (BrokeLocation brokeLocation : this.crazyManager.getBrokeCrateLocations()) {
-                Location location = brokeLocation.getLocation();
+        int fixedAmount = 0;
+        ArrayList<BrokeLocation> fixedWorlds = new ArrayList<>();
 
-                if (location.getWorld() != null) {
-                    if (brokeLocation.getCrate() != null) {
-                        this.crazyManager.getCrateLocations().add(new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location));
+        for (BrokeLocation brokeLocation : this.crateManager.getBrokeLocations()) {
+            Location location = brokeLocation.getLocation();
 
-                        if (brokeLocation.getCrate().getHologram().isEnabled() && this.crazyManager.getHologramController() != null) this.crazyManager.getHologramController().createHologram(location.getBlock(), brokeLocation.getCrate());
+            if (location.getWorld() != null) {
+                if (brokeLocation.getCrate() != null) {
+                    this.crateManager.addLocation(new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location));
 
-                        fixedWorlds.add(brokeLocation);
-                        fixedAmount++;
-                    }
+                    if (brokeLocation.getCrate().getHologram().isEnabled() && this.crateManager.getHolograms() != null)
+                        this.crateManager.getHolograms().createHologram(location.getBlock(), brokeLocation.getCrate());
+
+                    fixedWorlds.add(brokeLocation);
+                    fixedAmount++;
                 }
             }
+        }
 
-            this.crazyManager.getBrokeCrateLocations().removeAll(fixedWorlds);
+        this.crateManager.removeBrokeLocation(fixedWorlds);
 
-            if (this.plugin.isLogging()) {
-                this.plugin.getLogger().warning("Fixed " + fixedAmount + " broken crate locations.");
+        if (this.plugin.isLogging()) {
+            this.plugin.getLogger().warning("Fixed " + fixedAmount + " broken crate locations.");
 
-                if (this.crazyManager.getBrokeCrateLocations().isEmpty()) this.plugin.getLogger().warning("All broken crate locations have been fixed.");
-            }
+            if (this.crateManager.getBrokeLocations().isEmpty()) this.plugin.getLogger().warning("All broken crate locations have been fixed.");
         }
     }
 }

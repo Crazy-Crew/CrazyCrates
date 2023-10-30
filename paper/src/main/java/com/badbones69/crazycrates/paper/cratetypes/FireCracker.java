@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.paper.cratetypes;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
-import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
+import us.crazycrew.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.Color;
 import org.bukkit.Location;

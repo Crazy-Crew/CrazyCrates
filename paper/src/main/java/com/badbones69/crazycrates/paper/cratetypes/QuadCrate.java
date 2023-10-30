@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
-import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestStateHandler;
+import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestManager;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -40,7 +40,7 @@ public class QuadCrate implements Listener {
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     @NotNull
-    private final ChestStateHandler chestStateHandler = this.plugin.getCrazyHandler().getChestStateHandler();
+    private final ChestManager chestManager = this.plugin.getCrazyHandler().getChestManager();
 
     private final SessionManager sessionManager = new SessionManager();
 
@@ -65,7 +65,7 @@ public class QuadCrate implements Listener {
 
                 if (session.getCratesOpened().get(block.getLocation())) return;
 
-                this.chestStateHandler.openChest(block, true);
+                this.chestManager.openChest(block, true);
 
                 Crate crate = session.getCrate();
                 Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
