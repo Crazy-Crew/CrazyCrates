@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.listeners;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -20,6 +19,8 @@ import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +32,12 @@ public class MenuListener implements Listener {
     private static final CrazyHandler crazyHandler = plugin.getCrazyHandler();
 
     private static final CrazyManager crazyManager = plugin.getCrazyManager();
-
-    private static final Methods methods = crazyHandler.getMethods();
     
     public static void openGUI(Player player) {
         FileConfiguration config = Files.CONFIG.getFile();
 
         int size = config.getInt("Settings.InventorySize");
-        Inventory inv = player.getServer().createInventory(null, size, plugin.getCrazyHandler().getMethods().sanitizeColor(Files.CONFIG.getFile().getString("Settings.InventoryName")));
+        Inventory inv = player.getServer().createInventory(null, size, MsgUtils.sanitizeColor(Files.CONFIG.getFile().getString("Settings.InventoryName")));
 
         if (config.contains("Settings.Filler.Toggle")) {
             if (config.getBoolean("Settings.Filler.Toggle")) {
@@ -155,7 +154,7 @@ public class MenuListener implements Listener {
                 if (crate.getCrateType() != CrateType.menu && crate.isCrateMenu(e.getView())) return;
             }
 
-            if (e.getView().getTitle().equals(methods.sanitizeColor(config.getString("Settings.InventoryName")))) {
+            if (e.getView().getTitle().equals(MsgUtils.sanitizeColor(config.getString("Settings.InventoryName")))) {
                 e.setCancelled(true);
 
                 if (e.getCurrentItem() != null) {
@@ -216,7 +215,7 @@ public class MenuListener implements Listener {
                                     }
                                 }
 
-                                if (methods.isInventoryFull(player)) {
+                                if (MiscUtils.isInventoryFull(player)) {
                                     player.sendMessage(Messages.INVENTORY_FULL.getMessage());
                                     return;
                                 }

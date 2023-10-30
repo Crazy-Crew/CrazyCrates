@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
@@ -14,6 +13,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -22,8 +23,6 @@ public class CSGO implements Listener {
     private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
     private static final CrazyManager crazyManager = plugin.getCrazyManager();
-
-    private static final Methods methods = plugin.getCrazyHandler().getMethods();
     
     private static void setGlass(Inventory inv) {
         HashMap<Integer, ItemStack> glass = new HashMap<>();
@@ -34,7 +33,7 @@ public class CSGO implements Listener {
 
         for (int i : glass.keySet()) {
             if (inv.getItem(i) == null) {
-                ItemStack item = methods.getRandomPaneColor().setName(" ").build();
+                ItemStack item = MiscUtils.getRandomPaneColor().setName(" ").build();
                 inv.setItem(i, item);
                 inv.setItem(i + 18, item);
             }
@@ -44,7 +43,7 @@ public class CSGO implements Listener {
             if (i < 9 && i != 4) glass.put(i, inv.getItem(i));
         }
 
-        ItemStack item = methods.getRandomPaneColor().setName(" ").build();
+        ItemStack item = MiscUtils.getRandomPaneColor().setName(" ").build();
 
         inv.setItem(0, glass.get(1));
         inv.setItem(18, glass.get(1));
@@ -67,7 +66,7 @@ public class CSGO implements Listener {
     }
     
     public static void openCSGO(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        Inventory inv = plugin.getServer().createInventory(null, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
         setGlass(inv);
 
         for (int i = 9; i > 8 && i < 18; i++) {
@@ -79,7 +78,7 @@ public class CSGO implements Listener {
         if (plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
             startCSGO(player, inv, crate);
         } else {
-            methods.failedToTakeKey(player, crate);
+            MiscUtils.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
         }
     }

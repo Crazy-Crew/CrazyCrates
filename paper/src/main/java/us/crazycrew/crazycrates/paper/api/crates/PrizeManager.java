@@ -1,7 +1,6 @@
 package us.crazycrew.crazycrates.paper.api.crates;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -13,6 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.HashMap;
 import static java.util.regex.Matcher.quoteReplacement;
 
@@ -20,9 +21,6 @@ public class PrizeManager {
     
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-
-    @NotNull
-    private final Methods methods = this.plugin.getCrazyHandler().getMethods();
 
     /**
      * Give a player a prize they have won.
@@ -47,7 +45,7 @@ public class PrizeManager {
                 continue;
             }
 
-            if (!this.methods.isInventoryFull(player)) {
+            if (!MiscUtils.isInventoryFull(player)) {
                 player.getInventory().addItem(item);
             } else {
                 player.getWorld().dropItemNaturally(player.getLocation(), item);
@@ -62,7 +60,7 @@ public class PrizeManager {
                 clone.setLore(PlaceholderAPI.setPlaceholders(player, clone.getLore()));
             }
 
-            if (!this.methods.isInventoryFull(player)) {
+            if (!MiscUtils.isInventoryFull(player)) {
                 player.getInventory().addItem(clone.build());
             } else {
                 player.getWorld().dropItemNaturally(player.getLocation(), clone.build());
@@ -81,7 +79,7 @@ public class PrizeManager {
                         try {
                             long min = Long.parseLong(word.split("-")[0]);
                             long max = Long.parseLong(word.split("-")[1]);
-                            commandBuilder.append(this.methods.pickNumber(min, max)).append(" ");
+                            commandBuilder.append(MiscUtils.pickNumber(min, max)).append(" ");
                         } catch (Exception e) {
                             commandBuilder.append("1 ");
                             this.plugin.getLogger().warning("The prize " + prize.getName() + " in the " + prize.getCrate() + " crate has caused an error when trying to run a command.");
@@ -98,7 +96,7 @@ public class PrizeManager {
 
             if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) command = PlaceholderAPI.setPlaceholders(player, command);
 
-            this.methods.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getUpdatedName())).replaceAll("%crate%", crate.getCrateInventoryName()));
+            MiscUtils.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getUpdatedName())).replaceAll("%crate%", crate.getCrateInventoryName()));
         }
 
         if (!crate.getPrizeMessage().isEmpty() && prize.getMessages().isEmpty()) {
@@ -107,7 +105,7 @@ public class PrizeManager {
                     message = PlaceholderAPI.setPlaceholders(player, message);
                 }
 
-                this.methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getCrateInventoryName()), false);
+                MsgUtils.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getCrateInventoryName()), false);
             }
 
             return;
@@ -118,7 +116,7 @@ public class PrizeManager {
                 message = PlaceholderAPI.setPlaceholders(player, message);
             }
 
-            this.methods.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getCrateInventoryName()), false);
+            MsgUtils.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getCrateInventoryName()), false);
         }
     }
 
@@ -133,11 +131,11 @@ public class PrizeManager {
         if (prize != null) {
             givePrize(player, prize, crate);
 
-            if (prize.useFireworks()) this.methods.firework(player.getLocation().add(0, 1, 0));
+            if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
             this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
         } else {
-            player.sendMessage(this.methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
+            player.sendMessage(MsgUtils.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
         }
     }
 
@@ -145,11 +143,11 @@ public class PrizeManager {
         if (prize != null) {
             givePrize(player, prize, crate);
 
-            if (prize.useFireworks()) this.methods.firework(player.getLocation().add(0, 1, 0));
+            if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
             this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
         } else {
-            player.sendMessage(this.methods.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
+            player.sendMessage(MsgUtils.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
         }
     }
 }

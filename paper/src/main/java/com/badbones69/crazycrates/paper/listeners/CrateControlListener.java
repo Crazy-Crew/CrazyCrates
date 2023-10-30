@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.listeners;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.api.enums.Permissions;
@@ -32,6 +31,9 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.utils.MsgUtils;
+
 import java.util.HashMap;
 
 public class CrateControlListener implements Listener { // Crate Control
@@ -41,9 +43,6 @@ public class CrateControlListener implements Listener { // Crate Control
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-
-    @NotNull
-    private final Methods methods = this.plugin.getCrazyHandler().getMethods();
 
     @NotNull
     private final CrazyManager crazyManager = plugin.getCrazyManager();
@@ -171,7 +170,7 @@ public class CrateControlListener implements Listener { // Crate Control
                             }
                         }
 
-                        if (this.methods.isInventoryFull(player)) {
+                        if (MiscUtils.isInventoryFull(player)) {
                             player.sendMessage(Messages.INVENTORY_FULL.getMessage());
                             return;
                         }
@@ -208,10 +207,10 @@ public class CrateControlListener implements Listener { // Crate Control
         Inventory inv = e.getClickedInventory();
         Player player = (Player) e.getWhoClicked();
 
-        if (inv != null && e.getView().getTitle().equals(this.methods.sanitizeColor("&4&lAdmin Keys"))) {
+        if (inv != null && e.getView().getTitle().equals(MsgUtils.sanitizeColor("&4&lAdmin Keys"))) {
             e.setCancelled(true);
 
-            if (!this.methods.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
+            if (!MiscUtils.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
                 player.closeInventory();
                 return;
             }
@@ -231,7 +230,7 @@ public class CrateControlListener implements Listener { // Crate Control
 
                         if (key.hasItemMeta() && key.getItemMeta().hasDisplayName()) name = key.getItemMeta().getDisplayName();
 
-                        player.sendMessage(this.methods.getPrefix() + this.methods.color("&a&l+1 " + (name != null ? name : crate.getName())));
+                        player.sendMessage(MsgUtils.getPrefix("&a&l+1 " + (name != null ? name : crate.getName())));
                     }
                 }
             }

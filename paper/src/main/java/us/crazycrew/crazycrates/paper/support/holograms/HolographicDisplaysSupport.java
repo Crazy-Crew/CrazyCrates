@@ -4,12 +4,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.crates.CrateHologram;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import org.bukkit.block.Block;
+import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.HashMap;
 
 public class HolographicDisplaysSupport implements HologramController {
@@ -18,9 +18,6 @@ public class HolographicDisplaysSupport implements HologramController {
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-
-    @NotNull
-    private final Methods methods = this.plugin.getCrazyHandler().getMethods();
 
     @NotNull
     private final HolographicDisplaysAPI api = HolographicDisplaysAPI.get(this.plugin);
@@ -35,7 +32,7 @@ public class HolographicDisplaysSupport implements HologramController {
 
         Hologram hologram = this.api.createHologram(block.getLocation().add(.5, height, .5));
 
-        crateHologram.getMessages().forEach(line -> hologram.getLines().appendText(this.methods.color(line)));
+        crateHologram.getMessages().forEach(line -> hologram.getLines().appendText(MsgUtils.color(line)));
 
         this.holograms.put(block, hologram);
     }

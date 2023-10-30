@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
@@ -12,32 +11,32 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 
 public class Roulette implements Listener {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
     private static final CrazyManager crazyManager = plugin.getCrazyManager();
-
-    private static final Methods methods = plugin.getCrazyHandler().getMethods();
     
     private static void setGlass(Inventory inv) {
         for (int i = 0; i < 27; i++) {
             if (i != 13) {
-                ItemStack item = methods.getRandomPaneColor().setName(" ").build();
+                ItemStack item = MiscUtils.getRandomPaneColor().setName(" ").build();
                 inv.setItem(i, item);
             }
         }
     }
     
     public static void openRoulette(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        Inventory inv = plugin.getServer().createInventory(null, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
         setGlass(inv);
         inv.setItem(13, crate.pickPrize(player).getDisplayItem());
         player.openInventory(inv);
 
         if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
-            methods.failedToTakeKey(player, crate);
+            MiscUtils.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             return;
         }
@@ -77,7 +76,7 @@ public class Roulette implements Listener {
 
                 if (full > 16) {
 
-                    if (methods.slowSpin().contains(time)) {
+                    if (MiscUtils.slowSpin().contains(time)) {
                         setGlass(inv);
                         inv.setItem(13, crate.pickPrize(player).getDisplayItem());
                         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);

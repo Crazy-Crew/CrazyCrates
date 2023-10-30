@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
@@ -22,6 +21,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -33,14 +34,12 @@ public class Cosmic implements Listener {
 
     private static final CrazyManager crazyManager = plugin.getCrazyManager();
 
-    private static final Methods methods = plugin.getCrazyHandler().getMethods();
-
     private static final HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();
     private static final HashMap<Player, ArrayList<Integer>> picks = new HashMap<>();
     private static final HashMap<Player, Boolean> checkHands = new HashMap<>();
     
     private static void showRewards(Player player, Crate crate) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"));
+        Inventory inv = plugin.getServer().createInventory(null, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"));
 
         Tier tier = pickTier(player);
 
@@ -51,7 +50,7 @@ public class Cosmic implements Listener {
     }
     
     private static void startRoll(Player player, Crate crate) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Shuffling"));
+        Inventory inv = plugin.getServer().createInventory(null, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Shuffling"));
 
         Tier tier = pickTier(player);
 
@@ -76,7 +75,7 @@ public class Cosmic implements Listener {
     }
     
     public static void openCosmic(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"));
+        Inventory inv = plugin.getServer().createInventory(null, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"));
         setChests(inv, crate);
         crazyManager.addPlayerKeyType(player, keyType);
         checkHands.put(player, checkHand);
@@ -115,9 +114,9 @@ public class Cosmic implements Listener {
 
         final FileConfiguration file = crate.getFile();
 
-        if (e.getView().getTitle().equals(methods.sanitizeColor(file.getString("Crate.CrateName") + " - Shuffling"))) e.setCancelled(true);
+        if (e.getView().getTitle().equals(MsgUtils.sanitizeColor(file.getString("Crate.CrateName") + " - Shuffling"))) e.setCancelled(true);
 
-        if (e.getView().getTitle().equals(methods.sanitizeColor(file.getString("Crate.CrateName") + " - Prizes"))) {
+        if (e.getView().getTitle().equals(MsgUtils.sanitizeColor(file.getString("Crate.CrateName") + " - Prizes"))) {
             e.setCancelled(true);
             int slot = e.getRawSlot();
 
@@ -140,7 +139,7 @@ public class Cosmic implements Listener {
                                 e.setCurrentItem(prize.getDisplayItem());
                                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 
-                                if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
+                                if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
                             }
 
                             return;
@@ -150,7 +149,7 @@ public class Cosmic implements Listener {
             }
         }
 
-        if (e.getView().getTitle().equals(methods.sanitizeColor(file.getString("Crate.CrateName") + " - Choose"))) {
+        if (e.getView().getTitle().equals(MsgUtils.sanitizeColor(file.getString("Crate.CrateName") + " - Choose"))) {
             e.setCancelled(true);
             int slot = e.getRawSlot();
 
@@ -204,7 +203,7 @@ public class Cosmic implements Listener {
                         }
 
                         if (crazyManager.hasPlayerKeyType(player) && !plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHands.get(player))) {
-                            methods.failedToTakeKey(player, crate);
+                            MiscUtils.failedToTakeKey(player, crate);
                             crazyManager.removePlayerFromOpeningList(player);
                             crazyManager.removePlayerKeyType(player);
                             checkHands.remove(player);
@@ -227,7 +226,7 @@ public class Cosmic implements Listener {
                                         plugin.getCrazyHandler().getUserManager().addKeys(1, player.getUniqueId(), crate.getName(), keyType);
                                         crazyManager.endCrate(player);
                                         cancel();
-                                        player.sendMessage(methods.getPrefix("&cAn issue has occurred and so a key refund was given."));
+                                        player.sendMessage(MsgUtils.getPrefix("&cAn issue has occurred and so a key refund was given."));
                                         plugin.getServer().getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() +
                                         " was using the " + crate.getName() + " crate and so they were issued a key refund.", e);
                                     }
@@ -273,7 +272,7 @@ public class Cosmic implements Listener {
             return;
         }
 
-        if (e.getView().getTitle().equals(methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"))) {
+        if (e.getView().getTitle().equals(MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"))) {
             boolean playSound = false;
 
             for (int i : picks.get(player)) {
@@ -306,7 +305,7 @@ public class Cosmic implements Listener {
             checkHands.remove(player);
         }
 
-        if (crazyManager.isInOpeningList(player) && e.getView().getTitle().equals(methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"))) {
+        if (crazyManager.isInOpeningList(player) && e.getView().getTitle().equals(MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"))) {
             CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
             if (!glass.containsKey(player) || glass.get(player).size() < manager.getTotalPrizes()) {
                 crazyManager.removePlayerFromOpeningList(player);

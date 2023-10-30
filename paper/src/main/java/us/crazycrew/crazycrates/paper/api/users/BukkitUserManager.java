@@ -1,7 +1,6 @@
 package us.crazycrew.crazycrates.paper.api.users;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
@@ -16,6 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.users.UserManager;
+import us.crazycrew.crazycrates.paper.utils.ItemUtils;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,9 +27,6 @@ public class BukkitUserManager extends UserManager {
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-
-    @NotNull
-    private final Methods methods = this.plugin.getCrazyHandler().getMethods();
 
     private final @NotNull FileConfiguration data = Files.DATA.getFile();
     
@@ -112,7 +110,7 @@ public class BukkitUserManager extends UserManager {
 
         switch (keyType) {
             case physical_key -> {
-                if (!this.methods.isInventoryFull(player)) {
+                if (!MiscUtils.isInventoryFull(player)) {
                     player.getInventory().addItem(crate.getKey(amount));
                     return;
                 }
@@ -162,7 +160,7 @@ public class BukkitUserManager extends UserManager {
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
             if (item == null || item.getType() == Material.AIR) continue;
 
-            if (this.methods.isSimilar(item, crate)) keys += item.getAmount();
+            if (ItemUtils.isSimilar(item, crate)) keys += item.getAmount();
         }
 
         return keys;
@@ -205,7 +203,7 @@ public class BukkitUserManager extends UserManager {
                                 int keyAmount = item.getAmount();
 
                                 if ((takeAmount - keyAmount) >= 0) {
-                                    this.methods.removeItemAnySlot(player.getInventory(), item);
+                                    MiscUtils.removeMultipleItemStacks(player, item);
 
                                     if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), crate.getName());
 
@@ -247,7 +245,7 @@ public class BukkitUserManager extends UserManager {
                         }
                     }
                 } catch (Exception exception) {
-                    this.methods.failedToTakeKey(player, crate);
+                    MiscUtils.failedToTakeKey(player, crate);
                     return false;
                 }
             }
@@ -276,7 +274,7 @@ public class BukkitUserManager extends UserManager {
             }
         }
 
-        this.methods.failedToTakeKey(player, crate);
+        MiscUtils.failedToTakeKey(player, crate);
         return false;
     }
 
@@ -327,7 +325,7 @@ public class BukkitUserManager extends UserManager {
     private boolean isKeyFromCrate(ItemStack item, Crate crate) {
         if (crate.getCrateType() != CrateType.menu) {
             if (item != null && item.getType() != Material.AIR) {
-                return this.methods.isSimilar(item, crate);
+                return ItemUtils.isSimilar(item, crate);
             }
         }
 
@@ -420,7 +418,7 @@ public class BukkitUserManager extends UserManager {
                     // If the inventory is full, drop the remaining keys then stop.
                     if (crate.getCrateType() == CrateType.crate_on_the_go) {
                         // If the inventory is full, drop the items then stop.
-                        if (this.methods.isInventoryFull(player)) {
+                        if (MiscUtils.isInventoryFull(player)) {
                             player.getWorld().dropItemNaturally(player.getLocation(), crate.getKey(amount));
                             break;
                         }
@@ -454,7 +452,7 @@ public class BukkitUserManager extends UserManager {
 
                 while (keysGiven < amount) {
                     // If the inventory is full, drop the remaining keys then stop.
-                    if (this.methods.isInventoryFull(player)) {
+                    if (MiscUtils.isInventoryFull(player)) {
                         player.getWorld().dropItemNaturally(player.getLocation(), crate.getKey(amount-keysGiven));
                         break;
                     }

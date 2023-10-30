@@ -3,6 +3,9 @@ package com.badbones69.crazycrates.paper.api.enums.settings;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import org.bukkit.configuration.file.FileConfiguration;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.utils.MsgUtils;
+
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -117,7 +120,7 @@ public enum Messages {
         StringBuilder message = new StringBuilder();
 
         for (String line : list) {
-            message.append(plugin.getCrazyHandler().getMethods().color(line)).append("\n");
+            message.append(MsgUtils.color(line)).append("\n");
         }
 
         return message.toString();
@@ -328,15 +331,15 @@ public enum Messages {
 
         if (isList) {
             if (exists) {
-                message = plugin.getCrazyHandler().getMethods().color(convertList(Files.MESSAGES.getFile().getStringList("Messages." + path)));
+                message = MsgUtils.color(convertList(Files.MESSAGES.getFile().getStringList("Messages." + path)));
             } else {
-                message = plugin.getCrazyHandler().getMethods().color(convertList(getDefaultListMessage()));
+                message = MsgUtils.color(convertList(getDefaultListMessage()));
             }
         } else {
             if (exists) {
-                message = plugin.getCrazyHandler().getMethods().color(Files.MESSAGES.getFile().getString("Messages." + path));
+                message = MsgUtils.color(Files.MESSAGES.getFile().getString("Messages." + path));
             } else {
-                message = plugin.getCrazyHandler().getMethods().color(getDefaultMessage());
+                message = MsgUtils.color(getDefaultMessage());
             }
         }
 
@@ -345,12 +348,12 @@ public enum Messages {
         }
 
         if (isList) { // Don't want to add a prefix to a list of messages.
-            return plugin.getCrazyHandler().getMethods().color(message);
+            return MsgUtils.color(message);
         } else { // If the message isn't a list.
             if (prefix) { // If the message needs a prefix.
-                return plugin.getCrazyHandler().getMethods().getPrefix(message);
+                return MsgUtils.getPrefix(message);
             } else { // If the message doesn't need a prefix.
-                return plugin.getCrazyHandler().getMethods().color(message);
+                return MsgUtils.color(message);
             }
         }
     }

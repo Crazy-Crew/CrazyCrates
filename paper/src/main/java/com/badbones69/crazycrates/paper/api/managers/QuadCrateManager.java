@@ -21,6 +21,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.crates.quadcrates.CrateParticles;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -176,7 +178,7 @@ public class QuadCrateManager {
         }
 
         if (!this.plugin.getCrazyHandler().getUserManager().takeKeys(1, this.player.getUniqueId(), this.crate.getName(), this.keyType, this.checkHand)) {
-            this.plugin.getCrazyHandler().getMethods().failedToTakeKey(this.player, this.crate);
+            MiscUtils.failedToTakeKey(this.player, this.crate);
 
             this.crazyManager.removePlayerFromOpeningList(this.player);
             crateSessions.remove(this.instance);

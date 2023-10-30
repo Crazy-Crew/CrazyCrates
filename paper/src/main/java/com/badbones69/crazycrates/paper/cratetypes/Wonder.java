@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -14,6 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import java.util.ArrayList;
 
 public class Wonder implements Listener {
@@ -21,12 +21,10 @@ public class Wonder implements Listener {
     private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
     private static final CrazyManager crazyManager = plugin.getCrazyManager();
-
-    private static final Methods methods = plugin.getCrazyHandler().getMethods();
     
     public static void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
-            methods.failedToTakeKey(player, crate);
+            MiscUtils.failedToTakeKey(player, crate);
             crazyManager.removePlayerFromOpeningList(player);
             return;
         }
@@ -70,7 +68,7 @@ public class Wonder implements Listener {
                 }
 
                 if (fullTime > 67) {
-                    ItemStack item = methods.getRandomPaneColor().setName(" ").build();
+                    ItemStack item = MiscUtils.getRandomPaneColor().setName(" ").build();
 
                     for (int slot : Slots) {
                         inv.setItem(slot, item);
@@ -84,7 +82,7 @@ public class Wonder implements Listener {
                     player.closeInventory();
                     plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
 
-                    if (prize.useFireworks()) methods.firework(player.getLocation().add(0, 1, 0));
+                    if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
                     plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                     crazyManager.removePlayerFromOpeningList(player);

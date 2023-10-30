@@ -37,6 +37,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.common.crates.quadcrates.CrateSchematic;
+import us.crazycrew.crazycrates.paper.utils.ItemUtils;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import java.io.File;
 import java.util.*;
 import java.util.logging.Level;
@@ -400,11 +402,11 @@ public class CrazyManager {
                         Prize prize = crate.pickPrize(player);
                         this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
 
-                        if (prize.useFireworks()) this.plugin.getCrazyHandler().getMethods().firework(player.getLocation().add(0, 1, 0));
+                        if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
                         removePlayerFromOpeningList(player);
                     } else {
-                        this.plugin.getCrazyHandler().getMethods().failedToTakeKey(player, crate);
+                        MiscUtils.failedToTakeKey(player, crate);
                     }
                 }
             }
@@ -794,7 +796,7 @@ public class CrazyManager {
     public boolean isKeyFromCrate(ItemStack item, Crate crate) {
         if (crate.getCrateType() != CrateType.menu) {
             if (item != null && item.getType() != Material.AIR) {
-                return this.plugin.getCrazyHandler().getMethods().isSimilar(item, crate);
+                return ItemUtils.isSimilar(item, crate);
             }
         }
 
@@ -883,7 +885,7 @@ public class CrazyManager {
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
             if (item == null || item.getType() == Material.AIR) continue;
 
-            if (this.plugin.getCrazyHandler().getMethods().isSimilar(item, crate)) {
+            if (ItemUtils.isSimilar(item, crate)) {
                 return item;
             }
         }
@@ -1119,7 +1121,7 @@ public class CrazyManager {
 
             if (file.contains(path + "DisplayEnchantments")) {
                 for (String enchantmentName : file.getStringList(path + "DisplayEnchantments")) {
-                    Enchantment enchantment = this.plugin.getCrazyHandler().getMethods().getEnchantment(enchantmentName.split(":")[0]);
+                    Enchantment enchantment = MiscUtils.getEnchantment(enchantmentName.split(":")[0]);
 
                     if (enchantment != null) {
                         itemBuilder.addEnchantments(enchantment, Integer.parseInt(enchantmentName.split(":")[1]));

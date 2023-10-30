@@ -23,6 +23,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import us.crazycrew.crazycrates.paper.utils.MsgUtils;
+
 import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -589,7 +591,7 @@ public class ItemBuilder {
      * @return The ItemBuilder with an updated name.
      */
     public ItemBuilder setName(String itemName) {
-        if (itemName != null) this.itemName = this.plugin.getCrazyHandler().getMethods().color(itemName);
+        if (itemName != null) this.itemName = MsgUtils.color(itemName);
 
         return this;
     }
@@ -637,7 +639,7 @@ public class ItemBuilder {
             this.itemLore.clear();
 
             for (String line : lore) {
-                this.itemLore.add(this.plugin.getCrazyHandler().getMethods().color(line));
+                this.itemLore.add(MsgUtils.color(line));
             }
         }
 
@@ -651,7 +653,7 @@ public class ItemBuilder {
      * @return The ItemBuilder with updated info.
      */
     public ItemBuilder addLore(String lore) {
-        if (lore != null) this.itemLore.add(this.plugin.getCrazyHandler().getMethods().color(lore));
+        if (lore != null) this.itemLore.add(MsgUtils.color(lore));
         return this;
     }
 

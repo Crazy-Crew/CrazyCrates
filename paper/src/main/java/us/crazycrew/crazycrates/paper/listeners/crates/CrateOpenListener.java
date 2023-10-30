@@ -1,7 +1,6 @@
 package us.crazycrew.crazycrates.paper.listeners.crates;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import us.crazycrew.crazycrates.paper.api.events.crates.CrateOpenEvent;
@@ -19,6 +18,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
+import us.crazycrew.crazycrates.paper.utils.MsgUtils;
+
 import java.util.List;
 
 @SuppressWarnings("deprecation")
@@ -29,9 +30,6 @@ public class CrateOpenListener implements Listener {
 
     @NotNull
     private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
-
-    @NotNull
-    private final Methods methods = this.crazyHandler.getMethods();
 
     @NotNull
     private final CrazyManager crazyManager = this.plugin.getCrazyManager();
@@ -75,7 +73,7 @@ public class CrateOpenListener implements Listener {
 
         if (broadcastToggle) {
             if (!broadcastMessage.isBlank()) {
-                plugin.getServer().broadcastMessage(this.methods.color(broadcastMessage.replaceAll("%prefix%", this.methods.getPrefix())).replaceAll("%player%", player.getName()));
+                plugin.getServer().broadcastMessage(MsgUtils.color(broadcastMessage.replaceAll("%prefix%", MsgUtils.getPrefix())).replaceAll("%player%", player.getName()));
             }
         }
 
@@ -89,9 +87,9 @@ public class CrateOpenListener implements Listener {
                     String builder;
 
                     if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
-                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%prefix%", this.methods.getPrefix()).replaceAll("%player%", player.getName()));
+                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName()));
                     } else {
-                        builder = line.replaceAll("%prefix%", this.methods.getPrefix()).replaceAll("%player%", player.getName());
+                        builder = line.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName());
                     }
 
                     this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), builder);

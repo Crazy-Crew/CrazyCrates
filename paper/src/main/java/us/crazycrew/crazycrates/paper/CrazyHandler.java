@@ -1,6 +1,5 @@
 package us.crazycrew.crazycrates.paper;
 
-import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.CrazyCratesPlugin;
@@ -16,8 +15,6 @@ import java.io.File;
 public class CrazyHandler extends CrazyCratesPlugin {
 
     private FileManager fileManager;
-
-    private Methods methods;
 
     private CrateManager crateManager;
     private PrizeManager prizeManager;
@@ -50,8 +47,6 @@ public class CrazyHandler extends CrazyCratesPlugin {
                 .registerCustomFilesFolder("/schematics")
                 .setup();
 
-        this.methods = new Methods();
-
         this.crateManager = new CrateManager();
         this.prizeManager = new PrizeManager();
 
@@ -77,11 +72,6 @@ public class CrazyHandler extends CrazyCratesPlugin {
     @NotNull
     public FileManager getFileManager() {
         return this.fileManager;
-    }
-
-    @NotNull
-    public Methods getMethods() {
-        return this.methods;
     }
 
     @NotNull
