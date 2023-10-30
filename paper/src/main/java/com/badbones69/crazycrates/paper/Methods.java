@@ -22,6 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static java.util.regex.Matcher.quoteReplacement;
@@ -55,6 +56,17 @@ public class Methods {
         }
 
         if (!prefix.isEmpty() && prefixToggle) commandSender.sendMessage(color(message.replaceAll("%prefix%", quoteReplacement(prefix))).replaceAll("%Prefix%", quoteReplacement(prefix))); else commandSender.sendMessage(color(message));
+    }
+
+    public long pickNumber(long min, long max) {
+        max++;
+
+        try {
+            // new Random() does not have a nextLong(long bound) method.
+            return min + ThreadLocalRandom.current().nextLong(max - min);
+        } catch (IllegalArgumentException e) {
+            return min;
+        }
     }
 
     public void sendCommand(String command) {

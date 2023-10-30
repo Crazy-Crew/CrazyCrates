@@ -398,7 +398,7 @@ public class CrazyManager {
                 } else {
                     if (this.plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
                         Prize prize = crate.pickPrize(player);
-                        this.plugin.getCrazyHandler().givePrize(player, prize, crate);
+                        this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
 
                         if (prize.useFireworks()) this.plugin.getCrazyHandler().getMethods().firework(player.getLocation().add(0, 1, 0));
 

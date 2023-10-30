@@ -90,7 +90,7 @@ public class Roulette implements Listener {
                         crazyManager.endCrate(player);
                         Prize prize = crate.getPrize(inv.getItem(13));
 
-                        plugin.getCrazyHandler().checkPrize(prize, player, crate);
+                        plugin.getCrazyHandler().getPrizeManager().checkPrize(prize, player, crate);
 
                         crazyManager.removePlayerFromOpeningList(player);
 

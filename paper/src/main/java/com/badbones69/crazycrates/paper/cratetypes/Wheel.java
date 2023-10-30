@@ -96,7 +96,7 @@ public class Wheel implements Listener {
 
                         if (crazyManager.isInOpeningList(player)) prize = crate.getPrize(rewards.get(player).get(slots.get(f)));
 
-                        plugin.getCrazyHandler().checkPrize(prize, player, crate);
+                        plugin.getCrazyHandler().getPrizeManager().checkPrize(prize, player, crate);
 
                         player.closeInventory();
                         crazyManager.removePlayerFromOpeningList(player);

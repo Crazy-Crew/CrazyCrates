@@ -167,7 +167,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        crate.getPrizes().forEach(prize -> this.plugin.getCrazyHandler().givePrize((Player) sender, prize, crate));
+        crate.getPrizes().forEach(prize -> this.plugin.getCrazyHandler().getPrizeManager().givePrize((Player) sender, prize, crate));
     }
 
     @SubCommand("schem-save")
@@ -431,7 +431,7 @@ public class CrateBaseCommand extends BaseCommand {
             if (keysUsed >= crate.getMaxMassOpen()) break;
 
             Prize prize = crate.pickPrize(player);
-            this.plugin.getCrazyHandler().givePrize(player, prize, crate);
+            this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
             this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 
             if (prize.useFireworks()) this.methods.firework(((Player) sender).getLocation().clone().add(.5, 1, .5));
@@ -522,7 +522,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("give-random")
     @Permission(value = "crazycrates.command.admin.giverandomkey", def = PermissionDefault.OP)
     public void onAdminCrateGiveRandom(CommandSender sender, @Suggestion("key-types") String keyType, @Suggestion("numbers") int amount, @Suggestion("online-players") CustomPlayer target) {
-        Crate crate = this.plugin.getCrazyHandler().getCrateManager().getCrates().get((int) this.plugin.getCrazyHandler().pickNumber(0, (this.plugin.getCrazyHandler().getCrateManager().getCrates().size() - 2)));
+        Crate crate = this.plugin.getCrazyHandler().getCrateManager().getCrates().get((int) this.plugin.getCrazyHandler().getMethods().pickNumber(0, (this.plugin.getCrazyHandler().getCrateManager().getCrates().size() - 2)));
 
         onAdminCrateGive(sender, keyType, crate.getName(), amount, target);
     }

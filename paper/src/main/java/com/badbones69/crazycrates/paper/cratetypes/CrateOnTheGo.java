@@ -46,7 +46,7 @@ public class CrateOnTheGo implements Listener {
 
                     Prize prize = crate.pickPrize(player);
 
-                    this.plugin.getCrazyHandler().givePrize(player, prize, crate);
+                    this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
                     this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, this.crazyManager.getOpeningCrate(player).getName(), prize));
 
                     if (prize.useFireworks()) this.methods.firework(player.getLocation().add(0, 1, 0));
