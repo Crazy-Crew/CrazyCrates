@@ -27,8 +27,8 @@ public class PrizeManager {
     /**
      * Give a player a prize they have won.
      *
-     * @param player The player you wish to give the prize to.
-     * @param prize The prize the player has won.
+     * @param player you wish to give the prize to.
+     * @param prize the player has won.
      */
     public void givePrize(Player player, Prize prize, Crate crate) {
         if (prize == null) {
@@ -124,9 +124,10 @@ public class PrizeManager {
 
     /**
      * Picks the prize for the player.
-     * @param player - The player who the prize is for.
-     * @param crate - The crate the player is opening.
-     * @param prize - The prize the player is being given.
+     *
+     * @param player who the prize is for.
+     * @param crate the player is opening.
+     * @param prize the player is being given.
      */
     public void pickPrize(Player player, Crate crate, Prize prize) {
         if (prize != null) {

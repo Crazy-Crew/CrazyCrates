@@ -86,7 +86,7 @@ public class CrazyManager {
     public void loadCrates() {
         this.giveNewPlayersKeys = false;
 
-        this.plugin.getCrateManager().clearCrates();
+        this.plugin.getCrateManager().purge();
 
         this.brokecrates.clear();
         this.crateLocations.clear();
