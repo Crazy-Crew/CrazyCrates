@@ -2,17 +2,17 @@ package us.crazycrew.crazycrates.api.enums.types;
 
 public enum CrateType {
 
-    menu("menu"),
-    cosmic("cosmic"),
-    crate_on_the_go("crateonthego"),
-    csgo("csgo"),
-    fire_cracker("firecracker"),
-    quad_crate("quadcrate"),
-    quick_crate("quickcrate"),
-    roulette("roulette"),
-    wheel("wheel"),
-    wonder("wonder"),
-    war("war");
+    menu("Menu"),
+    cosmic("Cosmic"),
+    crate_on_the_go("CrateOnTheGo"),
+    csgo("CSGO"),
+    fire_cracker("FireCracker"),
+    quad_crate("QuadCrate"),
+    quick_crate("QuickCrate"),
+    roulette("Roulette"),
+    wheel("Wheel"),
+    wonder("Wonder"),
+    war("War");
     
     private final String name;
 
