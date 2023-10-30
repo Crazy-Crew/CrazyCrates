@@ -11,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.structure.StructureManager;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,10 +21,10 @@ import java.util.logging.Level;
 
 public class StructureHandler {
 
-    private final File file;
-
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
+    private final File file;
 
     public StructureHandler(File file) {
         this.file = file;

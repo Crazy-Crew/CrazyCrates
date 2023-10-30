@@ -12,6 +12,7 @@ import us.crazycrew.crazycrates.paper.CrazyHandler;
 import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
 import java.text.NumberFormat;
 
+@SuppressWarnings("deprecation")
 public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     @NotNull

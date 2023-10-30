@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.listeners;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import org.bukkit.Location;
@@ -11,9 +10,7 @@ import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
-
 import java.util.ArrayList;
-import java.util.List;
 
 // Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
 public class BrokeLocationsListener implements Listener {
@@ -23,9 +20,6 @@ public class BrokeLocationsListener implements Listener {
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
-
-    @NotNull
-    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
     
     @EventHandler
     public void onWorldLoad(WorldLoadEvent event) {

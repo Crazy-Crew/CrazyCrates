@@ -31,11 +31,9 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.paper.CrazyHandler;
 import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
-
 import java.util.HashMap;
 
 public class CrateControlListener implements Listener { // Crate Control
@@ -49,6 +47,7 @@ public class CrateControlListener implements Listener { // Crate Control
     @NotNull
     private final CrazyManager crazyManager = plugin.getCrazyManager();
 
+    @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
     
     // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
