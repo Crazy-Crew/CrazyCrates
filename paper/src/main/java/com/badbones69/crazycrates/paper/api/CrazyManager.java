@@ -267,7 +267,7 @@ public class CrazyManager {
     }
 
     // This method is deigned to help clean the data.yml file of any unless info that it may have.
-    public void cleanDataFile() {
+    private void cleanDataFile() {
         FileConfiguration data = Files.DATA.getFile();
 
         if (!data.contains("Players")) return;
@@ -416,6 +416,11 @@ public class CrazyManager {
         this.plugin.getStarter().getEventLogger().logCrateEvent(player, crate, keyType, logFile, logConsole);
     }
 
+    @Deprecated(since = "1.16", forRemoval = true)
+    public void pickPrize(Player player, Crate crate, Prize prize) {
+        this.plugin.getCrazyHandler().getPrizeManager().pickPrize(player, crate, prize);
+    }
+
     /**
      * This forces a crate to end and will not give out a prize. This is meant for people who leave the server to stop any errors or lag from happening.
      *
@@ -501,8 +506,9 @@ public class CrazyManager {
      *
      * @return List of locations.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public ArrayList<CrateLocation> getCrateLocations() {
-        return this.crateLocations;
+        return new ArrayList<>(this.plugin.getCrateManager().getCrateLocations());
     }
 
     /**
@@ -511,14 +517,9 @@ public class CrazyManager {
      * @param loc The location you are checking.
      * @return True if it is a physical crate and false if not.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public boolean isCrateLocation(Location loc) {
-        for (CrateLocation crateLocation : getCrateLocations()) {
-            if (crateLocation.getLocation().equals(loc)) {
-                return true;
-            }
-        }
-
-        return false;
+        return this.plugin.getCrateManager().isCrateLocation(loc);
     }
 
     /**
@@ -527,14 +528,9 @@ public class CrazyManager {
      * @param loc The location you are checking.
      * @return A CrateLocation if the location is a physical crate otherwise null if not.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public CrateLocation getCrateLocation(Location loc) {
-        for (CrateLocation crateLocation : getCrateLocations()) {
-            if (crateLocation.getLocation().equals(loc)) {
-                return crateLocation;
-            }
-        }
-
-        return null;
+        return this.plugin.getCrateManager().getCrateLocation(loc);
     }
 
     /**
