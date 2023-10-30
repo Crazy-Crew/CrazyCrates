@@ -1,11 +1,12 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.managers.CrateManager;
 import com.badbones69.crazycrates.paper.listeners.PreviewListener;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.common.crates.CrateHologram;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -36,7 +37,6 @@ public class Crate {
     private final boolean previewToggle;
     private final boolean borderToggle;
     private final ItemBuilder borderItem;
-    private final String borderName;
 
     private final CrateType crateType;
     private final FileConfiguration file;
@@ -49,12 +49,15 @@ public class Crate {
     private final ArrayList<Tier> tiers;
     private final CrateHologram hologram;
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
+    @NotNull
     private final FileManager fileManager = this.plugin.getFileManager();
-    private int maxMassOpen;
-    private int requiredKeys;
-    private List<String> prizeMessage;
+
+    private final int maxMassOpen;
+    private final int requiredKeys;
+    private final List<String> prizeMessage;
 
     /**
      * @param name The name of the crate.
@@ -92,8 +95,8 @@ public class Crate {
         for (int amount = this.preview.size(); amount > this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0); amount -= this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0), this.maxPage++) ;
 
         this.crateInventoryName = file != null ? this.plugin.getCrazyHandler().getMethods().sanitizeColor(file.getString("Crate.CrateName")) : "";
-        this.borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? this.plugin.getCrazyHandler().getMethods().color(file.getString("Crate.Preview.Glass.Name")) : " ";
-        this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(this.borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(this.borderName);
+        String borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? this.plugin.getCrazyHandler().getMethods().color(file.getString("Crate.Preview.Glass.Name")) : " ";
+        this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(borderName);
 
         this.hologram = hologram != null ? hologram : new CrateHologram();
 
@@ -167,7 +170,7 @@ public class Crate {
         } else {
             for (Prize prize : getPrizes()) {
                 if (prize.hasBlacklistPermission(player)) {
-                    if (!prize.hasAltPrize()) continue;
+                    if (prize.hasAltPrize()) continue;
                 }
 
                 usablePrizes.add(prize);
@@ -219,7 +222,7 @@ public class Crate {
         } else {
             for (Prize prize : getPrizes()) {
                 if (prize.hasBlacklistPermission(player)) {
-                    if (!prize.hasAltPrize()) continue;
+                    if (prize.hasAltPrize()) continue;
                 }
 
                 if (prize.getTiers().contains(tier)) usablePrizes.add(prize);

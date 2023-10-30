@@ -186,10 +186,10 @@ public class Prize {
     }
     
     /**
-     * @return Returns true if the prize has an alternative prize and false if not.
+     * @return Returns true if the prize doesn't have an alternative prize and false if it does.
      */
     public boolean hasAltPrize() {
-        return this.altPrize != null;
+        return this.altPrize == null;
     }
     
     /**

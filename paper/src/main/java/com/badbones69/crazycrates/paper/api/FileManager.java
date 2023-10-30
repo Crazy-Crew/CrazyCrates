@@ -387,7 +387,7 @@ public class FileManager {
         }
     }
 
-    public class CustomFile {
+    public static class CustomFile {
 
         private final String name;
         private final String fileName;

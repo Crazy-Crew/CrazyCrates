@@ -116,7 +116,7 @@ public class PreviewListener implements Listener {
     public void onPlayerClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
 
-        if (e.getInventory() != null && playerCrate.get(player.getUniqueId()) != null) {
+        if (e.getClickedInventory() != null && playerCrate.get(player.getUniqueId()) != null) {
             Crate crate = playerCrate.get(player.getUniqueId());
 
             if (crate.isPreview(e.getView())) {

@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.api;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;

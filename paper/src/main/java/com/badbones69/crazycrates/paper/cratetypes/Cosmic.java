@@ -41,15 +41,24 @@ public class Cosmic implements Listener {
     
     private static void showRewards(Player player, Crate crate) {
         Inventory inv = plugin.getServer().createInventory(null, 27, methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"));
-        picks.get(player).forEach(i -> inv.setItem(i, pickTier(player).getTierPane()));
-        player.openInventory(inv);
+
+        Tier tier = pickTier(player);
+
+        if (tier != null) {
+            picks.get(player).forEach(i -> inv.setItem(i, tier.getTierPane()));
+            player.openInventory(inv);
+        }
     }
     
     private static void startRoll(Player player, Crate crate) {
         Inventory inv = plugin.getServer().createInventory(null, 27, methods.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Shuffling"));
 
-        for (int i = 0; i < 27; i++) {
-            inv.setItem(i, pickTier(player).getTierPane());
+        Tier tier = pickTier(player);
+
+        if (tier != null) {
+            for (int i = 0; i < 27; i++) {
+                inv.setItem(i, tier.getTierPane());
+            }
         }
 
         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);

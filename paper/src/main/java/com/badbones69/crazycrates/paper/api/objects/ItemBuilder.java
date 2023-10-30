@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.Methods;
 import com.badbones69.crazycrates.paper.support.SkullCreator;
 import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -199,6 +198,8 @@ public class ItemBuilder {
         this.namePlaceholders = new HashMap<>(itemBuilder.namePlaceholders);
         this.lorePlaceholders = new HashMap<>(itemBuilder.lorePlaceholders);
         this.itemFlags = new ArrayList<>(itemBuilder.itemFlags);
+
+        this.customMaterial = itemBuilder.customMaterial;
     }
 
     /**
@@ -1023,7 +1024,7 @@ public class ItemBuilder {
                     }
                     default -> {
                         Enchantment enchantment = getEnchantment(option);
-                        if (enchantment != null && enchantment.getName() != null) {
+                        if (enchantment != null) {
                             try {
                                 itemBuilder.addEnchantments(enchantment, Integer.parseInt(value));
                             } catch (NumberFormatException e) {

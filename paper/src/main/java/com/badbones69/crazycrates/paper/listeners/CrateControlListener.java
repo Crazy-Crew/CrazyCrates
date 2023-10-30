@@ -136,7 +136,6 @@ public class CrateControlListener implements Listener { // Crate Control
                     boolean isPhysical = false;
                     boolean useQuickCrateAgain = false;
                     String keyName = crate.getKey().getItemMeta().getDisplayName();
-                    keyName = keyName != null ? keyName : crate.getKey().getType().toString();
 
                     int requiredKeys = this.plugin.getCrateManager().getCrateFromName(crate.getName()).getRequiredKeys();
 
@@ -191,9 +190,9 @@ public class CrateControlListener implements Listener { // Crate Control
                             if (config.getBoolean("Settings.KnockBack")) knockBack(player, clickedBlock.getLocation());
 
                             if (config.contains("Settings.Need-Key-Sound")) {
-                                Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
+                                Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound", "ENTITY_VILLAGER_NO"));
 
-                                if (sound != null) player.playSound(player.getLocation(), sound, 1f, 1f);
+                                player.playSound(player.getLocation(), sound, 1f, 1f);
                             }
 
                             player.sendMessage(Messages.NO_KEY.getMessage("%Key%", keyName));
@@ -206,7 +205,7 @@ public class CrateControlListener implements Listener { // Crate Control
     
     @EventHandler
     public void onAdminMenuClick(InventoryClickEvent e) {
-        Inventory inv = e.getInventory();
+        Inventory inv = e.getClickedInventory();
         Player player = (Player) e.getWhoClicked();
 
         if (inv != null && e.getView().getTitle().equals(this.methods.sanitizeColor("&4&lAdmin Keys"))) {

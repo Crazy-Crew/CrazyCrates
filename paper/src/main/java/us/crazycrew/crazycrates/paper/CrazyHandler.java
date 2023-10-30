@@ -2,7 +2,6 @@ package us.crazycrew.crazycrates.paper;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Methods;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
@@ -22,10 +21,8 @@ import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.support.metrics.MetricsWrapper;
 import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
-
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class CrazyHandler extends CrazyCratesPlugin {

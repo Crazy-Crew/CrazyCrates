@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.paper;
 
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.EventLogger;
-import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.support.structures.blocks.ChestStateHandler;
 
 @Deprecated(since = "1.16", forRemoval = true)

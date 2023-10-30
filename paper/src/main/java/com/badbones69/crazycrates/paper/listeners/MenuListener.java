@@ -147,11 +147,10 @@ public class MenuListener implements Listener {
     @EventHandler
     public void onInvClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
-        Inventory inv = e.getInventory();
+        Inventory inv = e.getClickedInventory();
         FileConfiguration config = Files.CONFIG.getFile();
 
         if (inv != null) {
-
             for (Crate crate : crazyManager.getCrates()) {
                 if (crate.getCrateType() != CrateType.menu && crate.isCrateMenu(e.getView())) return;
             }
@@ -201,9 +200,9 @@ public class MenuListener implements Listener {
 
                                 if (!hasKey) {
                                     if (config.contains("Settings.Need-Key-Sound")) {
-                                        Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
+                                        Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound", "ENTITY_VILLAGER_NO"));
 
-                                        if (sound != null) player.playSound(player.getLocation(), sound, 1f, 1f);
+                                        player.playSound(player.getLocation(), sound, 1f, 1f);
                                     }
 
                                     player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());

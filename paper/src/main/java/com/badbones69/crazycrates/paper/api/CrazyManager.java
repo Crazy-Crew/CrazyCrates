@@ -28,7 +28,6 @@ import com.badbones69.crazycrates.paper.support.holograms.HolographicDisplaysSup
 import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
 import com.badbones69.crazycrates.paper.support.structures.StructureHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -40,9 +39,7 @@ import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.common.crates.quadcrates.CrateSchematic;
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
-import static java.util.regex.Matcher.quoteReplacement;
 
 public class CrazyManager {
 
