@@ -1,5 +1,5 @@
 plugins {
-    id("paper-plugin")
+    id("root-plugin")
 }
 
 project.group = "${rootProject.group}.api"

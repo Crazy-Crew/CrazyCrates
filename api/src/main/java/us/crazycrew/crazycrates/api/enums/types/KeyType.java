@@ -41,6 +41,6 @@ public enum KeyType {
      * @return the name of the key-type
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 }

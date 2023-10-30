@@ -45,6 +45,6 @@ public enum CrateType {
      * @return the crate name
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 }
