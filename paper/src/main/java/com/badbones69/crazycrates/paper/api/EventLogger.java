@@ -10,12 +10,21 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
-
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 
+/**
+ * //TODO() To the moon!
+ * A few goals in mind in revamp.
+ * <p></p>
+ * 1) Try not to crash the server when the writes get to big.
+ * 2) User friendly enum names
+ * 3) Allow admins or players with permissions to view the logs of all players through a gui.
+ * 4) Allow players to have some type of /crazycrates profile to see everything they've done. ( I do have "crates opened" stuff added which might make this useless"
+ * 5) No one else touch this class.
+ */
 public class EventLogger {
 
     @NotNull
