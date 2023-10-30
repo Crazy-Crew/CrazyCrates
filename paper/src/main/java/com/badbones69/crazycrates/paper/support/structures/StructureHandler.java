@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.support.structures;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.Material;

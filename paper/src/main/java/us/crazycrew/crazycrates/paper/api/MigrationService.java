@@ -1,7 +1,7 @@
 package us.crazycrew.crazycrates.paper.api;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;

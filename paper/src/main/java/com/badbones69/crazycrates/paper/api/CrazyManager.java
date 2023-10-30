@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.api;
 
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
-import com.badbones69.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
@@ -22,10 +22,10 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import us.crazycrew.crazycrates.common.crates.CrateHologram;
-import com.badbones69.crazycrates.paper.support.holograms.CMIHologramsSupport;
-import com.badbones69.crazycrates.paper.support.holograms.DecentHologramsSupport;
-import com.badbones69.crazycrates.paper.support.holograms.HolographicDisplaysSupport;
-import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
+import us.crazycrew.crazycrates.paper.support.holograms.CMIHologramsSupport;
+import us.crazycrew.crazycrates.paper.support.holograms.DecentHologramsSupport;
+import us.crazycrew.crazycrates.paper.support.holograms.HolographicDisplaysSupport;
+import us.crazycrew.crazycrates.paper.support.libraries.PluginSupport;
 import com.badbones69.crazycrates.paper.support.structures.StructureHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.*;
@@ -413,7 +413,7 @@ public class CrazyManager {
         boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
         boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
 
-        this.plugin.getStarter().getEventLogger().logCrateEvent(player, crate, keyType, logFile, logConsole);
+        this.plugin.getCrazyCrates().getStarter().getEventLogger().logCrateEvent(player, crate, keyType, logFile, logConsole);
     }
 
     @Deprecated(since = "1.16", forRemoval = true)

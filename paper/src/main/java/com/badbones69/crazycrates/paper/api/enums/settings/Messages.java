@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.api.enums.settings;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import org.bukkit.configuration.file.FileConfiguration;
 import java.util.*;
@@ -123,7 +123,7 @@ public enum Messages {
         return message.toString();
     }
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
     /**
      * Adds any missing messages to the Messages.yml file based on values in the Messages enum.

@@ -1,6 +1,6 @@
 package us.crazycrew.crazycrates.paper;
 
-import com.badbones69.crazycrates.paper.Methods;
+import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.CrazyCratesPlugin;

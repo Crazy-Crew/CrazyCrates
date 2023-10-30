@@ -1,7 +1,7 @@
 package us.crazycrew.crazycrates.paper.commands.subs;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.Methods;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.EventLogger;
 import com.badbones69.crazycrates.paper.api.FileManager;
@@ -52,13 +52,13 @@ public class CrateBaseCommand extends BaseCommand {
     private final Methods methods = this.plugin.getCrazyHandler().getMethods();
 
     @NotNull
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
 
     @NotNull
     private final FileManager fileManager = this.plugin.getFileManager();
 
     @NotNull
-    private final EventLogger eventLogger = this.plugin.getStarter().getEventLogger();
+    private final EventLogger eventLogger = this.plugin.getCrazyCrates().getStarter().getEventLogger();
 
     @NotNull
     private final FileConfiguration config = Files.CONFIG.getFile();
@@ -151,7 +151,7 @@ public class CrateBaseCommand extends BaseCommand {
         this.fileManager.reloadAllFiles();
         this.fileManager.setup();
 
-        this.plugin.cleanFiles();
+        //this.plugin.cleanFiles();
         this.crazyManager.loadCrates();
 
         sender.sendMessage(Messages.RELOAD.getMessage());
@@ -528,7 +528,7 @@ public class CrateBaseCommand extends BaseCommand {
     }
 
     public record CustomPlayer(String name) {
-        private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+        private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
         public @NotNull OfflinePlayer getOfflinePlayer() {
             CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> Bukkit.getServer().getOfflinePlayer(name)).thenApply(OfflinePlayer::getUniqueId);

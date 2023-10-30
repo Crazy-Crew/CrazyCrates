@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.Methods;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -23,7 +23,7 @@ public class CrateOnTheGo implements Listener {
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     @NotNull
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
 
     @NotNull
     private final Methods methods = this.plugin.getCrazyHandler().getMethods();

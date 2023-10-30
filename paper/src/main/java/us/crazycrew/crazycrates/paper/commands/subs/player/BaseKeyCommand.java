@@ -1,6 +1,6 @@
 package us.crazycrew.crazycrates.paper.commands.subs.player;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -22,7 +22,7 @@ public class BaseKeyCommand extends BaseCommand {
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     @NotNull
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
 
     @Default
     @Permission("crazycrates.command.player.key")

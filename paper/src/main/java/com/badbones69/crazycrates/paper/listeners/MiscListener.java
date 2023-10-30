@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.listeners;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,7 +15,7 @@ public class MiscListener implements Listener {
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     @NotNull
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
+    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
 
     @EventHandler
     public void onPlayerPickUp(PlayerAttemptPickupItemEvent event) {

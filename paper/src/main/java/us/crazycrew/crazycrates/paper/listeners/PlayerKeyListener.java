@@ -1,6 +1,6 @@
 package us.crazycrew.crazycrates.paper.listeners;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.Starter;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import org.bukkit.entity.Player;
@@ -20,7 +20,7 @@ public class PlayerKeyListener implements Listener {
     private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
 
     @NotNull
-    private final Starter starter = this.plugin.getStarter();
+    private final Starter starter = this.plugin.getCrazyCrates().getStarter();
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(org.bukkit.event.player.PlayerJoinEvent e) {

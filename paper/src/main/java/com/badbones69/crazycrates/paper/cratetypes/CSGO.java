@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.Methods;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
@@ -19,9 +19,9 @@ import java.util.HashMap;
 
 public class CSGO implements Listener {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+    private static final CrazyManager crazyManager = plugin.getCrazyManager();
 
     private static final Methods methods = plugin.getCrazyHandler().getMethods();
     

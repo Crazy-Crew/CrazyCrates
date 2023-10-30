@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.listeners;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Firework;
@@ -12,7 +12,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class FireworkDamageListener implements Listener {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
     private static final NamespacedKey noDamage = new NamespacedKey(plugin, "no-damage");
 

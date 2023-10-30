@@ -1,8 +1,9 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
+import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.support.SkullCreator;
-import com.badbones69.crazycrates.paper.support.libraries.PluginSupport;
+import us.crazycrew.crazycrates.paper.support.libraries.PluginSupport;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import dev.lone.itemsadder.api.CustomStack;
 import io.th0rgal.oraxen.api.OraxenItems;
@@ -201,6 +202,9 @@ public class ItemBuilder {
 
         this.customMaterial = itemBuilder.customMaterial;
     }
+
+    @NotNull
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     /**
      * Gets the nbt item.
@@ -585,7 +589,7 @@ public class ItemBuilder {
      * @return The ItemBuilder with an updated name.
      */
     public ItemBuilder setName(String itemName) {
-        if (itemName != null) this.itemName = CrazyCrates.getPlugin().getCrazyHandler().getMethods().color(itemName);
+        if (itemName != null) this.itemName = this.plugin.getCrazyHandler().getMethods().color(itemName);
 
         return this;
     }
@@ -633,7 +637,7 @@ public class ItemBuilder {
             this.itemLore.clear();
 
             for (String line : lore) {
-                this.itemLore.add(CrazyCrates.getPlugin().getCrazyHandler().getMethods().color(line));
+                this.itemLore.add(this.plugin.getCrazyHandler().getMethods().color(line));
             }
         }
 
@@ -647,7 +651,7 @@ public class ItemBuilder {
      * @return The ItemBuilder with updated info.
      */
     public ItemBuilder addLore(String lore) {
-        if (lore != null) this.itemLore.add(CrazyCrates.getPlugin().getCrazyHandler().getMethods().color(lore));
+        if (lore != null) this.itemLore.add(this.plugin.getCrazyHandler().getMethods().color(lore));
         return this;
     }
 

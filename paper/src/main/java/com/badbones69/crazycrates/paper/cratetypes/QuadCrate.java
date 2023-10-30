@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
@@ -40,11 +39,9 @@ public class QuadCrate implements Listener {
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
+    //TODO() Create a single instance.
     @NotNull
-    private final CrazyManager crazyManager = this.plugin.getStarter().getCrazyManager();
-
-    @NotNull
-    private final ChestStateHandler chestStateHandler = this.plugin.getStarter().getChestStateHandler();
+    private final ChestStateHandler chestStateHandler = new ChestStateHandler();
 
     private final SessionManager sessionManager = new SessionManager();
 
