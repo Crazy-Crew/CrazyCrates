@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.paper.support.holograms;
+package us.crazycrew.crazycrates.paper.support.holograms;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Holograms.CMIHologram;

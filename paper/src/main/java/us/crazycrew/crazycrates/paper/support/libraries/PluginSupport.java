@@ -1,7 +1,7 @@
-package com.badbones69.crazycrates.paper.support.libraries;
+package us.crazycrew.crazycrates.paper.support.libraries;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
 import org.bukkit.plugin.java.JavaPlugin;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
 
 public enum PluginSupport {
 

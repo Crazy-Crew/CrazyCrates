@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.paper;
+package us.crazycrew.crazycrates.paper.support;
 
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
@@ -21,7 +21,12 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
-import java.util.*;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,10 +1,10 @@
-package com.badbones69.crazycrates.paper.support.holograms;
+package us.crazycrew.crazycrates.paper.support.holograms;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.crates.CrateHologram;
-import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.Methods;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.support.Methods;
 import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
