@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.support.structures;
+package us.crazycrew.crazycrates.paper.api.support.structures;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.google.common.collect.Lists;

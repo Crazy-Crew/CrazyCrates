@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.paper.api.objects;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.support.SkullCreator;
-import us.crazycrew.crazycrates.paper.support.libraries.PluginSupport;
+import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import dev.lone.itemsadder.api.CustomStack;
 import io.th0rgal.oraxen.api.OraxenItems;

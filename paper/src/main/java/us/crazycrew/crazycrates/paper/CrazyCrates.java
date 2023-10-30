@@ -13,7 +13,7 @@ import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.listeners.MiscListener;
-import us.crazycrew.crazycrates.paper.support.libraries.PluginSupport;
+import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 
 public class CrazyCrates extends JavaPlugin {
@@ -27,17 +27,16 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Load deprecated version 1 to not break plugins that might use old api's
-        this.crazyCrates = new com.badbones69.crazycrates.paper.CrazyCrates();
-        this.crazyCrates.enable();
-
         // Load version 2 of crazycrates
         this.crazyHandler = new CrazyHandler(getDataFolder());
         this.crazyHandler.load();
 
         // Load crates temporarily here, This is leftovers from version 1.
         this.crazyManager = new CrazyManager();
-        this.crazyManager.loadCrates();
+
+        // Load deprecated version 1 to not break plugins that might use old api's
+        this.crazyCrates = new com.badbones69.crazycrates.paper.CrazyCrates();
+        this.crazyCrates.enable();
 
         // Register listeners
         PluginManager pluginManager = getServer().getPluginManager();

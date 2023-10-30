@@ -1,6 +1,6 @@
-package us.crazycrew.crazycrates.paper.support.structures.blocks;
+package us.crazycrew.crazycrates.paper.api.support.structures.blocks;
 
-import us.crazycrew.crazycrates.paper.support.structures.interfaces.ChestControl;
+import us.crazycrew.crazycrates.paper.api.support.structures.interfaces.ChestControl;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

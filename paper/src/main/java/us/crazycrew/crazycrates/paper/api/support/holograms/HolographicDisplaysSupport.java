@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.support.holograms;
+package us.crazycrew.crazycrates.paper.api.support.holograms;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;

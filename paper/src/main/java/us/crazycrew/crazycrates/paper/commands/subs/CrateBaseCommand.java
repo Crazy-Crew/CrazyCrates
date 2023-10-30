@@ -150,7 +150,7 @@ public class CrateBaseCommand extends BaseCommand {
         this.fileManager.setup();
 
         //this.plugin.cleanFiles();
-        this.crazyManager.loadCrates();
+        this.plugin.getCrateManager().loadCrates();
 
         sender.sendMessage(Messages.RELOAD.getMessage());
     }

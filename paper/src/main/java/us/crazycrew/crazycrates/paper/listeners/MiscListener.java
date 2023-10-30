@@ -6,7 +6,7 @@ import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.FileManager;
+import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -29,15 +29,13 @@ public class MiscListener implements Listener {
         Player player = e.getPlayer();
 
         // Set new keys if we have to.
-        this.plugin.getCrazyManager().setNewPlayerKeys(player);
+        this.plugin.getCrateManager().setNewPlayerKeys(player);
 
         // Just in case any old data is in there.
         this.plugin.getCrazyManager().loadOfflinePlayersKeys(player);
 
         // Also add the new data.
         this.crazyHandler.getUserManager().loadOfflinePlayersKeys(player, this.crazyHandler.getCrateManager().getCrates());
-
-        FileManager.Files.DATA.saveFile();
     }
 
     @EventHandler(ignoreCancelled = true)

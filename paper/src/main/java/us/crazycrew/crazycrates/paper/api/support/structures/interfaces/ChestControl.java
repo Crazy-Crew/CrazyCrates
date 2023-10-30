@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.support.structures.interfaces;
+package us.crazycrew.crazycrates.paper.api.support.structures.interfaces;
 
 import org.bukkit.block.Block;
 

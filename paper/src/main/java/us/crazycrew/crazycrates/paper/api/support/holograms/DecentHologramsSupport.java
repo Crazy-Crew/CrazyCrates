@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.support.holograms;
+package us.crazycrew.crazycrates.paper.api.support.holograms;
 
 import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.objects.Crate;

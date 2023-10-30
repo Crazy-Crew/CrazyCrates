@@ -9,7 +9,7 @@ import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.crates.PrizeManager;
 import us.crazycrew.crazycrates.paper.api.support.metrics.MetricsWrapper;
 import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
-import us.crazycrew.crazycrates.paper.support.structures.blocks.ChestStateHandler;
+import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestStateHandler;
 import java.io.File;
 
 public class CrazyHandler extends CrazyCratesPlugin {
@@ -48,6 +48,8 @@ public class CrazyHandler extends CrazyCratesPlugin {
                 .setup();
 
         this.crateManager = new CrateManager();
+        this.crateManager.loadCrates();
+
         this.prizeManager = new PrizeManager();
 
         this.chestStateHandler = new ChestStateHandler();
