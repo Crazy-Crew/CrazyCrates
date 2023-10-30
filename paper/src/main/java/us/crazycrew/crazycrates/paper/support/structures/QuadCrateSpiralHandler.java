@@ -1,9 +1,10 @@
-package com.badbones69.crazycrates.paper.support.structures;
+package us.crazycrew.crazycrates.paper.support.structures;
 
-import com.badbones69.crazycrates.paper.support.structures.interfaces.SpiralControl;
+import us.crazycrew.crazycrates.paper.support.structures.interfaces.SpiralControl;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 public class QuadCrateSpiralHandler implements SpiralControl {

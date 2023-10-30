@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
-import com.badbones69.crazycrates.paper.support.structures.blocks.ChestStateHandler;
+import us.crazycrew.crazycrates.paper.support.structures.blocks.ChestStateHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -34,8 +34,7 @@ public class QuickCrate implements Listener {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
-    //TODO() Create a single instance.
-    private static final ChestStateHandler chestStateHandler = new ChestStateHandler();
+    private static final ChestStateHandler chestStateHandler = plugin.getCrazyHandler().getChestStateHandler();
 
     private static final Methods methods = plugin.getCrazyHandler().getMethods();
 
@@ -66,8 +65,7 @@ public class QuickCrate implements Listener {
             if (!plugin.getCrazyHandler().getUserManager().takeKeys(keysUsed, player.getUniqueId(), crate.getName(), keyType, false)) {
                 methods.failedToTakeKey(player, crate);
                 CrateControlListener.inUse.remove(player);
-                //TODO() Update this.
-                //crazyManager.removePlayerFromOpeningList(player);
+                plugin.getCrazyCrates().getStarter().getCrazyManager().removePlayerFromOpeningList(player);
                 return;
             }
 
@@ -76,8 +74,7 @@ public class QuickCrate implements Listener {
             if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
                 methods.failedToTakeKey(player, crate);
                 CrateControlListener.inUse.remove(player);
-                //TODO() Update this.
-                //crazyManager.removePlayerFromOpeningList(player);
+                plugin.getCrazyCrates().getStarter().getCrazyManager().removePlayerFromOpeningList(player);
                 return;
             }
 
@@ -136,8 +133,7 @@ public class QuickCrate implements Listener {
 
         chestStateHandler.closeChest(loc.getBlock(), false);
         CrateControlListener.inUse.remove(player);
-        //TODO() Update this.
-        //crazyManager.removePlayerFromOpeningList(player);
+        plugin.getCrazyCrates().getStarter().getCrazyManager().removePlayerFromOpeningList(player);
 
         if (!useQuickCrate) {
             if (hologramController != null) hologramController.createHologram(loc.getBlock(), crate);
@@ -150,7 +146,6 @@ public class QuickCrate implements Listener {
     
     @EventHandler
     public void onHopperPickUp(InventoryPickupItemEvent e) {
-        //TODO() Update this.
-        //if (crazyManager.isDisplayReward(e.getItem())) e.setCancelled(true);
+        if (plugin.getCrazyCrates().getStarter().getCrazyManager().isDisplayReward(e.getItem())) e.setCancelled(true);
     }
 }

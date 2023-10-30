@@ -4,9 +4,9 @@ import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.paper.support.structures.QuadCrateSpiralHandler;
-import com.badbones69.crazycrates.paper.support.structures.StructureHandler;
-import com.badbones69.crazycrates.paper.support.structures.blocks.ChestStateHandler;
+import us.crazycrew.crazycrates.paper.support.structures.QuadCrateSpiralHandler;
+import us.crazycrew.crazycrates.paper.support.structures.StructureHandler;
+import us.crazycrew.crazycrates.paper.support.structures.blocks.ChestStateHandler;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,9 +33,8 @@ public class QuadCrateManager {
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    //TODO() Make a single instance of this.
     @NotNull
-    private final ChestStateHandler chestStateHandler = new ChestStateHandler();
+    private final ChestStateHandler chestStateHandler = this.plugin.getCrazyHandler().getChestStateHandler();
 
     @NotNull
     private final CrazyManager crazyManager = this.plugin.getCrazyManager();

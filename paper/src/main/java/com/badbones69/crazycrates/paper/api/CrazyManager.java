@@ -26,7 +26,7 @@ import us.crazycrew.crazycrates.paper.support.holograms.CMIHologramsSupport;
 import us.crazycrew.crazycrates.paper.support.holograms.DecentHologramsSupport;
 import us.crazycrew.crazycrates.paper.support.holograms.HolographicDisplaysSupport;
 import us.crazycrew.crazycrates.paper.support.libraries.PluginSupport;
-import com.badbones69.crazycrates.paper.support.structures.StructureHandler;
+import us.crazycrew.crazycrates.paper.support.structures.StructureHandler;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;

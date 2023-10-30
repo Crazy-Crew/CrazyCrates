@@ -48,7 +48,7 @@ public class CrazyCrates extends JavaPlugin {
 
         QuickCrate.removeAllRewards();
 
-        //TODO() Remove holograms.
+        if (this.crazyCrates.getStarter().getCrazyManager().getHologramController() != null) this.crazyCrates.getStarter().getCrazyManager().getHologramController().removeAllHolograms();
 
         this.crazyHandler.unload();
     }

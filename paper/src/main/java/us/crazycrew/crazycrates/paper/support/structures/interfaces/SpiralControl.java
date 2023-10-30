@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.paper.support.structures.interfaces;
+package us.crazycrew.crazycrates.paper.support.structures.interfaces;
 
 import org.bukkit.Location;
 
