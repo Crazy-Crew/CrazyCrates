@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.paper.api;
 
-import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
@@ -15,31 +14,20 @@ import us.crazycrew.crazycrates.paper.commands.subs.CrateBaseCommand;
 import com.badbones69.crazycrates.paper.cratetypes.*;
 import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
 import com.badbones69.crazycrates.paper.listeners.MenuListener;
-import com.badbones69.crazycrates.paper.listeners.PreviewListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.users.UserManager;
-import us.crazycrew.crazycrates.common.crates.CrateHologram;
-import us.crazycrew.crazycrates.paper.support.holograms.CMIHologramsSupport;
-import us.crazycrew.crazycrates.paper.support.holograms.DecentHologramsSupport;
-import us.crazycrew.crazycrates.paper.support.holograms.HolographicDisplaysSupport;
-import us.crazycrew.crazycrates.paper.support.libraries.PluginSupport;
-import us.crazycrew.crazycrates.paper.support.structures.StructureHandler;
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.common.crates.quadcrates.CrateSchematic;
-import us.crazycrew.crazycrates.paper.utils.ItemUtils;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
-import java.io.File;
+
 import java.util.*;
 import java.util.logging.Level;
 
@@ -83,231 +71,6 @@ public class CrazyManager {
 
     // The hologram api that is being hooked into.
     private HologramController hologramController;
-
-    // Loads all the information the plugin needs to run.
-    public void loadCrates() {
-        this.giveNewPlayersKeys = false;
-
-        this.plugin.getCrateManager().purge();
-
-        this.brokecrates.clear();
-        this.crateLocations.clear();
-        this.crateSchematics.clear();
-
-        this.quadCrateTimer = Files.CONFIG.getFile().getInt("Settings.QuadCrate.Timer") * 20;
-
-        // Removes all holograms so that they can be replaced.
-        if (this.hologramController != null) this.hologramController.removeAllHolograms();
-
-        if (PluginSupport.DECENT_HOLOGRAMS.isPluginEnabled()) {
-            this.hologramController = new DecentHologramsSupport();
-            if (this.plugin.isLogging())this.plugin.getLogger().info("DecentHolograms support has been enabled.");
-        } else if (PluginSupport.CMI.isPluginEnabled() && CMIModule.holograms.isEnabled()) {
-            this.hologramController = new CMIHologramsSupport();
-            if (this.plugin.isLogging())this.plugin.getLogger().info("CMI Hologram support has been enabled.");
-        } else if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginEnabled()) {
-            this.hologramController = new HolographicDisplaysSupport();
-            if (this.plugin.isLogging())this.plugin.getLogger().info("Holographic Displays support has been enabled.");
-        } else if (this.plugin.isLogging())this.plugin.getLogger().warning("No holograms plugin were found. If using CMI, make sure holograms module is enabled.");
-
-        if (this.plugin.isLogging()) this.plugin.getLogger().info("Loading all crate information...");
-
-        for (String crateName : this.fileManager.getAllCratesNames()) {
-            try {
-                FileConfiguration file = this.fileManager.getFile(crateName).getFile();
-                CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));
-                ArrayList<Prize> prizes = new ArrayList<>();
-                String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
-                ArrayList<Tier> tiers = new ArrayList<>();
-                int maxMassOpen =  file.contains("Crate.Max-Mass-Open") ? file.getInt("Crate.Max-Mass-Open") : 10;
-                int requiredKeys = file.contains("Crate.RequiredKeys") ? file.getInt("Crate.RequiredKeys") : 0;
-
-                if (file.contains("Crate.Tiers") && file.getConfigurationSection("Crate.Tiers") != null) {
-                    for (String tier : file.getConfigurationSection("Crate.Tiers").getKeys(false)) {
-                        String path = "Crate.Tiers." + tier;
-                        tiers.add(new Tier(tier, file.getString(path + ".Name"), file.getString(path + ".Color"), file.getInt(path + ".Chance"), file.getInt(path + ".MaxRange")));
-                    }
-                }
-
-                if (crateType == CrateType.cosmic && tiers.isEmpty()) {
-                    this.brokecrates.add(crateName);
-                    if (this.plugin.isLogging()) this.plugin.getLogger().warning("No tiers were found for this cosmic crate " + crateName + ".yml file.");
-                    continue;
-                }
-
-                for (String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
-                    Prize altPrize = null;
-                    String path = "Crate.Prizes." + prize;
-                    ArrayList<Tier> prizeTiers = new ArrayList<>();
-
-                    for (String tier : file.getStringList(path + ".Tiers")) {
-                        for (Tier loadedTier : tiers) {
-                            if (loadedTier.getName().equalsIgnoreCase(tier)) prizeTiers.add(loadedTier);
-                        }
-                    }
-
-                    if (file.contains(path + ".Alternative-Prize")) {
-                        if (file.getBoolean(path + ".Alternative-Prize.Toggle")) {
-                            altPrize = new Prize("Alternative-Prize",
-                                    file.getStringList(path + ".Alternative-Prize.Messages"),
-                                    file.getStringList(path + ".Alternative-Prize.Commands"),
-                                    null, // No editor items
-                                    getItems(file, prize + ".Alternative-Prize"));
-                        }
-                    }
-
-                    ArrayList<ItemStack> editorItems = new ArrayList<>();
-
-                    if (file.contains(path + ".Editor-Items")) {
-                        for (Object list : file.getList(path + ".Editor-Items")) {
-                            editorItems.add((ItemStack) list);
-                        }
-                    }
-
-                    prizes.add(new Prize(prize, getDisplayItem(file, prize),
-                            file.getStringList(path + ".Messages"),
-                            file.getStringList(path + ".Commands"),
-                            editorItems,
-                            getItems(file, prize),
-                            crateName,
-                            file.getInt(path + ".Chance", 100),
-                            file.getInt(path + ".MaxRange", 100),
-                            file.getBoolean(path + ".Firework"),
-                            file.getStringList(path + ".BlackListed-Permissions"),
-                            prizeTiers,
-                            altPrize));
-                }
-
-                int newPlayersKeys = file.getInt("Crate.StartingKeys");
-
-                if (!this.giveNewPlayersKeys) {
-                    if (newPlayersKeys > 0) this.giveNewPlayersKeys = true;
-                }
-
-                List<String> prizeMessage = file.contains("Crate.Prize-Message") ? file.getStringList("Crate.Prize-Message") : Collections.emptyList();
-
-                CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"));
-                this.plugin.getCrateManager().addCrate(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, holo));
-            } catch (Exception exception) {
-                this.brokecrates.add(crateName);
-                this.plugin.getLogger().log(Level.WARNING, "There was an error while loading the " + crateName + ".yml file.", exception);
-            }
-        }
-
-        this.plugin.getCrateManager().addCrate(new Crate("Menu", "Menu", CrateType.menu, new ItemStack(Material.AIR), new ArrayList<>(), null, 0, null, 0, 0, Collections.emptyList(), null));
-
-        if (this.plugin.isLogging()) {
-            List.of(
-                    "All crate information has been loaded.",
-                    "Loading all the physical crate locations."
-            ).forEach(line -> this.plugin.getLogger().info(line));
-        }
-
-        FileConfiguration locations = Files.LOCATIONS.getFile();
-        int loadedAmount = 0;
-        int brokeAmount = 0;
-
-        if (locations.getConfigurationSection("Locations") != null) {
-            for (String locationName : locations.getConfigurationSection("Locations").getKeys(false)) {
-                try {
-                    String worldName = locations.getString("Locations." + locationName + ".World");
-                    World world = this.plugin.getServer().getWorld(worldName);
-                    int x = locations.getInt("Locations." + locationName + ".X");
-                    int y = locations.getInt("Locations." + locationName + ".Y");
-                    int z = locations.getInt("Locations." + locationName + ".Z");
-                    Location location = new Location(world, x, y, z);
-                    Crate crate = this.plugin.getCrateManager().getCrateFromName(locations.getString("Locations." + locationName + ".Crate"));
-
-                    if (world != null && crate != null) {
-                        this.crateLocations.add(new CrateLocation(locationName, crate, location));
-
-                        if (this.hologramController != null) {
-                            this.hologramController.createHologram(location.getBlock(), crate);
-                        }
-
-                        loadedAmount++;
-                    } else {
-                        this.brokeLocations.add(new BrokeLocation(locationName, crate, x, y, z, worldName));
-                        brokeAmount++;
-                    }
-
-                } catch (Exception ignored) {}
-            }
-        }
-
-        // Checking if all physical locations loaded
-        if (this.plugin.isLogging()) {
-            if (loadedAmount > 0 || brokeAmount > 0) {
-                if (brokeAmount <= 0) {
-                    this.plugin.getLogger().info("All physical crate locations have been loaded.");
-                } else {
-                    this.plugin.getLogger().info("Loaded " + loadedAmount + " physical crate locations.");
-                    this.plugin.getLogger().info("Failed to load " + brokeAmount + " physical crate locations.");
-                }
-            }
-
-            this.plugin.getLogger().info("Searching for schematics to load.");
-        }
-
-        // Loading schematic files
-        String[] schems = new File(this.plugin.getDataFolder() + "/schematics/").list();
-
-        if (schems != null) {
-            for (String schematicName : schems) {
-                if (schematicName.endsWith(".nbt")) {
-                    this.crateSchematics.add(new CrateSchematic(schematicName, new File(plugin.getDataFolder() + "/schematics/" + schematicName)));
-
-                    if (this.plugin.isLogging()) this.plugin.getLogger().info(schematicName + " was successfully found and loaded.");
-                }
-            }
-        }
-
-        if (this.plugin.isLogging()) this.plugin.getLogger().info("All schematics were found and loaded.");
-
-        cleanDataFile();
-        PreviewListener.loadButtons();
-    }
-
-    // This method is deigned to help clean the data.yml file of any unless info that it may have.
-    private void cleanDataFile() {
-        FileConfiguration data = Files.DATA.getFile();
-
-        if (!data.contains("Players")) return;
-
-        if (this.plugin.isLogging()) this.plugin.getLogger().info("Cleaning up the data.yml file.");
-
-        List<String> removePlayers = new ArrayList<>();
-
-        for (String uuid : data.getConfigurationSection("Players").getKeys(false)) {
-            boolean hasKeys = false;
-            List<String> noKeys = new ArrayList<>();
-
-            for (Crate crate : getCrates()) {
-                if (data.getInt("Players." + uuid + "." + crate.getName()) <= 0) {
-                    noKeys.add(crate.getName());
-                } else {
-                    hasKeys = true;
-                }
-            }
-
-            if (hasKeys) {
-                noKeys.forEach(crate -> data.set("Players." + uuid + "." + crate, null));
-            } else {
-                removePlayers.add(uuid);
-            }
-        }
-
-        if (!removePlayers.isEmpty()) {
-            if (this.plugin.isLogging()) this.plugin.getLogger().info(removePlayers.size() + " player's data has been marked to be removed.");
-
-            removePlayers.forEach(uuid -> data.set("Players." + uuid, null));
-
-            if (this.plugin.isLogging()) this.plugin.getLogger().info("All empty player data has been removed.");
-        }
-
-        if (this.plugin.isLogging()) this.plugin.getLogger().info("The data.yml file has been cleaned.");
-        Files.DATA.saveFile();
-    }
 
     /**
      * Opens a crate for a player.
@@ -418,11 +181,6 @@ public class CrazyManager {
         this.plugin.getCrazyCrates().getStarter().getEventLogger().logCrateEvent(player, crate, keyType, logFile, logConsole);
     }
 
-    @Deprecated(since = "1.16", forRemoval = true)
-    public void pickPrize(Player player, Crate crate, Prize prize) {
-        this.plugin.getCrazyHandler().getPrizeManager().pickPrize(player, crate, prize);
-    }
-
     /**
      * This forces a crate to end and will not give out a prize. This is meant for people who leave the server to stop any errors or lag from happening.
      *
@@ -504,38 +262,6 @@ public class CrazyManager {
     }
 
     /**
-     * A list of all the physical crate locations.
-     *
-     * @return List of locations.
-     */
-    @Deprecated(since = "1.16", forRemoval = true)
-    public ArrayList<CrateLocation> getCrateLocations() {
-        return new ArrayList<>(this.plugin.getCrateManager().getCrateLocations());
-    }
-
-    /**
-     * Checks to see if the location is a physical crate.
-     *
-     * @param loc The location you are checking.
-     * @return True if it is a physical crate and false if not.
-     */
-    @Deprecated(since = "1.16", forRemoval = true)
-    public boolean isCrateLocation(Location loc) {
-        return this.plugin.getCrateManager().isCrateLocation(loc);
-    }
-
-    /**
-     * Gets the physical crate of the location.
-     *
-     * @param loc The location you are checking.
-     * @return A CrateLocation if the location is a physical crate otherwise null if not.
-     */
-    @Deprecated(since = "1.16", forRemoval = true)
-    public CrateLocation getCrateLocation(Location loc) {
-        return this.plugin.getCrateManager().getCrateLocation(loc);
-    }
-
-    /**
      * Get a list of all the broke physical crate locations.
      *
      * @return List of broken crate locations.
@@ -602,12 +328,144 @@ public class CrazyManager {
     }
 
     /**
+     * Add a player to the list of players that are currently opening crates.
+     *
+     * @param player The player that is opening a crate.
+     * @param crate The crate the player is opening.
+     */
+    public void addPlayerToOpeningList(Player player, Crate crate) {
+        this.playerOpeningCrates.put(player.getUniqueId(), crate);
+    }
+
+    /**
+     * Remove a player from the list of players that are opening crates.
+     *
+     * @param player The player that has finished opening a crate.
+     */
+    public void removePlayerFromOpeningList(Player player) {
+        this.playerOpeningCrates.remove(player.getUniqueId());
+    }
+
+    /**
+     * Check if a player is opening a crate.
+     *
+     * @param player The player you are checking.
+     * @return True if they are opening a crate and false if they are not.
+     */
+    public boolean isInOpeningList(Player player) {
+        return this.playerOpeningCrates.containsKey(player.getUniqueId());
+    }
+
+    /**
+     * Get the crate the player is currently opening.
+     *
+     * @param player The player you want to check.
+     * @return The Crate of which the player is opening. May return null if no crate found.
+     */
+    public Crate getOpeningCrate(Player player) {
+        return this.playerOpeningCrates.get(player.getUniqueId());
+    }
+
+    /**
+     * Set the type of key the player is opening a crate for.
+     * This is only used in the Cosmic CrateType currently.
+     *
+     * @param player The player that is opening the crate.
+     * @param keyType The KeyType that they are using.
+     */
+    public void addPlayerKeyType(Player player, KeyType keyType) {
+        this.playerKeys.put(player.getUniqueId(), keyType);
+    }
+
+    /**
+     * Remove the player from the list as they have finished the crate.
+     * Currently, only used in the Cosmic CrateType.
+     *
+     * @param player The player you are removing.
+     */
+    public void removePlayerKeyType(Player player) {
+        this.playerKeys.remove(player.getUniqueId());
+    }
+
+    /**
+     * Check if the player is in the list.
+     *
+     * @param player The player you are checking.
+     * @return True if they are in the list and false if not.
+     */
+    public boolean hasPlayerKeyType(Player player) {
+        return this.playerKeys.containsKey(player.getUniqueId());
+    }
+
+    /**
+     * The key type the player's current crate is using.
+     *
+     * @param player The player that is using the crate.
+     * @return The key type of the crate the player is using.
+     */
+    public KeyType getPlayerKeyType(Player player) {
+        return this.playerKeys.get(player.getUniqueId());
+    }
+
+    /**
+     * The time in seconds a quadcrate will last before kicking the player.
+     *
+     * @return The time in seconds till kick.
+     */
+    public int getQuadCrateTimer() {
+        return this.quadCrateTimer;
+    }
+
+    @Deprecated(since = "1.16", forRemoval = true)
+    public void loadCrates() {
+        this.plugin.getCrateManager().loadCrates();
+    }
+
+    @Deprecated(since = "1.16", forRemoval = true)
+    public void pickPrize(Player player, Crate crate, Prize prize) {
+        this.plugin.getCrazyHandler().getPrizeManager().pickPrize(player, crate, prize);
+    }
+
+    /**
+     * A list of all the physical crate locations.
+     *
+     * @return List of locations.
+     */
+    @Deprecated(since = "1.16", forRemoval = true)
+    public ArrayList<CrateLocation> getCrateLocations() {
+        return new ArrayList<>(this.plugin.getCrateManager().getCrateLocations());
+    }
+
+    /**
+     * Checks to see if the location is a physical crate.
+     *
+     * @param loc The location you are checking.
+     * @return True if it is a physical crate and false if not.
+     */
+    @Deprecated(since = "1.16", forRemoval = true)
+    public boolean isCrateLocation(Location loc) {
+        return this.plugin.getCrateManager().isCrateLocation(loc);
+    }
+
+    /**
+     * Gets the physical crate of the location.
+     *
+     * @param loc The location you are checking.
+     * @return A CrateLocation if the location is a physical crate otherwise null if not.
+     */
+    @Deprecated(since = "1.16", forRemoval = true)
+    public CrateLocation getCrateLocation(Location loc) {
+        return this.plugin.getCrateManager().getCrateLocation(loc);
+    }
+
+    /**
      * Get a list of broken crates.
      *
      * @return An ArrayList of all the broken crates.
      */
-    public ArrayList<String> getBrokeCrates() {
-        return this.brokecrates;
+    @Deprecated(since = "1.16", forRemoval = true)
+    public List<String> getBrokeCrates() {
+        return this.plugin.getCrateManager().getBrokeCrates();
     }
 
     /**
@@ -615,6 +473,7 @@ public class CrazyManager {
      *
      * @return An ArrayList of all the loaded crates.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public List<Crate> getCrates() {
         return this.plugin.getCrateManager().getCrates();
     }
@@ -628,15 +487,6 @@ public class CrazyManager {
     @Deprecated(since = "1.16", forRemoval = true)
     public Crate getCrateFromName(String name) {
         return this.plugin.getCrateManager().getCrateFromName(name);
-    }
-
-    /**
-     * The time in seconds a quadcrate will last before kicking the player.
-     *
-     * @return The time in seconds till kick.
-     */
-    public int getQuadCrateTimer() {
-        return this.quadCrateTimer;
     }
 
     /**
@@ -718,52 +568,14 @@ public class CrazyManager {
     }
 
     /**
-     * Add a player to the list of players that are currently opening crates.
-     *
-     * @param player The player that is opening a crate.
-     * @param crate The crate the player is opening.
-     */
-    public void addPlayerToOpeningList(Player player, Crate crate) {
-        this.playerOpeningCrates.put(player.getUniqueId(), crate);
-    }
-
-    /**
-     * Remove a player from the list of players that are opening crates.
-     *
-     * @param player The player that has finished opening a crate.
-     */
-    public void removePlayerFromOpeningList(Player player) {
-        this.playerOpeningCrates.remove(player.getUniqueId());
-    }
-
-    /**
-     * Check if a player is opening a crate.
-     *
-     * @param player The player you are checking.
-     * @return True if they are opening a crate and false if they are not.
-     */
-    public boolean isInOpeningList(Player player) {
-        return this.playerOpeningCrates.containsKey(player.getUniqueId());
-    }
-
-    /**
-     * Get the crate the player is currently opening.
-     *
-     * @param player The player you want to check.
-     * @return The Crate of which the player is opening. May return null if no crate found.
-     */
-    public Crate getOpeningCrate(Player player) {
-        return this.playerOpeningCrates.get(player.getUniqueId());
-    }
-
-    /**
      * Check if an item is a key for a crate.
      *
      * @param item The item you are checking.
      * @return True if the item is a key and false if it is not.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public boolean isKey(ItemStack item) {
-        return getCrateFromKey(item) != null;
+        return this.plugin.getCrateManager().isKey(item);
     }
 
     /**
@@ -772,18 +584,9 @@ public class CrazyManager {
      * @param item The key ItemStack you are checking.
      * @return Returns a Crate if is a key from a crate otherwise null if it is not.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public Crate getCrateFromKey(ItemStack item) {
-        if (item != null && item.getType() != Material.AIR) {
-            for (Crate crate : getCrates()) {
-                if (crate.getCrateType() != CrateType.menu) {
-                    if (isKeyFromCrate(item, crate)) {
-                        return crate;
-                    }
-                }
-            }
-        }
-
-        return null;
+        return this.plugin.getCrateManager().getCrateFromKey(item);
     }
 
     /**
@@ -793,55 +596,9 @@ public class CrazyManager {
      * @param crate The Crate you are checking.
      * @return Returns true if it belongs to that Crate and false if it does not.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public boolean isKeyFromCrate(ItemStack item, Crate crate) {
-        if (crate.getCrateType() != CrateType.menu) {
-            if (item != null && item.getType() != Material.AIR) {
-                return ItemUtils.isSimilar(item, crate);
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Set the type of key the player is opening a crate for.
-     * This is only used in the Cosmic CrateType currently.
-     *
-     * @param player The player that is opening the crate.
-     * @param keyType The KeyType that they are using.
-     */
-    public void addPlayerKeyType(Player player, KeyType keyType) {
-        this.playerKeys.put(player.getUniqueId(), keyType);
-    }
-
-    /**
-     * Remove the player from the list as they have finished the crate.
-     * Currently, only used in the Cosmic CrateType.
-     *
-     * @param player The player you are removing.
-     */
-    public void removePlayerKeyType(Player player) {
-        this.playerKeys.remove(player.getUniqueId());
-    }
-
-    /**
-     * Check if the player is in the list.
-     *
-     * @param player The player you are checking.
-     * @return True if they are in the list and false if not.
-     */
-    public boolean hasPlayerKeyType(Player player) {
-        return this.playerKeys.containsKey(player.getUniqueId());
-    }
-
-    /**
-     * The key type the player's current crate is using.
-     *
-     * @param player The player that is using the crate.
-     * @return The key type of the crate the player is using.
-     */
-    public KeyType getPlayerKeyType(Player player) {
-        return this.playerKeys.get(player.getUniqueId());
+        return this.plugin.getCrateManager().isKeyFromCrate(item, crate);
     }
 
     /**
@@ -852,45 +609,9 @@ public class CrazyManager {
      * @param checkHand If it just checks the players hand or if it checks their inventory.
      * @return True if they have the key and false if not.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public boolean hasPhysicalKey(Player player, Crate crate, boolean checkHand) {
-        List<ItemStack> items = new ArrayList<>();
-
-        if (checkHand) {
-            items.add(player.getEquipment().getItemInMainHand());
-            items.add(player.getEquipment().getItemInOffHand());
-        } else {
-            items.addAll(Arrays.asList(player.getInventory().getContents()));
-            items.removeAll(Arrays.asList(player.getInventory().getArmorContents()));
-        }
-
-        for (ItemStack item : items) {
-            if (item != null) {
-                if (isKeyFromCrate(item, crate)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Get a physical key from a players inventory.
-     *
-     * @param player The player you are checking.
-     * @param crate The Crate of whose key you are getting.
-     * @return The ItemStack in the player's inventory. This will return null if not found.
-     */
-    public ItemStack getPhysicalKey(Player player, Crate crate) {
-        for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
-            if (item == null || item.getType() == Material.AIR) continue;
-
-            if (ItemUtils.isSimilar(item, crate)) {
-                return item;
-            }
-        }
-
-        return null;
+        return this.plugin.getCrazyHandler().getUserManager().hasPhysicalKey(player.getUniqueId(), crate.getName(), checkHand);
     }
 
     /**
@@ -976,6 +697,13 @@ public class CrazyManager {
         return this.plugin.getCrazyHandler().getUserManager().takeKeys(amount, player.getUniqueId(), crate.getName(), KeyType.getFromName(keyType.getName().toLowerCase()), checkHand);
     }
 
+    /**
+     * Add a key to a player.
+     *
+     * @param amount The amount of keys you wish to add.
+     * @param player The player you wish to add keys to.
+     * @param crate The crate key you are adding.
+     */
     @Deprecated(since = "1.16", forRemoval = true)
     public void addVirtualKeys(int amount, Player player, Crate crate) {
         this.plugin.getCrazyHandler().getUserManager().addVirtualKeys(amount, player.getUniqueId(), crate.getName());
@@ -1011,28 +739,9 @@ public class CrazyManager {
      *
      * @param player The player that has just joined.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public void setNewPlayerKeys(Player player) {
-        if (this.giveNewPlayersKeys) { // Checks if any crate gives new players keys and if not then no need to do all this stuff.
-            String uuid = player.getUniqueId().toString();
-
-            if (!player.hasPlayedBefore()) {
-                this.plugin.getCrateManager().getCrates().stream()
-                .filter(Crate :: doNewPlayersGetKeys)
-                .forEach(crate -> {
-                    Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
-                    Files.DATA.saveFile();
-                });
-            }
-        }
-    }
-
-    /**
-     * Get the hologram plugin settings that is being used.
-     *
-     * @return The hologram controller for the holograms.
-     */
-    public HologramController getHologramController() {
-        return this.hologramController;
+        this.plugin.getCrateManager().setNewPlayerKeys(player);
     }
 
     /**
@@ -1040,8 +749,9 @@ public class CrazyManager {
      *
      * @return The list of all loaded schematics.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public List<CrateSchematic> getCrateSchematics() {
-        return crateSchematics;
+        return this.plugin.getCrateManager().getCrateSchematics();
     }
 
     /**
@@ -1050,14 +760,9 @@ public class CrazyManager {
      * @param name The name of the schematic.
      * @return Returns the CrateSchematic otherwise returns null if not found.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public CrateSchematic getCrateSchematic(String name) {
-        for (CrateSchematic schematic : this.crateSchematics) {
-            if (schematic.getSchematicName().equalsIgnoreCase(name)) {
-                return schematic;
-            }
-        }
-
-        return null;
+        return this.plugin.getCrateManager().getCrateSchematic(name);
     }
 
     /**
@@ -1066,76 +771,8 @@ public class CrazyManager {
      * @param entity Entity you wish to check.
      * @return True if it is a display reward item and false if not.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public boolean isDisplayReward(Entity entity) {
-        if (entity instanceof Item) {
-            ItemStack item = ((Item) entity).getItemStack();
-
-            if (item.getType() != Material.AIR) {
-                return new NBTItem(item).hasTag("crazycrates-item");
-            }
-        }
-
-        return false;
-    }
-
-    private ItemStack getKey(FileConfiguration file) {
-        String name = file.getString("Crate.PhysicalKey.Name");
-        List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
-        String id = file.getString("Crate.PhysicalKey.Item");
-        boolean glowing = false;
-
-        if (file.contains("Crate.PhysicalKey.Glowing")) {
-            glowing = file.getBoolean("Crate.PhysicalKey.Glowing");
-        }
-
-        return new ItemBuilder().setMaterial(id).setName(name).setLore(lore).setGlow(glowing).build();
-    }
-
-    private ItemBuilder getDisplayItem(FileConfiguration file, String prize) {
-        String path = "Crate.Prizes." + prize + ".";
-        ItemBuilder itemBuilder = new ItemBuilder();
-
-        try {
-            itemBuilder.setMaterial(file.getString(path + "DisplayItem"))
-            .setAmount(file.getInt(path + "DisplayAmount", 1))
-            .setName(file.getString(path + "DisplayName"))
-            .setLore(file.getStringList(path + "Lore"))
-            .setGlow(file.getBoolean(path + "Glowing"))
-            .setUnbreakable(file.getBoolean(path + "Unbreakable"))
-            .hideItemFlags(file.getBoolean(path + "HideItemFlags"))
-            .addItemFlags(file.getStringList(path + "Flags"))
-            .addPatterns(file.getStringList(path + "Patterns"))
-            .setPlayerName(file.getString(path + "Player"));
-
-            if (file.contains(path + "DisplayDamage") && file.getInt(path + "DisplayDamage") >= 1) {
-                itemBuilder.setDamage(file.getInt(path + "DisplayDamage"));
-            }
-
-            if (file.contains(path + "DisplayTrim.Pattern")) {
-                itemBuilder.setTrimPattern(Registry.TRIM_PATTERN.get(NamespacedKey.minecraft(file.getString(path + "DisplayTrim.Pattern").toLowerCase())));
-            }
-
-            if (file.contains(path + "DisplayTrim.Material")) {
-                itemBuilder.setTrimMaterial(Registry.TRIM_MATERIAL.get(NamespacedKey.minecraft(file.getString(path + "DisplayTrim.Material").toLowerCase())));
-            }
-
-            if (file.contains(path + "DisplayEnchantments")) {
-                for (String enchantmentName : file.getStringList(path + "DisplayEnchantments")) {
-                    Enchantment enchantment = MiscUtils.getEnchantment(enchantmentName.split(":")[0]);
-
-                    if (enchantment != null) {
-                        itemBuilder.addEnchantments(enchantment, Integer.parseInt(enchantmentName.split(":")[1]));
-                    }
-                }
-            }
-
-            return itemBuilder;
-        } catch (Exception e) {
-            return new ItemBuilder().setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
-        }
-    }
-
-    private List<ItemBuilder> getItems(FileConfiguration file, String prize) {
-        return ItemBuilder.convertStringList(file.getStringList("Crate.Prizes." + prize + ".Items"), prize);
+        return this.plugin.getCrateManager().isDisplayReward(entity);
     }
 }
