@@ -79,6 +79,121 @@ public class CrateManager {
 
     private boolean giveNewPlayersKeys;
 
+    public void reloadCrate(String crateName) {
+        try {
+            Crate crate = getCrateFromName(crateName);
+
+            // If crate is not null.
+            if (crate != null) {
+                this.plugin.getLogger().warning("Old crate found.");
+
+                this.plugin.getLogger().warning("Old Prizes: " + crate.getPrizes().size());
+
+                // Close previews
+                this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+                    this.plugin.getLogger().warning("Inside for loop");
+                    if (PreviewListener.playerInMenu(player)) {
+                        this.plugin.getLogger().warning("Player is in menu?");
+
+                        PreviewListener.closePreview(player, crate);
+                        player.sendMessage(Translation.reloaded_forced_out_of_preview.getString());
+                    }
+                });
+
+                // Purge
+                crate.getPrizes().clear();
+                crate.getPreviewItems().clear();
+                crate.getTiers().clear();
+
+                // Remove crate
+                removeCrate(crate);
+            }
+
+            // Add it again.
+            FileConfiguration file = this.fileManager.getFile(crateName).getFile();
+
+            CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));
+            ArrayList<Prize> prizes = new ArrayList<>();
+            String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
+            ArrayList<Tier> tiers = new ArrayList<>();
+            int maxMassOpen = file.contains("Crate.Max-Mass-Open") ? file.getInt("Crate.Max-Mass-Open") : 10;
+            int requiredKeys = file.contains("Crate.RequiredKeys") ? file.getInt("Crate.RequiredKeys") : 0;
+
+            if (file.contains("Crate.Tiers") && file.getConfigurationSection("Crate.Tiers") != null) {
+                for (String tier : file.getConfigurationSection("Crate.Tiers").getKeys(false)) {
+                    String path = "Crate.Tiers." + tier;
+                    tiers.add(new Tier(tier, file.getString(path + ".Name"), file.getString(path + ".Color"), file.getInt(path + ".Chance"), file.getInt(path + ".MaxRange")));
+                }
+            }
+
+            if (crateType == CrateType.cosmic && tiers.isEmpty()) {
+                this.brokeCrates.add(crateName);
+                if (this.plugin.isLogging()) this.plugin.getLogger().warning("No tiers were found for this cosmic crate " + crateName + ".yml file.");
+                return;
+            }
+
+            for (String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
+                Prize altPrize = null;
+                String path = "Crate.Prizes." + prize;
+                ArrayList<Tier> prizeTiers = new ArrayList<>();
+
+                for (String tier : file.getStringList(path + ".Tiers")) {
+                    for (Tier loadedTier : tiers) {
+                        if (loadedTier.getName().equalsIgnoreCase(tier)) prizeTiers.add(loadedTier);
+                    }
+                }
+
+                if (file.contains(path + ".Alternative-Prize")) {
+                    if (file.getBoolean(path + ".Alternative-Prize.Toggle")) {
+                        altPrize = new Prize("Alternative-Prize",
+                                file.getStringList(path + ".Alternative-Prize.Messages"),
+                                file.getStringList(path + ".Alternative-Prize.Commands"),
+                                null, // No editor items
+                                getItems(file, prize + ".Alternative-Prize"));
+                    }
+                }
+
+                ArrayList<ItemStack> editorItems = new ArrayList<>();
+
+                if (file.contains(path + ".Editor-Items")) {
+                    for (Object list : file.getList(path + ".Editor-Items")) {
+                        editorItems.add((ItemStack) list);
+                    }
+                }
+
+                prizes.add(new Prize(prize, getDisplayItem(file, prize),
+                        file.getStringList(path + ".Messages"),
+                        file.getStringList(path + ".Commands"),
+                        editorItems,
+                        getItems(file, prize),
+                        crateName,
+                        file.getInt(path + ".Chance", 100),
+                        file.getInt(path + ".MaxRange", 100),
+                        file.getBoolean(path + ".Firework"),
+                        file.getStringList(path + ".BlackListed-Permissions"),
+                        prizeTiers,
+                        altPrize));
+            }
+
+            int newPlayersKeys = file.getInt("Crate.StartingKeys");
+
+            if (!this.giveNewPlayersKeys) {
+                if (newPlayersKeys > 0) this.giveNewPlayersKeys = true;
+            }
+
+            List<String> prizeMessage = file.contains("Crate.Prize-Message") ? file.getStringList("Crate.Prize-Message") : Collections.emptyList();
+
+            CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getStringList("Crate.Hologram.Message"));
+            addCrate(new Crate(crateName, previewName, crateType, getKey(file), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, holo));
+
+            this.plugin.getLogger().warning("Re-added new crate, " + getCrateFromName(crateName).getName());
+            this.plugin.getLogger().warning("New Prizes: " + getCrateFromName(crateName).getPrizes().size());
+        } catch (Exception exception) {
+            this.brokeCrates.add(crateName);
+            this.plugin.getLogger().log(Level.WARNING, "There was an error while loading the " + crateName + ".yml file.", exception);
+        }
+    }
+
     // Loads the crates.
     public void loadCrates() {
         this.giveNewPlayersKeys = false;
