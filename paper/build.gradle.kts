@@ -147,6 +147,9 @@ val description = """
    * Metrics actually shuts down when you reload the plugin after turning off metrics.
  * **The plugin prefix is no longer automatically appended, You must add %prefix% to every message.**
  * Added new config options related to gui-customizer and sounds in config.yml
+   * Need-Key-Sound-Toggle which defaults to true, Make sure to set it to false if you don't want it.
+   * GUI-Customizer-Toggle which defaults to true, Make sure you set it to false if you don't want it.
+ * Added extra comments/headers to messages.yml & config.yml
 
  ### New placeholders:
  #### Old placeholders do still work as they serve a purpose for when you don't need to supply a player.
@@ -167,8 +170,9 @@ val description = """
  #### Deprecation Notice:
   * com.badbones69.crazycrates.api inside the "core" module is marked for removal and is deprecated.
   * An alternative has been added that you can migrate to.
-    * us.crazycrew.crazycrates:crazycrates-api:1.16
-  * Backwards compatible is temporarily possible, old methods you may depend on will stay for the time being.
+    * us.crazycrew.crazycrates:crazycrates-api:0.1
+  * All methods under com.badbones69.crazycrates.api.CrazyManager have been deprecated, Please use the API above!
+  * Warnings will show up in your IDE when you go to view or compile your project but backwards compatibility is a thing for now.
  * A fair bit of code cleanup.
 
 ## Other:
