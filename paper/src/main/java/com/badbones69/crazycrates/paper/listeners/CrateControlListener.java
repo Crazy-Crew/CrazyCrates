@@ -46,8 +46,6 @@ public class CrateControlListener implements Listener { // Crate Control
     @NotNull
     private final SettingsManager config = this.plugin.getConfigManager().getConfig();
 
-
-
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
     

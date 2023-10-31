@@ -482,6 +482,7 @@ public class Crate {
     public void addEditorItem(String prize, ItemStack item) {
         ArrayList<ItemStack> items = new ArrayList<>();
         items.add(item);
+
         String path = "Crate.Prizes." + prize;
 
         if (!this.file.contains(path)) {
@@ -514,6 +515,7 @@ public class Crate {
         }
 
         this.file.set(path + ".Editor-Items", items);
+
         this.fileManager.saveFile(this.fileManager.getFile(this.name));
     }
     

@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
@@ -47,6 +48,19 @@ public class PreviewListener implements Listener {
         playerCrate.put(player.getUniqueId(), crate);
         setPage(player, 1);
         player.openInventory(crate.getPreview(player));
+    }
+
+    public static void closePreview(Player player, InventoryCloseEvent.Reason reason) {
+        playerCrate.remove(player.getUniqueId());
+        player.closeInventory(reason);
+    }
+
+    public static void closePreview(Player player, Crate crate) {
+        crate.getPreview(player).close();
+    }
+
+    public static Crate getPreview(Player player) {
+        return playerCrate.get(player.getUniqueId());
     }
     
     public static void openPreview(Player player) {

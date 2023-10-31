@@ -253,10 +253,9 @@ public class FileManager {
 
     /**
      * Overrides the loaded state file and loads the filesystems file.
-     * @return True if it reloaded correct and false if the file wasn't found.
      */
-    public boolean reloadFile(CustomFile file) {
-        return file.reloadFile();
+    public void reloadFile(CustomFile file) {
+        file.reloadFile();
     }
 
     public void reloadAllFiles() {
@@ -485,24 +484,20 @@ public class FileManager {
 
         /**
          * Overrides the loaded state file and loads the filesystems file.
-         * @return True if it reloaded correct and false if the file wasn't found or error.
          */
-        public boolean reloadFile() {
+        public void reloadFile() {
             if (this.file != null) {
                 try {
                     this.file = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "/" + this.homeFolder + "/" + this.fileName));
 
                     if (this.plugin.isLogging()) this.plugin.getLogger().info("Successfully reloaded the " + this.fileName + ".");
 
-                    return true;
                 } catch (Exception exception) {
                     this.plugin.getLogger().log(Level.SEVERE, "Could not reload the " + this.fileName + "!", exception);
                 }
             } else {
                 if (this.plugin.isLogging()) this.plugin.getLogger().warning("There was a null custom file that was not found!");
             }
-
-            return false;
         }
     }
 }
