@@ -5,6 +5,7 @@ import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.types.Config;
+import us.crazycrew.crazycrates.common.config.types.Messages;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import java.io.File;
 
@@ -40,7 +41,7 @@ public class ConfigManager {
         this.messages = SettingsManagerBuilder
                 .withYamlFile(new File(this.dataFolder, "messages.yml"), builder)
                 .useDefaultMigrationService()
-                .configurationData(Config.class)
+                .configurationData(Messages.class)
                 .create();
     }
 
