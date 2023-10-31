@@ -16,6 +16,8 @@ import us.crazycrew.crazycrates.paper.listeners.MiscListener;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 
+import java.util.List;
+
 public class CrazyCrates extends JavaPlugin {
 
     private final BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(this);
@@ -42,9 +44,9 @@ public class CrazyCrates extends JavaPlugin {
         // Print dependency garbage
         for (PluginSupport value : PluginSupport.values()) {
             if (value.isPluginEnabled()) {
-                getLogger().info(MsgUtils.color("&6&l" + value.name() + " &a&lFOUND"));
+                getServer().getConsoleSender().sendMessage(MsgUtils.color(this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.command_prefix) + "&6&l" + value.name() + " &a&lFOUND"));
             } else {
-                getLogger().info(MsgUtils.color("&6&l" + value.name() + " &c&lNOT FOUND"));
+                getServer().getConsoleSender().sendMessage(MsgUtils.color(this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.command_prefix) + "&6&l" + value.name() + " &c&lNOT FOUND"));
             }
         }
     }
