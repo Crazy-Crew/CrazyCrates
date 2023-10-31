@@ -9,6 +9,7 @@ import us.crazycrew.crazycrates.common.config.types.Messages;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.common.utils.StringUtils;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ public enum Translation {
     quick_crate_in_use(Messages.quick_crate_in_use),
     world_disabled(Messages.world_disabled),
     reloaded_plugin(Messages.reloaded_plugin),
+    reloaded_forced_out_of_preview(Messages.reloaded_forced_out_of_preview),
     not_online(Messages.not_online),
     no_permission(Messages.no_permission),
     no_crate_permission(Messages.no_crate_permission),
@@ -103,18 +105,18 @@ public enum Translation {
 
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
     private final ConfigManager configManager = this.plugin.getCrazyHandler().getConfigManager();
-    private final SettingsManager messages = this.configManager.getMessages();
+    private final SettingsManager configuration = this.configManager.getMessages();
 
     private boolean isList() {
         return this.isList;
     }
 
     private @NotNull List<String> getPropertyList(Property<List<String>> properties) {
-        return this.messages.getProperty(properties);
+        return this.configuration.getProperty(properties);
     }
 
     private @NotNull String getProperty(Property<String> property) {
-        return this.messages.getProperty(property);
+        return this.configuration.getProperty(property);
     }
 
     public String getString() {
@@ -155,13 +157,5 @@ public enum Translation {
 
     public String toString() {
         return MsgUtils.color(this.message.replaceAll("%prefix%", this.configManager.getPluginConfig().getProperty(PluginConfig.command_prefix)));
-    }
-
-    public List<String> toListString() {
-        ArrayList<String> components = new ArrayList<>();
-
-        getPropertyList(this.listProperty).forEach(line -> components.add(MsgUtils.color(line)));
-
-        return components;
     }
 }

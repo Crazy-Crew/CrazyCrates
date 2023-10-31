@@ -23,7 +23,10 @@ public class BaseKeyCommand extends BaseCommand {
     @Default
     @Permission("crazycrates.command.player.key")
     public void viewPersonal(Player player) {
-        getKeys(player, player, Translation.no_virtual_keys_header.getMessage("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(player.getUniqueId()))).toListString(), Translation.no_virtual_keys.getString());
+        HashMap<String, String> placeholders = new HashMap<>();
+        placeholders.put("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(player.getUniqueId())));
+
+        getKeys(player, player, Translation.no_virtual_keys_header.getMessage(placeholders).toString(), Translation.no_virtual_keys.getString());
     }
 
     @SubCommand("view")
@@ -38,17 +41,17 @@ public class BaseKeyCommand extends BaseCommand {
         placeholders.put("%player%", target.getName());
         placeholders.put("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(target.getUniqueId())));
 
-        List<String> header = Translation.other_player_no_keys_header.getMessage(placeholders).toListString();
+        String header = Translation.other_player_no_keys_header.getMessage(placeholders).toString();
 
         String otherPlayer = Translation.other_player_no_keys.getMessage("%player%", target.getName()).toString();
 
         getKeys(target, sender, header, otherPlayer);
     }
 
-    private void getKeys(Player player, CommandSender sender, List<String> header, String messageContent) {
+    private void getKeys(Player player, CommandSender sender, String header, String messageContent) {
         List<String> message = Lists.newArrayList();
 
-        message.addAll(header);
+        message.add(header);
 
         HashMap<Crate, Integer> keys = new HashMap<>();
 

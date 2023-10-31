@@ -48,6 +48,8 @@ public class Messages implements SettingsHolder {
 
     public static final Property<String> reloaded_plugin = newProperty("Messages.Reload", "%prefix%&3You have reloaded the Config and Data Files.");
 
+    public static final Property<String> reloaded_forced_out_of_preview = newProperty("Messages.Forced-Out-Of-Preview", "%prefix%&cA reload has forced you out of the preview.");
+
     public static final Property<String> not_online = newProperty("Messages.Not-Online", "%prefix%&cYou may not teleport away while opening a Crate.");
 
     public static final Property<String> no_permission = newProperty("Messages.No-Permission", "%prefix%&cYou do not have permission to use that command!");

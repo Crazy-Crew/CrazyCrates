@@ -40,7 +40,6 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
-import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
@@ -82,7 +81,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("help")
     @Permission(value = "crazycrates.command.player.help", def = PermissionDefault.TRUE)
     public void onHelp(CommandSender sender) {
-        Translation.help.toListString().forEach(sender::sendMessage);
+        sender.sendMessage(Translation.help.getString());
     }
 
     @SubCommand("transfer")
@@ -104,7 +103,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         // If they don't have enough keys, we return.
         if (this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(sender.getUniqueId(), crate.getName()) <= amount) {
-            sender.sendMessage(Translation.not_a_crate.getMessage("%crate%", crate.getName()).toString());
+            sender.sendMessage(Translation.transfer_not_enough_keys.getMessage("%crate%", crate.getName()).toString());
             return;
         }
 
@@ -135,7 +134,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("admin-help")
     @Permission(value = "crazycrates.command.admin.help", def = PermissionDefault.OP)
     public void onAdminHelp(CommandSender sender) {
-        Translation.admin_help.toListString().forEach(sender::sendMessage);
+        sender.sendMessage(Translation.admin_help.getString());
     }
 
     @SubCommand("reload")
@@ -291,12 +290,12 @@ public class CrateBaseCommand extends BaseCommand {
             crate.addEditorItem(prize, item);
         } catch (Exception exception) {
             this.plugin.getServer().getLogger().log(Level.WARNING, "Failed to add a new prize to the " + crate.getName() + " crate.", exception);
+
+            return;
         }
 
-        // Reload the individual file instead of all of them.
-        this.plugin.getServer().getLogger().warning("Crate: " + crate.getName());
-
-        this.fileManager.getFile(crate.getName() + ".yml").reloadFile();
+        //this.plugin.getCrateManager().reloadCrate(crate.getName());
+        this.plugin.getCrateManager().loadCrates();
 
         HashMap<String, String> placeholders = new HashMap<>();
 
@@ -513,7 +512,7 @@ public class CrateBaseCommand extends BaseCommand {
         placeholders.put("%crate%", crate.getName());
         placeholders.put("%prefix%", MsgUtils.getPrefix());
 
-        Translation.created_physical_crate.getMessage(placeholders).toListString().forEach(player::sendMessage);
+        player.sendMessage(Translation.created_physical_crate.getMessage(placeholders).toString());
     }
 
     @SubCommand("give-random")

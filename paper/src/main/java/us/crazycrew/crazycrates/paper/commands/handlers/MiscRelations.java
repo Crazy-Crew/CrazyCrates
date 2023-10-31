@@ -12,7 +12,7 @@ public class MiscRelations extends MessageHandler {
 
     @Override
     public void build() {
-        getBukkitCommandManager().registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> send(sender, Translation.correct_usage.getMessage("%player%", context.getTypedArgument()).toString()));
+        getBukkitCommandManager().registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> send(sender, Translation.correct_usage.getMessage("%usage%", context.getTypedArgument()).toString()));
         getBukkitCommandManager().registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> send(sender, Translation.no_permission.getString()));
         getBukkitCommandManager().registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> send(sender, Translation.must_be_a_player.getString()));
         getBukkitCommandManager().registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> send(sender, Translation.must_be_console_sender.getString()));
