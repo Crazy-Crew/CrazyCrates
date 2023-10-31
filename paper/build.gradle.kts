@@ -102,6 +102,8 @@ val other = if (isSnapshot) "Beta" else "Release"
 val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.version}.jar")
 
 val description = """
+# Take backups before you update just in case!
+    
 ## New Features:
  * Added the ability to require a permission to open a crate.
    * This feature was labeled to be added a while ago but I don't know why it didn't get added. [#594](https://github.com/Crazy-Crew/CrazyCrates/pull/594)
