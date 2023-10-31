@@ -23,9 +23,6 @@ public class CommandManager {
     private final BukkitCommandManager<CommandSender> bukkitCommandManager = this.plugin.getCommandManager();
 
     public void load() {
-        this.bukkitCommandManager.registerCommand(new CrateBaseCommand());
-        this.bukkitCommandManager.registerCommand(new BaseKeyCommand());
-
         new MiscRelations().build();
         new ArgumentRelations().build();
 
@@ -48,11 +45,14 @@ public class CommandManager {
         this.bukkitCommandManager.registerSuggestion(SuggestionKey.of("numbers"), (sender, context) -> {
             List<String> numbers = new ArrayList<>();
 
-            for (int i = 1; i <= 250; i++) numbers.add(i + "");
+            for (int i = 1; i <= 100; i++) numbers.add(String.valueOf(i));
 
             return numbers;
         });
 
         this.bukkitCommandManager.registerArgument(CrateBaseCommand.CustomPlayer.class, (sender, context) -> new CrateBaseCommand.CustomPlayer(context));
+
+        this.bukkitCommandManager.registerCommand(new CrateBaseCommand());
+        this.bukkitCommandManager.registerCommand(new BaseKeyCommand());
     }
 }
