@@ -93,11 +93,11 @@ public class Config implements SettingsHolder {
             "&7&lPage: &b%page%"
     ));
 
-    public static final Property<String> back_button_item = newProperty("Settings.Preview.Buttons.Menu.Item", "FEATHER");
+    public static final Property<String> back_button_item = newProperty("Settings.Preview.Buttons.Back.Item", "FEATHER");
 
-    public static final Property<String> back_button_name = newProperty("Settings.Preview.Buttons.Menu.Name", "&6&l<< Back");
+    public static final Property<String> back_button_name = newProperty("Settings.Preview.Buttons.Back.Name", "&6&l<< Back");
 
-    public static final Property<List<String>> back_button_lore = newListProperty("Settings.Preview.Buttons.Menu.Lore", List.of(
+    public static final Property<List<String>> back_button_lore = newListProperty("Settings.Preview.Buttons.Back.Lore", List.of(
             "&7&lPage: &b%page%"
     ));
 
