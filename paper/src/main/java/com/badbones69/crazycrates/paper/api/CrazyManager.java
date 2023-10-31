@@ -375,7 +375,7 @@ public class CrazyManager {
     /**
      * A list of all the physical crate locations.
      *
-     * @return List of locations.
+     * @return list of locations.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public ArrayList<CrateLocation> getCrateLocations() {
@@ -383,10 +383,20 @@ public class CrazyManager {
     }
 
     /**
+     * A map of all the schematic locations
+     *
+     * @return map of schematic locations.
+     */
+    @Deprecated(since = "1.16", forRemoval = true)
+    public HashMap<UUID, Location[]> getSchematicLocations() {
+        return this.plugin.getCrazyManager().getSchematicLocations();
+    }
+
+    /**
      * Checks to see if the location is a physical crate.
      *
      * @param loc The location you are checking.
-     * @return True if it is a physical crate and false if not.
+     * @return true if it is a physical crate and false if not.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean isCrateLocation(Location loc) {
@@ -397,7 +407,7 @@ public class CrazyManager {
      * Gets the physical crate of the location.
      *
      * @param loc The location you are checking.
-     * @return A CrateLocation if the location is a physical crate otherwise null if not.
+     * @return a CrateLocation if the location is a physical crate otherwise null if not.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public CrateLocation getCrateLocation(Location loc) {
@@ -417,7 +427,7 @@ public class CrazyManager {
     /**
      * Get a list of all the crates loaded into the plugin.
      *
-     * @return An ArrayList of all the loaded crates.
+     * @return an ArrayList of all the loaded crates.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public List<Crate> getCrates() {
@@ -428,7 +438,8 @@ public class CrazyManager {
      * Get a crate by its name.
      *
      * @param name The name of the crate you wish to grab.
-     * @return Returns a Crate object of the crate it found and if none are found it returns null.
+     *
+     * @return returns a Crate object of the crate it found and if none are found it returns null.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public Crate getCrateFromName(String name) {
@@ -441,7 +452,8 @@ public class CrazyManager {
      * @param player The offline player you wish to give keys to.
      * @param crate The Crate of which key you are giving to the player.
      * @param keys The amount of keys you wish to give to the player.
-     * @return Returns true if it successfully gave the offline player a key and false if there was an error.
+     *
+     * @return returns true if it successfully gave the offline player a key and false if there was an error.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean addOfflineKeys(String player, Crate crate, int keys) {
@@ -469,7 +481,8 @@ public class CrazyManager {
      * @param player The player which you are taking keys from.
      * @param crate The Crate of which key you are taking from the player.
      * @param keys The amount of keys you wish to take.
-     * @return Returns true if it took the keys and false if an error occurred.
+     *
+     * @return returns true if it took the keys and false if an error occurred.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean takeOfflineKeys(String player, Crate crate, int keys) {
@@ -517,7 +530,7 @@ public class CrazyManager {
      * Check if an item is a key for a crate.
      *
      * @param item The item you are checking.
-     * @return True if the item is a key and false if it is not.
+     * @return true if the item is a key and false if it is not.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean isKey(ItemStack item) {
@@ -528,7 +541,7 @@ public class CrazyManager {
      * Get a Crate from a key ItemStack the player.
      *
      * @param item The key ItemStack you are checking.
-     * @return Returns a Crate if is a key from a crate otherwise null if it is not.
+     * @return returns a Crate if is a key from a crate otherwise null if it is not.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public Crate getCrateFromKey(ItemStack item) {
@@ -540,7 +553,8 @@ public class CrazyManager {
      *
      * @param item The key ItemStack you are checking.
      * @param crate The Crate you are checking.
-     * @return Returns true if it belongs to that Crate and false if it does not.
+     *
+     * @return returns true if it belongs to that Crate and false if it does not.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean isKeyFromCrate(ItemStack item, Crate crate) {
@@ -553,7 +567,8 @@ public class CrazyManager {
      * @param player The player being checked.
      * @param crate The crate that has the key you are checking.
      * @param checkHand If it just checks the players hand or if it checks their inventory.
-     * @return True if they have the key and false if not.
+     *
+     * @return true if they have the key and false if not.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean hasPhysicalKey(Player player, Crate crate, boolean checkHand) {
@@ -564,7 +579,8 @@ public class CrazyManager {
      * Get the amount of virtual keys a player has.
      *
      * @param player The player you are checking.
-     * @return The amount of virtual keys they own.
+     *
+     * @return the amount of virtual keys they own.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public HashMap<Crate, Integer> getVirtualKeys(Player player) {
@@ -581,7 +597,8 @@ public class CrazyManager {
      * Get the amount of virtual keys a player has based on their name.
      *
      * @param playerName The name of the player you are checking.
-     * @return The amount of virtual keys the player by that name has.
+     *
+     * @return the amount of virtual keys the player by that name has.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public HashMap<Crate, Integer> getVirtualKeys(String playerName) {
@@ -636,7 +653,8 @@ public class CrazyManager {
      * @param crate The crate key you are taking.
      * @param keyType The type of key you are taking from the player.
      * @param checkHand If it just checks the players hand or if it checks their inventory.
-     * @return Returns true if successfully taken keys and false if not.
+     *
+     * @return returns true if successfully taken keys and false if not.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean takeKeys(int amount, Player player, Crate crate, com.badbones69.crazycrates.api.enums.types.KeyType keyType, boolean checkHand) {
@@ -704,7 +722,8 @@ public class CrazyManager {
      * Get a schematic based on its name.
      *
      * @param name The name of the schematic.
-     * @return Returns the CrateSchematic otherwise returns null if not found.
+     *
+     * @return returns the CrateSchematic otherwise returns null if not found.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public CrateSchematic getCrateSchematic(String name) {
@@ -715,7 +734,8 @@ public class CrazyManager {
      * Check if an entity is a display reward for a crate.
      *
      * @param entity Entity you wish to check.
-     * @return True if it is a display reward item and false if not.
+     *
+     * @return true if it is a display reward item and false if not.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean isDisplayReward(Entity entity) {
