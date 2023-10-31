@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.Color;
@@ -17,12 +17,12 @@ public class FireCracker {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
-    private static final CrazyManager crazyManager = plugin.getCrazyManager();
+    private static final CrateManager crateManager = plugin.getCrateManager();
     
     public static void startFireCracker(final Player player, final Crate crate, KeyType keyType, final Location loc, HologramController hologramController) {
         if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
             MiscUtils.failedToTakeKey(player, crate);
-            crazyManager.removePlayerFromOpeningList(player);
+            crateManager.removePlayerFromOpeningList(player);
             return;
         }
 
@@ -38,7 +38,7 @@ public class FireCracker {
         colors.add(Color.MAROON);
         colors.add(Color.PURPLE);
 
-        crazyManager.addCrateTask(player, new BukkitRunnable() {
+        crateManager.addCrateTask(player, new BukkitRunnable() {
             final Random rng = new Random();
             final int color = rng.nextInt(colors.size());
             int l = 0;
@@ -51,7 +51,7 @@ public class FireCracker {
                 l++;
 
                 if (l == 25) {
-                    crazyManager.endCrate(player);
+                    crateManager.endCrate(player);
                     // The key type is set to free because the key has already been taken above.
                     QuickCrate.openCrate(player, loc, crate, KeyType.free_key, hologramController);
                 }

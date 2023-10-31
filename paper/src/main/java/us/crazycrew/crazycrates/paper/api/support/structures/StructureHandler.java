@@ -100,10 +100,6 @@ public class StructureHandler {
         return getNearbyBlocks();
     }
 
-    public void saveStructure(Location location) {
-
-    }
-
     public double getStructureX() {
         try {
             return getStructureSize().getX();

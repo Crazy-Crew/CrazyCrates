@@ -25,12 +25,13 @@ import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class QuickCrate implements Listener {
 
     private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
-    public static ArrayList<Entity> allRewards = new ArrayList<>();
-    public static HashMap<Player, Entity> rewards = new HashMap<>();
+    public static final ArrayList<Entity> allRewards = new ArrayList<>();
+    public static final HashMap<Player, Entity> rewards = new HashMap<>();
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
@@ -63,7 +64,7 @@ public class QuickCrate implements Listener {
             if (!plugin.getCrazyHandler().getUserManager().takeKeys(keysUsed, player.getUniqueId(), crate.getName(), keyType, false)) {
                 MiscUtils.failedToTakeKey(player, crate);
                 CrateControlListener.inUse.remove(player);
-                plugin.getCrazyManager().removePlayerFromOpeningList(player);
+                plugin.getCrateManager().removePlayerFromOpeningList(player);
                 return;
             }
 
@@ -72,7 +73,7 @@ public class QuickCrate implements Listener {
             if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
                 MiscUtils.failedToTakeKey(player, crate);
                 CrateControlListener.inUse.remove(player);
-                plugin.getCrazyManager().removePlayerFromOpeningList(player);
+                plugin.getCrateManager().removePlayerFromOpeningList(player);
                 return;
             }
 
@@ -89,11 +90,10 @@ public class QuickCrate implements Listener {
 
             try {
                 reward = player.getWorld().dropItem(loc.clone().add(.5, 1, .5), displayItem);
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException exception) {
                 plugin.getServer().getLogger().warning("A prize could not be given due to an invalid display item for this prize. ");
-                plugin.getServer().getLogger().warning("Crate: " + prize.getCrate() + " Prize: " + prize.getName());
+                plugin.getServer().getLogger().log(Level.WARNING, "Crate: " + prize.getCrate() + " Prize: " + prize.getName(), exception);
 
-                e.printStackTrace();
                 return;
             }
 
@@ -131,7 +131,7 @@ public class QuickCrate implements Listener {
 
         CHEST_MANAGER.closeChest(loc.getBlock(), false);
         CrateControlListener.inUse.remove(player);
-        plugin.getCrazyManager().removePlayerFromOpeningList(player);
+        plugin.getCrateManager().removePlayerFromOpeningList(player);
 
         if (!useQuickCrate) {
             if (hologramController != null) hologramController.createHologram(loc.getBlock(), crate);
@@ -144,6 +144,6 @@ public class QuickCrate implements Listener {
     
     @EventHandler
     public void onHopperPickUp(InventoryPickupItemEvent e) {
-        if (plugin.getCrazyManager().isDisplayReward(e.getItem())) e.setCancelled(true);
+        if (plugin.getCrateManager().isDisplayReward(e.getItem())) e.setCancelled(true);
     }
 }

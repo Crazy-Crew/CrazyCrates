@@ -218,11 +218,11 @@ public class FileManager {
 
     /**
      * Save a custom file.
+     *
      * @param file The custom file you are saving.
-     * @return True if the file saved correct and false if there was an error.
      */
-    public boolean saveFile(CustomFile file) {
-        return file.saveFile();
+    public void saveFile(CustomFile file) {
+        file.saveFile();
     }
 
     /**

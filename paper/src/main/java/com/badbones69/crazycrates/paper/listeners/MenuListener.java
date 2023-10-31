@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.paper.listeners;
 import ch.jalu.configme.SettingsManager;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -34,7 +34,7 @@ public class MenuListener implements Listener {
 
     private static final CrazyHandler crazyHandler = plugin.getCrazyHandler();
 
-    private static final CrazyManager crazyManager = plugin.getCrazyManager();
+    private static final CrateManager crateManager = plugin.getCrateManager();
     
     public static void openGUI(Player player) {
         int size = config.getProperty(Config.inventory_size);
@@ -182,7 +182,7 @@ public class MenuListener implements Listener {
                                     return;
                                 }
 
-                                if (crazyManager.isInOpeningList(player)) {
+                                if (crateManager.isInOpeningList(player)) {
                                     player.sendMessage(Translation.already_opening_crate.getString());
                                     return;
                                 }
@@ -220,7 +220,7 @@ public class MenuListener implements Listener {
                                     return;
                                 }
 
-                                crazyManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
+                                crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
                             }
                         }
                     }

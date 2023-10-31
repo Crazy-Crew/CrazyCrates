@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
@@ -25,12 +25,12 @@ public class Wheel implements Listener {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
-    private static final CrazyManager crazyManager = plugin.getCrazyManager();
+    private static final CrateManager crateManager = plugin.getCrateManager();
     
     public static void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
             MiscUtils.failedToTakeKey(player, crate);
-            crazyManager.removePlayerFromOpeningList(player);
+            crateManager.removePlayerFromOpeningList(player);
             return;
         }
 
@@ -51,7 +51,7 @@ public class Wheel implements Listener {
         rewards.put(player, items);
         player.openInventory(inv);
 
-        crazyManager.addCrateTask(player, new BukkitRunnable() {
+        crateManager.addCrateTask(player, new BukkitRunnable() {
             final ArrayList<Integer> slots = getBorder();
             int i = 0;
             int f = 17;
@@ -92,13 +92,13 @@ public class Wheel implements Listener {
                     if (full >= (timer + 55 + 47)) {
                         Prize prize = null;
 
-                        if (crazyManager.isInOpeningList(player)) prize = crate.getPrize(rewards.get(player).get(slots.get(f)));
+                        if (crateManager.isInOpeningList(player)) prize = crate.getPrize(rewards.get(player).get(slots.get(f)));
 
                         plugin.getCrazyHandler().getPrizeManager().checkPrize(prize, player, crate);
 
                         player.closeInventory();
-                        crazyManager.removePlayerFromOpeningList(player);
-                        crazyManager.endCrate(player);
+                        crateManager.removePlayerFromOpeningList(player);
+                        crateManager.endCrate(player);
                     }
 
                     slower++;

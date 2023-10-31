@@ -2,9 +2,9 @@ package com.badbones69.crazycrates.paper.api.managers;
 
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.support.structures.QuadCrateSpiralHandler;
 import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
@@ -43,7 +43,7 @@ public class QuadCrateManager {
     private final ChestManager chestManager = this.crazyHandler.getChestManager();
 
     @NotNull
-    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
     private static final List<QuadCrateManager> crateSessions = new ArrayList<>();
 
@@ -131,7 +131,7 @@ public class QuadCrateManager {
         // Check if it is on a block.
         if (this.spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
             this.player.sendMessage(Translation.not_on_block.getString());
-            this.crazyManager.removePlayerFromOpeningList(player);
+            this.crateManager.removePlayerFromOpeningList(player);
             crateSessions.remove(this.instance);
             return;
         }
@@ -139,7 +139,7 @@ public class QuadCrateManager {
         // Check if schematic folder is empty.
         if (this.plugin.getCrateManager().getCrateSchematics().isEmpty()) {
             this.player.sendMessage(Translation.no_schematics_found.getString());
-            this.crazyManager.removePlayerFromOpeningList(this.player);
+            this.crateManager.removePlayerFromOpeningList(this.player);
             crateSessions.remove(this.instance);
             return;
         }
@@ -156,7 +156,7 @@ public class QuadCrateManager {
         for (Location loc : structureLocations) {
             if (this.handler.getBlockBlackList().contains(loc.getBlock().getType())) {
                 this.player.sendMessage(Translation.needs_more_room.getString());
-                this.crazyManager.removePlayerFromOpeningList(this.player);
+                this.crateManager.removePlayerFromOpeningList(this.player);
                 crateSessions.remove(this.instance);
                 return;
             } else {
@@ -171,7 +171,7 @@ public class QuadCrateManager {
                 for (QuadCrateManager ongoingCrate : crateSessions) {
                     if (entity.getUniqueId() == ongoingCrate.player.getUniqueId()) {
                         this.player.sendMessage(Translation.too_close_to_another_player.getMessage("%player%", entity.getName()).toString());
-                        this.crazyManager.removePlayerFromOpeningList(this.player);
+                        this.crateManager.removePlayerFromOpeningList(this.player);
                         crateSessions.remove(this.instance);
                         return;
                     }
@@ -184,7 +184,7 @@ public class QuadCrateManager {
         if (!this.plugin.getCrazyHandler().getUserManager().takeKeys(1, this.player.getUniqueId(), this.crate.getName(), this.keyType, this.checkHand)) {
             MiscUtils.failedToTakeKey(this.player, this.crate);
 
-            this.crazyManager.removePlayerFromOpeningList(this.player);
+            this.crateManager.removePlayerFromOpeningList(this.player);
             crateSessions.remove(this.instance);
             return;
         }
@@ -214,7 +214,7 @@ public class QuadCrateManager {
 
         this.player.teleport(this.spawnLocation.toCenterLocation().add(0, 1.0, 0));
 
-        this.crazyManager.addQuadCrateTask(this.player, new BukkitRunnable() {
+        this.crateManager.addQuadCrateTask(this.player, new BukkitRunnable() {
 
             private final QuadCrateSpiralHandler spiralHandler = new QuadCrateSpiralHandler();
 
@@ -238,7 +238,7 @@ public class QuadCrateManager {
                     chestManager.rotateChest(chest, crateNumber);
 
                     if (this.crateNumber == 3) { // Last crate has spawned.
-                        crazyManager.endQuadCrate(player); // Cancelled when method is called.
+                        crateManager.endQuadCrate(player); // Cancelled when method is called.
                     } else {
                         this.tickTillSpawn = 0;
                         this.crateNumber++;
@@ -251,7 +251,7 @@ public class QuadCrateManager {
             }
         }.runTaskTimer(this.plugin, 0,1));
 
-        this.crazyManager.addCrateTask(this.player, new BukkitRunnable() {
+        this.crateManager.addCrateTask(this.player, new BukkitRunnable() {
             @Override
             public void run() {
                 // End the crate by force.
@@ -286,10 +286,10 @@ public class QuadCrateManager {
                 if (crate.getHologram().isEnabled() && plugin.getCrateManager().getHolograms() != null) plugin.getCrateManager().getHolograms().createHologram(spawnLocation.getBlock(), crate);
 
                 // End the crate.
-                crazyManager.endCrate(player);
+                crateManager.endCrate(player);
 
                 // Remove the player from the list saying they are opening a crate.
-                crazyManager.removePlayerFromOpeningList(player);
+                crateManager.removePlayerFromOpeningList(player);
 
                 // Remove the "instance" from the crate sessions.
                 crateSessions.remove(instance);
@@ -309,7 +309,7 @@ public class QuadCrateManager {
         this.player.teleport(this.lastLocation);
 
         if (removeForce) {
-            this.crazyManager.removePlayerFromOpeningList(this.player);
+            this.crateManager.removePlayerFromOpeningList(this.player);
             crateSessions.remove(this.instance);
         }
 

@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
@@ -20,12 +20,12 @@ public class Wonder implements Listener {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
-    private static final CrazyManager crazyManager = plugin.getCrazyManager();
+    private static final CrateManager crateManager = plugin.getCrateManager();
     
     public static void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
         if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
             MiscUtils.failedToTakeKey(player, crate);
-            crazyManager.removePlayerFromOpeningList(player);
+            crateManager.removePlayerFromOpeningList(player);
             return;
         }
 
@@ -40,7 +40,7 @@ public class Wonder implements Listener {
 
         player.openInventory(inv);
 
-        crazyManager.addCrateTask(player, new BukkitRunnable() {
+        crateManager.addCrateTask(player, new BukkitRunnable() {
             int fullTime = 0;
             int timer = 0;
             int slot1 = 0;
@@ -78,14 +78,14 @@ public class Wonder implements Listener {
                 player.openInventory(inv);
 
                 if (fullTime > 100) {
-                    crazyManager.endCrate(player);
+                    crateManager.endCrate(player);
                     player.closeInventory();
                     plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
 
                     if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
                     plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-                    crazyManager.removePlayerFromOpeningList(player);
+                    crateManager.removePlayerFromOpeningList(player);
 
                     return;
                 }

@@ -22,7 +22,7 @@ import java.util.logging.Level;
  * 1) Try not to crash the server when the writes get to big.
  * 2) User friendly enum names
  * 3) Allow admins or players with permissions to view the logs of all players through a gui.
- * 4) Allow players to have some type of /crazycrates profile to see everything they've done. ( I do have "crates opened" stuff added which might make this useless"
+ * 4) Allow players to have some type of /crazycrates profile to see everything they've done. ( I do have "crates opened" stuff added which might make this useless )"
  * 5) No one else touch this class.
  */
 public class EventLogger {

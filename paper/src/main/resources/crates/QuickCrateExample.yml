@@ -56,8 +56,7 @@ Crate:
       DisplayName: '&a&lFancy Pants'
       DisplayItem: 'CHAINMAIL_LEGGINGS'
       # Only works on items with durability. This will make the item appear more damaged.
-      # It does not set the durability but subtracts this number from the durability
-      # Durability is 100, It subtracts 75.
+      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 75.
       # It cannot be 0.
       DisplayDamage: 75
       DisplayTrim:
@@ -81,8 +80,7 @@ Crate:
       DisplayName: '&b&lClassic Sword'
       DisplayItem: 'DIAMOND_SWORD'
       # Only works on items with durability. This will make the item appear more damaged.
-      # It does not set the durability but subtracts this number from the durability
-      # Durability is 100, It subtracts 7.
+      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 7.
       # It cannot be 0.
       DisplayDamage: 7
       DisplayAmount: 1

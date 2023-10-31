@@ -1,6 +1,8 @@
 package us.crazycrew.crazycrates.paper;
 
+import com.badbones69.crazycrates.paper.api.EventLogger;
 import com.badbones69.crazycrates.paper.api.FileManager;
+import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.CrazyCratesPlugin;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
@@ -10,6 +12,7 @@ import us.crazycrew.crazycrates.paper.api.crates.PrizeManager;
 import us.crazycrew.crazycrates.paper.api.support.metrics.MetricsWrapper;
 import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
 import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestManager;
+import us.crazycrew.crazycrates.paper.commands.CommandManager;
 import java.io.File;
 
 public class CrazyHandler extends CrazyCratesPlugin {
@@ -22,6 +25,7 @@ public class CrazyHandler extends CrazyCratesPlugin {
     private ChestManager chestManager;
 
     private BukkitUserManager userManager;
+    private EventLogger eventLogger;
 
     private MetricsWrapper metrics;
 
@@ -57,6 +61,11 @@ public class CrazyHandler extends CrazyCratesPlugin {
         // Creates user manager instance.
         this.userManager = new BukkitUserManager();
 
+        this.eventLogger = new EventLogger();
+
+        CommandManager commandManager = new CommandManager();
+        commandManager.load();
+
         // Migrates 2 config.yml settings to plugin-config.yml
         MigrationService service = new MigrationService();
         service.migrate();
@@ -69,6 +78,18 @@ public class CrazyHandler extends CrazyCratesPlugin {
 
     public void unload() {
         super.disable();
+    }
+
+    public void cleanFiles() {
+        if (!Files.LOCATIONS.getFile().contains("Locations")) {
+            Files.LOCATIONS.getFile().set("Locations.Clear", null);
+            Files.LOCATIONS.saveFile();
+        }
+
+        if (!Files.DATA.getFile().contains("Players")) {
+            Files.DATA.getFile().set("Players.Clear", null);
+            Files.DATA.saveFile();
+        }
     }
 
     @NotNull
@@ -95,6 +116,10 @@ public class CrazyHandler extends CrazyCratesPlugin {
     @NotNull
     public BukkitUserManager getUserManager() {
         return this.userManager;
+    }
+
+    public EventLogger getEventLogger() {
+        return this.eventLogger;
     }
 
     @NotNull

@@ -1,46 +1,30 @@
 package com.badbones69.crazycrates.paper.api;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
-import com.badbones69.crazycrates.paper.cratetypes.CSGO;
-import com.badbones69.crazycrates.paper.cratetypes.FireCracker;
-import com.badbones69.crazycrates.paper.cratetypes.QuickCrate;
-import com.badbones69.crazycrates.paper.cratetypes.Roulette;
-import com.badbones69.crazycrates.paper.cratetypes.War;
-import com.badbones69.crazycrates.paper.cratetypes.Wheel;
-import com.badbones69.crazycrates.paper.cratetypes.Wonder;
 import org.bukkit.Location;
-import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent.KeyReceiveReason;
-import us.crazycrew.crazycrates.paper.api.enums.Translation;
-import us.crazycrew.crazycrates.paper.api.events.crates.CrateOpenEvent;
 import us.crazycrew.crazycrates.paper.api.interfaces.HologramController;
-import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
 import us.crazycrew.crazycrates.paper.commands.subs.CrateBaseCommand;
-import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
-import com.badbones69.crazycrates.paper.listeners.MenuListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.users.UserManager;
-import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.common.crates.quadcrates.CrateSchematic;
-import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -51,18 +35,6 @@ public class CrazyManager {
 
     @NotNull
     private final SettingsManager config = this.plugin.getConfigManager().getConfig();
-
-    // The crate that the player is opening.
-    private final HashMap<UUID, Crate> playerOpeningCrates = new HashMap<>();
-
-    // Keys that are being used in crates. Only needed in cosmic due to it taking the key after the player picks a prize and not in a start method.
-    private final HashMap<UUID, KeyType> playerKeys = new HashMap<>();
-
-    // A list of all current crate tasks that are running that a time. Used to force stop any crates it needs to.
-    private final HashMap<UUID, BukkitTask> currentTasks = new HashMap<>();
-
-    // A list of tasks being run by the QuadCrate type.
-    private final HashMap<UUID, ArrayList<BukkitTask>> currentQuadTasks = new HashMap<>();
 
     // The time in seconds a quadcrate can go until afk kicks them from it.
     private int quadCrateTimer;
@@ -78,98 +50,9 @@ public class CrazyManager {
      * @param location The location that may be needed for some crate types.
      * @param checkHand If it just checks the players hand or if it checks their inventory.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
-        CrateOpenEvent crateOpenEvent = new CrateOpenEvent(this.plugin, player, crate, keyType, checkHand, crate.getFile());
-        crateOpenEvent.callEvent();
-
-        if (crateOpenEvent.isCancelled()) {
-            List.of(
-                    "Crate " + crate.getName() + " event has been cancelled.",
-                    "A few reasons for why this happened can be found below",
-                    "",
-                    " 1) No valid prizes can be found, Likely a yaml issue.",
-                    " 2) The player does not have the permission to open the crate."
-            ).forEach(this.plugin.getLogger()::warning);
-
-            return;
-        }
-
-        switch (crate.getCrateType()) {
-            case menu -> {
-                if (this.config.getProperty(Config.enable_crate_menu)) MenuListener.openGUI(player); else player.sendMessage(Translation.feature_disabled.getString());
-            }
-            case csgo -> CSGO.openCSGO(player, crate, keyType, checkHand);
-            case roulette -> Roulette.openRoulette(player, crate, keyType, checkHand);
-            case wheel -> Wheel.startWheel(player, crate, keyType, checkHand);
-            case wonder -> Wonder.startWonder(player, crate, keyType, checkHand);
-            case war -> War.openWarCrate(player, crate, keyType, checkHand);
-            case quad_crate -> {
-                Location lastLocation = player.getLocation();
-                lastLocation.setPitch(0F);
-
-                boolean isRandom = crate.getFile().contains("Crate.structure.file") && !crate.getFile().getBoolean("Crate.structure.random", true);
-
-                CrateSchematic schematic = isRandom ? getCrateSchematic(crate.getFile().getString("Crate.structure.file")) : getCrateSchematics().get(new Random().nextInt(getCrateSchematics().size()));
-
-                StructureHandler handler = new StructureHandler(schematic.getSchematicFile());
-                CrateLocation crateLocation = getCrateLocation(location);
-                QuadCrateManager session = new QuadCrateManager(player, crate, keyType, crateLocation.getLocation(), lastLocation, checkHand, handler);
-
-                session.startCrate();
-            }
-            case fire_cracker -> {
-                if (CrateControlListener.inUse.containsValue(location)) {
-                    player.sendMessage(Translation.quick_crate_in_use.getString());
-                    removePlayerFromOpeningList(player);
-                    return;
-                } else {
-                    if (virtualCrate) {
-                        player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
-                        removePlayerFromOpeningList(player);
-                        return;
-                    } else {
-                        CrateControlListener.inUse.put(player, location);
-                        FireCracker.startFireCracker(player, crate, keyType, location, hologramController);
-                    }
-                }
-            }
-            case quick_crate -> {
-                if (CrateControlListener.inUse.containsValue(location)) {
-                    player.sendMessage(Translation.quick_crate_in_use.getString());
-                    removePlayerFromOpeningList(player);
-                    return;
-                } else {
-                    if (virtualCrate && location.equals(player.getLocation())) {
-                        player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
-                        removePlayerFromOpeningList(player);
-                        return;
-                    } else {
-                        CrateControlListener.inUse.put(player, location);
-                        QuickCrate.openCrate(player, location, crate, keyType, hologramController);
-                    }
-                }
-            }
-            case crate_on_the_go -> {
-                if (virtualCrate) {
-                    player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
-                    removePlayerFromOpeningList(player);
-                    return;
-                } else {
-                    if (this.plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
-                        Prize prize = crate.pickPrize(player);
-                        this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
-
-                        if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
-
-                        removePlayerFromOpeningList(player);
-                    } else {
-                        MiscUtils.failedToTakeKey(player, crate);
-                    }
-                }
-            }
-        }
-
-        //this.plugin.getCrazyCrates().getStarter().getEventLogger().logCrateEvent(player, crate, keyType, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
+        this.plugin.getCrateManager().openCrate(player, crate, us.crazycrew.crazycrates.api.enums.types.KeyType.getFromName(keyType.getName().toLowerCase()), location, virtualCrate, checkHand);
     }
 
     /**
@@ -177,11 +60,9 @@ public class CrazyManager {
      *
      * @param player The player that the crate is being ended for.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public void endCrate(Player player) {
-        if (this.currentTasks.containsKey(player.getUniqueId())) {
-            this.currentTasks.get(player.getUniqueId()).cancel();
-            removeCrateTask(player);
-        }
+        this.plugin.getCrateManager().endCrate(player);
     }
 
     /**
@@ -189,14 +70,9 @@ public class CrazyManager {
      *
      * @param player The player using the crate.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public void endQuadCrate(Player player) {
-        if (this.currentQuadTasks.containsKey(player.getUniqueId())) {
-            for (BukkitTask task : this.currentQuadTasks.get(player.getUniqueId())) {
-                task.cancel();
-            }
-
-            this.currentQuadTasks.remove(player.getUniqueId());
-        }
+        this.plugin.getCrateManager().endQuadCrate(player);
     }
 
     /**
@@ -205,12 +81,9 @@ public class CrazyManager {
      * @param player The player opening the crate.
      * @param task The task of the quad crate.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public void addQuadCrateTask(Player player, BukkitTask task) {
-        if (!this.currentQuadTasks.containsKey(player.getUniqueId())) {
-            this.currentQuadTasks.put(player.getUniqueId(), new ArrayList<>());
-        }
-
-        this.currentQuadTasks.get(player.getUniqueId()).add(task);
+        this.plugin.getCrateManager().addQuadCrateTask(player, task);
     }
 
     /**
@@ -219,8 +92,9 @@ public class CrazyManager {
      * @param player The player that is being checked.
      * @return True if they do have a task and false if not.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public boolean hasQuadCrateTask(Player player) {
-        return this.currentQuadTasks.containsKey(player.getUniqueId());
+        return this.plugin.getCrateManager().hasQuadCrateTask(player);
     }
 
     /**
@@ -229,8 +103,9 @@ public class CrazyManager {
      * @param player The player opening the crate.
      * @param task The task of the crate.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public void addCrateTask(Player player, BukkitTask task) {
-        this.currentTasks.put(player.getUniqueId(), task);
+        this.plugin.getCrateManager().addCrateTask(player, task);
     }
 
     /**
@@ -238,8 +113,9 @@ public class CrazyManager {
      *
      * @param player The player using the crate.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public void removeCrateTask(Player player) {
-        this.currentTasks.remove(player.getUniqueId());
+        this.plugin.getCrateManager().removeCrateTask(player);
     }
 
     /**
@@ -248,8 +124,9 @@ public class CrazyManager {
      * @param player The player that is being checked.
      * @return True if they do have a task and false if not.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public boolean hasCrateTask(Player player) {
-        return this.currentTasks.containsKey(player.getUniqueId());
+        return this.plugin.getCrateManager().hasCrateTask(player);
     }
 
     /**
@@ -258,8 +135,9 @@ public class CrazyManager {
      * @param player The player that is opening a crate.
      * @param crate The crate the player is opening.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public void addPlayerToOpeningList(Player player, Crate crate) {
-        this.playerOpeningCrates.put(player.getUniqueId(), crate);
+        this.plugin.getCrateManager().addPlayerToOpeningList(player, crate);
     }
 
     /**
@@ -267,8 +145,9 @@ public class CrazyManager {
      *
      * @param player The player that has finished opening a crate.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public void removePlayerFromOpeningList(Player player) {
-        this.playerOpeningCrates.remove(player.getUniqueId());
+        this.plugin.getCrateManager().removePlayerFromOpeningList(player);
     }
 
     /**
@@ -277,8 +156,9 @@ public class CrazyManager {
      * @param player The player you are checking.
      * @return True if they are opening a crate and false if they are not.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public boolean isInOpeningList(Player player) {
-        return this.playerOpeningCrates.containsKey(player.getUniqueId());
+        return this.plugin.getCrateManager().isInOpeningList(player);
     }
 
     /**
@@ -287,8 +167,9 @@ public class CrazyManager {
      * @param player The player you want to check.
      * @return The Crate of which the player is opening. May return null if no crate found.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public Crate getOpeningCrate(Player player) {
-        return this.playerOpeningCrates.get(player.getUniqueId());
+        return this.plugin.getCrateManager().getOpeningCrate(player);
     }
 
     /**
@@ -298,8 +179,9 @@ public class CrazyManager {
      * @param player The player that is opening the crate.
      * @param keyType The KeyType that they are using.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public void addPlayerKeyType(Player player, KeyType keyType) {
-        this.playerKeys.put(player.getUniqueId(), keyType);
+        this.plugin.getCrateManager().addPlayerKeyType(player, us.crazycrew.crazycrates.api.enums.types.KeyType.getFromName(keyType.getName().toLowerCase()));
     }
 
     /**
@@ -308,8 +190,9 @@ public class CrazyManager {
      *
      * @param player The player you are removing.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public void removePlayerKeyType(Player player) {
-        this.playerKeys.remove(player.getUniqueId());
+        this.plugin.getCrateManager().removePlayerKeyType(player);
     }
 
     /**
@@ -318,8 +201,9 @@ public class CrazyManager {
      * @param player The player you are checking.
      * @return True if they are in the list and false if not.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public boolean hasPlayerKeyType(Player player) {
-        return this.playerKeys.containsKey(player.getUniqueId());
+        return this.plugin.getCrateManager().hasPlayerKeyType(player);
     }
 
     /**
@@ -328,8 +212,9 @@ public class CrazyManager {
      * @param player The player that is using the crate.
      * @return The key type of the crate the player is using.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public KeyType getPlayerKeyType(Player player) {
-        return this.playerKeys.get(player.getUniqueId());
+        return KeyType.getFromName(this.plugin.getCrateManager().getPlayerKeyType(player).getName().toUpperCase());
     }
 
     /**
@@ -337,6 +222,7 @@ public class CrazyManager {
      *
      * @return The time in seconds till kick.
      */
+    @Deprecated(since = "1.16", forRemoval = true)
     public int getQuadCrateTimer() {
         return this.quadCrateTimer;
     }
@@ -500,7 +386,7 @@ public class CrazyManager {
 
         UUID uuid = customPlayer.getPlayer() == null ? customPlayer.getOfflinePlayer().getUniqueId() : customPlayer.getPlayer().getUniqueId();
 
-        return this.plugin.getCrazyHandler().getUserManager().takeOfflineKeys(uuid, crate.getName(), keys, KeyType.virtual_key);
+        return this.plugin.getCrazyHandler().getUserManager().takeOfflineKeys(uuid, crate.getName(), keys, us.crazycrew.crazycrates.api.enums.types.KeyType.virtual_key);
     }
 
     /**
@@ -590,7 +476,7 @@ public class CrazyManager {
      *
      * @param player The player you are checking.
      *
-     * @return the amount of virtual keys they own.
+     * @return The amount of virtual keys they own.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public HashMap<Crate, Integer> getVirtualKeys(Player player) {
@@ -608,7 +494,7 @@ public class CrazyManager {
      *
      * @param playerName The name of the player you are checking.
      *
-     * @return the amount of virtual keys the player by that name has.
+     * @return The amount of virtual keys the player by that name has.
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public HashMap<Crate, Integer> getVirtualKeys(String playerName) {
@@ -667,8 +553,8 @@ public class CrazyManager {
      * @return returns true if successfully taken keys and false if not.
      */
     @Deprecated(since = "1.16", forRemoval = true)
-    public boolean takeKeys(int amount, Player player, Crate crate, com.badbones69.crazycrates.api.enums.types.KeyType keyType, boolean checkHand) {
-        return this.plugin.getCrazyHandler().getUserManager().takeKeys(amount, player.getUniqueId(), crate.getName(), KeyType.getFromName(keyType.getName().toLowerCase()), checkHand);
+    public boolean takeKeys(int amount, Player player, Crate crate, KeyType keyType, boolean checkHand) {
+        return this.plugin.getCrazyHandler().getUserManager().takeKeys(amount, player.getUniqueId(), crate.getName(), us.crazycrew.crazycrates.api.enums.types.KeyType.getFromName(keyType.getName().toLowerCase()), checkHand);
     }
 
     /**
@@ -692,8 +578,8 @@ public class CrazyManager {
      * @param keyType The type of key you are giving to the player.
      */
     @Deprecated(since = "1.16", forRemoval = true)
-    public void addKeys(int amount, Player player, Crate crate, com.badbones69.crazycrates.api.enums.types.KeyType keyType) {
-        this.plugin.getCrazyHandler().getUserManager().addKeys(amount, player.getUniqueId(), crate.getName(), KeyType.getFromName(keyType.getName().toLowerCase()));
+    public void addKeys(int amount, Player player, Crate crate, KeyType keyType) {
+        this.plugin.getCrazyHandler().getUserManager().addKeys(amount, player.getUniqueId(), crate.getName(), us.crazycrew.crazycrates.api.enums.types.KeyType.getFromName(keyType.getName().toLowerCase()));
     }
 
     /**

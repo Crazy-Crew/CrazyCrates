@@ -906,19 +906,15 @@ public class ItemBuilder {
 
     /**
      * @param item The item to hide flags on.
-     * @return The ItemBuilder with an updated Item.
      */
-    public ItemStack hideItemFlags(ItemStack item) {
+    public void hideItemFlags(ItemStack item) {
         if (this.hideItemFlags) {
             if (item != null && item.hasItemMeta() && item.getItemMeta() != null) {
                 ItemMeta itemMeta = item.getItemMeta();
                 itemMeta.addItemFlags(ItemFlag.values());
                 item.setItemMeta(itemMeta);
-                return item;
             }
         }
-
-        return item;
     }
 
     /**

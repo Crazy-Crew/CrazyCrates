@@ -1,7 +1,7 @@
 package us.crazycrew.crazycrates.paper.listeners.crates;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.events.crates.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -31,7 +31,7 @@ public class CrateOpenListener implements Listener {
     private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
 
     @NotNull
-    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onCrateOpen(CrateOpenEvent event) {
@@ -41,8 +41,8 @@ public class CrateOpenListener implements Listener {
         if (crate.getCrateType() != CrateType.menu) {
             if (!crate.canWinPrizes(player)) {
                 player.sendMessage(Translation.no_prizes_found.getString());
-                this.crazyManager.removePlayerFromOpeningList(player);
-                this.crazyManager.removePlayerKeyType(player);
+                this.crateManager.removePlayerFromOpeningList(player);
+                this.crateManager.removePlayerKeyType(player);
 
                 event.setCancelled(true);
 
@@ -52,7 +52,7 @@ public class CrateOpenListener implements Listener {
 
         if (!(player.hasPermission("crazycrates.open." + crate.getName()) || player.hasPermission("crazycrates.open.*"))) {
             player.sendMessage(Translation.no_crate_permission.getString());
-            this.crazyManager.removePlayerFromOpeningList(player);
+            this.crateManager.removePlayerFromOpeningList(player);
             CrateControlListener.inUse.remove(player);
 
             event.setCancelled(true);
@@ -60,7 +60,7 @@ public class CrateOpenListener implements Listener {
             return;
         }
 
-        this.crazyManager.addPlayerToOpeningList(player, crate);
+        this.crateManager.addPlayerToOpeningList(player, crate);
         if (crate.getCrateType() != CrateType.cosmic) this.crazyHandler.getUserManager().addOpenedCrate(player.getUniqueId(), crate.getName());
 
         JavaPlugin plugin = event.getPlugin();

@@ -3,7 +3,6 @@ package us.crazycrew.crazycrates.paper.api.support.structures.interfaces;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-
 import java.io.IOException;
 import java.util.List;
 

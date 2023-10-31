@@ -4,6 +4,21 @@ import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
+import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
+import com.badbones69.crazycrates.paper.cratetypes.CSGO;
+import com.badbones69.crazycrates.paper.cratetypes.FireCracker;
+import com.badbones69.crazycrates.paper.cratetypes.QuickCrate;
+import com.badbones69.crazycrates.paper.cratetypes.Roulette;
+import com.badbones69.crazycrates.paper.cratetypes.War;
+import com.badbones69.crazycrates.paper.cratetypes.Wheel;
+import com.badbones69.crazycrates.paper.cratetypes.Wonder;
+import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
+import com.badbones69.crazycrates.paper.listeners.MenuListener;
+import org.bukkit.scheduler.BukkitTask;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.common.config.types.Config;
+import us.crazycrew.crazycrates.paper.api.enums.Translation;
+import us.crazycrew.crazycrates.paper.api.events.crates.CrateOpenEvent;
 import us.crazycrew.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
@@ -33,13 +48,17 @@ import us.crazycrew.crazycrates.paper.api.support.holograms.CMIHologramsSupport;
 import us.crazycrew.crazycrates.paper.api.support.holograms.DecentHologramsSupport;
 import us.crazycrew.crazycrates.paper.api.support.holograms.HolographicDisplaysSupport;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
+import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
 import us.crazycrew.crazycrates.paper.utils.ItemUtils;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class CrateManager {
@@ -238,6 +257,280 @@ public class CrateManager {
 
         cleanDataFile();
         PreviewListener.loadButtons();
+    }
+
+    // The crate that the player is opening.
+    private final HashMap<UUID, Crate> playerOpeningCrates = new HashMap<>();
+
+    // Keys that are being used in crates. Only needed in cosmic due to it taking the key after the player picks a prize and not in a start method.
+    private final HashMap<UUID, KeyType> playerKeys = new HashMap<>();
+
+    // A list of all current crate tasks that are running that a time. Used to force stop any crates it needs to.
+    private final HashMap<UUID, BukkitTask> currentTasks = new HashMap<>();
+
+    // A list of tasks being run by the QuadCrate type.
+    private final HashMap<UUID, ArrayList<BukkitTask>> currentQuadTasks = new HashMap<>();
+
+    /**
+     * Opens a crate for a player.
+     *
+     * @param player The player that is having the crate opened for them.
+     * @param crate The crate that is being used.
+     * @param location The location that may be needed for some crate types.
+     * @param checkHand If it just checks the players hand or if it checks their inventory.
+     */
+    public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
+        CrateOpenEvent crateOpenEvent = new CrateOpenEvent(this.plugin, player, crate, keyType, checkHand, crate.getFile());
+        crateOpenEvent.callEvent();
+
+        if (crateOpenEvent.isCancelled()) {
+            List.of(
+                    "Crate " + crate.getName() + " event has been cancelled.",
+                    "A few reasons for why this happened can be found below",
+                    "",
+                    " 1) No valid prizes can be found, Likely a yaml issue.",
+                    " 2) The player does not have the permission to open the crate."
+            ).forEach(this.plugin.getLogger()::warning);
+
+            return;
+        }
+
+        switch (crate.getCrateType()) {
+            case menu -> {
+                if (this.plugin.getConfigManager().getConfig().getProperty(Config.enable_crate_menu)) MenuListener.openGUI(player); else player.sendMessage(Translation.feature_disabled.getString());
+            }
+            case csgo -> CSGO.openCSGO(player, crate, keyType, checkHand);
+            case roulette -> Roulette.openRoulette(player, crate, keyType, checkHand);
+            case wheel -> Wheel.startWheel(player, crate, keyType, checkHand);
+            case wonder -> Wonder.startWonder(player, crate, keyType, checkHand);
+            case war -> War.openWarCrate(player, crate, keyType, checkHand);
+            case quad_crate -> {
+                Location lastLocation = player.getLocation();
+                lastLocation.setPitch(0F);
+
+                boolean isRandom = crate.getFile().contains("Crate.structure.file") && !crate.getFile().getBoolean("Crate.structure.random", true);
+
+                CrateSchematic schematic = isRandom ? getCrateSchematic(crate.getFile().getString("Crate.structure.file")) : getCrateSchematics().get(new Random().nextInt(getCrateSchematics().size()));
+
+                StructureHandler handler = new StructureHandler(schematic.getSchematicFile());
+                CrateLocation crateLocation = getCrateLocation(location);
+                QuadCrateManager session = new QuadCrateManager(player, crate, keyType, crateLocation.getLocation(), lastLocation, checkHand, handler);
+
+                session.startCrate();
+            }
+            case fire_cracker -> {
+                if (CrateControlListener.inUse.containsValue(location)) {
+                    player.sendMessage(Translation.quick_crate_in_use.getString());
+                    removePlayerFromOpeningList(player);
+                    return;
+                } else {
+                    if (virtualCrate) {
+                        player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+                        removePlayerFromOpeningList(player);
+                        return;
+                    } else {
+                        CrateControlListener.inUse.put(player, location);
+                        FireCracker.startFireCracker(player, crate, keyType, location, holograms);
+                    }
+                }
+            }
+            case quick_crate -> {
+                if (CrateControlListener.inUse.containsValue(location)) {
+                    player.sendMessage(Translation.quick_crate_in_use.getString());
+                    removePlayerFromOpeningList(player);
+                    return;
+                } else {
+                    if (virtualCrate && location.equals(player.getLocation())) {
+                        player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+                        removePlayerFromOpeningList(player);
+                        return;
+                    } else {
+                        CrateControlListener.inUse.put(player, location);
+                        QuickCrate.openCrate(player, location, crate, keyType, holograms);
+                    }
+                }
+            }
+            case crate_on_the_go -> {
+                if (virtualCrate) {
+                    player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+                    removePlayerFromOpeningList(player);
+                    return;
+                } else {
+                    if (this.plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
+                        Prize prize = crate.pickPrize(player);
+                        this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
+
+                        if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
+
+                        removePlayerFromOpeningList(player);
+                    } else {
+                        MiscUtils.failedToTakeKey(player, crate);
+                    }
+                }
+            }
+        }
+
+        this.plugin.getCrazyHandler().getEventLogger().logCrateEvent(player, crate, keyType, this.plugin.getConfigManager().getConfig().getProperty(Config.log_to_file), this.plugin.getConfigManager().getConfig().getProperty(Config.log_to_console));
+    }
+
+    /**
+     * This forces a crate to end and will not give out a prize. This is meant for people who leave the server to stop any errors or lag from happening.
+     *
+     * @param player The player that the crate is being ended for.
+     */
+    public void endCrate(Player player) {
+        if (this.currentTasks.containsKey(player.getUniqueId())) {
+            this.currentTasks.get(player.getUniqueId()).cancel();
+            removeCrateTask(player);
+        }
+    }
+
+    /**
+     * Ends the tasks running by a player.
+     *
+     * @param player The player using the crate.
+     */
+    public void endQuadCrate(Player player) {
+        if (this.currentQuadTasks.containsKey(player.getUniqueId())) {
+            for (BukkitTask task : this.currentQuadTasks.get(player.getUniqueId())) {
+                task.cancel();
+            }
+
+            this.currentQuadTasks.remove(player.getUniqueId());
+        }
+    }
+
+    /**
+     * Add a quad crate task that is going on for a player.
+     *
+     * @param player The player opening the crate.
+     * @param task The task of the quad crate.
+     */
+    public void addQuadCrateTask(Player player, BukkitTask task) {
+        if (!this.currentQuadTasks.containsKey(player.getUniqueId())) {
+            this.currentQuadTasks.put(player.getUniqueId(), new ArrayList<>());
+        }
+
+        this.currentQuadTasks.get(player.getUniqueId()).add(task);
+    }
+
+    /**
+     * Checks to see if the player has a quad crate task going on.
+     *
+     * @param player The player that is being checked.
+     * @return True if they do have a task and false if not.
+     */
+    public boolean hasQuadCrateTask(Player player) {
+        return this.currentQuadTasks.containsKey(player.getUniqueId());
+    }
+
+    /**
+     * Add a crate task that is going on for a player.
+     *
+     * @param player The player opening the crate.
+     * @param task The task of the crate.
+     */
+    public void addCrateTask(Player player, BukkitTask task) {
+        this.currentTasks.put(player.getUniqueId(), task);
+    }
+
+    /**
+     * Remove a task from the list of current tasks.
+     *
+     * @param player The player using the crate.
+     */
+    public void removeCrateTask(Player player) {
+        this.currentTasks.remove(player.getUniqueId());
+    }
+
+    /**
+     * Checks to see if the player has a crate task going on.
+     *
+     * @param player The player that is being checked.
+     * @return True if they do have a task and false if not.
+     */
+    public boolean hasCrateTask(Player player) {
+        return this.currentTasks.containsKey(player.getUniqueId());
+    }
+
+    /**
+     * Add a player to the list of players that are currently opening crates.
+     *
+     * @param player The player that is opening a crate.
+     * @param crate The crate the player is opening.
+     */
+    public void addPlayerToOpeningList(Player player, Crate crate) {
+        this.playerOpeningCrates.put(player.getUniqueId(), crate);
+    }
+
+    /**
+     * Remove a player from the list of players that are opening crates.
+     *
+     * @param player The player that has finished opening a crate.
+     */
+    public void removePlayerFromOpeningList(Player player) {
+        this.playerOpeningCrates.remove(player.getUniqueId());
+    }
+
+    /**
+     * Check if a player is opening a crate.
+     *
+     * @param player The player you are checking.
+     * @return True if they are opening a crate and false if they are not.
+     */
+    public boolean isInOpeningList(Player player) {
+        return this.playerOpeningCrates.containsKey(player.getUniqueId());
+    }
+
+    /**
+     * Get the crate the player is currently opening.
+     *
+     * @param player The player you want to check.
+     * @return The Crate of which the player is opening. May return null if no crate found.
+     */
+    public Crate getOpeningCrate(Player player) {
+        return this.playerOpeningCrates.get(player.getUniqueId());
+    }
+
+    /**
+     * Set the type of key the player is opening a crate for.
+     * This is only used in the Cosmic CrateType currently.
+     *
+     * @param player The player that is opening the crate.
+     * @param keyType The KeyType that they are using.
+     */
+    public void addPlayerKeyType(Player player, KeyType keyType) {
+        this.playerKeys.put(player.getUniqueId(), keyType);
+    }
+
+    /**
+     * Remove the player from the list as they have finished the crate.
+     * Currently, only used in the Cosmic CrateType.
+     *
+     * @param player The player you are removing.
+     */
+    public void removePlayerKeyType(Player player) {
+        this.playerKeys.remove(player.getUniqueId());
+    }
+
+    /**
+     * Check if the player is in the list.
+     *
+     * @param player The player you are checking.
+     * @return True if they are in the list and false if not.
+     */
+    public boolean hasPlayerKeyType(Player player) {
+        return this.playerKeys.containsKey(player.getUniqueId());
+    }
+
+    /**
+     * The key type the player's current crate is using.
+     *
+     * @param player The player that is using the crate.
+     * @return The key type of the crate the player is using.
+     */
+    public KeyType getPlayerKeyType(Player player) {
+        return this.playerKeys.get(player.getUniqueId());
     }
 
     /**

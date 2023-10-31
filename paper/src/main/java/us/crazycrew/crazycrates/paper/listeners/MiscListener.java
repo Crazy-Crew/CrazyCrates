@@ -6,7 +6,6 @@ import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -25,6 +24,7 @@ public class MiscListener implements Listener {
     @NotNull
     private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
 
+    @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -48,9 +48,9 @@ public class MiscListener implements Listener {
             return;
         }
 
-        if (this.plugin.getCrazyManager().isInOpeningList(event.getPlayer())) {
+        if (this.crateManager.isInOpeningList(event.getPlayer())) {
             // DrBot Start
-            if (this.plugin.getCrazyManager().getOpeningCrate(event.getPlayer()).getCrateType().equals(CrateType.quick_crate)) return;
+            if (this.crateManager.getOpeningCrate(event.getPlayer()).getCrateType().equals(CrateType.quick_crate)) return;
             // DrBot End
             event.setCancelled(true);
         }

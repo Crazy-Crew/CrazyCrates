@@ -35,7 +35,7 @@ Crate:
     commands:
       - 'put your command here.'
   # A default message if the prize doesn't have any Messages
-  # i.e Messages: [] or the value isn't there.
+  # i.e. Messages: [] or the value isn't there.
   Prize-Message:
     - '&7You have won &c%reward% &7from &c%crate%.'
   # Item the crate is in the GUI
@@ -140,8 +140,7 @@ Crate:
       DisplayName: '&b&lCheap Helmet'
       DisplayItem: 'GOLDEN_HELMET'
       # Only works on items with durability. This will make the item appear more damaged.
-      # It does not set the durability but subtracts this number from the durability
-      # Durability is 100, It subtracts 50.
+      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 50.
       # It cannot be 0.
       DisplayDamage: 50
       DisplayTrim:

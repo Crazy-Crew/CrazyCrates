@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
@@ -28,7 +28,7 @@ public class War implements Listener {
     private static final String crateNameString = "Crate.CrateName";
     private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
-    private static final CrazyManager crazyManager = plugin.getCrazyManager();
+    private static final CrateManager crateManager = plugin.getCrateManager();
 
     private static HashMap<ItemStack, String> colorCodes;
     private static final HashMap<Player, Boolean> canPick = new HashMap<>();
@@ -44,7 +44,7 @@ public class War implements Listener {
 
         if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
             MiscUtils.failedToTakeKey(player, crate);
-            crazyManager.removePlayerFromOpeningList(player);
+            crateManager.removePlayerFromOpeningList(player);
             canClose.remove(player);
             canPick.remove(player);
             return;
@@ -54,7 +54,7 @@ public class War implements Listener {
     }
     
     private static void startWar(final Player player, final Inventory inv, final Crate crate, final String inventoryTitle) {
-        crazyManager.addCrateTask(player, new BukkitRunnable() {
+        crateManager.addCrateTask(player, new BukkitRunnable() {
             int full = 0;
             int open = 0;
             
@@ -84,7 +84,7 @@ public class War implements Listener {
     }
     
     private static void setRandomPrizes(Player player, Inventory inv, Crate crate, String inventoryTitle) {
-        if (crazyManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(MsgUtils.sanitizeColor(crazyManager.getOpeningCrate(player).getFile().getString(crateNameString)))) {
+        if (crateManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(MsgUtils.sanitizeColor(crateManager.getOpeningCrate(player).getFile().getString(crateNameString)))) {
             for (int i = 0; i < 9; i++) {
                 inv.setItem(i, crate.pickPrize(player).getDisplayItem());
             }
@@ -92,7 +92,7 @@ public class War implements Listener {
     }
     
     private static void setRandomGlass(Player player, Inventory inv, String inventoryTitle) {
-        if (crazyManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(MsgUtils.sanitizeColor(crazyManager.getOpeningCrate(player).getFile().getString(crateNameString)))) {
+        if (crateManager.isInOpeningList(player) && inventoryTitle.equalsIgnoreCase(MsgUtils.sanitizeColor(crateManager.getOpeningCrate(player).getFile().getString(crateNameString)))) {
 
             if (colorCodes == null) colorCodes = getColorCode();
 
@@ -134,8 +134,8 @@ public class War implements Listener {
         final Player player = (Player) e.getWhoClicked();
         final Inventory inv = e.getInventory();
 
-        if (canPick.containsKey(player) && crazyManager.isInOpeningList(player)) {
-            Crate crate = crazyManager.getOpeningCrate(player);
+        if (canPick.containsKey(player) && crateManager.isInOpeningList(player)) {
+            Crate crate = crateManager.getOpeningCrate(player);
 
             if (crate.getCrateType() == CrateType.war && canPick.get(player)) {
                 ItemStack item = e.getCurrentItem();
@@ -145,7 +145,7 @@ public class War implements Listener {
                     Prize prize = crate.pickPrize(player);
                     inv.setItem(slot, prize.getDisplayItem());
 
-                    if (crazyManager.hasCrateTask(player)) crazyManager.endCrate(player);
+                    if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
 
                     canPick.remove(player);
                     canClose.put(player, true);
@@ -154,11 +154,11 @@ public class War implements Listener {
                     if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
                     plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-                    crazyManager.removePlayerFromOpeningList(player);
+                    crateManager.removePlayerFromOpeningList(player);
                     player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 1, 1);
                     // Sets all other non-picked prizes to show what they could have been.
 
-                    crazyManager.addCrateTask(player, new BukkitRunnable() {
+                    crateManager.addCrateTask(player, new BukkitRunnable() {
                         @Override
                         public void run() {
 
@@ -166,10 +166,10 @@ public class War implements Listener {
                                 if (i != slot) inv.setItem(i, crate.pickPrize(player).getDisplayItem());
                             }
 
-                            if (crazyManager.hasCrateTask(player)) crazyManager.endCrate(player);
+                            if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
 
                             // Removing other items then the prize.
-                            crazyManager.addCrateTask(player, new BukkitRunnable() {
+                            crateManager.addCrateTask(player, new BukkitRunnable() {
                                 @Override
                                 public void run() {
 
@@ -177,13 +177,13 @@ public class War implements Listener {
                                         if (i != slot) inv.setItem(i, new ItemStack(Material.AIR));
                                     }
 
-                                    if (crazyManager.hasCrateTask(player)) crazyManager.endCrate(player);
+                                    if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
 
                                     // Closing the inventory when finished.
-                                    crazyManager.addCrateTask(player, new BukkitRunnable() {
+                                    crateManager.addCrateTask(player, new BukkitRunnable() {
                                         @Override
                                         public void run() {
-                                            if (crazyManager.hasCrateTask(player)) crazyManager.endCrate(player);
+                                            if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
 
                                             player.closeInventory();
                                         }
@@ -202,11 +202,11 @@ public class War implements Listener {
         Player player = (Player) e.getPlayer();
 
         if (canClose.containsKey(player) && canClose.get(player)) {
-            for (Crate crate : crazyManager.getCrates()) {
+            for (Crate crate : crateManager.getCrates()) {
                 if (crate.getCrateType() == CrateType.war && e.getView().getTitle().equalsIgnoreCase(MsgUtils.sanitizeColor(crate.getFile().getString(crateNameString)))) {
                     canClose.remove(player);
 
-                    if (crazyManager.hasCrateTask(player)) crazyManager.endCrate(player);
+                    if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
                 }
             }
         }

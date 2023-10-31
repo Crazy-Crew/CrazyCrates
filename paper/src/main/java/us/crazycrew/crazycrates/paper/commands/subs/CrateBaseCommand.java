@@ -13,7 +13,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.EventLogger;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
@@ -59,14 +59,13 @@ public class CrateBaseCommand extends BaseCommand {
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    @NotNull
-    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
+
 
     @NotNull
     private final FileManager fileManager = this.plugin.getFileManager();
 
     @NotNull
-    private final EventLogger eventLogger = new EventLogger();
+    private final EventLogger eventLogger = this.plugin.getEventLogger();
 
     @NotNull
     private final SettingsManager config = this.plugin.getConfigManager().getConfig();
@@ -343,7 +342,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        if (this.crazyManager.isInOpeningList(player)) {
+        if (this.crateManager.isInOpeningList(player)) {
             player.sendMessage(Translation.already_opening_crate.getString());
             return;
         }
@@ -389,7 +388,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        this.crazyManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
+        this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
 
         HashMap<String, String> placeholders = new HashMap<>();
 
@@ -413,7 +412,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        this.crazyManager.addPlayerToOpeningList(player, crate);
+        this.crateManager.addPlayerToOpeningList(player, crate);
 
         int keys = this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName());
         int keysUsed = 0;
@@ -440,11 +439,11 @@ public class CrateBaseCommand extends BaseCommand {
         if (!this.plugin.getCrazyHandler().getUserManager().takeKeys(keysUsed, player.getUniqueId(), crate.getName(), KeyType.virtual_key, false)) {
             MiscUtils.failedToTakeKey(player, crate);
             CrateControlListener.inUse.remove(player);
-            this.crazyManager.removePlayerFromOpeningList(player);
+            this.crateManager.removePlayerFromOpeningList(player);
             return;
         }
 
-        this.crazyManager.removePlayerFromOpeningList(player);
+        this.crateManager.removePlayerFromOpeningList(player);
     }
 
     @SubCommand("forceopen")
@@ -457,7 +456,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        if (this.crazyManager.isInOpeningList(player)) {
+        if (this.crateManager.isInOpeningList(player)) {
             sender.sendMessage(Translation.already_opening_crate.getString());
             return;
         }
@@ -475,7 +474,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        this.crazyManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), true, false);
+        this.crateManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), true, false);
 
         HashMap<String, String> placeholders = new HashMap<>();
 

@@ -258,20 +258,3 @@ public class SkullCreator {
         return Base64.getEncoder().encodeToString(toEncode.getBytes());
     }
 }
-
-/* Format for skull
-{
-   display:{
-      Name:"Cheese"
-   },
-   SkullOwner:{
-      Id:"9c919b83-f3fe-456f-a824-7d1d08cc8bd2",
-      Properties:{
-         textures:[
-            {
-               Value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTU1ZDYxMWE4NzhlODIxMjMxNzQ5YjI5NjU3MDhjYWQ5NDI2NTA2NzJkYjA5ZTI2ODQ3YTg4ZTJmYWMyOTQ2In19fQ=="
-            }
-         ]
-      }
-   }
-}*/
