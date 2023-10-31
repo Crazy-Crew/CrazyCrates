@@ -40,7 +40,7 @@ public class Config implements SettingsHolder {
     public static final Property<Boolean> log_to_console = newProperty("Settings.Log-Console", false);
 
     @Comment("The name of the gui (/crates)")
-    public static final Property<String> inventory_name = newProperty("Settings.InventoryName", "");
+    public static final Property<String> inventory_name = newProperty("Settings.InventoryName", "&b&lCrazy &4&lCrates");
 
     @Comment("The size of the gui (/crates)")
     public static final Property<Integer> inventory_size = newProperty("Settings.InventorySize", 45);
