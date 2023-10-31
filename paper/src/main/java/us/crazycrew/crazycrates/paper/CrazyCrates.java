@@ -49,6 +49,22 @@ public class CrazyCrates extends JavaPlugin {
                 getServer().getConsoleSender().sendMessage(MsgUtils.color(this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.command_prefix) + "&6&l" + value.name() + " &c&lNOT FOUND"));
             }
         }
+
+        List.of(
+                "CrazyCrate Update: " + getDescription().getVersion() + " is one of 4 major updates.",
+                "Version: " + getDescription().getVersion() + " is currently backwards compatible.",
+                "Please submit any bugs at https://github.com/Crazy-Crew/CrazyCrates/issues",
+                "",
+                "I will wait between releasing updates for bug reports",
+                "The next versions after will come quickly such as Version 1.17, Version 1.18, Version 1.19 and Version 2.0",
+                "1.17, 1.18 and 1.19 will likely have slight config migrations and overhauls in preparation for 2.0",
+                "Everything will be auto-converted when possible but new features will also be included as well",
+                "which you can find in changelogs when they release.... You can also submit feature requests as I am categorizing them",
+                "",
+                "2.0 is a hard break, Legacy color codes will no longer work, Configurations will be fully migrated, Placeholders will change and so on.",
+                "We only support https://papermc.io in 2.0 and will fully migrate to Modrinth and Hangar.",
+                "After that's done, I'll be adding practically anything including light gui editors or in-game editors ( improved /cc additem ) and crate conversions."
+        ).forEach(getLogger()::warning);
     }
 
     @Override
