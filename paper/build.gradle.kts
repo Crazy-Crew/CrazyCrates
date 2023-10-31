@@ -56,6 +56,18 @@ tasks {
         minecraftVersion("1.20.2")
     }
 
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = rootProject.group.toString()
+                artifactId = "${rootProject.name.lowercase()}-${project.name.lowercase()}-api"
+                version = rootProject.version.toString()
+
+                from(component)
+            }
+        }
+    }
+
     shadowJar {
         listOf(
             "de.tr7zw.changeme.nbtapi",

@@ -74,9 +74,9 @@ public class MenuListener implements Listener {
 
                         if (option.contains("Lore:")) {
                             option = option.replace("Lore:", "");
-                            String[] d = option.split(",");
+                            String[] lore = option.split(",");
 
-                            for (String l : d) {
+                            for (String line : lore) {
                                 option = getCrates(player, option);
 
                                 item.addLore(option.replaceAll("%player%", player.getName()));
