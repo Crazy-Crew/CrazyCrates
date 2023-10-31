@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.paper.listeners;
 
+import ch.jalu.configme.SettingsManager;
+import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
@@ -29,77 +31,79 @@ public class MenuListener implements Listener {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
+    private static final SettingsManager config = plugin.getConfigManager().getConfig();
+
     private static final CrazyHandler crazyHandler = plugin.getCrazyHandler();
 
     private static final CrazyManager crazyManager = plugin.getCrazyManager();
     
     public static void openGUI(Player player) {
-        FileConfiguration config = Files.CONFIG.getFile();
+        int size = config.getProperty(Config.inventory_size);
+        Inventory inv = player.getServer().createInventory(null, size, MsgUtils.sanitizeColor(config.getProperty(Config.inventory_name)));
 
-        int size = config.getInt("Settings.InventorySize");
-        Inventory inv = player.getServer().createInventory(null, size, MsgUtils.sanitizeColor(Files.CONFIG.getFile().getString("Settings.InventoryName")));
+        if (config.getProperty(Config.filler_toggle)) {
+            String id = config.getProperty(Config.filler_item);
+            String name = config.getProperty(Config.filler_name);
+            List<String> lore = config.getProperty(Config.filler_lore);
+            ItemStack item = new ItemBuilder().setMaterial(id).setName(name).setLore(lore).build();
 
-        if (config.contains("Settings.Filler.Toggle")) {
-            if (config.getBoolean("Settings.Filler.Toggle")) {
-                String id = config.getString("Settings.Filler.Item");
-                String name = config.getString("Settings.Filler.Name");
-                List<String> lore = config.getStringList("Settings.Filler.Lore");
-                ItemStack item = new ItemBuilder().setMaterial(id).setName(name).setLore(lore).build();
-
-                for (int i = 0; i < size; i++) {
-                    inv.setItem(i, item.clone());
-                }
+            for (int i = 0; i < size; i++) {
+                inv.setItem(i, item.clone());
             }
         }
 
-        if (config.contains("Settings.GUI-Customizer")) {
-            for (String custom : config.getStringList("Settings.GUI-Customizer")) {
-                int slot = 0;
-                ItemBuilder item = new ItemBuilder();
-                String[] split = custom.split(", ");
+        if (config.getProperty(Config.gui_customizer_toggle)) {
+            List<String> customizer = config.getProperty(Config.gui_customizer);
 
-                for (String option : split) {
+            if (!customizer.isEmpty()) {
+                for (String custom : customizer) {
+                    int slot = 0;
+                    ItemBuilder item = new ItemBuilder();
+                    String[] split = custom.split(", ");
 
-                    if (option.contains("Item:")) item.setMaterial(option.replace("Item:", ""));
+                    for (String option : split) {
 
-                    if (option.contains("Name:")) {
-                        option = option.replace("Name:", "");
+                        if (option.contains("Item:")) item.setMaterial(option.replace("Item:", ""));
 
-                        option = getCrates(player, option);
+                        if (option.contains("Name:")) {
+                            option = option.replace("Name:", "");
 
-                        item.setName(option.replaceAll("%player%", player.getName()));
-                    }
-
-                    if (option.contains("Lore:")) {
-                        option = option.replace("Lore:", "");
-                        String[] d = option.split(",");
-
-                        for (String l : d) {
                             option = getCrates(player, option);
 
-                            item.addLore(option.replaceAll("%player%", player.getName()));
+                            item.setName(option.replaceAll("%player%", player.getName()));
                         }
+
+                        if (option.contains("Lore:")) {
+                            option = option.replace("Lore:", "");
+                            String[] d = option.split(",");
+
+                            for (String l : d) {
+                                option = getCrates(player, option);
+
+                                item.addLore(option.replaceAll("%player%", player.getName()));
+                            }
+                        }
+
+                        if (option.contains("Glowing:")) item.setGlow(Boolean.parseBoolean(option.replace("Glowing:", "")));
+
+                        if (option.contains("Player:")) item.setPlayerName(option.replaceAll("%player%", player.getName()));
+
+                        if (option.contains("Slot:")) slot = Integer.parseInt(option.replace("Slot:", ""));
+
+                        if (option.contains("Unbreakable-Item")) item.setUnbreakable(Boolean.parseBoolean(option.replace("Unbreakable-Item:", "")));
+
+                        if (option.contains("Hide-Item-Flags")) item.hideItemFlags(Boolean.parseBoolean(option.replace("Hide-Item-Flags:", "")));
                     }
 
-                    if (option.contains("Glowing:")) item.setGlow(Boolean.parseBoolean(option.replace("Glowing:", "")));
+                    if (slot > size) continue;
 
-                    if (option.contains("Player:")) item.setPlayerName(option.replaceAll("%player%", player.getName()));
-
-                    if (option.contains("Slot:")) slot = Integer.parseInt(option.replace("Slot:", ""));
-
-                    if (option.contains("Unbreakable-Item")) item.setUnbreakable(Boolean.parseBoolean(option.replace("Unbreakable-Item:", "")));
-
-                    if (option.contains("Hide-Item-Flags")) item.hideItemFlags(Boolean.parseBoolean(option.replace("Hide-Item-Flags:", "")));
+                    slot--;
+                    inv.setItem(slot, item.build());
                 }
-
-                if (slot > size) continue;
-
-                slot--;
-                inv.setItem(slot, item.build());
             }
         }
 
-        for (Crate crate : crazyManager.getCrates()) {
+        for (Crate crate : plugin.getCrateManager().getCrates()) {
             FileConfiguration file = crate.getFile();
 
             if (file != null) {
@@ -131,7 +135,7 @@ public class MenuListener implements Listener {
     }
 
     private static String getCrates(Player player, String option) {
-        for (Crate crate : crazyManager.getCrates()) {
+        for (Crate crate : plugin.getCrateManager().getCrates()) {
             if (crate.getCrateType() != CrateType.menu) {
                 option = option.replaceAll("%" + crate.getName().toLowerCase() + "%", crazyHandler.getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) + "")
                 .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", crazyHandler.getUserManager().getPhysicalKeys(player.getUniqueId(), crate.getName()) + "")
@@ -147,14 +151,13 @@ public class MenuListener implements Listener {
     public void onInvClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
         Inventory inv = e.getClickedInventory();
-        FileConfiguration config = Files.CONFIG.getFile();
 
         if (inv != null) {
-            for (Crate crate : crazyManager.getCrates()) {
+            for (Crate crate : plugin.getCrateManager().getCrates()) {
                 if (crate.getCrateType() != CrateType.menu && crate.isCrateMenu(e.getView())) return;
             }
 
-            if (e.getView().getTitle().equals(MsgUtils.sanitizeColor(config.getString("Settings.InventoryName")))) {
+            if (e.getView().getTitle().equals(MsgUtils.sanitizeColor(config.getProperty(Config.inventory_name)))) {
                 e.setCancelled(true);
 
                 if (e.getCurrentItem() != null) {
@@ -191,17 +194,15 @@ public class MenuListener implements Listener {
                                 if (plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
                                     hasKey = true;
                                 } else {
-                                    if (Files.CONFIG.getFile().getBoolean("Settings.Virtual-Accepts-Physical-Keys") && crazyManager.hasPhysicalKey(player, crate, false)) {
+                                    if (config.getProperty(Config.virtual_accepts_physical_keys) && crazyHandler.getUserManager().hasPhysicalKey(player.getUniqueId(), crate.getName(), false)) {
                                         hasKey = true;
                                         keyType = KeyType.physical_key;
                                     }
                                 }
 
                                 if (!hasKey) {
-                                    if (config.contains("Settings.Need-Key-Sound")) {
-                                        Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound", "ENTITY_VILLAGER_NO"));
-
-                                        player.playSound(player.getLocation(), sound, 1f, 1f);
+                                    if (config.getProperty(Config.need_key_sound_toggle)) {
+                                        player.playSound(player.getLocation(), Sound.valueOf(config.getProperty(Config.need_key_sound)), 1f, 1f);
                                     }
 
                                     player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
@@ -230,6 +231,6 @@ public class MenuListener implements Listener {
     }
     
     private ArrayList<String> getDisabledWorlds() {
-        return new ArrayList<>(Files.CONFIG.getFile().getStringList("Settings.DisabledWorlds"));
+        return new ArrayList<>(config.getProperty(Config.disabledWorlds));
     }
 }

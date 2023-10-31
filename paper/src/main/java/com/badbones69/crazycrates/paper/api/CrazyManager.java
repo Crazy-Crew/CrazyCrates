@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.paper.api;
 
+import ch.jalu.configme.SettingsManager;
+import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
@@ -34,6 +36,9 @@ public class CrazyManager {
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
+    @NotNull
+    private final SettingsManager config = this.plugin.getConfigManager().getConfig();
 
     // The crate that the player is opening.
     private final HashMap<UUID, Crate> playerOpeningCrates = new HashMap<>();
@@ -77,13 +82,9 @@ public class CrazyManager {
             return;
         }
 
-        FileConfiguration config = Files.CONFIG.getFile();
-
         switch (crate.getCrateType()) {
             case menu -> {
-                boolean openMenu = config.getBoolean("Settings.Enable-Crate-Menu");
-
-                if (openMenu) MenuListener.openGUI(player); else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
+                if (this.config.getProperty(Config.enable_crate_menu)) MenuListener.openGUI(player); else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
             }
             case csgo -> CSGO.openCSGO(player, crate, keyType, checkHand);
             case roulette -> Roulette.openRoulette(player, crate, keyType, checkHand);
@@ -156,10 +157,7 @@ public class CrazyManager {
             }
         }
 
-        //boolean logFile = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-File");
-        //boolean logConsole = FileManager.Files.CONFIG.getFile().getBoolean("Settings.Crate-Actions.Log-Console");
-
-        //this.plugin.getCrazyCrates().getStarter().getEventLogger().logCrateEvent(player, crate, keyType, logFile, logConsole);
+        //this.plugin.getCrazyCrates().getStarter().getEventLogger().logCrateEvent(player, crate, keyType, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
     }
 
     /**

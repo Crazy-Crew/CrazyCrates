@@ -1,5 +1,6 @@
 package us.crazycrew.crazycrates.paper.api.users;
 
+import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
@@ -29,8 +30,6 @@ public class BukkitUserManager extends UserManager {
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final @NotNull FileConfiguration data = Files.DATA.getFile();
-    
-    private final @NotNull FileConfiguration config = Files.CONFIG.getFile();
 
     @Override
     public Player getUser(UUID uuid) {
@@ -115,14 +114,10 @@ public class BukkitUserManager extends UserManager {
                     return;
                 }
 
-                boolean giveKeys = this.config.getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
-
-                if (giveKeys) {
+                if (this.plugin.getConfigManager().getConfig().getProperty(Config.give_virtual_keys_when_inventory_full)) {
                     addVirtualKeys(amount, player.getUniqueId(), crate.getName());
 
-                    boolean fullMessage = Files.CONFIG.getFile().getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full-Message");
-
-                    if (fullMessage) player.sendMessage(Messages.CANNOT_GIVE_PLAYER_KEYS.getMessage().replaceAll("%amount%", String.valueOf(amount)).replaceAll("%key%", crate.getName()));
+                    if (this.plugin.getConfigManager().getConfig().getProperty(Config.notify_player_when_inventory_full)) player.sendMessage(Messages.CANNOT_GIVE_PLAYER_KEYS.getMessage().replaceAll("%amount%", String.valueOf(amount)).replaceAll("%key%", crate.getName()));
 
                     return;
                 }

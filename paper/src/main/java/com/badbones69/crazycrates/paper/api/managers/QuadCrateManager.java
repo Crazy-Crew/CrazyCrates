@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.api.managers;
 
+import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
@@ -258,7 +259,7 @@ public class QuadCrateManager {
                 endCrateForce(true);
                 player.sendMessage(Messages.OUT_OF_TIME.getMessage());
             }
-        }.runTaskLater(this.plugin, this.crazyManager.getQuadCrateTimer()));
+        }.runTaskLater(this.plugin, this.plugin.getConfigManager().getConfig().getProperty(Config.quad_crate_timer)));
     }
 
     /**

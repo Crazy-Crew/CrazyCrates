@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.paper.listeners;
 
+import ch.jalu.configme.SettingsManager;
+import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
@@ -45,7 +47,10 @@ public class CrateControlListener implements Listener { // Crate Control
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     @NotNull
-    private final CrazyManager crazyManager = plugin.getCrazyManager();
+    private final SettingsManager config = this.plugin.getConfigManager().getConfig();
+
+    @NotNull
+    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
@@ -64,7 +69,6 @@ public class CrateControlListener implements Listener { // Crate Control
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCrateOpen(PlayerInteractEvent e) {
         Player player = e.getPlayer();
-        FileConfiguration config = Files.CONFIG.getFile();
 
         if (e.getHand() == EquipmentSlot.OFF_HAND) {
             if (this.plugin.getCrateManager().isKey(player.getInventory().getItemInOffHand())) {
@@ -122,10 +126,8 @@ public class CrateControlListener implements Listener { // Crate Control
                 e.setCancelled(true);
 
                 if (crate.getCrateType() == CrateType.menu) {
-                    boolean openMenu = config.getBoolean("Settings.Enable-Crate-Menu");
-
                     //This is to stop players in QuadCrate to not be able to try and open a crate set to menu.
-                    if (!this.crazyManager.isInOpeningList(player) && openMenu) MenuListener.openGUI(player);
+                    if (!this.crazyManager.isInOpeningList(player) && this.config.getProperty(Config.enable_crate_menu)) MenuListener.openGUI(player);
 
                     return;
                 }
@@ -148,12 +150,12 @@ public class CrateControlListener implements Listener { // Crate Control
                         return;
                     }
 
-                    if (crate.getCrateType() != CrateType.crate_on_the_go && keyInHand && this.crateManager.isKeyFromCrate(key, crate) && config.getBoolean("Settings.Physical-Accepts-Physical-Keys")) {
+                    if (crate.getCrateType() != CrateType.crate_on_the_go && keyInHand && this.crateManager.isKeyFromCrate(key, crate) && this.config.getProperty(Config.physical_accepts_physical_keys)) {
                         hasKey = true;
                         isPhysical = true;
                     }
 
-                    if (config.getBoolean("Settings.Physical-Accepts-Virtual-Keys") && this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) hasKey = true;
+                    if (this.config.getProperty(Config.physical_accepts_virtual_keys) && this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) hasKey = true;
 
                     if (hasKey) {
                         // Checks if the player uses the quick crate again.
@@ -189,12 +191,10 @@ public class CrateControlListener implements Listener { // Crate Control
                         this.crazyManager.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true);
                     } else {
                         if (crate.getCrateType() != CrateType.crate_on_the_go) {
-                            if (config.getBoolean("Settings.KnockBack")) knockBack(player, clickedBlock.getLocation());
+                            if (this.config.getProperty(Config.knock_back)) knockBack(player, clickedBlock.getLocation());
 
-                            if (config.contains("Settings.Need-Key-Sound")) {
-                                Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound", "ENTITY_VILLAGER_NO"));
-
-                                player.playSound(player.getLocation(), sound, 1f, 1f);
+                            if (this.config.getProperty(Config.need_key_sound_toggle)) {
+                                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), 1f, 1f);
                             }
 
                             player.sendMessage(Messages.NO_KEY.getMessage("%Key%", keyName));

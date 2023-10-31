@@ -1,5 +1,7 @@
 package us.crazycrew.crazycrates.paper.commands.subs;
 
+import ch.jalu.configme.SettingsManager;
+import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.EventLogger;
@@ -59,7 +61,7 @@ public class CrateBaseCommand extends BaseCommand {
     private final EventLogger eventLogger = new EventLogger();
 
     @NotNull
-    private final FileConfiguration config = Files.CONFIG.getFile();
+    private final SettingsManager config = this.plugin.getConfigManager().getConfig();
 
     @NotNull
     private final FileConfiguration locations = Files.LOCATIONS.getFile();
@@ -67,10 +69,7 @@ public class CrateBaseCommand extends BaseCommand {
     @Default
     @Permission(value = "crazycrates.command.player.menu", def = PermissionDefault.TRUE)
     public void onDefaultMenu(Player player) {
-        boolean openMenu = this.config.getBoolean("Settings.Enable-Crate-Menu");
-
-        if (openMenu) MenuListener.openGUI(player);
-        else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
+        if (this.config.getProperty(Config.enable_crate_menu)) MenuListener.openGUI(player); else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
     }
 
     @SubCommand("help")
@@ -123,10 +122,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         player.sendMessage(Messages.RECEIVED_TRANSFERRED_KEYS.getMessage(placeholders));
 
-        boolean logFile = this.config.getBoolean("Settings.Crate-Actions.Log-File");
-        boolean logConsole = this.config.getBoolean("Settings.Crate-Actions.Log-Console");
-
-        this.eventLogger.logKeyEvent(player, sender, crate, KeyType.virtual_key, EventLogger.KeyEventType.KEY_EVENT_RECEIVED, logFile, logConsole);
+        this.eventLogger.logKeyEvent(player, sender, crate, KeyType.virtual_key, EventLogger.KeyEventType.KEY_EVENT_RECEIVED, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
     }
 
     @SubCommand("admin-help")
@@ -358,7 +354,7 @@ public class CrateBaseCommand extends BaseCommand {
         if (this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
             hasKey = true;
         } else {
-            if (this.config.getBoolean("Settings.Virtual-Accepts-Physical-Keys")) {
+            if (this.config.getProperty(Config.virtual_accepts_physical_keys)) {
                 if (this.plugin.getCrazyHandler().getUserManager().hasPhysicalKey(player.getUniqueId(), crate.getName(), false)) {
                     hasKey = true;
                     keyType = KeyType.physical_key;
@@ -367,10 +363,8 @@ public class CrateBaseCommand extends BaseCommand {
         }
 
         if (!hasKey) {
-            if (this.config.contains("Settings.Need-Key-Sound")) {
-                Sound sound = Sound.valueOf(this.config.getString("Settings.Need-Key-Sound"));
-
-                player.playSound(player.getLocation(), sound, 1f, 1f);
+            if (this.config.getProperty(Config.need_key_sound_toggle)) {
+                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), 1f, 1f);
             }
 
             player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
@@ -396,10 +390,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         sender.sendMessage(Messages.OPENED_A_CRATE.getMessage(placeholders));
 
-        boolean logFile = this.config.getBoolean("Settings.Crate-Actions.Log-File");
-        boolean logConsole = this.config.getBoolean("Settings.Crate-Actions.Log-Console");
-
-        this.eventLogger.logKeyEvent(player, sender, crate, keyType, EventLogger.KeyEventType.KEY_EVENT_REMOVED, logFile, logConsole);
+        this.eventLogger.logKeyEvent(player, sender, crate, keyType, EventLogger.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
     }
 
     @SubCommand("mass-open")
@@ -485,10 +476,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         sender.sendMessage(Messages.OPENED_A_CRATE.getMessage(placeholders));
 
-        boolean logFile = this.config.getBoolean("Settings.Crate-Actions.Log-File");
-        boolean logConsole = this.config.getBoolean("Settings.Crate-Actions.Log-Console");
-
-        this.eventLogger.logKeyEvent(player, sender, crate, KeyType.free_key, EventLogger.KeyEventType.KEY_EVENT_REMOVED, logFile, logConsole);
+        this.eventLogger.logKeyEvent(player, sender, crate, KeyType.free_key, EventLogger.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
     }
 
     @SubCommand("set")
@@ -572,9 +560,6 @@ public class CrateBaseCommand extends BaseCommand {
     private void addKey(CommandSender sender, Player player, OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount) {
         PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
 
-        boolean logFile = this.config.getBoolean("Settings.Crate-Actions.Log-File");
-        boolean logConsole = this.config.getBoolean("Settings.Crate-Actions.Log-Console");
-
         this.plugin.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) return;
@@ -592,13 +577,13 @@ public class CrateBaseCommand extends BaseCommand {
             placeholders.put("%player%", player.getName());
             placeholders.put("%key%", crate.getKey().getItemMeta().getDisplayName());
 
-            boolean fullMessage = this.config.getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full-Message");
-            boolean inventoryCheck = this.config.getBoolean("Settings.Give-Virtual-Keys-When-Inventory-Full");
+            boolean fullMessage = this.config.getProperty(Config.notify_player_when_inventory_full);
+            boolean inventoryCheck = this.config.getProperty(Config.give_virtual_keys_when_inventory_full);
 
             sender.sendMessage(Messages.GIVEN_A_PLAYER_KEYS.getMessage(placeholders));
             if (!inventoryCheck || !fullMessage && !MiscUtils.isInventoryFull(player) && player.isOnline()) player.sendMessage(Messages.OBTAINING_KEYS.getMessage(placeholders));
 
-            this.eventLogger.logKeyEvent(player, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, logFile, logConsole);
+            this.eventLogger.logKeyEvent(player, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
 
             return;
         }
@@ -613,7 +598,7 @@ public class CrateBaseCommand extends BaseCommand {
 
             sender.sendMessage(Messages.GIVEN_OFFLINE_PLAYER_KEYS.getMessage(placeholders));
 
-            this.eventLogger.logKeyEvent(offlinePlayer, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, logFile, logConsole);
+            this.eventLogger.logKeyEvent(offlinePlayer, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
         }
     }
 
@@ -644,9 +629,6 @@ public class CrateBaseCommand extends BaseCommand {
     }
 
     private void takeKey(CommandSender sender, Player player, OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount) {
-        boolean logFile = this.config.getBoolean("Settings.Crate-Actions.Log-File");
-        boolean logConsole = this.config.getBoolean("Settings.Crate-Actions.Log-Console");
-
         if (player != null) {
             this.plugin.getCrazyHandler().getUserManager().takeKeys(amount, player.getUniqueId(), crate.getName(), type, false);
 
@@ -657,7 +639,7 @@ public class CrateBaseCommand extends BaseCommand {
 
             sender.sendMessage(Messages.TAKE_A_PLAYER_KEYS.getMessage(placeholders));
 
-            this.eventLogger.logKeyEvent(player, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_REMOVED, logFile, logConsole);
+            this.eventLogger.logKeyEvent(player, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
 
             return;
         }
@@ -713,10 +695,7 @@ public class CrateBaseCommand extends BaseCommand {
 
             this.plugin.getCrazyHandler().getUserManager().addKeys(amount, onlinePlayer.getUniqueId(), crate.getName(), type);
 
-            boolean logFile = this.config.getBoolean("Settings.Crate-Actions.Log-File");
-            boolean logConsole = this.config.getBoolean("Settings.Crate-Actions.Log-Console");
-
-            this.eventLogger.logKeyEvent(onlinePlayer, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, logFile, logConsole);
+            this.eventLogger.logKeyEvent(onlinePlayer, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
         }
     }
 }

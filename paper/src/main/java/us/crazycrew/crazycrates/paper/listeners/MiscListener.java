@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
 
 public class MiscListener implements Listener {
@@ -23,6 +24,8 @@ public class MiscListener implements Listener {
 
     @NotNull
     private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(org.bukkit.event.player.PlayerJoinEvent e) {
@@ -35,12 +38,12 @@ public class MiscListener implements Listener {
         this.plugin.getCrazyManager().loadOfflinePlayersKeys(player);
 
         // Also add the new data.
-        this.crazyHandler.getUserManager().loadOfflinePlayersKeys(player, this.crazyHandler.getCrateManager().getCrates());
+        this.crazyHandler.getUserManager().loadOfflinePlayersKeys(player, this.crateManager.getCrates());
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerAttemptPickUp(PlayerAttemptPickupItemEvent event) {
-        if (this.plugin.getCrazyManager().isDisplayReward(event.getItem())) {
+        if (this.crateManager.isDisplayReward(event.getItem())) {
             event.setCancelled(true);
             return;
         }
