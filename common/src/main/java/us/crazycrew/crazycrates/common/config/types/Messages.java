@@ -27,7 +27,7 @@ public class Messages implements SettingsHolder {
         conf.setComment("Messages", header);
     }
 
-
+    @Comment("Only activates when you try to use an ender pearl while opening a crate.")
     public static final Property<String> no_teleporting = newProperty("Messages.No-Teleporting", "%prefix%&cYou may not teleport away while opening a Crate.");
 
     public static final Property<String> no_commands_while_using_crate = newProperty("Messages.No-Commands-While-In-Crate", "%prefix%&cYou are not allowed to use commands while opening Crates.");
@@ -60,6 +60,7 @@ public class Messages implements SettingsHolder {
 
     public static final Property<String> too_close_to_another_player = newProperty("Messages.To-Close-To-Another-Player", "%prefix%&cYou are too close to a player that is opening their Crate.");
 
+    @Comment("QuadCrate schematics need a fair bit of room so make sure you check the surroundings.")
     public static final Property<String> needs_more_room = newProperty("Messages.Needs-More-Room", "%prefix%&cThere is not enough space to open that here");
 
     public static final Property<String> out_of_time = newProperty("Messages.Out-Of-Time", "%prefix%&cYou took 5 Minutes to open the Crate so it closed.");
@@ -141,6 +142,7 @@ public class Messages implements SettingsHolder {
 
     public static final Property<String> per_crate = newProperty("Messages.Keys.Per-Crate", "%crate% &7&l>&8&l> &6%keys% keys &7: Opened &6%crate_opened% times");
 
+    @Comment("The output of /crazycrates help | Requires crazycrates.command.help")
     public static final Property<List<String>> help = newListProperty("Messages.Help", List.of(
             "&e&lCrazy Crates Player Help",
             "&6/keys view [player] &7- &eCheck the number of keys a player has.",
@@ -148,6 +150,7 @@ public class Messages implements SettingsHolder {
             "&6/cc &7- &eOpens the menu."
     ));
 
+    @Comment("The output of /crazycrates admin-help | Requires crazycrates.command.admin.help")
     public static final Property<List<String>> admin_help = newListProperty("Messages.Admin-Help", List.of(
             "&c&lCrazy Crates Admin Help",
             "",

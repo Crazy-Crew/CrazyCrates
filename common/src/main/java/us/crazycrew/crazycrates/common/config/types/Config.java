@@ -109,7 +109,7 @@ public class Config implements SettingsHolder {
 
     public static final Property<List<String>> filler_lore = newListProperty("Settings.Filler.Lore", Collections.emptyList());
 
-    public static final Property<Boolean> gui_customizer_toggle = newProperty("Settings.GUI-Customizer.Toggle", true);
+    public static final Property<Boolean> gui_customizer_toggle = newProperty("Settings.GUI-Customizer-Toggle", true);
 
     public static final Property<List<String>> gui_customizer = newListProperty("Settings.GUI-Customizer", List.of(
             "Slot:1, Item:BLACK_STAINED_GLASS_PANE, Name: ",
