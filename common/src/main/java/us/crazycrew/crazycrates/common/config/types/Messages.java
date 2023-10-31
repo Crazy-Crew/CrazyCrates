@@ -28,111 +28,111 @@ public class Messages implements SettingsHolder {
     }
 
 
-    public static final Property<String> no_teleporting = newProperty("Messages.No-Teleporting", "&cYou may not teleport away while opening a Crate.");
+    public static final Property<String> no_teleporting = newProperty("Messages.No-Teleporting", "%prefix%&cYou may not teleport away while opening a Crate.");
 
-    public static final Property<String> no_commands_while_using_crate = newProperty("Messages.No-Commands-While-In-Crate", "&cYou are not allowed to use commands while opening Crates.");
+    public static final Property<String> no_commands_while_using_crate = newProperty("Messages.No-Commands-While-In-Crate", "%prefix%&cYou are not allowed to use commands while opening Crates.");
 
-    public static final Property<String> feature_disabled = newProperty("Messages.Feature-Disabled", "&cThis feature is disabled.");
+    public static final Property<String> feature_disabled = newProperty("Messages.Feature-Disabled", "%prefix%&cThis feature is disabled.");
 
-    public static final Property<String> no_keys = newProperty("Messages.No-Key", "&cYou must have a %key% &cin your hand to use that crate.");
+    public static final Property<String> no_keys = newProperty("Messages.No-Key", "%prefix%&cYou must have a %key% &cin your hand to use that crate.");
 
-    public static final Property<String> no_virtual_key = newProperty("Messages.No-Virtual-Key", "&cYou need a key to open that Crate.");
+    public static final Property<String> no_virtual_key = newProperty("Messages.No-Virtual-Key", "%prefix%&cYou need a key to open that Crate.");
 
-    public static final Property<String> not_on_block = newProperty("Messages.Not-On-Block", "&cYou must be standing on a block to use this Crate.");
+    public static final Property<String> not_on_block = newProperty("Messages.Not-On-Block", "%prefix%&cYou must be standing on a block to use this Crate.");
 
-    public static final Property<String> already_opening_crate = newProperty("Messages.Already-Opening-Crate", "&cYou are already opening a Crate.");
+    public static final Property<String> already_opening_crate = newProperty("Messages.Already-Opening-Crate", "%prefix%&cYou are already opening a Crate.");
 
-    public static final Property<String> quick_crate_in_use = newProperty("Messages.Quick-Crate-In-Use", "&cThat Crate is already in use. Please wait for the Crate to open up.");
+    public static final Property<String> quick_crate_in_use = newProperty("Messages.Quick-Crate-In-Use", "%prefix%&cThat Crate is already in use. Please wait for the Crate to open up.");
 
-    public static final Property<String> world_disabled = newProperty("Messages.World-Disabled", "&cI am sorry but Crates are disabled in %world%.");
+    public static final Property<String> world_disabled = newProperty("Messages.World-Disabled", "%prefix%&cI am sorry but Crates are disabled in %world%.");
 
-    public static final Property<String> reloaded_plugin = newProperty("Messages.Reload", "&3You have reloaded the Config and Data Files.");
+    public static final Property<String> reloaded_plugin = newProperty("Messages.Reload", "%prefix%&3You have reloaded the Config and Data Files.");
 
-    public static final Property<String> not_online = newProperty("Messages.Not-Online", "&cYou may not teleport away while opening a Crate.");
+    public static final Property<String> not_online = newProperty("Messages.Not-Online", "%prefix%&cYou may not teleport away while opening a Crate.");
 
-    public static final Property<String> no_permission = newProperty("Messages.No-Permission", "&cYou do not have permission to use that command!");
+    public static final Property<String> no_permission = newProperty("Messages.No-Permission", "%prefix%&cYou do not have permission to use that command!");
 
-    public static final Property<String> no_crate_permission = newProperty("Messages.No-Crate-Permission", "&cYou do not have permission to use that crate.");
+    public static final Property<String> no_crate_permission = newProperty("Messages.No-Crate-Permission", "%prefix%&cYou do not have permission to use that crate.");
 
-    public static final Property<String> cant_be_a_virtual_crate = newProperty("Messages.Cant-Be-A-Virtual-Crate", "&cThat Crate type cannot be used as a Virtual Crate.");
+    public static final Property<String> cant_be_a_virtual_crate = newProperty("Messages.Cant-Be-A-Virtual-Crate", "%prefix%&cThat Crate type cannot be used as a Virtual Crate.");
 
-    public static final Property<String> inventory_not_empty = newProperty("Messages.Inventory-Full", "&cYour inventory is full, Please make room before opening a Crate.");
+    public static final Property<String> inventory_not_empty = newProperty("Messages.Inventory-Full", "%prefix%&cYour inventory is full, Please make room before opening a Crate.");
 
-    public static final Property<String> too_close_to_another_player = newProperty("Messages.To-Close-To-Another-Player", "&cYou are too close to a player that is opening their Crate.");
+    public static final Property<String> too_close_to_another_player = newProperty("Messages.To-Close-To-Another-Player", "%prefix%&cYou are too close to a player that is opening their Crate.");
 
-    public static final Property<String> needs_more_room = newProperty("Messages.Needs-More-Room", "&cThere is not enough space to open that here");
+    public static final Property<String> needs_more_room = newProperty("Messages.Needs-More-Room", "%prefix%&cThere is not enough space to open that here");
 
-    public static final Property<String> out_of_time = newProperty("Messages.Out-Of-Time", "&cYou took 5 Minutes to open the Crate so it closed.");
+    public static final Property<String> out_of_time = newProperty("Messages.Out-Of-Time", "%prefix%&cYou took 5 Minutes to open the Crate so it closed.");
 
-    public static final Property<String> must_be_a_player = newProperty("Messages.Must-Be-A-Player", "&cYou must be a player to use this command.");
+    public static final Property<String> must_be_a_player = newProperty("Messages.Must-Be-A-Player", "%prefix%&cYou must be a player to use this command.");
 
-    public static final Property<String> must_be_console_sender = newProperty("Messages.Must-Be-A-Console-Sender", "&cYou must be using console to use this command.");
+    public static final Property<String> must_be_console_sender = newProperty("Messages.Must-Be-A-Console-Sender", "%prefix%&cYou must be using console to use this command.");
 
-    public static final Property<String> must_be_looking_at_block = newProperty("Messages.Must-Be-Looking-At-A-Block", "&cYou must be looking at a block.");
+    public static final Property<String> must_be_looking_at_block = newProperty("Messages.Must-Be-Looking-At-A-Block", "%prefix%&cYou must be looking at a block.");
 
-    public static final Property<String> not_a_crate = newProperty("Messages.Not-A-Crate", "&cThere is no crate called &6%crate%.");
+    public static final Property<String> not_a_crate = newProperty("Messages.Not-A-Crate", "%prefix%&cThere is no crate called &6%crate%.");
 
-    public static final Property<String> not_a_number = newProperty("Messages.Not-A-Number", "&6%number% &cis not a number.");
+    public static final Property<String> not_a_number = newProperty("Messages.Not-A-Number", "%prefix%&6%number% &cis not a number.");
 
-    public static final Property<String> gave_a_player_keys = newProperty("Messages.Given-A-Player-Keys", "&7You have given &6%player% %amount% &7Keys.");
+    public static final Property<String> gave_a_player_keys = newProperty("Messages.Given-A-Player-Keys", "%prefix%&7You have given &6%player% %amount% &7Keys.");
 
-    public static final Property<String> cannot_give_player_keys = newProperty("Messages.Cannot-Give-Player-Keys", "&7You have been given &6%amount% %key% &7virtual keys because your inventory was full.");
+    public static final Property<String> cannot_give_player_keys = newProperty("Messages.Cannot-Give-Player-Keys", "%prefix%&7You have been given &6%amount% %key% &7virtual keys because your inventory was full.");
 
-    public static final Property<String> obtaining_keys = newProperty("Messages.Obtaining-Keys", "&7You have been given &6%amount% %key% &7Keys.");
+    public static final Property<String> obtaining_keys = newProperty("Messages.Obtaining-Keys", "%prefix%&7You have been given &6%amount% %key% &7Keys.");
 
-    public static final Property<String> given_everyone_keys = newProperty("Messages.Given-Everyone-Keys", "&7You have given everyone &6%amount% &7Keys.");
+    public static final Property<String> given_everyone_keys = newProperty("Messages.Given-Everyone-Keys", "%prefix%&7You have given everyone &6%amount% &7Keys.");
 
-    public static final Property<String> given_offline_player_keys = newProperty("Messages.Given-Offline-Player-Keys", "&7You have given &6%amount% &7key(s) to the offline player &6%player%.");
+    public static final Property<String> given_offline_player_keys = newProperty("Messages.Given-Offline-Player-Keys", "%prefix%&7You have given &6%amount% &7key(s) to the offline player &6%player%.");
 
-    public static final Property<String> take_players_keys = newProperty("Messages.Take-A-Player-Keys", "&7You have taken &6%amount% &7key(s) from &6%player%.");
+    public static final Property<String> take_players_keys = newProperty("Messages.Take-A-Player-Keys", "%prefix%&7You have taken &6%amount% &7key(s) from &6%player%.");
 
-    public static final Property<String> take_offline_player_keys = newProperty("Messages.Take-Offline-Player-Keys", "&7You have taken &6%amount% &7key(s) from the offline player &6%player%.");
+    public static final Property<String> take_offline_player_keys = newProperty("Messages.Take-Offline-Player-Keys", "%prefix%&7You have taken &6%amount% &7key(s) from the offline player &6%player%.");
 
-    public static final Property<String> opened_a_crate = newProperty("Messages.Opened-A-Crate", "&7You have just opened the &6%crate% &7crate for &6%player%.");
+    public static final Property<String> opened_a_crate = newProperty("Messages.Opened-A-Crate", "%prefix%&7You have just opened the &6%crate% &7crate for &6%player%.");
 
-    public static final Property<String> internal_error = newProperty("Messages.Internal-Error", "&cAn internal error has occurred. Please check the console for the full error.");
+    public static final Property<String> internal_error = newProperty("Messages.Internal-Error", "%prefix%&cAn internal error has occurred. Please check the console for the full error.");
 
-    public static final Property<String> unknown_command = newProperty("Messages.Unknown-Command", "&cThis command is not known.");
+    public static final Property<String> unknown_command = newProperty("Messages.Unknown-Command", "%prefix%&cThis command is not known.");
 
-    public static final Property<String> correct_usage = newProperty("Messages.Correct-Usage", "&cThe correct usage for this command is &e%usage%");
+    public static final Property<String> correct_usage = newProperty("Messages.Correct-Usage", "%prefix%&cThe correct usage for this command is &e%usage%");
 
-    public static final Property<String> no_item_in_hand = newProperty("Messages.No-Item-In-Hand", "&cYou need to have an item in your hand to add it to the Crate.");
+    public static final Property<String> no_item_in_hand = newProperty("Messages.No-Item-In-Hand", "%prefix%&cYou need to have an item in your hand to add it to the Crate.");
 
-    public static final Property<String> added_item_with_editor = newProperty("Messages.Added-Item-With-Editor", "&7The item has been added to the %crate% Crate in prize #%prize%.");
+    public static final Property<String> added_item_with_editor = newProperty("Messages.Added-Item-With-Editor", "%prefix%&7The item has been added to the %crate% Crate in prize #%prize%.");
 
-    public static final Property<String> preview_disabled = newProperty("Messages.Preview-Disabled", "&cThe preview for that crate is currently disabled.");
+    public static final Property<String> preview_disabled = newProperty("Messages.Preview-Disabled", "%prefix%&cThe preview for that crate is currently disabled.");
 
-    public static final Property<String> no_schematics_found = newProperty("Messages.No-Schematics-Found", "&cNo schematics were found. Please make sure files ending in .nbt exist in the schematics folder. If not delete the folder so they regenerate");
+    public static final Property<String> no_schematics_found = newProperty("Messages.No-Schematics-Found", "%prefix%&cNo schematics were found. Please make sure files ending in .nbt exist in the schematics folder. If not delete the folder so they regenerate");
 
-    public static final Property<String> no_prizes_found = newProperty("Messages.No-Prizes-Found", "&cThis crate contains no prizes that you can win.");
+    public static final Property<String> no_prizes_found = newProperty("Messages.No-Prizes-Found", "%prefix%&cThis crate contains no prizes that you can win.");
 
-    public static final Property<String> same_player = newProperty("Messages.Same-Player", "&cYou can''t use this command on yourself.");
+    public static final Property<String> same_player = newProperty("Messages.Same-Player", "%prefix%&cYou can''t use this command on yourself.");
 
-    public static final Property<String> prize_error = newProperty("Messages.Prize-Error", "&cAn error has occurred while trying to give you the prize called &6%prize%&c in crate called &6%crate%&c. Please contact the server owner and show them this error.");
+    public static final Property<String> prize_error = newProperty("Messages.Prize-Error", "%prefix%&cAn error has occurred while trying to give you the prize called &6%prize%&c in crate called &6%crate%&c. Please contact the server owner and show them this error.");
 
-    public static final Property<String> required_keys = newProperty("Messages.Required-Keys", "&7You need &c%key-amount% &7keys to open &c%crate%. &7You have &c%amount%.");
+    public static final Property<String> required_keys = newProperty("Messages.Required-Keys", "%prefix%&7You need &c%key-amount% &7keys to open &c%crate%. &7You have &c%amount%.");
 
-    public static final Property<String> transfer_not_enough_keys = newProperty("Messages.Transfer-Keys.Not-Enough-Keys", "&cYou do not have enough keys to transfer.");
+    public static final Property<String> transfer_not_enough_keys = newProperty("Messages.Transfer-Keys.Not-Enough-Keys", "%prefix%&cYou do not have enough keys to transfer.");
 
-    public static final Property<String> transfer_sent_keys = newProperty("Messages.Transfer-Keys.Transferred-Keys", "&7You have transferred %amount% %crate% keys to %player%.");
+    public static final Property<String> transfer_sent_keys = newProperty("Messages.Transfer-Keys.Transferred-Keys", "%prefix%&7You have transferred %amount% %crate% keys to %player%.");
 
-    public static final Property<String> transfer_received_keys = newProperty("Messages.Transfer-Keys.Received-Transferred-Keys", "&7You have received %amount% %crate% keys from %player%.");
+    public static final Property<String> transfer_received_keys = newProperty("Messages.Transfer-Keys.Received-Transferred-Keys", "%prefix%&7You have received %amount% %crate% keys from %player%.");
 
     public static final Property<List<String>> created_physical_crate = newListProperty("Messages.Created-Physical-Crate", List.of(
             "%prefix%&7You have set that block to %crate%.",
             "&7To remove the crate shift break in creative to remove."
     ));
 
-    public static final Property<String> removed_physical_crate = newProperty("Messages.Removed-Physical-Crate", "&7You have removed &6%id%.");
+    public static final Property<String> removed_physical_crate = newProperty("Messages.Removed-Physical-Crate", "%prefix%&7You have removed &6%id%.");
 
-    public static final Property<String> no_virtual_keys = newProperty("Messages.Keys.Personal.No-Virtual-Keys", "&8&l(&4&l!&8&l) &7You currently do not have any virtual keys.");
+    public static final Property<String> no_virtual_keys = newProperty("Messages.Keys.Personal.No-Virtual-Keys", "%prefix%&8&l(&4&l!&8&l) &7You currently do not have any virtual keys.");
 
     public static final Property<List<String>> no_virtual_keys_header = newListProperty("Messages.Keys.Personal.Header", List.of(
             "&8&l(&6&l!&8&l) &7List of your current number of keys.",
             " &e -> Total Crates Opened: &c%crates_opened%"
     ));
 
-    public static final Property<String> other_player_no_keys = newProperty("Messages.Keys.Other-Player.No-Virtual-Keys", "&8&l(&4&l!&8&l) &7The player %player% does not have any keys.");
+    public static final Property<String> other_player_no_keys = newProperty("Messages.Keys.Other-Player.No-Virtual-Keys", "%prefix%&8&l(&4&l!&8&l) &7The player %player% does not have any keys.");
 
     public static final Property<List<String>> other_player_header = newListProperty("Messages.Keys.Other-Player.Header", List.of(
             "&8&l(&6&l!&8&l) &7List of %player%''s current number of keys.",
@@ -170,5 +170,4 @@ public class Messages implements SettingsHolder {
             "",
             "&7You can find a list of permissions @ &ehttps://docs.crazycrew.us/crazycrates/info/commands/permissions"
     ));
-
 }
