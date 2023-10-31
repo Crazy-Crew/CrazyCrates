@@ -145,6 +145,8 @@ val description = """
  * Added plugin-config.yml
    * Migrated Settings.Toggle-Metrics and Settings.Prefix to plugin-config.yml, It will automatically move your old values to the new config.
    * Metrics actually shuts down when you reload the plugin after turning off metrics.
+ * **The plugin prefix is no longer automatically appended, You must add %prefix% to every message.**
+ * Added new config options related to gui-customizer and sounds in config.yml
 
  ### New placeholders:
  #### Old placeholders do still work as they serve a purpose for when you don't need to supply a player.

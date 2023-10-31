@@ -20,6 +20,8 @@ public class ConfigManager {
 
     private SettingsManager config;
 
+    private SettingsManager messages;
+
     public void load() {
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
 
@@ -34,13 +36,20 @@ public class ConfigManager {
                 .useDefaultMigrationService()
                 .configurationData(Config.class)
                 .create();
+
+        this.messages = SettingsManagerBuilder
+                .withYamlFile(new File(this.dataFolder, "messages.yml"), builder)
+                .useDefaultMigrationService()
+                .configurationData(Config.class)
+                .create();
     }
 
     public void reload() {
-        // Reload plugin-config.yml
         this.pluginConfig.reload();
 
         this.config.reload();
+
+        this.messages.reload();
     }
 
     @NotNull
@@ -51,5 +60,10 @@ public class ConfigManager {
     @NotNull
     public SettingsManager getConfig() {
         return config;
+    }
+
+    @NotNull
+    public SettingsManager getMessages() {
+        return this.messages;
     }
 }

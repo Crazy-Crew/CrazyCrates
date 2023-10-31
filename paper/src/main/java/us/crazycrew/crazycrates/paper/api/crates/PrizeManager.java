@@ -1,11 +1,11 @@
 package us.crazycrew.crazycrates.paper.api.crates;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
+import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
@@ -39,9 +39,9 @@ public class PrizeManager {
         for (ItemStack item : prize.getItems()) {
             if (item == null) {
                 HashMap<String, String> placeholders = new HashMap<>();
-                placeholders.put("%Crate%", prize.getCrate());
-                placeholders.put("%Prize%", prize.getName());
-                player.sendMessage(Messages.PRIZE_ERROR.getMessage(placeholders));
+                placeholders.put("%crate%", prize.getCrate());
+                placeholders.put("%prize%", prize.getName());
+                player.sendMessage(Translation.prize_error.getMessage(placeholders).toString());
                 continue;
             }
 

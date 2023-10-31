@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.paper.cratetypes;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
-import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
@@ -21,6 +20,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.ArrayList;
@@ -188,9 +188,9 @@ public class Cosmic implements Listener {
                     if (glass.get(player).size() >= totalPrizes) {
                         KeyType keyType = crazyManager.getPlayerKeyType(player);
 
-                        if (keyType == KeyType.physical_key && !crazyManager.hasPhysicalKey(player, crate, checkHands.get(player))) {
+                        if (keyType == KeyType.physical_key && !plugin.getCrazyHandler().getUserManager().hasPhysicalKey(player.getUniqueId(), crate.getName(), checkHands.get(player))) {
                             player.closeInventory();
-                            player.sendMessage(Messages.NO_KEY.getMessage());
+                            player.sendMessage(Translation.no_keys.getString());
 
                             if (crazyManager.isInOpeningList(player)) {
                                 crazyManager.removePlayerFromOpeningList(player);

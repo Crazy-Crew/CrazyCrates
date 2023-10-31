@@ -1,7 +1,6 @@
 package us.crazycrew.crazycrates.paper.commands.subs.player;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.google.common.collect.Lists;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -11,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,18 +23,14 @@ public class BaseKeyCommand extends BaseCommand {
     @Default
     @Permission("crazycrates.command.player.key")
     public void viewPersonal(Player player) {
-        String header = Messages.PERSONAL_HEADER.getMessageNoPrefix("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(player.getUniqueId())));
-
-        String noKeys = Messages.PERSONAL_NO_VIRTUAL_KEYS.getMessage();
-
-        getKeys(player, player, header, noKeys);
+        getKeys(player, player, Translation.no_virtual_keys_header.getMessage("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(player.getUniqueId()))).toListString(), Translation.no_virtual_keys.getString());
     }
 
     @SubCommand("view")
     @Permission("crazycrates.command.player.key.others")
     public void viewOthers(CommandSender sender, @Suggestion ("online-players") Player target) {
         if (target == sender) {
-            sender.sendMessage(Messages.SAME_PLAYER.getMessage());
+            sender.sendMessage(Translation.same_player.getString());
             return;
         }
 
@@ -42,17 +38,17 @@ public class BaseKeyCommand extends BaseCommand {
         placeholders.put("%player%", target.getName());
         placeholders.put("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(target.getUniqueId())));
 
-        String header = Messages.OTHER_PLAYER_HEADER.getMessageNoPrefix(placeholders);
+        List<String> header = Translation.other_player_no_keys_header.getMessage(placeholders).toListString();
 
-        String otherPlayer = Messages.OTHER_PLAYER_NO_VIRTUAL_KEYS.getMessage("%player%", target.getName());
+        String otherPlayer = Translation.other_player_no_keys.getMessage("%player%", target.getName()).toString();
 
         getKeys(target, sender, header, otherPlayer);
     }
 
-    private void getKeys(Player player, CommandSender sender, String header, String messageContent) {
+    private void getKeys(Player player, CommandSender sender, List<String> header, String messageContent) {
         List<String> message = Lists.newArrayList();
 
-        message.add(header);
+        message.addAll(header);
 
         HashMap<Crate, Integer> keys = new HashMap<>();
 
@@ -71,14 +67,15 @@ public class BaseKeyCommand extends BaseCommand {
                 placeholders.put("%crate%", crate.getFile().getString("Crate.Name"));
                 placeholders.put("%keys%", String.valueOf(amount));
                 placeholders.put("%crate_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getCrateOpened(player.getUniqueId(), crate.getName())));
-                message.add(Messages.PER_CRATE.getMessage(placeholders));
+                message.add(Translation.per_crate.getMessage(placeholders).toString());
             }
         }
 
         if (hasKeys) {
-            sender.sendMessage(Messages.convertList(message));
-        } else {
-            sender.sendMessage(messageContent);
+            message.forEach(sender::sendMessage);
+            return;
         }
+
+        sender.sendMessage(messageContent);
     }
 }

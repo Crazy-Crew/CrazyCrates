@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
-
 import java.util.ArrayList;
 import java.util.Random;
 

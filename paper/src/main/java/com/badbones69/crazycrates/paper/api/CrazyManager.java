@@ -1,19 +1,28 @@
 package com.badbones69.crazycrates.paper.api;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
+import com.badbones69.crazycrates.paper.api.objects.Prize;
+import com.badbones69.crazycrates.paper.cratetypes.CSGO;
+import com.badbones69.crazycrates.paper.cratetypes.FireCracker;
+import com.badbones69.crazycrates.paper.cratetypes.QuickCrate;
+import com.badbones69.crazycrates.paper.cratetypes.Roulette;
+import com.badbones69.crazycrates.paper.cratetypes.War;
+import com.badbones69.crazycrates.paper.cratetypes.Wheel;
+import com.badbones69.crazycrates.paper.cratetypes.Wonder;
+import org.bukkit.Location;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
-import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent.KeyReceiveReason;
+import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.events.crates.CrateOpenEvent;
 import us.crazycrew.crazycrates.paper.api.interfaces.HologramController;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
-import com.badbones69.crazycrates.paper.api.objects.*;
 import us.crazycrew.crazycrates.paper.commands.subs.CrateBaseCommand;
-import com.badbones69.crazycrates.paper.cratetypes.*;
 import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
 import com.badbones69.crazycrates.paper.listeners.MenuListener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,7 +30,6 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
-import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -29,7 +37,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.common.crates.quadcrates.CrateSchematic;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class CrazyManager {
@@ -84,7 +96,7 @@ public class CrazyManager {
 
         switch (crate.getCrateType()) {
             case menu -> {
-                if (this.config.getProperty(Config.enable_crate_menu)) MenuListener.openGUI(player); else player.sendMessage(Messages.FEATURE_DISABLED.getMessage());
+                if (this.config.getProperty(Config.enable_crate_menu)) MenuListener.openGUI(player); else player.sendMessage(Translation.feature_disabled.getString());
             }
             case csgo -> CSGO.openCSGO(player, crate, keyType, checkHand);
             case roulette -> Roulette.openRoulette(player, crate, keyType, checkHand);
@@ -107,12 +119,12 @@ public class CrazyManager {
             }
             case fire_cracker -> {
                 if (CrateControlListener.inUse.containsValue(location)) {
-                    player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
+                    player.sendMessage(Translation.quick_crate_in_use.getString());
                     removePlayerFromOpeningList(player);
                     return;
                 } else {
                     if (virtualCrate) {
-                        player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
+                        player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
                         removePlayerFromOpeningList(player);
                         return;
                     } else {
@@ -123,12 +135,12 @@ public class CrazyManager {
             }
             case quick_crate -> {
                 if (CrateControlListener.inUse.containsValue(location)) {
-                    player.sendMessage(Messages.QUICK_CRATE_IN_USE.getMessage());
+                    player.sendMessage(Translation.quick_crate_in_use.getString());
                     removePlayerFromOpeningList(player);
                     return;
                 } else {
                     if (virtualCrate && location.equals(player.getLocation())) {
-                        player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
+                        player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
                         removePlayerFromOpeningList(player);
                         return;
                     } else {
@@ -139,7 +151,7 @@ public class CrazyManager {
             }
             case crate_on_the_go -> {
                 if (virtualCrate) {
-                    player.sendMessage(Messages.CANT_BE_A_VIRTUAL_CRATE.getMessage());
+                    player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
                     removePlayerFromOpeningList(player);
                     return;
                 } else {

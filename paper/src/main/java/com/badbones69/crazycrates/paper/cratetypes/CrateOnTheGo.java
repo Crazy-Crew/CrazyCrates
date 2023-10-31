@@ -15,6 +15,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import us.crazycrew.crazycrates.paper.CrazyHandler;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.utils.ItemUtils;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 
@@ -22,6 +24,12 @@ public class CrateOnTheGo implements Listener {
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
+    @NotNull
+    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+
+    @NotNull
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @NotNull
     private final CrazyManager crazyManager = this.plugin.getCrazyManager();
@@ -35,7 +43,7 @@ public class CrateOnTheGo implements Listener {
             
             if (item.getType() == Material.AIR) return;
             
-            for (Crate crate : this.crazyManager.getCrates()) {
+            for (Crate crate : this.crateManager.getCrates()) {
                 if (crate.getCrateType() == CrateType.crate_on_the_go && ItemUtils.isSimilar(item, crate)) {
                     e.setCancelled(true);
                     this.crazyManager.addPlayerToOpeningList(player, crate);
@@ -44,7 +52,7 @@ public class CrateOnTheGo implements Listener {
 
                     Prize prize = crate.pickPrize(player);
 
-                    this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
+                    this.crazyHandler.getPrizeManager().givePrize(player, prize, crate);
                     this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, this.crazyManager.getOpeningCrate(player).getName(), prize));
 
                     if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);

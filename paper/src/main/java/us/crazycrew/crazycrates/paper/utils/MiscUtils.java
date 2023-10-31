@@ -1,7 +1,6 @@
 package us.crazycrew.crazycrates.paper.utils;
 
 import com.badbones69.crazycrates.api.enums.Permissions;
-import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import org.bukkit.Color;
@@ -25,7 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
-
+import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -194,7 +193,7 @@ public class MiscUtils {
             return true;
         } else {
             if (!tabComplete) {
-                player.sendMessage(Messages.NO_PERMISSION.getMessage());
+                player.sendMessage(Translation.no_permission.getString());
                 return false;
             }
 

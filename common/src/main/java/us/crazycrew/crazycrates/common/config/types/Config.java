@@ -27,7 +27,7 @@ public class Config implements SettingsHolder {
                 "List of all enchantments: https://jd.papermc.io/paper/1.20/org/bukkit/enchantments/Enchantment.html"
         };
 
-        conf.setComment("Settings");
+        conf.setComment("Settings", header);
     }
 
     @Comment("Whether to enable or disable the crate menu.")

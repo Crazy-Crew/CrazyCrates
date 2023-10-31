@@ -1,12 +1,17 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
+import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestManager;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
@@ -20,7 +25,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -147,7 +151,7 @@ public class QuadCrate implements Listener {
 
         if (this.sessionManager.inSession(player) && !player.hasPermission("crazycrates.admin")) {
             e.setCancelled(true);
-            player.sendMessage(Messages.NO_COMMANDS_WHILE_CRATE_OPENED.getMessage("%Player%", player.getName()));
+            player.sendMessage(Translation.no_commands_while_in_crate.getMessage("%player%", player.getName()).toString());
         }
     }
 
@@ -157,7 +161,7 @@ public class QuadCrate implements Listener {
 
         if (this.sessionManager.inSession(player) && e.getCause() == TeleportCause.ENDER_PEARL) {
             e.setCancelled(true);
-            player.sendMessage(Messages.NO_TELEPORTING.getMessage("%Player%", player.getName()));
+            player.sendMessage(Translation.no_teleporting.getMessage("%Player%", player.getName()).toString());
         }
     }
 

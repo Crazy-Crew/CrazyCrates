@@ -4,10 +4,8 @@ import ch.jalu.configme.SettingsManager;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
-import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
-import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
+import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.text.NumberFormat;
@@ -177,14 +176,14 @@ public class MenuListener implements Listener {
                                         PreviewListener.setPlayerInMenu(player, true);
                                         PreviewListener.openNewPreview(player, crate);
                                     } else {
-                                        player.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
+                                        player.sendMessage(Translation.preview_disabled.getString());
                                     }
 
                                     return;
                                 }
 
                                 if (crazyManager.isInOpeningList(player)) {
-                                    player.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
+                                    player.sendMessage(Translation.already_opening_crate.getString());
                                     return;
                                 }
 
@@ -205,19 +204,19 @@ public class MenuListener implements Listener {
                                         player.playSound(player.getLocation(), Sound.valueOf(config.getProperty(Config.need_key_sound)), 1f, 1f);
                                     }
 
-                                    player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
+                                    player.sendMessage(Translation.no_virtual_key.getString());
                                     return;
                                 }
 
                                 for (String world : getDisabledWorlds()) {
                                     if (world.equalsIgnoreCase(player.getWorld().getName())) {
-                                        player.sendMessage(Messages.WORLD_DISABLED.getMessage("%World%", player.getWorld().getName()));
+                                        player.sendMessage(Translation.world_disabled.getMessage("%world%", player.getWorld().getName()).toString());
                                         return;
                                     }
                                 }
 
                                 if (MiscUtils.isInventoryFull(player)) {
-                                    player.sendMessage(Messages.INVENTORY_FULL.getMessage());
+                                    player.sendMessage(Translation.inventory_not_empty.getString());
                                     return;
                                 }
 

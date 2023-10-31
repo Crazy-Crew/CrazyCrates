@@ -3,9 +3,9 @@ package com.badbones69.crazycrates.paper.api.managers;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
-import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
+import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.support.structures.QuadCrateSpiralHandler;
 import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
 import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestManager;
@@ -24,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.crates.quadcrates.CrateParticles;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -131,7 +130,7 @@ public class QuadCrateManager {
 
         // Check if it is on a block.
         if (this.spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
-            this.player.sendMessage(Messages.NOT_ON_BLOCK.getMessage());
+            this.player.sendMessage(Translation.not_on_block.getString());
             this.crazyManager.removePlayerFromOpeningList(player);
             crateSessions.remove(this.instance);
             return;
@@ -139,7 +138,7 @@ public class QuadCrateManager {
 
         // Check if schematic folder is empty.
         if (this.plugin.getCrateManager().getCrateSchematics().isEmpty()) {
-            this.player.sendMessage(Messages.NO_SCHEMATICS_FOUND.getMessage());
+            this.player.sendMessage(Translation.no_schematics_found.getString());
             this.crazyManager.removePlayerFromOpeningList(this.player);
             crateSessions.remove(this.instance);
             return;
@@ -156,7 +155,7 @@ public class QuadCrateManager {
 
         for (Location loc : structureLocations) {
             if (this.handler.getBlockBlackList().contains(loc.getBlock().getType())) {
-                this.player.sendMessage(Messages.NEEDS_MORE_ROOM.getMessage());
+                this.player.sendMessage(Translation.needs_more_room.getString());
                 this.crazyManager.removePlayerFromOpeningList(this.player);
                 crateSessions.remove(this.instance);
                 return;
@@ -171,7 +170,7 @@ public class QuadCrateManager {
             if (entity instanceof Player) {
                 for (QuadCrateManager ongoingCrate : crateSessions) {
                     if (entity.getUniqueId() == ongoingCrate.player.getUniqueId()) {
-                        this.player.sendMessage(Messages.TO_CLOSE_TO_ANOTHER_PLAYER.getMessage("%Player%", entity.getName()));
+                        this.player.sendMessage(Translation.too_close_to_another_player.getMessage("%player%", entity.getName()).toString());
                         this.crazyManager.removePlayerFromOpeningList(this.player);
                         crateSessions.remove(this.instance);
                         return;
@@ -257,7 +256,7 @@ public class QuadCrateManager {
             public void run() {
                 // End the crate by force.
                 endCrateForce(true);
-                player.sendMessage(Messages.OUT_OF_TIME.getMessage());
+                player.sendMessage(Translation.out_of_time.getString());
             }
         }.runTaskLater(this.plugin, this.plugin.getConfigManager().getConfig().getProperty(Config.quad_crate_timer)));
     }

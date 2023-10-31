@@ -24,7 +24,6 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
-
 import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;

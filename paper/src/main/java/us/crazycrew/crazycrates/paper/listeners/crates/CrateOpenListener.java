@@ -2,7 +2,7 @@ package us.crazycrew.crazycrates.paper.listeners.crates;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyManager;
-import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
+import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.events.crates.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
-
 import java.util.List;
 
 @SuppressWarnings("deprecation")
@@ -41,7 +40,7 @@ public class CrateOpenListener implements Listener {
 
         if (crate.getCrateType() != CrateType.menu) {
             if (!crate.canWinPrizes(player)) {
-                player.sendMessage(Messages.NO_PRIZES_FOUND.getMessage());
+                player.sendMessage(Translation.no_prizes_found.getString());
                 this.crazyManager.removePlayerFromOpeningList(player);
                 this.crazyManager.removePlayerKeyType(player);
 
@@ -52,7 +51,7 @@ public class CrateOpenListener implements Listener {
         }
 
         if (!(player.hasPermission("crazycrates.open." + crate.getName()) || player.hasPermission("crazycrates.open.*"))) {
-            player.sendMessage(Messages.NO_CRATE_PERMISSION.getMessage());
+            player.sendMessage(Translation.no_crate_permission.getString());
             this.crazyManager.removePlayerFromOpeningList(player);
             CrateControlListener.inUse.remove(player);
 

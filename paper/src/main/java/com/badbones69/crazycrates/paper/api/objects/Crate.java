@@ -20,7 +20,6 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
