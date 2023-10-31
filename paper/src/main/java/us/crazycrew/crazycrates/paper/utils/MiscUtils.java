@@ -54,7 +54,7 @@ public class MiscUtils {
                 .trail(false)
                 .flicker(false);
 
-        if (color != null) effect.withColor(color);
+        if (color != null) effect.withColor(color); else effect.withColor(Color.RED).withColor(Color.AQUA).withColor(Color.ORANGE).withColor(Color.YELLOW);
 
         fireworkMeta.addEffects(effect.build());
         fireworkMeta.setPower(0);
