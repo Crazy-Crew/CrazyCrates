@@ -14,6 +14,7 @@ import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
 import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestManager;
 import us.crazycrew.crazycrates.paper.api.users.guis.InventoryManager;
 import us.crazycrew.crazycrates.paper.commands.CommandManager;
+import us.crazycrew.crazycrates.paper.modules.ModuleLoader;
 
 public class CrazyHandler extends CrazyCratesPlugin {
 
@@ -27,6 +28,8 @@ public class CrazyHandler extends CrazyCratesPlugin {
     private PrizeManager prizeManager;
 
     private InventoryManager inventoryManager;
+
+    private ModuleLoader moduleLoader;
 
     private ChestManager chestManager;
 
@@ -54,11 +57,12 @@ public class CrazyHandler extends CrazyCratesPlugin {
                 .registerCustomFilesFolder("/schematics")
                 .setup();
 
+        // Load crates.
+        this.crateManager = new CrateManager();
+
         // Create inventory manager.
         this.inventoryManager = new InventoryManager();
 
-        // Load crates.
-        this.crateManager = new CrateManager();
         this.crateManager.loadCrates();
 
         // Enable prizes.
@@ -76,6 +80,9 @@ public class CrazyHandler extends CrazyCratesPlugin {
         // Load commands.
         CommandManager commandManager = new CommandManager();
         commandManager.load();
+
+        this.moduleLoader = new ModuleLoader();
+        this.moduleLoader.load();
 
         // Migrates 2 config.yml settings to plugin-config.yml.
         MigrationService service = new MigrationService();
@@ -132,6 +139,11 @@ public class CrazyHandler extends CrazyCratesPlugin {
     @NotNull
     public EventLogger getEventLogger() {
         return this.eventLogger;
+    }
+
+    @NotNull
+    public ModuleLoader getModuleLoader() {
+        return this.moduleLoader;
     }
 
     @NotNull

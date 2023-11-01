@@ -82,7 +82,7 @@ public class CrateManager {
     public void reloadCrate(Crate crate) {
         try {
             // Close previews
-            this.plugin.getServer().getOnlinePlayers().forEach(player -> PreviewListener.closePreview(player, crate));
+            //this.plugin.getServer().getOnlinePlayers().forEach(player -> PreviewListener.closePreview(player, crate));
 
             // Grab the new file.
             FileConfiguration file = crate.getFile();
@@ -124,7 +124,7 @@ public class CrateManager {
                 Player player = this.plugin.getServer().getPlayer(uuid);
 
                 if (player != null) {
-                    PreviewListener.openNewPreview(player, crate);
+                    //PreviewListener.openNewPreview(player, crate);
                 }
             }
         } catch (Exception exception) {
@@ -310,7 +310,8 @@ public class CrateManager {
         if (this.plugin.isLogging()) this.plugin.getLogger().info("All schematics were found and loaded.");
 
         cleanDataFile();
-        PreviewListener.loadButtons();
+
+        this.plugin.getCrazyHandler().getInventoryManager().loadButtons();
     }
 
     // The crate that the player is opening.
@@ -351,7 +352,7 @@ public class CrateManager {
 
         switch (crate.getCrateType()) {
             case menu -> {
-                if (this.plugin.getConfigManager().getConfig().getProperty(Config.enable_crate_menu)) MenuListener.openGUI(player); else player.sendMessage(Translation.feature_disabled.getString());
+                if (this.plugin.getConfigManager().getConfig().getProperty(Config.enable_crate_menu)) this.plugin.getCrazyHandler().getInventoryManager().openGUI(player); else player.sendMessage(Translation.feature_disabled.getString());
             }
             case csgo -> CSGO.openCSGO(player, crate, keyType, checkHand);
             case roulette -> Roulette.openRoulette(player, crate, keyType, checkHand);

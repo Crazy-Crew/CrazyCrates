@@ -25,7 +25,6 @@ import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
 import com.badbones69.crazycrates.paper.listeners.MenuListener;
-import com.badbones69.crazycrates.paper.listeners.PreviewListener;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.BaseCommand;
 import org.bukkit.block.Block;
@@ -73,7 +72,7 @@ public class CrateBaseCommand extends BaseCommand {
     @Default
     @Permission(value = "crazycrates.command.player.menu", def = PermissionDefault.TRUE)
     public void onDefaultMenu(Player player) {
-        if (this.config.getProperty(Config.enable_crate_menu)) MenuListener.openGUI(player); else player.sendMessage(Translation.feature_disabled.getString());
+        if (this.config.getProperty(Config.enable_crate_menu)) this.plugin.getCrazyHandler().getInventoryManager().openGUI(player); else player.sendMessage(Translation.feature_disabled.getString());
     }
 
     @SubCommand("help")
@@ -320,8 +319,8 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        PreviewListener.setPlayerInMenu(player, false);
-        PreviewListener.openNewPreview(player, crate);
+        //PreviewListener.setPlayerInMenu(player, false);
+        //PreviewListener.openNewPreview(player, crate);
     }
 
     @SubCommand("open-others")

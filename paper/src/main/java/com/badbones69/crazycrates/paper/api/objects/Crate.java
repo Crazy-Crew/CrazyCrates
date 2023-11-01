@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import us.crazycrew.crazycrates.paper.api.users.guis.InventoryManager;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.ArrayList;
@@ -53,6 +54,9 @@ public class Crate {
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
+    @NotNull
+    private final InventoryManager inventoryManager = this.plugin.getCrazyHandler().getInventoryManager();
 
     @NotNull
     private final FileManager fileManager = this.plugin.getFileManager();
@@ -361,7 +365,7 @@ public class Crate {
      * @return The preview as an Inventory object.
      */
     public Inventory getPreview(Player player) {
-        return getPreview(player, PreviewListener.getPage(player));
+        return getPreview(player, this.plugin.getCrazyHandler().getInventoryManager().getPage(player));
     }
     
     /**
@@ -369,7 +373,7 @@ public class Crate {
      * @return The preview as an Inventory object.
      */
     public Inventory getPreview(Player player, int page) {
-        Inventory inventory = player.getServer().createInventory(null, !this.borderToggle && (PreviewListener.playerInMenu(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, this.previewName);
+        Inventory inventory = player.getServer().createInventory(null, !this.borderToggle && (this.inventoryManager.inCratePreview(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, this.previewName);
         setDefaultItems(inventory, player);
 
         for (ItemStack item : getPageItems(page)) {
@@ -634,20 +638,20 @@ public class Crate {
             }
         }
 
-        int page = PreviewListener.getPage(player);
+        int page = this.inventoryManager.getPage(player);
 
-        if (PreviewListener.playerInMenu(player)) inventory.setItem(getAbsoluteItemPosition(4), PreviewListener.getMenuButton());
+        if (this.inventoryManager.inCratePreview(player)) inventory.setItem(getAbsoluteItemPosition(4), this.inventoryManager.getMenuButton());
 
         if (page == 1) {
             if (this.borderToggle) inventory.setItem(getAbsoluteItemPosition(3), this.borderItem.build());
         } else {
-            inventory.setItem(getAbsoluteItemPosition(3), PreviewListener.getBackButton(player));
+            inventory.setItem(getAbsoluteItemPosition(3), this.inventoryManager.getBackButton(player));
         }
 
         if (page == this.maxPage) {
             if (this.borderToggle) inventory.setItem(getAbsoluteItemPosition(5), this.borderItem.build());
         } else {
-            inventory.setItem(getAbsoluteItemPosition(5), PreviewListener.getNextButton(player));
+            inventory.setItem(getAbsoluteItemPosition(5), this.inventoryManager.getNextButton(player));
         }
     }
 }

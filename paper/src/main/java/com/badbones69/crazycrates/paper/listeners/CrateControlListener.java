@@ -31,6 +31,7 @@ import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
+import us.crazycrew.crazycrates.paper.api.users.guis.InventoryManager;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.HashMap;
@@ -42,6 +43,9 @@ public class CrateControlListener implements Listener { // Crate Control
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
+    @NotNull
+    private final InventoryManager inventoryManager = this.plugin.getCrazyHandler().getInventoryManager();
 
     @NotNull
     private final SettingsManager config = this.plugin.getConfigManager().getConfig();
@@ -92,8 +96,8 @@ public class CrateControlListener implements Listener { // Crate Control
 
                     if (loc.getCrateType() != CrateType.menu) {
                         if (loc.getCrate().isPreviewEnabled()) {
-                            PreviewListener.setPlayerInMenu(player, false);
-                            PreviewListener.openNewPreview(player, loc.getCrate());
+                            this.inventoryManager.addMenuViewer(player, false);
+                            this.inventoryManager.openCratePreview(player, loc.getCrate());
                         } else {
                             player.sendMessage(Translation.preview_disabled.getString());
                         }
@@ -121,7 +125,7 @@ public class CrateControlListener implements Listener { // Crate Control
 
                 if (crate.getCrateType() == CrateType.menu) {
                     //This is to stop players in QuadCrate to not be able to try and open a crate set to menu.
-                    if (!this.crateManager.isInOpeningList(player) && this.config.getProperty(Config.enable_crate_menu)) MenuListener.openGUI(player);
+                    if (!this.crateManager.isInOpeningList(player) && this.config.getProperty(Config.enable_crate_menu)) this.plugin.getCrazyHandler().getInventoryManager().openGUI(player);
 
                     return;
                 }

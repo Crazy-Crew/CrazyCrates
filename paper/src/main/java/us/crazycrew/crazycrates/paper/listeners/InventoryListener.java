@@ -1,6 +1,5 @@
 package us.crazycrew.crazycrates.paper.listeners;
 
-import com.badbones69.crazycrates.paper.listeners.PreviewListener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,12 +24,12 @@ public class InventoryListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent event) {
         if (event.getPlayer() instanceof Player player) {
-            if (PreviewListener.inPreview(player)) {
+            if (this.inventoryManager.inCratePreview(player)) {
                 // Close preview.
-                PreviewListener.closePreview(player, InventoryCloseEvent.Reason.PLAYER);
+                this.inventoryManager.closeCratePreview(player);
 
                 // Remove inventory viewer.
-                this.inventoryManager.removeViewer(player.getUniqueId());
+                this.inventoryManager.removeViewer(player);
             }
         }
     }

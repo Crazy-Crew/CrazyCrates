@@ -96,7 +96,7 @@ public class PrizeManager {
 
             if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) command = PlaceholderAPI.setPlaceholders(player, command);
 
-            MiscUtils.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getUpdatedName())).replaceAll("%crate%", crate.getCrateInventoryName()));
+            MiscUtils.sendCommand(command.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", prize.getDisplayItemBuilder().getName()).replaceAll("%crate%", crate.getCrateInventoryName()));
         }
 
         if (!crate.getPrizeMessage().isEmpty() && prize.getMessages().isEmpty()) {
@@ -105,7 +105,7 @@ public class PrizeManager {
                     message = PlaceholderAPI.setPlaceholders(player, message);
                 }
 
-                MsgUtils.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getCrateInventoryName()), false);
+                MsgUtils.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", prize.getDisplayItemBuilder().getName()).replaceAll("%crate%", crate.getCrateInventoryName()), false);
             }
 
             return;
@@ -116,7 +116,7 @@ public class PrizeManager {
                 message = PlaceholderAPI.setPlaceholders(player, message);
             }
 
-            MsgUtils.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName())).replaceAll("%crate%", crate.getCrateInventoryName()), false);
+            MsgUtils.sendMessage(player, message.replaceAll("%player%", player.getName()).replaceAll("%Player%", player.getName()).replaceAll("%reward%", prize.getDisplayItemBuilder().getName()).replaceAll("%crate%", crate.getCrateInventoryName()), false);
         }
     }
 
