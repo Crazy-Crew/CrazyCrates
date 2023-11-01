@@ -59,6 +59,7 @@ public class PreviewListener implements Listener {
     public static void closePreview(Player player, Crate crate) {
         if (playerCrate.containsKey(player.getUniqueId())) {
             plugin.getCrazyHandler().getInventoryManager().addInventoryViewer(player.getUniqueId());
+
             crate.getPreview(player).close();
 
             playerCrate.remove(player.getUniqueId());
