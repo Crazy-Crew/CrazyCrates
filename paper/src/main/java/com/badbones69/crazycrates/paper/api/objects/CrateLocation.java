@@ -6,7 +6,7 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 public class CrateLocation {
     
     private final String id;
-    private final Crate crate;
+    private Crate crate;
     private final Location loc;
     
     public CrateLocation(String id, Crate crate, Location loc) {
@@ -29,6 +29,15 @@ public class CrateLocation {
      */
     public Crate getCrate() {
         return this.crate;
+    }
+
+    /**
+     * Overwrites the current crate object.
+     *
+     * @param crate object
+     */
+    public void setCrate(Crate crate) {
+        this.crate = crate;
     }
     
     /**

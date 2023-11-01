@@ -55,6 +55,7 @@ public enum Translation {
     correct_usage(Messages.correct_usage),
     no_item_in_hand(Messages.no_item_in_hand),
     added_item_with_editor(Messages.added_item_with_editor),
+    failed_to_add_item(Messages.failed_to_add_item),
     preview_disabled(Messages.preview_disabled),
     no_schematics_found(Messages.no_schematics_found),
     no_prizes_found(Messages.no_prizes_found),

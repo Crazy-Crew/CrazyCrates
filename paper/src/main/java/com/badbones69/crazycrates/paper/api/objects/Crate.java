@@ -42,12 +42,12 @@ public class Crate {
 
     private final CrateType crateType;
     private final FileConfiguration file;
-    private final ArrayList<Prize> prizes;
+    private ArrayList<Prize> prizes;
     private final String crateInventoryName;
     private final boolean giveNewPlayerKeys;
     private int previewChestLines;
     private final int newPlayerKeys;
-    private final ArrayList<ItemStack> preview;
+    private ArrayList<ItemStack> preview;
     private final ArrayList<Tier> tiers;
     private final CrateHologram hologram;
 
@@ -85,7 +85,7 @@ public class Crate {
         this.prizeMessage = prizeMessage;
         this.prizes = prizes;
         this.crateType = crateType;
-        this.preview = loadPreview();
+        this.preview = getPreview();
         this.previewToggle = file != null && (!file.contains("Crate.Preview.Toggle") || file.getBoolean("Crate.Preview.Toggle"));
         this.borderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle");
         setPreviewChestLines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
@@ -204,6 +204,24 @@ public class Crate {
                 }
             }
         }
+    }
+
+    /**
+     * Overrides the current prize pool.
+     *
+     * @param prizes list
+     */
+    public void setPrize(ArrayList<Prize> prizes) {
+        this.prizes = prizes;
+    }
+
+    /**
+     * Overrides the preview items.
+     *
+     * @param itemStacks list
+     */
+    public void setPreview(ArrayList<ItemStack> itemStacks) {
+        this.preview = itemStacks;
     }
 
     /**
@@ -563,7 +581,7 @@ public class Crate {
      * Loads all the preview items and puts them into a list.
      * @return A list of all the preview items that were created.
      */
-    private ArrayList<ItemStack> loadPreview() {
+    public ArrayList<ItemStack> getPreview() {
         ArrayList<ItemStack> items = new ArrayList<>();
 
         for (Prize prize : getPrizes()) {

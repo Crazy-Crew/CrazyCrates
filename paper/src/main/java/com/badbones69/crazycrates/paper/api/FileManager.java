@@ -178,10 +178,20 @@ public class FileManager {
      */
     public CustomFile getFile(String name) {
         for (CustomFile file : this.customFiles) {
-            if (file.getName().equalsIgnoreCase(name)) return file;
+            if (file.getName().equalsIgnoreCase(name)) {
+                return file;
+            }
         }
 
         return null;
+    }
+
+    public void removeFile(String name) {
+        this.customFiles.remove(getFile(name));
+    }
+
+    public void addFile(String name, String folder) {
+        this.customFiles.add(new CustomFile(name, folder));
     }
 
     /**
@@ -461,25 +471,19 @@ public class FileManager {
 
         /**
          * Save the custom file.
-         * @return True if it saved correct and false if something went wrong.
          */
-        public boolean saveFile() {
+        public void saveFile() {
             if (this.file != null) {
                 try {
                     this.file.save(new File(this.plugin.getDataFolder(), this.homeFolder + "/" + this.fileName));
 
                     if (this.plugin.isLogging()) plugin.getLogger().info("Successfully saved the " + this.fileName + ".");
-
-                    return true;
                 } catch (Exception exception) {
                     this.plugin.getLogger().log(Level.WARNING, "Could not save " + this.fileName + "!", exception);
-                    return false;
                 }
             } else {
                 if (this.plugin.isLogging()) this.plugin.getLogger().warning("There was a null custom file that could not be found!");
             }
-
-            return false;
         }
 
         /**
@@ -491,7 +495,6 @@ public class FileManager {
                     this.file = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "/" + this.homeFolder + "/" + this.fileName));
 
                     if (this.plugin.isLogging()) this.plugin.getLogger().info("Successfully reloaded the " + this.fileName + ".");
-
                 } catch (Exception exception) {
                     this.plugin.getLogger().log(Level.SEVERE, "Could not reload the " + this.fileName + "!", exception);
                 }

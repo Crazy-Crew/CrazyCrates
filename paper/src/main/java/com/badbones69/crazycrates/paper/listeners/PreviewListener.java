@@ -56,13 +56,18 @@ public class PreviewListener implements Listener {
     }
 
     public static void closePreview(Player player, Crate crate) {
+        playerCrate.remove(player.getUniqueId());
         crate.getPreview(player).close();
+    }
+
+    public static boolean inPreview(Player player) {
+        return playerCrate.containsKey(player.getUniqueId());
     }
 
     public static Crate getPreview(Player player) {
         return playerCrate.get(player.getUniqueId());
     }
-    
+
     public static void openPreview(Player player) {
         player.openInventory(playerCrate.get(player.getUniqueId()).getPreview(player));
     }
