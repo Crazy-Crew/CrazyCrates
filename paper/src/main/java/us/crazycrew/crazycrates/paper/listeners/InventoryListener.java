@@ -30,7 +30,7 @@ public class InventoryListener implements Listener {
                 PreviewListener.closePreview(player, InventoryCloseEvent.Reason.PLAYER);
 
                 // Remove inventory viewer.
-                this.inventoryManager.removeInventoryViewer(player.getUniqueId());
+                this.inventoryManager.removeViewer(player.getUniqueId());
             }
         }
     }

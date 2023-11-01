@@ -120,7 +120,7 @@ public class CrateManager {
             crate.setPrize(prizes);
             crate.setPreviewItems(crate.getPreviewItems());
 
-            for (UUID uuid : this.plugin.getCrazyHandler().getInventoryManager().getInventoryViewers()) {
+            for (UUID uuid : this.plugin.getCrazyHandler().getInventoryManager().getViewers()) {
                 Player player = this.plugin.getServer().getPlayer(uuid);
 
                 if (player != null) {
