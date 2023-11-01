@@ -85,7 +85,7 @@ public class Crate {
         this.prizeMessage = prizeMessage;
         this.prizes = prizes;
         this.crateType = crateType;
-        this.preview = getPreview();
+        this.preview = getPreviewItems();
         this.previewToggle = file != null && (!file.contains("Crate.Preview.Toggle") || file.getBoolean("Crate.Preview.Toggle"));
         this.borderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle");
         setPreviewChestLines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
@@ -220,7 +220,7 @@ public class Crate {
      *
      * @param itemStacks list
      */
-    public void setPreview(ArrayList<ItemStack> itemStacks) {
+    public void setPreviewItems(ArrayList<ItemStack> itemStacks) {
         this.preview = itemStacks;
     }
 
@@ -381,15 +381,6 @@ public class Crate {
     }
     
     /**
-     * Gets all the preview items.
-     * @return A list of all the preview items.
-     */
-    @SuppressWarnings("unchecked")
-    public ArrayList<ItemStack> getPreviewItems() {
-        return (ArrayList<ItemStack>) this.preview.clone();
-    }
-    
-    /**
      * @return The crate type of the crate.
      */
     public CrateType getCrateType() {
@@ -535,6 +526,9 @@ public class Crate {
         this.file.set(path + ".Editor-Items", items);
 
         this.fileManager.saveFile(this.fileManager.getFile(this.name));
+
+        this.fileManager.removeFile(this.name);
+        this.fileManager.addFile(this.name + ".yml", "crates");
     }
     
     /**
@@ -581,7 +575,7 @@ public class Crate {
      * Loads all the preview items and puts them into a list.
      * @return A list of all the preview items that were created.
      */
-    public ArrayList<ItemStack> getPreview() {
+    public ArrayList<ItemStack> getPreviewItems() {
         ArrayList<ItemStack> items = new ArrayList<>();
 
         for (Prize prize : getPrizes()) {

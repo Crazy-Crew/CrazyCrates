@@ -86,20 +86,12 @@ public class CrateManager {
 
             // Close previews
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {
-                if (PreviewListener.inPreview(player) && PreviewListener.getPreview(player) == crate) {
-                    if (player == sender) return;
-
+                if (PreviewListener.inPreview(player) && PreviewListener.getPreview(player) == crate && player != sender) {
                     PreviewListener.closePreview(player, crate);
                     player.sendMessage(Translation.reloaded_forced_out_of_preview.getString());
                     players.add(player.getUniqueId());
                 }
             });
-
-            // Remove file from arraylist.
-            this.fileManager.removeFile(crateName);
-
-            // Add new file.
-            this.fileManager.addFile(crateName + ".yml", "crates");
 
             // Grab the new file.
             FileConfiguration file = this.fileManager.getFile(crateName).getFile();
@@ -133,7 +125,7 @@ public class CrateManager {
             }
 
             crate.setPrize(prizes);
-            crate.setPreview(crate.getPreview());
+            crate.setPreviewItems(crate.getPreviewItems());
 
             players.forEach(uuid -> {
                 Player player = this.plugin.getServer().getPlayer(uuid);
