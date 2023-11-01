@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
+import org.apache.commons.lang.WordUtils;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.support.SkullCreator;
@@ -268,7 +269,7 @@ public class ItemBuilder {
      * Get the name of the item.
      */
     public String getName() {
-        return this.itemName;
+        return this.itemName.isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(this.material.getKey().getKey().replaceAll("_", " "))) : this.itemName;
     }
 
     /**
@@ -353,7 +354,7 @@ public class ItemBuilder {
             newName = newName.replace(placeholder, this.namePlaceholders.get(placeholder)).replace(placeholder.toLowerCase(), this.namePlaceholders.get(placeholder));
         }
 
-        return newName;
+        return newName.isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(this.material.getKey().getKey().replaceAll("_", " "))) : newName;
     }
 
     private boolean isArmor() {
