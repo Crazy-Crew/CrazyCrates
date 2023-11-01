@@ -46,6 +46,7 @@ public class PreviewListener implements Listener {
     
     public static void openNewPreview(Player player, Crate crate) {
         playerCrate.put(player.getUniqueId(), crate);
+
         setPage(player, 1);
         player.openInventory(crate.getPreview(player));
     }
@@ -56,8 +57,14 @@ public class PreviewListener implements Listener {
     }
 
     public static void closePreview(Player player, Crate crate) {
-        playerCrate.remove(player.getUniqueId());
-        crate.getPreview(player).close();
+        if (playerCrate.containsKey(player.getUniqueId())) {
+            plugin.getCrazyHandler().getInventoryManager().addInventoryViewer(player.getUniqueId());
+            crate.getPreview(player).close();
+
+            playerCrate.remove(player.getUniqueId());
+
+            plugin.getLogger().warning("Inventory is closed.");
+        }
     }
 
     public static boolean inPreview(Player player) {

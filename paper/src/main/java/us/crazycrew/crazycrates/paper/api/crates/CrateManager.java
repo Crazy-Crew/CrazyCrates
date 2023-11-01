@@ -56,7 +56,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -80,21 +79,15 @@ public class CrateManager {
 
     private boolean giveNewPlayersKeys;
 
-    public void reloadCrate(Player sender, Crate crate, String crateName) {
+    public void reloadCrate(Crate crate) {
         try {
-            HashSet<UUID> players = new HashSet<>();
-
             // Close previews
-            this.plugin.getServer().getOnlinePlayers().forEach(player -> {
-                if (PreviewListener.inPreview(player) && PreviewListener.getPreview(player) == crate && player != sender) {
-                    PreviewListener.closePreview(player, crate);
-                    player.sendMessage(Translation.reloaded_forced_out_of_preview.getString());
-                    players.add(player.getUniqueId());
-                }
-            });
+            this.plugin.getServer().getOnlinePlayers().forEach(player -> PreviewListener.closePreview(player, crate));
 
             // Grab the new file.
-            FileConfiguration file = this.fileManager.getFile(crateName).getFile();
+            FileConfiguration file = crate.getFile();
+
+            crate.purge();
 
             // Profit?
             ArrayList<Prize> prizes = new ArrayList<>();
@@ -115,7 +108,7 @@ public class CrateManager {
                         file.getStringList(path + ".Commands"),
                         editorItems,
                         getItems(file, prize),
-                        crateName,
+                        crate.getName(),
                         file.getInt(path + ".Chance", 100),
                         file.getInt(path + ".MaxRange", 100),
                         file.getBoolean(path + ".Firework"),
@@ -127,18 +120,16 @@ public class CrateManager {
             crate.setPrize(prizes);
             crate.setPreviewItems(crate.getPreviewItems());
 
-            players.forEach(uuid -> {
+            for (UUID uuid : this.plugin.getCrazyHandler().getInventoryManager().getInventoryViewers()) {
                 Player player = this.plugin.getServer().getPlayer(uuid);
 
                 if (player != null) {
-                    PreviewListener.openNewPreview(player, getCrateFromName(crate.getName()));
+                    PreviewListener.openNewPreview(player, crate);
                 }
-            });
-
-            players.clear();
+            }
         } catch (Exception exception) {
             this.brokeCrates.add(crate.getName());
-            this.plugin.getLogger().log(Level.WARNING, "There was an error while loading the " + crateName + ".yml file.", exception);
+            this.plugin.getLogger().log(Level.WARNING, "There was an error while loading the " + crate.getName() + ".yml file.", exception);
         }
     }
 

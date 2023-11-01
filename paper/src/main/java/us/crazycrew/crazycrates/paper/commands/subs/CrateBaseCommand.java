@@ -297,8 +297,6 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        this.plugin.getCrateManager().reloadCrate(player, crate, crateName);
-
         HashMap<String, String> placeholders = new HashMap<>();
 
         placeholders.put("%crate%", crate.getName());

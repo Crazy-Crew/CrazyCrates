@@ -215,6 +215,11 @@ public class Crate {
         this.prizes = prizes;
     }
 
+    public void purge() {
+        this.prizes.clear();
+        this.preview.clear();
+    }
+
     /**
      * Overrides the preview items.
      *
@@ -529,6 +534,8 @@ public class Crate {
 
         this.fileManager.removeFile(this.name);
         this.fileManager.addFile(this.name + ".yml", "crates");
+
+        this.plugin.getCrateManager().reloadCrate(this);
     }
     
     /**
@@ -608,6 +615,7 @@ public class Crate {
                 if (index < list.size()) items.add(list.get(index));
             }
         }
+
         return items;
     }
     

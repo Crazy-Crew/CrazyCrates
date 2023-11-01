@@ -12,6 +12,7 @@ import us.crazycrew.crazycrates.paper.api.crates.PrizeManager;
 import us.crazycrew.crazycrates.paper.api.support.metrics.MetricsWrapper;
 import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
 import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestManager;
+import us.crazycrew.crazycrates.paper.api.users.guis.InventoryManager;
 import us.crazycrew.crazycrates.paper.commands.CommandManager;
 
 public class CrazyHandler extends CrazyCratesPlugin {
@@ -24,6 +25,8 @@ public class CrazyHandler extends CrazyCratesPlugin {
 
     private CrateManager crateManager;
     private PrizeManager prizeManager;
+
+    private InventoryManager inventoryManager;
 
     private ChestManager chestManager;
 
@@ -50,6 +53,9 @@ public class CrazyHandler extends CrazyCratesPlugin {
                 .registerCustomFilesFolder("/crates")
                 .registerCustomFilesFolder("/schematics")
                 .setup();
+
+        // Create inventory manager.
+        this.inventoryManager = new InventoryManager();
 
         // Load crates.
         this.crateManager = new CrateManager();
@@ -111,6 +117,11 @@ public class CrazyHandler extends CrazyCratesPlugin {
     @NotNull
     public PrizeManager getPrizeManager() {
         return this.prizeManager;
+    }
+
+    @NotNull
+    public InventoryManager getInventoryManager() {
+        return this.inventoryManager;
     }
 
     @NotNull
