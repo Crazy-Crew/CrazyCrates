@@ -13,9 +13,12 @@ import us.crazycrew.crazycrates.paper.api.support.metrics.MetricsWrapper;
 import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
 import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestManager;
 import us.crazycrew.crazycrates.paper.commands.CommandManager;
-import java.io.File;
 
 public class CrazyHandler extends CrazyCratesPlugin {
+
+    public CrazyHandler(CrazyCrates plugin) {
+        super(plugin.getDataFolder());
+    }
 
     private FileManager fileManager;
 
@@ -29,13 +32,10 @@ public class CrazyHandler extends CrazyCratesPlugin {
 
     private MetricsWrapper metrics;
 
-    public CrazyHandler(File dataFolder) {
-        super(dataFolder);
-    }
-
     public void load() {
         super.enable();
 
+        // Load all files.
         this.fileManager = new FileManager();
         this.fileManager.registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
@@ -51,25 +51,31 @@ public class CrazyHandler extends CrazyCratesPlugin {
                 .registerCustomFilesFolder("/schematics")
                 .setup();
 
+        // Load crates.
         this.crateManager = new CrateManager();
         this.crateManager.loadCrates();
 
+        // Enable prizes.
         this.prizeManager = new PrizeManager();
 
+        // Create chest manager.
         this.chestManager = new ChestManager();
 
         // Creates user manager instance.
         this.userManager = new BukkitUserManager();
 
+        // Create event logger.
         this.eventLogger = new EventLogger();
 
+        // Load commands.
         CommandManager commandManager = new CommandManager();
         commandManager.load();
 
-        // Migrates 2 config.yml settings to plugin-config.yml
+        // Migrates 2 config.yml settings to plugin-config.yml.
         MigrationService service = new MigrationService();
         service.migrate();
 
+        // Load metrics.
         boolean metrics = getConfigManager().getPluginConfig().getProperty(PluginConfig.toggle_metrics);
 
         this.metrics = new MetricsWrapper();
@@ -112,12 +118,7 @@ public class CrazyHandler extends CrazyCratesPlugin {
         return this.chestManager;
     }
 
-    @Override
     @NotNull
-    public BukkitUserManager getUserManager() {
-        return this.userManager;
-    }
-
     public EventLogger getEventLogger() {
         return this.eventLogger;
     }
@@ -125,5 +126,11 @@ public class CrazyHandler extends CrazyCratesPlugin {
     @NotNull
     public MetricsWrapper getMetrics() {
         return this.metrics;
+    }
+
+    @Override
+    @NotNull
+    public BukkitUserManager getUserManager() {
+        return this.userManager;
     }
 }
