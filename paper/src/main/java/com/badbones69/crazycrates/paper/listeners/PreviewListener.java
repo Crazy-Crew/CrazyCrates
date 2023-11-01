@@ -63,8 +63,6 @@ public class PreviewListener implements Listener {
             crate.getPreview(player).close();
 
             playerCrate.remove(player.getUniqueId());
-
-            plugin.getLogger().warning("Inventory is closed.");
         }
     }
 
