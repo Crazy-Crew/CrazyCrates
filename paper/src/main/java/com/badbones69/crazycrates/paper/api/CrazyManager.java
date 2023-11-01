@@ -255,7 +255,7 @@ public class CrazyManager {
      */
     @Deprecated(since = "1.16", forRemoval = true)
     public List<BrokeLocation> getBrokeCrateLocations() {
-        return this.plugin.getCrazyManager().getBrokeCrateLocations();
+        return this.plugin.getCrazyHandler().getCrateManager().getBrokeLocations();
     }
 
     @Deprecated(since = "1.16", forRemoval = true)
@@ -276,16 +276,6 @@ public class CrazyManager {
     @Deprecated(since = "1.16", forRemoval = true)
     public ArrayList<CrateLocation> getCrateLocations() {
         return new ArrayList<>(this.plugin.getCrateManager().getCrateLocations());
-    }
-
-    /**
-     * A map of all the schematic locations
-     *
-     * @return map of schematic locations.
-     */
-    @Deprecated(since = "1.16", forRemoval = true)
-    public HashMap<UUID, Location[]> getSchematicLocations() {
-        return this.plugin.getCrazyManager().getSchematicLocations();
     }
 
     /**
