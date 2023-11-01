@@ -103,6 +103,8 @@ public class Messages implements SettingsHolder {
 
     public static final Property<String> added_item_with_editor = newProperty("Messages.Added-Item-With-Editor", "%prefix%&7The item has been added to the %crate% Crate in prize #%prize%.");
 
+    public static final Property<String> failed_to_add_item = newProperty("Messages.Failed-To-Add-Item", "%prefix%&cCannot add an item if the crate type is a CosmicCrate for the time being.");
+
     public static final Property<String> preview_disabled = newProperty("Messages.Preview-Disabled", "%prefix%&cThe preview for that crate is currently disabled.");
 
     public static final Property<String> no_schematics_found = newProperty("Messages.No-Schematics-Found", "%prefix%&cNo schematics were found. Please make sure files ending in .nbt exist in the schematics folder. If not delete the folder so they regenerate");

@@ -58,8 +58,6 @@ public class CrateBaseCommand extends BaseCommand {
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
-
-
     @NotNull
     private final FileManager fileManager = this.plugin.getFileManager();
 
@@ -283,6 +281,11 @@ public class CrateBaseCommand extends BaseCommand {
 
         if (crate == null) {
             player.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
+            return;
+        }
+
+        if (crate.getCrateType() == CrateType.cosmic) {
+            player.sendMessage(Translation.failed_to_add_item.getString());
             return;
         }
 
