@@ -25,8 +25,17 @@ Crate:
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
   BroadCast: '%prefix%&6&l%player%&r &7is opening a &7&lBasic Chest&7.'
+  # This section is related to commands opening when a crate is opened.
+  opening-command:
+    # If the commands should be sent or not.
+    toggle: false
+    # The commands to run when the crate opens.
+    # Supports all placeholderapi placeholders
+    # Supports %prefix which returns our prefix, %player% which uses the player name
+    commands:
+      - 'put your command here.'
   # A default message if the prize doesn't have any Messages
-  # i.e Messages: [] or the value isn't there.
+  # i.e. Messages: [] or the value isn't there.
   Prize-Message:
     - '&7You have won &c%reward% &7from &c%crate%.'
   # Item the crate is in the GUI
@@ -38,7 +47,8 @@ Crate:
   # The lore of the item in the GUI.
   Lore:
     - '&7This crate contains strange objects.'
-    - '&7You have &6%Keys% keys &7to open this crate with.'
+    - '&7You have &6%keys% keys &7to open this crate with.'
+    - '&7You have opened this crate: &6%crate_opened% times'
     - '&7&l(&e&l!&7&l) Right click to view rewards.'
   Preview:
     # Turn on and off the preview for this crate.
@@ -130,8 +140,7 @@ Crate:
       DisplayName: '&b&lCheap Helmet'
       DisplayItem: 'GOLDEN_HELMET'
       # Only works on items with durability. This will make the item appear more damaged.
-      # It does not set the durability but subtracts this number from the durability
-      # Durability is 100, It subtracts 50.
+      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 50.
       # It cannot be 0.
       DisplayDamage: 50
       DisplayTrim:

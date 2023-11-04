@@ -12,6 +12,21 @@ Crate:
   Slot: 25
   OpeningBroadCast: true
   BroadCast: '%prefix%&6&l%player%&r &7is opening a &b&lQuad Crate.'
+  # This section is related to .nbt files.
+  structure:
+    # If it should randomly use an .nbt file.
+    random: true
+    # The file to use inside schematic's folder.
+    file: 'classic.nbt'
+  # This section is related to commands opening when a crate is opened.
+  opening-command:
+    # If the commands should be sent or not.
+    toggle: false
+    # The commands to run when the crate opens.
+    # Supports all placeholderapi placeholders
+    # Supports %prefix which returns our prefix, %player% which uses the player name
+    commands:
+      - 'put your command here.'
   Prize-Message:
     - '&7You have won &c%reward% &7from &c%crate%.'
   Item: 'CHEST'
@@ -19,7 +34,8 @@ Crate:
   Name: '&b&lQuad Crate'
   Lore:
     - '&7This crate contains crazy things.'
-    - '&7You have &6%Keys% keys &7to open this crate with.'
+    - '&7You have &6%keys% keys &7to open this crate with.'
+    - '&7You have opened this crate: &6%crate_opened% times'
     - '&7&l(&e&l!&7&l) Right click to view rewards.'
   Preview:
     Toggle: true
@@ -46,8 +62,7 @@ Crate:
       DisplayName: '&3&lRare ChestPlate'
       DisplayItem: 'DIAMOND_CHESTPLATE'
       # Only works on items with durability. This will make the item appear more damaged.
-      # It does not set the durability but subtracts this number from the durability
-      # Durability is 100, It subtracts 25.
+      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 25.
       # It cannot be 0.
       DisplayDamage: 25
       DisplayTrim:
@@ -70,8 +85,7 @@ Crate:
       DisplayName: '&b&lCrazy &4&lSword'
       DisplayItem: 'GOLDEN_SWORD'
       # Only works on items with durability. This will make the item appear more damaged.
-      # It does not set the durability but subtracts this number from the durability
-      # Durability is 100, It subtracts 13.
+      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 13.
       DisplayDamage: 13
       DisplayAmount: 1
       Lore:

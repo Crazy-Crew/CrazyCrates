@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api.enums.types;
 
+@Deprecated(since = "1.16", forRemoval = true)
 public enum CrateType {
     
     MENU("Menu"),

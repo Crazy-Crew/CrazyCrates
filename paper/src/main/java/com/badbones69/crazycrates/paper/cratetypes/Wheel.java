@@ -1,9 +1,7 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.Methods;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
@@ -14,6 +12,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,18 +22,19 @@ import java.util.Map;
 public class Wheel implements Listener {
     
     public static Map<Player, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
+
+    private static final CrateManager crateManager = plugin.getCrateManager();
     
     public static void startWheel(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
-            Methods.failedToTakeKey(player, crate);
-            crazyManager.removePlayerFromOpeningList(player);
+        if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
+            MiscUtils.failedToTakeKey(player, crate);
+            crateManager.removePlayerFromOpeningList(player);
             return;
         }
 
-        final Inventory inv = plugin.getServer().createInventory(null, 54, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        final Inventory inv = plugin.getServer().createInventory(null, 54, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
 
         for (int i = 0; i < 54; i++) {
             inv.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
@@ -49,12 +51,12 @@ public class Wheel implements Listener {
         rewards.put(player, items);
         player.openInventory(inv);
 
-        crazyManager.addCrateTask(player, new BukkitRunnable() {
+        crateManager.addCrateTask(player, new BukkitRunnable() {
             final ArrayList<Integer> slots = getBorder();
             int i = 0;
             int f = 17;
             int full = 0;
-            final int timer = Methods.randomNumber(42, 68);
+            final int timer = MiscUtils.randomNumber(42, 68);
             int slower = 0;
             int open = 0;
             int slow = 0;
@@ -69,7 +71,7 @@ public class Wheel implements Listener {
                 if (full < timer) checkLore();
 
                 if (full >= timer) {
-                    if (Methods.slowSpin().contains(slower)) checkLore();
+                    if (MiscUtils.slowSpin().contains(slower)) checkLore();
 
                     if (full == timer + 47) player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
 
@@ -77,7 +79,7 @@ public class Wheel implements Listener {
                         slow++;
 
                         if (slow >= 2) {
-                            ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+                            ItemStack item = MiscUtils.getRandomPaneColor().setName(" ").build();
 
                             for (int slot = 0; slot < 54; slot++) {
                                 if (!getBorder().contains(slot)) inv.setItem(slot, item);
@@ -90,13 +92,13 @@ public class Wheel implements Listener {
                     if (full >= (timer + 55 + 47)) {
                         Prize prize = null;
 
-                        if (crazyManager.isInOpeningList(player)) prize = crate.getPrize(rewards.get(player).get(slots.get(f)));
+                        if (crateManager.isInOpeningList(player)) prize = crate.getPrize(rewards.get(player).get(slots.get(f)));
 
-                        Methods.checkPrize(prize, crazyManager, plugin, player, crate);
+                        plugin.getCrazyHandler().getPrizeManager().checkPrize(prize, player, crate);
 
                         player.closeInventory();
-                        crazyManager.removePlayerFromOpeningList(player);
-                        crazyManager.endCrate(player);
+                        crateManager.removePlayerFromOpeningList(player);
+                        crateManager.endCrate(player);
                     }
 
                     slower++;

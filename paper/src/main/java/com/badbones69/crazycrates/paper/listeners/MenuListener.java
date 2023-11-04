@@ -1,17 +1,13 @@
 package com.badbones69.crazycrates.paper.listeners;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.Methods;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.paper.api.enums.settings.Messages;
+import ch.jalu.configme.SettingsManager;
+import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.common.config.types.Config;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
-import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Sound;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,135 +15,43 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import java.text.NumberFormat;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.CrazyHandler;
+import us.crazycrew.crazycrates.paper.api.enums.Translation;
+import us.crazycrew.crazycrates.paper.api.users.guis.InventoryManager;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MenuListener implements Listener {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    @NotNull
+    private final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
-    
-    public static void openGUI(Player player) {
-        int size = Files.CONFIG.getFile().getInt("Settings.InventorySize");
-        Inventory inv = player.getServer().createInventory(null, size, Methods.sanitizeColor(Files.CONFIG.getFile().getString("Settings.InventoryName")));
+    @NotNull
+    private final InventoryManager inventoryManager = this.plugin.getCrazyHandler().getInventoryManager();
 
-        if (Files.CONFIG.getFile().contains("Settings.Filler.Toggle")) {
-            if (Files.CONFIG.getFile().getBoolean("Settings.Filler.Toggle")) {
-                String id = Files.CONFIG.getFile().getString("Settings.Filler.Item");
-                String name = Files.CONFIG.getFile().getString("Settings.Filler.Name");
-                List<String> lore = Files.CONFIG.getFile().getStringList("Settings.Filler.Lore");
-                ItemStack item = new ItemBuilder().setMaterial(id).setName(name).setLore(lore).build();
+    @NotNull
+    private final SettingsManager config = this.plugin.getConfigManager().getConfig();
 
-                for (int i = 0; i < size; i++) {
-                    inv.setItem(i, item.clone());
-                }
-            }
-        }
+    @NotNull
+    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
 
-        if (Files.CONFIG.getFile().contains("Settings.GUI-Customizer")) {
-            for (String custom : Files.CONFIG.getFile().getStringList("Settings.GUI-Customizer")) {
-                int slot = 0;
-                ItemBuilder item = new ItemBuilder();
-                String[] split = custom.split(", ");
-
-                for (String option : split) {
-
-                    if (option.contains("Item:")) item.setMaterial(option.replace("Item:", ""));
-
-                    if (option.contains("Name:")) {
-                        option = option.replace("Name:", "");
-
-                        option = getCrates(player, option);
-
-                        item.setName(option.replaceAll("%player%", player.getName()));
-                    }
-
-                    if (option.contains("Lore:")) {
-                        option = option.replace("Lore:", "");
-                        String[] d = option.split(",");
-
-                        for (String l : d) {
-                            option = getCrates(player, option);
-
-                            item.addLore(option.replaceAll("%player%", player.getName()));
-                        }
-                    }
-
-                    if (option.contains("Glowing:")) item.setGlow(Boolean.parseBoolean(option.replace("Glowing:", "")));
-
-                    if (option.contains("Player:")) item.setPlayerName(option.replaceAll("%player%", player.getName()));
-
-                    if (option.contains("Slot:")) slot = Integer.parseInt(option.replace("Slot:", ""));
-
-                    if (option.contains("Unbreakable-Item")) item.setUnbreakable(Boolean.parseBoolean(option.replace("Unbreakable-Item:", "")));
-
-                    if (option.contains("Hide-Item-Flags")) item.hideItemFlags(Boolean.parseBoolean(option.replace("Hide-Item-Flags:", "")));
-                }
-
-                if (slot > size) continue;
-
-                slot--;
-                inv.setItem(slot, item.build());
-            }
-        }
-
-        for (Crate crate : crazyManager.getCrates()) {
-            FileConfiguration file = crate.getFile();
-
-            if (file != null) {
-                if (file.getBoolean("Crate.InGUI")) {
-                    String path = "Crate.";
-                    int slot = file.getInt(path + "Slot");
-
-                    if (slot > size) continue;
-
-                    slot--;
-                    inv.setItem(slot, new ItemBuilder()
-                    .setMaterial(file.getString(path + "Item"))
-                    .setName(file.getString(path + "Name"))
-                    .setLore(file.getStringList(path + "Lore"))
-                    .setCrateName(crate.getName())
-                    .setPlayerName(file.getString(path + "Player"))
-                    .setGlow(file.getBoolean(path + "Glowing"))
-                    .addLorePlaceholder("%Keys%", NumberFormat.getNumberInstance().format(crazyManager.getVirtualKeys(player, crate)))
-                    .addLorePlaceholder("%Keys_Physical%", NumberFormat.getNumberInstance().format(crazyManager.getPhysicalKeys(player, crate)))
-                    .addLorePlaceholder("%Keys_Total%", NumberFormat.getNumberInstance().format(crazyManager.getTotalKeys(player, crate)))
-                    .addLorePlaceholder("%Player%", player.getName())
-                    .build());
-                }
-            }
-        }
-
-        player.openInventory(inv);
-    }
-
-    private static String getCrates(Player player, String option) {
-        for (Crate crate : crazyManager.getCrates()) {
-            if (crate.getCrateType() != CrateType.MENU) {
-                option = option.replaceAll("%" + crate.getName().toLowerCase() + "%", crazyManager.getVirtualKeys(player, crate) + "")
-                .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", crazyManager.getPhysicalKeys(player, crate) + "")
-                .replaceAll("%" + crate.getName().toLowerCase() + "_total%", crazyManager.getTotalKeys(player, crate) + "");
-            }
-        }
-
-        return option;
-    }
+    @NotNull
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @EventHandler
     public void onInvClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
-        Inventory inv = e.getInventory();
-        FileConfiguration config = Files.CONFIG.getFile();
+        Inventory inv = e.getClickedInventory();
 
         if (inv != null) {
-
-            for (Crate crate : crazyManager.getCrates()) {
-                if (crate.getCrateType() != CrateType.MENU && crate.isCrateMenu(e.getView())) return;
+            for (Crate crate : this.plugin.getCrateManager().getCrates()) {
+                if (crate.getCrateType() != CrateType.menu && crate.isCrateMenu(e.getView())) return;
             }
 
-            if (e.getView().getTitle().equals(Methods.sanitizeColor(config.getString("Settings.InventoryName")))) {
+            if (e.getView().getTitle().equals(MsgUtils.sanitizeColor(this.config.getProperty(Config.inventory_name)))) {
                 e.setCancelled(true);
 
                 if (e.getCurrentItem() != null) {
@@ -156,64 +60,61 @@ public class MenuListener implements Listener {
                     if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
                         NBTItem nbtItem = new NBTItem(item);
 
-                        if (nbtItem.hasNBTData() && nbtItem.hasKey("CrazyCrates-Crate")) {
-                            Crate crate = crazyManager.getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
+                        if (nbtItem.hasNBTData() && nbtItem.hasTag("CrazyCrates-Crate")) {
+                            Crate crate = this.plugin.getCrateManager().getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
 
                             if (crate != null) {
                                 if (e.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
-
                                     if (crate.isPreviewEnabled()) {
                                         player.closeInventory();
-                                        PreviewListener.setPlayerInMenu(player, true);
-                                        PreviewListener.openNewPreview(player, crate);
+                                        this.inventoryManager.addMenuViewer(player, true);
+                                        this.inventoryManager.openCratePreview(player, crate);
                                     } else {
-                                        player.sendMessage(Messages.PREVIEW_DISABLED.getMessage());
+                                        player.sendMessage(Translation.preview_disabled.getString());
                                     }
 
                                     return;
                                 }
 
-                                if (crazyManager.isInOpeningList(player)) {
-                                    player.sendMessage(Messages.CRATE_ALREADY_OPENED.getMessage());
+                                if (this.crateManager.isInOpeningList(player)) {
+                                    player.sendMessage(Translation.already_opening_crate.getString());
                                     return;
                                 }
 
                                 boolean hasKey = false;
-                                KeyType keyType = KeyType.VIRTUAL_KEY;
+                                KeyType keyType = KeyType.virtual_key;
 
-                                if (crazyManager.getVirtualKeys(player, crate) >= 1) {
+                                if (this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
                                     hasKey = true;
                                 } else {
-                                    if (Files.CONFIG.getFile().getBoolean("Settings.Virtual-Accepts-Physical-Keys") && crazyManager.hasPhysicalKey(player, crate, false)) {
+                                    if (this.config.getProperty(Config.virtual_accepts_physical_keys) && this.crazyHandler.getUserManager().hasPhysicalKey(player.getUniqueId(), crate.getName(), false)) {
                                         hasKey = true;
-                                        keyType = KeyType.PHYSICAL_KEY;
+                                        keyType = KeyType.physical_key;
                                     }
                                 }
 
                                 if (!hasKey) {
-                                    if (config.contains("Settings.Need-Key-Sound")) {
-                                        Sound sound = Sound.valueOf(config.getString("Settings.Need-Key-Sound"));
-
-                                        if (sound != null) player.playSound(player.getLocation(), sound, 1f, 1f);
+                                    if (this.config.getProperty(Config.need_key_sound_toggle)) {
+                                        player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), 1f, 1f);
                                     }
 
-                                    player.sendMessage(Messages.NO_VIRTUAL_KEY.getMessage());
+                                    player.sendMessage(Translation.no_virtual_key.getString());
                                     return;
                                 }
 
                                 for (String world : getDisabledWorlds()) {
                                     if (world.equalsIgnoreCase(player.getWorld().getName())) {
-                                        player.sendMessage(Messages.WORLD_DISABLED.getMessage("%World%", player.getWorld().getName()));
+                                        player.sendMessage(Translation.world_disabled.getMessage("%world%", player.getWorld().getName()).toString());
                                         return;
                                     }
                                 }
 
-                                if (Methods.isInventoryFull(player)) {
-                                    player.sendMessage(Messages.INVENTORY_FULL.getMessage());
+                                if (MiscUtils.isInventoryFull(player)) {
+                                    player.sendMessage(Translation.inventory_not_empty.getString());
                                     return;
                                 }
 
-                                crazyManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
+                                this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
                             }
                         }
                     }
@@ -223,6 +124,6 @@ public class MenuListener implements Listener {
     }
     
     private ArrayList<String> getDisabledWorlds() {
-        return new ArrayList<>(Files.CONFIG.getFile().getStringList("Settings.DisabledWorlds"));
+        return new ArrayList<>(this.config.getProperty(Config.disabledWorlds));
     }
 }

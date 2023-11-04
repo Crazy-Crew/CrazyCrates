@@ -84,112 +84,112 @@ public class Prize {
      * @return Returns the name of the prize.
      */
     public String getName() {
-        return name;
+        return this.name;
     }
     
     /**
      * @return Returns the display item that is shown for the preview and the winning prize.
      */
     public ItemStack getDisplayItem() {
-        if (displayItemStack == null) {
-            displayItemStack = displayItem.build();
-            NBTItem nbt = new NBTItem(displayItemStack);
-            nbt.setString("crazycrate-prize", name);
-            displayItemStack = nbt.getItem();
+        if (this.displayItemStack == null) {
+            this.displayItemStack = this.displayItem.build();
+            NBTItem nbt = new NBTItem(this.displayItemStack);
+            nbt.setString("crazycrate-prize", this.name);
+            this.displayItemStack = nbt.getItem();
         }
 
-        return displayItemStack.clone();
+        return this.displayItemStack.clone();
     }
     
     /**
      * @return Returns the ItemBuilder of the display item.
      */
     public ItemBuilder getDisplayItemBuilder() {
-        return displayItem;
+        return this.displayItem;
     }
     
     /**
      * @return Returns the list of tiers the prize is in.
      */
     public List<Tier> getTiers() {
-        return tiers;
+        return this.tiers;
     }
     
     /**
      * @return Returns the messages sent to the player.
      */
     public List<String> getMessages() {
-        return messages;
+        return this.messages;
     }
     
     /**
      * @return Returns the commands that are run when the player wins.
      */
     public List<String> getCommands() {
-        return commands;
+        return this.commands;
     }
     
     /**
      * @return Returns the Editor ItemStacks that are given to the player that wins.
      */
     public List<ItemStack> getItems() {
-        return items;
+        return this.items;
     }
     
     /**
      * @return Returns the ItemBuilders for all the custom items made from the Items: option.
      */
     public List<ItemBuilder> getItemBuilders() {
-        return itemBuilders;
+        return this.itemBuilders;
     }
     
     /**
      * @return Returns the name of the crate the prize is in.
      */
     public String getCrate() {
-        return crate;
+        return this.crate;
     }
     
     /**
      * @return Returns the chance the prize has of being picked.
      */
     public int getChance() {
-        return chance;
+        return this.chance;
     }
     
     /**
      * @return Returns the max range of the prize.
      */
     public int getMaxRange() {
-        return maxRange;
+        return this.maxRange;
     }
     
     /**
      * @return Returns true if a firework explosion is played and false if not.
      */
     public boolean useFireworks() {
-        return firework;
+        return this.firework;
     }
     
     /**
      * @return Returns the list of blacklist permissions on the prize.
      */
     public List<String> getBlackListedPermissions() {
-        return blackListPermissions;
+        return this.blackListPermissions;
     }
     
     /**
      * @return Returns the alternative prize the player wins if they have a blacklist permission.
      */
     public Prize getAltPrize() {
-        return altPrize;
+        return this.altPrize;
     }
     
     /**
-     * @return Returns true if the prize has an alternative prize and false if not.
+     * @return Returns true if the prize doesn't have an alternative prize and false if it does.
      */
     public boolean hasAltPrize() {
-        return altPrize != null;
+        return this.altPrize == null;
     }
     
     /**
@@ -197,7 +197,7 @@ public class Prize {
      */
     public boolean hasBlacklistPermission(Player player) {
         if (!player.isOp()) {
-            for (String blackListPermission : blackListPermissions) {
+            for (String blackListPermission : this.blackListPermissions) {
                 if (player.hasPermission(blackListPermission)) return true;
             }
         }

@@ -1,9 +1,7 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.Methods;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
@@ -14,18 +12,20 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import java.util.ArrayList;
 
 public class Wonder implements Listener {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+    private static final CrateManager crateManager = plugin.getCrateManager();
     
     public static void startWonder(final Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        if (!crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
-            Methods.failedToTakeKey(player, crate);
-            crazyManager.removePlayerFromOpeningList(player);
+        if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
+            MiscUtils.failedToTakeKey(player, crate);
+            crateManager.removePlayerFromOpeningList(player);
             return;
         }
 
@@ -40,8 +40,8 @@ public class Wonder implements Listener {
 
         player.openInventory(inv);
 
-        crazyManager.addCrateTask(player, new BukkitRunnable() {
-            int fulltime = 0;
+        crateManager.addCrateTask(player, new BukkitRunnable() {
+            int fullTime = 0;
             int timer = 0;
             int slot1 = 0;
             int slot2 = 44;
@@ -50,7 +50,7 @@ public class Wonder implements Listener {
             
             @Override
             public void run() {
-                if (timer >= 2 && fulltime <= 65) {
+                if (timer >= 2 && fullTime <= 65) {
                     slots.remove(slot1 + "");
                     slots.remove(slot2 + "");
                     Slots.add(slot1);
@@ -67,8 +67,8 @@ public class Wonder implements Listener {
                     slot2--;
                 }
 
-                if (fulltime > 67) {
-                    ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+                if (fullTime > 67) {
+                    ItemStack item = MiscUtils.getRandomPaneColor().setName(" ").build();
 
                     for (int slot : Slots) {
                         inv.setItem(slot, item);
@@ -77,20 +77,20 @@ public class Wonder implements Listener {
 
                 player.openInventory(inv);
 
-                if (fulltime > 100) {
-                    crazyManager.endCrate(player);
+                if (fullTime > 100) {
+                    crateManager.endCrate(player);
                     player.closeInventory();
-                    crazyManager.givePrize(player, prize, crate);
+                    plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
 
-                    if (prize.useFireworks()) Methods.firework(player.getLocation().add(0, 1, 0));
+                    if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
                     plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-                    crazyManager.removePlayerFromOpeningList(player);
+                    crateManager.removePlayerFromOpeningList(player);
 
                     return;
                 }
 
-                fulltime++;
+                fullTime++;
                 timer++;
 
                 if (timer > 2) timer = 0;

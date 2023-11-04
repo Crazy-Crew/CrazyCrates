@@ -36,16 +36,16 @@ public class PhysicalCrateKeyCheckEvent extends Event implements Cancellable {
     }
     
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
     
     public CrateLocation getCrateLocation() {
-        return crateLocation;
+        return this.crateLocation;
     }
     
     @Override
     public boolean isCancelled() {
-        return isCancelled;
+        return this.isCancelled;
     }
     
     @Override

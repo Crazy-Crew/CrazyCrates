@@ -1,9 +1,7 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.Methods;
-import com.badbones69.crazycrates.paper.api.CrazyManager;
-import com.badbones69.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
@@ -14,14 +12,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CSGO implements Listener {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
-    private static final CrazyManager crazyManager = plugin.getStarter().getCrazyManager();
+    private static final CrateManager crateManager = plugin.getCrateManager();
     
     private static void setGlass(Inventory inv) {
         HashMap<Integer, ItemStack> glass = new HashMap<>();
@@ -32,7 +33,7 @@ public class CSGO implements Listener {
 
         for (int i : glass.keySet()) {
             if (inv.getItem(i) == null) {
-                ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+                ItemStack item = MiscUtils.getRandomPaneColor().setName(" ").build();
                 inv.setItem(i, item);
                 inv.setItem(i + 18, item);
             }
@@ -42,7 +43,7 @@ public class CSGO implements Listener {
             if (i < 9 && i != 4) glass.put(i, inv.getItem(i));
         }
 
-        ItemStack item = Methods.getRandomPaneColor().setName(" ").build();
+        ItemStack item = MiscUtils.getRandomPaneColor().setName(" ").build();
 
         inv.setItem(0, glass.get(1));
         inv.setItem(18, glass.get(1));
@@ -65,7 +66,7 @@ public class CSGO implements Listener {
     }
     
     public static void openCSGO(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, Methods.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        Inventory inv = plugin.getServer().createInventory(null, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
         setGlass(inv);
 
         for (int i = 9; i > 8 && i < 18; i++) {
@@ -74,16 +75,16 @@ public class CSGO implements Listener {
 
         player.openInventory(inv);
 
-        if (crazyManager.takeKeys(1, player, crate, keyType, checkHand)) {
+        if (plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
             startCSGO(player, inv, crate);
         } else {
-            Methods.failedToTakeKey(player, crate);
-            crazyManager.removePlayerFromOpeningList(player);
+            MiscUtils.failedToTakeKey(player, crate);
+            crateManager.removePlayerFromOpeningList(player);
         }
     }
     
     private static void startCSGO(final Player player, final Inventory inv, Crate crate) {
-        crazyManager.addCrateTask(player, new BukkitRunnable() {
+        crateManager.addCrateTask(player, new BukkitRunnable() {
             int time = 1;
             int full = 0;
             int open = 0;
@@ -116,12 +117,12 @@ public class CSGO implements Listener {
 
                     if (time == 60) { // When done
                         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-                        crazyManager.endCrate(player);
+                        crateManager.endCrate(player);
                         Prize prize = crate.getPrize(inv.getItem(13));
 
-                        Methods.checkPrize(prize, crazyManager, plugin, player, crate);
+                        plugin.getCrazyHandler().getPrizeManager().checkPrize(prize, player, crate);
 
-                        crazyManager.removePlayerFromOpeningList(player);
+                        crateManager.removePlayerFromOpeningList(player);
                         cancel();
 
                         new BukkitRunnable() {
