@@ -95,7 +95,7 @@ tasks {
     }
 }
 
-val isSnapshot = rootProject.version.toString().contains("snapshot")
+val isSnapshot = true
 val type = if (isSnapshot) "beta" else "release"
 val other = if (isSnapshot) "Beta" else "Release"
 
