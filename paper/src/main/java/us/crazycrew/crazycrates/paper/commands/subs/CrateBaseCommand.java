@@ -319,8 +319,8 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        //PreviewListener.setPlayerInMenu(player, false);
-        //PreviewListener.openNewPreview(player, crate);
+        this.plugin.getCrazyHandler().getInventoryManager().addMenuViewer(player, false);
+        this.plugin.getCrazyHandler().getInventoryManager().openCratePreview(player, crate);
     }
 
     @SubCommand("open-others")

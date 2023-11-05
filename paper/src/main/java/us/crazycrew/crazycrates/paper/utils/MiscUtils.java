@@ -99,6 +99,58 @@ public class MiscUtils {
         item.setAmount(item.getAmount() - 1);
     }
 
+    public static HashMap<Integer, ItemStack> removeMultipleItemStacks(Inventory inventory, ItemStack... items) {
+        if (items != null) {
+            HashMap<Integer, ItemStack> leftover = new HashMap<>();
+
+            // TODO: optimization
+
+            for (int i = 0; i < items.length; i++) {
+                ItemStack item = items[i];
+                int toDelete = item.getAmount();
+
+                while (true) {
+                    // Paper start - Allow searching entire contents
+                    ItemStack[] toSearch = inventory.getContents();
+                    int first = getFirstItem(item, false, toSearch);
+                    // Paper end
+
+                    // Drat! we don't have this type in the inventory
+                    if (first == -1) {
+                        item.setAmount(toDelete);
+                        leftover.put(i, item);
+                        break;
+                    } else {
+                        ItemStack itemStack = inventory.getItem(first);
+                        int amount = itemStack.getAmount();
+
+                        if (amount <= toDelete) {
+                            toDelete -= amount;
+                            // clear the slot, all used up
+                            inventory.clear(first);
+                        } else {
+                            // split the stack and store
+                            itemStack.setAmount(amount - toDelete);
+                            inventory.setItem(first, itemStack);
+                            toDelete = 0;
+                        }
+                    }
+
+                    // Bail when done
+                    if (toDelete <= 0) {
+                        break;
+                    }
+                }
+            }
+
+            return leftover;
+        } else {
+            plugin.getLogger().info("Items cannot be null.");
+        }
+
+        return null;
+    }
+
     /**
      * Remove multiple items from a player's inventory.
      */
