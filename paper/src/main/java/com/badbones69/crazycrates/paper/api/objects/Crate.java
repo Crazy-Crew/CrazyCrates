@@ -17,11 +17,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import us.crazycrew.crazycrates.paper.api.users.guis.InventoryManager;
+import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryManager;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePreviewMenu;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -321,7 +321,7 @@ public class Crate {
      * Get if the preview has an item boarder.
      * @return True if it does and false if not.
      */
-    public boolean isItemBorderEnabled() {
+    public boolean isBorderToggle() {
         return this.borderToggle;
     }
     
@@ -342,24 +342,6 @@ public class Crate {
     }
     
     /**
-     * Check if the inventory the player is in is the crate menu.
-     * @param view The inventory view of the inventory.
-     * @return True if it is the crate menu and false if not.
-     */
-    public boolean isCrateMenu(InventoryView view) {
-        return view != null && isCrateMenu(view.getTitle());
-    }
-    
-    /**
-     * Check if the inventory the player is in is the crate menu.
-     * @param inventoryName The name of the inventory.
-     * @return True if it is the crate menu and false if not.
-     */
-    public boolean isCrateMenu(String inventoryName) {
-        return inventoryName != null && isInventoryNameSimilar(inventoryName, this.crateInventoryName);
-    }
-    
-    /**
      * Gets the inventory of a preview of prizes for the crate.
      * @return The preview as an Inventory object.
      */
@@ -372,20 +354,9 @@ public class Crate {
      * @return The preview as an Inventory object.
      */
     public Inventory getPreview(Player player, int page) {
-        Inventory inventory = player.getServer().createInventory(null, !this.borderToggle && (this.inventoryManager.inCratePreview(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, this.previewName);
-        setDefaultItems(inventory, player);
+        CratePreviewMenu cratePreviewMenu = new CratePreviewMenu(this.plugin, this, player, !this.borderToggle && (this.inventoryManager.inCratePreview(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, page, this.previewName);
 
-        for (ItemStack item : getPageItems(page)) {
-            int nextSlot = inventory.firstEmpty();
-
-            if (nextSlot >= 0) {
-                inventory.setItem(nextSlot, item);
-            } else {
-                break;
-            }
-        }
-
-        return inventory;
+        return cratePreviewMenu.build().getInventory();
     }
     
     /**
@@ -566,6 +537,10 @@ public class Crate {
         return this.requiredKeys;
     }
 
+    public ArrayList<ItemStack> getPreview() {
+        return this.preview;
+    }
+
     /**
      * @return A CrateHologram which contains all the info about the hologram the crate uses.
      */
@@ -593,64 +568,5 @@ public class Crate {
         }
 
         return items;
-    }
-    
-    private List<ItemStack> getPageItems(int page) {
-        List<ItemStack> list = this.preview;
-        List<ItemStack> items = new ArrayList<>();
-
-        if (page <= 0) page = 1;
-
-        int max = this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0);
-        int index = page * max - max;
-        int endIndex = index >= list.size() ? list.size() - 1 : index + max;
-
-        for (; index < endIndex; index++) {
-            if (index < list.size()) items.add(list.get(index));
-        }
-
-        for (; items.isEmpty(); page--) {
-            if (page <= 0) break;
-            index = page * max - max;
-            endIndex = index >= list.size() ? list.size() - 1 : index + max;
-
-            for (; index < endIndex; index++) {
-                if (index < list.size()) items.add(list.get(index));
-            }
-        }
-
-        return items;
-    }
-    
-    private void setDefaultItems(Inventory inventory, Player player) {
-        if (this.borderToggle) {
-            List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
-
-            for (int i : borderItems) { // Top Boarder slots
-                inventory.setItem(i, this.borderItem.build());
-            }
-
-            borderItems.replaceAll(this::getAbsoluteItemPosition);
-
-            for (int i : borderItems) { // Bottom Boarder slots
-                inventory.setItem(i, this.borderItem.build());
-            }
-        }
-
-        int page = this.inventoryManager.getPage(player);
-
-        if (this.inventoryManager.inCratePreview(player)) inventory.setItem(getAbsoluteItemPosition(4), this.inventoryManager.getMenuButton());
-
-        if (page == 1) {
-            if (this.borderToggle) inventory.setItem(getAbsoluteItemPosition(3), this.borderItem.build());
-        } else {
-            inventory.setItem(getAbsoluteItemPosition(3), this.inventoryManager.getBackButton(player));
-        }
-
-        if (page == this.maxPage) {
-            if (this.borderToggle) inventory.setItem(getAbsoluteItemPosition(5), this.borderItem.build());
-        } else {
-            inventory.setItem(getAbsoluteItemPosition(5), this.inventoryManager.getNextButton(player));
-        }
     }
 }

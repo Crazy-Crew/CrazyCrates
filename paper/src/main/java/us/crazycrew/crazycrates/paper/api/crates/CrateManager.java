@@ -17,6 +17,7 @@ import com.badbones69.crazycrates.paper.listeners.MenuListener;
 import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.Config;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.events.crates.CrateOpenEvent;
 import us.crazycrew.crazycrates.paper.api.interfaces.HologramController;
@@ -354,7 +355,11 @@ public class CrateManager {
 
         switch (crate.getCrateType()) {
             case menu -> {
-                if (this.plugin.getConfigManager().getConfig().getProperty(Config.enable_crate_menu)) this.plugin.getCrazyHandler().getInventoryManager().openGUI(player); else player.sendMessage(Translation.feature_disabled.getString());
+                if (this.plugin.getConfigManager().getConfig().getProperty(Config.enable_crate_menu)) {
+                    CrateMainMenu crateMainMenu = new CrateMainMenu(this.plugin, player, this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_size), this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_name));
+
+                    player.openInventory(crateMainMenu.build().getInventory());
+                } else player.sendMessage(Translation.feature_disabled.getString());
             }
             case csgo -> CSGO.openCSGO(player, crate, keyType, checkHand);
             case roulette -> Roulette.openRoulette(player, crate, keyType, checkHand);

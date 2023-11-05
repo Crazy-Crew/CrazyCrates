@@ -38,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
@@ -71,7 +72,14 @@ public class CrateBaseCommand extends BaseCommand {
     @Default
     @Permission(value = "crazycrates.command.player.menu", def = PermissionDefault.TRUE)
     public void onDefaultMenu(Player player) {
-        if (this.config.getProperty(Config.enable_crate_menu)) this.plugin.getCrazyHandler().getInventoryManager().openGUI(player); else player.sendMessage(Translation.feature_disabled.getString());
+        if (this.config.getProperty(Config.enable_crate_menu)) {
+            CrateMainMenu crateMainMenu = new CrateMainMenu(this.plugin, player, this.config.getProperty(Config.inventory_size), this.config.getProperty(Config.inventory_name));
+
+            player.openInventory(crateMainMenu.build().getInventory());
+            return;
+        }
+
+        player.sendMessage(Translation.feature_disabled.getString());
     }
 
     @SubCommand("help")

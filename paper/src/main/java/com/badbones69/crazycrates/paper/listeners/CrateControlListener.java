@@ -30,8 +30,10 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePreviewMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
-import us.crazycrew.crazycrates.paper.api.users.guis.InventoryManager;
+import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryManager;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.HashMap;
@@ -56,8 +58,12 @@ public class CrateControlListener implements Listener { // Crate Control
     // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
     @EventHandler
     public void onCrateInventoryClick(InventoryClickEvent event) {
+        Inventory inventory = event.getClickedInventory();
+
+        if (inventory == null) return;
+
         for (Crate crate : this.crateManager.getCrates()) {
-            if (crate.getCrateType() != CrateType.menu && crate.isCrateMenu(event.getView())) event.setCancelled(true);
+            if (crate.getCrateType() != CrateType.menu && inventory.getHolder() instanceof CratePreviewMenu) event.setCancelled(true);
         }
     }
     
@@ -125,7 +131,11 @@ public class CrateControlListener implements Listener { // Crate Control
 
                 if (crate.getCrateType() == CrateType.menu) {
                     //This is to stop players in QuadCrate to not be able to try and open a crate set to menu.
-                    if (!this.crateManager.isInOpeningList(player) && this.config.getProperty(Config.enable_crate_menu)) this.plugin.getCrazyHandler().getInventoryManager().openGUI(player);
+                    if (!this.crateManager.isInOpeningList(player) && this.config.getProperty(Config.enable_crate_menu)) {
+                        CrateMainMenu crateMainMenu = new CrateMainMenu(this.plugin, player, this.config.getProperty(Config.inventory_size), this.config.getProperty(Config.inventory_name));
+
+                        player.openInventory(crateMainMenu.build().getInventory());
+                    }
 
                     return;
                 }
