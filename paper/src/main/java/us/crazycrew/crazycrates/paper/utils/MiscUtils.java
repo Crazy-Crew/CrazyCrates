@@ -99,6 +99,7 @@ public class MiscUtils {
         item.setAmount(item.getAmount() - 1);
     }
 
+    // ElectronicBoy is the author.
     public static HashMap<Integer, ItemStack> removeMultipleItemStacks(Inventory inventory, ItemStack... items) {
         if (items != null) {
             HashMap<Integer, ItemStack> leftover = new HashMap<>();
