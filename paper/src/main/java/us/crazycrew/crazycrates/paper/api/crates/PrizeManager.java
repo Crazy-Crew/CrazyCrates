@@ -31,7 +31,7 @@ public class PrizeManager {
      */
     public void givePrize(Player player, Prize prize, Crate crate) {
         if (prize == null) {
-            this.plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
             return;
         }
 

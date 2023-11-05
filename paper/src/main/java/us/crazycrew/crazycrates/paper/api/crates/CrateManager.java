@@ -178,8 +178,7 @@ public class CrateManager {
 
                 if (crateType == CrateType.cosmic && tiers.isEmpty()) {
                     this.brokeCrates.add(crateName);
-                    if (this.plugin.isLogging())
-                        this.plugin.getLogger().warning("No tiers were found for this cosmic crate " + crateName + ".yml file.");
+                    if (this.plugin.isLogging()) this.plugin.getLogger().warning("No tiers were found for this cosmic crate " + crateName + ".yml file.");
                     continue;
                 }
 

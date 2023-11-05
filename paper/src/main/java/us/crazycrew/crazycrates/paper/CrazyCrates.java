@@ -75,29 +75,31 @@ public class CrazyCrates extends JavaPlugin {
         pluginManager.registerEvents(new CrateOnTheGo(), this);
         pluginManager.registerEvents(new QuadCrate(), this);
 
-        // Print dependency garbage
-        for (PluginSupport value : PluginSupport.values()) {
-            if (value.isPluginEnabled()) {
-                getServer().getConsoleSender().sendMessage(MsgUtils.color(this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.command_prefix) + "&6&l" + value.name() + " &a&lFOUND"));
-            } else {
-                getServer().getConsoleSender().sendMessage(MsgUtils.color(this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.command_prefix) + "&6&l" + value.name() + " &c&lNOT FOUND"));
+        if (isLogging()) {
+            // Print dependency garbage
+            for (PluginSupport value : PluginSupport.values()) {
+                if (value.isPluginEnabled()) {
+                    getServer().getConsoleSender().sendMessage(MsgUtils.color(this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.command_prefix) + "&6&l" + value.name() + " &a&lFOUND"));
+                } else {
+                    getServer().getConsoleSender().sendMessage(MsgUtils.color(this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.command_prefix) + "&6&l" + value.name() + " &c&lNOT FOUND"));
+                }
             }
+
+            List.of(
+                    "CrazyCrate Update: " + getDescription().getVersion() + " is one of 4 major updates.",
+                    "Please submit any bugs at https://github.com/Crazy-Crew/CrazyCrates/issues",
+                    "",
+                    "I will wait between releasing updates for bug reports",
+                    "The next version is Version 2.0 excluding version bumps for Minecraft releases or some easy features",
+                    "",
+                    "2.0 is a hard break, Legacy color codes will no longer work, Configurations will be fully migrated, Placeholders will change and so on.",
+                    "We only support https://papermc.io in 2.0 and will fully migrate to Modrinth and Hangar.",
+                    "After that's done, I'll be adding practically anything including light gui editors or in-game editors ( improved /cc additem ) and crate conversions."
+            ).forEach(getLogger()::warning);
         }
 
-        List.of(
-                "CrazyCrate Update: " + getDescription().getVersion() + " is one of 4 major updates.",
-                "Please submit any bugs at https://github.com/Crazy-Crew/CrazyCrates/issues",
-                "",
-                "I will wait between releasing updates for bug reports",
-                "The next version is Version 2.0 excluding version bumps for Minecraft releases or some easy features",
-                "",
-                "2.0 is a hard break, Legacy color codes will no longer work, Configurations will be fully migrated, Placeholders will change and so on.",
-                "We only support https://papermc.io in 2.0 and will fully migrate to Modrinth and Hangar.",
-                "After that's done, I'll be adding practically anything including light gui editors or in-game editors ( improved /cc additem ) and crate conversions."
-        ).forEach(getLogger()::warning);
-
         if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
-            getLogger().info("PlaceholderAPI support is enabled!");
+            if (isLogging()) getLogger().info("PlaceholderAPI support is enabled!");
             new PlaceholderAPISupport().register();
         }
     }
