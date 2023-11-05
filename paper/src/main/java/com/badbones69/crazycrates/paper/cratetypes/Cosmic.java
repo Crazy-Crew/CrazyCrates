@@ -20,6 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
@@ -75,11 +76,11 @@ public class Cosmic implements Listener {
     }
     
     public static void openCosmic(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"));
-        setChests(inv, crate);
+        Inventory inventory = new CratePrizeMenu(plugin, crate, player, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose")).build().getInventory();
+        setChests(inventory, crate);
         crateManager.addPlayerKeyType(player, keyType);
         checkHands.put(player, checkHand);
-        player.openInventory(inv);
+        player.openInventory(inventory);
     }
     
     private static Tier pickTier(Player player) {

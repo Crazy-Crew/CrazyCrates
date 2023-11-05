@@ -33,6 +33,7 @@ import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateAdminMenu;
 import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePreviewMenu;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryManager;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
@@ -258,6 +259,17 @@ public class CrateControlListener implements Listener { // Crate Control
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void onCratePrizeMenuClick(InventoryClickEvent event) {
+        Inventory inventory = event.getClickedInventory();
+
+        if (inventory == null) return;
+
+        if (!(inventory.getHolder(false) instanceof CratePrizeMenu)) return;
+
+        event.setCancelled(true);
     }
     
     @EventHandler

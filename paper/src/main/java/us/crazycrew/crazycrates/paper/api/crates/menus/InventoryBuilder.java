@@ -28,6 +28,18 @@ public abstract class InventoryBuilder implements InventoryHolder {
         this.inventory = plugin.getServer().createInventory(this, this.size, MsgUtils.color(this.title));
     }
 
+    public InventoryBuilder(CrazyCrates plugin, Crate crate, Player player, int size, String title) {
+        this.plugin = plugin;
+        this.title = title;
+        this.player = player;
+        this.size = size;
+        this.page = page;
+
+        this.crate = crate;
+
+        this.inventory = plugin.getServer().createInventory(this, this.size, MsgUtils.color(this.title));
+    }
+
     public InventoryBuilder(CrazyCrates plugin, Crate crate, Player player, int size, int page, String title) {
         this.plugin = plugin;
         this.title = title;
