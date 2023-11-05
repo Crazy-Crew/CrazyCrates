@@ -97,10 +97,12 @@ public class PrizeManager {
 
             if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) command = PlaceholderAPI.setPlaceholders(player, command);
 
+            String name = prize.getDisplayItemBuilder().getName() == null || prize.getDisplayItemBuilder().getName().isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " "))) : prize.getDisplayItemBuilder().getName();
+
             MiscUtils.sendCommand(command
                     .replaceAll("%player%", quoteReplacement(player.getName()))
                     .replaceAll("%Player%", quoteReplacement(player.getName()))
-                    .replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName()))
+                    .replaceAll("%reward%", quoteReplacement(name))
                     .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
         }
 
@@ -110,7 +112,7 @@ public class PrizeManager {
                     message = PlaceholderAPI.setPlaceholders(player, message);
                 }
 
-                String name = prize.getDisplayItemBuilder().getName() == null || prize.getDisplayItemBuilder().getName().isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", ""))) : prize.getDisplayItemBuilder().getName();
+                String name = prize.getDisplayItemBuilder().getName() == null || prize.getDisplayItemBuilder().getName().isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " "))) : prize.getDisplayItemBuilder().getName();
 
                 MsgUtils.sendMessage(player, message
                         .replaceAll("%player%", quoteReplacement(player.getName()))
@@ -127,7 +129,7 @@ public class PrizeManager {
                 message = PlaceholderAPI.setPlaceholders(player, message);
             }
 
-            String name = prize.getDisplayItemBuilder().getName() == null || prize.getDisplayItemBuilder().getName().isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", ""))) : prize.getDisplayItemBuilder().getName();
+            String name = prize.getDisplayItemBuilder().getName() == null || prize.getDisplayItemBuilder().getName().isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " "))) : prize.getDisplayItemBuilder().getName();
 
             MsgUtils.sendMessage(player, message
                     .replaceAll("%player%", quoteReplacement(player.getName()))

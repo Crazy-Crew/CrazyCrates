@@ -85,8 +85,7 @@ public class CrazyCrates extends JavaPlugin {
         }
 
         List.of(
-                "CrazyCrate Update: " + getDescription().getVersion() + " is one of 2 major updates.",
-                "Version: " + getDescription().getVersion() + " is currently backwards compatible.",
+                "CrazyCrate Update: " + getDescription().getVersion() + " is one of 4 major updates.",
                 "Please submit any bugs at https://github.com/Crazy-Crew/CrazyCrates/issues",
                 "",
                 "I will wait between releasing updates for bug reports",
