@@ -48,6 +48,12 @@ public class Config implements SettingsHolder {
     @Comment("If crates should knock players back if they don't have a key.")
     public static final Property<Boolean> knock_back = newProperty("Settings.KnockBack", true);
 
+    @Comment("If the player should be forced out of the preview when doing /cc reload")
+    public static final Property<Boolean> take_out_of_preview = newProperty("Settings.Force-Out-Of-Preview", false);
+
+    @Comment("If the player should be sent a message that they were removed from the preview gui during /cc reload.")
+    public static final Property<Boolean> send_preview_taken_out_message = newProperty("Settings.Force-Out-Of-Preview-Message", false);
+
     @Comment("If physical crates can accept virtual keys.")
     public static final Property<Boolean> physical_accepts_virtual_keys = newProperty("Settings.Physical-Accepts-Virtual-Keys", true);
 
