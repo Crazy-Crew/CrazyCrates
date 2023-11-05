@@ -225,7 +225,7 @@ public class CrateControlListener implements Listener { // Crate Control
 
         if (inventory == null) return;
 
-        if (!(inventory.getHolder() instanceof CrateAdminMenu)) return;
+        if (!(inventory.getHolder(false) instanceof CrateAdminMenu)) return;
 
         e.setCancelled(true);
 
