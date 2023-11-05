@@ -269,7 +269,7 @@ public class ItemBuilder {
      * Get the name of the item.
      */
     public String getName() {
-        return this.itemName.isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(this.material.getKey().getKey().replaceAll("_", " "))) : this.itemName;
+        return this.itemName;
     }
 
     /**
@@ -354,7 +354,7 @@ public class ItemBuilder {
             newName = newName.replace(placeholder, this.namePlaceholders.get(placeholder)).replace(placeholder.toLowerCase(), this.namePlaceholders.get(placeholder));
         }
 
-        return newName.isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(this.material.getKey().getKey().replaceAll("_", " "))) : newName;
+        return newName;
     }
 
     private boolean isArmor() {
