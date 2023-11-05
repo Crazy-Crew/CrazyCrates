@@ -30,12 +30,12 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateAdminMenu;
 import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePreviewMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryManager;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
-import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.HashMap;
 
 public class CrateControlListener implements Listener { // Crate Control
@@ -220,33 +220,40 @@ public class CrateControlListener implements Listener { // Crate Control
     
     @EventHandler
     public void onAdminMenuClick(InventoryClickEvent e) {
-        Inventory inv = e.getClickedInventory();
+        Inventory inventory = e.getClickedInventory();
         Player player = (Player) e.getWhoClicked();
 
-        if (inv != null && e.getView().getTitle().equals(MsgUtils.sanitizeColor("&4&lAdmin Keys"))) {
-            e.setCancelled(true);
+        if (inventory == null) return;
 
-            if (!MiscUtils.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
-                player.closeInventory();
-                return;
-            }
+        if (!(inventory.getHolder() instanceof CrateAdminMenu)) return;
 
-            // Added the >= due to an error about a raw slot set at -999.
-            if (e.getRawSlot() < inv.getSize() && e.getRawSlot() >= 0) { // Clicked in the admin menu.
-                ItemStack item = inv.getItem(e.getRawSlot());
-                if (this.crateManager.isKey(item)) {
-                    Crate crate = this.crateManager.getCrateFromKey(item);
+        e.setCancelled(true);
 
-                    if (e.getAction() == InventoryAction.PICKUP_ALL) {
-                        player.getInventory().addItem(crate.getKey());
-                    } else if (e.getAction() == InventoryAction.PICKUP_HALF) {
-                        this.plugin.getCrazyHandler().getUserManager().addKeys(1, player.getUniqueId(), crate.getName(), KeyType.virtual_key);
-                        String name = null;
-                        ItemStack key = crate.getKey();
+        if (!MiscUtils.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
+            player.closeInventory();
+            return;
+        }
 
-                        if (key.hasItemMeta() && key.getItemMeta().hasDisplayName()) name = key.getItemMeta().getDisplayName();
+        // Added the >= due to an error about a raw slot set at -999.
+        if (e.getRawSlot() < inventory.getSize() && e.getRawSlot() >= 0) { // Clicked in the admin menu.
+            ItemStack item = inventory.getItem(e.getRawSlot());
+            if (this.crateManager.isKey(item)) {
+                Crate crate = this.crateManager.getCrateFromKey(item);
 
-                        player.sendMessage(MsgUtils.getPrefix("&a&l+1 " + (name != null ? name : crate.getName())));
+                if (e.getAction() == InventoryAction.PICKUP_ALL) {
+                    player.getInventory().addItem(crate.getKey());
+                } else if (e.getAction() == InventoryAction.PICKUP_HALF) {
+                    this.plugin.getCrazyHandler().getUserManager().addKeys(1, player.getUniqueId(), crate.getName(), KeyType.virtual_key);
+                    ItemStack key = crate.getKey();
+
+                    if (key.getItemMeta() != null) {
+                        HashMap<String, String> placeholders = new HashMap<>();
+
+                        placeholders.put("%amount%", String.valueOf(1));
+                        //noinspection deprecation
+                        placeholders.put("%key%", crate.getKey().getItemMeta().getDisplayName());
+
+                        player.sendMessage(Translation.obtaining_keys.getMessage(placeholders).toString());
                     }
                 }
             }
@@ -254,7 +261,7 @@ public class CrateControlListener implements Listener { // Crate Control
     }
     
     @EventHandler
-    public void onLeave(PlayerQuitEvent e) {
+    public void onPlayerQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
 
         if (this.crateManager.hasCrateTask(player)) this.crateManager.endCrate(player);

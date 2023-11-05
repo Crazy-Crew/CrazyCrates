@@ -43,7 +43,7 @@ public class MenuListener implements Listener {
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @EventHandler
-    public void onInvClick(InventoryClickEvent event) {
+    public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         Inventory inventory = event.getClickedInventory();
 

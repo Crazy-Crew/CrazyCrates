@@ -30,7 +30,6 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateAdminMenu;
 import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
@@ -208,15 +208,9 @@ public class CrateBaseCommand extends BaseCommand {
 
         for (; size > 9; size -= 9) slots += 9;
 
-        Inventory inv = this.plugin.getServer().createInventory(null, slots, MsgUtils.color("&4&lAdmin Keys"));
+        CrateAdminMenu inventory = new CrateAdminMenu(this.plugin, player, slots, MsgUtils.color("&4&lAdmin Keys"));
 
-        for (Crate crate : this.crateManager.getCrates()) {
-            if (crate.getCrateType() != CrateType.menu) {
-                if (inv.firstEmpty() >= 0) inv.setItem(inv.firstEmpty(), crate.getAdminKey());
-            }
-        }
-
-        player.openInventory(inv);
+        player.openInventory(inventory.build().getInventory());
     }
 
     @SubCommand("list")
