@@ -63,7 +63,7 @@ public class CrateControlListener implements Listener { // Crate Control
         if (inventory == null) return;
 
         for (Crate crate : this.crateManager.getCrates()) {
-            if (crate.getCrateType() != CrateType.menu && inventory.getHolder() instanceof CratePreviewMenu) event.setCancelled(true);
+            if (crate.getCrateType() != CrateType.menu && inventory.getHolder(false) instanceof CratePreviewMenu) event.setCancelled(true);
         }
     }
     

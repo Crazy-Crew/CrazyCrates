@@ -40,7 +40,7 @@ public class PreviewListener implements Listener {
 
         if (this.inventoryManager.getCratePreview(player) == null) return;
 
-        if (!(e.getClickedInventory().getHolder() instanceof CratePreviewMenu)) return;
+        if (!(e.getClickedInventory().getHolder(false) instanceof CratePreviewMenu)) return;
 
         e.setCancelled(true);
 

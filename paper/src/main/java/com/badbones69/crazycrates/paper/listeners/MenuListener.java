@@ -47,10 +47,10 @@ public class MenuListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         Inventory inventory = event.getClickedInventory();
 
-        if (inventory == null || !(inventory.getHolder() instanceof CrateMainMenu)) return;
+        if (inventory == null || !(inventory.getHolder(false) instanceof CrateMainMenu)) return;
 
         for (Crate crate : this.plugin.getCrateManager().getCrates()) {
-            if (crate.getCrateType() != CrateType.menu && inventory.getHolder() instanceof CratePreviewMenu) return;
+            if (crate.getCrateType() != CrateType.menu && inventory.getHolder(false) instanceof CratePreviewMenu) return;
         }
 
         event.setCancelled(true);

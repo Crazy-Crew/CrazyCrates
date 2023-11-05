@@ -103,7 +103,9 @@ val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.v
 
 val description = """
 ## Changes:
-  * Remove extra nbt data from item that caused them not to stack.
+  * If no display name option in the crate config prize section is present, The material name will be used for %reward%
+  * Inventories are no longer checked by if the view matches, This led to you being able to name your inventory Enchant and now you can't use the Enchant table
+   * We use inventory holders instead now which is the preferred way.
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
