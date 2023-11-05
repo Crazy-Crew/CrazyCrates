@@ -127,6 +127,8 @@ public class CrateManager {
                     this.plugin.getCrazyHandler().getInventoryManager().openNewCratePreview(player, crate);
                 }
             }
+
+            this.plugin.getCrazyHandler().getInventoryManager().purge();
         } catch (Exception exception) {
             this.brokeCrates.add(crate.getName());
             this.plugin.getLogger().log(Level.WARNING, "There was an error while loading the " + crate.getName() + ".yml file.", exception);

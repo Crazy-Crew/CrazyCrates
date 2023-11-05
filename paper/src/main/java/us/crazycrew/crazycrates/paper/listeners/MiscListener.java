@@ -3,6 +3,7 @@ package us.crazycrew.crazycrates.paper.listeners;
 import org.bukkit.entity.Firework;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
@@ -39,6 +40,15 @@ public class MiscListener implements Listener {
 
         // Also add the new data.
         this.crazyHandler.getUserManager().loadOfflinePlayersKeys(player, this.crateManager.getCrates());
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+
+        this.plugin.getCrazyHandler().getInventoryManager().removeViewer(player);
+        this.plugin.getCrazyHandler().getInventoryManager().removeCrateViewer(player);
+        this.plugin.getCrazyHandler().getInventoryManager().removePageViewer(player);
     }
 
     @EventHandler(ignoreCancelled = true)

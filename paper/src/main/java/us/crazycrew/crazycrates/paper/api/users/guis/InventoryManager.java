@@ -192,6 +192,10 @@ public class InventoryManager {
         player.openInventory(crate.getPreview(player));
     }
 
+    public void addCrateViewer(Player player, Crate crate) {
+        this.crateViewers.put(player.getUniqueId(), crate);
+    }
+
     public void openCratePreview(Player player, Crate crate) {
         this.crateViewers.put(player.getUniqueId(), crate);
 
@@ -199,8 +203,8 @@ public class InventoryManager {
     }
 
     public void closeCratePreview(Player player) {
-        this.viewers.remove(player.getUniqueId());
         this.pageViewers.remove(player.getUniqueId());
+        this.viewers.remove(player.getUniqueId());
         this.crateViewers.remove(player.getUniqueId());
         player.closeInventory();
     }
@@ -209,12 +213,16 @@ public class InventoryManager {
         return this.crateViewers.get(player.getUniqueId());
     }
 
-    public boolean inCratePreview(Player player) {
-        return this.crateViewers.containsKey(player.getUniqueId());
+    public void removeCrateViewer(Player player) {
+        this.crateViewers.remove(player.getUniqueId());
     }
 
-    public int size() {
-        return this.crateViewers.size();
+    public void removePageViewer(Player player) {
+        this.pageViewers.remove(player.getUniqueId());
+    }
+
+    public boolean inCratePreview(Player player) {
+        return this.crateViewers.containsKey(player.getUniqueId());
     }
 
     private final HashMap<UUID, Integer> pageViewers = new HashMap<>();
@@ -247,6 +255,14 @@ public class InventoryManager {
 
     public void addViewer(Player player) {
         this.viewers.add(player.getUniqueId());
+    }
+
+    public void removeViewer(Player player) {
+        this.viewers.remove(player.getUniqueId());
+    }
+
+    public void purge() {
+        this.viewers.clear();
     }
 
     public List<UUID> getViewers() {

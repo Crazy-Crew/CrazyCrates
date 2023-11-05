@@ -104,6 +104,10 @@ val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.v
 val description = """
 ## Bug:
   * Fixed bug where you can take items out when viewing previews
+  
+## Changes:
+  * Re-opened and reloaded preview gui for all viewers after doing /cc additem
+  * Take all players out of the preview gui's during /cc reload, They also get sent a message.
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)

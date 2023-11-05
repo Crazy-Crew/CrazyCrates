@@ -25,30 +25,33 @@ public class PreviewListener implements Listener {
     public void onPlayerClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
 
-        if (e.getClickedInventory() == null) return;
+        if (e.getClickedInventory() != null && this.inventoryManager.getCratePreview(player) != null) {
+            Crate crate = this.inventoryManager.getCratePreview(player);
 
-        if (this.inventoryManager.getCratePreview(player) == null) return;
+            if (e.getCurrentItem() != null) {
+                if (crate.isPreview(e.getView())) {
+                    e.setCancelled(true);
 
-        Crate crate = this.inventoryManager.getCratePreview(player);
+                    if (e.getRawSlot() == crate.getAbsoluteItemPosition(4)) { // Clicked the menu button.
+                        if (this.inventoryManager.inCratePreview(player)) {
+                            this.inventoryManager.removeViewer(player);
+                            this.inventoryManager.closeCratePreview(player);
+                            this.inventoryManager.openGUI(player);
+                        }
+                    } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(5)) { // Clicked the next button.
+                        if (this.inventoryManager.getPage(player) < crate.getMaxPage()) {
+                            this.inventoryManager.nextPage(player);
 
-        if (e.getCurrentItem() == null) return;
+                            this.inventoryManager.openCratePreview(player, crate);
+                        }
+                    } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(3)) { // Clicked the back button.
+                        if (this.inventoryManager.getPage(player) > 1 && this.inventoryManager.getPage(player) <= crate.getMaxPage()) {
+                            this.inventoryManager.backPage(player);
 
-        e.setCancelled(true);
-
-        if (e.getRawSlot() == crate.getAbsoluteItemPosition(4)) { // Clicked the menu button.
-            if (this.inventoryManager.inCratePreview(player)) {
-                this.inventoryManager.closeCratePreview(player);
-                this.inventoryManager.openGUI(player);
-            }
-        } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(5)) { // Clicked the next button.
-            if (this.inventoryManager.getPage(player) < crate.getMaxPage()) {
-                this.inventoryManager.nextPage(player);
-                this.inventoryManager.openCratePreview(player, crate);
-            }
-        } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(3)) { // Clicked the back button.
-            if (this.inventoryManager.getPage(player) > 1 && this.inventoryManager.getPage(player) <= crate.getMaxPage()) {
-                this.inventoryManager.backPage(player);
-                this.inventoryManager.openCratePreview(player, crate);
+                            this.inventoryManager.openCratePreview(player, crate);
+                        }
+                    }
+                }
             }
         }
     }

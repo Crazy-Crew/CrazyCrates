@@ -151,6 +151,12 @@ public class CrateBaseCommand extends BaseCommand {
 
         this.plugin.getCrazyHandler().cleanFiles();
 
+        // Close previews
+        this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+            this.plugin.getCrazyHandler().getInventoryManager().closeCratePreview(player);
+            player.sendMessage(Translation.reloaded_forced_out_of_preview.getString());
+        });
+
         this.plugin.getCrateManager().loadCrates();
 
         sender.sendMessage(Translation.reloaded_plugin.getString());
