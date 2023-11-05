@@ -53,7 +53,7 @@ public class FileManager {
             }
 
             this.files.put(file, newFile);
-            this.configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
+            if (file.getFileName().endsWith(".yml")) this.configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
 
             if (this.plugin.isLogging()) this.plugin.getLogger().info("Successfully loaded " + file.getFileName());
         }
@@ -239,7 +239,7 @@ public class FileManager {
      * Overrides the loaded state file and loads the file systems file.
      */
     public void reloadFile(Files file) {
-        this.configurations.put(file, YamlConfiguration.loadConfiguration(this.files.get(file)));
+        if (file.getFileName().endsWith(".yml")) this.configurations.put(file, YamlConfiguration.loadConfiguration(this.files.get(file)));
     }
 
     /**
@@ -390,7 +390,7 @@ public class FileManager {
          * Overrides the loaded state file and loads the file systems file.
          */
         public void reloadFile() {
-            this.fileManager.reloadFile(this);
+            if (this.getFileName().endsWith(".yml")) this.fileManager.reloadFile(this);
         }
     }
 
