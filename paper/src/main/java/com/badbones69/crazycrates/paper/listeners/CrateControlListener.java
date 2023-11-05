@@ -97,7 +97,7 @@ public class CrateControlListener implements Listener { // Crate Control
                     if (loc.getCrateType() != CrateType.menu) {
                         if (loc.getCrate().isPreviewEnabled()) {
                             this.inventoryManager.addMenuViewer(player, false);
-                            this.inventoryManager.openCratePreview(player, loc.getCrate());
+                            this.inventoryManager.openNewCratePreview(player, loc.getCrate());
                         } else {
                             player.sendMessage(Translation.preview_disabled.getString());
                         }

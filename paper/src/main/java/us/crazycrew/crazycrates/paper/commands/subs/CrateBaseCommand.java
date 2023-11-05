@@ -24,7 +24,6 @@ import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
-import com.badbones69.crazycrates.paper.listeners.MenuListener;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.BaseCommand;
 import org.bukkit.block.Block;
@@ -320,7 +319,7 @@ public class CrateBaseCommand extends BaseCommand {
         }
 
         this.plugin.getCrazyHandler().getInventoryManager().addMenuViewer(player, false);
-        this.plugin.getCrazyHandler().getInventoryManager().openCratePreview(player, crate);
+        this.plugin.getCrazyHandler().getInventoryManager().openNewCratePreview(player, crate);
     }
 
     @SubCommand("open-others")

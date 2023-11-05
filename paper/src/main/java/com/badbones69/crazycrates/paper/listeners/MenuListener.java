@@ -68,7 +68,7 @@ public class MenuListener implements Listener {
                                     if (crate.isPreviewEnabled()) {
                                         player.closeInventory();
                                         this.inventoryManager.addMenuViewer(player, true);
-                                        this.inventoryManager.openCratePreview(player, crate);
+                                        this.inventoryManager.openNewCratePreview(player, crate);
                                     } else {
                                         player.sendMessage(Translation.preview_disabled.getString());
                                     }

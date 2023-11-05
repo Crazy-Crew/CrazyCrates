@@ -201,7 +201,7 @@ public class InventoryManager {
 
     private final HashMap<UUID, Crate> crateViewers = new HashMap<>();
 
-    public void openCratePreview(Player player, Crate crate) {
+    public void openNewCratePreview(Player player, Crate crate) {
         this.crateViewers.putIfAbsent(player.getUniqueId(), crate);
 
         setPage(player, 1);
