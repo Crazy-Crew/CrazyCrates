@@ -134,7 +134,6 @@ public class Config implements SettingsHolder {
             "Slot:28, Item:BLACK_STAINED_GLASS_PANE, Name: ",
             "Slot:36, Item:BLACK_STAINED_GLASS_PANE, Name: ",
             "Slot:37, Item:BLACK_STAINED_GLASS_PANE, Name: ",
-            "Slot:45, Item:BLACK_STAINED_GLASS_PANE, Name: ",
 
             "Slot:11, Item:WHITE_STAINED_GLASS_PANE, Name: ",
             "Slot:12, Item:WHITE_STAINED_GLASS_PANE, Name: ",
