@@ -350,7 +350,7 @@ public class CrateBaseCommand extends BaseCommand {
     private void openCrate(CommandSender sender, Player player, String crateName) {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
-        if (crate == null || crate.getCrateType() == CrateType.menu) {
+        if (crate == null || crate.getCrateType() == CrateType.menu || crate.getCrateType() == CrateType.crate_on_the_go && crate.getCrateType() == CrateType.quick_crate && crate.getCrateType() == CrateType.fire_cracker && crate.getCrateType() == CrateType.quad_crate) {
             player.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
             return;
         }
@@ -393,11 +393,6 @@ public class CrateBaseCommand extends BaseCommand {
 
         if (MiscUtils.isInventoryFull(player)) {
             player.sendMessage(Translation.inventory_not_empty.getString());
-            return;
-        }
-
-        if (type != CrateType.crate_on_the_go && type != CrateType.quick_crate && type != CrateType.fire_cracker && type != CrateType.quad_crate) {
-            sender.sendMessage(Translation.cant_be_a_virtual_crate.getString());
             return;
         }
 
