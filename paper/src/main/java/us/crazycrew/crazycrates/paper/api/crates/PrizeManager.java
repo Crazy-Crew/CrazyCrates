@@ -1,5 +1,6 @@
 package us.crazycrew.crazycrates.paper.api.crates;
 
+import org.apache.commons.lang.WordUtils;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -109,10 +110,12 @@ public class PrizeManager {
                     message = PlaceholderAPI.setPlaceholders(player, message);
                 }
 
+                String name = prize.getDisplayItemBuilder().getName() == null || prize.getDisplayItemBuilder().getName().isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", ""))) : prize.getDisplayItemBuilder().getName();
+
                 MsgUtils.sendMessage(player, message
                         .replaceAll("%player%", quoteReplacement(player.getName()))
                         .replaceAll("%Player%", quoteReplacement(player.getName()))
-                        .replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName()))
+                        .replaceAll("%reward%", quoteReplacement(name))
                         .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())), false);
             }
 
@@ -124,10 +127,12 @@ public class PrizeManager {
                 message = PlaceholderAPI.setPlaceholders(player, message);
             }
 
+            String name = prize.getDisplayItemBuilder().getName() == null || prize.getDisplayItemBuilder().getName().isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", ""))) : prize.getDisplayItemBuilder().getName();
+
             MsgUtils.sendMessage(player, message
                     .replaceAll("%player%", quoteReplacement(player.getName()))
                     .replaceAll("%Player%", quoteReplacement(player.getName()))
-                    .replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName()))
+                    .replaceAll("%reward%", quoteReplacement(name))
                     .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())), false);
         }
     }
