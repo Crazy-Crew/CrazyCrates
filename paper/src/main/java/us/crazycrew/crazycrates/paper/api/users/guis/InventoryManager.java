@@ -187,39 +187,37 @@ public class InventoryManager {
 
     private final HashMap<UUID, Boolean> menuViewers = new HashMap<>();
 
-    public boolean menuViewerExists(Player player) {
-        return menuViewers.getOrDefault(player.getUniqueId(), false);
-    }
-
     public void addMenuViewer(Player player, boolean viewing) {
-        this.menuViewers.putIfAbsent(player.getUniqueId(), viewing);
+        this.menuViewers.remove(player.getUniqueId());
+
+        this.menuViewers.put(player.getUniqueId(), viewing);
     }
 
-    public Map<UUID, Boolean> getMenuViewers() {
-        return Collections.unmodifiableMap(this.menuViewers);
+    public boolean getMenuViewer(Player player) {
+        return this.menuViewers.getOrDefault(player.getUniqueId(), false);
     }
 
     private final HashMap<UUID, Crate> crateViewers = new HashMap<>();
 
     public void openNewCratePreview(Player player, Crate crate) {
-        this.crateViewers.putIfAbsent(player.getUniqueId(), crate);
+        this.crateViewers.put(player.getUniqueId(), crate);
 
         setPage(player, 1);
         player.openInventory(crate.getPreview(player));
     }
 
-    public void closeCratePreview(Player player) {
+    public void openCratePreview(Player player, Crate crate) {
         this.crateViewers.remove(player.getUniqueId());
-        player.closeInventory(InventoryCloseEvent.Reason.PLAYER);
+
+        this.crateViewers.put(player.getUniqueId(), crate);
+
+        player.openInventory(crate.getPreview(player));
     }
 
-    public void closeCratePreview(Player player, Crate crate) {
-        if (!this.crateViewers.containsKey(player.getUniqueId())) return;
-
-        addViewer(player);
-        crate.getPreview(player).close();
-
+    public void closeCratePreview(Player player) {
+        this.pageViewers.remove(player.getUniqueId());
         this.crateViewers.remove(player.getUniqueId());
+        player.closeInventory(InventoryCloseEvent.Reason.PLAYER);
     }
 
     public Crate getCratePreview(Player player) {
@@ -228,10 +226,6 @@ public class InventoryManager {
 
     public boolean inCratePreview(Player player) {
         return this.crateViewers.containsKey(player.getUniqueId());
-    }
-
-    public Map<UUID, Crate> getCrateViewers() {
-        return Collections.unmodifiableMap(this.crateViewers);
     }
 
     private final HashMap<UUID, Integer> pageViewers = new HashMap<>();
@@ -252,12 +246,20 @@ public class InventoryManager {
         int max = this.crateViewers.get(player.getUniqueId()).getMaxPage();
 
         if (page < 1) {
+            this.plugin.getLogger().warning("We should only be in here if the page is less than 1 or is 1: " + page);
             page = 1;
+            this.plugin.getLogger().warning("Page After: " + page);
         } else if (page >= max) {
+            this.plugin.getLogger().warning("Page After First: " + page);
+
             page = max;
         }
 
+        this.plugin.getLogger().warning("Contains #1: " + this.pageViewers.containsKey(player.getUniqueId()));
+
         this.pageViewers.put(player.getUniqueId(), page);
+
+        this.plugin.getLogger().warning("Contains #3: " + this.pageViewers.containsKey(player.getUniqueId()));
     }
 
     public Map<UUID, Integer> getPageViewers() {

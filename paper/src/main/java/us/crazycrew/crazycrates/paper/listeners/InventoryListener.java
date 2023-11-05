@@ -27,9 +27,6 @@ public class InventoryListener implements Listener {
             if (this.inventoryManager.inCratePreview(player)) {
                 // Close preview.
                 this.inventoryManager.closeCratePreview(player);
-
-                // Remove inventory viewer.
-                this.inventoryManager.removeViewer(player);
             }
         }
     }

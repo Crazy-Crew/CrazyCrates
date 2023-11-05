@@ -318,6 +318,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
+        this.plugin.getCrazyHandler().getInventoryManager().addViewer(player);
         this.plugin.getCrazyHandler().getInventoryManager().addMenuViewer(player, false);
         this.plugin.getCrazyHandler().getInventoryManager().openNewCratePreview(player, crate);
     }

@@ -82,7 +82,7 @@ public class CrateManager {
     public void reloadCrate(Crate crate) {
         try {
             // Close previews
-            //this.plugin.getServer().getOnlinePlayers().forEach(player -> PreviewListener.closePreview(player, crate));
+            this.plugin.getServer().getOnlinePlayers().forEach(player -> this.plugin.getCrazyHandler().getInventoryManager().closeCratePreview(player));
 
             // Grab the new file.
             FileConfiguration file = crate.getFile();
@@ -124,7 +124,7 @@ public class CrateManager {
                 Player player = this.plugin.getServer().getPlayer(uuid);
 
                 if (player != null) {
-                    //PreviewListener.openNewPreview(player, crate);
+                    this.plugin.getCrazyHandler().getInventoryManager().openNewCratePreview(player, crate);
                 }
             }
         } catch (Exception exception) {

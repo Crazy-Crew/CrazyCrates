@@ -373,7 +373,7 @@ public class Crate {
      * @return The preview as an Inventory object.
      */
     public Inventory getPreview(Player player, int page) {
-        Inventory inventory = player.getServer().createInventory(null, !this.borderToggle && (this.inventoryManager.inCratePreview(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, this.previewName);
+        Inventory inventory = player.getServer().createInventory(null, !this.borderToggle && (this.inventoryManager.getMenuViewer(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, this.previewName);
         setDefaultItems(inventory, player);
 
         for (ItemStack item : getPageItems(page)) {
@@ -640,7 +640,7 @@ public class Crate {
 
         int page = this.inventoryManager.getPage(player);
 
-        if (this.inventoryManager.inCratePreview(player)) inventory.setItem(getAbsoluteItemPosition(4), this.inventoryManager.getMenuButton());
+        if (this.inventoryManager.getMenuViewer(player)) inventory.setItem(getAbsoluteItemPosition(4), this.inventoryManager.getMenuButton());
 
         if (page == 1) {
             if (this.borderToggle) inventory.setItem(getAbsoluteItemPosition(3), this.borderItem.build());

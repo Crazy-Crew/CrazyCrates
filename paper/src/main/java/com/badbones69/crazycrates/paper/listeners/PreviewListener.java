@@ -33,8 +33,10 @@ public class PreviewListener implements Listener {
 
                 if (e.getCurrentItem() != null) {
                     if (e.getRawSlot() == crate.getAbsoluteItemPosition(4)) { // Clicked the menu button.
-                        if (this.inventoryManager.inCratePreview(player)) this.inventoryManager.openGUI(player);
-
+                        if (this.inventoryManager.getMenuViewer(player)) {
+                            this.inventoryManager.closeCratePreview(player);
+                            this.inventoryManager.openGUI(player);
+                        }
                     } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(5)) { // Clicked the next button.
                         if (this.inventoryManager.getPage(player) < crate.getMaxPage()) {
                             this.inventoryManager.nextPage(player);
@@ -42,7 +44,12 @@ public class PreviewListener implements Listener {
                         }
 
                     } else if (e.getRawSlot() == crate.getAbsoluteItemPosition(3)) { // Clicked the back button.
+                        this.plugin.getLogger().warning("Clicked the back button.");
+
                         if (this.inventoryManager.getPage(player) > 1 && this.inventoryManager.getPage(player) <= crate.getMaxPage()) {
+                            this.plugin.getLogger().warning("Page: " + this.inventoryManager.getPage(player));
+                            this.plugin.getLogger().warning("Max Page: " + crate.getMaxPage());
+
                             this.inventoryManager.backPage(player);
                             this.inventoryManager.openCratePreview(player, crate);
                         }
