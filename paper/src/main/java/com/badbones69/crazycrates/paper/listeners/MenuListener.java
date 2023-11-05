@@ -67,7 +67,6 @@ public class MenuListener implements Listener {
                                 if (e.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
                                     if (crate.isPreviewEnabled()) {
                                         player.closeInventory();
-                                        this.inventoryManager.addMenuViewer(player, true);
                                         this.inventoryManager.addViewer(player);
                                         this.inventoryManager.openNewCratePreview(player, crate);
                                     } else {

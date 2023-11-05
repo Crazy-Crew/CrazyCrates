@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.paper.api.support.placeholders.PlaceholderAPISupport;
-import us.crazycrew.crazycrates.paper.listeners.InventoryListener;
 import us.crazycrew.crazycrates.paper.listeners.MiscListener;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.modules.ModuleLoader;
@@ -65,7 +64,6 @@ public class CrazyCrates extends JavaPlugin {
         pluginManager.registerEvents(new CrateControlListener(), this);
         pluginManager.registerEvents(new CrateOpenListener(), this);
         pluginManager.registerEvents(new MiscListener(), this);
-        pluginManager.registerEvents(new InventoryListener(), this);
 
         pluginManager.registerEvents(new War(), this);
         pluginManager.registerEvents(new CSGO(), this);

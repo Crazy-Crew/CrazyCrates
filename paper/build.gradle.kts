@@ -103,7 +103,7 @@ val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.v
 
 val description = """
 ## Bug:
-  * Fixed a string replacement bug
+  * Fixed bug where you can take items out when viewing previews
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)

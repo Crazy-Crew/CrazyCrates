@@ -4,7 +4,6 @@ import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.managers.CrateManager;
-import com.badbones69.crazycrates.paper.listeners.PreviewListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -373,7 +372,7 @@ public class Crate {
      * @return The preview as an Inventory object.
      */
     public Inventory getPreview(Player player, int page) {
-        Inventory inventory = player.getServer().createInventory(null, !this.borderToggle && (this.inventoryManager.getMenuViewer(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, this.previewName);
+        Inventory inventory = player.getServer().createInventory(null, !this.borderToggle && (this.inventoryManager.inCratePreview(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, this.previewName);
         setDefaultItems(inventory, player);
 
         for (ItemStack item : getPageItems(page)) {
@@ -539,7 +538,7 @@ public class Crate {
         this.fileManager.removeFile(this.name);
         this.fileManager.addFile(this.name + ".yml", "crates");
 
-        this.plugin.getCrateManager().reloadCrate(this);
+        this.plugin.getCrateManager().reloadCrate(this.plugin.getCrateManager().getCrateFromName(this.name));
     }
     
     /**
@@ -640,7 +639,7 @@ public class Crate {
 
         int page = this.inventoryManager.getPage(player);
 
-        if (this.inventoryManager.getMenuViewer(player)) inventory.setItem(getAbsoluteItemPosition(4), this.inventoryManager.getMenuButton());
+        if (this.inventoryManager.inCratePreview(player)) inventory.setItem(getAbsoluteItemPosition(4), this.inventoryManager.getMenuButton());
 
         if (page == 1) {
             if (this.borderToggle) inventory.setItem(getAbsoluteItemPosition(3), this.borderItem.build());

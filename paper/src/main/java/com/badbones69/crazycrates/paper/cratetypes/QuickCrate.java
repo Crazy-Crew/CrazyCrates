@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import us.crazycrew.crazycrates.paper.api.interfaces.HologramController;
