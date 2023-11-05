@@ -103,7 +103,7 @@ val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.v
 
 val description = """
 ## Bug:
-  * Fixed a bug with the last physical key not being taken.
+  * Fixed a string replacement bug
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
