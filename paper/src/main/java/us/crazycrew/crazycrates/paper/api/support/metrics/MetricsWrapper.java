@@ -7,9 +7,7 @@ import org.bstats.charts.SimplePie;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class MetricsWrapper {
