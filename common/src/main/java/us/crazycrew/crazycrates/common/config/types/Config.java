@@ -107,7 +107,6 @@ public class Config implements SettingsHolder {
             "&7&lPage: &b%page%"
     ));
 
-    @Comment("This option requires gui customizer to be disabled.")
     public static final Property<Boolean> filler_toggle = newProperty("Settings.Filler.Toggle", false);
 
     public static final Property<String> filler_item = newProperty("Settings.Filler.Item", "BLACK_STAINED_GLASS_PANE");
@@ -116,7 +115,6 @@ public class Config implements SettingsHolder {
 
     public static final Property<List<String>> filler_lore = newListProperty("Settings.Filler.Lore", Collections.emptyList());
 
-    @Comment("This option requires the filler above to be disabled.")
     public static final Property<Boolean> gui_customizer_toggle = newProperty("Settings.GUI-Customizer-Toggle", true);
 
     public static final Property<List<String>> gui_customizer = newListProperty("Settings.GUI-Customizer", List.of(
