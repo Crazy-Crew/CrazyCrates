@@ -91,9 +91,8 @@ public class FileManager {
                         if (this.autoGenerateFiles.get(fileName).equalsIgnoreCase(homeFolder)) {
                             homeFolder = this.autoGenerateFiles.get(fileName);
 
-                            try {
+                            try (InputStream jarFile = getClass().getResourceAsStream((this.jarHomeFolders.getOrDefault(fileName, homeFolder)) + "/" + fileName)) {
                                 File serverFile = new File(this.plugin.getDataFolder(), homeFolder + "/" + fileName);
-                                InputStream jarFile = getClass().getResourceAsStream((this.jarHomeFolders.getOrDefault(fileName, homeFolder)) + "/" + fileName);
                                 copyFile(jarFile, serverFile);
 
                                 if (fileName.toLowerCase().endsWith(".yml")) this.customFiles.add(new CustomFile(fileName, homeFolder));
