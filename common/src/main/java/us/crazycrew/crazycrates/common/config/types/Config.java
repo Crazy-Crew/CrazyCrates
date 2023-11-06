@@ -107,7 +107,7 @@ public class Config implements SettingsHolder {
             "&7&lPage: &b%page%"
     ));
 
-    public static final Property<Boolean> filler_toggle = newProperty("Settings.Filler.Toggle", true);
+    public static final Property<Boolean> filler_toggle = newProperty("Settings.Filler.Toggle", false);
 
     public static final Property<String> filler_item = newProperty("Settings.Filler.Item", "BLACK_STAINED_GLASS_PANE");
 
