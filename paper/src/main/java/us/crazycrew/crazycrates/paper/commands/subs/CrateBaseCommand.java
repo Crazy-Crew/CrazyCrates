@@ -149,6 +149,8 @@ public class CrateBaseCommand extends BaseCommand {
         this.fileManager.reloadAllFiles();
         this.fileManager.setup();
 
+        FileUtils.loadFiles();
+
         boolean isEnabled = this.plugin.getCrazyHandler().getConfigManager().getPluginConfig().getProperty(PluginConfig.toggle_metrics);
 
         if (!isEnabled) {
