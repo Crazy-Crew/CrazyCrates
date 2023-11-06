@@ -103,11 +103,12 @@ val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.v
 
 val description = """
 ## Fixes:
-  * Fix crate type checks
-  * Don't load files as a yaml configuration if they don't end in .yml
-  * Fixed command typo in CrateExample.yml
-  * Fixed /cc set
-  * Added Menu crate to tab complete
+  * Fix crate type checks.
+  * Don't load files as a yaml configuration if they don't end in .yml.
+  * Fixed command typo in CrateExample.yml.
+  * Fixed /cc set.
+  * Added Menu crate to tab complete.
+  * Filtered Menu from metrics as that isn't a crate type.
     
 ## Changes:
   * Add extra isLogging() checks
