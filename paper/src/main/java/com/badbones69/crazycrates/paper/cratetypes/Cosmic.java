@@ -26,17 +26,19 @@ import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 
+@SuppressWarnings("ALL")
 public class Cosmic implements Listener {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
     private static final CrateManager crateManager = plugin.getCrateManager();
 
-    private static final HashMap<Player, ArrayList<Integer>> glass = new HashMap<>();
-    private static final HashMap<Player, ArrayList<Integer>> picks = new HashMap<>();
+    private static final HashMap<Player, List<Integer>> glass = new HashMap<>();
+    private static final HashMap<Player, List<Integer>> picks = new HashMap<>();
     private static final HashMap<Player, Boolean> checkHands = new HashMap<>();
     
     private static void showRewards(Player player, Crate crate) {
@@ -101,8 +103,8 @@ public class Cosmic implements Listener {
     }
     
     @EventHandler
-    public void onInvClick(InventoryClickEvent e) {
-        final Inventory inv = e.getInventory();
+    public void onInventoryClick(InventoryClickEvent e) {
+        final Inventory inv = e.getClickedInventory();
         final Player player = (Player) e.getWhoClicked();
 
         final Crate crate = crateManager.getOpeningCrate(player);
@@ -117,7 +119,9 @@ public class Cosmic implements Listener {
 
         if (!(inv.getHolder(false) instanceof CratePrizeMenu crateCosmicMenu)) return;
 
-        if (e.getView().getTitle().equals(MsgUtils.sanitizeColor(file.getString("Crate.CrateName") + " - Prizes"))) {
+        if (crateCosmicMenu.contains(" - Shuffling")) e.setCancelled(true);
+
+        if (crateCosmicMenu.contains(" - Prizes")) {
             e.setCancelled(true);
             int slot = e.getRawSlot();
 
@@ -150,7 +154,7 @@ public class Cosmic implements Listener {
             }
         }
 
-        if (e.getView().getTitle().equals(MsgUtils.sanitizeColor(file.getString("Crate.CrateName") + " - Choose"))) {
+        if (crateCosmicMenu.contains(" - Choose")) {
             e.setCancelled(true);
             int slot = e.getRawSlot();
 
@@ -177,11 +181,11 @@ public class Cosmic implements Listener {
                             if (!glass.containsKey(player)) glass.put(player, new ArrayList<>());
 
                             e.setCurrentItem(manager.getMysteryCrate().setAmount(pickedSlot).addNamePlaceholder("%Slot%", pickedSlot + "").addLorePlaceholder("%Slot%", pickedSlot + "").build());
-                            ArrayList<Integer> l = new ArrayList<>();
+                            List<Integer> slots = new ArrayList<>();
 
-                            for (int i : glass.get(player)) if (i != slot) l.add(i);
+                            for (int i : glass.get(player)) if (i != slot) slots.add(i);
 
-                            glass.put(player, l);
+                            glass.put(player, slots);
                             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                         }
                     }
@@ -258,7 +262,7 @@ public class Cosmic implements Listener {
     }
     
     @EventHandler
-    public void onInvClose(InventoryCloseEvent e) {
+    public void onInventoryClose(InventoryCloseEvent e) {
         Inventory inv = e.getInventory();
         Player player = (Player) e.getPlayer();
         Crate crate = crateManager.getOpeningCrate(player);
@@ -274,6 +278,8 @@ public class Cosmic implements Listener {
         }
 
         if (!(inv.getHolder(false) instanceof CratePrizeMenu crateCosmicMenu)) return;
+
+        if (crateCosmicMenu.contains(" - Prizes")) {
             boolean playSound = false;
 
             for (int i : picks.get(player)) {
@@ -306,7 +312,7 @@ public class Cosmic implements Listener {
             checkHands.remove(player);
         }
 
-        if (crateManager.isInOpeningList(player) && e.getView().getTitle().equals(MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"))) {
+        if (crateManager.isInOpeningList(player) && crateCosmicMenu.contains(" - Choose")) {
             CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
             if (!glass.containsKey(player) || glass.get(player).size() < manager.getTotalPrizes()) {
                 crateManager.removePlayerFromOpeningList(player);

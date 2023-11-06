@@ -33,7 +33,6 @@ public abstract class InventoryBuilder implements InventoryHolder {
         this.title = title;
         this.player = player;
         this.size = size;
-        this.page = page;
 
         this.crate = crate;
 
@@ -76,6 +75,10 @@ public abstract class InventoryBuilder implements InventoryHolder {
 
     public void title(String title) {
         this.title = title;
+    }
+
+    public boolean contains(String message) {
+        return this.title.contains(message);
     }
 
     public Player getPlayer() {
