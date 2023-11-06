@@ -358,6 +358,11 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
+        if (crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quick_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.quad_crate) {
+            player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+            return;
+        }
+
         if (this.crateManager.isInOpeningList(player)) {
             player.sendMessage(Translation.already_opening_crate.getString());
             return;
@@ -368,11 +373,6 @@ public class CrateBaseCommand extends BaseCommand {
         if (type == null) {
             player.sendMessage(Translation.internal_error.getString());
             this.plugin.getLogger().severe("An error has occurred: The crate type is null for the crate named " + crate.getName());
-            return;
-        }
-
-        if (crate.getCrateType() == CrateType.crate_on_the_go && crate.getCrateType() == CrateType.quick_crate && crate.getCrateType() == CrateType.fire_cracker && crate.getCrateType() == CrateType.quad_crate) {
-            player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
             return;
         }
 
@@ -430,7 +430,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        if (crate.getCrateType() == CrateType.crate_on_the_go && crate.getCrateType() == CrateType.quick_crate && crate.getCrateType() == CrateType.fire_cracker && crate.getCrateType() == CrateType.quad_crate) {
+        if (crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quick_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.quad_crate) {
             player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
             return;
         }
@@ -479,7 +479,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        if (crate.getCrateType() == CrateType.crate_on_the_go && crate.getCrateType() == CrateType.quick_crate && crate.getCrateType() == CrateType.fire_cracker && crate.getCrateType() == CrateType.quad_crate) {
+        if (crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quick_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.quad_crate) {
             player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
             return;
         }
