@@ -90,7 +90,7 @@ public class CrazyCrates extends JavaPlugin {
                     "Please submit any bugs at https://github.com/Crazy-Crew/CrazyCrates/issues",
                     "",
                     "I will wait between releasing updates for bug reports",
-                    "The next version is Version 2.0 excluding version bumps for Minecraft releases or some easy features",
+                    "The next version is Version 2.0 excluding version bumps for Minecraft releases or some easy features/enhancements",
                     "",
                     "2.0 is a hard break, Legacy color codes will no longer work, Configurations will be fully migrated, Placeholders will change and so on.",
                     "We only support https://papermc.io in 2.0 and will fully migrate to Modrinth and Hangar.",
