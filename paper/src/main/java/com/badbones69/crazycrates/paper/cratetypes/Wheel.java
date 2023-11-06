@@ -18,6 +18,7 @@ import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Wheel implements Listener {
@@ -53,7 +54,7 @@ public class Wheel implements Listener {
         player.openInventory(inventory);
 
         crateManager.addCrateTask(player, new BukkitRunnable() {
-            final ArrayList<Integer> slots = getBorder();
+            final List<Integer> slots = getBorder();
             int i = 0;
             int f = 17;
             int full = 0;

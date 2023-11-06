@@ -136,7 +136,7 @@ public class InventoryManager {
         this.pageViewers.put(player.getUniqueId(), page);
     }
 
-    private final ArrayList<UUID> viewers = new ArrayList<>();
+    private final List<UUID> viewers = new ArrayList<>();
 
     public void addViewer(Player player) {
         this.viewers.add(player.getUniqueId());

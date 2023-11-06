@@ -22,6 +22,7 @@ import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePreviewMenu;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -42,13 +43,13 @@ public class Crate {
 
     private final CrateType crateType;
     private final FileConfiguration file;
-    private ArrayList<Prize> prizes;
+    private List<Prize> prizes;
     private final String crateInventoryName;
     private final boolean giveNewPlayerKeys;
     private int previewChestLines;
     private final int newPlayerKeys;
-    private ArrayList<ItemStack> preview;
-    private final ArrayList<Tier> tiers;
+    private List<ItemStack> preview;
+    private final List<Tier> tiers;
     private final CrateHologram hologram;
 
     @NotNull
@@ -71,7 +72,7 @@ public class Crate {
      * @param prizes The prizes that can be won.
      * @param file The crate file.
      */
-    public Crate(String name, String previewName, CrateType crateType, ItemStack key, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, ArrayList<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, CrateHologram hologram) {
+    public Crate(String name, String previewName, CrateType crateType, ItemStack key, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, CrateHologram hologram) {
         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
         this.keyNoNBT = itemBuilder.build();
         this.key = itemBuilder.setCrateName(name).build();
@@ -166,8 +167,8 @@ public class Crate {
      * @return The winning prize.
      */
     public Prize pickPrize(Player player) {
-        ArrayList<Prize> prizes = new ArrayList<>();
-        ArrayList<Prize> usablePrizes = new ArrayList<>();
+        List<Prize> prizes = new ArrayList<>();
+        List<Prize> usablePrizes = new ArrayList<>();
 
         // ================= Blacklist Check ================= //
         if (player.isOp()) {
@@ -193,7 +194,7 @@ public class Crate {
         }
     }
 
-    private void chanceCheck(ArrayList<Prize> prizes, ArrayList<Prize> usablePrizes) {
+    private void chanceCheck(List<Prize> prizes, List<Prize> usablePrizes) {
         for (int stop = 0; prizes.isEmpty() && stop <= 2000; stop++) {
             for (Prize prize : usablePrizes) {
                 int max = prize.getMaxRange();
@@ -214,7 +215,7 @@ public class Crate {
      *
      * @param prizes list
      */
-    public void setPrize(ArrayList<Prize> prizes) {
+    public void setPrize(List<Prize> prizes) {
         this.prizes = prizes;
     }
 
@@ -228,7 +229,7 @@ public class Crate {
      *
      * @param itemStacks list
      */
-    public void setPreviewItems(ArrayList<ItemStack> itemStacks) {
+    public void setPreviewItems(List<ItemStack> itemStacks) {
         this.preview = itemStacks;
     }
 
@@ -239,8 +240,8 @@ public class Crate {
      * @return The winning prize based on the crate's tiers.
      */
     public Prize pickPrize(Player player, Tier tier) {
-        ArrayList<Prize> prizes = new ArrayList<>();
-        ArrayList<Prize> usablePrizes = new ArrayList<>();
+        List<Prize> prizes = new ArrayList<>();
+        List<Prize> usablePrizes = new ArrayList<>();
 
         // ================= Blacklist Check ================= //
         if (player.isOp()) {
@@ -418,7 +419,7 @@ public class Crate {
     /**
      * @return The prizes in the crate.
      */
-    public ArrayList<Prize> getPrizes() {
+    public List<Prize> getPrizes() {
         return this.prizes;
     }
     
@@ -468,7 +469,7 @@ public class Crate {
      * @param item The ItemStack that is being added.
      */
     public void addEditorItem(String prize, ItemStack item) {
-        ArrayList<ItemStack> items = new ArrayList<>();
+        List<ItemStack> items = new ArrayList<>();
         items.add(item);
 
         String path = "Crate.Prizes." + prize;
@@ -522,7 +523,7 @@ public class Crate {
     /**
      * @return A list of the tiers for the crate. Will be empty if there are none.
      */
-    public ArrayList<Tier> getTiers() {
+    public List<Tier> getTiers() {
         return this.tiers;
     }
 
@@ -537,7 +538,7 @@ public class Crate {
         return this.requiredKeys;
     }
 
-    public ArrayList<ItemStack> getPreview() {
+    public List<ItemStack> getPreview() {
         return this.preview;
     }
 
@@ -560,8 +561,8 @@ public class Crate {
      * Loads all the preview items and puts them into a list.
      * @return A list of all the preview items that were created.
      */
-    public ArrayList<ItemStack> getPreviewItems() {
-        ArrayList<ItemStack> items = new ArrayList<>();
+    public List<ItemStack> getPreviewItems() {
+        List<ItemStack> items = new ArrayList<>();
 
         for (Prize prize : getPrizes()) {
             items.add(prize.getDisplayItem());

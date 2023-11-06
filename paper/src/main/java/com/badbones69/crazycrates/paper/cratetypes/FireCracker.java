@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class FireCracker {
@@ -28,7 +29,7 @@ public class FireCracker {
 
         if (hologramController != null) hologramController.removeHologram(loc.getBlock());
 
-        final ArrayList<Color> colors = new ArrayList<>();
+        final List<Color> colors = new ArrayList<>();
         colors.add(Color.RED);
         colors.add(Color.YELLOW);
         colors.add(Color.GREEN);

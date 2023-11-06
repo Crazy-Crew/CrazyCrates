@@ -5,10 +5,11 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
+import java.util.List;
 
 public class QuadCrateSpiralHandler implements SpiralControl {
 
-    private ArrayList<Location> getLocations(Location center, boolean clockWise) {
+    private List<Location> getLocations(Location center, boolean clockWise) {
         World world = center.getWorld();
 
         double downWardsDistance = .05;
@@ -24,7 +25,7 @@ public class QuadCrateSpiralHandler implements SpiralControl {
 
         double increment = (2*Math.PI) / particleAmount;
 
-        ArrayList<Location> locations = new ArrayList<>();
+        List<Location> locations = new ArrayList<>();
 
         for (int i = 0; i < 60; i++) {
             double angle = nextLocation * increment;
@@ -57,12 +58,12 @@ public class QuadCrateSpiralHandler implements SpiralControl {
     }
 
     @Override
-    public @NotNull ArrayList<Location> getSpiralLocationClockwise(Location center) {
+    public @NotNull List<Location> getSpiralLocationClockwise(Location center) {
         return getLocations(center, true);
     }
 
     @Override
-    public @NotNull ArrayList<Location> getSpiralLocationCounterClockwise(Location center) {
+    public @NotNull List<Location> getSpiralLocationCounterClockwise(Location center) {
         return getLocations(center, false);
     }
 }

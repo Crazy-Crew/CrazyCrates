@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 
 public class FileManager {
@@ -19,8 +20,8 @@ public class FileManager {
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final HashMap<Files, File> files = new HashMap<>();
-    private final ArrayList<String> homeFolders = new ArrayList<>();
-    private final ArrayList<CustomFile> customFiles = new ArrayList<>();
+    private final List<String> homeFolders = new ArrayList<>();
+    private final List<CustomFile> customFiles = new ArrayList<>();
     private final HashMap<String, String> jarHomeFolders = new HashMap<>();
     private final HashMap<String, String> autoGenerateFiles = new HashMap<>();
     private final HashMap<Files, FileConfiguration> configurations = new HashMap<>();
@@ -278,8 +279,8 @@ public class FileManager {
         }
     }
 
-    public ArrayList<String> getAllCratesNames() {
-        ArrayList<String> files = new ArrayList<>();
+    public List<String> getAllCratesNames() {
+        List<String> files = new ArrayList<>();
 
         String[] file = new File(this.plugin.getDataFolder(), "/crates").list();
 

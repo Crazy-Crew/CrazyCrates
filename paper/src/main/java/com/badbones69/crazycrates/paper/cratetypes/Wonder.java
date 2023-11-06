@@ -16,6 +16,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Wonder implements Listener {
 
@@ -32,7 +33,7 @@ public class Wonder implements Listener {
 
         Inventory inventory = new CratePrizeMenu(plugin, crate, player, 45, crate.getCrateInventoryName()).build().getInventory();
 
-        final ArrayList<String> slots = new ArrayList<>();
+        final List<String> slots = new ArrayList<>();
 
         for (int i = 0; i < 45; i++) {
             Prize prize = crate.pickPrize(player);
@@ -47,7 +48,7 @@ public class Wonder implements Listener {
             int timer = 0;
             int slot1 = 0;
             int slot2 = 44;
-            final ArrayList<Integer> Slots = new ArrayList<>();
+            final List<Integer> Slots = new ArrayList<>();
             Prize prize = null;
             
             @Override

@@ -25,18 +25,19 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 
 public class QuickCrate implements Listener {
 
     private static final HashMap<Player, BukkitTask> tasks = new HashMap<>();
-    public static final ArrayList<Entity> allRewards = new ArrayList<>();
+    public static final List<Entity> allRewards = new ArrayList<>();
     public static final HashMap<Player, Entity> rewards = new HashMap<>();
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
-    private static final ChestManager CHEST_MANAGER = plugin.getCrazyHandler().getChestManager();
+    private static final ChestManager chestManager = plugin.getCrazyHandler().getChestManager();
 
     public static void openCrate(final Player player, final Location loc, Crate crate, KeyType keyType, HologramController hologramController) {
         int keys = switch (keyType) {
@@ -105,7 +106,7 @@ public class QuickCrate implements Listener {
             reward.setPickupDelay(Integer.MAX_VALUE);
             rewards.put(player, reward);
             allRewards.add(reward);
-            CHEST_MANAGER.openChest(loc.getBlock(), true);
+            chestManager.openChest(loc.getBlock(), true);
 
             if (prize.useFireworks()) MiscUtils.spawnFirework(loc.clone().add(.5, 1, .5), null);
 
@@ -130,7 +131,7 @@ public class QuickCrate implements Listener {
             rewards.remove(player);
         }
 
-        CHEST_MANAGER.closeChest(loc.getBlock(), false);
+        chestManager.closeChest(loc.getBlock(), false);
         CrateControlListener.inUse.remove(player);
         plugin.getCrateManager().removePlayerFromOpeningList(player);
 

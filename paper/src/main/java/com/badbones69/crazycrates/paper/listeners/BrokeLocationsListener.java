@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import java.util.ArrayList;
+import java.util.List;
 
 // Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
 public class BrokeLocationsListener implements Listener {
@@ -26,7 +27,7 @@ public class BrokeLocationsListener implements Listener {
         if (this.crateManager.getBrokeLocations().isEmpty()) return;
 
         int fixedAmount = 0;
-        ArrayList<BrokeLocation> fixedWorlds = new ArrayList<>();
+        List<BrokeLocation> fixedWorlds = new ArrayList<>();
 
         for (BrokeLocation brokeLocation : this.crateManager.getBrokeLocations()) {
             Location location = brokeLocation.getLocation();

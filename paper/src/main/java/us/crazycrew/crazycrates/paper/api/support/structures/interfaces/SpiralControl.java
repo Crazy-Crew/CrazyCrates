@@ -1,13 +1,12 @@
 package us.crazycrew.crazycrates.paper.api.support.structures.interfaces;
 
 import org.bukkit.Location;
-
-import java.util.ArrayList;
+import java.util.List;
 
 public interface SpiralControl {
 
-    ArrayList<Location> getSpiralLocationClockwise(Location center);
+    List<Location> getSpiralLocationClockwise(Location center);
 
-    ArrayList<Location> getSpiralLocationCounterClockwise(Location center);
+    List<Location> getSpiralLocationCounterClockwise(Location center);
 
 }

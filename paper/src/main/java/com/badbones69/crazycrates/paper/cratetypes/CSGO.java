@@ -13,12 +13,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePreviewMenu;
 import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CSGO implements Listener {
 
@@ -140,8 +140,8 @@ public class CSGO implements Listener {
         }.runTaskTimer(plugin, 1, 1));
     }
     
-    private static ArrayList<Integer> slowSpin() {
-        ArrayList<Integer> slow = new ArrayList<>();
+    private static List<Integer> slowSpin() {
+        List<Integer> slow = new ArrayList<>();
         int full = 120;
         int cut = 15;
 
@@ -157,7 +157,7 @@ public class CSGO implements Listener {
     }
     
     private static void moveItems(Inventory inv, Player player, Crate crate) {
-        ArrayList<ItemStack> items = new ArrayList<>();
+        List<ItemStack> items = new ArrayList<>();
 
         for (int i = 9; i > 8 && i < 17; i++) {
             items.add(inv.getItem(i));

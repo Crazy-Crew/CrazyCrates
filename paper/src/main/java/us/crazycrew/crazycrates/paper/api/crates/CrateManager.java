@@ -70,11 +70,11 @@ public class CrateManager {
     @NotNull
     private final FileManager fileManager = this.plugin.getFileManager();
 
-    private final ArrayList<CrateLocation> crateLocations = new ArrayList<>();
-    private final ArrayList<CrateSchematic> crateSchematics = new ArrayList<>();
-    private final ArrayList<BrokeLocation> brokeLocations = new ArrayList<>();
-    private final ArrayList<String> brokeCrates = new ArrayList<>();
-    private final ArrayList<Crate> crates = new ArrayList<>();
+    private final List<CrateLocation> crateLocations = new ArrayList<>();
+    private final List<CrateSchematic> crateSchematics = new ArrayList<>();
+    private final List<BrokeLocation> brokeLocations = new ArrayList<>();
+    private final List<String> brokeCrates = new ArrayList<>();
+    private final List<Crate> crates = new ArrayList<>();
 
     private HologramController holograms;
 
@@ -91,12 +91,12 @@ public class CrateManager {
             crate.purge();
 
             // Profit?
-            ArrayList<Prize> prizes = new ArrayList<>();
+            List<Prize> prizes = new ArrayList<>();
 
             for (String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
                 String path = "Crate.Prizes." + prize;
 
-                ArrayList<ItemStack> editorItems = new ArrayList<>();
+                List<ItemStack> editorItems = new ArrayList<>();
 
                 if (file.contains(path + ".Editor-Items")) {
                     for (Object list : file.getList(path + ".Editor-Items")) {
@@ -163,9 +163,9 @@ public class CrateManager {
             try {
                 FileConfiguration file = this.fileManager.getFile(crateName).getFile();
                 CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));
-                ArrayList<Prize> prizes = new ArrayList<>();
+                List<Prize> prizes = new ArrayList<>();
                 String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
-                ArrayList<Tier> tiers = new ArrayList<>();
+                List<Tier> tiers = new ArrayList<>();
                 int maxMassOpen = file.contains("Crate.Max-Mass-Open") ? file.getInt("Crate.Max-Mass-Open") : 10;
                 int requiredKeys = file.contains("Crate.RequiredKeys") ? file.getInt("Crate.RequiredKeys") : 0;
 
@@ -185,7 +185,7 @@ public class CrateManager {
                 for (String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
                     Prize altPrize = null;
                     String path = "Crate.Prizes." + prize;
-                    ArrayList<Tier> prizeTiers = new ArrayList<>();
+                    List<Tier> prizeTiers = new ArrayList<>();
 
                     for (String tier : file.getStringList(path + ".Tiers")) {
                         for (Tier loadedTier : tiers) {
@@ -326,7 +326,7 @@ public class CrateManager {
     private final HashMap<UUID, BukkitTask> currentTasks = new HashMap<>();
 
     // A list of tasks being run by the QuadCrate type.
-    private final HashMap<UUID, ArrayList<BukkitTask>> currentQuadTasks = new HashMap<>();
+    private final HashMap<UUID, List<BukkitTask>> currentQuadTasks = new HashMap<>();
 
     /**
      * Opens a crate for a player.
@@ -875,7 +875,7 @@ public class CrateManager {
         return Collections.unmodifiableList(this.brokeLocations);
     }
 
-    public void removeBrokeLocation(ArrayList<BrokeLocation> crateLocation) {
+    public void removeBrokeLocation(List<BrokeLocation> crateLocation) {
         this.brokeLocations.removeAll(crateLocation);
     }
 

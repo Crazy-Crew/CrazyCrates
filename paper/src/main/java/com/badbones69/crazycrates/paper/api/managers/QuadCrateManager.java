@@ -75,7 +75,7 @@ public class QuadCrateManager {
     private final Location lastLocation;
 
     // Defines the locations of the Chests that will spawn in.
-    private final ArrayList<Location> crateLocations = new ArrayList<>();
+    private final List<Location> crateLocations = new ArrayList<>();
 
     // Stores if the crate is open or not.
     private final HashMap<Location, Boolean> cratesOpened = new HashMap<>();
@@ -127,7 +127,6 @@ public class QuadCrateManager {
      * Start the crate session
      */
     public void startCrate() {
-
         // Check if it is on a block.
         if (this.spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
             this.player.sendMessage(Translation.not_on_block.getString());
