@@ -372,8 +372,10 @@ public class CrateManager {
                 CrateSchematic schematic = isRandom ? getCrateSchematic(crate.getFile().getString("Crate.structure.file")) : getCrateSchematics().get(new Random().nextInt(getCrateSchematics().size()));
 
                 StructureHandler handler = new StructureHandler(schematic.getSchematicFile());
-                CrateLocation crateLocation = getCrateLocation(location);
-                QuadCrateManager session = new QuadCrateManager(player, crate, keyType, crateLocation.getLocation(), lastLocation, checkHand, handler);
+                // if crate location is not null, get physical location otherwise get player location.
+                Location crateLocation = getCrateLocation(location) != null ? getCrateLocation(location).getLocation() : location;
+
+                QuadCrateManager session = new QuadCrateManager(player, crate, keyType, crateLocation, lastLocation, checkHand, handler);
 
                 session.startCrate();
             }
