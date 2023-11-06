@@ -43,9 +43,8 @@ public class FileManager {
             if (this.plugin.isLogging()) this.plugin.getLogger().info("Loading the " + file.getFileName());
 
             if (!newFile.exists()) {
-                try {
+                try (InputStream jarFile = getClass().getResourceAsStream("/" + file.getFileJar())) {
                     File serverFile = new File(this.plugin.getDataFolder(), "/" + file.getFileLocation());
-                    InputStream jarFile = getClass().getResourceAsStream("/" + file.getFileJar());
                     copyFile(jarFile, serverFile);
                 } catch (Exception exception) {
                     this.plugin.getLogger().log(Level.WARNING, "Failed to load file: " + file.getFileName(), exception);
