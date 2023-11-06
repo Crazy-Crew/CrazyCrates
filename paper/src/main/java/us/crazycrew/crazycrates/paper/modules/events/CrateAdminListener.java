@@ -16,6 +16,8 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateAdminMenu;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePreviewMenu;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.modules.ModuleHandler;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
@@ -31,18 +33,19 @@ public class CrateAdminListener extends ModuleHandler {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        Inventory inventory = event.getClickedInventory();
+        Player player = (Player) event.getWhoClicked();
 
-        if (inventory == null || !(inventory.getHolder(false) instanceof CrateAdminMenu)) {
+        Inventory inventory = event.getInventory();
+
+        if (!(inventory.getHolder(false) instanceof CrateAdminMenu)) {
             return;
         }
 
         event.setCancelled(true);
 
-        Player player = (Player) event.getWhoClicked();
-
         if (!MiscUtils.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
-            player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+            player.closeInventory(InventoryCloseEvent.Reason.CANT_USE);
+            player.sendMessage(Translation.no_permission.getString());
             return;
         }
 

@@ -40,9 +40,9 @@ public class CrateMenuListener extends ModuleHandler {
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
 
-        Inventory inventory = event.getClickedInventory();
+        Inventory inventory = event.getInventory();
 
-        if (inventory == null || !(inventory.getHolder(false) instanceof CrateMainMenu)) {
+        if (!(inventory.getHolder(false) instanceof CrateMainMenu)) {
             return;
         }
 

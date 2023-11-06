@@ -30,7 +30,6 @@ import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.modules.ModuleLoader;
 import us.crazycrew.crazycrates.paper.listeners.crates.CrateOpenListener;
 import us.crazycrew.crazycrates.paper.modules.events.CrateAdminListener;
-import us.crazycrew.crazycrates.paper.modules.events.CrateGuiListener;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.List;
 
@@ -57,7 +56,7 @@ public class CrazyCrates extends JavaPlugin {
         new com.badbones69.crazycrates.paper.CrazyCrates().enable();
 
         // Register listeners
-        this.crazyHandler.getModuleLoader().addModule(new CrateGuiListener());
+        //this.crazyHandler.getModuleLoader().addModule(new CrateGuiListener());
         this.crazyHandler.getModuleLoader().addModule(new CratePreviewListener());
         this.crazyHandler.getModuleLoader().addModule(new CrateAdminListener());
         this.crazyHandler.getModuleLoader().addModule(new CrateMenuListener());
