@@ -45,12 +45,12 @@ public class BukkitUserManager extends UserManager {
     @Override
     public void addVirtualKeys(int amount, UUID uuid, String crateName) {
         if (isPlayerNull(uuid)) {
-            this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
             return;
         }
 
         if (isCrateInvalid(crateName)) {
-            this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
             return;
         }
 
@@ -70,12 +70,12 @@ public class BukkitUserManager extends UserManager {
     @Override
     public void setKeys(int amount, UUID uuid, String crateName) {
         if (isPlayerNull(uuid)) {
-            this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
             return;
         }
 
         if (isCrateInvalid(crateName)) {
-            this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
             return;
         }
 
@@ -95,12 +95,12 @@ public class BukkitUserManager extends UserManager {
     @Override
     public void addKeys(int amount, UUID uuid, String crateName, KeyType keyType) {
         if (isPlayerNull(uuid)) {
-            this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
             return;
         }
 
         if (isCrateInvalid(crateName)) {
-            this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
             return;
         }
 
@@ -144,12 +144,12 @@ public class BukkitUserManager extends UserManager {
     @Override
     public int getPhysicalKeys(UUID uuid, String crateName) {
         if (isPlayerNull(uuid)) {
-            this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
             return 0;
         }
 
         if (isCrateInvalid(crateName)) {
-            this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
             return 0;
         }
 
@@ -171,12 +171,12 @@ public class BukkitUserManager extends UserManager {
     @Override
     public boolean takeKeys(int amount, UUID uuid, String crateName, KeyType keyType, boolean checkHand) {
         if (isPlayerNull(uuid)) {
-            this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
             return false;
         }
 
         if (isCrateInvalid(crateName)) {
-            this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
             return false;
         }
 
@@ -283,12 +283,12 @@ public class BukkitUserManager extends UserManager {
     @Override
     public boolean hasPhysicalKey(UUID uuid, String crateName, boolean checkHand) {
         if (isPlayerNull(uuid)) {
-            this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
             return false;
         }
 
         if (isCrateInvalid(crateName)) {
-            this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
             return false;
         }
 
@@ -337,7 +337,7 @@ public class BukkitUserManager extends UserManager {
     @Override
     public boolean addOfflineKeys(UUID uuid, String crateName, int keys, KeyType keyType) {
         if (isCrateInvalid(crateName)) {
-            this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
             return false;
         }
 
@@ -368,7 +368,7 @@ public class BukkitUserManager extends UserManager {
     @Override
     public boolean takeOfflineKeys(UUID uuid, String crateName, int keys, KeyType keyType) {
         if (isCrateInvalid(crateName)) {
-            this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
             return false;
         }
 
@@ -503,7 +503,7 @@ public class BukkitUserManager extends UserManager {
     @Override
     public void addOpenedCrate(UUID uuid, String crateName) {
         if (isCrateInvalid(crateName)) {
-            this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
             return;
         }
 

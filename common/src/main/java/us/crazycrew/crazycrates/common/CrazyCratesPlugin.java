@@ -35,4 +35,10 @@ public abstract class CrazyCratesPlugin implements ICrazyCrates {
     public ConfigManager getConfigManager() {
         return this.configManager;
     }
+
+    @Override
+    @NotNull
+    public File getDataFolder() {
+        return this.dataFolder;
+    }
 }

@@ -33,7 +33,7 @@ public class CrateOpenListener implements Listener {
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler
     public void onCrateOpen(CrateOpenEvent event) {
         Player player = event.getPlayer();
         Crate crate = event.getCrate();

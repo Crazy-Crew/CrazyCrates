@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
-import org.apache.commons.lang.WordUtils;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.support.SkullCreator;

@@ -11,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 
@@ -30,10 +31,10 @@ public class Roulette implements Listener {
     }
     
     public static void openRoulette(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
-        setGlass(inv);
-        inv.setItem(13, crate.pickPrize(player).getDisplayItem());
-        player.openInventory(inv);
+        Inventory inventory = new CratePrizeMenu(plugin, crate, player, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName"))).build().getInventory();
+        setGlass(inventory);
+        inventory.setItem(13, crate.pickPrize(player).getDisplayItem());
+        player.openInventory(inventory);
 
         if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
             MiscUtils.failedToTakeKey(player, crate);
@@ -41,7 +42,7 @@ public class Roulette implements Listener {
             return;
         }
 
-        startRoulette(player, inv, crate);
+        startRoulette(player, inventory, crate);
     }
     
     private static void startRoulette(final Player player, final Inventory inv, final Crate crate) {

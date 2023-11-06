@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.paper.api;
 
-import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
@@ -11,7 +10,6 @@ import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent.KeyReceiveReason;
-import us.crazycrew.crazycrates.paper.api.interfaces.HologramController;
 import us.crazycrew.crazycrates.paper.commands.subs.CrateBaseCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -32,15 +30,6 @@ public class CrazyManager {
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-
-    @NotNull
-    private final SettingsManager config = this.plugin.getConfigManager().getConfig();
-
-    // The time in seconds a quadcrate can go until afk kicks them from it.
-    private int quadCrateTimer;
-
-    // The hologram api that is being hooked into.
-    private HologramController hologramController;
 
     /**
      * Opens a crate for a player.
@@ -215,16 +204,6 @@ public class CrazyManager {
     @Deprecated(since = "1.16", forRemoval = true)
     public KeyType getPlayerKeyType(Player player) {
         return KeyType.getFromName(this.plugin.getCrateManager().getPlayerKeyType(player).getName().toUpperCase());
-    }
-
-    /**
-     * The time in seconds a quadcrate will last before kicking the player.
-     *
-     * @return The time in seconds till kick.
-     */
-    @Deprecated(since = "1.16", forRemoval = true)
-    public int getQuadCrateTimer() {
-        return this.quadCrateTimer;
     }
 
     /**

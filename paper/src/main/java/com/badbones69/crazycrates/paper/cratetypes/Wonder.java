@@ -13,8 +13,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Wonder implements Listener {
 
@@ -29,23 +31,24 @@ public class Wonder implements Listener {
             return;
         }
 
-        final Inventory inv = plugin.getServer().createInventory(null, 45, crate.getCrateInventoryName());
-        final ArrayList<String> slots = new ArrayList<>();
+        Inventory inventory = new CratePrizeMenu(plugin, crate, player, 45, crate.getCrateInventoryName()).build().getInventory();
+
+        final List<String> slots = new ArrayList<>();
 
         for (int i = 0; i < 45; i++) {
             Prize prize = crate.pickPrize(player);
             slots.add(i + "");
-            inv.setItem(i, prize.getDisplayItem());
+            inventory.setItem(i, prize.getDisplayItem());
         }
 
-        player.openInventory(inv);
+        player.openInventory(inventory);
 
         crateManager.addCrateTask(player, new BukkitRunnable() {
             int fullTime = 0;
             int timer = 0;
             int slot1 = 0;
             int slot2 = 44;
-            final ArrayList<Integer> Slots = new ArrayList<>();
+            final List<Integer> Slots = new ArrayList<>();
             Prize prize = null;
             
             @Override
@@ -55,12 +58,12 @@ public class Wonder implements Listener {
                     slots.remove(slot2 + "");
                     Slots.add(slot1);
                     Slots.add(slot2);
-                    inv.setItem(slot1, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
-                    inv.setItem(slot2, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+                    inventory.setItem(slot1, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+                    inventory.setItem(slot2, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
 
                     for (String slot : slots) {
                         prize = crate.pickPrize(player);
-                        inv.setItem(Integer.parseInt(slot), prize.getDisplayItem());
+                        inventory.setItem(Integer.parseInt(slot), prize.getDisplayItem());
                     }
 
                     slot1++;
@@ -71,11 +74,11 @@ public class Wonder implements Listener {
                     ItemStack item = MiscUtils.getRandomPaneColor().setName(" ").build();
 
                     for (int slot : Slots) {
-                        inv.setItem(slot, item);
+                        inventory.setItem(slot, item);
                     }
                 }
 
-                player.openInventory(inv);
+                player.openInventory(inventory);
 
                 if (fullTime > 100) {
                     crateManager.endCrate(player);

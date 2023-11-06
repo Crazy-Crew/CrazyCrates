@@ -18,10 +18,11 @@ import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePreviewMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
-import us.crazycrew.crazycrates.paper.api.users.guis.InventoryManager;
+import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryManager;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
-import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.ArrayList;
 
 public class MenuListener implements Listener {
@@ -42,85 +43,83 @@ public class MenuListener implements Listener {
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @EventHandler
-    public void onInvClick(InventoryClickEvent e) {
-        Player player = (Player) e.getWhoClicked();
-        Inventory inv = e.getClickedInventory();
+    public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        Inventory inventory = event.getClickedInventory();
 
-        if (inv != null) {
-            for (Crate crate : this.plugin.getCrateManager().getCrates()) {
-                if (crate.getCrateType() != CrateType.menu && crate.isCrateMenu(e.getView())) return;
+        if (inventory == null || !(inventory.getHolder(false) instanceof CrateMainMenu)) return;
+
+        for (Crate crate : this.plugin.getCrateManager().getCrates()) {
+            if (crate.getCrateType() != CrateType.menu && inventory.getHolder(false) instanceof CratePreviewMenu) return;
+        }
+
+        event.setCancelled(true);
+
+        if (event.getCurrentItem() == null) return;
+
+        ItemStack item = event.getCurrentItem();
+
+        if (!item.hasItemMeta() && !item.getItemMeta().hasDisplayName()) return;
+
+        NBTItem nbtItem = new NBTItem(item);
+
+        if (!nbtItem.hasNBTData() && !nbtItem.hasTag("CrazyCrates-Crate")) return;
+
+        Crate crate = this.plugin.getCrateManager().getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
+
+        if (crate == null) return;
+
+        if (event.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
+            if (crate.isPreviewEnabled()) {
+                player.closeInventory();
+                this.inventoryManager.addViewer(player);
+                this.inventoryManager.openNewCratePreview(player, crate);
+            } else {
+                player.sendMessage(Translation.preview_disabled.getString());
             }
 
-            if (e.getView().getTitle().equals(MsgUtils.sanitizeColor(this.config.getProperty(Config.inventory_name)))) {
-                e.setCancelled(true);
+            return;
+        }
 
-                if (e.getCurrentItem() != null) {
-                    ItemStack item = e.getCurrentItem();
+        if (this.crateManager.isInOpeningList(player)) {
+            player.sendMessage(Translation.already_opening_crate.getString());
+            return;
+        }
 
-                    if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
-                        NBTItem nbtItem = new NBTItem(item);
+        boolean hasKey = false;
+        KeyType keyType = KeyType.virtual_key;
 
-                        if (nbtItem.hasNBTData() && nbtItem.hasTag("CrazyCrates-Crate")) {
-                            Crate crate = this.plugin.getCrateManager().getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
-
-                            if (crate != null) {
-                                if (e.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
-                                    if (crate.isPreviewEnabled()) {
-                                        player.closeInventory();
-                                        this.inventoryManager.addViewer(player);
-                                        this.inventoryManager.openNewCratePreview(player, crate);
-                                    } else {
-                                        player.sendMessage(Translation.preview_disabled.getString());
-                                    }
-
-                                    return;
-                                }
-
-                                if (this.crateManager.isInOpeningList(player)) {
-                                    player.sendMessage(Translation.already_opening_crate.getString());
-                                    return;
-                                }
-
-                                boolean hasKey = false;
-                                KeyType keyType = KeyType.virtual_key;
-
-                                if (this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
-                                    hasKey = true;
-                                } else {
-                                    if (this.config.getProperty(Config.virtual_accepts_physical_keys) && this.crazyHandler.getUserManager().hasPhysicalKey(player.getUniqueId(), crate.getName(), false)) {
-                                        hasKey = true;
-                                        keyType = KeyType.physical_key;
-                                    }
-                                }
-
-                                if (!hasKey) {
-                                    if (this.config.getProperty(Config.need_key_sound_toggle)) {
-                                        player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), 1f, 1f);
-                                    }
-
-                                    player.sendMessage(Translation.no_virtual_key.getString());
-                                    return;
-                                }
-
-                                for (String world : getDisabledWorlds()) {
-                                    if (world.equalsIgnoreCase(player.getWorld().getName())) {
-                                        player.sendMessage(Translation.world_disabled.getMessage("%world%", player.getWorld().getName()).toString());
-                                        return;
-                                    }
-                                }
-
-                                if (MiscUtils.isInventoryFull(player)) {
-                                    player.sendMessage(Translation.inventory_not_empty.getString());
-                                    return;
-                                }
-
-                                this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
-                            }
-                        }
-                    }
-                }
+        if (this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
+            hasKey = true;
+        } else {
+            if (this.config.getProperty(Config.virtual_accepts_physical_keys) && this.crazyHandler.getUserManager().hasPhysicalKey(player.getUniqueId(), crate.getName(), false)) {
+                hasKey = true;
+                keyType = KeyType.physical_key;
             }
         }
+
+        if (!hasKey) {
+            if (this.config.getProperty(Config.need_key_sound_toggle)) {
+                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), 1f, 1f);
+            }
+
+            player.sendMessage(Translation.no_virtual_key.getString());
+            return;
+        }
+
+        for (String world : getDisabledWorlds()) {
+            if (world.equalsIgnoreCase(player.getWorld().getName())) {
+                player.sendMessage(Translation.world_disabled.getMessage("%world%", player.getWorld().getName()).toString());
+                return;
+            }
+        }
+
+        if (MiscUtils.isInventoryFull(player)) {
+            player.sendMessage(Translation.inventory_not_empty.getString());
+            return;
+        }
+
+        this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
     }
     
     private ArrayList<String> getDisabledWorlds() {

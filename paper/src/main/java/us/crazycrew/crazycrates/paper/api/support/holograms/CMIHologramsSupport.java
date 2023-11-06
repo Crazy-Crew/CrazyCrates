@@ -3,13 +3,13 @@ package us.crazycrew.crazycrates.paper.api.support.holograms;
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Holograms.CMIHologram;
 import net.Zrips.CMILib.Container.CMILocation;
-import us.crazycrew.crazycrates.paper.api.interfaces.HologramController;
+import us.crazycrew.crazycrates.paper.api.interfaces.HologramHandler;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.block.Block;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class CMIHologramsSupport implements HologramController {
+public class CMIHologramsSupport extends HologramHandler {
 
     private final HashMap<Block, CMIHologram> holograms = new HashMap<>();
 

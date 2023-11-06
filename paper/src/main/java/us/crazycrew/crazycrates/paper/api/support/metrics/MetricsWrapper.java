@@ -1,11 +1,14 @@
 package us.crazycrew.crazycrates.paper.api.support.metrics;
 
+import com.badbones69.crazycrates.paper.api.objects.Crate;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MetricsWrapper {
 
@@ -22,7 +25,11 @@ public class MetricsWrapper {
 
         this.metrics = new Metrics(this.plugin, 4514);
 
-        this.plugin.getCrateManager().getCrates().forEach(crate -> {
+        List<Crate> crateList = new ArrayList<>(this.plugin.getCrateManager().getCrates());
+
+        crateList.removeIf(crate -> crate.getCrateType() == CrateType.menu);
+
+        crateList.forEach(crate -> {
             CrateType crateType = crate.getCrateType();
 
             SimplePie chart = new SimplePie("crate_types", crateType::getName);

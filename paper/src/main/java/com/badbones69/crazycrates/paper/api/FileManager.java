@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 
 public class FileManager {
@@ -19,8 +20,8 @@ public class FileManager {
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final HashMap<Files, File> files = new HashMap<>();
-    private final ArrayList<String> homeFolders = new ArrayList<>();
-    private final ArrayList<CustomFile> customFiles = new ArrayList<>();
+    private final List<String> homeFolders = new ArrayList<>();
+    private final List<CustomFile> customFiles = new ArrayList<>();
     private final HashMap<String, String> jarHomeFolders = new HashMap<>();
     private final HashMap<String, String> autoGenerateFiles = new HashMap<>();
     private final HashMap<Files, FileConfiguration> configurations = new HashMap<>();
@@ -42,9 +43,8 @@ public class FileManager {
             if (this.plugin.isLogging()) this.plugin.getLogger().info("Loading the " + file.getFileName());
 
             if (!newFile.exists()) {
-                try {
+                try (InputStream jarFile = getClass().getResourceAsStream("/" + file.getFileJar())) {
                     File serverFile = new File(this.plugin.getDataFolder(), "/" + file.getFileLocation());
-                    InputStream jarFile = getClass().getResourceAsStream("/" + file.getFileJar());
                     copyFile(jarFile, serverFile);
                 } catch (Exception exception) {
                     this.plugin.getLogger().log(Level.WARNING, "Failed to load file: " + file.getFileName(), exception);
@@ -53,7 +53,7 @@ public class FileManager {
             }
 
             this.files.put(file, newFile);
-            this.configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
+            if (file.getFileName().endsWith(".yml")) this.configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
 
             if (this.plugin.isLogging()) this.plugin.getLogger().info("Successfully loaded " + file.getFileName());
         }
@@ -90,9 +90,8 @@ public class FileManager {
                         if (this.autoGenerateFiles.get(fileName).equalsIgnoreCase(homeFolder)) {
                             homeFolder = this.autoGenerateFiles.get(fileName);
 
-                            try {
+                            try (InputStream jarFile = getClass().getResourceAsStream((this.jarHomeFolders.getOrDefault(fileName, homeFolder)) + "/" + fileName)) {
                                 File serverFile = new File(this.plugin.getDataFolder(), homeFolder + "/" + fileName);
-                                InputStream jarFile = getClass().getResourceAsStream((this.jarHomeFolders.getOrDefault(fileName, homeFolder)) + "/" + fileName);
                                 copyFile(jarFile, serverFile);
 
                                 if (fileName.toLowerCase().endsWith(".yml")) this.customFiles.add(new CustomFile(fileName, homeFolder));
@@ -239,7 +238,7 @@ public class FileManager {
      * Overrides the loaded state file and loads the file systems file.
      */
     public void reloadFile(Files file) {
-        this.configurations.put(file, YamlConfiguration.loadConfiguration(this.files.get(file)));
+        if (file.getFileName().endsWith(".yml")) this.configurations.put(file, YamlConfiguration.loadConfiguration(this.files.get(file)));
     }
 
     /**
@@ -278,8 +277,8 @@ public class FileManager {
         }
     }
 
-    public ArrayList<String> getAllCratesNames() {
-        ArrayList<String> files = new ArrayList<>();
+    public List<String> getAllCratesNames() {
+        List<String> files = new ArrayList<>();
 
         String[] file = new File(this.plugin.getDataFolder(), "/crates").list();
 
@@ -390,7 +389,7 @@ public class FileManager {
          * Overrides the loaded state file and loads the file systems file.
          */
         public void reloadFile() {
-            this.fileManager.reloadFile(this);
+            if (this.getFileName().endsWith(".yml")) this.fileManager.reloadFile(this);
         }
     }
 

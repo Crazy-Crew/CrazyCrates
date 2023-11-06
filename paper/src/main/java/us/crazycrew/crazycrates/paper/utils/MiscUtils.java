@@ -345,8 +345,8 @@ public class MiscUtils {
     /**
      * Decides when the crate should start to slow down.
      */
-    public static ArrayList<Integer> slowSpin() {
-        ArrayList<Integer> slow = new ArrayList<>();
+    public static List<Integer> slowSpin() {
+        List<Integer> slow = new ArrayList<>();
         int full = 46;
         int cut = 9;
 

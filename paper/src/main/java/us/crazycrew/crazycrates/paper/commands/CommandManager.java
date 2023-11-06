@@ -1,5 +1,6 @@
 package us.crazycrew.crazycrates.paper.commands;
 
+import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
@@ -14,6 +15,7 @@ import us.crazycrew.crazycrates.paper.commands.subs.CrateBaseCommand;
 import us.crazycrew.crazycrates.paper.commands.subs.player.BaseKeyCommand;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommandManager {
 
@@ -26,7 +28,13 @@ public class CommandManager {
         new MiscRelations().build();
         new ArgumentRelations().build();
 
-        this.bukkitCommandManager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> this.plugin.getFileManager().getAllCratesNames().stream().toList());
+        this.bukkitCommandManager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> {
+            List<String> crates = new ArrayList<>(this.plugin.getFileManager().getAllCratesNames());
+
+            crates.add("Menu");
+
+            return crates;
+        });
 
         this.bukkitCommandManager.registerSuggestion(SuggestionKey.of("key-types"), (sender, context) -> List.of("virtual", "v", "physical", "p"));
 

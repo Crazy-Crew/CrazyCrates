@@ -102,8 +102,23 @@ val other = if (isSnapshot) "Beta" else "Release"
 val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.version}.jar")
 
 val description = """
+## Fixes:
+  * Fix crate type checks.
+  * Don't load files as a yaml configuration if they don't end in .yml.
+  * Fixed command typo in CrateExample.yml.
+  * Fixed /cc set.
+  * Added Menu crate to tab complete.
+  * Filtered Menu from metrics as that isn't a crate type.
+    
 ## Changes:
-  * Remove extra nbt data from item that caused them not to stack.
+  * Add extra isLogging() checks
+  * If no display name option in the crate config prize section is present, The material name will be used for %reward%
+  * Inventories are no longer checked by if the view matches, This led to you being able to name your inventory Enchant and now you can't use the Enchant table
+   * We use inventory holders instead now which is the preferred way. This includes the animated menus.
+  * Use customizable message for when getting keys out of the admin menu.
+
+## New Features:
+  * A directory called examples will be re-generated on every startup and /crazycrates reload to always ensure that you get fresh example files if needed.
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)

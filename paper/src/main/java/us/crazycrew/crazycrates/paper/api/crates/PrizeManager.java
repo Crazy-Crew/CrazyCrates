@@ -1,5 +1,6 @@
 package us.crazycrew.crazycrates.paper.api.crates;
 
+import org.apache.commons.lang.WordUtils;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -30,7 +31,7 @@ public class PrizeManager {
      */
     public void givePrize(Player player, Prize prize, Crate crate) {
         if (prize == null) {
-            this.plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
             return;
         }
 
@@ -96,10 +97,12 @@ public class PrizeManager {
 
             if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) command = PlaceholderAPI.setPlaceholders(player, command);
 
+            String name = prize.getDisplayItemBuilder().getName() == null || prize.getDisplayItemBuilder().getName().isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " "))) : prize.getDisplayItemBuilder().getName();
+
             MiscUtils.sendCommand(command
                     .replaceAll("%player%", quoteReplacement(player.getName()))
                     .replaceAll("%Player%", quoteReplacement(player.getName()))
-                    .replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName()))
+                    .replaceAll("%reward%", quoteReplacement(name))
                     .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
         }
 
@@ -109,10 +112,12 @@ public class PrizeManager {
                     message = PlaceholderAPI.setPlaceholders(player, message);
                 }
 
+                String name = prize.getDisplayItemBuilder().getName() == null || prize.getDisplayItemBuilder().getName().isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " "))) : prize.getDisplayItemBuilder().getName();
+
                 MsgUtils.sendMessage(player, message
                         .replaceAll("%player%", quoteReplacement(player.getName()))
                         .replaceAll("%Player%", quoteReplacement(player.getName()))
-                        .replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName()))
+                        .replaceAll("%reward%", quoteReplacement(name))
                         .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())), false);
             }
 
@@ -124,10 +129,12 @@ public class PrizeManager {
                 message = PlaceholderAPI.setPlaceholders(player, message);
             }
 
+            String name = prize.getDisplayItemBuilder().getName() == null || prize.getDisplayItemBuilder().getName().isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " "))) : prize.getDisplayItemBuilder().getName();
+
             MsgUtils.sendMessage(player, message
                     .replaceAll("%player%", quoteReplacement(player.getName()))
                     .replaceAll("%Player%", quoteReplacement(player.getName()))
-                    .replaceAll("%reward%", quoteReplacement(prize.getDisplayItemBuilder().getName()))
+                    .replaceAll("%reward%", quoteReplacement(name))
                     .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())), false);
         }
     }

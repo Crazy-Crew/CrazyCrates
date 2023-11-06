@@ -107,7 +107,7 @@ public class Config implements SettingsHolder {
             "&7&lPage: &b%page%"
     ));
 
-    public static final Property<Boolean> filler_toggle = newProperty("Settings.Filler.Toggle", true);
+    public static final Property<Boolean> filler_toggle = newProperty("Settings.Filler.Toggle", false);
 
     public static final Property<String> filler_item = newProperty("Settings.Filler.Item", "BLACK_STAINED_GLASS_PANE");
 
@@ -127,7 +127,7 @@ public class Config implements SettingsHolder {
             "Slot:7, Item:BLACK_STAINED_GLASS_PANE, Name: ",
             "Slot:8, Item:BLACK_STAINED_GLASS_PANE, Name: ",
             "Slot:9, Item:BLACK_STAINED_GLASS_PANE, Name: ",
-            "Slot:0, Item:BLACK_STAINED_GLASS_PANE, Name: ",
+            "Slot:10, Item:BLACK_STAINED_GLASS_PANE, Name: ",
             "Slot:18, Item:BLACK_STAINED_GLASS_PANE, Name: ",
             "Slot:19, Item:BLACK_STAINED_GLASS_PANE, Name: ",
             "Slot:27, Item:BLACK_STAINED_GLASS_PANE, Name: ",

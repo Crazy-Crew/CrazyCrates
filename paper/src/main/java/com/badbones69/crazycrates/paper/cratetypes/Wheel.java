@@ -13,10 +13,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Wheel implements Listener {
@@ -34,25 +36,25 @@ public class Wheel implements Listener {
             return;
         }
 
-        final Inventory inv = plugin.getServer().createInventory(null, 54, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName")));
+        Inventory inventory = new CratePrizeMenu(plugin, crate, player, 54, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName"))).build().getInventory();
 
         for (int i = 0; i < 54; i++) {
-            inv.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
+            inventory.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());
         }
 
         HashMap<Integer, ItemStack> items = new HashMap<>();
 
         for (int i : getBorder()) {
             Prize prize = crate.pickPrize(player);
-            inv.setItem(i, prize.getDisplayItem());
+            inventory.setItem(i, prize.getDisplayItem());
             items.put(i, prize.getDisplayItem());
         }
 
         rewards.put(player, items);
-        player.openInventory(inv);
+        player.openInventory(inventory);
 
         crateManager.addCrateTask(player, new BukkitRunnable() {
-            final ArrayList<Integer> slots = getBorder();
+            final List<Integer> slots = getBorder();
             int i = 0;
             int f = 17;
             int full = 0;
@@ -82,7 +84,7 @@ public class Wheel implements Listener {
                             ItemStack item = MiscUtils.getRandomPaneColor().setName(" ").build();
 
                             for (int slot = 0; slot < 54; slot++) {
-                                if (!getBorder().contains(slot)) inv.setItem(slot, item);
+                                if (!getBorder().contains(slot)) inventory.setItem(slot, item);
                             }
 
                             slow = 0;
@@ -108,19 +110,19 @@ public class Wheel implements Listener {
                 open++;
 
                 if (open > 5) {
-                    player.openInventory(inv);
+                    player.openInventory(inventory);
                     open = 0;
                 }
             }
 
             private void checkLore() {
                 if (rewards.get(player).get(slots.get(i)).getItemMeta().hasLore()) {
-                    inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
+                    inventory.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).setLore(rewards.get(player).get(slots.get(i)).getItemMeta().getLore()).build());
                 } else {
-                    inv.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
+                    inventory.setItem(slots.get(i), new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).setName(rewards.get(player).get(slots.get(i)).getItemMeta().getDisplayName()).build());
                 }
 
-                inv.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
+                inventory.setItem(slots.get(f), rewards.get(player).get(slots.get(f)));
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
                 i++;
                 f++;
