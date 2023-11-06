@@ -1,6 +1,6 @@
 package us.crazycrew.crazycrates.paper.api.support.holograms;
 
-import us.crazycrew.crazycrates.paper.api.interfaces.HologramController;
+import us.crazycrew.crazycrates.paper.api.interfaces.HologramHandler;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import us.crazycrew.crazycrates.common.crates.CrateHologram;
 import eu.decentsoftware.holograms.api.DHAPI;
@@ -10,10 +10,11 @@ import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class DecentHologramsSupport implements HologramController {
+public class DecentHologramsSupport extends HologramHandler {
 
     private final HashMap<Block, Hologram> holograms = new HashMap<>();
-    
+
+    @Override
     public void createHologram(Block block, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();
 
@@ -27,7 +28,8 @@ public class DecentHologramsSupport implements HologramController {
 
         this.holograms.put(block, hologram);
     }
-    
+
+    @Override
     public void removeHologram(Block block) {
         if (!this.holograms.containsKey(block)) return;
 
@@ -37,6 +39,7 @@ public class DecentHologramsSupport implements HologramController {
         hologram.delete();
     }
 
+    @Override
     public void removeAllHolograms() {
         this.holograms.forEach((key, value) -> value.delete());
         this.holograms.clear();
