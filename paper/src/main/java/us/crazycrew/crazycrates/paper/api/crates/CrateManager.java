@@ -19,7 +19,7 @@ import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.events.crates.CrateOpenEvent;
-import us.crazycrew.crazycrates.paper.api.interfaces.HologramController;
+import us.crazycrew.crazycrates.paper.api.interfaces.HologramHandler;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
@@ -74,7 +74,7 @@ public class CrateManager {
     private final List<String> brokeCrates = new ArrayList<>();
     private final List<Crate> crates = new ArrayList<>();
 
-    private HologramController holograms;
+    private HologramHandler holograms;
 
     private boolean giveNewPlayersKeys;
 
@@ -844,7 +844,7 @@ public class CrateManager {
         return false;
     }
 
-    public HologramController getHolograms() {
+    public HologramHandler getHolograms() {
         return this.holograms;
     }
 

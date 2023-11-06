@@ -516,7 +516,7 @@ public class CrateBaseCommand extends BaseCommand {
     public void onAdminCrateSet(Player player, @Suggestion("crates") String crateName) {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
-        if (crate == null || crate.getCrateType() == CrateType.menu) {
+        if (crate == null) {
             player.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
             return;
         }

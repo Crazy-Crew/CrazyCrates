@@ -106,6 +106,8 @@ val description = """
   * Fix crate type checks
   * Don't load files as a yaml configuration if they don't end in .yml
   * Fixed command typo in CrateExample.yml
+  * Fixed /cc set
+  * Added Menu crate to tab complete
     
 ## Changes:
   * Add extra isLogging() checks
