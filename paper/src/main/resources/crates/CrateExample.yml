@@ -14,7 +14,7 @@ Crate:
   StartingKeys: 0
   # The amount of keys required to use the crate.
   RequiredKeys: 0
-  #Max amount of crates that can be opened at once using /cc max-open
+  #Max amount of crates that can be opened at once using /cc mass-open
   Max-Mass-Open: 10
   # If the crate shows in the /cc GUI.
   # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
