@@ -203,7 +203,7 @@ public class War implements Listener {
 
         if (canClose.containsKey(player) && canClose.get(player)) {
             for (Crate crate : crateManager.getCrates()) {
-                if (crate.getCrateType() == CrateType.war && e.getView().getTitle().equalsIgnoreCase(MsgUtils.sanitizeColor(crate.getFile().getString(crateNameString)))) {
+                if (crate.getCrateType() == CrateType.war && e.getInventory().getHolder(false) instanceof CratePrizeMenu) {
                     canClose.remove(player);
 
                     if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);

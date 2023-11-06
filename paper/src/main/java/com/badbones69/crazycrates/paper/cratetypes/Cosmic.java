@@ -40,29 +40,29 @@ public class Cosmic implements Listener {
     private static final HashMap<Player, Boolean> checkHands = new HashMap<>();
     
     private static void showRewards(Player player, Crate crate) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"));
+        Inventory inventory = new CratePrizeMenu(plugin, crate, player, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes")).build().getInventory();
 
         Tier tier = pickTier(player);
 
         if (tier != null) {
-            picks.get(player).forEach(i -> inv.setItem(i, tier.getTierPane()));
-            player.openInventory(inv);
+            picks.get(player).forEach(i -> inventory.setItem(i, tier.getTierPane()));
+            player.openInventory(inventory);
         }
     }
     
     private static void startRoll(Player player, Crate crate) {
-        Inventory inv = plugin.getServer().createInventory(null, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Shuffling"));
+        Inventory inventory = new CratePrizeMenu(plugin, crate, player, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Shuffling")).build().getInventory();
 
         Tier tier = pickTier(player);
 
         if (tier != null) {
             for (int i = 0; i < 27; i++) {
-                inv.setItem(i, tier.getTierPane());
+                inventory.setItem(i, tier.getTierPane());
             }
         }
 
         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
-        player.openInventory(inv);
+        player.openInventory(inventory);
     }
     
     private static void setChests(Inventory inv, Crate crate) {
@@ -115,7 +115,7 @@ public class Cosmic implements Listener {
 
         final FileConfiguration file = crate.getFile();
 
-        if (e.getView().getTitle().equals(MsgUtils.sanitizeColor(file.getString("Crate.CrateName") + " - Shuffling"))) e.setCancelled(true);
+        if (!(inv.getHolder(false) instanceof CratePrizeMenu crateCosmicMenu)) return;
 
         if (e.getView().getTitle().equals(MsgUtils.sanitizeColor(file.getString("Crate.CrateName") + " - Prizes"))) {
             e.setCancelled(true);
@@ -273,7 +273,7 @@ public class Cosmic implements Listener {
             return;
         }
 
-        if (e.getView().getTitle().equals(MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes"))) {
+        if (!(inv.getHolder(false) instanceof CratePrizeMenu crateCosmicMenu)) return;
             boolean playSound = false;
 
             for (int i : picks.get(player)) {
