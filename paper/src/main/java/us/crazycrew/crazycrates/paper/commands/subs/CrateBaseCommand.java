@@ -352,7 +352,7 @@ public class CrateBaseCommand extends BaseCommand {
     private void openCrate(CommandSender sender, Player player, String crateName) {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
-        if (crate == null || crate.getCrateType() == CrateType.menu || crate.getCrateType() == CrateType.crate_on_the_go && crate.getCrateType() == CrateType.quick_crate && crate.getCrateType() == CrateType.fire_cracker && crate.getCrateType() == CrateType.quad_crate) {
+        if (crate == null || crate.getCrateType() == CrateType.menu) {
             player.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
             return;
         }
