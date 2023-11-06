@@ -400,12 +400,14 @@ public class CrateBaseCommand extends BaseCommand {
 
         this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
 
-        HashMap<String, String> placeholders = new HashMap<>();
+        if (sender != player) {
+            HashMap<String, String> placeholders = new HashMap<>();
 
-        placeholders.put("%Crate%", crate.getName());
-        placeholders.put("%Player%", player.getName());
+            placeholders.put("%Crate%", crate.getName());
+            placeholders.put("%Player%", player.getName());
 
-        sender.sendMessage(Translation.opened_a_crate.getMessage(placeholders).toString());
+            sender.sendMessage(Translation.opened_a_crate.getMessage(placeholders).toString());
+        }
 
         this.eventLogger.logKeyEvent(player, sender, crate, keyType, EventLogger.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
     }
@@ -486,12 +488,14 @@ public class CrateBaseCommand extends BaseCommand {
 
         this.crateManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), true, false);
 
-        HashMap<String, String> placeholders = new HashMap<>();
+        if (sender != player) {
+            HashMap<String, String> placeholders = new HashMap<>();
 
-        placeholders.put("%crate%", crate.getName());
-        placeholders.put("%player%", player.getName());
+            placeholders.put("%crate%", crate.getName());
+            placeholders.put("%player%", player.getName());
 
-        sender.sendMessage(Translation.opened_a_crate.getMessage(placeholders).toString());
+            sender.sendMessage(Translation.opened_a_crate.getMessage(placeholders).toString());
+        }
 
         this.eventLogger.logKeyEvent(player, sender, crate, KeyType.free_key, EventLogger.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
     }
