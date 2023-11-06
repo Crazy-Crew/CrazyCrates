@@ -20,7 +20,7 @@ public class FileUtils {
     }
 
     public static void loadFiles() {
-        File file = new File(plugin.getDataFolder(), "crates");
+        File file = new File(plugin.getDataFolder(), "examples");
 
         if (file.exists()) {
             String[] entries = file.list();
@@ -36,7 +36,7 @@ public class FileUtils {
             file.delete();
         }
 
-        copyFiles(file.toPath(), "examples", List.of(
+        copyFiles(file.toPath(), "crates", List.of(
                 "CosmicCrateExample.yml",
                 "CrateExample.yml",
                 "QuadCrateExample.yml",
