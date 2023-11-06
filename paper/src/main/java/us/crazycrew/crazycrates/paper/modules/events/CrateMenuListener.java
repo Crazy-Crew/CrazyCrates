@@ -120,7 +120,7 @@ public class CrateMenuListener extends ModuleHandler {
             return;
         }
 
-        this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
+        this.crateManager.openCrate(player, crate, keyType, player.getLocation(), false);
     }
 
     @Override

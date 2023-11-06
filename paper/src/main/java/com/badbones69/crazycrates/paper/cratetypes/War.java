@@ -132,10 +132,12 @@ public class War implements Listener {
     
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
         Inventory inventory = event.getInventory();
+        Player player = (Player) event.getWhoClicked();
 
-        if (!(inventory.getHolder(false) instanceof CratePrizeMenu)) return;
+        if (!(inventory.getHolder(false) instanceof CratePrizeMenu)) {
+            return;
+        }
 
         event.setCancelled(true);
 

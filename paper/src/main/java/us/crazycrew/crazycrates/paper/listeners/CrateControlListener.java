@@ -183,7 +183,7 @@ public class CrateControlListener implements Listener { // Crate Control
                         if (crate.getCrateType() == CrateType.cosmic) this.crateManager.addPlayerKeyType(player, keyType);
 
                         this.crateManager.addPlayerToOpeningList(player, crate);
-                        this.crateManager.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true);
+                        this.crateManager.openCrate(player, crate, keyType, crateLocation.getLocation(), true);
                     } else {
                         if (crate.getCrateType() != CrateType.crate_on_the_go) {
                             if (this.config.getProperty(Config.knock_back)) knockBack(player, clickedBlock.getLocation());

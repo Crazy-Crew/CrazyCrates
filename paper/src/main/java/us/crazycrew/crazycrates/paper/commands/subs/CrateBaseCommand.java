@@ -404,7 +404,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
+        this.crateManager.openCrate(player, crate, keyType, player.getLocation(), false);
 
         if (sender != player) {
             HashMap<String, String> placeholders = new HashMap<>();
@@ -497,7 +497,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        this.crateManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), true, false);
+        this.crateManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), false);
 
         if (sender != player) {
             HashMap<String, String> placeholders = new HashMap<>();

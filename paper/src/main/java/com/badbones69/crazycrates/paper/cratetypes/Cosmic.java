@@ -107,7 +107,11 @@ public class Cosmic implements Listener {
         Inventory inventory = event.getInventory();
         Player player = (Player) event.getWhoClicked();
 
-        if (!(inventory.getHolder(false) instanceof CratePrizeMenu crateCosmicMenu)) return;
+        if (!(inventory.getHolder(false) instanceof CratePrizeMenu crateCosmicMenu)) {
+            return;
+        }
+
+        event.setCancelled(true);
 
         Crate crate = crateManager.getOpeningCrate(player);
 
@@ -119,10 +123,7 @@ public class Cosmic implements Listener {
 
         FileConfiguration file = crate.getFile();
 
-        if (crateCosmicMenu.contains(" - Shuffling")) event.setCancelled(true);
-
         if (crateCosmicMenu.contains(" - Prizes")) {
-            event.setCancelled(true);
             int slot = event.getRawSlot();
 
             if (inCosmic(slot)) {
@@ -156,7 +157,6 @@ public class Cosmic implements Listener {
         }
 
         if (crateCosmicMenu.contains(" - Choose")) {
-            event.setCancelled(true);
             int slot = event.getRawSlot();
 
             if (inCosmic(slot)) {

@@ -109,6 +109,7 @@ val description = """
   * Fixed /cc set.
   * Added Menu crate to tab complete.
   * Filtered Menu from metrics as that isn't a crate type.
+  * QuadCrate tells you it can't be used as a virtual crate.
     
 ## Changes:
   * Add extra isLogging() checks
@@ -116,7 +117,7 @@ val description = """
   * Inventories are no longer checked by if the view matches, This led to you being able to name your inventory Enchant and now you can't use the Enchant table
    * We use inventory holders instead now which is the preferred way. This includes the animated menus.
   * Use customizable message for when getting keys out of the admin menu.
-
+  
 ## New Features:
   * A directory called examples will be re-generated on every startup and /crazycrates reload to always ensure that you get fresh example files if needed.
 
