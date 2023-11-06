@@ -40,6 +40,7 @@ import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateAdminMenu;
 import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
+import us.crazycrew.crazycrates.paper.utils.FileUtils;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.HashMap;
@@ -370,6 +371,11 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
+        if (crate.getCrateType() == CrateType.crate_on_the_go && crate.getCrateType() == CrateType.quick_crate && crate.getCrateType() == CrateType.fire_cracker && crate.getCrateType() == CrateType.quad_crate) {
+            player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+            return;
+        }
+
         boolean hasKey = false;
         KeyType keyType = KeyType.virtual_key;
 
@@ -424,6 +430,11 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
+        if (crate.getCrateType() == CrateType.crate_on_the_go && crate.getCrateType() == CrateType.quick_crate && crate.getCrateType() == CrateType.fire_cracker && crate.getCrateType() == CrateType.quad_crate) {
+            player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+            return;
+        }
+
         this.crateManager.addPlayerToOpeningList(player, crate);
 
         int keys = this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName());
@@ -468,6 +479,11 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
+        if (crate.getCrateType() == CrateType.crate_on_the_go && crate.getCrateType() == CrateType.quick_crate && crate.getCrateType() == CrateType.fire_cracker && crate.getCrateType() == CrateType.quad_crate) {
+            player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+            return;
+        }
+
         if (this.crateManager.isInOpeningList(player)) {
             sender.sendMessage(Translation.already_opening_crate.getString());
             return;
@@ -478,11 +494,6 @@ public class CrateBaseCommand extends BaseCommand {
         if (type == null) {
             player.sendMessage(Translation.internal_error.getString());
             this.plugin.getLogger().severe("An error has occurred: The crate type is null for the crate named " + crate.getName());
-            return;
-        }
-
-        if (type != CrateType.crate_on_the_go && type != CrateType.quick_crate && type != CrateType.fire_cracker) {
-            sender.sendMessage(Translation.cant_be_a_virtual_crate.getString());
             return;
         }
 
