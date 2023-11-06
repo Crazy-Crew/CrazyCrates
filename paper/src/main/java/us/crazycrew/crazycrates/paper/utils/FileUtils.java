@@ -20,7 +20,7 @@ public class FileUtils {
     }
 
     public static void loadFiles() {
-        File file = new File(plugin.getDataFolder(), "examples");
+        File file = new File(plugin.getDataFolder(), "crates");
 
         if (file.exists()) {
             String[] entries = file.list();
