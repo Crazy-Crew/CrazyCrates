@@ -1,7 +1,7 @@
 package us.crazycrew.crazycrates.paper.modules;
 
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.paper.api.interfaces.ModuleHandler;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +13,7 @@ public class ModuleLoader {
     private EventRegistry registry;
 
     public void load() {
-        if (this.registry != null) this.registry = new EventRegistry();
+        this.registry = new EventRegistry();
 
         this.modules.forEach(module -> {
             if (module.isEnabled()) {
@@ -22,6 +22,14 @@ public class ModuleLoader {
             }
 
             this.registry.removeListener(module);
+        });
+    }
+    
+    public void unload() {
+        this.modules.forEach(module -> {
+            if (module.isEnabled()) {
+                this.registry.removeListener(module);
+            }
         });
     }
 

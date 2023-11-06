@@ -1,11 +1,12 @@
-package us.crazycrew.crazycrates.paper.api.support.holograms;
+package us.crazycrew.crazycrates.paper.api.support.holograms.types;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Holograms.CMIHologram;
 import net.Zrips.CMILib.Container.CMILocation;
-import us.crazycrew.crazycrates.paper.api.interfaces.HologramHandler;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.block.Block;
+import us.crazycrew.crazycrates.paper.api.support.holograms.HologramHandler;
+
 import java.util.HashMap;
 import java.util.UUID;
 

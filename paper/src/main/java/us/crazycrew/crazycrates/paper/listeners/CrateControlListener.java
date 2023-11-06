@@ -1,7 +1,6 @@
-package com.badbones69.crazycrates.paper.listeners;
+package us.crazycrew.crazycrates.paper.listeners;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
@@ -15,12 +14,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
@@ -30,10 +26,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateAdminMenu;
 import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePreviewMenu;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryManager;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
@@ -55,18 +48,6 @@ public class CrateControlListener implements Listener { // Crate Control
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
-    
-    // This event controls when a player tries to click in a GUI based crate type. This will stop them from taking items out of their inventories.
-    @EventHandler
-    public void onCrateInventoryClick(InventoryClickEvent event) {
-        Inventory inventory = event.getClickedInventory();
-
-        if (inventory == null) return;
-
-        for (Crate crate : this.crateManager.getCrates()) {
-            if (crate.getCrateType() != CrateType.menu && inventory.getHolder(false) instanceof CratePreviewMenu) event.setCancelled(true);
-        }
-    }
     
     // This must run as highest, so it doesn't cause other plugins to check
     // the items that were added to the players inventory and replaced the item in the player's hand.
@@ -133,7 +114,7 @@ public class CrateControlListener implements Listener { // Crate Control
                 if (crate.getCrateType() == CrateType.menu) {
                     //This is to stop players in QuadCrate to not be able to try and open a crate set to menu.
                     if (!this.crateManager.isInOpeningList(player) && this.config.getProperty(Config.enable_crate_menu)) {
-                        CrateMainMenu crateMainMenu = new CrateMainMenu(this.plugin, player, this.config.getProperty(Config.inventory_size), this.config.getProperty(Config.inventory_name));
+                        CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(Config.inventory_size), this.config.getProperty(Config.inventory_name));
 
                         player.openInventory(crateMainMenu.build().getInventory());
                     }
@@ -217,59 +198,6 @@ public class CrateControlListener implements Listener { // Crate Control
                 }
             }
         }
-    }
-    
-    @EventHandler
-    public void onAdminMenuClick(InventoryClickEvent e) {
-        Inventory inventory = e.getClickedInventory();
-        Player player = (Player) e.getWhoClicked();
-
-        if (inventory == null) return;
-
-        if (!(inventory.getHolder(false) instanceof CrateAdminMenu)) return;
-
-        e.setCancelled(true);
-
-        if (!MiscUtils.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
-            player.closeInventory();
-            return;
-        }
-
-        // Added the >= due to an error about a raw slot set at -999.
-        if (e.getRawSlot() < inventory.getSize() && e.getRawSlot() >= 0) { // Clicked in the admin menu.
-            ItemStack item = inventory.getItem(e.getRawSlot());
-            if (this.crateManager.isKey(item)) {
-                Crate crate = this.crateManager.getCrateFromKey(item);
-
-                if (e.getAction() == InventoryAction.PICKUP_ALL) {
-                    player.getInventory().addItem(crate.getKey());
-                } else if (e.getAction() == InventoryAction.PICKUP_HALF) {
-                    this.plugin.getCrazyHandler().getUserManager().addKeys(1, player.getUniqueId(), crate.getName(), KeyType.virtual_key);
-                    ItemStack key = crate.getKey();
-
-                    if (key.getItemMeta() != null) {
-                        HashMap<String, String> placeholders = new HashMap<>();
-
-                        placeholders.put("%amount%", String.valueOf(1));
-                        //noinspection deprecation
-                        placeholders.put("%key%", crate.getKey().getItemMeta().getDisplayName());
-
-                        player.sendMessage(Translation.obtaining_keys.getMessage(placeholders).toString());
-                    }
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onCratePrizeMenuClick(InventoryClickEvent event) {
-        Inventory inventory = event.getClickedInventory();
-
-        if (inventory == null) return;
-
-        if (!(inventory.getHolder(false) instanceof CratePrizeMenu)) return;
-
-        event.setCancelled(true);
     }
     
     @EventHandler

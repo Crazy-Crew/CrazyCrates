@@ -12,14 +12,14 @@ import com.badbones69.crazycrates.paper.cratetypes.Roulette;
 import com.badbones69.crazycrates.paper.cratetypes.War;
 import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import com.badbones69.crazycrates.paper.cratetypes.Wonder;
-import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
+import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
 import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.events.crates.CrateOpenEvent;
-import us.crazycrew.crazycrates.paper.api.interfaces.HologramHandler;
+import us.crazycrew.crazycrates.paper.api.support.holograms.HologramHandler;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
@@ -43,9 +43,9 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.common.crates.CrateHologram;
 import us.crazycrew.crazycrates.common.crates.quadcrates.CrateSchematic;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.api.support.holograms.CMIHologramsSupport;
-import us.crazycrew.crazycrates.paper.api.support.holograms.DecentHologramsSupport;
-import us.crazycrew.crazycrates.paper.api.support.holograms.HolographicDisplaysSupport;
+import us.crazycrew.crazycrates.paper.api.support.holograms.types.CMIHologramsSupport;
+import us.crazycrew.crazycrates.paper.api.support.holograms.types.DecentHologramsSupport;
+import us.crazycrew.crazycrates.paper.api.support.holograms.types.HolographicDisplaysSupport;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
 import us.crazycrew.crazycrates.paper.utils.ItemUtils;
@@ -353,7 +353,7 @@ public class CrateManager {
         switch (crate.getCrateType()) {
             case menu -> {
                 if (this.plugin.getConfigManager().getConfig().getProperty(Config.enable_crate_menu)) {
-                    CrateMainMenu crateMainMenu = new CrateMainMenu(this.plugin, player, this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_size), this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_name));
+                    CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_size), this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_name));
 
                     player.openInventory(crateMainMenu.build().getInventory());
                 } else player.sendMessage(Translation.feature_disabled.getString());

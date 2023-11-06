@@ -23,6 +23,7 @@ import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class War implements Listener {
     
@@ -32,21 +33,21 @@ public class War implements Listener {
     private static final CrateManager crateManager = plugin.getCrateManager();
 
     private static HashMap<ItemStack, String> colorCodes;
-    private static final HashMap<Player, Boolean> canPick = new HashMap<>();
-    private static final HashMap<Player, Boolean> canClose = new HashMap<>();
+    private static final HashMap<UUID, Boolean> canPick = new HashMap<>();
+    private static final HashMap<UUID, Boolean> canClose = new HashMap<>();
     
     public static void openWarCrate(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         String crateName = MsgUtils.sanitizeColor(crate.getFile().getString(crateNameString));
-        Inventory inventory = new CratePrizeMenu(plugin, crate, player, 9, crateName).build().getInventory();
+        Inventory inventory = new CratePrizeMenu(crate, player, 9, crateName).build().getInventory();
         setRandomPrizes(player, inventory, crate);
-        canPick.put(player, false);
-        canClose.put(player, false);
+        canPick.put(player.getUniqueId(), false);
+        canClose.put(player.getUniqueId(), false);
 
         if (!plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, checkHand)) {
             MiscUtils.failedToTakeKey(player, crate);
             crateManager.removePlayerFromOpeningList(player);
-            canClose.remove(player);
-            canPick.remove(player);
+            canClose.remove(player.getUniqueId());
+            canPick.remove(player.getUniqueId());
             return;
         }
 
@@ -77,7 +78,7 @@ public class War implements Listener {
                 if (full == 26) { // Finished Rolling
                     player.playSound(player.getLocation(), Sound.BLOCK_LAVA_POP, 1, 1);
                     setRandomGlass(player, inv);
-                    canPick.put(player, true);
+                    canPick.put(player.getUniqueId(), true);
                 }
             }
         }.runTaskTimer(plugin, 1, 3));
@@ -130,25 +131,29 @@ public class War implements Listener {
     }
     
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent e) {
-        final Player player = (Player) e.getWhoClicked();
-        final Inventory inv = e.getInventory();
+    public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        Inventory inventory = event.getInventory();
 
-        if (canPick.containsKey(player) && crateManager.isInOpeningList(player)) {
+        if (!(inventory.getHolder(false) instanceof CratePrizeMenu)) return;
+
+        event.setCancelled(true);
+
+        if (canPick.containsKey(player.getUniqueId()) && crateManager.isInOpeningList(player)) {
             Crate crate = crateManager.getOpeningCrate(player);
 
-            if (crate.getCrateType() == CrateType.war && canPick.get(player)) {
-                ItemStack item = e.getCurrentItem();
+            if (crate.getCrateType() == CrateType.war && canPick.get(player.getUniqueId())) {
+                ItemStack item = event.getCurrentItem();
 
                 if (item != null && item.getType().toString().contains(Material.GLASS_PANE.toString())) {
-                    final int slot = e.getRawSlot();
+                    final int slot = event.getRawSlot();
                     Prize prize = crate.pickPrize(player);
-                    inv.setItem(slot, prize.getDisplayItem());
+                    inventory.setItem(slot, prize.getDisplayItem());
 
                     if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
 
-                    canPick.remove(player);
-                    canClose.put(player, true);
+                    canPick.remove(player.getUniqueId());
+                    canClose.put(player.getUniqueId(), true);
                     plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
 
                     if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
@@ -163,7 +168,7 @@ public class War implements Listener {
                         public void run() {
 
                             for (int i = 0; i < 9; i++) {
-                                if (i != slot) inv.setItem(i, crate.pickPrize(player).getDisplayItem());
+                                if (i != slot) inventory.setItem(i, crate.pickPrize(player).getDisplayItem());
                             }
 
                             if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
@@ -174,7 +179,7 @@ public class War implements Listener {
                                 public void run() {
 
                                     for (int i = 0; i < 9; i++) {
-                                        if (i != slot) inv.setItem(i, new ItemStack(Material.AIR));
+                                        if (i != slot) inventory.setItem(i, new ItemStack(Material.AIR));
                                     }
 
                                     if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
@@ -201,10 +206,10 @@ public class War implements Listener {
     public void onInventoryClose(InventoryCloseEvent e) {
         Player player = (Player) e.getPlayer();
 
-        if (canClose.containsKey(player) && canClose.get(player)) {
+        if (canClose.containsKey(player.getUniqueId()) && canClose.get(player.getUniqueId())) {
             for (Crate crate : crateManager.getCrates()) {
                 if (crate.getCrateType() == CrateType.war && e.getInventory().getHolder(false) instanceof CratePrizeMenu) {
-                    canClose.remove(player);
+                    canClose.remove(player.getUniqueId());
 
                     if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
                 }
