@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import org.bukkit.Location;
+import org.jetbrains.annotations.ApiStatus;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
@@ -39,6 +40,7 @@ public class CrazyManager {
      * @param location The location that may be needed for some crate types.
      * @param checkHand If it just checks the players hand or if it checks their inventory.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
         this.plugin.getCrateManager().openCrate(player, crate, us.crazycrew.crazycrates.api.enums.types.KeyType.getFromName(keyType.getName().toLowerCase()), location, checkHand);
@@ -49,6 +51,7 @@ public class CrazyManager {
      *
      * @param player The player that the crate is being ended for.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void endCrate(Player player) {
         this.plugin.getCrateManager().endCrate(player);
@@ -59,6 +62,7 @@ public class CrazyManager {
      *
      * @param player The player using the crate.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void endQuadCrate(Player player) {
         this.plugin.getCrateManager().endQuadCrate(player);
@@ -70,6 +74,7 @@ public class CrazyManager {
      * @param player The player opening the crate.
      * @param task The task of the quad crate.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void addQuadCrateTask(Player player, BukkitTask task) {
         this.plugin.getCrateManager().addQuadCrateTask(player, task);
@@ -81,6 +86,7 @@ public class CrazyManager {
      * @param player The player that is being checked.
      * @return True if they do have a task and false if not.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean hasQuadCrateTask(Player player) {
         return this.plugin.getCrateManager().hasQuadCrateTask(player);
@@ -92,6 +98,7 @@ public class CrazyManager {
      * @param player The player opening the crate.
      * @param task The task of the crate.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void addCrateTask(Player player, BukkitTask task) {
         this.plugin.getCrateManager().addCrateTask(player, task);
@@ -102,6 +109,7 @@ public class CrazyManager {
      *
      * @param player The player using the crate.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void removeCrateTask(Player player) {
         this.plugin.getCrateManager().removeCrateTask(player);
@@ -113,6 +121,7 @@ public class CrazyManager {
      * @param player The player that is being checked.
      * @return True if they do have a task and false if not.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean hasCrateTask(Player player) {
         return this.plugin.getCrateManager().hasCrateTask(player);
@@ -124,6 +133,7 @@ public class CrazyManager {
      * @param player The player that is opening a crate.
      * @param crate The crate the player is opening.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void addPlayerToOpeningList(Player player, Crate crate) {
         this.plugin.getCrateManager().addPlayerToOpeningList(player, crate);
@@ -134,6 +144,7 @@ public class CrazyManager {
      *
      * @param player The player that has finished opening a crate.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void removePlayerFromOpeningList(Player player) {
         this.plugin.getCrateManager().removePlayerFromOpeningList(player);
@@ -145,6 +156,7 @@ public class CrazyManager {
      * @param player The player you are checking.
      * @return True if they are opening a crate and false if they are not.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean isInOpeningList(Player player) {
         return this.plugin.getCrateManager().isInOpeningList(player);
@@ -156,6 +168,7 @@ public class CrazyManager {
      * @param player The player you want to check.
      * @return The Crate of which the player is opening. May return null if no crate found.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public Crate getOpeningCrate(Player player) {
         return this.plugin.getCrateManager().getOpeningCrate(player);
@@ -168,6 +181,7 @@ public class CrazyManager {
      * @param player The player that is opening the crate.
      * @param keyType The KeyType that they are using.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void addPlayerKeyType(Player player, KeyType keyType) {
         this.plugin.getCrateManager().addPlayerKeyType(player, us.crazycrew.crazycrates.api.enums.types.KeyType.getFromName(keyType.getName().toLowerCase()));
@@ -179,6 +193,7 @@ public class CrazyManager {
      *
      * @param player The player you are removing.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void removePlayerKeyType(Player player) {
         this.plugin.getCrateManager().removePlayerKeyType(player);
@@ -190,6 +205,7 @@ public class CrazyManager {
      * @param player The player you are checking.
      * @return True if they are in the list and false if not.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean hasPlayerKeyType(Player player) {
         return this.plugin.getCrateManager().hasPlayerKeyType(player);
@@ -201,6 +217,7 @@ public class CrazyManager {
      * @param player The player that is using the crate.
      * @return The key type of the crate the player is using.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public KeyType getPlayerKeyType(Player player) {
         return KeyType.getFromName(this.plugin.getCrateManager().getPlayerKeyType(player).getName().toUpperCase());
@@ -212,6 +229,7 @@ public class CrazyManager {
      * @param location The location you wish to add.
      * @param crate The crate which you would like to set it to.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void addCrateLocation(Location location, Crate crate) {
         this.plugin.getCrateManager().addCrateLocation(location, crate);
@@ -222,6 +240,7 @@ public class CrazyManager {
      *
      * @param id The id of the location.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void removeCrateLocation(String id) {
         this.plugin.getCrateManager().removeCrateLocation(id);
@@ -232,16 +251,19 @@ public class CrazyManager {
      *
      * @return List of broken crate locations.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public List<BrokeLocation> getBrokeCrateLocations() {
         return this.plugin.getCrazyHandler().getCrateManager().getBrokeLocations();
     }
 
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void loadCrates() {
         this.plugin.getCrateManager().loadCrates();
     }
 
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void pickPrize(Player player, Crate crate, Prize prize) {
         this.plugin.getCrazyHandler().getPrizeManager().pickPrize(player, crate, prize);
@@ -252,6 +274,7 @@ public class CrazyManager {
      *
      * @return list of locations.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public ArrayList<CrateLocation> getCrateLocations() {
         return new ArrayList<>(this.plugin.getCrateManager().getCrateLocations());
@@ -263,6 +286,7 @@ public class CrazyManager {
      * @param loc The location you are checking.
      * @return true if it is a physical crate and false if not.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean isCrateLocation(Location loc) {
         return this.plugin.getCrateManager().isCrateLocation(loc);
@@ -274,6 +298,7 @@ public class CrazyManager {
      * @param loc The location you are checking.
      * @return a CrateLocation if the location is a physical crate otherwise null if not.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public CrateLocation getCrateLocation(Location loc) {
         return this.plugin.getCrateManager().getCrateLocation(loc);
@@ -284,6 +309,7 @@ public class CrazyManager {
      *
      * @return An ArrayList of all the broken crates.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public List<String> getBrokeCrates() {
         return this.plugin.getCrateManager().getBrokeCrates();
@@ -294,6 +320,7 @@ public class CrazyManager {
      *
      * @return an ArrayList of all the loaded crates.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public List<Crate> getCrates() {
         return this.plugin.getCrateManager().getCrates();
@@ -306,6 +333,7 @@ public class CrazyManager {
      *
      * @return returns a Crate object of the crate it found and if none are found it returns null.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public Crate getCrateFromName(String name) {
         return this.plugin.getCrateManager().getCrateFromName(name);
@@ -320,6 +348,7 @@ public class CrazyManager {
      *
      * @return returns true if it successfully gave the offline player a key and false if there was an error.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean addOfflineKeys(String player, Crate crate, int keys) {
         try {
@@ -349,6 +378,7 @@ public class CrazyManager {
      *
      * @return returns true if it took the keys and false if an error occurred.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean takeOfflineKeys(String player, Crate crate, int keys) {
         CrateBaseCommand.CustomPlayer customPlayer = new CrateBaseCommand.CustomPlayer(player);
@@ -363,6 +393,7 @@ public class CrazyManager {
      *
      * @param player The player which you would like to load the offline keys for.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void loadOfflinePlayersKeys(Player player) {
         FileConfiguration data = Files.DATA.getFile();
@@ -397,6 +428,7 @@ public class CrazyManager {
      * @param item The item you are checking.
      * @return true if the item is a key and false if it is not.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean isKey(ItemStack item) {
         return this.plugin.getCrateManager().isKey(item);
@@ -408,6 +440,7 @@ public class CrazyManager {
      * @param item The key ItemStack you are checking.
      * @return returns a Crate if is a key from a crate otherwise null if it is not.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public Crate getCrateFromKey(ItemStack item) {
         return this.plugin.getCrateManager().getCrateFromKey(item);
@@ -421,6 +454,7 @@ public class CrazyManager {
      *
      * @return returns true if it belongs to that Crate and false if it does not.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean isKeyFromCrate(ItemStack item, Crate crate) {
         return this.plugin.getCrateManager().isKeyFromCrate(item, crate);
@@ -435,6 +469,7 @@ public class CrazyManager {
      *
      * @return true if they have the key and false if not.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean hasPhysicalKey(Player player, Crate crate, boolean checkHand) {
         return this.plugin.getCrazyHandler().getUserManager().hasPhysicalKey(player.getUniqueId(), crate.getName(), checkHand);
@@ -447,6 +482,7 @@ public class CrazyManager {
      *
      * @return The amount of virtual keys they own.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public HashMap<Crate, Integer> getVirtualKeys(Player player) {
         HashMap<Crate, Integer> keys = new HashMap<>();
@@ -465,6 +501,7 @@ public class CrazyManager {
      *
      * @return The amount of virtual keys the player by that name has.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public HashMap<Crate, Integer> getVirtualKeys(String playerName) {
         HashMap<Crate, Integer> keys = new HashMap<>();
@@ -484,6 +521,7 @@ public class CrazyManager {
     /**
      * Get the amount of virtual keys a player has.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public int getVirtualKeys(Player player, Crate crate) {
         return this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName());
@@ -492,6 +530,7 @@ public class CrazyManager {
     /**
      * Get the amount of physical keys a player has.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public int getPhysicalKeys(Player player, Crate crate) {
         return this.plugin.getCrazyHandler().getUserManager().getPhysicalKeys(player.getUniqueId(), crate.getName());
@@ -500,6 +539,7 @@ public class CrazyManager {
     /**
      * Get the total amount of keys a player has.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public Integer getTotalKeys(Player player, Crate crate) {
         UserManager userManager = this.plugin.getCrazyHandler().getUserManager();
@@ -521,6 +561,7 @@ public class CrazyManager {
      *
      * @return returns true if successfully taken keys and false if not.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean takeKeys(int amount, Player player, Crate crate, KeyType keyType, boolean checkHand) {
         return this.plugin.getCrazyHandler().getUserManager().takeKeys(amount, player.getUniqueId(), crate.getName(), us.crazycrew.crazycrates.api.enums.types.KeyType.getFromName(keyType.getName().toLowerCase()), checkHand);
@@ -533,6 +574,7 @@ public class CrazyManager {
      * @param player The player you wish to add keys to.
      * @param crate The crate key you are adding.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void addVirtualKeys(int amount, Player player, Crate crate) {
         this.plugin.getCrazyHandler().getUserManager().addVirtualKeys(amount, player.getUniqueId(), crate.getName());
@@ -546,6 +588,7 @@ public class CrazyManager {
      * @param crate The Crate of whose keys you are giving.
      * @param keyType The type of key you are giving to the player.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void addKeys(int amount, Player player, Crate crate, KeyType keyType) {
         this.plugin.getCrazyHandler().getUserManager().addKeys(amount, player.getUniqueId(), crate.getName(), us.crazycrew.crazycrates.api.enums.types.KeyType.getFromName(keyType.getName().toLowerCase()));
@@ -558,6 +601,7 @@ public class CrazyManager {
      * @param player The player you are setting the keys to.
      * @param crate The Crate of whose keys are being set.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void setKeys(int amount, Player player, Crate crate) {
         this.plugin.getCrazyHandler().getUserManager().setKeys(amount, player.getUniqueId(), crate.getName());
@@ -568,6 +612,7 @@ public class CrazyManager {
      *
      * @param player The player that has just joined.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void setNewPlayerKeys(Player player) {
         this.plugin.getCrateManager().setNewPlayerKeys(player);
@@ -578,6 +623,7 @@ public class CrazyManager {
      *
      * @return The list of all loaded schematics.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public List<CrateSchematic> getCrateSchematics() {
         return this.plugin.getCrateManager().getCrateSchematics();
@@ -590,6 +636,7 @@ public class CrazyManager {
      *
      * @return returns the CrateSchematic otherwise returns null if not found.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public CrateSchematic getCrateSchematic(String name) {
         return this.plugin.getCrateManager().getCrateSchematic(name);
@@ -602,6 +649,7 @@ public class CrazyManager {
      *
      * @return true if it is a display reward item and false if not.
      */
+    @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public boolean isDisplayReward(Entity entity) {
         return this.plugin.getCrateManager().isDisplayReward(entity);
