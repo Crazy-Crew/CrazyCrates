@@ -944,6 +944,9 @@ public class CrateManager {
         List<String> removePlayers = new ArrayList<>();
 
         for (String uuid : data.getConfigurationSection("Players").getKeys(false)) {
+
+            if (data.contains("Players." + uuid + ".tracking")) return;
+
             boolean hasKeys = false;
             List<String> noKeys = new ArrayList<>();
 
