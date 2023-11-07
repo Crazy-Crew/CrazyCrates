@@ -1,5 +1,6 @@
 package us.crazycrew.crazycrates.paper.api.users;
 
+import org.bukkit.OfflinePlayer;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
@@ -259,7 +260,7 @@ public class BukkitUserManager extends UserManager {
 
                 int newAmount = Math.max((keys - amount), 0);
 
-                if (newAmount == 0) {
+                if (newAmount < 1) {
                     this.data.set("Players." + uuid + "." + crate.getName(), null);
                 } else {
                     this.data.set("Players." + uuid + "." + crate.getName(), newAmount);
