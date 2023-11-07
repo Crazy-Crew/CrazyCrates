@@ -13,15 +13,15 @@ public class ArgumentRelations extends MessageHandler {
         String correctUsage = null;
 
         switch (subCommand) {
-            case "transfer" -> correctUsage = commandOrder + "<crate-name> " + "<player-name> " + "<amount>";
+            case "transfer" -> correctUsage = commandOrder + "<crate-name> <player-name> <amount>";
             case "debug", "open", "set" -> correctUsage = commandOrder + "<crate-name>";
             case "tp" -> correctUsage = commandOrder + "<id>";
-            case "additem" -> correctUsage = commandOrder + "<crate-name> " + "<prize-number>";
-            case "preview", "open-others", "forceopen" -> correctUsage = commandOrder + "<crate-name> " + "<player-name>";
-            case "mass-open" -> correctUsage = commandOrder + "<crate-name> <key-type>" + "<amount>";
-            case "give-random" -> correctUsage = commandOrder + "<key-type> " + "<amount> " + "<player-name>";
-            case "give", "take" -> correctUsage = commandOrder + "<key-type> " + "<crate-name> " + "<amount> " + "<player-name>";
-            case "giveall" -> correctUsage = commandOrder + "<key-type> " + "<crate-name> " + "<amount>";
+            case "additem" -> correctUsage = commandOrder + "<crate-name> <prize-number>";
+            case "preview", "open-others", "forceopen" -> correctUsage = commandOrder + "<crate-name> <player-name>";
+            case "mass-open" -> correctUsage = commandOrder + "<crate-name> <key-type> <amount>";
+            case "give-random" -> correctUsage = commandOrder + "<key-type> <amount> <player-name>";
+            case "give", "take" -> correctUsage = commandOrder + "<key-type> <crate-name> <amount> <player-name>";
+            case "giveall" -> correctUsage = commandOrder + "<key-type> <crate-name> <amount>";
         }
 
         return correctUsage;
