@@ -125,6 +125,15 @@ public abstract class UserManager {
      */
     public abstract int getCrateOpened(UUID uuid, String crateName);
 
+    /**
+     * Adds how many times a player has opened a crate.
+     *
+     * @param uuid The uuid of the player you wish to check.
+     * @param amount The amount of times they opened.
+     * @param crateName The name of the crate.
+     */
+    public abstract void addOpenedCrate(UUID uuid, int amount, String crateName);
+
 
     /**
      * Adds how many times a player has opened a crate.

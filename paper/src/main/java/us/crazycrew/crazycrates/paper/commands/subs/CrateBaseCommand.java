@@ -464,12 +464,13 @@ public class CrateBaseCommand extends BaseCommand {
             Prize prize = crate.pickPrize(player);
             this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
             this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-            userManager.addOpenedCrate(player.getUniqueId(), crate.getName());
 
             if (prize.useFireworks()) MiscUtils.spawnFirework(((Player) sender).getLocation().clone().add(.5, 1, .5), null);
 
             keysUsed++;
         }
+
+        if (crate.getCrateType() != CrateType.cosmic) userManager.addOpenedCrate(player.getUniqueId(), keysUsed, crate.getName());
 
         if (!this.plugin.getCrazyHandler().getUserManager().takeKeys(keysUsed, player.getUniqueId(), crate.getName(), type, false)) {
             MiscUtils.failedToTakeKey(player, crate);
