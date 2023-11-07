@@ -458,7 +458,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         for (;keys > 0; keys--) {
             if (MiscUtils.isInventoryFull(player)) break;
-            if (keysUsed > amount) break;
+            if (keysUsed >= amount) break;
             if (keysUsed >= crate.getMaxMassOpen()) break;
 
             Prize prize = crate.pickPrize(player);
