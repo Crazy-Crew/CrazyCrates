@@ -9,9 +9,12 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 
+@SuppressWarnings("ALL")
 public abstract class InventoryBuilder implements InventoryHolder {
 
-    private final CrazyCrates plugin;
+    @NotNull
+    public final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
+
     private final Inventory inventory;
     private final Player player;
     private String title;
@@ -19,28 +22,25 @@ public abstract class InventoryBuilder implements InventoryHolder {
     private int size;
     private int page;
 
-    public InventoryBuilder(CrazyCrates plugin, Player player, int size, String title) {
-        this.plugin = plugin;
+    public InventoryBuilder(Player player, int size, String title) {
         this.title = title;
         this.player = player;
         this.size = size;
 
-        this.inventory = plugin.getServer().createInventory(this, this.size, MsgUtils.color(this.title));
+        this.inventory = this.plugin.getServer().createInventory(this, this.size, MsgUtils.color(this.title));
     }
 
-    public InventoryBuilder(CrazyCrates plugin, Crate crate, Player player, int size, String title) {
-        this.plugin = plugin;
+    public InventoryBuilder(Crate crate, Player player, int size, String title) {
         this.title = title;
         this.player = player;
         this.size = size;
 
         this.crate = crate;
 
-        this.inventory = plugin.getServer().createInventory(this, this.size, MsgUtils.color(this.title));
+        this.inventory = this.plugin.getServer().createInventory(this, this.size, MsgUtils.color(this.title));
     }
 
-    public InventoryBuilder(CrazyCrates plugin, Crate crate, Player player, int size, int page, String title) {
-        this.plugin = plugin;
+    public InventoryBuilder(Crate crate, Player player, int size, int page, String title) {
         this.title = title;
         this.player = player;
         this.size = size;
@@ -48,7 +48,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
 
         this.crate = crate;
 
-        this.inventory = plugin.getServer().createInventory(this, this.size, MsgUtils.color(this.title));
+        this.inventory = this.plugin.getServer().createInventory(this, this.size, MsgUtils.color(this.title));
     }
 
     public abstract InventoryBuilder build();
@@ -88,11 +88,6 @@ public abstract class InventoryBuilder implements InventoryHolder {
     public void update() {
         this.player.closeInventory(InventoryCloseEvent.Reason.OPEN_NEW);
         this.player.openInventory(getInventory());
-    }
-
-    @NotNull
-    public CrazyCrates getPlugin() {
-        return this.plugin;
     }
 
     @Override

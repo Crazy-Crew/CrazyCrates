@@ -31,7 +31,7 @@ public class Wonder implements Listener {
             return;
         }
 
-        Inventory inventory = new CratePrizeMenu(plugin, crate, player, 45, crate.getCrateInventoryName()).build().getInventory();
+        Inventory inventory = new CratePrizeMenu(crate, player, 45, crate.getCrateInventoryName()).build().getInventory();
 
         final List<String> slots = new ArrayList<>();
 

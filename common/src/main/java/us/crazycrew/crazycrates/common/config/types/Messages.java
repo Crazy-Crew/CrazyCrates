@@ -52,7 +52,7 @@ public class Messages implements SettingsHolder {
 
     public static final Property<String> not_online = newProperty("Messages.Not-Online", "%prefix%&c%player% &7is not online.");
 
-    public static final Property<String> no_permission = newProperty("Messages.No-Permission", "%prefix%&cYou do not have permission to use that command!");
+    public static final Property<String> no_permission = newProperty("Messages.No-Permission", "%prefix%&cYou do not have permission to use that command/menu!");
 
     public static final Property<String> no_crate_permission = newProperty("Messages.No-Crate-Permission", "%prefix%&cYou do not have permission to use that crate.");
 

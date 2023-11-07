@@ -156,7 +156,7 @@ public class QuadCrate implements Listener {
     }
 
     @EventHandler
-    public void onTeleport(PlayerTeleportEvent e) {
+    public void onPlayerTeleport(PlayerTeleportEvent e) {
         Player player = e.getPlayer();
 
         if (this.sessionManager.inSession(player) && e.getCause() == TeleportCause.ENDER_PEARL) {
@@ -166,7 +166,7 @@ public class QuadCrate implements Listener {
     }
 
     @EventHandler
-    public void onLeave(PlayerQuitEvent e) {
+    public void onPlayerQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
 
         if (this.sessionManager.inSession(player)) this.sessionManager.getSession(player).endCrate();

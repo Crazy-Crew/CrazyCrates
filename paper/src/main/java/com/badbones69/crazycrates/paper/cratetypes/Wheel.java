@@ -36,7 +36,7 @@ public class Wheel implements Listener {
             return;
         }
 
-        Inventory inventory = new CratePrizeMenu(plugin, crate, player, 54, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName"))).build().getInventory();
+        Inventory inventory = new CratePrizeMenu(crate, player, 54, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName"))).build().getInventory();
 
         for (int i = 0; i < 54; i++) {
             inventory.setItem(i, new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build());

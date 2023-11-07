@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.Config;
-import us.crazycrew.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.CrazyHandler;
 import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryBuilder;
 import java.text.NumberFormat;
 import java.util.List;
@@ -19,13 +19,16 @@ import java.util.List;
 public class CrateMainMenu extends InventoryBuilder {
 
     @NotNull
-    private final ConfigManager configManager = getPlugin().getConfigManager();
+    private final ConfigManager configManager = this.plugin.getConfigManager();
+
+    @NotNull
+    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
 
     @NotNull
     private final SettingsManager config = this.configManager.getConfig();
 
-    public CrateMainMenu(CrazyCrates plugin, Player player, int size, String title) {
-        super(plugin, player, size, title);
+    public CrateMainMenu(Player player, int size, String title) {
+        super(player, size, title);
     }
 
     @Override
@@ -94,7 +97,7 @@ public class CrateMainMenu extends InventoryBuilder {
             }
         }
 
-        for (Crate crate : getPlugin().getCrateManager().getCrates()) {
+        for (Crate crate : this.plugin.getCrateManager().getCrates()) {
             FileConfiguration file = crate.getFile();
 
             if (file != null) {
@@ -112,10 +115,10 @@ public class CrateMainMenu extends InventoryBuilder {
                             .setCrateName(crate.getName())
                             .setPlayerName(file.getString(path + "Player"))
                             .setGlow(file.getBoolean(path + "Glowing"))
-                            .addLorePlaceholder("%Keys%", NumberFormat.getNumberInstance().format(getPlugin().getCrazyHandler().getUserManager().getVirtualKeys(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("%Keys_Physical%", NumberFormat.getNumberInstance().format(getPlugin().getCrazyHandler().getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("%Keys_Total%", NumberFormat.getNumberInstance().format(getPlugin().getCrazyHandler().getUserManager().getTotalKeys(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(getPlugin().getCrazyHandler().getUserManager().getCrateOpened(getPlayer().getUniqueId(), crate.getName())))
+                            .addLorePlaceholder("%Keys%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getVirtualKeys(getPlayer().getUniqueId(), crate.getName())))
+                            .addLorePlaceholder("%Keys_Physical%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), crate.getName())))
+                            .addLorePlaceholder("%Keys_Total%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getTotalKeys(getPlayer().getUniqueId(), crate.getName())))
+                            .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getCrateOpened(getPlayer().getUniqueId(), crate.getName())))
                             .addLorePlaceholder("%Player%", getPlayer().getName())
                             .build());
                 }
@@ -126,12 +129,12 @@ public class CrateMainMenu extends InventoryBuilder {
     }
 
     private String getCrates(String option) {
-        for (Crate crate : getPlugin().getCrateManager().getCrates()) {
+        for (Crate crate : this.plugin.getCrateManager().getCrates()) {
             if (crate.getCrateType() != CrateType.menu) {
-                option = option.replaceAll("%" + crate.getName().toLowerCase() + "%", getPlugin().getCrazyHandler().getUserManager().getVirtualKeys(getPlayer().getUniqueId(), crate.getName()) + "")
-                        .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", getPlugin().getCrazyHandler().getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
-                        .replaceAll("%" + crate.getName().toLowerCase() + "_total%", getPlugin().getCrazyHandler().getUserManager().getTotalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
-                        .replaceAll("%" + crate.getName().toLowerCase() + "_opened%", getPlugin().getCrazyHandler().getUserManager().getCrateOpened(getPlayer().getUniqueId(), crate.getName()) + "");
+                option = option.replaceAll("%" + crate.getName().toLowerCase() + "%", this.crazyHandler.getUserManager().getVirtualKeys(getPlayer().getUniqueId(), crate.getName()) + "")
+                        .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", this.crazyHandler.getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
+                        .replaceAll("%" + crate.getName().toLowerCase() + "_total%", this.crazyHandler.getUserManager().getTotalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
+                        .replaceAll("%" + crate.getName().toLowerCase() + "_opened%", this.crazyHandler.getUserManager().getCrateOpened(getPlayer().getUniqueId(), crate.getName()) + "");
             }
         }
 

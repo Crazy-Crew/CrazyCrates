@@ -100,11 +100,10 @@ public class QuadCrateManager {
      * @param crate the player is opening
      * @param keyType the player has
      * @param spawnLocation of the schematic
-     * @param lastLocation the player was at
      * @param inHand check the hand of the player
      * @param handler the structure handler instance
      */
-    public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, Location lastLocation, boolean inHand, StructureHandler handler) {
+    public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, boolean inHand, StructureHandler handler) {
         this.instance = this;
         this.player = player;
         this.crate = crate;
@@ -112,7 +111,9 @@ public class QuadCrateManager {
         this.checkHand = inHand;
 
         this.spawnLocation = spawnLocation;
-        this.lastLocation = lastLocation;
+
+        this.lastLocation = player.getLocation();
+        this.lastLocation.setPitch(0F);
 
         this.handler = handler;
 
@@ -257,7 +258,7 @@ public class QuadCrateManager {
                 endCrateForce(true);
                 player.sendMessage(Translation.out_of_time.getString());
             }
-        }.runTaskLater(this.plugin, this.plugin.getConfigManager().getConfig().getProperty(Config.quad_crate_timer)));
+        }.runTaskLater(this.plugin, this.plugin.getConfigManager().getConfig().getProperty(Config.quad_crate_timer) * 20));
     }
 
     /**

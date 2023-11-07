@@ -14,9 +14,9 @@ import com.badbones69.crazycrates.paper.cratetypes.Roulette;
 import com.badbones69.crazycrates.paper.cratetypes.War;
 import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import com.badbones69.crazycrates.paper.cratetypes.Wonder;
-import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
-import com.badbones69.crazycrates.paper.listeners.MenuListener;
-import com.badbones69.crazycrates.paper.listeners.PreviewListener;
+import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
+import us.crazycrew.crazycrates.paper.modules.events.CrateMenuListener;
+import us.crazycrew.crazycrates.paper.modules.events.CratePreviewListener;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
@@ -29,6 +29,7 @@ import us.crazycrew.crazycrates.paper.listeners.MiscListener;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.modules.ModuleLoader;
 import us.crazycrew.crazycrates.paper.listeners.crates.CrateOpenListener;
+import us.crazycrew.crazycrates.paper.modules.events.CrateAdminListener;
 import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 import java.util.List;
 
@@ -55,15 +56,17 @@ public class CrazyCrates extends JavaPlugin {
         new com.badbones69.crazycrates.paper.CrazyCrates().enable();
 
         // Register listeners
-        //this.crazyHandler.getModuleLoader().addModule(new ExampleModule());
+        //this.crazyHandler.getModuleLoader().addModule(new CrateGuiListener());
+        this.crazyHandler.getModuleLoader().addModule(new CratePreviewListener());
+        this.crazyHandler.getModuleLoader().addModule(new CrateAdminListener());
+        this.crazyHandler.getModuleLoader().addModule(new CrateMenuListener());
+
+        this.crazyHandler.getModuleLoader().load();
 
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new MiscListener(), this);
-        pluginManager.registerEvents(new MenuListener(), this);
-        pluginManager.registerEvents(new PreviewListener(), this);
         pluginManager.registerEvents(new CrateControlListener(), this);
         pluginManager.registerEvents(new CrateOpenListener(), this);
-        pluginManager.registerEvents(new MiscListener(), this);
 
         pluginManager.registerEvents(new War(), this);
         pluginManager.registerEvents(new CSGO(), this);

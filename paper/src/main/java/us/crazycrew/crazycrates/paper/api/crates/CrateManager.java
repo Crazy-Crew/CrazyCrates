@@ -12,14 +12,14 @@ import com.badbones69.crazycrates.paper.cratetypes.Roulette;
 import com.badbones69.crazycrates.paper.cratetypes.War;
 import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import com.badbones69.crazycrates.paper.cratetypes.Wonder;
-import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
+import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
 import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.events.crates.CrateOpenEvent;
-import us.crazycrew.crazycrates.paper.api.interfaces.HologramHandler;
+import us.crazycrew.crazycrates.paper.api.support.holograms.HologramHandler;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
@@ -43,9 +43,9 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.common.crates.CrateHologram;
 import us.crazycrew.crazycrates.common.crates.quadcrates.CrateSchematic;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.api.support.holograms.CMIHologramsSupport;
-import us.crazycrew.crazycrates.paper.api.support.holograms.DecentHologramsSupport;
-import us.crazycrew.crazycrates.paper.api.support.holograms.HolographicDisplaysSupport;
+import us.crazycrew.crazycrates.paper.api.support.holograms.types.CMIHologramsSupport;
+import us.crazycrew.crazycrates.paper.api.support.holograms.types.DecentHologramsSupport;
+import us.crazycrew.crazycrates.paper.api.support.holograms.types.HolographicDisplaysSupport;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
 import us.crazycrew.crazycrates.paper.utils.ItemUtils;
@@ -326,6 +326,10 @@ public class CrateManager {
     // A list of tasks being run by the QuadCrate type.
     private final HashMap<UUID, List<BukkitTask>> currentQuadTasks = new HashMap<>();
 
+    private boolean isPhysical(Crate crate) {
+        return crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quad_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.quick_crate;
+    }
+
     /**
      * Opens a crate for a player.
      *
@@ -334,7 +338,13 @@ public class CrateManager {
      * @param location The location that may be needed for some crate types.
      * @param checkHand If it just checks the players hand or if it checks their inventory.
      */
-    public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
+    public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean checkHand) {
+        if (isPhysical(crate)) {
+            player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+            removePlayerFromOpeningList(player);
+            return;
+        }
+
         CrateOpenEvent crateOpenEvent = new CrateOpenEvent(this.plugin, player, crate, keyType, checkHand, crate.getFile());
         crateOpenEvent.callEvent();
 
@@ -353,7 +363,7 @@ public class CrateManager {
         switch (crate.getCrateType()) {
             case menu -> {
                 if (this.plugin.getConfigManager().getConfig().getProperty(Config.enable_crate_menu)) {
-                    CrateMainMenu crateMainMenu = new CrateMainMenu(this.plugin, player, this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_size), this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_name));
+                    CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_size), this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_name));
 
                     player.openInventory(crateMainMenu.build().getInventory());
                 } else player.sendMessage(Translation.feature_disabled.getString());
@@ -364,16 +374,15 @@ public class CrateManager {
             case wonder -> Wonder.startWonder(player, crate, keyType, checkHand);
             case war -> War.openWarCrate(player, crate, keyType, checkHand);
             case quad_crate -> {
-                Location lastLocation = player.getLocation();
-                lastLocation.setPitch(0F);
-
                 boolean isRandom = crate.getFile().contains("Crate.structure.file") && !crate.getFile().getBoolean("Crate.structure.random", true);
 
                 CrateSchematic schematic = isRandom ? getCrateSchematic(crate.getFile().getString("Crate.structure.file")) : getCrateSchematics().get(new Random().nextInt(getCrateSchematics().size()));
 
                 StructureHandler handler = new StructureHandler(schematic.getSchematicFile());
-                CrateLocation crateLocation = getCrateLocation(location);
-                QuadCrateManager session = new QuadCrateManager(player, crate, keyType, crateLocation.getLocation(), lastLocation, checkHand, handler);
+                // if crate location is not null, get physical location otherwise get player location.
+                Location crateLocation = getCrateLocation(location) != null ? getCrateLocation(location).getLocation() : location;
+
+                QuadCrateManager session = new QuadCrateManager(player, crate, keyType, crateLocation, checkHand, handler);
 
                 session.startCrate();
             }
@@ -383,14 +392,8 @@ public class CrateManager {
                     removePlayerFromOpeningList(player);
                     return;
                 } else {
-                    if (virtualCrate) {
-                        player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
-                        removePlayerFromOpeningList(player);
-                        return;
-                    } else {
-                        CrateControlListener.inUse.put(player, location);
-                        FireCracker.startFireCracker(player, crate, keyType, location, holograms);
-                    }
+                    CrateControlListener.inUse.put(player, location);
+                    FireCracker.startFireCracker(player, crate, keyType, location, holograms);
                 }
             }
             case quick_crate -> {
@@ -399,32 +402,20 @@ public class CrateManager {
                     removePlayerFromOpeningList(player);
                     return;
                 } else {
-                    if (virtualCrate && location.equals(player.getLocation())) {
-                        player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
-                        removePlayerFromOpeningList(player);
-                        return;
-                    } else {
-                        CrateControlListener.inUse.put(player, location);
-                        QuickCrate.openCrate(player, location, crate, keyType, holograms);
-                    }
+                    CrateControlListener.inUse.put(player, location);
+                    QuickCrate.openCrate(player, location, crate, keyType, holograms);
                 }
             }
             case crate_on_the_go -> {
-                if (virtualCrate) {
-                    player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+                if (this.plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
+                    Prize prize = crate.pickPrize(player);
+                    this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
+
+                    if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
+
                     removePlayerFromOpeningList(player);
-                    return;
                 } else {
-                    if (this.plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
-                        Prize prize = crate.pickPrize(player);
-                        this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
-
-                        if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
-
-                        removePlayerFromOpeningList(player);
-                    } else {
-                        MiscUtils.failedToTakeKey(player, crate);
-                    }
+                    MiscUtils.failedToTakeKey(player, crate);
                 }
             }
         }

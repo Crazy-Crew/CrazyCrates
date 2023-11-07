@@ -4,7 +4,9 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
+import us.crazycrew.crazycrates.paper.CrazyHandler;
 import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,8 +14,11 @@ import java.util.List;
 
 public class CratePreviewMenu extends InventoryBuilder {
 
-    public CratePreviewMenu(CrazyCrates plugin, Crate crate, Player player, int size, int page, String title) {
-        super(plugin, crate, player, size, page, title);
+    @NotNull
+    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+
+    public CratePreviewMenu(Crate crate, Player player, int size, int page, String title) {
+        super(crate, player, size, page, title);
     }
 
     @Override
@@ -50,20 +55,20 @@ public class CratePreviewMenu extends InventoryBuilder {
             }
         }
 
-        int page = getPlugin().getCrazyHandler().getInventoryManager().getPage(getPlayer());
+        int page = this.crazyHandler.getInventoryManager().getPage(getPlayer());
 
-        if (getPlugin().getCrazyHandler().getInventoryManager().inCratePreview(getPlayer())) inventory.setItem(getCrate().getAbsoluteItemPosition(4), getPlugin().getCrazyHandler().getInventoryManager().getMenuButton());
+        if (this.crazyHandler.getInventoryManager().inCratePreview(getPlayer())) inventory.setItem(getCrate().getAbsoluteItemPosition(4), this.crazyHandler.getInventoryManager().getMenuButton());
 
         if (page == 1) {
             if (getCrate().isBorderToggle()) inventory.setItem(getCrate().getAbsoluteItemPosition(3), getCrate().getBorderItem().build());
         } else {
-            inventory.setItem(getCrate().getAbsoluteItemPosition(3), getPlugin().getCrazyHandler().getInventoryManager().getBackButton(getPlayer()));
+            inventory.setItem(getCrate().getAbsoluteItemPosition(3), this.crazyHandler.getInventoryManager().getBackButton(getPlayer()));
         }
 
         if (page == getCrate().getMaxPage()) {
             if (getCrate().isBorderToggle()) inventory.setItem(getCrate().getAbsoluteItemPosition(5), getCrate().getBorderItem().build());
         } else {
-            inventory.setItem(getCrate().getAbsoluteItemPosition(5), getPlugin().getCrazyHandler().getInventoryManager().getNextButton(getPlayer()));
+            inventory.setItem(getCrate().getAbsoluteItemPosition(5), this.crazyHandler.getInventoryManager().getNextButton(getPlayer()));
         }
     }
 

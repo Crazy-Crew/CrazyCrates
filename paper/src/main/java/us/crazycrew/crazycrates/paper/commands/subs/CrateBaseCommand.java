@@ -23,7 +23,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.api.enums.Permissions;
-import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
+import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.BaseCommand;
 import org.bukkit.block.Block;
@@ -74,7 +74,7 @@ public class CrateBaseCommand extends BaseCommand {
     @Permission(value = "crazycrates.command.player.menu", def = PermissionDefault.TRUE)
     public void onDefaultMenu(Player player) {
         if (this.config.getProperty(Config.enable_crate_menu)) {
-            CrateMainMenu crateMainMenu = new CrateMainMenu(this.plugin, player, this.config.getProperty(Config.inventory_size), this.config.getProperty(Config.inventory_name));
+            CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(Config.inventory_size), this.config.getProperty(Config.inventory_name));
 
             player.openInventory(crateMainMenu.build().getInventory());
             return;
@@ -211,7 +211,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         for (; size > 9; size -= 9) slots += 9;
 
-        CrateAdminMenu inventory = new CrateAdminMenu(this.plugin, player, slots, MsgUtils.color("&4&lAdmin Keys"));
+        CrateAdminMenu inventory = new CrateAdminMenu(player, slots, MsgUtils.color("&4&lAdmin Keys"));
 
         player.openInventory(inventory.build().getInventory());
     }
@@ -404,7 +404,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
+        this.crateManager.openCrate(player, crate, keyType, player.getLocation(), false);
 
         if (sender != player) {
             HashMap<String, String> placeholders = new HashMap<>();
@@ -497,7 +497,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        this.crateManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), true, false);
+        this.crateManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), false);
 
         if (sender != player) {
             HashMap<String, String> placeholders = new HashMap<>();

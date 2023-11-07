@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.paper.listeners;
+package us.crazycrew.crazycrates.paper.listeners;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
