@@ -3,7 +3,7 @@ plugins {
 }
 
 project.group = "us.crazycrew.crazycrates"
-project.version = "0.1"
+project.version = "0.2"
 
 dependencies {
     //compileOnlyApi(libs.minimessage)

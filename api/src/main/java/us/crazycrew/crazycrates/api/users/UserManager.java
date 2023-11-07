@@ -134,7 +134,6 @@ public abstract class UserManager {
      */
     public abstract void addOpenedCrate(UUID uuid, int amount, String crateName);
 
-
     /**
      * Adds how many times a player has opened a crate.
      *
