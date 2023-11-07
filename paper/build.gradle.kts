@@ -123,6 +123,7 @@ val description = """
   * Remove data from offline sections if the keys are 0 or less than
   * If a player has 10 keys and they are offline, You try to remove 15 so It will only remove 10.
   * Added a new message for when taking keys from poor people as an admin i.e if they are offline or online
+  * /cc mass-open now allows you to pick between physical and virtual keys.
   
 ## New Features:
   * A directory called examples will be re-generated on every startup and /crazycrates reload to always ensure that you get fresh example files if needed.
