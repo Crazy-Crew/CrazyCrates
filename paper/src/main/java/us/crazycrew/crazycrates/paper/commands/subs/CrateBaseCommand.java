@@ -24,6 +24,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.api.enums.Permissions;
+import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
 import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.BaseCommand;
@@ -445,11 +446,13 @@ public class CrateBaseCommand extends BaseCommand {
 
         this.crateManager.addPlayerToOpeningList(player, crate);
 
-        int keys = this.plugin.getCrazyHandler().getUserManager().getTotalKeys(player.getUniqueId(), crate.getName());
+        BukkitUserManager userManager = this.plugin.getCrazyHandler().getUserManager();
+
+        int keys = type == KeyType.physical_key ? userManager.getPhysicalKeys(player.getUniqueId(), crate.getName()) : userManager.getVirtualKeys(player.getUniqueId(), crate.getName());
         int keysUsed = 0;
 
         if (keys == 0) {
-            player.sendMessage(Translation.no_keys.getMessage("%key%", crate.getKey().getItemMeta().getDisplayName()).toString());
+            player.sendMessage(Translation.no_virtual_key.getString());
             return;
         }
 
