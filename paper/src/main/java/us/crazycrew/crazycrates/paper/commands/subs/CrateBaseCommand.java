@@ -421,8 +421,15 @@ public class CrateBaseCommand extends BaseCommand {
 
     @SubCommand("mass-open")
     @Permission(value = "crazycrates.command.admin.massopen", def = PermissionDefault.OP)
-    public void onAdminCrateMassOpen(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount) {
+    public void onAdminCrateMassOpen(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("key-types") String keyType, @Suggestion("numbers") int amount) {
         if (!(sender instanceof Player player)) return;
+
+        KeyType type = KeyType.getFromName(keyType);
+
+        if (type == null || type == KeyType.free_key) {
+            sender.sendMessage(MsgUtils.color(MsgUtils.getPrefix() + "&cPlease use Virtual/V or Physical/P for a Key type."));
+            return;
+        }
 
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
@@ -438,15 +445,15 @@ public class CrateBaseCommand extends BaseCommand {
 
         this.crateManager.addPlayerToOpeningList(player, crate);
 
-        int keys = this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName());
+        int keys = this.plugin.getCrazyHandler().getUserManager().getTotalKeys(player.getUniqueId(), crate.getName());
         int keysUsed = 0;
 
         if (keys == 0) {
-            player.sendMessage(Translation.no_virtual_key.getString());
+            player.sendMessage(Translation.no_keys.getMessage("%key%", crate.getKey().getItemMeta().getDisplayName()).toString());
             return;
         }
 
-        for (; keys > 0; keys--) {
+        for (;keys > 0; keys--) {
             if (MiscUtils.isInventoryFull(player)) break;
             if (keysUsed > amount) break;
             if (keysUsed >= crate.getMaxMassOpen()) break;
@@ -460,7 +467,7 @@ public class CrateBaseCommand extends BaseCommand {
             keysUsed++;
         }
 
-        if (!this.plugin.getCrazyHandler().getUserManager().takeKeys(keysUsed, player.getUniqueId(), crate.getName(), KeyType.virtual_key, false)) {
+        if (!this.plugin.getCrazyHandler().getUserManager().takeKeys(keysUsed, player.getUniqueId(), crate.getName(), type, type == KeyType.physical_key)) {
             MiscUtils.failedToTakeKey(player, crate);
             CrateControlListener.inUse.remove(player);
             this.crateManager.removePlayerFromOpeningList(player);
