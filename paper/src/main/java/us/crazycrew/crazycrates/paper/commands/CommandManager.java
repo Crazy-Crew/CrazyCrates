@@ -1,6 +1,5 @@
 package us.crazycrew.crazycrates.paper.commands;
 
-import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
@@ -15,7 +14,6 @@ import us.crazycrew.crazycrates.paper.commands.subs.CrateBaseCommand;
 import us.crazycrew.crazycrates.paper.commands.subs.player.BaseKeyCommand;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CommandManager {
 
