@@ -95,7 +95,7 @@ public class BukkitUserManager extends UserManager {
     @Override
     public void addKeys(int amount, UUID uuid, String crateName, KeyType keyType) {
         if (isPlayerNull(uuid)) {
-            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Player with the uuid " + uuid + " is null.");
             return;
         }
 
@@ -144,7 +144,7 @@ public class BukkitUserManager extends UserManager {
     @Override
     public int getPhysicalKeys(UUID uuid, String crateName) {
         if (isPlayerNull(uuid)) {
-            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Player with the uuid " + uuid + " is null.");
             return 0;
         }
 
@@ -171,7 +171,7 @@ public class BukkitUserManager extends UserManager {
     @Override
     public boolean takeKeys(int amount, UUID uuid, String crateName, KeyType keyType, boolean checkHand) {
         if (isPlayerNull(uuid)) {
-            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Player with the uuid " + uuid + " is null.");
             return false;
         }
 
@@ -283,7 +283,7 @@ public class BukkitUserManager extends UserManager {
     @Override
     public boolean hasPhysicalKey(UUID uuid, String crateName, boolean checkHand) {
         if (isPlayerNull(uuid)) {
-            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Player with the uuid " + uuid + " is null.");
             return false;
         }
 
@@ -404,7 +404,6 @@ public class BukkitUserManager extends UserManager {
 
         for (Crate crate : crates) {
             if (this.data.contains("Offline-Players." + uuid + "." + crate.getName())) {
-
                 PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, 1);
                 this.plugin.getServer().getPluginManager().callEvent(event);
 
