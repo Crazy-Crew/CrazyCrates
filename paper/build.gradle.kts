@@ -117,6 +117,10 @@ val description = """
   * Inventories are no longer checked by if the view matches, This led to you being able to name your inventory Enchant and now you can't use the Enchant table
    * We use inventory holders instead now which is the preferred way. This includes the animated menus.
   * Use customizable message for when getting keys out of the admin menu.
+  * If you try to use the crate give/take command with any number equal or less then 0, It will tell you that it isn't a valid number.
+  * Remove data from offline sections if the keys are 0 or less than
+  * If a player has 10 keys and they are offline, You try to remove 15 so It will only remove 10.
+  * Added a new message for when taking keys from poor people as an admin i.e if they are offline or online
   
 ## New Features:
   * A directory called examples will be re-generated on every startup and /crazycrates reload to always ensure that you get fresh example files if needed.

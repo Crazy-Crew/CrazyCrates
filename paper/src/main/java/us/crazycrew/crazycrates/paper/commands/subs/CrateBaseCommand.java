@@ -672,7 +672,7 @@ public class CrateBaseCommand extends BaseCommand {
         takeKey(sender, null, target.getOfflinePlayer(), crate, type, amount);
     }
 
-    private void takeKey(CommandSender sender, Player player, OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount) {
+    private void takeKey(CommandSender sender, @Nullable Player player, OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount) {
         if (player != null) {
             int totalKeys = this.plugin.getCrazyHandler().getUserManager().getTotalKeys(player.getUniqueId(), crate.getName());
 
@@ -681,6 +681,13 @@ public class CrateBaseCommand extends BaseCommand {
 
                 sender.sendMessage(Translation.cannot_take_keys.getMessage("%player%", player.getName()).toString());
                 return;
+            }
+
+            // If total keys is 30, Amount is 35.
+            // It will check the key type and fetch the keys of the type, and it will set amount to the current virtual keys or physical keys.
+            // If the check doesn't meet, It just uses amount as is.
+            if (totalKeys < amount) {
+                amount = type == KeyType.physical_key ? this.plugin.getCrazyHandler().getUserManager().getPhysicalKeys(player.getUniqueId(), crate.getName()) : this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName());
             }
 
             this.plugin.getCrazyHandler().getUserManager().takeKeys(amount, player.getUniqueId(), crate.getName(), type, false);
