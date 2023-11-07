@@ -36,6 +36,8 @@ dependencies {
 
     compileOnly(libs.holographicdisplays)
 
+    //compileOnly("net.kyori", "adventure-platform-bukkit", "4.3.1")
+
     compileOnly(libs.decentholograms)
 
     compileOnly(libs.placeholderapi)
