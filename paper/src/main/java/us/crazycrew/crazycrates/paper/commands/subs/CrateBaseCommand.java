@@ -665,6 +665,8 @@ public class CrateBaseCommand extends BaseCommand {
             Player player = target.getPlayer();
             
             takeKey(sender, player, null, crate, type, amount);
+
+            return;
         }
         
         takeKey(sender, null, target.getOfflinePlayer(), crate, type, amount);
