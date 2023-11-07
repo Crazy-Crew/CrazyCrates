@@ -576,6 +576,11 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
+        if (amount <= 0) {
+            sender.sendMessage(Translation.not_a_number.getMessage("%number%", String.valueOf(amount)).toString());
+            return;
+        }
+
         if (target.getPlayer() != null) {
             Player player = target.getPlayer();
 
@@ -648,6 +653,11 @@ public class CrateBaseCommand extends BaseCommand {
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
             sender.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
+            return;
+        }
+        
+        if (amount <= 0) {
+            sender.sendMessage(Translation.not_a_number.getMessage("%number%", String.valueOf(amount)).toString());
             return;
         }
         
