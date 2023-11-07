@@ -377,6 +377,10 @@ public class BukkitUserManager extends UserManager {
         try {
             if (keyType == KeyType.physical_key) {
                 this.data.set("Offline-Players." + uuid + ".Physical." + crate.getName(), this.data.getInt("Offline-Players." + uuid + ".Physical." + crate.getName()) - keys);
+
+                // Remove the data if 0 keys remain after if checks.
+                if (this.data.getInt("Offline-Players." + uuid + ".Physical." + crate.getName()) <= 0) this.data.set("Offline-Players." + uuid + ".Physical." + crate.getName(), null);
+
                 Files.DATA.saveFile();
 
                 return true;
