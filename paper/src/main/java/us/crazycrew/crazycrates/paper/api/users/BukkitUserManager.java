@@ -376,6 +376,13 @@ public class BukkitUserManager extends UserManager {
 
         try {
             if (keyType == KeyType.physical_key) {
+                int offlineKeys = this.data.getInt("Offline-Players." + uuid + ".Physical." + crate.getName());
+
+                // If the offline keys are less than the keys the person wants to take. We will set the keys variable to how many offline keys they have.
+                if (offlineKeys < keys) {
+                    keys = offlineKeys;
+                }
+
                 this.data.set("Offline-Players." + uuid + ".Physical." + crate.getName(), this.data.getInt("Offline-Players." + uuid + ".Physical." + crate.getName()) - keys);
 
                 // Remove the data if 0 keys remain after if checks.
