@@ -89,6 +89,8 @@ public class Messages implements SettingsHolder {
 
     public static final Property<String> take_players_keys = newProperty("Messages.Take-A-Player-Keys", "%prefix%&7You have taken &6%amount% &7key(s) from &6%player%.");
 
+    public static final Property<String> cannot_take_keys = newProperty("Messages.Cannot-Take-Keys", "%prefix%&7You cannot take keys from &6%player% &7as they are poor.");
+
     public static final Property<String> take_offline_player_keys = newProperty("Messages.Take-Offline-Player-Keys", "%prefix%&7You have taken &6%amount% &7key(s) from the offline player &6%player%.");
 
     public static final Property<String> opened_a_crate = newProperty("Messages.Opened-A-Crate", "%prefix%&7You have just opened the &6%crate% &7crate for &6%player%.");

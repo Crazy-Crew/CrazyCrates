@@ -674,6 +674,15 @@ public class CrateBaseCommand extends BaseCommand {
 
     private void takeKey(CommandSender sender, Player player, OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount) {
         if (player != null) {
+            int totalKeys = this.plugin.getCrazyHandler().getUserManager().getTotalKeys(player.getUniqueId(), crate.getName());
+
+            if (totalKeys < 1) {
+                if (this.plugin.isLogging()) this.plugin.getLogger().warning("The player " + player.getName() + " does not have enough keys to take.");
+
+                sender.sendMessage(Translation.cannot_take_keys.getMessage("%player%", player.getName()).toString());
+                return;
+            }
+
             this.plugin.getCrazyHandler().getUserManager().takeKeys(amount, player.getUniqueId(), crate.getName(), type, false);
 
             HashMap<String, String> placeholders = new HashMap<>();

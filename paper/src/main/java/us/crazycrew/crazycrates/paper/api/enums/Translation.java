@@ -48,6 +48,7 @@ public enum Translation {
     given_everyone_keys(Messages.given_everyone_keys),
     given_offline_player_keys(Messages.given_offline_player_keys),
     take_player_keys(Messages.take_players_keys),
+    cannot_take_keys(Messages.cannot_take_keys),
     take_offline_player_keys(Messages.take_offline_player_keys),
     opened_a_crate(Messages.opened_a_crate),
     internal_error(Messages.internal_error),
