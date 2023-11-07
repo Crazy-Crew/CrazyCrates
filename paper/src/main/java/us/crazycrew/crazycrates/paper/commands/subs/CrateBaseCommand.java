@@ -655,7 +655,7 @@ public class CrateBaseCommand extends BaseCommand {
             sender.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
             return;
         }
-        
+
         if (amount <= 0) {
             sender.sendMessage(Translation.not_a_number.getMessage("%number%", String.valueOf(amount)).toString());
             return;
@@ -694,7 +694,7 @@ public class CrateBaseCommand extends BaseCommand {
         placeholders.put("%player%", offlinePlayer.getName());
 
         sender.sendMessage(Translation.take_offline_player_keys.getMessage(placeholders).toString());
-        
+
         this.plugin.getCrazyHandler().getUserManager().takeOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), amount, type);
     }
 
