@@ -127,7 +127,7 @@ public class CrazyCrates extends JavaPlugin {
         return this.crazyHandler;
     }
 
-    //TODO() Migrate this to crazy handler
+    // TODO() Remove this in 2.0
     @NotNull
     public CrazyManager getCrazyManager() {
         return this.crazyManager;
