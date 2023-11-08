@@ -43,7 +43,7 @@ public class CrazyManager {
     @ApiStatus.ScheduledForRemoval(inVersion = "2.0")
     @Deprecated(since = "1.16", forRemoval = true)
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
-        this.plugin.getCrateManager().openCrate(player, crate, us.crazycrew.crazycrates.api.enums.types.KeyType.getFromName(keyType.getName().toLowerCase()), location, checkHand);
+        this.plugin.getCrateManager().openCrate(player, crate, us.crazycrew.crazycrates.api.enums.types.KeyType.getFromName(keyType.getName().toLowerCase()), location, virtualCrate, checkHand);
     }
 
     /**
