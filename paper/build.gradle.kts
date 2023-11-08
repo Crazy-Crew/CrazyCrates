@@ -104,7 +104,8 @@ val other = if (isSnapshot) "Beta" else "Release"
 val file = file("${rootProject.rootDir}/jars/${rootProject.name}-${rootProject.version}.jar")
 
 val description = """
-## 
+## Fixes:
+ * Fix not crates being wrongly labeled as virtual crates if they are quadcrate, quickcrate or ones that need to be in the physical world.
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
