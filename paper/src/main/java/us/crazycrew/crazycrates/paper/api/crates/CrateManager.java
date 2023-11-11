@@ -363,6 +363,9 @@ public class CrateManager {
                     player.openInventory(crateMainMenu.build().getInventory());
                 } else player.sendMessage(Translation.feature_disabled.getString());
             }
+            case cosmic -> {
+                if (callCrateEvent(player, crate, keyType, checkHand)) Cosmic.openCosmic(player, crate, keyType, checkHand);
+            }
             case csgo -> {
                 if (callCrateEvent(player, crate, keyType, checkHand)) CSGO.openCSGO(player, crate, keyType, checkHand);
             }
