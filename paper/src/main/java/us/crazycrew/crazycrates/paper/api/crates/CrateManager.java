@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.paper.cratetypes.CSGO;
+import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
 import com.badbones69.crazycrates.paper.cratetypes.FireCracker;
 import com.badbones69.crazycrates.paper.cratetypes.QuickCrate;
 import com.badbones69.crazycrates.paper.cratetypes.Roulette;
