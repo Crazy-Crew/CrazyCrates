@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
 import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryBuilder;
@@ -57,7 +58,7 @@ public class CratePreviewMenu extends InventoryBuilder {
 
         int page = this.crazyHandler.getInventoryManager().getPage(getPlayer());
 
-        if (this.crazyHandler.getInventoryManager().inCratePreview(getPlayer())) inventory.setItem(getCrate().getAbsoluteItemPosition(4), this.crazyHandler.getInventoryManager().getMenuButton());
+        if (this.crazyHandler.getInventoryManager().inCratePreview(getPlayer()) && this.crazyHandler.getConfigManager().getConfig().getProperty(Config.enable_crate_menu)) inventory.setItem(getCrate().getAbsoluteItemPosition(4), this.crazyHandler.getInventoryManager().getMenuButton());
 
         if (page == 1) {
             if (getCrate().isBorderToggle()) inventory.setItem(getCrate().getAbsoluteItemPosition(3), getCrate().getBorderItem().build());

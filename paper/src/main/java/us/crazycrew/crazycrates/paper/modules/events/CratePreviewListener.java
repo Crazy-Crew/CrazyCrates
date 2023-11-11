@@ -55,7 +55,7 @@ public class CratePreviewListener extends ModuleHandler {
 
         Crate crate = this.inventoryManager.getCratePreview(player);
 
-        if (event.getRawSlot() == crate.getAbsoluteItemPosition(4)) { // Clicked the menu button.
+        if (event.getRawSlot() == crate.getAbsoluteItemPosition(4) && this.crazyHandler.getConfigManager().getConfig().getProperty(Config.enable_crate_menu)) { // Clicked the menu button.
             if (this.inventoryManager.inCratePreview(player)) {
                 this.inventoryManager.removeViewer(player);
                 this.inventoryManager.closeCratePreview(player);

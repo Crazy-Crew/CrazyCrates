@@ -117,6 +117,8 @@ public class CrateControlListener implements Listener { // Crate Control
                         CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(Config.inventory_size), this.config.getProperty(Config.inventory_name));
 
                         player.openInventory(crateMainMenu.build().getInventory());
+                    } else {
+                        player.sendMessage(Translation.feature_disabled.getString());
                     }
 
                     return;
