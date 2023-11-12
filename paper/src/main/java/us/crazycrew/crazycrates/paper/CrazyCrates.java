@@ -12,7 +12,6 @@ import com.badbones69.crazycrates.paper.cratetypes.QuickCrate;
 import com.badbones69.crazycrates.paper.cratetypes.Roulette;
 import com.badbones69.crazycrates.paper.cratetypes.War;
 import com.badbones69.crazycrates.paper.cratetypes.Wheel;
-import com.badbones69.crazycrates.paper.cratetypes.Wonder;
 import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
 import us.crazycrew.crazycrates.paper.listeners.menus.CrateMenuListener;
 import us.crazycrew.crazycrates.paper.listeners.menus.CratePreviewListener;
@@ -69,7 +68,6 @@ public class CrazyCrates extends JavaPlugin {
 
         pluginManager.registerEvents(new War(), this);
         pluginManager.registerEvents(new Wheel(), this);
-        pluginManager.registerEvents(new Wonder(), this);
         pluginManager.registerEvents(new Cosmic(), this);
         pluginManager.registerEvents(new Roulette(), this);
         pluginManager.registerEvents(new QuickCrate(), this);
