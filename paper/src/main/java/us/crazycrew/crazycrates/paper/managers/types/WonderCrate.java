@@ -18,8 +18,8 @@ import java.util.List;
 public class WonderCrate extends CrateBuilder {
 
 
-    public WonderCrate(Crate crate, Player player, int size, String title) {
-        super(crate, player, size, title);
+    public WonderCrate(Crate crate, Player player, int size) {
+        super(crate, player, size);
     }
 
     @Override

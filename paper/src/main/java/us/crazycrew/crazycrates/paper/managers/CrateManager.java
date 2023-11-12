@@ -359,8 +359,8 @@ public class CrateManager {
         CrateBuilder crateBuilder;
 
         switch (crate.getCrateType()) {
-            case csgo -> crateBuilder = new CsgoCrate(crate, player, 27, crate.getCrateInventoryName());
-            case wonder -> crateBuilder = new WonderCrate(crate, player, 45, crate.getCrateInventoryName());
+            case csgo -> crateBuilder = new CsgoCrate(crate, player, 27);
+            case wonder -> crateBuilder = new WonderCrate(crate, player, 45);
             default -> {
                 crateBuilder = new CsgoCrate(crate, player, 27, crate.getCrateInventoryName());
 

@@ -17,8 +17,8 @@ import java.util.List;
 
 public class CsgoCrate extends CrateBuilder {
 
-    public CsgoCrate(Crate crate, Player player, int size, String title) {
-        super(crate, player, size, title);
+    public CsgoCrate(Crate crate, Player player, int size) {
+        super(crate, player, size);
     }
 
     @Override

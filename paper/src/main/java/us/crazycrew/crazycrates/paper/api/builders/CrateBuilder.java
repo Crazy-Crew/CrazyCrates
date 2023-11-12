@@ -22,18 +22,16 @@ public abstract class CrateBuilder {
     private final InventoryBuilder menu;
     private final Inventory inventory;
     private final Player player;
-    private final String title;
     private final Crate crate;
     private final int size;
 
-    public CrateBuilder(Crate crate, Player player, int size, String title) {
+    public CrateBuilder(Crate crate, Player player, int size) {
         this.crate = crate;
 
         this.player = player;
         this.size = size;
-        this.title = title;
 
-        this.menu = new CratePrizeMenu(crate, player, size, title);
+        this.menu = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
 
         this.inventory = this.menu.build().getInventory();
     }
@@ -55,7 +53,7 @@ public abstract class CrateBuilder {
      * @return title of the crate
      */
     public String getTitle() {
-        return this.title;
+        return this.crate.getCrateInventoryName();
     }
 
     /**
