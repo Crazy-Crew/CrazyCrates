@@ -1,8 +1,10 @@
 package us.crazycrew.crazycrates.paper.api.builders;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import com.google.common.base.Preconditions;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -198,8 +200,20 @@ public abstract class CrateBuilder {
      * @param item to set
      * @param slot to set at
      */
-    public void setItem(ItemStack item, int slot) {
+    public void setItem(int slot, ItemStack item) {
         getInventory().setItem(slot, item);
+    }
+
+    public void setItem(int slot, Material material, String name, List<String> lore) {
+        ItemBuilder builder = new ItemBuilder().setMaterial(material).setName(name).setLore(lore);
+
+        getInventory().setItem(slot, builder.build());
+    }
+
+    public void setItem(int slot, Material material, String name) {
+        ItemBuilder builder = new ItemBuilder().setMaterial(material).setName(name);
+
+        getInventory().setItem(slot, builder.build());
     }
 
     /**
