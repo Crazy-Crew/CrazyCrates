@@ -9,7 +9,6 @@ import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
 import com.badbones69.crazycrates.paper.cratetypes.CrateOnTheGo;
 import com.badbones69.crazycrates.paper.cratetypes.QuadCrate;
 import com.badbones69.crazycrates.paper.cratetypes.War;
-import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
 import us.crazycrew.crazycrates.paper.listeners.menus.CrateMenuListener;
 import us.crazycrew.crazycrates.paper.listeners.menus.CratePreviewListener;
@@ -65,7 +64,6 @@ public class CrazyCrates extends JavaPlugin {
         pluginManager.registerEvents(new CrateOpenListener(), this);
 
         pluginManager.registerEvents(new War(), this);
-        pluginManager.registerEvents(new Wheel(), this);
         pluginManager.registerEvents(new Cosmic(), this);
         pluginManager.registerEvents(new CrateOnTheGo(), this);
         pluginManager.registerEvents(new QuadCrate(), this);

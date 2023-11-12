@@ -36,7 +36,7 @@ public class RouletteCrate extends CrateBuilder {
             return;
         }
 
-        setItem(getCrate().pickPrize(getPlayer()).getDisplayItem(), 13);
+        setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
 
         addCrateTask(new BukkitRunnable() {
             int full = 0;
@@ -48,7 +48,7 @@ public class RouletteCrate extends CrateBuilder {
             @Override
             public void run() {
                 if (full <= 15) {
-                    setItem(getCrate().pickPrize(getPlayer()).getDisplayItem(), 13);
+                    setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
                     setGlass();
 
                     getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
@@ -56,7 +56,7 @@ public class RouletteCrate extends CrateBuilder {
 
                     if (even >= 4) {
                         even = 0;
-                        setItem(getCrate().pickPrize(getPlayer()).getDisplayItem(), 13);
+                        setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
                     }
                 }
 
@@ -72,7 +72,7 @@ public class RouletteCrate extends CrateBuilder {
                 if (full > 16) {
                     if (MiscUtils.slowSpin().contains(time)) {
                         setGlass();
-                        setItem(getCrate().pickPrize(getPlayer()).getDisplayItem(), 13);
+                        setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
 
                         getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
                     }

@@ -17,7 +17,6 @@ import java.util.List;
 
 public class WonderCrate extends CrateBuilder {
 
-
     public WonderCrate(Crate crate, Player player, int size) {
         super(crate, player, size);
     }
@@ -47,7 +46,7 @@ public class WonderCrate extends CrateBuilder {
             Prize prize = getCrate().pickPrize(getPlayer());
             slots.add(String.valueOf(index));
 
-            setItem(prize.getDisplayItem(), index);
+            setItem(index, prize.getDisplayItem());
         }
 
         getPlayer().openInventory(getInventory());
@@ -74,12 +73,12 @@ public class WonderCrate extends CrateBuilder {
 
                     ItemStack material = new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build();
 
-                    setItem(material, slot1);
-                    setItem(material, slot2);
+                    setItem(slot1, material);
+                    setItem(slot2, material);
 
                     for (String slot : slots) {
                         prize = getCrate().pickPrize(getPlayer());
-                        getInventory().setItem(Integer.parseInt(slot), prize.getDisplayItem());
+                        setItem(Integer.parseInt(slot), prize.getDisplayItem());
                     }
 
                     slot1++;

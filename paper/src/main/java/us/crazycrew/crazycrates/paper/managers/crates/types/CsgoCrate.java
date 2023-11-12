@@ -121,36 +121,36 @@ public class CsgoCrate extends CrateBuilder {
             if (index < 9 && index != 4) glass.put(index, getInventory().getItem(index));
         }
 
-        setItem(glass.get(1), 0);
+        setItem(0, glass.get(1));
 
-        setItem(glass.get(2), 1);
-        setItem(glass.get(2), 1 + 18);
+        setItem(1, glass.get(2));
+        setItem(1 + 18, glass.get(2));
 
-        setItem(glass.get(3), 2);
-        setItem(glass.get(3), 2 + 18);
+        setItem(2, glass.get(3));
+        setItem(2 + 18, glass.get(3));
 
-        setItem(glass.get(5), 3);
-        setItem(glass.get(5), 3 + 18);
+        setItem(3, glass.get(5));
+        setItem(3 + 18, glass.get(5));
 
         ItemStack itemStack = new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build();
-        setItem(itemStack, 4);
-        setItem(itemStack, 4 + 18);
+        setItem(4, itemStack);
+        setItem(4 + 18, itemStack);
 
-        setItem(glass.get(6), 5);
-        setItem(glass.get(6), 5 + 18);
+        setItem(5, glass.get(6));
+        setItem(5 + 18, glass.get(6));
 
-        setItem(glass.get(7), 6);
-        setItem(glass.get(7), 6 + 18);
+        setItem(6, glass.get(7));
+        setItem(6 + 18, glass.get(7));
 
-        setItem(glass.get(8), 7);
-        setItem(glass.get(8), 7 + 18);
+        setItem(7, glass.get(8));
+        setItem(7 + 18, glass.get(8));
 
         setCustomGlassPane(8);
         setCustomGlassPane(8 + 18);
 
         // Set display items.
         for (int index = 9; index > 8 && index < 18; index++) {
-            setItem(getCrate().pickPrize(getPlayer()).getDisplayItem(), index);
+            setItem(index, getCrate().pickPrize(getPlayer()).getDisplayItem());
         }
     }
 
@@ -175,10 +175,10 @@ public class CsgoCrate extends CrateBuilder {
             items.add(getInventory().getItem(i));
         }
 
-        setItem(getCrate().pickPrize(getPlayer()).getDisplayItem(), 9);
+        setItem(9, getCrate().pickPrize(getPlayer()).getDisplayItem());
 
         for (int i = 0; i < 8; i++) {
-            setItem(items.get(i), i + 10);
+            setItem(i + 10, items.get(i));
         }
 
         populate();
