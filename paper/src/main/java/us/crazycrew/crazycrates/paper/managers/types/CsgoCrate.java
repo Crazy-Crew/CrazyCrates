@@ -23,6 +23,11 @@ public class CsgoCrate extends CrateBuilder {
 
     @Override
     public void open(KeyType type, boolean checkHand) {
+        // Crate event failed so we return.
+        if (isCrateEventValid(getPlayer(), getCrate(), type, checkHand)) {
+            return;
+        }
+
         boolean keyCheck = this.plugin.getCrazyHandler().getUserManager().takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
 
         if (!keyCheck) {
