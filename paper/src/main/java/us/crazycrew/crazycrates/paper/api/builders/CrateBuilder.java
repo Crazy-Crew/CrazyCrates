@@ -45,15 +45,6 @@ public abstract class CrateBuilder {
     /**
      * @return crate that is being opened
      */
-
-    public Crate getCrateTask(Player player) {
-        return this.plugin.getCrateManager().getOpeningCrate(player);
-    }
-
-    public void removeCrateTask(Player player) {
-        this.plugin.getCrateManager().removeCrateTask(player);
-    }
-
     public Crate getCrate() {
         return this.crate;
     }
