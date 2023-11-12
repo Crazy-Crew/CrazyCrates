@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
-import com.badbones69.crazycrates.paper.cratetypes.CSGO;
 import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
 import com.badbones69.crazycrates.paper.cratetypes.FireCracker;
 import com.badbones69.crazycrates.paper.cratetypes.QuickCrate;
@@ -13,6 +12,7 @@ import com.badbones69.crazycrates.paper.cratetypes.Roulette;
 import com.badbones69.crazycrates.paper.cratetypes.War;
 import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import com.badbones69.crazycrates.paper.cratetypes.Wonder;
+import us.crazycrew.crazycrates.paper.api.crates.types.CsgoCrate;
 import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
 import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -367,7 +367,11 @@ public class CrateManager {
                 if (callCrateEvent(player, crate, keyType, checkHand)) Cosmic.openCosmic(player, crate, keyType, checkHand);
             }
             case csgo -> {
-                if (callCrateEvent(player, crate, keyType, checkHand)) CSGO.openCSGO(player, crate, keyType, checkHand);
+                if (callCrateEvent(player, crate, keyType, checkHand)) {
+                    CsgoCrate csgoCrate = new CsgoCrate(crate, player, 27, crate.getCrateInventoryName());
+
+                    csgoCrate.open(keyType, checkHand);
+                }
             }
             case roulette -> {
                 if (callCrateEvent(player, crate, keyType, checkHand)) Roulette.openRoulette(player, crate, keyType, checkHand);

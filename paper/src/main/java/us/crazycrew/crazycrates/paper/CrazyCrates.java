@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.paper.api.EventLogger;
 import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
-import com.badbones69.crazycrates.paper.cratetypes.CSGO;
 import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
 import com.badbones69.crazycrates.paper.cratetypes.CrateOnTheGo;
 import com.badbones69.crazycrates.paper.cratetypes.QuadCrate;
@@ -69,7 +68,6 @@ public class CrazyCrates extends JavaPlugin {
         pluginManager.registerEvents(new CrateOpenListener(), this);
 
         pluginManager.registerEvents(new War(), this);
-        pluginManager.registerEvents(new CSGO(), this);
         pluginManager.registerEvents(new Wheel(), this);
         pluginManager.registerEvents(new Wonder(), this);
         pluginManager.registerEvents(new Cosmic(), this);
