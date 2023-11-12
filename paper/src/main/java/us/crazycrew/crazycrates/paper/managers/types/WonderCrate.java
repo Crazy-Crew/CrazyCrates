@@ -41,13 +41,13 @@ public class WonderCrate extends CrateBuilder {
             return;
         }
 
-        List<String> slots = new ArrayList<>();
+        final List<String> slots = new ArrayList<>();
 
         for (int index = 0; index < getSize(); index++) {
             Prize prize = getCrate().pickPrize(getPlayer());
             slots.add(String.valueOf(index));
 
-            getInventory().setItem(index, prize.getDisplayItem());
+            setItem(prize.getDisplayItem(), index);
         }
 
         getPlayer().openInventory(getInventory());
@@ -56,38 +56,40 @@ public class WonderCrate extends CrateBuilder {
             int time = 0;
             int full = 0;
 
-            int slotOne = 0;
-            int slotTwo = 44;
+            int slot1 = 0;
+            int slot2 = 44;
 
-            final List<Integer> otherSlots = new ArrayList<>();
+            final List<Integer> other = new ArrayList<>();
 
             Prize prize = null;
 
             @Override
             public void run() {
                 if (time >= 2 && full <= 65) {
-                    slots.remove(String.valueOf(slotOne));
-                    slots.remove(String.valueOf(slotTwo));
+                    slots.remove(slot1 + "");
+                    slots.remove(slot2 + "");
 
-                    otherSlots.add(slotOne);
-                    otherSlots.add(slotTwo);
+                    other.add(slot1);
+                    other.add(slot2);
 
                     ItemStack material = new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build();
 
-                    setItem(material, slotOne);
-                    setItem(material, slotTwo);
+                    setItem(material, slot1);
+                    setItem(material, slot2);
 
-                    slots.forEach(slot -> {
+                    for (String slot : slots) {
                         prize = getCrate().pickPrize(getPlayer());
-                        setItem(prize.getDisplayItem(), Integer.parseInt(slot));
-                    });
+                        getInventory().setItem(Integer.parseInt(slot), prize.getDisplayItem());
+                    }
 
-                    slotOne++;
-                    slotTwo--;
+                    slot1++;
+                    slot2--;
                 }
 
                 if (full > 67) {
-                    otherSlots.forEach(slot -> setCustomGlassPane(slot));
+                    for (int slot : other) {
+                        setCustomGlassPane(slot);
+                    }
                 }
 
                 getPlayer().openInventory(getInventory());
@@ -110,7 +112,7 @@ public class WonderCrate extends CrateBuilder {
                 full++;
                 time++;
 
-                if (time < 2) time = 0;
+                if (time > 2) time = 0;
             }
         }.runTaskTimer(plugin, 0, 2));
     }
