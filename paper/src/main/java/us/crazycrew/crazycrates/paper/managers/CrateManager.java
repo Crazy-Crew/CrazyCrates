@@ -379,9 +379,6 @@ public class CrateManager {
             case wheel -> {
                 if (isCrateEventSuccessful(player, crate, keyType, checkHand)) Wheel.startWheel(player, crate, keyType, checkHand);
             }
-            case wonder -> {
-                if (callCrateEvent(player, crate, keyType, checkHand)) Wonder.startWonder(player, crate, keyType, checkHand);
-            }
             case war -> {
                 if (isCrateEventSuccessful(player, crate, keyType, checkHand)) War.openWarCrate(player, crate, keyType, checkHand);
             }
