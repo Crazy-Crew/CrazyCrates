@@ -128,6 +128,22 @@ public class QuickCrate extends CrateBuilder {
             reward.setPickupDelay(-1);
 
             this.plugin.getCrateManager().addReward(getPlayer(), reward);
+
+            // Always open the chest.
+            this.plugin.getCrazyHandler().getChestManager().openChest(getLocation().getBlock(), true);
+
+            // Always spawn fireworks if enabled.
+            if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(0.5, 1, .5), null);
+
+            // Always end the crate.
+            addCrateTask(new BukkitRunnable() {
+                @Override
+                public void run() {
+                    plugin.getCrateManager().endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
+                }
+            }.runTaskLater(this.plugin, 5 * 20));
+
+            return;
         }
 
         // Always open the chest.
