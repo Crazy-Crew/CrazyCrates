@@ -395,7 +395,6 @@ public class CrateManager {
                 }
 
                 crateBuilder = new QuickCrate(crate, player, location);
-                crateBuilder.open(keyType, checkHand);
             }
             default -> {
                 crateBuilder = new CsgoCrate(crate, player, 27);
