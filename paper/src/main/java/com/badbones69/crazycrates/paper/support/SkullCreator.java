@@ -24,40 +24,6 @@ public class SkullCreator {
     private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
     
     /**
-     * Creates a player skull based on a player's name.
-     *
-     * @param name The Player's name
-     * @return The head of the Player
-     *
-     * @deprecated names don't make for good identifiers
-     */
-    @Deprecated
-    public static ItemStack itemFromName(String name) {
-        ItemStack item = getPlayerSkullItem();
-        
-        return itemWithName(item, name);
-    }
-    
-    /**
-     * Creates a player skull based on a player's name.
-     *
-     * @param item The item to apply the name to
-     * @param name The Player's name
-     * @return The head of the Player
-     *
-     * @deprecated names don't make for good identifiers
-     */
-    @Deprecated
-    public static ItemStack itemWithName(ItemStack item, String name) {
-        notNull(item, "item");
-        notNull(name, "name");
-        
-        return plugin.getServer().getUnsafe().modifyItemStack(item,
-        "{SkullOwner:\"" + name + "\"}"
-        );
-    }
-    
-    /**
      * Creates a player skull with a UUID. 1.13 only.
      *
      * @param id The Player's UUID
@@ -143,23 +109,6 @@ public class SkullCreator {
     }
     
     /**
-     * Sets the block to a skull with the given name.
-     *
-     * @param block The block to set
-     * @param name The player to set it to
-     *
-     * @deprecated names don't make for good identifiers
-     */
-    @Deprecated
-    public static void blockWithName(Block block, String name) {
-        notNull(block, "block");
-        notNull(name, "name");
-        
-        setBlockType(block);
-        ((Skull) block.getState()).setOwningPlayer(Bukkit.getOfflinePlayer(name));
-    }
-    
-    /**
      * Sets the block to a skull with the given UUID.
      *
      * @param block The block to set
@@ -205,37 +154,16 @@ public class SkullCreator {
         block.getZ(),
         "{Owner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
         );
-        
-        if (newerApi()) {
-            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "data merge block " + args);
-        } else {
-            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "blockdata " + args);
-        }
-    }
-    
-    private static boolean newerApi() {
-        try {
-            Material.valueOf("PLAYER_HEAD");
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
+
+        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "data merge block " + args);
     }
     
     private static ItemStack getPlayerSkullItem() {
-        if (newerApi()) {
-            return new ItemStack(Material.valueOf("PLAYER_HEAD"));
-        } else {
-            return new ItemStack(Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
-        }
+        return new ItemStack(Material.valueOf("PLAYER_HEAD"));
     }
     
     private static void setBlockType(Block block) {
-        try {
-            block.setType(Material.valueOf("PLAYER_HEAD"), false);
-        } catch (IllegalArgumentException e) {
-            block.setType(Material.valueOf("SKULL"), false);
-        }
+        block.setType(Material.valueOf("PLAYER_HEAD"), false);
     }
     
     private static void notNull(Object o, String name) {
