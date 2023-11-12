@@ -8,7 +8,6 @@ import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
 import com.badbones69.crazycrates.paper.cratetypes.CrateOnTheGo;
 import com.badbones69.crazycrates.paper.cratetypes.QuadCrate;
-import com.badbones69.crazycrates.paper.cratetypes.QuickCrate;
 import com.badbones69.crazycrates.paper.cratetypes.War;
 import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
@@ -27,6 +26,7 @@ import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.api.modules.ModuleLoader;
 import us.crazycrew.crazycrates.paper.listeners.crates.CrateOpenListener;
 import us.crazycrew.crazycrates.paper.listeners.menus.CrateAdminListener;
+import us.crazycrew.crazycrates.paper.managers.types.QuickCrate;
 import us.crazycrew.crazycrates.paper.other.MsgUtils;
 import java.util.List;
 
@@ -68,7 +68,6 @@ public class CrazyCrates extends JavaPlugin {
         pluginManager.registerEvents(new War(), this);
         pluginManager.registerEvents(new Wheel(), this);
         pluginManager.registerEvents(new Cosmic(), this);
-        pluginManager.registerEvents(new QuickCrate(), this);
         pluginManager.registerEvents(new CrateOnTheGo(), this);
         pluginManager.registerEvents(new QuadCrate(), this);
 
@@ -107,7 +106,7 @@ public class CrazyCrates extends JavaPlugin {
         SessionManager.endCrates();
 
         // Remove quick crate rewards
-        QuickCrate.removeAllRewards();
+        this.crazyHandler.getCrateManager().purgeRewards();
 
         // Purge holograms.
         if (this.crazyHandler.getCrateManager().getHolograms() != null) this.crazyHandler.getCrateManager().getHolograms().removeAllHolograms();

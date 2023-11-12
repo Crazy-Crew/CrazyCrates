@@ -2,6 +2,7 @@ package us.crazycrew.crazycrates.paper.listeners;
 
 import org.bukkit.entity.Firework;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -73,5 +74,10 @@ public class MiscListener implements Listener {
 
             if (container.has(PersistentKeys.no_firework_damage.getNamespacedKey(this.plugin))) event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onItemPickUp(InventoryPickupItemEvent event) {
+        if (this.plugin.getCrateManager().isDisplayReward(event.getItem())) event.setCancelled(true);
     }
 }

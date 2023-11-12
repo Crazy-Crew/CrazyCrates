@@ -6,6 +6,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.api.builders.CrateBuilder;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
@@ -20,7 +21,7 @@ public class RouletteCrate extends CrateBuilder {
     @Override
     public void open(KeyType type, boolean checkHand) {
         // Crate event failed so we return.
-        if (isCrateEventValid(getPlayer(), getCrate(), type, checkHand)) {
+        if (isCrateEventValid(type, checkHand)) {
             return;
         }
 
@@ -38,7 +39,7 @@ public class RouletteCrate extends CrateBuilder {
 
         setItem(getCrate().pickPrize(getPlayer()).getDisplayItem(), 13);
 
-        addCrateTask(getPlayer(), new BukkitRunnable() {
+        addCrateTask(new BukkitRunnable() {
             int full = 0;
             int time = 1;
 

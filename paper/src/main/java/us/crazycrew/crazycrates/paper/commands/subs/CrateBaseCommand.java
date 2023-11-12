@@ -474,7 +474,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         if (!this.plugin.getCrazyHandler().getUserManager().takeKeys(keysUsed, player.getUniqueId(), crate.getName(), type, false)) {
             MiscUtils.failedToTakeKey(player, crate);
-            CrateControlListener.inUse.remove(player);
+            this.crateManager.removeCrateInUse(player);
             this.crateManager.removePlayerFromOpeningList(player);
             return;
         }

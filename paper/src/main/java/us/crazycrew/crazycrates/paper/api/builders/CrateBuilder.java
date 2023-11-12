@@ -1,6 +1,8 @@
 package us.crazycrew.crazycrates.paper.api.builders;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.google.common.base.Preconditions;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -11,7 +13,6 @@ import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.api.builders.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.api.events.CrateOpenEvent;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
-
 import java.util.List;
 
 public abstract class CrateBuilder {
@@ -21,12 +22,18 @@ public abstract class CrateBuilder {
 
     private final InventoryBuilder menu;
     private final Inventory inventory;
+    private final Location location;
     private final Player player;
     private final Crate crate;
     private final int size;
 
     public CrateBuilder(Crate crate, Player player, int size) {
+        Preconditions.checkNotNull(crate, "Crate can't be null.");
+        Preconditions.checkNotNull(player, "Player can't be null.");
+
         this.crate = crate;
+
+        this.location = player.getLocation();
 
         this.player = player;
         this.size = size;
@@ -36,15 +43,66 @@ public abstract class CrateBuilder {
         this.inventory = this.menu.build().getInventory();
     }
 
+    public CrateBuilder(Crate crate, Player player, int size, Location location) {
+        Preconditions.checkNotNull(crate, "Crate can't be null.");
+        Preconditions.checkNotNull(player, "Player can't be null.");
+        Preconditions.checkNotNull(location, "Location can't be null.");
+
+        this.crate = crate;
+
+        this.location = location;
+
+        this.player = player;
+        this.size = size;
+
+        this.menu = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
+
+        this.inventory = this.menu.build().getInventory();
+    }
+
+    public CrateBuilder(Crate crate, Player player, Location location) {
+        Preconditions.checkNotNull(crate, "Crate can't be null.");
+        Preconditions.checkNotNull(player, "Player can't be null.");
+        Preconditions.checkNotNull(location, "Location can't be null.");
+
+        this.crate = crate;
+
+        this.location = location;
+
+        this.player = player;
+        this.size = 0;
+
+        this.menu = null;
+
+        this.inventory = null;
+    }
+
     public abstract void open(KeyType type, boolean checkHand);
 
-    public void addCrateTask(Player player, BukkitTask task) {
-        this.plugin.getCrateManager().addCrateTask(player, task);
+    public void addCrateTask(BukkitTask task) {
+        this.plugin.getCrateManager().addCrateTask(this.player, task);
+    }
+
+    public void removeTask() {
+        this.plugin.getCrateManager().removeCrateTask(this.player);
+    }
+
+    public void cancelCrateTask() {
+        // Cancel
+        this.plugin.getCrateManager().getCrateTask(this.player).cancel();
+
+        // Remove the task.
+        removeTask();
+    }
+
+    public boolean hasCrateTask() {
+        return this.plugin.getCrateManager().hasCrateTask(this.player);
     }
 
     /**
      * @return crate that is being opened
      */
+    @NotNull
     public Crate getCrate() {
         return this.crate;
     }
@@ -52,6 +110,7 @@ public abstract class CrateBuilder {
     /**
      * @return title of the crate
      */
+    @NotNull
     public String getTitle() {
         return this.crate.getCrateInventoryName();
     }
@@ -59,6 +118,7 @@ public abstract class CrateBuilder {
     /**
      * @return player opening the crate
      */
+    @NotNull
     public Player getPlayer() {
         return this.player;
     }
@@ -73,18 +133,28 @@ public abstract class CrateBuilder {
     /**
      * @return inventory of the crate
      */
+    @NotNull
     public Inventory getInventory() {
         return this.inventory;
     }
 
     /**
+     * Specific crates need a location.
+     *
+     * @return location in the world
+     */
+    @NotNull
+    public Location getLocation() {
+        return this.location;
+    }
+
+    /**
      * @return instance of this class
      */
+    @NotNull
     public InventoryBuilder getMenu() {
         return this.menu.build();
     }
-
-    // Item Management
 
     /**
      * Sets an item to a slot
@@ -109,19 +179,17 @@ public abstract class CrateBuilder {
     /**
      * Calls the crate open event and returns true/false if successful or not.
      *
-     * @param player opening the crate
-     * @param crate object being opened
      * @param keyType virtual or physical key
      * @param checkHand true or false
      * @return true if cancelled otherwise false.
      */
-    public boolean isCrateEventValid(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        CrateOpenEvent event = new CrateOpenEvent(this.plugin, player, crate, keyType, checkHand, crate.getFile());
+    public boolean isCrateEventValid(KeyType keyType, boolean checkHand) {
+        CrateOpenEvent event = new CrateOpenEvent(this.plugin, this.player, this.crate, keyType, checkHand, this.crate.getFile());
         event.callEvent();
 
         if (event.isCancelled()) {
             List.of(
-                    "Crate " + crate.getName() + " event has been cancelled.",
+                    "Crate " + this.crate.getName() + " event has been cancelled.",
                     "A few reasons for why this happened can be found below",
                     "",
                     " 1) No valid prizes can be found, Likely a yaml issue.",

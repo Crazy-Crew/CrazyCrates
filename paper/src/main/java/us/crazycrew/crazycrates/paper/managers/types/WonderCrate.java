@@ -25,7 +25,7 @@ public class WonderCrate extends CrateBuilder {
     @Override
     public void open(KeyType type, boolean checkHand) {
         // Crate event failed so we return.
-        if (isCrateEventValid(getPlayer(), getCrate(), type, checkHand)) {
+        if (isCrateEventValid(type, checkHand)) {
             return;
         }
 
@@ -52,7 +52,7 @@ public class WonderCrate extends CrateBuilder {
 
         getPlayer().openInventory(getInventory());
 
-        addCrateTask(getPlayer(), new BukkitRunnable() {
+        addCrateTask(new BukkitRunnable() {
             int time = 0;
             int full = 0;
 

@@ -8,6 +8,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.api.builders.CrateBuilder;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
@@ -24,7 +25,7 @@ public class CsgoCrate extends CrateBuilder {
     @Override
     public void open(KeyType type, boolean checkHand) {
         // Crate event failed so we return.
-        if (isCrateEventValid(getPlayer(), getCrate(), type, checkHand)) {
+        if (isCrateEventValid(type, checkHand)) {
             return;
         }
 
@@ -46,7 +47,7 @@ public class CsgoCrate extends CrateBuilder {
         // Open the inventory.
         getPlayer().openInventory(getInventory());
 
-        addCrateTask(getPlayer(), new BukkitRunnable() {
+        addCrateTask(new BukkitRunnable() {
             int time = 1;
 
             int full = 0;

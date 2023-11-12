@@ -4,7 +4,6 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.api.events.PhysicalCrateKeyCheckEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
-import com.badbones69.crazycrates.paper.cratetypes.QuickCrate;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -32,10 +31,7 @@ import us.crazycrew.crazycrates.paper.managers.InventoryManager;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
 import java.util.HashMap;
 
-public class CrateControlListener implements Listener { // Crate Control
-    
-    // A list of crate locations that are in use.
-    public static final HashMap<Player, Location> inUse = new HashMap<>();
+public class CrateControlListener implements Listener {
 
     @NotNull
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
@@ -156,7 +152,7 @@ public class CrateControlListener implements Listener { // Crate Control
 
                     if (hasKey) {
                         // Checks if the player uses the quick crate again.
-                        if (this.crateManager.isInOpeningList(player) && this.crateManager.getOpeningCrate(player).getCrateType() == CrateType.quick_crate && inUse.containsKey(player) && inUse.get(player).equals(crateLocation.getLocation())) {
+                        if (this.crateManager.isInOpeningList(player) && this.crateManager.getOpeningCrate(player).getCrateType() == CrateType.quick_crate && this.crateManager.isCrateInUse(player) && this.crateManager.getCrateInUseLocation(player).equals(crateLocation.getLocation())) {
                             useQuickCrateAgain = true;
                         }
 
@@ -166,7 +162,7 @@ public class CrateControlListener implements Listener { // Crate Control
                                 return;
                             }
 
-                            if (inUse.containsValue(crateLocation.getLocation())) {
+                            if (this.crateManager.getCratesInUse().containsValue(crateLocation.getLocation())) {
                                 player.sendMessage(Translation.quick_crate_in_use.getString());
                                 return;
                             }
@@ -177,7 +173,7 @@ public class CrateControlListener implements Listener { // Crate Control
                             return;
                         }
 
-                        if (useQuickCrateAgain) QuickCrate.endQuickCrate(player, crateLocation.getLocation(), crate, this.crateManager.getHolograms(), true);
+                        if (useQuickCrateAgain) this.plugin.getCrateManager().endQuickCrate(player, crateLocation.getLocation(), crate, true);
 
                         KeyType keyType = isPhysical ? KeyType.physical_key : KeyType.virtual_key;
 
