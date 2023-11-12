@@ -401,7 +401,7 @@ public class CrateManager {
 
                 if (this.plugin.isLogging()) {
                     List.of(
-                            crate.getCrateInventoryName() + " has an invalid crate type.",
+                            crate.getCrateInventoryName() + " has an invalid crate type. Your Value: " + crate.getFile().getString("Crate.CrateType"),
                             "We will use " + CrateType.csgo.getName() + " until you change the crate type.",
                             "Valid Crate Types: CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War"
                     ).forEach(line -> this.plugin.getLogger().warning(line));
