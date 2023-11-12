@@ -7,7 +7,6 @@ import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
 import com.badbones69.crazycrates.paper.cratetypes.War;
-import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import us.crazycrew.crazycrates.paper.api.builders.CrateBuilder;
@@ -50,6 +49,7 @@ import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
 import us.crazycrew.crazycrates.paper.managers.crates.types.FireCrackerCrate;
 import us.crazycrew.crazycrates.paper.managers.crates.types.QuickCrate;
 import us.crazycrew.crazycrates.paper.managers.crates.types.RouletteCrate;
+import us.crazycrew.crazycrates.paper.managers.crates.types.WheelCrate;
 import us.crazycrew.crazycrates.paper.managers.crates.types.WonderCrate;
 import us.crazycrew.crazycrates.paper.other.ItemUtils;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
@@ -365,6 +365,7 @@ public class CrateManager {
         switch (crate.getCrateType()) {
             case csgo -> crateBuilder = new CsgoCrate(crate, player, 27);
             case wonder -> crateBuilder = new WonderCrate(crate, player, 45);
+            case wheel -> crateBuilder = new WheelCrate(crate, player, 54);
             case roulette -> crateBuilder = new RouletteCrate(crate, player, 45);
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
@@ -422,9 +423,6 @@ public class CrateManager {
             }
             case cosmic -> {
                 if (isCrateEventSuccessful(player, crate, keyType, checkHand)) Cosmic.openCosmic(player, crate, keyType, checkHand);
-            }
-            case wheel -> {
-                if (isCrateEventSuccessful(player, crate, keyType, checkHand)) Wheel.startWheel(player, crate, keyType, checkHand);
             }
             case war -> {
                 if (isCrateEventSuccessful(player, crate, keyType, checkHand)) War.openWarCrate(player, crate, keyType, checkHand);
