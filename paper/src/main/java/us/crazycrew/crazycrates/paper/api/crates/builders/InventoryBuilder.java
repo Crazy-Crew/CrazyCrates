@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.api.crates.menus;
+package us.crazycrew.crazycrates.paper.api.crates.builders;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ import us.crazycrew.crazycrates.paper.utils.MsgUtils;
 public abstract class InventoryBuilder implements InventoryHolder {
 
     @NotNull
-    public final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
+    protected final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
     private final Inventory inventory;
     private final Player player;

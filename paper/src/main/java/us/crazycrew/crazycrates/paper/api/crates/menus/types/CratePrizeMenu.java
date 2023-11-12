@@ -2,7 +2,7 @@ package us.crazycrew.crazycrates.paper.api.crates.menus.types;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.entity.Player;
-import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryBuilder;
+import us.crazycrew.crazycrates.paper.api.crates.builders.InventoryBuilder;
 
 public class CratePrizeMenu extends InventoryBuilder {
 

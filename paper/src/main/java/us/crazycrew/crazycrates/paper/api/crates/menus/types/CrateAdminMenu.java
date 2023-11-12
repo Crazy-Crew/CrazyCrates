@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryBuilder;
+import us.crazycrew.crazycrates.paper.api.crates.builders.InventoryBuilder;
 
 public class CrateAdminMenu extends InventoryBuilder {
 

@@ -12,7 +12,7 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
-import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryBuilder;
+import us.crazycrew.crazycrates.paper.api.crates.builders.InventoryBuilder;
 import java.text.NumberFormat;
 import java.util.List;
 
