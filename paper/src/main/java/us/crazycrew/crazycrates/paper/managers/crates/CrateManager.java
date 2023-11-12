@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
-import com.badbones69.crazycrates.paper.cratetypes.War;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import us.crazycrew.crazycrates.paper.api.builders.CrateBuilder;
@@ -49,6 +48,7 @@ import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
 import us.crazycrew.crazycrates.paper.managers.crates.types.FireCrackerCrate;
 import us.crazycrew.crazycrates.paper.managers.crates.types.QuickCrate;
 import us.crazycrew.crazycrates.paper.managers.crates.types.RouletteCrate;
+import us.crazycrew.crazycrates.paper.managers.crates.types.WarCrate;
 import us.crazycrew.crazycrates.paper.managers.crates.types.WheelCrate;
 import us.crazycrew.crazycrates.paper.managers.crates.types.WonderCrate;
 import us.crazycrew.crazycrates.paper.other.ItemUtils;
@@ -360,6 +360,19 @@ public class CrateManager {
      * @param checkHand If it just checks the players hand or if it checks their inventory.
      */
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
+        if (crate.getCrateType() == CrateType.menu) {
+            if (this.plugin.getConfigManager().getConfig().getProperty(Config.enable_crate_menu)) {
+                CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_size), this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_name));
+
+                player.openInventory(crateMainMenu.build().getInventory());
+                return;
+            }
+
+            player.sendMessage(Translation.feature_disabled.getString());
+
+            return;
+        }
+
         CrateBuilder crateBuilder;
 
         switch (crate.getCrateType()) {
@@ -367,6 +380,7 @@ public class CrateManager {
             case wonder -> crateBuilder = new WonderCrate(crate, player, 45);
             case wheel -> crateBuilder = new WheelCrate(crate, player, 54);
             case roulette -> crateBuilder = new RouletteCrate(crate, player, 45);
+            case war -> crateBuilder = new WarCrate(crate, player, 9);
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
                     player.sendMessage(Translation.quick_crate_in_use.getString());
@@ -414,18 +428,8 @@ public class CrateManager {
         crateBuilder.open(keyType, checkHand);
 
         switch (crate.getCrateType()) {
-            case menu -> {
-                if (this.plugin.getConfigManager().getConfig().getProperty(Config.enable_crate_menu)) {
-                    CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_size), this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_name));
-
-                    player.openInventory(crateMainMenu.build().getInventory());
-                } else player.sendMessage(Translation.feature_disabled.getString());
-            }
             case cosmic -> {
                 if (isCrateEventSuccessful(player, crate, keyType, checkHand)) Cosmic.openCosmic(player, crate, keyType, checkHand);
-            }
-            case war -> {
-                if (isCrateEventSuccessful(player, crate, keyType, checkHand)) War.openWarCrate(player, crate, keyType, checkHand);
             }
             case quad_crate -> {
                 if (virtualCrate) {
@@ -1067,6 +1071,39 @@ public class CrateManager {
         return ItemBuilder.convertStringList(file.getStringList("Crate.Prizes." + prize + ".Items"), prize);
     }
 
+    // War Crate
+    private final HashMap<UUID, Boolean> canPick = new HashMap<>();
+    private final HashMap<UUID, Boolean> canClose = new HashMap<>();
+
+    public void addPicker(Player player, boolean value) {
+        this.canPick.put(player.getUniqueId(), value);
+    }
+
+    public boolean containsPicker(Player player) {
+        return this.canPick.containsKey(player.getUniqueId());
+    }
+
+    public boolean isPicker(Player player) {
+        return this.canPick.get(player.getUniqueId());
+    }
+
+    public void removePicker(Player player) {
+        this.canPick.remove(player.getUniqueId());
+    }
+
+    public void addCloser(Player player, boolean value) {
+        this.canClose.put(player.getUniqueId(), value);
+    }
+
+    public boolean containsCloser(Player player) {
+        return this.canClose.containsKey(player.getUniqueId());
+    }
+
+    public void removeCloser(Player player) {
+        this.canClose.remove(player.getUniqueId());
+    }
+
+    // QuickCrate/FireCracker
     private final List<Entity> allRewards = new ArrayList<>();
     private final HashMap<UUID, Entity> rewards = new HashMap<>();
 
