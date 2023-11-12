@@ -9,7 +9,10 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.api.builders.types.CratePrizeMenu;
+import us.crazycrew.crazycrates.paper.api.events.CrateOpenEvent;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
+
+import java.util.List;
 
 public abstract class CrateBuilder {
 
@@ -17,23 +20,22 @@ public abstract class CrateBuilder {
     protected final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
     private final InventoryBuilder menu;
+    private final Inventory inventory;
     private final Player player;
     private final String title;
     private final Crate crate;
     private final int size;
 
-    private Inventory inventory;
-
-    protected CrateBuilder(Crate crate, Player player, int size, String title) {
+    public CrateBuilder(Crate crate, Player player, int size, String title) {
         this.crate = crate;
 
         this.player = player;
         this.size = size;
         this.title = title;
 
-        this.menu = new CratePrizeMenu(crate, player, 27, title);
+        this.menu = new CratePrizeMenu(crate, player, size, title);
 
-        if (this.inventory == null) this.inventory = this.menu.build().getInventory();
+        this.inventory = this.menu.build().getInventory();
     }
 
     public abstract void open(KeyType type, boolean checkHand);
