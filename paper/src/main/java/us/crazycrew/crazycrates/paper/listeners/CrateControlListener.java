@@ -24,7 +24,7 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.managers.CrateManager;
+import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.builders.types.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.managers.InventoryManager;

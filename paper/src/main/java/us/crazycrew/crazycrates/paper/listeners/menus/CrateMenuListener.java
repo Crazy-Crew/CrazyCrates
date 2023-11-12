@@ -4,7 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.types.Config;
-import us.crazycrew.crazycrates.paper.managers.CrateManager;
+import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Sound;

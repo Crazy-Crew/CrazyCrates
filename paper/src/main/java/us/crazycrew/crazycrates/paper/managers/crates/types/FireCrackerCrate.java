@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.managers.types;
+package us.crazycrew.crazycrates.paper.managers.crates.types;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.Color;

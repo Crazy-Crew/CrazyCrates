@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.managers.types;
+package us.crazycrew.crazycrates.paper.managers.crates.types;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
@@ -6,7 +6,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.api.builders.CrateBuilder;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;

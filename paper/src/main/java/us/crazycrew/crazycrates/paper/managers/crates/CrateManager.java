@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.managers;
+package us.crazycrew.crazycrates.paper.managers.crates;
 
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.paper.api.FileManager;
@@ -12,7 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import us.crazycrew.crazycrates.paper.api.builders.CrateBuilder;
 import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
-import us.crazycrew.crazycrates.paper.managers.types.CsgoCrate;
+import us.crazycrew.crazycrates.paper.managers.crates.types.CsgoCrate;
 import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.Config;
@@ -47,10 +47,10 @@ import us.crazycrew.crazycrates.paper.api.support.holograms.types.DecentHologram
 import us.crazycrew.crazycrates.paper.api.support.holograms.types.HolographicDisplaysSupport;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
-import us.crazycrew.crazycrates.paper.managers.types.FireCrackerCrate;
-import us.crazycrew.crazycrates.paper.managers.types.QuickCrate;
-import us.crazycrew.crazycrates.paper.managers.types.RouletteCrate;
-import us.crazycrew.crazycrates.paper.managers.types.WonderCrate;
+import us.crazycrew.crazycrates.paper.managers.crates.types.FireCrackerCrate;
+import us.crazycrew.crazycrates.paper.managers.crates.types.QuickCrate;
+import us.crazycrew.crazycrates.paper.managers.crates.types.RouletteCrate;
+import us.crazycrew.crazycrates.paper.managers.crates.types.WonderCrate;
 import us.crazycrew.crazycrates.paper.other.ItemUtils;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
 import java.io.File;

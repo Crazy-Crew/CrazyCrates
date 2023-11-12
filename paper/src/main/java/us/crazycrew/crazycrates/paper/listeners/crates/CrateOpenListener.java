@@ -1,12 +1,11 @@
 package us.crazycrew.crazycrates.paper.listeners.crates;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.managers.CrateManager;
+import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
-import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.FileConfiguration;

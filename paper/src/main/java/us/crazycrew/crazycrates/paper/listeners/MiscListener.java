@@ -15,7 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
-import us.crazycrew.crazycrates.paper.managers.CrateManager;
+import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
 
 public class MiscListener implements Listener {

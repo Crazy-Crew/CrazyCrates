@@ -2,7 +2,7 @@ package us.crazycrew.crazycrates.paper;
 
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.EventLogger;
-import us.crazycrew.crazycrates.paper.managers.CrateManager;
+import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
@@ -26,7 +26,6 @@ import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.api.modules.ModuleLoader;
 import us.crazycrew.crazycrates.paper.listeners.crates.CrateOpenListener;
 import us.crazycrew.crazycrates.paper.listeners.menus.CrateAdminListener;
-import us.crazycrew.crazycrates.paper.managers.types.QuickCrate;
 import us.crazycrew.crazycrates.paper.other.MsgUtils;
 import java.util.List;
 

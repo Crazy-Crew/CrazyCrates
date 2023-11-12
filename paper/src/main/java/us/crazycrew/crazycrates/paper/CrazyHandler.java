@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.CrazyCratesPlugin;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.paper.api.MigrationService;
-import us.crazycrew.crazycrates.paper.managers.CrateManager;
+import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.managers.PrizeManager;
 import us.crazycrew.crazycrates.paper.api.support.metrics.MetricsWrapper;
 import us.crazycrew.crazycrates.paper.managers.BukkitUserManager;
