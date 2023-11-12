@@ -355,6 +355,16 @@ public class CrateManager {
      * @param checkHand If it just checks the players hand or if it checks their inventory.
      */
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
+        CrateBuilder crateBuilder;
+
+        switch (crate.getCrateType()) {
+            case csgo -> crateBuilder = new CsgoCrate(crate, player, 27, crate.getCrateInventoryName());
+            case wonder -> crateBuilder = new WonderCrate(crate, player, 45, crate.getCrateInventoryName());
+        }
+
+        // Open the crate.
+        crateBuilder.open(keyType, checkHand);
+
         switch (crate.getCrateType()) {
             case menu -> {
                 if (this.plugin.getConfigManager().getConfig().getProperty(Config.enable_crate_menu)) {
@@ -365,13 +375,6 @@ public class CrateManager {
             }
             case cosmic -> {
                 if (isCrateEventSuccessful(player, crate, keyType, checkHand)) Cosmic.openCosmic(player, crate, keyType, checkHand);
-            }
-            case csgo -> {
-                if (callCrateEvent(player, crate, keyType, checkHand)) {
-                    CsgoCrate csgoCrate = new CsgoCrate(crate, player, 27, crate.getCrateInventoryName());
-
-                    csgoCrate.open(keyType, checkHand);
-                }
             }
             case roulette -> {
                 if (isCrateEventSuccessful(player, crate, keyType, checkHand)) Roulette.openRoulette(player, crate, keyType, checkHand);
