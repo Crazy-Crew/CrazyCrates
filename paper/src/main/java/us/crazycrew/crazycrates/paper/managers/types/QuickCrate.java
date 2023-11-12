@@ -89,23 +89,23 @@ public class QuickCrate extends CrateBuilder {
         this.plugin.getCrazyHandler().getPrizeManager().givePrize(getPlayer(), prize, getCrate());
         this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(getPlayer(), getCrate(), getCrate().getName(), prize));
 
-        // Get the display item.
-        ItemStack display = prize.getDisplayItem();
-
-        // Get the item meta.
-        ItemMeta itemMeta = display.getItemMeta();
-
-        // Access the pdc and set "crazycrates-item"
-        PersistentKeys key = PersistentKeys.crate_prize;
-
-        //noinspection unchecked
-        itemMeta.getPersistentDataContainer().set(key.getNamespacedKey(this.plugin), key.getType(), 1);
-
-        // Set the item meta.
-        display.setItemMeta(itemMeta);
-
         boolean showQuickCrateItem = this.plugin.getConfigManager().getConfig().getProperty(Config.show_quickcrate_item);
+
         if (showQuickCrateItem) {
+            // Get the display item.
+            ItemStack display = prize.getDisplayItem();
+
+            // Get the item meta.
+            ItemMeta itemMeta = display.getItemMeta();
+
+            // Access the pdc and set "crazycrates-item"
+            PersistentKeys key = PersistentKeys.crate_prize;
+
+            //noinspection unchecked
+            itemMeta.getPersistentDataContainer().set(key.getNamespacedKey(this.plugin), key.getType(), 1);
+
+            // Set the item meta.
+            display.setItemMeta(itemMeta);
 
             Item reward;
 
@@ -136,10 +136,6 @@ public class QuickCrate extends CrateBuilder {
                     plugin.getCrateManager().endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
                 }
             }.runTaskLater(this.plugin, 5 * 20));
-
-            return;
         }
-
-        plugin.getCrazyHandler().getPrizeManager().checkPrize(prize, getPlayer(), getCrate());
     }
 }
