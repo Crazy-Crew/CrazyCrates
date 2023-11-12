@@ -11,7 +11,7 @@ import com.badbones69.crazycrates.paper.cratetypes.QuickCrate;
 import com.badbones69.crazycrates.paper.cratetypes.Roulette;
 import com.badbones69.crazycrates.paper.cratetypes.War;
 import com.badbones69.crazycrates.paper.cratetypes.Wheel;
-import com.badbones69.crazycrates.paper.cratetypes.Wonder;
+import us.crazycrew.crazycrates.paper.api.builders.CrateBuilder;
 import us.crazycrew.crazycrates.paper.managers.types.CsgoCrate;
 import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
 import org.bukkit.scheduler.BukkitTask;
@@ -49,6 +49,7 @@ import us.crazycrew.crazycrates.paper.api.support.holograms.types.DecentHologram
 import us.crazycrew.crazycrates.paper.api.support.holograms.types.HolographicDisplaysSupport;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
+import us.crazycrew.crazycrates.paper.managers.types.WonderCrate;
 import us.crazycrew.crazycrates.paper.other.ItemUtils;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
 import java.io.File;
@@ -360,6 +361,17 @@ public class CrateManager {
         switch (crate.getCrateType()) {
             case csgo -> crateBuilder = new CsgoCrate(crate, player, 27, crate.getCrateInventoryName());
             case wonder -> crateBuilder = new WonderCrate(crate, player, 45, crate.getCrateInventoryName());
+            default -> {
+                crateBuilder = new CsgoCrate(crate, player, 27, crate.getCrateInventoryName());
+
+                if (this.plugin.isLogging()) {
+                    List.of(
+                            crate.getCrateInventoryName() + " has an invalid crate type.",
+                            "We will use " + CrateType.csgo.getName() + " until you change the crate type.",
+                            "Valid Crate Types: CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War"
+                    ).forEach(line -> this.plugin.getLogger().warning(line));
+                }
+            }
         }
 
         // Open the crate.
