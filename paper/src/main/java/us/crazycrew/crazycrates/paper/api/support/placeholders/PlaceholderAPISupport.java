@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
-import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
+import us.crazycrew.crazycrates.paper.managers.BukkitUserManager;
 import java.text.NumberFormat;
 
 @SuppressWarnings("deprecation")

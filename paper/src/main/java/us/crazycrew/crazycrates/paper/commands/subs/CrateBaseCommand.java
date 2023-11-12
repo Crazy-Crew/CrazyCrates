@@ -24,7 +24,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.api.enums.Permissions;
-import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
+import us.crazycrew.crazycrates.paper.managers.BukkitUserManager;
 import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.BaseCommand;

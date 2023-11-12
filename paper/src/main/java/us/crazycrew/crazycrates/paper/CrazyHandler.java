@@ -10,7 +10,7 @@ import us.crazycrew.crazycrates.paper.api.MigrationService;
 import us.crazycrew.crazycrates.paper.managers.CrateManager;
 import us.crazycrew.crazycrates.paper.managers.PrizeManager;
 import us.crazycrew.crazycrates.paper.api.support.metrics.MetricsWrapper;
-import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
+import us.crazycrew.crazycrates.paper.managers.BukkitUserManager;
 import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestManager;
 import us.crazycrew.crazycrates.paper.managers.InventoryManager;
 import us.crazycrew.crazycrates.paper.commands.CommandManager;

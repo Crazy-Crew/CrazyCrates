@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.api.users;
+package us.crazycrew.crazycrates.paper.managers;
 
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
