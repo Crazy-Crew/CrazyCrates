@@ -34,7 +34,7 @@ public class Config implements SettingsHolder {
     public static final Property<Boolean> enable_crate_menu = newProperty("Settings.Enable-Crate-Menu", true);
 
     @Comment("Hides the item that appears above QuickCrate")
-    public static final Property<Boolean> hide_quickcrate_item = newProperty("Settings.Hide-QuickCrate-Item", false);
+    public static final Property<Boolean> show_quickcrate_item = newProperty("Settings.Show-QuickCrate-Item", true);
 
     @Comment("Logs all crate actions to file if true. You might have to delete your logs file every now and then.")
     public static final Property<Boolean> log_to_file = newProperty("Settings.Log-File", false);

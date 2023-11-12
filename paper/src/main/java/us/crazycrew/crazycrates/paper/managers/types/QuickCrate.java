@@ -104,9 +104,9 @@ public class QuickCrate extends CrateBuilder {
         // Set the item meta.
         display.setItemMeta(itemMeta);
 
-        boolean hideQuickCrateItem = this.plugin.getConfigManager().getConfig().getProperty(Config.hide_quickcrate_item);
+        boolean showQuickCrateItem = this.plugin.getConfigManager().getConfig().getProperty(Config.show_quickcrate_item);
+        if (showQuickCrateItem) {
 
-        if (hideQuickCrateItem) {
             Item reward;
 
             try {
