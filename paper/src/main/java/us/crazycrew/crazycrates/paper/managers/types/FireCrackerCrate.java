@@ -5,7 +5,6 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.api.builders.CrateBuilder;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
@@ -62,6 +61,7 @@ public class FireCrackerCrate extends CrateBuilder {
                     plugin.getCrateManager().endCrate(getPlayer());
 
                     QuickCrate quickCrate = new QuickCrate(getCrate(), getPlayer(), getLocation());
+
                     quickCrate.open(KeyType.free_key, false);
                 }
             }

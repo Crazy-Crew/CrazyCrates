@@ -1093,8 +1093,8 @@ public class CrateManager {
 
         this.plugin.getCrazyHandler().getChestManager().closeChest(location.getBlock(), false);
 
-        this.plugin.getCrateManager().removeCrateInUse(player);
-        this.plugin.getCrateManager().removePlayerFromOpeningList(player);
+        removeCrateInUse(player);
+        removePlayerFromOpeningList(player);
 
         if (!useQuickCrateAgain) {
             HologramHandler handler = this.plugin.getCrateManager().getHolograms();
