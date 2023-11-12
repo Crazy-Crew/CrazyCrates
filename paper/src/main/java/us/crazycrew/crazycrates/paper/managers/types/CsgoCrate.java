@@ -107,10 +107,8 @@ public class CsgoCrate extends CrateBuilder {
 
         for (int index : glass.keySet()) {
             if (getInventory().getItem(index) == null) {
-                ItemStack item = MiscUtils.getRandomPaneColor().setName(" ").build();
-
-                getInventory().setItem(index, item);
-                getInventory().setItem(index + 18, item);
+                setCustomGlassPane(index);
+                setCustomGlassPane(index + 18);
             }
         }
 
