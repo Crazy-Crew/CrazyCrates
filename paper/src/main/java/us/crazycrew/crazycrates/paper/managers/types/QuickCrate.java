@@ -18,18 +18,20 @@ import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
 import java.util.logging.Level;
 
-@SuppressWarnings("ALL")
 public class QuickCrate extends CrateBuilder {
 
-    public QuickCrate(Crate crate, Player player, Location location) {
-        super(crate, player, location);
+    public QuickCrate(Crate crate, Player player, Location location, boolean isFireCracker) {
+        super(crate, player, location, isFireCracker);
     }
 
     @Override
     public void open(KeyType type, boolean checkHand) {
-        // Crate event failed so we return.
-        if (isCrateEventValid(type, checkHand)) {
-            return;
+        // If the crate type is not fire cracker.
+        if (!isFireCracker()) {
+            // If the crate event failed.
+            if (isCrateEventValid(type, checkHand)) {
+                return;
+            }
         }
 
         this.plugin.getCrateManager().addCrateInUse(getPlayer(), getLocation());
@@ -91,6 +93,7 @@ public class QuickCrate extends CrateBuilder {
 
         boolean showQuickCrateItem = this.plugin.getConfigManager().getConfig().getProperty(Config.show_quickcrate_item);
 
+        // Only related to the item above the crate.
         if (showQuickCrateItem) {
             // Get the display item.
             ItemStack display = prize.getDisplayItem();
@@ -125,17 +128,20 @@ public class QuickCrate extends CrateBuilder {
             reward.setPickupDelay(-1);
 
             this.plugin.getCrateManager().addReward(getPlayer(), reward);
-
-            this.plugin.getCrazyHandler().getChestManager().openChest(getLocation().getBlock(), true);
-
-            if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(0.5, 1, .5), null);
-
-            addCrateTask(new BukkitRunnable() {
-                @Override
-                public void run() {
-                    plugin.getCrateManager().endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
-                }
-            }.runTaskLater(this.plugin, 5 * 20));
         }
+
+        // Always open the chest.
+        this.plugin.getCrazyHandler().getChestManager().openChest(getLocation().getBlock(), true);
+
+        // Always spawn fireworks if enabled.
+        if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(0.5, 1, .5), null);
+
+        // Always end the crate.
+        addCrateTask(new BukkitRunnable() {
+            @Override
+            public void run() {
+                plugin.getCrateManager().endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
+            }
+        }.runTaskLater(this.plugin, 40));
     }
 }

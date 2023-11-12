@@ -41,6 +41,8 @@ public abstract class CrateBuilder {
         this.menu = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
 
         this.inventory = this.menu.build().getInventory();
+
+        this.isFireCracker = false;
     }
 
     public CrateBuilder(Crate crate, Player player, int size, Location location) {
@@ -58,6 +60,8 @@ public abstract class CrateBuilder {
         this.menu = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
 
         this.inventory = this.menu.build().getInventory();
+
+        this.isFireCracker = false;
     }
 
     public CrateBuilder(Crate crate, Player player, Location location) {
@@ -75,6 +79,29 @@ public abstract class CrateBuilder {
         this.menu = null;
 
         this.inventory = null;
+
+        this.isFireCracker = false;
+    }
+
+    private final boolean isFireCracker;
+
+    public CrateBuilder(Crate crate, Player player, Location location, boolean isFireCracker) {
+        Preconditions.checkNotNull(crate, "Crate can't be null.");
+        Preconditions.checkNotNull(player, "Player can't be null.");
+        Preconditions.checkNotNull(location, "Location can't be null.");
+
+        this.crate = crate;
+
+        this.location = location;
+
+        this.player = player;
+        this.size = 0;
+
+        this.menu = null;
+
+        this.inventory = null;
+
+        this.isFireCracker = isFireCracker;
     }
 
     public abstract void open(KeyType type, boolean checkHand);
@@ -128,6 +155,15 @@ public abstract class CrateBuilder {
      */
     public int getSize() {
         return this.size;
+    }
+
+    /**
+     * If the crate type is fire cracker, we won't run the open crate event again.
+     *
+     * @return true or false
+     */
+    public boolean isFireCracker() {
+        return isFireCracker;
     }
 
     /**
