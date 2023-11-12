@@ -92,7 +92,7 @@ public abstract class CrateBuilder {
      * @param item to set
      * @param slot to set at
      */
-    public void setGlassPane(ItemStack item, int slot) {
+    public void setItem(ItemStack item, int slot) {
         getInventory().setItem(slot, item);
     }
 

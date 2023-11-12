@@ -116,36 +116,36 @@ public class CsgoCrate extends CrateBuilder {
             if (index < 9 && index != 4) glass.put(index, getInventory().getItem(index));
         }
 
-        setGlassPane(glass.get(1), 0);
+        setItem(glass.get(1), 0);
 
-        setGlassPane(glass.get(2), 1);
-        setGlassPane(glass.get(2), 1 + 18);
+        setItem(glass.get(2), 1);
+        setItem(glass.get(2), 1 + 18);
 
-        setGlassPane(glass.get(3), 2);
-        setGlassPane(glass.get(3), 2 + 18);
+        setItem(glass.get(3), 2);
+        setItem(glass.get(3), 2 + 18);
 
-        setGlassPane(glass.get(5), 3);
-        setGlassPane(glass.get(5), 3 + 18);
+        setItem(glass.get(5), 3);
+        setItem(glass.get(5), 3 + 18);
 
         ItemStack itemStack = new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build();
-        setGlassPane(itemStack, 4);
-        setGlassPane(itemStack, 4 + 18);
+        setItem(itemStack, 4);
+        setItem(itemStack, 4 + 18);
 
-        setGlassPane(glass.get(6), 5);
-        setGlassPane(glass.get(6), 5 + 18);
+        setItem(glass.get(6), 5);
+        setItem(glass.get(6), 5 + 18);
 
-        setGlassPane(glass.get(7), 6);
-        setGlassPane(glass.get(7), 6 + 18);
+        setItem(glass.get(7), 6);
+        setItem(glass.get(7), 6 + 18);
 
-        setGlassPane(glass.get(8), 7);
-        setGlassPane(glass.get(8), 7 + 18);
+        setItem(glass.get(8), 7);
+        setItem(glass.get(8), 7 + 18);
 
         setCustomGlassPane(8);
         setCustomGlassPane(8 + 18);
 
         // Set display items.
         for (int index = 9; index > 8 && index < 18; index++) {
-            getInventory().setItem(index, getCrate().pickPrize(getPlayer()).getDisplayItem());
+            setItem(getCrate().pickPrize(getPlayer()).getDisplayItem(), index);
         }
     }
 
@@ -170,10 +170,10 @@ public class CsgoCrate extends CrateBuilder {
             items.add(getInventory().getItem(i));
         }
 
-        getInventory().setItem(9, getCrate().pickPrize(getPlayer()).getDisplayItem());
+        setItem(getCrate().pickPrize(getPlayer()).getDisplayItem(), 9);
 
         for (int i = 0; i < 8; i++) {
-            getInventory().setItem(i + 10, items.get(i));
+            setItem(items.get(i), i + 10);
         }
 
         populate();
