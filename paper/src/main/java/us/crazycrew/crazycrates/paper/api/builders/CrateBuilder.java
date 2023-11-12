@@ -42,9 +42,9 @@ public abstract class CrateBuilder {
         this.plugin.getCrateManager().addCrateTask(player, task);
     }
 
-    public boolean hasCrateTask(Player player) {
-        return this.plugin.getCrateManager().hasCrateTask(player);
-    }
+    /**
+     * @return crate that is being opened
+     */
 
     public Crate getCrateTask(Player player) {
         return this.plugin.getCrateManager().getOpeningCrate(player);
@@ -58,33 +58,60 @@ public abstract class CrateBuilder {
         return this.crate;
     }
 
+    /**
+     * @return title of the crate
+     */
     public String getTitle() {
         return this.title;
     }
 
+    /**
+     * @return player opening the crate
+     */
     public Player getPlayer() {
         return this.player;
     }
 
+    /**
+     * @return inventory size
+     */
     public int getSize() {
         return this.size;
     }
 
+    /**
+     * @return inventory of the crate
+     */
     public Inventory getInventory() {
         return this.inventory;
     }
 
+    /**
+     * @return instance of this class
+     */
     public InventoryBuilder getMenu() {
         return this.menu.build();
     }
 
     // Item Management
-    public void setGlassPane(ItemStack item, int index) {
-        getInventory().setItem(index, item);
+
+    /**
+     * Sets an item to a slot
+     *
+     * @param item to set
+     * @param slot to set at
+     */
+    public void setGlassPane(ItemStack item, int slot) {
+        getInventory().setItem(slot, item);
     }
 
-    public void setCustomGlassPane(int index) {
+    /**
+     * Sets random glass pane at a specific slot.
+     *
+     * @param slot to set at
+     */
+    public void setCustomGlassPane(int slot) {
         ItemStack item = MiscUtils.getRandomPaneColor().setName(" ").build();
-        getInventory().setItem(index, item);
+        getInventory().setItem(slot, item);
     }
 }
