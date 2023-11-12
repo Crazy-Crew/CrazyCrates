@@ -327,7 +327,7 @@ public class CrateManager {
     // A list of tasks being run by the QuadCrate type.
     private final HashMap<UUID, List<BukkitTask>> currentQuadTasks = new HashMap<>();
 
-    private boolean callCrateEvent(Player player, Crate crate, KeyType keyType, boolean checkHand) {
+    private boolean isCrateEventSuccessful(Player player, Crate crate, KeyType keyType, boolean checkHand) {
         CrateOpenEvent crateOpenEvent = new CrateOpenEvent(this.plugin, player, crate, keyType, checkHand, crate.getFile());
         crateOpenEvent.callEvent();
 
@@ -364,7 +364,7 @@ public class CrateManager {
                 } else player.sendMessage(Translation.feature_disabled.getString());
             }
             case cosmic -> {
-                if (callCrateEvent(player, crate, keyType, checkHand)) Cosmic.openCosmic(player, crate, keyType, checkHand);
+                if (isCrateEventSuccessful(player, crate, keyType, checkHand)) Cosmic.openCosmic(player, crate, keyType, checkHand);
             }
             case csgo -> {
                 if (callCrateEvent(player, crate, keyType, checkHand)) {
@@ -374,16 +374,16 @@ public class CrateManager {
                 }
             }
             case roulette -> {
-                if (callCrateEvent(player, crate, keyType, checkHand)) Roulette.openRoulette(player, crate, keyType, checkHand);
+                if (isCrateEventSuccessful(player, crate, keyType, checkHand)) Roulette.openRoulette(player, crate, keyType, checkHand);
             }
             case wheel -> {
-                if (callCrateEvent(player, crate, keyType, checkHand)) Wheel.startWheel(player, crate, keyType, checkHand);
+                if (isCrateEventSuccessful(player, crate, keyType, checkHand)) Wheel.startWheel(player, crate, keyType, checkHand);
             }
             case wonder -> {
                 if (callCrateEvent(player, crate, keyType, checkHand)) Wonder.startWonder(player, crate, keyType, checkHand);
             }
             case war -> {
-                if (callCrateEvent(player, crate, keyType, checkHand)) War.openWarCrate(player, crate, keyType, checkHand);
+                if (isCrateEventSuccessful(player, crate, keyType, checkHand)) War.openWarCrate(player, crate, keyType, checkHand);
             }
             case quad_crate -> {
                 if (virtualCrate) {
@@ -392,7 +392,7 @@ public class CrateManager {
                     return;
                 }
 
-                if (callCrateEvent(player, crate, keyType, checkHand)) {
+                if (isCrateEventSuccessful(player, crate, keyType, checkHand)) {
                     boolean isRandom = crate.getFile().contains("Crate.structure.file") && !crate.getFile().getBoolean("Crate.structure.random", true);
 
                     CrateSchematic schematic = isRandom ? getCrateSchematic(crate.getFile().getString("Crate.structure.file")) : getCrateSchematics().get(new Random().nextInt(getCrateSchematics().size()));
@@ -417,7 +417,7 @@ public class CrateManager {
                         removePlayerFromOpeningList(player);
                         return;
                     } else {
-                        if (callCrateEvent(player, crate, keyType, checkHand)) {
+                        if (isCrateEventSuccessful(player, crate, keyType, checkHand)) {
                             CrateControlListener.inUse.put(player, location);
                             FireCracker.startFireCracker(player, crate, keyType, location, holograms);
                         }
@@ -435,7 +435,7 @@ public class CrateManager {
                         removePlayerFromOpeningList(player);
                         return;
                     } else {
-                        if (callCrateEvent(player, crate, keyType, checkHand)) {
+                        if (isCrateEventSuccessful(player, crate, keyType, checkHand)) {
                             CrateControlListener.inUse.put(player, location);
                             QuickCrate.openCrate(player, location, crate, keyType, holograms);
                         }
@@ -448,7 +448,7 @@ public class CrateManager {
                     removePlayerFromOpeningList(player);
                     return;
                 } else {
-                    if (callCrateEvent(player, crate, keyType, checkHand)) {
+                    if (isCrateEventSuccessful(player, crate, keyType, checkHand)) {
                         if (this.plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
                             Prize prize = crate.pickPrize(player);
                             this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);

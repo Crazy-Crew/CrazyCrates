@@ -105,4 +105,30 @@ public abstract class CrateBuilder {
         ItemStack item = MiscUtils.getRandomPaneColor().setName(" ").build();
         getInventory().setItem(slot, item);
     }
+
+    /**
+     * Calls the crate open event and returns true/false if successful or not.
+     *
+     * @param player opening the crate
+     * @param crate object being opened
+     * @param keyType virtual or physical key
+     * @param checkHand true or false
+     * @return true if cancelled otherwise false.
+     */
+    public boolean isCrateEventValid(Player player, Crate crate, KeyType keyType, boolean checkHand) {
+        CrateOpenEvent event = new CrateOpenEvent(this.plugin, player, crate, keyType, checkHand, crate.getFile());
+        event.callEvent();
+
+        if (event.isCancelled()) {
+            List.of(
+                    "Crate " + crate.getName() + " event has been cancelled.",
+                    "A few reasons for why this happened can be found below",
+                    "",
+                    " 1) No valid prizes can be found, Likely a yaml issue.",
+                    " 2) The player does not have the permission to open the crate."
+            ).forEach(this.plugin.getLogger()::warning);
+        }
+
+        return event.isCancelled();
+    }
 }
