@@ -23,12 +23,6 @@ public class CsgoCrate extends CrateBuilder {
 
     @Override
     public void open(KeyType type, boolean checkHand) {
-        // Set the glass/display items to the inventory.
-        populate();
-
-        // Open the inventory.
-        getPlayer().openInventory(getInventory());
-
         boolean keyCheck = this.plugin.getCrazyHandler().getUserManager().takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
 
         if (!keyCheck) {
@@ -40,6 +34,12 @@ public class CsgoCrate extends CrateBuilder {
 
             return;
         }
+
+        // Set the glass/display items to the inventory.
+        populate();
+
+        // Open the inventory.
+        getPlayer().openInventory(getInventory());
 
         addCrateTask(getPlayer(), new BukkitRunnable() {
             int time = 1;
