@@ -322,24 +322,25 @@ public class MiscUtils {
     }
 
     public static ItemBuilder getRandomPaneColor() {
-        List<String> colors = Arrays.asList(
-                Material.WHITE_STAINED_GLASS_PANE.toString(),
-                Material.ORANGE_STAINED_GLASS_PANE.toString(),
-                Material.MAGENTA_STAINED_GLASS_PANE.toString(),
-                Material.LIGHT_BLUE_STAINED_GLASS_PANE.toString(),
-                Material.YELLOW_STAINED_GLASS_PANE.toString(),
-                Material.LIME_STAINED_GLASS_PANE.toString(),
-                Material.PINK_STAINED_GLASS_PANE.toString(),
-                Material.GRAY_STAINED_GLASS_PANE.toString(),
-                Material.CYAN_STAINED_GLASS_PANE.toString(),
-                Material.PURPLE_STAINED_GLASS_PANE.toString(),
-                Material.BLUE_STAINED_GLASS_PANE.toString(),
-                Material.BROWN_STAINED_GLASS_PANE.toString(),
-                Material.GREEN_STAINED_GLASS_PANE.toString(),
-                Material.RED_STAINED_GLASS_PANE.toString(),
-                Material.BLACK_STAINED_GLASS_PANE.toString(),
-                Material.LIGHT_GRAY_STAINED_GLASS_PANE.toString());
-        return new ItemBuilder().setMaterial(colors.get(new Random().nextInt(colors.size())));
+        List<Material> glassPanes = Arrays.asList(
+                Material.WHITE_STAINED_GLASS_PANE,
+                Material.ORANGE_STAINED_GLASS_PANE,
+                Material.MAGENTA_STAINED_GLASS_PANE,
+                Material.LIGHT_BLUE_STAINED_GLASS_PANE,
+                Material.YELLOW_STAINED_GLASS_PANE,
+                Material.LIME_STAINED_GLASS_PANE,
+                Material.PINK_STAINED_GLASS_PANE,
+                Material.GRAY_STAINED_GLASS_PANE,
+                Material.CYAN_STAINED_GLASS_PANE,
+                Material.PURPLE_STAINED_GLASS_PANE,
+                Material.BLUE_STAINED_GLASS_PANE,
+                Material.BROWN_STAINED_GLASS_PANE,
+                Material.GREEN_STAINED_GLASS_PANE,
+                Material.RED_STAINED_GLASS_PANE,
+                Material.BLACK_STAINED_GLASS_PANE,
+                Material.LIGHT_GRAY_STAINED_GLASS_PANE);
+
+        return new ItemBuilder().setMaterial(glassPanes.get(ThreadLocalRandom.current().nextInt(glassPanes.size())));
     }
 
     /**
