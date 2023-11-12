@@ -2,7 +2,7 @@ package us.crazycrew.crazycrates.paper;
 
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.EventLogger;
-import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
+import us.crazycrew.crazycrates.paper.managers.CrateManager;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
@@ -14,8 +14,8 @@ import com.badbones69.crazycrates.paper.cratetypes.War;
 import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import com.badbones69.crazycrates.paper.cratetypes.Wonder;
 import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
-import us.crazycrew.crazycrates.paper.modules.events.CrateMenuListener;
-import us.crazycrew.crazycrates.paper.modules.events.CratePreviewListener;
+import us.crazycrew.crazycrates.paper.listeners.menus.CrateMenuListener;
+import us.crazycrew.crazycrates.paper.listeners.menus.CratePreviewListener;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
@@ -26,10 +26,10 @@ import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.paper.api.support.placeholders.PlaceholderAPISupport;
 import us.crazycrew.crazycrates.paper.listeners.MiscListener;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
-import us.crazycrew.crazycrates.paper.modules.ModuleLoader;
+import us.crazycrew.crazycrates.paper.api.modules.ModuleLoader;
 import us.crazycrew.crazycrates.paper.listeners.crates.CrateOpenListener;
-import us.crazycrew.crazycrates.paper.modules.events.CrateAdminListener;
-import us.crazycrew.crazycrates.paper.utils.MsgUtils;
+import us.crazycrew.crazycrates.paper.listeners.menus.CrateAdminListener;
+import us.crazycrew.crazycrates.paper.other.MsgUtils;
 import java.util.List;
 
 public class CrazyCrates extends JavaPlugin {

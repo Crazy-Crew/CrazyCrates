@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
-import us.crazycrew.crazycrates.paper.utils.MsgUtils;
+import us.crazycrew.crazycrates.paper.other.MsgUtils;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.api.crates.menus.types;
+package us.crazycrew.crazycrates.paper.api.builders.types;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.entity.Player;
@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
-import us.crazycrew.crazycrates.paper.api.crates.builders.InventoryBuilder;
+import us.crazycrew.crazycrates.paper.api.builders.InventoryBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

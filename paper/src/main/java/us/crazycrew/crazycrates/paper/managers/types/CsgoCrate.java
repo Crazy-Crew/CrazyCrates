@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.api.crates.types;
+package us.crazycrew.crazycrates.paper.managers.types;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.paper.api.crates.builders.CrateBuilder;
-import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.api.builders.CrateBuilder;
+import us.crazycrew.crazycrates.paper.other.MiscUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,14 +29,14 @@ public class CsgoCrate extends CrateBuilder {
         // Open the inventory.
         getPlayer().openInventory(getInventory());
 
-        boolean keyCheck = getPlugin().getCrazyHandler().getUserManager().takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
+        boolean keyCheck = this.plugin.getCrazyHandler().getUserManager().takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
 
         if (!keyCheck) {
             // Send the message about failing to take the key.
             MiscUtils.failedToTakeKey(getPlayer(), getCrate());
 
             // Remove from opening list.
-            getPlugin().getCrateManager().removePlayerFromOpeningList(getPlayer());
+            this.plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
 
             return;
         }
@@ -75,12 +75,12 @@ public class CsgoCrate extends CrateBuilder {
 
                     if (time == 60) { // When done
                         getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-                        getPlugin().getCrateManager().endCrate(getPlayer());
+                        plugin.getCrateManager().endCrate(getPlayer());
                         Prize prize = getCrate().getPrize(getInventory().getItem(13));
 
-                        getPlugin().getCrazyHandler().getPrizeManager().checkPrize(prize, getPlayer(), getCrate());
+                        plugin.getCrazyHandler().getPrizeManager().checkPrize(prize, getPlayer(), getCrate());
 
-                        getPlugin().getCrateManager().removePlayerFromOpeningList(getPlayer());
+                        plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
 
                         cancel();
 
@@ -89,13 +89,13 @@ public class CsgoCrate extends CrateBuilder {
                             public void run() {
                                 if (getPlayer().getOpenInventory().getTopInventory().equals(getInventory())) getPlayer().closeInventory();
                             }
-                        }.runTaskLater(getPlugin(), 40);
+                        }.runTaskLater(plugin, 40);
                     } else if (time > 60) { // Added this due reports of the prizes spamming when low tps.
                         cancel();
                     }
                 }
             }
-        }.runTaskTimer(getPlugin(), 1, 1));
+        }.runTaskTimer(this.plugin, 1, 1));
     }
 
     private void populate() {

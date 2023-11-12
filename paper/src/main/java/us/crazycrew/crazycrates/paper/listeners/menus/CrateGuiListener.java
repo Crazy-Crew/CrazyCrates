@@ -1,13 +1,13 @@
-package us.crazycrew.crazycrates.paper.modules.events;
+package us.crazycrew.crazycrates.paper.listeners.menus;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateAdminMenu;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePreviewMenu;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePrizeMenu;
-import us.crazycrew.crazycrates.paper.modules.ModuleHandler;
+import us.crazycrew.crazycrates.paper.api.builders.types.CrateAdminMenu;
+import us.crazycrew.crazycrates.paper.api.builders.types.CrateMainMenu;
+import us.crazycrew.crazycrates.paper.api.builders.types.CratePreviewMenu;
+import us.crazycrew.crazycrates.paper.api.builders.types.CratePrizeMenu;
+import us.crazycrew.crazycrates.paper.api.modules.ModuleHandler;
 
 public class CrateGuiListener extends ModuleHandler {
 

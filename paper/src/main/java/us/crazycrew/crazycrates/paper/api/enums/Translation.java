@@ -9,9 +9,8 @@ import us.crazycrew.crazycrates.common.config.types.Messages;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.common.utils.StringUtils;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.utils.MiscUtils;
-import us.crazycrew.crazycrates.paper.utils.MsgUtils;
-import java.util.ArrayList;
+import us.crazycrew.crazycrates.paper.other.MsgUtils;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

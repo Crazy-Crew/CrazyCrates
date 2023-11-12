@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.utils;
+package us.crazycrew.crazycrates.paper.other;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.paper.CrazyCrates;

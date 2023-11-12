@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.api.crates.menus.types;
+package us.crazycrew.crazycrates.paper.api.builders.types;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -12,7 +12,7 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
-import us.crazycrew.crazycrates.paper.api.crates.builders.InventoryBuilder;
+import us.crazycrew.crazycrates.paper.api.builders.InventoryBuilder;
 import java.text.NumberFormat;
 import java.util.List;
 

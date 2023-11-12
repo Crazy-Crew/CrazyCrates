@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.api.crates.builders;
+package us.crazycrew.crazycrates.paper.api.builders;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.entity.Player;
@@ -7,7 +7,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.utils.MsgUtils;
+import us.crazycrew.crazycrates.paper.other.MsgUtils;
 
 @SuppressWarnings("ALL")
 public abstract class InventoryBuilder implements InventoryHolder {

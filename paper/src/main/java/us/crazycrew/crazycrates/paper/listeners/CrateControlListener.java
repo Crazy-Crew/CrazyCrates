@@ -25,11 +25,11 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
+import us.crazycrew.crazycrates.paper.managers.CrateManager;
+import us.crazycrew.crazycrates.paper.api.builders.types.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
-import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryManager;
-import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.managers.InventoryManager;
+import us.crazycrew.crazycrates.paper.other.MiscUtils;
 import java.util.HashMap;
 
 public class CrateControlListener implements Listener { // Crate Control

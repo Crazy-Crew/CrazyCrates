@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.modules.events;
+package us.crazycrew.crazycrates.paper.listeners.menus;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -12,10 +12,10 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
-import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryManager;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePreviewMenu;
-import us.crazycrew.crazycrates.paper.modules.ModuleHandler;
+import us.crazycrew.crazycrates.paper.managers.InventoryManager;
+import us.crazycrew.crazycrates.paper.api.builders.types.CrateMainMenu;
+import us.crazycrew.crazycrates.paper.api.builders.types.CratePreviewMenu;
+import us.crazycrew.crazycrates.paper.api.modules.ModuleHandler;
 
 public class CratePreviewListener extends ModuleHandler {
 

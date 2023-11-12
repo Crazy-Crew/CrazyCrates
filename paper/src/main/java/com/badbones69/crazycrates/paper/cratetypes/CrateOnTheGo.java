@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
+import us.crazycrew.crazycrates.paper.managers.CrateManager;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
@@ -16,8 +16,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
-import us.crazycrew.crazycrates.paper.utils.ItemUtils;
-import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.other.ItemUtils;
+import us.crazycrew.crazycrates.paper.other.MiscUtils;
 
 public class CrateOnTheGo implements Listener {
 

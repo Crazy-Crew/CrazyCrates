@@ -1,10 +1,10 @@
-package us.crazycrew.crazycrates.paper.modules.events;
+package us.crazycrew.crazycrates.paper.listeners.menus;
 
 import ch.jalu.configme.SettingsManager;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.types.Config;
-import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
+import us.crazycrew.crazycrates.paper.managers.CrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Sound;
@@ -16,11 +16,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
+import us.crazycrew.crazycrates.paper.api.builders.types.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
-import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryManager;
-import us.crazycrew.crazycrates.paper.modules.ModuleHandler;
-import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.managers.InventoryManager;
+import us.crazycrew.crazycrates.paper.api.modules.ModuleHandler;
+import us.crazycrew.crazycrates.paper.other.MiscUtils;
 
 public class CrateMenuListener extends ModuleHandler {
 

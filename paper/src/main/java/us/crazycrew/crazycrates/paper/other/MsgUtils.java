@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.utils;
+package us.crazycrew.crazycrates.paper.other;
 
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;

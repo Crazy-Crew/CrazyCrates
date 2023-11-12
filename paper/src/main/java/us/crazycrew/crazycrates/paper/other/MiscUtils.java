@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.utils;
+package us.crazycrew.crazycrates.paper.other;
 
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.objects.Crate;

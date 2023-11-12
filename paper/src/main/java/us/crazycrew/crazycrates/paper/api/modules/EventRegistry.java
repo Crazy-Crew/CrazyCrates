@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.modules;
+package us.crazycrew.crazycrates.paper.api.modules;
 
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;

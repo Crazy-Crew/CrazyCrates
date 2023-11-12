@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
+import us.crazycrew.crazycrates.paper.managers.CrateManager;
 import us.crazycrew.crazycrates.paper.api.support.holograms.HologramHandler;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.Color;
@@ -9,7 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.other.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

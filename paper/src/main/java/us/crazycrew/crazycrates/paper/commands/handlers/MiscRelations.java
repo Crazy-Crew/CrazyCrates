@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.commands.handlers.interfaces.MessageHandler;
-import us.crazycrew.crazycrates.paper.utils.MsgUtils;
+import us.crazycrew.crazycrates.paper.other.MsgUtils;
 
 public class MiscRelations extends MessageHandler {
 

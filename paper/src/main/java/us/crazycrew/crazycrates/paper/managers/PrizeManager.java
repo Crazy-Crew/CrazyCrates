@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.api.crates;
+package us.crazycrew.crazycrates.paper.managers;
 
 import org.apache.commons.lang.WordUtils;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
@@ -13,8 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.paper.utils.MiscUtils;
-import us.crazycrew.crazycrates.paper.utils.MsgUtils;
+import us.crazycrew.crazycrates.paper.other.MiscUtils;
+import us.crazycrew.crazycrates.paper.other.MsgUtils;
 import java.util.HashMap;
 import static java.util.regex.Matcher.quoteReplacement;
 

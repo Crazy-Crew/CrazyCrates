@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.api.crates.builders;
+package us.crazycrew.crazycrates.paper.api.builders;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.entity.Player;
@@ -8,8 +8,8 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePrizeMenu;
-import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.api.builders.types.CratePrizeMenu;
+import us.crazycrew.crazycrates.paper.other.MiscUtils;
 
 public abstract class CrateBuilder {
 

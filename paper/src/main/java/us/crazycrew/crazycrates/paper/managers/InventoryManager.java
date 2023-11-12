@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.api.crates.menus;
+package us.crazycrew.crazycrates.paper.managers;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;

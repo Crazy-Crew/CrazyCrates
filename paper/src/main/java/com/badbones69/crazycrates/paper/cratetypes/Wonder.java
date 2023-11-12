@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.cratetypes;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
+import us.crazycrew.crazycrates.paper.managers.CrateManager;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
@@ -13,8 +13,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePrizeMenu;
-import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.api.builders.types.CratePrizeMenu;
+import us.crazycrew.crazycrates.paper.other.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
 

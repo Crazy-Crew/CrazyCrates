@@ -21,7 +21,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.other.MiscUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

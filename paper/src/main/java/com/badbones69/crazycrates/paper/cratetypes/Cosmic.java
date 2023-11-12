@@ -19,11 +19,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CratePrizeMenu;
+import us.crazycrew.crazycrates.paper.managers.CrateManager;
+import us.crazycrew.crazycrates.paper.api.builders.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
-import us.crazycrew.crazycrates.paper.utils.MiscUtils;
-import us.crazycrew.crazycrates.paper.utils.MsgUtils;
+import us.crazycrew.crazycrates.paper.other.MiscUtils;
+import us.crazycrew.crazycrates.paper.other.MsgUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 

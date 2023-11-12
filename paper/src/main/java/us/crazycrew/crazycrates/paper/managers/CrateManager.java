@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.paper.api.crates;
+package us.crazycrew.crazycrates.paper.managers;
 
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.paper.api.FileManager;
@@ -12,14 +12,14 @@ import com.badbones69.crazycrates.paper.cratetypes.Roulette;
 import com.badbones69.crazycrates.paper.cratetypes.War;
 import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import com.badbones69.crazycrates.paper.cratetypes.Wonder;
-import us.crazycrew.crazycrates.paper.api.crates.types.CsgoCrate;
+import us.crazycrew.crazycrates.paper.managers.types.CsgoCrate;
 import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
 import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.Config;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
+import us.crazycrew.crazycrates.paper.api.builders.types.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
-import us.crazycrew.crazycrates.paper.api.events.crates.CrateOpenEvent;
+import us.crazycrew.crazycrates.paper.api.events.CrateOpenEvent;
 import us.crazycrew.crazycrates.paper.api.support.holograms.HologramHandler;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
@@ -49,8 +49,8 @@ import us.crazycrew.crazycrates.paper.api.support.holograms.types.DecentHologram
 import us.crazycrew.crazycrates.paper.api.support.holograms.types.HolographicDisplaysSupport;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
-import us.crazycrew.crazycrates.paper.utils.ItemUtils;
-import us.crazycrew.crazycrates.paper.utils.MiscUtils;
+import us.crazycrew.crazycrates.paper.other.ItemUtils;
+import us.crazycrew.crazycrates.paper.other.MiscUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
