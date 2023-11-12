@@ -8,7 +8,6 @@ import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
 import com.badbones69.crazycrates.paper.cratetypes.FireCracker;
 import com.badbones69.crazycrates.paper.cratetypes.QuickCrate;
-import com.badbones69.crazycrates.paper.cratetypes.Roulette;
 import com.badbones69.crazycrates.paper.cratetypes.War;
 import com.badbones69.crazycrates.paper.cratetypes.Wheel;
 import us.crazycrew.crazycrates.paper.api.builders.CrateBuilder;
@@ -49,6 +48,7 @@ import us.crazycrew.crazycrates.paper.api.support.holograms.types.DecentHologram
 import us.crazycrew.crazycrates.paper.api.support.holograms.types.HolographicDisplaysSupport;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
+import us.crazycrew.crazycrates.paper.managers.types.RouletteCrate;
 import us.crazycrew.crazycrates.paper.managers.types.WonderCrate;
 import us.crazycrew.crazycrates.paper.other.ItemUtils;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
@@ -361,8 +361,9 @@ public class CrateManager {
         switch (crate.getCrateType()) {
             case csgo -> crateBuilder = new CsgoCrate(crate, player, 27);
             case wonder -> crateBuilder = new WonderCrate(crate, player, 45);
+            case roulette -> crateBuilder = new RouletteCrate(crate, player, 45);
             default -> {
-                crateBuilder = new CsgoCrate(crate, player, 27, crate.getCrateInventoryName());
+                crateBuilder = new CsgoCrate(crate, player, 27);
 
                 if (this.plugin.isLogging()) {
                     List.of(
@@ -387,9 +388,6 @@ public class CrateManager {
             }
             case cosmic -> {
                 if (isCrateEventSuccessful(player, crate, keyType, checkHand)) Cosmic.openCosmic(player, crate, keyType, checkHand);
-            }
-            case roulette -> {
-                if (isCrateEventSuccessful(player, crate, keyType, checkHand)) Roulette.openRoulette(player, crate, keyType, checkHand);
             }
             case wheel -> {
                 if (isCrateEventSuccessful(player, crate, keyType, checkHand)) Wheel.startWheel(player, crate, keyType, checkHand);
