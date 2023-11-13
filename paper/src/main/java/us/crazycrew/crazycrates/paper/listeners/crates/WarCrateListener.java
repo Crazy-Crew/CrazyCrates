@@ -105,19 +105,15 @@ public class WarCrateListener implements Listener {
     public void onInventoryClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
 
-        if (!this.crateManager.containsCloser(player) && !this.crateManager.containsPicker(player)) {
-            return;
-        }
+        if (this.crateManager.containsPicker(player) && this.crateManager.isPicker(player)) {
+            for (Crate crate : this.crateManager.getCrates()) {
+                if (crate.getCrateType() == CrateType.war && event.getInventory().getHolder(false) instanceof CratePrizeMenu) {
+                    if (this.crateManager.hasCrateTask(player)) {
+                        this.crateManager.removeCloser(player);
 
-        for (Crate crate : this.crateManager.getCrates()) {
-            if (crate.getCrateType() != CrateType.war && !(event.getInventory().getHolder(false) instanceof CratePrizeMenu)) {
-                return;
-            }
-
-            this.crateManager.removeCloser(player);
-
-            if (this.crateManager.hasCrateTask(player)) {
-                this.crateManager.endCrate(player);
+                        this.crateManager.endCrate(player);
+                    }
+                }
             }
         }
     }
