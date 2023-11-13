@@ -31,6 +31,9 @@ public class MetricsWrapper {
         crateList.forEach(crate -> {
             CrateType crateType = crate.getCrateType();
 
+            // If the crate type is null. don't add to the pie chart.
+            if (crateType == null) return;
+
             SimplePie chart = new SimplePie("crate_types", crateType::getName);
 
             this.metrics.addCustomChart(chart);
