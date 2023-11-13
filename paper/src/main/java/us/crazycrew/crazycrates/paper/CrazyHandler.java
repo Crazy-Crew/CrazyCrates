@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.CrazyCratesPlugin;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
+import us.crazycrew.crazycrates.paper.api.MigrationService;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.managers.PrizeManager;
 import us.crazycrew.crazycrates.paper.api.support.metrics.MetricsWrapper;
@@ -85,6 +86,10 @@ public class CrazyHandler extends CrazyCratesPlugin {
 
         this.moduleLoader = new ModuleLoader();
         this.moduleLoader.load();
+
+        // Migrates 2 config.yml settings to plugin-config.yml.
+        MigrationService service = new MigrationService();
+        service.migrate();
 
         // Load metrics.
         boolean metrics = getConfigManager().getPluginConfig().getProperty(PluginConfig.toggle_metrics);
