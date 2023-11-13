@@ -43,60 +43,61 @@ public class WarCrateListener implements Listener {
             Crate crate = this.crateManager.getOpeningCrate(player);
 
             if (crate.getCrateType() == CrateType.war && this.crateManager.isPicker(player)) {
+                ItemStack item = event.getCurrentItem();
 
-            }
+                if (item != null && item.getType().toString().contains(Material.GLASS_PANE.toString())) {
+                    int slot = event.getRawSlot();
+                    Prize prize = crate.pickPrize(player);
+                    inventory.setItem(slot, prize.getDisplayItem());
 
-            ItemStack item = event.getCurrentItem();
+                    if (this.crateManager.hasCrateTask(player)) this.crateManager.endCrate(player);
 
-            if (item != null && item.getType().toString().contains(Material.GLASS_PANE.toString())) {
-                int slot = event.getRawSlot();
-                Prize prize = crate.pickPrize(player);
-                inventory.setItem(slot, prize.getDisplayItem());
+                    this.crateManager.removePicker(player);
+                    this.crateManager.addCloser(player, true);
+                    this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
 
-                if (this.crateManager.hasCrateTask(player)) this.crateManager.endCrate(player);
+                    if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
-                this.crateManager.removePicker(player);
-                this.crateManager.addCloser(player, true);
-                this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
+                    this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+                    this.crateManager.removePlayerFromOpeningList(player);
 
-                if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
+                    //TODO() make volume/pitch configurable and sound type configurable.
+                    //TODO() Adopt the new sound system including custom sounds.
+                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 1f, 1f);
 
-                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-                this.crateManager.removePlayerFromOpeningList(player);
-                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 1f, 1f);
-
-                this.crateManager.addCrateTask(player, new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        for (int i = 0; i < 9; i++) {
-                            if (i != slot) inventory.setItem(i, crate.pickPrize(player).getDisplayItem());
-                        }
-
-                        if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
-
-                        // Removing other items then the prize.
-                        crateManager.addCrateTask(player, new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                for (int i = 0; i < 9; i++) {
-                                    if (i != slot) inventory.setItem(i, new ItemStack(Material.AIR));
-                                }
-
-                                if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
-
-                                // Closing the inventory when finished.
-                                crateManager.addCrateTask(player, new BukkitRunnable() {
-                                    @Override
-                                    public void run() {
-                                        if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
-
-                                        player.closeInventory();
-                                    }
-                                }.runTaskLater(plugin, 30));
+                    this.crateManager.addCrateTask(player, new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            for (int i = 0; i < 9; i++) {
+                                if (i != slot) inventory.setItem(i, crate.pickPrize(player).getDisplayItem());
                             }
-                        }.runTaskLater(plugin, 30));
-                    }
-                }.runTaskLater(this.plugin, 30));
+
+                            if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
+
+                            // Removing other items then the prize.
+                            crateManager.addCrateTask(player, new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    for (int i = 0; i < 9; i++) {
+                                        if (i != slot) inventory.setItem(i, new ItemStack(Material.AIR));
+                                    }
+
+                                    if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
+
+                                    // Closing the inventory when finished.
+                                    crateManager.addCrateTask(player, new BukkitRunnable() {
+                                        @Override
+                                        public void run() {
+                                            if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
+
+                                            player.closeInventory();
+                                        }
+                                    }.runTaskLater(plugin, 30));
+                                }
+                            }.runTaskLater(plugin, 30));
+                        }
+                    }.runTaskLater(this.plugin, 30));
+                }
             }
         }
     }
