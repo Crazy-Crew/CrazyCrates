@@ -7,7 +7,7 @@ import us.crazycrew.crazycrates.paper.listeners.crates.WarCrateListener;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
-import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
+import us.crazycrew.crazycrates.paper.listeners.crates.CosmicCrateListener;
 import us.crazycrew.crazycrates.paper.listeners.crates.MobileCrateListener;
 import us.crazycrew.crazycrates.paper.listeners.crates.QuadCrateListener;
 import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
@@ -22,7 +22,6 @@ import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.paper.api.support.placeholders.PlaceholderAPISupport;
 import us.crazycrew.crazycrates.paper.listeners.MiscListener;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
-import us.crazycrew.crazycrates.paper.api.modules.ModuleLoader;
 import us.crazycrew.crazycrates.paper.listeners.crates.CrateOpenListener;
 import us.crazycrew.crazycrates.paper.listeners.menus.CrateAdminListener;
 import us.crazycrew.crazycrates.paper.other.MsgUtils;
@@ -67,14 +66,12 @@ public class CrazyCrates extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
 
         pluginManager.registerEvents(new CrateControlListener(), this);
-        pluginManager.registerEvents(new CrateOpenListener(), this);
-        pluginManager.registerEvents(new MiscListener(), this);
-
         pluginManager.registerEvents(new MobileCrateListener(), this);
+        pluginManager.registerEvents(new CosmicCrateListener(), this);
         pluginManager.registerEvents(new QuadCrateListener(), this);
+        pluginManager.registerEvents(new CrateOpenListener(), this);
         pluginManager.registerEvents(new WarCrateListener(), this);
-
-        pluginManager.registerEvents(new Cosmic(), this);
+        pluginManager.registerEvents(new MiscListener(), this);
 
         if (isLogging()) {
             // Print dependency garbage

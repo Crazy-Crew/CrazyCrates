@@ -1,12 +1,10 @@
 package us.crazycrew.crazycrates.paper.listeners.crates;
 
-import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -60,8 +58,6 @@ public class CrateOpenListener implements Listener {
         this.crateManager.addPlayerToOpeningList(player, crate);
         if (crate.getCrateType() != CrateType.cosmic) this.crazyHandler.getUserManager().addOpenedCrate(player.getUniqueId(), crate.getName());
 
-        JavaPlugin plugin = event.getPlugin();
-
         FileConfiguration configuration = event.getConfiguration();
 
         String broadcastMessage = configuration.getString("Crate.BroadCast", "");
@@ -69,7 +65,8 @@ public class CrateOpenListener implements Listener {
 
         if (broadcastToggle) {
             if (!broadcastMessage.isBlank()) {
-                plugin.getServer().broadcastMessage(MsgUtils.color(broadcastMessage.replaceAll("%prefix%", MsgUtils.getPrefix())).replaceAll("%player%", player.getName()));
+                //noinspection deprecation
+                this.plugin.getServer().broadcastMessage(MsgUtils.color(broadcastMessage.replaceAll("%prefix%", MsgUtils.getPrefix())).replaceAll("%player%", player.getName()));
             }
         }
 
@@ -91,10 +88,6 @@ public class CrateOpenListener implements Listener {
                     this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), builder);
                 });
             }
-        }
-
-        if (crate.getCrateType() == CrateType.cosmic) {
-            Cosmic.openCosmic(player, crate, event.getKeyType(), event.isCheckHand());
         }
     }
 }

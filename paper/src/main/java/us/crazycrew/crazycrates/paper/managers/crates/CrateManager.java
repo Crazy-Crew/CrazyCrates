@@ -4,19 +4,17 @@ import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
 import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
-import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
-import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import us.crazycrew.crazycrates.paper.api.builders.CrateBuilder;
 import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
+import us.crazycrew.crazycrates.paper.managers.crates.types.CosmicCrate;
 import us.crazycrew.crazycrates.paper.managers.crates.types.CsgoCrate;
 import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.api.builders.types.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
-import us.crazycrew.crazycrates.paper.api.events.CrateOpenEvent;
 import us.crazycrew.crazycrates.paper.api.support.holograms.HologramHandler;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
@@ -43,7 +41,6 @@ import us.crazycrew.crazycrates.paper.api.support.holograms.types.CMIHologramsSu
 import us.crazycrew.crazycrates.paper.api.support.holograms.types.DecentHologramsSupport;
 import us.crazycrew.crazycrates.paper.api.support.holograms.types.HolographicDisplaysSupport;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
-import us.crazycrew.crazycrates.paper.api.support.structures.StructureHandler;
 import us.crazycrew.crazycrates.paper.managers.crates.types.FireCrackerCrate;
 import us.crazycrew.crazycrates.paper.managers.crates.types.QuickCrate;
 import us.crazycrew.crazycrates.paper.managers.crates.types.RouletteCrate;
@@ -60,7 +57,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -331,25 +327,6 @@ public class CrateManager {
     // A list of tasks being run by the QuadCrate type.
     private final HashMap<UUID, List<BukkitTask>> currentQuadTasks = new HashMap<>();
 
-    private boolean isCrateEventSuccessful(Player player, Crate crate, KeyType keyType, boolean checkHand) {
-        CrateOpenEvent crateOpenEvent = new CrateOpenEvent(this.plugin, player, crate, keyType, checkHand, crate.getFile());
-        crateOpenEvent.callEvent();
-
-        if (crateOpenEvent.isCancelled()) {
-            List.of(
-                    "Crate " + crate.getName() + " event has been cancelled.",
-                    "A few reasons for why this happened can be found below",
-                    "",
-                    " 1) No valid prizes can be found, Likely a yaml issue.",
-                    " 2) The player does not have the permission to open the crate."
-            ).forEach(this.plugin.getLogger()::warning);
-
-            return false;
-        }
-
-        return true;
-    }
-
     /**
      * Opens a crate for a player.
      *
@@ -380,6 +357,7 @@ public class CrateManager {
             case wheel -> crateBuilder = new WheelCrate(crate, player, 54);
             case roulette -> crateBuilder = new RouletteCrate(crate, player, 45);
             case war -> crateBuilder = new WarCrate(crate, player, 9);
+            case cosmic -> crateBuilder = new CosmicCrate(crate, player, 27, false);
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
                     player.sendMessage(Translation.quick_crate_in_use.getString());
@@ -425,55 +403,6 @@ public class CrateManager {
 
         // Open the crate.
         crateBuilder.open(keyType, checkHand);
-
-        switch (crate.getCrateType()) {
-            case cosmic -> {
-                if (isCrateEventSuccessful(player, crate, keyType, checkHand)) Cosmic.openCosmic(player, crate, keyType, checkHand);
-            }
-            case quad_crate -> {
-                if (virtualCrate) {
-                    player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
-                    removePlayerFromOpeningList(player);
-                    return;
-                }
-
-                if (isCrateEventSuccessful(player, crate, keyType, checkHand)) {
-                    boolean isRandom = crate.getFile().contains("Crate.structure.file") && !crate.getFile().getBoolean("Crate.structure.random", true);
-
-                    CrateSchematic schematic = isRandom ? getCrateSchematic(crate.getFile().getString("Crate.structure.file")) : getCrateSchematics().get(new Random().nextInt(getCrateSchematics().size()));
-
-                    StructureHandler handler = new StructureHandler(schematic.getSchematicFile());
-                    // if crate location is not null, get physical location otherwise get player location.
-                    Location crateLocation = getCrateLocation(location) != null ? getCrateLocation(location).getLocation() : location;
-
-                    QuadCrateManager session = new QuadCrateManager(player, crate, keyType, crateLocation, checkHand, handler);
-
-                    session.startCrate();
-                }
-            }
-            case crate_on_the_go -> {
-                if (virtualCrate) {
-                    player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
-                    removePlayerFromOpeningList(player);
-                    return;
-                } else {
-                    if (isCrateEventSuccessful(player, crate, keyType, checkHand)) {
-                        if (this.plugin.getCrazyHandler().getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, true)) {
-                            Prize prize = crate.pickPrize(player);
-                            this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
-
-                            if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
-
-                            removePlayerFromOpeningList(player);
-                        } else {
-                            MiscUtils.failedToTakeKey(player, crate);
-                        }
-                    }
-                }
-            }
-        }
-
-        this.plugin.getCrazyHandler().getEventLogger().logCrateEvent(player, crate, keyType, this.plugin.getConfigManager().getConfig().getProperty(Config.log_to_file), this.plugin.getConfigManager().getConfig().getProperty(Config.log_to_console));
     }
 
     public void addCrateInUse(Player player, Location location) {
@@ -1100,6 +1029,61 @@ public class CrateManager {
 
     public void removeCloser(Player player) {
         this.canClose.remove(player.getUniqueId());
+    }
+
+    // Cosmic Crate
+    private final HashMap<UUID, ArrayList<Integer>> glass = new HashMap<>();
+
+    public void addNewGlassPlayer(Player player) {
+        if (!containsGlass(player)) this.glass.put(player.getUniqueId(), new ArrayList<>());
+    }
+
+    public void setGlass(Player player, ArrayList<Integer> slots) {
+        this.glass.put(player.getUniqueId(), slots);
+    }
+
+    public void removeGlass(Player player) {
+        this.glass.remove(player.getUniqueId());
+    }
+
+    public void addGlass(Player player, int slot) {
+        this.glass.get(player.getUniqueId()).add(slot);
+    }
+
+    public ArrayList<Integer> getGlass(Player player) {
+        return this.glass.get(player.getUniqueId());
+    }
+
+    public boolean containsGlass(Player player) {
+        return this.glass.containsKey(player.getUniqueId());
+    }
+
+    private final HashMap<UUID, ArrayList<Integer>> picks = new HashMap<>();
+
+    public void addPicks(Player player, ArrayList<Integer> slots) {
+        this.picks.put(player.getUniqueId(), slots);
+    }
+
+    public void removePicks(Player player) {
+        this.picks.remove(player.getUniqueId());
+    }
+
+    public ArrayList<Integer> getPicks(Player player) {
+        return this.picks.get(player.getUniqueId());
+    }
+
+    private final HashMap<UUID, Boolean> checkHands = new HashMap<>();
+
+    public void addHands(Player player, boolean checkHand) {
+        this.checkHands.put(player.getUniqueId(), checkHand);
+    }
+
+    public void removeHands(Player player) {
+        this.checkHands.remove(player.getUniqueId());
+    }
+
+    public boolean getHand(Player player) {
+        return this.checkHands.get(player.getUniqueId());
     }
 
     // QuickCrate/FireCracker

@@ -45,6 +45,28 @@ public abstract class CrateBuilder {
         this.inventory = this.menu.build().getInventory();
 
         this.isFireCracker = false;
+        this.isCosmicCrate = false;
+    }
+
+    private final boolean isCosmicCrate;
+
+    public CrateBuilder(Crate crate, Player player, int size, boolean isCosmicCrate) {
+        Preconditions.checkNotNull(crate, "Crate can't be null.");
+        Preconditions.checkNotNull(player, "Player can't be null.");
+
+        this.crate = crate;
+
+        this.location = player.getLocation();
+
+        this.player = player;
+        this.size = size;
+
+        this.menu = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
+
+        this.inventory = this.menu.build().getInventory();
+
+        this.isFireCracker = false;
+        this.isCosmicCrate = isCosmicCrate;
     }
 
     public CrateBuilder(Crate crate, Player player, int size, Location location) {
@@ -64,6 +86,7 @@ public abstract class CrateBuilder {
         this.inventory = this.menu.build().getInventory();
 
         this.isFireCracker = false;
+        this.isCosmicCrate = false;
     }
 
     public CrateBuilder(Crate crate, Player player, Location location) {
@@ -83,6 +106,7 @@ public abstract class CrateBuilder {
         this.inventory = null;
 
         this.isFireCracker = false;
+        this.isCosmicCrate = false;
     }
 
     private final boolean isFireCracker;
@@ -104,6 +128,7 @@ public abstract class CrateBuilder {
         this.inventory = null;
 
         this.isFireCracker = isFireCracker;
+        this.isCosmicCrate = false;
     }
 
     public abstract void open(KeyType type, boolean checkHand);
@@ -166,6 +191,15 @@ public abstract class CrateBuilder {
      */
     public boolean isFireCracker() {
         return isFireCracker;
+    }
+
+    /**
+     * If the crate type is cosmic crate, we won't run the event again.
+     *
+     * @return true or false
+     */
+    public boolean isCosmicCrate() {
+        return this.isCosmicCrate;
     }
 
     /**
@@ -234,7 +268,7 @@ public abstract class CrateBuilder {
      * @return true if cancelled otherwise false.
      */
     public boolean isCrateEventValid(KeyType keyType, boolean checkHand) {
-        CrateOpenEvent event = new CrateOpenEvent(this.plugin, this.player, this.crate, keyType, checkHand, this.crate.getFile());
+        CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getFile());
         event.callEvent();
 
         if (event.isCancelled()) {
