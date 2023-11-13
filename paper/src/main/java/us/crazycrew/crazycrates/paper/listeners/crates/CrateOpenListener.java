@@ -1,5 +1,6 @@
 package us.crazycrew.crazycrates.paper.listeners.crates;
 
+import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
@@ -12,18 +13,16 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
 import us.crazycrew.crazycrates.paper.other.MsgUtils;
 import java.util.List;
 
-@SuppressWarnings("deprecation")
 public class CrateOpenListener implements Listener {
 
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     @NotNull
     private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();

@@ -12,7 +12,7 @@ import com.badbones69.crazycrates.paper.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent.KeyReceiveReason;
 import us.crazycrew.crazycrates.paper.commands.subs.CrateBaseCommand;
-import org.bukkit.plugin.java.JavaPlugin;
+
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,7 +30,7 @@ import java.util.logging.Level;
 public class CrazyManager {
 
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     /**
      * Opens a crate for a player.

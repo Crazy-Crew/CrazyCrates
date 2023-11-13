@@ -2,7 +2,6 @@ package us.crazycrew.crazycrates.paper.api.modules;
 
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import java.util.ArrayList;
@@ -11,7 +10,7 @@ import java.util.List;
 public class EventRegistry {
 
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     @NotNull
     private final List<Listener> listeners = new ArrayList<>();

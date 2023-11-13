@@ -6,7 +6,6 @@ import net.Zrips.CMILib.Container.CMILocation;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.block.Block;
 import us.crazycrew.crazycrates.paper.api.support.holograms.HologramHandler;
-
 import java.util.HashMap;
 import java.util.UUID;
 

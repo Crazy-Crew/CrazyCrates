@@ -1,6 +1,6 @@
 package us.crazycrew.crazycrates.paper.api.support.holograms.types;
 
-import org.bukkit.plugin.java.JavaPlugin;
+
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.crates.CrateHologram;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
@@ -17,7 +17,7 @@ public class HolographicDisplaysSupport extends HologramHandler {
     private final HashMap<Block, Hologram> holograms = new HashMap<>();
 
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     @NotNull
     private final HolographicDisplaysAPI api = HolographicDisplaysAPI.get(this.plugin);

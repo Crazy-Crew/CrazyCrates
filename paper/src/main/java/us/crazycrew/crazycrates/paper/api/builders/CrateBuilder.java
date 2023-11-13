@@ -20,7 +20,7 @@ import java.util.List;
 public abstract class CrateBuilder {
 
     @NotNull
-    protected final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
+    protected final CrazyCrates plugin = CrazyCrates.get();
 
     private final InventoryBuilder menu;
     private final Inventory inventory;

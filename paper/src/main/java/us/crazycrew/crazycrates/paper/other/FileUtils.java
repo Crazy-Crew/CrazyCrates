@@ -1,6 +1,6 @@
 package us.crazycrew.crazycrates.paper.other;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,7 +12,8 @@ import java.util.logging.Level;
 
 public class FileUtils {
 
-    private final static CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    @NotNull
+    private final static CrazyCrates plugin = CrazyCrates.get();
 
     public static void copyFiles(Path directory, String folder, List<String> names) {
         names.forEach(name -> copyFile(directory, folder, name));

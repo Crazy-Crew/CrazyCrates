@@ -20,7 +20,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
@@ -34,7 +33,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MiscUtils {
 
-    private static final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static final CrazyCrates plugin = CrazyCrates.get();
 
     public static void sendCommand(String command) {
         Server server = plugin.getServer();

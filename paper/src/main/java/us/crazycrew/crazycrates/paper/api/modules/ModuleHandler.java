@@ -7,7 +7,7 @@ import us.crazycrew.crazycrates.paper.CrazyCrates;
 public abstract class ModuleHandler implements Listener {
 
     @NotNull
-    public final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
+    public final CrazyCrates plugin = CrazyCrates.get();
 
     public abstract String getModuleName();
 

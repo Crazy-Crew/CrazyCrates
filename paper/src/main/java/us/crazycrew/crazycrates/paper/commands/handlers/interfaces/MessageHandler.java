@@ -2,14 +2,13 @@ package us.crazycrew.crazycrates.paper.commands.handlers.interfaces;
 
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 
 public abstract class MessageHandler {
 
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     @NotNull
     private final BukkitCommandManager<CommandSender> bukkitCommandManager = this.plugin.getCommandManager();

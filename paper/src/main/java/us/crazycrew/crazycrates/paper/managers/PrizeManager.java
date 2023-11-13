@@ -11,7 +11,6 @@ import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
 import us.crazycrew.crazycrates.paper.other.MsgUtils;
@@ -21,7 +20,7 @@ import static java.util.regex.Matcher.quoteReplacement;
 public class PrizeManager {
     
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     /**
      * Give a player a prize they have won.

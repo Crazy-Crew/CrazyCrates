@@ -2,6 +2,7 @@ package us.crazycrew.crazycrates.paper;
 
 import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.EventLogger;
+import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.paper.listeners.crates.WarCrateListener;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.FileManager;
@@ -15,7 +16,6 @@ import us.crazycrew.crazycrates.paper.listeners.menus.CratePreviewListener;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
@@ -30,6 +30,12 @@ import java.util.List;
 
 public class CrazyCrates extends JavaPlugin {
 
+    @NotNull
+    public static CrazyCrates get() {
+        return JavaPlugin.getPlugin(CrazyCrates.class);
+    }
+
+    @NotNull
     private final BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(this);
 
     private CrazyHandler crazyHandler;

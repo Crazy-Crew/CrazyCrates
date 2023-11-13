@@ -10,7 +10,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -28,9 +27,10 @@ import java.util.logging.Level;
 public class BukkitUserManager extends UserManager {
 
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = CrazyCrates.get();
 
-    private final @NotNull FileConfiguration data = Files.DATA.getFile();
+    @NotNull
+    private final FileConfiguration data = Files.DATA.getFile();
 
     @Override
     public Player getUser(UUID uuid) {
