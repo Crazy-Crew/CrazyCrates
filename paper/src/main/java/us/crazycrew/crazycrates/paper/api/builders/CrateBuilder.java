@@ -15,6 +15,8 @@ import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.api.builders.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.api.events.CrateOpenEvent;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
+import us.crazycrew.crazycrates.paper.other.MsgUtils;
+
 import java.util.List;
 
 public abstract class CrateBuilder {
@@ -61,7 +63,7 @@ public abstract class CrateBuilder {
         this.player = player;
         this.size = size;
 
-        this.menu = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
+        this.menu = new CratePrizeMenu(crate, player, size, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"));
 
         this.inventory = this.menu.build().getInventory();
 

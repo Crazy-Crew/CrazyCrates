@@ -23,7 +23,7 @@ public class CosmicCrate extends CrateBuilder {
         CosmicCrateManager manager = (CosmicCrateManager) getCrate().getManager();
         int slot = 1;
 
-        for (int index = 0; index < 27; index++) {
+        for (int index = 0; index < getSize(); index++) {
             ItemStack stack = manager.getMysteryCrate().setAmount(slot).addNamePlaceholder("%Slot%", String.valueOf(slot)).addLorePlaceholder("%Slot%", String.valueOf(slot)).build();
 
             setItem(index, stack);

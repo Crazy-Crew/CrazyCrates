@@ -94,6 +94,8 @@ public class CosmicCrateListener implements Listener {
         if (crateCosmicMenu.contains(" - Choose")) {
             int slot = event.getRawSlot();
 
+            this.plugin.getLogger().warning("Slot: " + slot);
+
             if (inCosmic(slot)) {
                 ItemStack item = event.getCurrentItem();
 
