@@ -8,8 +8,8 @@ import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
-import com.badbones69.crazycrates.paper.cratetypes.CrateOnTheGo;
-import com.badbones69.crazycrates.paper.cratetypes.QuadCrate;
+import us.crazycrew.crazycrates.paper.listeners.crates.MobileCrateListener;
+import us.crazycrew.crazycrates.paper.listeners.crates.QuadCrateListener;
 import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
 import us.crazycrew.crazycrates.paper.listeners.menus.CrateMenuListener;
 import us.crazycrew.crazycrates.paper.listeners.menus.CratePreviewListener;
@@ -65,15 +65,16 @@ public class CrazyCrates extends JavaPlugin {
         this.crazyHandler.getModuleLoader().load();
 
         PluginManager pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(new MiscListener(), this);
+
         pluginManager.registerEvents(new CrateControlListener(), this);
         pluginManager.registerEvents(new CrateOpenListener(), this);
+        pluginManager.registerEvents(new MiscListener(), this);
 
+        pluginManager.registerEvents(new MobileCrateListener(), this);
+        pluginManager.registerEvents(new QuadCrateListener(), this);
         pluginManager.registerEvents(new WarCrateListener(), this);
 
         pluginManager.registerEvents(new Cosmic(), this);
-        pluginManager.registerEvents(new CrateOnTheGo(), this);
-        pluginManager.registerEvents(new QuadCrate(), this);
 
         if (isLogging()) {
             // Print dependency garbage
@@ -128,11 +129,6 @@ public class CrazyCrates extends JavaPlugin {
     @NotNull
     public CrazyManager getCrazyManager() {
         return this.crazyManager;
-    }
-
-    @NotNull
-    public ModuleLoader getModuleLoader() {
-        return this.crazyHandler.getModuleLoader();
     }
 
     @NotNull

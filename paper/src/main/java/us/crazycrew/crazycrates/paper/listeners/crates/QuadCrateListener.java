@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.paper.cratetypes;
+package us.crazycrew.crazycrates.paper.listeners.crates;
 
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -28,17 +28,12 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 
-/**
- * Controller class for the quad-crate crate type.
- * Display items are controlled from the quick crate due to them using nbt tags.
- */
-public class QuadCrate implements Listener {
+public class QuadCrateListener implements Listener {
 
     @NotNull
     private final CrazyCrates plugin = CrazyCrates.get();
@@ -49,23 +44,23 @@ public class QuadCrate implements Listener {
     private final SessionManager sessionManager = new SessionManager();
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent e) {
-        if (this.sessionManager.inSession(e.getPlayer())) e.setCancelled(true);
+    public void onBlockBreak(BlockBreakEvent event) {
+        if (this.sessionManager.inSession(event.getPlayer())) event.setCancelled(true);
     }
 
     @EventHandler
-    public void onChestClick(PlayerInteractEvent e) {
-        Player player = e.getPlayer();
+    public void onChestClick(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
 
         if (!this.sessionManager.inSession(player)) return;
 
         QuadCrateManager session = sessionManager.getSession(player);
 
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            Block block = e.getClickedBlock();
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK) {
+            Block block = event.getClickedBlock();
 
             if (session.getCrateLocations().contains(block.getLocation())) {
-                e.setCancelled(true);
+                event.setCancelled(true);
 
                 if (session.getCratesOpened().get(block.getLocation())) return;
 
@@ -109,15 +104,15 @@ public class QuadCrate implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent e) {
-        Player player = e.getPlayer();
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
 
         if (this.sessionManager.inSession(player)) { // Player tries to walk away from the crate area
-            Location from = e.getFrom();
-            Location to = e.getTo();
+            Location from = event.getFrom();
+            Location to = event.getTo();
 
             if (from.getBlockX() != to.getBlockX() || from.getBlockZ() != to.getBlockZ()) {
-                e.setCancelled(true);
+                event.setCancelled(true);
                 player.teleport(from);
                 return;
             }
@@ -141,33 +136,33 @@ public class QuadCrate implements Listener {
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent e) {
-        if (this.sessionManager.inSession(e.getPlayer())) e.setCancelled(true);
+    public void onBlockPlace(BlockPlaceEvent event) {
+        if (this.sessionManager.inSession(event.getPlayer())) event.setCancelled(true);
     }
 
     @EventHandler
-    public void onCommandProcess(PlayerCommandPreprocessEvent e) {
-        Player player = e.getPlayer();
+    public void onCommandProcess(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
 
         if (this.sessionManager.inSession(player) && !player.hasPermission("crazycrates.admin")) {
-            e.setCancelled(true);
+            event.setCancelled(true);
             player.sendMessage(Translation.no_commands_while_in_crate.getMessage("%player%", player.getName()).toString());
         }
     }
 
     @EventHandler
-    public void onPlayerTeleport(PlayerTeleportEvent e) {
-        Player player = e.getPlayer();
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        Player player = event.getPlayer();
 
-        if (this.sessionManager.inSession(player) && e.getCause() == TeleportCause.ENDER_PEARL) {
-            e.setCancelled(true);
+        if (this.sessionManager.inSession(player) && event.getCause() == TeleportCause.ENDER_PEARL) {
+            event.setCancelled(true);
             player.sendMessage(Translation.no_teleporting.getMessage("%Player%", player.getName()).toString());
         }
     }
 
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent e) {
-        Player player = e.getPlayer();
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
 
         if (this.sessionManager.inSession(player)) this.sessionManager.getSession(player).endCrate();
     }

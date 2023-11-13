@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.paper.cratetypes;
+package us.crazycrew.crazycrates.paper.listeners.crates;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
@@ -12,14 +12,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
 import us.crazycrew.crazycrates.paper.other.ItemUtils;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
 
-public class CrateOnTheGo implements Listener {
+public class MobileCrateListener implements Listener {
 
     @NotNull
     private final CrazyCrates plugin = CrazyCrates.get();
@@ -31,17 +30,17 @@ public class CrateOnTheGo implements Listener {
     private final CrateManager crateManager = this.plugin.getCrateManager();
     
     @EventHandler
-    public void onCrateOpen(PlayerInteractEvent e) {
-        Player player = e.getPlayer();
+    public void onCrateOpen(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
 
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             ItemStack item = player.getInventory().getItemInMainHand();
             
             if (item.getType() == Material.AIR) return;
             
             for (Crate crate : this.crateManager.getCrates()) {
                 if (crate.getCrateType() == CrateType.crate_on_the_go && ItemUtils.isSimilar(item, crate)) {
-                    e.setCancelled(true);
+                    event.setCancelled(true);
                     this.crateManager.addPlayerToOpeningList(player, crate);
 
                     ItemUtils.removeItem(item, player);
