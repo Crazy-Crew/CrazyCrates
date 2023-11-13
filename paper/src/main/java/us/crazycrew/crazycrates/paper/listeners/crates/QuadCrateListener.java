@@ -5,15 +5,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.meta.ItemMeta;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.managers.QuadCrateManager;
 import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
+import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestManager;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -70,27 +71,48 @@ public class QuadCrateListener implements Listener {
                 Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
                 this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
 
-                ItemBuilder itemBuilder = ItemBuilder.convertItemStack(prize.getDisplayItem());
-                itemBuilder.addLore(new Random().nextInt(Integer.MAX_VALUE) + ""); // Makes sure items don't merge
+                // Get the display item.
+                ItemStack display = prize.getDisplayItem();
 
+                // Get the item meta.
+                ItemMeta itemMeta = display.getItemMeta();
+
+                // Access the pdc and set "crazycrates-item"
+                PersistentKeys key = PersistentKeys.crate_prize;
+
+                //noinspection unchecked
+                itemMeta.getPersistentDataContainer().set(key.getNamespacedKey(this.plugin), key.getType(), 1);
+
+                // Set the item meta.
+                display.setItemMeta(itemMeta);
+
+                // Convert the item stack to item builder.
+                ItemBuilder itemBuilder = ItemBuilder.convertItemStack(display);
+
+                // Makes sure items do not merge.
+                itemBuilder.addLore(new Random().nextInt(Integer.MAX_VALUE) + "");
+
+                // Builds the item.
                 ItemStack item = itemBuilder.build();
-                NBTItem nbtItem = new NBTItem(item);
-                nbtItem.setBoolean("crazycrates-item", true);
-                item = nbtItem.getItem();
+
+                // Drop the item.
                 Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), item);
 
+                // Set data
                 reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(plugin, true));
                 reward.setVelocity(new Vector(0, .2, 0));
-
                 reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
                 reward.setCustomNameVisible(true);
                 reward.setPickupDelay(Integer.MAX_VALUE);
 
+                // Add open crates
                 session.getCratesOpened().put(block.getLocation(), true);
 
+                // Add display rewards
                 session.getDisplayedRewards().add(reward);
 
-                if (session.allCratesOpened()) { // All 4 crates have been opened
+                // Check if all crates have spawned then end if so.
+                if (session.allCratesOpened()) {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
