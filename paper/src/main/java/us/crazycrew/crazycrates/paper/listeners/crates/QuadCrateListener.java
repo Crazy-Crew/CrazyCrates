@@ -130,12 +130,9 @@ public class QuadCrateListener implements Listener {
         Player player = event.getPlayer();
 
         if (this.sessionManager.inSession(player)) { // Player tries to walk away from the crate area
-            Location oldLocation = event.getFrom();
-            Location newLocation = event.getTo();
-
-            if (oldLocation.getBlockX() != newLocation.getBlockX() || oldLocation.getBlockZ() != newLocation.getBlockZ()) {
+            if (event.hasChangedPosition()) {
+                player.teleport(event.getFrom());
                 event.setCancelled(true);
-                player.teleport(oldLocation);
                 return;
             }
         }
