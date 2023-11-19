@@ -3,6 +3,7 @@ package us.crazycrew.crazycrates.paper.managers.crates.types;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -51,7 +52,7 @@ public class RouletteCrate extends CrateBuilder {
                     setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
                     setGlass();
 
-                    getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
+                    getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
                     even++;
 
                     if (even >= 4) {
@@ -74,13 +75,13 @@ public class RouletteCrate extends CrateBuilder {
                         setGlass();
                         setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
 
-                        getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
+                        getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
                     }
 
                     time++;
 
                     if (time >= 23) {
-                        getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+                        getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 1f);
                         plugin.getCrateManager().endCrate(getPlayer());
 
                         Prize prize = getCrate().getPrize(getInventory().getItem(13));

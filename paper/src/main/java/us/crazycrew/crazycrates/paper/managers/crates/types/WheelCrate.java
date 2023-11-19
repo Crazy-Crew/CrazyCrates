@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
@@ -86,7 +87,7 @@ public class WheelCrate extends CrateBuilder {
                     if (MiscUtils.slowSpin().contains(slower)) lore();
 
                     if (full == timer + 47) {
-                        getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+                        getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 1f);
                     }
 
                     if (full >= timer + 47) {
@@ -151,7 +152,7 @@ public class WheelCrate extends CrateBuilder {
                 int other = slots.get(what);
 
                 setItem(other, map.get(other));
-                getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
+                getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
                 uh++;
                 what++;
             }

@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.common.config.types.Config;
@@ -392,7 +393,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         if (!hasKey) {
             if (this.config.getProperty(Config.need_key_sound_toggle)) {
-                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), 1f, 1f);
+                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), SoundCategory.PLAYERS,1f, 1f);
             }
 
             player.sendMessage(Translation.no_virtual_key.getString());

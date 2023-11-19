@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -187,7 +188,7 @@ public class CrateControlListener implements Listener {
                             if (this.config.getProperty(Config.knock_back)) knockBack(player, clickedBlock.getLocation());
 
                             if (this.config.getProperty(Config.need_key_sound_toggle)) {
-                                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), 1f, 1f);
+                                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
                             }
 
                             player.sendMessage(Translation.no_keys.getMessage("%key%", keyName).toString());

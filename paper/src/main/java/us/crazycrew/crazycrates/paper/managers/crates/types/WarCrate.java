@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -55,7 +56,7 @@ public class WarCrate extends CrateBuilder {
             public void run() {
                 if (full < 25) {
                     setRandomPrizes();
-                    getPlayer().playSound(getPlayer().getLocation(), Sound.BLOCK_LAVA_POP, 1f, 1f);
+                    getPlayer().playSound(getPlayer().getLocation(), Sound.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 1f, 1f);
                 }
 
                 open++;
@@ -68,7 +69,7 @@ public class WarCrate extends CrateBuilder {
                 full++;
 
                 if (full == 26) {
-                    getPlayer().playSound(getPlayer().getLocation(), Sound.BLOCK_LAVA_POP, 1f, 1f);
+                    getPlayer().playSound(getPlayer().getLocation(), Sound.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 1f, 1f);
                     setRandomGlass();
                     plugin.getCrateManager().addPicker(getPlayer(), true);
                 }

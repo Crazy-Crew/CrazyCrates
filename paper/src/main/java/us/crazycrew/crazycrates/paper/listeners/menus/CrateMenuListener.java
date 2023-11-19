@@ -2,6 +2,7 @@ package us.crazycrew.crazycrates.paper.listeners.menus;
 
 import ch.jalu.configme.SettingsManager;
 import org.bukkit.Material;
+import org.bukkit.SoundCategory;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
@@ -101,7 +102,7 @@ public class CrateMenuListener extends ModuleHandler {
 
         if (!hasKey) {
             if (this.config.getProperty(Config.need_key_sound_toggle)) {
-                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), 1f, 1f);
+                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
             }
 
             player.sendMessage(Translation.no_virtual_key.getString());

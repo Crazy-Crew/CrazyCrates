@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -57,7 +58,7 @@ public class CsgoCrate extends CrateBuilder {
             public void run() {
                 if (full <= 50) { // When Spinning
                     moveItemsAndSetGlass();
-                    getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+                    getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
                 }
 
                 open++;
@@ -73,13 +74,13 @@ public class CsgoCrate extends CrateBuilder {
                     if (calculateSpinDelays().contains(time)) { // When Slowing Down
                         moveItemsAndSetGlass();
 
-                        getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+                        getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
                     }
 
                     time++;
 
                     if (time == 60) { // When done
-                        getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+                        getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 1f);
                         plugin.getCrateManager().endCrate(getPlayer());
                         Prize prize = getCrate().getPrize(getInventory().getItem(13));
 

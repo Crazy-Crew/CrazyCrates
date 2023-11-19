@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.api.managers;
 
+import org.bukkit.SoundCategory;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -231,7 +232,7 @@ public class QuadCrateManager {
                     spawnParticles(particle, particleColor, this.spiralLocationsClockwise.get(this.tickTillSpawn), this.spiralLocationsCounterClockwise.get(this.tickTillSpawn));
                     this.tickTillSpawn++;
                 } else {
-                    player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
+                    player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, SoundCategory.BLOCKS, 1f, 1f);
                     Block chest = crateLocations.get(crateNumber).getBlock();
 
                     chest.setType(Material.CHEST);

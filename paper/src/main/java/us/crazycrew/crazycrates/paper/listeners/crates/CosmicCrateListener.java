@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -79,7 +80,7 @@ public class CosmicCrateListener implements Listener {
                                 this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
                                 this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, this.crateManager.getOpeningCrate(player).getName(), prize));
                                 event.setCurrentItem(prize.getDisplayItem());
-                                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+                                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 1f);
 
                                 if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
                             }
@@ -115,7 +116,7 @@ public class CosmicCrateListener implements Listener {
                                 this.crateManager.addGlass(player, slot);
                             }
 
-                            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+                            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
                         } else if (nbtItem.hasTag("Cosmic-Picked-Crate")) {
                             this.crateManager.addNewGlassPlayer(player);
 
@@ -125,7 +126,7 @@ public class CosmicCrateListener implements Listener {
                             for (int index : this.crateManager.getGlass(player)) if (index != slot) slots.add(index);
 
                             this.crateManager.setGlass(player, slots);
-                            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+                            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
                         }
                     }
 
@@ -182,7 +183,7 @@ public class CosmicCrateListener implements Listener {
                                 if (time == 40) {
                                     crateManager.endCrate(player);
                                     showRewards(player, crate);
-                                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1, 1);
+                                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
 
                                     crateManager.removePicks(player);
 
@@ -242,7 +243,7 @@ public class CosmicCrateListener implements Listener {
                 }
             }
 
-            if (playSound) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
+            if (playSound) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS,1f, 1f);
 
             this.crateManager.removePlayerFromOpeningList(player);
             this.crateManager.removePlayerKeyType(player);
@@ -294,7 +295,7 @@ public class CosmicCrateListener implements Listener {
             }
         }
 
-        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
         player.openInventory(inventory);
     }
 

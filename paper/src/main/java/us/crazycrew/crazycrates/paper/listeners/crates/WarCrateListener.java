@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -63,7 +64,7 @@ public class WarCrateListener implements Listener {
 
                     //TODO() make volume/pitch configurable and sound type configurable.
                     //TODO() Adopt the new sound system including custom sounds.
-                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 1f, 1f);
+                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 1f, 1f);
 
                     this.crateManager.addCrateTask(player, new BukkitRunnable() {
                         @Override

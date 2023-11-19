@@ -1,5 +1,6 @@
 package us.crazycrew.crazycrates.paper.listeners.crates;
 
+import org.bukkit.SoundCategory;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -117,7 +118,7 @@ public class QuadCrateListener implements Listener {
                         @Override
                         public void run() {
                             session.endCrate();
-                            player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, 1, 1);
+                            player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, SoundCategory.BLOCKS, 1f, 1f);
                         }
                     }.runTaskLater(this.plugin, 60);
                 }
