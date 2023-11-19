@@ -5,14 +5,20 @@ shadow_version = "8.1.1"
 
 jetbrains_kotlin = "1.9.10"
 
-cluster_version = "2.4"
+cluster_version = "3.0"
 kyori_version = "4.14.0"
+
+configurate = "4.1.2"
 
 [plugins]
 hangar = { id = "io.papermc.hangar-publish-plugin", version = "0.1.0" }
 modrinth = { id = "com.modrinth.minotaur", version = "2.8.4" }
 
 [libraries]
+configurate_json = { module = "org.spongepowered:configurate-gson", version.ref = "configurate" }
+configurate_hocon = { module = "org.spongepowered:configurate-hocon", version.ref = "configurate" }
+configurate_yaml = { module = "org.spongepowered:configurate-yaml", version.ref = "configurate" }
+
 cluster_paper = { module = "com.ryderbelserion.cluster:cluster-paper", version.ref = "cluster_version" }
 cluster_api = { module = "com.ryderbelserion.cluster:cluster-api", version.ref = "cluster_version" }
 
@@ -24,9 +30,9 @@ nbtapi = { module = "de.tr7zw:item-nbt-api", version = "2.12.0" }
 annotations = { module = "org.jetbrains:annotations", version = "24.0.1" }
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "jetbrains_kotlin" }
 
-triumphcmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version = "2.0.0-SNAPSHOT" }
+triumph_cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version = "2.0.0-SNAPSHOT" }
 
-configme = { module = "ch.jalu:configme", version = "1.4.1" }
+config_me = { module = "ch.jalu:configme", version = "1.4.1" }
 
 metrics = { module = "org.bstats:bstats-bukkit", version = "3.0.2" }
 

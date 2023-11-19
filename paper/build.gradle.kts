@@ -10,6 +10,11 @@ plugins {
 }
 
 project.group = "${rootProject.group}.paper"
+project.version = "${rootProject.version}"
+
+base {
+    archivesName.set("${rootProject.name}-${project.name}")
+}
 
 repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
@@ -25,18 +30,15 @@ repositories {
 
 dependencies {
     api(project(":common"))
-
     api(project(":core"))
 
-    implementation(libs.triumphcmds)
+    implementation(libs.triumph.cmds)
 
     implementation(libs.metrics)
 
     implementation(libs.nbtapi)
 
     compileOnly(libs.holographicdisplays)
-
-    //compileOnly("net.kyori", "adventure-platform-bukkit", "4.3.1")
 
     compileOnly(libs.decentholograms)
 

@@ -5,12 +5,14 @@ plugins {
 project.group = "us.crazycrew.crazycrates"
 project.version = "0.2"
 
+base {
+    archivesName.set("${rootProject.name}-${project.name}")
+}
+
 dependencies {
     //compileOnlyApi(libs.minimessage)
 
     compileOnlyApi(libs.adventure)
-
-    compileOnly(libs.annotations)
 }
 
 java {

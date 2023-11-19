@@ -16,8 +16,4 @@ tasks {
     assemble {
         dependsOn(reobfJar)
     }
-
-    reobfJar {
-        outputJar.set(file("${project.layout.buildDirectory.get()}/libs/${rootProject.name}-${rootProject.version}.jar"))
-    }
 }

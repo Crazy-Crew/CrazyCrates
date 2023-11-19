@@ -3,19 +3,8 @@ plugins {
 }
 
 project.group = "${rootProject.group}.api"
+project.version = "${rootProject.version}"
 
-val component: SoftwareComponent = components["java"]
-
-tasks {
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = rootProject.group.toString()
-                artifactId = "${rootProject.name.lowercase()}-${project.name.lowercase()}-api"
-                version = rootProject.version.toString()
-
-                from(component)
-            }
-        }
-    }
+base {
+    archivesName.set("${rootProject.name}-${project.name}")
 }
