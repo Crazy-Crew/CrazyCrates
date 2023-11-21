@@ -26,6 +26,7 @@ public class PaperListener implements Listener {
         if (this.crateManager.isInOpeningList(event.getPlayer())) {
             // DrBot Start
             if (this.crateManager.getOpeningCrate(event.getPlayer()).getCrateType().equals(CrateType.quick_crate)) return;
+
             // DrBot End
             event.setCancelled(true);
         }
