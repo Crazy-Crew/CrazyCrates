@@ -1,9 +1,12 @@
 package us.crazycrew.crazycrates.paper;
 
-import com.badbones69.crazycrates.paper.api.CrazyManager;
 import com.badbones69.crazycrates.paper.api.EventLogger;
 import org.bukkit.plugin.java.JavaPlugin;
+import us.crazycrew.crazycrates.api.users.UserManager;
+import us.crazycrew.crazycrates.paper.listeners.platforms.PaperListener;
 import us.crazycrew.crazycrates.paper.listeners.crates.WarCrateListener;
+import us.crazycrew.crazycrates.paper.listeners.platforms.SpigotListener;
+import us.crazycrew.crazycrates.paper.managers.BukkitUserManager;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
@@ -38,7 +41,6 @@ public class CrazyCrates extends JavaPlugin {
     private final BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(this);
 
     private CrazyHandler crazyHandler;
-    private CrazyManager crazyManager;
 
     @Override
     public void onEnable() {
@@ -49,19 +51,21 @@ public class CrazyCrates extends JavaPlugin {
         // Clean if we have to.
         this.crazyHandler.cleanFiles();
 
-        // Load crates temporarily here, This is leftovers from version 1.
-        this.crazyManager = new CrazyManager();
-
-        // Load deprecated version 1 to not break plugins that might use old api's
-        new com.badbones69.crazycrates.paper.CrazyCrates().enable();
-
         // Register listeners
-        //this.crazyHandler.getModuleLoader().addModule(new CrateGuiListener());
         this.crazyHandler.getModuleLoader().addModule(new CratePreviewListener());
         this.crazyHandler.getModuleLoader().addModule(new CrateAdminListener());
         this.crazyHandler.getModuleLoader().addModule(new CrateMenuListener());
 
         this.crazyHandler.getModuleLoader().load();
+
+        boolean isSpigot;
+
+        try {
+            Class.forName("io.papermc.paper.configuration.Configuration");
+            isSpigot = false;
+        } catch (ClassNotFoundException exception) {
+            isSpigot = true;
+        }
 
         PluginManager pluginManager = getServer().getPluginManager();
 
@@ -73,33 +77,41 @@ public class CrazyCrates extends JavaPlugin {
         pluginManager.registerEvents(new WarCrateListener(), this);
         pluginManager.registerEvents(new MiscListener(), this);
 
+        if (isSpigot) pluginManager.registerEvents(new SpigotListener(), this); else pluginManager.registerEvents(new PaperListener(), this);
+
         if (isLogging()) {
+            String prefix = this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.console_prefix);
+
             // Print dependency garbage
             for (PluginSupport value : PluginSupport.values()) {
                 if (value.isPluginEnabled()) {
-                    getServer().getConsoleSender().sendMessage(MsgUtils.color(this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.command_prefix) + "&6&l" + value.name() + " &a&lFOUND"));
+                    getServer().getConsoleSender().sendMessage(MsgUtils.color(prefix + "&6&l" + value.name() + " &a&lFOUND"));
                 } else {
-                    getServer().getConsoleSender().sendMessage(MsgUtils.color(this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.command_prefix) + "&6&l" + value.name() + " &c&lNOT FOUND"));
+                    getServer().getConsoleSender().sendMessage(MsgUtils.color(prefix + "&6&l" + value.name() + " &c&lNOT FOUND"));
                 }
             }
 
-            List.of(
-                    "CrazyCrate Update: " + getDescription().getVersion() + " is one of 4 major updates.",
-                    "Please submit any bugs at https://github.com/Crazy-Crew/CrazyCrates/issues",
-                    "",
-                    "I will wait between releasing updates for bug reports",
-                    "The next version is Version 2.0 excluding version bumps for Minecraft releases or some easy features/enhancements",
-                    "",
-                    "2.0 is a hard break, Legacy color codes will no longer work, Configurations will be fully migrated, Placeholders will change and so on.",
-                    "We only support https://papermc.io in 2.0 and will fully migrate to Modrinth and Hangar.",
-                    "After that's done, I'll be adding practically anything including light gui editors or in-game editors ( improved /cc additem ) and crate conversions."
-            ).forEach(getLogger()::warning);
+            if (isSpigot) {
+                List.of(
+                        "CrazyCrates will no longer work using Spigot when 2.0 releases",
+                        "If you wish to keep using and getting updates for our plugin",
+                        "You must migrate your servers to https://papermc.io",
+                        "",
+                        "This is a warning to all Spigot users",
+                        "",
+                        "All downloads will be served only at the following links per Spigot's rules",
+                        "https://hangar.papermc.io/CrazyCrew/CrazyCrates",
+                        "https://modrinth.com/plugin/crazycrates"
+                ).forEach(getLogger()::warning);
+            }
         }
 
         if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
             if (isLogging()) getLogger().info("PlaceholderAPI support is enabled!");
             new PlaceholderAPISupport().register();
         }
+
+        if (isLogging()) getLogger().info("You can disable logging by going to the plugin-config.yml and setting verbose to false.");
     }
 
     @Override
@@ -122,12 +134,6 @@ public class CrazyCrates extends JavaPlugin {
         return this.crazyHandler;
     }
 
-    // TODO() Remove this in 2.0
-    @NotNull
-    public CrazyManager getCrazyManager() {
-        return this.crazyManager;
-    }
-
     @NotNull
     public ConfigManager getConfigManager() {
         return getCrazyHandler().getConfigManager();
@@ -136,6 +142,11 @@ public class CrazyCrates extends JavaPlugin {
     @NotNull
     public FileManager getFileManager() {
         return getCrazyHandler().getFileManager();
+    }
+
+    @NotNull
+    public BukkitUserManager getUserManager() {
+        return getCrazyHandler().getUserManager();
     }
 
     @NotNull
