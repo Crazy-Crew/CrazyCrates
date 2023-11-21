@@ -74,7 +74,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
     }
 
     public void title(String title) {
-        this.title = title;
+        this.title = MsgUtils.sanitizeColor(title);
     }
 
     public boolean contains(String message) {
