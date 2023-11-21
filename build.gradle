@@ -12,26 +12,20 @@ def combineJars = tasks.register("combineJars", org.gradle.jvm.tasks.Jar) {
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-    from(files(subprojects.findAll {}.collect {
-        it.layout.buildDirectory.file("libs/${rootProject}-${it.name}-${it.version}.jar").get()
-    }).filter { it.name != 'MANIFEST.MF'}.collect { if (it.isDirectory()) it else zipTree(it) })
+    from(files(subprojects.findAll { it.name != 'webmap' }.collect {
+        it.layout.buildDirectory.file("libs/${rootProject.name}-${it.name}-${it.version}.jar").get()
+    }).filter { it.name != 'MANIFEST.MF' }.collect { if (it.isDirectory()) it else zipTree(it) })
 
     doLast {
-        File file = new File(rootDir, "jars")
+        File dir = new File(rootDir, "jars")
 
-        if (file.exists()) file.delete()
+        if (dir.exists()) dir.delete()
 
-        file.mkdirs()
-
-        File compat = new File(project.layout.buildDirectory.get().asFile, "${rootProject.name}-paper-${rootProject.version}.jar")
-
-        File rename = new File(project.layout.buildDirectory.get().asFile, "${rootProject.name}-${rootProject.version}.jar")
-
-        compat.renameTo(rename)
+        dir.mkdirs()
 
         copy {
-            from(compat)
-            into(file)
+            from(layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar"))
+            into(dir)
         }
     }
 }

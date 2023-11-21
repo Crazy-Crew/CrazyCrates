@@ -7,7 +7,7 @@ project.group = "${rootProject.group}.paper"
 project.version = rootProject.version
 
 base {
-    archivesName = rootProject.name
+    archivesName = "${rootProject.name}-${project.name}"
 }
 
 dependencies {
@@ -43,7 +43,7 @@ tasks {
         List.of(
                 "de.tr7zw.changeme.nbtapi",
                 "org.bstats",
-                "ch.jalu"
+                //"ch.jalu"
         ).forEach {
             relocate(it, "com.badbones69.crazycrates.libraries")
         }
@@ -54,7 +54,7 @@ tasks {
 
         props.put("name", rootProject.name)
         props.put("version", "$rootProject.version")
-        props.put("group", "$rootProject.group")
+        props.put("group", "$project.group")
         props.put("description", rootProject.description)
 
         props.put("apiVersion", apiVersion)
