@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;

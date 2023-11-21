@@ -1,12 +1,11 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.managers.CrateManager;
-
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.common.crates.CrateHologram;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;

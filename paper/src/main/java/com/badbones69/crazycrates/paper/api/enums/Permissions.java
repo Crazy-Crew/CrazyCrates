@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.paper.api.enums;
 
-@Deprecated(since = "1.16", forRemoval = true)
 public enum Permissions {
 
     CRAZY_CRATES_PLAYER_KEY("player.key", "Check the number of keys you have."),

@@ -16,7 +16,6 @@ import com.badbones69.crazycrates.paper.api.objects.Prize;
 import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestManager;
-import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;

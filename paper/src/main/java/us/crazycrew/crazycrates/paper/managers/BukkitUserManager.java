@@ -1,5 +1,7 @@
 package us.crazycrew.crazycrates.paper.managers;
 
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
@@ -11,8 +13,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.other.ItemUtils;
@@ -400,6 +400,33 @@ public class BukkitUserManager extends UserManager {
         } catch (Exception exception) {
             this.plugin.getLogger().log(Level.SEVERE, "Could not take keys from offline player with uuid: " + uuid, exception);
             return false;
+        }
+    }
+
+    public void loadOldOfflinePlayersKeys(Player player, List<Crate> crates) {
+        FileConfiguration data = Files.DATA.getFile();
+        String name = player.getName().toLowerCase();
+
+        if (data.contains("Offline-Players." + name)) {
+            for (Crate crate : crates) {
+                if (data.contains("Offline-Players." + name + "." + crate.getName())) {
+                    PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, 1);
+                    this.plugin.getServer().getPluginManager().callEvent(event);
+
+                    if (!event.isCancelled()) {
+                        int keys = getVirtualKeys(player.getUniqueId(), crate.getName());
+                        int addedKeys = data.getInt("Offline-Players." + name + "." + crate.getName());
+
+                        data.set("Players." + player.getUniqueId() + "." + crate.getName(), (Math.max((keys + addedKeys), 0)));
+
+                        Files.DATA.saveFile();
+                    }
+                }
+            }
+
+            data.set("Offline-Players." + name, null);
+
+            Files.DATA.saveFile();
         }
     }
 
