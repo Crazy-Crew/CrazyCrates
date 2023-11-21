@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.paperweight)
     alias(libs.plugins.shadowjar)
+
+    alias(libs.plugins.runpaper)
 }
 
 project.group = "${rootProject.group}.paper"
@@ -35,6 +37,12 @@ dependencies {
 }
 
 tasks {
+    runServer {
+        jvmArgs("-Xms4096M -Xmx4096M --add-modules=jdk.incubator.vector -Dnet.kyori.ansi.colorLevel=truecolor")
+
+        minecraftVersion(minecraftVersion)
+    }
+
     assemble {
         dependsOn(reobfJar)
     }

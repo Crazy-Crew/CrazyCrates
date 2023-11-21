@@ -6,7 +6,7 @@ hangar = { id = "io.papermc.hangar-publish-plugin", version = "0.1.0" }
 modrinth = { id = "com.modrinth.minotaur", version = "2.8.4" }
 
 paperweight = { id = "io.papermc.paperweight.userdev", version = "1.5.9" }
-runpaper = { id = "xyz.jpenilla.run-task", version = "2.2.2" }
+runpaper = { id = "xyz.jpenilla.run-paper", version = "2.2.2" }
 shadowjar = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
 
 [libraries]
