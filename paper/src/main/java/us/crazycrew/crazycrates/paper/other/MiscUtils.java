@@ -1,6 +1,6 @@
 package us.crazycrew.crazycrates.paper.other;
 
-import com.badbones69.crazycrates.api.enums.Permissions;
+import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import org.bukkit.Color;

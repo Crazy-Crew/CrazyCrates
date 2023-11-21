@@ -1,6 +1,6 @@
 package us.crazycrew.crazycrates.paper.listeners.menus;
 
-import com.badbones69.crazycrates.api.enums.Permissions;
+import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

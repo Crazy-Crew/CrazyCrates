@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.enums.types;
+package com.badbones69.crazycrates.paper.api.enums;
 
 @Deprecated(since = "1.16", forRemoval = true)
 public enum KeyType {

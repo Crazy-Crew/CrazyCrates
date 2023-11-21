@@ -13,14 +13,14 @@ import us.crazycrew.crazycrates.paper.other.MsgUtils;
 import java.util.HashMap;
 
 public class HolographicDisplaysSupport extends HologramHandler {
-    
-    private final HashMap<Block, Hologram> holograms = new HashMap<>();
 
     @NotNull
     private final CrazyCrates plugin = CrazyCrates.get();
 
     @NotNull
     private final HolographicDisplaysAPI api = HolographicDisplaysAPI.get(this.plugin);
+    
+    private final HashMap<Block, Hologram> holograms = new HashMap<>();
 
     @Override
     public void createHologram(Block block, Crate crate) {

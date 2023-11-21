@@ -1,0 +1,90 @@
+plugins {
+    alias(libs.plugins.hangar)
+    alias(libs.plugins.modrinth)
+
+    id 'java-library'
+}
+
+defaultTasks 'build'
+
+def combineJars = tasks.register("combineJars", org.gradle.jvm.tasks.Jar) {
+    mustRunAfter build
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from(files(subprojects.findAll {}.collect {
+        it.layout.buildDirectory.file("libs/${rootProject}-${it.name}-${it.version}.jar").get()
+    }).filter { it.name != 'MANIFEST.MF'}.collect { if (it.isDirectory()) it else zipTree(it) })
+
+    doLast {
+        File file = new File(rootDir, "jars")
+
+        if (file.exists()) file.delete()
+
+        file.mkdirs()
+
+        File compat = new File(project.layout.buildDirectory.get().asFile, "${rootProject.name}-paper-${rootProject.version}.jar")
+
+        File rename = new File(project.layout.buildDirectory.get().asFile, "${rootProject.name}-${rootProject.version}.jar")
+
+        compat.renameTo(rename)
+
+        copy {
+            from(compat)
+            into(file)
+        }
+    }
+}
+
+assemble {
+    subprojects.forEach { project -> dependsOn ":${project.name}:build" }
+
+    finalizedBy combineJars
+}
+
+subprojects {
+    apply plugin: 'java-library'
+
+    repositories {
+        maven { url = 'https://repo.crazycrew.us/releases' }
+
+        maven { url = 'https://jitpack.io' }
+
+        mavenCentral()
+    }
+
+    if (name == "paper") {
+        repositories {
+            maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+
+            maven { url = 'https://repo.codemc.io/repository/maven-public/' }
+
+            maven { url = 'https://repo.crazycrew.us/first-party/' }
+
+            maven { url = 'https://repo.crazycrew.us/third-party/' }
+
+            maven { url = 'https://repo.triumphteam.dev/snapshots' }
+
+            flatDir { dirs("libs") }
+        }
+    }
+
+    compileJava {
+        options.encoding = 'UTF-8'
+        options.release.set(17)
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+
+    javadoc {
+        options.encoding = 'UTF-8'
+    }
+
+    processResources {
+        filteringCharset = 'UTF-8'
+    }
+}

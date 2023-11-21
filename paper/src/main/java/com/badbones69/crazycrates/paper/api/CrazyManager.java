@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.api;
 
-import com.badbones69.crazycrates.api.enums.types.KeyType;
+import com.badbones69.crazycrates.paper.api.enums.KeyType;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.Prize;

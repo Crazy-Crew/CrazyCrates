@@ -1,0 +1,70 @@
+plugins {
+    alias(libs.plugins.paperweight)
+    alias(libs.plugins.shadowjar)
+}
+
+project.group = "${rootProject.group}.paper"
+project.version = rootProject.version
+
+base {
+    archivesName = rootProject.name
+}
+
+dependencies {
+    api(project(":common"))
+
+    implementation(libs.triumph.cmds)
+
+    implementation(libs.metrics)
+
+    implementation(libs.nbtapi)
+
+    compileOnly(libs.holographicdisplays)
+
+    compileOnly(libs.decentholograms)
+
+    compileOnly(libs.placeholderapi)
+
+    compileOnly(libs.itemsadder)
+
+    compileOnly(libs.oraxen)
+
+    compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
+
+    paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:$minecraftVersion-R0.1-SNAPSHOT")
+}
+
+tasks {
+    assemble {
+        dependsOn(reobfJar)
+    }
+
+    shadowJar {
+        List.of(
+                "de.tr7zw.changeme.nbtapi",
+                "org.bstats",
+                "ch.jalu"
+        ).forEach {
+            relocate(it, "com.badbones69.crazycrates.libraries")
+        }
+    }
+
+    processResources {
+        Map<String, String> props = new HashMap<>()
+
+        props.put("name", rootProject.name)
+        props.put("version", "$rootProject.version")
+        props.put("group", "$rootProject.group")
+        props.put("description", rootProject.description)
+
+        props.put("apiVersion", apiVersion)
+        props.put("authors", authors)
+        props.put("website", website)
+
+        inputs.properties(props)
+
+        filesMatching("plugin.yml") {
+            expand(props)
+        }
+    }
+}

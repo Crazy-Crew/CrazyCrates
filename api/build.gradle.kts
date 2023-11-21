@@ -1,5 +1,5 @@
 plugins {
-    id("root-plugin")
+    `maven-publish`
 }
 
 project.group = "us.crazycrew.crazycrates"
@@ -10,8 +10,6 @@ base {
 }
 
 dependencies {
-    //compileOnlyApi(libs.minimessage)
-
     compileOnlyApi(libs.adventure)
 }
 
