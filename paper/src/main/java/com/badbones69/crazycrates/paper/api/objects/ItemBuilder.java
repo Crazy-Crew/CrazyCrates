@@ -209,10 +209,6 @@ public class ItemBuilder {
         this.customMaterial = itemBuilder.customMaterial;
     }
 
-    public ItemStack getItemStack() {
-        return this.itemStack;
-    }
-
     public void setItemMeta(ItemMeta itemMeta) {
         this.itemMeta = itemMeta;
     }
