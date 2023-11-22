@@ -57,7 +57,7 @@ public class CosmicCrateManager extends AbstractCrate {
     }
     
     public ItemBuilder getMysteryCrate() {
-        return new ItemBuilder(this.mysteryCrate);
+        return this.mysteryCrate;
     }
     
     public ItemBuilder getPickedCrate() {
