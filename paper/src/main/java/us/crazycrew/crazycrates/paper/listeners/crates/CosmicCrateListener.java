@@ -107,8 +107,13 @@ public class CosmicCrateListener implements Listener {
             // Overwrite the current item.
             event.setCurrentItem(builder.build());
 
-            // Play a sound to indicate they clicked a chest.
-            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+                // Play a sound to indicate they clicked a chest.
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+
+                return;
+            }
+
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.NEUTRAL, 1F, 1F);
         } else if (container.has(PersistentKeys.cosmic_picked_crate.getNamespacedKey(this.plugin))) {
             // Get item builder.
             ItemBuilder builder = cosmicCrateManager.getMysteryCrate().setAmount(pickedSlot)
