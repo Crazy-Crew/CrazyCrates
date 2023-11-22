@@ -68,8 +68,6 @@ public class CosmicCrateListener implements Listener {
 
         int slot = event.getRawSlot();
 
-        this.plugin.getLogger().warning("Slot: " + slot);
-
         if (inCosmic(slot)) {
             ItemStack item = event.getCurrentItem();
 
@@ -158,7 +156,7 @@ public class CosmicCrateListener implements Listener {
                                 showRewards(player, crate);
                                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
 
-                                crateManager.removePicks(player);
+
 
                                 new BukkitRunnable() {
                                     @Override
@@ -352,9 +350,5 @@ public class CosmicCrateListener implements Listener {
 
         return null;
     }
-    
-    private boolean inCosmic(int slot) {
-        // The last slot in cosmic crate is 27
-        return slot < 27;
-    }
+     */
 }
