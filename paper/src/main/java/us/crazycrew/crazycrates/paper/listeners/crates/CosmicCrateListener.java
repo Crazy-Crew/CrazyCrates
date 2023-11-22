@@ -117,7 +117,35 @@ public class CosmicCrateListener implements Listener {
                 return;
             }
 
+            // Play the no sound.
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.NEUTRAL, 1F, 1F);
+
+            // Get item builder.
+            ItemStack builder = cosmicCrateManager.getMysteryCrate().setAmount(pickedSlot)
+                    .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
+                    .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot)).build();
+
+            ItemStack other = cosmicCrateManager.getAlreadyPicked().build();
+
+            // If current item is the same type as the BARRIER block, we do nothing as the task is already running.
+            if (event.getCurrentItem().getType() == other.getType()) return;
+
+            // Set to the barrier block.
+            event.setCurrentItem(other);
+
+            // Run the timer.
+            Timer timer = new Timer();
+
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    // Set old item.
+                    event.setCurrentItem(builder);
+                }
+            };
+
+            // Runs the task 3 seconds later.
+            timer.schedule(task, 3000);
         } else if (container.has(PersistentKeys.cosmic_picked_crate.getNamespacedKey(this.plugin))) {
             // Get item builder.
             ItemBuilder builder = cosmicCrateManager.getMysteryCrate().setAmount(pickedSlot)
