@@ -17,6 +17,7 @@ import java.util.UUID;
 
 public class CosmicCrateManager extends AbstractCrate {
 
+    private final ItemBuilder alreadyPicked;
     private final ItemBuilder mysteryCrate;
     private final ItemBuilder pickedCrate;
     private final FileConfiguration file;
@@ -36,6 +37,10 @@ public class CosmicCrateManager extends AbstractCrate {
         String path = "Crate.Crate-Type-Settings.";
 
         this.totalPrizes = file.getInt(path + "Total-Prize-Amount", 4);
+
+        this.alreadyPicked = new ItemBuilder()
+                .setMaterial(Material.BARRIER)
+                .setName("&cYou have already chosen 4 crates.");
 
         this.mysteryCrate = new ItemBuilder()
         .setMaterial(file.getString(path + "Mystery-Crate.Item", "CHEST"))
@@ -87,6 +92,13 @@ public class CosmicCrateManager extends AbstractCrate {
      */
     public ItemBuilder getMysteryCrate() {
         return this.mysteryCrate;
+    }
+
+    /**
+     * @return already picked builder
+     */
+    public ItemBuilder getAlreadyPicked() {
+        return this.alreadyPicked;
     }
 
     /**
