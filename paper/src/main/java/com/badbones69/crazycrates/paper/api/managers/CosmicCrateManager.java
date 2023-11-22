@@ -118,6 +118,8 @@ public class CosmicCrateManager extends AbstractCrate {
      * @param player to add
      * @param prizes list
      */
+    public void addPickedPrizes(Player player, ArrayList<Integer> prizes) {
+        this.pickedPrizes.put(player.getUniqueId(), prizes);
     }
 
     /**
