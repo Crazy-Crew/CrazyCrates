@@ -465,6 +465,7 @@ public class ItemBuilder {
             hideItemFlags(item);
             item.addUnsafeEnchantments(this.enchantments);
             addGlow(item);
+
             NBTItem nbt = new NBTItem(item);
 
             if (this.isHead && !this.isHash) nbt.setString("SkullOwner", this.player);

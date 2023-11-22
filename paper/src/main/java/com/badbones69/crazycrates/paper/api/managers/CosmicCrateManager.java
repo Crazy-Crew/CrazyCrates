@@ -11,6 +11,7 @@ import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,9 +22,14 @@ public class CosmicCrateManager extends AbstractCrate {
     private final FileConfiguration file;
     private final int totalPrizes;
 
-    // Picked items
     private final Map<UUID, ArrayList<Integer>> pickedPrizes = new HashMap<>();
-    
+
+    /**
+     * Creates a cosmic crate manager instance
+     *
+     * @param plugin instance
+     * @param file crate configuration
+     */
     public CosmicCrateManager(CrazyCrates plugin, FileConfiguration file) {
         this.file = file;
 
@@ -61,32 +67,61 @@ public class CosmicCrateManager extends AbstractCrate {
 
         this.pickedCrate.setItemMeta(pickedCrateMeta);
     }
-    
+
+    /**
+     * @return crate file configuration
+     */
     public FileConfiguration getFile() {
         return this.file;
     }
-    
+
+    /**
+     * @return total prizes allowed to be won
+     */
     public int getTotalPrizes() {
         return this.totalPrizes;
     }
-    
+
+    /**
+     * @return mystery crate builder
+     */
     public ItemBuilder getMysteryCrate() {
         return this.mysteryCrate;
     }
 
+    /**
+     * @return picked crate builder
+     */
     public ItemBuilder getPickedCrate() {
         return this.pickedCrate;
     }
 
-    public void addPickedPrize(Player player, ArrayList<Integer> prizes) {
-        this.pickedPrizes.put(player.getUniqueId(), prizes);
+    /**
+     * Adds a single slot to the arraylist
+     * It also adds the player if not found.
+     *
+     * @param player to add
+     * @param slot to add
+     */
+    /**
+     * Removes a single slot from the arraylist
+     * It also removes the uuid if prizes arraylist is empty.
+     *
+     * @param player to remove
+     * @param slot to remove
+     */
     }
 
-    public void removePickedPrize(Player player) {
-        this.pickedPrizes.remove(player.getUniqueId());
+    /**
+     * Adds a list of prizes to the hashmap.
+     *
+     * @param player to add
+     * @param prizes list
+     */
     }
 
-    public Map<UUID, ArrayList<Integer>> getPickedPrizes() {
-        return Collections.unmodifiableMap(this.pickedPrizes);
+    /**
+     * @return unmodifiable list
+     */
     }
 }
