@@ -123,5 +123,7 @@ public class CosmicCrateManager extends AbstractCrate {
     /**
      * @return unmodifiable list
      */
+    public List<Integer> getPickedPrizes(Player player) {
+        return Collections.unmodifiableList(this.pickedPrizes.getOrDefault(player.getUniqueId(), new ArrayList<>()));
     }
 }
