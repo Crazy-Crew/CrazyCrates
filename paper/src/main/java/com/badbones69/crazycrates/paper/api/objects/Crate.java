@@ -105,7 +105,7 @@ public class Crate {
         this.hologram = hologram != null ? hologram : new CrateHologram();
 
         if (crateType == CrateType.cosmic) {
-            if (this.file != null) this.manager = new CosmicCrateManager(this.file);
+            if (this.file != null) this.manager = new CosmicCrateManager(this.plugin, this.file);
         }
     }
     

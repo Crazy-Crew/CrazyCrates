@@ -12,7 +12,8 @@ public class CosmicCrateManager extends AbstractCrate {
     private final ItemBuilder mysteryCrate;
     private final ItemBuilder pickedCrate;
     
-    public CosmicCrateManager(FileConfiguration file) {
+    // Picked items
+    public CosmicCrateManager(CrazyCrates plugin, FileConfiguration file) {
         this.file = file;
         String path = "Crate.Crate-Type-Settings.";
         this.totalPrizes = file.getInt(path + "Total-Prize-Amount", 4);
