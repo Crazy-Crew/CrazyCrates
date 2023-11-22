@@ -1,34 +1,31 @@
 package us.crazycrew.crazycrates.paper.listeners.crates;
 
-import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
-import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.paper.api.objects.Prize;
-import com.badbones69.crazycrates.paper.api.objects.Tier;
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
 import us.crazycrew.crazycrates.paper.api.builders.types.CratePrizeMenu;
-import us.crazycrew.crazycrates.paper.api.enums.Translation;
+import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
-import us.crazycrew.crazycrates.paper.other.MiscUtils;
-import us.crazycrew.crazycrates.paper.other.MsgUtils;
+
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.logging.Level;
 
 public class CosmicCrateListener implements Listener {
 
@@ -42,6 +39,94 @@ public class CosmicCrateListener implements Listener {
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @EventHandler
+    public void onSlotPicks(InventoryClickEvent event) {
+        // Get the inventory.
+        Inventory inventory = event.getInventory();
+
+        // Get the player.
+        Player player = (Player) event.getWhoClicked();
+
+        // Check if inventory holder is instance of CratePrizeMenu
+        InventoryHolder holder = inventory.getHolder();
+        if (!(holder instanceof CratePrizeMenu cosmic)) return;
+
+        // Cancel event.
+        event.setCancelled(true);
+
+        // Get opening crate.
+        Crate crate = this.crateManager.getOpeningCrate(player);
+
+        // Check if player is in the opening list.
+        if (!this.crateManager.isInOpeningList(player) || crate.getCrateType() != CrateType.cosmic) return;
+
+        // Check the title.
+        if (!cosmic.contains(" - Choose")) return;
+
+        // Get the raw slot.
+        int slot = event.getRawSlot();
+
+        // Get inventory view.
+        InventoryView view = event.getView();
+
+        // Check if clicking top inventory or not.
+        Inventory topInventory = view.getTopInventory();
+
+        if (event.getClickedInventory() != topInventory) return;
+
+        // Get item stack of clicked item.
+        ItemStack itemStack = topInventory.getItem(slot);
+
+        // Check if null
+        if (itemStack == null) return;
+
+        // Check if air
+        if (itemStack.getType() == Material.AIR) return;
+
+        // Get crate manager.
+        CosmicCrateManager cosmicCrateManager = (CosmicCrateManager) crate.getManager();
+
+        // Get total prizes.
+        int totalPrizes = cosmicCrateManager.getTotalPrizes();
+
+        // Get picked slot.
+        int pickedSlot = slot + 1;
+
+        // Get clicked item's item meta
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        // Get PDC
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+
+        // Check if it has the mystery crate key otherwise check picked key.
+        if (container.has(PersistentKeys.cosmic_mystery_crate.getNamespacedKey(this.plugin))) {
+            // Get item builder.
+            ItemBuilder builder = cosmicCrateManager.getPickedCrate().setAmount(pickedSlot)
+                    .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
+                    .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
+
+            // Overwrite the current item.
+            event.setCurrentItem(builder.build());
+
+            // Play a sound to indicate they clicked a chest.
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+        } else if (container.has(PersistentKeys.cosmic_picked_crate.getNamespacedKey(this.plugin))) {
+            // Get item builder.
+            ItemBuilder builder = cosmicCrateManager.getMysteryCrate().setAmount(pickedSlot)
+                    .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
+                    .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
+
+            ArrayList<Integer> slots = new ArrayList<>();
+
+            // Implement logic to handle picked prizes.
+
+            // Play a sound to indicate they clicked a chest.
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+        }
+
+        // Check picked prizes size to total prizes allowed, so we know when to take the key.
+    }
+
+    /*@EventHandler
     public void onPrizeChoose(InventoryClickEvent event) {
         Inventory inventory = event.getInventory();
         Player player = (Player) event.getWhoClicked();
