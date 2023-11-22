@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import java.util.Collections;
 
-public class CosmicCrateManager extends CrateManager {
+public class CosmicCrateManager extends AbstractCrate {
     
     private final FileConfiguration file;
     private final int totalPrizes;

@@ -4,7 +4,7 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
-import com.badbones69.crazycrates.paper.api.managers.CrateManager;
+import com.badbones69.crazycrates.paper.api.managers.AbstractCrate;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.crates.CrateHologram;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -27,7 +27,7 @@ import java.util.logging.Level;
 
 public class Crate {
     
-    private CrateManager manager;
+    private AbstractCrate manager;
     private final String name;
     private final ItemStack key;
     private final ItemStack keyNoNBT;
@@ -112,7 +112,7 @@ public class Crate {
     /**
      * Get the crate manager which contains all the settings for that crate type.
      */
-    public CrateManager getManager() {
+    public AbstractCrate getManager() {
         return this.manager;
     }
     
