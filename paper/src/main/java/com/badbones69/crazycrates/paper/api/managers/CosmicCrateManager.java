@@ -20,12 +20,31 @@ public class CosmicCrateManager extends AbstractCrate {
         .setMaterial(file.getString(path + "Mystery-Crate.Item", "CHEST"))
         .setName(file.getString(path + "Mystery-Crate.Name", "&f&l???"))
         .setLore(file.contains(path + "Mystery-Crate.Lore") ? file.getStringList(path + "Mystery-Crate.Lore") : Collections.singletonList("&7You may choose 4 crates."));
-        this.mysteryCrate.getNBTItem().setString("Cosmic-Mystery-Crate", "Mystery Crate");
+
+        ItemMeta mysteryItemMeta = this.mysteryCrate.getItemMeta();
+
+        PersistentDataContainer mysteryData = mysteryItemMeta.getPersistentDataContainer();
+
+        PersistentKeys mysteryCrate = PersistentKeys.cosmic_mystery_crate;
+
+        mysteryData.set(mysteryCrate.getNamespacedKey(plugin), mysteryCrate.getType(), 1);
+
+        this.mysteryCrate.setItemMeta(mysteryItemMeta);
+
         this.pickedCrate = new ItemBuilder()
         .setMaterial(file.getString(path + "Picked-Crate.Item", Material.GLASS_PANE.toString()))
         .setName(file.getString(path + "Picked-Crate.Name", "&f&l???"))
         .setLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("&7You have chosen #%slot%."));
-        this.pickedCrate.getNBTItem().setString("Cosmic-Picked-Crate", "Picked Crate");
+
+        ItemMeta pickedCrateMeta = this.pickedCrate.getItemMeta();
+
+        PersistentDataContainer pickedCrateData = pickedCrateMeta.getPersistentDataContainer();
+
+        PersistentKeys pickedCrate = PersistentKeys.cosmic_picked_crate;
+
+        pickedCrateData.set(pickedCrate.getNamespacedKey(plugin), pickedCrate.getType(), 1);
+
+        this.pickedCrate.setItemMeta(pickedCrateMeta);
     }
     
     public FileConfiguration getFile() {
