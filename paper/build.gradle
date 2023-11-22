@@ -38,7 +38,7 @@ dependencies {
 
 tasks {
     runServer {
-        jvmArgs("-Xms4096M -Xmx4096M --add-modules=jdk.incubator.vector -Dnet.kyori.ansi.colorLevel=truecolor")
+        jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")
 
         minecraftVersion(minecraftVersion)
     }
