@@ -50,8 +50,7 @@ tasks {
     shadowJar {
         List.of(
                 "de.tr7zw.changeme.nbtapi",
-                "org.bstats",
-                //"ch.jalu"
+                "org.bstats"
         ).forEach {
             relocate(it, "com.badbones69.crazycrates.libraries")
         }
