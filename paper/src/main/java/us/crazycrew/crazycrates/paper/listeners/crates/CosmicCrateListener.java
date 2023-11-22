@@ -72,17 +72,11 @@ public class CosmicCrateListener implements Listener {
 
         if (event.getClickedInventory() != topInventory) return;
 
-        // Check if clicked item is null.
-        if (event.getCurrentItem() == null) return;
-
         // Get item stack of clicked item.
         ItemStack itemStack = topInventory.getItem(slot);
 
-        // Check if null
-        if (itemStack == null) return;
-
-        // Check if air
-        if (itemStack.getType() == Material.AIR) return;
+        // Check if null or air
+        if (itemStack == null || itemStack.getType() == Material.AIR) return;
 
         // Get crate manager.
         CosmicCrateManager cosmicCrateManager = (CosmicCrateManager) crate.getManager();
@@ -132,7 +126,7 @@ public class CosmicCrateListener implements Listener {
             ItemStack other = cosmicCrateManager.getAlreadyPicked().build();
 
             // If current item is the same type as the BARRIER block, we do nothing as the task is already running.
-            if (event.getCurrentItem().getType() == other.getType()) return;
+            if (itemStack.getType() == other.getType()) return;
 
             // Set to the barrier block.
             event.setCurrentItem(other);
