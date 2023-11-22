@@ -89,7 +89,7 @@ public class CosmicCrateListener implements Listener {
         int totalPrizes = cosmicCrateManager.getTotalPrizes();
 
         // Get picked slot.
-        int pickedSlot = slot + 1;
+        int pickedSlot = slot+1;
 
         // Get clicked item's item meta
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -99,13 +99,17 @@ public class CosmicCrateListener implements Listener {
 
         // Check if it has the mystery crate key otherwise check picked key.
         if (container.has(PersistentKeys.cosmic_mystery_crate.getNamespacedKey(this.plugin))) {
-            // Get item builder.
-            ItemBuilder builder = cosmicCrateManager.getPickedCrate().setAmount(pickedSlot)
-                    .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
-                    .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
+            // Check if prizes is greater than or equal to totalPrizes before we change any items.
+            if (cosmicCrateManager.getPickedPrizes(player).size() < totalPrizes) {
+                // Get item builder.
+                ItemBuilder builder = cosmicCrateManager.getPickedCrate().setAmount(pickedSlot)
+                        .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
+                        .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
 
-            // Overwrite the current item.
-            event.setCurrentItem(builder.build());
+                // Overwrite the current item.
+                event.setCurrentItem(builder.build());
+
+                cosmicCrateManager.addPickedPrize(player, slot);
 
                 // Play a sound to indicate they clicked a chest.
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
@@ -120,9 +124,11 @@ public class CosmicCrateListener implements Listener {
                     .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
                     .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
 
-            ArrayList<Integer> slots = new ArrayList<>();
+            // Overwrite the current item.
+            event.setCurrentItem(builder.build());
 
-            // Implement logic to handle picked prizes.
+            // Remove slot if we click it.
+            cosmicCrateManager.removePickedPrize(player, slot);
 
             // Play a sound to indicate they clicked a chest.
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);

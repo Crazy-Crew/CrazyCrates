@@ -103,6 +103,17 @@ public class CosmicCrateManager extends AbstractCrate {
      * @param player to add
      * @param slot to add
      */
+    public void addPickedPrize(Player player, int slot) {
+        if (this.pickedPrizes.containsKey(player.getUniqueId())) {
+            // Adds a player uuid with a default arraylist to the map if not found otherwise adds the slot.
+            this.pickedPrizes.get(player.getUniqueId()).add(slot);
+            return;
+        }
+
+        this.pickedPrizes.put(player.getUniqueId(), new ArrayList<>());
+        this.pickedPrizes.get(player.getUniqueId()).add(slot);
+    }
+
     /**
      * Removes a single slot from the arraylist
      * It also removes the uuid if prizes arraylist is empty.
@@ -110,6 +121,15 @@ public class CosmicCrateManager extends AbstractCrate {
      * @param player to remove
      * @param slot to remove
      */
+    public void removePickedPrize(Player player, int slot) {
+        // Get prizes.
+        ArrayList<Integer> prizes = this.pickedPrizes.get(player.getUniqueId());
+
+        //prizes.removeIf(value -> value == slot);
+        prizes.removeIf(value -> value == slot);
+
+        // If the arraylist is empty, remove player uuid from list entirely to prevent a leak.
+        if (prizes.isEmpty()) this.pickedPrizes.remove(player.getUniqueId());
     }
 
     /**
