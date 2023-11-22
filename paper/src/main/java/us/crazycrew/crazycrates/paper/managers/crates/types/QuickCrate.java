@@ -21,7 +21,7 @@ import java.util.logging.Level;
 public class QuickCrate extends CrateBuilder {
 
     public QuickCrate(Crate crate, Player player, Location location, boolean isFireCracker) {
-        super(crate, player, location, isFireCracker);
+        super(crate, player, location);
     }
 
     @Override

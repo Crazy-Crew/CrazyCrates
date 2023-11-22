@@ -5,18 +5,18 @@ import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import com.google.common.base.Preconditions;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.api.builders.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.api.events.CrateOpenEvent;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
-import us.crazycrew.crazycrates.paper.other.MsgUtils;
-
 import java.util.List;
 
 public abstract class CrateBuilder {
@@ -24,6 +24,7 @@ public abstract class CrateBuilder {
     @NotNull
     protected final CrazyCrates plugin = CrazyCrates.get();
 
+    private final FileConfiguration file;
     private final InventoryBuilder menu;
     private final Inventory inventory;
     private final Location location;
@@ -31,9 +32,18 @@ public abstract class CrateBuilder {
     private final Crate crate;
     private final int size;
 
+    /**
+     * Create a crate with no inventory size.
+     *
+     * @param crate opened by player
+     * @param player opening crate
+     * @param size of inventory
+     */
     public CrateBuilder(Crate crate, Player player, int size) {
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
+
+        this.file = crate.getFile();
 
         this.crate = crate;
 
@@ -45,16 +55,21 @@ public abstract class CrateBuilder {
         this.menu = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
 
         this.inventory = this.menu.build().getInventory();
-
-        this.isFireCracker = false;
-        this.isCosmicCrate = false;
     }
 
-    private final boolean isCosmicCrate;
-
-    public CrateBuilder(Crate crate, Player player, int size, boolean isCosmicCrate) {
+    /**
+     * Create a crate with no inventory size.
+     *
+     * @param crate opened by player
+     * @param player opening crate
+     * @param size of inventory
+     * @param crateName of crate
+     */
+    public CrateBuilder(Crate crate, Player player, int size, String crateName) {
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
+
+        this.file = crate.getFile();
 
         this.crate = crate;
 
@@ -63,19 +78,26 @@ public abstract class CrateBuilder {
         this.player = player;
         this.size = size;
 
-        this.menu = new CratePrizeMenu(crate, player, size, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Choose"));
+        this.menu = new CratePrizeMenu(crate, player, size, crateName);
 
         this.inventory = this.menu.build().getInventory();
-
-        this.isFireCracker = false;
-        this.isCosmicCrate = isCosmicCrate;
     }
 
+    /**
+     * Create a crate with no inventory size.
+     *
+     * @param crate opened by player
+     * @param player opening crate
+     * @param size of inventory
+     * @param location of player
+     */
     public CrateBuilder(Crate crate, Player player, int size, Location location) {
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
         Preconditions.checkNotNull(location, "Location can't be null.");
 
+        this.file = crate.getFile();
+
         this.crate = crate;
 
         this.location = location;
@@ -86,37 +108,21 @@ public abstract class CrateBuilder {
         this.menu = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
 
         this.inventory = this.menu.build().getInventory();
-
-        this.isFireCracker = false;
-        this.isCosmicCrate = false;
     }
 
+    /**
+     * Create a crate with no inventory size.
+     *
+     * @param crate opened by player
+     * @param player opening crate
+     * @param location of player
+     */
     public CrateBuilder(Crate crate, Player player, Location location) {
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
         Preconditions.checkNotNull(location, "Location can't be null.");
 
-        this.crate = crate;
-
-        this.location = location;
-
-        this.player = player;
-        this.size = 0;
-
-        this.menu = null;
-
-        this.inventory = null;
-
-        this.isFireCracker = false;
-        this.isCosmicCrate = false;
-    }
-
-    private final boolean isFireCracker;
-
-    public CrateBuilder(Crate crate, Player player, Location location, boolean isFireCracker) {
-        Preconditions.checkNotNull(crate, "Crate can't be null.");
-        Preconditions.checkNotNull(player, "Player can't be null.");
-        Preconditions.checkNotNull(location, "Location can't be null.");
+        this.file = crate.getFile();
 
         this.crate = crate;
 
@@ -128,21 +134,35 @@ public abstract class CrateBuilder {
         this.menu = null;
 
         this.inventory = null;
-
-        this.isFireCracker = isFireCracker;
-        this.isCosmicCrate = false;
     }
 
+    /**
+     * The open method for crates
+     *
+     * @param type of key
+     * @param checkHand whether to check hands or not
+     */
     public abstract void open(KeyType type, boolean checkHand);
 
+    /**
+     * Add a new crate task
+     *
+     * @param task to add
+     */
     public void addCrateTask(BukkitTask task) {
         this.plugin.getCrateManager().addCrateTask(this.player, task);
     }
 
+    /**
+     * Remove crate task
+     */
     public void removeTask() {
         this.plugin.getCrateManager().removeCrateTask(this.player);
     }
 
+    /**
+     * Cancel a crate task and remove it.
+     */
     public void cancelCrateTask() {
         // Cancel
         this.plugin.getCrateManager().getCrateTask(this.player).cancel();
@@ -151,6 +171,9 @@ public abstract class CrateBuilder {
         removeTask();
     }
 
+    /**
+     * @return true or false
+     */
     public boolean hasCrateTask() {
         return this.plugin.getCrateManager().hasCrateTask(this.player);
     }
@@ -192,7 +215,7 @@ public abstract class CrateBuilder {
      * @return true or false
      */
     public boolean isFireCracker() {
-        return isFireCracker;
+        return this.crate.getCrateType() == CrateType.fire_cracker;
     }
 
     /**
@@ -201,7 +224,15 @@ public abstract class CrateBuilder {
      * @return true or false
      */
     public boolean isCosmicCrate() {
-        return this.isCosmicCrate;
+        return this.crate.getCrateType() == CrateType.cosmic;
+    }
+
+    /**
+     * @return file configuration of crate.
+     */
+    @NotNull
+    public FileConfiguration getFile() {
+        return this.file;
     }
 
     /**
@@ -240,12 +271,27 @@ public abstract class CrateBuilder {
         getInventory().setItem(slot, item);
     }
 
+    /**
+     * Sets an item to a slot
+     *
+     * @param slot to set at
+     * @param material to use
+     * @param name of item
+     * @param lore of item
+     */
     public void setItem(int slot, Material material, String name, List<String> lore) {
         ItemBuilder builder = new ItemBuilder().setMaterial(material).setName(name).setLore(lore);
 
         getInventory().setItem(slot, builder.build());
     }
 
+    /**
+     * Sets an item to a slot
+     *
+     * @param slot to set at
+     * @param material to use
+     * @param name of item
+     */
     public void setItem(int slot, Material material, String name) {
         ItemBuilder builder = new ItemBuilder().setMaterial(material).setName(name);
 

@@ -9,8 +9,8 @@ import us.crazycrew.crazycrates.paper.api.builders.CrateBuilder;
 
 public class CosmicCrate extends CrateBuilder {
 
-    public CosmicCrate(Crate crate, Player player, int size, boolean isCosmicCrate) {
-        super(crate, player, size, isCosmicCrate);
+    public CosmicCrate(Crate crate, Player player, int size) {
+        super(crate, player, size, crate.getFile().getString("Crate.CrateName") + " - Choose");
     }
 
     @Override

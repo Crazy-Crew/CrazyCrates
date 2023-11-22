@@ -357,7 +357,7 @@ public class CrateManager {
             case wheel -> crateBuilder = new WheelCrate(crate, player, 54);
             case roulette -> crateBuilder = new RouletteCrate(crate, player, 45);
             case war -> crateBuilder = new WarCrate(crate, player, 9);
-            case cosmic -> crateBuilder = new CosmicCrate(crate, player, 27, false);
+            case cosmic -> crateBuilder = new CosmicCrate(crate, player, 27);
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
                     player.sendMessage(Translation.quick_crate_in_use.getString());
@@ -1056,20 +1056,6 @@ public class CrateManager {
 
     public boolean containsGlass(Player player) {
         return this.glass.containsKey(player.getUniqueId());
-    }
-
-    private final HashMap<UUID, ArrayList<Integer>> picks = new HashMap<>();
-
-    public void addPicks(Player player, ArrayList<Integer> slots) {
-        this.picks.put(player.getUniqueId(), slots);
-    }
-
-    public void removePicks(Player player) {
-        this.picks.remove(player.getUniqueId());
-    }
-
-    public ArrayList<Integer> getPicks(Player player) {
-        return this.picks.get(player.getUniqueId());
     }
 
     private final HashMap<UUID, Boolean> checkHands = new HashMap<>();
