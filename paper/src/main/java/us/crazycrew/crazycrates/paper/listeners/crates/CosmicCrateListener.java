@@ -9,7 +9,6 @@ import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -24,8 +23,8 @@ import us.crazycrew.crazycrates.paper.CrazyHandler;
 import us.crazycrew.crazycrates.paper.api.builders.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
-
-import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CosmicCrateListener implements Listener {
 
@@ -73,6 +72,9 @@ public class CosmicCrateListener implements Listener {
 
         if (event.getClickedInventory() != topInventory) return;
 
+        // Check if clicked item is null.
+        if (event.getCurrentItem() == null) return;
+
         // Get item stack of clicked item.
         ItemStack itemStack = topInventory.getItem(slot);
 
@@ -99,8 +101,10 @@ public class CosmicCrateListener implements Listener {
 
         // Check if it has the mystery crate key otherwise check picked key.
         if (container.has(PersistentKeys.cosmic_mystery_crate.getNamespacedKey(this.plugin))) {
+            int size = cosmicCrateManager.getPickedPrizes(player).size();
+
             // Check if prizes is greater than or equal to totalPrizes before we change any items.
-            if (cosmicCrateManager.getPickedPrizes(player).size() < totalPrizes) {
+            if (size < totalPrizes) {
                 // Get item builder.
                 ItemBuilder builder = cosmicCrateManager.getPickedCrate().setAmount(pickedSlot)
                         .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
