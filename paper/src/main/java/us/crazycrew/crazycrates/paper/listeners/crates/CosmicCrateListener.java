@@ -180,13 +180,25 @@ public class CosmicCrateListener implements Listener {
                 return;
             }
 
+            // Get new name.
+            String shufflingName = crate.getFile().getString("Crate.CrateName") + " - Shuffling";
+
+            // Update the cosmic name.
+            cosmic.title(shufflingName);
+
+            // Set the new title.
+            view.setTitle(MsgUtils.color(shufflingName));
+
+            // Clear the top inventory.
+            view.getTopInventory().clear();
+
             this.crateManager.addRepeatingCrateTask(player, new TimerTask() {
                 int time = 0;
 
                 @Override
                 public void run() {
                     try {
-                        startRollingAnimation(player, crate, view, cosmic);
+                        startRollingAnimation(player, view, cosmic);
                     } catch (Exception exception) {
                         PlayerReceiveKeyEvent keyEvent = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.REFUND, 1);
                         // Call the event.
