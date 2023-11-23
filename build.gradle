@@ -1,3 +1,5 @@
+import io.papermc.hangarpublishplugin.model.Platforms
+
 plugins {
     alias(libs.plugins.hangar)
     alias(libs.plugins.modrinth)
@@ -80,5 +82,88 @@ subprojects {
 
     processResources {
         filteringCharset = 'UTF-8'
+    }
+}
+
+boolean isBeta = true
+String modrinthType = isBeta ? "beta" : "release"
+String hangarType = isBeta ? "Beta" : "Release"
+
+String description = """
+## Changes:
+ * Added a simpler warning about plans to migrate from Spigot to Paper only
+ * 
+ * Added a config option to hide the quickcrate item
+ * Added a null check to metrics for null crate types
+ * Updated variable names to be more readable
+ * Slowly starting to remove nbt api in some areas to use PDC instead.
+ * Added sound categories to playSound so it respects individual client categories
+
+ ### Debugs:
+  * Added extra debug messages
+  * Debug messages now contain more information
+  * You can turn them off in plugin-config.yml
+
+ ### Crates:
+  * CosmicCrate got a face lift with a tad bit of optimization
+  * Other crate types have been migrated to be easier to edit
+   * Allows adding new crate types in a much easier way
+  * Clean up crate type checks
+
+## Fixes:
+ * Fixed a bug with CosmicCrate
+ * Fixed crate open event being fired twice
+
+## Other:
+ * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
+ * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
+"""
+
+List<String> versions = List.of(
+        "1.20",
+        "1.20.1",
+        "1.20.2"
+)
+
+File file = layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar").get().asFile
+
+modrinth {
+    setAutoAddDependsOn(false)
+
+    token.set(System.getenv("modrinth_token"))
+
+    projectId.set(rootProject.name.toLowerCase())
+
+    versionName.set("${rootProject.name} ${rootProject.version}")
+
+    versionNumber.set("${rootProject.version}")
+
+    versionType.set(modrinthType)
+
+    uploadFile.set(file)
+
+    gameVersions.addAll(versions)
+
+    changelog.set(description)
+
+    loaders.addAll("paper", "purpur")
+}
+
+hangarPublish {
+    publications.register("plugin") {
+        version.set("$rootProject.version")
+
+        id.set(rootProject.name)
+
+        channel.set(hangarType)
+
+        apiKey.set(System.getenv("hangar_key"))
+
+        platforms {
+            register(Platforms.PAPER) {
+                jar.set(file)
+                platformVersions.set(versions)
+            }
+        }
     }
 }
