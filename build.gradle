@@ -112,6 +112,7 @@ String description = """
 ## Fixes:
  * Fixed a bug with CosmicCrate
  * Fixed crate open event being fired twice
+ * Fixed a temp bug to keep spigot compatibility for the next few versions
 
 ## Developers:
  * Removed all deprecated methods in newer builds
