@@ -234,7 +234,8 @@ public class CosmicCrateListener implements Listener {
                             // Cancel the task.
                             cancel();
 
-                            //TODO() Send messages to player/console
+                            player.sendMessage(MsgUtils.getPrefix("&cAn issue has occurred and so a key refund was given."));
+                            plugin.getServer().getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + crate.getName() + " crate and so they were issued a key refund.", exception);
                         }
 
                         // Wrap it all up.
