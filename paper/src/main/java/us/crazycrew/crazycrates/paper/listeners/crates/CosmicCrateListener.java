@@ -1,5 +1,6 @@
 package us.crazycrew.crazycrates.paper.listeners.crates;
 
+import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
@@ -28,11 +29,13 @@ import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
+import us.crazycrew.crazycrates.paper.other.MsgUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 public class CosmicCrateListener implements Listener {
 
@@ -274,90 +277,12 @@ public class CosmicCrateListener implements Listener {
 
     /*@EventHandler
     public void onPrizeChoose(InventoryClickEvent event) {
-        Inventory inventory = event.getInventory();
-        Player player = (Player) event.getWhoClicked();
-
-        if (!(inventory.getHolder(false) instanceof CratePrizeMenu crateCosmicMenu)) {
-            return;
-        }
-
-        event.setCancelled(true);
-
-        Crate crate = this.crateManager.getOpeningCrate(player);
-
-        if (this.crateManager.isInOpeningList(player)) {
-            if (crate.getFile() == null) {
-                return;
-            }
-
-            if (!crate.getFile().getString("Crate.CrateType").equalsIgnoreCase("Cosmic")) return;
-        } else {
-            return;
-        }
-
-        if (!crateCosmicMenu.contains(" - Choose")) return;
-
-        int slot = event.getRawSlot();
 
         if (inCosmic(slot)) {
             ItemStack item = event.getCurrentItem();
 
             if (item != null) {
-                CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
-                int totalPrizes = manager.getTotalPrizes();
-                int pickedSlot = slot + 1;
-
-                NBTItem nbtItem = new NBTItem(item);
-
-                if (nbtItem.hasNBTData()) {
-                    if (nbtItem.hasTag("Cosmic-Mystery-Crate")) {
-                        this.crateManager.addNewGlassPlayer(player);
-
-                        if (this.crateManager.getGlass(player).size() < totalPrizes) {
-                            event.setCurrentItem(manager.getPickedCrate().setAmount(pickedSlot).addNamePlaceholder("%Slot%", pickedSlot + "").addLorePlaceholder("%Slot%", pickedSlot + "").build());
-                            this.crateManager.addGlass(player, slot);
-                        }
-
-                        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
-                    } else if (nbtItem.hasTag("Cosmic-Picked-Crate")) {
-                        this.crateManager.addNewGlassPlayer(player);
-
-                        event.setCurrentItem(manager.getMysteryCrate().setAmount(pickedSlot).addNamePlaceholder("%Slot%", pickedSlot + "").addLorePlaceholder("%Slot%", pickedSlot + "").build());
-                        ArrayList<Integer> slots = new ArrayList<>();
-
-                        for (int index : this.crateManager.getGlass(player)) if (index != slot) slots.add(index);
-
-                        this.crateManager.setGlass(player, slots);
-                        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
-                    }
-                }
-
                 if (this.crateManager.getGlass(player).size() >= totalPrizes) {
-                    KeyType keyType = this.crateManager.getPlayerKeyType(player);
-
-                    if (keyType == KeyType.physical_key && !this.crazyHandler.getUserManager().hasPhysicalKey(player.getUniqueId(), crate.getName(), this.crateManager.getHand(player))) {
-                        player.closeInventory();
-                        player.sendMessage(Translation.no_keys.getString());
-
-                        if (this.crateManager.isInOpeningList(player)) {
-                            this.crateManager.removePlayerFromOpeningList(player);
-                            this.crateManager.removePlayerKeyType(player);
-                        }
-
-                        this.crateManager.removeHands(player);
-                        this.crateManager.removeGlass(player);
-                        return;
-                    }
-
-                    if (this.crateManager.hasPlayerKeyType(player) && !this.crazyHandler.getUserManager().takeKeys(1, player.getUniqueId(), crate.getName(), keyType, this.crateManager.getHand(player))) {
-                        MiscUtils.failedToTakeKey(player, crate);
-                        this.crateManager.removePlayerFromOpeningList(player);
-                        this.crateManager.removePlayerKeyType(player);
-                        this.crateManager.removeHands(player);
-                        this.crateManager.removeGlass(player);
-                        return;
-                    }
-
                     this.crateManager.addCrateTask(player, new BukkitRunnable() {
                         int time = 0;
 
@@ -365,37 +290,12 @@ public class CosmicCrateListener implements Listener {
                         public void run() {
                             try {
                                 startRoll(player, crate);
-                            } catch (Exception e) {
-                                PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.REFUND, 1);
-                                plugin.getServer().getPluginManager().callEvent(event);
-
-                                if (!event.isCancelled()) {
-                                    plugin.getCrazyHandler().getUserManager().addKeys(1, player.getUniqueId(), crate.getName(), keyType);
-                                    crateManager.endCrate(player);
-                                    cancel();
-                                    player.sendMessage(MsgUtils.getPrefix("&cAn issue has occurred and so a key refund was given."));
-                                    plugin.getServer().getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + crate.getName() + " crate and so they were issued a key refund.", e);
-                                }
-
-                                return;
                             }
 
                             time++;
 
                             if (time == 40) {
-                                crateManager.endCrate(player);
                                 showRewards(player, crate);
-                                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1f, 1f);
-
-
-
-                                new BukkitRunnable() {
-                                    @Override
-                                    public void run() {
-                                        if (player.getOpenInventory().getTopInventory().equals(inventory))
-                                            player.closeInventory();
-                                    }
-                                }.runTaskLater(plugin, 40);
                             }
                         }
                     }.runTaskTimer(plugin, 0, 2));
