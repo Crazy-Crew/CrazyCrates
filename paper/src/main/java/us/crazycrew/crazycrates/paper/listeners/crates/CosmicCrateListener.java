@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.objects.Tier;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -28,6 +29,8 @@ import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
 import us.crazycrew.crazycrates.paper.other.MsgUtils;
+
+import java.util.Random;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -234,20 +237,38 @@ public class CosmicCrateListener implements Listener {
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
                     }
                 }
-            }, 0L, 2L);
+            }, 0L, 150L);
         }
     }
 
-    private void startRollingAnimation(Player player, Crate crate, InventoryView view, CratePrizeMenu cosmic) {
-        String shufflingName = crate.getFile().getString("Crate.CrateName") + " - Shuffling";
+    private void startRollingAnimation(Player player, InventoryView view, CratePrizeMenu cosmic) {
+        // Pick the tier
+        Tier tier = pickTier(player);
 
-        // Update the cosmic name.
-        cosmic.title(shufflingName);
+        if (tier != null) {
+            for (int slot = 0; slot < cosmic.getSize(); slot++) {
+                view.getTopInventory().setItem(slot, tier.getTierPane());
+            }
+        }
 
-        // Set the new title.
-        view.setTitle(shufflingName);
+        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+        player.updateInventory();
+    }
 
-        // Clear the top inventory.
-        view.getTopInventory().clear();
+    private Tier pickTier(Player player) {
+        Crate crate = this.crateManager.getOpeningCrate(player);
+
+        if (crate.getTiers() != null && !crate.getTiers().isEmpty()) {
+            for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
+                for (Tier tier : crate.getTiers()) {
+                    int chance = tier.getChance();
+                    int num = new Random().nextInt(tier.getMaxRange());
+
+                    if (num >= 1 && num <= chance) return tier;
+                }
+            }
+        }
+
+        return null;
     }
 }
