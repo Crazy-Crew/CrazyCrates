@@ -145,6 +145,15 @@ public class CosmicCrateManager extends AbstractCrate {
     }
 
     /**
+     * Removes a player from the hashmap.
+     *
+     * @param player to remove
+     */
+    public void removePickedPlayer(Player player) {
+        this.pickedPrizes.remove(player.getUniqueId());
+    }
+
+    /**
      * Adds a list of prizes to the hashmap.
      *
      * @param player to add

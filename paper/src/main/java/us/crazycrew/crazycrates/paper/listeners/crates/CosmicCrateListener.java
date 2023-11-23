@@ -10,21 +10,29 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
 import us.crazycrew.crazycrates.paper.api.builders.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
+import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
+import us.crazycrew.crazycrates.paper.other.MiscUtils;
+
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class CosmicCrateListener implements Listener {
 
@@ -44,6 +52,7 @@ public class CosmicCrateListener implements Listener {
 
         // Get the player.
         Player player = (Player) event.getWhoClicked();
+        UUID uuid = player.getUniqueId();
 
         // Check if inventory holder is instance of CratePrizeMenu
         InventoryHolder holder = inventory.getHolder();
@@ -157,7 +166,109 @@ public class CosmicCrateListener implements Listener {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
         }
 
+        String crateName = crate.getName();
+
         // Check picked prizes size to total prizes allowed, so we know when to take the key.
+        int size = cosmicCrateManager.getPickedPrizes(player).size();
+
+        if (size >= totalPrizes) {
+            KeyType type = this.crateManager.getPlayerKeyType(player);
+
+            boolean value = type == KeyType.physical_key && !this.plugin.getUserManager().hasPhysicalKey(uuid, crateName, this.crateManager.getHand(player));
+
+            // If they don't have enough keys.
+            if (value) {
+                // Send no keys message
+                player.sendMessage(Translation.no_keys.getString());
+
+                // Check if in opening list and remove from opening lists
+                if (this.crateManager.isInOpeningList(player)) {
+                    this.crateManager.removePlayerFromOpeningList(player);
+                    this.crateManager.removePlayerKeyType(player);
+                }
+
+                // Remove the player from the hashmap.
+                cosmicCrateManager.removePickedPlayer(player);
+
+                // Close inventory.
+                player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
+
+                // Return
+                return;
+            }
+
+            boolean hasKey = this.crateManager.hasPlayerKeyType(player) && !this.plugin.getUserManager().takeKeys(1, uuid, crateName, type, this.crateManager.getHand(player));
+
+            if (hasKey) {
+                MiscUtils.failedToTakeKey(player, crate);
+
+                this.crateManager.removePlayerFromOpeningList(player);
+                this.crateManager.removePlayerKeyType(player);
+                this.crateManager.removeHands(player);
+
+                cosmicCrateManager.removePickedPlayer(player);
+
+                return;
+            }
+
+            this.crateManager.addRepeatingCrateTask(player, new TimerTask() {
+                int time = 0;
+
+                @Override
+                public void run() {
+                    try {
+                        //TODO() Start roll logic
+                    } catch (Exception exception) {
+                        PlayerReceiveKeyEvent keyEvent = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.REFUND, 1);
+                        // Call the event.
+                        plugin.getServer().getPluginManager().callEvent(keyEvent);
+
+                        // Check if event is cancelled.
+                        if (!event.isCancelled()) {
+                            // Add the keys
+                            plugin.getUserManager().addKeys(1, uuid, crateName, type);
+
+                            // End the crate.
+                            crateManager.endCrate(player);
+
+                            // Cancel the task.
+                            cancel();
+
+                            //TODO() Send messages to player/console
+                        }
+
+                        // Wrap it all up.
+                        return;
+                    }
+
+                    // Increment the time?
+                    time++;
+
+                    if (time == 40) {
+                        // End the crate.
+                        crateManager.endCrate(player);
+
+                        // Show rewards
+                        //TODO() Not done yet.
+
+                        // Play a sound
+                        player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
+
+                        // Run a task delayed by 40 milliseconds.
+                        TimerTask task = new TimerTask() {
+                            @Override
+                            public void run() {
+                                // Close old inventory with plugin reason.
+                                if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+                            }
+                        };
+
+                        // Run the schedule 40 milliseconds later.
+                        plugin.getTimer().schedule(task, 40L);
+                    }
+                }
+            }, 0L, 2L);
+        }
     }
 
     /*@EventHandler
