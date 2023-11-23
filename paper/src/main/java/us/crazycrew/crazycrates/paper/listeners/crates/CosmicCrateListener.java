@@ -1,9 +1,11 @@
 package us.crazycrew.crazycrates.paper.listeners.crates;
 
+import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -29,7 +31,6 @@ import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
 import us.crazycrew.crazycrates.paper.other.MsgUtils;
-
 import java.util.Random;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -44,7 +45,128 @@ public class CosmicCrateListener implements Listener {
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @EventHandler
-    public void onSlotPicks(InventoryClickEvent event) {
+    public void onInventoryClose(InventoryCloseEvent event) {
+        Inventory inventory = event.getInventory();
+        Player player = (Player) event.getPlayer();
+
+        InventoryHolder holder = inventory.getHolder();
+        if (!(holder instanceof CratePrizeMenu cosmic)) return;
+
+        // Get opening crate.
+        Crate crate = this.crateManager.getOpeningCrate(player);
+
+        // Check if player is in the opening list.
+        if (!this.crateManager.isInOpeningList(player) || crate.getCrateType() != CrateType.cosmic) return;
+
+        // Get crate manager.
+        CosmicCrateManager cosmicCrateManager = (CosmicCrateManager) crate.getManager();
+
+        boolean playSound = false;
+
+        if (cosmic.contains(" - Prizes")) {
+            for (int amount : cosmicCrateManager.getPickedPrizes(player)) {
+                ItemStack item = inventory.getItem(amount);
+
+                if (item != null) {
+                    Tier tier = getTier(crate, item);
+
+                    if (tier != null) {
+                        Prize prize = crate.pickPrize(player, tier);
+
+                        for (int stop = 0; prize == null && stop <= 2000; stop++) {
+                            prize = crate.pickPrize(player, tier);
+                        }
+
+                        this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
+
+                        playSound = true;
+                    }
+                }
+            }
+        }
+
+        // Play sound.
+        if (playSound) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+
+        // Remove opening stuff.
+        this.crateManager.removePlayerFromOpeningList(player);
+        this.crateManager.removePlayerKeyType(player);
+
+        this.crateManager.removeCrateTask(player);
+
+        // Remove hand checks.
+        this.crateManager.removeHands(player);
+
+        // Remove the player from the hashmap.
+        cosmicCrateManager.removePickedPlayer(player);
+    }
+
+    @EventHandler
+    public void onInventoryClickPrize(InventoryClickEvent event) {
+        // Get the inventory.
+        Inventory inventory = event.getInventory();
+
+        // Get the player.
+        Player player = (Player) event.getWhoClicked();
+
+        // Check if inventory holder is instance of CratePrizeMenu
+        InventoryHolder holder = inventory.getHolder();
+        if (!(holder instanceof CratePrizeMenu cosmic)) return;
+
+        // Cancel event.
+        event.setCancelled(true);
+
+        // Get opening crate.
+        Crate crate = this.crateManager.getOpeningCrate(player);
+
+        // Check if player is in the opening list.
+        if (!this.crateManager.isInOpeningList(player) || crate.getCrateType() != CrateType.cosmic) return;
+
+        // Check the title.
+        if (!cosmic.contains(" - Prizes")) return;
+
+        // Get the raw slot.
+        int slot = event.getRawSlot();
+
+        // Get inventory view.
+        InventoryView view = event.getView();
+
+        // Check if clicking top inventory or not.
+        Inventory topInventory = view.getTopInventory();
+
+        if (event.getClickedInventory() != topInventory) return;
+
+        // Get item stack of clicked item.
+        ItemStack itemStack = topInventory.getItem(slot);
+
+        // Check if null or air.
+        if (itemStack == null || itemStack.getType() == Material.AIR) return;
+
+        Tier tier = getTier(crate, itemStack);
+
+        // If tier is null, return
+        if (tier == null) return;
+
+        Prize prize = crate.pickPrize(player, tier);
+
+        for (int stop = 0; prize == null && stop <= 2000; stop++) {
+            prize = crate.pickPrize(player, tier);
+        }
+
+        if (prize == null) return;
+
+        this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
+        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+
+        event.setCurrentItem(prize.getDisplayItem());
+
+        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1F, 1F);
+
+        if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
         // Get the inventory.
         Inventory inventory = event.getInventory();
 
@@ -104,7 +226,7 @@ public class CosmicCrateListener implements Listener {
         if (container.has(PersistentKeys.cosmic_mystery_crate.getNamespacedKey(this.plugin))) {
             int size = cosmicCrateManager.getPickedPrizes(player).size();
 
-            // Check if prizes is greater than or equal to totalPrizes before we change any items.
+            // Check if prizes is less than or equal to totalPrizes before we change any items.
             if (size < totalPrizes) {
                 // Get item builder.
                 ItemBuilder builder = cosmicCrateManager.getPickedCrate().setAmount(pickedSlot)
@@ -135,6 +257,8 @@ public class CosmicCrateListener implements Listener {
 
             // Play a sound to indicate they clicked a chest.
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+
+            return;
         }
 
         // Get the crate name.
@@ -150,14 +274,15 @@ public class CosmicCrateListener implements Listener {
 
             // If they don't have enough keys.
             if (value) {
-                // Send no keys message
+                // Send no keys message.
                 player.sendMessage(Translation.no_keys.getString());
 
-                // Check if in opening list and remove from opening lists
-                if (this.crateManager.isInOpeningList(player)) {
-                    this.crateManager.removePlayerFromOpeningList(player);
-                    this.crateManager.removePlayerKeyType(player);
-                }
+                // Check if in opening list and remove from opening lists.
+                this.crateManager.removePlayerFromOpeningList(player);
+                this.crateManager.removePlayerKeyType(player);
+
+                // Remove hand checks.
+                this.crateManager.removeHands(player);
 
                 // Remove the player from the hashmap.
                 cosmicCrateManager.removePickedPlayer(player);
@@ -165,20 +290,28 @@ public class CosmicCrateListener implements Listener {
                 // Close inventory.
                 player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 
-                // Return
+                // Return.
                 return;
             }
 
             boolean hasKey = this.crateManager.hasPlayerKeyType(player) && !this.plugin.getUserManager().takeKeys(1, uuid, crateName, type, this.crateManager.getHand(player));
 
             if (hasKey) {
+                // Notify player/console.
                 MiscUtils.failedToTakeKey(player, crate);
 
+                // Remove opening stuff.
                 this.crateManager.removePlayerFromOpeningList(player);
                 this.crateManager.removePlayerKeyType(player);
+
+                // Remove hand checks.
                 this.crateManager.removeHands(player);
 
+                // Remove the player from the hashmap.
                 cosmicCrateManager.removePickedPlayer(player);
+
+                // Close inventory.
+                player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 
                 return;
             }
@@ -203,8 +336,8 @@ public class CosmicCrateListener implements Listener {
                     try {
                         startRollingAnimation(player, view, cosmic);
                     } catch (Exception exception) {
-                        PlayerReceiveKeyEvent keyEvent = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.REFUND, 1);
                         // Call the event.
+                        PlayerReceiveKeyEvent keyEvent = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.REFUND, 1);
                         plugin.getServer().getPluginManager().callEvent(keyEvent);
 
                         // Check if event is cancelled.
@@ -212,9 +345,17 @@ public class CosmicCrateListener implements Listener {
                             // Add the keys
                             plugin.getUserManager().addKeys(1, uuid, crateName, type);
 
+                            crateManager.removePlayerFromOpeningList(player);
+
+                            crateManager.removePlayerKeyType(player);
+
+                            // Remove hand checks.
+                            crateManager.removeHands(player);
+
                             // End the crate and task.
                             crateManager.removeCrateTask(player);
 
+                            // Send refund notices.
                             player.sendMessage(MsgUtils.getPrefix("&cAn issue has occurred and so a key refund was given."));
                             plugin.getServer().getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + crate.getName() + " crate and so they were issued a key refund.", exception);
                         }
@@ -223,7 +364,7 @@ public class CosmicCrateListener implements Listener {
                         return;
                     }
 
-                    // Increment the time?
+                    // Increment the count?
                     time++;
 
                     if (time == 40) {
@@ -231,33 +372,53 @@ public class CosmicCrateListener implements Listener {
                         crateManager.removeCrateTask(player);
 
                         // Show their rewards after the animation is done.
-                        //TODO() Not done yet.
+                        showRewards(player, view, cosmic, cosmicCrateManager);
 
                         // Play a sound
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
                     }
                 }
-            }, 0L, 150L);
+            }, 0L, 80L);
         }
     }
 
     private void startRollingAnimation(Player player, InventoryView view, CratePrizeMenu cosmic) {
-        // Pick the tier
-        Tier tier = pickTier(player);
+        for (int slot = 0; slot < cosmic.getSize(); slot++) {
+            Tier tier = pickTier(cosmic.getCrate());
 
-        if (tier != null) {
-            for (int slot = 0; slot < cosmic.getSize(); slot++) {
-                view.getTopInventory().setItem(slot, tier.getTierPane());
-            }
+            if (tier != null) view.getTopInventory().setItem(slot, tier.getTierPane());
         }
 
         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
         player.updateInventory();
     }
 
-    private Tier pickTier(Player player) {
-        Crate crate = this.crateManager.getOpeningCrate(player);
+    private void showRewards(Player player, InventoryView view, CratePrizeMenu cosmic, CosmicCrateManager crateManager) {
+        String rewardsName = cosmic.getCrate().getFile().getString("Crate.CrateName") + " - Prizes";
 
+        cosmic.title(rewardsName);
+
+        view.setTitle(MsgUtils.color(rewardsName));
+
+        view.getTopInventory().clear();
+
+        Tier tier = pickTier(cosmic.getCrate());
+
+        if (tier != null) {
+            crateManager.getPickedPrizes(player).forEach(slot -> view.setItem(slot, tier.getTierPane()));
+            player.updateInventory();
+        }
+    }
+
+    private Tier getTier(Crate crate, ItemStack item) {
+        for (Tier tier : crate.getTiers()) {
+            if (tier.getTierPane().isSimilar(item)) return tier;
+        }
+
+        return null;
+    }
+
+    private Tier pickTier(Crate crate) {
         if (crate.getTiers() != null && !crate.getTiers().isEmpty()) {
             for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
                 for (Tier tier : crate.getTiers()) {
