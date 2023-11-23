@@ -92,7 +92,6 @@ String hangarType = isBeta ? "Beta" : "Release"
 String description = """
 ## Changes:
  * Added a simpler warning about plans to migrate from Spigot to Paper only
- * 
  * Added a config option to hide the quickcrate item
  * Added a null check to metrics for null crate types
  * Updated variable names to be more readable
