@@ -3,8 +3,8 @@ package com.badbones69.crazycrates.paper.api.objects;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.FileManager;
-import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
-import com.badbones69.crazycrates.paper.api.managers.AbstractCrate;
+import us.crazycrew.crazycrates.paper.managers.crates.other.CosmicCrateManager;
+import us.crazycrew.crazycrates.paper.managers.crates.other.AbstractCrateManager;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.crates.CrateHologram;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -14,7 +14,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.paper.managers.InventoryManager;
 import us.crazycrew.crazycrates.paper.api.builders.types.CratePreviewMenu;
@@ -27,7 +26,7 @@ import java.util.logging.Level;
 
 public class Crate {
     
-    private AbstractCrate manager;
+    private AbstractCrateManager manager;
     private final String name;
     private final ItemStack key;
     private final ItemStack keyNoNBT;
@@ -112,7 +111,7 @@ public class Crate {
     /**
      * Get the crate manager which contains all the settings for that crate type.
      */
-    public AbstractCrate getManager() {
+    public AbstractCrateManager getManager() {
         return this.manager;
     }
     
@@ -233,6 +232,7 @@ public class Crate {
 
     /**
      * Picks a random prize based on BlackList Permissions and the Chance System. Only used in the Cosmic Crate Type since it is the only one with tiers.
+     *
      * @param player The player that will be winning the prize.
      * @param tier The tier you wish the prize to be from.
      * @return The winning prize based on the crate's tiers.
@@ -264,6 +264,7 @@ public class Crate {
     
     /**
      * Picks a random prize based on BlackList Permissions and the Chance System. Spawns the display item at the location.
+     *
      * @param player The player that will be winning the prize.
      * @param location The location the firework will spawn at.
      * @return The winning prize.
@@ -291,24 +292,6 @@ public class Crate {
     }
     
     /**
-     * Check if the inventory the player is in is the preview menu.
-     * @param view The inventory view of the inventory.
-     * @return True if it is the preview menu and false if not.
-     */
-    public boolean isPreview(InventoryView view) {
-        return view != null && isPreview(view.getTitle());
-    }
-    
-    /**
-     * Check if the inventory the player is in is the preview menu.
-     * @param inventoryName The name of the inventory.
-     * @return True if it is the preview menu and false if not.
-     */
-    public boolean isPreview(String inventoryName) {
-        return inventoryName != null && (isInventoryNameSimilar(inventoryName, this.previewName) || isInventoryNameSimilar(inventoryName, this.crateInventoryName));
-    }
-    
-    /**
      * Get if the preview is toggled on.
      * @return True if preview is on and false if not.
      */
@@ -326,6 +309,7 @@ public class Crate {
     
     /**
      * Get the item that shows as the preview boarder if enabled.
+     *
      * @return The ItemBuilder for the boarder item.
      */
     public ItemBuilder getBorderItem() {
@@ -334,6 +318,7 @@ public class Crate {
     
     /**
      * Get the name of the inventory the crate will have.
+     *
      * @return The name of the inventory for GUI based crate types.
      */
     public String getCrateInventoryName() {
@@ -342,6 +327,7 @@ public class Crate {
     
     /**
      * Gets the inventory of a preview of prizes for the crate.
+     *
      * @return The preview as an Inventory object.
      */
     public Inventory getPreview(Player player) {
@@ -350,6 +336,7 @@ public class Crate {
     
     /**
      * Gets the inventory of a preview of prizes for the crate.
+     *
      * @return The preview as an Inventory object.
      */
     public Inventory getPreview(Player player, int page) {
@@ -401,6 +388,7 @@ public class Crate {
     
     /**
      * Get the key that shows in the /cc admin menu.
+     *
      * @return The itemstack of the key shown in the /cc admin menu.
      */
     public ItemStack getAdminKey() {
@@ -448,7 +436,7 @@ public class Crate {
     }
     
     /**
-     * @return True if new players get keys and false if they do not.
+     * @return true if new players get keys and false if they do not.
      */
     public boolean doNewPlayersGetKeys() {
         return this.giveNewPlayerKeys;
@@ -462,7 +450,8 @@ public class Crate {
     }
     
     /**
-     * Add a new editor item to a prize in the Crate.
+     * Add a new editor item to a prize in the crate.
+     *
      * @param prize The prize the item is being added to.
      * @param item The ItemStack that is being added.
      */
@@ -551,12 +540,9 @@ public class Crate {
         return baseSlot + (this.previewChestLines > 1 ? this.previewChestLines - 1 : 1) * 9;
     }
     
-    private boolean isInventoryNameSimilar(String inventory1, String inventory2) {
-        return MsgUtils.removeColor(inventory1).equalsIgnoreCase(MsgUtils.removeColor(inventory2));
-    }
-    
     /**
      * Loads all the preview items and puts them into a list.
+     *
      * @return A list of all the preview items that were created.
      */
     public List<ItemStack> getPreviewItems() {

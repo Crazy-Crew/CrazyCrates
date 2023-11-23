@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.paper.api.managers;
+package us.crazycrew.crazycrates.paper.managers.crates.other.quadcrates;
 
 import org.bukkit.SoundCategory;
 import us.crazycrew.crazycrates.common.config.types.Config;
@@ -19,7 +19,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;

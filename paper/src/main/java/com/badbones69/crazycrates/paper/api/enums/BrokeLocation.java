@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.paper.api.enums;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.Location;
-
 import org.jetbrains.annotations.NotNull;
 
 public class BrokeLocation {

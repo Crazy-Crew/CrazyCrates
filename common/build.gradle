@@ -1,3 +1,7 @@
+plugins {
+    alias(libs.plugins.shadowjar)
+}
+
 project.group = "${rootProject.group}.common"
 project.version = "${rootProject.version}"
 
@@ -10,5 +14,19 @@ dependencies {
 
     api(libs.config.me) {
         exclude group: 'org.yaml', module: 'snakeyaml'
+    }
+
+    compileOnly(libs.cluster.api)
+}
+
+assemble {
+    dependsOn(shadowJar)
+}
+
+shadowJar {
+    List.of(
+            "ch.jalu.configme"
+    ).forEach {
+        relocate(it, "com.badbones69.crazycrates.libraries")
     }
 }

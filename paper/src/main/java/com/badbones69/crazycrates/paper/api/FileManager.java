@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.paper.api;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileOutputStream;

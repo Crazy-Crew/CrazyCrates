@@ -2,7 +2,7 @@ package us.crazycrew.crazycrates.paper.listeners.crates;
 
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
-import com.badbones69.crazycrates.paper.api.managers.CosmicCrateManager;
+import us.crazycrew.crazycrates.paper.managers.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Prize;

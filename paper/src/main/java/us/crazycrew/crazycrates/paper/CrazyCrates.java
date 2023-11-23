@@ -2,14 +2,13 @@ package us.crazycrew.crazycrates.paper;
 
 import com.badbones69.crazycrates.paper.api.EventLogger;
 import org.bukkit.plugin.java.JavaPlugin;
-import us.crazycrew.crazycrates.api.users.UserManager;
 import us.crazycrew.crazycrates.paper.listeners.platforms.PaperListener;
 import us.crazycrew.crazycrates.paper.listeners.crates.WarCrateListener;
 import us.crazycrew.crazycrates.paper.listeners.platforms.SpigotListener;
 import us.crazycrew.crazycrates.paper.managers.BukkitUserManager;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.FileManager;
-import com.badbones69.crazycrates.paper.api.managers.quadcrates.SessionManager;
+import us.crazycrew.crazycrates.paper.managers.crates.other.quadcrates.SessionManager;
 import us.crazycrew.crazycrates.paper.listeners.crates.CosmicCrateListener;
 import us.crazycrew.crazycrates.paper.listeners.crates.MobileCrateListener;
 import us.crazycrew.crazycrates.paper.listeners.crates.QuadCrateListener;

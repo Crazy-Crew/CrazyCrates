@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.paper.api.managers;
+package us.crazycrew.crazycrates.paper.managers.crates.other;
 
 import com.badbones69.crazycrates.paper.api.objects.ItemBuilder;
 import org.bukkit.Material;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class CosmicCrateManager extends AbstractCrate {
+public class CosmicCrateManager extends AbstractCrateManager {
 
     private final ItemBuilder mysteryCrate;
     private final ItemBuilder pickedCrate;

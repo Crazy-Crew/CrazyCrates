@@ -15,6 +15,8 @@ base {
 dependencies {
     api(project(":common"))
 
+    implementation(libs.cluster.paper)
+
     implementation(libs.triumph.cmds)
 
     implementation(libs.metrics)
@@ -49,10 +51,13 @@ tasks {
 
     shadowJar {
         List.of(
+                "com.ryderbelserion.cluster.paper",
+                "org.jetbrains.annotations",
                 "de.tr7zw.changeme.nbtapi",
+                "dev.triumphteam.cmd",
                 "org.bstats"
         ).forEach {
-            relocate(it, "com.badbones69.crazycrates.libraries")
+            relocate(it, "com.badbones69.crazycrates.paper.libraries")
         }
     }
 
