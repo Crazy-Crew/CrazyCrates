@@ -29,6 +29,7 @@ import us.crazycrew.crazycrates.paper.listeners.crates.CrateOpenListener;
 import us.crazycrew.crazycrates.paper.listeners.menus.CrateAdminListener;
 import us.crazycrew.crazycrates.paper.other.MsgUtils;
 import java.util.List;
+import java.util.Timer;
 
 public class CrazyCrates extends JavaPlugin {
 
@@ -41,9 +42,12 @@ public class CrazyCrates extends JavaPlugin {
     private final BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(this);
 
     private CrazyHandler crazyHandler;
+    private Timer timer;
 
     @Override
     public void onEnable() {
+        this.timer = new Timer();
+
         // Load version 2 of crazycrates
         this.crazyHandler = new CrazyHandler(this);
         this.crazyHandler.load();
@@ -127,6 +131,13 @@ public class CrazyCrates extends JavaPlugin {
 
         // Unload the plugin.
         this.crazyHandler.unload();
+
+        if (this.timer != null) this.timer.cancel();
+    }
+
+    @NotNull
+    public Timer getTimer() {
+        return this.timer;
     }
 
     @NotNull

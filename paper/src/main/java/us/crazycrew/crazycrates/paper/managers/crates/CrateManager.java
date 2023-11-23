@@ -57,6 +57,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TimerTask;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -324,6 +325,8 @@ public class CrateManager {
     // A list of all current crate tasks that are running that a time. Used to force stop any crates it needs to.
     private final HashMap<UUID, BukkitTask> currentTasks = new HashMap<>();
 
+    private final HashMap<UUID, TimerTask> timerTasks = new HashMap<>();
+
     // A list of tasks being run by the QuadCrate type.
     private final HashMap<UUID, List<BukkitTask>> currentQuadTasks = new HashMap<>();
 
@@ -484,6 +487,33 @@ public class CrateManager {
      */
     public void addCrateTask(Player player, BukkitTask task) {
         this.currentTasks.put(player.getUniqueId(), task);
+    }
+
+    /**
+     * Adds a repeating timer task for a player opening a crate.
+     *
+     * @param player The player opening the crate.
+     * @param task The task of the crate.
+     * @param delay The delay before running the task.
+     * @param period The interval between task runs.
+     */
+    public void addRepeatingCrateTask(Player player, TimerTask task, Long delay, Long period) {
+        this.timerTasks.put(player.getUniqueId(), task);
+
+        this.plugin.getTimer().scheduleAtFixedRate(task, delay, period);
+    }
+
+    /**
+     * Adds a timer task for a player opening a crate.
+     *
+     * @param player The player opening the crate.
+     * @param task The task of the crate.
+     * @param delay The delay before running the task.
+     */
+    public void addCrateTask(Player player, TimerTask task, Long delay) {
+        this.timerTasks.put(player.getUniqueId(), task);
+
+        this.plugin.getTimer().schedule(task, delay);
     }
 
     /**

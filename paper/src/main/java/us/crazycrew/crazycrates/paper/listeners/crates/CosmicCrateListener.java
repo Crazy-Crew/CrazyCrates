@@ -131,9 +131,6 @@ public class CosmicCrateListener implements Listener {
             // Set to the barrier block.
             event.setCurrentItem(other);
 
-            // Run the timer.
-            Timer timer = new Timer();
-
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
@@ -142,8 +139,8 @@ public class CosmicCrateListener implements Listener {
                 }
             };
 
-            // Runs the task 3 seconds later.
-            timer.schedule(task, 3000);
+            // Runs the task 1.5 seconds later.
+            this.plugin.getTimer().schedule(task, 1500L);
         } else if (container.has(PersistentKeys.cosmic_picked_crate.getNamespacedKey(this.plugin))) {
             // Get item builder.
             ItemBuilder builder = cosmicCrateManager.getMysteryCrate().setAmount(pickedSlot)
