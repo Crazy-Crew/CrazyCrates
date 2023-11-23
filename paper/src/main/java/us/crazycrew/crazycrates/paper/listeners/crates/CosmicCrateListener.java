@@ -92,6 +92,7 @@ public class CosmicCrateListener implements Listener {
         this.crateManager.removePlayerFromOpeningList(player);
         this.crateManager.removePlayerKeyType(player);
 
+        // Cancel crate task.
         this.crateManager.removeCrateTask(player);
 
         // Remove hand checks.
@@ -240,8 +241,6 @@ public class CosmicCrateListener implements Listener {
 
                 // Play a sound to indicate they clicked a chest.
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
-
-                return;
             }
         } else if (container.has(PersistentKeys.cosmic_picked_crate.getNamespacedKey(this.plugin))) {
             // Get item builder.
@@ -257,8 +256,6 @@ public class CosmicCrateListener implements Listener {
 
             // Play a sound to indicate they clicked a chest.
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
-
-            return;
         }
 
         // Get the crate name.
@@ -277,7 +274,7 @@ public class CosmicCrateListener implements Listener {
                 // Send no keys message.
                 player.sendMessage(Translation.no_keys.getString());
 
-                // Check if in opening list and remove from opening lists.
+                // Remove opening stuff.
                 this.crateManager.removePlayerFromOpeningList(player);
                 this.crateManager.removePlayerKeyType(player);
 
@@ -345,15 +342,18 @@ public class CosmicCrateListener implements Listener {
                             // Add the keys
                             plugin.getUserManager().addKeys(1, uuid, crateName, type);
 
+                            // Remove opening stuff.
                             crateManager.removePlayerFromOpeningList(player);
-
                             crateManager.removePlayerKeyType(player);
+
+                            // Cancel crate task.
+                            crateManager.removeCrateTask(player);
 
                             // Remove hand checks.
                             crateManager.removeHands(player);
 
-                            // End the crate and task.
-                            crateManager.removeCrateTask(player);
+                            // Remove the player from the hashmap.
+                            cosmicCrateManager.removePickedPlayer(player);
 
                             // Send refund notices.
                             player.sendMessage(MsgUtils.getPrefix("&cAn issue has occurred and so a key refund was given."));
