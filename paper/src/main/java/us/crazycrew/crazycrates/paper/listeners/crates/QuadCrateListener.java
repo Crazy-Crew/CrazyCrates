@@ -1,5 +1,6 @@
 package us.crazycrew.crazycrates.paper.listeners.crates;
 
+import org.bukkit.Location;
 import org.bukkit.SoundCategory;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -130,10 +131,21 @@ public class QuadCrateListener implements Listener {
         Player player = event.getPlayer();
 
         if (this.sessionManager.inSession(player)) { // Player tries to walk away from the crate area
-            if (event.hasChangedPosition()) {
-                player.teleport(event.getFrom());
-                event.setCancelled(true);
-                return;
+            // Check if spigot temporarily to decide whether to use new api from paper or not.
+            if (this.plugin.isSpigot()) {
+                Location oldLocation = event.getFrom();
+                Location newLocation = event.getTo();
+
+                if (oldLocation.getBlockX() != newLocation.getBlockX() || oldLocation.getBlockZ() != newLocation.getBlockZ()) {
+                    player.teleport(oldLocation);
+                    event.setCancelled(true);
+                }
+            } else {
+                if (event.hasChangedPosition()) {
+                    player.teleport(event.getFrom());
+                    event.setCancelled(true);
+                    return;
+                }
             }
         }
 

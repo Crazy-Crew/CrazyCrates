@@ -44,6 +44,8 @@ public class CrazyCrates extends JavaPlugin {
     private CrazyHandler crazyHandler;
     private Timer timer;
 
+    private boolean isSpigot;
+
     @Override
     public void onEnable() {
         this.timer = new Timer();
@@ -62,13 +64,11 @@ public class CrazyCrates extends JavaPlugin {
 
         this.crazyHandler.getModuleLoader().load();
 
-        boolean isSpigot;
-
         try {
             Class.forName("io.papermc.paper.configuration.Configuration");
-            isSpigot = false;
+            this.isSpigot = false;
         } catch (ClassNotFoundException exception) {
-            isSpigot = true;
+            this.isSpigot = true;
         }
 
         PluginManager pluginManager = getServer().getPluginManager();
@@ -81,7 +81,7 @@ public class CrazyCrates extends JavaPlugin {
         pluginManager.registerEvents(new WarCrateListener(), this);
         pluginManager.registerEvents(new MiscListener(), this);
 
-        if (isSpigot) pluginManager.registerEvents(new SpigotListener(), this); else pluginManager.registerEvents(new PaperListener(), this);
+        if (this.isSpigot) pluginManager.registerEvents(new SpigotListener(), this); else pluginManager.registerEvents(new PaperListener(), this);
 
         if (isLogging()) {
             String prefix = this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.console_prefix);
@@ -95,7 +95,7 @@ public class CrazyCrates extends JavaPlugin {
                 }
             }
 
-            if (isSpigot) {
+            if (this.isSpigot) {
                 List.of(
                         "CrazyCrates will no longer work using Spigot when 2.0 releases",
                         "If you wish to keep using and getting updates for our plugin",
@@ -177,5 +177,9 @@ public class CrazyCrates extends JavaPlugin {
 
     public boolean isLogging() {
         return getConfigManager().getPluginConfig().getProperty(PluginConfig.verbose_logging);
+    }
+
+    public boolean isSpigot() {
+        return this.isSpigot;
     }
 }
