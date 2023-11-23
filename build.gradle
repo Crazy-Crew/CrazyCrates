@@ -113,6 +113,11 @@ String description = """
  * Fixed a bug with CosmicCrate
  * Fixed crate open event being fired twice
 
+## Developers:
+ * Removed all deprecated methods in newer builds
+ * You must update your api's to https://docs.crazycrew.us/crazycrates/api/intro
+ * Check the `API Usage` tab to see an example plugin.
+
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
  * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
