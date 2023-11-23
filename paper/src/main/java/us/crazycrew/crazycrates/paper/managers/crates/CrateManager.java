@@ -436,7 +436,7 @@ public class CrateManager {
     public void endCrate(Player player) {
         if (this.currentTasks.containsKey(player.getUniqueId())) {
             this.currentTasks.get(player.getUniqueId()).cancel();
-            removeCrateTask(player);
+            //removeCrateTask(player);
         }
     }
 
@@ -472,8 +472,8 @@ public class CrateManager {
     /**
      * Checks to see if the player has a quad crate task going on.
      *
-     * @param player The player that is being checked.
-     * @return True if they do have a task and false if not.
+     * @param player that is being checked.
+     * @return true if they do have a task and false if not.
      */
     public boolean hasQuadCrateTask(Player player) {
         return this.currentQuadTasks.containsKey(player.getUniqueId());
@@ -482,8 +482,8 @@ public class CrateManager {
     /**
      * Add a crate task that is going on for a player.
      *
-     * @param player The player opening the crate.
-     * @param task The task of the crate.
+     * @param player opening the crate.
+     * @param task of the crate.
      */
     public void addCrateTask(Player player, BukkitTask task) {
         this.currentTasks.put(player.getUniqueId(), task);
@@ -492,10 +492,10 @@ public class CrateManager {
     /**
      * Adds a repeating timer task for a player opening a crate.
      *
-     * @param player The player opening the crate.
-     * @param task The task of the crate.
-     * @param delay The delay before running the task.
-     * @param period The interval between task runs.
+     * @param player opening the crate.
+     * @param task of the crate.
+     * @param delay before running the task.
+     * @param period interval between task runs.
      */
     public void addRepeatingCrateTask(Player player, TimerTask task, Long delay, Long period) {
         this.timerTasks.put(player.getUniqueId(), task);
@@ -504,11 +504,30 @@ public class CrateManager {
     }
 
     /**
+     * This forces a crate to end and will not give out a prize. This is meant for people who leave the server to stop any errors or lag from happening.
+     *
+     * @param player that the crate is being ended for.
+     */
+    public void removeCrateTask(Player player) {
+        // Get uuid
+        UUID uuid = player.getUniqueId();
+
+        // Check if contains.
+        if (this.timerTasks.containsKey(uuid)) {
+            // Cancel the task.
+            this.timerTasks.get(uuid).cancel();
+
+            // Remove the player.
+            this.timerTasks.remove(uuid);
+        }
+    }
+
+    /**
      * Adds a timer task for a player opening a crate.
      *
-     * @param player The player opening the crate.
-     * @param task The task of the crate.
-     * @param delay The delay before running the task.
+     * @param player opening the crate.
+     * @param task of the crate.
+     * @param delay before running the task.
      */
     public void addCrateTask(Player player, TimerTask task, Long delay) {
         this.timerTasks.put(player.getUniqueId(), task);
@@ -524,15 +543,6 @@ public class CrateManager {
      */
     public BukkitTask getCrateTask(Player player) {
         return this.currentTasks.get(player.getUniqueId());
-    }
-
-    /**
-     * Remove a task from the list of current tasks.
-     *
-     * @param player The player using the crate.
-     */
-    public void removeCrateTask(Player player) {
-        this.currentTasks.remove(player.getUniqueId());
     }
 
     /**
@@ -1059,33 +1069,6 @@ public class CrateManager {
 
     public void removeCloser(Player player) {
         this.canClose.remove(player.getUniqueId());
-    }
-
-    // Cosmic Crate
-    private final HashMap<UUID, ArrayList<Integer>> glass = new HashMap<>();
-
-    public void addNewGlassPlayer(Player player) {
-        if (!containsGlass(player)) this.glass.put(player.getUniqueId(), new ArrayList<>());
-    }
-
-    public void setGlass(Player player, ArrayList<Integer> slots) {
-        this.glass.put(player.getUniqueId(), slots);
-    }
-
-    public void removeGlass(Player player) {
-        this.glass.remove(player.getUniqueId());
-    }
-
-    public void addGlass(Player player, int slot) {
-        this.glass.get(player.getUniqueId()).add(slot);
-    }
-
-    public ArrayList<Integer> getGlass(Player player) {
-        return this.glass.get(player.getUniqueId());
-    }
-
-    public boolean containsGlass(Player player) {
-        return this.glass.containsKey(player.getUniqueId());
     }
 
     private final HashMap<UUID, Boolean> checkHands = new HashMap<>();

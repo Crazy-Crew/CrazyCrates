@@ -18,32 +18,24 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.CrazyHandler;
 import us.crazycrew.crazycrates.paper.api.builders.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
 import us.crazycrew.crazycrates.paper.other.MsgUtils;
-
-import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public class CosmicCrateListener implements Listener {
 
     @NotNull
     private final CrazyCrates plugin = CrazyCrates.get();
-
-    @NotNull
-    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
@@ -87,7 +79,7 @@ public class CosmicCrateListener implements Listener {
         // Get item stack of clicked item.
         ItemStack itemStack = topInventory.getItem(slot);
 
-        // Check if null or air
+        // Check if null or air.
         if (itemStack == null || itemStack.getType() == Material.AIR) return;
 
         // Get crate manager.
@@ -99,10 +91,10 @@ public class CosmicCrateListener implements Listener {
         // Get picked slot.
         int pickedSlot = slot+1;
 
-        // Get clicked item's item meta
+        // Get clicked item's item meta.
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        // Get PDC
+        // Get the pdc container.
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
         // Check if it has the mystery crate key otherwise check picked key.
@@ -126,33 +118,6 @@ public class CosmicCrateListener implements Listener {
 
                 return;
             }
-
-            // Play the no sound.
-            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.NEUTRAL, 1F, 1F);
-
-            // Get item builder.
-            ItemStack builder = cosmicCrateManager.getMysteryCrate().setAmount(pickedSlot)
-                    .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
-                    .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot)).build();
-
-            ItemStack other = cosmicCrateManager.getAlreadyPicked().build();
-
-            // If current item is the same type as the BARRIER block, we do nothing as the task is already running.
-            if (itemStack.getType() == other.getType()) return;
-
-            // Set to the barrier block.
-            event.setCurrentItem(other);
-
-            TimerTask task = new TimerTask() {
-                @Override
-                public void run() {
-                    // Set old item.
-                    event.setCurrentItem(builder);
-                }
-            };
-
-            // Runs the task 1.5 seconds later.
-            this.plugin.getTimer().schedule(task, 1500L);
         } else if (container.has(PersistentKeys.cosmic_picked_crate.getNamespacedKey(this.plugin))) {
             // Get item builder.
             ItemBuilder builder = cosmicCrateManager.getMysteryCrate().setAmount(pickedSlot)
@@ -169,6 +134,7 @@ public class CosmicCrateListener implements Listener {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
         }
 
+        // Get the crate name.
         String crateName = crate.getName();
 
         // Check picked prizes size to total prizes allowed, so we know when to take the key.
@@ -220,7 +186,7 @@ public class CosmicCrateListener implements Listener {
                 @Override
                 public void run() {
                     try {
-                        //TODO() Start roll logic
+                        startRollingAnimation(player, crate, view, cosmic);
                     } catch (Exception exception) {
                         PlayerReceiveKeyEvent keyEvent = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.REFUND, 1);
                         // Call the event.
@@ -231,11 +197,8 @@ public class CosmicCrateListener implements Listener {
                             // Add the keys
                             plugin.getUserManager().addKeys(1, uuid, crateName, type);
 
-                            // End the crate.
-                            crateManager.endCrate(player);
-
-                            // Cancel the task.
-                            cancel();
+                            // End the crate and task.
+                            crateManager.removeCrateTask(player);
 
                             player.sendMessage(MsgUtils.getPrefix("&cAn issue has occurred and so a key refund was given."));
                             plugin.getServer().getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + crate.getName() + " crate and so they were issued a key refund.", exception);
@@ -249,237 +212,30 @@ public class CosmicCrateListener implements Listener {
                     time++;
 
                     if (time == 40) {
-                        // End the crate.
-                        crateManager.endCrate(player);
+                        // End the crate and task.
+                        crateManager.removeCrateTask(player);
 
-                        // Show rewards
+                        // Show their rewards after the animation is done.
                         //TODO() Not done yet.
 
                         // Play a sound
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
-
-                        // Run a task delayed by 40 milliseconds.
-                        TimerTask task = new TimerTask() {
-                            @Override
-                            public void run() {
-                                // Close old inventory with plugin reason.
-                                if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
-                            }
-                        };
-
-                        // Run the schedule 40 milliseconds later.
-                        plugin.getTimer().schedule(task, 40L);
                     }
                 }
             }, 0L, 2L);
         }
     }
 
-    /*@EventHandler
-    public void onPrizeChoose(InventoryClickEvent event) {
+    private void startRollingAnimation(Player player, Crate crate, InventoryView view, CratePrizeMenu cosmic) {
+        String shufflingName = crate.getFile().getString("Crate.CrateName") + " - Shuffling";
 
-        if (inCosmic(slot)) {
-            ItemStack item = event.getCurrentItem();
+        // Update the cosmic name.
+        cosmic.title(shufflingName);
 
-            if (item != null) {
-                if (this.crateManager.getGlass(player).size() >= totalPrizes) {
-                    this.crateManager.addCrateTask(player, new BukkitRunnable() {
-                        int time = 0;
+        // Set the new title.
+        view.setTitle(shufflingName);
 
-                        @Override
-                        public void run() {
-                            try {
-                                startRoll(player, crate);
-                            }
-
-                            time++;
-
-                            if (time == 40) {
-                                showRewards(player, crate);
-                            }
-                        }
-                    }.runTaskTimer(plugin, 0, 2));
-                }
-            }
-        }
+        // Clear the top inventory.
+        view.getTopInventory().clear();
     }
-
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        Inventory inventory = event.getInventory();
-        Player player = (Player) event.getWhoClicked();
-
-        if (!(inventory.getHolder(false) instanceof CratePrizeMenu crateCosmicMenu)) {
-            return;
-        }
-
-        event.setCancelled(true);
-
-        Crate crate = this.crateManager.getOpeningCrate(player);
-
-        if (this.crateManager.isInOpeningList(player)) {
-            if (crate.getFile() == null) {
-                return;
-            }
-
-            if (!crate.getFile().getString("Crate.CrateType").equalsIgnoreCase("Cosmic")) return;
-        } else {
-            return;
-        }
-
-        if (!crateCosmicMenu.contains(" - Prizes")) return;
-
-        int slot = event.getRawSlot();
-
-        if (inCosmic(slot)) {
-            for (int i : this.crateManager.getPicks(player)) {
-                if (slot == i) {
-                    ItemStack item = event.getCurrentItem();
-                    Tier tier = getTier(crate, item);
-
-                    if (item != null && tier != null) {
-                        Prize prize = crate.pickPrize(player, tier);
-
-                        for (int stop = 0; prize == null && stop <= 2000; stop++) {
-                            prize = crate.pickPrize(player, tier);
-                        }
-
-                        if (prize != null) {
-                            this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
-                            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, this.crateManager.getOpeningCrate(player).getName(), prize));
-                            event.setCurrentItem(prize.getDisplayItem());
-                            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 1f);
-
-                            if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
-                        }
-
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onInventoryClose(InventoryCloseEvent e) {
-        Inventory inventory = e.getInventory();
-        Player player = (Player) e.getPlayer();
-
-        Crate crate = this.crateManager.getOpeningCrate(player);
-
-        if (this.crateManager.isInOpeningList(player)) {
-            if (crate.getFile() == null) {
-                return;
-            }
-
-            if (!crate.getFile().getString("Crate.CrateType").equalsIgnoreCase("Cosmic")) return;
-        } else {
-            return;
-        }
-
-        if (!(inventory.getHolder(false) instanceof CratePrizeMenu crateCosmicMenu)) {
-            return;
-        }
-
-        if (crateCosmicMenu.contains(" - Prizes")) {
-            boolean playSound = false;
-
-            for (int i : this.crateManager.getPicks(player)) {
-                if (inventory.getItem(i) != null) {
-                    Tier tier = getTier(crate, inventory.getItem(i));
-
-                    if (tier != null) {
-                        Prize prize = crate.pickPrize(player, tier);
-
-                        for (int stop = 0; prize == null && stop <= 2000; stop++) {
-                            prize = crate.pickPrize(player, tier);
-                        }
-
-                        this.crazyHandler.getPrizeManager().givePrize(player, prize, crate);
-                        playSound = true;
-                    }
-                }
-            }
-
-            if (playSound) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS,1f, 1f);
-
-            this.crateManager.removePlayerFromOpeningList(player);
-            this.crateManager.removePlayerKeyType(player);
-
-            if (this.crateManager.containsGlass(player)) {
-                this.crateManager.addPicks(player, this.crateManager.getGlass(player));
-                this.crateManager.removeGlass(player);
-            }
-
-            this.crateManager.removeHands(player);
-        }
-
-        if (this.crateManager.isInOpeningList(player) && crateCosmicMenu.contains(" - Choose")) {
-            CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
-
-            if (!this.crateManager.containsGlass(player) || this.crateManager.getGlass(player).size() > manager.getTotalPrizes()) {
-                this.crateManager.removePlayerFromOpeningList(player);
-                this.crateManager.removePlayerKeyType(player);
-            }
-
-            if (this.crateManager.containsGlass(player)) {
-                this.crateManager.addPicks(player, this.crateManager.getGlass(player));
-                this.crateManager.removeGlass(player);
-            }
-
-            this.crateManager.removeHands(player);
-        }
-    }
-    
-    private void showRewards(Player player, Crate crate) {
-        Inventory inventory = new CratePrizeMenu(crate, player, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Prizes")).build().getInventory();
-
-        Tier tier = pickTier(player);
-
-        if (tier != null) {
-            this.crateManager.getPicks(player).forEach(value -> inventory.setItem(value, tier.getTierPane()));
-            player.openInventory(inventory);
-        }
-    }
-
-    private void startRoll(Player player, Crate crate) {
-        Inventory inventory = new CratePrizeMenu(crate, player, 27, MsgUtils.sanitizeColor(crate.getFile().getString("Crate.CrateName") + " - Shuffling")).build().getInventory();
-
-        Tier tier = pickTier(player);
-
-        if (tier != null) {
-            for (int i = 0; i < 27; i++) {
-                inventory.setItem(i, tier.getTierPane());
-            }
-        }
-
-        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
-        player.openInventory(inventory);
-    }
-
-    private Tier pickTier(Player player) {
-        Crate crate = this.crateManager.getOpeningCrate(player);
-
-        if (crate.getTiers() != null && !crate.getTiers().isEmpty()) {
-            for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
-                for (Tier tier : crate.getTiers()) {
-                    int chance = tier.getChance();
-                    int num = new Random().nextInt(tier.getMaxRange());
-
-                    if (num >= 1 && num <= chance) return tier;
-                }
-            }
-        }
-
-        return null;
-    }
-    
-    private Tier getTier(Crate crate, ItemStack item) {
-        for (Tier tier : crate.getTiers()) {
-            if (tier.getTierPane().isSimilar(item)) return tier;
-        }
-
-        return null;
-    }
-     */
 }
