@@ -34,7 +34,7 @@ public class WarCrateListener implements Listener {
         Inventory inventory = event.getInventory();
         Player player = (Player) event.getWhoClicked();
 
-        if (!(inventory.getHolder(false) instanceof CratePrizeMenu)) {
+        if (!(inventory.getHolder() instanceof CratePrizeMenu)) {
             return;
         }
 
@@ -109,7 +109,7 @@ public class WarCrateListener implements Listener {
 
         if (this.crateManager.containsPicker(player) && this.crateManager.isPicker(player)) {
             for (Crate crate : this.crateManager.getCrates()) {
-                if (crate.getCrateType() == CrateType.war && event.getInventory().getHolder(false) instanceof CratePrizeMenu) {
+                if (crate.getCrateType() == CrateType.war && event.getInventory().getHolder() instanceof CratePrizeMenu) {
                     if (this.crateManager.hasCrateTask(player)) {
                         this.crateManager.removeCloser(player);
 

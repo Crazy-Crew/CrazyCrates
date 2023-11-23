@@ -37,7 +37,7 @@ public class CratePreviewListener extends ModuleHandler {
 
         Inventory inventory = event.getInventory();
 
-        if (!(inventory.getHolder(false) instanceof CratePreviewMenu)) {
+        if (!(inventory.getHolder() instanceof CratePreviewMenu)) {
             return;
         }
 

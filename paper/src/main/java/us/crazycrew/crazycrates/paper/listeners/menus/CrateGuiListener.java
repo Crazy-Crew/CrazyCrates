@@ -15,7 +15,7 @@ public class CrateGuiListener extends ModuleHandler {
     public void onInventoryDragEvent(InventoryDragEvent event) {
         Inventory inventory = event.getView().getTopInventory();
 
-        if (inventory.getHolder(false) instanceof CrateAdminMenu || inventory.getHolder(false) instanceof CrateMainMenu || inventory.getHolder(false) instanceof CratePreviewMenu || inventory.getHolder(false) instanceof CratePrizeMenu) {
+        if (inventory.getHolder() instanceof CrateAdminMenu || inventory.getHolder() instanceof CrateMainMenu || inventory.getHolder() instanceof CratePreviewMenu || inventory.getHolder() instanceof CratePrizeMenu) {
             event.setCancelled(true);
         }
     }

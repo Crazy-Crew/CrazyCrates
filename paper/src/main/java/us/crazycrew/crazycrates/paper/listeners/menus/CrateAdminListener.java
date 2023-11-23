@@ -34,7 +34,7 @@ public class CrateAdminListener extends ModuleHandler {
 
         Inventory inventory = event.getInventory();
 
-        if (!(inventory.getHolder(false) instanceof CrateAdminMenu)) {
+        if (!(inventory.getHolder() instanceof CrateAdminMenu)) {
             return;
         }
 
