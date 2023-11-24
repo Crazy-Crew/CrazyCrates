@@ -125,8 +125,7 @@ String description = """
 """
 
 List<String> versions = List.of(
-        "1.20.2",
-        "1.20.3"
+        "1.20.2"
 )
 
 File file = layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar").get().asFile
