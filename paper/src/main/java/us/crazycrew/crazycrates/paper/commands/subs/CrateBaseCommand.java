@@ -10,11 +10,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
+import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.EventLogger;
 import com.badbones69.crazycrates.paper.api.FileManager;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
@@ -23,9 +24,8 @@ import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
-import com.badbones69.crazycrates.api.enums.Permissions;
-import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
-import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
+import com.badbones69.crazycrates.paper.api.enums.Permissions;
+import us.crazycrew.crazycrates.paper.managers.BukkitUserManager;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.BaseCommand;
 import org.bukkit.block.Block;
@@ -34,17 +34,16 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateAdminMenu;
-import us.crazycrew.crazycrates.paper.api.crates.menus.types.CrateMainMenu;
+import us.crazycrew.crazycrates.paper.api.builders.types.CrateAdminMenu;
+import us.crazycrew.crazycrates.paper.api.builders.types.CrateMainMenu;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
-import us.crazycrew.crazycrates.paper.utils.FileUtils;
-import us.crazycrew.crazycrates.paper.utils.MiscUtils;
-import us.crazycrew.crazycrates.paper.utils.MsgUtils;
+import us.crazycrew.crazycrates.paper.other.FileUtils;
+import us.crazycrew.crazycrates.paper.other.MiscUtils;
+import us.crazycrew.crazycrates.paper.other.MsgUtils;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
@@ -55,7 +54,7 @@ import java.util.logging.Level;
 public class CrateBaseCommand extends BaseCommand {
 
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = CrazyCrates.get();
     
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
@@ -394,7 +393,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         if (!hasKey) {
             if (this.config.getProperty(Config.need_key_sound_toggle)) {
-                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), 1f, 1f);
+                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), SoundCategory.PLAYERS,1f, 1f);
             }
 
             player.sendMessage(Translation.no_virtual_key.getString());
@@ -474,7 +473,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         if (!this.plugin.getCrazyHandler().getUserManager().takeKeys(keysUsed, player.getUniqueId(), crate.getName(), type, false)) {
             MiscUtils.failedToTakeKey(player, crate);
-            CrateControlListener.inUse.remove(player);
+            this.crateManager.removeCrateInUse(player);
             this.crateManager.removePlayerFromOpeningList(player);
             return;
         }

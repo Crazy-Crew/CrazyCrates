@@ -5,12 +5,13 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.FileManager.Files;
-import us.crazycrew.crazycrates.paper.utils.MsgUtils;
-import java.io.*;
+import us.crazycrew.crazycrates.paper.other.MsgUtils;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -28,7 +29,7 @@ import java.util.logging.Level;
 public class EventLogger {
 
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     private final String fileName = Files.LOGS.getFileName();
 

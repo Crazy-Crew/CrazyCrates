@@ -20,3 +20,4 @@ run
 !paper/run/eula.txt
 !paper/run/server.properties
 !paper/run/plugins
+!paper/run/ops.json

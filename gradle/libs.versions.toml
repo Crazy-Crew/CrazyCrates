@@ -1,32 +1,28 @@
 [versions]
-paperweight_version = "1.5.8"
-run_paper_version = "2.2.0"
-shadow_version = "8.1.1"
-
-jetbrains_kotlin = "1.9.10"
-
-cluster_version = "2.4"
 kyori_version = "4.14.0"
+
+cluster_version = "3.1"
 
 [plugins]
 hangar = { id = "io.papermc.hangar-publish-plugin", version = "0.1.0" }
 modrinth = { id = "com.modrinth.minotaur", version = "2.8.4" }
 
-[libraries]
-cluster_paper = { module = "com.ryderbelserion.cluster:cluster-paper", version.ref = "cluster_version" }
-cluster_api = { module = "com.ryderbelserion.cluster:cluster-api", version.ref = "cluster_version" }
+paperweight = { id = "io.papermc.paperweight.userdev", version = "1.5.9" }
+runpaper = { id = "xyz.jpenilla.run-paper", version = "2.2.2" }
+shadowjar = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
 
+[libraries]
 adventure = { module = "net.kyori:adventure-api", version.ref = "kyori_version" }
 minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "kyori_version" }
 
+cluster_paper = { module = "com.ryderbelserion.cluster.paper:cluster-paper", version.ref = "cluster_version" }
+cluster_api = { module = "com.ryderbelserion.cluster.api:cluster-api", version.ref = "cluster_version" }
+
 nbtapi = { module = "de.tr7zw:item-nbt-api", version = "2.12.0" }
 
-annotations = { module = "org.jetbrains:annotations", version = "24.0.1" }
-kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "jetbrains_kotlin" }
+triumph_cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version = "2.0.0-SNAPSHOT" }
 
-triumphcmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version = "2.0.0-SNAPSHOT" }
-
-configme = { module = "ch.jalu:configme", version = "1.4.1" }
+config_me = { module = "ch.jalu:configme", version = "1.4.1" }
 
 metrics = { module = "org.bstats:bstats-bukkit", version = "3.0.2" }
 
@@ -37,10 +33,3 @@ holographicdisplays = { module = "me.filoghost.holographicdisplays:holographicdi
 decentholograms = { module = "com.github.decentsoftware-eu:decentholograms", version = "2.8.4" }
 
 placeholderapi = { module = "me.clip:placeholderapi", version = "2.11.4" }
-
-# Plugins
-paperweight_plugin = { module = "io.papermc.paperweight:paperweight-userdev", version.ref = "paperweight_version" }
-jpenilla_plugin = { module = "xyz.jpenilla:run-task", version.ref = "run_paper_version" }
-shadow_plugin = { module = "com.github.johnrengelman:shadow", version.ref = "shadow_version" }
-
-kotlin_plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "jetbrains_kotlin" }

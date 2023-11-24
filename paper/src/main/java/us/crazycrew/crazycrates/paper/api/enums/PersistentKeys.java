@@ -7,7 +7,10 @@ import us.crazycrew.crazycrates.paper.CrazyCrates;
 @SuppressWarnings("rawtypes")
 public enum PersistentKeys {
 
-    no_firework_damage("firework", PersistentDataType.BOOLEAN);
+    no_firework_damage("firework", PersistentDataType.BOOLEAN),
+    cosmic_mystery_crate("cosmic_mystery_crate", PersistentDataType.INTEGER),
+    cosmic_picked_crate("cosmic_picked_crate", PersistentDataType.INTEGER),
+    crate_prize("item", PersistentDataType.INTEGER);
 
     private final String NamespacedKey;
     private final PersistentDataType type;

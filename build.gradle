@@ -1,0 +1,174 @@
+import io.papermc.hangarpublishplugin.model.Platforms
+
+plugins {
+    alias(libs.plugins.hangar)
+    alias(libs.plugins.modrinth)
+
+    id 'java-library'
+}
+
+defaultTasks 'build'
+
+def combineJars = tasks.register("combineJars", org.gradle.jvm.tasks.Jar) {
+    mustRunAfter build
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from(files(subprojects.findAll { it.name != 'webmap' }.collect {
+        it.layout.buildDirectory.file("libs/${rootProject.name}-${it.name}-${it.version}.jar").get()
+    }).filter { it.name != 'MANIFEST.MF' }.collect { if (it.isDirectory()) it else zipTree(it) })
+
+    doLast {
+        File dir = new File(rootDir, "jars")
+
+        if (dir.exists()) dir.delete()
+
+        dir.mkdirs()
+
+        copy {
+            from(layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar"))
+            into(dir)
+        }
+    }
+}
+
+assemble {
+    subprojects.forEach { project -> dependsOn ":${project.name}:build" }
+
+    finalizedBy combineJars
+}
+
+subprojects {
+    apply plugin: 'java-library'
+
+    repositories {
+        maven { url = 'https://repo.crazycrew.us/releases' }
+
+        maven { url = 'https://jitpack.io' }
+
+        mavenCentral()
+    }
+
+    if (name == "paper") {
+        repositories {
+            maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+
+            maven { url = 'https://repo.codemc.io/repository/maven-public/' }
+
+            maven { url = 'https://repo.crazycrew.us/first-party/' }
+
+            maven { url = 'https://repo.crazycrew.us/third-party/' }
+
+            maven { url = 'https://repo.triumphteam.dev/snapshots' }
+
+            flatDir { dirs("libs") }
+        }
+    }
+
+    compileJava {
+        options.encoding = 'UTF-8'
+        options.release.set(17)
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+
+    javadoc {
+        options.encoding = 'UTF-8'
+    }
+
+    processResources {
+        filteringCharset = 'UTF-8'
+    }
+}
+
+boolean isBeta = true
+String modrinthType = isBeta ? "beta" : "release"
+String hangarType = isBeta ? "Beta" : "Release"
+
+String description = """
+## Changes:
+ * Added a simpler warning about plans to migrate from Spigot to Paper only
+ * Added a config option to hide the quickcrate item
+ * Added a null check to metrics for null crate types
+ * Updated variable names to be more readable
+ * Slowly starting to remove nbt api in some areas to use PDC instead.
+ * Added sound categories to playSound so it respects individual client categories
+
+ ### Debugs:
+  * Added extra debug messages
+  * Debug messages now contain more information
+  * You can turn them off in plugin-config.yml
+
+ ### Crates:
+  * CosmicCrate got a face lift with a tad bit of optimization
+  * Other crate types have been migrated to be easier to edit
+   * Allows adding new crate types in a much easier way
+  * Clean up crate type checks
+
+## Fixes:
+ * Fixed a bug with CosmicCrate
+ * Fixed crate open event being fired twice
+ * Fixed a temp bug to keep spigot compatibility for the next few versions
+
+## Developers:
+ * Removed all deprecated methods in newer builds
+ * You must update your api's to https://docs.crazycrew.us/crazycrates/api/intro
+ * Check the `API Usage` tab to see an example plugin.
+
+## Other:
+ * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
+ * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
+"""
+
+List<String> versions = List.of(
+        "1.20",
+        "1.20.1",
+        "1.20.2"
+)
+
+File file = layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar").get().asFile
+
+modrinth {
+    setAutoAddDependsOn(false)
+
+    token.set(System.getenv("modrinth_token"))
+
+    projectId.set(rootProject.name.toLowerCase())
+
+    versionName.set("${rootProject.name} ${rootProject.version}")
+
+    versionNumber.set("${rootProject.version}")
+
+    versionType.set(modrinthType)
+
+    uploadFile.set(file)
+
+    gameVersions.addAll(versions)
+
+    changelog.set(description)
+
+    loaders.addAll("paper", "purpur")
+}
+
+hangarPublish {
+    publications.register("plugin") {
+        version.set("$rootProject.version")
+
+        id.set(rootProject.name)
+
+        channel.set(hangarType)
+
+        apiKey.set(System.getenv("hangar_key"))
+
+        platforms {
+            register(Platforms.PAPER) {
+                jar.set(file)
+                platformVersions.set(versions)
+            }
+        }
+    }
+}

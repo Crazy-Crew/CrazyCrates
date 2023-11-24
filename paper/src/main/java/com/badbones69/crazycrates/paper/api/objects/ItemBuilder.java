@@ -1,13 +1,24 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.inventory.meta.ArmorMeta;
+import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.MapMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.support.SkullCreator;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import dev.lone.itemsadder.api.CustomStack;
 import io.th0rgal.oraxen.api.OraxenItems;
-import org.bukkit.*;
 import org.bukkit.block.Banner;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
@@ -15,22 +26,23 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.*;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-import us.crazycrew.crazycrates.paper.utils.MsgUtils;
-import java.util.*;
+import us.crazycrew.crazycrates.paper.other.MsgUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class ItemBuilder {
 
-    private NBTItem nbtItem;
+    private final NBTItem nbtItem;
 
     // Item Data
     private Material material;
@@ -97,11 +109,16 @@ public class ItemBuilder {
     private int customModelData;
     private boolean useCustomModelData;
 
+    private ItemStack itemStack;
+    private ItemMeta itemMeta;
+
     /**
      * Create a blank item builder.
      */
     public ItemBuilder() {
         this.nbtItem = null;
+        this.itemStack = null;
+        this.itemMeta = null;
         this.material = Material.STONE;
         this.trimMaterial = null;
         this.trimPattern = null;
@@ -154,6 +171,8 @@ public class ItemBuilder {
      */
     public ItemBuilder(ItemBuilder itemBuilder) {
         this.nbtItem = itemBuilder.nbtItem;
+        this.itemStack = itemBuilder.itemStack;
+        this.itemMeta = itemBuilder.itemMeta;
         this.material = itemBuilder.material;
         this.trimMaterial = itemBuilder.trimMaterial;
         this.trimPattern = itemBuilder.trimPattern;
@@ -204,15 +223,12 @@ public class ItemBuilder {
         this.customMaterial = itemBuilder.customMaterial;
     }
 
-    @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    public void setItemMeta(ItemMeta itemMeta) {
+        this.itemMeta = itemMeta;
+    }
 
-    /**
-     * Gets the nbt item.
-     */
-    public NBTItem getNBTItem() {
-        this.nbtItem = new NBTItem(build());
-        return this.nbtItem;
+    public ItemMeta getItemMeta() {
+        return this.itemMeta;
     }
 
     /**
@@ -398,34 +414,33 @@ public class ItemBuilder {
             }
 
             item.setAmount(this.itemAmount);
-            ItemMeta itemMeta = item.getItemMeta();
-            itemMeta.setDisplayName(getUpdatedName());
-            itemMeta.setLore(getUpdatedLore());
+            this.itemMeta.setDisplayName(getUpdatedName());
+            this.itemMeta.setLore(getUpdatedLore());
 
             if (isArmor()) {
                 if (this.trimPattern != null && this.trimMaterial != null) {
-                    ((ArmorMeta) itemMeta).setTrim(new ArmorTrim(this.trimMaterial, this.trimPattern));
+                    ((ArmorMeta) this.itemMeta).setTrim(new ArmorTrim(this.trimMaterial, this.trimPattern));
                 }
             }
 
             if (this.isMap) {
-                MapMeta mapMeta = (MapMeta) itemMeta;
+                MapMeta mapMeta = (MapMeta) this.itemMeta;
 
                 if (this.mapColor != null) mapMeta.setColor(this.mapColor);
             }
 
-            if (itemMeta instanceof Damageable) {
+            if (this.itemMeta instanceof Damageable damageable) {
                 if (this.damage >= 1) {
                     if (this.damage >= item.getType().getMaxDurability()) {
-                        ((Damageable) itemMeta).setDamage(item.getType().getMaxDurability());
+                        damageable.setDamage(item.getType().getMaxDurability());
                     } else {
-                        ((Damageable) itemMeta).setDamage(this.damage);
+                        damageable.setDamage(this.damage);
                     }
                 }
             }
 
             if (this.isPotion && (this.potionType != null || this.potionColor != null)) {
-                PotionMeta potionMeta = (PotionMeta) itemMeta;
+                PotionMeta potionMeta = (PotionMeta) this.itemMeta;
 
                 if (this.potionType != null) potionMeta.setBasePotionData(new PotionData(this.potionType));
 
@@ -433,37 +448,38 @@ public class ItemBuilder {
             }
 
             if (this.material == Material.TIPPED_ARROW && this.potionType != null) {
-                PotionMeta potionMeta = (PotionMeta) itemMeta;
+                PotionMeta potionMeta = (PotionMeta) this.itemMeta;
                 potionMeta.setBasePotionData(new PotionData(this.potionType));
 
                 if (this.potionColor != null) potionMeta.setColor(this.potionColor);
             }
 
             if (this.isLeatherArmor && this.armorColor != null) {
-                LeatherArmorMeta leatherMeta = (LeatherArmorMeta) itemMeta;
+                LeatherArmorMeta leatherMeta = (LeatherArmorMeta) this.itemMeta;
                 leatherMeta.setColor(this.armorColor);
             }
 
             if (this.isBanner && !this.patterns.isEmpty()) {
-                BannerMeta bannerMeta = (BannerMeta) itemMeta;
+                BannerMeta bannerMeta = (BannerMeta) this.itemMeta;
                 bannerMeta.setPatterns(this.patterns);
             }
 
             if (this.isShield && !this.patterns.isEmpty()) {
-                BlockStateMeta shieldMeta = (BlockStateMeta) itemMeta;
+                BlockStateMeta shieldMeta = (BlockStateMeta) this.itemMeta;
                 Banner banner = (Banner) shieldMeta.getBlockState();
                 banner.setPatterns(this.patterns);
                 banner.update();
                 shieldMeta.setBlockState(banner);
             }
 
-            if (this.useCustomModelData) itemMeta.setCustomModelData(this.customModelData);
+            if (this.useCustomModelData) this.itemMeta.setCustomModelData(this.customModelData);
 
-            this.itemFlags.forEach(itemMeta :: addItemFlags);
-            item.setItemMeta(itemMeta);
+            this.itemFlags.forEach(this.itemMeta::addItemFlags);
+            item.setItemMeta(this.itemMeta);
             hideItemFlags(item);
             item.addUnsafeEnchantments(this.enchantments);
             addGlow(item);
+
             NBTItem nbt = new NBTItem(item);
 
             if (this.isHead && !this.isHash) nbt.setString("SkullOwner", this.player);
@@ -492,7 +508,12 @@ public class ItemBuilder {
      */
     public ItemBuilder setMaterial(Material material) {
         this.material = material;
+
+        this.itemStack = new ItemStack(this.material);
+        this.itemMeta = this.itemStack.getItemMeta();
+
         this.isHead = material == Material.PLAYER_HEAD;
+
         return this;
     }
 
@@ -555,6 +576,12 @@ public class ItemBuilder {
         Material matchedMaterial = Material.matchMaterial(material);
 
         if (matchedMaterial != null) this.material = matchedMaterial;
+
+        // If it's item, create itemstack.
+        if (this.material.isItem()) {
+            this.itemStack = new ItemStack(this.material);
+            this.itemMeta = this.itemStack.getItemMeta();
+        }
 
         switch (this.material.name()) {
             case "PLAYER_HEAD" -> this.isHead = true;
@@ -1056,7 +1083,7 @@ public class ItemBuilder {
         } catch (Exception exception) {
             itemBuilder.setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor : &c" + (placeHolder != null ? placeHolder : "")));
 
-            CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+            CrazyCrates plugin = CrazyCrates.get();
             plugin.getLogger().log(Level.WARNING, "An error has occurred with the item builder: ", exception);
         }
 

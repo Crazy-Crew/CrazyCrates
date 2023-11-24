@@ -7,15 +7,15 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.CrazyCratesPlugin;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.paper.api.MigrationService;
-import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
-import us.crazycrew.crazycrates.paper.api.crates.PrizeManager;
+import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
+import us.crazycrew.crazycrates.paper.managers.PrizeManager;
 import us.crazycrew.crazycrates.paper.api.support.metrics.MetricsWrapper;
-import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
+import us.crazycrew.crazycrates.paper.managers.BukkitUserManager;
 import us.crazycrew.crazycrates.paper.api.support.structures.blocks.ChestManager;
-import us.crazycrew.crazycrates.paper.api.crates.menus.InventoryManager;
+import us.crazycrew.crazycrates.paper.managers.InventoryManager;
 import us.crazycrew.crazycrates.paper.commands.CommandManager;
-import us.crazycrew.crazycrates.paper.modules.ModuleLoader;
-import us.crazycrew.crazycrates.paper.utils.FileUtils;
+import us.crazycrew.crazycrates.paper.api.modules.ModuleLoader;
+import us.crazycrew.crazycrates.paper.other.FileUtils;
 
 public class CrazyHandler extends CrazyCratesPlugin {
 

@@ -8,7 +8,6 @@ import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import java.util.HashMap;
@@ -18,7 +17,7 @@ import java.util.List;
 public class BaseKeyCommand extends BaseCommand {
 
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     @Default
     @Permission("crazycrates.command.player.key")

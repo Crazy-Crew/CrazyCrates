@@ -1,8 +1,8 @@
 package us.crazycrew.crazycrates.common;
 
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.ICrazyCrates;
 import us.crazycrew.crazycrates.api.CrazyCratesService;
+import us.crazycrew.crazycrates.api.ICrazyCrates;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
 import java.io.File;
 

@@ -1,6 +1,6 @@
 package us.crazycrew.crazycrates.paper.api.support.libraries;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 
 public enum PluginSupport {
@@ -14,7 +14,8 @@ public enum PluginSupport {
     
     private final String name;
 
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    @NotNull
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     PluginSupport(String name) {
         this.name = name;

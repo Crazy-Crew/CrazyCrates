@@ -1,0 +1,15 @@
+pluginManagement {
+    repositories {
+
+        maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'CrazyCrates'
+
+include 'common'
+include 'paper'
+include 'api'

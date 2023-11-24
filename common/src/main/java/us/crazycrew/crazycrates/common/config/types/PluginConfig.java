@@ -19,7 +19,10 @@ public class PluginConfig implements SettingsHolder {
     })
     public static final Property<Boolean> toggle_metrics = newProperty("toggle_metrics", true);
 
-    @Comment("The command prefix you want shown in front of commands!")
+    @Comment("The prefix used in commands")
     public static final Property<String> command_prefix = newProperty("command_prefix", "&8[&bCrazyCrates&8]: ");
+
+    @Comment("The prefix used in console")
+    public static final Property<String> console_prefix = newProperty("console_prefix", "&8[&bCrazyCrates&8] ");
 
 }

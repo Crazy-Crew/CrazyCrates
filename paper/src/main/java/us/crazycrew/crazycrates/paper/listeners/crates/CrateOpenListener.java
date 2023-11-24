@@ -1,30 +1,26 @@
 package us.crazycrew.crazycrates.paper.listeners.crates;
 
 import us.crazycrew.crazycrates.paper.CrazyCrates;
-import us.crazycrew.crazycrates.paper.api.crates.CrateManager;
+import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.api.enums.Translation;
-import us.crazycrew.crazycrates.paper.api.events.crates.CrateOpenEvent;
+import us.crazycrew.crazycrates.paper.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.paper.cratetypes.Cosmic;
-import us.crazycrew.crazycrates.paper.listeners.CrateControlListener;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
-import us.crazycrew.crazycrates.paper.utils.MsgUtils;
+import us.crazycrew.crazycrates.paper.other.MsgUtils;
 import java.util.List;
 
-@SuppressWarnings("deprecation")
 public class CrateOpenListener implements Listener {
 
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     @NotNull
     private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
@@ -52,7 +48,7 @@ public class CrateOpenListener implements Listener {
         if (!(player.hasPermission("crazycrates.open." + crate.getName()) || player.hasPermission("crazycrates.open.*"))) {
             player.sendMessage(Translation.no_crate_permission.getString());
             this.crateManager.removePlayerFromOpeningList(player);
-            CrateControlListener.inUse.remove(player);
+            this.crateManager.removeCrateInUse(player);
 
             event.setCancelled(true);
 
@@ -62,8 +58,6 @@ public class CrateOpenListener implements Listener {
         this.crateManager.addPlayerToOpeningList(player, crate);
         if (crate.getCrateType() != CrateType.cosmic) this.crazyHandler.getUserManager().addOpenedCrate(player.getUniqueId(), crate.getName());
 
-        JavaPlugin plugin = event.getPlugin();
-
         FileConfiguration configuration = event.getConfiguration();
 
         String broadcastMessage = configuration.getString("Crate.BroadCast", "");
@@ -71,7 +65,8 @@ public class CrateOpenListener implements Listener {
 
         if (broadcastToggle) {
             if (!broadcastMessage.isBlank()) {
-                plugin.getServer().broadcastMessage(MsgUtils.color(broadcastMessage.replaceAll("%prefix%", MsgUtils.getPrefix())).replaceAll("%player%", player.getName()));
+                //noinspection deprecation
+                this.plugin.getServer().broadcastMessage(MsgUtils.color(broadcastMessage.replaceAll("%prefix%", MsgUtils.getPrefix())).replaceAll("%player%", player.getName()));
             }
         }
 
@@ -93,10 +88,6 @@ public class CrateOpenListener implements Listener {
                     this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), builder);
                 });
             }
-        }
-
-        if (crate.getCrateType() == CrateType.cosmic) {
-            Cosmic.openCosmic(player, crate, event.getKeyType(), event.isCheckHand());
         }
     }
 }

@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import us.crazycrew.crazycrates.paper.CrazyCrates;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ import java.util.List;
 public class MetricsWrapper {
 
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     private Metrics metrics;
 
@@ -31,6 +30,9 @@ public class MetricsWrapper {
 
         crateList.forEach(crate -> {
             CrateType crateType = crate.getCrateType();
+
+            // If the crate type is null. don't add to the pie chart.
+            if (crateType == null) return;
 
             SimplePie chart = new SimplePie("crate_types", crateType::getName);
 

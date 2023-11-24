@@ -7,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.structure.Mirror;
 import org.bukkit.block.structure.StructureRotation;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.structure.StructureManager;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +21,7 @@ import java.util.logging.Level;
 public class StructureHandler {
 
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     private final File file;
 

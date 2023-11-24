@@ -5,18 +5,17 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.paper.CrazyHandler;
-import us.crazycrew.crazycrates.paper.api.users.BukkitUserManager;
+import us.crazycrew.crazycrates.paper.managers.BukkitUserManager;
 import java.text.NumberFormat;
 
 @SuppressWarnings("deprecation")
 public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     @NotNull
     private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
