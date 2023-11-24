@@ -4,8 +4,6 @@ plugins {
     alias(libs.plugins.hangar)
     alias(libs.plugins.modrinth)
 
-    alias(libs.plugins.shadowjar)
-
     id 'java-library'
 }
 

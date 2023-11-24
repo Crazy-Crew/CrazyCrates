@@ -57,7 +57,7 @@ tasks {
                 "dev.triumphteam.cmd",
                 "org.bstats"
         ).forEach {
-            relocate(it, "com.badbones69.crazycrates.paper.libraries")
+            relocate(it, "com.badbones69.crazycrates.paper.libraries.$it")
         }
     }
 
