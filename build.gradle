@@ -85,7 +85,7 @@ subprojects {
     }
 }
 
-boolean isBeta = true
+boolean isBeta = false
 String modrinthType = isBeta ? "beta" : "release"
 String hangarType = isBeta ? "Beta" : "Release"
 
@@ -106,7 +106,7 @@ String description = """
  ### Crates:
   * CosmicCrate got a face lift with a tad bit of optimization
   * Other crate types have been migrated to be easier to edit
-   * Allows adding new crate types in a much easier way
+    * Allows adding new crate types in a much easier way
   * Clean up crate type checks
 
 ## Fixes:
@@ -123,10 +123,6 @@ String description = """
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
  * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
 """
-
-List<String> versions = List.of(
-        "1.20.2"
-)
 
 File file = layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar").get().asFile
 
@@ -145,7 +141,7 @@ modrinth {
 
     uploadFile.set(file)
 
-    gameVersions.addAll(versions)
+    gameVersions.add(minecraftVersion)
 
     changelog.set(description)
 
@@ -160,12 +156,15 @@ hangarPublish {
 
         channel.set(hangarType)
 
+        changelog.set(description)
+
         apiKey.set(System.getenv("hangar_key"))
 
         platforms {
             register(Platforms.PAPER) {
                 jar.set(file)
-                platformVersions.set(versions)
+
+                platformVersions.set(["$minecraftVersion"])
             }
         }
     }
