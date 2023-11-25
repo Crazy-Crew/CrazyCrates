@@ -27,6 +27,19 @@ public class Config implements SettingsHolder {
                 "List of all enchantments: https://jd.papermc.io/paper/1.20/org/bukkit/enchantments/Enchantment.html"
         };
 
+        String[] deprecation = {
+                "",
+                "Warning: This section is subject to change so it is considered deprecated.",
+                "This is your warning before the change happens.",
+                ""
+        };
+
+        conf.setComment("Settings.GUI-Customizer-Toggle", deprecation);
+
+        conf.setComment("Settings.Preview", deprecation);
+
+        conf.setComment("Settings.Filler", deprecation);
+
         conf.setComment("Settings", header);
     }
 
