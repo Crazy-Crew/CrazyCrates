@@ -9,6 +9,8 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -34,11 +36,21 @@ public class CrateAdminListener extends ModuleHandler {
 
         Inventory inventory = event.getInventory();
 
-        if (!(inventory.getHolder() instanceof CrateAdminMenu)) {
+        InventoryHolder holder = inventory.getHolder();
+
+        if (!(holder instanceof CrateAdminMenu)) {
             return;
         }
 
         event.setCancelled(true);
+
+        // Get inventory view.
+        InventoryView view = event.getView();
+
+        // Check if clicking top inventory or not.
+        Inventory topInventory = view.getTopInventory();
+
+        if (event.getClickedInventory() != topInventory) return;
 
         if (!MiscUtils.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
             player.closeInventory(InventoryCloseEvent.Reason.CANT_USE);

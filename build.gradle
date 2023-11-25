@@ -61,6 +61,8 @@ subprojects {
 
             maven { url = 'https://repo.triumphteam.dev/snapshots' }
 
+            maven { url = 'https://repo.oraxen.com/releases/' }
+
             flatDir { dirs("libs") }
         }
     }
@@ -91,33 +93,10 @@ String hangarType = isBeta ? "Beta" : "Release"
 
 String description = """
 ## Changes:
- * Added a simpler warning about plans to migrate from Spigot to Paper only
- * Added a config option to hide the quickcrate item
- * Added a null check to metrics for null crate types
- * Updated variable names to be more readable
- * Slowly starting to remove nbt api in some areas to use PDC instead.
- * Added sound categories to playSound so it respects individual client categories
-
- ### Debugs:
-  * Added extra debug messages
-  * Debug messages now contain more information
-  * You can turn them off in plugin-config.yml
-
- ### Crates:
-  * CosmicCrate got a face lift with a tad bit of optimization
-  * Other crate types have been migrated to be easier to edit
-    * Allows adding new crate types in a much easier way
-  * Clean up crate type checks
+ * Updated a section of the itembuilder to better support custom items.
 
 ## Fixes:
- * Fixed a bug with CosmicCrate
- * Fixed crate open event being fired twice
- * Fixed a temp bug to keep spigot compatibility for the next few versions
-
-## Developers:
- * Removed all deprecated methods in newer builds
- * You must update your api's to https://docs.crazycrew.us/crazycrates/api/intro
- * Check the `API Usage` tab to see an example plugin.
+ * A simple fix in the admin menu to prevent getting keys if clicking already existing keys in inventory.
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)

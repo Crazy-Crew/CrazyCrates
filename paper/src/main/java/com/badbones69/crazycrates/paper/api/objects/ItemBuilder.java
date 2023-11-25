@@ -392,11 +392,17 @@ public class ItemBuilder {
             if (PluginSupport.ITEMS_ADDER.isPluginEnabled()) {
                 CustomStack customStack = CustomStack.getInstance("ia:" + this.customMaterial);
 
-                if (customStack != null) item = customStack.getItemStack();
+                if (customStack != null && CustomStack.isInRegistry("ia:" + this.customMaterial)) {
+                    item = customStack.getItemStack();
+                    itemMeta = item.getItemMeta();
+                }
             } else if (PluginSupport.ORAXEN.isPluginEnabled()) {
                 io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
 
-                if (oraxenItem != null) item = oraxenItem.build();
+                if (oraxenItem != null && OraxenItems.exists(this.customMaterial)) {
+                    item = oraxenItem.build();
+                    itemMeta = item.getItemMeta();
+                }
             }
         }
 
@@ -952,6 +958,7 @@ public class ItemBuilder {
      */
     private ItemBuilder setReferenceItem(ItemStack referenceItem) {
         this.referenceItem = referenceItem;
+        this.itemMeta = this.referenceItem.getItemMeta();
         return this;
     }
 
@@ -982,11 +989,14 @@ public class ItemBuilder {
      * @return The ItemStack as an ItemBuilder with all the info from the item.
      */
     public static ItemBuilder convertItemStack(ItemStack item) {
-        ItemBuilder itemBuilder = new ItemBuilder().setReferenceItem(item).setAmount(item.getAmount()).setMaterial(item.getType()).setEnchantments(new HashMap<>(item.getEnchantments()));
+        ItemBuilder itemBuilder = new ItemBuilder().setReferenceItem(item).setAmount(item.getAmount()).setEnchantments(new HashMap<>(item.getEnchantments()));
 
         if (item.hasItemMeta() && item.getItemMeta() != null) {
             ItemMeta itemMeta = item.getItemMeta();
-            itemBuilder.setName(itemMeta.getDisplayName()).setLore(itemMeta.getLore());
+
+            if (itemMeta.hasDisplayName()) itemBuilder.setName(itemMeta.getDisplayName());
+            if (itemMeta.hasLore()) itemBuilder.setLore(itemMeta.getLore());
+
             NBTItem nbt = new NBTItem(item);
 
             if (nbt.hasTag("Unbreakable")) itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
