@@ -57,6 +57,23 @@ public abstract class CrateBuilder {
         this.inventory = this.menu.build().getInventory();
     }
 
+    public CrateBuilder(Crate crate, Player player) {
+        Preconditions.checkNotNull(crate, "Crate can't be null.");
+        Preconditions.checkNotNull(player, "Player can't be null.");
+
+        this.file = crate.getFile();
+
+        this.crate = crate;
+
+        this.location = player.getLocation();
+
+        this.player = player;
+
+        this.size = 0;
+        this.inventory = null;
+        this.menu = null;
+    }
+
     /**
      * Create a crate with no inventory size.
      *

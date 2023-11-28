@@ -11,6 +11,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.paper.api.builders.CrateBuilder;
 import us.crazycrew.crazycrates.paper.api.enums.PersistentKeys;
 import us.crazycrew.crazycrates.paper.managers.crates.types.CosmicCrate;
+import us.crazycrew.crazycrates.paper.managers.crates.types.CrateOnTheGo;
 import us.crazycrew.crazycrates.paper.managers.crates.types.CsgoCrate;
 import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.common.config.types.Config;
@@ -42,6 +43,7 @@ import us.crazycrew.crazycrates.paper.api.support.holograms.types.DecentHologram
 import us.crazycrew.crazycrates.paper.api.support.holograms.types.HolographicDisplaysSupport;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import us.crazycrew.crazycrates.paper.managers.crates.types.FireCrackerCrate;
+import us.crazycrew.crazycrates.paper.managers.crates.types.QuadCrate;
 import us.crazycrew.crazycrates.paper.managers.crates.types.QuickCrate;
 import us.crazycrew.crazycrates.paper.managers.crates.types.RouletteCrate;
 import us.crazycrew.crazycrates.paper.managers.crates.types.WarCrate;
@@ -361,6 +363,7 @@ public class CrateManager {
             case roulette -> crateBuilder = new RouletteCrate(crate, player, 45);
             case war -> crateBuilder = new WarCrate(crate, player, 9);
             case cosmic -> crateBuilder = new CosmicCrate(crate, player, 27);
+            case quad_crate -> crateBuilder = new QuadCrate(crate, player, location);
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
                     player.sendMessage(Translation.quick_crate_in_use.getString());
@@ -375,6 +378,15 @@ public class CrateManager {
                 }
 
                 crateBuilder = new FireCrackerCrate(crate, player, 45, location);
+            }
+            case crate_on_the_go -> {
+                if (virtualCrate) {
+                    player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+                    removePlayerFromOpeningList(player);
+                    return;
+                }
+
+                crateBuilder = new CrateOnTheGo(crate, player);
             }
             case quick_crate -> {
                 if (this.cratesInUse.containsValue(location)) {

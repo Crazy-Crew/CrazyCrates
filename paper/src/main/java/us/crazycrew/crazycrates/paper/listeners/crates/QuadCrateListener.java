@@ -131,21 +131,12 @@ public class QuadCrateListener implements Listener {
         Player player = event.getPlayer();
 
         if (this.sessionManager.inSession(player)) { // Player tries to walk away from the crate area
-            // Check if spigot temporarily to decide whether to use new api from paper or not.
-            if (this.plugin.isSpigot()) {
-                Location oldLocation = event.getFrom();
-                Location newLocation = event.getTo();
+            Location oldLocation = event.getFrom();
+            Location newLocation = event.getTo();
 
-                if (oldLocation.getBlockX() != newLocation.getBlockX() || oldLocation.getBlockZ() != newLocation.getBlockZ()) {
-                    player.teleport(oldLocation);
-                    event.setCancelled(true);
-                }
-            } else {
-                if (event.hasChangedPosition()) {
-                    player.teleport(event.getFrom());
-                    event.setCancelled(true);
-                    return;
-                }
+            if (oldLocation.getBlockX() != newLocation.getBlockX() || oldLocation.getBlockZ() != newLocation.getBlockZ()) {
+                player.teleport(oldLocation);
+                event.setCancelled(true);
             }
         }
 
