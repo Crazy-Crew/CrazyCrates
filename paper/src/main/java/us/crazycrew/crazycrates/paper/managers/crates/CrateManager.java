@@ -363,7 +363,15 @@ public class CrateManager {
             case roulette -> crateBuilder = new RouletteCrate(crate, player, 45);
             case war -> crateBuilder = new WarCrate(crate, player, 9);
             case cosmic -> crateBuilder = new CosmicCrate(crate, player, 27);
-            case quad_crate -> crateBuilder = new QuadCrate(crate, player, location);
+            case quad_crate -> {
+                if (virtualCrate) {
+                    player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+                    removePlayerFromOpeningList(player);
+                    return;
+                }
+
+                crateBuilder = new QuadCrate(crate, player, location);
+            }
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
                     player.sendMessage(Translation.quick_crate_in_use.getString());
