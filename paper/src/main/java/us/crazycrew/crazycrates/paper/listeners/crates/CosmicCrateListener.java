@@ -31,6 +31,7 @@ import us.crazycrew.crazycrates.paper.api.enums.Translation;
 import us.crazycrew.crazycrates.paper.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.paper.other.MiscUtils;
 import us.crazycrew.crazycrates.paper.other.MsgUtils;
+import java.util.List;
 import java.util.Random;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -368,14 +369,14 @@ public class CosmicCrateListener implements Listener {
                     time++;
 
                     if (time == 40) {
-                        // End the crate and task.
-                        crateManager.removeCrateTask(player);
-
                         // Show their rewards after the animation is done.
                         showRewards(player, view, cosmic, cosmicCrateManager);
 
                         // Play a sound
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
+
+                        // End the crate and task.
+                        crateManager.removeCrateTask(player);
                     }
                 }
             }, 0L, 80L);
@@ -407,6 +408,24 @@ public class CosmicCrateListener implements Listener {
         if (tier != null) {
             crateManager.getPickedPrizes(player).forEach(slot -> view.setItem(slot, tier.getTierPane()));
             player.updateInventory();
+
+            this.plugin.getTimer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    // Close inventory.
+                    plugin.getServer().getScheduler().runTask(plugin, () -> player.closeInventory(InventoryCloseEvent.Reason.UNLOADED));
+
+                    // Log it
+                    if (plugin.isLogging()) {
+                        List.of(
+                                player.getName() + " spent 10 seconds staring at a gui instead of collecting their prizes",
+                                "The task has been cancelled, They have been given their prizes and the gui is closed."
+                        ).forEach(plugin.getLogger()::info);
+                    }
+
+                    cancel();
+                }
+            }, 10000L);
         }
     }
 

@@ -384,42 +384,35 @@ public class ItemBuilder {
      * @return The result of all the info that was given to the builder as an ItemStack.
      */
     public ItemStack build() {
-        if (this.nbtItem != null) this.referenceItem = this.nbtItem.getItem();
+        if (this.nbtItem != null) this.itemStack = this.nbtItem.getItem();
 
-        ItemStack item = this.referenceItem;
+        ItemStack item = this.itemStack;
 
-        if (item == null) {
-            if (PluginSupport.ITEMS_ADDER.isPluginEnabled()) {
-                CustomStack customStack = CustomStack.getInstance("ia:" + this.customMaterial);
+        if (PluginSupport.ORAXEN.isPluginEnabled()) {
+            io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
 
-                if (customStack != null && CustomStack.isInRegistry("ia:" + this.customMaterial)) {
-                    item = customStack.getItemStack();
-                    itemMeta = item.getItemMeta();
-                }
-            } else if (PluginSupport.ORAXEN.isPluginEnabled()) {
-                io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
-
-                if (oraxenItem != null && OraxenItems.exists(this.customMaterial)) {
-                    item = oraxenItem.build();
-                    itemMeta = item.getItemMeta();
-                }
+            if (oraxenItem != null && OraxenItems.exists(this.customMaterial)) {
+                item = oraxenItem.build();
+                this.itemMeta = item.getItemMeta();
             }
         }
-
-        if (item == null) item = new ItemStack(this.material);
 
         if (item.getType() != Material.AIR) {
             if (this.isHead) { // Has to go 1st due to it removing all data when finished.
                 if (this.isHash) { // Sauce: https://github.com/deanveloper/SkullCreator
                     if (this.isURL) {
-                        SkullCreator.itemWithUrl(item, this.player);
+                        item = SkullCreator.itemWithUrl(item, this.player);
+                        this.itemMeta = item.getItemMeta();
                     } else {
-                        SkullCreator.itemWithBase64(item, this.player);
+                        item = SkullCreator.itemWithBase64(item, this.player);
                     }
                 }
             }
 
             item.setAmount(this.itemAmount);
+
+            if (this.itemMeta == null) this.itemMeta = item.getItemMeta();
+
             this.itemMeta.setDisplayName(getUpdatedName());
             this.itemMeta.setLore(getUpdatedLore());
 
@@ -484,7 +477,7 @@ public class ItemBuilder {
             item.setItemMeta(this.itemMeta);
             hideItemFlags(item);
             item.addUnsafeEnchantments(this.enchantments);
-            addGlow(item);
+            addGlow();
 
             NBTItem nbt = new NBTItem(item);
 
@@ -957,8 +950,8 @@ public class ItemBuilder {
      * @return The ItemBuilder with updated info.
      */
     private ItemBuilder setReferenceItem(ItemStack referenceItem) {
-        this.referenceItem = referenceItem;
-        this.itemMeta = this.referenceItem.getItemMeta();
+        this.itemStack = referenceItem;
+        this.itemMeta = this.itemStack.getItemMeta();
         return this;
     }
 
@@ -1124,21 +1117,12 @@ public class ItemBuilder {
     /**
      * Add glow to an item.
      *
-     * @param item The item to add glow to.
      */
-    private void addGlow(ItemStack item) {
+    private void addGlow() {
         if (this.glowing) {
             try {
-                if (item != null && item.getItemMeta() != null) {
-                    if (item.hasItemMeta()) {
-                        if (item.getItemMeta().hasEnchants()) return;
-                    }
-
-                    item.addUnsafeEnchantment(Enchantment.LUCK, 1);
-                    ItemMeta meta = item.getItemMeta();
-                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    item.setItemMeta(meta);
-                }
+                this.itemMeta.addEnchant(Enchantment.LUCK, 1, false);
+                this.itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             } catch (NoClassDefFoundError ignored) {}
         }
     }

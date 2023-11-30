@@ -93,10 +93,12 @@ String hangarType = isBeta ? "Beta" : "Release"
 
 String description = """
 ## Changes:
- * Updated a section of the itembuilder to better support custom items.
+ * Clean up timer tasks when we need to.
+ * Close cosmic crate gui 10 seconds after prizes are given.
+ * Added extra debug for Cosmic Crate when a task is complete.
 
 ## Fixes:
- * A simple fix in the admin menu to prevent getting keys if clicking already existing keys in inventory.
+ * Fix itembuilder so custom heads and custom items can cooperate together.
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
