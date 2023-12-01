@@ -85,11 +85,6 @@ public abstract class InventoryBuilder implements InventoryHolder {
         return this.player;
     }
 
-    public void update() {
-        this.player.closeInventory(InventoryCloseEvent.Reason.OPEN_NEW);
-        this.player.openInventory(getInventory());
-    }
-
     @Override
     @NotNull
     public Inventory getInventory() {

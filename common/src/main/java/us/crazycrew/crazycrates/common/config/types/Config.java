@@ -43,7 +43,7 @@ public class Config implements SettingsHolder {
         conf.setComment("Settings", header);
     }
 
-    @Comment("Whether to enable or disable the crate menu.")
+    @Comment("Whether to enable or disable the crate menu. This also removes the Menu button in crate previews")
     public static final Property<Boolean> enable_crate_menu = newProperty("Settings.Enable-Crate-Menu", true);
 
     @Comment("Whether to show the item that appears above QuickCrate")

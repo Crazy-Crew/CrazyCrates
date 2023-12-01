@@ -50,6 +50,10 @@ tasks {
     }
 
     shadowJar {
+        mergeServiceFiles()
+
+        exclude("META-INF/**")
+
         List.of(
                 "com.ryderbelserion.cluster.paper",
                 "org.jetbrains.annotations",
