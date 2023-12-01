@@ -156,23 +156,25 @@ public class CsgoCrate extends CrateBuilder {
     }
 
     private List<Integer> calculateSpinDelays() {
-        List<Integer> spinDelays = new ArrayList<>();
-        int totalSpins = 120;
-        int spinIncrement = 15;
+        ArrayList<Integer> slow = new ArrayList<>();
+        int full = 120;
+        int cut = 15;
 
-        for (int currentSpin = totalSpins; spinIncrement > 0; currentSpin--) {
-            spinDelays.add(currentSpin);
-            currentSpin -= spinIncrement;
-            spinIncrement--;
+        for (int i = 120; cut > 0; full--) {
+            if (full <= i - cut || full >= i - cut) {
+                slow.add(i);
+                i -= cut;
+                cut--;
+            }
         }
 
-        return spinDelays;
+        return slow;
     }
 
     private void moveItemsAndSetGlass() {
         List<ItemStack> items = new ArrayList<>();
 
-        for (int i = 10; i < 18; i++) {
+        for (int i = 9; i > 8 && i < 17; i++) {
             items.add(getInventory().getItem(i));
         }
 
@@ -181,7 +183,5 @@ public class CsgoCrate extends CrateBuilder {
         for (int i = 0; i < 8; i++) {
             setItem(i + 10, items.get(i));
         }
-
-        populate();
     }
 }

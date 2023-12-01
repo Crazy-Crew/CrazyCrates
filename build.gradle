@@ -92,13 +92,8 @@ String modrinthType = isBeta ? "beta" : "release"
 String hangarType = isBeta ? "Beta" : "Release"
 
 String description = """
-## Changes:
- * Clean up timer tasks when we need to.
- * Close cosmic crate gui 10 seconds after prizes are given.
- * Added extra debug for Cosmic Crate when a task is complete.
-
 ## Fixes:
- * Fix itembuilder so custom heads and custom items can cooperate together.
+ * Fix csgo crate animation
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
