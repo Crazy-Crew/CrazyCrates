@@ -93,7 +93,7 @@ String hangarType = isBeta ? "Beta" : "Release"
 
 String description = """
 ## Fixes:
- * Fix csgo crate animation
+ * Glow now works again.
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)

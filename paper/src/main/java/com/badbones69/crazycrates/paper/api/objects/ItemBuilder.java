@@ -17,7 +17,6 @@ import us.crazycrew.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.support.SkullCreator;
 import us.crazycrew.crazycrates.paper.api.support.libraries.PluginSupport;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import dev.lone.itemsadder.api.CustomStack;
 import io.th0rgal.oraxen.api.OraxenItems;
 import org.bukkit.block.Banner;
 import org.bukkit.block.banner.Pattern;
@@ -405,6 +404,7 @@ public class ItemBuilder {
                         this.itemMeta = item.getItemMeta();
                     } else {
                         item = SkullCreator.itemWithBase64(item, this.player);
+                        this.itemMeta = item.getItemMeta();
                     }
                 }
             }
@@ -475,7 +475,7 @@ public class ItemBuilder {
 
             this.itemFlags.forEach(this.itemMeta::addItemFlags);
             item.setItemMeta(this.itemMeta);
-            hideItemFlags(item);
+            hideItemFlags();
             item.addUnsafeEnchantments(this.enchantments);
             addGlow();
 
@@ -931,15 +931,11 @@ public class ItemBuilder {
     }
 
     /**
-     * @param item The item to hide flags on.
      */
-    public void hideItemFlags(ItemStack item) {
+    public void hideItemFlags() {
         if (this.hideItemFlags) {
-            if (item != null && item.hasItemMeta() && item.getItemMeta() != null) {
-                ItemMeta itemMeta = item.getItemMeta();
-                itemMeta.addItemFlags(ItemFlag.values());
-                item.setItemMeta(itemMeta);
-            }
+            this.itemMeta.addItemFlags(ItemFlag.values());
+            this.itemStack.setItemMeta(this.itemMeta);
         }
     }
 
@@ -1123,6 +1119,7 @@ public class ItemBuilder {
             try {
                 this.itemMeta.addEnchant(Enchantment.LUCK, 1, false);
                 this.itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                this.itemStack.setItemMeta(this.itemMeta);
             } catch (NoClassDefFoundError ignored) {}
         }
     }
