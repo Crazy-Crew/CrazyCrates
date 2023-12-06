@@ -21,9 +21,9 @@
     <a href="https://docs.crazycrew.us/crazycrates/home"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/Crazy-Crew/CrazyCrates/issues">Report Bug</a>
+    <a href="https://github.com/Crazy-Crew/CrazyCrates/issues/new?assignees=ryderbelserion&labels=bug&projects=&template=bugs.yml&title=%5BBug+Report%5D%3A+">Report Bug</a>
     ·
-    <a href="https://github.com/Crazy-Crew/CrazyCrates/issues">Request Feature</a>
+    <a href="https://github.com/Crazy-Crew/CrazyCrates/issues/new?assignees=&labels=feature&template=feature_request.md&title=%5BFeature%5D+">Request Feature</a>
     ·
     <a href="https://discord.gg/badbones-s-live-chat-182615261403283459">Get Support</a>
   </p>
