@@ -23,7 +23,7 @@
     <br />
     <a href="https://github.com/Crazy-Crew/CrazyCrates/issues">Report Bug</a>
     ·
-    <a href="https://github.com/Crazy-Crew/CrazyCrates/discussions/categories/features">Request Feature</a>
+    <a href="https://github.com/Crazy-Crew/CrazyCrates/issues">Request Feature</a>
     ·
     <a href="https://discord.gg/badbones-s-live-chat-182615261403283459">Get Support</a>
   </p>
