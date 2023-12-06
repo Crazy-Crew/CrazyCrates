@@ -15,7 +15,7 @@ assemble {
         dir.mkdirs()
 
         copy {
-            from(project(":paper").layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar").get())
+            from(project("paper").layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar").get())
             into(dir)
         }
     }
