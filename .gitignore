@@ -1,6 +1,7 @@
 build
 .gradle
 .idea
+jars
 
 common/build
 paper/build
