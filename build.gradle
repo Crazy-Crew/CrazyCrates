@@ -1,41 +1,11 @@
-import io.papermc.hangarpublishplugin.model.Platforms
-
 plugins {
-    alias(libs.plugins.hangar)
     alias(libs.plugins.modrinth)
 
     id 'java-library'
 }
 
-defaultTasks 'build'
-
-def combineJars = tasks.register("combineJars", org.gradle.jvm.tasks.Jar) {
-    mustRunAfter build
-
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
-    from(files(subprojects.findAll { it.name != 'webmap' }.collect {
-        it.layout.buildDirectory.file("libs/${rootProject.name}-${it.name}-${it.version}.jar").get()
-    }).filter { it.name != 'MANIFEST.MF' }.collect { if (it.isDirectory()) it else zipTree(it) })
-
-    doLast {
-        File dir = new File(rootDir, "jars")
-
-        if (dir.exists()) dir.delete()
-
-        dir.mkdirs()
-
-        copy {
-            from(layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar"))
-            into(dir)
-        }
-    }
-}
-
 assemble {
     subprojects.forEach { project -> dependsOn ":${project.name}:build" }
-
-    finalizedBy combineJars
 }
 
 subprojects {
@@ -54,10 +24,6 @@ subprojects {
             maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
 
             maven { url = 'https://repo.codemc.io/repository/maven-public/' }
-
-            maven { url = 'https://repo.crazycrew.us/first-party/' }
-
-            maven { url = 'https://repo.crazycrew.us/third-party/' }
 
             maven { url = 'https://repo.triumphteam.dev/snapshots' }
 
@@ -84,64 +50,5 @@ subprojects {
 
     processResources {
         filteringCharset = 'UTF-8'
-    }
-}
-
-boolean isBeta = false
-String modrinthType = isBeta ? "beta" : "release"
-String hangarType = isBeta ? "Beta" : "Release"
-
-String description = """
-## Fixes:
- * Glow now works again.
-
-## Other:
- * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
- * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
-"""
-
-File file = layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar").get().asFile
-
-modrinth {
-    setAutoAddDependsOn(false)
-
-    token.set(System.getenv("modrinth_token"))
-
-    projectId.set(rootProject.name.toLowerCase())
-
-    versionName.set("${rootProject.name} ${rootProject.version}")
-
-    versionNumber.set("${rootProject.version}")
-
-    versionType.set(modrinthType)
-
-    uploadFile.set(file)
-
-    gameVersions.add(minecraftVersion)
-
-    changelog.set(description)
-
-    loaders.addAll("paper", "purpur")
-}
-
-hangarPublish {
-    publications.register("plugin") {
-        version.set("$rootProject.version")
-
-        id.set(rootProject.name)
-
-        channel.set(hangarType)
-
-        changelog.set(description)
-
-        apiKey.set(System.getenv("hangar_key"))
-
-        platforms {
-            register(Platforms.PAPER) {
-                jar.set(file)
-
-                platformVersions.set(["$minecraftVersion"])
-            }
-        }
     }
 }
