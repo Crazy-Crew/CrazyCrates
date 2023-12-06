@@ -5,14 +5,32 @@ import us.crazycrew.crazycrates.api.users.UserManager;
 
 import java.io.File;
 
+/**
+ * An interface used to enable api related functions.
+ *
+ * @author Ryder Belserion
+ * @version 0.3
+ */
 public interface ICrazyCrates {
 
+    /**
+     * Enables the api service.
+     */
     void enable();
 
+    /**
+     * Disables the api service.
+     */
     void disable();
 
+    /**
+     * @return the plugin folder.
+     */
     File getDataFolder();
 
+    /**
+     * @return the user manager
+     */
     @NotNull UserManager getUserManager();
 
 }
