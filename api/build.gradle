@@ -33,6 +33,7 @@ publishing {
 
     publications {
         mavenJava(MavenPublication) {
+            artifactId = "api"
 
             from components.java
 
