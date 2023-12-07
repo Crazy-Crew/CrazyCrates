@@ -48,6 +48,10 @@ String description = """
  * Nested placeholders now work *with limitations
   * %crazycrates_<player>_<crate>_opened% must be done like %crazycrates_{player_name}_your_crate_opened%
  * {player_name} can be replaced with almost any player variable from https://github.com/PlaceholderAPI/PlaceholderAPI/wiki/Placeholders
+ * /crazycrates admin-help has been removed.
+  * /crazycrates help now has a permission check if the player has crazycrates.admin-access
+  * The permission crazycrates.command.player.help has been changed to crazycrates.help which defaults to TRUE
+ * Console can now use /crazycrates help.
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)

@@ -12,6 +12,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.World;
+import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.common.config.types.Config;
 import us.crazycrew.crazycrates.CrazyCrates;
@@ -85,8 +86,14 @@ public class CrateBaseCommand extends BaseCommand {
     }
 
     @SubCommand("help")
-    @Permission(value = "crazycrates.command.player.help", def = PermissionDefault.TRUE)
+    @Permission(value = "crazycrates.help", def = PermissionDefault.TRUE)
     public void onHelp(CommandSender sender) {
+        if (sender.hasPermission("crazycrates.admin-access") || sender instanceof ConsoleCommandSender) {
+            sender.sendMessage(Translation.admin_help.getString());
+
+            return;
+        }
+
         sender.sendMessage(Translation.help.getString());
     }
 
@@ -135,12 +142,6 @@ public class CrateBaseCommand extends BaseCommand {
         player.sendMessage(Translation.transfer_received_keys.getMessage("%player%", sender.getName()).toString());
 
         this.eventLogger.logKeyEvent(player, sender, crate, KeyType.virtual_key, EventLogger.KeyEventType.KEY_EVENT_RECEIVED, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
-    }
-
-    @SubCommand("admin-help")
-    @Permission(value = "crazycrates.command.admin.help", def = PermissionDefault.OP)
-    public void onAdminHelp(CommandSender sender) {
-        sender.sendMessage(Translation.admin_help.getString());
     }
 
     @SubCommand("reload")

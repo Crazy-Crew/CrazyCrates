@@ -23,11 +23,6 @@ commands:
     aliases: [key]
 
 permissions:
-  crazycrates.command.player.help:
-    default: true
-    children:
-      crazycrates.command.player.key: true
-
   crazycrates.command.player.menu:
     default: true
 
