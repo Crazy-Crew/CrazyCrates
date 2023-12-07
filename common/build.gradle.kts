@@ -1,5 +1,3 @@
-project.group = "${rootProject.group}.common"
-
 base {
     archivesName.set("${rootProject.name}-${project.name}")
 }

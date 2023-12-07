@@ -613,6 +613,15 @@ public class ItemBuilder {
     }
 
     /**
+     * Get the damage to the item.
+     *
+     * @return The damage to the item as an int.
+     */
+    public int getDamage() {
+        return this.damage;
+    }
+
+    /**
      * @param itemName The name of the item.
      * @return The ItemBuilder with an updated name.
      */
