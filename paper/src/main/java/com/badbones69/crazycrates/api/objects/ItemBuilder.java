@@ -757,7 +757,7 @@ public class ItemBuilder {
             for (PatternType pattern : PatternType.values()) {
 
                 if (split[0].equalsIgnoreCase(pattern.name()) || split[0].equalsIgnoreCase(pattern.getIdentifier())) {
-                    DyeColor color = getDyeColor(split[1]);
+                    DyeColor color = DyeUtils.getDyeColor(split[1]);
 
                     if (color != null) addPattern(new Pattern(color, pattern));
 
@@ -1070,7 +1070,7 @@ public class ItemBuilder {
                         try {
                             for (PatternType pattern : PatternType.values()) {
                                 if (option.equalsIgnoreCase(pattern.name()) || value.equalsIgnoreCase(pattern.getIdentifier())) {
-                                    DyeColor color = getDyeColor(value);
+                                    DyeColor color = DyeUtils.getDyeColor(value);
                                     if (color != null) itemBuilder.addPattern(new Pattern(color, pattern));
                                     break;
                                 }
@@ -1161,27 +1161,6 @@ public class ItemBuilder {
                 return PotionType.WATER_BREATHING;
             } else if (type.equals(PotionEffectType.WEAKNESS)) {
                 return PotionType.WEAKNESS;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Get the dye color from a string.
-     *
-     * @param color The string of the color.
-     * @return The dye color from the string.
-     */
-    public static DyeColor getDyeColor(String color) {
-        if (color != null) {
-            try {
-                return DyeColor.valueOf(color.toUpperCase());
-            } catch (Exception e) {
-                try {
-                    String[] rgb = color.split(",");
-                    return DyeColor.getByColor(Color.fromRGB(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2])));
-                } catch (Exception ignore) {}
             }
         }
 
