@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.support.SkullCreator;
+import com.ryderbelserion.cluster.paper.utils.DyeUtils;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -558,9 +559,9 @@ public class ItemBuilder {
                 this.damage = Integer.parseInt(metaData);
             } else { // Value is something else.
                 this.potionType = getPotionType(PotionEffectType.getByName(metaData));
-                this.potionColor = getColor(metaData);
-                this.armorColor = getColor(metaData);
-                this.mapColor = getColor(metaData);
+                this.potionColor = DyeUtils.getColor(metaData);
+                this.armorColor = DyeUtils.getColor(metaData);
+                this.mapColor = DyeUtils.getColor(metaData);
             }
         } else if (material.contains("#")) {
             String[] b = material.split("#");
@@ -1161,77 +1162,6 @@ public class ItemBuilder {
             } else if (type.equals(PotionEffectType.WEAKNESS)) {
                 return PotionType.WEAKNESS;
             }
-        }
-
-        return null;
-    }
-
-    /**
-     * Get the Color from a string.
-     *
-     * @param color The string of the color.
-     * @return The color from the string.
-     */
-    private static Color getColor(String color) {
-        if (color != null) {
-            switch (color.toUpperCase()) {
-                case "AQUA" -> {
-                    return Color.AQUA;
-                }
-                case "BLACK" -> {
-                    return Color.BLACK;
-                }
-                case "BLUE" -> {
-                    return Color.BLUE;
-                }
-                case "FUCHSIA" -> {
-                    return Color.FUCHSIA;
-                }
-                case "GRAY" -> {
-                    return Color.GRAY;
-                }
-                case "GREEN" -> {
-                    return Color.GREEN;
-                }
-                case "LIME" -> {
-                    return Color.LIME;
-                }
-                case "MAROON" -> {
-                    return Color.MAROON;
-                }
-                case "NAVY" -> {
-                    return Color.NAVY;
-                }
-                case "OLIVE" -> {
-                    return Color.OLIVE;
-                }
-                case "ORANGE" -> {
-                    return Color.ORANGE;
-                }
-                case "PURPLE" -> {
-                    return Color.PURPLE;
-                }
-                case "RED" -> {
-                    return Color.RED;
-                }
-                case "SILVER" -> {
-                    return Color.SILVER;
-                }
-                case "TEAL" -> {
-                    return Color.TEAL;
-                }
-                case "WHITE" -> {
-                    return Color.WHITE;
-                }
-                case "YELLOW" -> {
-                    return Color.YELLOW;
-                }
-            }
-
-            try {
-                String[] rgb = color.split(",");
-                return Color.fromRGB(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2]));
-            } catch (Exception ignore) {}
         }
 
         return null;
