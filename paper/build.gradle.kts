@@ -12,8 +12,10 @@ plugins {
 }
 
 base {
-    archivesName = "${rootProject.name}"
+    archivesName.set(rootProject.name)
 }
+
+val mcVersion = rootProject.properties["minecraftVersion"] as String
 
 dependencies {
     api(project(":common"))
@@ -36,14 +38,15 @@ dependencies {
 
     compileOnly(libs.oraxen)
 
-    compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
+    compileOnly(fileTree("libs").include("*.jar"))
 
-    paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:$minecraftVersion-R0.1-SNAPSHOT")
+    paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:$mcVersion-R0.1-SNAPSHOT")
 }
 
-String type = isBeta ? "Beta" : "Release"
+val isBeta: Boolean get() = rootProject.extra["isBeta"]?.toString()?.toBoolean() ?: false
+val type = if (isBeta) "Beta" else "Release"
 
-String description = """
+val description = """
 ## Changes:
  * Nested placeholders now work *with limitations
   * %crazycrates_<player>_<crate>_opened% must be done like %crazycrates_{player_name}_your_crate_opened%
@@ -58,7 +61,9 @@ String description = """
  * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
 """
 
-File file = project.layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar").get().asFile
+val file = project.layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar").get().asFile
+
+val component: SoftwareComponent = components["java"]
 
 tasks {
     // Publish to hangar.papermc.io.
@@ -78,7 +83,7 @@ tasks {
                 register(Platforms.PAPER) {
                     jar.set(file)
 
-                    platformVersions.set(["$minecraftVersion"])
+                    platformVersions.set(listOf(mcVersion))
                 }
             }
         }
@@ -86,21 +91,21 @@ tasks {
 
     // Publish to modrinth.
     modrinth {
-        setAutoAddDependsOn(false)
+        autoAddDependsOn.set(false)
 
         token.set(System.getenv("modrinth_token"))
 
-        projectId.set(rootProject.name.toLowerCase())
+        projectId.set(rootProject.name.lowercase())
 
         versionName.set("${rootProject.name} ${rootProject.version}")
 
         versionNumber.set("${rootProject.version}")
 
-        versionType.set(type.toLowerCase())
+        versionType.set(type.lowercase())
 
         uploadFile.set(file)
 
-        gameVersions.add(minecraftVersion)
+        gameVersions.add(mcVersion)
 
         changelog.set(description)
 
@@ -111,7 +116,7 @@ tasks {
     runServer {
         jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")
 
-        minecraftVersion(minecraftVersion)
+        minecraftVersion(mcVersion)
     }
 
     // Assembles the plugin.
@@ -120,41 +125,35 @@ tasks {
     }
 
     shadowJar {
-        // Remove classifier
         archiveClassifier.set("")
 
-        // Exclude meta inf.
         exclude("META-INF/**")
 
-        // Relocate dependencies.
-        List.of(
+        listOf(
                 "com.ryderbelserion.cluster.paper",
-                "org.jetbrains.annotations",
                 "de.tr7zw.changeme.nbtapi",
                 "dev.triumphteam.cmd",
                 "org.bstats"
         ).forEach {
-            relocate(it, "com.badbones69.crazycrates.libs.$it")
+            relocate(it, "libs.$it")
         }
     }
 
-    // Updates variables in the plugin.yml
     processResources {
-        Map<String, String> props = new HashMap<>()
+        val properties = hashMapOf(
+                "name" to rootProject.name,
+                "version" to rootProject.version,
+                "group" to rootProject.group,
+                "description" to rootProject.description,
+                "apiVersion" to rootProject.properties["apiVersion"],
+                "authors" to rootProject.properties["authors"],
+                "website" to rootProject.properties["website"]
+        )
 
-        props.put("name", rootProject.name)
-        props.put("version", "$rootProject.version")
-        props.put("group", "$project.group")
-        props.put("description", rootProject.description)
-
-        props.put("apiVersion", apiVersion)
-        props.put("authors", authors)
-        props.put("website", website)
-
-        inputs.properties(props)
+        inputs.properties(properties)
 
         filesMatching("plugin.yml") {
-            expand(props)
+            expand(properties)
         }
     }
 }

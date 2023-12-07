@@ -1,15 +1,14 @@
 project.group = "${rootProject.group}.common"
-project.version = "${rootProject.version}"
 
 base {
-    archivesName = "${rootProject.name}-${project.name}"
+    archivesName.set("${rootProject.name}-${project.name}")
 }
 
 dependencies {
     api(project(":api"))
 
     api(libs.config.me) {
-        exclude group: 'org.yaml', module: 'snakeyaml'
+        exclude(group = "org.yaml", module = "snakeyaml")
     }
 
     compileOnly(libs.cluster.api)
