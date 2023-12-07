@@ -1,5 +1,7 @@
 package us.crazycrew.crazycrates.api.support.placeholders;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.apache.commons.lang3.StringUtils;
 import us.crazycrew.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -10,8 +12,9 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.CrazyHandler;
 import us.crazycrew.crazycrates.managers.BukkitUserManager;
 import java.text.NumberFormat;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
-@SuppressWarnings("deprecation")
 public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     @NotNull
@@ -22,16 +25,15 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     @NotNull
     private final BukkitUserManager userManager = this.crazyHandler.getUserManager();
-    
+
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {
-        if (player == null) {
-            return "N/A";
-        }
+        if (player == null) return "N/A";
 
         // The player who sees the placeholder.
         Player human = (Player) player;
 
+        // This is if the person opening the gui is to be used.
         for (Crate crate : this.crazyHandler.getCrateManager().getCrates()) {
             if (crate.getCrateType() != CrateType.menu) {
                 if (identifier.equalsIgnoreCase(crate.getName())) {
@@ -56,22 +58,32 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
             }
         }
 
-        // Get the player name online or offline i.e <player>
-        String playerName = identifier.split("_")[0];
+        // Gets the {player_name} or whatever
+        int index = identifier.lastIndexOf("_");
+        String value = PlaceholderAPI.setPlaceholders(human, "%" + StringUtils.substringBetween(identifier.substring(0, index), "{", "}") + "%");
 
-        Player target = this.plugin.getServer().getPlayer(playerName);
+        // Get player
+        Player target = this.plugin.getServer().getPlayer(value);
 
+        // If player is offline.
         if (target == null) {
-            this.plugin.getLogger().warning("Player: " + playerName + " is likely not online or doesn't exist.");
-            return "N/A";
+            UUID offlinePlayer = CompletableFuture.supplyAsync(() -> plugin.getServer().getOfflinePlayer(value)).thenApply(OfflinePlayer::getUniqueId).join();
+
+            String crateName = identifier.split("_")[2];
+
+            return getKeys(offlinePlayer, identifier, crateName, value);
         }
 
-        if (identifier.equalsIgnoreCase(target.getName() + "_opened")) { // %crazycrates_<player>_opened%
-            return NumberFormat.getNumberInstance().format(this.userManager.getTotalCratesOpened(human.getUniqueId()));
-        }
+        // If player is online.
+        String crateName = identifier.split("_")[2];
 
-        // Get the crate name i.e <crate>
-        String crateName = identifier.split("_")[1];
+        return getKeys(target.getUniqueId(), identifier, crateName, value);
+    }
+
+    private String getKeys(UUID uuid, String identifier, String crateName, String value) {
+        if (this.plugin.getCrateManager().getCrateFromName(crateName) == null && identifier.endsWith("opened")) { // %crazycrates_<player>_opened%
+            return NumberFormat.getNumberInstance().format(this.userManager.getTotalCratesOpened(uuid));
+        }
 
         Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
 
@@ -80,20 +92,22 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
             return "N/A";
         }
 
-        if (identifier.equalsIgnoreCase(target.getName() + "_" + crate.getName() + "_total")) { // %crazycrates_<player>_<crate>_total%
-            return NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(target.getUniqueId(), crate.getName()));
+        String result = value + "_" + crateName + "_" + identifier.split("_")[3];
+
+        if (result.endsWith("total")) { // %crazycrates_<player>_<crate>_total%
+            return NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, crate.getName()));
         }
 
-        if (identifier.equalsIgnoreCase(target.getName() + "_" + crate.getName() + "_physical")) { // %crazycrates_<player>_<crate>_physical%
-            return NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(target.getUniqueId(), crate.getName()));
+        if (result.endsWith("physical")) { // %crazycrates_<player>_<crate>_physical%
+            return NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, crate.getName()));
         }
 
-        if (identifier.equalsIgnoreCase(target.getName() + "_" + crate.getName() + "_virtual")) { // %crazycrates_<player>_<crate>_virtual%
-            return NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(target.getUniqueId(), crate.getName()));
+        if (result.endsWith("virtual")) { // %crazycrates_<player>_<crate>_virtual%
+            return NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crate.getName()));
         }
 
-        if (identifier.equalsIgnoreCase(target.getName() + "_" + crate.getName() + "_opened")) { // %crazycrates_<player>_<crate>_opened%
-            return NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(target.getUniqueId(), crate.getName()));
+        if (result.endsWith("opened")) { // %crazycrates_<player>_<crate>_opened%
+            return NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, crate.getName()));
         }
 
         return "N/A";
