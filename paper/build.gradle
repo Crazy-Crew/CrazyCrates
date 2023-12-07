@@ -44,8 +44,10 @@ dependencies {
 String type = isBeta ? "Beta" : "Release"
 
 String description = """
-## Fixes:
- * Glow now works again.
+## Changes:
+ * Nested placeholders now work *with limitations
+  * %crazycrates_<player>_<crate>_opened% must be done like %crazycrates_{player_name}_your_crate_opened%
+ * {player_name} can be replaced with almost any player variable from https://github.com/PlaceholderAPI/PlaceholderAPI/wiki/Placeholders
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
