@@ -14,9 +14,9 @@ import us.crazycrew.crazycrates.managers.crates.types.CosmicCrate;
 import us.crazycrew.crazycrates.managers.crates.types.CrateOnTheGo;
 import us.crazycrew.crazycrates.managers.crates.types.CsgoCrate;
 import org.bukkit.scheduler.BukkitTask;
-import us.crazycrew.crazycrates.common.config.types.Config;
+import us.crazycrew.crazycrates.common.config.types.ConfigKeys;
 import us.crazycrew.crazycrates.api.builders.types.CrateMainMenu;
-import us.crazycrew.crazycrates.api.enums.Translation;
+import us.crazycrew.crazycrates.api.enums.Messages;
 import us.crazycrew.crazycrates.api.support.holograms.HologramHandler;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
@@ -342,14 +342,14 @@ public class CrateManager {
      */
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
         if (crate.getCrateType() == CrateType.menu) {
-            if (this.plugin.getConfigManager().getConfig().getProperty(Config.enable_crate_menu)) {
-                CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_size), this.plugin.getConfigManager().getConfig().getProperty(Config.inventory_name));
+            if (this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
+                CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.inventory_size), this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.inventory_name));
 
                 player.openInventory(crateMainMenu.build().getInventory());
                 return;
             }
 
-            player.sendMessage(Translation.feature_disabled.getString());
+            player.sendMessage(Messages.feature_disabled.getString());
 
             return;
         }
@@ -365,7 +365,7 @@ public class CrateManager {
             case cosmic -> crateBuilder = new CosmicCrate(crate, player, 27);
             case quad_crate -> {
                 if (virtualCrate) {
-                    player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+                    player.sendMessage(Messages.cant_be_a_virtual_crate.getString());
                     removePlayerFromOpeningList(player);
                     return;
                 }
@@ -374,13 +374,13 @@ public class CrateManager {
             }
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    player.sendMessage(Translation.quick_crate_in_use.getString());
+                    player.sendMessage(Messages.quick_crate_in_use.getString());
                     removePlayerFromOpeningList(player);
                     return;
                 }
 
                 if (virtualCrate) {
-                    player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+                    player.sendMessage(Messages.cant_be_a_virtual_crate.getString());
                     removePlayerFromOpeningList(player);
                     return;
                 }
@@ -389,7 +389,7 @@ public class CrateManager {
             }
             case crate_on_the_go -> {
                 if (virtualCrate) {
-                    player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+                    player.sendMessage(Messages.cant_be_a_virtual_crate.getString());
                     removePlayerFromOpeningList(player);
                     return;
                 }
@@ -398,13 +398,13 @@ public class CrateManager {
             }
             case quick_crate -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    player.sendMessage(Translation.quick_crate_in_use.getString());
+                    player.sendMessage(Messages.quick_crate_in_use.getString());
                     removePlayerFromOpeningList(player);
                     return;
                 }
 
                 if (virtualCrate) {
-                    player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+                    player.sendMessage(Messages.cant_be_a_virtual_crate.getString());
                     removePlayerFromOpeningList(player);
                     return;
                 }

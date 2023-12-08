@@ -27,7 +27,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.CrazyCrates;
 import us.crazycrew.crazycrates.api.builders.types.CratePrizeMenu;
 import us.crazycrew.crazycrates.api.enums.PersistentKeys;
-import us.crazycrew.crazycrates.api.enums.Translation;
+import us.crazycrew.crazycrates.api.enums.Messages;
 import us.crazycrew.crazycrates.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.other.MiscUtils;
 import us.crazycrew.crazycrates.other.MsgUtils;
@@ -273,7 +273,7 @@ public class CosmicCrateListener implements Listener {
             // If they don't have enough keys.
             if (value) {
                 // Send no keys message.
-                player.sendMessage(Translation.no_keys.getString());
+                player.sendMessage(Messages.no_keys.getString());
 
                 // Remove opening stuff.
                 this.crateManager.removePlayerFromOpeningList(player);

@@ -17,7 +17,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import us.crazycrew.crazycrates.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.api.builders.types.CrateAdminMenu;
-import us.crazycrew.crazycrates.api.enums.Translation;
+import us.crazycrew.crazycrates.api.enums.Messages;
 import us.crazycrew.crazycrates.api.modules.ModuleHandler;
 import us.crazycrew.crazycrates.other.MiscUtils;
 import java.util.HashMap;
@@ -54,7 +54,7 @@ public class CrateAdminListener extends ModuleHandler {
 
         if (!MiscUtils.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
             player.closeInventory(InventoryCloseEvent.Reason.CANT_USE);
-            player.sendMessage(Translation.no_permission.getString());
+            player.sendMessage(Messages.no_permission.getString());
             return;
         }
 
@@ -85,7 +85,7 @@ public class CrateAdminListener extends ModuleHandler {
                 placeholders.put("%amount%", String.valueOf(1));
                 placeholders.put("%key%", crate.getKey().getItemMeta().getDisplayName());
 
-                player.sendMessage(Translation.obtaining_keys.getMessage(placeholders).toString());
+                player.sendMessage(Messages.obtaining_keys.getMessage(placeholders).toString());
             }
         }
     }

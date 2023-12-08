@@ -10,7 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
-import us.crazycrew.crazycrates.common.config.types.Config;
+import us.crazycrew.crazycrates.common.config.types.ConfigKeys;
 import us.crazycrew.crazycrates.CrazyHandler;
 import us.crazycrew.crazycrates.managers.InventoryManager;
 import us.crazycrew.crazycrates.api.builders.types.CrateMainMenu;
@@ -55,12 +55,12 @@ public class CratePreviewListener extends ModuleHandler {
 
         Crate crate = this.inventoryManager.getCratePreview(player);
 
-        if (event.getRawSlot() == crate.getAbsoluteItemPosition(4) && this.crazyHandler.getConfigManager().getConfig().getProperty(Config.enable_crate_menu)) { // Clicked the menu button.
+        if (event.getRawSlot() == crate.getAbsoluteItemPosition(4) && this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) { // Clicked the menu button.
             if (this.inventoryManager.inCratePreview(player)) {
                 this.inventoryManager.removeViewer(player);
                 this.inventoryManager.closeCratePreview(player);
 
-                CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(Config.inventory_size), this.config.getProperty(Config.inventory_name));
+                CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_size), this.config.getProperty(ConfigKeys.inventory_name));
 
                 player.openInventory(crateMainMenu.build().getInventory());
             }

@@ -15,7 +15,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import us.crazycrew.crazycrates.api.enums.PersistentKeys;
-import us.crazycrew.crazycrates.api.enums.Translation;
+import us.crazycrew.crazycrates.api.enums.Messages;
 import us.crazycrew.crazycrates.api.support.structures.blocks.ChestManager;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -168,7 +168,7 @@ public class QuadCrateListener implements Listener {
 
         if (this.sessionManager.inSession(player) && !player.hasPermission("crazycrates.admin")) {
             event.setCancelled(true);
-            player.sendMessage(Translation.no_commands_while_in_crate.getMessage("%player%", player.getName()).toString());
+            player.sendMessage(Messages.no_commands_while_in_crate.getMessage("%player%", player.getName()).toString());
         }
     }
 
@@ -178,7 +178,7 @@ public class QuadCrateListener implements Listener {
 
         if (this.sessionManager.inSession(player) && event.getCause() == TeleportCause.ENDER_PEARL) {
             event.setCancelled(true);
-            player.sendMessage(Translation.no_teleporting.getMessage("%Player%", player.getName()).toString());
+            player.sendMessage(Messages.no_teleporting.getMessage("%Player%", player.getName()).toString());
         }
     }
 

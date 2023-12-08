@@ -4,7 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.common.config.types.Config;
+import us.crazycrew.crazycrates.common.config.types.ConfigKeys;
 import us.crazycrew.crazycrates.managers.crates.CrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.CrazyHandler;
 import us.crazycrew.crazycrates.api.builders.types.CrateMainMenu;
-import us.crazycrew.crazycrates.api.enums.Translation;
+import us.crazycrew.crazycrates.api.enums.Messages;
 import us.crazycrew.crazycrates.managers.InventoryManager;
 import us.crazycrew.crazycrates.api.modules.ModuleHandler;
 import us.crazycrew.crazycrates.other.MiscUtils;
@@ -77,14 +77,14 @@ public class CrateMenuListener extends ModuleHandler {
                 this.inventoryManager.addViewer(player);
                 this.inventoryManager.openNewCratePreview(player, crate);
             } else {
-                player.sendMessage(Translation.preview_disabled.getString());
+                player.sendMessage(Messages.preview_disabled.getString());
             }
 
             return;
         }
 
         if (this.crateManager.isInOpeningList(player)) {
-            player.sendMessage(Translation.already_opening_crate.getString());
+            player.sendMessage(Messages.already_opening_crate.getString());
             return;
         }
 
@@ -94,30 +94,30 @@ public class CrateMenuListener extends ModuleHandler {
         if (this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
             hasKey = true;
         } else {
-            if (this.config.getProperty(Config.virtual_accepts_physical_keys) && this.crazyHandler.getUserManager().hasPhysicalKey(player.getUniqueId(), crate.getName(), false)) {
+            if (this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && this.crazyHandler.getUserManager().hasPhysicalKey(player.getUniqueId(), crate.getName(), false)) {
                 hasKey = true;
                 keyType = KeyType.physical_key;
             }
         }
 
         if (!hasKey) {
-            if (this.config.getProperty(Config.need_key_sound_toggle)) {
-                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
+            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
+                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
             }
 
-            player.sendMessage(Translation.no_virtual_key.getString());
+            player.sendMessage(Messages.no_virtual_key.getString());
             return;
         }
 
-        for (String world : this.config.getProperty(Config.disabledWorlds)) {
+        for (String world : this.config.getProperty(ConfigKeys.disabledWorlds)) {
             if (world.equalsIgnoreCase(player.getWorld().getName())) {
-                player.sendMessage(Translation.world_disabled.getMessage("%world%", player.getWorld().getName()).toString());
+                player.sendMessage(Messages.world_disabled.getMessage("%world%", player.getWorld().getName()).toString());
                 return;
             }
         }
 
         if (MiscUtils.isInventoryFull(player)) {
-            player.sendMessage(Translation.inventory_not_empty.getString());
+            player.sendMessage(Messages.inventory_not_empty.getString());
             return;
         }
 

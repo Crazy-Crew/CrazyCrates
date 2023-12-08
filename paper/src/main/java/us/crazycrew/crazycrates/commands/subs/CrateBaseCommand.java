@@ -14,7 +14,7 @@ import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.Nullable;
-import us.crazycrew.crazycrates.common.config.types.Config;
+import us.crazycrew.crazycrates.common.config.types.ConfigKeys;
 import us.crazycrew.crazycrates.CrazyCrates;
 import us.crazycrew.crazycrates.managers.crates.CrateManager;
 import com.badbones69.crazycrates.api.EventLogger;
@@ -41,7 +41,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.api.builders.types.CrateAdminMenu;
 import us.crazycrew.crazycrates.api.builders.types.CrateMainMenu;
-import us.crazycrew.crazycrates.api.enums.Translation;
+import us.crazycrew.crazycrates.api.enums.Messages;
 import us.crazycrew.crazycrates.other.FileUtils;
 import us.crazycrew.crazycrates.other.MiscUtils;
 import us.crazycrew.crazycrates.other.MsgUtils;
@@ -75,26 +75,26 @@ public class CrateBaseCommand extends BaseCommand {
     @Default
     @Permission(value = "crazycrates.command.player.menu", def = PermissionDefault.TRUE)
     public void onDefaultMenu(Player player) {
-        if (this.config.getProperty(Config.enable_crate_menu)) {
-            CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(Config.inventory_size), this.config.getProperty(Config.inventory_name));
+        if (this.config.getProperty(ConfigKeys.enable_crate_menu)) {
+            CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_size), this.config.getProperty(ConfigKeys.inventory_name));
 
             player.openInventory(crateMainMenu.build().getInventory());
             return;
         }
 
-        player.sendMessage(Translation.feature_disabled.getString());
+        player.sendMessage(Messages.feature_disabled.getString());
     }
 
     @SubCommand("help")
     @Permission(value = "crazycrates.help", def = PermissionDefault.TRUE)
     public void onHelp(CommandSender sender) {
         if (sender.hasPermission("crazycrates.admin-access") || sender instanceof ConsoleCommandSender) {
-            sender.sendMessage(Translation.admin_help.getString());
+            sender.sendMessage(Messages.admin_help.getString());
 
             return;
         }
 
-        sender.sendMessage(Translation.help.getString());
+        sender.sendMessage(Messages.help.getString());
     }
 
     @SubCommand("transfer")
@@ -104,19 +104,19 @@ public class CrateBaseCommand extends BaseCommand {
 
         // If the crate is menu or null. we return
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            sender.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
+            sender.sendMessage(Messages.not_a_crate.getMessage("%crate%", crateName).toString());
             return;
         }
 
         // If it's the same player, we return.
         if (player.getName().equalsIgnoreCase(sender.getName())) {
-            sender.sendMessage(Translation.same_player.getString());
+            sender.sendMessage(Messages.same_player.getString());
             return;
         }
 
         // If they don't have enough keys, we return.
         if (this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(sender.getUniqueId(), crate.getName()) <= amount) {
-            sender.sendMessage(Translation.transfer_not_enough_keys.getMessage("%crate%", crate.getName()).toString());
+            sender.sendMessage(Messages.transfer_not_enough_keys.getMessage("%crate%", crate.getName()).toString());
             return;
         }
 
@@ -135,13 +135,13 @@ public class CrateBaseCommand extends BaseCommand {
         placeholders.put("%amount%", String.valueOf(amount));
         placeholders.put("%player%", player.getName());
 
-        sender.sendMessage(Translation.transfer_sent_keys.getMessage(placeholders).toString());
+        sender.sendMessage(Messages.transfer_sent_keys.getMessage(placeholders).toString());
 
         placeholders.put("%player%", sender.getName());
 
-        player.sendMessage(Translation.transfer_received_keys.getMessage("%player%", sender.getName()).toString());
+        player.sendMessage(Messages.transfer_received_keys.getMessage("%player%", sender.getName()).toString());
 
-        this.eventLogger.logKeyEvent(player, sender, crate, KeyType.virtual_key, EventLogger.KeyEventType.KEY_EVENT_RECEIVED, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
+        this.eventLogger.logKeyEvent(player, sender, crate, KeyType.virtual_key, EventLogger.KeyEventType.KEY_EVENT_RECEIVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
     }
 
     @SubCommand("reload")
@@ -165,19 +165,19 @@ public class CrateBaseCommand extends BaseCommand {
         this.plugin.getCrazyHandler().cleanFiles();
 
         // Close previews
-        if (this.plugin.getConfigManager().getConfig().getProperty(Config.take_out_of_preview)) {
+        if (this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.take_out_of_preview)) {
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {
                 this.plugin.getCrazyHandler().getInventoryManager().closeCratePreview(player);
 
-                if (this.plugin.getConfigManager().getConfig().getProperty(Config.send_preview_taken_out_message)) {
-                    player.sendMessage(Translation.reloaded_forced_out_of_preview.getString());
+                if (this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.send_preview_taken_out_message)) {
+                    player.sendMessage(Messages.reloaded_forced_out_of_preview.getString());
                 }
             });
         }
 
         this.plugin.getCrateManager().loadCrates();
 
-        sender.sendMessage(Translation.reloaded_plugin.getString());
+        sender.sendMessage(Messages.reloaded_plugin.getString());
     }
 
     @SubCommand("debug")
@@ -186,7 +186,7 @@ public class CrateBaseCommand extends BaseCommand {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null) {
-            sender.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
+            sender.sendMessage(Messages.not_a_crate.getMessage("%crate%", crateName).toString());
             return;
         }
 
@@ -196,13 +196,13 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("schem-save")
     @Permission(value = "crazycrates.command.admin.schematic.save", def = PermissionDefault.OP)
     public void onAdminSave(Player player) {
-        player.sendMessage(Translation.feature_disabled.getString());
+        player.sendMessage(Messages.feature_disabled.getString());
     }
 
     @SubCommand("schem-set")
     @Permission(value = "crazycrates.command.admin.schematic.set", def = PermissionDefault.OP)
     public void onAdminSet(Player player) {
-        player.sendMessage(Translation.feature_disabled.getString());
+        player.sendMessage(Messages.feature_disabled.getString());
     }
 
     @SubCommand("admin")
@@ -289,19 +289,19 @@ public class CrateBaseCommand extends BaseCommand {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item.getType() == Material.AIR) {
-            player.sendMessage(Translation.no_item_in_hand.getString());
+            player.sendMessage(Messages.no_item_in_hand.getString());
             return;
         }
 
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null) {
-            player.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
+            player.sendMessage(Messages.not_a_crate.getMessage("%crate%", crateName).toString());
             return;
         }
 
         if (crate.getCrateType() == CrateType.cosmic) {
-            player.sendMessage(Translation.failed_to_add_item.getString());
+            player.sendMessage(Messages.failed_to_add_item.getString());
             return;
         }
 
@@ -318,7 +318,7 @@ public class CrateBaseCommand extends BaseCommand {
         placeholders.put("%crate%", crate.getName());
         placeholders.put("%prize%", prize);
 
-        player.sendMessage(Translation.added_item_with_editor.getMessage(placeholders).toString());
+        player.sendMessage(Messages.added_item_with_editor.getMessage(placeholders).toString());
     }
 
     @SubCommand("preview")
@@ -327,12 +327,12 @@ public class CrateBaseCommand extends BaseCommand {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            player.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
+            player.sendMessage(Messages.not_a_crate.getMessage("%crate%", crateName).toString());
             return;
         }
 
         if (!crate.isPreviewEnabled()) {
-            sender.sendMessage(Translation.preview_disabled.getString());
+            sender.sendMessage(Messages.preview_disabled.getString());
             return;
         }
 
@@ -356,24 +356,24 @@ public class CrateBaseCommand extends BaseCommand {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            player.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
+            player.sendMessage(Messages.not_a_crate.getMessage("%crate%", crateName).toString());
             return;
         }
 
         if (crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quick_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.quad_crate) {
-            player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+            player.sendMessage(Messages.cant_be_a_virtual_crate.getString());
             return;
         }
 
         if (this.crateManager.isInOpeningList(player)) {
-            player.sendMessage(Translation.already_opening_crate.getString());
+            player.sendMessage(Messages.already_opening_crate.getString());
             return;
         }
 
         CrateType type = crate.getCrateType();
 
         if (type == null) {
-            player.sendMessage(Translation.internal_error.getString());
+            player.sendMessage(Messages.internal_error.getString());
             this.plugin.getLogger().severe("An error has occurred: The crate type is null for the crate named " + crate.getName());
             return;
         }
@@ -384,7 +384,7 @@ public class CrateBaseCommand extends BaseCommand {
         if (this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
             hasKey = true;
         } else {
-            if (this.config.getProperty(Config.virtual_accepts_physical_keys)) {
+            if (this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys)) {
                 if (this.plugin.getCrazyHandler().getUserManager().hasPhysicalKey(player.getUniqueId(), crate.getName(), false)) {
                     hasKey = true;
                     keyType = KeyType.physical_key;
@@ -393,16 +393,16 @@ public class CrateBaseCommand extends BaseCommand {
         }
 
         if (!hasKey) {
-            if (this.config.getProperty(Config.need_key_sound_toggle)) {
-                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), SoundCategory.PLAYERS,1f, 1f);
+            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
+                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS,1f, 1f);
             }
 
-            player.sendMessage(Translation.no_virtual_key.getString());
+            player.sendMessage(Messages.no_virtual_key.getString());
             return;
         }
 
         if (MiscUtils.isInventoryFull(player)) {
-            player.sendMessage(Translation.inventory_not_empty.getString());
+            player.sendMessage(Messages.inventory_not_empty.getString());
             return;
         }
 
@@ -414,10 +414,10 @@ public class CrateBaseCommand extends BaseCommand {
             placeholders.put("%Crate%", crate.getName());
             placeholders.put("%Player%", player.getName());
 
-            sender.sendMessage(Translation.opened_a_crate.getMessage(placeholders).toString());
+            sender.sendMessage(Messages.opened_a_crate.getMessage(placeholders).toString());
         }
 
-        this.eventLogger.logKeyEvent(player, sender, crate, keyType, EventLogger.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
+        this.eventLogger.logKeyEvent(player, sender, crate, keyType, EventLogger.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
     }
 
     @SubCommand("mass-open")
@@ -435,12 +435,12 @@ public class CrateBaseCommand extends BaseCommand {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            sender.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
+            sender.sendMessage(Messages.not_a_crate.getMessage("%crate%", crateName).toString());
             return;
         }
 
         if (crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quick_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.quad_crate) {
-            player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+            player.sendMessage(Messages.cant_be_a_virtual_crate.getString());
             return;
         }
 
@@ -452,7 +452,7 @@ public class CrateBaseCommand extends BaseCommand {
         int keysUsed = 0;
 
         if (keys == 0) {
-            player.sendMessage(Translation.no_virtual_key.getString());
+            player.sendMessage(Messages.no_virtual_key.getString());
             return;
         }
 
@@ -488,24 +488,24 @@ public class CrateBaseCommand extends BaseCommand {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            player.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
+            player.sendMessage(Messages.not_a_crate.getMessage("%crate%", crateName).toString());
             return;
         }
 
         if (crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quick_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.quad_crate) {
-            player.sendMessage(Translation.cant_be_a_virtual_crate.getString());
+            player.sendMessage(Messages.cant_be_a_virtual_crate.getString());
             return;
         }
 
         if (this.crateManager.isInOpeningList(player)) {
-            sender.sendMessage(Translation.already_opening_crate.getString());
+            sender.sendMessage(Messages.already_opening_crate.getString());
             return;
         }
 
         CrateType type = crate.getCrateType();
 
         if (type == null) {
-            player.sendMessage(Translation.internal_error.getString());
+            player.sendMessage(Messages.internal_error.getString());
             this.plugin.getLogger().severe("An error has occurred: The crate type is null for the crate named " + crate.getName());
             return;
         }
@@ -518,10 +518,10 @@ public class CrateBaseCommand extends BaseCommand {
             placeholders.put("%crate%", crate.getName());
             placeholders.put("%player%", player.getName());
 
-            sender.sendMessage(Translation.opened_a_crate.getMessage(placeholders).toString());
+            sender.sendMessage(Messages.opened_a_crate.getMessage(placeholders).toString());
         }
 
-        this.eventLogger.logKeyEvent(player, sender, crate, KeyType.free_key, EventLogger.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
+        this.eventLogger.logKeyEvent(player, sender, crate, KeyType.free_key, EventLogger.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
     }
 
     @SubCommand("set")
@@ -530,14 +530,14 @@ public class CrateBaseCommand extends BaseCommand {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null) {
-            player.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
+            player.sendMessage(Messages.not_a_crate.getMessage("%crate%", crateName).toString());
             return;
         }
 
         Block block = player.getTargetBlock(null, 5);
 
         if (block.isEmpty()) {
-            player.sendMessage(Translation.must_be_looking_at_block.getString());
+            player.sendMessage(Messages.must_be_looking_at_block.getString());
             return;
         }
 
@@ -548,7 +548,7 @@ public class CrateBaseCommand extends BaseCommand {
         placeholders.put("%crate%", crate.getName());
         placeholders.put("%prefix%", MsgUtils.getPrefix());
 
-        player.sendMessage(Translation.created_physical_crate.getMessage(placeholders).toString());
+        player.sendMessage(Messages.created_physical_crate.getMessage(placeholders).toString());
     }
 
     @SubCommand("give-random")
@@ -585,12 +585,12 @@ public class CrateBaseCommand extends BaseCommand {
         }
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            sender.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
+            sender.sendMessage(Messages.not_a_crate.getMessage("%crate%", crateName).toString());
             return;
         }
 
         if (amount <= 0) {
-            sender.sendMessage(Translation.not_a_number.getMessage("%number%", String.valueOf(amount)).toString());
+            sender.sendMessage(Messages.not_a_number.getMessage("%number%", String.valueOf(amount)).toString());
             return;
         }
 
@@ -627,28 +627,28 @@ public class CrateBaseCommand extends BaseCommand {
             placeholders.put("%player%", player.getName());
             placeholders.put("%key%", crate.getKey().getItemMeta().getDisplayName());
 
-            boolean fullMessage = this.config.getProperty(Config.notify_player_when_inventory_full);
-            boolean inventoryCheck = this.config.getProperty(Config.give_virtual_keys_when_inventory_full);
+            boolean fullMessage = this.config.getProperty(ConfigKeys.notify_player_when_inventory_full);
+            boolean inventoryCheck = this.config.getProperty(ConfigKeys.give_virtual_keys_when_inventory_full);
 
-            sender.sendMessage(Translation.gave_a_player_keys.getMessage(placeholders).toString());
-            if (!inventoryCheck || !fullMessage && !MiscUtils.isInventoryFull(player) && player.isOnline()) player.sendMessage(Translation.obtaining_keys.getMessage(placeholders).toString());
+            sender.sendMessage(Messages.gave_a_player_keys.getMessage(placeholders).toString());
+            if (!inventoryCheck || !fullMessage && !MiscUtils.isInventoryFull(player) && player.isOnline()) player.sendMessage(Messages.obtaining_keys.getMessage(placeholders).toString());
 
-            this.eventLogger.logKeyEvent(player, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
+            this.eventLogger.logKeyEvent(player, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
 
             return;
         }
 
         if (!this.plugin.getCrazyHandler().getUserManager().addOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), amount, type)) {
-            sender.sendMessage(Translation.internal_error.getString());
+            sender.sendMessage(Messages.internal_error.getString());
         } else {
             HashMap<String, String> placeholders = new HashMap<>();
 
             placeholders.put("%amount%", String.valueOf(amount));
             placeholders.put("%player%", offlinePlayer.getName());
 
-            sender.sendMessage(Translation.given_offline_player_keys.getMessage(placeholders).toString());
+            sender.sendMessage(Messages.given_offline_player_keys.getMessage(placeholders).toString());
 
-            this.eventLogger.logKeyEvent(offlinePlayer, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
+            this.eventLogger.logKeyEvent(offlinePlayer, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
         }
     }
 
@@ -665,12 +665,12 @@ public class CrateBaseCommand extends BaseCommand {
         }
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            sender.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
+            sender.sendMessage(Messages.not_a_crate.getMessage("%crate%", crateName).toString());
             return;
         }
 
         if (amount <= 0) {
-            sender.sendMessage(Translation.not_a_number.getMessage("%number%", String.valueOf(amount)).toString());
+            sender.sendMessage(Messages.not_a_number.getMessage("%number%", String.valueOf(amount)).toString());
             return;
         }
         
@@ -692,7 +692,7 @@ public class CrateBaseCommand extends BaseCommand {
             if (totalKeys < 1) {
                 if (this.plugin.isLogging()) this.plugin.getLogger().warning("The player " + player.getName() + " does not have enough keys to take.");
 
-                sender.sendMessage(Translation.cannot_take_keys.getMessage("%player%", player.getName()).toString());
+                sender.sendMessage(Messages.cannot_take_keys.getMessage("%player%", player.getName()).toString());
                 return;
             }
 
@@ -710,9 +710,9 @@ public class CrateBaseCommand extends BaseCommand {
             placeholders.put("%amount%", String.valueOf(amount));
             placeholders.put("%player%", player.getName());
 
-            sender.sendMessage(Translation.take_player_keys.getMessage(placeholders).toString());
+            sender.sendMessage(Messages.take_player_keys.getMessage(placeholders).toString());
 
-            this.eventLogger.logKeyEvent(player, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
+            this.eventLogger.logKeyEvent(player, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
 
             return;
         }
@@ -722,7 +722,7 @@ public class CrateBaseCommand extends BaseCommand {
         placeholders.put("%amount%", String.valueOf(amount));
         placeholders.put("%player%", offlinePlayer.getName());
 
-        sender.sendMessage(Translation.take_offline_player_keys.getMessage(placeholders).toString());
+        sender.sendMessage(Messages.take_offline_player_keys.getMessage(placeholders).toString());
 
         this.plugin.getCrazyHandler().getUserManager().takeOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), amount, type);
     }
@@ -740,7 +740,7 @@ public class CrateBaseCommand extends BaseCommand {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            sender.sendMessage(Translation.not_a_crate.getMessage("%crate%", crateName).toString());
+            sender.sendMessage(Messages.not_a_crate.getMessage("%crate%", crateName).toString());
             return;
         }
 
@@ -749,7 +749,7 @@ public class CrateBaseCommand extends BaseCommand {
         placeholders.put("%amount%", String.valueOf(amount));
         placeholders.put("%key%", crate.getKey().getItemMeta().getDisplayName());
 
-        sender.sendMessage(Translation.given_everyone_keys.getMessage(placeholders).toString());
+        sender.sendMessage(Messages.given_everyone_keys.getMessage(placeholders).toString());
 
         for (Player onlinePlayer : this.plugin.getServer().getOnlinePlayers()) {
             if (MiscUtils.permCheck(onlinePlayer, Permissions.CRAZY_CRATES_PLAYER_EXCLUDE_GIVE_ALL, true)) continue;
@@ -759,7 +759,7 @@ public class CrateBaseCommand extends BaseCommand {
 
             if (event.isCancelled()) return;
 
-            onlinePlayer.sendMessage(Translation.obtaining_keys.getMessage(placeholders).toString());
+            onlinePlayer.sendMessage(Messages.obtaining_keys.getMessage(placeholders).toString());
 
             if (crate.getCrateType() == CrateType.crate_on_the_go) {
                 onlinePlayer.getInventory().addItem(crate.getKey(amount));
@@ -768,7 +768,7 @@ public class CrateBaseCommand extends BaseCommand {
 
             this.plugin.getCrazyHandler().getUserManager().addKeys(amount, onlinePlayer.getUniqueId(), crate.getName(), type);
 
-            this.eventLogger.logKeyEvent(onlinePlayer, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(Config.log_to_file), this.config.getProperty(Config.log_to_console));
+            this.eventLogger.logKeyEvent(onlinePlayer, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
         }
     }
 }

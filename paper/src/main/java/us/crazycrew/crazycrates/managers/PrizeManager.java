@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
-import us.crazycrew.crazycrates.api.enums.Translation;
+import us.crazycrew.crazycrates.api.enums.Messages;
 import us.crazycrew.crazycrates.api.support.libraries.PluginSupport;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
@@ -41,7 +41,7 @@ public class PrizeManager {
                 HashMap<String, String> placeholders = new HashMap<>();
                 placeholders.put("%crate%", prize.getCrate());
                 placeholders.put("%prize%", prize.getName());
-                player.sendMessage(Translation.prize_error.getMessage(placeholders).toString());
+                player.sendMessage(Messages.prize_error.getMessage(placeholders).toString());
                 continue;
             }
 

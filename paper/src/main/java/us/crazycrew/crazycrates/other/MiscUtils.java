@@ -23,7 +23,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CrazyCrates;
 import us.crazycrew.crazycrates.api.enums.PersistentKeys;
-import us.crazycrew.crazycrates.api.enums.Translation;
+import us.crazycrew.crazycrates.api.enums.Messages;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -245,7 +245,7 @@ public class MiscUtils {
             return true;
         } else {
             if (!tabComplete) {
-                player.sendMessage(Translation.no_permission.getString());
+                player.sendMessage(Messages.no_permission.getString());
                 return false;
             }
 

@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
-import us.crazycrew.crazycrates.common.config.types.Config;
+import us.crazycrew.crazycrates.common.config.types.ConfigKeys;
 import us.crazycrew.crazycrates.CrazyHandler;
 import us.crazycrew.crazycrates.api.builders.InventoryBuilder;
 import java.text.NumberFormat;
@@ -35,10 +35,10 @@ public class CrateMainMenu extends InventoryBuilder {
     public InventoryBuilder build() {
         Inventory inventory = getInventory();
 
-        if (this.config.getProperty(Config.filler_toggle)) {
-            String id = this.config.getProperty(Config.filler_item);
-            String name = this.config.getProperty(Config.filler_name);
-            List<String> lore = this.config.getProperty(Config.filler_lore);
+        if (this.config.getProperty(ConfigKeys.filler_toggle)) {
+            String id = this.config.getProperty(ConfigKeys.filler_item);
+            String name = this.config.getProperty(ConfigKeys.filler_name);
+            List<String> lore = this.config.getProperty(ConfigKeys.filler_lore);
             ItemStack item = new ItemBuilder().setMaterial(id).setName(name).setLore(lore).build();
 
             for (int i = 0; i < getSize(); i++) {
@@ -46,8 +46,8 @@ public class CrateMainMenu extends InventoryBuilder {
             }
         }
 
-        if (this.config.getProperty(Config.gui_customizer_toggle)) {
-            List<String> customizer = this.config.getProperty(Config.gui_customizer);
+        if (this.config.getProperty(ConfigKeys.gui_customizer_toggle)) {
+            List<String> customizer = this.config.getProperty(ConfigKeys.gui_customizer);
 
             if (!customizer.isEmpty()) {
                 for (String custom : customizer) {

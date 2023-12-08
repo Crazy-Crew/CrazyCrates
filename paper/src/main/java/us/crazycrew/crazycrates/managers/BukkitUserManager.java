@@ -2,7 +2,7 @@ package us.crazycrew.crazycrates.managers;
 
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.common.config.types.Config;
+import us.crazycrew.crazycrates.common.config.types.ConfigKeys;
 import us.crazycrew.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
-import us.crazycrew.crazycrates.api.enums.Translation;
+import us.crazycrew.crazycrates.api.enums.Messages;
 import us.crazycrew.crazycrates.other.ItemUtils;
 import us.crazycrew.crazycrates.other.MiscUtils;
 import java.util.ArrayList;
@@ -115,15 +115,15 @@ public class BukkitUserManager extends UserManager {
                     return;
                 }
 
-                if (this.plugin.getConfigManager().getConfig().getProperty(Config.give_virtual_keys_when_inventory_full)) {
+                if (this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.give_virtual_keys_when_inventory_full)) {
                     addVirtualKeys(amount, player.getUniqueId(), crate.getName());
 
-                    if (this.plugin.getConfigManager().getConfig().getProperty(Config.notify_player_when_inventory_full)) {
+                    if (this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.notify_player_when_inventory_full)) {
                         HashMap<String, String> placeholders = new HashMap<>();
                         placeholders.put("%amount%", String.valueOf(amount));
                         placeholders.put("%key%", crate.getName());
 
-                        player.sendMessage(Translation.cannot_give_player_keys.getMessage(placeholders).toString());
+                        player.sendMessage(Messages.cannot_give_player_keys.getMessage(placeholders).toString());
                     }
 
                     return;

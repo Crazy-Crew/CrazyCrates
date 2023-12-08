@@ -9,7 +9,7 @@ import dev.triumphteam.cmd.core.annotation.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.enums.Translation;
+import us.crazycrew.crazycrates.api.enums.Messages;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,14 +25,14 @@ public class BaseKeyCommand extends BaseCommand {
         HashMap<String, String> placeholders = new HashMap<>();
         placeholders.put("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(player.getUniqueId())));
 
-        getKeys(player, player, Translation.no_virtual_keys_header.getMessage(placeholders).toString(), Translation.no_virtual_keys.getString());
+        getKeys(player, player, Messages.no_virtual_keys_header.getMessage(placeholders).toString(), Messages.no_virtual_keys.getString());
     }
 
     @SubCommand("view")
     @Permission("crazycrates.command.player.key.others")
     public void viewOthers(CommandSender sender, @Suggestion ("online-players") Player target) {
         if (target == sender) {
-            sender.sendMessage(Translation.same_player.getString());
+            sender.sendMessage(Messages.same_player.getString());
             return;
         }
 
@@ -40,9 +40,9 @@ public class BaseKeyCommand extends BaseCommand {
         placeholders.put("%player%", target.getName());
         placeholders.put("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(target.getUniqueId())));
 
-        String header = Translation.other_player_no_keys_header.getMessage(placeholders).toString();
+        String header = Messages.other_player_no_keys_header.getMessage(placeholders).toString();
 
-        String otherPlayer = Translation.other_player_no_keys.getMessage("%player%", target.getName()).toString();
+        String otherPlayer = Messages.other_player_no_keys.getMessage("%player%", target.getName()).toString();
 
         getKeys(target, sender, header, otherPlayer);
     }
@@ -69,7 +69,7 @@ public class BaseKeyCommand extends BaseCommand {
                 placeholders.put("%crate%", crate.getFile().getString("Crate.Name"));
                 placeholders.put("%keys%", String.valueOf(amount));
                 placeholders.put("%crate_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getCrateOpened(player.getUniqueId(), crate.getName())));
-                message.add(Translation.per_crate.getMessage(placeholders).toString());
+                message.add(Messages.per_crate.getMessage(placeholders).toString());
             }
         }
 

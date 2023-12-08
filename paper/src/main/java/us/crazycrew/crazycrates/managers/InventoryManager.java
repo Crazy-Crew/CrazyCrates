@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.common.config.types.Config;
+import us.crazycrew.crazycrates.common.config.types.ConfigKeys;
 import us.crazycrew.crazycrates.CrazyCrates;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,19 +28,19 @@ public class InventoryManager {
 
     public void loadButtons() {
         this.menuButton = new ItemBuilder()
-                .setMaterial(this.config.getProperty(Config.menu_button_item))
-                .setName(this.config.getProperty(Config.menu_button_name))
-                .setLore(this.config.getProperty(Config.menu_button_lore))
+                .setMaterial(this.config.getProperty(ConfigKeys.menu_button_item))
+                .setName(this.config.getProperty(ConfigKeys.menu_button_name))
+                .setLore(this.config.getProperty(ConfigKeys.menu_button_lore))
                 .build();
 
         this.nextButton = new ItemBuilder()
-                .setMaterial(this.config.getProperty(Config.next_button_item))
-                .setName(this.config.getProperty(Config.next_button_name))
-                .setLore(this.config.getProperty(Config.next_button_lore));
+                .setMaterial(this.config.getProperty(ConfigKeys.next_button_item))
+                .setName(this.config.getProperty(ConfigKeys.next_button_name))
+                .setLore(this.config.getProperty(ConfigKeys.next_button_lore));
         this.backButton = new ItemBuilder()
-                .setMaterial(this.config.getProperty(Config.back_button_item))
-                .setName(this.config.getProperty(Config.back_button_name))
-                .setLore(this.config.getProperty(Config.back_button_lore));
+                .setMaterial(this.config.getProperty(ConfigKeys.back_button_item))
+                .setName(this.config.getProperty(ConfigKeys.back_button_name))
+                .setLore(this.config.getProperty(ConfigKeys.back_button_lore));
     }
 
     public ItemStack getMenuButton() {

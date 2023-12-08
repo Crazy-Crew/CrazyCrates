@@ -10,9 +10,9 @@ import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
-public class Config implements SettingsHolder {
+public class ConfigKeys implements SettingsHolder {
 
-    protected Config() {}
+    protected ConfigKeys() {}
 
     @Override
     public void registerComments(@NotNull CommentsConfiguration conf) {

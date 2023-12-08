@@ -3,7 +3,7 @@ package us.crazycrew.crazycrates.commands.handlers;
 import dev.triumphteam.cmd.core.message.MessageKey;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.enums.Translation;
+import us.crazycrew.crazycrates.api.enums.Messages;
 import us.crazycrew.crazycrates.commands.handlers.interfaces.MessageHandler;
 import us.crazycrew.crazycrates.other.MsgUtils;
 
@@ -44,7 +44,7 @@ public class ArgumentRelations extends MessageHandler {
                 }
             }
 
-            if (correctUsage != null) send(sender, Translation.correct_usage.getMessage("%usage%", correctUsage).toString());
+            if (correctUsage != null) send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage).toString());
         });
 
         getBukkitCommandManager().registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
@@ -62,10 +62,10 @@ public class ArgumentRelations extends MessageHandler {
                 }
             }
 
-            if (correctUsage != null) send(sender, Translation.correct_usage.getMessage("%usage%", correctUsage).toString());
+            if (correctUsage != null) send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage).toString());
         });
 
-        getBukkitCommandManager().registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> send(sender, Translation.unknown_command.getString()));
+        getBukkitCommandManager().registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> send(sender, Messages.unknown_command.getString()));
     }
 
     @Override

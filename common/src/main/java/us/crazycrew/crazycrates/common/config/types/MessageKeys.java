@@ -11,7 +11,7 @@ import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
-public class Messages implements SettingsHolder {
+public class MessageKeys implements SettingsHolder {
 
     @Override
     public void registerComments(@NotNull CommentsConfiguration conf) {

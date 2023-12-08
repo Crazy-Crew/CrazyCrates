@@ -22,11 +22,11 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.common.config.types.Config;
+import us.crazycrew.crazycrates.common.config.types.ConfigKeys;
 import us.crazycrew.crazycrates.CrazyCrates;
 import us.crazycrew.crazycrates.managers.crates.CrateManager;
 import us.crazycrew.crazycrates.api.builders.types.CrateMainMenu;
-import us.crazycrew.crazycrates.api.enums.Translation;
+import us.crazycrew.crazycrates.api.enums.Messages;
 import us.crazycrew.crazycrates.managers.InventoryManager;
 import us.crazycrew.crazycrates.other.MiscUtils;
 import java.util.HashMap;
@@ -72,7 +72,7 @@ public class CrateControlListener implements Listener {
                     if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) {
                         e.setCancelled(true);
                         this.plugin.getCrateManager().removeCrateLocation(loc.getID());
-                        player.sendMessage(Translation.removed_physical_crate.getMessage("%id%", loc.getID()).toString());
+                        player.sendMessage(Messages.removed_physical_crate.getMessage("%id%", loc.getID()).toString());
                         return;
                     }
 
@@ -83,7 +83,7 @@ public class CrateControlListener implements Listener {
                             this.inventoryManager.addViewer(player);
                             this.inventoryManager.openNewCratePreview(player, loc.getCrate());
                         } else {
-                            player.sendMessage(Translation.preview_disabled.getString());
+                            player.sendMessage(Messages.preview_disabled.getString());
                         }
                     }
                 }
@@ -109,12 +109,12 @@ public class CrateControlListener implements Listener {
 
                 if (crate.getCrateType() == CrateType.menu) {
                     //This is to stop players in QuadCrate to not be able to try and open a crate set to menu.
-                    if (!this.crateManager.isInOpeningList(player) && this.config.getProperty(Config.enable_crate_menu)) {
-                        CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(Config.inventory_size), this.config.getProperty(Config.inventory_name));
+                    if (!this.crateManager.isInOpeningList(player) && this.config.getProperty(ConfigKeys.enable_crate_menu)) {
+                        CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_size), this.config.getProperty(ConfigKeys.inventory_name));
 
                         player.openInventory(crateMainMenu.build().getInventory());
                     } else {
-                        player.sendMessage(Translation.feature_disabled.getString());
+                        player.sendMessage(Messages.feature_disabled.getString());
                     }
 
                     return;
@@ -139,16 +139,16 @@ public class CrateControlListener implements Listener {
                         placeholders.put("%crate%", crate.getPreviewName());
                         placeholders.put("%amount%", String.valueOf(totalKeys));
 
-                        player.sendMessage(Translation.required_keys.getMessage(placeholders).toString());
+                        player.sendMessage(Messages.required_keys.getMessage(placeholders).toString());
                         return;
                     }
 
-                    if (crate.getCrateType() != CrateType.crate_on_the_go && keyInHand && this.crateManager.isKeyFromCrate(key, crate) && this.config.getProperty(Config.physical_accepts_physical_keys)) {
+                    if (crate.getCrateType() != CrateType.crate_on_the_go && keyInHand && this.crateManager.isKeyFromCrate(key, crate) && this.config.getProperty(ConfigKeys.physical_accepts_physical_keys)) {
                         hasKey = true;
                         isPhysical = true;
                     }
 
-                    if (this.config.getProperty(Config.physical_accepts_virtual_keys) && this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) hasKey = true;
+                    if (this.config.getProperty(ConfigKeys.physical_accepts_virtual_keys) && this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) hasKey = true;
 
                     if (hasKey) {
                         // Checks if the player uses the quick crate again.
@@ -158,18 +158,18 @@ public class CrateControlListener implements Listener {
 
                         if (!useQuickCrateAgain) {
                             if (this.crateManager.isInOpeningList(player)) {
-                                player.sendMessage(Translation.already_opening_crate.getMessage("%key%", keyName).toString());
+                                player.sendMessage(Messages.already_opening_crate.getMessage("%key%", keyName).toString());
                                 return;
                             }
 
                             if (this.crateManager.getCratesInUse().containsValue(crateLocation.getLocation())) {
-                                player.sendMessage(Translation.quick_crate_in_use.getString());
+                                player.sendMessage(Messages.quick_crate_in_use.getString());
                                 return;
                             }
                         }
 
                         if (MiscUtils.isInventoryFull(player)) {
-                            player.sendMessage(Translation.inventory_not_empty.getString());
+                            player.sendMessage(Messages.inventory_not_empty.getString());
                             return;
                         }
 
@@ -185,13 +185,13 @@ public class CrateControlListener implements Listener {
                         this.crateManager.openCrate(player, crate, keyType, crateLocation.getLocation(), false,true);
                     } else {
                         if (crate.getCrateType() != CrateType.crate_on_the_go) {
-                            if (this.config.getProperty(Config.knock_back)) knockBack(player, clickedBlock.getLocation());
+                            if (this.config.getProperty(ConfigKeys.knock_back)) knockBack(player, clickedBlock.getLocation());
 
-                            if (this.config.getProperty(Config.need_key_sound_toggle)) {
-                                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(Config.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
+                            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
+                                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
                             }
 
-                            player.sendMessage(Translation.no_keys.getMessage("%key%", keyName).toString());
+                            player.sendMessage(Messages.no_keys.getMessage("%key%", keyName).toString());
                         }
                     }
                 }

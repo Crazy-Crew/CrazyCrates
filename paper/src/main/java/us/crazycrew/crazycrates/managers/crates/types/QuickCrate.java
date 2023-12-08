@@ -12,7 +12,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.common.config.types.Config;
+import us.crazycrew.crazycrates.common.config.types.ConfigKeys;
 import us.crazycrew.crazycrates.api.builders.CrateBuilder;
 import us.crazycrew.crazycrates.api.enums.PersistentKeys;
 import us.crazycrew.crazycrates.other.MiscUtils;
@@ -91,7 +91,7 @@ public class QuickCrate extends CrateBuilder {
         this.plugin.getCrazyHandler().getPrizeManager().givePrize(getPlayer(), prize, getCrate());
         this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(getPlayer(), getCrate(), getCrate().getName(), prize));
 
-        boolean showQuickCrateItem = this.plugin.getConfigManager().getConfig().getProperty(Config.show_quickcrate_item);
+        boolean showQuickCrateItem = this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.show_quickcrate_item);
 
         // Only related to the item above the crate.
         if (showQuickCrateItem) {
