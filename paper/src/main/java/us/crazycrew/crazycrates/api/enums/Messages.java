@@ -4,8 +4,8 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
+import us.crazycrew.crazycrates.common.config.types.ConfigKeys;
 import us.crazycrew.crazycrates.common.config.types.MessageKeys;
-import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.common.utils.StringUtils;
 import us.crazycrew.crazycrates.CrazyCrates;
 import us.crazycrew.crazycrates.other.MsgUtils;
@@ -155,6 +155,6 @@ public enum Messages {
     }
 
     public String toString() {
-        return MsgUtils.color(this.message.replaceAll("%prefix%", this.configManager.getPluginConfig().getProperty(PluginConfig.command_prefix)));
+        return MsgUtils.color(this.message.replaceAll("%prefix%", this.configManager.getConfig().getProperty(ConfigKeys.command_prefix)));
     }
 }

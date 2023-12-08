@@ -38,7 +38,6 @@ import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.api.builders.types.CrateAdminMenu;
 import us.crazycrew.crazycrates.api.builders.types.CrateMainMenu;
 import us.crazycrew.crazycrates.api.enums.Messages;
@@ -154,7 +153,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         FileUtils.loadFiles();
 
-        boolean isEnabled = this.plugin.getCrazyHandler().getConfigManager().getPluginConfig().getProperty(PluginConfig.toggle_metrics);
+        boolean isEnabled = this.plugin.getCrazyHandler().getConfigManager().getConfig().getProperty(ConfigKeys.toggle_metrics);
 
         if (!isEnabled) {
             this.plugin.getCrazyHandler().getMetrics().stop();

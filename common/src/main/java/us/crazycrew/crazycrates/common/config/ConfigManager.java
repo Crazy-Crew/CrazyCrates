@@ -6,7 +6,7 @@ import ch.jalu.configme.resource.YamlFileResourceOptions;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.types.ConfigKeys;
 import us.crazycrew.crazycrates.common.config.types.MessageKeys;
-import us.crazycrew.crazycrates.common.config.types.PluginConfig;
+
 import java.io.File;
 
 public class ConfigManager {
@@ -17,20 +17,12 @@ public class ConfigManager {
         this.dataFolder = dataFolder;
     }
 
-    private SettingsManager pluginConfig;
-
     private SettingsManager config;
 
     private SettingsManager messages;
 
     public void load() {
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
-
-        this.pluginConfig = SettingsManagerBuilder
-                .withYamlFile(new File(this.dataFolder, "plugin-config.yml"), builder)
-                .useDefaultMigrationService()
-                .configurationData(PluginConfig.class)
-                .create();
 
         this.config = SettingsManagerBuilder
                 .withYamlFile(new File(this.dataFolder, "config.yml"), builder)
@@ -46,16 +38,9 @@ public class ConfigManager {
     }
 
     public void reload() {
-        this.pluginConfig.reload();
-
         this.config.reload();
 
         this.messages.reload();
-    }
-
-    @NotNull
-    public SettingsManager getPluginConfig() {
-        return this.pluginConfig;
     }
 
     @NotNull

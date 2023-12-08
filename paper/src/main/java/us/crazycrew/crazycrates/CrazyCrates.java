@@ -2,6 +2,7 @@ package us.crazycrew.crazycrates;
 
 import com.badbones69.crazycrates.api.EventLogger;
 import org.bukkit.plugin.java.JavaPlugin;
+import us.crazycrew.crazycrates.common.config.types.ConfigKeys;
 import us.crazycrew.crazycrates.listeners.platforms.PaperListener;
 import us.crazycrew.crazycrates.listeners.crates.WarCrateListener;
 import us.crazycrew.crazycrates.listeners.platforms.SpigotListener;
@@ -20,7 +21,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.ConfigManager;
-import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.api.support.placeholders.PlaceholderAPISupport;
 import us.crazycrew.crazycrates.listeners.MiscListener;
 import us.crazycrew.crazycrates.api.support.libraries.PluginSupport;
@@ -83,7 +83,7 @@ public class CrazyCrates extends JavaPlugin {
         if (this.isSpigot) pluginManager.registerEvents(new SpigotListener(), this); else pluginManager.registerEvents(new PaperListener(), this);
 
         if (isLogging()) {
-            String prefix = this.crazyHandler.getConfigManager().getPluginConfig().getProperty(PluginConfig.console_prefix);
+            String prefix = this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.console_prefix);
 
             // Print dependency garbage
             for (PluginSupport value : PluginSupport.values()) {
@@ -175,7 +175,7 @@ public class CrazyCrates extends JavaPlugin {
     }
 
     public boolean isLogging() {
-        return getConfigManager().getPluginConfig().getProperty(PluginConfig.verbose_logging);
+        return getConfigManager().getConfig().getProperty(ConfigKeys.verbose_logging);
     }
 
     public boolean isSpigot() {

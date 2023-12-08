@@ -47,6 +47,9 @@ val isBeta: Boolean get() = rootProject.extra["isBeta"]?.toString()?.toBoolean()
 val type = if (isBeta) "Beta" else "Release"
 
 val description = """
+## Configs:
+ * Removed plugin-config.yml as it was just weird, Options in there will migrate to config.yml automatically.
+    
 ## Changes:
  * Nested placeholders now work *with limitations
   * %crazycrates_<player>_<crate>_opened% must be done like %crazycrates_{player_name}_your_crate_opened%
@@ -116,7 +119,7 @@ tasks {
     runServer {
         jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")
 
-        minecraftVersion(mcVersion)
+        minecraftVersion("1.20.2")
     }
 
     // Assembles the plugin.

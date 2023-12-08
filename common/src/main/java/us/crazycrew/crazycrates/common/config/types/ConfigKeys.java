@@ -40,8 +40,24 @@ public class ConfigKeys implements SettingsHolder {
 
         conf.setComment("Settings.Filler", deprecation);
 
-        conf.setComment("Settings", header);
+        conf.setComment("root", header);
     }
+
+    @Comment("Whether you want CrazyCrates to shut up or not, This option is ignored by errors.")
+    public static final Property<Boolean> verbose_logging = newProperty("root.verbose_logging", true);
+
+    @Comment({
+            "Sends anonymous statistics about how the plugin is used to bstats.org.",
+            "bstats is a service for plugin developers to find out how the plugin being used,",
+            "This information helps us figure out how to better improve the plugin."
+    })
+    public static final Property<Boolean> toggle_metrics = newProperty("root.toggle_metrics", true);
+
+    @Comment("The prefix used in commands")
+    public static final Property<String> command_prefix = newProperty("root.command_prefix", "&8[&bCrazyCrates&8]: ");
+
+    @Comment("The prefix used in console")
+    public static final Property<String> console_prefix = newProperty("root.console_prefix", "&8[&bCrazyCrates&8] ");
 
     @Comment("Whether to enable or disable the crate menu. This also removes the Menu button in crate previews")
     public static final Property<Boolean> enable_crate_menu = newProperty("Settings.Enable-Crate-Menu", true);

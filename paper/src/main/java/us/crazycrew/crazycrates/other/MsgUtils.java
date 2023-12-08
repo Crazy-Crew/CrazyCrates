@@ -4,8 +4,9 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.crazycrew.crazycrates.common.config.types.PluginConfig;
 import us.crazycrew.crazycrates.CrazyCrates;
+import us.crazycrew.crazycrates.common.config.types.ConfigKeys;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static java.util.regex.Matcher.quoteReplacement;
@@ -41,7 +42,7 @@ public class MsgUtils {
     }
 
     public static String getPrefix() {
-        return color(plugin.getCrazyHandler().getConfigManager().getPluginConfig().getProperty(PluginConfig.command_prefix));
+        return color(plugin.getCrazyHandler().getConfigManager().getConfig().getProperty(ConfigKeys.command_prefix));
     }
 
     public static String getPrefix(String msg) {
