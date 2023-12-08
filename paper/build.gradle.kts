@@ -119,7 +119,7 @@ tasks {
     runServer {
         jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")
 
-        minecraftVersion("1.20.2")
+        minecraftVersion(mcVersion)
     }
 
     // Assembles the plugin.
