@@ -3,10 +3,8 @@ package us.crazycrew.crazycrates.common.config;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
-import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.common.config.types.ConfigKeys;
 import us.crazycrew.crazycrates.common.config.types.MessageKeys;
-
 import java.io.File;
 
 public class ConfigManager {
@@ -43,12 +41,10 @@ public class ConfigManager {
         this.messages.reload();
     }
 
-    @NotNull
     public SettingsManager getConfig() {
         return config;
     }
 
-    @NotNull
     public SettingsManager getMessages() {
         return this.messages;
     }

@@ -24,11 +24,6 @@ public interface ICrazyCrates {
     void disable();
 
     /**
-     * @return the plugin folder.
-     */
-    File getDataFolder();
-
-    /**
      * @return the user manager
      */
     @NotNull UserManager getUserManager();

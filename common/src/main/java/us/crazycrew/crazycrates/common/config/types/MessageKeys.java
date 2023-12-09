@@ -4,17 +4,14 @@ import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
-
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
 public class MessageKeys implements SettingsHolder {
 
     @Override
-    public void registerComments(@NotNull CommentsConfiguration conf) {
+    public void registerComments(CommentsConfiguration conf) {
         String[] header = {
                 "Support: https://discord.gg/badbones-s-live-chat-182615261403283459",
                 "Github: https://github.com/Crazy-Crew",

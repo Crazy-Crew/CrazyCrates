@@ -205,7 +205,8 @@ public class BukkitUserManager extends UserManager {
                                 int keyAmount = item.getAmount();
 
                                 if ((takeAmount - keyAmount) >= 0) {
-                                    MiscUtils.removeMultipleItemStacks(player.getInventory(), item);
+                                    //TODO() Test this
+                                    player.getInventory().removeItem(item);
 
                                     if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), amount, crate.getName());
 
