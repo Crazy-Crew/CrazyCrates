@@ -492,10 +492,8 @@ public class Crate {
 
         this.file.set(path + ".Editor-Items", items);
 
-        this.fileManager.saveFile(this.fileManager.getFile(this.name));
-
-        this.fileManager.removeFile(this.name);
-        this.fileManager.addFile(this.name + ".yml", "crates");
+        //TODO() Test /cc additem with this change.
+        this.fileManager.getFile(this.name).reloadFile();
 
         this.plugin.getCrateManager().reloadCrate(this.plugin.getCrateManager().getCrateFromName(this.name));
     }
