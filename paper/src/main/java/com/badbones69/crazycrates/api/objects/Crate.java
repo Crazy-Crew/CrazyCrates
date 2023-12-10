@@ -19,6 +19,9 @@ import us.crazycrew.crazycrates.managers.InventoryManager;
 import us.crazycrew.crazycrates.api.builders.types.CratePreviewMenu;
 import us.crazycrew.crazycrates.other.MiscUtils;
 import us.crazycrew.crazycrates.other.MsgUtils;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -492,7 +495,16 @@ public class Crate {
 
         this.file.set(path + ".Editor-Items", items);
 
-        //TODO() Test /cc additem with this change.
+        File crates = new File(this.plugin.getDataFolder(), "crates");
+
+        File crateFile = new File(crates, this.name + ".yml");
+
+        try {
+            this.file.save(crateFile);
+        } catch (IOException exception) {
+            this.plugin.getLogger().log(Level.SEVERE, "Failed to save " + this.name + ".yml", exception);
+        }
+
         this.fileManager.getFile(this.name).reloadFile();
 
         this.plugin.getCrateManager().reloadCrate(this.plugin.getCrateManager().getCrateFromName(this.name));
