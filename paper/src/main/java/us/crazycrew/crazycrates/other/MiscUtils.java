@@ -152,51 +152,6 @@ public class MiscUtils {
     }
 
     /**
-     * Remove multiple items from a player's inventory.
-     */
-    public static void removeMultipleItemStacks(Player player, ItemStack... items) {
-        if (items == null) {
-            plugin.getLogger().warning("Items cannot be null.");
-            return;
-        }
-
-        Inventory inventory = player.getInventory();
-
-        HashMap<Integer, ItemStack> stuckItems = new HashMap<>();
-        ItemStack[] toSearch = inventory.getContents();
-
-        for (ItemStack item : items) {
-            int toDelete = item.getAmount();
-
-            while (toDelete > 0) {
-                int first = getFirstItem(item, false, toSearch);
-
-                // Drat! we don't have this type in the inventory
-                if (first == -1) {
-                    ItemStack itemClone = item.clone();
-                    itemClone.setAmount(toDelete);
-                    // Clear the slot, all used up
-                    stuckItems.put(stuckItems.size(), itemClone);
-                    break;
-                } else {
-                    ItemStack itemStack = toSearch[first];
-                    int amount = itemStack.getAmount();
-
-                    if (amount <= toDelete) {
-                        toSearch[first] = null;
-                        toDelete -= amount;
-                    } else {
-                        // Split the stack and store
-                        itemStack.setAmount(amount - toDelete);
-                        toSearch[first] = itemStack;
-                        toDelete = 0;
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * Gets the first item amount in an inventory.
      *
      * @return -1 or item amount.
