@@ -47,19 +47,8 @@ val isBeta: Boolean get() = rootProject.extra["isBeta"]?.toString()?.toBoolean()
 val type = if (isBeta) "Beta" else "Release"
 
 val description = """
-## Configs:
- * Removed plugin-config.yml as it was just weird, Options in there will migrate to config.yml automatically.
-    
 ## Changes:
- * Bumped to 1.20.4
- * Bumped nbt api
- * Nested placeholders now work *with limitations
-  * %crazycrates_<player>_<crate>_opened% must be done like %crazycrates_{player_name}_your_crate_opened%
- * {player_name} can be replaced with almost any player variable from https://github.com/PlaceholderAPI/PlaceholderAPI/wiki/Placeholders
- * /crazycrates admin-help has been removed.
-  * /crazycrates help now has a permission check if the player has crazycrates.admin-access
-  * The permission crazycrates.command.player.help has been changed to crazycrates.help which defaults to TRUE
- * Console can now use /crazycrates help.
+ * N/A
 
 ## Other:
  * [Feature Requests](https://github.com/Crazy-Crew/${rootProject.name}/issues)
