@@ -11,7 +11,6 @@ website: '${website}'
 # Remove this in the future when we go paper only
 libraries:
   - net.kyori:adventure-api:4.14.0
-  #- net.kyori:adventure-platform-bukkit:4.3.1
 
 softdepend: [CMI, DecentHolograms, HolographicDisplays, PlaceholderAPI, ItemsAdder, Oraxen]
 
@@ -24,11 +23,6 @@ commands:
     aliases: [key]
 
 permissions:
-  crazycrates.command.player.help:
-    default: true
-    children:
-      crazycrates.command.player.key: true
-
   crazycrates.command.player.menu:
     default: true
 

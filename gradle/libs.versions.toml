@@ -1,7 +1,7 @@
 [versions]
 kyori_version = "4.14.0"
 
-cluster_version = "3.1"
+cluster_version = "4.1.2"
 
 [plugins]
 hangar = { id = "io.papermc.hangar-publish-plugin", version = "0.1.0" }

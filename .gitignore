@@ -1,19 +1,18 @@
 build
 .gradle
 .idea
-
-buildSrc/.gradle
-buildSrc/build
-
-core/.gradle
-core/build
-
 jars
 
+common/build
 paper/build
+api/build
+
+common/.gradle
+api/.gradle
 paper/.gradle
 
 paper/run
+
 !paper/run/config
 !paper/run/spigot.yml
 !paper/run/bukkit.yml

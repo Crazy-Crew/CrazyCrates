@@ -1,17 +1,56 @@
 package us.crazycrew.crazycrates.api.enums.types;
 
+/**
+ * An enum class that contains all our current crate types.
+ *
+ * @author Ryder Belserion
+ * @version 0.3
+ */
 public enum CrateType {
 
+    /**
+     * The menu i.e. /crates menu
+     */
     menu("Menu"),
+    /**
+     * The cosmic crate type
+     */
     cosmic("Cosmic"),
+    /**
+     * CrateOnTheGo which allows players to be given crates that can be opened anywhere instantly.
+     */
     crate_on_the_go("CrateOnTheGo"),
+    /**
+     * CSGO Crate, A crate type that mimics the infamous CSGO Crate! SHOCKING
+     */
     csgo("CSGO"),
+    /**
+     * FireCracker, A simple variant of QuickCrate that launches fireworks.
+     */
     fire_cracker("FireCracker"),
+    /**
+     * A crate that spawns a schematic in the physical world with 4 chests that spawn on each corner.
+     */
     quad_crate("QuadCrate"),
+    /**
+     * A crate that opens up quickly
+     */
     quick_crate("QuickCrate"),
+    /**
+     * It's a roulette crate.
+     */
     roulette("Roulette"),
+    /**
+     * Spin the wheel!
+     */
     wheel("Wheel"),
+    /**
+     * Makes you wonder what you're going to get!
+     */
     wonder("Wonder"),
+    /**
+     * Definitely going to war over what you win.
+     */
     war("War");
     
     private final String name;

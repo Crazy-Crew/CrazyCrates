@@ -4,6 +4,13 @@ import net.kyori.adventure.audience.Audience;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.UUID;
 
+/**
+ * A class that handles fetching users, checking virtual keys, adding virtual keys or physical keys
+ * Ability to set keys, get keys, getting total keys or checking total crates opened or individual crates opened.
+ *
+ * @author Ryder Belserion
+ * @version 0.3
+ */
 public abstract class UserManager {
 
     /**
@@ -19,6 +26,7 @@ public abstract class UserManager {
      *
      * @param uuid The uuid of the player
      * @param crateName The name of the crate
+     * @return the amount of virtual keys
      */
     public abstract int getVirtualKeys(UUID uuid, String crateName);
 
@@ -55,6 +63,7 @@ public abstract class UserManager {
      *
      * @param uuid The player you want to get keys from.
      * @param crateName The crate you want to use.
+     * @return total amount of keys a player has.
      */
     public abstract int getTotalKeys(UUID uuid, String crateName);
 
@@ -63,6 +72,7 @@ public abstract class UserManager {
      *
      * @param uuid The player you want to get keys from.
      * @param crateName The crate you want to use.
+     * @return the amount of physical keys
      */
     public abstract int getPhysicalKeys(UUID uuid, String crateName);
 
@@ -74,7 +84,7 @@ public abstract class UserManager {
      * @param crateName The crate key you are taking.
      * @param keyType The type of key you are taking from the player.
      * @param checkHand If it just checks the players hand or if it checks their inventory.
-     * @return Returns true if successfully taken keys and false if not.
+     * @return true if successfully taken keys and false if not.
      */
     public abstract boolean takeKeys(int amount, UUID uuid, String crateName, KeyType keyType, boolean checkHand);
 
@@ -94,7 +104,8 @@ public abstract class UserManager {
      * @param uuid The uuid of the offline player you wish to give keys to.
      * @param crateName The crate of which key you are giving to the player.
      * @param keys The amount of keys you wish to give to the player.
-     * @return Returns true if it successfully gave the offline player a key and false if there was an error.
+     * @param type The key type used i.e. virtual or physical
+     * @return true if it successfully gave the offline player a key and false if there was an error.
      */
     public abstract boolean addOfflineKeys(UUID uuid, String crateName, int keys, KeyType type);
 
@@ -104,6 +115,7 @@ public abstract class UserManager {
      * @param uuid The uuid of the offline player you wish to take keys from.
      * @param crateName The crate of which key you are taking from the player.
      * @param keys The amount of keys you wish to take from the player.
+     * @param type The key type used i.e. virtual or physical
      * @return Returns true if it successfully took the key from the offline player and false if there was an error.
      */
     public abstract boolean takeOfflineKeys(UUID uuid, String crateName, int keys, KeyType type);

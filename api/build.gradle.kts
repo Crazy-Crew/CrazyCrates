@@ -3,7 +3,7 @@ plugins {
 }
 
 project.group = "us.crazycrew.crazycrates"
-project.version = "0.2"
+project.version = "0.3"
 
 base {
     archivesName.set("${rootProject.name}-${project.name}")

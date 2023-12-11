@@ -1,5 +1,11 @@
 package us.crazycrew.crazycrates.api.enums;
 
+/**
+ * An enum class which contains permissions to be used in Version 2.0
+ *
+ * @author Ryder Belserion
+ * @version 0.3
+ */
 public enum Permissions {
 
     crazycrates_player_key("key", "Check the number of keys you have."),

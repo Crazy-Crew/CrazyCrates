@@ -21,9 +21,9 @@
     <a href="https://docs.crazycrew.us/crazycrates/home"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/Crazy-Crew/CrazyCrates/issues">Report Bug</a>
+    <a href="https://github.com/Crazy-Crew/CrazyCrates/issues/new?assignees=ryderbelserion&labels=bug&projects=&template=bugs.yml&title=%5BBug+Report%5D%3A+">Report Bug</a>
     ·
-    <a href="https://github.com/Crazy-Crew/CrazyCrates/discussions/categories/features">Request Feature</a>
+    <a href="https://github.com/Crazy-Crew/CrazyCrates/issues/new?assignees=&labels=feature&template=feature_request.md&title=%5BFeature%5D+">Request Feature</a>
     ·
     <a href="https://discord.gg/badbones-s-live-chat-182615261403283459">Get Support</a>
   </p>
@@ -90,7 +90,7 @@ Check our public [trello board](https://trello.com/b/bzQ5TwXo) for our current p
 Distributed under the MIT License. See [`LICENSE`](/LICENSE) for more information.
 
 [discord-shield]: https://img.shields.io/discord/182615261403283459.svg?style=flat&logo=appveyor
-[discord-url]: https://discord.gg/crazycrew
+[discord-url]: https://discord.gg/badbones-s-live-chat-182615261403283459
 
 [contributors-shield]: https://img.shields.io/github/contributors/Crazy-Crew/CrazyCrates.svg?style=flat&logo=appveyor
 [contributors-url]: https://github.com/Crazy-Crew/CrazyCrates/graphs/contributors
