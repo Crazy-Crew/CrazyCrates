@@ -18,7 +18,7 @@ minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "
 cluster_paper = { module = "com.ryderbelserion.cluster.paper:cluster-paper", version.ref = "cluster_version" }
 cluster_api = { module = "com.ryderbelserion.cluster.api:cluster-api", version.ref = "cluster_version" }
 
-nbtapi = { module = "de.tr7zw:item-nbt-api", version = "2.12.1" }
+nbtapi = { module = "de.tr7zw:item-nbt-api", version = "2.12.2" }
 
 triumph_cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version = "2.0.0-SNAPSHOT" }
 
