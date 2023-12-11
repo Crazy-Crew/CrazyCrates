@@ -51,6 +51,8 @@ val description = """
  * Removed plugin-config.yml as it was just weird, Options in there will migrate to config.yml automatically.
     
 ## Changes:
+ * Bumped to 1.20.4
+ * Bumped nbt api
  * Nested placeholders now work *with limitations
   * %crazycrates_<player>_<crate>_opened% must be done like %crazycrates_{player_name}_your_crate_opened%
  * {player_name} can be replaced with almost any player variable from https://github.com/PlaceholderAPI/PlaceholderAPI/wiki/Placeholders
@@ -64,11 +66,11 @@ val description = """
  * [Bug Reports](https://github.com/Crazy-Crew/${rootProject.name}/issues)
 """
 
-val file = project.layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar").get().asFile
-
 val component: SoftwareComponent = components["java"]
 
 tasks {
+    val file = project.layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar").get()
+
     // Publish to hangar.papermc.io.
     hangarPublish {
         publications.register("plugin") {
