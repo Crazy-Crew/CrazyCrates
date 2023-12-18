@@ -70,7 +70,7 @@ A list of things necessary to make sure you can build CrazyCrates properly.
 2. Open the repository using Intellij IDEA & wait until it finishes downloading/indexing.
 3. Run the assemble task.
    ```gradle
-   ./gradlew assemble
+   ./gradlew clean assemble
    ```
 
 ## Roadmap
