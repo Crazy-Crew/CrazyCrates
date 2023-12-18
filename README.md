@@ -68,7 +68,7 @@ A list of things necessary to make sure you can build CrazyCrates properly.
    git clone https://github.com/Crazy-Crew/CrazyCrates.git
    ```
 2. Open the repository using Intellij IDEA & wait until it finishes downloading/indexing.
-3. Run the assemble task.
+3. Run the clean assemble task.
    ```gradle
    ./gradlew clean assemble
    ```
