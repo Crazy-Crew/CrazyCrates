@@ -22,6 +22,17 @@ val component: SoftwareComponent = components["java"]
 
 tasks {
     publishing {
+        repositories {
+            maven {
+                url = uri("https://repo.crazycrew.us/releases/")
+
+                credentials {
+                    this.username = System.getenv("GRADLE_USERNAME")
+                    this.password = System.getenv("GRADLE_PASSWORD")
+                }
+            }
+        }
+
         publications {
             create<MavenPublication>("maven") {
                 artifactId = "api"
