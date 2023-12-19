@@ -22,7 +22,7 @@ tasks {
         jarsDir.mkdirs()
 
         subprojects.forEach { project ->
-            dependsOn(":${project.name}:build")
+            dependsOn(":${project.name}:clean build")
 
             doLast {
                 runCatching {
