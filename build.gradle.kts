@@ -14,10 +14,10 @@ val type = if (isBeta) "Beta" else "Release"
 
 val component: SoftwareComponent = components["java"]
 
-val jarsDir = File("$rootDir/jars")
-
 tasks {
     assemble {
+        val jarsDir = File("$rootDir/jars")
+
         if (jarsDir.exists()) jarsDir.delete()
         jarsDir.mkdirs()
 
@@ -112,6 +112,8 @@ subprojects {
         apply(plugin = "io.papermc.hangar-publish-plugin")
 
         tasks {
+            val jarsDir = File("$rootDir/jars")
+
             // Publish to hangar.papermc.io.
             hangarPublish {
                 publications.register("plugin") {
@@ -141,6 +143,8 @@ subprojects {
         apply(plugin = "com.modrinth.minotaur")
 
         tasks {
+            val jarsDir = File("$rootDir/jars")
+
             // Publish to modrinth.
             modrinth {
                 autoAddDependsOn.set(false)
