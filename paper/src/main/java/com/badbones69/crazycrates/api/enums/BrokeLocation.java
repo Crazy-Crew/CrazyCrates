@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.api.enums;
 
-import us.crazycrew.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;

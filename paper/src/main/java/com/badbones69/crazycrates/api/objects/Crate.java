@@ -1,12 +1,12 @@
 package com.badbones69.crazycrates.api.objects;
 
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import us.crazycrew.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.FileManager;
-import us.crazycrew.crazycrates.managers.crates.other.CosmicCrateManager;
-import us.crazycrew.crazycrates.managers.crates.other.AbstractCrateManager;
+import com.badbones69.crazycrates.managers.crates.other.CosmicCrateManager;
+import com.badbones69.crazycrates.managers.crates.other.AbstractCrateManager;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.common.crates.CrateHologram;
+import com.badbones69.crazycrates.common.crates.CrateHologram;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,10 +15,10 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import us.crazycrew.crazycrates.managers.InventoryManager;
-import us.crazycrew.crazycrates.api.builders.types.CratePreviewMenu;
-import us.crazycrew.crazycrates.other.MiscUtils;
-import us.crazycrew.crazycrates.other.MsgUtils;
+import com.badbones69.crazycrates.managers.InventoryManager;
+import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
+import com.badbones69.crazycrates.other.MiscUtils;
+import com.badbones69.crazycrates.other.MsgUtils;
 
 import java.io.File;
 import java.io.IOException;
