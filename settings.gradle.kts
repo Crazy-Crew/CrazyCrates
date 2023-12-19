@@ -11,4 +11,5 @@ rootProject.name = "CrazyCrates"
 
 include("api")
 include("paper")
+include("fabric")
 include("common")
