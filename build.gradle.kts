@@ -83,19 +83,19 @@ subprojects {
         "paper" -> {
             val newVersion = "1.19.1"
 
-            project.version = if (buildNumber != null) "$newVersion-#$buildNumber" else newVersion
+            project.version = if (buildNumber != null) "$newVersion-$buildNumber" else newVersion
         }
 
         "fabric" -> {
             val newVersion = "1.19.1"
 
-            project.version = if (buildNumber != null) "$newVersion-#$buildNumber" else newVersion
+            project.version = if (buildNumber != null) "$newVersion-$buildNumber" else newVersion
         }
 
         "forge" -> {
             val newVersion = "1.19.1"
 
-            project.version = if (buildNumber != null) "$newVersion-#$buildNumber" else newVersion
+            project.version = if (buildNumber != null) "$newVersion-$buildNumber" else newVersion
         }
     }
 
