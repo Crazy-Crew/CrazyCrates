@@ -84,6 +84,45 @@ subprojects {
             val newVersion = "1.19.1"
 
             project.version = if (buildNumber != null) "$newVersion-$buildNumber" else newVersion
+
+            repositories {
+                maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+
+                maven("https://repo.codemc.io/repository/maven-public/")
+
+                maven("https://repo.triumphteam.dev/snapshots/")
+
+                maven("https://repo.oraxen.com/releases/")
+
+                flatDir { dirs("libs") }
+            }
+
+            apply(plugin = "io.papermc.hangar-publish-plugin")
+
+            tasks {
+                // Publish to hangar.papermc.io.
+                hangarPublish {
+                    publications.register("plugin") {
+                        version.set("${project.version}")
+
+                        id.set(rootProject.name)
+
+                        channel.set(type)
+
+                        changelog.set(rootProject.file("CHANGELOG.md").readText())
+
+                        apiKey.set(System.getenv("hangar_key"))
+
+                        platforms {
+                            register(Platforms.PAPER) {
+                                jar.set(file("$jarsDir/${rootProject.name}-${project.version}.jar"))
+
+                                platformVersions.set(listOf(mcVersion))
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         "fabric" -> {
@@ -99,83 +138,40 @@ subprojects {
         }
     }
 
-    if (name == "paper") {
-        repositories {
-            maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    apply(plugin = "com.modrinth.minotaur")
 
-            maven("https://repo.codemc.io/repository/maven-public/")
+    tasks {
+        // Publish to modrinth.
+        modrinth {
+            autoAddDependsOn.set(false)
 
-            maven("https://repo.triumphteam.dev/snapshots/")
+            token.set(System.getenv("modrinth_token"))
 
-            maven("https://repo.oraxen.com/releases/")
+            projectId.set("crazyrunes")
 
-            flatDir { dirs("libs") }
-        }
+            versionName.set("${rootProject.name} ${project.version}")
 
-        apply(plugin = "io.papermc.hangar-publish-plugin")
+            versionNumber.set("${project.version}")
 
-        tasks {
-            // Publish to hangar.papermc.io.
-            hangarPublish {
-                publications.register("plugin") {
-                    version.set("${project.version}")
+            versionType.set(type.lowercase())
 
-                    id.set(rootProject.name)
+            uploadFile.set("$jarsDir/${rootProject.name}-${project.version}.jar")
 
-                    channel.set(type)
+            gameVersions.add(mcVersion)
 
-                    changelog.set(rootProject.file("CHANGELOG.md").readText())
+            changelog.set(rootProject.file("CHANGELOG.md").readText())
 
-                    apiKey.set(System.getenv("hangar_key"))
-
-                    platforms {
-                        register(Platforms.PAPER) {
-                            jar.set(file("$jarsDir/${rootProject.name}-${project.version}.jar"))
-
-                            platformVersions.set(listOf(mcVersion))
-                        }
-                    }
+            when (project.name) {
+                "fabric" -> {
+                    loaders.addAll("fabric", "quilt")
                 }
-            }
-        }
-    }
 
-    if (name == "paper" || name == "fabric" || name == "forge") {
-        apply(plugin = "com.modrinth.minotaur")
+                "paper" -> {
+                    loaders.addAll("paper", "purpur")
+                }
 
-        tasks {
-            // Publish to modrinth.
-            modrinth {
-                autoAddDependsOn.set(false)
-
-                token.set(System.getenv("modrinth_token"))
-
-                projectId.set("crazyrunes")
-
-                versionName.set("${rootProject.name} ${project.version}")
-
-                versionNumber.set("${project.version}")
-
-                versionType.set(type.lowercase())
-
-                uploadFile.set("$jarsDir/${rootProject.name}-${project.version}.jar")
-
-                gameVersions.add(mcVersion)
-
-                changelog.set(rootProject.file("CHANGELOG.md").readText())
-
-                when (project.name) {
-                    "fabric" -> {
-                        loaders.addAll("fabric", "quilt")
-                    }
-
-                    "paper" -> {
-                        loaders.addAll("paper", "purpur")
-                    }
-
-                    "forge" -> {
-                        loaders.addAll("forge", "neoforge")
-                    }
+                "forge" -> {
+                    loaders.addAll("forge", "neoforge")
                 }
             }
         }
