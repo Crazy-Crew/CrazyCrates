@@ -74,17 +74,25 @@ subprojects {
         toolchain.languageVersion.set(JavaLanguageVersion.of("17"))
     }
 
+    val buildNumber = System.getenv("BUILD_NUMBER")
+
     when (project.name) {
         "paper" -> {
-            project.version = System.getenv("BUILD_NUMBER") ?: "1.19.1"
+            val newVersion = "1.19.1"
+
+            project.version = if (buildNumber != null) "$newVersion-$buildNumber" else newVersion
         }
 
         "fabric" -> {
-            project.version = System.getenv("BUILD_NUMBER") ?: "1.19.1"
+            val newVersion = "1.19.1"
+
+            project.version = if (buildNumber != null) "$newVersion-$buildNumber" else newVersion
         }
 
         "forge" -> {
-            project.version = System.getenv("BUILD_NUMBER") ?: "1.19.1"
+            val newVersion = "1.19.1"
+
+            project.version = if (buildNumber != null) "$newVersion-$buildNumber" else newVersion
         }
     }
 
