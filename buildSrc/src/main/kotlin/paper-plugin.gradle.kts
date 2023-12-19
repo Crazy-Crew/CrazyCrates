@@ -1,4 +1,6 @@
+import gradle.kotlin.dsl.accessors._3c6de1dd92ae3b7d1ad54590cc9ae150.base
 import io.papermc.hangarpublishplugin.model.Platforms
+import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 
 plugins {
     id("io.papermc.hangar-publish-plugin")
@@ -8,6 +10,10 @@ plugins {
     id("xyz.jpenilla.run-paper")
 
     id("root-plugin")
+}
+
+base {
+    archivesName.set("${rootProject.name}-${project.name.uppercaseFirstChar()}")
 }
 
 repositories {
@@ -63,7 +69,7 @@ tasks {
 
             platforms {
                 register(Platforms.PAPER) {
-                    jar.set(file("$directory/${rootProject.name}-${project.version}.jar"))
+                    jar.set(file("$directory/${rootProject.name}-${project.name.uppercaseFirstChar()}-${project.version}.jar"))
 
                     platformVersions.set(listOf(mcVersion))
                 }

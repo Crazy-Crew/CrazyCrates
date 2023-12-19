@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.support.uppercaseFirstChar
+
 plugins {
     id("root-plugin")
 }
@@ -17,9 +19,9 @@ tasks {
 
             doLast {
                 runCatching {
-                    if (project.name != "api" || project.name != "common") {
+                    if (project.name != "api") {
                         copy {
-                            from(project.layout.buildDirectory.file("libs/${rootProject.name}-${project.version}.jar"))
+                            from(project.layout.buildDirectory.file("libs/${rootProject.name}-${project.name.uppercaseFirstChar()}-${project.version}.jar"))
                             into(jarsDir)
                         }
                     }

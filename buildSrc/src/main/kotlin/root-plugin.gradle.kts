@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.support.uppercaseFirstChar
+
 plugins {
     id("com.github.johnrengelman.shadow")
 
@@ -6,10 +8,6 @@ plugins {
     `java-library`
 
     `maven-publish`
-}
-
-base {
-    archivesName.set(rootProject.name)
 }
 
 repositories {
@@ -54,7 +52,7 @@ tasks {
 
         versionNumber.set("${project.version}")
 
-        uploadFile.set("$directory/${rootProject.name}-${project.version}.jar")
+        uploadFile.set("$directory/${rootProject.name}-${project.name.uppercaseFirstChar()}-${project.version}.jar")
 
         gameVersions.add(mcVersion)
 

@@ -1,5 +1,11 @@
+import org.gradle.kotlin.dsl.support.uppercaseFirstChar
+
 plugins {
     id("root-plugin")
+}
+
+base {
+    archivesName.set("${rootProject.name}-${project.name.uppercaseFirstChar()}")
 }
 
 val mcVersion = rootProject.properties["minecraftVersion"] as String
