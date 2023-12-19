@@ -1,5 +1,4 @@
 import io.papermc.hangarpublishplugin.model.Platforms
-import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 
 plugins {
     `java-library`
@@ -10,19 +9,16 @@ plugins {
 }
 
 val mcVersion = rootProject.properties["minecraftVersion"] as String
-
-val version = rootProject.version as String
-val isRelease: Boolean = version.contains("-")
-val type = if (isRelease) "Release" else "Beta"
+val isBeta: Boolean get() = rootProject.extra["isBeta"]?.toString()?.toBoolean() ?: false
+val type = if (isBeta) "Beta" else "Release"
 
 val component: SoftwareComponent = components["java"]
 
-tasks {
-    val jarsDir = File("$rootDir/jars")
+val jarsDir = File("$rootDir/jars")
 
+tasks {
     assemble {
         if (jarsDir.exists()) jarsDir.delete()
-
         jarsDir.mkdirs()
 
         subprojects.forEach { project ->
@@ -30,9 +26,11 @@ tasks {
 
             doLast {
                 runCatching {
-                    copy {
-                        from(project.layout.buildDirectory.file("libs/${rootProject.name}-${project.name.uppercaseFirstChar()}-${version}.jar"))
-                        into(jarsDir)
+                    if (project.name != "api" || project.name != "common") {
+                        copy {
+                            from(project.layout.buildDirectory.file("libs/${rootProject.name}-${project.version}.jar"))
+                            into(jarsDir)
+                        }
                     }
                 }.onSuccess {
                     // Delete to save space on jenkins.
@@ -43,52 +41,6 @@ tasks {
                 }
             }
         }
-    }
-
-    // Publish to hangar.papermc.io.
-    hangarPublish {
-        publications.register("plugin") {
-            version.set("$rootProject.version")
-
-            id.set(rootProject.name)
-
-            channel.set(type)
-
-            changelog.set(rootProject.file("CHANGELOG.md").readText())
-
-            apiKey.set(System.getenv("hangar_key"))
-
-            platforms {
-                register(Platforms.PAPER) {
-                    jar.set(file("$jarsDir/${rootProject.name}-Paper-${rootProject.version}.jar"))
-
-                    platformVersions.set(listOf(mcVersion))
-                }
-            }
-        }
-    }
-
-    // Publish to modrinth.
-    modrinth {
-        autoAddDependsOn.set(false)
-
-        token.set(System.getenv("modrinth_token"))
-
-        projectId.set("crazyrunes")
-
-        versionName.set("${rootProject.name} ${rootProject.version}")
-
-        versionNumber.set("${rootProject.version}")
-
-        versionType.set(type.lowercase())
-
-        uploadFile.set(file("$jarsDir/${rootProject.name}-Paper-${rootProject.version}.jar"))
-
-        gameVersions.add(mcVersion)
-
-        changelog.set(rootProject.file("CHANGELOG.md").readText())
-
-        loaders.addAll("paper", "purpur")
     }
 }
 
@@ -101,20 +53,6 @@ subprojects {
         maven("https://jitpack.io/")
 
         mavenCentral()
-    }
-
-    if (name == "paper") {
-        repositories {
-            maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-
-            maven("https://repo.codemc.io/repository/maven-public/")
-
-            maven("https://repo.triumphteam.dev/snapshots/")
-
-            maven("https://repo.oraxen.com/releases/")
-
-            flatDir { dirs("libs") }
-        }
     }
 
     tasks {
@@ -134,5 +72,101 @@ subprojects {
 
     java {
         toolchain.languageVersion.set(JavaLanguageVersion.of("17"))
+    }
+
+    when (project.name) {
+        "paper" -> {
+            project.version = System.getenv("BUILD_NUMBER") ?: "1.19.1"
+        }
+
+        "fabric" -> {
+            project.version = System.getenv("BUILD_NUMBER") ?: "1.19.1"
+        }
+
+        "forge" -> {
+            project.version = System.getenv("BUILD_NUMBER") ?: "1.19.1"
+        }
+    }
+
+    if (name == "paper") {
+        repositories {
+            maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+
+            maven("https://repo.codemc.io/repository/maven-public/")
+
+            maven("https://repo.triumphteam.dev/snapshots/")
+
+            maven("https://repo.oraxen.com/releases/")
+
+            flatDir { dirs("libs") }
+        }
+
+        apply(plugin = "io.papermc.hangar-publish-plugin")
+
+        tasks {
+            // Publish to hangar.papermc.io.
+            hangarPublish {
+                publications.register("plugin") {
+                    version.set("${project.version}")
+
+                    id.set(rootProject.name)
+
+                    channel.set(type)
+
+                    changelog.set(rootProject.file("CHANGELOG.md").readText())
+
+                    apiKey.set(System.getenv("hangar_key"))
+
+                    platforms {
+                        register(Platforms.PAPER) {
+                            jar.set(file("$jarsDir/${rootProject.name}-${project.version}.jar"))
+
+                            platformVersions.set(listOf(mcVersion))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (name == "paper" || name == "fabric" || name == "forge") {
+        apply(plugin = "com.modrinth.minotaur")
+
+        tasks {
+            // Publish to modrinth.
+            modrinth {
+                autoAddDependsOn.set(false)
+
+                token.set(System.getenv("modrinth_token"))
+
+                projectId.set("crazyrunes")
+
+                versionName.set("${rootProject.name} ${project.version}")
+
+                versionNumber.set("${project.version}")
+
+                versionType.set(type.lowercase())
+
+                uploadFile.set("$jarsDir/${rootProject.name}-${project.version}.jar")
+
+                gameVersions.add(mcVersion)
+
+                changelog.set(rootProject.file("CHANGELOG.md").readText())
+
+                when (project.name) {
+                    "fabric" -> {
+                        loaders.addAll("fabric", "quilt")
+                    }
+
+                    "paper" -> {
+                        loaders.addAll("paper", "purpur")
+                    }
+
+                    "forge" -> {
+                        loaders.addAll("forge", "neoforge")
+                    }
+                }
+            }
+        }
     }
 }

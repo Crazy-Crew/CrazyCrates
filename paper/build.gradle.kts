@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.support.uppercaseFirstChar
-
 plugins {
     alias(libs.plugins.paperweight)
     alias(libs.plugins.shadowjar)
@@ -8,7 +6,7 @@ plugins {
 }
 
 base {
-    archivesName.set("${rootProject.name}-${project.name.uppercaseFirstChar()}")
+    archivesName.set(rootProject.name)
 }
 
 val mcVersion = rootProject.properties["minecraftVersion"] as String
@@ -70,7 +68,7 @@ tasks {
     processResources {
         val properties = hashMapOf(
                 "name" to rootProject.name,
-                "version" to rootProject.version,
+                "version" to project.version,
                 "group" to rootProject.group,
                 "description" to rootProject.description,
                 "apiVersion" to rootProject.properties["apiVersion"],
