@@ -1,12 +1,5 @@
 plugins {
-    alias(libs.plugins.paperweight)
-    alias(libs.plugins.shadowjar)
-
-    alias(libs.plugins.runpaper)
-}
-
-base {
-    archivesName.set(rootProject.name)
+    id("paper-plugin")
 }
 
 val mcVersion = rootProject.properties["minecraftVersion"] as String
@@ -33,28 +26,10 @@ dependencies {
     compileOnly(libs.oraxen)
 
     compileOnly(fileTree("libs").include("*.jar"))
-
-    paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:$mcVersion-R0.1-SNAPSHOT")
 }
 
 tasks {
-    // Runs a test server.
-    runServer {
-        jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")
-
-        minecraftVersion(mcVersion)
-    }
-
-    // Assembles the plugin.
-    assemble {
-        dependsOn(reobfJar)
-    }
-
     shadowJar {
-        archiveClassifier.set("")
-
-        exclude("META-INF/**")
-
         listOf(
                 "com.ryderbelserion.cluster.paper",
                 "de.tr7zw.changeme.nbtapi",

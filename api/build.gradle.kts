@@ -1,5 +1,5 @@
 plugins {
-    `maven-publish`
+    id("root-plugin")
 }
 
 project.group = "us.crazycrew.crazycrates"
