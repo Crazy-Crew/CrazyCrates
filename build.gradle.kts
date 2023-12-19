@@ -14,12 +14,15 @@ val type = if (isBeta) "Beta" else "Release"
 
 val component: SoftwareComponent = components["java"]
 
+val jarsDir = File("$rootDir/jars")
+
 tasks {
     assemble {
-        val jarsDir = File("$rootDir/jars")
+        doFirst {
+            delete(jarsDir)
 
-        if (jarsDir.exists()) jarsDir.delete()
-        jarsDir.mkdirs()
+            jarsDir.mkdirs()
+        }
 
         subprojects.forEach { project ->
             dependsOn(":${project.name}:build")
@@ -36,6 +39,8 @@ tasks {
                     // Delete to save space on jenkins.
                     delete(project.layout.buildDirectory.get())
                     delete(rootProject.layout.buildDirectory.get())
+
+                    if (System.getenv("BUILD_NUMBER") != null) delete(jarsDir)
                 }.onFailure {
                     println("Failed to copy file out of build folder into jars directory: Likely does not exist.")
                 }
@@ -112,8 +117,6 @@ subprojects {
         apply(plugin = "io.papermc.hangar-publish-plugin")
 
         tasks {
-            val jarsDir = File("$rootDir/jars")
-
             // Publish to hangar.papermc.io.
             hangarPublish {
                 publications.register("plugin") {
@@ -143,8 +146,6 @@ subprojects {
         apply(plugin = "com.modrinth.minotaur")
 
         tasks {
-            val jarsDir = File("$rootDir/jars")
-
             // Publish to modrinth.
             modrinth {
                 autoAddDependsOn.set(false)
