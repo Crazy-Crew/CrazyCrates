@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.api;
 
-import us.crazycrew.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.CrazyCrates;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;

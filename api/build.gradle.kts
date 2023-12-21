@@ -1,5 +1,5 @@
 plugins {
-    `maven-publish`
+    id("root-plugin")
 }
 
 project.group = "us.crazycrew.crazycrates"
@@ -35,6 +35,7 @@ tasks {
 
         publications {
             create<MavenPublication>("maven") {
+                group = project.group
                 artifactId = "api"
 
                 from(component)

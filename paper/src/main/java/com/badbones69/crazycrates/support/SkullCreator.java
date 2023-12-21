@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.support;
 
-import us.crazycrew.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.CrazyCrates;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
