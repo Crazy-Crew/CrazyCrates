@@ -46,7 +46,7 @@ tasks {
 
         token.set(System.getenv("modrinth_token"))
 
-        projectId.set("crazyrunes")
+        projectId.set(rootProject.name.lowercase())
 
         versionName.set("${rootProject.name} ${project.version}")
 
