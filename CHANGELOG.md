@@ -1,5 +1,5 @@
-## Fixes:
-* Fix an NPE with item builder
+## Changes:
+ * Added back a bit of code that got removed somehow.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
