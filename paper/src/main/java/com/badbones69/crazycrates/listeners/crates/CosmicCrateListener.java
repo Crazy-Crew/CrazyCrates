@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.listeners.crates;
 
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
+import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.managers.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
@@ -93,7 +94,7 @@ public class CosmicCrateListener implements Listener {
         this.crateManager.removePlayerFromOpeningList(player);
         this.crateManager.removePlayerKeyType(player);
 
-        // Cancel crate task.
+        // Cancel crate task just in case.
         this.crateManager.removeCrateTask(player);
 
         // Remove hand checks.
@@ -369,14 +370,14 @@ public class CosmicCrateListener implements Listener {
                     time++;
 
                     if (time == 40) {
+                        // End the crate and task before as we start a new task.
+                        crateManager.removeCrateTask(player);
+
                         // Show their rewards after the animation is done.
                         showRewards(player, view, cosmic, cosmicCrateManager);
 
                         // Play a sound
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
-
-                        // End the crate and task.
-                        crateManager.removeCrateTask(player);
                     }
                 }
             }, 0L, 80L);
@@ -409,23 +410,23 @@ public class CosmicCrateListener implements Listener {
             crateManager.getPickedPrizes(player).forEach(slot -> view.setItem(slot, tier.getTierPane()));
             player.updateInventory();
 
-            this.plugin.getTimer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    // Close inventory.
-                    plugin.getServer().getScheduler().runTask(plugin, () -> player.closeInventory(InventoryCloseEvent.Reason.UNLOADED));
+            if (this.plugin.getCrazyHandler().getConfigManager().getConfig().getProperty(ConfigKeys.cosmic_crate_timeout)) {
+                this.plugin.getCrateManager().addCrateTask(player, new TimerTask() {
+                    @Override
+                    public void run() {
+                        // Close inventory.
+                        plugin.getServer().getScheduler().runTask(plugin, () -> player.closeInventory(InventoryCloseEvent.Reason.UNLOADED));
 
-                    // Log it
-                    if (plugin.isLogging()) {
-                        List.of(
-                                player.getName() + " spent 10 seconds staring at a gui instead of collecting their prizes",
-                                "The task has been cancelled, They have been given their prizes and the gui is closed."
-                        ).forEach(plugin.getLogger()::info);
+                        // Log it
+                        if (plugin.isLogging()) {
+                            List.of(
+                                    player.getName() + " spent 10 seconds staring at a gui instead of collecting their prizes",
+                                    "The task has been cancelled, They have been given their prizes and the gui is closed."
+                            ).forEach(plugin.getLogger()::info);
+                        }
                     }
-
-                    cancel();
-                }
-            }, 10000L);
+                }, 10000L);
+            }
         }
     }
 
