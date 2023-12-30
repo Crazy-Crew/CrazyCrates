@@ -64,7 +64,7 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("Whether to show the item that appears above QuickCrate")
     public static final Property<Boolean> show_quickcrate_item = newProperty("Settings.Show-QuickCrate-Item", true);
 
-    @Comment("Logs all crate actions to file if true. You might have to delete your logs file every now and then.")
+    @Comment("Logs all crate actions to file if true. You might have to delete your logs file sometimes.")
     public static final Property<Boolean> log_to_file = newProperty("Settings.Log-File", false);
 
     @Comment("Logs all crate actions to your console if true.")
@@ -84,6 +84,13 @@ public class ConfigKeys implements SettingsHolder {
 
     @Comment("If the player should be sent a message that they were removed from the preview gui during /cc reload.")
     public static final Property<Boolean> send_preview_taken_out_message = newProperty("Settings.Force-Out-Of-Preview-Message", false);
+
+    @Comment({
+            "If a player gets to the menu related to the Prizes gui, Should they be timed out?",
+            "",
+            "It will wait 10 seconds and if they already collected 3 prizes, It will only give one prize."
+    })
+    public static final Property<Boolean> cosmic_crate_timeout = newProperty("Settings.Cosmic-Crate-Timeout", true);
 
     @Comment("If physical crates can accept virtual keys.")
     public static final Property<Boolean> physical_accepts_virtual_keys = newProperty("Settings.Physical-Accepts-Virtual-Keys", true);
