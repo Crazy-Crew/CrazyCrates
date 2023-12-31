@@ -8,7 +8,6 @@ import com.badbones69.crazycrates.listeners.menus.CrateAdminListener;
 import com.badbones69.crazycrates.listeners.menus.CrateMenuListener;
 import com.badbones69.crazycrates.listeners.menus.CratePreviewListener;
 import com.badbones69.crazycrates.listeners.platforms.PaperListener;
-import com.badbones69.crazycrates.listeners.platforms.SpigotListener;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.crates.CrateManager;
 import com.badbones69.crazycrates.managers.crates.other.quadcrates.SessionManager;
@@ -23,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.support.libraries.PluginSupport;
-import java.util.List;
 import java.util.Timer;
 
 public class CrazyCrates extends JavaPlugin {
@@ -38,8 +36,6 @@ public class CrazyCrates extends JavaPlugin {
 
     private CrazyHandler crazyHandler;
     private Timer timer;
-
-    private boolean isSpigot;
 
     @Override
     public void onEnable() {
@@ -59,13 +55,6 @@ public class CrazyCrates extends JavaPlugin {
 
         this.crazyHandler.getModuleLoader().load();
 
-        try {
-            Class.forName("io.papermc.paper.configuration.Configuration");
-            this.isSpigot = false;
-        } catch (ClassNotFoundException exception) {
-            this.isSpigot = true;
-        }
-
         PluginManager pluginManager = getServer().getPluginManager();
 
         pluginManager.registerEvents(new CrateControlListener(), this);
@@ -76,7 +65,7 @@ public class CrazyCrates extends JavaPlugin {
         pluginManager.registerEvents(new WarCrateListener(), this);
         pluginManager.registerEvents(new MiscListener(), this);
 
-        if (this.isSpigot) pluginManager.registerEvents(new SpigotListener(), this); else pluginManager.registerEvents(new PaperListener(), this);
+        pluginManager.registerEvents(new PaperListener(), this);
 
         if (isLogging()) {
             String prefix = this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.console_prefix);
@@ -88,20 +77,6 @@ public class CrazyCrates extends JavaPlugin {
                 } else {
                     getServer().getConsoleSender().sendMessage(MsgUtils.color(prefix + "&6&l" + value.name() + " &c&lNOT FOUND"));
                 }
-            }
-
-            if (this.isSpigot) {
-                List.of(
-                        "CrazyCrates will no longer work using Spigot when 2.0 releases",
-                        "If you wish to keep using and getting updates for our plugin",
-                        "You must migrate your servers to https://papermc.io",
-                        "",
-                        "This is a warning to all Spigot users",
-                        "",
-                        "All downloads will be served only at the following links per Spigot's rules",
-                        "https://hangar.papermc.io/CrazyCrew/CrazyCrates",
-                        "https://modrinth.com/plugin/crazycrates"
-                ).forEach(getLogger()::warning);
             }
         }
 
@@ -172,9 +147,5 @@ public class CrazyCrates extends JavaPlugin {
 
     public boolean isLogging() {
         return getConfigManager().getConfig().getProperty(ConfigKeys.verbose_logging);
-    }
-
-    public boolean isSpigot() {
-        return this.isSpigot;
     }
 }
