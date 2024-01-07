@@ -46,6 +46,7 @@ public class MiscListener implements Listener {
         this.plugin.getCrazyHandler().getInventoryManager().removePageViewer(player);
 
         this.plugin.getCrazyHandler().getCrateManager().removePlayerFromOpeningList(player);
+        this.plugin.getCrazyHandler().getCrateManager().removeCrateInUse(player);
     }
 
     @EventHandler(ignoreCancelled = true)
