@@ -8,10 +8,6 @@ api-version: '${apiVersion}'
 description: '${description}'
 website: '${website}'
 
-# Remove this in the future when we go paper only
-libraries:
-  - net.kyori:adventure-api:4.14.0
-
 softdepend: [CMI, DecentHolograms, HolographicDisplays, PlaceholderAPI, ItemsAdder, Oraxen]
 
 commands:
