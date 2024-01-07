@@ -72,6 +72,9 @@ collisions:
   fix-climbing-bypassing-cramming-rule: false
   max-entity-collisions: 8
   only-players-collide: false
+command-blocks:
+  force-follow-perm-level: true
+  permissions-level: 2
 entities:
   armor-stands:
     do-collision-entity-lookups: true
