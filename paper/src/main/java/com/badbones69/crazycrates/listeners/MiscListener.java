@@ -57,7 +57,9 @@ public class MiscListener implements Listener {
         this.plugin.getCrateManager().endCrate(player);
         this.plugin.getCrateManager().endQuadCrate(player);
 
-        this.plugin.getCrateManager().endQuickCrate(player, player.getLocation(), this.plugin.getCrateManager().getOpeningCrate(player), false);
+        if (this.plugin.getCrateManager().getOpeningCrate(player) != null) {
+            this.plugin.getCrateManager().endQuickCrate(player, player.getLocation(), this.plugin.getCrateManager().getOpeningCrate(player), false);
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
