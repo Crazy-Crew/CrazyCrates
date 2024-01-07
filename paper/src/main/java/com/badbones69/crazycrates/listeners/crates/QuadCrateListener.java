@@ -182,10 +182,12 @@ public class QuadCrateListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        if (this.sessionManager.inSession(player)) this.sessionManager.getSession(player).endCrate();
+        if (this.sessionManager.inSession(player)) {
+            this.sessionManager.getSession(player).endCrate();
+        }
     }
 }
