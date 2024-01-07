@@ -47,6 +47,17 @@ public class MiscListener implements Listener {
 
         this.plugin.getCrazyHandler().getCrateManager().removePlayerFromOpeningList(player);
         this.plugin.getCrazyHandler().getCrateManager().removeCrateInUse(player);
+        this.plugin.getCrazyHandler().getCrateManager().removeCrateTask(player);
+
+        this.plugin.getCrazyHandler().getCrateManager().removeCloser(player);
+        this.plugin.getCrazyHandler().getCrateManager().removeHands(player);
+        this.plugin.getCrazyHandler().getCrateManager().removePicker(player);
+        this.plugin.getCrazyHandler().getCrateManager().removePlayerKeyType(player);
+
+        this.plugin.getCrateManager().endCrate(player);
+        this.plugin.getCrateManager().endQuadCrate(player);
+
+        this.plugin.getCrateManager().endQuickCrate(player, player.getLocation(), this.plugin.getCrateManager().getOpeningCrate(player), false);
     }
 
     @EventHandler(ignoreCancelled = true)
