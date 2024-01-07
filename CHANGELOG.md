@@ -1,8 +1,5 @@
-## Additions:
- * Added a toggle for the cosmic crate timeout feature. `Settings.Cosmic-Crate-Timeout` will be automatically added to your config.
-
-## Fixes:
- * Fixed a bug with the cosmic crate timeout feature that closed the prize gui after 10 seconds.
+## Changes/Fixes:
+ * End all crate tasks for a player if they leave, Remove all data related to the crate they opened if they leave
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
