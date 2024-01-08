@@ -45,16 +45,13 @@ public class MiscListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        Crate crate = this.crateManager.getOpeningCrate(player);
-
         this.inventoryManager.removeViewer(player);
         this.inventoryManager.removeCrateViewer(player);
         this.inventoryManager.removePageViewer(player);
 
-       if (this.crateManager.getOpeningCrate(player);
- != null) {         
-        this.crateManager.endQuickCrate(player, player.getLocation(), crate, false);
-       }
+        if (this.crateManager.getOpeningCrate(player) != null) {         
+            this.crateManager.endQuickCrate(player, player.getLocation(), this.crateManager.getOpeningCrate(player), false);
+        }
 
         // End just in case.
         this.crateManager.endCrate(player);
