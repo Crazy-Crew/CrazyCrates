@@ -16,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.managers.crates.CrateManager;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
 public class MiscListener implements Listener {
 
@@ -49,8 +50,10 @@ public class MiscListener implements Listener {
         this.inventoryManager.removeCrateViewer(player);
         this.inventoryManager.removePageViewer(player);
 
-        if (this.crateManager.getOpeningCrate(player) != null) {         
-            this.crateManager.endQuickCrate(player, player.getLocation(), this.crateManager.getOpeningCrate(player), false);
+        if (this.crateManager.getOpeningCrate(player) != null) {
+            Crate crate = this.crateManager.getOpeningCrate(player);
+
+            if (crate.getCrateType() == CrateType.quick_crate) this.crateManager.endQuickCrate(player, player.getLocation(), crate, false);
         }
 
         // End just in case.
