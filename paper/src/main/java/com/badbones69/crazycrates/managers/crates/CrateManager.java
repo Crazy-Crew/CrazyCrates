@@ -1141,7 +1141,7 @@ public class CrateManager {
         if (!useQuickCrateAgain) {
             HologramHandler handler = this.plugin.getCrateManager().getHolograms();
 
-            if (handler != null) handler.createHologram(location.getBlock(), crate);
+            if (handler != null && crate != null) handler.createHologram(location.getBlock(), crate);
         }
     }
 
