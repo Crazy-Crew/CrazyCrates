@@ -1129,11 +1129,7 @@ public class CrateManager {
             this.rewards.remove(player.getUniqueId());
         }
 
-        ChestManager manager = this.plugin.getCrazyHandler().getChestManager();
-
-        if (manager.isChestOpen(location.getBlock())) {
-            manager.closeChest(location.getBlock(), false);
-        }
+        this.plugin.getCrazyHandler().getChestManager().closeChest(location.getBlock(), false);
 
         removeCrateInUse(player);
         removePlayerFromOpeningList(player);

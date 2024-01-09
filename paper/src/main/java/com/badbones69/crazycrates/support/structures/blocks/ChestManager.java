@@ -44,15 +44,21 @@ public class ChestManager implements ChestControl {
             case ENDER_CHEST -> {
                 EnderChest enderChest = (EnderChest) blockState;
 
-                if (enderChest.isOpen()) enderChest.close();
-                blockState.update(forceUpdate);
+                if (enderChest.isOpen()) {
+                    enderChest.close();
+
+                    blockState.update(forceUpdate);
+                }
             }
 
             case CHEST, TRAPPED_CHEST -> {
                 Chest chest = (Chest) blockState;
 
-                if (chest.isOpen()) chest.close();
-                blockState.update(forceUpdate);
+                if (chest.isOpen()) {
+                    chest.close();
+
+                    blockState.update(forceUpdate);
+                }
             }
         }
     }
