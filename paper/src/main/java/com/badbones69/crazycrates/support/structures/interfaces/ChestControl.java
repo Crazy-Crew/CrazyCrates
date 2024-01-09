@@ -10,4 +10,6 @@ public interface ChestControl {
 
     void rotateChest(Block block, int direction);
 
+    boolean isChestOpen(Block block);
+
 }

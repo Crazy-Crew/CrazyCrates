@@ -4,6 +4,7 @@ import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.enums.BrokeLocation;
+import com.badbones69.crazycrates.support.structures.blocks.ChestManager;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -1128,7 +1129,11 @@ public class CrateManager {
             this.rewards.remove(player.getUniqueId());
         }
 
-        this.plugin.getCrazyHandler().getChestManager().closeChest(location.getBlock(), false);
+        ChestManager manager = this.plugin.getCrazyHandler().getChestManager();
+
+        if (manager.isChestOpen(location.getBlock())) {
+            manager.closeChest(location.getBlock(), false);
+        }
 
         removeCrateInUse(player);
         removePlayerFromOpeningList(player);
