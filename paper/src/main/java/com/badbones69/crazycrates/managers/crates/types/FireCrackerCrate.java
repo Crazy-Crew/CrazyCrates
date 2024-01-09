@@ -60,7 +60,7 @@ public class FireCrackerCrate extends CrateBuilder {
                 if (length == 25) {
                     plugin.getCrateManager().endCrate(getPlayer());
 
-                    QuickCrate quickCrate = new QuickCrate(getCrate(), getPlayer(), getLocation(), true);
+                    QuickCrate quickCrate = new QuickCrate(getCrate(), getPlayer(), getLocation());
 
                     quickCrate.open(KeyType.free_key, false);
                 }

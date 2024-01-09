@@ -409,7 +409,7 @@ public class CrateManager {
                     return;
                 }
 
-                crateBuilder = new QuickCrate(crate, player, location, false);
+                crateBuilder = new QuickCrate(crate, player, location);
             }
             default -> {
                 crateBuilder = new CsgoCrate(crate, player, 27);
