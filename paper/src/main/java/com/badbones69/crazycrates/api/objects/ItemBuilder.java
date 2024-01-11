@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.support.SkullCreator;
-import com.ryderbelserion.cluster.paper.utils.DyeUtils;
+import com.ryderbelserion.cluster.utils.DyeUtils;
 import org.bukkit.*;
 import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.BannerMeta;
