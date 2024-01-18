@@ -139,6 +139,3 @@ permissions:
     default: op
     children:
       crazycrates.command.admin.reload: true
-
-  crazycrates.open.*:
-    default: true
