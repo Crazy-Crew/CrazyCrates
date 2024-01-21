@@ -1,8 +1,11 @@
 ## Changes:
- * We no longer download Adventure API on runtime using the libraries feature in the plugin.yml
+ * Removed the wildcard crazycrates.open.*
+ * Registered crazycrates.open.<cratename> to server permissions on startup.
+   * Each crate will have one registered, If you remove a crate. The permission will not be removed from the server until server restart.
+ * Updated cluster api version.
 
 ## Fixes:
- * End all crate tasks for a player if they leave, Remove all data related to the crate they opened if they leave
+ * Fixed permission checks being weird.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
