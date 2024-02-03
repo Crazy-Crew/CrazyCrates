@@ -55,6 +55,7 @@ Crate:
   Hologram:
     Toggle: true
     Height: 1.5
+    Range: 8
     Message:
       - '&b&lCrazy Chest'
   Prizes:

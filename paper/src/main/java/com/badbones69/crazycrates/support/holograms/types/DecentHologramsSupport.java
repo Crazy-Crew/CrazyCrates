@@ -24,6 +24,8 @@ public class DecentHologramsSupport extends HologramHandler {
 
         Hologram hologram = DHAPI.createHologram("CrazyCrates-" + UUID.randomUUID(), block.getLocation().add(.5, height, .5));
 
+        hologram.setDisplayRange(crateHologram.getRange());
+
         crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, MsgUtils.color(line)));
 
         this.holograms.put(block, hologram);

@@ -79,6 +79,8 @@ Crate:
     Toggle: true
     # The height of the hologram above the crate.
     Height: 1.5
+    # The distance the hologram can be seen. Only works with CMI and DecentHolograms
+    Range: 8
     # The message that will be displayed.
     Message:
       - '&7&lBasic Chest'

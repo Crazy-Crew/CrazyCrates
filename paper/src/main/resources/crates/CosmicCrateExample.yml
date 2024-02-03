@@ -59,6 +59,7 @@ Crate:
   Hologram:
     Toggle: true
     Height: 1.5
+    Range: 8
     Message:
       - '&d&lCosmic Chest'
   # Tiers are available in Cosmic crates only

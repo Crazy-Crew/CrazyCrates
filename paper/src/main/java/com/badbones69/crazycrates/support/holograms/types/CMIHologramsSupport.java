@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.support.holograms.types;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Holograms.CMIHologram;
+import com.badbones69.crazycrates.common.crates.CrateHologram;
 import net.Zrips.CMILib.Container.CMILocation;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.block.Block;
@@ -15,13 +16,19 @@ public class CMIHologramsSupport extends HologramHandler {
 
     @Override
     public void createHologram(Block block, Crate crate) {
-        double height = crate.getHologram().getHeight();
+        CrateHologram crateHologram = crate.getHologram();
+
+        if (!crateHologram.isEnabled()) return;
+
+        double height = crateHologram.getHeight();
 
         CMILocation location = new CMILocation(block.getLocation().add(0.5, height, 0.5));
 
         CMIHologram hologram = new CMIHologram("CrazyCrates-" + UUID.randomUUID(), location);
 
-        hologram.setLines(crate.getHologram().getMessages());
+        hologram.setLines(crateHologram.getMessages());
+
+        hologram.setShowRange(crateHologram.getRange());
 
         CMI.getInstance().getHologramManager().addHologram(hologram);
 

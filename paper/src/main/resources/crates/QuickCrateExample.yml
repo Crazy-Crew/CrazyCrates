@@ -49,6 +49,7 @@ Crate:
   Hologram:
     Toggle: true
     Height: 1.5
+    Range: 8
     Message:
       - '&e&lClassic Chest'
   Prizes:

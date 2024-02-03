@@ -7,6 +7,7 @@ public class CrateHologram {
     
     private final boolean enabled;
     private final double height;
+    private final int range;
     private final List<String> messages;
 
     /**
@@ -15,6 +16,7 @@ public class CrateHologram {
     public CrateHologram() {
         this.enabled = false;
         this.height = 0.0;
+        this.range = 8;
         this.messages = new ArrayList<>();
     }
 
@@ -25,9 +27,10 @@ public class CrateHologram {
      * @param height of the hologram from the ground
      * @param messages the hologram will display
      */
-    public CrateHologram(boolean enabled, double height, List<String> messages) {
+    public CrateHologram(boolean enabled, double height, int range, List<String> messages) {
         this.enabled = enabled;
         this.height = height;
+        this.range = range;
         this.messages = messages;
     }
 
@@ -38,6 +41,15 @@ public class CrateHologram {
      */
     public boolean isEnabled() {
         return enabled;
+    }
+
+    /**
+     * Gets the range at which a hologram can be seen.
+     *
+     * @return the range
+     */
+    public int getRange() {
+        return range;
     }
 
     /**
