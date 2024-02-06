@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.google.common.base.Preconditions;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -353,4 +354,16 @@ public abstract class CrateBuilder extends TimerTask {
         return getCrate().pickPrize(getPlayer()).getDisplayItem();
     }
 
+    //TODO() Add config options to change volume/pitch and sound used for cycling
+    public void cycleSound() {
+        getPlayer().playSound(getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_XYLOPHONE, 1f, 1f);
+    }
+
+    public void endSound() {
+        getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+    }
+
+    public void clickSound() {
+        getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
+    }
 }
