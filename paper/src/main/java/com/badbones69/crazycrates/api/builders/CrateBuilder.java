@@ -18,8 +18,9 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.other.MiscUtils;
 import java.util.List;
+import java.util.TimerTask;
 
-public abstract class CrateBuilder {
+public abstract class CrateBuilder extends TimerTask {
 
     @NotNull
     protected final CrazyCrates plugin = CrazyCrates.get();

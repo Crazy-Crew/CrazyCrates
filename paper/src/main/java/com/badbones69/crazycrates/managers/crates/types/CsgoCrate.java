@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.other.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -183,5 +183,10 @@ public class CsgoCrate extends CrateBuilder {
         for (int i = 0; i < 8; i++) {
             setItem(i + 10, items.get(i));
         }
+    }
+
+    @Override
+    public void run() {
+
     }
 }

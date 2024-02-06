@@ -35,4 +35,9 @@ public class CosmicCrate extends CrateBuilder {
 
         getPlayer().openInventory(getInventory());
     }
+
+    @Override
+    public void run() {
+
+    }
 }

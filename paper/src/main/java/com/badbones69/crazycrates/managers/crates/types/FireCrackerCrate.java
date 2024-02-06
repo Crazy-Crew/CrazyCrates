@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.other.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -66,5 +66,10 @@ public class FireCrackerCrate extends CrateBuilder {
                 }
             }
         }.runTaskTimer(this.plugin, 0, 2));
+    }
+
+    @Override
+    public void run() {
+
     }
 }

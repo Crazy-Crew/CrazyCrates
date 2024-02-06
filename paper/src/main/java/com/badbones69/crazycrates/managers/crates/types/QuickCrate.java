@@ -15,7 +15,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
-import com.badbones69.crazycrates.other.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.logging.Level;
 
 public class QuickCrate extends CrateBuilder {
@@ -159,5 +159,9 @@ public class QuickCrate extends CrateBuilder {
                 plugin.getCrateManager().endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
             }
         }.runTaskLater(this.plugin, 40));
+    }
+    @Override
+    public void run() {
+
     }
 }

@@ -8,7 +8,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.managers.crates.CrateManager;
-import com.badbones69.crazycrates.other.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 
 public class CrateOnTheGo extends CrateBuilder {
 
@@ -47,5 +47,10 @@ public class CrateOnTheGo extends CrateBuilder {
         if (prize.useFireworks()) MiscUtils.spawnFirework(getPlayer().getLocation().add(0, 1, 0), null);
 
         this.crateManager.removePlayerKeyType(getPlayer());
+    }
+
+    @Override
+    public void run() {
+
     }
 }

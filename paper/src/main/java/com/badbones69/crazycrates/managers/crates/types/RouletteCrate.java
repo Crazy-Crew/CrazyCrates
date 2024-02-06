@@ -9,7 +9,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.other.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 
 public class RouletteCrate extends CrateBuilder {
 
@@ -108,5 +108,10 @@ public class RouletteCrate extends CrateBuilder {
                 setCustomGlassPane(slot);
             }
         }
+    }
+
+    @Override
+    public void run() {
+
     }
 }

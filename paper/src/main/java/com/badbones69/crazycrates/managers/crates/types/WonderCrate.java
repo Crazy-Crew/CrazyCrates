@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.other.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,5 +114,10 @@ public class WonderCrate extends CrateBuilder {
                 if (time > 2) time = 0;
             }
         }.runTaskTimer(plugin, 0, 2));
+    }
+
+    @Override
+    public void run() {
+
     }
 }
