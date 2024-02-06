@@ -2,16 +2,11 @@ package com.badbones69.crazycrates.managers.crates.types;
 
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
-import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.other.MiscUtils;
-import org.bukkit.Material;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 
 import java.util.*;
