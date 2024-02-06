@@ -52,7 +52,7 @@ public class CsgoCrateTriple extends CrateBuilder {
             @Override
             public void run() {
                 if (full <= 50) { // When Spinning
-                    cycle();
+                    //cycle();
 
                     sound(Sound.UI_BUTTON_CLICK);
                 }
@@ -68,7 +68,7 @@ public class CsgoCrateTriple extends CrateBuilder {
 
                 if (full > 51) {
                     if (calculateSpinDelays().contains(time)) { // When Slowing Down
-                        cycle();
+                        //cycle();
 
                         sound(Sound.UI_BUTTON_CLICK);
                     }
@@ -111,7 +111,7 @@ public class CsgoCrateTriple extends CrateBuilder {
         return slow;
     }
 
-    private void cycle() {
+    /*private ItemStack cycle() {
         setItem(9, getCrate().pickPrize(getPlayer()).getDisplayItem());
 
         /*List<ItemStack> items = new ArrayList<>();
@@ -122,10 +122,16 @@ public class CsgoCrateTriple extends CrateBuilder {
 
         for (int index = 0; index < 8; index++) {
             setItem(index, items.get(index));
-        }*/
-    }
+        }
+        return null;
+    }*/
 
     private void sound(Sound sound) {
         getPlayer().playSound(getPlayer().getLocation(), sound, SoundCategory.PLAYERS, 1f, 1f);
+    }
+
+    @Override
+    public void run() {
+
     }
 }
