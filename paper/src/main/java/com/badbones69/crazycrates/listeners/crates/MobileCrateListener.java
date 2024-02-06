@@ -15,8 +15,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyHandler;
-import com.badbones69.crazycrates.other.ItemUtils;
-import com.badbones69.crazycrates.other.MiscUtils;
+import com.badbones69.crazycrates.utils.ItemUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 
 public class MobileCrateListener implements Listener {
 

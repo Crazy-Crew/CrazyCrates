@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.other;
+package com.badbones69.crazycrates.utils;
 
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -24,11 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.enums.Messages;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MiscUtils {
@@ -276,25 +272,39 @@ public class MiscUtils {
     }
 
     public static ItemBuilder getRandomPaneColor() {
-        List<Material> glassPanes = Arrays.asList(
-                Material.WHITE_STAINED_GLASS_PANE,
-                Material.ORANGE_STAINED_GLASS_PANE,
-                Material.MAGENTA_STAINED_GLASS_PANE,
+        List<Material> panes = Arrays.asList(
                 Material.LIGHT_BLUE_STAINED_GLASS_PANE,
+                Material.MAGENTA_STAINED_GLASS_PANE,
                 Material.YELLOW_STAINED_GLASS_PANE,
+                Material.PURPLE_STAINED_GLASS_PANE,
+                Material.ORANGE_STAINED_GLASS_PANE,
+                Material.GREEN_STAINED_GLASS_PANE,
+                Material.BROWN_STAINED_GLASS_PANE,
+                Material.BLACK_STAINED_GLASS_PANE,
+                Material.BLUE_STAINED_GLASS_PANE,
+                Material.CYAN_STAINED_GLASS_PANE,
+                Material.GRAY_STAINED_GLASS_PANE,
                 Material.LIME_STAINED_GLASS_PANE,
                 Material.PINK_STAINED_GLASS_PANE,
-                Material.GRAY_STAINED_GLASS_PANE,
-                Material.CYAN_STAINED_GLASS_PANE,
-                Material.PURPLE_STAINED_GLASS_PANE,
-                Material.BLUE_STAINED_GLASS_PANE,
-                Material.BROWN_STAINED_GLASS_PANE,
-                Material.GREEN_STAINED_GLASS_PANE,
                 Material.RED_STAINED_GLASS_PANE,
-                Material.BLACK_STAINED_GLASS_PANE,
-                Material.LIGHT_GRAY_STAINED_GLASS_PANE);
 
-        return new ItemBuilder().setMaterial(glassPanes.get(ThreadLocalRandom.current().nextInt(glassPanes.size())));
+                Material.LIGHT_BLUE_STAINED_GLASS_PANE,
+                Material.MAGENTA_STAINED_GLASS_PANE,
+                Material.YELLOW_STAINED_GLASS_PANE,
+                Material.PURPLE_STAINED_GLASS_PANE,
+                Material.ORANGE_STAINED_GLASS_PANE,
+                Material.GREEN_STAINED_GLASS_PANE,
+                Material.BROWN_STAINED_GLASS_PANE,
+                Material.BLACK_STAINED_GLASS_PANE,
+                Material.BLUE_STAINED_GLASS_PANE,
+                Material.CYAN_STAINED_GLASS_PANE,
+                Material.GRAY_STAINED_GLASS_PANE,
+                Material.LIME_STAINED_GLASS_PANE,
+                Material.PINK_STAINED_GLASS_PANE,
+                Material.RED_STAINED_GLASS_PANE
+        );
+
+        return new ItemBuilder().setMaterial(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
     }
 
     /**

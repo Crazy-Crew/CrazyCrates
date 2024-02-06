@@ -12,8 +12,8 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.other.MiscUtils;
-import com.badbones69.crazycrates.other.MsgUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
+import com.badbones69.crazycrates.utils.MsgUtils;
 import java.util.HashMap;
 import static java.util.regex.Matcher.quoteReplacement;
 

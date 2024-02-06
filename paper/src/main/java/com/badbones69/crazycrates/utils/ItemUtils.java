@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.other;
+package com.badbones69.crazycrates.utils;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import de.tr7zw.changeme.nbtapi.NBTItem;

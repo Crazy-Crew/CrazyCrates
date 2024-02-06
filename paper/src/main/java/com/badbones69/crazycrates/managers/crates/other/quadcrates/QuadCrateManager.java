@@ -23,7 +23,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.common.crates.quadcrates.CrateParticles;
-import com.badbones69.crazycrates.other.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

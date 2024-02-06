@@ -28,7 +28,7 @@ import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-import com.badbones69.crazycrates.other.MsgUtils;
+import com.badbones69.crazycrates.utils.MsgUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

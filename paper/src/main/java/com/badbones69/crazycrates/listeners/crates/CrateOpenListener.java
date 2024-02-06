@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyHandler;
-import com.badbones69.crazycrates.other.MsgUtils;
+import com.badbones69.crazycrates.utils.MsgUtils;
 import java.util.List;
 
 public class CrateOpenListener implements Listener {

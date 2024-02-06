@@ -11,7 +11,7 @@ import com.badbones69.crazycrates.listeners.platforms.PaperListener;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.crates.CrateManager;
 import com.badbones69.crazycrates.managers.crates.other.quadcrates.SessionManager;
-import com.badbones69.crazycrates.other.MsgUtils;
+import com.badbones69.crazycrates.utils.MsgUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.api.FileManager;

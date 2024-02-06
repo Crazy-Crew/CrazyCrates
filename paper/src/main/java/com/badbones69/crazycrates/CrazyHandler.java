@@ -15,7 +15,7 @@ import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.support.structures.blocks.ChestManager;
 import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.api.modules.ModuleLoader;
-import com.badbones69.crazycrates.other.FileUtils;
+import com.badbones69.crazycrates.utils.FileUtils;
 
 public class CrazyHandler extends CrazyCratesPlugin {
 

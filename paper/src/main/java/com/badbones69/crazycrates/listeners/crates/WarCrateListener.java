@@ -19,7 +19,7 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.managers.crates.CrateManager;
-import com.badbones69.crazycrates.other.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 
 public class WarCrateListener implements Listener {
 

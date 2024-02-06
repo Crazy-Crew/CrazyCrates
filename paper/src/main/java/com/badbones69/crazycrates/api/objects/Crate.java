@@ -17,8 +17,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
-import com.badbones69.crazycrates.other.MiscUtils;
-import com.badbones69.crazycrates.other.MsgUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
+import com.badbones69.crazycrates.utils.MsgUtils;
 
 import java.io.File;
 import java.io.IOException;

@@ -21,7 +21,7 @@ import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.api.modules.ModuleHandler;
-import com.badbones69.crazycrates.other.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 
 public class CrateMenuListener extends ModuleHandler {
 
