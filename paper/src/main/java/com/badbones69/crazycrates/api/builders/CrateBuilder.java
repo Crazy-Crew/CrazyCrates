@@ -25,8 +25,7 @@ public abstract class CrateBuilder extends TimerTask {
     @NotNull
     protected final CrazyCrates plugin = CrazyCrates.get();
 
-    private final FileConfiguration file;
-    private final InventoryBuilder menu;
+    private final InventoryBuilder builder;
     private final Inventory inventory;
     private final Location location;
     private final Player player;
@@ -34,7 +33,7 @@ public abstract class CrateBuilder extends TimerTask {
     private final int size;
 
     /**
-     * Create a crate with no inventory size.
+     * Create a crate with inventory size
      *
      * @param crate opened by player
      * @param player opening crate
@@ -44,8 +43,6 @@ public abstract class CrateBuilder extends TimerTask {
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
 
-        this.file = crate.getFile();
-
         this.crate = crate;
 
         this.location = player.getLocation();
@@ -53,30 +50,12 @@ public abstract class CrateBuilder extends TimerTask {
         this.player = player;
         this.size = size;
 
-        this.menu = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
-
-        this.inventory = this.menu.build().getInventory();
-    }
-
-    public CrateBuilder(Crate crate, Player player) {
-        Preconditions.checkNotNull(crate, "Crate can't be null.");
-        Preconditions.checkNotNull(player, "Player can't be null.");
-
-        this.file = crate.getFile();
-
-        this.crate = crate;
-
-        this.location = player.getLocation();
-
-        this.player = player;
-
-        this.size = 0;
-        this.inventory = null;
-        this.menu = null;
+        this.builder = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
+        this.inventory = this.builder.build().getInventory();
     }
 
     /**
-     * Create a crate with no inventory size.
+     * Create a crate with inventory size
      *
      * @param crate opened by player
      * @param player opening crate
@@ -87,8 +66,6 @@ public abstract class CrateBuilder extends TimerTask {
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
 
-        this.file = crate.getFile();
-
         this.crate = crate;
 
         this.location = player.getLocation();
@@ -96,13 +73,12 @@ public abstract class CrateBuilder extends TimerTask {
         this.player = player;
         this.size = size;
 
-        this.menu = new CratePrizeMenu(crate, player, size, crateName);
-
-        this.inventory = this.menu.build().getInventory();
+        this.builder = new CratePrizeMenu(crate, player, size, crateName);
+        this.inventory = this.builder.build().getInventory();
     }
 
     /**
-     * Create a crate with no inventory size.
+     * Create a crate with inventory size
      *
      * @param crate opened by player
      * @param player opening crate
@@ -114,8 +90,6 @@ public abstract class CrateBuilder extends TimerTask {
         Preconditions.checkNotNull(player, "Player can't be null.");
         Preconditions.checkNotNull(location, "Location can't be null.");
 
-        this.file = crate.getFile();
-
         this.crate = crate;
 
         this.location = location;
@@ -123,9 +97,29 @@ public abstract class CrateBuilder extends TimerTask {
         this.player = player;
         this.size = size;
 
-        this.menu = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
+        this.builder = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
+        this.inventory = this.builder.build().getInventory();
+    }
 
-        this.inventory = this.menu.build().getInventory();
+    /**
+     * Create a crate with no inventory size.
+     *
+     * @param crate opened by player
+     * @param player opening crate
+     */
+    public CrateBuilder(Crate crate, Player player) {
+        Preconditions.checkNotNull(crate, "Crate can't be null.");
+        Preconditions.checkNotNull(player, "Player can't be null.");
+
+        this.crate = crate;
+
+        this.location = player.getLocation();
+
+        this.player = player;
+
+        this.size = 0;
+        this.inventory = null;
+        this.builder = null;
     }
 
     /**
@@ -140,8 +134,6 @@ public abstract class CrateBuilder extends TimerTask {
         Preconditions.checkNotNull(player, "Player can't be null.");
         Preconditions.checkNotNull(location, "Location can't be null.");
 
-        this.file = crate.getFile();
-
         this.crate = crate;
 
         this.location = location;
@@ -149,8 +141,7 @@ public abstract class CrateBuilder extends TimerTask {
         this.player = player;
         this.size = 0;
 
-        this.menu = null;
-
+        this.builder = null;
         this.inventory = null;
     }
 
@@ -250,7 +241,7 @@ public abstract class CrateBuilder extends TimerTask {
      */
     @NotNull
     public FileConfiguration getFile() {
-        return this.file;
+        return this.crate.getFile();
     }
 
     /**
@@ -276,7 +267,7 @@ public abstract class CrateBuilder extends TimerTask {
      */
     @NotNull
     public InventoryBuilder getMenu() {
-        return this.menu.build();
+        return this.builder.build();
     }
 
     /**
@@ -349,4 +340,13 @@ public abstract class CrateBuilder extends TimerTask {
 
         return event.isCancelled();
     }
+
+    protected boolean isCancelled = false;
+
+    @Override
+    public boolean cancel() {
+        this.isCancelled = true;
+        return super.cancel();
+    }
+
 }
