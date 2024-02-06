@@ -349,4 +349,8 @@ public abstract class CrateBuilder extends TimerTask {
         return super.cancel();
     }
 
+    public ItemStack prize() {
+        return getCrate().pickPrize(getPlayer()).getDisplayItem();
+    }
+
 }
