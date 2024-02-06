@@ -84,6 +84,20 @@ public class CrateBaseCommand extends BaseCommand {
         player.sendMessage(Messages.feature_disabled.getString());
     }
 
+    @SubCommand("debug")
+    @Permission(value = "crazycrates.debug", def = PermissionDefault.TRUE)
+    public void debug(Player player, @Suggestion("crates") String crateName) {
+        Crate crate = this.crateManager.getCrateFromName(crateName);
+
+        // If the crate is menu or null. we return
+        if (crate == null || crate.getCrateType() == CrateType.menu) {
+            player.sendMessage(Messages.not_a_crate.getMessage("%crate%", crateName).toString());
+            return;
+        }
+
+        this.crateManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), false, false);
+    }
+
     @SubCommand("help")
     @Permission(value = "crazycrates.help", def = PermissionDefault.TRUE)
     public void onHelp(CommandSender sender) {
