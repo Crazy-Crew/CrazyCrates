@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.managers.crates.types.*;
-import com.badbones69.crazycrates.support.structures.blocks.ChestManager;
+import com.badbones69.crazycrates.managers.crates.types.animation.RouletteTriple;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -364,7 +364,7 @@ public class CrateManager {
 
         switch (crate.getCrateType()) {
             case csgo -> crateBuilder = new CsgoCrate(crate, player, 27);
-            case csgo_triple -> crateBuilder = new CsgoCrateTriple(crate, player, 54);
+            case csgo_triple -> crateBuilder = new RouletteTriple(crate, player, 54);
             case wonder -> crateBuilder = new WonderCrate(crate, player, 45);
             case wheel -> crateBuilder = new WheelCrate(crate, player, 54);
             case roulette -> crateBuilder = new RouletteCrate(crate, player, 45);
