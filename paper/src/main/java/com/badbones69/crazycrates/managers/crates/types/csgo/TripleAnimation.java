@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 
 public class TripleAnimation extends CrateBuilder {
@@ -69,6 +70,13 @@ public class TripleAnimation extends CrateBuilder {
                 plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
 
                 cancel();
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (getPlayer().getOpenInventory().getTopInventory().equals(getInventory())) getPlayer().closeInventory();
+                    }
+                }.runTaskLater(plugin, 40);
 
                 return;
             }
