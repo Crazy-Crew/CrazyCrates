@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -22,7 +23,7 @@ import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.List;
 import java.util.TimerTask;
 
-public abstract class CrateBuilder extends TimerTask {
+public abstract class CrateBuilder extends BukkitRunnable {
 
     @NotNull
     protected final CrazyCrates plugin = CrazyCrates.get();
@@ -346,9 +347,9 @@ public abstract class CrateBuilder extends TimerTask {
     protected boolean isCancelled = false;
 
     @Override
-    public boolean cancel() {
+    public void cancel() {
+        super.cancel();
         this.isCancelled = true;
-        return super.cancel();
     }
 
     public ItemStack prize() {
