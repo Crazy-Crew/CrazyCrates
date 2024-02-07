@@ -8,7 +8,7 @@ Crate:
     - '&7You have won &c%reward% &7from &c%crate%.'
   Max-Mass-Open: 10
   InGUI: true
-  Slot: 23
+  Slot: 14
   OpeningBroadCast: false
   BroadCast: ''
   # This section is related to commands opening when a crate is opened.

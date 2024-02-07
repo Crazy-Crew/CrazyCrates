@@ -9,7 +9,7 @@ Crate:
   RequiredKeys: 0
   Max-Mass-Open: 10
   InGUI: true
-  Slot: 25
+  Slot: 16
   OpeningBroadCast: true
   BroadCast: '%prefix%&6&l%player%&r &7is opening a &b&lQuad Crate.'
   # This section is related to .nbt files.
@@ -63,7 +63,7 @@ Crate:
       pitch: 1.0
   Prize-Message:
     - '&7You have won &c%reward% &7from &c%crate%.'
-  Item: 'CHEST'
+  Item: 'BREWING_STAND'
   Glowing: false
   Name: '&b&lQuad Crate'
   Lore:

@@ -40,7 +40,8 @@ public class FileUtils {
                 "CosmicCrateExample.yml",
                 "CrateExample.yml",
                 "QuadCrateExample.yml",
-                "QuickCrateExample.yml"
+                "QuickCrateExample.yml",
+                "WarCrateExample.yml"
         ));
     }
 
