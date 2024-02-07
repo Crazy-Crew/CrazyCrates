@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.listeners.menus;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.Material;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -57,6 +58,8 @@ public class CratePreviewListener extends ModuleHandler {
 
         if (event.getRawSlot() == crate.getAbsoluteItemPosition(4) && this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) { // Clicked the menu button.
             if (this.inventoryManager.inCratePreview(player)) {
+                crate.playSound(player, player.getLocation(), "click-sound", SoundCategory.PLAYERS, "UI_BUTTON_CLICK");
+
                 this.inventoryManager.removeViewer(player);
                 this.inventoryManager.closeCratePreview(player);
 
@@ -66,12 +69,16 @@ public class CratePreviewListener extends ModuleHandler {
             }
         } else if (event.getRawSlot() == crate.getAbsoluteItemPosition(5)) { // Clicked the next button.
             if (this.inventoryManager.getPage(player) < crate.getMaxPage()) {
+                crate.playSound(player, player.getLocation(), "click-sound", SoundCategory.PLAYERS, "UI_BUTTON_CLICK");
+
                 this.inventoryManager.nextPage(player);
 
                 this.inventoryManager.openCratePreview(player, crate);
             }
         } else if (event.getRawSlot() == crate.getAbsoluteItemPosition(3)) { // Clicked the back button.
             if (this.inventoryManager.getPage(player) > 1 && this.inventoryManager.getPage(player) <= crate.getMaxPage()) {
+                crate.playSound(player, player.getLocation(), "click-sound", SoundCategory.PLAYERS, "UI_BUTTON_CLICK");
+
                 this.inventoryManager.backPage(player);
 
                 this.inventoryManager.openCratePreview(player, crate);

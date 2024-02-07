@@ -52,7 +52,7 @@ public class RouletteCrate extends CrateBuilder {
                     setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
                     setGlass();
 
-                    getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
+                    playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
                     even++;
 
                     if (even >= 4) {
@@ -75,13 +75,13 @@ public class RouletteCrate extends CrateBuilder {
                         setGlass();
                         setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
 
-                        getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
+                        playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
                     }
 
                     time++;
 
                     if (time >= 23) {
-                        getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 1f);
+                        playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
                         plugin.getCrateManager().endCrate(getPlayer());
 
                         Prize prize = getCrate().getPrize(getInventory().getItem(13));

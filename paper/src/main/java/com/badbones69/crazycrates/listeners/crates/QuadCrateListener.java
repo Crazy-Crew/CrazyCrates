@@ -118,7 +118,7 @@ public class QuadCrateListener implements Listener {
                         @Override
                         public void run() {
                             session.endCrate();
-                            player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, SoundCategory.BLOCKS, 1f, 1f);
+                            crate.playSound(player, block.getLocation(), "stop-sound", SoundCategory.BLOCKS, "BLOCK_ANVIL_LAND");
                         }
                     }.runTaskLater(this.plugin, 60);
                 }

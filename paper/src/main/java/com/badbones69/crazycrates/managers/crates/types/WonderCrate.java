@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import org.bukkit.Material;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
@@ -99,6 +100,8 @@ public class WonderCrate extends CrateBuilder {
                     getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 
                     plugin.getCrazyHandler().getPrizeManager().givePrize(getPlayer(), prize, getCrate());
+
+                    playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
 
                     if (prize.useFireworks()) MiscUtils.spawnFirework(getPlayer().getLocation().add(0, 1, 0), null);
 

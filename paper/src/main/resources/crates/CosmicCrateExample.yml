@@ -20,6 +20,40 @@ Crate:
     # Supports %prefix which returns our prefix, %player% which uses the player name
     commands:
       - 'put your command here.'
+  sound:
+    # The sound options when the animation is cycling.
+    cycle-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: 'BLOCK_NOTE_BLOCK_XYLOPHONE'
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
+    # The sound options when an item is clicked.
+    click-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: 'UI_BUTTON_CLICK'
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
+    # The sound options when a crate ends.
+    stop-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: 'BLOCK_ANVIL_PLACE'
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
   Item: 'ENDER_CHEST'
   Glowing: false
   Name: '&d&lCosmic Chest'

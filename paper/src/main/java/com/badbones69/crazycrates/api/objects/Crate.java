@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.api.objects;
 
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.FileManager;
@@ -563,5 +565,26 @@ public class Crate {
         }
 
         return items;
+    }
+
+    /**
+     * Plays a sound at different volume levels with fallbacks
+     *
+     * @param type i.e. stop, cycle or click sound
+     * @param category sound category to respect client settings
+     * @param defaultSound fallback sound
+     */
+    public void playSound(Player player, Location location, String type, SoundCategory category, String defaultSound) {
+        String path = "Crate." + type;
+
+        boolean isEnabled = getFile().getBoolean(path + ".toggle", true);
+
+        if (isEnabled) {
+            String sound = getFile().getString(path + ".value", defaultSound);
+            double volume = getFile().getDouble(path + ".volume", 1.0);
+            double pitch = getFile().getDouble(path + ".pitch", 1.0);
+
+            player.playSound(location, Sound.valueOf(sound), category, (float) volume, (float) pitch);
+        }
     }
 }

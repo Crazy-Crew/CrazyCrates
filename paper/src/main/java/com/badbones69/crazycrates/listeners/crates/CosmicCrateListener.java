@@ -9,7 +9,6 @@ import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -88,7 +87,7 @@ public class CosmicCrateListener implements Listener {
         }
 
         // Play sound.
-        if (playSound) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+        if (playSound) cosmic.getCrate().playSound(player, player.getLocation(), "click-sound", SoundCategory.PLAYERS, "UI_BUTTON_CLICK");
 
         // Remove opening stuff.
         this.crateManager.removePlayerFromOpeningList(player);
@@ -163,7 +162,7 @@ public class CosmicCrateListener implements Listener {
 
         event.setCurrentItem(prize.getDisplayItem());
 
-        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1F, 1F);
+        cosmic.getCrate().playSound(player, player.getLocation(), "click-sound", SoundCategory.PLAYERS, "UI_BUTTON_CLICK");
 
         if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
     }
@@ -242,7 +241,7 @@ public class CosmicCrateListener implements Listener {
                 cosmicCrateManager.addPickedPrize(player, slot);
 
                 // Play a sound to indicate they clicked a chest.
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+                cosmic.getCrate().playSound(player, player.getLocation(), "click-sound", SoundCategory.PLAYERS, "UI_BUTTON_CLICK");
             }
         } else if (container.has(PersistentKeys.cosmic_picked_crate.getNamespacedKey(this.plugin))) {
             // Get item builder.
@@ -257,7 +256,7 @@ public class CosmicCrateListener implements Listener {
             cosmicCrateManager.removePickedPrize(player, slot);
 
             // Play a sound to indicate they clicked a chest.
-            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+            cosmic.getCrate().playSound(player, player.getLocation(), "click-sound", SoundCategory.PLAYERS, "UI_BUTTON_CLICK");
         }
 
         // Get the crate name.
@@ -360,6 +359,9 @@ public class CosmicCrateListener implements Listener {
                             // Send refund notices.
                             player.sendMessage(MsgUtils.getPrefix("&cAn issue has occurred and so a key refund was given."));
                             plugin.getServer().getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + crate.getName() + " crate and so they were issued a key refund.", exception);
+
+                            // Play a sound
+                            crate.playSound(player, player.getLocation(), "stop-sound", SoundCategory.PLAYERS, "BLOCK_ANVIL_PLACE");
                         }
 
                         // Wrap it all up.
@@ -377,7 +379,7 @@ public class CosmicCrateListener implements Listener {
                         showRewards(player, view, cosmic, cosmicCrateManager);
 
                         // Play a sound
-                        player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
+                        crate.playSound(player, player.getLocation(), "stop-sound", SoundCategory.PLAYERS, "BLOCK_ANVIL_PLACE");
                     }
                 }
             }, 0L, 80L);
@@ -391,7 +393,7 @@ public class CosmicCrateListener implements Listener {
             if (tier != null) view.getTopInventory().setItem(slot, tier.getTierPane());
         }
 
-        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1F, 1F);
+        cosmic.getCrate().playSound(player, player.getLocation(), "cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
         player.updateInventory();
     }
 

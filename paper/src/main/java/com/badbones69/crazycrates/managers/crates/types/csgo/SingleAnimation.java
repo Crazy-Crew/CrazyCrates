@@ -58,7 +58,7 @@ public class SingleAnimation extends CrateBuilder {
             public void run() {
                 if (full <= 50) { // When Spinning
                     moveItemsAndSetGlass();
-                    getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
+                    playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
                 }
 
                 open++;
@@ -74,13 +74,14 @@ public class SingleAnimation extends CrateBuilder {
                     if (MiscUtils.slowSpin(120, 15).contains(time)) { // When Slowing Down
                         moveItemsAndSetGlass();
 
-                        getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
+                        playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
                     }
 
                     time++;
 
                     if (time == 60) { // When done
-                        getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 1f);
+                        playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
+
                         plugin.getCrateManager().endCrate(getPlayer());
                         Prize prize = getCrate().getPrize(getInventory().getItem(13));
 

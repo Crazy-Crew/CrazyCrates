@@ -87,7 +87,7 @@ public class WheelCrate extends CrateBuilder {
                     if (MiscUtils.slowSpin(46, 9).contains(slower)) lore();
 
                     if (full == timer + 47) {
-                        getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 1f);
+                        playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
                     }
 
                     if (full >= timer + 47) {
@@ -110,6 +110,8 @@ public class WheelCrate extends CrateBuilder {
                         }
 
                         plugin.getCrazyHandler().getPrizeManager().checkPrize(prize, getPlayer(), getCrate());
+
+                        playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
 
                         getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
                         plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
@@ -152,7 +154,7 @@ public class WheelCrate extends CrateBuilder {
                 int other = slots.get(what);
 
                 setItem(other, map.get(other));
-                getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
+                playSound("cycle-sound", SoundCategory.MUSIC, "BLOCK_NOTE_BLOCK_XYLOPHONE");
                 uh++;
                 what++;
             }

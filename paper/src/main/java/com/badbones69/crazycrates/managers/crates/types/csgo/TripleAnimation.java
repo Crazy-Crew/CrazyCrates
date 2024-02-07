@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.managers.PrizeManager;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import org.bukkit.Material;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -31,7 +32,7 @@ public class TripleAnimation extends CrateBuilder {
         }
 
         if (counter <= 50) { // When the crate is currently spinning.
-            playCycleSound();
+            playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
 
             cycle();
         }
@@ -47,7 +48,7 @@ public class TripleAnimation extends CrateBuilder {
 
         if (counter > 51) {
             if (MiscUtils.slowSpin(120, 15).contains(time)) {
-                playCycleSound();
+                playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
 
                 cycle();
             }
@@ -55,7 +56,7 @@ public class TripleAnimation extends CrateBuilder {
             time++;
 
             if (time >= 60) { // When the crate task is finished.
-                playStopSound();
+                playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
 
                 plugin.getCrateManager().endCrate(getPlayer());
 

@@ -62,9 +62,8 @@ public class WarCrateListener implements Listener {
                     this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                     this.crateManager.removePlayerFromOpeningList(player);
 
-                    //TODO() make volume/pitch configurable and sound type configurable.
                     //TODO() Adopt the new sound system including custom sounds.
-                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 1f, 1f);
+                    crate.playSound(player, player.getLocation(), "cycle-sound", SoundCategory.PLAYERS, "BLOCK_ANVIL_LAND");
 
                     this.crateManager.addCrateTask(player, new BukkitRunnable() {
                         @Override

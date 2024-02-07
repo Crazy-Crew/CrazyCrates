@@ -38,7 +38,7 @@ Crate:
     # The sound options when the animation is cycling.
     cycle-sound:
       # If sound should be enabled or not.
-      toggle: false
+      toggle: true
       # The type of sound to use.
       # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
       value: 'BLOCK_LAVA_POP'
@@ -49,7 +49,7 @@ Crate:
     # The sound options when an item is clicked.
     click-sound:
       # If sound should be enabled or not.
-      toggle: false
+      toggle: true
       # The type of sound to use.
       # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
       value: 'UI_BUTTON_CLICK'
@@ -60,7 +60,7 @@ Crate:
     # The sound options when a crate ends.
     stop-sound:
       # If sound should be enabled or not.
-      toggle: false
+      toggle: true
       # The type of sound to use.
       # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
       value: 'ENTITY_PLAYER_LEVELUP'
