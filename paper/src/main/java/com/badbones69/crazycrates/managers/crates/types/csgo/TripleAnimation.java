@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.managers.crates.types.animation;
+package com.badbones69.crazycrates.managers.crates.types.csgo;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 
-public class RouletteTriple extends CrateBuilder {
+public class TripleAnimation extends CrateBuilder {
 
-    public RouletteTriple(Crate crate, Player player, int size) {
+    public TripleAnimation(Crate crate, Player player, int size) {
         super(crate, player, size);
 
         runTaskTimer(CrazyCrates.get(), 1, 1);

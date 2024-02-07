@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.managers.crates.types;
+package com.badbones69.crazycrates.managers.crates.types.csgo;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CsgoCrate extends CrateBuilder {
+public class SingleAnimation extends CrateBuilder {
 
-    public CsgoCrate(Crate crate, Player player, int size) {
+    public SingleAnimation(Crate crate, Player player, int size) {
         super(crate, player, size);
     }
 
