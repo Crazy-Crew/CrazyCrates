@@ -1,17 +1,27 @@
 package com.badbones69.crazycrates.managers.crates.types.animation;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.managers.PrizeManager;
+import com.badbones69.crazycrates.utils.MiscUtils;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 
 public class RouletteTriple extends CrateBuilder {
 
     public RouletteTriple(Crate crate, Player player, int size) {
         super(crate, player, size);
+
+        runTaskTimer(CrazyCrates.get(), 1, 1);
     }
 
     private int counter = 0;
+    private int time = 1;
+    private int open = 0;
 
     @Override
     public void run() {
@@ -20,14 +30,47 @@ public class RouletteTriple extends CrateBuilder {
             return;
         }
 
-        if (counter <= 50) {
+        if (counter <= 50) { // When the crate is currently spinning.
+            playCycleSound();
+
             cycle();
         }
 
-        if (counter >= 60) {
-            cancel();
+        open++;
 
-            return;
+        if (open >= 5) {
+            getPlayer().openInventory(getInventory());
+            open = 0;
+        }
+
+        counter++;
+
+        if (counter > 51) {
+            if (MiscUtils.slowSpin(120, 15).contains(time)) {
+                playCycleSound();
+
+                cycle();
+            }
+
+            time++;
+
+            if (time >= 60) { // When the crate task is finished.
+                playStopSound();
+
+                plugin.getCrateManager().endCrate(getPlayer());
+
+                PrizeManager manager = plugin.getCrazyHandler().getPrizeManager();
+
+                manager.checkPrize(getPrize(13), getPlayer(), getCrate());
+                manager.checkPrize(getPrize(31), getPlayer(), getCrate());
+                manager.checkPrize(getPrize(49), getPlayer(), getCrate());
+
+                plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
+
+                cancel();
+
+                return;
+            }
         }
 
         counter++;
@@ -38,19 +81,61 @@ public class RouletteTriple extends CrateBuilder {
         populate();
 
         getPlayer().openInventory(getInventory());
-
-        //this.plugin.getTimer().schedule(this, 1, 1);
     }
 
     private void populate() {
-        for (int index = 0; index < 9; index++) {
-            setCustomGlassPane(index);
-            setCustomGlassPane(index+18);
-            setCustomGlassPane(index+36);
+        setItem(13, getDisplayItem());
+        setItem(31, getDisplayItem());
+        setItem(49, getDisplayItem());
+
+        ItemStack glass = new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build();
+
+        setItem(4, glass);
+        setItem(22, glass);
+        setItem(40, glass);
+
+        // Exclude 13,31 and 49
+        for (int index = 9; index < 18; index++) {
+            if (index != 13) setItem(index, getDisplayItem());
+        }
+
+        for (int index = 27; index < 36; index++) {
+            if (index != 31) setItem(index, getDisplayItem());
+        }
+
+        for (int index = 44; index < 54; index++) {
+            if (index != 49) setItem(index, getDisplayItem());
         }
     }
 
     private void cycle() {
+        setItem(13, getDisplayItem());
+        setItem(31, getDisplayItem());
+        setItem(49, getDisplayItem());
 
+        // Exclude 40, 22 and 4
+        for (int index = 8; index >= 0; index--) {
+            if (index != 4) setItem(index, getRandomGlassPane());
+        }
+
+        for (int index = 18; index < 27; index++) {
+            if (index != 22) setItem(index, getRandomGlassPane());
+        }
+
+        for (int index = 44; index >= 36; index--) {
+            if (index != 40) setItem(index, getRandomGlassPane());
+        }
+
+        for (int index = 9; index < 18; index++) {
+            setItem(index, getDisplayItem());
+        }
+
+        for (int index = 27; index < 36; index++) {
+            setItem(index, getDisplayItem());
+        }
+
+        for (int index = 45; index < 54; index++) {
+            setItem(index, getDisplayItem());
+        }
     }
 }
