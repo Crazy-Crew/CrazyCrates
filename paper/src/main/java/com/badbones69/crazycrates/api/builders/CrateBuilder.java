@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api.builders;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.api.objects.Prize;
 import com.google.common.base.Preconditions;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -316,8 +317,11 @@ public abstract class CrateBuilder extends BukkitRunnable {
      * @param slot to set at
      */
     public void setCustomGlassPane(int slot) {
-        ItemStack item = MiscUtils.getRandomPaneColor().setName(" ").build();
-        getInventory().setItem(slot, item);
+        getInventory().setItem(slot, getRandomGlassPane());
+    }
+
+    public ItemStack getRandomGlassPane() {
+        return MiscUtils.getRandomPaneColor().setName(" ").build();
     }
 
     /**
@@ -352,8 +356,18 @@ public abstract class CrateBuilder extends BukkitRunnable {
         this.isCancelled = true;
     }
 
-    public ItemStack prize() {
+    /**
+     * @return the display item of the picked prize.
+     */
+    public ItemStack getDisplayItem() {
         return getCrate().pickPrize(getPlayer()).getDisplayItem();
+    }
+
+    /**
+     * @return the prize object.
+     */
+    public Prize getPrize(int slot) {
+        return getCrate().getPrize(getInventory().getItem(slot));
     }
 
     //TODO() Add config options to change volume/pitch and sound used for cycling
