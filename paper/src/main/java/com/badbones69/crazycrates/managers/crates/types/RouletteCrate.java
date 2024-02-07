@@ -71,7 +71,7 @@ public class RouletteCrate extends CrateBuilder {
                 full++;
 
                 if (full > 16) {
-                    if (MiscUtils.slowSpin().contains(time)) {
+                    if (MiscUtils.slowSpin(46, 9).contains(time)) {
                         setGlass();
                         setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
 

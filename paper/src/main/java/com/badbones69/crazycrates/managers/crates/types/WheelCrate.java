@@ -84,7 +84,7 @@ public class WheelCrate extends CrateBuilder {
                 if (full < timer) lore();
 
                 if (full >= timer) {
-                    if (MiscUtils.slowSpin().contains(slower)) lore();
+                    if (MiscUtils.slowSpin(46, 9).contains(slower)) lore();
 
                     if (full == timer + 47) {
                         getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 1f);

@@ -310,15 +310,13 @@ public class MiscUtils {
     /**
      * Decides when the crate should start to slow down.
      */
-    public static List<Integer> slowSpin() {
+    public static List<Integer> slowSpin(int full, int cut) {
         List<Integer> slow = new ArrayList<>();
-        int full = 46;
-        int cut = 9;
 
-        for (int i = 46; cut > 0; full--) {
-            if (full <= i - cut || full >= i - cut) {
-                slow.add(i);
-                i -= cut;
+        for (int index = full; cut > 0; full--) {
+            if (full <= index - cut || full >= index - cut) {
+                slow.add(index);
+                index -= cut;
                 cut--;
             }
         }

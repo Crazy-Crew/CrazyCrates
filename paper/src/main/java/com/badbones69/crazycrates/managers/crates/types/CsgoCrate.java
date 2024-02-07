@@ -71,7 +71,7 @@ public class CsgoCrate extends CrateBuilder {
                 full++;
 
                 if (full > 51) {
-                    if (calculateSpinDelays().contains(time)) { // When Slowing Down
+                    if (MiscUtils.slowSpin(120, 15).contains(time)) { // When Slowing Down
                         moveItemsAndSetGlass();
 
                         getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
@@ -153,22 +153,6 @@ public class CsgoCrate extends CrateBuilder {
         for (int index = 9; index > 8 && index < 18; index++) {
             setItem(index, getCrate().pickPrize(getPlayer()).getDisplayItem());
         }
-    }
-
-    private List<Integer> calculateSpinDelays() {
-        ArrayList<Integer> slow = new ArrayList<>();
-        int full = 120;
-        int cut = 15;
-
-        for (int i = 120; cut > 0; full--) {
-            if (full <= i - cut || full >= i - cut) {
-                slow.add(i);
-                i -= cut;
-                cut--;
-            }
-        }
-
-        return slow;
     }
 
     private void moveItemsAndSetGlass() {
