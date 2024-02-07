@@ -64,9 +64,6 @@ Crate:
  * Added WarCrate as a default generated crate.
  * Re-organized the default /crate gui
 
-## Fixes:
- * Fixed permission checks being weird.
-
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
 * [Bug Reports](https://github.com/Crazy-Crew/CrazyCrates/issues)

@@ -19,7 +19,7 @@ tasks {
 
             doLast {
                 runCatching {
-                    if (project.name != "api") {
+                    if (project.name != "api" || project.name != "common") {
                         copy {
                             from(project.layout.buildDirectory.file("libs/${rootProject.name}-${project.name.uppercaseFirstChar()}-${project.version}.jar"))
                             into(jarsDir)
