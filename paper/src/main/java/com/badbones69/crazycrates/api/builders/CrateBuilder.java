@@ -357,15 +357,15 @@ public abstract class CrateBuilder extends BukkitRunnable {
     }
 
     //TODO() Add config options to change volume/pitch and sound used for cycling
-    public void cycleSound() {
+    public void playCycleSound() {
         getPlayer().playSound(getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_XYLOPHONE, SoundCategory.BLOCKS, 1f, 1f);
     }
 
-    public void endSound() {
+    public void playStopSound() {
         getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 1f);
     }
 
-    public void clickSound() {
+    public void playClickSound() {
         getPlayer().playSound(getPlayer().getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 1f, 1f);
     }
 }
