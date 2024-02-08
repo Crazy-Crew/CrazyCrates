@@ -25,9 +25,9 @@ public enum CrateType {
      */
     csgo("CSGO"),
     /**
-     * CSGO Crate but spins 3 rewards
+     * Casino Crate like a slots machine in a casino.
      */
-    csgo_triple("CSGOTriple"),
+    casino("Casino"),
     /**
      * FireCracker, A simple variant of QuickCrate that launches fireworks.
      */

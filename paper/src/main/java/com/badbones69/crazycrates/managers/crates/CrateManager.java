@@ -365,7 +365,7 @@ public class CrateManager {
 
         switch (crate.getCrateType()) {
             case csgo -> crateBuilder = new SingleAnimation(crate, player, 27);
-            case csgo_triple -> crateBuilder = new TripleAnimation(crate, player, 27);
+            case casino -> crateBuilder = new CasinoCrate(crate, player, 27);
             case wonder -> crateBuilder = new WonderCrate(crate, player, 45);
             case wheel -> crateBuilder = new WheelCrate(crate, player, 54);
             case roulette -> crateBuilder = new RouletteCrate(crate, player, 45);

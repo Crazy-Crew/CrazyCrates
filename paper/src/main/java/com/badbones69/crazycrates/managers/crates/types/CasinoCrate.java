@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.managers.crates.types.csgo;
+package com.badbones69.crazycrates.managers.crates.types;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -11,13 +11,11 @@ import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 
-public class TripleAnimation extends CrateBuilder {
+public class CasinoCrate extends CrateBuilder {
 
-    public TripleAnimation(Crate crate, Player player, int size) {
+    public CasinoCrate(Crate crate, Player player, int size) {
         super(crate, player, size);
 
         runTaskTimer(CrazyCrates.get(), 1, 1);
