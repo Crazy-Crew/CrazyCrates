@@ -1,10 +1,9 @@
-package com.badbones69.crazycrates.managers.crates.types.csgo;
+package com.badbones69.crazycrates.managers.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -16,9 +15,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class SingleAnimation extends CrateBuilder {
+public class CsgoCrate extends CrateBuilder {
 
-    public SingleAnimation(Crate crate, Player player, int size) {
+    public CsgoCrate(Crate crate, Player player, int size) {
         super(crate, player, size);
     }
 

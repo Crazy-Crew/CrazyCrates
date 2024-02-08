@@ -5,8 +5,8 @@ import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.enums.BrokeLocation;
 import com.badbones69.crazycrates.managers.crates.types.*;
-import com.badbones69.crazycrates.managers.crates.types.csgo.TripleAnimation;
-import com.badbones69.crazycrates.managers.crates.types.csgo.SingleAnimation;
+import com.badbones69.crazycrates.managers.crates.types.CasinoCrate;
+import com.badbones69.crazycrates.managers.crates.types.CsgoCrate;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -364,7 +364,7 @@ public class CrateManager {
         CrateBuilder crateBuilder;
 
         switch (crate.getCrateType()) {
-            case csgo -> crateBuilder = new SingleAnimation(crate, player, 27);
+            case csgo -> crateBuilder = new CsgoCrate(crate, player, 27);
             case casino -> crateBuilder = new CasinoCrate(crate, player, 27);
             case wonder -> crateBuilder = new WonderCrate(crate, player, 45);
             case wheel -> crateBuilder = new WheelCrate(crate, player, 54);
@@ -420,7 +420,7 @@ public class CrateManager {
                 crateBuilder = new QuickCrate(crate, player, location);
             }
             default -> {
-                crateBuilder = new SingleAnimation(crate, player, 27);
+                crateBuilder = new CsgoCrate(crate, player, 27);
 
                 if (this.plugin.isLogging()) {
                     List.of(
