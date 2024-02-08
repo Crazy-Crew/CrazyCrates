@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.enums.BrokeLocation;
+import com.badbones69.crazycrates.api.objects.BrokeLocation;
 import com.badbones69.crazycrates.api.objects.CrateLocation;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;

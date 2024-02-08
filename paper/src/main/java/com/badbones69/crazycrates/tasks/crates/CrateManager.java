@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.tasks.crates;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
-import com.badbones69.crazycrates.api.enums.BrokeLocation;
+import com.badbones69.crazycrates.api.objects.BrokeLocation;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;
