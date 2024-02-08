@@ -63,9 +63,9 @@ public class TripleAnimation extends CrateBuilder {
 
                 PrizeManager manager = plugin.getCrazyHandler().getPrizeManager();
 
+                manager.checkPrize(getPrize(11), getPlayer(), getCrate());
                 manager.checkPrize(getPrize(13), getPlayer(), getCrate());
-                manager.checkPrize(getPrize(31), getPlayer(), getCrate());
-                manager.checkPrize(getPrize(49), getPlayer(), getCrate());
+                manager.checkPrize(getPrize(15), getPlayer(), getCrate());
 
                 plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
 
@@ -104,64 +104,28 @@ public class TripleAnimation extends CrateBuilder {
             return;
         }
 
-        populate();
+        setDisplayItems();
 
         getPlayer().openInventory(getInventory());
     }
 
-    private void populate() {
-        setItem(13, getDisplayItem());
-        setItem(31, getDisplayItem());
-        setItem(49, getDisplayItem());
-
-        ItemStack glass = new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build();
-
-        setItem(4, glass);
-        setItem(22, glass);
-        setItem(40, glass);
-
-        // Exclude 13,31 and 49
-        for (int index = 9; index < 18; index++) {
-            if (index != 13) setItem(index, getDisplayItem());
-        }
-
-        for (int index = 27; index < 36; index++) {
-            if (index != 31) setItem(index, getDisplayItem());
-        }
-
-        for (int index = 44; index < 54; index++) {
-            if (index != 49) setItem(index, getDisplayItem());
+    private void setDisplayItems() {
+        for (int index = 0; index <= 27; index++) {
+            if (index == 2 || index == 4 || index == 6 || index == 11 || index == 13 || index == 15 || index == 20 || index == 22 || index == 24) {
+                setItem(index, getDisplayItem());
+            }
         }
     }
 
     private void cycle() {
-        setItem(13, getDisplayItem());
-        setItem(31, getDisplayItem());
-        setItem(49, getDisplayItem());
+        setDisplayItems();
 
-        // Exclude 40, 22 and 4
-        for (int index = 8; index >= 0; index--) {
-            if (index != 4) setItem(index, getRandomGlassPane());
-        }
+        for (int index = 0; index < 27; index++) {
+            ItemStack itemStack = getInventory().getItem(index);
 
-        for (int index = 18; index < 27; index++) {
-            if (index != 22) setItem(index, getRandomGlassPane());
-        }
-
-        for (int index = 44; index >= 36; index--) {
-            if (index != 40) setItem(index, getRandomGlassPane());
-        }
-
-        for (int index = 9; index < 18; index++) {
-            setItem(index, getDisplayItem());
-        }
-
-        for (int index = 27; index < 36; index++) {
-            setItem(index, getDisplayItem());
-        }
-
-        for (int index = 45; index < 54; index++) {
-            setItem(index, getDisplayItem());
+            if (itemStack == null) {
+                setItem(index, getRandomGlassPane());
+            }
         }
     }
 }
