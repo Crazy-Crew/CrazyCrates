@@ -110,7 +110,7 @@ public class TripleAnimation extends CrateBuilder {
     }
 
     private void setDisplayItems() {
-        for (int index = 0; index <= 27; index++) {
+        for (int index = 0; index <= 26; index++) {
             if (index == 2 || index == 4 || index == 6 || index == 11 || index == 13 || index == 15 || index == 20 || index == 22 || index == 24) {
                 setItem(index, getDisplayItem());
             }
