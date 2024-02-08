@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.utils;
+package com.badbones69.crazycrates.api.utils;
 
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
