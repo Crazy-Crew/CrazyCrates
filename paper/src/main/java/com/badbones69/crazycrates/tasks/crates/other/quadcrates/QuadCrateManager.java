@@ -230,7 +230,7 @@ public class QuadCrateManager {
                     spawnParticles(particle, particleColor, this.spiralLocationsClockwise.get(this.tickTillSpawn), this.spiralLocationsCounterClockwise.get(this.tickTillSpawn));
                     this.tickTillSpawn++;
                 } else {
-                    crate.playSound(player, player.getLocation(), "cycle-sound", SoundCategory.PLAYERS, "BLOCK_STONE_STEP");
+                    crate.playSound(player.getLocation(), "cycle-sound", "BLOCK_STONE_STEP", SoundCategory.PLAYERS);
 
                     Block chest = crateLocations.get(crateNumber).getBlock();
 
@@ -257,7 +257,7 @@ public class QuadCrateManager {
                 // End the crate by force.
                 endCrateForce(true);
                 player.sendMessage(Messages.out_of_time.getString());
-                crate.playSound(player, player.getLocation(), "stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
+                crate.playSound(player.getLocation(), "stop-sound", "ENTITY_PLAYER_LEVELUP", SoundCategory.PLAYERS);
             }
         }.runTaskLater(this.plugin, this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
     }

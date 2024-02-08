@@ -73,7 +73,7 @@ public class CrateMenuListener extends ModuleHandler {
 
         if (event.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
             if (crate.isPreviewEnabled()) {
-                crate.playSound(player, player.getLocation(), "click-sound", SoundCategory.PLAYERS, "UI_BUTTON_CLICK");
+                crate.playSound(player.getLocation(), "click-sound", "UI_BUTTON_CLICK", SoundCategory.PLAYERS);
 
                 player.closeInventory();
                 this.inventoryManager.addViewer(player);
@@ -122,8 +122,6 @@ public class CrateMenuListener extends ModuleHandler {
             player.sendMessage(Messages.inventory_not_empty.getString());
             return;
         }
-
-        crate.playSound(player, player.getLocation(), "click-sound", SoundCategory.PLAYERS, "UI_BUTTON_CLICK");
 
         this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
     }

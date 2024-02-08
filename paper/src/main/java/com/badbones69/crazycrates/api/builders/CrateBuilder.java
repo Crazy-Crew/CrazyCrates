@@ -4,10 +4,12 @@ import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -369,13 +371,24 @@ public abstract class CrateBuilder extends BukkitRunnable {
     }
 
     /**
-     * Plays a sound at different volume levels with fallbacks
+     * Plays a sound at different volume levels with fallbacks.
      *
-     * @param type i.e. stop, cycle or click sound
-     * @param category sound category to respect client settings
-     * @param defaultSound fallback sound
+     * @param type i.e. stop, cycle or click sound.
+     * @param category sound category to respect client settings.
+     * @param fallback fallback sound in case no sound is found.
      */
-    public void playSound(String type, SoundCategory category, String defaultSound) {
-        crate.playSound(getPlayer(), getPlayer().getLocation(), type, category, defaultSound);
+    public void playSound(String type, SoundCategory category, String fallback) {
+        ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
+
+        if (section != null) {
+            SoundEffect sound = new SoundEffect(
+                    section,
+                    type,
+                    fallback,
+                    category
+            );
+
+            sound.play(getPlayer().getLocation());
+        }
     }
 }

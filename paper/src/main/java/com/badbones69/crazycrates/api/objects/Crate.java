@@ -1,7 +1,9 @@
 package com.badbones69.crazycrates.api.objects;
 
+import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
+import org.bukkit.configuration.ConfigurationSection;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.FileManager;
@@ -21,7 +23,6 @@ import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -568,23 +569,24 @@ public class Crate {
     }
 
     /**
-     * Plays a sound at different volume levels with fallbacks
+     * Plays a sound at different volume levels with fallbacks.
      *
-     * @param type i.e. stop, cycle or click sound
-     * @param category sound category to respect client settings
-     * @param defaultSound fallback sound
+     * @param type i.e. stop, cycle or click sound.
+     * @param category sound category to respect client settings.
+     * @param fallback fallback sound in case no sound is found.
      */
-    public void playSound(Player player, Location location, String type, SoundCategory category, String defaultSound) {
-        String path = "Crate." + type;
+    public void playSound(Location location, String type, String fallback, SoundCategory category) {
+        ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
 
-        boolean isEnabled = getFile().getBoolean(path + ".toggle", true);
+        if (section != null) {
+            SoundEffect sound = new SoundEffect(
+                    section,
+                    type,
+                    fallback,
+                    category
+            );
 
-        if (isEnabled) {
-            String sound = getFile().getString(path + ".value", defaultSound);
-            double volume = getFile().getDouble(path + ".volume", 1.0);
-            double pitch = getFile().getDouble(path + ".pitch", 1.0);
-
-            player.playSound(location, Sound.valueOf(sound), category, (float) volume, (float) pitch);
+            sound.play(location);
         }
     }
 }

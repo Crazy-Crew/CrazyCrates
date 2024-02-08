@@ -87,7 +87,7 @@ public class CosmicCrateListener implements Listener {
         }
 
         // Play sound.
-        if (playSound) cosmic.getCrate().playSound(player, player.getLocation(), "click-sound", SoundCategory.PLAYERS, "UI_BUTTON_CLICK");
+        if (playSound) cosmic.getCrate().playSound(player.getLocation(), "click-sound", "UI_BUTTON_CLICK", SoundCategory.PLAYERS);
 
         // Remove opening stuff.
         this.crateManager.removePlayerFromOpeningList(player);
@@ -162,7 +162,7 @@ public class CosmicCrateListener implements Listener {
 
         event.setCurrentItem(prize.getDisplayItem());
 
-        cosmic.getCrate().playSound(player, player.getLocation(), "click-sound", SoundCategory.PLAYERS, "UI_BUTTON_CLICK");
+        cosmic.getCrate().playSound(player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
 
         if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
     }
@@ -241,7 +241,7 @@ public class CosmicCrateListener implements Listener {
                 cosmicCrateManager.addPickedPrize(player, slot);
 
                 // Play a sound to indicate they clicked a chest.
-                cosmic.getCrate().playSound(player, player.getLocation(), "click-sound", SoundCategory.PLAYERS, "UI_BUTTON_CLICK");
+                cosmic.getCrate().playSound(player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
             }
         } else if (container.has(PersistentKeys.cosmic_picked_crate.getNamespacedKey(this.plugin))) {
             // Get item builder.
@@ -256,7 +256,7 @@ public class CosmicCrateListener implements Listener {
             cosmicCrateManager.removePickedPrize(player, slot);
 
             // Play a sound to indicate they clicked a chest.
-            cosmic.getCrate().playSound(player, player.getLocation(), "click-sound", SoundCategory.PLAYERS, "UI_BUTTON_CLICK");
+            cosmic.getCrate().playSound(player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
         }
 
         // Get the crate name.
@@ -361,7 +361,7 @@ public class CosmicCrateListener implements Listener {
                             plugin.getServer().getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + crate.getName() + " crate and so they were issued a key refund.", exception);
 
                             // Play a sound
-                            crate.playSound(player, player.getLocation(), "stop-sound", SoundCategory.PLAYERS, "BLOCK_ANVIL_PLACE");
+                            crate.playSound(player.getLocation(), "stop-sound", "BLOCK_ANVIL_PLACE", SoundCategory.PLAYERS);
                         }
 
                         // Wrap it all up.
@@ -379,7 +379,7 @@ public class CosmicCrateListener implements Listener {
                         showRewards(player, view, cosmic, cosmicCrateManager);
 
                         // Play a sound
-                        crate.playSound(player, player.getLocation(), "stop-sound", SoundCategory.PLAYERS, "BLOCK_ANVIL_PLACE");
+                        crate.playSound(player.getLocation(), "stop-sound", "BLOCK_ANVIL_PLACE", SoundCategory.PLAYERS);
                     }
                 }
             }, 0L, 80L);
@@ -393,7 +393,7 @@ public class CosmicCrateListener implements Listener {
             if (tier != null) view.getTopInventory().setItem(slot, tier.getTierPane());
         }
 
-        cosmic.getCrate().playSound(player, player.getLocation(), "cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
+        cosmic.getCrate().playSound(player.getLocation(), "cycle-sound", "BLOCK_NOTE_BLOCK_XYLOPHONE", SoundCategory.PLAYERS);
         player.updateInventory();
     }
 
