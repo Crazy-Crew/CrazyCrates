@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.managers.crates.types;
+package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.managers.crates.CrateManager;
-import com.badbones69.crazycrates.utils.MiscUtils;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 
 public class CrateOnTheGo extends CrateBuilder {
 

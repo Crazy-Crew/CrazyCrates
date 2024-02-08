@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.managers.crates.other.quadcrates;
+package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 
 import org.bukkit.entity.Player;
 

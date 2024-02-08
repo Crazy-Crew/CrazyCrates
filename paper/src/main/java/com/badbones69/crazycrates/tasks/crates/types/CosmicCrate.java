@@ -1,6 +1,6 @@
-package com.badbones69.crazycrates.managers.crates.types;
+package com.badbones69.crazycrates.tasks.crates.types;
 
-import com.badbones69.crazycrates.managers.crates.other.CosmicCrateManager;
+import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

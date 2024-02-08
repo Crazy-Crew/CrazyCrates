@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.CrazyHandler;
-import com.badbones69.crazycrates.managers.InventoryManager;
+import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.modules.ModuleHandler;

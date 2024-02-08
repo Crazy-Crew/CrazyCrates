@@ -6,7 +6,7 @@ import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.managers.crates.CrateManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 
 public class PaperListener implements Listener {
 

@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.managers;
+package com.badbones69.crazycrates.tasks;
 
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -15,8 +15,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.utils.ItemUtils;
-import com.badbones69.crazycrates.utils.MiscUtils;
+import com.badbones69.crazycrates.api.utils.ItemUtils;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

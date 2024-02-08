@@ -7,7 +7,6 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.google.common.base.Preconditions;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -20,7 +19,7 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
-import com.badbones69.crazycrates.utils.MiscUtils;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.List;
 
 public abstract class CrateBuilder extends BukkitRunnable {

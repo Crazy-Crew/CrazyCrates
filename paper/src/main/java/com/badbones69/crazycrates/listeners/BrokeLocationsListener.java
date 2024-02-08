@@ -8,7 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.managers.crates.CrateManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import java.util.ArrayList;
 import java.util.List;
 

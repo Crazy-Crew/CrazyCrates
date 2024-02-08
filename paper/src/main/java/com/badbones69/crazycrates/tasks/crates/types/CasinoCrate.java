@@ -1,11 +1,11 @@
-package com.badbones69.crazycrates.managers.crates.types;
+package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
-import com.badbones69.crazycrates.managers.PrizeManager;
-import com.badbones69.crazycrates.utils.MiscUtils;
+import com.badbones69.crazycrates.tasks.PrizeManager;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;

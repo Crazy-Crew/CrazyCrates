@@ -6,7 +6,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.utils.MsgUtils;
+import com.badbones69.crazycrates.api.utils.MsgUtils;
 
 @SuppressWarnings("ALL")
 public abstract class InventoryBuilder implements InventoryHolder {

@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
-import com.badbones69.crazycrates.managers.crates.CrateManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Sound;
@@ -19,9 +19,9 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.CrazyHandler;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.managers.InventoryManager;
+import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.api.modules.ModuleHandler;
-import com.badbones69.crazycrates.utils.MiscUtils;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 
 public class CrateMenuListener extends ModuleHandler {
 

@@ -1,12 +1,12 @@
-package com.badbones69.crazycrates.managers.crates;
+package com.badbones69.crazycrates.tasks.crates;
 
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.enums.BrokeLocation;
-import com.badbones69.crazycrates.managers.crates.types.*;
-import com.badbones69.crazycrates.managers.crates.types.CasinoCrate;
-import com.badbones69.crazycrates.managers.crates.types.CsgoCrate;
+import com.badbones69.crazycrates.tasks.crates.types.*;
+import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
+import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -44,8 +44,8 @@ import com.badbones69.crazycrates.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.HolographicDisplaysSupport;
 import com.badbones69.crazycrates.support.libraries.PluginSupport;
-import com.badbones69.crazycrates.utils.ItemUtils;
-import com.badbones69.crazycrates.utils.MiscUtils;
+import com.badbones69.crazycrates.api.utils.ItemUtils;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;

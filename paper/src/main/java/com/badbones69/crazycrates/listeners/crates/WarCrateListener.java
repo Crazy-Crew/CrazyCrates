@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,8 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
-import com.badbones69.crazycrates.managers.crates.CrateManager;
-import com.badbones69.crazycrates.utils.MiscUtils;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 
 public class WarCrateListener implements Listener {
 

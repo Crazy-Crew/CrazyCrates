@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.managers;
+package com.badbones69.crazycrates.tasks;
 
 import org.apache.commons.lang.WordUtils;
 import com.badbones69.crazycrates.CrazyCrates;
@@ -12,8 +12,8 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.utils.MiscUtils;
-import com.badbones69.crazycrates.utils.MsgUtils;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.HashMap;
 import static java.util.regex.Matcher.quoteReplacement;
 

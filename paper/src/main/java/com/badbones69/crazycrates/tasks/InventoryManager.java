@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.managers;
+package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.objects.Crate;

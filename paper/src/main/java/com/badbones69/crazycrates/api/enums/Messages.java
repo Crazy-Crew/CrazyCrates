@@ -8,7 +8,7 @@ import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.common.config.types.MessageKeys;
 import com.badbones69.crazycrates.common.utils.StringUtils;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.utils.MsgUtils;
+import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

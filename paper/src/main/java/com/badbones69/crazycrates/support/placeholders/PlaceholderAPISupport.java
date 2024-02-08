@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyHandler;
-import com.badbones69.crazycrates.managers.BukkitUserManager;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import java.text.NumberFormat;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;

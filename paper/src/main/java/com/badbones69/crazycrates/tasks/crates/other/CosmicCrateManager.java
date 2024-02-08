@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.managers.crates.other;
+package com.badbones69.crazycrates.tasks.crates.other;
 
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import org.bukkit.Material;
