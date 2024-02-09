@@ -74,7 +74,7 @@ public class CrateMenuListener extends ModuleHandler {
 
         if (event.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
             if (crate.isPreviewEnabled()) {
-                crate.playSound(player.getLocation(), "click-sound", "UI_BUTTON_CLICK", SoundCategory.PLAYERS);
+                crate.playSound(player, player.getLocation(), "click-sound", "UI_BUTTON_CLICK", SoundCategory.PLAYERS);
 
                 player.closeInventory();
                 this.inventoryManager.addViewer(player);

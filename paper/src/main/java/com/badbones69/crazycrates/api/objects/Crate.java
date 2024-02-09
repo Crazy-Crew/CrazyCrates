@@ -102,8 +102,8 @@ public class Crate {
         this.previewToggle = file != null && file.getBoolean("Crate.Preview.Toggle", false);
         this.borderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle", false);
 
-        this.previewTierToggle = file != null && file.getBoolean("Crate.Tiers.preview.toggle", false);
-        this.previewTierBorderToggle = file != null && file.getBoolean("Crate.Tiers.preview.glass.toggle", false);
+        this.previewTierToggle = file != null && file.getBoolean("Crate.tier-preview.toggle", false);
+        this.previewTierBorderToggle = file != null && file.getBoolean("Crate.tier-preview.glass.toggle", false);
 
         setPreviewChestLines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
         this.previewName = MsgUtils.sanitizeColor(previewName);
@@ -119,10 +119,10 @@ public class Crate {
         String borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? MsgUtils.color(file.getString("Crate.Preview.Glass.Name")) : " ";
         this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(borderName);
 
-        String previewTierBorderName = file != null ? MsgUtils.color(file.getString("Crate.Tiers.preview.glass.name", " ")) : " ";
-        this.previewTierBorderItem = file != null ? new ItemBuilder().setMaterial(file.getString("Crate.Tiers.preview.glass.item", "")).setName(previewTierBorderName) : new ItemBuilder().setMaterial(Material.AIR).setName(previewTierBorderName);
+        String previewTierBorderName = file != null ? MsgUtils.color(file.getString("Crate.tier-preview.glass.name", " ")) : " ";
+        this.previewTierBorderItem = file != null ? new ItemBuilder().setMaterial(file.getString("Crate.tier-preview.glass.item", "")).setName(previewTierBorderName) : new ItemBuilder().setMaterial(Material.AIR).setName(previewTierBorderName);
 
-        setTierPreviewRows(file != null ? file.getInt("Crate.Tiers.preview.rows", 5) : 5);
+        setTierPreviewRows(file != null ? file.getInt("Crate.tier-preview.rows", 5) : 5);
         this.previewTierMaxSlots = this.previewTierCrateRows * 9;
 
         this.hologram = hologram != null ? hologram : new CrateHologram();
@@ -669,7 +669,7 @@ public class Crate {
      * @param category sound category to respect client settings.
      * @param fallback fallback sound in case no sound is found.
      */
-    public void playSound(Location location, String type, String fallback, SoundCategory category) {
+    public void playSound(Player player, Location location, String type, String fallback, SoundCategory category) {
         ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
 
         if (section != null) {
@@ -680,7 +680,7 @@ public class Crate {
                     category
             );
 
-            sound.play(location);
+            sound.play(player, location);
         }
     }
 }

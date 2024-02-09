@@ -66,7 +66,7 @@ public class CratePreviewListener extends ModuleHandler {
 
         if (container.has(PersistentKeys.main_menu_button.getNamespacedKey(this.plugin)) && this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) { // Clicked the menu button.
             if (this.inventoryManager.inCratePreview(player)) {
-                crate.playSound(player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
+                crate.playSound(player, player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
 
                 if (crate.getCrateType() == CrateType.casino || crate.getCrateType() == CrateType.cosmic) {
                     player.openInventory(crate.getTierPreview(player));
@@ -87,7 +87,7 @@ public class CratePreviewListener extends ModuleHandler {
 
         if (container.has(PersistentKeys.next_button.getNamespacedKey(this.plugin))) {  // Clicked the next button.
             if (this.inventoryManager.getPage(player) < crate.getMaxPage()) {
-                crate.playSound(player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
+                crate.playSound(player, player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
 
                 this.inventoryManager.nextPage(player);
 
@@ -99,7 +99,7 @@ public class CratePreviewListener extends ModuleHandler {
 
         if (container.has(PersistentKeys.back_button.getNamespacedKey(this.plugin))) {  // Clicked the back button.
             if (this.inventoryManager.getPage(player) > 1 && this.inventoryManager.getPage(player) <= crate.getMaxPage()) {
-                crate.playSound(player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
+                crate.playSound(player, player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
 
                 this.inventoryManager.backPage(player);
 

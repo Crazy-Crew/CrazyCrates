@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 public class SoundEffect {
 
@@ -31,9 +32,9 @@ public class SoundEffect {
         this.category = category;
     }
 
-    public void play(Location location) {
+    public void play(Player player, Location location) {
         if (!this.isEnabled) return;
 
-        location.getWorld().playSound(location, this.sound, this.category, this.volume, this.pitch);
+        player.playSound(location, this.sound, this.category, this.volume, this.pitch);
     }
 }

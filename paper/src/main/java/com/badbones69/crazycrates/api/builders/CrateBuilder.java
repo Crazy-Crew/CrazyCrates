@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api.builders;
 
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
+import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
@@ -14,6 +15,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -360,7 +364,17 @@ public abstract class CrateBuilder extends BukkitRunnable {
      * @return the display item of the picked prize.
      */
     public ItemStack getDisplayItem() {
-        return getCrate().pickPrize(getPlayer()).getDisplayItem();
+        ItemStack itemStack = getCrate().pickPrize(getPlayer()).getDisplayItem();
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+
+        container.set(PersistentKeys.crate_prize.getNamespacedKey(this.plugin), PersistentDataType.STRING, "none");
+
+        itemStack.setItemMeta(itemMeta);
+
+        return itemStack;
     }
 
     /**
@@ -388,7 +402,7 @@ public abstract class CrateBuilder extends BukkitRunnable {
                     category
             );
 
-            sound.play(getPlayer().getLocation());
+            sound.play(getPlayer(), getPlayer().getLocation());
         }
     }
 }
