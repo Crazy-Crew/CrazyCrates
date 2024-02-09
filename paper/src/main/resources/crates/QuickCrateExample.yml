@@ -1,6 +1,11 @@
 Crate:
-  # Type of crate -> CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War
+  # Type of crate -> CSGO/Casino/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War
+
+  # Make sure to check out the wiki for anything not explained here.
+  # https://docs.crazycrew.us/crazycrates/home
+
   # See CosmicCrateExample.yml to see how the Cosmic CrateType works.
+
   # QuickCrate simply allows you to speed open crates.
   CrateType: QuickCrate
   CrateName: '&eClassic Crate'
@@ -11,7 +16,7 @@ Crate:
   InGUI: false
   Slot: 14
   OpeningBroadCast: true
-  BroadCast: '%prefix%&6&l%player%&r &7is opening a &e&lClassic Chest&7.'
+  BroadCast: '%prefix%&6&l%player%&r &7is opening a &e&lClassic Crate&7.'
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
@@ -21,11 +26,45 @@ Crate:
     # Supports %prefix which returns our prefix, %player% which uses the player name
     commands:
       - 'put your command here.'
+  sound:
+    # The sound options when the animation is cycling.
+    cycle-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: 'BLOCK_NOTE_BLOCK_XYLOPHONE'
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
+    # The sound options when an item is clicked.
+    click-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: 'UI_BUTTON_CLICK'
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
+    # The sound options when a crate ends.
+    stop-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: 'ENTITY_PLAYER_LEVELUP'
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
   Prize-Message:
     - '&7You have won &c%reward% &7from &c%crate%.'
   Item: 'CHEST'
   Glowing: false
-  Name: '&e&lClassic Chest'
+  Name: '&e&lClassic Crate'
   Lore:
     - '&7This crate contains classic items.'
     - '&7You have &6%keys% keys &7to open this crate with.'
@@ -51,7 +90,7 @@ Crate:
     Height: 1.5
     Range: 8
     Message:
-      - '&e&lClassic Chest'
+      - '&e&lClassic Crate'
   Prizes:
     1:
       DisplayName: '&a&lFancy Pants'

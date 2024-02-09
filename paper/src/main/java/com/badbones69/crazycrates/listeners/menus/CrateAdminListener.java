@@ -15,11 +15,11 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.users.UserManager;
-import com.badbones69.crazycrates.managers.crates.CrateManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.modules.ModuleHandler;
-import com.badbones69.crazycrates.other.MiscUtils;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.HashMap;
 
 public class CrateAdminListener extends ModuleHandler {

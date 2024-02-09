@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
-import com.badbones69.crazycrates.managers.crates.CrateManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Sound;
@@ -15,13 +15,14 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.CrazyHandler;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.managers.InventoryManager;
+import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.api.modules.ModuleHandler;
-import com.badbones69.crazycrates.other.MiscUtils;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 
 public class CrateMenuListener extends ModuleHandler {
 
@@ -73,9 +74,11 @@ public class CrateMenuListener extends ModuleHandler {
 
         if (event.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
             if (crate.isPreviewEnabled()) {
+                crate.playSound(player, player.getLocation(), "click-sound", "UI_BUTTON_CLICK", SoundCategory.PLAYERS);
+
                 player.closeInventory();
                 this.inventoryManager.addViewer(player);
-                this.inventoryManager.openNewCratePreview(player, crate);
+                this.inventoryManager.openNewCratePreview(player, crate, crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
             } else {
                 player.sendMessage(Messages.preview_disabled.getString());
             }

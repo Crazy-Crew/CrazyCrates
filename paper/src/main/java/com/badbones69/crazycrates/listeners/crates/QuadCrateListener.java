@@ -9,15 +9,14 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.managers.crates.other.quadcrates.QuadCrateManager;
-import com.badbones69.crazycrates.managers.crates.other.quadcrates.SessionManager;
+import com.badbones69.crazycrates.tasks.crates.other.quadcrates.QuadCrateManager;
+import com.badbones69.crazycrates.tasks.crates.other.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.support.structures.blocks.ChestManager;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -82,7 +81,7 @@ public class QuadCrateListener implements Listener {
                 PersistentKeys key = PersistentKeys.crate_prize;
 
                 //noinspection unchecked
-                itemMeta.getPersistentDataContainer().set(key.getNamespacedKey(this.plugin), key.getType(), 1);
+                itemMeta.getPersistentDataContainer().set(key.getNamespacedKey(), key.getType(), 1);
 
                 // Set the item meta.
                 display.setItemMeta(itemMeta);
@@ -118,7 +117,7 @@ public class QuadCrateListener implements Listener {
                         @Override
                         public void run() {
                             session.endCrate();
-                            player.playSound(player.getLocation(), Sound.BLOCK_STONE_STEP, SoundCategory.BLOCKS, 1f, 1f);
+                            crate.playSound(player, block.getLocation(), "stop-sound", "BLOCK_ANVIL_LAND", SoundCategory.BLOCKS);
                         }
                     }.runTaskLater(this.plugin, 60);
                 }

@@ -6,7 +6,7 @@ import dev.triumphteam.cmd.core.message.MessageKey;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.other.MsgUtils;
+import com.badbones69.crazycrates.api.utils.MsgUtils;
 
 public class MiscRelations extends MessageHandler {
 

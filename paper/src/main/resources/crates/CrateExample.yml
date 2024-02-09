@@ -1,8 +1,8 @@
 Crate:
-  # Type of crate -> CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War
+  # Type of crate -> CSGO/Casino/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War
 
   # Make sure to check out the wiki for anything not explained here.
-  # https://github.com/Crazy-Crew/Crazy-Crates/wiki
+  # https://docs.crazycrew.us/crazycrates/home
 
   # See CosmicCrateExample.yml to see how the Cosmic CrateType works.
   CrateType: CSGO
@@ -20,11 +20,11 @@ Crate:
   # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
   InGUI: true
   # Slot the item is in the GUI.
-  Slot: 21
+  Slot: 12
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
-  BroadCast: '%prefix%&6&l%player%&r &7is opening a &7&lBasic Chest&7.'
+  BroadCast: '%prefix%&6&l%player%&r &7is opening a &7&lBasic Crate.'
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
@@ -34,16 +34,50 @@ Crate:
     # Supports %prefix which returns our prefix, %player% which uses the player name
     commands:
       - 'put your command here.'
+  sound:
+    # The sound options when the animation is cycling.
+    cycle-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: 'BLOCK_NOTE_BLOCK_XYLOPHONE'
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
+    # The sound options when an item is clicked.
+    click-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: 'UI_BUTTON_CLICK'
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
+    # The sound options when a crate ends.
+    stop-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: 'ENTITY_PLAYER_LEVELUP'
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
   # A default message if the prize doesn't have any Messages
   # i.e. Messages: [] or the value isn't there.
   Prize-Message:
     - '&7You have won &c%reward% &7from &c%crate%.'
   # Item the crate is in the GUI
-  Item: 'CHEST'
+  Item: 'DIAMOND'
   # If the crate in the main /cc GUI is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
-  Name: '&a&lBasic Chest'
+  Name: '&a&lBasic Crate'
   # The lore of the item in the GUI.
   Lore:
     - '&7This crate contains strange objects.'
@@ -56,11 +90,11 @@ Crate:
     # How many lines the Crate Preview should have. Including Header and Bottom (Between 3 and 6)
     ChestLines: 6
     Glass:
-      # Turn the glass boarder in the preview on and off.
+      # Turn the glass border in the preview on and off.
       Toggle: true
       # The name of the border item.
       Name: ' '
-      # The item that shows in the boarder. Can be glass or any other item.
+      # The item that shows in the border. Can be glass or any other item.
       Item: 'GRAY_STAINED_GLASS_PANE'
   PhysicalKey:
     # Name of the Key.
@@ -83,7 +117,7 @@ Crate:
     Range: 8
     # The message that will be displayed.
     Message:
-      - '&7&lBasic Chest'
+      - '&7&lBasic Crate'
   # All the prizes that can be gotten in the Crate.
   Prizes:
     1:

@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.listeners.crates;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.managers.crates.CrateManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyHandler;
-import com.badbones69.crazycrates.other.MsgUtils;
+import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.List;
 
 public class CrateOpenListener implements Listener {
@@ -45,7 +45,7 @@ public class CrateOpenListener implements Listener {
             }
         }
 
-        if (!player.hasPermission("crazycrates.open." + crate.getName())) {
+        if (!player.hasPermission("crazycrates.open." + crate.getName()) || !player.hasPermission("crazycrates.open." + crate.getName().toLowerCase())) {
             player.sendMessage(Messages.no_crate_permission.getString());
             this.crateManager.removePlayerFromOpeningList(player);
             this.crateManager.removeCrateInUse(player);

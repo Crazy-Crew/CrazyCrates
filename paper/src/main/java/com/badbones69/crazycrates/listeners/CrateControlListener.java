@@ -24,11 +24,11 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.managers.crates.CrateManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.managers.InventoryManager;
-import com.badbones69.crazycrates.other.MiscUtils;
+import com.badbones69.crazycrates.tasks.InventoryManager;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.HashMap;
 
 public class CrateControlListener implements Listener {
@@ -79,9 +79,11 @@ public class CrateControlListener implements Listener {
                     e.setCancelled(true);
 
                     if (loc.getCrateType() != CrateType.menu) {
+                        Crate crate = loc.getCrate();
+
                         if (loc.getCrate().isPreviewEnabled()) {
                             this.inventoryManager.addViewer(player);
-                            this.inventoryManager.openNewCratePreview(player, loc.getCrate());
+                            this.inventoryManager.openNewCratePreview(player, loc.getCrate(), crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
                         } else {
                             player.sendMessage(Messages.preview_disabled.getString());
                         }

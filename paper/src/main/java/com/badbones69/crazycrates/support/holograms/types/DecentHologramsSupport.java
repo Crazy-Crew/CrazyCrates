@@ -6,7 +6,7 @@ import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.block.Block;
 import com.badbones69.crazycrates.support.holograms.HologramHandler;
-import com.badbones69.crazycrates.other.MsgUtils;
+import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.HashMap;
 import java.util.UUID;
 

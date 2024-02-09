@@ -9,7 +9,7 @@ import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import org.bukkit.block.Block;
 import com.badbones69.crazycrates.support.holograms.HologramHandler;
-import com.badbones69.crazycrates.other.MsgUtils;
+import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.HashMap;
 
 public class HolographicDisplaysSupport extends HologramHandler {

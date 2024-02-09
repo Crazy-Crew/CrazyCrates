@@ -1,4 +1,8 @@
 Crate:
+  # Type of crate -> CSGO/Casino/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War
+
+  # Make sure to check out the wiki for anything not explained here.
+  # https://docs.crazycrew.us/crazycrates/home
   CrateType: Cosmic
   CrateName: '&dCosmic Crate'
   Preview-Name: '&dCosmic Crate Preview'
@@ -8,7 +12,7 @@ Crate:
     - '&7You have won &c%reward% &7from &c%crate%.'
   Max-Mass-Open: 10
   InGUI: true
-  Slot: 23
+  Slot: 14
   OpeningBroadCast: false
   BroadCast: ''
   # This section is related to commands opening when a crate is opened.
@@ -20,23 +24,49 @@ Crate:
     # Supports %prefix which returns our prefix, %player% which uses the player name
     commands:
       - 'put your command here.'
+  sound:
+    # The sound options when the animation is cycling.
+    cycle-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: 'BLOCK_NOTE_BLOCK_XYLOPHONE'
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
+    # The sound options when an item is clicked.
+    click-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: 'UI_BUTTON_CLICK'
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
+    # The sound options when a crate ends.
+    stop-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: 'BLOCK_ANVIL_PLACE'
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
   Item: 'ENDER_CHEST'
   Glowing: false
-  Name: '&d&lCosmic Chest'
+  Name: '&d&lCosmic Crate'
   Lore:
     - '&7This crate contains strange objects,'
     - '&7from somewhere beyond this planet.'
     - '&7You have &6%keys% keys &7to open this crate with.'
     - '&7You have opened this crate: &6%crate_opened% times'
     - '&7&l(&e&l!&7&l) Right click to view rewards.'
-  Preview:
-    Toggle: true
-    ChestLines: 6
-    Glass:
-      Toggle: true
-      # The name of the border item.
-      Name: ' '
-      Item: 'PURPLE_STAINED_GLASS_PANE'
   Crate-Type-Settings:
     Total-Prize-Amount: 4
     Mystery-Crate:
@@ -61,30 +91,65 @@ Crate:
     Height: 1.5
     Range: 8
     Message:
-      - '&d&lCosmic Chest'
-  # Tiers are available in Cosmic crates only
-  #The tiers in the Crate
+      - '&d&lCosmic Crate'
+  Preview:
+    # Turn on and off the preview for this crate.
+    Toggle: true
+    # How many lines the Crate Preview should have. Including Header and Bottom (Between 3 and 6)
+    ChestLines: 6
+    Glass:
+      # Turn the glass border in the preview on and off.
+      Toggle: true
+      # The name of the border item.
+      Name: ' '
+      # The item that shows in the border. Can be glass or any other item.
+      Item: 'GRAY_STAINED_GLASS_PANE'
+  tier-preview:
+    # Turn on and off the preview for this crate.
+    toggle: true
+    # How many lines the Tier Preview should have. Including Header and Bottom (Between 3 and 6)
+    rows: 5
+    glass:
+      # Turn the glass border in the preview on and off.
+      toggle: true
+      # The name of the border item.
+      name: ' '
+      # The item that shows in the border. Can be glass or any other item.
+      item: 'RED_STAINED_GLASS_PANE'
+  # Tiers are available in Cosmic and Casino crate types.
+  # The Tiers the rewards can be found in.
   Tiers:
-    #The Config Name for the Crate
+    # The Config Name for the Crate
     Basic:
-      #The in-game name of the Crate
-      Name: '&8Basic Prize'
-      #Use the MetaData for the color of the glass
-      Color: 'GRAY_STAINED_GLASS_PANE'
-      #Chance of that item getting picked. It would be 80/100 chance because MaxRange is 100.
+      # The in-game name of the tier.
+      Name: '&8Basic Tier'
+      # The in-game lore of the tier.
+      Lore:
+        - '&7A basic tier.'
+      # The item used for the secondary gui when you right-click for the preview.
+      Item: 'CHEST'
+      # Chance of that item getting picked. It would be 80/100 chance because MaxRange is 100.
       Chance: 80
-      #The max range that the chance will go though.
+      # The max range that the chance will go though.
       MaxRange: 100
+      # The slot this item will be in the secondary gui.
+      Slot: 20
     UnCommon:
-      Name: '&aUnCommon Prize'
-      Color: 'LIME_STAINED_GLASS_PANE'
+      Name: '&aUncommon Tier'
+      Lore:
+        - '&aAn uncommon tier.'
+      Item: 'CHEST'
       Chance: 55
       MaxRange: 100
+      Slot: 22
     Rare:
-      Name: '&4Rare Prize'
-      Color: 'RED_STAINED_GLASS_PANE'
+      Name: '&4Rare Tier'
+      Lore:
+        - '&cA rare tier.'
+      Item: 'ENDER_CHEST'
       Chance: 20
       MaxRange: 100
+      Slot: 24
   Prizes:
     1:
       DisplayName: '&d&lCosmic Grass'
@@ -95,8 +160,8 @@ Crate:
         - '&6&lChance: &c&l40%'
       MaxRange: 100
       Chance: 40
-      # Tiers are available in Cosmic crates only
-      #The Tiers the rewards can be found in.
+      # Tiers are available in Cosmic and Casino crate types.
+      # The Tiers the rewards can be found in.
       Tiers:
         - 'Basic'
         - 'UnCommon'

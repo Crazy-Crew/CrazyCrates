@@ -1,31 +1,39 @@
 package com.badbones69.crazycrates.api.builders;
 
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
+import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.SoundCategory;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
-import com.badbones69.crazycrates.other.MiscUtils;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.List;
 
-public abstract class CrateBuilder {
+public abstract class CrateBuilder extends BukkitRunnable {
 
     @NotNull
     protected final CrazyCrates plugin = CrazyCrates.get();
 
-    private final FileConfiguration file;
-    private final InventoryBuilder menu;
+    private final InventoryBuilder builder;
     private final Inventory inventory;
     private final Location location;
     private final Player player;
@@ -33,7 +41,7 @@ public abstract class CrateBuilder {
     private final int size;
 
     /**
-     * Create a crate with no inventory size.
+     * Create a crate with inventory size
      *
      * @param crate opened by player
      * @param player opening crate
@@ -43,8 +51,6 @@ public abstract class CrateBuilder {
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
 
-        this.file = crate.getFile();
-
         this.crate = crate;
 
         this.location = player.getLocation();
@@ -52,30 +58,12 @@ public abstract class CrateBuilder {
         this.player = player;
         this.size = size;
 
-        this.menu = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
-
-        this.inventory = this.menu.build().getInventory();
-    }
-
-    public CrateBuilder(Crate crate, Player player) {
-        Preconditions.checkNotNull(crate, "Crate can't be null.");
-        Preconditions.checkNotNull(player, "Player can't be null.");
-
-        this.file = crate.getFile();
-
-        this.crate = crate;
-
-        this.location = player.getLocation();
-
-        this.player = player;
-
-        this.size = 0;
-        this.inventory = null;
-        this.menu = null;
+        this.builder = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
+        this.inventory = this.builder.build().getInventory();
     }
 
     /**
-     * Create a crate with no inventory size.
+     * Create a crate with inventory size
      *
      * @param crate opened by player
      * @param player opening crate
@@ -86,8 +74,6 @@ public abstract class CrateBuilder {
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
 
-        this.file = crate.getFile();
-
         this.crate = crate;
 
         this.location = player.getLocation();
@@ -95,13 +81,12 @@ public abstract class CrateBuilder {
         this.player = player;
         this.size = size;
 
-        this.menu = new CratePrizeMenu(crate, player, size, crateName);
-
-        this.inventory = this.menu.build().getInventory();
+        this.builder = new CratePrizeMenu(crate, player, size, crateName);
+        this.inventory = this.builder.build().getInventory();
     }
 
     /**
-     * Create a crate with no inventory size.
+     * Create a crate with inventory size
      *
      * @param crate opened by player
      * @param player opening crate
@@ -113,8 +98,6 @@ public abstract class CrateBuilder {
         Preconditions.checkNotNull(player, "Player can't be null.");
         Preconditions.checkNotNull(location, "Location can't be null.");
 
-        this.file = crate.getFile();
-
         this.crate = crate;
 
         this.location = location;
@@ -122,9 +105,29 @@ public abstract class CrateBuilder {
         this.player = player;
         this.size = size;
 
-        this.menu = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
+        this.builder = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
+        this.inventory = this.builder.build().getInventory();
+    }
 
-        this.inventory = this.menu.build().getInventory();
+    /**
+     * Create a crate with no inventory size.
+     *
+     * @param crate opened by player
+     * @param player opening crate
+     */
+    public CrateBuilder(Crate crate, Player player) {
+        Preconditions.checkNotNull(crate, "Crate can't be null.");
+        Preconditions.checkNotNull(player, "Player can't be null.");
+
+        this.crate = crate;
+
+        this.location = player.getLocation();
+
+        this.player = player;
+
+        this.size = 0;
+        this.inventory = null;
+        this.builder = null;
     }
 
     /**
@@ -139,8 +142,6 @@ public abstract class CrateBuilder {
         Preconditions.checkNotNull(player, "Player can't be null.");
         Preconditions.checkNotNull(location, "Location can't be null.");
 
-        this.file = crate.getFile();
-
         this.crate = crate;
 
         this.location = location;
@@ -148,8 +149,7 @@ public abstract class CrateBuilder {
         this.player = player;
         this.size = 0;
 
-        this.menu = null;
-
+        this.builder = null;
         this.inventory = null;
     }
 
@@ -249,7 +249,7 @@ public abstract class CrateBuilder {
      */
     @NotNull
     public FileConfiguration getFile() {
-        return this.file;
+        return this.crate.getFile();
     }
 
     /**
@@ -275,7 +275,7 @@ public abstract class CrateBuilder {
      */
     @NotNull
     public InventoryBuilder getMenu() {
-        return this.menu.build();
+        return this.builder.build();
     }
 
     /**
@@ -321,8 +321,11 @@ public abstract class CrateBuilder {
      * @param slot to set at
      */
     public void setCustomGlassPane(int slot) {
-        ItemStack item = MiscUtils.getRandomPaneColor().setName(" ").build();
-        getInventory().setItem(slot, item);
+        getInventory().setItem(slot, getRandomGlassPane());
+    }
+
+    public ItemStack getRandomGlassPane() {
+        return MiscUtils.getRandomPaneColor().setName(" ").build();
     }
 
     /**
@@ -347,5 +350,59 @@ public abstract class CrateBuilder {
         }
 
         return event.isCancelled();
+    }
+
+    protected boolean isCancelled = false;
+
+    @Override
+    public void cancel() {
+        super.cancel();
+        this.isCancelled = true;
+    }
+
+    /**
+     * @return the display item of the picked prize.
+     */
+    public ItemStack getDisplayItem() {
+        ItemStack itemStack = getCrate().pickPrize(getPlayer()).getDisplayItem();
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+
+        container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "none");
+
+        itemStack.setItemMeta(itemMeta);
+
+        return itemStack;
+    }
+
+    /**
+     * @return the prize object.
+     */
+    public Prize getPrize(int slot) {
+        return getCrate().getPrize(getInventory().getItem(slot));
+    }
+
+    /**
+     * Plays a sound at different volume levels with fallbacks.
+     *
+     * @param type i.e. stop, cycle or click sound.
+     * @param category sound category to respect client settings.
+     * @param fallback fallback sound in case no sound is found.
+     */
+    public void playSound(String type, SoundCategory category, String fallback) {
+        ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
+
+        if (section != null) {
+            SoundEffect sound = new SoundEffect(
+                    section,
+                    type,
+                    fallback,
+                    category
+            );
+
+            sound.play(getPlayer(), getPlayer().getLocation());
+        }
     }
 }

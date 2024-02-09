@@ -8,14 +8,14 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.common.CrazyCratesPlugin;
 import com.badbones69.crazycrates.api.MigrationService;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
-import com.badbones69.crazycrates.managers.crates.CrateManager;
-import com.badbones69.crazycrates.managers.PrizeManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.badbones69.crazycrates.tasks.PrizeManager;
 import com.badbones69.crazycrates.support.metrics.MetricsWrapper;
-import com.badbones69.crazycrates.managers.BukkitUserManager;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.support.structures.blocks.ChestManager;
-import com.badbones69.crazycrates.managers.InventoryManager;
+import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.api.modules.ModuleLoader;
-import com.badbones69.crazycrates.other.FileUtils;
+import com.badbones69.crazycrates.api.utils.FileUtils;
 
 public class CrazyHandler extends CrazyCratesPlugin {
 
@@ -48,6 +48,8 @@ public class CrazyHandler extends CrazyCratesPlugin {
                 .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("WarCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("CasinoExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
                 .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
                 .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")

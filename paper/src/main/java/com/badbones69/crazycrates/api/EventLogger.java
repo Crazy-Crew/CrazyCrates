@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.FileManager.Files;
-import com.badbones69.crazycrates.other.MsgUtils;
+import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;

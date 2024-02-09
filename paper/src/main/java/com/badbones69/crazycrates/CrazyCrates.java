@@ -1,17 +1,19 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.EventLogger;
+import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.listeners.crates.*;
 import com.badbones69.crazycrates.listeners.menus.CrateAdminListener;
 import com.badbones69.crazycrates.listeners.menus.CrateMenuListener;
 import com.badbones69.crazycrates.listeners.menus.CratePreviewListener;
+import com.badbones69.crazycrates.listeners.menus.CrateTierListener;
 import com.badbones69.crazycrates.listeners.platforms.PaperListener;
-import com.badbones69.crazycrates.managers.BukkitUserManager;
-import com.badbones69.crazycrates.managers.crates.CrateManager;
-import com.badbones69.crazycrates.managers.crates.other.quadcrates.SessionManager;
-import com.badbones69.crazycrates.other.MsgUtils;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.badbones69.crazycrates.tasks.crates.other.quadcrates.SessionManager;
+import com.badbones69.crazycrates.api.utils.MsgUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.api.FileManager;
@@ -49,6 +51,7 @@ public class CrazyCrates extends JavaPlugin {
         this.crazyHandler.cleanFiles();
 
         // Register listeners
+        this.crazyHandler.getModuleLoader().addModule(new CrateTierListener());
         this.crazyHandler.getModuleLoader().addModule(new CratePreviewListener());
         this.crazyHandler.getModuleLoader().addModule(new CrateAdminListener());
         this.crazyHandler.getModuleLoader().addModule(new CrateMenuListener());
@@ -56,6 +59,8 @@ public class CrazyCrates extends JavaPlugin {
         this.crazyHandler.getModuleLoader().load();
 
         PluginManager pluginManager = getServer().getPluginManager();
+
+        pluginManager.registerEvents(new BrokeLocationsListener(), this);
 
         pluginManager.registerEvents(new CrateControlListener(), this);
         pluginManager.registerEvents(new MobileCrateListener(), this);

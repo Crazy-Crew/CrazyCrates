@@ -1,5 +1,9 @@
 Crate:
-  # Type of crate -> CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War
+  # Type of crate -> CSGO/Casino/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War
+
+  # Make sure to check out the wiki for anything not explained here.
+  # https://docs.crazycrew.us/crazycrates/home
+
   # See CosmicCrateExample.yml to see how the Cosmic CrateType works.
   # Spawns 4 chests and a custom structure.
   CrateType: QuadCrate
@@ -9,9 +13,9 @@ Crate:
   RequiredKeys: 0
   Max-Mass-Open: 10
   InGUI: true
-  Slot: 25
+  Slot: 16
   OpeningBroadCast: true
-  BroadCast: '%prefix%&6&l%player%&r &7is opening a &b&lQuad Crate.'
+  BroadCast: '%prefix%&6&l%player%&r &7is opening a &b&lCrazy Crate.'
   # This section is related to .nbt files.
   structure:
     # If it should randomly use an .nbt file.
@@ -27,9 +31,43 @@ Crate:
     # Supports %prefix which returns our prefix, %player% which uses the player name
     commands:
       - 'put your command here.'
+  sound:
+    # The sound options when the animation is cycling.
+    cycle-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: 'BLOCK_STONE_STEP'
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
+    # The sound options when an item is clicked.
+    click-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: 'UI_BUTTON_CLICK'
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
+    # The sound options when a crate ends.
+    stop-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: 'BLOCK_ANVIL_LAND'
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
   Prize-Message:
     - '&7You have won &c%reward% &7from &c%crate%.'
-  Item: 'CHEST'
+  Item: 'BREWING_STAND'
   Glowing: false
   Name: '&b&lQuad Crate'
   Lore:
@@ -57,7 +95,7 @@ Crate:
     Height: 1.5
     Range: 8
     Message:
-      - '&b&lCrazy Chest'
+      - '&b&lCrazy Crate'
   Prizes:
     1:
       DisplayName: '&3&lRare ChestPlate'
