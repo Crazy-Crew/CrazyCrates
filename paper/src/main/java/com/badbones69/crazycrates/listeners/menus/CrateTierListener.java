@@ -82,6 +82,8 @@ public class CrateTierListener extends ModuleHandler {
         }
 
         if (container.has(PersistentKeys.preview_tier_button.getNamespacedKey(this.plugin))) {
+            crate.playSound(player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
+
             String tierName = container.get(PersistentKeys.preview_tier_button.getNamespacedKey(this.plugin), PersistentDataType.STRING);
 
             Tier tier = crate.getTier(tierName);
