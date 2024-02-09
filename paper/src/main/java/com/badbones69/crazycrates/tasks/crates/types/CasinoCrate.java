@@ -68,11 +68,9 @@ public class CasinoCrate extends CrateBuilder {
 
                 PrizeManager manager = plugin.getCrazyHandler().getPrizeManager();
 
-                Tier tier = pickTier(getCrate());
-
-                manager.checkPrize(tier, getPrize(11), getPlayer(), getCrate());
-                manager.checkPrize(tier, getPrize(13), getPlayer(), getCrate());
-                manager.checkPrize(tier, getPrize(15), getPlayer(), getCrate());
+                manager.checkPrize(pickTier(getCrate()), getPrize(11), getPlayer(), getCrate());
+                manager.checkPrize(pickTier(getCrate()), getPrize(13), getPlayer(), getCrate());
+                manager.checkPrize(pickTier(getCrate()), getPrize(15), getPlayer(), getCrate());
 
                 plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
 
