@@ -4,6 +4,8 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.tasks.PrizeManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.bukkit.SoundCategory;
@@ -13,6 +15,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+
+import java.util.Random;
 
 public class CasinoCrate extends CrateBuilder {
 
@@ -64,9 +68,11 @@ public class CasinoCrate extends CrateBuilder {
 
                 PrizeManager manager = plugin.getCrazyHandler().getPrizeManager();
 
-                manager.checkPrize(getPrize(11), getPlayer(), getCrate());
-                manager.checkPrize(getPrize(13), getPlayer(), getCrate());
-                manager.checkPrize(getPrize(15), getPlayer(), getCrate());
+                Tier tier = pickTier(getCrate());
+
+                manager.checkPrize(tier, getPrize(11), getPlayer(), getCrate());
+                manager.checkPrize(tier, getPrize(13), getPlayer(), getCrate());
+                manager.checkPrize(tier, getPrize(15), getPlayer(), getCrate());
 
                 plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
 
@@ -118,6 +124,21 @@ public class CasinoCrate extends CrateBuilder {
                 setItem(index, getRandomGlassPane());
             }
         }
+    }
+
+    private Tier pickTier(Crate crate) {
+        if (crate.getTiers() != null && !crate.getTiers().isEmpty()) {
+            for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
+                for (Tier tier : crate.getTiers()) {
+                    int chance = tier.getChance();
+                    int num = new Random().nextInt(tier.getMaxRange());
+
+                    if (num >= 1 && num <= chance) return tier;
+                }
+            }
+        }
+
+        return null;
     }
 
     private void cycle() {

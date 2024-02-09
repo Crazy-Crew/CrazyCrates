@@ -14,7 +14,7 @@ import java.util.List;
 public abstract class InventoryBuilder implements InventoryHolder {
 
     @NotNull
-    protected final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
+    protected final CrazyCrates plugin = CrazyCrates.get();
 
     private final Inventory inventory;
     private final Player player;

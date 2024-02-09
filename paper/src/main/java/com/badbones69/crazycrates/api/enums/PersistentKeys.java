@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api.enums;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
 import com.badbones69.crazycrates.CrazyCrates;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("rawtypes")
 public enum PersistentKeys {
@@ -17,6 +18,8 @@ public enum PersistentKeys {
     next_button("next_button", PersistentDataType.STRING),
     crate_prize("crate_prize", PersistentDataType.INTEGER);
 
+    private final @NotNull CrazyCrates plugin = CrazyCrates.get();
+
     private final String NamespacedKey;
     private final PersistentDataType type;
 
@@ -25,8 +28,8 @@ public enum PersistentKeys {
         this.type = type;
     }
 
-    public NamespacedKey getNamespacedKey(CrazyCrates plugin) {
-        return new NamespacedKey(plugin, plugin.getName().toLowerCase() + "_" + this.NamespacedKey);
+    public NamespacedKey getNamespacedKey() {
+        return new NamespacedKey(this.plugin, this.plugin.getName().toLowerCase() + "_" + this.NamespacedKey);
     }
 
     public PersistentDataType getType() {

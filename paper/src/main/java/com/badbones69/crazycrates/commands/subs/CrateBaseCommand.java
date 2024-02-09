@@ -87,14 +87,6 @@ public class CrateBaseCommand extends BaseCommand {
         player.sendMessage(Messages.feature_disabled.getString());
     }
 
-    /*@SubCommand("debug")
-    @Permission(value = "crazycrates.debug", def = PermissionDefault.TRUE)
-    public void debug(Player player, @Suggestion("crates") String crateName) {
-        Crate crate = this.crateManager.getCrateFromName(crateName);
-
-        player.openInventory(crate.getTierPreview(player, this.plugin.getCrazyHandler().getInventoryManager().getPage(player)));
-    }*/
-
     @SubCommand("help")
     @Permission(value = "crazycrates.help", def = PermissionDefault.TRUE)
     public void onHelp(CommandSender sender) {

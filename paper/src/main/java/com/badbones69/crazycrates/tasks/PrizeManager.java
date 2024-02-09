@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.tasks;
 
+import com.badbones69.crazycrates.api.objects.Tier;
 import org.apache.commons.lang.WordUtils;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
@@ -164,6 +165,20 @@ public class PrizeManager {
             if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
             this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+        } else {
+            player.sendMessage(MsgUtils.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
+        }
+    }
+
+    public void checkPrize(Tier tier, Prize prize, Player player, Crate crate) {
+        if (prize != null && tier != null) {
+            if (prize.getTiers().contains(tier)) {
+                givePrize(player, prize, crate);
+
+                if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
+
+                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+            }
         } else {
             player.sendMessage(MsgUtils.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
         }
