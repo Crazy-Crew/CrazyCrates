@@ -63,21 +63,21 @@ Crate:
 ## Changes:
 * A piece of the configuration for Cosmic Crate has been changed.
 ```yml
+  tier-preview:
+    # Turn on and off the preview for this crate.
+    toggle: true
+    # How many lines the Tier Preview should have. Including Header and Bottom (Between 3 and 6)
+    rows: 5
+    glass:
+      # Turn the glass border in the preview on and off.
+      toggle: true
+      # The name of the border item.
+      name: ' '
+      # The item that shows in the border. Can be glass or any other item.
+      item: 'RED_STAINED_GLASS_PANE'
   # Tiers are available in Cosmic and Casino crate types.
   # The Tiers the rewards can be found in.
   Tiers:
-    preview:
-      # Turn on and off the preview for this crate.
-      toggle: true
-      # How many lines the Tier Preview should have. Including Header and Bottom (Between 3 and 6)
-      rows: 5
-      glass:
-        # Turn the glass border in the preview on and off.
-        toggle: true
-        # The name of the border item.
-        name: ' '
-        # The item that shows in the border. Can be glass or any other item.
-        item: 'RED_STAINED_GLASS_PANE'
     # The Config Name for the Crate
     Basic:
       # The in-game name of the tier.
