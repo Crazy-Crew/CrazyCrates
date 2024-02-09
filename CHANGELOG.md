@@ -66,26 +66,49 @@ Crate:
   # Tiers are available in Cosmic and Casino crate types.
   # The Tiers the rewards can be found in.
   Tiers:
-     # The Config Name for the Crate
-     Basic:
-        # The in-game name of the tier
-        Name: '&8Basic Tier'
-        # The item used for the secondary gui when you right-click for the preview.
-        Item: 'GRAY_STAINED_GLASS_PANE'
-        # Chance of that item getting picked. It would be 80/100 chance because MaxRange is 100.
-        Chance: 80
-        # The max range that the chance will go though.
-        MaxRange: 100
-     UnCommon:
-        Name: '&aUncommon Tier'
-        Item: 'LIME_STAINED_GLASS_PANE'
-        Chance: 55
-        MaxRange: 100
-     Rare:
-        Name: '&4Rare Tier'
-        Item: 'RED_STAINED_GLASS_PANE'
-        Chance: 20
-        MaxRange: 100 
+    preview:
+      # Turn on and off the preview for this crate.
+      toggle: true
+      # How many lines the Tier Preview should have. Including Header and Bottom (Between 3 and 6)
+      rows: 5
+      glass:
+        # Turn the glass border in the preview on and off.
+        toggle: true
+        # The name of the border item.
+        name: ' '
+        # The item that shows in the border. Can be glass or any other item.
+        item: 'RED_STAINED_GLASS_PANE'
+    # The Config Name for the Crate
+    Basic:
+      # The in-game name of the tier.
+      Name: '&8Basic Tier'
+      # The in-game lore of the tier.
+      Lore:
+        - '&7A basic tier.'
+      # The item used for the secondary gui when you right-click for the preview.
+      Item: 'CHEST'
+      # Chance of that item getting picked. It would be 80/100 chance because MaxRange is 100.
+      Chance: 80
+      # The max range that the chance will go though.
+      MaxRange: 100
+      # The slot this item will be in the secondary gui.
+      Slot: 20
+    UnCommon:
+      Name: '&aUncommon Tier'
+      Lore:
+        - '&aAn uncommon tier.'
+      Item: 'CHEST'
+      Chance: 55
+      MaxRange: 100
+      Slot: 22
+    Rare:
+      Name: '&4Rare Tier'
+      Lore:
+        - '&cA rare tier.'
+      Item: 'ENDER_CHEST'
+      Chance: 20
+      MaxRange: 100
+      Slot: 24
 ```
 * `Color` has been replaced by `Item` as you could have always used any item, so it was misleading to name it `Color`
 * If `Item` is not found, It will fall back to LIME_STAINED_GLASS_PANE.
@@ -94,6 +117,7 @@ Crate:
 * Re-organized the default /crate gui
 * Cleaned up the package layout
 * Fixed a few bugs
+* Switched more checks to rely on PersistentDataContainer over checking for specific slots.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
