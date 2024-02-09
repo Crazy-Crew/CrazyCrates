@@ -3,13 +3,10 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.tasks.PrizeManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 
@@ -109,43 +106,22 @@ public class CasinoCrate extends CrateBuilder {
         getPlayer().openInventory(getInventory());
     }
 
-    private final ItemStack red_glass = new ItemBuilder().setMaterial(Material.RED_STAINED_GLASS_PANE).build();
-
     private void setDisplayItems() {
         for (int index = 0; index <= 26; index++) {
             if (index == 2 || index == 4 || index == 6 || index == 11 || index == 13 || index == 15 || index == 20 || index == 22 || index == 24) {
                 setItem(index, getDisplayItem());
-            } else {
-                setItem(index, this.red_glass);
             }
         }
     }
 
     private void cycle() {
         for (int index = 0; index < 27; index++) {
-            ItemStack green_glass = new ItemBuilder().setMaterial(Material.GREEN_STAINED_GLASS_PANE).build();
-
-            ItemStack item = getInventory().getItem(index);
-
-            if (item != null) {
-                Material type = item.getType();
-
-                if (type == this.red_glass.getType()) {
-                    setItem(index, green_glass);
-                } else {
-                    setItem(index, this.red_glass);
-                }
-            }
-
-            /*if (index != 2 || index != 4 || index != 6 || index != 11 || index != 13 || index != 15 || index != 20 || index != 22 || index != 24) {
+            //noinspection ConstantValue
+            if (index != 2 || index != 4 || index != 6 || index != 11 || index != 13 || index != 15 || index != 20 || index != 22 || index != 24) {
                 setItem(index, getRandomGlassPane());
-            }*/
-        }
-
-        for (int index = 0; index <= 27; index++) {
-            if (index == 2 || index == 4 || index == 6 || index == 11 || index == 13 || index == 15 || index == 20 || index == 22 || index == 24) {
-                setItem(index, getDisplayItem());
             }
         }
+
+        setDisplayItems();
     }
 }
