@@ -122,6 +122,7 @@ Crate:
 ## Fixes:
  * Fixed issues with crates being broken in worlds created by world plugins.
  * Fixed a few other bugs I can't remember.
+ * Fixed a bug where the refund event needed to be fired sync.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
