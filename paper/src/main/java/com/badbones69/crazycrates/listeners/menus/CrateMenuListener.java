@@ -15,6 +15,7 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.CrazyHandler;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
@@ -77,7 +78,7 @@ public class CrateMenuListener extends ModuleHandler {
 
                 player.closeInventory();
                 this.inventoryManager.addViewer(player);
-                this.inventoryManager.openNewCratePreview(player, crate);
+                this.inventoryManager.openNewCratePreview(player, crate, crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
             } else {
                 player.sendMessage(Messages.preview_disabled.getString());
             }

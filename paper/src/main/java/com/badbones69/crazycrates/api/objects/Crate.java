@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api.objects;
 
+import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
-import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -43,6 +43,12 @@ public class Crate {
     private final boolean previewToggle;
     private final boolean borderToggle;
     private final ItemBuilder borderItem;
+
+    private final boolean previewTierToggle;
+    private final boolean previewTierBorderToggle;
+    private final ItemBuilder previewTierBorderItem;
+    private int previewTierCrateRows;
+    private final int previewTierMaxSlots;
 
     private final CrateType crateType;
     private final FileConfiguration file;
@@ -93,19 +99,31 @@ public class Crate {
         this.prizes = prizes;
         this.crateType = crateType;
         this.preview = getPreviewItems();
-        this.previewToggle = file != null && (!file.contains("Crate.Preview.Toggle") || file.getBoolean("Crate.Preview.Toggle"));
-        this.borderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle");
+        this.previewToggle = file != null && file.getBoolean("Crate.Preview.Toggle", false);
+        this.borderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle", false);
+
+        this.previewTierToggle = file != null && file.getBoolean("Crate.Tiers.preview.toggle", false);
+        this.previewTierBorderToggle = file != null && file.getBoolean("Crate.Tiers.preview.glass.toggle", false);
+
         setPreviewChestLines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
         this.previewName = MsgUtils.sanitizeColor(previewName);
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
+
         this.maxSlots = this.previewChestLines * 9;
 
         for (int amount = this.preview.size(); amount > this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0); amount -= this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0), this.maxPage++) ;
 
         this.crateInventoryName = file != null ? MsgUtils.sanitizeColor(file.getString("Crate.CrateName")) : "";
+
         String borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? MsgUtils.color(file.getString("Crate.Preview.Glass.Name")) : " ";
         this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(borderName);
+
+        String previewTierBorderName = file != null ? MsgUtils.color(file.getString("Crate.Tiers.preview.glass.name", " ")) : " ";
+        this.previewTierBorderItem = file != null ? new ItemBuilder().setMaterial(file.getString("Crate.Tiers.preview.glass.item", "")).setName(previewTierBorderName) : new ItemBuilder().setMaterial(Material.AIR).setName(previewTierBorderName);
+
+        setTierPreviewRows(file != null ? file.getInt("Crate.Tiers.preview.rows", 5) : 5);
+        this.previewTierMaxSlots = this.previewTierCrateRows * 9;
 
         this.hologram = hologram != null ? hologram : new CrateHologram();
 
@@ -113,7 +131,19 @@ public class Crate {
             if (this.file != null) this.manager = new CosmicCrateManager(this.plugin, this.file);
         }
     }
-    
+
+    public boolean isPreviewTierBorderToggle() {
+        return this.previewTierBorderToggle;
+    }
+
+    public boolean isPreviewTierToggle() {
+        return this.previewTierToggle;
+    }
+
+    public ItemBuilder getPreviewTierBorderItem() {
+        return this.previewTierBorderItem;
+    }
+
     /**
      * Get the crate manager which contains all the settings for that crate type.
      */
@@ -133,6 +163,20 @@ public class Crate {
         } else finalAmount = Math.min(amount, 6);
 
         this.previewChestLines = finalAmount;
+    }
+
+    /**
+     * Set the preview lines for a Crate.
+     * @param amount The amount of lines the preview has.
+     */
+    public void setTierPreviewRows(int amount) {
+        int finalAmount;
+
+        if (amount < 3 && this.borderToggle) {
+            finalAmount = 3;
+        } else finalAmount = Math.min(amount, 6);
+
+        this.previewTierCrateRows = finalAmount;
     }
     
     /**
@@ -306,7 +350,7 @@ public class Crate {
     }
     
     /**
-     * Get if the preview has an item boarder.
+     * Get if the preview has an item border.
      * @return True if it does and false if not.
      */
     public boolean isBorderToggle() {
@@ -314,9 +358,9 @@ public class Crate {
     }
     
     /**
-     * Get the item that shows as the preview boarder if enabled.
+     * Get the item that shows as the preview border if enabled.
      *
-     * @return The ItemBuilder for the boarder item.
+     * @return The ItemBuilder for the border item.
      */
     public ItemBuilder getBorderItem() {
         return this.borderItem;
@@ -350,6 +394,12 @@ public class Crate {
 
         return cratePreviewMenu.build().getInventory();
     }
+
+    public Inventory getTierPreview(Player player) {
+        CrateTierMenu crateTierMenu = new CrateTierMenu(getTiers(), this, player, !this.previewTierBorderToggle && (this.inventoryManager.inCratePreview(player)) && this.previewTierMaxSlots == 9 ? this.previewTierMaxSlots + 9 : this.previewTierMaxSlots, this.previewName);
+
+        return crateTierMenu.build().getInventory();
+    }
     
     /**
      * @return The crate type of the crate.
@@ -371,7 +421,9 @@ public class Crate {
      */
     public ItemStack getKey(int amount) {
         ItemStack key = this.key.clone();
+
         key.setAmount(amount);
+
         return key;
     }
     
@@ -527,6 +579,16 @@ public class Crate {
         return this.tiers;
     }
 
+    public Tier getTier(String name) {
+        for (Tier tier : this.tiers) {
+            if (tier.getName().equalsIgnoreCase(name)) {
+                return tier;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @return Returns the max amount that players can specify for crate mass open.
      */
@@ -566,6 +628,32 @@ public class Crate {
         }
 
         return items;
+    }
+
+    /**
+     * Get prizes for tier specific preview gui's
+     *
+     * @param tier to check
+     * @return list of prizes
+     */
+    public List<ItemStack> getPreviewItems(Tier tier) {
+        List<ItemStack> prizes = new ArrayList<>();
+
+        for (Prize prize : getPrizes()) {
+            if (prize.getTiers().contains(tier)) prizes.add(prize.getDisplayItem());
+        }
+
+        return prizes;
+    }
+
+    public List<ItemStack> getPreviewDisplayItems() {
+        List<ItemStack> tiers = new ArrayList<>();
+
+        for (Tier tier : getTiers()) {
+            tiers.add(tier.getTierItem());
+        }
+
+        return tiers;
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.badbones69.crazycrates.commands.subs;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
+import com.badbones69.crazycrates.api.objects.Tier;
 import dev.triumphteam.cmd.core.annotation.ArgName;
 import dev.triumphteam.cmd.core.annotation.Command;
 import dev.triumphteam.cmd.core.annotation.Default;
@@ -45,6 +47,7 @@ import com.badbones69.crazycrates.api.utils.FileUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -89,13 +92,7 @@ public class CrateBaseCommand extends BaseCommand {
     public void debug(Player player, @Suggestion("crates") String crateName) {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
-        // If the crate is menu or null. we return
-        if (crate == null || crate.getCrateType() == CrateType.menu) {
-            player.sendMessage(Messages.not_a_crate.getMessage("%crate%", crateName).toString());
-            return;
-        }
-
-        this.crateManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), false, false);
+        player.openInventory(crate.getTierPreview(player, this.plugin.getCrazyHandler().getInventoryManager().getPage(player)));
     }*/
 
     @SubCommand("help")
@@ -350,7 +347,7 @@ public class CrateBaseCommand extends BaseCommand {
         }
 
         this.plugin.getCrazyHandler().getInventoryManager().addViewer(player);
-        this.plugin.getCrazyHandler().getInventoryManager().openNewCratePreview(player, crate);
+        this.plugin.getCrazyHandler().getInventoryManager().openNewCratePreview(player, crate,crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
     }
 
     @SubCommand("open-others")

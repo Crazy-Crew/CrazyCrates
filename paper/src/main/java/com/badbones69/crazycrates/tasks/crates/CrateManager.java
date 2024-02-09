@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.objects.BrokeLocation;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -122,7 +123,7 @@ public class CrateManager {
                 Player player = this.plugin.getServer().getPlayer(uuid);
 
                 if (player != null) {
-                    this.plugin.getCrazyHandler().getInventoryManager().openNewCratePreview(player, crate);
+                    this.plugin.getCrazyHandler().getInventoryManager().openNewCratePreview(player, crate, crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
                 }
             }
 
@@ -166,16 +167,27 @@ public class CrateManager {
                 int maxMassOpen = file.contains("Crate.Max-Mass-Open") ? file.getInt("Crate.Max-Mass-Open") : 10;
                 int requiredKeys = file.contains("Crate.RequiredKeys") ? file.getInt("Crate.RequiredKeys") : 0;
 
-                if (file.contains("Crate.Tiers") && file.getConfigurationSection("Crate.Tiers") != null) {
-                    for (String tier : file.getConfigurationSection("Crate.Tiers").getKeys(false)) {
+                ConfigurationSection section = file.getConfigurationSection("Crate.Tiers");
+
+                if (file.contains("Crate.Tiers") && section != null) {
+                    for (String tier : section.getKeys(false)) {
                         String path = "Crate.Tiers." + tier;
-                        tiers.add(new Tier(tier, file.getString(path + ".Name"), file.getString(path + ".Item", "LIME_STAINED_GLASS_PANE"), file.getInt(path + ".Chance"), file.getInt(path + ".MaxRange")));
+
+                        ConfigurationSection tierSection = file.getConfigurationSection(path);
+
+                        if (tierSection != null) {
+                            tiers.add(new Tier(path, tierSection));
+                        }
                     }
                 }
 
-                if (crateType == CrateType.cosmic && tiers.isEmpty()) {
+                boolean isTiersEmpty = crateType == CrateType.cosmic || crateType == CrateType.casino;
+
+                if (isTiersEmpty && tiers.isEmpty()) {
                     this.brokeCrates.add(crateName);
-                    if (this.plugin.isLogging()) this.plugin.getLogger().warning("No tiers were found for this cosmic crate " + crateName + ".yml file.");
+
+                    if (this.plugin.isLogging()) this.plugin.getLogger().warning("No tiers were found for " + crateName + ".yml file.");
+
                     continue;
                 }
 

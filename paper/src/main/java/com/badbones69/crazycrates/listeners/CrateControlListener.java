@@ -79,9 +79,11 @@ public class CrateControlListener implements Listener {
                     e.setCancelled(true);
 
                     if (loc.getCrateType() != CrateType.menu) {
+                        Crate crate = loc.getCrate();
+
                         if (loc.getCrate().isPreviewEnabled()) {
                             this.inventoryManager.addViewer(player);
-                            this.inventoryManager.openNewCratePreview(player, loc.getCrate());
+                            this.inventoryManager.openNewCratePreview(player, loc.getCrate(), crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
                         } else {
                             player.sendMessage(Messages.preview_disabled.getString());
                         }

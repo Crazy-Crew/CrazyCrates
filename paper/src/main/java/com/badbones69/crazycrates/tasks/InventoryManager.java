@@ -11,12 +11,15 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.CrazyCrates;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+@SuppressWarnings("unchecked")
 public class InventoryManager {
 
     @NotNull
@@ -84,7 +87,9 @@ public class InventoryManager {
     public ItemStack getNextButton(Player player) {
         ItemBuilder button = new ItemBuilder(this.nextButton);
 
-        if (player != null) button.addLorePlaceholder("%Page%", (getPage(player) + 1) + "");
+        if (player != null) {
+            button.addLorePlaceholder("%Page%", (getPage(player) + 1) + "");
+        }
 
         return button.build();
     }
@@ -92,17 +97,25 @@ public class InventoryManager {
     public ItemStack getBackButton(Player player) {
         ItemBuilder button = new ItemBuilder(this.backButton);
 
-        if (player != null) button.addLorePlaceholder("%Page%", (getPage(player) - 1) + "");
+        if (player != null) {
+            button.addLorePlaceholder("%Page%", (getPage(player) - 1) + "");
+        }
 
         return button.build();
     }
 
     private final HashMap<UUID, Crate> crateViewers = new HashMap<>();
 
-    public void openNewCratePreview(Player player, Crate crate) {
+    public void openNewCratePreview(Player player, Crate crate, boolean isTierPreview) {
         this.crateViewers.put(player.getUniqueId(), crate);
 
+        if (isTierPreview) {
+            player.openInventory(crate.getTierPreview(player));
+            return;
+        }
+
         setPage(player, 1);
+
         player.openInventory(crate.getPreview(player));
     }
 
