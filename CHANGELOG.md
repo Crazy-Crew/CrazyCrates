@@ -1,8 +1,9 @@
 ## Additions:
 ### Crate Types:
-* Added a new crate type called `CSGOTriple` ( Idea by slimemcstew )
+* Added a new crate type called `Casino` ( Idea by slimemcstew )
    * This allows a player to win 3 prizes with 3 animations while opening a crate.
 ### Other:
+* Added War Crate as a default generated crate.
 * Added the ability to have holograms created using CMI or DecentHolograms have a configurable "block" range.
 ```yml
   Hologram:
@@ -113,12 +114,14 @@ Crate:
 * `Color` has been replaced by `Item` as you could have always used any item, so it was misleading to name it `Color`
 * If `Item` is not found, It will fall back to LIME_STAINED_GLASS_PANE.
 
-* Added War Crate as a default generated crate.
+## Enhancements:
+* Added a check if the crate type is invalid, It will notify you in console and show you valid crate types. 
+* Updated slot checks for menu items to rely on PersistentDataContainer.
 * Re-organized the default /crate gui
-* Cleaned up the package layout
-* Fixed a few bugs
-* Switched more checks to rely on PersistentDataContainer over checking for specific slots.
-* Added a check if the crate type is invalid, It will notify you in console and show you valid crate types.
+
+## Fixes:
+ * Fixed issues with crates being broken in worlds created by world plugins.
+ * Fixed a few other bugs I can't remember.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
