@@ -36,13 +36,13 @@ public class CrateTierMenu extends InventoryBuilder {
                 getInventory().setItem(item, getCrate().getPreviewTierBorderItem().build());
             }
 
-            borderItems.replaceAll(getCrate()::getAbsoluteItemPosition);
+            borderItems.replaceAll(getCrate()::getAbsolutePreviewItemPosition);
 
             for (int item : borderItems) { // Bottom border slots
                 getInventory().setItem(item, getCrate().getPreviewTierBorderItem().build());
             }
         }
 
-        if (this.crazyHandler.getInventoryManager().inCratePreview(getPlayer()) && this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) getInventory().setItem(getCrate().getAbsoluteItemPosition(4), this.crazyHandler.getInventoryManager().getMenuButton());
+        if (this.crazyHandler.getInventoryManager().inCratePreview(getPlayer()) && this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) getInventory().setItem(getCrate().getAbsolutePreviewItemPosition(4), this.crazyHandler.getInventoryManager().getMenuButton());
     }
 }

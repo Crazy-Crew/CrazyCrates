@@ -614,6 +614,10 @@ public class Crate {
     public int getAbsoluteItemPosition(int baseSlot) {
         return baseSlot + (this.previewChestLines > 1 ? this.previewChestLines - 1 : 1) * 9;
     }
+
+    public int getAbsolutePreviewItemPosition(int baseSlot) {
+        return baseSlot + (this.previewTierCrateRows > 1 ? this.previewTierCrateRows - 1 : 1) * 9;
+    }
     
     /**
      * Loads all the preview items and puts them into a list.
