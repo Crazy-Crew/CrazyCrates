@@ -109,16 +109,20 @@ Crate:
       Chance: 80
       # The max range that the chance will go though.
       MaxRange: 100
+      # The slot this item will be in the secondary gui.
+      Slot: 11
     UnCommon:
       Name: '&aUncommon Tier'
       Item: 'LIME_STAINED_GLASS_PANE'
       Chance: 55
       MaxRange: 100
+      Slot: 13
     Rare:
       Name: '&4Rare Tier'
       Item: 'RED_STAINED_GLASS_PANE'
       Chance: 20
       MaxRange: 100
+      Slot: 15
   PhysicalKey:
     # Name of the Key.
     Name: '&9&lCasino Crate Key'
