@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.EventLogger;
+import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.listeners.crates.*;
@@ -58,6 +59,8 @@ public class CrazyCrates extends JavaPlugin {
         this.crazyHandler.getModuleLoader().load();
 
         PluginManager pluginManager = getServer().getPluginManager();
+
+        pluginManager.registerEvents(new BrokeLocationsListener(), this);
 
         pluginManager.registerEvents(new CrateControlListener(), this);
         pluginManager.registerEvents(new MobileCrateListener(), this);
