@@ -7,9 +7,9 @@ Crate:
   # See CosmicCrateExample.yml to see how the Cosmic CrateType works.
   CrateType: Casino
   # Name of the Inventory if a GUI crate.
-  CrateName: '&dCasino Crate'
+  CrateName: '&9Casino Crate'
   # The name of the inventory that will be in the preview GUI.
-  Preview-Name: '&dCasino Crate Preview'
+  Preview-Name: '&9Casino Crate Preview'
   # Starting amount of keys when the player 1st joins.
   StartingKeys: 0
   # The amount of keys required to use the crate.
@@ -24,7 +24,7 @@ Crate:
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
-  BroadCast: '%prefix%&6&l%player%&r &7is opening a &d&lCasino Crate.'
+  BroadCast: '%prefix%&6&l%player%&r &7is opening a &9&lCasino Crate.'
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
@@ -73,11 +73,11 @@ Crate:
   Prize-Message:
     - '&7You have won &c%reward% &7from &c%crate%.'
   # Item the crate is in the GUI
-  Item: 'DIAMOND'
+  Item: 'GOLD_INGOT'
   # If the crate in the main /cc GUI is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
-  Name: '&d&lCasino Crate'
+  Name: '&9&lCasino Crate'
   # The lore of the item in the GUI.
   Lore:
     - '&7This crate contains strange objects.'
@@ -121,7 +121,7 @@ Crate:
       MaxRange: 100
   PhysicalKey:
     # Name of the Key.
-    Name: '&d&lCasino Crate Key'
+    Name: '&9&lCasino Crate Key'
     # Lore of the Key.
     Lore:
       - '&7A special Key'
@@ -140,7 +140,7 @@ Crate:
     Range: 8
     # The message that will be displayed.
     Message:
-      - '&d&lCasino Crate'
+      - '&9&lCasino Crate'
   # All the prizes that can be gotten in the Crate.
   Prizes:
     1:
