@@ -16,7 +16,7 @@ Crate:
   InGUI: false
   Slot: 14
   OpeningBroadCast: true
-  BroadCast: '%prefix%&6&l%player%&r &7is opening a &e&lClassic Chest&7.'
+  BroadCast: '%prefix%&6&l%player%&r &7is opening a &e&lClassic Crate&7.'
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
@@ -64,7 +64,7 @@ Crate:
     - '&7You have won &c%reward% &7from &c%crate%.'
   Item: 'CHEST'
   Glowing: false
-  Name: '&e&lClassic Chest'
+  Name: '&e&lClassic Crate'
   Lore:
     - '&7This crate contains classic items.'
     - '&7You have &6%keys% keys &7to open this crate with.'
@@ -90,7 +90,7 @@ Crate:
     Height: 1.5
     Range: 8
     Message:
-      - '&e&lClassic Chest'
+      - '&e&lClassic Crate'
   Prizes:
     1:
       DisplayName: '&a&lFancy Pants'

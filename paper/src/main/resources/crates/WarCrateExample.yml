@@ -24,7 +24,7 @@ Crate:
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
-  BroadCast: '%prefix%&6&l%player%&r &7is opening a &4&lWar Chest&7.'
+  BroadCast: '%prefix%&6&l%player%&r &7is opening a &4&lWar Crate&7.'
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
@@ -77,7 +77,7 @@ Crate:
   # If the crate in the main /cc GUI is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
-  Name: '&4&lWar Chest'
+  Name: '&4&lWar Crate'
   # The lore of the item in the GUI.
   Lore:
     - '&7This crate contains strange objects.'
@@ -117,7 +117,7 @@ Crate:
     Range: 8
     # The message that will be displayed.
     Message:
-      - '&4&lWar Chest'
+      - '&4&lWar Crate'
   # All the prizes that can be gotten in the Crate.
   Prizes:
     1:

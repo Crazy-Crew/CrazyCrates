@@ -15,7 +15,7 @@ Crate:
   InGUI: true
   Slot: 16
   OpeningBroadCast: true
-  BroadCast: '%prefix%&6&l%player%&r &7is opening a &b&lQuad Crate.'
+  BroadCast: '%prefix%&6&l%player%&r &7is opening a &b&lCrazy Crate.'
   # This section is related to .nbt files.
   structure:
     # If it should randomly use an .nbt file.
@@ -95,7 +95,7 @@ Crate:
     Height: 1.5
     Range: 8
     Message:
-      - '&b&lCrazy Chest'
+      - '&b&lCrazy Crate'
   Prizes:
     1:
       DisplayName: '&3&lRare ChestPlate'

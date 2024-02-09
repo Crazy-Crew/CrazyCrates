@@ -60,7 +60,7 @@ Crate:
       pitch: 1.0
   Item: 'ENDER_CHEST'
   Glowing: false
-  Name: '&d&lCosmic Chest'
+  Name: '&d&lCosmic Crate'
   Lore:
     - '&7This crate contains strange objects,'
     - '&7from somewhere beyond this planet.'
@@ -99,19 +99,19 @@ Crate:
     Height: 1.5
     Range: 8
     Message:
-      - '&d&lCosmic Chest'
-  # Tiers are available in Cosmic crates only
-  #The tiers in the Crate
+      - '&d&lCosmic Crate'
+  # Tiers are available in Cosmic and Casino crate types.
+  # The Tiers the rewards can be found in.
   Tiers:
-    #The Config Name for the Crate
+    # The Config Name for the Crate
     Basic:
-      #The in-game name of the Crate
+      # The in-game name of the tier
       Name: '&8Basic Prize'
-      #Use the MetaData for the color of the glass
+      # The type of glass used for each tier.
       Color: 'GRAY_STAINED_GLASS_PANE'
-      #Chance of that item getting picked. It would be 80/100 chance because MaxRange is 100.
+      # Chance of that item getting picked. It would be 80/100 chance because MaxRange is 100.
       Chance: 80
-      #The max range that the chance will go though.
+      # The max range that the chance will go though.
       MaxRange: 100
     UnCommon:
       Name: '&aUnCommon Prize'
@@ -133,8 +133,8 @@ Crate:
         - '&6&lChance: &c&l40%'
       MaxRange: 100
       Chance: 40
-      # Tiers are available in Cosmic crates only
-      #The Tiers the rewards can be found in.
+      # Tiers are available in Cosmic and Casino crate types.
+      # The Tiers the rewards can be found in.
       Tiers:
         - 'Basic'
         - 'UnCommon'
