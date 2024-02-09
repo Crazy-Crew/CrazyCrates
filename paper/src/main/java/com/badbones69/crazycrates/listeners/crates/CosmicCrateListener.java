@@ -390,7 +390,7 @@ public class CosmicCrateListener implements Listener {
         for (int slot = 0; slot < cosmic.getSize(); slot++) {
             Tier tier = pickTier(cosmic.getCrate());
 
-            if (tier != null) view.getTopInventory().setItem(slot, tier.getTierPane());
+            if (tier != null) view.getTopInventory().setItem(slot, tier.getTierItem());
         }
 
         cosmic.getCrate().playSound(player.getLocation(), "cycle-sound", "BLOCK_NOTE_BLOCK_XYLOPHONE", SoundCategory.PLAYERS);
@@ -409,7 +409,7 @@ public class CosmicCrateListener implements Listener {
         Tier tier = pickTier(cosmic.getCrate());
 
         if (tier != null) {
-            crateManager.getPickedPrizes(player).forEach(slot -> view.setItem(slot, tier.getTierPane()));
+            crateManager.getPickedPrizes(player).forEach(slot -> view.setItem(slot, tier.getTierItem()));
             player.updateInventory();
 
             if (this.plugin.getCrazyHandler().getConfigManager().getConfig().getProperty(ConfigKeys.cosmic_crate_timeout)) {
@@ -434,7 +434,7 @@ public class CosmicCrateListener implements Listener {
 
     private Tier getTier(Crate crate, ItemStack item) {
         for (Tier tier : crate.getTiers()) {
-            if (tier.getTierPane().isSimilar(item)) return tier;
+            if (tier.getTierItem().isSimilar(item)) return tier;
         }
 
         return null;

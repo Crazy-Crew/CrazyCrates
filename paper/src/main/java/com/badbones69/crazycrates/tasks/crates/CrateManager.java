@@ -169,7 +169,7 @@ public class CrateManager {
                 if (file.contains("Crate.Tiers") && file.getConfigurationSection("Crate.Tiers") != null) {
                     for (String tier : file.getConfigurationSection("Crate.Tiers").getKeys(false)) {
                         String path = "Crate.Tiers." + tier;
-                        tiers.add(new Tier(tier, file.getString(path + ".Name"), file.getString(path + ".Color"), file.getInt(path + ".Chance"), file.getInt(path + ".MaxRange")));
+                        tiers.add(new Tier(tier, file.getString(path + ".Name"), file.getString(path + ".Item", "LIME_STAINED_GLASS_PANE"), file.getInt(path + ".Chance"), file.getInt(path + ".MaxRange")));
                     }
                 }
 
