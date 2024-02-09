@@ -363,6 +363,13 @@ public class CrateManager {
      * @param checkHand If it just checks the players hand or if it checks their inventory.
      */
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
+        if (crate.getCrateType() == null) {
+            this.plugin.getLogger().warning("The crate type in the config section is not a valid type: " + crate.getFile().getString("Crate.CrateType"));
+            this.plugin.getLogger().warning("Valid Crate Types: CSGO/Casino/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War");
+            removePlayerFromOpeningList(player);
+            return;
+        }
+
         if (crate.getCrateType() == CrateType.menu) {
             if (this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
                 CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.inventory_size), this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.inventory_name));
