@@ -70,7 +70,7 @@ public class MiscUtils {
     public static void setEntityData(Entity entity, PersistentKeys key) {
         PersistentDataContainer entityData = entity.getPersistentDataContainer();
 
-        entityData.set(key.getNamespacedKey(plugin), key.getType(), true);
+        entityData.set(key.getNamespacedKey(), key.getType(), true);
     }
 
     /**

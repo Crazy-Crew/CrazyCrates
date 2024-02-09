@@ -66,7 +66,7 @@ public class CrateTierListener extends ModuleHandler {
 
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-        if (container.has(PersistentKeys.main_menu_button.getNamespacedKey(this.plugin)) && this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
+        if (container.has(PersistentKeys.main_menu_button.getNamespacedKey()) && this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
             if (this.inventoryManager.inCratePreview(player)) {
                 crate.playSound(player, player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
 
@@ -81,10 +81,10 @@ public class CrateTierListener extends ModuleHandler {
             return;
         }
 
-        if (container.has(PersistentKeys.preview_tier_button.getNamespacedKey(this.plugin))) {
+        if (container.has(PersistentKeys.preview_tier_button.getNamespacedKey())) {
             crate.playSound(player, player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
 
-            String tierName = container.get(PersistentKeys.preview_tier_button.getNamespacedKey(this.plugin), PersistentDataType.STRING);
+            String tierName = container.get(PersistentKeys.preview_tier_button.getNamespacedKey(), PersistentDataType.STRING);
 
             Tier tier = crate.getTier(tierName);
 

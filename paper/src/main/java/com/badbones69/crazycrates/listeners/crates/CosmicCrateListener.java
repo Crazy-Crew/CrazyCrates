@@ -226,7 +226,7 @@ public class CosmicCrateListener implements Listener {
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
         // Check if it has the mystery crate key otherwise check picked key.
-        if (container.has(PersistentKeys.cosmic_mystery_crate.getNamespacedKey(this.plugin))) {
+        if (container.has(PersistentKeys.cosmic_mystery_crate.getNamespacedKey())) {
             int size = cosmicCrateManager.getPickedPrizes(player).size();
 
             // Check if prizes is less than or equal to totalPrizes before we change any items.
@@ -244,7 +244,7 @@ public class CosmicCrateListener implements Listener {
                 // Play a sound to indicate they clicked a chest.
                 cosmic.getCrate().playSound(player, player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
             }
-        } else if (container.has(PersistentKeys.cosmic_picked_crate.getNamespacedKey(this.plugin))) {
+        } else if (container.has(PersistentKeys.cosmic_picked_crate.getNamespacedKey())) {
             // Get item builder.
             ItemBuilder builder = cosmicCrateManager.getMysteryCrate().setAmount(pickedSlot)
                     .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))

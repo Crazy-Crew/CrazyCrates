@@ -93,7 +93,7 @@ public class Tier {
         PersistentKeys key = PersistentKeys.preview_tier_button;
 
         //noinspection unchecked
-        container.set(key.getNamespacedKey(this.plugin), key.getType(), this.name);
+        container.set(key.getNamespacedKey(), key.getType(), this.name);
 
         this.item.setItemMeta(itemMeta);
 

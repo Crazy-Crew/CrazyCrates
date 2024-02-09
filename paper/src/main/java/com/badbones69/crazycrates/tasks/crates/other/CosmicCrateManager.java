@@ -48,7 +48,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
 
         PersistentKeys mysteryCrate = PersistentKeys.cosmic_mystery_crate;
 
-        mysteryData.set(mysteryCrate.getNamespacedKey(plugin), mysteryCrate.getType(), 1);
+        mysteryData.set(mysteryCrate.getNamespacedKey(), mysteryCrate.getType(), 1);
 
         this.mysteryCrate.setItemMeta(mysteryItemMeta);
 
@@ -63,7 +63,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
 
         PersistentKeys pickedCrate = PersistentKeys.cosmic_picked_crate;
 
-        pickedCrateData.set(pickedCrate.getNamespacedKey(plugin), pickedCrate.getType(), 1);
+        pickedCrateData.set(pickedCrate.getNamespacedKey(), pickedCrate.getType(), 1);
 
         this.pickedCrate.setItemMeta(pickedCrateMeta);
     }

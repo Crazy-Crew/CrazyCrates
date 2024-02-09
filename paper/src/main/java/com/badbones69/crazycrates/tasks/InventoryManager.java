@@ -45,7 +45,7 @@ public class InventoryManager {
 
         PersistentKeys main_menu_button = PersistentKeys.main_menu_button;
 
-        menuContainer.set(main_menu_button.getNamespacedKey(this.plugin), main_menu_button.getType(), "none");
+        menuContainer.set(main_menu_button.getNamespacedKey(), main_menu_button.getType(), "none");
 
         this.menuButton.setItemMeta(menuMeta);
 
@@ -60,7 +60,7 @@ public class InventoryManager {
 
         PersistentKeys next_button = PersistentKeys.next_button;
 
-        nextContainer.set(next_button.getNamespacedKey(this.plugin), next_button.getType(), "none");
+        nextContainer.set(next_button.getNamespacedKey(), next_button.getType(), "none");
 
         this.nextButton.setItemMeta(nextMeta);
 
@@ -75,7 +75,7 @@ public class InventoryManager {
 
         PersistentKeys back_button = PersistentKeys.back_button;
 
-        backContainer.set(back_button.getNamespacedKey(this.plugin), back_button.getType(), "none");
+        backContainer.set(back_button.getNamespacedKey(), back_button.getType(), "none");
 
         this.backButton.setItemMeta(backMeta);
     }

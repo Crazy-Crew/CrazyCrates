@@ -913,7 +913,7 @@ public class CrateManager {
 
             PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-            return container.has(prize.getNamespacedKey(this.plugin));
+            return container.has(prize.getNamespacedKey());
         }
 
         return false;

@@ -150,7 +150,7 @@ public class CasinoCrate extends CrateBuilder {
 
                 PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-                if (!container.has(PersistentKeys.crate_prize.getNamespacedKey(this.plugin))) {
+                if (!container.has(PersistentKeys.crate_prize.getNamespacedKey())) {
                     setItem(index, getRandomGlassPane());
                 }
             }

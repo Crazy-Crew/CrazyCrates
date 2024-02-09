@@ -65,7 +65,7 @@ public class MiscListener implements Listener {
         if (event.getDamager() instanceof Firework firework) {
             PersistentDataContainer container = firework.getPersistentDataContainer();
 
-            if (container.has(PersistentKeys.no_firework_damage.getNamespacedKey(this.plugin))) event.setCancelled(true);
+            if (container.has(PersistentKeys.no_firework_damage.getNamespacedKey())) event.setCancelled(true);
         }
     }
 

@@ -370,7 +370,7 @@ public abstract class CrateBuilder extends BukkitRunnable {
 
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-        container.set(PersistentKeys.crate_prize.getNamespacedKey(this.plugin), PersistentDataType.STRING, "none");
+        container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "none");
 
         itemStack.setItemMeta(itemMeta);
 
