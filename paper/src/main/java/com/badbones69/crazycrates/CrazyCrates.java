@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.listeners.crates.*;
 import com.badbones69.crazycrates.listeners.menus.CrateAdminListener;
 import com.badbones69.crazycrates.listeners.menus.CrateMenuListener;
 import com.badbones69.crazycrates.listeners.menus.CratePreviewListener;
+import com.badbones69.crazycrates.listeners.menus.CrateTierListener;
 import com.badbones69.crazycrates.listeners.platforms.PaperListener;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -49,6 +50,7 @@ public class CrazyCrates extends JavaPlugin {
         this.crazyHandler.cleanFiles();
 
         // Register listeners
+        this.crazyHandler.getModuleLoader().addModule(new CrateTierListener());
         this.crazyHandler.getModuleLoader().addModule(new CratePreviewListener());
         this.crazyHandler.getModuleLoader().addModule(new CrateAdminListener());
         this.crazyHandler.getModuleLoader().addModule(new CrateMenuListener());
