@@ -41,7 +41,8 @@ public class FileUtils {
                 "CrateExample.yml",
                 "QuadCrateExample.yml",
                 "QuickCrateExample.yml",
-                "WarCrateExample.yml"
+                "WarCrateExample.yml",
+                "CasinoExample.yml"
         ));
     }
 

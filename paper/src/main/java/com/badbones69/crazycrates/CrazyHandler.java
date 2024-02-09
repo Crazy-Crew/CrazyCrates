@@ -49,6 +49,7 @@ public class CrazyHandler extends CrazyCratesPlugin {
                 .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("WarCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("CasinoExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
                 .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
                 .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
