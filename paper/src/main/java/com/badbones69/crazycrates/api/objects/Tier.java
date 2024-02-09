@@ -18,13 +18,14 @@ public class Tier {
     private final ItemBuilder item;
     private final int maxRange;
     private final String name;
+    private final String coloredName;
     private final int chance;
     private final int slot;
 
     public Tier(String tier, ConfigurationSection section) {
         this.name = tier;
 
-        String coloredName = section.getString("Name");
+        this.coloredName = section.getString("Name", "");
 
         List<String> lore = section.getStringList("Lore");
 
@@ -45,7 +46,14 @@ public class Tier {
     public String getName() {
         return this.name;
     }
-    
+
+    /**
+     * @return Colored name of the tier.
+     */
+    public String getColoredName() {
+        return this.coloredName;
+    }
+
     /**
      * @return The colored glass pane.
      */

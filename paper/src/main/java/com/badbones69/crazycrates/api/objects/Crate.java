@@ -380,8 +380,8 @@ public class Crate {
      *
      * @return The preview as an Inventory object.
      */
-    public Inventory getPreview(Player player, boolean isTier) {
-        return getPreview(player, this.plugin.getCrazyHandler().getInventoryManager().getPage(player), isTier, null);
+    public Inventory getPreview(Player player) {
+        return getPreview(player, this.plugin.getCrazyHandler().getInventoryManager().getPage(player), false, null);
     }
     
     /**
