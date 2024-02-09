@@ -101,7 +101,7 @@ public class CrateMainMenu extends InventoryBuilder {
             FileConfiguration file = crate.getFile();
 
             if (file != null) {
-                if (file.getBoolean("Crate.InGUI")) {
+                if (file.getBoolean("Crate.InGUI", false)) {
                     String path = "Crate.";
                     int slot = file.getInt(path + "Slot");
 
