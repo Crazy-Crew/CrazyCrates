@@ -1,6 +1,6 @@
 ## Additions:
 ### Crate Types:
-* Added a new crate type called `CSGOTriple` ( Idea by slimemcstew )
+* Added a new crate type called `Casino` ( Idea by slimemcstew )
    * This allows a player to win 3 prizes with 3 animations while opening a crate.
 ### Other:
 * Added the ability to have holograms created using CMI or DecentHolograms have a configurable "block" range.
