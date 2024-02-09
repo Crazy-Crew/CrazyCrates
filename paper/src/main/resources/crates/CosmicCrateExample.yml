@@ -67,14 +67,6 @@ Crate:
     - '&7You have &6%keys% keys &7to open this crate with.'
     - '&7You have opened this crate: &6%crate_opened% times'
     - '&7&l(&e&l!&7&l) Right click to view rewards.'
-  Preview:
-    Toggle: true
-    ChestLines: 6
-    Glass:
-      Toggle: true
-      # The name of the border item.
-      Name: ' '
-      Item: 'PURPLE_STAINED_GLASS_PANE'
   Crate-Type-Settings:
     Total-Prize-Amount: 4
     Mystery-Crate:
@@ -100,29 +92,64 @@ Crate:
     Range: 8
     Message:
       - '&d&lCosmic Crate'
+  Preview:
+    # Turn on and off the preview for this crate.
+    Toggle: true
+    # How many lines the Crate Preview should have. Including Header and Bottom (Between 3 and 6)
+    ChestLines: 6
+    Glass:
+      # Turn the glass border in the preview on and off.
+      Toggle: true
+      # The name of the border item.
+      Name: ' '
+      # The item that shows in the border. Can be glass or any other item.
+      Item: 'GRAY_STAINED_GLASS_PANE'
   # Tiers are available in Cosmic and Casino crate types.
   # The Tiers the rewards can be found in.
   Tiers:
+    preview:
+      # Turn on and off the preview for this crate.
+      toggle: true
+      # How many lines the Tier Preview should have. Including Header and Bottom (Between 3 and 6)
+      rows: 5
+      glass:
+        # Turn the glass border in the preview on and off.
+        toggle: true
+        # The name of the border item.
+        name: ' '
+        # The item that shows in the border. Can be glass or any other item.
+        item: 'RED_STAINED_GLASS_PANE'
     # The Config Name for the Crate
     Basic:
-      # The in-game name of the tier
-      Name: '&8Basic Prize'
-      # The type of glass used for each tier.
-      Color: 'GRAY_STAINED_GLASS_PANE'
+      # The in-game name of the tier.
+      Name: '&8Basic Tier'
+      # The in-game lore of the tier.
+      Lore:
+        - '&7A basic tier.'
+      # The item used for the secondary gui when you right-click for the preview.
+      Item: 'CHEST'
       # Chance of that item getting picked. It would be 80/100 chance because MaxRange is 100.
       Chance: 80
       # The max range that the chance will go though.
       MaxRange: 100
+      # The slot this item will be in the secondary gui.
+      Slot: 20
     UnCommon:
-      Name: '&aUnCommon Prize'
-      Color: 'LIME_STAINED_GLASS_PANE'
+      Name: '&aUncommon Tier'
+      Lore:
+        - '&aAn uncommon tier.'
+      Item: 'CHEST'
       Chance: 55
       MaxRange: 100
+      Slot: 22
     Rare:
-      Name: '&4Rare Prize'
-      Color: 'RED_STAINED_GLASS_PANE'
+      Name: '&4Rare Tier'
+      Lore:
+        - '&cA rare tier.'
+      Item: 'ENDER_CHEST'
       Chance: 20
       MaxRange: 100
+      Slot: 24
   Prizes:
     1:
       DisplayName: '&d&lCosmic Grass'

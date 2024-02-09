@@ -90,11 +90,11 @@ Crate:
     # How many lines the Crate Preview should have. Including Header and Bottom (Between 3 and 6)
     ChestLines: 6
     Glass:
-      # Turn the glass boarder in the preview on and off.
+      # Turn the glass border in the preview on and off.
       Toggle: true
       # The name of the border item.
       Name: ' '
-      # The item that shows in the boarder. Can be glass or any other item.
+      # The item that shows in the border. Can be glass or any other item.
       Item: 'GRAY_STAINED_GLASS_PANE'
   PhysicalKey:
     # Name of the Key.
