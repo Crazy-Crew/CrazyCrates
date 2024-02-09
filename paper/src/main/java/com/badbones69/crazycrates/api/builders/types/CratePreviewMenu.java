@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api.builders.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.Tier;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -17,8 +18,14 @@ public class CratePreviewMenu extends InventoryBuilder {
     @NotNull
     private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
 
-    public CratePreviewMenu(Crate crate, Player player, int size, int page, String title) {
+    private final boolean isTier;
+    private final Tier tier;
+
+    public CratePreviewMenu(Crate crate, Player player, int size, int page, String title, boolean isTier, Tier tier) {
         super(crate, player, size, page, title);
+
+        this.isTier = isTier;
+        this.tier = tier;
     }
 
     @Override
@@ -79,7 +86,7 @@ public class CratePreviewMenu extends InventoryBuilder {
     }
 
     private List<ItemStack> getPageItems(int page) {
-        List<ItemStack> list = getCrate().getPreviewItems();
+        List<ItemStack> list = !this.isTier ? getCrate().getPreviewItems() : getCrate().getPreviewItems(this.tier);
         List<ItemStack> items = new ArrayList<>();
 
         if (page <= 0) page = 1;

@@ -116,7 +116,7 @@ public class InventoryManager {
 
         setPage(player, 1);
 
-        player.openInventory(crate.getPreview(player));
+        player.openInventory(crate.getPreview(player, false));
     }
 
     public void addCrateViewer(Player player, Crate crate) {
@@ -126,7 +126,7 @@ public class InventoryManager {
     public void openCratePreview(Player player, Crate crate) {
         this.crateViewers.put(player.getUniqueId(), crate);
 
-        player.openInventory(crate.getPreview(player));
+        player.openInventory(crate.getPreview(player, false));
     }
 
     public void closeCratePreview(Player player) {

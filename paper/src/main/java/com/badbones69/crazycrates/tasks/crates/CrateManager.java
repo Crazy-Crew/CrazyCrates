@@ -176,7 +176,7 @@ public class CrateManager {
                         ConfigurationSection tierSection = file.getConfigurationSection(path);
 
                         if (tierSection != null) {
-                            tiers.add(new Tier(path, tierSection));
+                            tiers.add(new Tier(tier, tierSection));
                         }
                     }
                 }
@@ -197,8 +197,11 @@ public class CrateManager {
                     List<Tier> prizeTiers = new ArrayList<>();
 
                     for (String tier : file.getStringList(path + ".Tiers")) {
+
                         for (Tier loadedTier : tiers) {
-                            if (loadedTier.getName().equalsIgnoreCase(tier)) prizeTiers.add(loadedTier);
+                            if (loadedTier.getName().equalsIgnoreCase(tier)) {
+                                prizeTiers.add(loadedTier);
+                            }
                         }
                     }
 

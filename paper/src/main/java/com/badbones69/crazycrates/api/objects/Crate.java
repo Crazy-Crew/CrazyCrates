@@ -380,8 +380,8 @@ public class Crate {
      *
      * @return The preview as an Inventory object.
      */
-    public Inventory getPreview(Player player) {
-        return getPreview(player, this.plugin.getCrazyHandler().getInventoryManager().getPage(player));
+    public Inventory getPreview(Player player, boolean isTier) {
+        return getPreview(player, this.plugin.getCrazyHandler().getInventoryManager().getPage(player), isTier, null);
     }
     
     /**
@@ -389,8 +389,8 @@ public class Crate {
      *
      * @return The preview as an Inventory object.
      */
-    public Inventory getPreview(Player player, int page) {
-        CratePreviewMenu cratePreviewMenu = new CratePreviewMenu(this, player, !this.borderToggle && (this.inventoryManager.inCratePreview(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, page, this.previewName);
+    public Inventory getPreview(Player player, int page, boolean isTier, Tier tier) {
+        CratePreviewMenu cratePreviewMenu = new CratePreviewMenu(this, player, !this.borderToggle && (this.inventoryManager.inCratePreview(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, page, this.previewName, isTier, tier);
 
         return cratePreviewMenu.build().getInventory();
     }
@@ -644,7 +644,9 @@ public class Crate {
         List<ItemStack> prizes = new ArrayList<>();
 
         for (Prize prize : getPrizes()) {
-            if (prize.getTiers().contains(tier)) prizes.add(prize.getDisplayItem());
+            if (prize.getTiers().contains(tier)) {
+                prizes.add(prize.getDisplayItem());
+            }
         }
 
         return prizes;

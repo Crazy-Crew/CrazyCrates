@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.listeners.menus;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyHandler;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
+import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.modules.ModuleHandler;
@@ -85,7 +86,9 @@ public class CrateTierListener extends ModuleHandler {
 
             Tier tier = crate.getTier(tierName);
 
-            //TODO() Open another gui.
+            Inventory cratePreviewMenu = crate.getPreview(player, this.plugin.getCrazyHandler().getInventoryManager().getPage(player), true, tier);
+
+            player.openInventory(cratePreviewMenu);
         }
     }
 
