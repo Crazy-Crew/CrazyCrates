@@ -237,7 +237,7 @@ public class Crate {
     }
 
     /**
-     * Picks a random prize based on BlackList Permissions and the Chance System. Only used in the Cosmic Crate Type since it is the only one with tiers.
+     * Picks a random prize based on BlackList Permissions and the Chance System. Only used in the Cosmic Crate & Casino Type since it is the only one with tiers.
      *
      * @param player The player that will be winning the prize.
      * @param tier The tier you wish the prize to be from.

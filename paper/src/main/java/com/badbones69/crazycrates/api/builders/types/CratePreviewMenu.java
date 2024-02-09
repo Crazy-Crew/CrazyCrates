@@ -44,13 +44,13 @@ public class CratePreviewMenu extends InventoryBuilder {
         if (getCrate().isBorderToggle()) {
             List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
 
-            for (int i : borderItems) { // Top Boarder slots
+            for (int i : borderItems) { // Top Border slots
                 inventory.setItem(i, getCrate().getBorderItem().build());
             }
 
             borderItems.replaceAll(getCrate()::getAbsoluteItemPosition);
 
-            for (int i : borderItems) { // Bottom Boarder slots
+            for (int i : borderItems) { // Bottom Border slots
                 inventory.setItem(i, getCrate().getBorderItem().build());
             }
         }
