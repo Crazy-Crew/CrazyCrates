@@ -278,10 +278,19 @@ public class CrateManager {
         int loadedAmount = 0;
         int brokeAmount = 0;
 
-        if (locations.getConfigurationSection("Locations") != null) {
-            for (String locationName : locations.getConfigurationSection("Locations").getKeys(false)) {
+        ConfigurationSection section = locations.getConfigurationSection("Locations");
+
+        if (section != null) {
+            for (String locationName : section.getKeys(false)) {
                 try {
                     String worldName = locations.getString("Locations." + locationName + ".World");
+
+                    // If name is null, we return.
+                    if (worldName == null) return;
+
+                    // If name is empty or blank, we return.
+                    if (worldName.isEmpty() || worldName.isBlank()) return;
+
                     World world = this.plugin.getServer().getWorld(worldName);
                     int x = locations.getInt("Locations." + locationName + ".X");
                     int y = locations.getInt("Locations." + locationName + ".Y");
