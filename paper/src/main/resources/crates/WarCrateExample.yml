@@ -5,7 +5,7 @@ Crate:
   # https://docs.crazycrew.us/crazycrates/home
 
   # See CosmicCrateExample.yml to see how the Cosmic CrateType works.
-  CrateType: WarCrate
+  CrateType: War
   # Name of the Inventory if a GUI crate.
   CrateName: '&4War Crate'
   # The name of the inventory that will be in the preview GUI.

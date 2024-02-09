@@ -113,11 +113,12 @@ Crate:
 * `Color` has been replaced by `Item` as you could have always used any item, so it was misleading to name it `Color`
 * If `Item` is not found, It will fall back to LIME_STAINED_GLASS_PANE.
 
-* Added WarCrate as a default generated crate.
+* Added War Crate as a default generated crate.
 * Re-organized the default /crate gui
 * Cleaned up the package layout
 * Fixed a few bugs
 * Switched more checks to rely on PersistentDataContainer over checking for specific slots.
+* Added a check if the crate type is invalid, It will notify you in console and show you valid crate types.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
