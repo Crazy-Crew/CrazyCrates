@@ -1,10 +1,13 @@
 package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.CrazyCrates;
@@ -33,14 +36,45 @@ public class InventoryManager {
                 .setLore(this.config.getProperty(ConfigKeys.menu_button_lore))
                 .build();
 
+        ItemMeta menuMeta = this.menuButton.getItemMeta();
+
+        PersistentDataContainer menuContainer = menuMeta.getPersistentDataContainer();
+
+        PersistentKeys main_menu_button = PersistentKeys.main_menu_button;
+
+        menuContainer.set(main_menu_button.getNamespacedKey(this.plugin), main_menu_button.getType(), "none");
+
+        this.menuButton.setItemMeta(menuMeta);
+
         this.nextButton = new ItemBuilder()
                 .setMaterial(this.config.getProperty(ConfigKeys.next_button_item))
                 .setName(this.config.getProperty(ConfigKeys.next_button_name))
                 .setLore(this.config.getProperty(ConfigKeys.next_button_lore));
+
+        ItemMeta nextMeta = this.nextButton.getItemMeta();
+
+        PersistentDataContainer nextContainer = nextMeta.getPersistentDataContainer();
+
+        PersistentKeys next_button = PersistentKeys.next_button;
+
+        nextContainer.set(next_button.getNamespacedKey(this.plugin), next_button.getType(), "none");
+
+        this.nextButton.setItemMeta(nextMeta);
+
         this.backButton = new ItemBuilder()
                 .setMaterial(this.config.getProperty(ConfigKeys.back_button_item))
                 .setName(this.config.getProperty(ConfigKeys.back_button_name))
                 .setLore(this.config.getProperty(ConfigKeys.back_button_lore));
+
+        ItemMeta backMeta = this.backButton.getItemMeta();
+
+        PersistentDataContainer backContainer = backMeta.getPersistentDataContainer();
+
+        PersistentKeys back_button = PersistentKeys.back_button;
+
+        backContainer.set(back_button.getNamespacedKey(this.plugin), back_button.getType(), "none");
+
+        this.backButton.setItemMeta(backMeta);
     }
 
     public ItemStack getMenuButton() {
