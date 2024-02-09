@@ -20,6 +20,7 @@ import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.modules.ModuleHandler;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
 public class CratePreviewListener extends ModuleHandler {
 
@@ -66,6 +67,12 @@ public class CratePreviewListener extends ModuleHandler {
         if (container.has(PersistentKeys.main_menu_button.getNamespacedKey(this.plugin)) && this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) { // Clicked the menu button.
             if (this.inventoryManager.inCratePreview(player)) {
                 crate.playSound(player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
+
+                if (crate.getCrateType() == CrateType.casino || crate.getCrateType() == CrateType.cosmic) {
+                    player.openInventory(crate.getTierPreview(player));
+
+                    return;
+                }
 
                 this.inventoryManager.removeViewer(player);
                 this.inventoryManager.closeCratePreview(player);
