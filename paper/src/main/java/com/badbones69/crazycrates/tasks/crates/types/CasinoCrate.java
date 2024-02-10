@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.api.objects.Tier;
+import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.tasks.PrizeManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.bukkit.SoundCategory;
@@ -13,10 +13,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-
-import java.util.Random;
 
 public class CasinoCrate extends CrateBuilder {
 
@@ -66,15 +65,11 @@ public class CasinoCrate extends CrateBuilder {
 
                 plugin.getCrateManager().endCrate(getPlayer());
 
-                PrizeManager manager = plugin.getCrazyHandler().getPrizeManager();
-
-                manager.checkPrize(pickTier(getCrate()), getPrize(11), getPlayer(), getCrate());
-                manager.checkPrize(pickTier(getCrate()), getPrize(13), getPlayer(), getCrate());
-                manager.checkPrize(pickTier(getCrate()), getPrize(15), getPlayer(), getCrate());
+                setTier(getPrize(11));
+                setTier(getPrize(13));
+                setTier(getPrize(15));
 
                 plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
-
-                cancel();
 
                 new BukkitRunnable() {
                     @Override
@@ -83,11 +78,26 @@ public class CasinoCrate extends CrateBuilder {
                     }
                 }.runTaskLater(plugin, 40);
 
+                cancel();
+
                 return;
             }
         }
 
         counter++;
+    }
+
+    private Prize setTier(Prize prize) {
+        ItemStack itemStack = prize.getDisplayItem();
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        container.set(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING, plugin.getCrazyHandler().getPrizeManager().getTier(getCrate()).getName());
+        itemStack.setItemMeta(itemMeta);
+        prize.setDisplayItemStack(itemStack);
+
+        //this.plugin.getCrazyHandler().getPrizeManager().getPrize(getPlayer(), getCrate(), tier, prize);
+
+        return prize;
     }
 
     @Override

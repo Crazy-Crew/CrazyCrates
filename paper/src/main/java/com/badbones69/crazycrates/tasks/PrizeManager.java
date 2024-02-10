@@ -16,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.HashMap;
+import java.util.Random;
+
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class PrizeManager {
@@ -158,20 +160,24 @@ public class PrizeManager {
         }
     }
 
-    public void checkPrize(Prize prize, Player player, Crate crate) {
-        if (prize != null) {
+    public void getPrize(Player player, Crate crate, String key, Prize prize) {
+        this.plugin.getLogger().warning("Other: " + key);
+
+        for (Tier tiers : prize.getTiers()) {
+            this.plugin.getLogger().warning("Tier: " + tiers.getName());
+        }
+
+        /*if (prize != null && tier != null) {
+            crate.getTier(tier.getName());
+
+            this.plugin.getCrazyHandler().
+
             givePrize(player, prize, crate);
 
             if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
             this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-        } else {
-            player.sendMessage(MsgUtils.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
-        }
-    }
 
-    public void checkPrize(Tier tier, Prize prize, Player player, Crate crate) {
-        if (prize != null && tier != null) {
             if (prize.getTiers().contains(tier)) {
                 givePrize(player, prize, crate);
 
@@ -179,8 +185,27 @@ public class PrizeManager {
 
                 this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
             }
-        } else {
-            player.sendMessage(MsgUtils.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
+
+            return;
+        }*/
+
+        player.sendMessage(MsgUtils.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
+    }
+
+    public Tier getTier(Crate crate) {
+        if (crate.getTiers() != null && !crate.getTiers().isEmpty()) {
+            for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
+                for (Tier tier : crate.getTiers()) {
+                    int chance = tier.getChance();
+                    int num = new Random().nextInt(tier.getMaxRange());
+
+                    if (num >= 1 && num <= chance) {
+                        return tier;
+                    }
+                }
+            }
         }
+
+        return null;
     }
 }
