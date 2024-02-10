@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
 import org.bukkit.Location;
@@ -364,24 +365,17 @@ public abstract class CrateBuilder extends BukkitRunnable {
      * @return the display item of the picked prize.
      */
     public ItemStack getDisplayItem() {
-        ItemStack itemStack = getCrate().pickPrize(getPlayer()).getDisplayItem();
-
-        ItemMeta itemMeta = itemStack.getItemMeta();
-
-        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-
-        container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "none");
-
-        itemStack.setItemMeta(itemMeta);
-
-        return itemStack;
+        return getCrate().pickPrize(getPlayer()).getDisplayItem();
     }
 
     /**
      * @return the prize object.
      */
     public Prize getPrize(int slot) {
-        return getCrate().getPrize(getInventory().getItem(slot));
+        ItemStack itemStack = getInventory().getItem(slot);
+
+        assert itemStack != null;
+        return getCrate().getPrize(itemStack);
     }
 
     /**
