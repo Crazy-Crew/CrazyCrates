@@ -1,8 +1,13 @@
 package com.badbones69.crazycrates.api.objects;
 
+import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,14 +98,22 @@ public class Prize {
     public ItemStack getDisplayItem() {
         if (this.displayItemStack == null) {
             this.displayItemStack = this.displayItem.build();
-            NBTItem nbt = new NBTItem(this.displayItemStack);
-            nbt.setString("crazycrate-prize", this.name);
-            this.displayItemStack = nbt.getItem();
+
+            ItemMeta itemMeta = this.displayItemStack.getItemMeta();
+            PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+
+            container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.name);
+
+            this.displayItemStack.setItemMeta(itemMeta);
         }
 
         return this.displayItemStack.clone();
     }
-    
+
+    public void setDisplayItemStack(ItemStack displayItemStack) {
+        this.displayItemStack = displayItemStack;
+    }
+
     /**
      * @return Returns the ItemBuilder of the display item.
      */

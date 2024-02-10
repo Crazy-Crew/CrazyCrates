@@ -1,9 +1,13 @@
 package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
+import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.FileManager;
@@ -27,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.logging.Level;
 
@@ -128,7 +133,7 @@ public class Crate {
         this.hologram = hologram != null ? hologram : new CrateHologram();
 
         if (crateType == CrateType.cosmic) {
-            if (this.file != null) this.manager = new CosmicCrateManager(this.plugin, this.file);
+            if (this.file != null) this.manager = new CosmicCrateManager(this.file);
         }
     }
 
@@ -480,17 +485,11 @@ public class Crate {
     }
     
     public Prize getPrize(ItemStack item) {
-        try {
-            NBTItem nbt = new NBTItem(item);
+        ItemMeta itemMeta = item.getItemMeta();
 
-            if (nbt.hasTag("crazycrate-prize")) return getPrize(nbt.getString("crazycrate-prize"));
-        } catch (Exception ignored) {}
-        
-        for (Prize prize : this.prizes) {
-            if (item.isSimilar(prize.getDisplayItem())) return prize;
-        }
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-        return null;
+        return getPrize(container.get(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING));
     }
     
     /**
