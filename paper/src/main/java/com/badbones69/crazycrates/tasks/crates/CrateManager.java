@@ -97,24 +97,24 @@ public class CrateManager {
 
                 List<ItemStack> editorItems = new ArrayList<>();
 
-                if (file.contains(path + ".Editor-Items")) {
-                    for (Object list : file.getList(path + ".Editor-Items")) {
-                        editorItems.add((ItemStack) list);
+                List<?> list = file.getList(path + ".Editor-Items") == null ? file.getList(path + ".Editor-Items") : Collections.emptyList();
+
+                if (list != null) {
+                    for (Object key : list) {
+                        editorItems.add((ItemStack) key);
                     }
                 }
 
-                prizes.add(new Prize(prize, getDisplayItem(file, prize),
+                /*prizes.add(new Prize(getDisplayItem(file, prize),
                         file.getStringList(path + ".Messages"),
                         file.getStringList(path + ".Commands"),
-                        editorItems,
                         getItems(file, prize),
-                        crate.getName(),
                         file.getInt(path + ".Chance", 100),
                         file.getInt(path + ".MaxRange", 100),
                         file.getBoolean(path + ".Firework"),
                         file.getStringList(path + ".BlackListed-Permissions"),
                         null,
-                        null));
+                        null));*/
             }
 
             crate.setPrize(prizes);
@@ -192,6 +192,20 @@ public class CrateManager {
                     continue;
                 }
 
+                ConfigurationSection prizesSection = file.getConfigurationSection("Crate.Prizes");
+
+                List<Prize> newPrizes = new ArrayList<>();
+
+                if (prizesSection != null) {
+                    for (String prize : prizesSection.getKeys(false)) {
+                        ConfigurationSection prizeSection = prizesSection.getConfigurationSection(prize);
+
+                        if (prizeSection != null) {
+                            newPrizes.add(new Prize(prizeSection, crateName));
+                        }
+                    }
+                }
+
                 for (String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
                     Prize altPrize = null;
                     String path = "Crate.Prizes." + prize;
@@ -215,24 +229,8 @@ public class CrateManager {
                         }
                     }
 
-                    ArrayList<ItemStack> editorItems = new ArrayList<>();
-
-                    if (file.contains(path + ".Editor-Items")) {
-                        for (Object list : file.getList(path + ".Editor-Items")) {
-                            editorItems.add((ItemStack) list);
-                        }
-                    }
-
-                    prizes.add(new Prize(prize, getDisplayItem(file, prize),
-                            file.getStringList(path + ".Messages"),
-                            file.getStringList(path + ".Commands"),
-                            editorItems,
+                    prizes.add(new Prize(
                             getItems(file, prize),
-                            crateName,
-                            file.getInt(path + ".Chance", 100),
-                            file.getInt(path + ".MaxRange", 100),
-                            file.getBoolean(path + ".Firework"),
-                            file.getStringList(path + ".BlackListed-Permissions"),
                             prizeTiers,
                             altPrize));
                 }
@@ -495,7 +493,6 @@ public class CrateManager {
     public void endCrate(Player player) {
         if (this.currentTasks.containsKey(player.getUniqueId())) {
             this.currentTasks.get(player.getUniqueId()).cancel();
-            //removeCrateTask(player);
         }
     }
 
@@ -999,61 +996,7 @@ public class CrateManager {
         String id = file.getString("Crate.PhysicalKey.Item", "TRIPWIRE_HOOK");
         boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
 
-        if (file.contains("Crate.PhysicalKey.Glowing")) {
-            glowing = file.getBoolean("Crate.PhysicalKey.Glowing");
-        }
-
         return new ItemBuilder().setMaterial(id).setName(name).setLore(lore).setGlow(glowing).build();
-    }
-
-    private ItemBuilder getDisplayItem(FileConfiguration file, String prize) {
-        String path = "Crate.Prizes." + prize + ".";
-        ItemBuilder itemBuilder = new ItemBuilder();
-
-        try {
-            itemBuilder.setMaterial(file.getString(path + "DisplayItem"))
-                    .setAmount(file.getInt(path + "DisplayAmount", 1))
-                    .setName(file.getString(path + "DisplayName"))
-                    .setLore(file.getStringList(path + "Lore"))
-                    .setGlow(file.getBoolean(path + "Glowing"))
-                    .setUnbreakable(file.getBoolean(path + "Unbreakable"))
-                    .hideItemFlags(file.getBoolean(path + "HideItemFlags"))
-                    .addItemFlags(file.getStringList(path + "Flags"))
-                    .addPatterns(file.getStringList(path + "Patterns"))
-                    .setPlayerName(file.getString(path + "Player"));
-
-            // Set the prize number to the item stack.
-            ItemMeta itemMeta = itemBuilder.getItemMeta();
-            PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-            container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, prize);
-            itemBuilder.setItemMeta(itemMeta);
-
-            if (file.contains(path + "DisplayDamage") && file.getInt(path + "DisplayDamage") >= 1) {
-                itemBuilder.setDamage(file.getInt(path + "DisplayDamage"));
-            }
-
-            if (file.contains(path + "DisplayTrim.Pattern")) {
-                itemBuilder.setTrimPattern(Registry.TRIM_PATTERN.get(NamespacedKey.minecraft(file.getString(path + "DisplayTrim.Pattern").toLowerCase())));
-            }
-
-            if (file.contains(path + "DisplayTrim.Material")) {
-                itemBuilder.setTrimMaterial(Registry.TRIM_MATERIAL.get(NamespacedKey.minecraft(file.getString(path + "DisplayTrim.Material").toLowerCase())));
-            }
-
-            if (file.contains(path + "DisplayEnchantments")) {
-                for (String enchantmentName : file.getStringList(path + "DisplayEnchantments")) {
-                    Enchantment enchantment = MiscUtils.getEnchantment(enchantmentName.split(":")[0]);
-
-                    if (enchantment != null) {
-                        itemBuilder.addEnchantments(enchantment, Integer.parseInt(enchantmentName.split(":")[1]));
-                    }
-                }
-            }
-
-            return itemBuilder;
-        } catch (Exception e) {
-            return new ItemBuilder().setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor the reward: &c" + prize));
-        }
     }
 
     // Cleans the data file.
@@ -1067,7 +1010,6 @@ public class CrateManager {
         List<String> removePlayers = new ArrayList<>();
 
         for (String uuid : data.getConfigurationSection("Players").getKeys(false)) {
-
             if (data.contains("Players." + uuid + ".tracking")) return;
 
             boolean hasKeys = false;

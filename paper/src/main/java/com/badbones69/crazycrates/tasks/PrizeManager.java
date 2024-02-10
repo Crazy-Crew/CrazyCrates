@@ -31,24 +31,39 @@ public class PrizeManager {
     private final CrazyCrates plugin = CrazyCrates.get();
 
     /**
-     * Give a player a prize they have won.
+     * Gets the prize for the player.
      *
-     * @param player you wish to give the prize to.
-     * @param prize the player has won.
+     * @param player who the prize is for.
+     * @param crate the player is opening.
+     * @param prize the player is being given.
+     * @param tier the tier the player got.
      */
-    public void givePrize(Player player, Prize prize, Crate crate) {
+    public void givePrize(Player player, Prize prize, Crate crate, Tier tier) {
         if (prize == null) {
             if (this.plugin.isLogging()) this.plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
             return;
         }
 
-        prize = prize.hasBlacklistPermission(player) ? prize.getAltPrize() : prize;
+        if (tier == null) {
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("No tier was found when giving " + player.getName() + " a prize.");
+            return;
+        }
+
+        prize.getTiersList().forEach(key -> this.plugin.getLogger().warning("Key: " + key));
+
+        this.plugin.getLogger().warning(tier.getName());
+
+        //if (prize.getTiersList().contains(tier.getName())) {
+        //    this.plugin.getLogger().warning("Valid!");
+        //}
+
+        prize = prize.hasPermission(player) ? prize.getAlternativePrize() : prize;
 
         for (ItemStack item : prize.getItems()) {
             if (item == null) {
                 HashMap<String, String> placeholders = new HashMap<>();
-                placeholders.put("%crate%", prize.getCrate());
-                placeholders.put("%prize%", prize.getName());
+                placeholders.put("%crate%", prize.getCrateName());
+                placeholders.put("%prize%", prize.getPrizeName());
                 player.sendMessage(Messages.prize_error.getMessage(placeholders).toString());
                 continue;
             }
@@ -90,7 +105,7 @@ public class PrizeManager {
                             commandBuilder.append(MiscUtils.pickNumber(min, max)).append(" ");
                         } catch (Exception e) {
                             commandBuilder.append("1 ");
-                            this.plugin.getLogger().warning("The prize " + prize.getName() + " in the " + prize.getCrate() + " crate has caused an error when trying to run a command.");
+                            this.plugin.getLogger().warning("The prize " + prize.getPrizeName() + " in the " + prize.getCrateName() + " crate has caused an error when trying to run a command.");
                             this.plugin.getLogger().warning("Command: " + cmd);
                         }
                     } else {
@@ -147,7 +162,18 @@ public class PrizeManager {
     }
 
     /**
-     * Picks the prize for the player.
+     * Gets the prize for the player.
+     *
+     * @param player who the prize is for.
+     * @param crate the player is opening.
+     * @param prize the player is being given.
+     */
+    public void givePrize(Player player, Prize prize, Crate crate) {
+        givePrize(player, prize, crate, null);
+    }
+
+    /**
+     * Gets the prize for the player.
      *
      * @param player who the prize is for.
      * @param crate the player is opening.
@@ -175,12 +201,14 @@ public class PrizeManager {
         ItemStack itemStack = prize.getDisplayItem();
         ItemMeta itemMeta = itemStack.getItemMeta();
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-        container.set(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING, this.plugin.getCrazyHandler().getPrizeManager().getTier(crate).getName());
+        container.set(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING, getTier(crate).getName());
         itemStack.setItemMeta(itemMeta);
 
-        prize.setDisplayItemStack(itemStack);
+        prize.setItemStack(itemStack);
 
-        givePrize(player, prize, crate);
+        Tier tier = crate.getTier(prize.getDisplayItem().getItemMeta().getPersistentDataContainer().get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
+
+        givePrize(player, prize, crate, tier);
 
         if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 

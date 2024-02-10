@@ -227,8 +227,8 @@ public class Crate {
             usablePrizes.addAll(getPrizes());
         } else {
             for (Prize prize : getPrizes()) {
-                if (prize.hasBlacklistPermission(player)) {
-                    if (prize.hasAltPrize()) continue;
+                if (prize.hasPermission(player)) {
+                    if (prize.hasAlternativePrize()) continue;
                 }
 
                 usablePrizes.add(prize);
@@ -303,8 +303,8 @@ public class Crate {
             }
         } else {
             for (Prize prize : getPrizes()) {
-                if (prize.hasBlacklistPermission(player)) {
-                    if (prize.hasAltPrize()) continue;
+                if (prize.hasPermission(player)) {
+                    if (prize.hasAlternativePrize()) continue;
                 }
 
                 if (prize.getTiers().contains(tier)) usablePrizes.add(prize);
@@ -478,7 +478,7 @@ public class Crate {
      */
     public Prize getPrize(String name) {
         for (Prize prize : this.prizes) {
-            if (prize.getName().equalsIgnoreCase(name)) return prize;
+            if (prize.getPrizeName().equalsIgnoreCase(name)) return prize;
         }
 
         return null;
