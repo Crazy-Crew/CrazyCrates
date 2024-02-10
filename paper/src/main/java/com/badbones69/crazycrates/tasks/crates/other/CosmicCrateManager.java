@@ -6,7 +6,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,10 +26,9 @@ public class CosmicCrateManager extends AbstractCrateManager {
     /**
      * Creates a cosmic crate manager instance
      *
-     * @param plugin instance
      * @param file crate configuration
      */
-    public CosmicCrateManager(CrazyCrates plugin, FileConfiguration file) {
+    public CosmicCrateManager(FileConfiguration file) {
         this.file = file;
 
         String path = "Crate.Crate-Type-Settings.";
