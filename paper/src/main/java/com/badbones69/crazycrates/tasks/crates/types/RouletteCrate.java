@@ -85,7 +85,7 @@ public class RouletteCrate extends CrateBuilder {
 
                         Prize prize = getCrate().getPrize(getInventory().getItem(13));
 
-                        plugin.getCrazyHandler().getPrizeManager().pickPrize(getPlayer(), getCrate(), prize);
+                        plugin.getCrazyHandler().getPrizeManager().givePrize(getPlayer(), getCrate(), prize);
 
                         plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
 

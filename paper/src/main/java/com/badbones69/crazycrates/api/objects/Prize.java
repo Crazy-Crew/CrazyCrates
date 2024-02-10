@@ -1,13 +1,11 @@
 package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,17 +36,27 @@ public class Prize {
      */
     public Prize(String name, List<String> messages, List<String> commands, List<ItemStack> items, List<ItemBuilder> itemBuilders) {
         this.name = name != null ? name : "&4No name Found!";
+
         this.crate = "";
+
         this.items = items != null ? items : new ArrayList<>();
+
         this.itemBuilders = itemBuilders != null ? itemBuilders : new ArrayList<>();
+
         this.chance = 0;
-        this.firework = false;
         this.maxRange = 100;
+
+        this.firework = false;
+
         this.tiers = new ArrayList<>();
+
         this.messages = messages != null ? messages : new ArrayList<>();
         this.commands = commands != null ? commands : new ArrayList<>();
+
         this.displayItem = new ItemBuilder();
+
         this.blackListPermissions = new ArrayList<>();
+
         this.altPrize = null;
     }
     
@@ -70,18 +78,28 @@ public class Prize {
     List<ItemStack> items, List<ItemBuilder> itemBuilders, String crate, int chance, int maxRange, boolean firework, List<String> blackListPermissions,
     List<Tier> tiers, Prize altPrize) {
         this.name = name != null ? name : "&4No name Found!";
+
         this.crate = crate;
+
         this.items = items != null ? items : new ArrayList<>();
+
         this.itemBuilders = itemBuilders != null ? itemBuilders : new ArrayList<>();
+
         this.chance = chance;
-        this.firework = firework;
         this.maxRange = maxRange;
+
+        this.firework = firework;
+
         this.tiers = tiers != null ? tiers : new ArrayList<>();
+
         this.messages = messages != null ? messages : new ArrayList<>();
         this.commands = commands != null ? commands : new ArrayList<>();
+
         this.displayItem = displayItem != null ? displayItem : new ItemBuilder();
+
         this.blackListPermissions = blackListPermissions != null ? blackListPermissions : new ArrayList<>();
         this.blackListPermissions.replaceAll(String :: toLowerCase);
+
         this.altPrize = altPrize;
     }
     

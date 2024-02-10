@@ -4,16 +4,12 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.api.utils.MsgUtils;
-import com.badbones69.crazycrates.tasks.PrizeManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 
@@ -65,9 +61,9 @@ public class CasinoCrate extends CrateBuilder {
 
                 plugin.getCrateManager().endCrate(getPlayer());
 
-                setTier(getPrize(11));
-                setTier(getPrize(13));
-                setTier(getPrize(15));
+                getPrizeManager().getPrize(getCrate(), getInventory(), 11, getPlayer());
+                getPrizeManager().getPrize(getCrate(), getInventory(), 13, getPlayer());
+                getPrizeManager().getPrize(getCrate(), getInventory(), 15, getPlayer());
 
                 plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
 
@@ -85,19 +81,6 @@ public class CasinoCrate extends CrateBuilder {
         }
 
         counter++;
-    }
-
-    private Prize setTier(Prize prize) {
-        ItemStack itemStack = prize.getDisplayItem();
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-        container.set(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING, plugin.getCrazyHandler().getPrizeManager().getTier(getCrate()).getName());
-        itemStack.setItemMeta(itemMeta);
-        prize.setDisplayItemStack(itemStack);
-
-        //this.plugin.getCrazyHandler().getPrizeManager().getPrize(getPlayer(), getCrate(), tier, prize);
-
-        return prize;
     }
 
     @Override

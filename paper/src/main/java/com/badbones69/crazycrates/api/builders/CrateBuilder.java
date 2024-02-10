@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
+import com.badbones69.crazycrates.tasks.PrizeManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
 import org.bukkit.Location;
@@ -369,16 +370,6 @@ public abstract class CrateBuilder extends BukkitRunnable {
     }
 
     /**
-     * @return the prize object.
-     */
-    public Prize getPrize(int slot) {
-        ItemStack itemStack = getInventory().getItem(slot);
-
-        assert itemStack != null;
-        return getCrate().getPrize(itemStack);
-    }
-
-    /**
      * Plays a sound at different volume levels with fallbacks.
      *
      * @param type i.e. stop, cycle or click sound.
@@ -398,5 +389,9 @@ public abstract class CrateBuilder extends BukkitRunnable {
 
             sound.play(getPlayer(), getPlayer().getLocation());
         }
+    }
+
+    public PrizeManager getPrizeManager() {
+        return this.plugin.getCrazyHandler().getPrizeManager();
     }
 }

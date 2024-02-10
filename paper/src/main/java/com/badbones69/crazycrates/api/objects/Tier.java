@@ -1,19 +1,14 @@
 package com.badbones69.crazycrates.api.objects;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 
 public class Tier {
-
-    @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
 
     private final ItemBuilder item;
     private final int maxRange;
@@ -31,7 +26,7 @@ public class Tier {
 
         this.item = new ItemBuilder()
                 .setMaterial(section.getString("Item", "CHEST"))
-                .setName(coloredName)
+                .setName(this.coloredName)
                 .setLore(!lore.isEmpty() ? lore : Collections.emptyList());
 
         this.chance = section.getInt("Chance");
