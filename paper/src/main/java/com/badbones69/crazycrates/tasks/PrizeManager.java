@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.tasks;
 
+import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Tier;
 import org.apache.commons.lang.WordUtils;
 import com.badbones69.crazycrates.CrazyCrates;
@@ -11,7 +12,11 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.support.libraries.PluginSupport;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
@@ -148,7 +153,7 @@ public class PrizeManager {
      * @param crate the player is opening.
      * @param prize the player is being given.
      */
-    public void pickPrize(Player player, Crate crate, Prize prize) {
+    public void givePrize(Player player, Crate crate, Prize prize) {
         if (prize != null) {
             givePrize(player, prize, crate);
 
@@ -160,36 +165,26 @@ public class PrizeManager {
         }
     }
 
-    public void getPrize(Player player, Crate crate, String key, Prize prize) {
-        this.plugin.getLogger().warning("Other: " + key);
+    public void getPrize(Crate crate, Inventory inventory, int slot, Player player) {
+        ItemStack item = inventory.getItem(slot);
 
-        for (Tier tiers : prize.getTiers()) {
-            this.plugin.getLogger().warning("Tier: " + tiers.getName());
-        }
+        if (item == null) return;
 
-        /*if (prize != null && tier != null) {
-            crate.getTier(tier.getName());
+        Prize prize = crate.getPrize(item);
 
-            this.plugin.getCrazyHandler().
+        ItemStack itemStack = prize.getDisplayItem();
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        container.set(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING, this.plugin.getCrazyHandler().getPrizeManager().getTier(crate).getName());
+        itemStack.setItemMeta(itemMeta);
 
-            givePrize(player, prize, crate);
+        prize.setDisplayItemStack(itemStack);
 
-            if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
+        givePrize(player, prize, crate);
 
-            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+        if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
-            if (prize.getTiers().contains(tier)) {
-                givePrize(player, prize, crate);
-
-                if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
-
-                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-            }
-
-            return;
-        }*/
-
-        player.sendMessage(MsgUtils.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
+        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
     }
 
     public Tier getTier(Crate crate) {
