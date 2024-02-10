@@ -32,47 +32,47 @@ public class CasinoCrate extends CrateBuilder {
             return;
         }
 
-        if (counter <= 50) { // When the crate is currently spinning.
+        if (this.counter <= 50) { // When the crate is currently spinning.
             playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
 
             cycle();
         }
 
-        open++;
+        this.open++;
 
-        if (open >= 5) {
+        if (this.open >= 5) {
             getPlayer().openInventory(getInventory());
-            open = 0;
+            this.open = 0;
         }
 
-        counter++;
+        this.counter++;
 
-        if (counter > 51) {
-            if (MiscUtils.slowSpin(120, 15).contains(time)) {
+        if (this.counter > 51) {
+            if (MiscUtils.slowSpin(120, 15).contains(this.time)) {
                 playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
 
                 cycle();
             }
 
-            time++;
+            this.time++;
 
-            if (time >= 60) { // When the crate task is finished.
+            if (this.time >= 60) { // When the crate task is finished.
                 playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
 
-                plugin.getCrateManager().endCrate(getPlayer());
+                this.plugin.getCrateManager().endCrate(getPlayer());
 
                 getPrizeManager().getPrize(getCrate(), getInventory(), 11, getPlayer());
                 getPrizeManager().getPrize(getCrate(), getInventory(), 13, getPlayer());
                 getPrizeManager().getPrize(getCrate(), getInventory(), 15, getPlayer());
 
-                plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
+                this.plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
 
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         if (getPlayer().getOpenInventory().getTopInventory().equals(getInventory())) getPlayer().closeInventory();
                     }
-                }.runTaskLater(plugin, 40);
+                }.runTaskLater(this.plugin, 40);
 
                 cancel();
 
@@ -80,7 +80,7 @@ public class CasinoCrate extends CrateBuilder {
             }
         }
 
-        counter++;
+        this.counter++;
     }
 
     @Override
