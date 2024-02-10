@@ -996,8 +996,8 @@ public class CrateManager {
     private ItemStack getKey(FileConfiguration file) {
         String name = file.getString("Crate.PhysicalKey.Name");
         List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
-        String id = file.getString("Crate.PhysicalKey.Item");
-        boolean glowing = false;
+        String id = file.getString("Crate.PhysicalKey.Item", "TRIPWIRE_HOOK");
+        boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
 
         if (file.contains("Crate.PhysicalKey.Glowing")) {
             glowing = file.getBoolean("Crate.PhysicalKey.Glowing");
