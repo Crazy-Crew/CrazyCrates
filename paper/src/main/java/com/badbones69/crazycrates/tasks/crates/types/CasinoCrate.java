@@ -124,21 +124,6 @@ public class CasinoCrate extends CrateBuilder {
         }
     }
 
-    private Tier pickTier(Crate crate) {
-        if (crate.getTiers() != null && !crate.getTiers().isEmpty()) {
-            for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
-                for (Tier tier : crate.getTiers()) {
-                    int chance = tier.getChance();
-                    int num = new Random().nextInt(tier.getMaxRange());
-
-                    if (num >= 1 && num <= chance) return tier;
-                }
-            }
-        }
-
-        return null;
-    }
-
     private void cycle() {
         for (int index = 0; index < 27; index++) {
             ItemStack itemStack = getInventory().getItem(index);
