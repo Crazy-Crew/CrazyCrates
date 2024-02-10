@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -197,7 +198,6 @@ public class CrateManager {
                     List<Tier> prizeTiers = new ArrayList<>();
 
                     for (String tier : file.getStringList(path + ".Tiers")) {
-
                         for (Tier loadedTier : tiers) {
                             if (loadedTier.getName().equalsIgnoreCase(tier)) {
                                 prizeTiers.add(loadedTier);
@@ -1021,6 +1021,12 @@ public class CrateManager {
                     .addItemFlags(file.getStringList(path + "Flags"))
                     .addPatterns(file.getStringList(path + "Patterns"))
                     .setPlayerName(file.getString(path + "Player"));
+
+            // Set the prize number to the item stack.
+            ItemMeta itemMeta = itemBuilder.getItemMeta();
+            PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+            container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, prize);
+            itemBuilder.setItemMeta(itemMeta);
 
             if (file.contains(path + "DisplayDamage") && file.getInt(path + "DisplayDamage") >= 1) {
                 itemBuilder.setDamage(file.getInt(path + "DisplayDamage"));
