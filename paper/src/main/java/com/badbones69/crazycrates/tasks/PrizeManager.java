@@ -46,16 +46,9 @@ public class PrizeManager {
 
         if (tier == null) {
             if (this.plugin.isLogging()) this.plugin.getLogger().warning("No tier was found when giving " + player.getName() + " a prize.");
-            return;
+
+
         }
-
-        prize.getTiersList().forEach(key -> this.plugin.getLogger().warning("Key: " + key));
-
-        this.plugin.getLogger().warning(tier.getName());
-
-        //if (prize.getTiersList().contains(tier.getName())) {
-        //    this.plugin.getLogger().warning("Valid!");
-        //}
 
         prize = prize.hasPermission(player) ? prize.getAlternativePrize() : prize;
 
