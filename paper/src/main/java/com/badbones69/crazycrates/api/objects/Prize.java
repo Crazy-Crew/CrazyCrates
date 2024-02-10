@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -25,7 +24,7 @@ public class Prize {
     @NotNull
     private final CrazyCrates plugin = CrazyCrates.get();
 
-    private List<ItemStack> items = new ArrayList<>();
+    private final List<ItemStack> items = new ArrayList<>();
 
     private List<String> permissions = new ArrayList<>();
     private ItemBuilder displayItem = new ItemBuilder();
@@ -36,13 +35,21 @@ public class Prize {
     private String prizeName = "";
     private ItemStack itemStack;
     private int maxRange = 100;
+    private final String prizeNumber;
     private int chance = 0;
 
-    private List<Tier> tiers;
-    private List<ItemBuilder> itemBuilders;
+    private List<String> tiersNames = new ArrayList<>();
+    private List<Tier> tiers = new ArrayList<>();
+    private final List<ItemBuilder> builders;
     private Prize alternativePrize;
 
-    public Prize(ConfigurationSection section, String crateName) {
+    private final ConfigurationSection section;
+
+    public Prize(ConfigurationSection section, List<Tier> tierPrizes, List<String> tierNames, String crateName, Prize alternativePrize) {
+        this.section = section;
+
+        this.prizeNumber = section.getName();
+
         this.crateName = crateName;
 
         List<?> list = section.getList("Editor-Items") == null ? section.getList("Editor-Items") : Collections.emptyList();
@@ -53,63 +60,47 @@ public class Prize {
             }
         }
 
-        this.displayItem = display(section);
+        this.builders = ItemBuilder.convertStringList(this.section.getStringList("Items"), this.prizeNumber);
+
+        this.displayItem = display();
+
+        this.tiers = tierPrizes;
+        this.tiersNames = tierNames;
+
+        this.alternativePrize = alternativePrize;
 
         this.prizeName = section.getString("DisplayName", "&4Name not found.exe!");
         this.maxRange = section.getInt("MaxRange", 100);
         this.chance = section.getInt("Chance", 100);
         this.firework = section.getBoolean("Firework", false);
 
-        this.messages = section.getStringList("Messages");
-        this.commands = section.getStringList("Commands");
+        this.messages = section.contains("Messages") ? section.getStringList("Messages") : Collections.emptyList();
+        this.commands = section.contains("Commands") ? section.getStringList("Commands") : Collections.emptyList();
 
-        this.permissions = section.getStringList("BlackListed-Permissions");
-        this.permissions.replaceAll(String::toLowerCase);
-    }
-    
-    /**
-     * @param tiers The tiers the prize is in.
-     * @param alternativePrize The alternative prize that is won if the player has a blacklist permission.
-     */
-    public Prize(List<ItemBuilder> itemBuilders, List<Tier> tiers, Prize alternativePrize) {
-        this.itemBuilders = itemBuilders != null ? itemBuilders : new ArrayList<>();
+        this.permissions = section.contains("BlackListed-Permissions") ? section.getStringList("BlackListed-Permissions") : Collections.emptyList();
 
-        this.tiers = tiers != null ? tiers : new ArrayList<>();
-
-        this.alternativePrize = alternativePrize;
+        if (!this.permissions.isEmpty()) {
+            this.permissions.replaceAll(String::toLowerCase);
+        }
     }
 
     /**
      * Create a new prize.
      * This option is used only for Alternative Prizes.
-     * @param name The name of the prize.
-     * @param messages The messages it sends to the player that wins it.
-     * @param commands The commands that run when the prize is won.
-     * @param items The ItemStacks that are given to the player that wins.
+     *
+     * @param section the configuration section.
      */
-    public Prize(String name, List<String> messages, List<String> commands, List<ItemStack> items, List<ItemBuilder> itemBuilders) {
-        this.prizeName = name != null ? name : "&4No name Found!";
+    public Prize(String prizeName, String prizeNumber, ConfigurationSection section) {
+        this.prizeName = prizeName;
 
-        this.crateName = "";
+        this.builders = ItemBuilder.convertStringList(section.getStringList("Items"), prizeNumber);
 
-        this.items = items != null ? items : new ArrayList<>();
+        this.messages = section.getStringList("Messages");
+        this.commands = section.getStringList("Commands");
 
-        this.itemBuilders = itemBuilders != null ? itemBuilders : new ArrayList<>();
+        this.prizeNumber = prizeNumber;
 
-        this.chance = 0;
-
-        this.firework = false;
-
-        this.tiers = new ArrayList<>();
-
-        this.messages = messages != null ? messages : new ArrayList<>();
-        this.commands = commands != null ? commands : new ArrayList<>();
-
-        this.displayItem = new ItemBuilder();
-
-        this.permissions = new ArrayList<>();
-
-        this.alternativePrize = null;
+        this.section = section;
     }
     
     /**
@@ -154,92 +145,91 @@ public class Prize {
     }
     
     /**
-     * @return returns the list of tiers the prize is in.
+     * @return the list of tiers the prize is in.
      */
     public List<Tier> getTiers() {
         return this.tiers;
     }
 
-    public List<String> getTiersList() {
-        List<String> tiers = new ArrayList<>();
-
-        getTiers().forEach(tier -> tiers.add(tier.getName()));
-
-        return tiers;
+    /**
+     * @return the list of tier names a prize has.
+     */
+    public List<String> getTiersNames() {
+        return this.tiersNames;
     }
     
     /**
-     * @return returns the messages sent to the player.
+     * @return the messages sent to the player.
      */
     public List<String> getMessages() {
         return this.messages;
     }
     
     /**
-     * @return returns the commands that are run when the player wins.
+     * @return the commands that are run when the player wins.
      */
     public List<String> getCommands() {
         return this.commands;
     }
     
     /**
-     * @return returns the Editor ItemStacks that are given to the player that wins.
+     * @return the Editor ItemStacks that are given to the player that wins.
      */
     public List<ItemStack> getItems() {
         return this.items;
     }
     
     /**
-     * @return returns the ItemBuilders for all the custom items made from the Items: option.
+     * @return the ItemBuilders for all the custom items made from the Items: option.
      */
     public List<ItemBuilder> getItemBuilders() {
-        return this.itemBuilders;
+        return this.builders;
     }
     
     /**
-     * @return returns the name of the crate the prize is in.
+     * @return the name of the crate the prize is in.
      */
     public String getCrateName() {
         return this.crateName;
     }
     
     /**
-     * @return returns the chance the prize has of being picked.
+     * @return the chance the prize has of being picked.
      */
     public int getChance() {
         return this.chance;
     }
     
     /**
-     * @return returns the max range of the prize.
+     * @return the max range of the prize.
      */
     public int getMaxRange() {
         return this.maxRange;
     }
     
     /**
-     * @return returns true if a firework explosion is played and false if not.
+     * @return true if a firework explosion is played and false if not.
      */
     public boolean useFireworks() {
         return this.firework;
     }
     
     /**
-     * @return returns the alternative prize the player wins if they have a blacklist permission.
+     * @return the alternative prize the player wins if they have a blacklist permission.
      */
     public Prize getAlternativePrize() {
         return this.alternativePrize;
     }
     
     /**
-     * @return returns true if the prize doesn't have an alternative prize and false if it does.
+     * @return true if the prize doesn't have an alternative prize and false if it does.
      */
     public boolean hasAlternativePrize() {
         return this.alternativePrize == null;
     }
     
     /**
-     * @return Returns true if they prize has blacklist permissions and false if not.
+     * @return true if they prize has blacklist permissions and false if not.
      */
     public boolean hasPermission(Player player) {
         if (player.isOp()) {
@@ -255,19 +245,19 @@ public class Prize {
         return false;
     }
 
-    private ItemBuilder display(ConfigurationSection section) {
+    private ItemBuilder display() {
         ItemBuilder builder = new ItemBuilder();
 
         try {
-            String material = section.getString("DisplayItem", "RED_TERRACOTTA");
-            int amount = section.getInt("DisplayAmount", 1);
-            List<String> lore = section.getStringList("Lore");
-            boolean isGlowing = section.getBoolean("Glowing", false);
-            boolean isUnbreakable = section.getBoolean("Unbreakable", false);
-            boolean hideItemFlags = section.getBoolean("HideItemFlags", false);
-            List<String> itemFlags = section.getStringList("Flags");
-            List<String> patterns = section.getStringList("Patterns");
-            String playerName = section.getString("Player", "");
+            String material = this.section.getString("DisplayItem", "RED_TERRACOTTA");
+            int amount = this.section.getInt("DisplayAmount", 1);
+            List<String> lore = this.section.getStringList("Lore");
+            boolean isGlowing = this.section.getBoolean("Glowing", false);
+            boolean isUnbreakable = this.section.getBoolean("Unbreakable", false);
+            boolean hideItemFlags = this.section.getBoolean("HideItemFlags", false);
+            List<String> itemFlags = this.section.getStringList("Flags");
+            List<String> patterns = this.section.getStringList("Patterns");
+            String playerName = this.section.getString("Player", "");
 
             builder.setMaterial(material)
                     .setAmount(amount)
@@ -284,19 +274,16 @@ public class Prize {
 
             ItemMeta itemMeta = builder.getItemMeta();
 
-            // Check to make sure the container has the correct variable.
-            Bukkit.getLogger().warning("Section Name: " + section.getName());
-
-            itemMeta.getPersistentDataContainer().set(cratePrize, PersistentDataType.STRING, section.getName());
+            itemMeta.getPersistentDataContainer().set(cratePrize, PersistentDataType.STRING, this.section.getName());
             builder.setItemMeta(itemMeta);
 
-            int displayDamage = section.getInt("DisplayDamage", builder.getMaterial().getMaxDurability());
+            int displayDamage = this.section.getInt("DisplayDamage", 0);
             builder.setDamage(displayDamage);
 
-            if (section.contains("DisplayTrim.Pattern")) {
+            if (this.section.contains("DisplayTrim.Pattern")) {
                 NamespacedKey key = null;
 
-                String trimPattern = section.getString("DisplayTrim.Pattern");
+                String trimPattern = this.section.getString("DisplayTrim.Pattern");
 
                 if (trimPattern != null) {
                     key = NamespacedKey.fromString(trimPattern);
@@ -308,10 +295,10 @@ public class Prize {
                 }
             }
 
-            if (section.contains("DisplayTrim.Material")) {
+            if (this.section.contains("DisplayTrim.Material")) {
                 NamespacedKey key = null;
 
-                String trimMaterial = section.getString("DisplayTrim.Material");
+                String trimMaterial = this.section.getString("DisplayTrim.Material");
 
                 if (trimMaterial != null) {
                     key = NamespacedKey.fromString(trimMaterial);
@@ -323,8 +310,8 @@ public class Prize {
                 }
             }
 
-            if (section.contains("DisplayEnchantments")) {
-                for (String name : section.getStringList("DisplayEnchantments")) {
+            if (this.section.contains("DisplayEnchantments")) {
+                for (String name : this.section.getStringList("DisplayEnchantments")) {
                     Enchantment enchantment = MiscUtils.getEnchantment(name.split(":")[0]);
 
                     if (enchantment != null) {

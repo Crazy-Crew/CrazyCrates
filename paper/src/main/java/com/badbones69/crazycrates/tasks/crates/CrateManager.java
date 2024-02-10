@@ -93,7 +93,7 @@ public class CrateManager {
                     ConfigurationSection prizeSection = prizesSection.getConfigurationSection(prize);
 
                     if (prizeSection != null) {
-                        prizes.add(new Prize(prizeSection, crate.getName()));
+                        //prizes.add(new Prize(prizeSection, crate.getName()));
                     }
                 }
 
@@ -154,9 +154,11 @@ public class CrateManager {
             try {
                 FileConfiguration file = this.fileManager.getFile(crateName).getFile();
                 CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));
+
                 List<Prize> prizes = new ArrayList<>();
-                String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
                 List<Tier> tiers = new ArrayList<>();
+
+                String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
                 int maxMassOpen = file.contains("Crate.Max-Mass-Open") ? file.getInt("Crate.Max-Mass-Open") : 10;
                 int requiredKeys = file.contains("Crate.RequiredKeys") ? file.getInt("Crate.RequiredKeys") : 0;
 
@@ -186,45 +188,38 @@ public class CrateManager {
 
                 ConfigurationSection prizesSection = file.getConfigurationSection("Crate.Prizes");
 
-                List<Prize> newPrizes = new ArrayList<>();
-
                 if (prizesSection != null) {
                     for (String prize : prizesSection.getKeys(false)) {
                         ConfigurationSection prizeSection = prizesSection.getConfigurationSection(prize);
 
+                        List<Tier> tierPrizes = new ArrayList<>();
+                        List<String> tierNames = new ArrayList<>();
+
+                        Prize alternativePrize = null;
+
                         if (prizeSection != null) {
-                            newPrizes.add(new Prize(prizeSection, crateName));
-                        }
-                    }
-                }
-
-                for (String prize : file.getConfigurationSection("Crate.Prizes").getKeys(false)) {
-                    Prize altPrize = null;
-                    String path = "Crate.Prizes." + prize;
-                    List<Tier> prizeTiers = new ArrayList<>();
-
-                    for (String tier : file.getStringList(path + ".Tiers")) {
-                        for (Tier loadedTier : tiers) {
-                            if (loadedTier.getName().equalsIgnoreCase(tier)) {
-                                prizeTiers.add(loadedTier);
+                            for (String tier : prizeSection.getStringList("Tiers")) {
+                                for (Tier key : tiers) {
+                                    if (key.getName().equalsIgnoreCase(tier)) {
+                                        tierNames.add(key.getName());
+                                        tierPrizes.add(key);
+                                    }
+                                }
                             }
+
+                            ConfigurationSection alternativeSection = prizeSection.getConfigurationSection("Alternative-Prize");
+
+                            if (alternativeSection != null) {
+                                boolean isEnabled = alternativeSection.getBoolean("Toggle");
+
+                                if (isEnabled) {
+                                    alternativePrize = new Prize(prizeSection.getString("DisplayName", "&4Name not found.exe!"), prizeSection.getName(), alternativeSection);
+                                }
+                            }
+
+                            prizes.add(new Prize(prizeSection, tierPrizes, tierNames, crateName, alternativePrize));
                         }
                     }
-
-                    if (file.contains(path + ".Alternative-Prize")) {
-                        if (file.getBoolean(path + ".Alternative-Prize.Toggle")) {
-                            altPrize = new Prize("Alternative-Prize",
-                                    file.getStringList(path + ".Alternative-Prize.Messages"),
-                                    file.getStringList(path + ".Alternative-Prize.Commands"),
-                                    null, // No editor items
-                                    getItems(file, prize + ".Alternative-Prize"));
-                        }
-                    }
-
-                    prizes.add(new Prize(
-                            getItems(file, prize),
-                            prizeTiers,
-                            altPrize));
                 }
 
                 int newPlayersKeys = file.getInt("Crate.StartingKeys");
