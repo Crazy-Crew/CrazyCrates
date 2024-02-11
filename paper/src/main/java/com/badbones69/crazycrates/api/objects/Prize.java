@@ -98,14 +98,21 @@ public class Prize {
     }
     
     /**
-     * @return returns the name of the prize.
+     * @return the name of the prize.
      */
     public String getPrizeName() {
         return this.prizeName;
     }
-    
+
     /**
-     * @return returns the display item that is shown for the preview and the winning prize.
+     * @return the prize number.
+     */
+    public String getPrizeNumber() {
+        return this.prizeNumber;
+    }
+
+    /**
+     * @return the display item that is shown for the preview and the winning prize.
      */
     public ItemStack getDisplayItem() {
         if (this.itemStack == null) {
@@ -123,7 +130,7 @@ public class Prize {
     }
 
     /**
-     * @return returns the ItemBuilder of the display item.
+     * @return the ItemBuilder of the display item.
      */
     public ItemBuilder getDisplayItemBuilder() {
         return this.displayItem;
