@@ -233,8 +233,6 @@ public class Prize {
      */
     public boolean hasPermission(Player player) {
         if (player.isOp()) {
-            if (this.plugin.isLogging()) this.plugin.getLogger().warning(player.getName() + " is opped so we do not check for blacklist permissions.");
-
             return false;
         }
 

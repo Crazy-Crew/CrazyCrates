@@ -425,7 +425,7 @@ public class QuadCrateManager {
      *
      * @return true if yes otherwise false
      */
-    public Boolean allCratesOpened() {
+    public boolean allCratesOpened() {
         for (Map.Entry<Location, Boolean> location : this.cratesOpened.entrySet()) {
             if (!location.getValue()) return false;
         }
