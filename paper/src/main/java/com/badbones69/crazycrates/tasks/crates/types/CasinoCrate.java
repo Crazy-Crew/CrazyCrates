@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.bukkit.SoundCategory;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -104,18 +105,54 @@ public class CasinoCrate extends CrateBuilder {
             return;
         }
 
-        setDisplayItems(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size())));
+        setDisplayItems(true);
 
         getPlayer().openInventory(getInventory());
     }
 
-    private void setDisplayItems(Tier tier) {
-        for (int index = 0; index <= 26; index++) {
-            if (index == 2 || index == 4 || index == 6 || index == 11 || index == 13 || index == 15 || index == 20 || index == 22 || index == 24) {
-                setItem(index, getDisplayItem(tier));
-            } else {
+    private void setDisplayItems(boolean isStatic) {
+        ConfigurationSection section = getCrate().getFile().getConfigurationSection("Crate.random");
+
+        if (isStatic) {
+            for (int index = 0; index < 27; index++) {
                 setItem(index, getRandomGlassPane());
             }
+        }
+
+        if (section != null) {
+            boolean isRandom = section.getBoolean("toggle", false);
+
+            String row_uno = section.getString("types.row-1");
+            String row_dos = section.getString("types.row-2");
+            String row_tres = section.getString("types.row-3");
+
+            if (isRandom) {
+                setItem(2, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+                setItem(11, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+                setItem(20, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+
+                setItem(4, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+                setItem(13, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+                setItem(22, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+
+                setItem(6, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+                setItem(15, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+                setItem(24, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+
+                return;
+            }
+
+            setItem(2, getDisplayItem(getCrate().getTier(row_uno)));
+            setItem(11, getDisplayItem(getCrate().getTier(row_uno)));
+            setItem(20, getDisplayItem(getCrate().getTier(row_uno)));
+
+            setItem(4, getDisplayItem(getCrate().getTier(row_dos)));
+            setItem(13, getDisplayItem(getCrate().getTier(row_dos)));
+            setItem(22, getDisplayItem(getCrate().getTier(row_dos)));
+
+            setItem(6, getDisplayItem(getCrate().getTier(row_tres)));
+            setItem(15, getDisplayItem(getCrate().getTier(row_tres)));
+            setItem(24, getDisplayItem(getCrate().getTier(row_tres)));
         }
     }
 
@@ -134,6 +171,6 @@ public class CasinoCrate extends CrateBuilder {
             }
         }
 
-        setDisplayItems(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size())));
+        setDisplayItems(false);
     }
 }
