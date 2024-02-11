@@ -594,6 +594,69 @@ public class Crate {
 
         this.plugin.getCrateManager().reloadCrate(this.plugin.getCrateManager().getCrateFromName(this.name));
     }
+
+    /**
+     * Add a new editor item to a prize in the crate.
+     *
+     * @param prize the prize the item is being added to.
+     * @param item the ItemStack that is being added.
+     * @param tier the tier for the crate.
+     */
+    public void addEditorItem(String prize, ItemStack item, Tier tier) {
+        List<ItemStack> items = new ArrayList<>();
+        items.add(item);
+
+        String path = "Crate.Prizes." + prize;
+
+        if (!this.file.contains(path)) {
+            if (item.hasItemMeta()) {
+                if (item.getItemMeta().hasDisplayName()) this.file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
+                if (item.getItemMeta().hasLore()) this.file.set(path + ".Lore", item.getItemMeta().getLore());
+            }
+
+            NBTItem nbtItem = new NBTItem(item);
+
+            if (nbtItem.hasNBTData()) {
+                if (nbtItem.hasTag("Unbreakable") && nbtItem.getBoolean("Unbreakable")) this.file.set(path + ".Unbreakable", true);
+            }
+
+            List<String> enchantments = new ArrayList<>();
+
+            for (Enchantment enchantment : item.getEnchantments().keySet()) {
+                enchantments.add((enchantment.getKey().getKey() + ":" + item.getEnchantmentLevel(enchantment)));
+            }
+
+            if (!enchantments.isEmpty()) this.file.set(path + ".DisplayEnchantments", enchantments);
+
+            this.file.set(path + ".DisplayItem", item.getType().name());
+            this.file.set(path + ".DisplayAmount", item.getAmount());
+            this.file.set(path + ".MaxRange", 100);
+            this.file.set(path + ".Chance", 50);
+
+            this.file.set(path + ".Tiers", new ArrayList<>() {{
+                add(tier.getName());
+            }});
+        } else {
+            // Must be checked as getList will return null if nothing is found.
+            if (this.file.contains(path + ".Editor-Items")) this.file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
+        }
+
+        this.file.set(path + ".Editor-Items", items);
+
+        File crates = new File(this.plugin.getDataFolder(), "crates");
+
+        File crateFile = new File(crates, this.name + ".yml");
+
+        try {
+            this.file.save(crateFile);
+        } catch (IOException exception) {
+            this.plugin.getLogger().log(Level.SEVERE, "Failed to save " + this.name + ".yml", exception);
+        }
+
+        this.fileManager.getFile(this.name).reloadFile();
+
+        this.plugin.getCrateManager().reloadCrate(this.plugin.getCrateManager().getCrateFromName(this.name));
+    }
     
     /**
      * @return the max page for the preview.

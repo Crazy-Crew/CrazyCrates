@@ -50,6 +50,14 @@ public class CommandManager {
             return numbers;
         });
 
+        this.bukkitCommandManager.registerSuggestion(SuggestionKey.of("tiers"), (sender, context) -> {
+            List<String> numbers = new ArrayList<>();
+
+            this.plugin.getCrateManager().getCrateFromName(context.getArgs().get(0)).getTiers().forEach(tier -> numbers.add(tier.getName()));
+
+            return numbers;
+        });
+
         this.bukkitCommandManager.registerSuggestion(SuggestionKey.of("numbers"), (sender, context) -> {
             List<String> numbers = new ArrayList<>();
 
