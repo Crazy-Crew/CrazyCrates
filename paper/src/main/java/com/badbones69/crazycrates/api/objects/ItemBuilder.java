@@ -1044,7 +1044,7 @@ public class ItemBuilder {
                         try {
                             itemBuilder.setDamage(Integer.parseInt(value));
                         } catch (NumberFormatException e) {
-                            itemBuilder.setDamage(itemBuilder.material.getMaxDurability());
+                            itemBuilder.setDamage(0);
                         }
                     }
                     case "lore" -> itemBuilder.setLore(Arrays.asList(value.split(",")));
