@@ -1085,10 +1085,6 @@ public class CrateManager {
         FileManager.Files.DATA.saveFile();
     }
 
-    private List<ItemBuilder> getItems(FileConfiguration file, String prize) {
-        return ItemBuilder.convertStringList(file.getStringList("Crate.Prizes." + prize + ".Items"), prize);
-    }
-
     // War Crate
     private final HashMap<UUID, Boolean> canPick = new HashMap<>();
     private final HashMap<UUID, Boolean> canClose = new HashMap<>();
