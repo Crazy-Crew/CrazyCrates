@@ -47,6 +47,14 @@ public class BaseKeyCommand extends BaseCommand {
         getKeys(target, sender, header, otherPlayer);
     }
 
+    /**
+     * Get keys from player or sender or other player.
+     *
+     * @param player player to get keys.
+     * @param sender sender to send message to.
+     * @param header header of the message.
+     * @param messageContent content of the message.
+     */
     private void getKeys(Player player, CommandSender sender, String header, String messageContent) {
         List<String> message = Lists.newArrayList();
 

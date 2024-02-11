@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.tasks;
 
+import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Tier;
 import org.apache.commons.lang.WordUtils;
 import com.badbones69.crazycrates.CrazyCrates;
@@ -11,11 +12,20 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.support.libraries.PluginSupport;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class PrizeManager {
@@ -24,10 +34,11 @@ public class PrizeManager {
     private final CrazyCrates plugin = CrazyCrates.get();
 
     /**
-     * Give a player a prize they have won.
+     * Gets the prize for the player.
      *
-     * @param player you wish to give the prize to.
-     * @param prize the player has won.
+     * @param player who the prize is for.
+     * @param crate the player is opening.
+     * @param prize the player is being given.
      */
     public void givePrize(Player player, Prize prize, Crate crate) {
         if (prize == null) {
@@ -35,13 +46,13 @@ public class PrizeManager {
             return;
         }
 
-        prize = prize.hasBlacklistPermission(player) ? prize.getAltPrize() : prize;
+        prize = prize.hasPermission(player) ? prize.getAlternativePrize() : prize;
 
         for (ItemStack item : prize.getItems()) {
             if (item == null) {
                 HashMap<String, String> placeholders = new HashMap<>();
-                placeholders.put("%crate%", prize.getCrate());
-                placeholders.put("%prize%", prize.getName());
+                placeholders.put("%crate%", prize.getCrateName());
+                placeholders.put("%prize%", prize.getPrizeName());
                 player.sendMessage(Messages.prize_error.getMessage(placeholders).toString());
                 continue;
             }
@@ -83,7 +94,7 @@ public class PrizeManager {
                             commandBuilder.append(MiscUtils.pickNumber(min, max)).append(" ");
                         } catch (Exception e) {
                             commandBuilder.append("1 ");
-                            this.plugin.getLogger().warning("The prize " + prize.getName() + " in the " + prize.getCrate() + " crate has caused an error when trying to run a command.");
+                            this.plugin.getLogger().warning("The prize " + prize.getPrizeName() + " in the " + prize.getCrateName() + " crate has caused an error when trying to run a command.");
                             this.plugin.getLogger().warning("Command: " + cmd);
                         }
                     } else {
@@ -140,13 +151,13 @@ public class PrizeManager {
     }
 
     /**
-     * Picks the prize for the player.
+     * Gets the prize for the player.
      *
      * @param player who the prize is for.
      * @param crate the player is opening.
      * @param prize the player is being given.
      */
-    public void pickPrize(Player player, Crate crate, Prize prize) {
+    public void givePrize(Player player, Crate crate, Prize prize) {
         if (prize != null) {
             givePrize(player, prize, crate);
 
@@ -158,29 +169,30 @@ public class PrizeManager {
         }
     }
 
-    public void checkPrize(Prize prize, Player player, Crate crate) {
-        if (prize != null) {
-            givePrize(player, prize, crate);
+    public void getPrize(Crate crate, Inventory inventory, int slot, Player player) {
+        ItemStack item = inventory.getItem(slot);
 
-            if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
+        if (item == null) return;
 
-            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
-        } else {
-            player.sendMessage(MsgUtils.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
-        }
+        Prize prize = crate.getPrize(item);
+
+        givePrize(player, prize, crate);
     }
 
-    public void checkPrize(Tier tier, Prize prize, Player player, Crate crate) {
-        if (prize != null && tier != null) {
-            if (prize.getTiers().contains(tier)) {
-                givePrize(player, prize, crate);
+    public Tier getTier(Crate crate) {
+        if (crate.getTiers() != null && !crate.getTiers().isEmpty()) {
+            for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
+                for (Tier tier : crate.getTiers()) {
+                    int chance = tier.getChance();
+                    int num = new Random().nextInt(tier.getMaxRange());
 
-                if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
-
-                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+                    if (num >= 1 && num <= chance) {
+                        return tier;
+                    }
+                }
             }
-        } else {
-            player.sendMessage(MsgUtils.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
         }
+
+        return null;
     }
 }

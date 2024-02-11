@@ -11,8 +11,6 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.CrazyCrates;
-import us.crazycrew.crazycrates.api.enums.types.CrateType;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

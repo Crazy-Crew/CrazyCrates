@@ -76,6 +76,18 @@ Crate:
       name: ' '
       # The item that shows in the border. Can be glass or any other item.
       item: 'RED_STAINED_GLASS_PANE'
+  # Tier related settings only for Casino should be random.
+  random:
+    # If the tiers should be random.
+    toggle: false
+    # The rows with pre-defined tiers.
+    types:
+      # Row 1
+      row-1: Basic
+      # Row 2
+      row-2: UnCommon
+      # Row 3
+      row-3: Rare
   # Tiers are available in Cosmic and Casino crate types.
   # The Tiers the rewards can be found in.
   Tiers:
@@ -113,16 +125,20 @@ Crate:
 ```
 * `Color` has been replaced by `Item` as you could have always used any item, so it was misleading to name it `Color`
 * If `Item` is not found, It will fall back to LIME_STAINED_GLASS_PANE.
+* You can choose between a pre-defined tier for each row or have it pick randomly between available tiers.
+* Note: We only have 3 rows, so you obviously can only have 1 tier per row. This is not likely to change for this Crate Type... 
 
 ## Enhancements:
 * Added a check if the crate type is invalid, It will notify you in console and show you valid crate types. 
 * Updated slot checks for menu items to rely on PersistentDataContainer.
 * Re-organized the default /crate gui
+* Check uuids for quad crate sessions over player objects.
 
 ## Fixes:
  * Fixed issues with crates being broken in worlds created by world plugins.
  * Fixed a few other bugs I can't remember.
  * Fixed a bug where the refund event needed to be fired sync.
+ * Fixed a bug with display damage where if you put a value that can't be parsed as an integer like 50f, It wouldn't just be empty durability.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)

@@ -17,7 +17,8 @@ public class CrateLocation {
     
     /**
      * Get the ID of the location.
-     * @return The location's ID.
+     *
+     * @return the location's ID.
      */
     public String getID() {
         return this.id;
@@ -25,7 +26,8 @@ public class CrateLocation {
     
     /**
      * Get the crate that this location is set to.
-     * @return The crate that the block is set to.
+     *
+     * @return the crate that the block is set to.
      */
     public Crate getCrate() {
         return this.crate;
@@ -34,7 +36,7 @@ public class CrateLocation {
     /**
      * Overwrites the current crate object.
      *
-     * @param crate object
+     * @param crate crate object
      */
     public void setCrate(Crate crate) {
         this.crate = crate;
@@ -42,7 +44,8 @@ public class CrateLocation {
     
     /**
      * Get the crate type of the crate.
-     * @return The type of crate the crate is.
+     *
+     * @return the type of crate the crate is.
      */
     public CrateType getCrateType() {
         return this.crate.getCrateType();
@@ -50,7 +53,8 @@ public class CrateLocation {
     
     /**
      * Get the physical location of the crate.
-     * @return The location of the crate.
+     *
+     * @return the location of the crate.
      */
     public Location getLocation() {
         return this.loc;

@@ -17,10 +17,10 @@ public class SoundEffect {
     /**
      * Builds a sound to play.
      *
-     * @param section in the crate config.
-     * @param type of sound i.e. cycle-sound or click-sound.
+     * @param section section in the crate config.
+     * @param type type of sound i.e. cycle-sound or click-sound.
      * @param fallback the fallback sound if no sound is found.
-     * @param category of sound as to respect the client side sound settings.
+     * @param category category of sound as to respect the client side sound settings.
      */
     public SoundEffect(ConfigurationSection section, String type, String fallback, SoundCategory category) {
         this.isEnabled = section.getBoolean(type + ".toggle", false);
@@ -32,6 +32,12 @@ public class SoundEffect {
         this.category = category;
     }
 
+    /**
+     * Play a sound for a player at a location.
+     *
+     * @param player player to play sound to.
+     * @param location location for sound to play at.
+     */
     public void play(Player player, Location location) {
         if (!this.isEnabled) return;
 

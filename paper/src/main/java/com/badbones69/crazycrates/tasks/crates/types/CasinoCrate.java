@@ -4,18 +4,15 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.tasks.PrizeManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.bukkit.SoundCategory;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-
 import java.util.Random;
 
 public class CasinoCrate extends CrateBuilder {
@@ -37,57 +34,55 @@ public class CasinoCrate extends CrateBuilder {
             return;
         }
 
-        if (counter <= 50) { // When the crate is currently spinning.
+        if (this.counter <= 50) { // When the crate is currently spinning.
             playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
 
             cycle();
         }
 
-        open++;
+        this.open++;
 
-        if (open >= 5) {
+        if (this.open >= 5) {
             getPlayer().openInventory(getInventory());
-            open = 0;
+            this.open = 0;
         }
 
-        counter++;
+        this.counter++;
 
-        if (counter > 51) {
-            if (MiscUtils.slowSpin(120, 15).contains(time)) {
+        if (this.counter > 51) {
+            if (MiscUtils.slowSpin(120, 15).contains(this.time)) {
                 playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
 
                 cycle();
             }
 
-            time++;
+            this.time++;
 
-            if (time >= 60) { // When the crate task is finished.
+            if (this.time >= 60) { // When the crate task is finished.
                 playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
 
-                plugin.getCrateManager().endCrate(getPlayer());
+                this.plugin.getCrateManager().endCrate(getPlayer());
 
-                PrizeManager manager = plugin.getCrazyHandler().getPrizeManager();
+                getPrizeManager().getPrize(getCrate(), getInventory(), 11, getPlayer());
+                getPrizeManager().getPrize(getCrate(), getInventory(), 13, getPlayer());
+                getPrizeManager().getPrize(getCrate(), getInventory(), 15, getPlayer());
 
-                manager.checkPrize(pickTier(getCrate()), getPrize(11), getPlayer(), getCrate());
-                manager.checkPrize(pickTier(getCrate()), getPrize(13), getPlayer(), getCrate());
-                manager.checkPrize(pickTier(getCrate()), getPrize(15), getPlayer(), getCrate());
-
-                plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
-
-                cancel();
+                this.plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
 
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         if (getPlayer().getOpenInventory().getTopInventory().equals(getInventory())) getPlayer().closeInventory();
                     }
-                }.runTaskLater(plugin, 40);
+                }.runTaskLater(this.plugin, 40);
+
+                cancel();
 
                 return;
             }
         }
 
-        counter++;
+        this.counter++;
     }
 
     @Override
@@ -109,34 +104,55 @@ public class CasinoCrate extends CrateBuilder {
             return;
         }
 
-        setDisplayItems();
+        setDisplayItems(true);
 
         getPlayer().openInventory(getInventory());
     }
 
-    private void setDisplayItems() {
-        for (int index = 0; index <= 26; index++) {
-            if (index == 2 || index == 4 || index == 6 || index == 11 || index == 13 || index == 15 || index == 20 || index == 22 || index == 24) {
-                setItem(index, getDisplayItem());
-            } else {
+    private void setDisplayItems(boolean isStatic) {
+        ConfigurationSection section = getCrate().getFile().getConfigurationSection("Crate.random");
+
+        if (isStatic) {
+            for (int index = 0; index < 27; index++) {
                 setItem(index, getRandomGlassPane());
             }
         }
-    }
 
-    private Tier pickTier(Crate crate) {
-        if (crate.getTiers() != null && !crate.getTiers().isEmpty()) {
-            for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
-                for (Tier tier : crate.getTiers()) {
-                    int chance = tier.getChance();
-                    int num = new Random().nextInt(tier.getMaxRange());
+        if (section != null) {
+            boolean isRandom = section.getBoolean("toggle", false);
 
-                    if (num >= 1 && num <= chance) return tier;
-                }
+            String row_uno = section.getString("types.row-1");
+            String row_dos = section.getString("types.row-2");
+            String row_tres = section.getString("types.row-3");
+
+            if (isRandom) {
+                setItem(2, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+                setItem(11, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+                setItem(20, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+
+                setItem(4, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+                setItem(13, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+                setItem(22, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+
+                setItem(6, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+                setItem(15, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+                setItem(24, getDisplayItem(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size()))));
+
+                return;
             }
-        }
 
-        return null;
+            setItem(2, getDisplayItem(getCrate().getTier(row_uno)));
+            setItem(11, getDisplayItem(getCrate().getTier(row_uno)));
+            setItem(20, getDisplayItem(getCrate().getTier(row_uno)));
+
+            setItem(4, getDisplayItem(getCrate().getTier(row_dos)));
+            setItem(13, getDisplayItem(getCrate().getTier(row_dos)));
+            setItem(22, getDisplayItem(getCrate().getTier(row_dos)));
+
+            setItem(6, getDisplayItem(getCrate().getTier(row_tres)));
+            setItem(15, getDisplayItem(getCrate().getTier(row_tres)));
+            setItem(24, getDisplayItem(getCrate().getTier(row_tres)));
+        }
     }
 
     private void cycle() {
@@ -154,6 +170,6 @@ public class CasinoCrate extends CrateBuilder {
             }
         }
 
-        setDisplayItems();
+        setDisplayItems(false);
     }
 }

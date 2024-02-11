@@ -16,7 +16,8 @@ public enum PersistentKeys {
     main_menu_crate("main_menu_crate", PersistentDataType.STRING),
     back_button("back_button", PersistentDataType.STRING),
     next_button("next_button", PersistentDataType.STRING),
-    crate_prize("crate_prize", PersistentDataType.INTEGER);
+    crate_prize("crate_prize", PersistentDataType.STRING),
+    crate_tier("crate_tier", PersistentDataType.STRING);
 
     private final @NotNull CrazyCrates plugin = CrazyCrates.get();
 

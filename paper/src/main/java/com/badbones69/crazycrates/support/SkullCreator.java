@@ -21,7 +21,7 @@ import java.util.UUID;
  */
 public class SkullCreator {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
+    private static final CrazyCrates plugin = CrazyCrates.get();
     
     /**
      * Creates a player skull with a UUID. 1.13 only.

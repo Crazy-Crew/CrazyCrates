@@ -397,7 +397,7 @@ public class CosmicCrateListener implements Listener {
 
     private void startRollingAnimation(Player player, InventoryView view, CratePrizeMenu cosmic) {
         for (int slot = 0; slot < cosmic.getSize(); slot++) {
-            Tier tier = pickTier(cosmic.getCrate());
+            Tier tier = this.plugin.getCrazyHandler().getPrizeManager().getTier(cosmic.getCrate());
 
             if (tier != null) view.getTopInventory().setItem(slot, tier.getTierItem());
         }
@@ -415,7 +415,7 @@ public class CosmicCrateListener implements Listener {
 
         view.getTopInventory().clear();
 
-        Tier tier = pickTier(cosmic.getCrate());
+        Tier tier = this.plugin.getCrazyHandler().getPrizeManager().getTier(cosmic.getCrate());
 
         if (tier != null) {
             crateManager.getPickedPrizes(player).forEach(slot -> view.setItem(slot, tier.getTierItem()));
@@ -444,21 +444,6 @@ public class CosmicCrateListener implements Listener {
     private Tier getTier(Crate crate, ItemStack item) {
         for (Tier tier : crate.getTiers()) {
             if (tier.getTierItem().isSimilar(item)) return tier;
-        }
-
-        return null;
-    }
-
-    private Tier pickTier(Crate crate) {
-        if (crate.getTiers() != null && !crate.getTiers().isEmpty()) {
-            for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
-                for (Tier tier : crate.getTiers()) {
-                    int chance = tier.getChance();
-                    int num = new Random().nextInt(tier.getMaxRange());
-
-                    if (num >= 1 && num <= chance) return tier;
-                }
-            }
         }
 
         return null;

@@ -5,6 +5,8 @@ import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.objects.Tier;
+import com.badbones69.crazycrates.tasks.PrizeManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
 import org.bukkit.Location;
@@ -41,11 +43,11 @@ public abstract class CrateBuilder extends BukkitRunnable {
     private final int size;
 
     /**
-     * Create a crate with inventory size
+     * Create a crate with inventory size.
      *
-     * @param crate opened by player
-     * @param player opening crate
-     * @param size of inventory
+     * @param crate crate opened by player.
+     * @param player player opening crate.
+     * @param size size of inventory.
      */
     public CrateBuilder(Crate crate, Player player, int size) {
         Preconditions.checkNotNull(crate, "Crate can't be null.");
@@ -63,12 +65,12 @@ public abstract class CrateBuilder extends BukkitRunnable {
     }
 
     /**
-     * Create a crate with inventory size
+     * Create a crate with inventory size.
      *
-     * @param crate opened by player
-     * @param player opening crate
-     * @param size of inventory
-     * @param crateName of crate
+     * @param crate crate opened by player.
+     * @param player player opening crate.
+     * @param size size of inventory.
+     * @param crateName crate name of crate.
      */
     public CrateBuilder(Crate crate, Player player, int size, String crateName) {
         Preconditions.checkNotNull(crate, "Crate can't be null.");
@@ -86,12 +88,12 @@ public abstract class CrateBuilder extends BukkitRunnable {
     }
 
     /**
-     * Create a crate with inventory size
+     * Create a crate with inventory size.
      *
-     * @param crate opened by player
-     * @param player opening crate
-     * @param size of inventory
-     * @param location of player
+     * @param crate crate opened by player.
+     * @param player player opening crate.
+     * @param size size of inventory.
+     * @param location location of player.
      */
     public CrateBuilder(Crate crate, Player player, int size, Location location) {
         Preconditions.checkNotNull(crate, "Crate can't be null.");
@@ -112,8 +114,8 @@ public abstract class CrateBuilder extends BukkitRunnable {
     /**
      * Create a crate with no inventory size.
      *
-     * @param crate opened by player
-     * @param player opening crate
+     * @param crate crate opened by player.
+     * @param player player opening crate.
      */
     public CrateBuilder(Crate crate, Player player) {
         Preconditions.checkNotNull(crate, "Crate can't be null.");
@@ -133,9 +135,9 @@ public abstract class CrateBuilder extends BukkitRunnable {
     /**
      * Create a crate with no inventory size.
      *
-     * @param crate opened by player
-     * @param player opening crate
-     * @param location of player
+     * @param crate crate opened by player.
+     * @param player player opening crate.
+     * @param location location of player.
      */
     public CrateBuilder(Crate crate, Player player, Location location) {
         Preconditions.checkNotNull(crate, "Crate can't be null.");
@@ -154,24 +156,24 @@ public abstract class CrateBuilder extends BukkitRunnable {
     }
 
     /**
-     * The open method for crates
+     * The open method for crates.
      *
-     * @param type of key
-     * @param checkHand whether to check hands or not
+     * @param type type of key.
+     * @param checkHand whether to check hands or not.
      */
     public abstract void open(KeyType type, boolean checkHand);
 
     /**
-     * Add a new crate task
+     * Add a new crate task.
      *
-     * @param task to add
+     * @param task task to add.
      */
     public void addCrateTask(BukkitTask task) {
         this.plugin.getCrateManager().addCrateTask(this.player, task);
     }
 
     /**
-     * Remove crate task
+     * Remove crate task.
      */
     public void removeTask() {
         this.plugin.getCrateManager().removeCrateTask(this.player);
@@ -189,14 +191,14 @@ public abstract class CrateBuilder extends BukkitRunnable {
     }
 
     /**
-     * @return true or false
+     * @return true or false.
      */
     public boolean hasCrateTask() {
         return this.plugin.getCrateManager().hasCrateTask(this.player);
     }
 
     /**
-     * @return crate that is being opened
+     * @return crate that is being opened.
      */
     @NotNull
     public Crate getCrate() {
@@ -204,7 +206,7 @@ public abstract class CrateBuilder extends BukkitRunnable {
     }
 
     /**
-     * @return title of the crate
+     * @return title of the crate.
      */
     @NotNull
     public String getTitle() {
@@ -212,7 +214,7 @@ public abstract class CrateBuilder extends BukkitRunnable {
     }
 
     /**
-     * @return player opening the crate
+     * @return player opening the crate.
      */
     @NotNull
     public Player getPlayer() {
@@ -220,7 +222,7 @@ public abstract class CrateBuilder extends BukkitRunnable {
     }
 
     /**
-     * @return inventory size
+     * @return inventory size.
      */
     public int getSize() {
         return this.size;
@@ -229,7 +231,7 @@ public abstract class CrateBuilder extends BukkitRunnable {
     /**
      * If the crate type is fire cracker, we won't run the open crate event again.
      *
-     * @return true or false
+     * @return true or false.
      */
     public boolean isFireCracker() {
         return this.crate.getCrateType() == CrateType.fire_cracker;
@@ -238,7 +240,7 @@ public abstract class CrateBuilder extends BukkitRunnable {
     /**
      * If the crate type is cosmic crate, we won't run the event again.
      *
-     * @return true or false
+     * @return true or false.
      */
     public boolean isCosmicCrate() {
         return this.crate.getCrateType() == CrateType.cosmic;
@@ -253,7 +255,7 @@ public abstract class CrateBuilder extends BukkitRunnable {
     }
 
     /**
-     * @return inventory of the crate
+     * @return inventory of the crate.
      */
     @NotNull
     public Inventory getInventory() {
@@ -263,7 +265,7 @@ public abstract class CrateBuilder extends BukkitRunnable {
     /**
      * Specific crates need a location.
      *
-     * @return location in the world
+     * @return location in the world.
      */
     @NotNull
     public Location getLocation() {
@@ -271,7 +273,7 @@ public abstract class CrateBuilder extends BukkitRunnable {
     }
 
     /**
-     * @return instance of this class
+     * @return instance of this class.
      */
     @NotNull
     public InventoryBuilder getMenu() {
@@ -279,22 +281,22 @@ public abstract class CrateBuilder extends BukkitRunnable {
     }
 
     /**
-     * Sets an item to a slot
+     * Sets an item to a slot.
      *
-     * @param item to set
-     * @param slot to set at
+     * @param item item to set.
+     * @param slot slot to set at.
      */
     public void setItem(int slot, ItemStack item) {
         getInventory().setItem(slot, item);
     }
 
     /**
-     * Sets an item to a slot
+     * Sets an item to a slot.
      *
-     * @param slot to set at
-     * @param material to use
-     * @param name of item
-     * @param lore of item
+     * @param slot slot to set at.
+     * @param material material to use.
+     * @param name name of item.
+     * @param lore lore of item.
      */
     public void setItem(int slot, Material material, String name, List<String> lore) {
         ItemBuilder builder = new ItemBuilder().setMaterial(material).setName(name).setLore(lore);
@@ -303,11 +305,11 @@ public abstract class CrateBuilder extends BukkitRunnable {
     }
 
     /**
-     * Sets an item to a slot
+     * Sets an item to a slot.
      *
-     * @param slot to set at
-     * @param material to use
-     * @param name of item
+     * @param slot slot to set at.
+     * @param material material to use.
+     * @param name name of item.
      */
     public void setItem(int slot, Material material, String name) {
         ItemBuilder builder = new ItemBuilder().setMaterial(material).setName(name);
@@ -318,7 +320,7 @@ public abstract class CrateBuilder extends BukkitRunnable {
     /**
      * Sets random glass pane at a specific slot.
      *
-     * @param slot to set at
+     * @param slot slot to set at.
      */
     public void setCustomGlassPane(int slot) {
         getInventory().setItem(slot, getRandomGlassPane());
@@ -331,8 +333,8 @@ public abstract class CrateBuilder extends BukkitRunnable {
     /**
      * Calls the crate open event and returns true/false if successful or not.
      *
-     * @param keyType virtual or physical key
-     * @param checkHand true or false
+     * @param keyType virtual or physical key.
+     * @param checkHand true or false.
      * @return true if cancelled otherwise false.
      */
     public boolean isCrateEventValid(KeyType keyType, boolean checkHand) {
@@ -354,6 +356,9 @@ public abstract class CrateBuilder extends BukkitRunnable {
 
     protected boolean isCancelled = false;
 
+    /**
+     * Cancel the task.
+     */
     @Override
     public void cancel() {
         super.cancel();
@@ -364,24 +369,14 @@ public abstract class CrateBuilder extends BukkitRunnable {
      * @return the display item of the picked prize.
      */
     public ItemStack getDisplayItem() {
-        ItemStack itemStack = getCrate().pickPrize(getPlayer()).getDisplayItem();
-
-        ItemMeta itemMeta = itemStack.getItemMeta();
-
-        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-
-        container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "none");
-
-        itemStack.setItemMeta(itemMeta);
-
-        return itemStack;
+        return getCrate().pickPrize(getPlayer()).getDisplayItem();
     }
 
     /**
-     * @return the prize object.
+     * @return the display item of the picked prize with a tier.
      */
-    public Prize getPrize(int slot) {
-        return getCrate().getPrize(getInventory().getItem(slot));
+    public ItemStack getDisplayItem(Tier tier) {
+        return getCrate().pickPrize(getPlayer(), tier).getDisplayItem();
     }
 
     /**
@@ -404,5 +399,12 @@ public abstract class CrateBuilder extends BukkitRunnable {
 
             sound.play(getPlayer(), getPlayer().getLocation());
         }
+    }
+
+    /**
+     * @return the prize manager.
+     */
+    public PrizeManager getPrizeManager() {
+        return this.plugin.getCrazyHandler().getPrizeManager();
     }
 }

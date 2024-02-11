@@ -18,8 +18,8 @@ public class PhysicalCrateKeyCheckEvent extends Event implements Cancellable {
      * Used to be able to disabled CrazyCrates CrateControl.onCrateOpen# event listener to be able to implement a custom one.
      * This does not disable the preview opener and the menu opener.
      *
-     * @param player being checked.
-     * @param crateLocation that is being used.
+     * @param player player being checked.
+     * @param crateLocation crate location that is being used.
      */
     public PhysicalCrateKeyCheckEvent(Player player, CrateLocation crateLocation) {
         this.player = player;

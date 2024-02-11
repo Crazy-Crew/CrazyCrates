@@ -108,7 +108,7 @@ public class WheelCrate extends CrateBuilder {
                             prize = getCrate().getPrize(rewards.get(getPlayer().getUniqueId()).get(slots.get(what)));
                         }
 
-                        plugin.getCrazyHandler().getPrizeManager().checkPrize(prize, getPlayer(), getCrate());
+                        plugin.getCrazyHandler().getPrizeManager().givePrize(getPlayer(), getCrate(), prize);
 
                         playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
 
