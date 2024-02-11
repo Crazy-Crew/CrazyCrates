@@ -11,10 +11,13 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -284,7 +287,7 @@ public class Prize {
                 String trimPattern = this.section.getString("DisplayTrim.Pattern");
 
                 if (trimPattern != null) {
-                    key = NamespacedKey.fromString(trimPattern);
+                    key = NamespacedKey.minecraft(trimPattern.toLowerCase());
                 }
 
                 if (key != null) {
@@ -299,12 +302,12 @@ public class Prize {
                 String trimMaterial = this.section.getString("DisplayTrim.Material");
 
                 if (trimMaterial != null) {
-                    key = NamespacedKey.fromString(trimMaterial);
+                    key = NamespacedKey.minecraft(trimMaterial.toLowerCase());
                 }
 
                 if (key != null) {
-                    TrimPattern registry = Registry.TRIM_PATTERN.get(key);
-                    builder.setTrimPattern(registry);
+                    TrimMaterial registry = Registry.TRIM_MATERIAL.get(key);
+                    builder.setTrimMaterial(registry);
                 }
             }
 
