@@ -16,7 +16,7 @@ public class ArgumentRelations extends MessageHandler {
             case "transfer" -> correctUsage = commandOrder + "<crate-name> <player-name> <amount>";
             case "debug", "open", "set" -> correctUsage = commandOrder + "<crate-name>";
             case "tp" -> correctUsage = commandOrder + "<id>";
-            case "additem" -> correctUsage = commandOrder + "<crate-name> <prize-number>";
+            case "additem" -> correctUsage = commandOrder + "<crate-name> <prize-number> <chance> [tier]";
             case "preview", "open-others", "forceopen" -> correctUsage = commandOrder + "<crate-name> <player-name>";
             case "mass-open" -> correctUsage = commandOrder + "<crate-name> <key-type> <amount>";
             case "give-random" -> correctUsage = commandOrder + "<key-type> <amount> <player-name>";
