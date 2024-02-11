@@ -21,6 +21,9 @@ public class CommandManager {
 
     private final BukkitCommandManager<CommandSender> bukkitCommandManager = this.plugin.getCommandManager();
 
+    /**
+     * Loads commands.
+     */
     public void load() {
         new MiscRelations().build();
         new ArgumentRelations().build();

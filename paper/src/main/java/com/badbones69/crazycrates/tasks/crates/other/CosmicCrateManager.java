@@ -24,9 +24,9 @@ public class CosmicCrateManager extends AbstractCrateManager {
     private final Map<UUID, ArrayList<Integer>> pickedPrizes = new HashMap<>();
 
     /**
-     * Creates a cosmic crate manager instance
+     * Creates a cosmic crate manager instance.
      *
-     * @param file crate configuration
+     * @param file the crate configuration.
      */
     public CosmicCrateManager(FileConfiguration file) {
         this.file = file;
@@ -67,39 +67,39 @@ public class CosmicCrateManager extends AbstractCrateManager {
     }
 
     /**
-     * @return crate file configuration
+     * @return crate file configuration.
      */
     public FileConfiguration getFile() {
         return this.file;
     }
 
     /**
-     * @return total prizes allowed to be won
+     * @return total prizes allowed to be won.
      */
     public int getTotalPrizes() {
         return this.totalPrizes;
     }
 
     /**
-     * @return mystery crate builder
+     * @return mystery crate builder.
      */
     public ItemBuilder getMysteryCrate() {
         return this.mysteryCrate;
     }
 
     /**
-     * @return picked crate builder
+     * @return picked crate builder.
      */
     public ItemBuilder getPickedCrate() {
         return this.pickedCrate;
     }
 
     /**
-     * Adds a single slot to the arraylist
+     * Adds a single slot to the arraylist.
      * It also adds the player if not found.
      *
-     * @param player to add
-     * @param slot to add
+     * @param player player to add
+     * @param slot slot to add.
      */
     public void addPickedPrize(Player player, int slot) {
         if (this.pickedPrizes.containsKey(player.getUniqueId())) {
@@ -113,11 +113,11 @@ public class CosmicCrateManager extends AbstractCrateManager {
     }
 
     /**
-     * Removes a single slot from the arraylist
+     * Removes a single slot from the arraylist.
      * It also removes the uuid if prizes arraylist is empty.
      *
-     * @param player to remove
-     * @param slot to remove
+     * @param player player to remove.
+     * @param slot slot to remove.
      */
     public void removePickedPrize(Player player, int slot) {
         // Get prizes.
@@ -133,7 +133,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
     /**
      * Removes a player from the hashmap.
      *
-     * @param player to remove
+     * @param player player to remove.
      */
     public void removePickedPlayer(Player player) {
         this.pickedPrizes.remove(player.getUniqueId());
@@ -142,15 +142,15 @@ public class CosmicCrateManager extends AbstractCrateManager {
     /**
      * Adds a list of prizes to the hashmap.
      *
-     * @param player to add
-     * @param prizes list
+     * @param player player to add.
+     * @param prizes prizes to list.
      */
     public void addPickedPrizes(Player player, ArrayList<Integer> prizes) {
         this.pickedPrizes.put(player.getUniqueId(), prizes);
     }
 
     /**
-     * @return unmodifiable list
+     * @return unmodifiable list of picked prizes.
      */
     public List<Integer> getPickedPrizes(Player player) {
         return Collections.unmodifiableList(this.pickedPrizes.getOrDefault(player.getUniqueId(), new ArrayList<>()));

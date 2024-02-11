@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.api.objects;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.bukkit.Material;
@@ -15,17 +14,11 @@ import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Prize {
-
-    @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
 
     private final List<ItemStack> items = new ArrayList<>();
 
@@ -41,14 +34,13 @@ public class Prize {
     private final String prizeNumber;
     private int chance = 0;
 
-    private List<String> tiersNames = new ArrayList<>();
     private List<Tier> tiers = new ArrayList<>();
     private final List<ItemBuilder> builders;
     private Prize alternativePrize;
 
     private final ConfigurationSection section;
 
-    public Prize(ConfigurationSection section, List<Tier> tierPrizes, List<String> tierNames, String crateName, Prize alternativePrize) {
+    public Prize(ConfigurationSection section, List<Tier> tierPrizes, String crateName, Prize alternativePrize) {
         this.section = section;
 
         this.prizeNumber = section.getName();
@@ -68,7 +60,6 @@ public class Prize {
         this.displayItem = display();
 
         this.tiers = tierPrizes;
-        this.tiersNames = tierNames;
 
         this.alternativePrize = alternativePrize;
 
@@ -132,15 +123,6 @@ public class Prize {
     }
 
     /**
-     * Sets the new item stack.
-     *
-     * @param itemStack new item
-     */
-    public void setItemStack(ItemStack itemStack) {
-        this.itemStack = itemStack;
-    }
-
-    /**
      * @return returns the ItemBuilder of the display item.
      */
     public ItemBuilder getDisplayItemBuilder() {
@@ -152,13 +134,6 @@ public class Prize {
      */
     public List<Tier> getTiers() {
         return this.tiers;
-    }
-
-    /**
-     * @return the list of tier names a prize has.
-     */
-    public List<String> getTiersNames() {
-        return this.tiersNames;
     }
     
     /**

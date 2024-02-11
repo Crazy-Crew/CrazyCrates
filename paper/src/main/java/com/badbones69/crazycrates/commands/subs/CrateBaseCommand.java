@@ -687,6 +687,16 @@ public class CrateBaseCommand extends BaseCommand {
         takeKey(sender, null, target.getOfflinePlayer(), crate, type, amount);
     }
 
+    /**
+     * Take keys from a player whether offline or not.
+     *
+     * @param sender the sender of the command.
+     * @param player the target of the command.
+     * @param offlinePlayer the other target of the command.
+     * @param crate the crate.
+     * @param type the type of key.
+     * @param amount the amount of keys.
+     */
     private void takeKey(CommandSender sender, @Nullable Player player, OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount) {
         if (player != null) {
             int totalKeys = this.plugin.getCrazyHandler().getUserManager().getTotalKeys(player.getUniqueId(), crate.getName());

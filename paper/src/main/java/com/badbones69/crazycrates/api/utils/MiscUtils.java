@@ -74,9 +74,9 @@ public class MiscUtils {
     }
 
     /**
-     * Checks if the player's inventory is empty by checking if the first empty slot is -1
+     * Checks if the player's inventory is empty by checking if the first empty slot is -1.
      *
-     * @return true if inventory is empty otherwise false
+     * @return true if inventory is empty otherwise false.
      */
     public static boolean isInventoryFull(Player player) {
         return player.getInventory().firstEmpty() == -1;

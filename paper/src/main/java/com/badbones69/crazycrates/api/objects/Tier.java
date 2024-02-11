@@ -36,35 +36,35 @@ public class Tier {
     }
     
     /**
-     * @return Name of the tier.
+     * @return name of the tier.
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * @return Colored name of the tier.
+     * @return colored name of the tier.
      */
     public String getColoredName() {
         return this.coloredName;
     }
 
     /**
-     * @return The colored glass pane.
+     * @return the colored glass pane.
      */
     public ItemBuilder getItem() {
         return this.item;
     }
     
     /**
-     * @return The chance of being picked.
+     * @return the chance of being picked.
      */
     public int getChance() {
         return this.chance;
     }
     
     /**
-     * @return The range of max possible chances.
+     * @return the range of max possible chances.
      */
     public int getMaxRange() {
         return this.maxRange;
@@ -78,7 +78,7 @@ public class Tier {
     }
 
     /**
-     * @return The tier item shown in the preview.
+     * @return the tier item shown in the preview.
      */
     public ItemStack getTierItem() {
         ItemMeta itemMeta = this.item.getItemMeta();
