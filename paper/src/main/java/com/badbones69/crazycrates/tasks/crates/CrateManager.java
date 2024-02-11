@@ -92,21 +92,37 @@ public class CrateManager {
                 for (String prize : prizesSection.getKeys(false)) {
                     ConfigurationSection prizeSection = prizesSection.getConfigurationSection(prize);
 
+                    List<Tier> tierPrizes = new ArrayList<>();
+
                     if (prizeSection != null) {
-                        //prizes.add(new Prize(prizeSection, crate.getName()));
+                        for (String tier : prizeSection.getStringList("Tiers")) {
+                            for (Tier key : crate.getTiers()) {
+                                if (key.getName().equalsIgnoreCase(tier)) {
+                                    tierPrizes.add(key);
+                                }
+                            }
+                        }
+
+                        Prize alternativePrize = null;
+
+                        ConfigurationSection alternativeSection = prizeSection.getConfigurationSection("Alternative-Prize");
+
+                        if (alternativeSection != null) {
+                            boolean isEnabled = alternativeSection.getBoolean("Toggle");
+
+                            if (isEnabled) {
+                                alternativePrize = new Prize(prizeSection.getString("DisplayName", "&4Name not found.exe!"), prizeSection.getName(), alternativeSection);
+                            }
+                        }
+
+                        prizes.add(new Prize(
+                                prizeSection,
+                                tierPrizes,
+                                crate.getName(),
+                                alternativePrize
+                        ));
                     }
                 }
-
-                /*prizes.add(new Prize(getDisplayItem(file, prize),
-                        file.getStringList(path + ".Messages"),
-                        file.getStringList(path + ".Commands"),
-                        getItems(file, prize),
-                        file.getInt(path + ".Chance", 100),
-                        file.getInt(path + ".MaxRange", 100),
-                        file.getBoolean(path + ".Firework"),
-                        file.getStringList(path + ".BlackListed-Permissions"),
-                        null,
-                        null));*/
             }
 
             crate.setPrize(prizes);
