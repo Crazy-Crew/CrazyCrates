@@ -133,12 +133,14 @@ Crate:
 * Updated slot checks for menu items to rely on PersistentDataContainer.
 * Re-organized the default /crate gui
 * Check uuids for quad crate sessions over player objects.
+* Update /cc additem to take input for tiers which only work for cosmic/casino, /cc additem <crate_name> <prize_number> [tier]
 
 ## Fixes:
  * Fixed issues with crates being broken in worlds created by world plugins.
  * Fixed a few other bugs I can't remember.
  * Fixed a bug where the refund event needed to be fired sync.
  * Fixed a bug with display damage where if you put a value that can't be parsed as an integer like 50f, It wouldn't just be empty durability.
+ * Fixed a bug where cc additem wouldn't add tiers to casino/cosmic crate.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
