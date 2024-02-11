@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import java.util.Random;
 
 public class CasinoCrate extends CrateBuilder {
 
@@ -102,15 +104,15 @@ public class CasinoCrate extends CrateBuilder {
             return;
         }
 
-        setDisplayItems();
+        setDisplayItems(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size())));
 
         getPlayer().openInventory(getInventory());
     }
 
-    private void setDisplayItems() {
+    private void setDisplayItems(Tier tier) {
         for (int index = 0; index <= 26; index++) {
             if (index == 2 || index == 4 || index == 6 || index == 11 || index == 13 || index == 15 || index == 20 || index == 22 || index == 24) {
-                setItem(index, getDisplayItem());
+                setItem(index, getDisplayItem(tier));
             } else {
                 setItem(index, getRandomGlassPane());
             }
@@ -132,6 +134,6 @@ public class CasinoCrate extends CrateBuilder {
             }
         }
 
-        setDisplayItems();
+        setDisplayItems(getCrate().getTiers().get(new Random().nextInt(getCrate().getTiers().size())));
     }
 }

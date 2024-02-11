@@ -20,7 +20,10 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import static java.util.regex.Matcher.quoteReplacement;
@@ -36,18 +39,11 @@ public class PrizeManager {
      * @param player who the prize is for.
      * @param crate the player is opening.
      * @param prize the player is being given.
-     * @param tier the tier the player got.
      */
-    public void givePrize(Player player, Prize prize, Crate crate, Tier tier) {
+    public void givePrize(Player player, Prize prize, Crate crate) {
         if (prize == null) {
             if (this.plugin.isLogging()) this.plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
             return;
-        }
-
-        if (tier == null) {
-            if (this.plugin.isLogging()) this.plugin.getLogger().warning("No tier was found when giving " + player.getName() + " a prize.");
-
-
         }
 
         prize = prize.hasPermission(player) ? prize.getAlternativePrize() : prize;
@@ -161,17 +157,6 @@ public class PrizeManager {
      * @param crate the player is opening.
      * @param prize the player is being given.
      */
-    public void givePrize(Player player, Prize prize, Crate crate) {
-        givePrize(player, prize, crate, null);
-    }
-
-    /**
-     * Gets the prize for the player.
-     *
-     * @param player who the prize is for.
-     * @param crate the player is opening.
-     * @param prize the player is being given.
-     */
     public void givePrize(Player player, Crate crate, Prize prize) {
         if (prize != null) {
             givePrize(player, prize, crate);
@@ -191,21 +176,7 @@ public class PrizeManager {
 
         Prize prize = crate.getPrize(item);
 
-        ItemStack itemStack = prize.getDisplayItem();
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-        container.set(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING, getTier(crate).getName());
-        itemStack.setItemMeta(itemMeta);
-
-        prize.setItemStack(itemStack);
-
-        Tier tier = crate.getTier(prize.getDisplayItem().getItemMeta().getPersistentDataContainer().get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
-
-        givePrize(player, prize, crate, tier);
-
-        if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
-
-        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+        givePrize(player, prize, crate);
     }
 
     public Tier getTier(Crate crate) {
