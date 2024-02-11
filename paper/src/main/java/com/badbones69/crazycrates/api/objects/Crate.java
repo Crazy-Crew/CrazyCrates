@@ -543,7 +543,7 @@ public class Crate {
      * @param prize the prize the item is being added to.
      * @param item the ItemStack that is being added.
      */
-    public void addEditorItem(String prize, ItemStack item) {
+    public void addEditorItem(String prize, ItemStack item, int chance) {
         List<ItemStack> items = new ArrayList<>();
         items.add(item);
 
@@ -572,7 +572,7 @@ public class Crate {
             this.file.set(path + ".DisplayItem", item.getType().name());
             this.file.set(path + ".DisplayAmount", item.getAmount());
             this.file.set(path + ".MaxRange", 100);
-            this.file.set(path + ".Chance", 50);
+            this.file.set(path + ".Chance", chance);
         } else {
             // Must be checked as getList will return null if nothing is found.
             if (this.file.contains(path + ".Editor-Items")) this.file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
@@ -602,7 +602,7 @@ public class Crate {
      * @param item the ItemStack that is being added.
      * @param tier the tier for the crate.
      */
-    public void addEditorItem(String prize, ItemStack item, Tier tier) {
+    public void addEditorItem(String prize, ItemStack item, Tier tier, int chance) {
         List<ItemStack> items = new ArrayList<>();
         items.add(item);
 
@@ -631,7 +631,7 @@ public class Crate {
             this.file.set(path + ".DisplayItem", item.getType().name());
             this.file.set(path + ".DisplayAmount", item.getAmount());
             this.file.set(path + ".MaxRange", 100);
-            this.file.set(path + ".Chance", 50);
+            this.file.set(path + ".Chance", chance);
 
             this.file.set(path + ".Tiers", new ArrayList<>() {{
                 add(tier.getName());

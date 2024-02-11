@@ -283,7 +283,7 @@ public class CrateBaseCommand extends BaseCommand {
 
     @SubCommand("additem")
     @Permission(value = "crazycrates.command.admin.additem", def = PermissionDefault.OP)
-    public void onAdminCrateAddItem(Player player, @Suggestion("crates") String crateName, @Suggestion("prizes") String prize, @Optional @Suggestion("tiers") String tier) {
+    public void onAdminCrateAddItem(Player player, @Suggestion("crates") String crateName, @Suggestion("prizes") String prize, @Suggestion("numbers") int chance, @Optional @Suggestion("tiers") String tier) {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item.getType() == Material.AIR) {
@@ -300,9 +300,9 @@ public class CrateBaseCommand extends BaseCommand {
 
         try {
             if (tier == null) {
-                crate.addEditorItem(prize, item);
+                crate.addEditorItem(prize, item, chance);
             } else {
-                crate.addEditorItem(prize, item, crate.getTier(tier));
+                crate.addEditorItem(prize, item, crate.getTier(tier), chance);
             }
         } catch (Exception exception) {
             this.plugin.getServer().getLogger().log(Level.WARNING, "Failed to add a new prize to the " + crate.getName() + " crate.", exception);
