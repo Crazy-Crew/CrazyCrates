@@ -41,6 +41,22 @@ public class MiscListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
+    public void onPlayerAttemptPickUp(PlayerAttemptPickupItemEvent event) {
+        if (this.crateManager.isDisplayReward(event.getItem())) {
+            event.setCancelled(true);
+            return;
+        }
+
+        if (this.crateManager.isInOpeningList(event.getPlayer())) {
+            // DrBot Start
+            if (this.crateManager.getOpeningCrate(event.getPlayer()).getCrateType().equals(CrateType.quick_crate)) return;
+
+            // DrBot End
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
