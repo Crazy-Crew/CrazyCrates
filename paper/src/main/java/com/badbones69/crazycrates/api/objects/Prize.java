@@ -48,7 +48,7 @@ public class Prize {
 
         this.crateName = crateName;
 
-        List<?> list = section.getList("Editor-Items") == null ? section.getList("Editor-Items") : Collections.emptyList();
+        List<?> list = section.getList("Editor-Items");
 
         if (list != null) {
             for (Object key : list) {
