@@ -90,6 +90,8 @@ public class WarCrateListener implements Listener {
                                         public void run() {
                                             if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
 
+                                            crateManager.removePlayerFromOpeningList(player);
+
                                             player.closeInventory();
                                         }
                                     }.runTaskLater(plugin, 30));
