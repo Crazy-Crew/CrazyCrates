@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.api.utils;
 
-import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.ItemBuilder;
 import org.bukkit.Color;
@@ -10,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -23,7 +21,6 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
-import com.badbones69.crazycrates.api.enums.Messages;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -184,23 +181,6 @@ public class MiscUtils {
             return min + ThreadLocalRandom.current().nextLong(max - min);
         } catch (IllegalArgumentException e) {
             return min;
-        }
-    }
-
-    public static boolean permCheck(CommandSender sender, Permissions permissions, boolean tabComplete) {
-        if (sender instanceof ConsoleCommandSender || sender instanceof RemoteConsoleCommandSender) return true;
-
-        Player player = (Player) sender;
-
-        if (player.hasPermission(permissions.getPermission("command"))) {
-            return true;
-        } else {
-            if (!tabComplete) {
-                player.sendMessage(Messages.no_permission.getString());
-                return false;
-            }
-
-            return false;
         }
     }
 

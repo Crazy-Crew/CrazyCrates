@@ -49,7 +49,8 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
-@Command(value = "crates", alias = {"crazycrates", "cc", "crate", "crazycrate"})
+@Command(value = "crates", alias = {"crazycrates", "crazycrate", "crate", "cc"})
+@Description("The base command for CrazyCrates")
 public class CrateBaseCommand extends BaseCommand {
 
     @NotNull
@@ -192,7 +193,7 @@ public class CrateBaseCommand extends BaseCommand {
     }
 
     @SubCommand("schem-save")
-    @Permission(value = "crazycrates.command.admin.schematic.save", def = PermissionDefault.OP)
+    @Permission(value = "crazycrates.save", def = PermissionDefault.OP)
     public void onAdminSave(Player player) {
         player.sendMessage(Messages.feature_disabled.getString());
     }
@@ -759,7 +760,7 @@ public class CrateBaseCommand extends BaseCommand {
         sender.sendMessage(Messages.given_everyone_keys.getMessage(placeholders).toString());
 
         for (Player onlinePlayer : this.plugin.getServer().getOnlinePlayers()) {
-            if (MiscUtils.permCheck(onlinePlayer, Permissions.CRAZY_CRATES_PLAYER_EXCLUDE_GIVE_ALL, true)) continue;
+            if (Permissions.CRAZYCRATES_PLAYER_EXCLUDE.hasPermission(onlinePlayer)) continue;
 
             PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(onlinePlayer, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_ALL_COMMAND, amount);
             onlinePlayer.getServer().getPluginManager().callEvent(event);

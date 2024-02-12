@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Command(value = "keys", alias = {"key"})
+@Description("Views the amount of keys you/others have.")
 public class BaseKeyCommand extends BaseCommand {
 
     @NotNull

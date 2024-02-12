@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.EventLogger;
+import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
@@ -14,6 +15,7 @@ import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.api.FileManager;
@@ -24,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.support.libraries.PluginSupport;
+import java.util.Arrays;
 import java.util.Timer;
 
 public class CrazyCrates extends JavaPlugin {
@@ -91,6 +94,8 @@ public class CrazyCrates extends JavaPlugin {
         }
 
         if (isLogging()) getLogger().info("You can disable logging by going to the plugin-config.yml and setting verbose to false.");
+
+        registerPermissions();
     }
 
     @Override
@@ -152,5 +157,18 @@ public class CrazyCrates extends JavaPlugin {
 
     public boolean isLogging() {
         return getConfigManager().getConfig().getProperty(ConfigKeys.verbose_logging);
+    }
+
+    private void registerPermissions() {
+        Arrays.stream(Permissions.values()).toList().forEach(permission -> {
+            Permission newPermission = new Permission(
+                    permission.getPermission(),
+                    permission.getDescription(),
+                    permission.isDefault(),
+                    permission.getChildren()
+            );
+
+            getServer().getPluginManager().addPermission(newPermission);
+        });
     }
 }
