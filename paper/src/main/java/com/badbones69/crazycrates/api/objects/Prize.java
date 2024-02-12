@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -25,11 +26,11 @@ public class Prize {
 
     private List<String> permissions = new ArrayList<>();
     private ItemBuilder displayItem = new ItemBuilder();
-    private List<String> commands = new ArrayList<>();
-    private List<String> messages = new ArrayList<>();
+    private final List<String> commands;
+    private final List<String> messages;
     private boolean firework = false;
     private String crateName = "";
-    private String prizeName = "";
+    private final String prizeName;
     private ItemStack itemStack;
     private int maxRange = 100;
     private final String prizeNumber;
@@ -58,13 +59,11 @@ public class Prize {
 
         this.builders = ItemBuilder.convertStringList(this.section.getStringList("Items"), this.prizeNumber);
 
-        this.displayItem = display();
-
         this.tiers = tierPrizes;
 
         this.alternativePrize = alternativePrize;
 
-        this.prizeName = section.getString("DisplayName", "&4Name not found.exe!");
+        this.prizeName = section.getString("DisplayName", WordUtils.capitalizeFully(section.getString("DisplayItem", "STONE").replaceAll("_", " ")));
         this.maxRange = section.getInt("MaxRange", 100);
         this.chance = section.getInt("Chance", 100);
         this.firework = section.getBoolean("Firework", false);
@@ -77,6 +76,8 @@ public class Prize {
         if (!this.permissions.isEmpty()) {
             this.permissions.replaceAll(String::toLowerCase);
         }
+
+        this.displayItem = display();
     }
 
     /**

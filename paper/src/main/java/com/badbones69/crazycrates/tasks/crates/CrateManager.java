@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
@@ -117,7 +118,7 @@ public class CrateManager {
                             boolean isEnabled = alternativeSection.getBoolean("Toggle");
 
                             if (isEnabled) {
-                                alternativePrize = new Prize(prizeSection.getString("DisplayName", "&4Name not found.exe!"), prizeSection.getName(), alternativeSection);
+                                alternativePrize = new Prize(prizeSection.getString("DisplayName", WordUtils.capitalizeFully(prizeSection.getString("DisplayItem", "STONE").replaceAll("_", " "))), prizeSection.getName(), alternativeSection);
                             }
                         }
 
@@ -235,7 +236,7 @@ public class CrateManager {
                                 boolean isEnabled = alternativeSection.getBoolean("Toggle");
 
                                 if (isEnabled) {
-                                    alternativePrize = new Prize(prizeSection.getString("DisplayName", "&4Name not found.exe!"), prizeSection.getName(), alternativeSection);
+                                    alternativePrize = new Prize(prizeSection.getString("DisplayName", WordUtils.capitalizeFully(prizeSection.getString("DisplayItem", "STONE").replaceAll("_", " "))), prizeSection.getName(), alternativeSection);
                                 }
                             }
 
