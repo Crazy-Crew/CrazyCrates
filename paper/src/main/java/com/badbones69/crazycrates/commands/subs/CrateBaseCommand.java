@@ -192,15 +192,15 @@ public class CrateBaseCommand extends BaseCommand {
         crate.getPrizes().forEach(prize -> this.plugin.getCrazyHandler().getPrizeManager().givePrize((Player) sender, prize, crate));
     }
 
-    @SubCommand("schem-save")
+    @SubCommand("save")
     @Permission(value = "crazycrates.save", def = PermissionDefault.OP)
-    public void onAdminSave(Player player) {
+    public void onSchematicSave(Player player, String name) {
         player.sendMessage(Messages.feature_disabled.getString());
     }
 
-    @SubCommand("schem-set")
-    @Permission(value = "crazycrates.command.admin.schematic.set", def = PermissionDefault.OP)
-    public void onAdminSet(Player player) {
+    @SubCommand("wand")
+    @Permission(value = "crazycrates.wand", def = PermissionDefault.OP)
+    public void onWandGive(Player player) {
         player.sendMessage(Messages.feature_disabled.getString());
     }
 
