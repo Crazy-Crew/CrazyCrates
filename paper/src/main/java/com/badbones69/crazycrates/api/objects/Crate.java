@@ -561,34 +561,55 @@ public class Crate {
         String path = "Crate.Prizes." + prize;
 
         if (!this.file.contains(path)) {
-            if (item.hasItemMeta()) {
-                if (item.getItemMeta().hasDisplayName()) this.file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
-                if (item.getItemMeta().hasLore()) this.file.set(path + ".Lore", item.getItemMeta().getLore());
-            }
-
-            NBTItem nbtItem = new NBTItem(item);
-
-            if (nbtItem.hasNBTData()) {
-                if (nbtItem.hasTag("Unbreakable") && nbtItem.getBoolean("Unbreakable")) this.file.set(path + ".Unbreakable", true);
-            }
-
-            List<String> enchantments = new ArrayList<>();
-
-            for (Enchantment enchantment : item.getEnchantments().keySet()) {
-                enchantments.add((enchantment.getKey().getKey() + ":" + item.getEnchantmentLevel(enchantment)));
-            }
-
-            if (!enchantments.isEmpty()) this.file.set(path + ".DisplayEnchantments", enchantments);
-
-            this.file.set(path + ".DisplayItem", item.getType().name());
-            this.file.set(path + ".DisplayAmount", item.getAmount());
-            this.file.set(path + ".MaxRange", 100);
-            this.file.set(path + ".Chance", chance);
+            setItem(item, chance, path);
         } else {
             // Must be checked as getList will return null if nothing is found.
             if (this.file.contains(path + ".Editor-Items")) this.file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
         }
 
+        saveFile(items, path);
+    }
+
+    /**
+     * Sets display item to config
+     *
+     * @param item the item to use
+     * @param chance the chance to win the item
+     * @param path the path in the config to set the item at.
+     */
+    private void setItem(ItemStack item, int chance, String path) {
+        if (item.hasItemMeta()) {
+            if (item.getItemMeta().hasDisplayName()) this.file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
+            if (item.getItemMeta().hasLore()) this.file.set(path + ".Lore", item.getItemMeta().getLore());
+        }
+
+        NBTItem nbtItem = new NBTItem(item);
+
+        if (nbtItem.hasNBTData()) {
+            if (nbtItem.hasTag("Unbreakable") && nbtItem.getBoolean("Unbreakable")) this.file.set(path + ".Unbreakable", true);
+        }
+
+        List<String> enchantments = new ArrayList<>();
+
+        for (Enchantment enchantment : item.getEnchantments().keySet()) {
+            enchantments.add((enchantment.getKey().getKey() + ":" + item.getEnchantmentLevel(enchantment)));
+        }
+
+        if (!enchantments.isEmpty()) this.file.set(path + ".DisplayEnchantments", enchantments);
+
+        this.file.set(path + ".DisplayItem", item.getType().name());
+        this.file.set(path + ".DisplayAmount", item.getAmount());
+        this.file.set(path + ".MaxRange", 100);
+        this.file.set(path + ".Chance", chance);
+    }
+
+    /**
+     * Saves item stacks to editor-items
+     *
+     * @param items list of items
+     * @param path the path in the config.
+     */
+    private void saveFile(List<ItemStack> items, String path) {
         this.file.set(path + ".Editor-Items", items);
 
         File crates = new File(this.plugin.getDataFolder(), "crates");
@@ -620,29 +641,7 @@ public class Crate {
         String path = "Crate.Prizes." + prize;
 
         if (!this.file.contains(path)) {
-            if (item.hasItemMeta()) {
-                if (item.getItemMeta().hasDisplayName()) this.file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
-                if (item.getItemMeta().hasLore()) this.file.set(path + ".Lore", item.getItemMeta().getLore());
-            }
-
-            NBTItem nbtItem = new NBTItem(item);
-
-            if (nbtItem.hasNBTData()) {
-                if (nbtItem.hasTag("Unbreakable") && nbtItem.getBoolean("Unbreakable")) this.file.set(path + ".Unbreakable", true);
-            }
-
-            List<String> enchantments = new ArrayList<>();
-
-            for (Enchantment enchantment : item.getEnchantments().keySet()) {
-                enchantments.add((enchantment.getKey().getKey() + ":" + item.getEnchantmentLevel(enchantment)));
-            }
-
-            if (!enchantments.isEmpty()) this.file.set(path + ".DisplayEnchantments", enchantments);
-
-            this.file.set(path + ".DisplayItem", item.getType().name());
-            this.file.set(path + ".DisplayAmount", item.getAmount());
-            this.file.set(path + ".MaxRange", 100);
-            this.file.set(path + ".Chance", chance);
+            setItem(item, chance, path);
 
             this.file.set(path + ".Tiers", new ArrayList<>() {{
                 add(tier.getName());
@@ -652,21 +651,7 @@ public class Crate {
             if (this.file.contains(path + ".Editor-Items")) this.file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
         }
 
-        this.file.set(path + ".Editor-Items", items);
-
-        File crates = new File(this.plugin.getDataFolder(), "crates");
-
-        File crateFile = new File(crates, this.name + ".yml");
-
-        try {
-            this.file.save(crateFile);
-        } catch (IOException exception) {
-            this.plugin.getLogger().log(Level.SEVERE, "Failed to save " + this.name + ".yml", exception);
-        }
-
-        this.fileManager.getFile(this.name).reloadFile();
-
-        this.plugin.getCrateManager().reloadCrate(this.plugin.getCrateManager().getCrateFromName(this.name));
+        saveFile(items, path);
     }
     
     /**
