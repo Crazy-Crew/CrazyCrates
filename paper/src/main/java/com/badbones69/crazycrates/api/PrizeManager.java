@@ -152,7 +152,7 @@ public class PrizeManager {
      */
     public static void givePrize(Player player, Crate crate, Prize prize) {
         if (prize != null) {
-            givePrize(player, crate, prize);
+            givePrize(player, prize, crate);
 
             if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
