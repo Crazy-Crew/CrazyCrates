@@ -379,13 +379,6 @@ public class CrateManager {
      * @param checkHand if it just checks the players hand or if it checks their inventory.
      */
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
-        if (crate.getCrateType() == null) {
-            this.plugin.getLogger().warning("The crate type in the config section is not a valid type: " + crate.getFile().getString("Crate.CrateType"));
-            this.plugin.getLogger().warning("Valid Crate Types: CSGO/Casino/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War");
-            removePlayerFromOpeningList(player);
-            return;
-        }
-
         if (crate.getCrateType() == CrateType.menu) {
             if (this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
                 CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.inventory_size), this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.inventory_name));
@@ -464,7 +457,7 @@ public class CrateManager {
                     List.of(
                             crate.getCrateInventoryName() + " has an invalid crate type. Your Value: " + crate.getFile().getString("Crate.CrateType"),
                             "We will use " + CrateType.csgo.getName() + " until you change the crate type.",
-                            "Valid Crate Types: CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War"
+                            "Valid Crate Types: CSGO/Casino/Cosmic/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War"
                     ).forEach(line -> this.plugin.getLogger().warning(line));
                 }
             }
