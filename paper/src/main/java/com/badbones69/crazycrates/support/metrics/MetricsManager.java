@@ -9,7 +9,7 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MetricsWrapper {
+public class MetricsManager {
 
     @NotNull
     private final CrazyCrates plugin = CrazyCrates.get();

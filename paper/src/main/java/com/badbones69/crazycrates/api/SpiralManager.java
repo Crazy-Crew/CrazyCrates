@@ -1,15 +1,15 @@
-package com.badbones69.crazycrates.support.structures;
+package com.badbones69.crazycrates.api;
 
-import com.badbones69.crazycrates.support.structures.interfaces.SpiralControl;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuadCrateSpiralHandler implements SpiralControl {
+public class SpiralManager {
 
-    private List<Location> getLocations(Location center, boolean clockWise) {
+    @NotNull
+    private static List<Location> getLocations(Location center, boolean clockWise) {
         World world = center.getWorld();
 
         double downWardsDistance = .05;
@@ -57,13 +57,13 @@ public class QuadCrateSpiralHandler implements SpiralControl {
         return locations;
     }
 
-    @Override
-    public @NotNull List<Location> getSpiralLocationClockwise(Location center) {
+    @NotNull
+    public static List<Location> getSpiralLocationClockwise(Location center) {
         return getLocations(center, true);
     }
 
-    @Override
-    public @NotNull List<Location> getSpiralLocationCounterClockwise(Location center) {
+    @NotNull
+    public static List<Location> getSpiralLocationCounterClockwise(Location center) {
         return getLocations(center, false);
     }
 }

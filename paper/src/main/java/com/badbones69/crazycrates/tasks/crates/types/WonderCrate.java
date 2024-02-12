@@ -2,8 +2,9 @@ package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.PrizeManager;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -65,58 +66,58 @@ public class WonderCrate extends CrateBuilder {
 
             @Override
             public void run() {
-                if (time >= 2 && full <= 65) {
-                    slots.remove(slot1 + "");
-                    slots.remove(slot2 + "");
+                if (this.time >= 2 && this.full <= 65) {
+                    slots.remove(this.slot1 + "");
+                    slots.remove(this.slot2 + "");
 
-                    other.add(slot1);
-                    other.add(slot2);
+                    other.add(this.slot1);
+                    other.add(this.slot2);
 
                     ItemStack material = new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build();
 
-                    setItem(slot1, material);
-                    setItem(slot2, material);
+                    setItem(this.slot1, material);
+                    setItem(this.slot2, material);
 
                     for (String slot : slots) {
-                        prize = getCrate().pickPrize(getPlayer());
-                        setItem(Integer.parseInt(slot), prize.getDisplayItem());
+                        this.prize = getCrate().pickPrize(getPlayer());
+                        setItem(Integer.parseInt(slot), this.prize.getDisplayItem());
                     }
 
-                    slot1++;
-                    slot2--;
+                    this.slot1++;
+                    this.slot2--;
                 }
 
-                if (full > 67) {
-                    for (int slot : other) {
+                if (this.full > 67) {
+                    for (int slot : this.other) {
                         setCustomGlassPane(slot);
                     }
                 }
 
                 getPlayer().openInventory(getInventory());
 
-                if (full > 100) {
+                if (this.full > 100) {
                     plugin.getCrateManager().endCrate(getPlayer());
 
                     getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 
-                    plugin.getCrazyHandler().getPrizeManager().givePrize(getPlayer(), prize, getCrate());
+                    PrizeManager.givePrize(getPlayer(), this.prize, getCrate());
 
                     playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
 
-                    if (prize.useFireworks()) MiscUtils.spawnFirework(getPlayer().getLocation().add(0, 1, 0), null);
+                    if (this.prize.useFireworks()) MiscUtils.spawnFirework(getPlayer().getLocation().add(0, 1, 0), null);
 
-                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(getPlayer(), getCrate(), getCrate().getName(), prize));
+                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(getPlayer(), getCrate(), getCrate().getName(), this.prize));
                     plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
 
                     return;
                 }
 
-                full++;
-                time++;
+                this.full++;
+                this.time++;
 
-                if (time > 2) time = 0;
+                if (this.time > 2) this.time = 0;
             }
-        }.runTaskTimer(plugin, 0, 2));
+        }.runTaskTimer(this.plugin, 0, 2));
     }
 
     @Override

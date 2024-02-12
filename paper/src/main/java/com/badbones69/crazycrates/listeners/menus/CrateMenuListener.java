@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -42,9 +41,7 @@ public class CrateMenuListener extends ModuleHandler {
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
 
-        Inventory inventory = event.getInventory();
-
-        if (!(inventory.getHolder() instanceof CrateMainMenu)) {
+        if (!(event.getInventory().getHolder() instanceof CrateMainMenu)) {
             return;
         }
 
@@ -61,7 +58,6 @@ public class CrateMenuListener extends ModuleHandler {
         }
 
         NBTItem nbtItem = new NBTItem(item);
-
         if (!nbtItem.hasNBTData() && !nbtItem.hasTag("CrazyCrates-Crate")) {
             return;
         }
@@ -77,6 +73,7 @@ public class CrateMenuListener extends ModuleHandler {
                 crate.playSound(player, player.getLocation(), "click-sound", "UI_BUTTON_CLICK", SoundCategory.PLAYERS);
 
                 player.closeInventory();
+
                 this.inventoryManager.addViewer(player);
                 this.inventoryManager.openNewCratePreview(player, crate, crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
             } else {

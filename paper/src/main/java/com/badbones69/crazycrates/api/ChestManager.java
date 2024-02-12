@@ -1,6 +1,5 @@
-package com.badbones69.crazycrates.support.structures.blocks;
+package com.badbones69.crazycrates.api;
 
-import com.badbones69.crazycrates.support.structures.interfaces.ChestControl;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -9,10 +8,9 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.EnderChest;
 import org.bukkit.block.data.Directional;
 
-public class ChestManager implements ChestControl {
+public class ChestManager {
 
-    @Override
-    public void openChest(Block block, boolean forceUpdate) {
+    public static void openChest(Block block, boolean forceUpdate) {
         if (block.getType() != Material.CHEST || block.getType() != Material.TRAPPED_CHEST || block.getType() != Material.ENDER_CHEST) return;
 
         BlockState blockState = block.getState();
@@ -34,8 +32,7 @@ public class ChestManager implements ChestControl {
         }
     }
 
-    @Override
-    public void closeChest(Block block, boolean forceUpdate) {
+    public static void closeChest(Block block, boolean forceUpdate) {
         if (block.getType() != Material.CHEST || block.getType() != Material.TRAPPED_CHEST || block.getType() != Material.ENDER_CHEST) return;
 
         BlockState blockState = block.getState();
@@ -63,8 +60,7 @@ public class ChestManager implements ChestControl {
         }
     }
 
-    @Override
-    public void rotateChest(Block block, int direction) {
+    public static void rotateChest(Block block, int direction) {
         BlockFace blockFace = switch (direction) {
             case 0 -> // West
                     BlockFace.WEST;
@@ -86,8 +82,7 @@ public class ChestManager implements ChestControl {
         block.getState().update(true);
     }
 
-    @Override
-    public boolean isChestOpen(Block block) {
+    public static boolean isChestOpen(Block block) {
         if (block.getType() != Material.CHEST || block.getType() != Material.TRAPPED_CHEST || block.getType() != Material.ENDER_CHEST) return false;
 
         BlockState blockState = block.getState();

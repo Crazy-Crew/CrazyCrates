@@ -1,18 +1,14 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.api.EventLogger;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.commands.CommandManager;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.common.CrazyCratesPlugin;
-import com.badbones69.crazycrates.api.MigrationService;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.tasks.PrizeManager;
-import com.badbones69.crazycrates.support.metrics.MetricsWrapper;
+import com.badbones69.crazycrates.support.metrics.MetricsManager;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.support.structures.blocks.ChestManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.api.modules.ModuleLoader;
 import com.badbones69.crazycrates.api.utils.FileUtils;
@@ -23,21 +19,12 @@ public class CrazyHandler extends CrazyCratesPlugin {
         super(plugin.getDataFolder());
     }
 
-    private FileManager fileManager;
-
-    private CrateManager crateManager;
-    private PrizeManager prizeManager;
-
     private InventoryManager inventoryManager;
-
-    private ModuleLoader moduleLoader;
-
-    private ChestManager chestManager;
-
     private BukkitUserManager userManager;
-    private EventLogger eventLogger;
-
-    private MetricsWrapper metrics;
+    private CrateManager crateManager;
+    private ModuleLoader moduleLoader;
+    private FileManager fileManager;
+    private MetricsManager metrics;
 
     public void load() {
         super.enable();
@@ -62,7 +49,7 @@ public class CrazyHandler extends CrazyCratesPlugin {
 
         FileUtils.loadFiles();
 
-        // Load crates.
+        // Create crate manager.
         this.crateManager = new CrateManager();
 
         // Create inventory manager.
@@ -70,17 +57,8 @@ public class CrazyHandler extends CrazyCratesPlugin {
 
         this.crateManager.loadCrates();
 
-        // Enable prizes.
-        this.prizeManager = new PrizeManager();
-
-        // Create chest manager.
-        this.chestManager = new ChestManager();
-
         // Creates user manager instance.
         this.userManager = new BukkitUserManager();
-
-        // Create event logger.
-        this.eventLogger = new EventLogger();
 
         // Load commands.
         CommandManager commandManager = new CommandManager();
@@ -89,14 +67,10 @@ public class CrazyHandler extends CrazyCratesPlugin {
         this.moduleLoader = new ModuleLoader();
         this.moduleLoader.load();
 
-        // Migrates configuration settings.
-        MigrationService service = new MigrationService();
-        service.migrate();
-
         // Load metrics.
         boolean metrics = getConfigManager().getConfig().getProperty(ConfigKeys.toggle_metrics);
 
-        this.metrics = new MetricsWrapper();
+        this.metrics = new MetricsManager();
         if (metrics) this.metrics.start();
     }
 
@@ -117,8 +91,14 @@ public class CrazyHandler extends CrazyCratesPlugin {
     }
 
     @NotNull
-    public FileManager getFileManager() {
-        return this.fileManager;
+    public InventoryManager getInventoryManager() {
+        return this.inventoryManager;
+    }
+
+    @Override
+    @NotNull
+    public BukkitUserManager getUserManager() {
+        return this.userManager;
     }
 
     @NotNull
@@ -127,38 +107,17 @@ public class CrazyHandler extends CrazyCratesPlugin {
     }
 
     @NotNull
-    public PrizeManager getPrizeManager() {
-        return this.prizeManager;
-    }
-
-    @NotNull
-    public InventoryManager getInventoryManager() {
-        return this.inventoryManager;
-    }
-
-    @NotNull
-    public ChestManager getChestManager() {
-        return this.chestManager;
-    }
-
-    @NotNull
-    public EventLogger getEventLogger() {
-        return this.eventLogger;
-    }
-
-    @NotNull
     public ModuleLoader getModuleLoader() {
         return this.moduleLoader;
     }
 
     @NotNull
-    public MetricsWrapper getMetrics() {
-        return this.metrics;
+    public FileManager getFileManager() {
+        return this.fileManager;
     }
 
-    @Override
     @NotNull
-    public BukkitUserManager getUserManager() {
-        return this.userManager;
+    public MetricsManager getMetrics() {
+        return this.metrics;
     }
 }

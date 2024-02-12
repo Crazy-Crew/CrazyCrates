@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.tasks;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

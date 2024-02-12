@@ -44,6 +44,7 @@ public class ModuleLoader {
         this.modules.remove(module);
     }
 
+    @NotNull
     public List<ModuleHandler> getModules() {
         return Collections.unmodifiableList(this.modules);
     }

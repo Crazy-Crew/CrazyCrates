@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

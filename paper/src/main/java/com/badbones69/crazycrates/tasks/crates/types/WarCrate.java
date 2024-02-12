@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -53,21 +53,21 @@ public class WarCrate extends CrateBuilder {
 
             @Override
             public void run() {
-                if (full < 25) {
+                if (this.full < 25) {
                     setRandomPrizes();
                     playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_LAVA_POP");
                 }
 
-                open++;
+                this.open++;
 
-                if (open >= 3) {
+                if (this.open >= 3) {
                     getPlayer().openInventory(getInventory());
-                    open = 0;
+                    this.open = 0;
                 }
 
-                full++;
+                this.full++;
 
-                if (full == 26) {
+                if (this.full == 26) {
                     playSound("stop-sound", SoundCategory.PLAYERS, "BLOCK_LAVA_POP");
                     setRandomGlass();
                     plugin.getCrateManager().addPicker(getPlayer(), true);
@@ -87,10 +87,10 @@ public class WarCrate extends CrateBuilder {
     private void setRandomGlass() {
         if (!this.plugin.getCrateManager().isInOpeningList(getPlayer()) && !(getInventory().getHolder() instanceof CratePrizeMenu)) return;
 
-        if (colorCodes.isEmpty()) getColorCode();
+        if (this.colorCodes.isEmpty()) getColorCode();
 
         ItemBuilder builder = MiscUtils.getRandomPaneColor();
-        builder.setName("&" + colorCodes.get(builder.build()) + "&l???");
+        builder.setName("&" + this.colorCodes.get(builder.build()) + "&l???");
         ItemStack item = builder.build();
 
         for (int index = 0; index < 9; index++) {

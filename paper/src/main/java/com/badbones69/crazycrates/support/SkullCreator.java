@@ -159,21 +159,20 @@ public class SkullCreator {
     }
     
     private static ItemStack getPlayerSkullItem() {
-        return new ItemStack(Material.valueOf("PLAYER_HEAD"));
+        return new ItemStack(Material.PLAYER_HEAD);
     }
     
     private static void setBlockType(Block block) {
-        block.setType(Material.valueOf("PLAYER_HEAD"), false);
+        block.setType(Material.PLAYER_HEAD, false);
     }
     
-    private static void notNull(Object o, String name) {
-        if (o == null) {
+    private static void notNull(Object instance, String name) {
+        if (instance == null) {
             throw new NullPointerException(name + " should not be null!");
         }
     }
     
     private static String urlToBase64(String url) {
-        
         URI actualUrl;
 
         try {

@@ -1,11 +1,11 @@
-package com.badbones69.crazycrates.commands.handlers.interfaces;
+package com.badbones69.crazycrates.commands;
 
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
 
-public abstract class MessageHandler {
+public abstract class MessageManager {
 
     @NotNull
     private final CrazyCrates plugin = CrazyCrates.get();

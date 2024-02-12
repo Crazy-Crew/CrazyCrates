@@ -1,8 +1,9 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.PrizeManager;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -55,36 +56,41 @@ public class CsgoCrate extends CrateBuilder {
 
             @Override
             public void run() {
-                if (full <= 50) { // When Spinning
+                if (this.full <= 50) { // When Spinning
                     moveItemsAndSetGlass();
                     playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
                 }
 
-                open++;
+                this.open++;
 
-                if (open >= 5) {
+                if (this.open >= 5) {
                     getPlayer().openInventory(getInventory());
-                    open = 0;
+                    this.open = 0;
                 }
 
-                full++;
+                this.full++;
 
-                if (full > 51) {
-                    if (MiscUtils.slowSpin(120, 15).contains(time)) { // When Slowing Down
+                if (this.full > 51) {
+                    if (MiscUtils.slowSpin(120, 15).contains(this.time)) { // When Slowing Down
                         moveItemsAndSetGlass();
 
                         playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
                     }
 
-                    time++;
+                    this.time++;
 
-                    if (time == 60) { // When done
+                    if (this.time == 60) { // When done
                         playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
 
                         plugin.getCrateManager().endCrate(getPlayer());
-                        Prize prize = getCrate().getPrize(getInventory().getItem(13));
 
-                        plugin.getCrazyHandler().getPrizeManager().givePrize(getPlayer(), getCrate(), prize);
+                        ItemStack item = getInventory().getItem(13);
+
+                        if (item != null) {
+                            Prize prize = getCrate().getPrize(item);
+
+                            PrizeManager.givePrize(getPlayer(), getCrate(), prize);
+                        }
 
                         plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
 
@@ -96,7 +102,7 @@ public class CsgoCrate extends CrateBuilder {
                                 if (getPlayer().getOpenInventory().getTopInventory().equals(getInventory())) getPlayer().closeInventory();
                             }
                         }.runTaskLater(plugin, 40);
-                    } else if (time > 60) { // Added this due reports of the prizes spamming when low tps.
+                    } else if (this.time > 60) { // Added this due reports of the prizes spamming when low tps.
                         cancel();
                     }
                 }

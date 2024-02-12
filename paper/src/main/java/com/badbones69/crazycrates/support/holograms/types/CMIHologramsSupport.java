@@ -6,11 +6,11 @@ import com.badbones69.crazycrates.common.crates.CrateHologram;
 import net.Zrips.CMILib.Container.CMILocation;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.block.Block;
-import com.badbones69.crazycrates.support.holograms.HologramHandler;
+import com.badbones69.crazycrates.support.holograms.HologramManager;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class CMIHologramsSupport extends HologramHandler {
+public class CMIHologramsSupport extends HologramManager {
 
     private final HashMap<Block, CMIHologram> holograms = new HashMap<>();
 

@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.objects.BrokeLocation;
-import com.badbones69.crazycrates.api.objects.CrateLocation;
+import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
+import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

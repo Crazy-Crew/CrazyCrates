@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.listeners.crates;
 
+import com.badbones69.crazycrates.api.PrizeManager;
 import org.bukkit.Location;
 import org.bukkit.SoundCategory;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -12,11 +13,11 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.crates.other.quadcrates.QuadCrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.support.structures.blocks.ChestManager;
+import com.badbones69.crazycrates.api.ChestManager;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -38,9 +39,6 @@ public class QuadCrateListener implements Listener {
 
     @NotNull
     private final CrazyCrates plugin = CrazyCrates.get();
-
-    @NotNull
-    private final ChestManager chestManager = this.plugin.getCrazyHandler().getChestManager();
 
     private final SessionManager sessionManager = new SessionManager();
 
@@ -65,11 +63,11 @@ public class QuadCrateListener implements Listener {
 
                 if (session.getCratesOpened().get(block.getLocation())) return;
 
-                this.chestManager.openChest(block, true);
+                ChestManager.openChest(block, true);
 
                 Crate crate = session.getCrate();
                 Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
-                this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
+                PrizeManager.givePrize(player, prize, crate);
 
                 // Get the display item.
                 ItemStack display = prize.getDisplayItem();

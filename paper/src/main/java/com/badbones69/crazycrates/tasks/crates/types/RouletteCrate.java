@@ -2,9 +2,11 @@ package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.PrizeManager;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -47,45 +49,48 @@ public class RouletteCrate extends CrateBuilder {
 
             @Override
             public void run() {
-                if (full <= 15) {
+                if (this.full <= 15) {
                     setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
                     setGlass();
 
                     playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
-                    even++;
+                    this.even++;
 
-                    if (even >= 4) {
-                        even = 0;
+                    if (this.even >= 4) {
+                        this.even = 0;
                         setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
                     }
                 }
 
-                open++;
+                this.open++;
 
-                if (open >= 5) {
+                if (this.open >= 5) {
                     getPlayer().openInventory(getInventory());
-                    open = 0;
+                    this.open = 0;
                 }
 
-                full++;
+                this.full++;
 
-                if (full > 16) {
-                    if (MiscUtils.slowSpin(46, 9).contains(time)) {
+                if (this.full > 16) {
+                    if (MiscUtils.slowSpin(46, 9).contains(this.time)) {
                         setGlass();
                         setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
 
                         playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
                     }
 
-                    time++;
+                    this.time++;
 
-                    if (time >= 23) {
+                    if (this.time >= 23) {
                         playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
                         plugin.getCrateManager().endCrate(getPlayer());
 
-                        Prize prize = getCrate().getPrize(getInventory().getItem(13));
+                        ItemStack item = getInventory().getItem(13);
 
-                        plugin.getCrazyHandler().getPrizeManager().givePrize(getPlayer(), getCrate(), prize);
+                        if (item != null) {
+                            Prize prize = getCrate().getPrize(item);
+                            PrizeManager.givePrize(getPlayer(), getCrate(), prize);
+                        }
 
                         plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
 

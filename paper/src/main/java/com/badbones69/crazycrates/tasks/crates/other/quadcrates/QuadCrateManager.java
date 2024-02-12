@@ -4,12 +4,11 @@ import org.bukkit.SoundCategory;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.CrazyHandler;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.support.structures.QuadCrateSpiralHandler;
-import com.badbones69.crazycrates.support.structures.StructureHandler;
-import com.badbones69.crazycrates.support.structures.blocks.ChestManager;
+import com.badbones69.crazycrates.api.SpiralManager;
+import com.badbones69.crazycrates.support.StructureHandler;
+import com.badbones69.crazycrates.api.ChestManager;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -34,12 +33,6 @@ public class QuadCrateManager {
 
     @NotNull
     private final CrazyCrates plugin = CrazyCrates.get();
-
-    @NotNull
-    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
-
-    @NotNull
-    private final ChestManager chestManager = this.crazyHandler.getChestManager();
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
@@ -215,14 +208,12 @@ public class QuadCrateManager {
 
         this.crateManager.addQuadCrateTask(this.player, new BukkitRunnable() {
 
-            private final QuadCrateSpiralHandler spiralHandler = new QuadCrateSpiralHandler();
-
             double radius = 0.0; // Radius of the particle spiral.
             int crateNumber = 0; // The crate number that spawns next.
             int tickTillSpawn = 0; // At tick 60 the crate will spawn and then reset the tick.
             Location particleLocation = crateLocations.get(this.crateNumber).clone().add(.5, 3, .5);
-            List<Location> spiralLocationsClockwise = this.spiralHandler.getSpiralLocationClockwise(particleLocation);
-            List<Location> spiralLocationsCounterClockwise = this.spiralHandler.getSpiralLocationCounterClockwise(particleLocation);
+            List<Location> spiralLocationsClockwise = SpiralManager.getSpiralLocationClockwise(particleLocation);
+            List<Location> spiralLocationsCounterClockwise = SpiralManager.getSpiralLocationCounterClockwise(particleLocation);
 
             @Override
             public void run() {
@@ -235,7 +226,8 @@ public class QuadCrateManager {
                     Block chest = crateLocations.get(crateNumber).getBlock();
 
                     chest.setType(Material.CHEST);
-                    chestManager.rotateChest(chest, crateNumber);
+
+                    ChestManager.rotateChest(chest, crateNumber);
 
                     if (this.crateNumber == 3) { // Last crate has spawned.
                         crateManager.endQuadCrate(player); // Cancelled when method is called.
@@ -244,8 +236,8 @@ public class QuadCrateManager {
                         this.crateNumber++;
                         this.radius = 0;
                         this.particleLocation = crateLocations.get(this.crateNumber).clone().add(.5, 3, .5); // Set the new particle location for the new crate
-                        this.spiralLocationsClockwise = this.spiralHandler.getSpiralLocationClockwise(this.particleLocation);
-                        this.spiralLocationsCounterClockwise = this.spiralHandler.getSpiralLocationCounterClockwise(this.particleLocation);
+                        this.spiralLocationsClockwise = SpiralManager.getSpiralLocationClockwise(this.particleLocation);
+                        this.spiralLocationsCounterClockwise = SpiralManager.getSpiralLocationCounterClockwise(this.particleLocation);
                     }
                 }
             }

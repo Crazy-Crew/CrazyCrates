@@ -1,12 +1,11 @@
-package com.badbones69.crazycrates.tasks;
+package com.badbones69.crazycrates.api;
 
-import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Tier;
 import org.apache.commons.lang.WordUtils;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.support.libraries.PluginSupport;
@@ -14,24 +13,17 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
-
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class PrizeManager {
     
     @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
+    private static final CrazyCrates plugin = CrazyCrates.get();
 
     /**
      * Gets the prize for the player.
@@ -40,9 +32,9 @@ public class PrizeManager {
      * @param crate the player is opening.
      * @param prize the player is being given.
      */
-    public void givePrize(Player player, Prize prize, Crate crate) {
+    public static void givePrize(Player player, Prize prize, Crate crate) {
         if (prize == null) {
-            if (this.plugin.isLogging()) this.plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
+            if (plugin.isLogging()) plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
             return;
         }
 
@@ -94,8 +86,9 @@ public class PrizeManager {
                             commandBuilder.append(MiscUtils.pickNumber(min, max)).append(" ");
                         } catch (Exception e) {
                             commandBuilder.append("1 ");
-                            this.plugin.getLogger().warning("The prize " + prize.getPrizeName() + " in the " + prize.getCrateName() + " crate has caused an error when trying to run a command.");
-                            this.plugin.getLogger().warning("Command: " + cmd);
+
+                            plugin.getLogger().warning("The prize " + prize.getPrizeName() + " in the " + prize.getCrateName() + " crate has caused an error when trying to run a command.");
+                            plugin.getLogger().warning("Command: " + cmd);
                         }
                     } else {
                         commandBuilder.append(word).append(" ");
@@ -157,19 +150,19 @@ public class PrizeManager {
      * @param crate the player is opening.
      * @param prize the player is being given.
      */
-    public void givePrize(Player player, Crate crate, Prize prize) {
+    public static void givePrize(Player player, Crate crate, Prize prize) {
         if (prize != null) {
-            givePrize(player, prize, crate);
+            givePrize(player, crate, prize);
 
             if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
-            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
         } else {
             player.sendMessage(MsgUtils.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
         }
     }
 
-    public void getPrize(Crate crate, Inventory inventory, int slot, Player player) {
+    public static void getPrize(Crate crate, Inventory inventory, int slot, Player player) {
         ItemStack item = inventory.getItem(slot);
 
         if (item == null) return;
@@ -179,7 +172,7 @@ public class PrizeManager {
         givePrize(player, prize, crate);
     }
 
-    public Tier getTier(Crate crate) {
+    public static Tier getTier(Crate crate) {
         if (crate.getTiers() != null && !crate.getTiers().isEmpty()) {
             for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
                 for (Tier tier : crate.getTiers()) {

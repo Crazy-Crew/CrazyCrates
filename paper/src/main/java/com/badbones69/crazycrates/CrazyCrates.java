@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.api.EventLogger;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
@@ -46,6 +45,8 @@ public class CrazyCrates extends JavaPlugin {
     public void onEnable() {
         this.timer = new Timer();
 
+        registerPermissions();
+
         // Load version 2 of crazycrates
         this.crazyHandler = new CrazyHandler(this);
         this.crazyHandler.load();
@@ -73,8 +74,6 @@ public class CrazyCrates extends JavaPlugin {
         pluginManager.registerEvents(new WarCrateListener(), this);
         pluginManager.registerEvents(new MiscListener(), this);
 
-        pluginManager.registerEvents(new PaperListener(), this);
-
         if (isLogging()) {
             String prefix = this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.console_prefix);
 
@@ -94,8 +93,6 @@ public class CrazyCrates extends JavaPlugin {
         }
 
         if (isLogging()) getLogger().info("You can disable logging by going to the plugin-config.yml and setting verbose to false.");
-
-        registerPermissions();
     }
 
     @Override
@@ -116,23 +113,8 @@ public class CrazyCrates extends JavaPlugin {
     }
 
     @NotNull
-    public Timer getTimer() {
-        return this.timer;
-    }
-
-    @NotNull
-    public CrazyHandler getCrazyHandler() {
-        return this.crazyHandler;
-    }
-
-    @NotNull
-    public ConfigManager getConfigManager() {
-        return getCrazyHandler().getConfigManager();
-    }
-
-    @NotNull
-    public FileManager getFileManager() {
-        return getCrazyHandler().getFileManager();
+    public BukkitCommandManager<CommandSender> getCommandManager() {
+        return this.commandManager;
     }
 
     @NotNull
@@ -141,18 +123,28 @@ public class CrazyCrates extends JavaPlugin {
     }
 
     @NotNull
+    public ConfigManager getConfigManager() {
+        return getCrazyHandler().getConfigManager();
+    }
+
+    @NotNull
     public CrateManager getCrateManager() {
         return getCrazyHandler().getCrateManager();
     }
 
     @NotNull
-    public BukkitCommandManager<CommandSender> getCommandManager() {
-        return this.commandManager;
+    public FileManager getFileManager() {
+        return getCrazyHandler().getFileManager();
     }
 
     @NotNull
-    public EventLogger getEventLogger() {
-        return getCrazyHandler().getEventLogger();
+    public CrazyHandler getCrazyHandler() {
+        return this.crazyHandler;
+    }
+
+    @NotNull
+    public Timer getTimer() {
+        return this.timer;
     }
 
     public boolean isLogging() {

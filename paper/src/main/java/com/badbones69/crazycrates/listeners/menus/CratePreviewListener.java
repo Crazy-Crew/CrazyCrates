@@ -8,7 +8,6 @@ import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -40,9 +39,7 @@ public class CratePreviewListener extends ModuleHandler {
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
 
-        Inventory inventory = event.getInventory();
-
-        if (!(inventory.getHolder() instanceof CratePreviewMenu)) {
+        if (!(event.getInventory().getHolder() instanceof CratePreviewMenu)) {
             return;
         }
 

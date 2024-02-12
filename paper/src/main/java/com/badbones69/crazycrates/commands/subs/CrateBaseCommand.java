@@ -3,9 +3,10 @@ package com.badbones69.crazycrates.commands.subs;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.CrateLocation;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.api.objects.other.CrateLocation;
+import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.PrizeManager;
 import dev.triumphteam.cmd.core.annotation.ArgName;
 import dev.triumphteam.cmd.core.annotation.Command;
 import dev.triumphteam.cmd.core.annotation.Default;
@@ -15,6 +16,7 @@ import dev.triumphteam.cmd.core.annotation.SubCommand;
 import dev.triumphteam.cmd.core.annotation.Suggestion;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -27,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.api.EventLogger;
+import com.badbones69.crazycrates.api.EventManager;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
@@ -70,9 +72,6 @@ public class CrateBaseCommand extends BaseCommand {
 
     @NotNull
     private final FileManager fileManager = this.plugin.getFileManager();
-
-    @NotNull
-    private final EventLogger eventLogger = this.plugin.getEventLogger();
 
     @NotNull
     private final SettingsManager config = this.plugin.getConfigManager().getConfig();
@@ -149,7 +148,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         player.sendMessage(Messages.transfer_received_keys.getMessage("%player%", sender.getName()).toString());
 
-        this.eventLogger.logKeyEvent(player, sender, crate, KeyType.virtual_key, EventLogger.KeyEventType.KEY_EVENT_RECEIVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
+        EventManager.logKeyEvent(player, sender, crate, KeyType.virtual_key, EventManager.KeyEventType.KEY_EVENT_RECEIVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
     }
 
     @SubCommand("reload")
@@ -198,19 +197,40 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        crate.getPrizes().forEach(prize -> this.plugin.getCrazyHandler().getPrizeManager().givePrize((Player) sender, prize, crate));
+        crate.getPrizes().forEach(prize -> PrizeManager.givePrize((Player) sender, prize, crate));
     }
 
     @SubCommand("save")
     @Permission(value = "crazycrates.save", def = PermissionDefault.OP)
     public void onSchematicSave(Player player, String name) {
-        player.sendMessage(Messages.feature_disabled.getString());
+
     }
 
     @SubCommand("wand")
     @Permission(value = "crazycrates.wand", def = PermissionDefault.OP)
     public void onWandGive(Player player) {
-        player.sendMessage(Messages.feature_disabled.getString());
+        player.getInventory().addItem(getItem(PersistentKeys.selector_wand.getNamespacedKey(), Material.DIAMOND_AXE, "&c&lPoint Selector"));
+        player.getInventory().addItem(getItem(PersistentKeys.crate_prize.getNamespacedKey(), Material.IRON_AXE, "&c&lTest Wand"));
+    }
+
+    private ItemStack getItem(NamespacedKey key, Material material, String name) {
+        ItemBuilder builder = new ItemBuilder();
+
+        builder.setMaterial(material).setName(name).setLore(List.of(
+                "&eSelect &cpoint #1 &eand &cpoint #2 &eto create a schematic.",
+                "&eOnce you select 2 points, Stand in the center",
+                "&eand run &c/schem-save to save your schematic."
+        ));
+
+        ItemMeta itemMeta = builder.getItemMeta();
+
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+
+        container.set(key, PersistentDataType.STRING, "none");
+
+        builder.setItemMeta(itemMeta);
+
+        return builder.build();
     }
 
     @SubCommand("admin")
@@ -424,7 +444,7 @@ public class CrateBaseCommand extends BaseCommand {
             sender.sendMessage(Messages.opened_a_crate.getMessage(placeholders).toString());
         }
 
-        this.eventLogger.logKeyEvent(player, sender, crate, keyType, EventLogger.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
+        EventManager.logKeyEvent(player, sender, crate, keyType, EventManager.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
     }
 
     @SubCommand("mass-open")
@@ -469,7 +489,7 @@ public class CrateBaseCommand extends BaseCommand {
             if (keysUsed >= crate.getMaxMassOpen()) break;
 
             Prize prize = crate.pickPrize(player);
-            this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
+            PrizeManager.givePrize(player, prize, crate);
             this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 
             if (prize.useFireworks()) MiscUtils.spawnFirework(((Player) sender).getLocation().clone().add(.5, 1, .5), null);
@@ -528,7 +548,7 @@ public class CrateBaseCommand extends BaseCommand {
             sender.sendMessage(Messages.opened_a_crate.getMessage(placeholders).toString());
         }
 
-        this.eventLogger.logKeyEvent(player, sender, crate, KeyType.free_key, EventLogger.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
+        EventManager.logKeyEvent(player, sender, crate, KeyType.free_key, EventManager.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
     }
 
     @SubCommand("set")
@@ -640,7 +660,7 @@ public class CrateBaseCommand extends BaseCommand {
             sender.sendMessage(Messages.gave_a_player_keys.getMessage(placeholders).toString());
             if (!inventoryCheck || !fullMessage && !MiscUtils.isInventoryFull(player) && player.isOnline()) player.sendMessage(Messages.obtaining_keys.getMessage(placeholders).toString());
 
-            this.eventLogger.logKeyEvent(player, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
+            EventManager.logKeyEvent(player, sender, crate, type, EventManager.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
 
             return;
         }
@@ -655,7 +675,7 @@ public class CrateBaseCommand extends BaseCommand {
 
             sender.sendMessage(Messages.given_offline_player_keys.getMessage(placeholders).toString());
 
-            this.eventLogger.logKeyEvent(offlinePlayer, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
+            EventManager.logKeyEvent(offlinePlayer, sender, crate, type, EventManager.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
         }
     }
 
@@ -729,7 +749,7 @@ public class CrateBaseCommand extends BaseCommand {
 
             sender.sendMessage(Messages.take_player_keys.getMessage(placeholders).toString());
 
-            this.eventLogger.logKeyEvent(player, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
+            EventManager.logKeyEvent(player, sender, crate, type, EventManager.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
 
             return;
         }
@@ -785,7 +805,7 @@ public class CrateBaseCommand extends BaseCommand {
 
             this.plugin.getCrazyHandler().getUserManager().addKeys(amount, onlinePlayer.getUniqueId(), crate.getName(), type);
 
-            this.eventLogger.logKeyEvent(onlinePlayer, sender, crate, type, EventLogger.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
+            EventManager.logKeyEvent(onlinePlayer, sender, crate, type, EventManager.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
         }
     }
 }

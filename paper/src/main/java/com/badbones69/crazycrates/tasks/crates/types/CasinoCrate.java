@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.api.PrizeManager;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -63,9 +64,9 @@ public class CasinoCrate extends CrateBuilder {
 
                 this.plugin.getCrateManager().endCrate(getPlayer());
 
-                getPrizeManager().getPrize(getCrate(), getInventory(), 11, getPlayer());
-                getPrizeManager().getPrize(getCrate(), getInventory(), 13, getPlayer());
-                getPrizeManager().getPrize(getCrate(), getInventory(), 15, getPlayer());
+                PrizeManager.getPrize(getCrate(), getInventory(), 11, getPlayer());
+                PrizeManager.getPrize(getCrate(), getInventory(), 13, getPlayer());
+                PrizeManager.getPrize(getCrate(), getInventory(), 15, getPlayer());
 
                 this.plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
 

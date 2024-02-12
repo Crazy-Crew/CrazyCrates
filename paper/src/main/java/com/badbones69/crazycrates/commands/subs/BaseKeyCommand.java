@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.commands.subs.player;
+package com.badbones69.crazycrates.commands.subs;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;

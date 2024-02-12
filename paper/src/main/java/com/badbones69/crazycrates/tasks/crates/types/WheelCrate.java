@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.PrizeManager;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -76,39 +77,39 @@ public class WheelCrate extends CrateBuilder {
 
             @Override
             public void run() {
-                if (uh >= 18) uh = 0;
+                if (this.uh >= 18) this.uh = 0;
 
-                if (what >= 18) what = 0;
+                if (this.what >= 18) this.what = 0;
 
-                if (full < timer) lore();
+                if (this.full < this.timer) lore();
 
-                if (full >= timer) {
-                    if (MiscUtils.slowSpin(46, 9).contains(slower)) lore();
+                if (this.full >= this.timer) {
+                    if (MiscUtils.slowSpin(46, 9).contains(this.slower)) lore();
 
-                    if (full == timer + 47) {
+                    if (this.full == this.timer + 47) {
                         playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
                     }
 
-                    if (full >= timer + 47) {
-                        slow++;
+                    if (this.full >= this.timer + 47) {
+                        this.slow++;
 
-                        if (slow >= 2) {
+                        if (this.slow >= 2) {
                             for (int slot = 0; slot < getSize(); slot++) {
                                 if (!getBorder().contains(slot)) setCustomGlassPane(slot);
                             }
 
-                            slow = 0;
+                            this.slow = 0;
                         }
                     }
 
-                    if (full >= (timer + 55 + 47)) {
+                    if (this.full >= (this.timer + 55 + 47)) {
                         Prize prize = null;
 
                         if (plugin.getCrateManager().isInOpeningList(getPlayer())) {
-                            prize = getCrate().getPrize(rewards.get(getPlayer().getUniqueId()).get(slots.get(what)));
+                            prize = getCrate().getPrize(rewards.get(getPlayer().getUniqueId()).get(this.slots.get(this.what)));
                         }
 
-                        plugin.getCrazyHandler().getPrizeManager().givePrize(getPlayer(), getCrate(), prize);
+                        PrizeManager.givePrize(getPlayer(), getCrate(), prize);
 
                         playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
 
@@ -117,22 +118,22 @@ public class WheelCrate extends CrateBuilder {
                         plugin.getCrateManager().endCrate(getPlayer());
                     }
 
-                    slower++;
+                    this.slower++;
                 }
 
-                full++;
-                open++;
+                this.full++;
+                this.open++;
 
-                if (open > 5) {
+                if (this.open > 5) {
                     getPlayer().openInventory(getInventory());
-                    open = 0;
+                    this.open = 0;
                 }
             }
 
             private void lore() {
                 HashMap<Integer, ItemStack> map = rewards.get(getPlayer().getUniqueId());
 
-                int slot = slots.get(uh);
+                int slot = this.slots.get(this.uh);
 
                 ItemStack item = map.get(slot);
 
@@ -150,12 +151,12 @@ public class WheelCrate extends CrateBuilder {
                     setItem(slot, material, name);
                 }
 
-                int other = slots.get(what);
+                int other = this.slots.get(this.what);
 
                 setItem(other, map.get(other));
                 playSound("cycle-sound", SoundCategory.MUSIC, "BLOCK_NOTE_BLOCK_XYLOPHONE");
-                uh++;
-                what++;
+                this.uh++;
+                this.what++;
             }
         }.runTaskTimer(this.plugin, 1, 1));
     }

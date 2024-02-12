@@ -3,9 +3,10 @@ package com.badbones69.crazycrates.listeners.crates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
+import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
 import org.bukkit.Material;
@@ -16,12 +17,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -33,7 +32,6 @@ import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.List;
-import java.util.Random;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -51,8 +49,7 @@ public class CosmicCrateListener implements Listener {
         Inventory inventory = event.getInventory();
         Player player = (Player) event.getPlayer();
 
-        InventoryHolder holder = inventory.getHolder();
-        if (!(holder instanceof CratePrizeMenu cosmic)) return;
+        if (!(inventory.getHolder() instanceof CratePrizeMenu cosmic)) return;
 
         // Get opening crate.
         Crate crate = this.crateManager.getOpeningCrate(player);
@@ -79,7 +76,7 @@ public class CosmicCrateListener implements Listener {
                             prize = crate.pickPrize(player, tier);
                         }
 
-                        this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
+                        PrizeManager.givePrize(player, prize, crate);
 
                         playSound = true;
                     }
@@ -113,8 +110,7 @@ public class CosmicCrateListener implements Listener {
         Player player = (Player) event.getWhoClicked();
 
         // Check if inventory holder is instance of CratePrizeMenu
-        InventoryHolder holder = inventory.getHolder();
-        if (!(holder instanceof CratePrizeMenu cosmic)) return;
+        if (!(inventory.getHolder() instanceof CratePrizeMenu cosmic)) return;
 
         // Cancel event.
         event.setCancelled(true);
@@ -158,7 +154,8 @@ public class CosmicCrateListener implements Listener {
 
         if (prize == null) return;
 
-        this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
+        PrizeManager.givePrize(player, prize, crate);
+
         this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 
         event.setCurrentItem(prize.getDisplayItem());
@@ -178,8 +175,7 @@ public class CosmicCrateListener implements Listener {
         UUID uuid = player.getUniqueId();
 
         // Check if inventory holder is instance of CratePrizeMenu
-        InventoryHolder holder = inventory.getHolder();
-        if (!(holder instanceof CratePrizeMenu cosmic)) return;
+        if (!(inventory.getHolder() instanceof CratePrizeMenu cosmic)) return;
 
         // Cancel event.
         event.setCancelled(true);
@@ -397,7 +393,7 @@ public class CosmicCrateListener implements Listener {
 
     private void startRollingAnimation(Player player, InventoryView view, CratePrizeMenu cosmic) {
         for (int slot = 0; slot < cosmic.getSize(); slot++) {
-            Tier tier = this.plugin.getCrazyHandler().getPrizeManager().getTier(cosmic.getCrate());
+            Tier tier = PrizeManager.getTier(cosmic.getCrate());
 
             if (tier != null) view.getTopInventory().setItem(slot, tier.getTierItem());
         }
@@ -415,7 +411,7 @@ public class CosmicCrateListener implements Listener {
 
         view.getTopInventory().clear();
 
-        Tier tier = this.plugin.getCrazyHandler().getPrizeManager().getTier(cosmic.getCrate());
+        Tier tier = PrizeManager.getTier(cosmic.getCrate());
 
         if (tier != null) {
             crateManager.getPickedPrizes(player).forEach(slot -> view.setItem(slot, tier.getTierItem()));

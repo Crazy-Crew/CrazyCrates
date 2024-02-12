@@ -1,13 +1,13 @@
-package com.badbones69.crazycrates.commands.handlers;
+package com.badbones69.crazycrates.commands.relations;
 
-import com.badbones69.crazycrates.commands.handlers.interfaces.MessageHandler;
+import com.badbones69.crazycrates.commands.MessageManager;
 import dev.triumphteam.cmd.core.message.MessageKey;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 
-public class ArgumentRelations extends MessageHandler {
+public class ArgumentRelations extends MessageManager {
 
     private String getContext(String subCommand, String commandOrder) {
         String correctUsage = null;

@@ -53,11 +53,11 @@ public class FireCrackerCrate extends CrateBuilder {
 
             @Override
             public void run() {
-                location.subtract(0, 1, 0);
-                MiscUtils.spawnFirework(location, colors.get(random));
-                length++;
+                this.location.subtract(0, 1, 0);
+                MiscUtils.spawnFirework(this.location, colors.get(this.random));
+                this.length++;
 
-                if (length == 25) {
+                if (this.length == 25) {
                     plugin.getCrateManager().endCrate(getPlayer());
 
                     QuickCrate quickCrate = new QuickCrate(getCrate(), getPlayer(), getLocation());

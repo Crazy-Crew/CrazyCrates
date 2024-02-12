@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.listeners.crates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.PrizeManager;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -54,7 +55,8 @@ public class WarCrateListener implements Listener {
 
                     this.crateManager.removePicker(player);
                     this.crateManager.addCloser(player, true);
-                    this.plugin.getCrazyHandler().getPrizeManager().givePrize(player, prize, crate);
+
+                    PrizeManager.givePrize(player, prize, crate);
 
                     if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 

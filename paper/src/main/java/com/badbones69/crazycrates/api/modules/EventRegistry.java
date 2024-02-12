@@ -19,6 +19,7 @@ public class EventRegistry {
         if (this.listeners.contains(listener)) return;
 
         this.listeners.add(listener);
+
         this.plugin.getServer().getPluginManager().registerEvents(listener, this.plugin);
     }
 
@@ -26,6 +27,7 @@ public class EventRegistry {
         if (!this.listeners.contains(listener)) return;
 
         this.listeners.remove(listener);
+
         HandlerList.unregisterAll(listener);
     }
 }

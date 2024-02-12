@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.support.structures;
+package com.badbones69.crazycrates.support;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.google.common.collect.Lists;

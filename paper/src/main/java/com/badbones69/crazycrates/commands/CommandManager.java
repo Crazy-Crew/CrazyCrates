@@ -1,10 +1,10 @@
 package com.badbones69.crazycrates.commands;
 
-import com.badbones69.crazycrates.api.objects.CrateLocation;
-import com.badbones69.crazycrates.commands.handlers.ArgumentRelations;
-import com.badbones69.crazycrates.commands.handlers.MiscRelations;
+import com.badbones69.crazycrates.api.objects.other.CrateLocation;
+import com.badbones69.crazycrates.commands.relations.ArgumentRelations;
+import com.badbones69.crazycrates.commands.relations.MiscRelations;
 import com.badbones69.crazycrates.commands.subs.CrateBaseCommand;
-import com.badbones69.crazycrates.commands.subs.player.BaseKeyCommand;
+import com.badbones69.crazycrates.commands.subs.BaseKeyCommand;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
 import org.bukkit.command.CommandSender;

@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.listeners.menus;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyHandler;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
-import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.modules.ModuleHandler;
@@ -42,9 +41,7 @@ public class CrateTierListener extends ModuleHandler {
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
 
-        Inventory inventory = event.getInventory();
-
-        if (!(inventory.getHolder() instanceof CrateTierMenu)) {
+        if (!(event.getInventory().getHolder() instanceof CrateTierMenu)) {
             return;
         }
 

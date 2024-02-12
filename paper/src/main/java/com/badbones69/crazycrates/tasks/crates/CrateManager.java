@@ -3,7 +3,8 @@ package com.badbones69.crazycrates.tasks.crates;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
-import com.badbones69.crazycrates.api.objects.BrokeLocation;
+import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
+import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;
@@ -20,10 +21,10 @@ import org.bukkit.scheduler.BukkitTask;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.support.holograms.HologramHandler;
+import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.CrateLocation;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
+import com.badbones69.crazycrates.api.objects.other.CrateLocation;
+import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
 import org.bukkit.Location;
@@ -69,7 +70,7 @@ public class CrateManager {
     private final List<String> brokeCrates = new ArrayList<>();
     private final List<Crate> crates = new ArrayList<>();
 
-    private HologramHandler holograms;
+    private HologramManager holograms;
 
     private boolean giveNewPlayersKeys;
 
@@ -982,7 +983,7 @@ public class CrateManager {
     /**
      * @return the hologram handler.
      */
-    public HologramHandler getHolograms() {
+    public HologramManager getHolograms() {
         return this.holograms;
     }
 
@@ -1154,13 +1155,13 @@ public class CrateManager {
             this.rewards.remove(player.getUniqueId());
         }
 
-        this.plugin.getCrazyHandler().getChestManager().closeChest(location.getBlock(), false);
+        ChestManager.closeChest(location.getBlock(), false);
 
         removeCrateInUse(player);
         removePlayerFromOpeningList(player);
 
         if (!useQuickCrateAgain) {
-            HologramHandler handler = this.plugin.getCrateManager().getHolograms();
+            HologramManager handler = this.plugin.getCrateManager().getHolograms();
 
             if (handler != null && crate != null) handler.createHologram(location.getBlock(), crate);
         }

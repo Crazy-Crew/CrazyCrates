@@ -1,12 +1,9 @@
 package com.badbones69.crazycrates.api.builders;
 
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
-import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.ItemBuilder;
-import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.tasks.PrizeManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
 import org.bukkit.Location;
@@ -17,9 +14,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -399,12 +393,5 @@ public abstract class CrateBuilder extends BukkitRunnable {
 
             sound.play(getPlayer(), getPlayer().getLocation());
         }
-    }
-
-    /**
-     * @return the prize manager.
-     */
-    public PrizeManager getPrizeManager() {
-        return this.plugin.getCrazyHandler().getPrizeManager();
     }
 }

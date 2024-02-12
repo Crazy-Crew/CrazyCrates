@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.objects;
+package com.badbones69.crazycrates.api.objects.other;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;

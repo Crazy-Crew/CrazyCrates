@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.PrizeManager;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -42,7 +43,7 @@ public class CrateOnTheGo extends CrateBuilder {
         }
 
         Prize prize = getCrate().pickPrize(getPlayer());
-        this.plugin.getCrazyHandler().getPrizeManager().givePrize(getPlayer(), prize, getCrate());
+        PrizeManager.givePrize(getPlayer(), prize, getCrate());
 
         if (prize.useFireworks()) MiscUtils.spawnFirework(getPlayer().getLocation().add(0, 1, 0), null);
 

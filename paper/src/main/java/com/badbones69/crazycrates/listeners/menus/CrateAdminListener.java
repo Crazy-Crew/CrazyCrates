@@ -9,7 +9,6 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +18,6 @@ import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.modules.ModuleHandler;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.HashMap;
 
 public class CrateAdminListener extends ModuleHandler {
@@ -36,11 +34,7 @@ public class CrateAdminListener extends ModuleHandler {
 
         Inventory inventory = event.getInventory();
 
-        InventoryHolder holder = inventory.getHolder();
-
-        if (!(holder instanceof CrateAdminMenu)) {
-            return;
-        }
+        if (!(inventory.getHolder() instanceof CrateAdminMenu)) return;
 
         event.setCancelled(true);
 

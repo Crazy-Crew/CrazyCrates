@@ -5,12 +5,12 @@ import com.badbones69.crazycrates.common.crates.CrateHologram;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.block.Block;
-import com.badbones69.crazycrates.support.holograms.HologramHandler;
+import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class DecentHologramsSupport extends HologramHandler {
+public class DecentHologramsSupport extends HologramManager {
 
     private final HashMap<Block, Hologram> holograms = new HashMap<>();
 
