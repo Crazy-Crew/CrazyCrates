@@ -102,8 +102,11 @@ public enum Messages {
         this.isList = isList;
     }
 
+    @NotNull
     private final CrazyCrates plugin = CrazyCrates.get();
+    @NotNull
     private final ConfigManager configManager = this.plugin.getCrazyHandler().getConfigManager();
+    @NotNull
     private final SettingsManager configuration = this.configManager.getMessages();
 
     private boolean isList() {

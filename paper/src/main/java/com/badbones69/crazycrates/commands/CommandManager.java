@@ -19,6 +19,7 @@ public class CommandManager {
     @NotNull
     private final CrazyCrates plugin = CrazyCrates.get();
 
+    @NotNull
     private final BukkitCommandManager<CommandSender> bukkitCommandManager = this.plugin.getCommandManager();
 
     /**

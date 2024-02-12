@@ -485,7 +485,9 @@ public class Crate {
      */
     public ItemStack getKeyNoNBT(int amount) {
         ItemStack key = this.keyNoNBT.clone();
+
         key.setAmount(amount);
+
         return key;
     }
     
