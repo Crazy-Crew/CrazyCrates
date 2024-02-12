@@ -39,6 +39,7 @@ public class Crate {
     
     private AbstractCrateManager manager;
     private final String name;
+    private final String keyName;
     private final ItemStack key;
     private final ItemStack keyNoNBT;
     private final ItemStack adminKey;
@@ -86,10 +87,11 @@ public class Crate {
      * @param prizes The prizes that can be won.
      * @param file The crate file.
      */
-    public Crate(String name, String previewName, CrateType crateType, ItemStack key, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, CrateHologram hologram) {
+    public Crate(String name, String previewName, CrateType crateType, ItemStack key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, CrateHologram hologram) {
         ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
         this.keyNoNBT = itemBuilder.build();
         this.key = itemBuilder.setCrateName(name).build();
+        this.keyName = keyName;
         this.adminKey = itemBuilder
         .addLore("")
         .addLore("&7&l(&6&l!&7&l) Left click for Physical Key")
@@ -135,6 +137,13 @@ public class Crate {
         if (crateType == CrateType.cosmic) {
             if (this.file != null) this.manager = new CosmicCrateManager(this.file);
         }
+    }
+
+    /**
+     * @return the key name.
+     */
+    public String getKeyName() {
+        return this.keyName;
     }
 
     /**

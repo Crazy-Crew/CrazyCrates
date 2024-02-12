@@ -129,7 +129,7 @@ public class CrateControlListener implements Listener {
                     boolean hasKey = false;
                     boolean isPhysical = false;
                     boolean useQuickCrateAgain = false;
-                    String keyName = crate.getKey().getItemMeta().getDisplayName();
+                    String keyName = crate.getKeyName();
 
                     int requiredKeys = this.plugin.getCrateManager().getCrateFromName(crate.getName()).getRequiredKeys();
 

@@ -52,7 +52,7 @@ public class CrateAdminListener extends ModuleHandler {
 
         if (event.getClickedInventory() != topInventory) return;
 
-        if (!MiscUtils.permCheck(player, Permissions.CRAZY_CRATES_ADMIN_ACCESS, false)) {
+        if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(player)) {
             player.closeInventory(InventoryCloseEvent.Reason.CANT_USE);
             player.sendMessage(Messages.no_permission.getString());
             return;
@@ -83,7 +83,7 @@ public class CrateAdminListener extends ModuleHandler {
                 HashMap<String, String> placeholders = new HashMap<>();
 
                 placeholders.put("%amount%", String.valueOf(1));
-                placeholders.put("%key%", crate.getKey().getItemMeta().getDisplayName());
+                placeholders.put("%key%", crate.getKeyName());
 
                 player.sendMessage(Messages.obtaining_keys.getMessage(placeholders).toString());
             }

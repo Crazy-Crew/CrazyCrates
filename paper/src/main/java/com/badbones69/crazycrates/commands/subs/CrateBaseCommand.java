@@ -622,7 +622,7 @@ public class CrateBaseCommand extends BaseCommand {
 
             placeholders.put("%amount%", String.valueOf(amount));
             placeholders.put("%player%", player.getName());
-            placeholders.put("%key%", crate.getKey().getItemMeta().getDisplayName());
+            placeholders.put("%key%", crate.getKeyName());
 
             boolean fullMessage = this.config.getProperty(ConfigKeys.notify_player_when_inventory_full);
             boolean inventoryCheck = this.config.getProperty(ConfigKeys.give_virtual_keys_when_inventory_full);
@@ -754,7 +754,7 @@ public class CrateBaseCommand extends BaseCommand {
         HashMap<String, String> placeholders = new HashMap<>();
 
         placeholders.put("%amount%", String.valueOf(amount));
-        placeholders.put("%key%", crate.getKey().getItemMeta().getDisplayName());
+        placeholders.put("%key%", crate.getKeyName());
 
         sender.sendMessage(Messages.given_everyone_keys.getMessage(placeholders).toString());
 

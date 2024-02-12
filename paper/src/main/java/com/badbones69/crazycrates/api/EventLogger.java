@@ -89,13 +89,13 @@ public class EventLogger {
     @SuppressWarnings("DEPRECATIONS")
     private String setEntryData(String string, Player player, CommandSender sender, Crate crate, KeyType keyType) {
         return string.replace("%player%", player.getName()).replace("%crate_name%", crate.getName()).replace("%sender%", sender.getName())
-                .replace("%crate_type%", crate.getCrateType().getName()).replace("%key_name%", crate.getKey().getItemMeta().getDisplayName())
+                .replace("%crate_type%", crate.getCrateType().getName()).replace("%key_name%", crate.getKeyName())
                 .replace("%key_type%", keyType.getName()).replace("%key_item%", crate.getKey().getType().toString());
     }
 
     private String setEntryData(String string, OfflinePlayer player, CommandSender sender, Crate crate, KeyType keyType) {
         return string.replace("%player%", player.getName()).replace("%crate_name%", crate.getName()).replace("%sender%", sender.getName())
-                .replace("%crate_type%", crate.getCrateType().getName()).replace("%key_name%", crate.getKey().getItemMeta().getDisplayName())
+                .replace("%crate_type%", crate.getCrateType().getName()).replace("%key_name%", crate.getKeyName())
                 .replace("%key_type%", keyType.getName()).replace("%key_item%", crate.getKey().getType().toString());
     }
 
