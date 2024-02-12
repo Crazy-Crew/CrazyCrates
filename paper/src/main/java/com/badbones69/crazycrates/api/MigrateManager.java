@@ -13,13 +13,12 @@ import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
-@SuppressWarnings("ALL")
-public class MigrationService {
+public class MigrateManager {
 
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    public void migrate() {
+    public static void migrate() {
         // Migrate config options
         migrateConfig();
 
@@ -27,8 +26,8 @@ public class MigrationService {
         migratePluginConfig();
     }
 
-    private void migrateConfig() {
-        File input = new File(this.plugin.getDataFolder(), "config.yml");
+    private static void migrateConfig() {
+        File input = new File(plugin.getDataFolder(), "config.yml");
 
         YamlConfiguration config = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(input)).join();
 
@@ -37,7 +36,7 @@ public class MigrationService {
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
 
         SettingsManager configKeys = SettingsManagerBuilder
-                .withYamlFile(new File(this.plugin.getDataFolder(), "config.yml"), builder)
+                .withYamlFile(new File(plugin.getDataFolder(), "config.yml"), builder)
                 .useDefaultMigrationService()
                 .configurationData(ConfigKeys.class)
                 .create();
@@ -56,12 +55,12 @@ public class MigrationService {
 
             config.save(input);
         } catch (IOException exception) {
-            this.plugin.getLogger().log(Level.SEVERE, "Failed to save config.yml", exception);
+            plugin.getLogger().log(Level.SEVERE, "Failed to save config.yml", exception);
         }
     }
 
-    private void migratePluginConfig() {
-        File input = new File(this.plugin.getDataFolder(), "plugin-config.yml");
+    private static void migratePluginConfig() {
+        File input = new File(plugin.getDataFolder(), "plugin-config.yml");
 
         if (!input.exists()) return;
 
@@ -70,7 +69,7 @@ public class MigrationService {
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
 
         SettingsManager configKeys = SettingsManagerBuilder
-                .withYamlFile(new File(this.plugin.getDataFolder(), "config.yml"), builder)
+                .withYamlFile(new File(plugin.getDataFolder(), "config.yml"), builder)
                 .useDefaultMigrationService()
                 .configurationData(ConfigKeys.class)
                 .create();
@@ -90,6 +89,6 @@ public class MigrationService {
         configKeys.save();
 
         // Delete old file.
-        if (input.delete()) this.plugin.getLogger().warning("Successfully migrated " + input.getName());
+        if (input.delete()) plugin.getLogger().warning("Successfully migrated " + input.getName());
     }
 }

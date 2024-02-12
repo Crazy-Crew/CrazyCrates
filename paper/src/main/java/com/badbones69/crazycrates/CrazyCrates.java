@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates;
 
+import com.badbones69.crazycrates.api.MigrateManager;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
@@ -9,7 +10,6 @@ import com.badbones69.crazycrates.listeners.menus.CrateAdminListener;
 import com.badbones69.crazycrates.listeners.menus.CrateMenuListener;
 import com.badbones69.crazycrates.listeners.menus.CratePreviewListener;
 import com.badbones69.crazycrates.listeners.menus.CrateTierListener;
-import com.badbones69.crazycrates.listeners.platforms.PaperListener;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.quadcrates.SessionManager;
@@ -43,6 +43,9 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // Migrate configurations.
+        MigrateManager.migrate();
+
         this.timer = new Timer();
 
         registerPermissions();
