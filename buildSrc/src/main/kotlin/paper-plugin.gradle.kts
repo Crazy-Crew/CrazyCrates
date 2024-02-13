@@ -31,9 +31,8 @@ repositories {
 }
 
 val mcVersion = rootProject.properties["minecraftVersion"] as String
-val paperVersion = rootProject.properties["paperVersion"] as String
 
-project.version = if (System.getenv("BUILD_NUMBER") != null) "$paperVersion-${System.getenv("BUILD_NUMBER")}" else paperVersion
+project.version = if (System.getenv("BUILD_NUMBER") != null) "${rootProject.version}-${System.getenv("BUILD_NUMBER")}" else rootProject.version
 
 dependencies {
     paperweight.paperDevBundle("$mcVersion-R0.1-SNAPSHOT")
@@ -46,6 +45,8 @@ tasks {
 
     runServer {
         jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")
+
+        defaultCharacterEncoding = Charsets.UTF_8.name()
 
         minecraftVersion(mcVersion)
     }
