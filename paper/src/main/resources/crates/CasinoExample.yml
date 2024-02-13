@@ -240,7 +240,7 @@ Crate:
       # Only works on items with durability. This will make the item appear more damaged.
       # It does not set the durability but subtracts this number from the durability is 100, It subtracts 50.
       # It cannot be 0.
-      DisplayDamage: 50f
+      DisplayDamage: 50
       DisplayTrim:
         # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
         Material: 'QUARTZ'
