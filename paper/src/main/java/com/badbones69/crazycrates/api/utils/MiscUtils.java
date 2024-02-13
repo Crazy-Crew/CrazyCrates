@@ -18,6 +18,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
@@ -57,21 +58,13 @@ public class MiscUtils {
 
         firework.setFireworkMeta(fireworkMeta);
 
-        setEntityData(firework, PersistentKeys.no_firework_damage);
+        PersistentDataContainer fireworkData = firework.getPersistentDataContainer();
+
+        fireworkData.set(PersistentKeys.no_firework_damage.getNamespacedKey(), PersistentDataType.BOOLEAN, true);
 
         Server server = plugin.getServer();
 
         server.getScheduler().scheduleSyncDelayedTask(plugin, firework::detonate, 3);
-    }
-
-    /**
-     * Add a persistent tag to an entity.
-     */
-    @SuppressWarnings("unchecked")
-    public static void setEntityData(Entity entity, PersistentKeys key) {
-        PersistentDataContainer entityData = entity.getPersistentDataContainer();
-
-        entityData.set(key.getNamespacedKey(), key.getType(), true);
     }
 
     /**

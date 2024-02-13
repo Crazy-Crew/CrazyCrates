@@ -10,6 +10,7 @@ import com.badbones69.crazycrates.listeners.menus.CrateAdminListener;
 import com.badbones69.crazycrates.listeners.menus.CrateMenuListener;
 import com.badbones69.crazycrates.listeners.menus.CratePreviewListener;
 import com.badbones69.crazycrates.listeners.menus.CrateTierListener;
+import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.quadcrates.SessionManager;
@@ -70,6 +71,7 @@ public class CrazyCrates extends JavaPlugin {
         pluginManager.registerEvents(new BrokeLocationsListener(), this);
 
         pluginManager.registerEvents(new CrateControlListener(), this);
+        pluginManager.registerEvents(new EntityDamageListener(), this);
         pluginManager.registerEvents(new MobileCrateListener(), this);
         pluginManager.registerEvents(new CosmicCrateListener(), this);
         pluginManager.registerEvents(new QuadCrateListener(), this);
