@@ -129,7 +129,6 @@ Crate:
 * Note: We only have 3 rows, so you obviously can only have 1 tier per row. This is not likely to change for this Crate Type... 
 
 ## Enhancements:
-* Added a check if the crate type is invalid, It will notify you in console and show you valid crate types. 
 * Updated slot checks for menu items to rely on PersistentDataContainer.
 * Re-organized the default /crate gui
 * Check uuids for quad crate sessions over player objects.
