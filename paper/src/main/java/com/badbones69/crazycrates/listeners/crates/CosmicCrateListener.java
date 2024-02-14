@@ -158,7 +158,7 @@ public class CosmicCrateListener implements Listener {
 
         this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
 
-        event.setCurrentItem(prize.getDisplayItem());
+        event.setCurrentItem(prize.getDisplayItem(player));
 
         cosmic.getCrate().playSound(player, player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
 

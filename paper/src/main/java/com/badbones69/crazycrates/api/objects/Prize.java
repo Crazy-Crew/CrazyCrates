@@ -3,6 +3,8 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.support.libraries.PluginSupport;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -129,6 +131,55 @@ public class Prize {
         }
 
         return this.itemStack.clone();
+    }
+
+    /**
+     * @return the display item that is shown for the preview and the winning prize.
+     */
+    public ItemStack getDisplayItem(Player player) {
+        if (this.itemStack == null) {
+            ItemBuilder builder = this.displayItem;
+
+            if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
+                String name = PlaceholderAPI.setPlaceholders(player, builder.getName());
+                builder.setName(name);
+
+                List<String> newLore = new ArrayList<>();
+
+                List<String> lore = builder.getLore();
+                lore.forEach(line -> newLore.add(PlaceholderAPI.setPlaceholders(player, line)));
+
+                builder.setLore(newLore);
+            }
+
+            this.itemStack = builder.build();
+
+            ItemMeta itemMeta = this.itemStack.getItemMeta();
+            PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+
+            container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeName);
+
+            this.itemStack.setItemMeta(itemMeta);
+
+            return this.itemStack.clone();
+        }
+
+        ItemStack item = this.itemStack.clone();
+
+        if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
+            ItemMeta itemMeta = item.getItemMeta();
+
+            String name = PlaceholderAPI.setPlaceholders(player, itemMeta.getDisplayName());
+            itemMeta.setDisplayName(name);
+
+            List<String> newLore = new ArrayList<>();
+            itemMeta.getLore().forEach(line -> newLore.add(PlaceholderAPI.setPlaceholders(player, line)));
+            itemMeta.setLore(newLore);
+
+            item.setItemMeta(itemMeta);
+        }
+
+        return item;
     }
 
     /**

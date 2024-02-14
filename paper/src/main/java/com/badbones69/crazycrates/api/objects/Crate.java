@@ -725,7 +725,7 @@ public class Crate {
     public int getAbsolutePreviewItemPosition(int baseSlot) {
         return baseSlot + (this.previewTierCrateRows > 1 ? this.previewTierCrateRows - 1 : 1) * 9;
     }
-    
+
     /**
      * Loads all the preview items and puts them into a list.
      *
@@ -740,6 +740,21 @@ public class Crate {
 
         return items;
     }
+    
+    /**
+     * Loads all the preview items and puts them into a list.
+     *
+     * @return a list of all the preview items that were created.
+     */
+    public List<ItemStack> getPreviewItems(Player player) {
+        List<ItemStack> items = new ArrayList<>();
+
+        for (Prize prize : getPrizes()) {
+            items.add(prize.getDisplayItem(player));
+        }
+
+        return items;
+    }
 
     /**
      * Get prizes for tier specific preview gui's
@@ -747,12 +762,12 @@ public class Crate {
      * @param tier The tier to check
      * @return list of prizes
      */
-    public List<ItemStack> getPreviewItems(Tier tier) {
+    public List<ItemStack> getPreviewItems(Tier tier, Player player) {
         List<ItemStack> prizes = new ArrayList<>();
 
         for (Prize prize : getPrizes()) {
             if (prize.getTiers().contains(tier)) {
-                prizes.add(prize.getDisplayItem());
+                prizes.add(prize.getDisplayItem(player));
             }
         }
 

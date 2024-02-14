@@ -86,7 +86,7 @@ public class CratePreviewMenu extends InventoryBuilder {
     }
 
     private List<ItemStack> getPageItems(int page) {
-        List<ItemStack> list = !this.isTier ? getCrate().getPreviewItems() : getCrate().getPreviewItems(this.tier);
+        List<ItemStack> list = !this.isTier ? getCrate().getPreviewItems(getPlayer()) : getCrate().getPreviewItems(this.tier, getPlayer());
         List<ItemStack> items = new ArrayList<>();
 
         if (page <= 0) page = 1;

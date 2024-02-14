@@ -363,14 +363,14 @@ public abstract class CrateBuilder extends BukkitRunnable {
      * @return the display item of the picked prize.
      */
     public ItemStack getDisplayItem() {
-        return getCrate().pickPrize(getPlayer()).getDisplayItem();
+        return getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer());
     }
 
     /**
      * @return the display item of the picked prize with a tier.
      */
     public ItemStack getDisplayItem(Tier tier) {
-        return getCrate().pickPrize(getPlayer(), tier).getDisplayItem();
+        return getCrate().pickPrize(getPlayer(), tier).getDisplayItem(getPlayer());
     }
 
     /**

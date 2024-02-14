@@ -53,8 +53,8 @@ public class WheelCrate extends CrateBuilder {
 
         for (int number : getBorder()) {
             Prize prize = getCrate().pickPrize(getPlayer());
-            setItem(number, prize.getDisplayItem());
-            items.put(number, prize.getDisplayItem());
+            setItem(number, prize.getDisplayItem(getPlayer()));
+            items.put(number, prize.getDisplayItem(getPlayer()));
         }
 
         this.rewards.put(getPlayer().getUniqueId(), items);

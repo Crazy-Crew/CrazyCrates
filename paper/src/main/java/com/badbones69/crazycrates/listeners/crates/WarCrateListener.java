@@ -49,7 +49,7 @@ public class WarCrateListener implements Listener {
                 if (item != null && item.getType().toString().contains(Material.GLASS_PANE.toString())) {
                     int slot = event.getRawSlot();
                     Prize prize = crate.pickPrize(player);
-                    inventory.setItem(slot, prize.getDisplayItem());
+                    inventory.setItem(slot, prize.getDisplayItem(player));
 
                     if (this.crateManager.hasCrateTask(player)) this.crateManager.endCrate(player);
 
@@ -69,7 +69,7 @@ public class WarCrateListener implements Listener {
                         @Override
                         public void run() {
                             for (int i = 0; i < 9; i++) {
-                                if (i != slot) inventory.setItem(i, crate.pickPrize(player).getDisplayItem());
+                                if (i != slot) inventory.setItem(i, crate.pickPrize(player).getDisplayItem(player));
                             }
 
                             if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);

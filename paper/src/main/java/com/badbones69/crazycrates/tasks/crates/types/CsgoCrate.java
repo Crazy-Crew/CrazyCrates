@@ -157,7 +157,7 @@ public class CsgoCrate extends CrateBuilder {
 
         // Set display items.
         for (int index = 9; index > 8 && index < 18; index++) {
-            setItem(index, getCrate().pickPrize(getPlayer()).getDisplayItem());
+            setItem(index, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
         }
     }
 
@@ -168,7 +168,7 @@ public class CsgoCrate extends CrateBuilder {
             items.add(getInventory().getItem(i));
         }
 
-        setItem(9, getCrate().pickPrize(getPlayer()).getDisplayItem());
+        setItem(9, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
 
         for (int i = 0; i < 8; i++) {
             setItem(i + 10, items.get(i));

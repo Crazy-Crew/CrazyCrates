@@ -38,7 +38,7 @@ public class RouletteCrate extends CrateBuilder {
             return;
         }
 
-        setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
+        setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
 
         addCrateTask(new BukkitRunnable() {
             int full = 0;
@@ -50,7 +50,7 @@ public class RouletteCrate extends CrateBuilder {
             @Override
             public void run() {
                 if (this.full <= 15) {
-                    setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
+                    setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
                     setGlass();
 
                     playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
@@ -58,7 +58,7 @@ public class RouletteCrate extends CrateBuilder {
 
                     if (this.even >= 4) {
                         this.even = 0;
-                        setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
+                        setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
                     }
                 }
 
@@ -74,7 +74,7 @@ public class RouletteCrate extends CrateBuilder {
                 if (this.full > 16) {
                     if (MiscUtils.slowSpin(46, 9).contains(this.time)) {
                         setGlass();
-                        setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem());
+                        setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
 
                         playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
                     }

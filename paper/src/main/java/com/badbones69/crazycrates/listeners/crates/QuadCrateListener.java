@@ -70,7 +70,7 @@ public class QuadCrateListener implements Listener {
                 PrizeManager.givePrize(player, prize, crate);
 
                 // Get the display item.
-                ItemStack display = prize.getDisplayItem();
+                ItemStack display = prize.getDisplayItem(player);
 
                 // Get the item meta.
                 ItemMeta itemMeta = display.getItemMeta();
@@ -99,7 +99,7 @@ public class QuadCrateListener implements Listener {
                 // Set data
                 reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(plugin, true));
                 reward.setVelocity(new Vector(0, .2, 0));
-                reward.setCustomName(prize.getDisplayItem().getItemMeta().getDisplayName());
+                reward.setCustomName(prize.getDisplayItem(player).getItemMeta().getDisplayName());
                 reward.setCustomNameVisible(true);
                 reward.setPickupDelay(Integer.MAX_VALUE);
 

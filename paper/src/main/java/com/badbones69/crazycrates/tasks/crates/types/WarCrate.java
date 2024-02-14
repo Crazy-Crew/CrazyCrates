@@ -80,7 +80,7 @@ public class WarCrate extends CrateBuilder {
         if (!this.plugin.getCrateManager().isInOpeningList(getPlayer()) && !(getInventory().getHolder() instanceof CratePrizeMenu)) return;
 
         for (int index = 0; index < 9; index++) {
-            setItem(index, getCrate().pickPrize(getPlayer()).getDisplayItem());
+            setItem(index, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
         }
     }
 
