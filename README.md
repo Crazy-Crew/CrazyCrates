@@ -48,21 +48,19 @@
 </details>
 
 ### Resource Page
-<a href="https://modrinth.com/plugin/crazycrates">![Modrinth](https://raw.githubusercontent.com/intergrav/devins-badges/v3/assets/compact/available/modrinth_46h.png)</a>
+[![Hangar](https://raw.githubusercontent.com/intergrav/devins-badges/v3/assets/compact/available/hangar_46h.png)](https://hangar.papermc.io/CrazyCrew/CrazyCrates)
+[![Modrinth](https://raw.githubusercontent.com/intergrav/devins-badges/v3/assets/compact/available/modrinth_46h.png)](https://modrinth.com/user/plugin/crazycrates)
 
 ## Getting Started
-
 How to get started with contributing / maintaining your own version of CrazyCrates!
 
 ### Prerequisites
-
 A list of things necessary to make sure you can build CrazyCrates properly.
 * Intellij IDEA
     * > https://www.jetbrains.com/idea/download/
 * Gradle
 
 ### Installation
-
 1. Clone the repo
    ```sh
    git clone https://github.com/Crazy-Crew/CrazyCrates.git
@@ -74,11 +72,9 @@ A list of things necessary to make sure you can build CrazyCrates properly.
    ```
 
 ## Roadmap
-
 Check our public [trello board](https://trello.com/b/bzQ5TwXo) for our current plans, any bugs and general tracking of the project progress.
 
 ## Contributing
-
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/yourfeature`)
 3. Commit your Changes (`git commit -m 'your amazing feature.'`)
@@ -86,7 +82,6 @@ Check our public [trello board](https://trello.com/b/bzQ5TwXo) for our current p
 5. Open a Pull Request to the `main` branch to add your feature/fix.
 
 ## License
-
 Distributed under the MIT License. See [`LICENSE`](/LICENSE) for more information.
 
 [discord-shield]: https://img.shields.io/discord/182615261403283459.svg?style=flat&logo=appveyor
