@@ -147,9 +147,11 @@ public class Prize {
                 List<String> newLore = new ArrayList<>();
 
                 List<String> lore = builder.getLore();
-                lore.forEach(line -> newLore.add(PlaceholderAPI.setPlaceholders(player, line)));
 
-                builder.setLore(newLore);
+                if (lore != null) {
+                    lore.forEach(line -> newLore.add(PlaceholderAPI.setPlaceholders(player, line)));
+                    builder.setLore(newLore);
+                }
             }
 
             this.itemStack = builder.build();
@@ -172,9 +174,13 @@ public class Prize {
             String name = PlaceholderAPI.setPlaceholders(player, itemMeta.getDisplayName());
             itemMeta.setDisplayName(name);
 
-            List<String> newLore = new ArrayList<>();
-            itemMeta.getLore().forEach(line -> newLore.add(PlaceholderAPI.setPlaceholders(player, line)));
-            itemMeta.setLore(newLore);
+            List<String> lore = itemMeta.getLore();
+
+            if (lore != null) {
+                List<String> newLore = new ArrayList<>();
+                lore.forEach(line -> newLore.add(PlaceholderAPI.setPlaceholders(player, line)));
+                itemMeta.setLore(newLore);
+            }
 
             item.setItemMeta(itemMeta);
         }
