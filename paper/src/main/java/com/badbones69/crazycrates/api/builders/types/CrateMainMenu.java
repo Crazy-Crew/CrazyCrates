@@ -1,10 +1,23 @@
 package com.badbones69.crazycrates.api.builders.types;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.tasks.InventoryManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import de.tr7zw.changeme.nbtapi.NBTItem;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +26,7 @@ import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.CrazyHandler;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
 import java.util.List;
 
@@ -109,7 +123,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
                     slot--;
                     inventory.setItem(slot, new ItemBuilder()
-                            .setMaterial(file.getString(path + "Item"))
+                            .setMaterial(file.getString(path + "Item", "CHEST"))
                             .setName(file.getString(path + "Name"))
                             .setLore(file.getStringList(path + "Lore"))
                             .setCrateName(crate.getName())
@@ -139,5 +153,100 @@ public class CrateMainMenu extends InventoryBuilder {
         }
 
         return option;
+    }
+
+    public static class CrateMenuListener implements Listener {
+
+        @NotNull
+        private final CrazyCrates plugin = CrazyCrates.get();
+
+        @NotNull
+        private final InventoryManager inventoryManager = this.plugin.getCrazyHandler().getInventoryManager();
+
+        @NotNull
+        private final SettingsManager config = this.plugin.getConfigManager().getConfig();
+
+        @NotNull
+        private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+
+        @NotNull
+        private final CrateManager crateManager = this.plugin.getCrateManager();
+
+        @EventHandler
+        public void onInventoryClick(InventoryClickEvent event) {
+            Inventory inventory = event.getInventory();
+
+            if (!(inventory.getHolder() instanceof CrateAdminMenu holder)) return;
+
+            Player player = holder.getPlayer();
+
+            ItemStack item = event.getCurrentItem();
+
+            if (item == null || item.getType() == Material.AIR) return;
+
+            if (!item.hasItemMeta() && !item.getItemMeta().hasDisplayName()) return;
+
+            NBTItem nbtItem = new NBTItem(item);
+            if (!nbtItem.hasNBTData() && !nbtItem.hasTag("CrazyCrates-Crate")) return;
+
+            Crate crate = this.plugin.getCrateManager().getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
+
+            if (crate == null) return;
+
+            if (event.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
+                if (crate.isPreviewEnabled()) {
+                    crate.playSound(player, player.getLocation(), "click-sound", "UI_BUTTON_CLICK", SoundCategory.PLAYERS);
+
+                    player.closeInventory();
+
+                    this.inventoryManager.addViewer(player);
+                    this.inventoryManager.openNewCratePreview(player, crate, crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
+                } else {
+                    player.sendMessage(Messages.preview_disabled.getString());
+                }
+
+                return;
+            }
+
+            if (this.crateManager.isInOpeningList(player)) {
+                player.sendMessage(Messages.already_opening_crate.getString());
+                return;
+            }
+
+            boolean hasKey = false;
+            KeyType keyType = KeyType.virtual_key;
+
+            if (this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
+                hasKey = true;
+            } else {
+                if (this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && this.crazyHandler.getUserManager().hasPhysicalKey(player.getUniqueId(), crate.getName(), false)) {
+                    hasKey = true;
+                    keyType = KeyType.physical_key;
+                }
+            }
+
+            if (!hasKey) {
+                if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
+                    player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
+                }
+
+                player.sendMessage(Messages.no_virtual_key.getString());
+                return;
+            }
+
+            for (String world : this.config.getProperty(ConfigKeys.disabledWorlds)) {
+                if (world.equalsIgnoreCase(player.getWorld().getName())) {
+                    player.sendMessage(Messages.world_disabled.getMessage("%world%", player.getWorld().getName()).toString());
+                    return;
+                }
+            }
+
+            if (MiscUtils.isInventoryFull(player)) {
+                player.sendMessage(Messages.inventory_not_empty.getString());
+                return;
+            }
+
+            this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
+        }
     }
 }
