@@ -146,7 +146,7 @@ public class CratePreviewMenu extends InventoryBuilder {
         public void onInventoryClick(InventoryClickEvent event) {
             Inventory inventory = event.getInventory();
 
-            if (!(inventory.getHolder() instanceof CrateAdminMenu holder)) return;
+            if (!(inventory.getHolder(false) instanceof CrateAdminMenu holder)) return;
 
             event.setCancelled(true);
 

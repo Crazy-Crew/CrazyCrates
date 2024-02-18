@@ -90,7 +90,7 @@ public class MiscListener implements Listener {
     public void onInventoryDragEvent(InventoryDragEvent event) {
         Inventory inventory = event.getView().getTopInventory();
 
-        if (inventory.getHolder() instanceof CrateAdminMenu || inventory.getHolder() instanceof CrateMainMenu || inventory.getHolder() instanceof CratePreviewMenu || inventory.getHolder() instanceof CratePrizeMenu) {
+        if (inventory.getHolder(false) instanceof CrateAdminMenu || inventory.getHolder(false) instanceof CrateMainMenu || inventory.getHolder(false) instanceof CratePreviewMenu || inventory.getHolder(false) instanceof CratePrizeMenu) {
             event.setCancelled(true);
         }
     }

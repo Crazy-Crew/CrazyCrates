@@ -48,7 +48,7 @@ public class CosmicCrateListener implements Listener {
     public void onInventoryClose(InventoryCloseEvent event) {
         Inventory inventory = event.getInventory();
 
-        if (!(inventory.getHolder() instanceof CratePrizeMenu holder)) return;
+        if (!(inventory.getHolder(false) instanceof CratePrizeMenu holder)) return;
 
         Player player = holder.getPlayer();
 
@@ -107,7 +107,7 @@ public class CosmicCrateListener implements Listener {
         // Get the inventory.
         Inventory inventory = event.getInventory();
 
-        if (!(inventory.getHolder() instanceof CratePrizeMenu holder)) return;
+        if (!(inventory.getHolder(false) instanceof CratePrizeMenu holder)) return;
 
         Player player = holder.getPlayer();
 
@@ -169,7 +169,7 @@ public class CosmicCrateListener implements Listener {
         // Get the inventory.
         Inventory inventory = event.getInventory();
 
-        if (!(inventory.getHolder() instanceof CratePrizeMenu holder)) return;
+        if (!(inventory.getHolder(false) instanceof CratePrizeMenu holder)) return;
 
         Player player = holder.getPlayer();
         UUID uuid = player.getUniqueId();
