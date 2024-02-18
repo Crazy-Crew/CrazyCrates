@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.objects.Tier;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
@@ -101,6 +102,10 @@ public abstract class InventoryBuilder implements InventoryHolder {
 
     public List<Tier> getTiers() {
         return this.tiers;
+    }
+
+    public InventoryView getView() {
+        return getPlayer().getOpenInventory();
     }
 
     @Override

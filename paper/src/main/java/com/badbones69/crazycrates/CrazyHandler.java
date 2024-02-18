@@ -10,7 +10,6 @@ import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.support.metrics.MetricsManager;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
-import com.badbones69.crazycrates.api.modules.ModuleLoader;
 import com.badbones69.crazycrates.api.utils.FileUtils;
 
 public class CrazyHandler extends CrazyCratesPlugin {
@@ -22,7 +21,6 @@ public class CrazyHandler extends CrazyCratesPlugin {
     private InventoryManager inventoryManager;
     private BukkitUserManager userManager;
     private CrateManager crateManager;
-    private ModuleLoader moduleLoader;
     private FileManager fileManager;
     private MetricsManager metrics;
 
@@ -64,9 +62,6 @@ public class CrazyHandler extends CrazyCratesPlugin {
         CommandManager commandManager = new CommandManager();
         commandManager.load();
 
-        this.moduleLoader = new ModuleLoader();
-        this.moduleLoader.load();
-
         // Load metrics.
         boolean metrics = getConfigManager().getConfig().getProperty(ConfigKeys.toggle_metrics);
 
@@ -104,11 +99,6 @@ public class CrazyHandler extends CrazyCratesPlugin {
     @NotNull
     public CrateManager getCrateManager() {
         return this.crateManager;
-    }
-
-    @NotNull
-    public ModuleLoader getModuleLoader() {
-        return this.moduleLoader;
     }
 
     @NotNull

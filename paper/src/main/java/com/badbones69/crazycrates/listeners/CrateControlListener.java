@@ -67,7 +67,8 @@ public class CrateControlListener implements Listener {
             // Loops through all loaded physical locations.
             for (CrateLocation loc : this.plugin.getCrateManager().getCrateLocations()) {
                 // Checks to see if the clicked block is the same as a physical crate.
-                if (loc.getLocation().equals(clickedBlock.getLocation())) {
+                //todo() if someone complains, remove null check.
+                if (clickedBlock != null && loc.getLocation().equals(clickedBlock.getLocation())) {
                     // Checks to see if the player is removing a crate location.
                     if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) {
                         e.setCancelled(true);
@@ -103,7 +104,12 @@ public class CrateControlListener implements Listener {
             }
 
             //Checks to see if the clicked block is a physical crate.
-            CrateLocation crateLocation = this.crateManager.getCrateLocation(clickedBlock.getLocation());
+            CrateLocation crateLocation = null;
+
+            //todo() if someone complains, remove null check.
+            if (clickedBlock != null) {
+                crateLocation = this.crateManager.getCrateLocation(clickedBlock.getLocation());
+            }
 
             if (crateLocation != null && crateLocation.getCrate() != null) {
                 Crate crate = crateLocation.getCrate();

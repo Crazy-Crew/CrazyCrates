@@ -1,6 +1,11 @@
 package com.badbones69.crazycrates.listeners;
 
+import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
+import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
+import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
+import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.tasks.InventoryManager;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -10,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -78,5 +84,14 @@ public class MiscListener implements Listener {
     @EventHandler
     public void onItemPickUp(InventoryPickupItemEvent event) {
         if (this.crateManager.isDisplayReward(event.getItem())) event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onInventoryDragEvent(InventoryDragEvent event) {
+        Inventory inventory = event.getView().getTopInventory();
+
+        if (inventory.getHolder(false) instanceof CrateAdminMenu || inventory.getHolder(false) instanceof CrateMainMenu || inventory.getHolder(false) instanceof CratePreviewMenu || inventory.getHolder(false) instanceof CratePrizeMenu) {
+            event.setCancelled(true);
+        }
     }
 }

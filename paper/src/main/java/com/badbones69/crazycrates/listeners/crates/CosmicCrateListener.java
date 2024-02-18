@@ -47,9 +47,10 @@ public class CosmicCrateListener implements Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         Inventory inventory = event.getInventory();
-        Player player = (Player) event.getPlayer();
 
-        if (!(inventory.getHolder() instanceof CratePrizeMenu cosmic)) return;
+        if (!(inventory.getHolder(false) instanceof CratePrizeMenu holder)) return;
+
+        Player player = holder.getPlayer();
 
         // Get opening crate.
         Crate crate = this.crateManager.getOpeningCrate(player);
@@ -62,7 +63,7 @@ public class CosmicCrateListener implements Listener {
 
         boolean playSound = false;
 
-        if (cosmic.contains(" - Prizes")) {
+        if (holder.contains(" - Prizes")) {
             for (int amount : cosmicCrateManager.getPickedPrizes(player)) {
                 ItemStack item = inventory.getItem(amount);
 
@@ -85,7 +86,7 @@ public class CosmicCrateListener implements Listener {
         }
 
         // Play sound.
-        if (playSound) cosmic.getCrate().playSound(player, player.getLocation(), "click-sound", "UI_BUTTON_CLICK", SoundCategory.PLAYERS);
+        if (playSound) holder.getCrate().playSound(player, player.getLocation(), "click-sound", "UI_BUTTON_CLICK", SoundCategory.PLAYERS);
 
         // Remove opening stuff.
         this.crateManager.removePlayerFromOpeningList(player);
@@ -106,11 +107,9 @@ public class CosmicCrateListener implements Listener {
         // Get the inventory.
         Inventory inventory = event.getInventory();
 
-        // Get the player.
-        Player player = (Player) event.getWhoClicked();
+        if (!(inventory.getHolder(false) instanceof CratePrizeMenu holder)) return;
 
-        // Check if inventory holder is instance of CratePrizeMenu
-        if (!(inventory.getHolder() instanceof CratePrizeMenu cosmic)) return;
+        Player player = holder.getPlayer();
 
         // Cancel event.
         event.setCancelled(true);
@@ -122,7 +121,7 @@ public class CosmicCrateListener implements Listener {
         if (!this.crateManager.isInOpeningList(player) || crate.getCrateType() != CrateType.cosmic) return;
 
         // Check the title.
-        if (!cosmic.contains(" - Prizes")) return;
+        if (!holder.contains(" - Prizes")) return;
 
         // Get the raw slot.
         int slot = event.getRawSlot();
@@ -160,7 +159,7 @@ public class CosmicCrateListener implements Listener {
 
         event.setCurrentItem(prize.getDisplayItem(player));
 
-        cosmic.getCrate().playSound(player, player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
+        holder.getCrate().playSound(player, player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
 
         if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
     }
@@ -170,12 +169,10 @@ public class CosmicCrateListener implements Listener {
         // Get the inventory.
         Inventory inventory = event.getInventory();
 
-        // Get the player.
-        Player player = (Player) event.getWhoClicked();
-        UUID uuid = player.getUniqueId();
+        if (!(inventory.getHolder(false) instanceof CratePrizeMenu holder)) return;
 
-        // Check if inventory holder is instance of CratePrizeMenu
-        if (!(inventory.getHolder() instanceof CratePrizeMenu cosmic)) return;
+        Player player = holder.getPlayer();
+        UUID uuid = player.getUniqueId();
 
         // Cancel event.
         event.setCancelled(true);
@@ -187,7 +184,7 @@ public class CosmicCrateListener implements Listener {
         if (!this.crateManager.isInOpeningList(player) || crate.getCrateType() != CrateType.cosmic) return;
 
         // Check the title.
-        if (!cosmic.contains(" - Choose")) return;
+        if (!holder.contains(" - Choose")) return;
 
         // Get the raw slot.
         int slot = event.getRawSlot();
@@ -238,7 +235,7 @@ public class CosmicCrateListener implements Listener {
                 cosmicCrateManager.addPickedPrize(player, slot);
 
                 // Play a sound to indicate they clicked a chest.
-                cosmic.getCrate().playSound(player, player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
+                holder.getCrate().playSound(player, player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
             }
         } else if (container.has(PersistentKeys.cosmic_picked_crate.getNamespacedKey())) {
             // Get item builder.
@@ -253,7 +250,7 @@ public class CosmicCrateListener implements Listener {
             cosmicCrateManager.removePickedPrize(player, slot);
 
             // Play a sound to indicate they clicked a chest.
-            cosmic.getCrate().playSound(player, player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
+            holder.getCrate().playSound(player, player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
         }
 
         // Get the crate name.
@@ -315,7 +312,7 @@ public class CosmicCrateListener implements Listener {
             String shufflingName = crate.getFile().getString("Crate.CrateName") + " - Shuffling";
 
             // Update the cosmic name.
-            cosmic.title(shufflingName);
+            holder.title(shufflingName);
 
             // Set the new title.
             view.setTitle(MsgUtils.color(shufflingName));
@@ -329,7 +326,7 @@ public class CosmicCrateListener implements Listener {
                 @Override
                 public void run() {
                     try {
-                        startRollingAnimation(player, view, cosmic);
+                        startRollingAnimation(player, view, holder);
                     } catch (Exception exception) {
                         plugin.getServer().getScheduler().runTask(plugin, () -> {
                             // Call the event.
@@ -378,7 +375,7 @@ public class CosmicCrateListener implements Listener {
                         crateManager.removeCrateTask(player);
 
                         // Show their rewards after the animation is done.
-                        showRewards(player, view, cosmic, cosmicCrateManager);
+                        showRewards(player, view, holder, cosmicCrateManager);
 
                         // Play a sound
                         crate.playSound(player, player.getLocation(), "stop-sound", "BLOCK_ANVIL_PLACE", SoundCategory.PLAYERS);
