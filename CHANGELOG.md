@@ -135,6 +135,7 @@ Crate:
 * Update /cc additem to take input for tiers which only work for cosmic/casino, /cc additem <crate_name> <prize_number> [tier]
 * Update /cc additem again to take input for custom chance, Note: The max range by default is still 100 so keep it under 100. /cc additem <crate_name> <prize_number> <chance> [tier]
   * [tier] is an optional arg.
+* No longer create a snapshot of the holder when checking for inventoryholders
 
 ## Fixes:
  * Fixed issues with crates being broken in worlds created by world plugins.
