@@ -24,7 +24,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
-import com.badbones69.crazycrates.support.libraries.PluginSupport;
+import com.badbones69.crazycrates.support.PluginSupport;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;

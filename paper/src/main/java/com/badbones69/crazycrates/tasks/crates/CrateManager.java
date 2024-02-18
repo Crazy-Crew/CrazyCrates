@@ -43,7 +43,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.HolographicDisplaysSupport;
-import com.badbones69.crazycrates.support.libraries.PluginSupport;
+import com.badbones69.crazycrates.support.PluginSupport;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import java.io.File;
 import java.util.ArrayList;

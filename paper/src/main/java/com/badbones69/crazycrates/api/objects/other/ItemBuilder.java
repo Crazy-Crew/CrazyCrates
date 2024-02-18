@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.support.libraries.PluginSupport;
+import com.badbones69.crazycrates.support.PluginSupport;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import io.th0rgal.oraxen.api.OraxenItems;
 import org.bukkit.block.Banner;
