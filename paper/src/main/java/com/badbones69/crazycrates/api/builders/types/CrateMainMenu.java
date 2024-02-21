@@ -176,7 +176,7 @@ public class CrateMainMenu extends InventoryBuilder {
         public void onInventoryClick(InventoryClickEvent event) {
             Inventory inventory = event.getInventory();
 
-            if (!(inventory.getHolder(false) instanceof CrateAdminMenu holder)) return;
+            if (!(inventory.getHolder(false) instanceof CrateMainMenu holder)) return;
 
             event.setCancelled(true);
 
