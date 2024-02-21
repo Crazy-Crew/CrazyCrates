@@ -178,6 +178,8 @@ public class CrateMainMenu extends InventoryBuilder {
 
             if (!(inventory.getHolder(false) instanceof CrateAdminMenu holder)) return;
 
+            event.setCancelled(true);
+
             Player player = holder.getPlayer();
 
             ItemStack item = event.getCurrentItem();
