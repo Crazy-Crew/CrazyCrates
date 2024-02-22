@@ -54,62 +54,86 @@ public class FileManager {
 
             this.files.put(file, newFile);
 
-            if (file.getFileName().endsWith(".yml")) this.configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
+            if (file.getFileName().endsWith(".yml"))
+                this.configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
 
             if (this.plugin.isLogging()) this.plugin.getLogger().info("Successfully loaded " + file.getFileName());
         }
 
+        if (this.homeFolders.isEmpty()) return;
+
         // Starts to load all the custom files.
-        if (!this.homeFolders.isEmpty()) {
-            if (this.plugin.isLogging()) this.plugin.getLogger().info("Loading custom files.");
+        if (this.plugin.isLogging()) this.plugin.getLogger().info("Loading custom files.");
 
-            for (String homeFolder : this.homeFolders) {
-                File homeFile = new File(this.plugin.getDataFolder(), "/" + homeFolder);
+        for (String homeFolder : this.homeFolders) {
+            File homeFile = new File(this.plugin.getDataFolder(), "/" + homeFolder);
 
-                if (homeFile.exists()) {
-                    String[] list = homeFile.list();
+            if (homeFile.exists()) {
+                File[] filesList = homeFile.listFiles();
 
-                    if (list != null) {
-                        for (String name : list) {
-                            if (name.endsWith(".yml")) {
-                                CustomFile file = new CustomFile(name, homeFolder);
+                if (filesList != null) {
+                    for (File directory : filesList) {
+                        if (directory.isDirectory()) {
+                            String[] folder = directory.list();
 
-                                if (file.exists()) {
-                                    this.customFiles.add(file);
+                            if (folder != null) {
+                                for (String name : folder) {
+                                    if (!name.endsWith(".yml")) continue;
 
-                                    if (this.plugin.isLogging()) this.plugin.getLogger().info("Loaded new custom file: " + homeFolder + "/" + name + ".");
+                                    CustomFile file = new CustomFile(name, homeFolder + "/", directory.getName());
+
+                                    if (file.exists()) {
+                                        this.customFiles.add(file);
+
+                                        if (this.plugin.isLogging()) this.plugin.getLogger().info("Loaded new custom file: " + homeFolder + "/" + directory.getName() + "/" + name + ".");
+                                    }
                                 }
                             }
-                        }
-                    }
-                } else {
-                    homeFile.mkdir();
+                        } else {
+                            String name = directory.getName();
 
-                    if (this.plugin.isLogging()) this.plugin.getLogger().info("The folder " + homeFolder + "/ was not found so it was created.");
+                            if (!name.endsWith(".yml")) continue;
 
-                    for (String fileName : this.autoGenerateFiles.keySet()) {
-                        if (this.autoGenerateFiles.get(fileName).equalsIgnoreCase(homeFolder)) {
-                            homeFolder = this.autoGenerateFiles.get(fileName);
+                            CustomFile file = new CustomFile(name, homeFolder);
 
-                            try (InputStream jarFile = getClass().getResourceAsStream((this.jarHomeFolders.getOrDefault(fileName, homeFolder)) + "/" + fileName)) {
-                                File serverFile = new File(this.plugin.getDataFolder(), homeFolder + "/" + fileName);
+                            if (file.exists()) {
+                                this.customFiles.add(file);
 
-                                copyFile(jarFile, serverFile);
-
-                                if (fileName.toLowerCase().endsWith(".yml")) this.customFiles.add(new CustomFile(fileName, homeFolder));
-
-                                if (this.plugin.isLogging()) this.plugin.getLogger().info("Created new default file: " + homeFolder + "/" + fileName + ".");
-                            } catch (Exception exception) {
-                                this.plugin.getLogger().log(Level.SEVERE, "Failed to create new default file: " + homeFolder + "/" + fileName + "!", exception);
+                                if (this.plugin.isLogging()) this.plugin.getLogger().info("Loaded new custom file: " + homeFolder + "/" + name + ".");
                             }
                         }
                     }
                 }
+
+                return;
             }
 
-            if (this.plugin.isLogging()) this.plugin.getLogger().info("Finished loading custom files.");
+            homeFile.mkdir();
+
+            if (this.plugin.isLogging()) this.plugin.getLogger().info("The folder " + homeFolder + "/ was not found so it was created.");
+
+            for (String fileName : this.autoGenerateFiles.keySet()) {
+                if (this.autoGenerateFiles.get(fileName).equalsIgnoreCase(homeFolder)) {
+                    homeFolder = this.autoGenerateFiles.get(fileName);
+
+                    try (InputStream jarFile = getClass().getResourceAsStream((this.jarHomeFolders.getOrDefault(fileName, homeFolder)) + "/" + fileName)) {
+                        File serverFile = new File(this.plugin.getDataFolder(), homeFolder + "/" + fileName);
+
+                        copyFile(jarFile, serverFile);
+
+                        if (fileName.toLowerCase().endsWith(".yml"))
+                            this.customFiles.add(new CustomFile(fileName, homeFolder));
+
+                        if (this.plugin.isLogging())
+                            this.plugin.getLogger().info("Created new default file: " + homeFolder + "/" + fileName + ".");
+                    } catch (Exception exception) {
+                        this.plugin.getLogger().log(Level.SEVERE, "Failed to create new default file: " + homeFolder + "/" + fileName + "!", exception);
+                    }
+                }
+            }
         }
 
+        if (this.plugin.isLogging()) this.plugin.getLogger().info("Finished loading custom files.");
     }
 
     /**
@@ -305,9 +329,29 @@ public class FileManager {
     public List<String> getAllCratesNames() {
         List<String> files = new ArrayList<>();
 
-        String[] file = new File(this.plugin.getDataFolder(), "/crates").list();
+        File crateDirectory = new File(this.plugin.getDataFolder(), "/crates");
+
+        String[] file = crateDirectory.list();
 
         if (file != null) {
+            File[] filesList = crateDirectory.listFiles();
+
+            if (filesList != null) {
+                for (File directory : filesList) {
+                    if (directory.isDirectory()) {
+                        String[] folder = directory.list();
+
+                        if (folder != null) {
+                            for (String name : folder) {
+                                if (!name.endsWith(".yml")) continue;
+
+                                files.add(name.replaceAll(".yml", ""));
+                            }
+                        }
+                    }
+                }
+            }
+
             for (String name : file) {
                 if (!name.endsWith(".yml")) continue;
 
@@ -445,18 +489,46 @@ public class FileManager {
             this.fileName = name;
             this.homeFolder = homeFolder;
 
-            if (new File(this.plugin.getDataFolder(), "/" + homeFolder).exists()) {
-                if (new File(this.plugin.getDataFolder(), "/" + homeFolder + "/" + name).exists()) {
-                    this.file = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "/" + homeFolder + "/" + name));
+            File root = new File(this.plugin.getDataFolder(), "/" + homeFolder);
+
+            if (root.exists()) {
+                File crate = new File(root, name);
+
+                if (crate.exists()) {
+                    this.file = YamlConfiguration.loadConfiguration(crate);
                 } else {
                     this.file = null;
                 }
             } else {
-                new File(this.plugin.getDataFolder(), "/" + homeFolder).mkdir();
+                root.mkdir();
 
                 if (this.plugin.isLogging()) this.plugin.getLogger().info("The folder " + homeFolder + "/ was not found so it was created.");
 
                 this.file = null;
+            }
+        }
+
+        /**
+         * A custom file that is being made.
+         *
+         * @param name name of the file.
+         * @param homeFolder the home folder of the file.
+         */
+        public CustomFile(String name, String homeFolder, String subFolder) {
+            this.name = name.replace(".yml", "");
+            this.fileName = name;
+            this.homeFolder = homeFolder + "/" + subFolder;
+
+            File root = new File(this.plugin.getDataFolder(), "/" + this.homeFolder);
+
+            if (root.exists()) {
+                File crate = new File(root, name);
+
+                if (crate.exists()) {
+                    this.file = YamlConfiguration.loadConfiguration(crate);
+                } else {
+                    this.file = null;
+                }
             }
         }
 
