@@ -8,11 +8,12 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.block.Block;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class CMIHologramsSupport extends HologramManager {
 
-    private final HashMap<Block, CMIHologram> holograms = new HashMap<>();
+    private final Map<Block, CMIHologram> holograms = new HashMap<>();
 
     @Override
     public void createHologram(Block block, Crate crate) {
