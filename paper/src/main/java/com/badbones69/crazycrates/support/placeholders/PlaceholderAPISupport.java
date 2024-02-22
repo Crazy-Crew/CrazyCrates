@@ -124,17 +124,20 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
     }
 
     @Override
-    public @NotNull String getIdentifier() {
-        return "crazycrates";
+    @NotNull
+    public String getIdentifier() {
+        return this.plugin.getName().toLowerCase();
     }
     
     @Override
-    public @NotNull String getAuthor() {
+    @NotNull
+    public String getAuthor() {
         return this.plugin.getDescription().getAuthors().toString();
     }
     
     @Override
-    public @NotNull String getVersion() {
+    @NotNull
+    public String getVersion() {
         return this.plugin.getDescription().getVersion();
     }
 }
