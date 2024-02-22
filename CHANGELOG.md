@@ -2,6 +2,9 @@
 ### Crate Types:
 * Added a new crate type called `Casino` ( Idea by slimemcstew )
    * This allows a player to win 3 prizes with 3 animations while opening a crate.
+### Ability to have files categorized by folder.
+* It will search for folders in `crates` such as `crates/sub_folder`
+  * It will not search for folders inside `crates/sub_folder` such as `crates/sub_folder/secondary_folder`
 ### Other:
 * Added War Crate as a default generated crate.
 * Added the ability to have holograms created using CMI or DecentHolograms have a configurable "block" range.
