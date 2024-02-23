@@ -34,6 +34,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class QuadCrateListener implements Listener {
 
@@ -88,7 +89,7 @@ public class QuadCrateListener implements Listener {
                 ItemBuilder itemBuilder = ItemBuilder.convertItemStack(display);
 
                 // Makes sure items do not merge.
-                itemBuilder.addLore(new Random().nextInt(Integer.MAX_VALUE) + "");
+                itemBuilder.addLore(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE) + "");
 
                 // Builds the item.
                 ItemStack item = itemBuilder.build();

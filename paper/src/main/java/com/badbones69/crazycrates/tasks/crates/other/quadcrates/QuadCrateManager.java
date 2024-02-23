@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class QuadCrateManager {
 
@@ -110,8 +111,8 @@ public class QuadCrateManager {
         this.handler = handler;
 
         List<CrateParticles> particles = Arrays.asList(CrateParticles.values());
-        this.particle = particles.get(new Random().nextInt(particles.size()));
-        this.particleColor = getColors().get(new Random().nextInt(getColors().size()));
+        this.particle = particles.get(ThreadLocalRandom.current().nextInt(particles.size()));
+        this.particleColor = getColors().get(ThreadLocalRandom.current().nextInt(getColors().size()));
 
         crateSessions.add(this.instance);
     }

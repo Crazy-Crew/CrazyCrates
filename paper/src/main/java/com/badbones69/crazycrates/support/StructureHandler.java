@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
 public class StructureHandler {
@@ -48,7 +48,7 @@ public class StructureHandler {
         try {
             getBlocks(location);
 
-            getStructureManager().loadStructure(this.file).place(location.subtract(2, 0.0, 2), false, StructureRotation.NONE, Mirror.NONE, 0, 1F, new Random());
+            getStructureManager().loadStructure(this.file).place(location.subtract(2, 0.0, 2), false, StructureRotation.NONE, Mirror.NONE, 0, 1F, ThreadLocalRandom.current());
 
             getStructureBlocks(location);
         } catch (Exception exception) {
