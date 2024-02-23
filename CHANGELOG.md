@@ -139,6 +139,7 @@ Crate:
 * Update /cc additem again to take input for custom chance, Note: The max range by default is still 100 so keep it under 100. /cc additem <crate_name> <prize_number> <chance> [tier]
   * [tier] is an optional arg.
 * No longer create a snapshot of the holder when checking for inventoryholders
+* Add a config option to switch to a faster implementation of picking numbers. It defaults to `false` which is the old way of doing random.
 
 ## Fixes:
  * Fixed issues with crates being broken in worlds created by world plugins.
@@ -146,6 +147,7 @@ Crate:
  * Fixed a bug where the refund event needed to be fired sync.
  * Fixed a bug with display damage where if you put a value that can't be parsed as an integer like 50f, It wouldn't just be empty durability.
  * Fixed a bug where cc additem wouldn't add tiers to casino/cosmic crate.
+ * Fixed a bug where we stored the wrong value for PDC causing it to error when using QuadCrates.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
