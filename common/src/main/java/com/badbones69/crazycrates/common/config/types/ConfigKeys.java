@@ -45,6 +45,9 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("Whether you want CrazyCrates to shut up or not, This option is ignored by errors.")
     public static final Property<Boolean> verbose_logging = newProperty("root.verbose_logging", true);
 
+    @Comment("This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.")
+    public static final Property<Boolean> use_different_random = newProperty("root.use-different-random", false);
+
     @Comment({
             "Sends anonymous statistics about how the plugin is used to bstats.org.",
             "bstats is a service for plugin developers to find out how the plugin being used,",

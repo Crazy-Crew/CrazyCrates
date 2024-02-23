@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.api.objects.Tier;
+import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import org.apache.commons.lang.WordUtils;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
@@ -18,6 +19,8 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class PrizeManager {
@@ -177,7 +180,8 @@ public class PrizeManager {
             for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
                 for (Tier tier : crate.getTiers()) {
                     int chance = tier.getChance();
-                    int num = new Random().nextInt(tier.getMaxRange());
+
+                    int num = MiscUtils.useOtherRandom() ? ThreadLocalRandom.current().nextInt(tier.getMaxRange()) : new Random().nextInt(tier.getMaxRange());
 
                     if (num >= 1 && num <= chance) {
                         return tier;

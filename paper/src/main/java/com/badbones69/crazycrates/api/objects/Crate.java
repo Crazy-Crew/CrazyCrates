@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
 public class Crate {
@@ -263,7 +264,7 @@ public class Crate {
         chanceCheck(prizes, usablePrizes);
 
         try {
-            return prizes.get(new Random().nextInt(prizes.size()));
+            return prizes.get(MiscUtils.useOtherRandom() ? ThreadLocalRandom.current().nextInt(prizes.size()) : new Random().nextInt(prizes.size()));
         } catch (IllegalArgumentException exception) {
             this.plugin.getLogger().log(Level.WARNING, "Failed to find prize from the " + name + " crate for player " + player.getName() + ".", exception);
             return null;
@@ -284,7 +285,7 @@ public class Crate {
                 int num;
 
                 for (int counter = 1; counter <= 1; counter++) {
-                    num = 1 + new Random().nextInt(max);
+                    num = MiscUtils.useOtherRandom() ? 1 + ThreadLocalRandom.current().nextInt(max) : 1 + new Random().nextInt(max);
 
                     if (num <= chance) prizes.add(prize);
                 }
@@ -347,7 +348,7 @@ public class Crate {
         // ================= Chance Check ================= //
         chanceCheck(prizes, usablePrizes);
 
-        return prizes.get(new Random().nextInt(prizes.size()));
+        return prizes.get(MiscUtils.useOtherRandom() ? ThreadLocalRandom.current().nextInt(prizes.size()) : new Random().nextInt(prizes.size()));
     }
     
     /**
