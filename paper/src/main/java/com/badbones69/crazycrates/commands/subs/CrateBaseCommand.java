@@ -206,7 +206,7 @@ public class CrateBaseCommand extends BaseCommand {
 
     }
 
-    @SubCommand("wand")
+    /*@SubCommand("wand")
     @Permission(value = "crazycrates.wand", def = PermissionDefault.OP)
     public void onWandGive(Player player) {
         player.getInventory().addItem(getItem(PersistentKeys.selector_wand.getNamespacedKey(), Material.DIAMOND_AXE, "&c&lPoint Selector"));
@@ -231,7 +231,7 @@ public class CrateBaseCommand extends BaseCommand {
         builder.setItemMeta(itemMeta);
 
         return builder.build();
-    }
+    }*/
 
     @SubCommand("admin")
     @Permission(value = "crazycrates.command.admin.access", def = PermissionDefault.OP)
