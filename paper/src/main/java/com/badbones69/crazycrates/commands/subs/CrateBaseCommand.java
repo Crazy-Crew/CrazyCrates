@@ -250,20 +250,19 @@ public class CrateBaseCommand extends BaseCommand {
     @Permission(value = "crazycrates.command.admin.list", def = PermissionDefault.OP)
     public void onAdminList(CommandSender sender) {
         StringBuilder crates = new StringBuilder();
-        String brokecrates;
+        String brokeCrates;
 
-        this.crateManager.getCrates().forEach(crate -> crates.append("&a").append(crate.getName()).append("&8, "));
+        this.crateManager.getUsableCrates().forEach(crate -> crates.append("&a").append(crate.getName()).append("&8, "));
 
-        StringBuilder brokecratesBuilder = new StringBuilder();
+        StringBuilder brokeCratesBuilder = new StringBuilder();
 
-        this.crateManager.getBrokeCrates().forEach(crate -> brokecratesBuilder.append("&c").append(crate).append(".yml&8,"));
+        this.crateManager.getBrokeCrates().forEach(crate -> brokeCratesBuilder.append("&c").append(crate).append(".yml&8,"));
 
-        brokecrates = brokecratesBuilder.toString();
+        brokeCrates = brokeCratesBuilder.toString();
 
         sender.sendMessage(MsgUtils.color("&e&lCrates:&f " + crates));
 
-        if (!brokecrates.isEmpty())
-            sender.sendMessage(MsgUtils.color("&6&lBroken Crates:&f " + brokecrates.substring(0, brokecrates.length() - 2)));
+        if (!brokeCrates.isEmpty()) sender.sendMessage(MsgUtils.color("&6&lBroken Crates:&f " + brokeCrates.substring(0, brokeCrates.length() - 2)));
 
         sender.sendMessage(MsgUtils.color("&e&lAll Crate Locations:"));
         sender.sendMessage(MsgUtils.color("&c[ID]&8, &c[Crate]&8, &c[World]&8, &c[X]&8, &c[Y]&8, &c[Z]"));
