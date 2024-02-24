@@ -109,7 +109,7 @@ public class QuickCrate extends CrateBuilder {
             PersistentKeys key = PersistentKeys.crate_prize;
 
             //noinspection unchecked
-            itemMeta.getPersistentDataContainer().set(key.getNamespacedKey(), key.getType(), 1);
+            itemMeta.getPersistentDataContainer().set(key.getNamespacedKey(), key.getType(), "1");
 
             // Set the item meta.
             display.setItemMeta(itemMeta);
