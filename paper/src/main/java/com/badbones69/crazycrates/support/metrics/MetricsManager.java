@@ -24,11 +24,7 @@ public class MetricsManager {
 
         this.metrics = new Metrics(this.plugin, 4514);
 
-        List<Crate> crateList = new ArrayList<>(this.plugin.getCrateManager().getCrates());
-
-        crateList.removeIf(crate -> crate.getCrateType() == CrateType.menu);
-
-        crateList.forEach(crate -> {
+        this.plugin.getCrateManager().getUsableCrates().forEach(crate -> {
             CrateType crateType = crate.getCrateType();
 
             // If the crate type is null. don't add to the pie chart.

@@ -736,7 +736,7 @@ public class CrateManager {
             String uuid = player.getUniqueId().toString();
 
             if (!player.hasPlayedBefore()) {
-                this.plugin.getCrateManager().getCrates().stream()
+                this.plugin.getCrateManager().getUsableCrates().stream()
                         .filter(Crate :: doNewPlayersGetKeys)
                         .forEach(crate -> {
                             FileManager.Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
@@ -835,6 +835,16 @@ public class CrateManager {
     /**
      * @return an unmodifiable list of crate objects.
      */
+    public List<Crate> getUsableCrates() {
+        List<Crate> crateList = new ArrayList<>(this.crates);
+        crateList.removeIf(crate -> crate.getCrateType() == CrateType.menu);
+
+        return Collections.unmodifiableList(crateList);
+    }
+
+    /**
+     * @return an unmodifiable list of crate objects.
+     */
     public List<Crate> getCrates() {
         return Collections.unmodifiableList(this.crates);
     }
@@ -889,11 +899,9 @@ public class CrateManager {
      */
     public Crate getCrateFromKey(ItemStack item) {
         if (item != null && item.getType() != Material.AIR) {
-            for (Crate crate : getCrates()) {
-                if (crate.getCrateType() != CrateType.menu) {
-                    if (isKeyFromCrate(item, crate)) {
-                        return crate;
-                    }
+            for (Crate crate : getUsableCrates()) {
+                if (isKeyFromCrate(item, crate)) {
+                    return crate;
                 }
             }
         }
@@ -1053,7 +1061,7 @@ public class CrateManager {
             boolean hasKeys = false;
             List<String> noKeys = new ArrayList<>();
 
-            for (Crate crate : getCrates()) {
+            for (Crate crate : getUsableCrates()) {
                 if (data.getInt("Players." + uuid + "." + crate.getName()) <= 0) {
                     noKeys.add(crate.getName());
                 } else {

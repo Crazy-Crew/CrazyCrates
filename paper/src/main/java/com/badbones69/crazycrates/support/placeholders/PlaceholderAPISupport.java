@@ -8,7 +8,6 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyHandler;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import java.text.NumberFormat;
@@ -34,27 +33,25 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         Player human = (Player) player;
 
         // This is if the person opening the gui is to be used.
-        for (Crate crate : this.crazyHandler.getCrateManager().getCrates()) {
-            if (crate.getCrateType() != CrateType.menu) {
-                if (identifier.equalsIgnoreCase(crate.getName())) {
-                    return NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(human.getUniqueId(), crate.getName()));
-                }
+        for (Crate crate : this.crazyHandler.getCrateManager().getUsableCrates()) {
+            if (identifier.equalsIgnoreCase(crate.getName())) {
+                return NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(human.getUniqueId(), crate.getName()));
+            }
 
-                if (identifier.equalsIgnoreCase(crate.getName() + "_physical")) {
-                    return NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(human.getUniqueId(), crate.getName()));
-                }
+            if (identifier.equalsIgnoreCase(crate.getName() + "_physical")) {
+                return NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(human.getUniqueId(), crate.getName()));
+            }
 
-                if (identifier.equalsIgnoreCase(crate.getName() + "_total")) {
-                    return NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(human.getUniqueId(), crate.getName()));
-                }
+            if (identifier.equalsIgnoreCase(crate.getName() + "_total")) {
+                return NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(human.getUniqueId(), crate.getName()));
+            }
 
-                if (identifier.equalsIgnoreCase(crate.getName() + "_opened")) {
-                    return NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(human.getUniqueId(), crate.getName()));
-                }
+            if (identifier.equalsIgnoreCase(crate.getName() + "_opened")) {
+                return NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(human.getUniqueId(), crate.getName()));
+            }
 
-                if (identifier.equalsIgnoreCase("crates_opened")) {
-                    return NumberFormat.getNumberInstance().format(this.userManager.getTotalCratesOpened(human.getUniqueId()));
-                }
+            if (identifier.equalsIgnoreCase("crates_opened")) {
+                return NumberFormat.getNumberInstance().format(this.userManager.getTotalCratesOpened(human.getUniqueId()));
             }
         }
 

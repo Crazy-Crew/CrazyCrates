@@ -111,7 +111,7 @@ public class CrateMainMenu extends InventoryBuilder {
             }
         }
 
-        for (Crate crate : this.plugin.getCrateManager().getCrates()) {
+        for (Crate crate : this.plugin.getCrateManager().getUsableCrates()) {
             FileConfiguration file = crate.getFile();
 
             if (file != null) {
@@ -143,13 +143,11 @@ public class CrateMainMenu extends InventoryBuilder {
     }
 
     private String getCrates(String option) {
-        for (Crate crate : this.plugin.getCrateManager().getCrates()) {
-            if (crate.getCrateType() != CrateType.menu) {
-                option = option.replaceAll("%" + crate.getName().toLowerCase() + "%", this.crazyHandler.getUserManager().getVirtualKeys(getPlayer().getUniqueId(), crate.getName()) + "")
-                        .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", this.crazyHandler.getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
-                        .replaceAll("%" + crate.getName().toLowerCase() + "_total%", this.crazyHandler.getUserManager().getTotalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
-                        .replaceAll("%" + crate.getName().toLowerCase() + "_opened%", this.crazyHandler.getUserManager().getCrateOpened(getPlayer().getUniqueId(), crate.getName()) + "");
-            }
+        for (Crate crate : this.plugin.getCrateManager().getUsableCrates()) {
+            option = option.replaceAll("%" + crate.getName().toLowerCase() + "%", this.crazyHandler.getUserManager().getVirtualKeys(getPlayer().getUniqueId(), crate.getName()) + "")
+                    .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", this.crazyHandler.getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
+                    .replaceAll("%" + crate.getName().toLowerCase() + "_total%", this.crazyHandler.getUserManager().getTotalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
+                    .replaceAll("%" + crate.getName().toLowerCase() + "_opened%", this.crazyHandler.getUserManager().getCrateOpened(getPlayer().getUniqueId(), crate.getName()) + "");
         }
 
         return option;

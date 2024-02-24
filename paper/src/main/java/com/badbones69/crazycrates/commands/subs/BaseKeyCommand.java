@@ -63,7 +63,7 @@ public class BaseKeyCommand extends BaseCommand {
 
         HashMap<Crate, Integer> keys = new HashMap<>();
 
-        this.plugin.getCrateManager().getCrates().forEach(crate -> keys.put(crate, this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName())));
+        this.plugin.getCrateManager().getUsableCrates().forEach(crate -> keys.put(crate, this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName())));
 
         boolean hasKeys = false;
 

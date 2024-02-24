@@ -236,7 +236,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("admin")
     @Permission(value = "crazycrates.command.admin.access", def = PermissionDefault.OP)
     public void onAdminMenu(Player player) {
-        int size = this.crateManager.getCrates().size();
+        int size = this.crateManager.getUsableCrates().size();
         int slots = 9;
 
         for (; size > 9; size -= 9) slots += 9;
@@ -581,7 +581,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("give-random")
     @Permission(value = "crazycrates.command.admin.giverandomkey", def = PermissionDefault.OP)
     public void onAdminCrateGiveRandom(CommandSender sender, @Suggestion("key-types") String keyType, @Suggestion("numbers") int amount, @Suggestion("online-players") CustomPlayer target) {
-        Crate crate = this.plugin.getCrazyHandler().getCrateManager().getCrates().get((int) MiscUtils.pickNumber(0, (this.plugin.getCrazyHandler().getCrateManager().getCrates().size() - 2)));
+        Crate crate = this.crateManager.getUsableCrates().get((int) MiscUtils.pickNumber(0, (this.crateManager.getUsableCrates().size() - 2)));
 
         onAdminCrateGive(sender, keyType, crate.getName(), amount, target);
     }

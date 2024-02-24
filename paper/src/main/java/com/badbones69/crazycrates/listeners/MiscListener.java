@@ -39,10 +39,10 @@ public class MiscListener implements Listener {
         this.crateManager.setNewPlayerKeys(player);
 
         // Just in case any old data is in there.
-        this.plugin.getUserManager().loadOldOfflinePlayersKeys(player, this.crateManager.getCrates());
+        this.plugin.getUserManager().loadOldOfflinePlayersKeys(player, this.crateManager.getUsableCrates());
 
         // Also add the new data.
-        this.plugin.getUserManager().loadOfflinePlayersKeys(player, this.crateManager.getCrates());
+        this.plugin.getUserManager().loadOfflinePlayersKeys(player, this.crateManager.getUsableCrates());
     }
 
     @EventHandler(ignoreCancelled = true)

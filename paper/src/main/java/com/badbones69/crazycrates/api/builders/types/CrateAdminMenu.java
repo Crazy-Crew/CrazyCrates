@@ -20,7 +20,10 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.users.UserManager;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CrateAdminMenu extends InventoryBuilder {
 
@@ -32,10 +35,8 @@ public class CrateAdminMenu extends InventoryBuilder {
     public InventoryBuilder build() {
         Inventory inventory = getInventory();
 
-        for (Crate crate : this.plugin.getCrateManager().getCrates()) {
-            if (crate.getCrateType() != CrateType.menu) {
-                if (inventory.firstEmpty() >= 0) inventory.setItem(inventory.firstEmpty(), crate.getAdminKey());
-            }
+        for (Crate crate : this.plugin.getCrateManager().getUsableCrates()) {
+            if (inventory.firstEmpty() >= 0) inventory.setItem(inventory.firstEmpty(), crate.getAdminKey());
         }
 
         return this;
