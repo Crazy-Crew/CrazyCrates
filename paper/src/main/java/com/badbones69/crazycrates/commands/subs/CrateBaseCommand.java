@@ -208,8 +208,8 @@ public class CrateBaseCommand extends BaseCommand {
 
     @SubCommand("save")
     @Permission(value = "crazycrates.save", def = PermissionDefault.OP)
-    public void onSchematicSave(Player player, String name) {
-
+    public void onSchematicSave(Player player) {
+        player.sendMessage(MsgUtils.color("&cThis feature is not yet developed internally by &eRyder Belserion."))
     }
 
     /*@SubCommand("wand")
