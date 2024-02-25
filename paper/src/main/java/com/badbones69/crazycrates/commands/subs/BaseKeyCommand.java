@@ -26,14 +26,14 @@ public class BaseKeyCommand extends BaseCommand {
         HashMap<String, String> placeholders = new HashMap<>();
         placeholders.put("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(player.getUniqueId())));
 
-        getKeys(player, player, Messages.no_virtual_keys_header.getMessage(placeholders).toString(), Messages.no_virtual_keys.getString(player));
+        getKeys(player, player, Messages.no_virtual_keys_header.getMessage(placeholders).toString(player), Messages.no_virtual_keys.getString(player));
     }
 
     @SubCommand("view")
     @Permission("crazycrates.command.player.key.others")
     public void viewOthers(CommandSender sender, @Suggestion ("online-players") Player target) {
         if (target == sender) {
-            target.sendMessage(Messages.same_player.getString(target));
+            viewPersonal(target);
             return;
         }
 
@@ -41,11 +41,11 @@ public class BaseKeyCommand extends BaseCommand {
         placeholders.put("%player%", target.getName());
         placeholders.put("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(target.getUniqueId())));
 
-        String header = Messages.other_player_no_keys_header.getMessage(placeholders).toString(null);
+        Messages header = Messages.other_player_no_keys_header.getMessage(placeholders);
 
-        String otherPlayer = Messages.other_player_no_keys.getMessage("%player%", target.getName()).toString(null);
+        Messages otherPlayer = Messages.other_player_no_keys.getMessage("%player%", target.getName());
 
-        getKeys(target, sender, header, otherPlayer);
+        getKeys(target, sender, sender instanceof Player ? header.toString((Player) sender) : header.toString(null), sender instanceof Player ? otherPlayer.toString((Player) sender) : otherPlayer.toString(null));
     }
 
     /**
