@@ -387,7 +387,7 @@ public class CrateBaseCommand extends BaseCommand {
 
     @SubCommand("open-others")
     @Permission(value = "crazycrates.command.admin.open.others", def = PermissionDefault.OP)
-    public void onAdminCrateOpenOthers(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("online-players") Player player, @Optional @Suggestion("key-type") KeyType keyType) {
+    public void onAdminCrateOpenOthers(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("online-players") Player player, @Optional @Suggestion("key-types") KeyType keyType) {
         if (sender == player) {
             onAdminCrateOpen(player, crateName);
             return;
