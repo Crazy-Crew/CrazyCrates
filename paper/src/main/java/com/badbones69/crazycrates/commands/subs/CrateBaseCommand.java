@@ -558,13 +558,6 @@ public class CrateBaseCommand extends BaseCommand {
 
         this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
 
-        HashMap<String, String> placeholders = new HashMap<>();
-
-        placeholders.put("%Crate%", crate.getName());
-        placeholders.put("%Player%", player.getName());
-
-        player.sendMessage(Messages.opened_a_crate.getMessage(placeholders).toString(player));
-
         EventManager.logKeyEvent(player, player, crate, keyType, EventManager.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
     }
 
@@ -622,6 +615,7 @@ public class CrateBaseCommand extends BaseCommand {
             MiscUtils.failedToTakeKey(player, crate);
             this.crateManager.removeCrateInUse(player);
             this.crateManager.removePlayerFromOpeningList(player);
+
             return;
         }
 
