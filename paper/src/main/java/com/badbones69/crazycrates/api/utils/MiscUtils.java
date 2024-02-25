@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api.utils;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
+import com.badbones69.crazycrates.support.PluginSupport;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -299,6 +300,10 @@ public class MiscUtils {
         }
 
         return slow;
+    }
+
+    public static boolean isPapiActive() {
+        return PluginSupport.PLACEHOLDERAPI.isPluginEnabled();
     }
 
     public static boolean useOtherRandom() {

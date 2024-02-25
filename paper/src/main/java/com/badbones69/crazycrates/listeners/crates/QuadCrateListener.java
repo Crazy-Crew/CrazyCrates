@@ -92,7 +92,7 @@ public class QuadCrateListener implements Listener {
                 itemBuilder.addLore(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE) + "");
 
                 // Builds the item.
-                ItemStack item = itemBuilder.build();
+                ItemStack item = itemBuilder.build(player);
 
                 // Drop the item.
                 Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), item);

@@ -2,7 +2,10 @@ package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -14,6 +17,7 @@ public class Tier {
     private final ItemBuilder item;
     private final int maxRange;
     private final String name;
+    private final List<String> lore;
     private final String coloredName;
     private final int chance;
     private final int slot;
@@ -23,15 +27,12 @@ public class Tier {
 
         this.coloredName = section.getString("Name", "");
 
-        List<String> lore = section.getStringList("Lore");
+        this.lore = section.getStringList("Lore").isEmpty() ? Collections.emptyList() : section.getStringList("Lore");
 
-        this.item = new ItemBuilder()
-                .setMaterial(section.getString("Item", "CHEST"))
-                .setName(this.coloredName)
-                .setLore(!lore.isEmpty() ? lore : Collections.emptyList());
+        this.item = new ItemBuilder().setMaterial(section.getString("Item", "CHEST"));
 
         this.chance = section.getInt("Chance");
-        this.maxRange = section.getInt("MaxRange");
+        this.maxRange = section.getInt("MaxRange", 100);
 
         this.slot = section.getInt("Slot");
     }
@@ -81,7 +82,11 @@ public class Tier {
     /**
      * @return the tier item shown in the preview.
      */
-    public ItemStack getTierItem() {
+    public ItemStack getTierItem(Player player) {
+        this.item.setName(MiscUtils.isPapiActive() && player != null ? PlaceholderAPI.setPlaceholders(player, this.coloredName) : this.coloredName);
+
+        this.item.setLore(player, this.lore);
+
         ItemMeta itemMeta = this.item.getItemMeta();
 
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();

@@ -4,6 +4,8 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -26,7 +28,7 @@ public class InventoryManager {
     @NotNull
     private final SettingsManager config = this.plugin.getConfigManager().getConfig();
 
-    private ItemStack menuButton;
+    private ItemBuilder menuButton;
     private ItemBuilder nextButton;
     private ItemBuilder backButton;
 
@@ -34,8 +36,7 @@ public class InventoryManager {
         this.menuButton = new ItemBuilder()
                 .setMaterial(this.config.getProperty(ConfigKeys.menu_button_item))
                 .setName(this.config.getProperty(ConfigKeys.menu_button_name))
-                .setLore(this.config.getProperty(ConfigKeys.menu_button_lore))
-                .build();
+                .setLore(this.config.getProperty(ConfigKeys.menu_button_lore));
 
         ItemMeta menuMeta = this.menuButton.getItemMeta();
 
@@ -78,28 +79,54 @@ public class InventoryManager {
         this.backButton.setItemMeta(backMeta);
     }
 
-    public ItemStack getMenuButton() {
+    public ItemBuilder getMenuButton(Player player) {
+        ItemBuilder button = new ItemBuilder(this.menuButton);
+
+        if (MiscUtils.isPapiActive()) {
+            // Set new lore.
+            button.setLore(player, button.getLore());
+
+            // Set new name.
+            button.setName(button.getName());
+        }
+
         return this.menuButton;
     }
 
     public ItemStack getNextButton(Player player) {
         ItemBuilder button = new ItemBuilder(this.nextButton);
 
+        if (MiscUtils.isPapiActive()) {
+            // Set new lore.
+            button.setLore(player, this.config.getProperty(ConfigKeys.next_button_lore));
+
+            // Set new name.
+            button.setName(PlaceholderAPI.setPlaceholders(player, this.config.getProperty(ConfigKeys.next_button_name)));
+        }
+
         if (player != null) {
             button.addLorePlaceholder("%Page%", (getPage(player) + 1) + "");
         }
 
-        return button.build();
+        return button.build(player);
     }
 
     public ItemStack getBackButton(Player player) {
         ItemBuilder button = new ItemBuilder(this.backButton);
 
+        if (MiscUtils.isPapiActive()) {
+            // Set new lore.
+            button.setLore(player, this.config.getProperty(ConfigKeys.back_button_lore));
+
+            // Set new name.
+            button.setName(PlaceholderAPI.setPlaceholders(player, this.config.getProperty(ConfigKeys.back_button_name)));
+        }
+
         if (player != null) {
             button.addLorePlaceholder("%Page%", (getPage(player) - 1) + "");
         }
 
-        return button.build();
+        return button.build(player);
     }
 
     private final HashMap<UUID, Crate> crateViewers = new HashMap<>();

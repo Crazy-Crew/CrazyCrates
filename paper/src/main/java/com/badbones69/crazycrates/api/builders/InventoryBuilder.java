@@ -2,6 +2,9 @@ package com.badbones69.crazycrates.api.builders;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.support.PluginSupport;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -30,7 +33,9 @@ public abstract class InventoryBuilder implements InventoryHolder {
         this.player = player;
         this.size = size;
 
-        this.inventory = this.plugin.getServer().createInventory(this, this.size, MsgUtils.color(this.title));
+        String inventoryTitle = MiscUtils.isPapiActive() ? PlaceholderAPI.setPlaceholders(getPlayer(), MsgUtils.color(this.title)) : MsgUtils.color(this.title);
+
+        this.inventory = this.plugin.getServer().createInventory(this, this.size, inventoryTitle);
     }
 
     public InventoryBuilder(Crate crate, Player player, int size, String title) {
@@ -40,7 +45,9 @@ public abstract class InventoryBuilder implements InventoryHolder {
 
         this.crate = crate;
 
-        this.inventory = this.plugin.getServer().createInventory(this, this.size, MsgUtils.color(this.title));
+        String inventoryTitle = MiscUtils.isPapiActive() ? PlaceholderAPI.setPlaceholders(getPlayer(), MsgUtils.color(this.title)) : MsgUtils.color(this.title);
+
+        this.inventory = this.plugin.getServer().createInventory(this, this.size, inventoryTitle);
     }
 
     public InventoryBuilder(Crate crate, Player player, int size, int page, String title) {
@@ -51,7 +58,9 @@ public abstract class InventoryBuilder implements InventoryHolder {
 
         this.crate = crate;
 
-        this.inventory = this.plugin.getServer().createInventory(this, this.size, MsgUtils.color(this.title));
+        String inventoryTitle = MiscUtils.isPapiActive() ? PlaceholderAPI.setPlaceholders(getPlayer(), MsgUtils.color(this.title)) : MsgUtils.color(this.title);
+
+        this.inventory = this.plugin.getServer().createInventory(this, this.size, inventoryTitle);
     }
 
     public InventoryBuilder(List<Tier> tiers, Crate crate, Player player, int size, String title) {
@@ -63,7 +72,9 @@ public abstract class InventoryBuilder implements InventoryHolder {
 
         this.tiers = tiers;
 
-        this.inventory = this.plugin.getServer().createInventory(this, this.size, MsgUtils.color(this.title));
+        String inventoryTitle = MiscUtils.isPapiActive() ? PlaceholderAPI.setPlaceholders(getPlayer(), MsgUtils.color(this.title)) : MsgUtils.color(this.title);
+
+        this.inventory = this.plugin.getServer().createInventory(this, this.size, inventoryTitle);
     }
 
     public abstract InventoryBuilder build();
