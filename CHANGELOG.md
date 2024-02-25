@@ -140,6 +140,7 @@ Crate:
   * [tier] is an optional arg.
 * No longer create a snapshot of the holder when checking for inventoryholders
 * Add a config option to switch to a faster implementation of picking numbers. It defaults to `false` which is the old way of doing random.
+* All messages in chat, lore of preview items, gui names even filler items have `PlaceholderAPI` support.
 
 ## Fixes:
  * Fixed issues with crates being broken in worlds created by world plugins.
