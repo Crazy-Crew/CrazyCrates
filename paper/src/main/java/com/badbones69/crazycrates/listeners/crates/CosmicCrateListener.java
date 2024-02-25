@@ -267,7 +267,7 @@ public class CosmicCrateListener implements Listener {
             // If they don't have enough keys.
             if (value) {
                 // Send no keys message.
-                player.sendMessage(Messages.no_keys.getString());
+                player.sendMessage(Messages.no_keys.getString(player));
 
                 // Remove opening stuff.
                 this.crateManager.removePlayerFromOpeningList(player);

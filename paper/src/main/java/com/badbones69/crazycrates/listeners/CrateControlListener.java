@@ -86,7 +86,7 @@ public class CrateControlListener implements Listener {
                             this.inventoryManager.addViewer(player);
                             this.inventoryManager.openNewCratePreview(player, loc.getCrate(), crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
                         } else {
-                            player.sendMessage(Messages.preview_disabled.getString());
+                            player.sendMessage(Messages.preview_disabled.getString(player));
                         }
                     }
                 }
@@ -122,7 +122,7 @@ public class CrateControlListener implements Listener {
 
                         player.openInventory(crateMainMenu.build().getInventory());
                     } else {
-                        player.sendMessage(Messages.feature_disabled.getString());
+                        player.sendMessage(Messages.feature_disabled.getString(player));
                     }
 
                     return;
@@ -171,13 +171,13 @@ public class CrateControlListener implements Listener {
                             }
 
                             if (this.crateManager.getCratesInUse().containsValue(crateLocation.getLocation())) {
-                                player.sendMessage(Messages.quick_crate_in_use.getString());
+                                player.sendMessage(Messages.quick_crate_in_use.getString(player));
                                 return;
                             }
                         }
 
                         if (MiscUtils.isInventoryFull(player)) {
-                            player.sendMessage(Messages.inventory_not_empty.getString());
+                            player.sendMessage(Messages.inventory_not_empty.getString(player));
                             return;
                         }
 

@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.commands.relations;
 import com.badbones69.crazycrates.commands.MessageManager;
 import dev.triumphteam.cmd.core.message.MessageKey;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
@@ -62,10 +63,10 @@ public class ArgumentRelations extends MessageManager {
                 }
             }
 
-            if (correctUsage != null) send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage).toString());
+            if (correctUsage != null) send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage).toString(null));
         });
 
-        getBukkitCommandManager().registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> send(sender, Messages.unknown_command.getString()));
+        getBukkitCommandManager().registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> send(sender, Messages.unknown_command.getString(null)));
     }
 
     @Override

@@ -26,14 +26,14 @@ public class BaseKeyCommand extends BaseCommand {
         HashMap<String, String> placeholders = new HashMap<>();
         placeholders.put("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(player.getUniqueId())));
 
-        getKeys(player, player, Messages.no_virtual_keys_header.getMessage(placeholders).toString(), Messages.no_virtual_keys.getString());
+        getKeys(player, player, Messages.no_virtual_keys_header.getMessage(placeholders).toString(), Messages.no_virtual_keys.getString(player));
     }
 
     @SubCommand("view")
     @Permission("crazycrates.command.player.key.others")
     public void viewOthers(CommandSender sender, @Suggestion ("online-players") Player target) {
         if (target == sender) {
-            sender.sendMessage(Messages.same_player.getString());
+            target.sendMessage(Messages.same_player.getString(target));
             return;
         }
 
@@ -41,9 +41,9 @@ public class BaseKeyCommand extends BaseCommand {
         placeholders.put("%player%", target.getName());
         placeholders.put("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(target.getUniqueId())));
 
-        String header = Messages.other_player_no_keys_header.getMessage(placeholders).toString();
+        String header = Messages.other_player_no_keys_header.getMessage(placeholders).toString(null);
 
-        String otherPlayer = Messages.other_player_no_keys.getMessage("%player%", target.getName()).toString();
+        String otherPlayer = Messages.other_player_no_keys.getMessage("%player%", target.getName()).toString(null);
 
         getKeys(target, sender, header, otherPlayer);
     }
@@ -78,7 +78,7 @@ public class BaseKeyCommand extends BaseCommand {
                 placeholders.put("%crate%", crate.getFile().getString("Crate.Name"));
                 placeholders.put("%keys%", String.valueOf(amount));
                 placeholders.put("%crate_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getCrateOpened(player.getUniqueId(), crate.getName())));
-                message.add(Messages.per_crate.getMessage(placeholders).toString());
+                message.add(Messages.per_crate.getMessage(placeholders).toString(null));
             }
         }
 

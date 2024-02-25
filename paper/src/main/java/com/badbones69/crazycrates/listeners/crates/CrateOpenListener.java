@@ -35,7 +35,7 @@ public class CrateOpenListener implements Listener {
 
         if (crate.getCrateType() != CrateType.menu) {
             if (!crate.canWinPrizes(player)) {
-                player.sendMessage(Messages.no_prizes_found.getString());
+                player.sendMessage(Messages.no_prizes_found.getString(player));
                 this.crateManager.removePlayerFromOpeningList(player);
                 this.crateManager.removePlayerKeyType(player);
 
@@ -46,7 +46,7 @@ public class CrateOpenListener implements Listener {
         }
 
         if (!player.hasPermission("crazycrates.open." + crate.getName()) || !player.hasPermission("crazycrates.open." + crate.getName().toLowerCase())) {
-            player.sendMessage(Messages.no_crate_permission.getString());
+            player.sendMessage(Messages.no_crate_permission.getString(player));
             this.crateManager.removePlayerFromOpeningList(player);
             this.crateManager.removeCrateInUse(player);
 

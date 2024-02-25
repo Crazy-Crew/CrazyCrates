@@ -123,7 +123,7 @@ public class QuadCrateManager {
     public void startCrate() {
         // Check if it is on a block.
         if (this.spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
-            this.player.sendMessage(Messages.not_on_block.getString());
+            this.player.sendMessage(Messages.not_on_block.getString(player));
             this.crateManager.removePlayerFromOpeningList(player);
             crateSessions.remove(this.instance);
             return;
@@ -131,7 +131,7 @@ public class QuadCrateManager {
 
         // Check if schematic folder is empty.
         if (this.plugin.getCrateManager().getCrateSchematics().isEmpty()) {
-            this.player.sendMessage(Messages.no_schematics_found.getString());
+            this.player.sendMessage(Messages.no_schematics_found.getString(player));
             this.crateManager.removePlayerFromOpeningList(this.player);
             crateSessions.remove(this.instance);
             return;
@@ -148,7 +148,7 @@ public class QuadCrateManager {
 
         for (Location loc : structureLocations) {
             if (this.handler.getBlockBlackList().contains(loc.getBlock().getType())) {
-                this.player.sendMessage(Messages.needs_more_room.getString());
+                this.player.sendMessage(Messages.needs_more_room.getString(player));
                 this.crateManager.removePlayerFromOpeningList(this.player);
                 crateSessions.remove(this.instance);
                 return;
@@ -249,7 +249,7 @@ public class QuadCrateManager {
             public void run() {
                 // End the crate by force.
                 endCrateForce(true);
-                player.sendMessage(Messages.out_of_time.getString());
+                player.sendMessage(Messages.out_of_time.getString(player));
                 crate.playSound(player, player.getLocation(), "stop-sound", "ENTITY_PLAYER_LEVELUP", SoundCategory.PLAYERS);
             }
         }.runTaskLater(this.plugin, this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
