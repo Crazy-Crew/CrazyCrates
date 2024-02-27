@@ -30,7 +30,7 @@ repositories {
     flatDir { dirs("libs") }
 }
 
-val mcVersion = rootProject.properties["minecraftVersion"] as String
+val mcVersion = providers.gradleProperty("mcVersion").get()
 
 project.version = if (System.getenv("BUILD_NUMBER") != null) "${rootProject.version}-${System.getenv("BUILD_NUMBER")}" else rootProject.version
 
@@ -52,7 +52,7 @@ tasks {
     }
 
     val directory = File("$rootDir/jars")
-    val isBeta: Boolean = rootProject.extra["isBeta"]?.toString()?.toBoolean() ?: false
+    val isBeta: Boolean = providers.gradleProperty("isBeta").get().toBoolean()
     val type = if (isBeta) "Beta" else "Release"
 
     // Publish to hangar.papermc.io.

@@ -41,7 +41,7 @@ tasks {
     }
 
     val directory = File("$rootDir/jars")
-    val mcVersion = rootProject.properties["minecraftVersion"] as String
+    val mcVersion = providers.gradleProperty("mcVersion").get()
 
     modrinth {
         autoAddDependsOn.set(false)

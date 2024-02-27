@@ -8,13 +8,13 @@ base {
     archivesName.set("${rootProject.name}-${project.name.uppercaseFirstChar()}")
 }
 
-val mcVersion = rootProject.properties["minecraftVersion"] as String
-val fabricVersion = rootProject.properties["fabricVersion"] as String
+val mcVersion = providers.gradleProperty("mcVersion")
+val fabricVersion = providers.gradleProperty("version")
 
 project.version = if (System.getenv("BUILD_NUMBER") != null) "$fabricVersion-${System.getenv("BUILD_NUMBER")}" else fabricVersion
 
 tasks {
-    val isBeta: Boolean = rootProject.extra["isBeta"]?.toString()?.toBoolean() ?: false
+    val isBeta: Boolean = providers.gradleProperty("isBeta").get().toBoolean()
     val type = if (isBeta) "Beta" else "Release"
 
     modrinth {

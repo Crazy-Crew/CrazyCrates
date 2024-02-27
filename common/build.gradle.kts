@@ -5,7 +5,7 @@ plugins {
 dependencies {
     api(project(":api"))
 
-    api(libs.config.me) {
+    api(libs.configme) {
         exclude(group = "org.yaml", module = "snakeyaml")
     }
 
