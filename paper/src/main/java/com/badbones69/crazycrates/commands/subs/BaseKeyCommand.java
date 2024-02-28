@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.enums.Messages;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Command(value = "keys", alias = {"key"})
 @Description("Views the amount of keys you/others have.")
@@ -25,7 +26,8 @@ public class BaseKeyCommand extends BaseCommand {
     @Default
     @Permission("crazycrates.command.player.key")
     public void viewPersonal(Player player) {
-        HashMap<String, String> placeholders = new HashMap<>();
+        Map<String, String> placeholders = new HashMap<>();
+
         placeholders.put("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(player.getUniqueId())));
 
         getKeys(player, player, Messages.no_virtual_keys_header.getMessage(placeholders).toString(player), Messages.no_virtual_keys.getString(player));
@@ -36,10 +38,12 @@ public class BaseKeyCommand extends BaseCommand {
     public void viewOthers(CommandSender sender, @Suggestion ("online-players") Player target) {
         if (target == sender) {
             viewPersonal(target);
+
             return;
         }
 
-        HashMap<String, String> placeholders = new HashMap<>();
+        Map<String, String> placeholders = new HashMap<>();
+
         placeholders.put("%player%", target.getName());
         placeholders.put("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(target.getUniqueId())));
 
@@ -63,7 +67,7 @@ public class BaseKeyCommand extends BaseCommand {
 
         message.add(header);
 
-        HashMap<Crate, Integer> keys = new HashMap<>();
+        Map<Crate, Integer> keys = new HashMap<>();
 
         this.plugin.getCrateManager().getUsableCrates().forEach(crate -> keys.put(crate, this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName())));
 
@@ -73,7 +77,7 @@ public class BaseKeyCommand extends BaseCommand {
             int amount = keys.get(crate);
 
             if (amount > 0) {
-                HashMap<String, String> placeholders = new HashMap<>();
+                Map<String, String> placeholders = new HashMap<>();
 
                 hasKeys = true;
 
@@ -89,6 +93,7 @@ public class BaseKeyCommand extends BaseCommand {
             if (sender instanceof Player person) {
                 if (hasKeys) {
                     message.forEach(line -> person.sendMessage(PlaceholderAPI.setPlaceholders(person, line)));
+
                     return;
                 }
 
@@ -102,6 +107,7 @@ public class BaseKeyCommand extends BaseCommand {
 
         if (hasKeys) {
             message.forEach(sender::sendMessage);
+
             return;
         }
 
