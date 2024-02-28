@@ -166,7 +166,7 @@ public class QuadCrateListener implements Listener {
 
         if (this.sessionManager.inSession(player) && !player.hasPermission("crazycrates.admin")) {
             event.setCancelled(true);
-            player.sendMessage(Messages.no_commands_while_in_crate.getMessage("%player%", player.getName()).toString());
+            player.sendMessage(Messages.no_commands_while_in_crate.getMessage("%player%", player.getName()).toString(player));
         }
     }
 
@@ -176,7 +176,7 @@ public class QuadCrateListener implements Listener {
 
         if (this.sessionManager.inSession(player) && event.getCause() == TeleportCause.ENDER_PEARL) {
             event.setCancelled(true);
-            player.sendMessage(Messages.no_teleporting.getMessage("%Player%", player.getName()).toString());
+            player.sendMessage(Messages.no_teleporting.getMessage("%Player%", player.getName()).toString(player));
         }
     }
 

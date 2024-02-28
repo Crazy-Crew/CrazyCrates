@@ -48,7 +48,7 @@ public class PrizeManager {
                 HashMap<String, String> placeholders = new HashMap<>();
                 placeholders.put("%crate%", prize.getCrateName());
                 placeholders.put("%prize%", prize.getPrizeName());
-                player.sendMessage(Messages.prize_error.getMessage(placeholders).toString());
+                player.sendMessage(Messages.prize_error.getMessage(placeholders).toString(player));
                 continue;
             }
 

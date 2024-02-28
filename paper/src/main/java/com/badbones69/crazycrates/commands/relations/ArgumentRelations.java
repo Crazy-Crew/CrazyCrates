@@ -46,7 +46,7 @@ public class ArgumentRelations extends MessageManager {
                 }
             }
 
-            if (correctUsage != null) send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage).toString());
+            if (correctUsage != null) send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage).toString(null));
         });
 
         getBukkitCommandManager().registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {

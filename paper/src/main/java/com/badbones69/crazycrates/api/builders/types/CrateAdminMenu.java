@@ -97,7 +97,7 @@ public class CrateAdminMenu extends InventoryBuilder {
                         placeholders.put("%amount%", String.valueOf(1));
                         placeholders.put("%key%", crate.getKeyName());
 
-                        player.sendMessage(Messages.obtaining_keys.getMessage(placeholders).toString());
+                        player.sendMessage(Messages.obtaining_keys.getMessage(placeholders).toString(player));
                     }
                 }
             }

@@ -73,7 +73,7 @@ public class CrateControlListener implements Listener {
                     if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) {
                         e.setCancelled(true);
                         this.plugin.getCrateManager().removeCrateLocation(loc.getID());
-                        player.sendMessage(Messages.removed_physical_crate.getMessage("%id%", loc.getID()).toString());
+                        player.sendMessage(Messages.removed_physical_crate.getMessage("%id%", loc.getID()).toString(player));
                         return;
                     }
 
@@ -147,7 +147,7 @@ public class CrateControlListener implements Listener {
                         placeholders.put("%crate%", crate.getPreviewName());
                         placeholders.put("%amount%", String.valueOf(totalKeys));
 
-                        player.sendMessage(Messages.required_keys.getMessage(placeholders).toString());
+                        player.sendMessage(Messages.required_keys.getMessage(placeholders).toString(player));
                         return;
                     }
 
@@ -166,7 +166,7 @@ public class CrateControlListener implements Listener {
 
                         if (!useQuickCrateAgain) {
                             if (this.crateManager.isInOpeningList(player)) {
-                                player.sendMessage(Messages.already_opening_crate.getMessage("%key%", keyName).toString());
+                                player.sendMessage(Messages.already_opening_crate.getMessage("%key%", keyName).toString(player));
                                 return;
                             }
 
@@ -199,7 +199,7 @@ public class CrateControlListener implements Listener {
                                 player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
                             }
 
-                            player.sendMessage(Messages.no_keys.getMessage("%key%", keyName).toString());
+                            player.sendMessage(Messages.no_keys.getMessage("%key%", keyName).toString(player));
                         }
                     }
                 }
