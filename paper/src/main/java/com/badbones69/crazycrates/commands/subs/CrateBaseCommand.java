@@ -450,7 +450,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        boolean hasKey = false;
+        boolean hasKey = keyType != KeyType.free_key;
         KeyType value = keyType != null ? keyType : KeyType.physical_key;
 
         if (this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
