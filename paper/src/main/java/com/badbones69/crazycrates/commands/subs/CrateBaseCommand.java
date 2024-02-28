@@ -30,7 +30,6 @@ import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.enums.Permissions;
-import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.BaseCommand;
 import org.bukkit.block.Block;
@@ -49,7 +48,6 @@ import com.badbones69.crazycrates.api.utils.FileUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import us.crazycrew.crazycrates.api.users.UserManager;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -136,7 +134,7 @@ public class CrateBaseCommand extends BaseCommand {
         }
 
         // If they don't have enough keys, we return.
-        if (this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(sender.getUniqueId(), crate.getName()) <= amount) {
+        if (this.userManager.getVirtualKeys(sender.getUniqueId(), crate.getName()) <= amount) {
             sender.sendMessage(Messages.transfer_not_enough_keys.getMessage("%crate%", crate.getName()).toString(sender));
 
             return;
@@ -408,7 +406,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("open-others")
     @Permission(value = "crazycrates.command.admin.open.others", def = PermissionDefault.OP)
     public void onAdminCrateOpenOthers(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("online-players") Player player, @Optional @Suggestion("key-types") KeyType keyType) {
-        if (sender == player) {
+        if (sender == player && keyType != KeyType.free_key) {
             onAdminCrateOpen(player, crateName);
 
             return;
@@ -675,7 +673,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         if (crate.getCrateType() != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), keysUsed, crate.getName());
 
-        if (!this.plugin.getCrazyHandler().getUserManager().takeKeys(keysUsed, player.getUniqueId(), crate.getName(), type, false)) {
+        if (!this.userManager.takeKeys(keysUsed, player.getUniqueId(), crate.getName(), type, false)) {
             MiscUtils.failedToTakeKey(player, crate);
 
             this.crateManager.removeCrateInUse(player);
@@ -803,7 +801,7 @@ public class CrateBaseCommand extends BaseCommand {
             if (crate.getCrateType() == CrateType.crate_on_the_go) {
                 player.getInventory().addItem(crate.getKey(amount));
             } else {
-                this.plugin.getCrazyHandler().getUserManager().addKeys(amount, player.getUniqueId(), crate.getName(), type);
+                this.userManager.addKeys(amount, player.getUniqueId(), crate.getName(), type);
             }
 
             HashMap<String, String> placeholders = new HashMap<>();
@@ -910,7 +908,7 @@ public class CrateBaseCommand extends BaseCommand {
      */
     private void takeKey(CommandSender sender, @Nullable Player player, OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount) {
         if (player != null) {
-            int totalKeys = this.plugin.getCrazyHandler().getUserManager().getTotalKeys(player.getUniqueId(), crate.getName());
+            int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), crate.getName());
 
             if (totalKeys < 1) {
                 if (this.plugin.isLogging()) this.plugin.getLogger().warning("The player " + player.getName() + " does not have enough keys to take.");
@@ -962,7 +960,7 @@ public class CrateBaseCommand extends BaseCommand {
             sender.sendMessage(Messages.take_offline_player_keys.getMessage(placeholders).toString(null));
         }
 
-        this.plugin.getCrazyHandler().getUserManager().takeOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), amount, type);
+        this.userManager.takeOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), amount, type);
     }
 
     @SubCommand("giveall")
