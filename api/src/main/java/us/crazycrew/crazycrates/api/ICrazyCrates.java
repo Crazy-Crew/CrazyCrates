@@ -3,8 +3,6 @@ package us.crazycrew.crazycrates.api;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
 
-import java.io.File;
-
 /**
  * An interface used to enable api related functions.
  *
