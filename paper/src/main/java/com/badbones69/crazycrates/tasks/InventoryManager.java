@@ -84,10 +84,10 @@ public class InventoryManager {
 
         if (MiscUtils.isPapiActive()) {
             // Set new lore.
-            button.setLore(player, button.getLore());
+            button.setLore(player, this.config.getProperty(ConfigKeys.menu_button_lore));
 
             // Set new name.
-            button.setName(button.getName());
+            button.setName(PlaceholderAPI.setPlaceholders(player, this.config.getProperty(ConfigKeys.menu_button_name)));
         }
 
         return this.menuButton;
