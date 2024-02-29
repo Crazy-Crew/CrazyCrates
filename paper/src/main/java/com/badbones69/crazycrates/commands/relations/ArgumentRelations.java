@@ -46,7 +46,13 @@ public class ArgumentRelations extends MessageManager {
                 }
             }
 
-            if (correctUsage != null) send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage).toString(null));
+            if (correctUsage != null) {
+                if (sender instanceof Player player) {
+                    send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage, player));
+                } else {
+                    send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage));
+                }
+            }
         });
 
         getBukkitCommandManager().registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
@@ -64,10 +70,22 @@ public class ArgumentRelations extends MessageManager {
                 }
             }
 
-            if (correctUsage != null) send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage).toString(null));
+            if (correctUsage != null) {
+                if (sender instanceof Player player) {
+                    send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage, player));
+                } else {
+                    send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage));
+                }
+            }
         });
 
-        getBukkitCommandManager().registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> send(sender, Messages.unknown_command.getString(null)));
+        getBukkitCommandManager().registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> {
+            if (sender instanceof Player player) {
+                send(sender, Messages.unknown_command.getMessage(player));
+            } else {
+                send(sender, Messages.unknown_command.getMessage());
+            }
+        });
     }
 
     @Override

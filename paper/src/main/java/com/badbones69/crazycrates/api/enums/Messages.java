@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.api.enums;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.support.PluginSupport;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -125,22 +124,30 @@ public enum Messages {
         return this.configuration.getProperty(property);
     }
 
-    public String getString(Player player) {
-        return getMessage().toString(player);
+    public String getMessage(Map<String, String> placeholders) {
+        return getMessage(placeholders, null);
     }
 
-    public Messages getMessage() {
-        return getMessage(new HashMap<>());
+    public String getMessage() {
+        return getMessage(new HashMap<>(), null);
     }
 
-    public Messages getMessage(String placeholder, String replacement) {
+    public String getMessage(Player player) {
+        return getMessage(new HashMap<>(), player);
+    }
+
+    public String getMessage(String placeholder, String replacement, Player player) {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put(placeholder, replacement);
 
-        return getMessage(placeholders);
+        return getMessage(placeholders, player);
     }
 
-    public Messages getMessage(Map<String, String> placeholders) {
+    public String getMessage(String placeholder, String replacement) {
+        return getMessage(placeholder, replacement, null);
+    }
+
+    public String getMessage(Map<String, String> placeholders, Player player) {
         // Get the string first.
         String message;
 
@@ -158,14 +165,18 @@ public enum Messages {
 
         this.message = message;
 
-        return this;
+        return asString(player);
     }
 
-    public String toString(Player player) {
+    private String asString(Player player) {
         String prefix = this.configManager.getConfig().getProperty(ConfigKeys.command_prefix);
 
-        String replacedMessage = this.message.replaceAll("%prefix%", prefix);
+        String message = this.message.replaceAll("%prefix%", prefix);
 
-        return MiscUtils.isPapiActive() && player != null ? PlaceholderAPI.setPlaceholders(player, MsgUtils.color(replacedMessage)) : MsgUtils.color(replacedMessage);
+        if (MiscUtils.isPapiActive() && player != null) {
+            return PlaceholderAPI.setPlaceholders(player, MsgUtils.color(message));
+        }
+
+        return MsgUtils.color(message);
     }
 }

@@ -123,7 +123,7 @@ public class BukkitUserManager extends UserManager {
                         placeholders.put("%amount%", String.valueOf(amount));
                         placeholders.put("%key%", crate.getName());
 
-                        player.sendMessage(Messages.cannot_give_player_keys.getMessage(placeholders).toString(player));
+                        player.sendMessage(Messages.cannot_give_player_keys.getMessage(placeholders, player));
                     }
 
                     return;

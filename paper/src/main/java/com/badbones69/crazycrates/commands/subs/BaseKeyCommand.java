@@ -12,6 +12,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.enums.Messages;
+import us.crazycrew.crazycrates.api.users.UserManager;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,14 +25,17 @@ public class BaseKeyCommand extends BaseCommand {
     @NotNull
     private final CrazyCrates plugin = CrazyCrates.get();
 
+    @NotNull
+    private final UserManager userManager = this.plugin.getUserManager();
+
     @Default
     @Permission("crazycrates.command.player.key")
     public void viewPersonal(Player player) {
         Map<String, String> placeholders = new HashMap<>();
 
-        placeholders.put("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(player.getUniqueId())));
+        placeholders.put("%crates_opened%", String.valueOf(this.userManager.getTotalCratesOpened(player.getUniqueId())));
 
-        getKeys(player, player, Messages.no_virtual_keys_header.getMessage(placeholders).toString(player), Messages.no_virtual_keys.getString(player));
+        getKeys(player, player, Messages.no_virtual_keys_header.getMessage(placeholders, player), Messages.no_virtual_keys.getMessage(player));
     }
 
     @SubCommand("view")
@@ -45,13 +50,13 @@ public class BaseKeyCommand extends BaseCommand {
         Map<String, String> placeholders = new HashMap<>();
 
         placeholders.put("%player%", target.getName());
-        placeholders.put("%crates_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getTotalCratesOpened(target.getUniqueId())));
+        placeholders.put("%crates_opened%", String.valueOf(this.userManager.getTotalCratesOpened(target.getUniqueId())));
 
-        Messages header = Messages.other_player_no_keys_header.getMessage(placeholders);
+        String header = Messages.other_player_no_keys_header.getMessage(placeholders, sender instanceof Player ? (Player) sender : null);
 
-        Messages otherPlayer = Messages.other_player_no_keys.getMessage("%player%", target.getName());
+        String otherPlayer = Messages.other_player_no_keys.getMessage("%player%", target.getName(), sender instanceof Player ? (Player) sender : null);
 
-        getKeys(target, sender, sender instanceof Player ? header.toString((Player) sender) : header.toString(null), sender instanceof Player ? otherPlayer.toString((Player) sender) : otherPlayer.toString(null));
+        getKeys(target, sender, header, otherPlayer);
     }
 
     /**
@@ -69,7 +74,7 @@ public class BaseKeyCommand extends BaseCommand {
 
         Map<Crate, Integer> keys = new HashMap<>();
 
-        this.plugin.getCrateManager().getUsableCrates().forEach(crate -> keys.put(crate, this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName())));
+        this.plugin.getCrateManager().getUsableCrates().forEach(crate -> keys.put(crate, this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName())));
 
         boolean hasKeys = false;
 
@@ -83,9 +88,9 @@ public class BaseKeyCommand extends BaseCommand {
 
                 placeholders.put("%crate%", crate.getFile().getString("Crate.Name"));
                 placeholders.put("%keys%", String.valueOf(amount));
-                placeholders.put("%crate_opened%", String.valueOf(this.plugin.getCrazyHandler().getUserManager().getCrateOpened(player.getUniqueId(), crate.getName())));
+                placeholders.put("%crate_opened%", String.valueOf(this.userManager.getCrateOpened(player.getUniqueId(), crate.getName())));
 
-                message.add(Messages.per_crate.getMessage(placeholders).toString(null));
+                message.add(Messages.per_crate.getMessage(placeholders, player));
             }
         }
 

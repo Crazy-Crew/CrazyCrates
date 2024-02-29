@@ -69,7 +69,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
             if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(player)) {
                 player.closeInventory(InventoryCloseEvent.Reason.CANT_USE);
-                player.sendMessage(Messages.no_permission.getString(player));
+                player.sendMessage(Messages.no_permission.getMessage(player));
                 return;
             }
 
@@ -95,7 +95,7 @@ public class CrateAdminMenu extends InventoryBuilder {
                         placeholders.put("%amount%", String.valueOf(1));
                         placeholders.put("%key%", crate.getKeyName());
 
-                        player.sendMessage(Messages.obtaining_keys.getMessage(placeholders).toString(player));
+                        player.sendMessage(Messages.obtaining_keys.getMessage(placeholders, player));
                     }
                 }
 
@@ -110,7 +110,7 @@ public class CrateAdminMenu extends InventoryBuilder {
                         placeholders.put("%amount%", String.valueOf(1));
                         placeholders.put("%key%", crate.getKeyName());
 
-                        player.sendMessage(Messages.obtaining_keys.getMessage(placeholders).toString(player));
+                        player.sendMessage(Messages.obtaining_keys.getMessage(placeholders, player));
                     }
                 }
             }
