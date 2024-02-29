@@ -727,7 +727,7 @@ public class ItemBuilder {
             this.itemLore.clear();
 
             for (String line : lore) {
-                this.itemLore.add(PlaceholderAPI.setPlaceholders(player, line));
+                this.itemLore.add(PlaceholderAPI.setPlaceholders(player, MsgUtils.color(line)));
             }
         }
 
