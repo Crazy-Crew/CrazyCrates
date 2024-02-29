@@ -85,7 +85,7 @@ public class Tier {
     public ItemStack getTierItem(Player player) {
         this.item.setName(MiscUtils.isPapiActive() && player != null ? PlaceholderAPI.setPlaceholders(player, this.coloredName) : this.coloredName);
 
-        this.item.setLore(player, this.lore);
+        if (MiscUtils.isPapiActive()) this.item.setLore(player, this.lore); else this.item.setLore(this.lore);
 
         ItemMeta itemMeta = this.item.getItemMeta();
 
