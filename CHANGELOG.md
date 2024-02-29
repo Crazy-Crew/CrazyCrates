@@ -132,6 +132,7 @@ Crate:
 * Note: We only have 3 rows, so you obviously can only have 1 tier per row. This is not likely to change for this Crate Type... 
 
 ## Enhancements:
+* Cosmic Crate when initially picking crates, All the ??? crates will have a tier bound to them, so it actually matters when you pick them.
 * Updated slot checks for menu items to rely on PersistentDataContainer.
 * Re-organized the default /crate gui
 * Check uuids for quad crate sessions over player objects.

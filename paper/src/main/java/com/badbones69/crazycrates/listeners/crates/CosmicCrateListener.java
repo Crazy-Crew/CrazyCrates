@@ -21,6 +21,7 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -64,8 +65,8 @@ public class CosmicCrateListener implements Listener {
         boolean playSound = false;
 
         if (holder.contains(" - Prizes")) {
-            for (int amount : cosmicCrateManager.getPickedPrizes(player)) {
-                ItemStack item = inventory.getItem(amount);
+            for (Integer key : cosmicCrateManager.getPrizes(player).keySet()) {
+                ItemStack item = inventory.getItem(key);
 
                 if (item != null) {
                     Tier tier = getTier(crate, item);
@@ -220,28 +221,47 @@ public class CosmicCrateListener implements Listener {
 
         // Check if it has the mystery crate key otherwise check picked key.
         if (container.has(PersistentKeys.cosmic_mystery_crate.getNamespacedKey())) {
-            int size = cosmicCrateManager.getPickedPrizes(player).size();
+            int size = cosmicCrateManager.getPrizes(player).size();
 
             // Check if prizes is less than or equal to totalPrizes before we change any items.
             if (size < totalPrizes) {
+                // Gets the tier name from the pdc.
+                String tierName = container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING);
+
                 // Get item builder.
                 ItemBuilder builder = cosmicCrateManager.getPickedCrate().setTarget(player).setAmount(pickedSlot)
                         .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
                         .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
 
+                // Set the tier name from before to the pdc if it exists.
+                ItemMeta meta = cosmicCrateManager.setTier(builder.getItemMeta(), tierName);
+
+                // Set the item meta.
+                builder.setItemMeta(meta);
+
                 // Overwrite the current item.
                 event.setCurrentItem(builder.build());
 
-                cosmicCrateManager.addPickedPrize(player, slot);
+                // Add the picked prize.
+                cosmicCrateManager.addPickedPrize(player, slot, crate.getTier(tierName));
 
                 // Play a sound to indicate they clicked a chest.
                 holder.getCrate().playSound(player, player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
             }
         } else if (container.has(PersistentKeys.cosmic_picked_crate.getNamespacedKey())) {
+            // Gets the tier name from the pdc.
+            String tierName = container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING);
+
             // Get item builder.
             ItemBuilder builder = cosmicCrateManager.getMysteryCrate().setTarget(player).setAmount(pickedSlot)
                     .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
                     .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
+
+            // Set the tier name from before to the pdc if it exists.
+            ItemMeta meta = cosmicCrateManager.setTier(builder.getItemMeta(), tierName);
+
+            // Set the item meta.
+            builder.setItemMeta(meta);
 
             // Overwrite the current item.
             event.setCurrentItem(builder.build());
@@ -257,7 +277,7 @@ public class CosmicCrateListener implements Listener {
         String crateName = crate.getName();
 
         // Check picked prizes size to total prizes allowed, so we know when to take the key.
-        int size = cosmicCrateManager.getPickedPrizes(player).size();
+        int size = cosmicCrateManager.getPrizes(player).size();
 
         if (size >= totalPrizes) {
             KeyType type = this.crateManager.getPlayerKeyType(player);
@@ -392,7 +412,7 @@ public class CosmicCrateListener implements Listener {
         for (int slot = 0; slot < cosmic.getSize(); slot++) {
             Tier tier = PrizeManager.getTier(cosmic.getCrate());
 
-            if (tier != null) view.getTopInventory().setItem(slot, tier.getTierItem(null));
+            if (tier != null) view.getTopInventory().setItem(slot, tier.getTierItem(player));
         }
 
         cosmic.getCrate().playSound(player, player.getLocation(), "cycle-sound", "BLOCK_NOTE_BLOCK_XYLOPHONE", SoundCategory.PLAYERS);
@@ -408,29 +428,32 @@ public class CosmicCrateListener implements Listener {
 
         view.getTopInventory().clear();
 
-        Tier tier = PrizeManager.getTier(cosmic.getCrate());
+        crateManager.getPrizes(player).forEach((slot, tier) -> {
+            Inventory inventory = view.getTopInventory();
 
-        if (tier != null) {
-            crateManager.getPickedPrizes(player).forEach(slot -> view.setItem(slot, tier.getTierItem(null)));
-            player.updateInventory();
+            inventory.setItem(slot, tier.getTierItem(player));
+        });
 
-            if (this.plugin.getCrazyHandler().getConfigManager().getConfig().getProperty(ConfigKeys.cosmic_crate_timeout)) {
-                this.plugin.getCrateManager().addCrateTask(player, new TimerTask() {
-                    @Override
-                    public void run() {
-                        // Close inventory.
-                        plugin.getServer().getScheduler().runTask(plugin, () -> player.closeInventory(InventoryCloseEvent.Reason.UNLOADED));
+        player.updateInventory();
 
-                        // Log it
-                        if (plugin.isLogging()) {
-                            List.of(
-                                    player.getName() + " spent 10 seconds staring at a gui instead of collecting their prizes",
-                                    "The task has been cancelled, They have been given their prizes and the gui is closed."
-                            ).forEach(plugin.getLogger()::info);
-                        }
+        if (this.plugin.getCrazyHandler().getConfigManager().getConfig().getProperty(ConfigKeys.cosmic_crate_timeout)) {
+            this.plugin.getCrateManager().addCrateTask(player, new TimerTask() {
+                @Override
+                public void run() {
+                    // Close inventory.
+                    plugin.getServer().getScheduler().runTask(plugin, () -> player.closeInventory(InventoryCloseEvent.Reason.UNLOADED));
+
+                    crateManager.removePickedPlayer(player);
+
+                    // Log it
+                    if (plugin.isLogging()) {
+                        List.of(
+                                player.getName() + " spent 10 seconds staring at a gui instead of collecting their prizes",
+                                "The task has been cancelled, They have been given their prizes and the gui is closed."
+                        ).forEach(plugin.getLogger()::info);
                     }
-                }, 10000L);
-            }
+                }
+            }, 10000L);
         }
     }
 
