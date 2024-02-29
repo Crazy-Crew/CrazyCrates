@@ -41,7 +41,7 @@ public class Crate {
     private AbstractCrateManager manager;
     private final String name;
     private final String keyName;
-    private final ItemStack key;
+    private final ItemBuilder keyBuilder;
     private final ItemStack keyNoNBT;
     private final ItemStack adminKey;
     private int maxPage = 1;
@@ -89,11 +89,10 @@ public class Crate {
      * @param file The crate file.
      */
     public Crate(String name, String previewName, CrateType crateType, ItemStack key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, CrateHologram hologram) {
-        ItemBuilder itemBuilder = ItemBuilder.convertItemStack(key);
-        this.keyNoNBT = itemBuilder.build();
-        this.key = itemBuilder.setCrateName(name).build();
+        this.keyBuilder = ItemBuilder.convertItemStack(key).setCrateName(name);
+        this.keyNoNBT = this.keyBuilder.build();
         this.keyName = keyName;
-        this.adminKey = itemBuilder
+        this.adminKey = this.keyBuilder
         .addLore("")
         .addLore("&7&l(&6&l!&7&l) Left click for Physical Key")
         .addLore("&7&l(&6&l!&7&l) Right click for Virtual Key")
@@ -125,10 +124,10 @@ public class Crate {
         this.crateInventoryName = file != null ? MsgUtils.sanitizeColor(file.getString("Crate.CrateName")) : "";
 
         String borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? MsgUtils.color(file.getString("Crate.Preview.Glass.Name")) : " ";
-        this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item")).setName(borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(borderName);
+        this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item", "GRAY_STAINED_GLASS_PANE")).setName(borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(borderName);
 
         String previewTierBorderName = file != null ? MsgUtils.color(file.getString("Crate.tier-preview.glass.name", " ")) : " ";
-        this.previewTierBorderItem = file != null ? new ItemBuilder().setMaterial(file.getString("Crate.tier-preview.glass.item", "")).setName(previewTierBorderName) : new ItemBuilder().setMaterial(Material.AIR).setName(previewTierBorderName);
+        this.previewTierBorderItem = file != null ? new ItemBuilder().setMaterial(file.getString("Crate.tier-preview.glass.item", "GRAY_STAINED_GLASS_PANE")).setName(previewTierBorderName) : new ItemBuilder().setMaterial(Material.AIR).setName(previewTierBorderName);
 
         setTierPreviewRows(file != null ? file.getInt("Crate.tier-preview.rows", 5) : 5);
         this.previewTierMaxSlots = this.previewTierCrateRows * 9;
@@ -458,7 +457,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public ItemStack getKey() {
-        return this.key.clone();
+        return this.keyBuilder.build();
     }
     
     /**
@@ -466,11 +465,9 @@ public class Crate {
      * @return the key as an item stack.
      */
     public ItemStack getKey(int amount) {
-        ItemStack key = this.key.clone();
+        ItemBuilder key = this.keyBuilder.setAmount(amount);
 
-        key.setAmount(amount);
-
-        return key;
+        return key.build();
     }
     
     /**

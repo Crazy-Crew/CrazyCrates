@@ -225,12 +225,12 @@ public class CosmicCrateListener implements Listener {
             // Check if prizes is less than or equal to totalPrizes before we change any items.
             if (size < totalPrizes) {
                 // Get item builder.
-                ItemBuilder builder = cosmicCrateManager.getPickedCrate().setAmount(pickedSlot)
+                ItemBuilder builder = cosmicCrateManager.getPickedCrate().setTarget(player).setAmount(pickedSlot)
                         .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
                         .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
 
                 // Overwrite the current item.
-                event.setCurrentItem(builder.build(player));
+                event.setCurrentItem(builder.build());
 
                 cosmicCrateManager.addPickedPrize(player, slot);
 
@@ -239,12 +239,12 @@ public class CosmicCrateListener implements Listener {
             }
         } else if (container.has(PersistentKeys.cosmic_picked_crate.getNamespacedKey())) {
             // Get item builder.
-            ItemBuilder builder = cosmicCrateManager.getMysteryCrate().setAmount(pickedSlot)
+            ItemBuilder builder = cosmicCrateManager.getMysteryCrate().setTarget(player).setAmount(pickedSlot)
                     .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
                     .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
 
             // Overwrite the current item.
-            event.setCurrentItem(builder.build(player));
+            event.setCurrentItem(builder.build());
 
             // Remove slot if we click it.
             cosmicCrateManager.removePickedPrize(player, slot);

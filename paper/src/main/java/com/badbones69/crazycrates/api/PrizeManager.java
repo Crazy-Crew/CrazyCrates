@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import org.apache.commons.lang.WordUtils;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
@@ -60,17 +59,12 @@ public class PrizeManager {
         }
 
         for (ItemBuilder item : prize.getItemBuilders()) {
-            ItemBuilder clone = new ItemBuilder(item);
-
-            if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
-                clone.setName(PlaceholderAPI.setPlaceholders(player, clone.getName()));
-                clone.setLore(PlaceholderAPI.setPlaceholders(player, clone.getLore()));
-            }
+            ItemBuilder clone = new ItemBuilder(item).setTarget(player);
 
             if (!MiscUtils.isInventoryFull(player)) {
-                player.getInventory().addItem(clone.build(player));
+                player.getInventory().addItem(clone.build());
             } else {
-                player.getWorld().dropItemNaturally(player.getLocation(), clone.build(player));
+                player.getWorld().dropItemNaturally(player.getLocation(), clone.build());
             }
         }
 
@@ -104,7 +98,9 @@ public class PrizeManager {
 
             if (MiscUtils.isPapiActive()) command = PlaceholderAPI.setPlaceholders(player, command);
 
-            String name = prize.getDisplayItemBuilder().getName() == null || prize.getDisplayItemBuilder().getName().isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " "))) : prize.getDisplayItemBuilder().getName();
+            String display = prize.getDisplayItemBuilder().getName();
+
+            String name = display == null || display.isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " "))) : display;
 
             MiscUtils.sendCommand(command
                     .replaceAll("%player%", quoteReplacement(player.getName()))
@@ -127,7 +123,9 @@ public class PrizeManager {
     }
 
     private static void sendMessage(Player player, Prize prize, Crate crate, String message) {
-        String name = prize.getDisplayItemBuilder().getName() == null || prize.getDisplayItemBuilder().getName().isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " "))) : prize.getDisplayItemBuilder().getName();
+        String display = prize.getDisplayItemBuilder().getName();
+
+        String name = display == null || display.isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " "))) : display;
 
         String defaultMessage = message
                 .replaceAll("%player%", quoteReplacement(player.getName()))

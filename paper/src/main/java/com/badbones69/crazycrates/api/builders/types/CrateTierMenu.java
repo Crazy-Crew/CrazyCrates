@@ -48,17 +48,17 @@ public class CrateTierMenu extends InventoryBuilder {
             List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
 
             for (int item : borderItems) { // Top border slots
-                getInventory().setItem(item, getCrate().getPreviewTierBorderItem().build(getPlayer()));
+                getInventory().setItem(item, getCrate().getPreviewTierBorderItem().setTarget(getPlayer()).build());
             }
 
             borderItems.replaceAll(getCrate()::getAbsolutePreviewItemPosition);
 
             for (int item : borderItems) { // Bottom border slots
-                getInventory().setItem(item, getCrate().getPreviewTierBorderItem().build(getPlayer()));
+                getInventory().setItem(item, getCrate().getPreviewTierBorderItem().setTarget(getPlayer()).build());
             }
         }
 
-        if (this.crazyHandler.getInventoryManager().inCratePreview(getPlayer()) && this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) getInventory().setItem(getCrate().getAbsolutePreviewItemPosition(4), this.crazyHandler.getInventoryManager().getMenuButton(getPlayer()).build(getPlayer()));
+        if (this.crazyHandler.getInventoryManager().inCratePreview(getPlayer()) && this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) getInventory().setItem(getCrate().getAbsolutePreviewItemPosition(4), this.crazyHandler.getInventoryManager().getMenuButton(getPlayer()));
     }
 
     public static class CrateTierListener implements Listener {

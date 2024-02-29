@@ -79,54 +79,28 @@ public class InventoryManager {
         this.backButton.setItemMeta(backMeta);
     }
 
-    public ItemBuilder getMenuButton(Player player) {
-        ItemBuilder button = new ItemBuilder(this.menuButton);
-
-        if (MiscUtils.isPapiActive()) {
-            // Set new lore.
-            button.setLore(player, this.config.getProperty(ConfigKeys.menu_button_lore));
-
-            // Set new name.
-            button.setName(PlaceholderAPI.setPlaceholders(player, this.config.getProperty(ConfigKeys.menu_button_name)));
-        }
-
-        return this.menuButton;
+    public ItemStack getMenuButton(Player player) {
+        return this.menuButton.setTarget(player).build();
     }
 
     public ItemStack getNextButton(Player player) {
         ItemBuilder button = new ItemBuilder(this.nextButton);
 
-        if (MiscUtils.isPapiActive()) {
-            // Set new lore.
-            button.setLore(player, this.config.getProperty(ConfigKeys.next_button_lore));
-
-            // Set new name.
-            button.setName(PlaceholderAPI.setPlaceholders(player, this.config.getProperty(ConfigKeys.next_button_name)));
-        }
-
         if (player != null) {
             button.addLorePlaceholder("%Page%", (getPage(player) + 1) + "");
         }
 
-        return button.build(player);
+        return button.setTarget(player).build();
     }
 
     public ItemStack getBackButton(Player player) {
         ItemBuilder button = new ItemBuilder(this.backButton);
 
-        if (MiscUtils.isPapiActive()) {
-            // Set new lore.
-            button.setLore(player, this.config.getProperty(ConfigKeys.back_button_lore));
-
-            // Set new name.
-            button.setName(PlaceholderAPI.setPlaceholders(player, this.config.getProperty(ConfigKeys.back_button_name)));
-        }
-
         if (player != null) {
             button.addLorePlaceholder("%Page%", (getPage(player) - 1) + "");
         }
 
-        return button.build(player);
+        return button.setTarget(player).build();
     }
 
     private final HashMap<UUID, Crate> crateViewers = new HashMap<>();

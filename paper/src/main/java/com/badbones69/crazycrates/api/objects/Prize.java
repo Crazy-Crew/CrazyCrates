@@ -33,7 +33,6 @@ public class Prize {
     private boolean firework = false;
     private String crateName = "";
     private final String prizeName;
-    private ItemStack itemStack;
     private int maxRange = 100;
     private final String prizeNumber;
     private int chance = 0;
@@ -119,73 +118,32 @@ public class Prize {
      * @return the display item that is shown for the preview and the winning prize.
      */
     public ItemStack getDisplayItem() {
-        if (this.itemStack == null) {
-            this.itemStack = this.displayItem.build();
+        ItemStack itemStack = this.displayItem.build();
 
-            ItemMeta itemMeta = this.itemStack.getItemMeta();
-            PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-            container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeName);
+        container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeName);
 
-            this.itemStack.setItemMeta(itemMeta);
-        }
+        itemStack.setItemMeta(itemMeta);
 
-        return this.itemStack.clone();
+        return itemStack;
     }
 
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
     public ItemStack getDisplayItem(Player player) {
-        if (this.itemStack == null) {
-            ItemBuilder builder = this.displayItem;
+        ItemStack itemStack = this.displayItem.setTarget(player).build();
 
-            if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
-                String name = PlaceholderAPI.setPlaceholders(player, builder.getName());
-                builder.setName(name);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-                List<String> newLore = new ArrayList<>();
+        container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeName);
 
-                List<String> lore = builder.getLore();
+        itemStack.setItemMeta(itemMeta);
 
-                if (lore != null) {
-                    lore.forEach(line -> newLore.add(PlaceholderAPI.setPlaceholders(player, line)));
-                    builder.setLore(newLore);
-                }
-            }
-
-            this.itemStack = builder.build();
-
-            ItemMeta itemMeta = this.itemStack.getItemMeta();
-            PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-
-            container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeName);
-
-            this.itemStack.setItemMeta(itemMeta);
-
-            return this.itemStack.clone();
-        }
-
-        ItemStack item = this.itemStack.clone();
-
-        if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
-            ItemMeta itemMeta = item.getItemMeta();
-
-            String name = PlaceholderAPI.setPlaceholders(player, itemMeta.getDisplayName());
-            itemMeta.setDisplayName(name);
-
-            List<String> lore = itemMeta.getLore();
-
-            if (lore != null) {
-                List<String> newLore = new ArrayList<>();
-                lore.forEach(line -> newLore.add(PlaceholderAPI.setPlaceholders(player, line)));
-                itemMeta.setLore(newLore);
-            }
-
-            item.setItemMeta(itemMeta);
-        }
-
-        return item;
+        return itemStack;
     }
 
     /**

@@ -45,6 +45,8 @@ import java.util.stream.Collectors;
 
 public class ItemBuilder {
 
+    private Player target;
+
     private final NBTItem nbtItem;
 
     // Item Data
@@ -119,6 +121,8 @@ public class ItemBuilder {
      * Create a blank item builder.
      */
     public ItemBuilder() {
+        this.target = null;
+
         this.nbtItem = null;
         this.itemStack = null;
         this.itemMeta = null;
@@ -173,6 +177,8 @@ public class ItemBuilder {
      * @param itemBuilder the item builder to deduplicate.
      */
     public ItemBuilder(ItemBuilder itemBuilder) {
+        this.target = itemBuilder.target;
+
         this.nbtItem = itemBuilder.nbtItem;
         this.itemStack = itemBuilder.itemStack;
         this.itemMeta = itemBuilder.itemMeta;
@@ -224,6 +230,18 @@ public class ItemBuilder {
         this.itemFlags = new ArrayList<>(itemBuilder.itemFlags);
 
         this.customMaterial = itemBuilder.customMaterial;
+    }
+
+    /**
+     * Set a target player if using PlaceholderAPI
+     *
+     * @param target the target to set.
+     * @return the ItemBuilder with updated data.
+     */
+    public ItemBuilder setTarget(Player target) {
+        this.target = target;
+
+        return this;
     }
 
     /**
@@ -373,14 +391,14 @@ public class ItemBuilder {
      *
      * @return The name with all the placeholders in it.
      */
-    public String getUpdatedName(Player player) {
+    public String getUpdatedName() {
         String newName = this.itemName;
 
         for (String placeholder : this.namePlaceholders.keySet()) {
             newName = newName.replace(placeholder, this.namePlaceholders.get(placeholder)).replace(placeholder.toLowerCase(), this.namePlaceholders.get(placeholder));
         }
 
-        return MiscUtils.isPapiActive() && player != null ? PlaceholderAPI.setPlaceholders(player, newName) : newName;
+        return parse(newName);
     }
 
     private boolean isArmor() {
@@ -395,15 +413,6 @@ public class ItemBuilder {
      * @return the result of all the info that was given to the builder as an ItemStack.
      */
     public ItemStack build() {
-        return build(null);
-    }
-
-    /**
-     * Builder the item from all the information that was given to the builder.
-     *
-     * @return the result of all the info that was given to the builder as an ItemStack.
-     */
-    public ItemStack build(Player player) {
         if (this.nbtItem != null) this.itemStack = this.nbtItem.getItem();
 
         ItemStack item = this.itemStack;
@@ -434,8 +443,8 @@ public class ItemBuilder {
 
             if (this.itemMeta == null) this.itemMeta = item.getItemMeta();
 
-            this.itemMeta.setDisplayName(getUpdatedName(player));
-            this.itemMeta.setLore(getUpdatedLore(player));
+            this.itemMeta.setDisplayName(getUpdatedName());
+            this.itemMeta.setLore(getUpdatedLore());
 
             if (isArmor()) {
                 if (this.trimPattern != null && this.trimMaterial != null) {
@@ -653,13 +662,21 @@ public class ItemBuilder {
         return this.damage;
     }
 
+    private String parse(String value) {
+        if (MiscUtils.isPapiActive() && this.target != null) {
+            return MsgUtils.color(PlaceholderAPI.setPlaceholders(this.target, value));
+        }
+
+        return MsgUtils.color(value);
+    }
+
     /**
      * @param itemName the name of the item.
      * @return the ItemBuilder with an updated name.
      */
     public ItemBuilder setName(String itemName) {
         if (itemName != null) {
-            this.itemName = MsgUtils.color(itemName);
+            this.itemName = itemName;
         }
 
         return this;
@@ -773,7 +790,7 @@ public class ItemBuilder {
      *
      * @return the lore with all placeholders in it.
      */
-    public List<String> getUpdatedLore(Player player) {
+    public List<String> getUpdatedLore() {
         List<String> newLore = new ArrayList<>();
 
         for (String item : this.itemLore) {
@@ -781,7 +798,7 @@ public class ItemBuilder {
                 item = item.replace(placeholder, this.lorePlaceholders.get(placeholder)).replace(placeholder.toLowerCase(), this.lorePlaceholders.get(placeholder));
             }
 
-            newLore.add(MiscUtils.isPapiActive() && player != null ? PlaceholderAPI.setPlaceholders(player, item) : item);
+            newLore.add(parse(item));
         }
 
         return newLore;
@@ -1046,6 +1063,25 @@ public class ItemBuilder {
      */
     public static ItemBuilder convertItemStack(ItemStack item) {
         ItemBuilder itemBuilder = new ItemBuilder().setReferenceItem(item).setAmount(item.getAmount()).setEnchantments(new HashMap<>(item.getEnchantments()));
+
+        if (item.hasItemMeta() && item.getItemMeta() != null) {
+            ItemMeta itemMeta = item.getItemMeta();
+
+            if (itemMeta.hasDisplayName()) itemBuilder.setName(itemMeta.getDisplayName());
+            if (itemMeta.hasLore()) itemBuilder.setLore(itemMeta.getLore());
+
+            NBTItem nbt = new NBTItem(item);
+
+            if (nbt.hasTag("Unbreakable")) itemBuilder.setUnbreakable(nbt.getBoolean("Unbreakable"));
+
+            if (itemMeta instanceof org.bukkit.inventory.meta.Damageable) itemBuilder.setDamage(((org.bukkit.inventory.meta.Damageable) itemMeta).getDamage());
+        }
+
+        return itemBuilder;
+    }
+
+    public static ItemBuilder convertItemStack(ItemStack item, Player player) {
+        ItemBuilder itemBuilder = new ItemBuilder().setTarget(player).setReferenceItem(item).setAmount(item.getAmount()).setEnchantments(new HashMap<>(item.getEnchantments()));
 
         if (item.hasItemMeta() && item.getItemMeta() != null) {
             ItemMeta itemMeta = item.getItemMeta();
