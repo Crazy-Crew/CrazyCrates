@@ -168,12 +168,14 @@ public class BukkitUserManager extends UserManager {
         
         int keys = 0;
 
-        //Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
+        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
 
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
             if (item == null || item.getType() == Material.AIR) continue;
 
-            if (ItemUtils.isKey(item)) keys += item.getAmount();
+            if (this.plugin.getCrateManager().isKeyFromCrate(item, crate)) {
+                keys += item.getAmount();
+            }
         }
 
         return keys;
@@ -195,6 +197,8 @@ public class BukkitUserManager extends UserManager {
 
         Player player = getUser(uuid);
 
+        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
+
         switch (keyType) {
             case physical_key -> {
                 int takeAmount = amount;
@@ -212,8 +216,6 @@ public class BukkitUserManager extends UserManager {
 
                     for (ItemStack item : items) {
                         if (item != null) {
-                            Crate crate = this.plugin.getCrateManager().getCrateFromName(ItemUtils.getCrate(item));
-
                             if (isKeyFromCrate(item, crate)) {
                                 int keyAmount = item.getAmount();
 
@@ -232,6 +234,8 @@ public class BukkitUserManager extends UserManager {
                                 }
 
                                 if (takeAmount <= 0) return true;
+
+                                break;
                             }
                         }
                     }
@@ -239,8 +243,6 @@ public class BukkitUserManager extends UserManager {
                     // This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the offhand.
                     if (takeAmount > 0) {
                         ItemStack item = player.getEquipment().getItemInOffHand();
-
-                        Crate crate = this.plugin.getCrateManager().getCrateFromName(ItemUtils.getCrate(item));
 
                         if (isKeyFromCrate(item, crate)) {
                             int keyAmount = item.getAmount();
@@ -268,8 +270,6 @@ public class BukkitUserManager extends UserManager {
             }
 
             case virtual_key -> {
-                Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
-
                 int keys = getVirtualKeys(uuid, crate.getName());
 
                 this.data.set("Players." + uuid + ".Name", player.getName());
@@ -295,6 +295,7 @@ public class BukkitUserManager extends UserManager {
         }
 
         MiscUtils.failedToTakeKey(player, crateName);
+
         return false;
     }
 
@@ -345,13 +346,14 @@ public class BukkitUserManager extends UserManager {
      * @return true if it belongs to that crate and false if it does not.
      */
     private boolean isKeyFromCrate(ItemStack item, Crate crate) {
-        if (crate.getCrateType() != CrateType.menu) {
-            if (item != null && item.getType() != Material.AIR) {
-                return ItemUtils.isKey(item);
-            }
-        }
+        if (crate.getCrateType() == CrateType.menu) return false;
 
-        return false;
+        if (item == null) return false;
+        if (item.getType() == Material.AIR) return false;
+
+        String key = ItemUtils.getKey(item);
+
+        return crate.getName().equalsIgnoreCase(key);
     }
 
     @Override

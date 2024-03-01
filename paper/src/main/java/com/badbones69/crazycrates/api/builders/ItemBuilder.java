@@ -417,9 +417,11 @@ public class ItemBuilder {
                 itemMeta.setDisplayName(getUpdatedName());
                 itemMeta.setLore(getUpdatedLore());
 
-                PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+                if (!this.crateName.isBlank() || !this.crateName.isEmpty()) {
+                    PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-                container.set(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING, crateName);
+                    container.set(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING, crateName);
+                }
             });
         } else {
             if (this.plugin.isLogging()) this.plugin.getLogger().warning("Material cannot be air or null.");

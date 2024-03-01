@@ -36,7 +36,7 @@ public class MobileCrateListener implements Listener {
             if (item.getType() == Material.AIR) return;
             
             for (Crate crate : this.crateManager.getUsableCrates()) {
-                if (crate.getCrateType() == CrateType.crate_on_the_go && ItemUtils.isKey(item)) {
+                if (crate.getCrateType() == CrateType.crate_on_the_go && this.crateManager.isKeyFromCrate(item, crate)) {
                     event.setCancelled(true);
 
                     this.crateManager.addPlayerToOpeningList(player, crate);

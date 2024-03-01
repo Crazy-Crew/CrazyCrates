@@ -973,13 +973,12 @@ public class CrateManager {
      * @return true if it belongs to that Crate and false if it does not.
      */
     public boolean isKeyFromCrate(ItemStack item, Crate crate) {
-        if (crate.getCrateType() != CrateType.menu) {
-            if (item != null && item.getType() != Material.AIR) {
-                return ItemUtils.isKey(item);
-            }
-        }
+        if (crate.getCrateType() == CrateType.menu) return false;
 
-        return false;
+        if (item == null) return false;
+        if (item.getType() == Material.AIR) return false;
+
+        return ItemUtils.isKey(item);
     }
 
     /**
