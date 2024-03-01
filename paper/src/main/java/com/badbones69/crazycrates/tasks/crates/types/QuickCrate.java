@@ -65,7 +65,7 @@ public class QuickCrate extends CrateBuilder {
 
             if (!keyCheck) {
                 // Send the message about failing to take the key.
-                MiscUtils.failedToTakeKey(getPlayer(), getCrate());
+                MiscUtils.failedToTakeKey(getPlayer(), getCrate().getName());
 
                 // Remove from opening list.
                 this.plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
@@ -82,7 +82,7 @@ public class QuickCrate extends CrateBuilder {
 
         if (!keyCheck) {
             // Send the message about failing to take the key.
-            MiscUtils.failedToTakeKey(getPlayer(), getCrate());
+            MiscUtils.failedToTakeKey(getPlayer(), getCrate().getName());
 
             // Remove from opening list.
             this.plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());

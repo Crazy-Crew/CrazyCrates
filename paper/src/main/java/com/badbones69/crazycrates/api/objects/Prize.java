@@ -1,10 +1,8 @@
 package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
-import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.support.PluginSupport;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -120,12 +118,7 @@ public class Prize {
     public ItemStack getDisplayItem() {
         ItemStack itemStack = this.displayItem.build();
 
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-
-        container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeName);
-
-        itemStack.setItemMeta(itemMeta);
+        itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeName));
 
         return itemStack;
     }
@@ -136,12 +129,7 @@ public class Prize {
     public ItemStack getDisplayItem(Player player) {
         ItemStack itemStack = this.displayItem.setTarget(player).build();
 
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-
-        container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeName);
-
-        itemStack.setItemMeta(itemMeta);
+        itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeName));
 
         return itemStack;
     }
@@ -250,6 +238,7 @@ public class Prize {
 
         try {
             String material = this.section.getString("DisplayItem", "RED_TERRACOTTA");
+
             int amount = this.section.getInt("DisplayAmount", 1);
             List<String> lore = this.section.getStringList("Lore");
             boolean isGlowing = this.section.getBoolean("Glowing", false);
@@ -275,6 +264,7 @@ public class Prize {
             ItemMeta itemMeta = builder.getItemMeta();
 
             itemMeta.getPersistentDataContainer().set(cratePrize, PersistentDataType.STRING, this.section.getName());
+
             builder.setItemMeta(itemMeta);
 
             int displayDamage = this.section.getInt("DisplayDamage", 0);
@@ -329,7 +319,7 @@ public class Prize {
                add("&cIf you are confused, Stop by our discord for support!");
             }};
 
-            return new ItemBuilder().setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(list);
+            return new ItemBuilder(new ItemStack(Material.RED_TERRACOTTA)).setName("&c&lERROR").setLore(list);
         }
     }
 }

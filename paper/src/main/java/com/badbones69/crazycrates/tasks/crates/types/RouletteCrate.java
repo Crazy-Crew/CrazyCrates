@@ -30,7 +30,7 @@ public class RouletteCrate extends CrateBuilder {
 
         if (!keyCheck) {
             // Send the message about failing to take the key.
-            MiscUtils.failedToTakeKey(getPlayer(), getCrate());
+            MiscUtils.failedToTakeKey(getPlayer(), getCrate().getName());
 
             // Remove from opening list.
             this.plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());

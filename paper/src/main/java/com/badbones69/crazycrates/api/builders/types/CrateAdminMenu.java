@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -36,7 +37,7 @@ public class CrateAdminMenu extends InventoryBuilder {
         Inventory inventory = getInventory();
 
         for (Crate crate : this.plugin.getCrateManager().getUsableCrates()) {
-            if (inventory.firstEmpty() >= 0) inventory.setItem(inventory.firstEmpty(), crate.getAdminKey());
+            if (inventory.firstEmpty() >= 0) inventory.setItem(inventory.firstEmpty(), crate.getKey());
         }
 
         return this;
@@ -70,6 +71,7 @@ public class CrateAdminMenu extends InventoryBuilder {
             if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(player)) {
                 player.closeInventory(InventoryCloseEvent.Reason.CANT_USE);
                 player.sendMessage(Messages.no_permission.getMessage(player));
+
                 return;
             }
 

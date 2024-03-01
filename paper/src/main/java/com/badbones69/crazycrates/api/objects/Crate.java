@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
-import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,7 +16,6 @@ import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.AbstractCrateManager;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.common.crates.CrateHologram;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -42,7 +41,6 @@ public class Crate {
     private final String name;
     private final String keyName;
     private final ItemBuilder keyBuilder;
-    private final ItemStack keyNoNBT;
     private final ItemStack adminKey;
     private int maxPage = 1;
     private final int maxSlots;
@@ -90,13 +88,15 @@ public class Crate {
      */
     public Crate(String name, String previewName, CrateType crateType, ItemStack key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, CrateHologram hologram) {
         this.keyBuilder = ItemBuilder.convertItemStack(key).setCrateName(name);
-        this.keyNoNBT = this.keyBuilder.build();
-        this.keyName = keyName;
+
         this.adminKey = this.keyBuilder
-        .addLore("")
-        .addLore("&7&l(&6&l!&7&l) Left click for Physical Key")
-        .addLore("&7&l(&6&l!&7&l) Right click for Virtual Key")
-        .setCrateName(name).build();
+                .addLore("")
+                .addLore("&7&l(&6&l!&7&l) Left click for Physical Key")
+                .addLore("&7&l(&6&l!&7&l) Right click for Virtual Key")
+                .build();
+
+        this.keyName = keyName;
+
         this.file = file;
         this.name = name;
         this.tiers = tiers != null ? tiers : new ArrayList<>();
@@ -471,25 +471,6 @@ public class Crate {
     }
     
     /**
-     * @return the key as an item stack with no nbt tags.
-     */
-    public ItemStack getKeyNoNBT() {
-        return this.keyNoNBT.clone();
-    }
-    
-    /**
-     * @param amount the amount of keys you want.
-     * @return the key as an item stack with no nbt tags.
-     */
-    public ItemStack getKeyNoNBT(int amount) {
-        ItemStack key = this.keyNoNBT.clone();
-
-        key.setAmount(amount);
-
-        return key;
-    }
-    
-    /**
      * Get the key that shows in the /cc admin menu.
      *
      * @return the itemstack of the key shown in the /cc admin menu.
@@ -576,16 +557,12 @@ public class Crate {
      * @param path the path in the config to set the item at.
      */
     private void setItem(ItemStack item, int chance, String path) {
-        if (item.hasItemMeta()) {
-            if (item.getItemMeta().hasDisplayName()) this.file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
-            if (item.getItemMeta().hasLore()) this.file.set(path + ".Lore", item.getItemMeta().getLore());
-        }
+        ItemMeta itemMeta = item.getItemMeta();
 
-        NBTItem nbtItem = new NBTItem(item);
+        if (itemMeta.hasDisplayName()) this.file.set(path + ".DisplayName", itemMeta.getDisplayName());
+        if (itemMeta.hasLore()) this.file.set(path + ".Lore", itemMeta.getLore());
 
-        if (nbtItem.hasNBTData()) {
-            if (nbtItem.hasTag("Unbreakable") && nbtItem.getBoolean("Unbreakable")) this.file.set(path + ".Unbreakable", true);
-        }
+        if (itemMeta.isUnbreakable()) this.file.set(path + ".Unbreakable", itemMeta.isUnbreakable());
 
         List<String> enchantments = new ArrayList<>();
 

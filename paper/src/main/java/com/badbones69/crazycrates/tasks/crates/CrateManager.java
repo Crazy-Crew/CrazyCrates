@@ -3,8 +3,10 @@ package com.badbones69.crazycrates.tasks.crates;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
+import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;
@@ -16,7 +18,6 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataContainer;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import org.bukkit.scheduler.BukkitTask;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
@@ -25,7 +26,6 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
-import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
 import org.bukkit.Location;
@@ -975,7 +975,7 @@ public class CrateManager {
     public boolean isKeyFromCrate(ItemStack item, Crate crate) {
         if (crate.getCrateType() != CrateType.menu) {
             if (item != null && item.getType() != Material.AIR) {
-                return ItemUtils.isSimilar(item, crate);
+                return ItemUtils.isKey(item);
             }
         }
 
@@ -1042,7 +1042,7 @@ public class CrateManager {
         String id = file.getString("Crate.PhysicalKey.Item", "TRIPWIRE_HOOK");
         boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
 
-        return new ItemBuilder().setMaterial(id).setName(name).setLore(lore).setGlow(glowing).build();
+        return new ItemBuilder(new ItemStack(Material.valueOf(id))).setName(name).setLore(lore).setGlow(glowing).build();
     }
 
     // Cleans the data file.

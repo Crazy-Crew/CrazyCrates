@@ -2,11 +2,11 @@ package com.badbones69.crazycrates.listeners.crates;
 
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
 import org.bukkit.Material;
@@ -310,7 +310,7 @@ public class CosmicCrateListener implements Listener {
 
             if (hasKey) {
                 // Notify player/console.
-                MiscUtils.failedToTakeKey(player, crate);
+                MiscUtils.failedToTakeKey(player, crateName);
 
                 // Remove opening stuff.
                 this.crateManager.removePlayerFromOpeningList(player);
