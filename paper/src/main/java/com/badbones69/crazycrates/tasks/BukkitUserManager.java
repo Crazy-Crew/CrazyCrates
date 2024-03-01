@@ -215,28 +215,30 @@ public class BukkitUserManager extends UserManager {
                     }
 
                     for (ItemStack item : items) {
-                        if (item != null) {
-                            if (isKeyFromCrate(item, crate)) {
-                                int keyAmount = item.getAmount();
+                        if (item == null) continue;
 
-                                if ((takeAmount - keyAmount) >= 0) {
-                                    MiscUtils.removeMultipleItemStacks(player.getInventory(), item);
+                        if (isKeyFromCrate(item, crate)) {
+                            int keyAmount = item.getAmount();
 
-                                    if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), amount, crate.getName());
+                            if ((takeAmount - keyAmount) >= 0) {
+                                MiscUtils.removeMultipleItemStacks(player.getInventory(), item);
 
-                                    takeAmount -= keyAmount;
-                                } else {
-                                    item.setAmount(keyAmount - takeAmount);
+                                if (crate.getCrateType() == CrateType.cosmic)
+                                    addOpenedCrate(player.getUniqueId(), amount, crate.getName());
 
-                                    if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), amount, crate.getName());
+                                takeAmount -= keyAmount;
+                            } else {
+                                item.setAmount(keyAmount - takeAmount);
 
-                                    takeAmount = 0;
-                                }
+                                if (crate.getCrateType() == CrateType.cosmic)
+                                    addOpenedCrate(player.getUniqueId(), amount, crate.getName());
 
-                                if (takeAmount <= 0) return true;
-
-                                break;
+                                takeAmount = 0;
                             }
+
+                            if (takeAmount <= 0) return true;
+
+                            break;
                         }
                     }
 
