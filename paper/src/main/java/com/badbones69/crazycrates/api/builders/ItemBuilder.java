@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.support.PluginSupport;
+import com.badbones69.crazycrates.support.SkullCreator;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.ryderbelserion.cluster.utils.DyeUtils;
 import io.th0rgal.oraxen.api.OraxenItems;
@@ -46,8 +47,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ItemBuilder {
@@ -81,8 +82,11 @@ public class ItemBuilder {
     private int potionAmplifier = 1;
 
     // Player Heads
-    private UUID uuid = null;
+    private boolean isHash = false;
+    private boolean isURL = false;
     private boolean isHead = false;
+
+    private String player = "";
 
     // Arrows
     private boolean isTippedArrow = false;
@@ -162,8 +166,10 @@ public class ItemBuilder {
         this.potionDuration = itemBuilder.potionDuration;
         this.potionAmplifier = itemBuilder.potionAmplifier;
 
-        this.uuid = itemBuilder.uuid;
         this.isHead = itemBuilder.isHead;
+        this.isHash = itemBuilder.isHash;
+        this.isURL = itemBuilder.isURL;
+        this.player = itemBuilder.player;
 
         this.isTippedArrow = itemBuilder.isTippedArrow;
 
@@ -282,18 +288,6 @@ public class ItemBuilder {
      * @return the result of all the info that was given to the builder as an ItemStack.
      */
     public ItemStack build() {
-       /*if (this.isHead) { // Has to go 1st due to it removing all data when finished.
-            if (this.isHash) { // Sauce: https://github.com/deanveloper/SkullCreator
-                if (this.isURL) {
-                    item = SkullCreator.itemWithUrl(item, this.player);
-                    this.itemMeta = item.getItemMeta();
-                } else {
-                    item = SkullCreator.itemWithBase64(item, this.player);
-                    this.itemMeta = item.getItemMeta();
-                }
-            }
-        }*/
-
         if (this.itemStack == null) {
             if (PluginSupport.ORAXEN.isPluginEnabled()) {
                 io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
@@ -311,7 +305,17 @@ public class ItemBuilder {
             }
         }
 
-        if (!isAir()) {
+        if (this.isHead) { // Has to go 1st due to it removing all data when finished.
+            if (this.isHash) { // Sauce: https://github.com/deanveloper/SkullCreator
+                if (this.isURL) {
+                    this.itemStack = SkullCreator.itemWithUrl(this.itemStack, this.player);
+                } else {
+                    this.itemStack = SkullCreator.itemWithBase64(this.itemStack, this.player);
+                }
+            }
+        }
+
+        if (this.itemStack.getType() != Material.AIR) {
             // If item data is not empty. We ignore all other options and simply return.
             if (!this.itemData.isEmpty()) {
                 net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(getItemStack());
@@ -424,14 +428,16 @@ public class ItemBuilder {
                 }
             });
         } else {
-            if (this.plugin.isLogging()) this.plugin.getLogger().warning("Material cannot be air or null.");
+            if (this.plugin.isLogging()) {
+                Logger logger = this.plugin.getLogger();
+
+                logger.warning("Material cannot be of type AIR or null, If you see this.");
+                logger.warning("in your console but do not have any invalid items. You can");
+                logger.warning("ignore this as we use AIR for some niche cases internally.");
+            }
         }
 
         return getItemStack();
-    }
-
-    private boolean isAir() {
-        return this.material.isAir();
     }
 
     public ItemStack getItemStack() {
@@ -850,12 +856,12 @@ public class ItemBuilder {
      * @return the ItemBuilder with an updated Player Name.
      */
     public ItemBuilder setPlayerName(String playerName) {
-        //this.player = playerName;
+        this.player = playerName;
 
-        //if (this.player != null && this.player.length() > 16) {
-        //    this.isHash = true;
-        //    this.isURL = this.player.startsWith("http");
-        //}
+        if (this.player != null && this.player.length() > 16) {
+            this.isHash = true;
+            this.isURL = this.player.startsWith("http");
+        }
 
         return this;
     }
