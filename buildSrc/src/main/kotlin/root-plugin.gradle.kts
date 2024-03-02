@@ -57,8 +57,6 @@ tasks {
         uploadFile.set("$directory/${rootProject.name}-${project.name.uppercaseFirstChar()}-${project.version}.jar")
 
         gameVersions.add(mcVersion)
-
-        changelog.set(rootProject.file("CHANGELOG.md").readText())
     }
 }
 
