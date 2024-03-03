@@ -460,14 +460,28 @@ public class Crate {
     }
 
     /**
+     * @param player The player getting the key.
+     *
      * @return the key as an item stack.
      */
     public ItemStack getKey(Player player) {
         return this.keyBuilder.setTarget(player).build();
     }
+
+    /**
+     * @param amount The amount of keys you want.
+     * @return the key as an item stack.
+     */
+    public ItemStack getKey(int amount) {
+        ItemBuilder key = this.keyBuilder.setAmount(amount);
+
+        return key.build();
+    }
     
     /**
      * @param amount The amount of keys you want.
+     * @param player The player getting the key.
+     *
      * @return the key as an item stack.
      */
     public ItemStack getKey(int amount, Player player) {
@@ -485,6 +499,7 @@ public class Crate {
     
     /**
      * @param amount the amount of keys you want.
+     *
      * @return the key as an item stack with no nbt tags.
      */
     public ItemStack getKeyNoNBT(int amount) {
@@ -506,6 +521,8 @@ public class Crate {
 
     /**
      * Get the key that shows in the /cc admin menu.
+     *
+     * @param player The player getting the key.
      *
      * @return the itemstack of the key shown in the /cc admin menu.
      */
