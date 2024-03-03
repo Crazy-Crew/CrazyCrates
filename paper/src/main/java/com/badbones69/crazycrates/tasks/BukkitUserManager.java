@@ -157,12 +157,10 @@ public class BukkitUserManager extends UserManager {
         
         int keys = 0;
 
-        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
-
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
             if (item == null || item.getType() == Material.AIR) continue;
 
-            if (ItemUtils.isSimilar(item, crate)) keys += item.getAmount();
+            if (ItemUtils.isKey(item)) keys += item.getAmount();
         }
 
         return keys;
@@ -247,7 +245,7 @@ public class BukkitUserManager extends UserManager {
                         }
                     }
                 } catch (Exception exception) {
-                    MiscUtils.failedToTakeKey(player, crate);
+                    MiscUtils.failedToTakeKey(player, crateName);
                     return false;
                 }
             }
@@ -276,7 +274,7 @@ public class BukkitUserManager extends UserManager {
             }
         }
 
-        MiscUtils.failedToTakeKey(player, crate);
+        MiscUtils.failedToTakeKey(player, crateName);
         return false;
     }
 
@@ -327,7 +325,7 @@ public class BukkitUserManager extends UserManager {
     private boolean isKeyFromCrate(ItemStack item, Crate crate) {
         if (crate.getCrateType() != CrateType.menu) {
             if (item != null && item.getType() != Material.AIR) {
-                return ItemUtils.isSimilar(item, crate);
+                return ItemUtils.isKey(item);
             }
         }
 
