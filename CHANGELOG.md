@@ -1,3 +1,4 @@
+
 ## Additions:
 ### Crate Types:
 * Added a new crate type called `Casino` ( Idea by slimemcstew )
