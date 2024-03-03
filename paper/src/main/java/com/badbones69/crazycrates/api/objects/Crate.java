@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.api.objects;
 
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
@@ -41,7 +41,8 @@ public class Crate {
     private final String name;
     private final String keyName;
     private final ItemBuilder keyBuilder;
-    private final ItemStack adminKey;
+    private final ItemStack keyNoNBT;
+    private final ItemBuilder adminKey;
     private int maxPage = 1;
     private final int maxSlots;
     private final String previewName;
@@ -88,15 +89,13 @@ public class Crate {
      */
     public Crate(String name, String previewName, CrateType crateType, ItemStack key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, CrateHologram hologram) {
         this.keyBuilder = ItemBuilder.convertItemStack(key).setCrateName(name);
-
-        this.adminKey = this.keyBuilder
-                .addLore("")
-                .addLore("&7&l(&6&l!&7&l) Left click for Physical Key")
-                .addLore("&7&l(&6&l!&7&l) Right click for Virtual Key")
-                .build();
-
+        this.keyNoNBT = this.keyBuilder.build();
         this.keyName = keyName;
-
+        this.adminKey = this.keyBuilder
+        .addLore("")
+        .addLore("&7&l(&6&l!&7&l) Left click for Physical Key")
+        .addLore("&7&l(&6&l!&7&l) Right click for Virtual Key")
+        .setCrateName(name);
         this.file = file;
         this.name = name;
         this.tiers = tiers != null ? tiers : new ArrayList<>();
@@ -459,7 +458,16 @@ public class Crate {
     public ItemStack getKey() {
         return this.keyBuilder.build();
     }
-    
+
+    /**
+     * @param player The player getting the key.
+     *
+     * @return the key as an item stack.
+     */
+    public ItemStack getKey(Player player) {
+        return this.keyBuilder.setTarget(player).build();
+    }
+
     /**
      * @param amount The amount of keys you want.
      * @return the key as an item stack.
@@ -471,12 +479,55 @@ public class Crate {
     }
     
     /**
+     * @param amount The amount of keys you want.
+     * @param player The player getting the key.
+     *
+     * @return the key as an item stack.
+     */
+    public ItemStack getKey(int amount, Player player) {
+        ItemBuilder key = this.keyBuilder.setTarget(player).setAmount(amount);
+
+        return key.build();
+    }
+    
+    /**
+     * @return the key as an item stack with no nbt tags.
+     */
+    public ItemStack getKeyNoNBT() {
+        return this.keyNoNBT.clone();
+    }
+    
+    /**
+     * @param amount the amount of keys you want.
+     *
+     * @return the key as an item stack with no nbt tags.
+     */
+    public ItemStack getKeyNoNBT(int amount) {
+        ItemStack key = this.keyNoNBT.clone();
+
+        key.setAmount(amount);
+
+        return key;
+    }
+    
+    /**
      * Get the key that shows in the /cc admin menu.
      *
      * @return the itemstack of the key shown in the /cc admin menu.
      */
     public ItemStack getAdminKey() {
-        return this.adminKey;
+        return this.adminKey.build();
+    }
+
+    /**
+     * Get the key that shows in the /cc admin menu.
+     *
+     * @param player The player getting the key.
+     *
+     * @return the itemstack of the key shown in the /cc admin menu.
+     */
+    public ItemStack getAdminKey(Player player) {
+        return this.adminKey.setTarget(player).build();
     }
     
     /**
@@ -559,10 +610,10 @@ public class Crate {
     private void setItem(ItemStack item, int chance, String path) {
         ItemMeta itemMeta = item.getItemMeta();
 
-        if (itemMeta.hasDisplayName()) this.file.set(path + ".DisplayName", itemMeta.getDisplayName());
-        if (itemMeta.hasLore()) this.file.set(path + ".Lore", itemMeta.getLore());
+        if (itemMeta.hasDisplayName()) this.file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
+        if (itemMeta.hasLore()) this.file.set(path + ".Lore", item.getItemMeta().getLore());
 
-        if (itemMeta.isUnbreakable()) this.file.set(path + ".Unbreakable", itemMeta.isUnbreakable());
+        this.file.set(path + ".Unbreakable", itemMeta.isUnbreakable());
 
         List<String> enchantments = new ArrayList<>();
 

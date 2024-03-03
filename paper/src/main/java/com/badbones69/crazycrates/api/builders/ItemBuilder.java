@@ -10,11 +10,8 @@ import com.ryderbelserion.cluster.utils.DyeUtils;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.nbt.TagParser;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
+import net.minecraft.references.Items;
+import org.bukkit.*;
 import org.bukkit.block.Banner;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
@@ -504,7 +501,21 @@ public class ItemBuilder {
     public ItemBuilder setMaterial(Material material) {
         this.material = material;
 
-        if (this.itemStack != null) this.itemStack.setType(this.material); else this.itemStack = new ItemStack(this.material);
+        if (this.itemStack == null) {
+            // If item stack is null, we create new item stack based on material.
+            this.itemStack = new ItemStack(this.material);
+        } else {
+            // Get old item meta.
+            ItemMeta itemMeta = this.itemStack.getItemMeta();
+
+            // Create new itemstack.
+            ItemStack newItemStack = new ItemStack(this.material);
+            // Set old item meta to new itemstack.
+            newItemStack.setItemMeta(itemMeta);
+
+            // Overwrite old item stack with new item stack.
+            this.itemStack = newItemStack;
+        }
 
         this.isHead = material == Material.PLAYER_HEAD;
 

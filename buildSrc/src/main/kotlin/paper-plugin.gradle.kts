@@ -1,10 +1,4 @@
-import gradle.kotlin.dsl.accessors._3c6de1dd92ae3b7d1ad54590cc9ae150.base
-import io.papermc.hangarpublishplugin.model.Platforms
-import org.gradle.kotlin.dsl.support.uppercaseFirstChar
-
 plugins {
-    id("io.papermc.hangar-publish-plugin")
-
     id("io.papermc.paperweight.userdev")
 
     id("xyz.jpenilla.run-paper")
@@ -13,7 +7,7 @@ plugins {
 }
 
 base {
-    archivesName.set("${rootProject.name}-${project.name.uppercaseFirstChar()}")
+    archivesName.set(rootProject.name)
 }
 
 repositories {
@@ -51,36 +45,7 @@ tasks {
         minecraftVersion(mcVersion)
     }
 
-    val directory = File("$rootDir/jars")
-    val isBeta: Boolean = providers.gradleProperty("isBeta").get().toBoolean()
-    val type = if (isBeta) "Beta" else "Release"
-
-    // Publish to hangar.papermc.io.
-    hangarPublish {
-        publications.register("plugin") {
-            version.set("${project.version}")
-
-            id.set(rootProject.name)
-
-            channel.set(type)
-
-            changelog.set(rootProject.file("CHANGELOG.md").readText())
-
-            apiKey.set(System.getenv("hangar_key"))
-
-            platforms {
-                register(Platforms.PAPER) {
-                    jar.set(file("$directory/${rootProject.name}-${project.name.uppercaseFirstChar()}-${project.version}.jar"))
-
-                    platformVersions.set(listOf(mcVersion))
-                }
-            }
-        }
-    }
-
     modrinth {
-        versionType.set(type.lowercase())
-
         loaders.addAll("paper", "purpur")
     }
 }
