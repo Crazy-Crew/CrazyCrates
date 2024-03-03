@@ -82,7 +82,7 @@ tasks {
         exclude("META-INF/**")
     }
 
-    val directory = File("$rootDir/jars")
+    val directory = File("$rootDir/jars/${project.name.lowercase()}")
     val mcVersion = providers.gradleProperty("mcVersion").get()
 
     val isBeta: Boolean = providers.gradleProperty("isBeta").get().toBoolean()
