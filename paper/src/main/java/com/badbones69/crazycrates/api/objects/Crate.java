@@ -42,7 +42,7 @@ public class Crate {
     private final String keyName;
     private final ItemBuilder keyBuilder;
     private final ItemStack keyNoNBT;
-    private final ItemStack adminKey;
+    private final ItemBuilder adminKey;
     private int maxPage = 1;
     private final int maxSlots;
     private final String previewName;
@@ -95,7 +95,7 @@ public class Crate {
         .addLore("")
         .addLore("&7&l(&6&l!&7&l) Left click for Physical Key")
         .addLore("&7&l(&6&l!&7&l) Right click for Virtual Key")
-        .setCrateName(name).build();
+        .setCrateName(name);
         this.file = file;
         this.name = name;
         this.tiers = tiers != null ? tiers : new ArrayList<>();
@@ -458,13 +458,20 @@ public class Crate {
     public ItemStack getKey() {
         return this.keyBuilder.build();
     }
+
+    /**
+     * @return the key as an item stack.
+     */
+    public ItemStack getKey(Player player) {
+        return this.keyBuilder.setTarget(player).build();
+    }
     
     /**
      * @param amount The amount of keys you want.
      * @return the key as an item stack.
      */
-    public ItemStack getKey(int amount) {
-        ItemBuilder key = this.keyBuilder.setAmount(amount);
+    public ItemStack getKey(int amount, Player player) {
+        ItemBuilder key = this.keyBuilder.setTarget(player).setAmount(amount);
 
         return key.build();
     }
@@ -494,7 +501,16 @@ public class Crate {
      * @return the itemstack of the key shown in the /cc admin menu.
      */
     public ItemStack getAdminKey() {
-        return this.adminKey;
+        return this.adminKey.build();
+    }
+
+    /**
+     * Get the key that shows in the /cc admin menu.
+     *
+     * @return the itemstack of the key shown in the /cc admin menu.
+     */
+    public ItemStack getAdminKey(Player player) {
+        return this.adminKey.setTarget(player).build();
     }
     
     /**
