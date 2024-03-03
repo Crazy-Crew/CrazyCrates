@@ -20,9 +20,13 @@ tasks {
             doLast {
                 runCatching {
                     if (project.name != "api") {
+                        val file = File("$jarsDir/${project.name.uppercaseFirstChar()}")
+
+                        file.mkdirs()
+
                         copy {
-                            from(project.layout.buildDirectory.file("libs/${rootProject.name}-${project.name.uppercaseFirstChar()}-${project.version}.jar"))
-                            into(jarsDir)
+                            from(project.layout.buildDirectory.file("libs/${rootProject.name}-${project.version}.jar"))
+                            into(file)
                         }
                     }
                 }.onSuccess {
