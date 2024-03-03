@@ -16,7 +16,6 @@ import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.AbstractCrateManager;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.common.crates.CrateHologram;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -576,16 +575,12 @@ public class Crate {
      * @param path the path in the config to set the item at.
      */
     private void setItem(ItemStack item, int chance, String path) {
-        if (item.hasItemMeta()) {
-            if (item.getItemMeta().hasDisplayName()) this.file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
-            if (item.getItemMeta().hasLore()) this.file.set(path + ".Lore", item.getItemMeta().getLore());
-        }
+        ItemMeta itemMeta = item.getItemMeta();
 
-        NBTItem nbtItem = new NBTItem(item);
+        if (itemMeta.hasDisplayName()) this.file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
+        if (itemMeta.hasLore()) this.file.set(path + ".Lore", item.getItemMeta().getLore());
 
-        if (nbtItem.hasNBTData()) {
-            if (nbtItem.hasTag("Unbreakable") && nbtItem.getBoolean("Unbreakable")) this.file.set(path + ".Unbreakable", true);
-        }
+        this.file.set(path + ".Unbreakable", itemMeta.isUnbreakable());
 
         List<String> enchantments = new ArrayList<>();
 
