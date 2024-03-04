@@ -256,12 +256,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("admin")
     @Permission(value = "crazycrates.command.admin.access", def = PermissionDefault.OP)
     public void onAdminMenu(Player player) {
-        int size = this.crateManager.getUsableCrates().size();
-        int slots = 9;
-
-        for (; size > 9; size -= 9) slots += 9;
-
-        CrateAdminMenu inventory = new CrateAdminMenu(player, slots, MsgUtils.color("&4&lAdmin Keys"));
+        CrateAdminMenu inventory = new CrateAdminMenu(player, 54, "&c&lAdmin Keys");
 
         player.openInventory(inventory.build().getInventory());
     }
