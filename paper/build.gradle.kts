@@ -9,6 +9,8 @@ dependencies {
 
     implementation(libs.triumphcmds)
 
+    //implementation(libs.triumphgui)
+
     implementation(libs.metrics)
 
     implementation(libs.nbtapi)
