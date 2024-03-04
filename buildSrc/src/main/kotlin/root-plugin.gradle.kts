@@ -1,3 +1,4 @@
+import gradle.kotlin.dsl.accessors._8291d1211fdf2e346e0abe66afb65704.idea
 import io.papermc.hangarpublishplugin.model.Platforms
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 import java.io.ByteArrayOutputStream
@@ -12,6 +13,15 @@ plugins {
     `java-library`
 
     `maven-publish`
+
+    idea
+}
+
+idea {
+    module {
+        isDownloadJavadoc = true
+        isDownloadSources = true
+    }
 }
 
 repositories {
