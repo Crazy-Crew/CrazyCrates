@@ -1,9 +1,10 @@
 package com.badbones69.crazycrates.api.builders;
 
+import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.support.PluginSupport;
+import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.List;
+import static java.util.regex.Matcher.quoteReplacement;
 
 @SuppressWarnings("ALL")
 public abstract class InventoryBuilder implements InventoryHolder {
@@ -75,6 +77,32 @@ public abstract class InventoryBuilder implements InventoryHolder {
         String inventoryTitle = MiscUtils.isPapiActive() ? PlaceholderAPI.setPlaceholders(getPlayer(), MsgUtils.color(this.title)) : MsgUtils.color(this.title);
 
         this.inventory = this.plugin.getServer().createInventory(this, this.size, inventoryTitle);
+    }
+
+    public boolean overrideMenu() {
+        SettingsManager config = this.plugin.getConfigManager().getConfig();
+
+        if (config.getProperty(ConfigKeys.menu_button_override)) {
+            List<String> commands = config.getProperty(ConfigKeys.menu_button_command_list);
+
+            if (!commands.isEmpty()) {
+                commands.forEach(value -> {
+                    String command = value.replaceAll("%player%", quoteReplacement(player.getName()))
+                            .replaceAll("%Player%", quoteReplacement(player.getName()))
+                            .replaceAll("%crate%", quoteReplacement(crate.getName()));
+
+                    MiscUtils.sendCommand(command);
+                });
+
+                return true;
+            }
+
+            if (plugin.isLogging()) plugin.getLogger().warning("The property " + ConfigKeys.menu_button_command_list.getPath() + " is empty so no commands were run.");
+
+            return true;
+        }
+
+        return false;
     }
 
     public abstract InventoryBuilder build();

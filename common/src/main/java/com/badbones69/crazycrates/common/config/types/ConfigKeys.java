@@ -126,6 +126,17 @@ public class ConfigKeys implements SettingsHolder {
 
     public static final Property<String> menu_button_item = newProperty("Settings.Preview.Buttons.Menu.Item", "COMPASS");
 
+    @Comment({
+            "This will disable our current functionality of our main menu button in crate previews.",
+            "It allows you to override and use a menu of your choice from your plugin using a command."
+    })
+    public static final Property<Boolean> menu_button_override = newProperty("Settings.Preview.Buttons.Menu.override.toggle", false);
+
+    @Comment({
+            "A list of commands to run when the main menu button is clicked. The override option above has to be set to true.",
+    })
+    public static final Property<List<String>> menu_button_command_list = newListProperty("Settings.Preview.Buttons.Menu.override.list", List.of("see %player%."));
+
     public static final Property<String> menu_button_name = newProperty("Settings.Preview.Buttons.Menu.Name", "&7&l>> &c&lMenu &7&l<<");
 
     public static final Property<List<String>> menu_button_lore = newListProperty("Settings.Preview.Buttons.Menu.Lore", List.of(
