@@ -35,10 +35,10 @@ repositories {
 }
 
 // The commit id for the "main" branch prior to merging a pull request.
-val start = "e888a19"
+val start = "b1b0f99"
 
 // The commit id BEFORE merging the pull request so before "Merge pull request #30"
-val end = "f78f454"
+val end = "2e5b558"
 
 val commitLog = getGitHistory().joinToString(separator = "") { formatGitLog(it) }
 

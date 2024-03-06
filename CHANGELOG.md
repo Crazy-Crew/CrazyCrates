@@ -1,5 +1,5 @@
 ## Additions:
-* Added the ability to override the menu button functionality to use your own menu through DeluxeMenus and nay other gui plugin.
+* Added the ability to override the menu button functionality to use your own menu through DeluxeMenus and any other gui plugin.
   * The config options have been automatically added to your config.yml and default to false, They can be found where you edit what the menu button looks like.
 
 ## Enhancements:
