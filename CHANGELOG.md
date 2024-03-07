@@ -1,10 +1,15 @@
 ## Additions:
-* N/A
+* Added extra placeholders to all messages. The messages.yml will update with new comments showing what each message can use.
+
+## Changes:
+* A few straggling placeholders that were still capitalized like %Crate% or %Player% have been made lowercase, double-check your configs.
+* %Keys%, %Keys_Physical% and %Keys_Total% have been made lowercase like %keys% instead. Please double-check your lores.
 
 ## Enhancements:
-* Play sounds in /crazycrates admin when a player gets virtual/physical keys instead of sending a message.
-* Optimize item meta checks
-* If the crate main menu is turned off, Trying to do /crates set menu will send you a message saying you can't
+* Play sounds in /crazycrates admin when a player gets virtual/physical keys.
+* Change from sending messages in chat for /crazycrates admin to using action bars.
+* Optimize item meta checks.
+* If the crate main menu is turned off, Trying to do /crates set menu will send you a message saying you can't.
 * If the crate main menu is disabled, /crates will simply open the help message instead.
 
 ## Other:
