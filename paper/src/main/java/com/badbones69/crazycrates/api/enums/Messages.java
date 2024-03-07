@@ -57,7 +57,6 @@ public enum Messages {
     correct_usage(MessageKeys.correct_usage),
     no_item_in_hand(MessageKeys.no_item_in_hand),
     added_item_with_editor(MessageKeys.added_item_with_editor),
-    failed_to_add_item(MessageKeys.failed_to_add_item),
     preview_disabled(MessageKeys.preview_disabled),
     no_schematics_found(MessageKeys.no_schematics_found),
     no_prizes_found(MessageKeys.no_prizes_found),
