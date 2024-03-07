@@ -138,7 +138,7 @@ public class CrateMainMenu extends InventoryBuilder {
                             .addLorePlaceholder("%Keys_Physical%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), crate.getName())))
                             .addLorePlaceholder("%Keys_Total%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getTotalKeys(getPlayer().getUniqueId(), crate.getName())))
                             .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getCrateOpened(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("%Player%", getPlayer().getName())
+                            .addLorePlaceholder("%player%", getPlayer().getName())
                             .build());
                 }
             }

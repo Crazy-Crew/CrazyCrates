@@ -103,7 +103,6 @@ public class PrizeManager {
 
             MiscUtils.sendCommand(command
                     .replaceAll("%player%", quoteReplacement(player.getName()))
-                    .replaceAll("%Player%", quoteReplacement(player.getName()))
                     .replaceAll("%reward%", quoteReplacement(name))
                     .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
         }
@@ -128,7 +127,6 @@ public class PrizeManager {
 
         String defaultMessage = message
                 .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%Player%", quoteReplacement(player.getName()))
                 .replaceAll("%reward%", quoteReplacement(name))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName()));
 
