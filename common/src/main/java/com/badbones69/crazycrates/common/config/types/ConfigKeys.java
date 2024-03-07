@@ -150,7 +150,7 @@ public class ConfigKeys implements SettingsHolder {
     @Comment({
             "A list of commands to run when the main menu button is clicked. The override option above has to be set to true.",
     })
-    public static final Property<List<String>> menu_button_command_list = newListProperty("gui.inventory.buttons.menu.override.list", List.of("see %player%"));
+    public static final Property<List<String>> menu_button_command_list = newListProperty("gui.inventory.buttons.menu.override.list", List.of("see {player}"));
 
     @Comment("The name of the item.")
     public static final Property<String> menu_button_name = newProperty("gui.inventory.buttons.menu.name", "&7&l>> &c&lMenu &7&l<<");

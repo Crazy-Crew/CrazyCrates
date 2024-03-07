@@ -171,7 +171,7 @@ public enum Messages {
     private String asString(Player player) {
         String prefix = this.configManager.getConfig().getProperty(ConfigKeys.command_prefix);
 
-        String message = this.message.replaceAll("%prefix%", prefix);
+        String message = this.message.replaceAll("{prefix}", prefix);
 
         if (MiscUtils.isPapiActive() && player != null) {
             return PlaceholderAPI.setPlaceholders(player, MsgUtils.color(message));

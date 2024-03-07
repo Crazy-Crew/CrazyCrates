@@ -407,8 +407,8 @@ public class CrateManager {
                 if (virtualCrate) {
                     Map<String, String> placeholders = new HashMap<>();
 
-                    placeholders.put("%cratetype%", crate.getCrateType().getName());
-                    placeholders.put("%crate%", crate.getName());
+                    placeholders.put("{cratetype}", crate.getCrateType().getName());
+                    placeholders.put("{crate}", crate.getName());
 
                     player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
                     removePlayerFromOpeningList(player);
@@ -419,7 +419,7 @@ public class CrateManager {
             }
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    player.sendMessage(Messages.quick_crate_in_use.getMessage("%crate%", crate.getName(), player));
+                    player.sendMessage(Messages.quick_crate_in_use.getMessage("{crate}", crate.getName(), player));
                     removePlayerFromOpeningList(player);
                     return;
                 }
@@ -427,8 +427,8 @@ public class CrateManager {
                 if (virtualCrate) {
                     Map<String, String> placeholders = new HashMap<>();
 
-                    placeholders.put("%cratetype%", crate.getCrateType().getName());
-                    placeholders.put("%crate%", crate.getName());
+                    placeholders.put("{cratetype}", crate.getCrateType().getName());
+                    placeholders.put("{crate}", crate.getName());
 
                     player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
                     removePlayerFromOpeningList(player);
@@ -441,8 +441,8 @@ public class CrateManager {
                 if (virtualCrate) {
                     Map<String, String> placeholders = new HashMap<>();
 
-                    placeholders.put("%cratetype%", crate.getCrateType().getName());
-                    placeholders.put("%crate%", crate.getName());
+                    placeholders.put("{cratetype}", crate.getCrateType().getName());
+                    placeholders.put("{crate}", crate.getName());
 
                     player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
                     removePlayerFromOpeningList(player);

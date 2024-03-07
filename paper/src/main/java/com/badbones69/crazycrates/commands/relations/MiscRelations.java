@@ -15,9 +15,9 @@ public class MiscRelations extends MessageManager {
     public void build() {
         getBukkitCommandManager().registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> {
             if (sender instanceof Player player) {
-                send(sender, Messages.correct_usage.getMessage("%usage%", context.getTypedArgument(), player));
+                send(sender, Messages.correct_usage.getMessage("{usage}", context.getTypedArgument(), player));
             } else {
-                send(sender, Messages.correct_usage.getMessage("%usage%", context.getTypedArgument()));
+                send(sender, Messages.correct_usage.getMessage("{usage}", context.getTypedArgument()));
             }
         });
 

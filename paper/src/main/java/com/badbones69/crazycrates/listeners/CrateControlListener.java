@@ -74,7 +74,7 @@ public class CrateControlListener implements Listener {
                     if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) {
                         e.setCancelled(true);
                         this.plugin.getCrateManager().removeCrateLocation(loc.getID());
-                        player.sendMessage(Messages.removed_physical_crate.getMessage("%id%", loc.getID(), player));
+                        player.sendMessage(Messages.removed_physical_crate.getMessage("{id}", loc.getID(), player));
                         return;
                     }
 
@@ -87,7 +87,7 @@ public class CrateControlListener implements Listener {
                             this.inventoryManager.addViewer(player);
                             this.inventoryManager.openNewCratePreview(player, loc.getCrate(), crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
                         } else {
-                            player.sendMessage(Messages.preview_disabled.getMessage("%crate%", crate.getName(), player));
+                            player.sendMessage(Messages.preview_disabled.getMessage("{crate}", crate.getName(), player));
                         }
                     }
                 }
@@ -143,10 +143,10 @@ public class CrateControlListener implements Listener {
                     int totalKeys = this.plugin.getCrazyHandler().getUserManager().getTotalKeys(player.getUniqueId(), crate.getName());
 
                     if (requiredKeys > 0 && totalKeys < requiredKeys) {
-                        HashMap<String, String> placeholders = new HashMap<>();
-                        placeholders.put("%key-amount%", String.valueOf(requiredKeys));
-                        placeholders.put("%crate%", crate.getPreviewName());
-                        placeholders.put("%amount%", String.valueOf(totalKeys));
+                        Map<String, String> placeholders = new HashMap<>();
+                        placeholders.put("{key-amount}", String.valueOf(requiredKeys));
+                        placeholders.put("{crate}", crate.getPreviewName());
+                        placeholders.put("{amount}", String.valueOf(totalKeys));
 
                         player.sendMessage(Messages.required_keys.getMessage(placeholders, player));
                         return;

@@ -33,7 +33,7 @@ public class BaseKeyCommand extends BaseCommand {
     public void viewPersonal(Player player) {
         Map<String, String> placeholders = new HashMap<>();
 
-        placeholders.put("%crates_opened%", String.valueOf(this.userManager.getTotalCratesOpened(player.getUniqueId())));
+        placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(player.getUniqueId())));
 
         getKeys(player, player, Messages.no_virtual_keys_header.getMessage(placeholders, player), Messages.no_virtual_keys.getMessage(player));
     }
@@ -49,12 +49,12 @@ public class BaseKeyCommand extends BaseCommand {
 
         Map<String, String> placeholders = new HashMap<>();
 
-        placeholders.put("%player%", target.getName());
-        placeholders.put("%crates_opened%", String.valueOf(this.userManager.getTotalCratesOpened(target.getUniqueId())));
+        placeholders.put("{player}", target.getName());
+        placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(target.getUniqueId())));
 
         String header = Messages.other_player_no_keys_header.getMessage(placeholders, sender instanceof Player ? (Player) sender : null);
 
-        String otherPlayer = Messages.other_player_no_keys.getMessage("%player%", target.getName(), sender instanceof Player ? (Player) sender : null);
+        String otherPlayer = Messages.other_player_no_keys.getMessage("{player}", target.getName(), sender instanceof Player ? (Player) sender : null);
 
         getKeys(target, sender, header, otherPlayer);
     }
@@ -86,9 +86,9 @@ public class BaseKeyCommand extends BaseCommand {
 
                 hasKeys = true;
 
-                placeholders.put("%crate%", crate.getFile().getString("Crate.Name"));
-                placeholders.put("%keys%", String.valueOf(amount));
-                placeholders.put("%crate_opened%", String.valueOf(this.userManager.getCrateOpened(player.getUniqueId(), crate.getName())));
+                placeholders.put("{crate}", crate.getFile().getString("Crate.Name"));
+                placeholders.put("{keys}", String.valueOf(amount));
+                placeholders.put("{crate_opened}", String.valueOf(this.userManager.getCrateOpened(player.getUniqueId(), crate.getName())));
 
                 message.add(Messages.per_crate.getMessage(placeholders, player));
             }
