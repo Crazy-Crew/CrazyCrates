@@ -137,11 +137,11 @@ public class CrateMainMenu extends InventoryBuilder {
                             .setCrateName(crate.getName())
                             .setPlayerName(file.getString(path + "Player"))
                             .setGlow(file.getBoolean(path + "Glowing"))
-                            .addLorePlaceholder("%Keys%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getVirtualKeys(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("%Keys_Physical%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("%Keys_Total%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getTotalKeys(getPlayer().getUniqueId(), crate.getName())))
+                            .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getVirtualKeys(getPlayer().getUniqueId(), crate.getName())))
+                            .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), crate.getName())))
+                            .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getTotalKeys(getPlayer().getUniqueId(), crate.getName())))
                             .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getCrateOpened(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("%Player%", getPlayer().getName())
+                            .addLorePlaceholder("%player%", getPlayer().getName())
                             .build());
                 }
             }
@@ -205,14 +205,14 @@ public class CrateMainMenu extends InventoryBuilder {
                     this.inventoryManager.addViewer(player);
                     this.inventoryManager.openNewCratePreview(player, crate, crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
                 } else {
-                    player.sendMessage(Messages.preview_disabled.getMessage(player));
+                    player.sendMessage(Messages.preview_disabled.getMessage("%crate%", crate.getName(), player));
                 }
 
                 return;
             }
 
             if (this.crateManager.isInOpeningList(player)) {
-                player.sendMessage(Messages.already_opening_crate.getMessage(player));
+                player.sendMessage(Messages.already_opening_crate.getMessage("%crate%", crate.getName(), player));
                 return;
             }
 
@@ -233,7 +233,7 @@ public class CrateMainMenu extends InventoryBuilder {
                     player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
                 }
 
-                player.sendMessage(Messages.no_virtual_key.getMessage(player));
+                player.sendMessage(Messages.no_virtual_key.getMessage("%crate%", crate.getName(), player));
                 return;
             }
 
@@ -245,7 +245,7 @@ public class CrateMainMenu extends InventoryBuilder {
             }
 
             if (MiscUtils.isInventoryFull(player)) {
-                player.sendMessage(Messages.inventory_not_empty.getMessage(player));
+                player.sendMessage(Messages.inventory_not_empty.getMessage("%crate%", crate.getName(), player));
                 return;
             }
 

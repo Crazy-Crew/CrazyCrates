@@ -30,6 +30,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.HashMap;
+import java.util.Map;
 
 public class CrateControlListener implements Listener {
 
@@ -86,7 +87,7 @@ public class CrateControlListener implements Listener {
                             this.inventoryManager.addViewer(player);
                             this.inventoryManager.openNewCratePreview(player, loc.getCrate(), crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
                         } else {
-                            player.sendMessage(Messages.preview_disabled.getMessage(player));
+                            player.sendMessage(Messages.preview_disabled.getMessage("%crate%", crate.getName(), player));
                         }
                     }
                 }
@@ -158,6 +159,10 @@ public class CrateControlListener implements Listener {
 
                     if (this.config.getProperty(ConfigKeys.physical_accepts_virtual_keys) && this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) hasKey = true;
 
+                    Map<String, String> placeholders = new HashMap<>();
+                    placeholders.put("%crate%", crate.getName());
+                    placeholders.put("%key%", keyName);
+
                     if (hasKey) {
                         // Checks if the player uses the quick crate again.
                         if (this.crateManager.isInOpeningList(player) && this.crateManager.getOpeningCrate(player).getCrateType() == CrateType.quick_crate && this.crateManager.isCrateInUse(player) && this.crateManager.getCrateInUseLocation(player).equals(crateLocation.getLocation())) {
@@ -166,18 +171,18 @@ public class CrateControlListener implements Listener {
 
                         if (!useQuickCrateAgain) {
                             if (this.crateManager.isInOpeningList(player)) {
-                                player.sendMessage(Messages.already_opening_crate.getMessage("%key%", keyName, player));
+                                player.sendMessage(Messages.already_opening_crate.getMessage("%crate%", crate.getName(), player));
                                 return;
                             }
 
                             if (this.crateManager.getCratesInUse().containsValue(crateLocation.getLocation())) {
-                                player.sendMessage(Messages.quick_crate_in_use.getMessage(player));
+                                player.sendMessage(Messages.quick_crate_in_use.getMessage("%crate%", crate.getName(), player));
                                 return;
                             }
                         }
 
                         if (MiscUtils.isInventoryFull(player)) {
-                            player.sendMessage(Messages.inventory_not_empty.getMessage(player));
+                            player.sendMessage(Messages.inventory_not_empty.getMessage("%crate%", crate.getName(), player));
                             return;
                         }
 
@@ -199,7 +204,7 @@ public class CrateControlListener implements Listener {
                                 player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
                             }
 
-                            player.sendMessage(Messages.no_keys.getMessage("%key%", keyName, player));
+                            player.sendMessage(Messages.no_keys.getMessage(placeholders, player));
                         }
                     }
                 }

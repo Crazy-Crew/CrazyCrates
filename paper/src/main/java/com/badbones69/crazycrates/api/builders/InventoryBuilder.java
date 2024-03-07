@@ -88,7 +88,6 @@ public abstract class InventoryBuilder implements InventoryHolder {
             if (!commands.isEmpty()) {
                 commands.forEach(value -> {
                     String command = value.replaceAll("%player%", quoteReplacement(player.getName()))
-                            .replaceAll("%Player%", quoteReplacement(player.getName()))
                             .replaceAll("%crate%", quoteReplacement(crate.getName()));
 
                     MiscUtils.sendCommand(command);

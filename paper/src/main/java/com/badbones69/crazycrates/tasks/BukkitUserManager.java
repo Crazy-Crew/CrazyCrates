@@ -121,7 +121,9 @@ public class BukkitUserManager extends UserManager {
                     if (this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.notify_player_when_inventory_full)) {
                         HashMap<String, String> placeholders = new HashMap<>();
                         placeholders.put("%amount%", String.valueOf(amount));
-                        placeholders.put("%key%", crate.getName());
+                        placeholders.put("%player%", player.getName());
+                        placeholders.put("%keytype%", keyType.getFriendlyName());
+                        placeholders.put("%key%", crate.getKeyName());
 
                         player.sendMessage(Messages.cannot_give_player_keys.getMessage(placeholders, player));
                     }

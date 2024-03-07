@@ -33,7 +33,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class QuadCrateListener implements Listener {
@@ -68,6 +69,7 @@ public class QuadCrateListener implements Listener {
 
                 Crate crate = session.getCrate();
                 Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
+
                 PrizeManager.givePrize(player, prize, crate);
 
                 // Get the display item.
@@ -166,7 +168,16 @@ public class QuadCrateListener implements Listener {
 
         if (this.sessionManager.inSession(player) && !player.hasPermission("crazycrates.admin")) {
             event.setCancelled(true);
-            player.sendMessage(Messages.no_commands_while_in_crate.getMessage("%player%", player.getName(), player));
+
+            Map<String, String> placeholders = new HashMap<>();
+
+            Crate crate = this.sessionManager.getSession(player).getCrate();
+
+            if (crate != null) placeholders.put("%crate%", crate.getName());
+
+            placeholders.put("%player%", player.getName());
+
+            player.sendMessage(Messages.no_commands_while_in_crate.getMessage(placeholders, player));
         }
     }
 
@@ -176,7 +187,16 @@ public class QuadCrateListener implements Listener {
 
         if (this.sessionManager.inSession(player) && event.getCause() == TeleportCause.ENDER_PEARL) {
             event.setCancelled(true);
-            player.sendMessage(Messages.no_teleporting.getMessage("%Player%", player.getName(), player));
+
+            Map<String, String> placeholders = new HashMap<>();
+
+            Crate crate = this.sessionManager.getSession(player).getCrate();
+
+            if (crate != null) placeholders.put("%crate%", crate.getName());
+
+            placeholders.put("%player%", player.getName());
+
+            player.sendMessage(Messages.no_teleporting.getMessage(placeholders, player));
         }
     }
 

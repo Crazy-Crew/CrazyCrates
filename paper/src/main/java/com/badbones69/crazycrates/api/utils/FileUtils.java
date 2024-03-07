@@ -36,7 +36,10 @@ public class FileUtils {
             file.delete();
         }
 
-        copyFiles(file.toPath(), "crates", List.of(
+        copyFile(file.toPath(), "config.yml");
+        copyFile(file.toPath(), "messages.yml");
+
+        copyFiles(new File(file, "crates").toPath(), "crates", List.of(
                 "CosmicCrateExample.yml",
                 "CrateExample.yml",
                 "QuadCrateExample.yml",
@@ -44,6 +47,40 @@ public class FileUtils {
                 "WarCrateExample.yml",
                 "CasinoExample.yml"
         ));
+    }
+
+    public static void copyFile(Path directory, String name) {
+        File file = directory.resolve(name).toFile();
+
+        if (file.exists()) return;
+
+        File dir = directory.toFile();
+
+        if (!dir.exists()) {
+            if (dir.mkdirs()) {
+                if (plugin.isLogging()) plugin.getLogger().warning("Created " + dir.getName() + " because we couldn't find it.");
+            }
+        }
+
+        ClassLoader loader = plugin.getClass().getClassLoader();
+
+        getResource(name, file, loader);
+    }
+
+    private static void getResource(String name, File file, ClassLoader loader) {
+        URL resource = loader.getResource(name);
+
+        if (resource == null) {
+            if (plugin.isLogging()) plugin.getLogger().severe("Failed to find file: " + name);
+
+            return;
+        }
+
+        try {
+            grab(resource.openStream(), file);
+        } catch (Exception exception) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to copy file: " + name, exception);
+        }
     }
 
     public static void copyFile(Path directory, String folder, String name) {
@@ -63,19 +100,7 @@ public class FileUtils {
 
         String url = folder + "/" + name;
 
-        URL resource = loader.getResource(url);
-
-        if (resource == null) {
-            if (plugin.isLogging()) plugin.getLogger().severe("Failed to find file: " + url);
-
-            return;
-        }
-
-        try {
-            grab(resource.openStream(), file);
-        } catch (Exception exception) {
-            plugin.getLogger().log(Level.SEVERE, "Failed to copy file: " + url, exception);
-        }
+        getResource(url, file, loader);
     }
 
     private static void grab(InputStream input, File output) throws Exception {

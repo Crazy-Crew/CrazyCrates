@@ -268,6 +268,7 @@ public class Prize {
             builder.setItemMeta(itemMeta);
 
             int displayDamage = this.section.getInt("DisplayDamage", 0);
+
             builder.setDamage(displayDamage);
 
             if (this.section.contains("DisplayTrim.Pattern")) {

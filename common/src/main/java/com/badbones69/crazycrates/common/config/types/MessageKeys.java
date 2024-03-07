@@ -27,122 +27,175 @@ public class MessageKeys implements SettingsHolder {
     @Comment("Only activates when you try to use an ender pearl while opening a crate.")
     public static final Property<String> no_teleporting = newProperty("Messages.No-Teleporting", "%prefix%&cYou may not teleport away while opening a Crate.");
 
+    @Comment("A list of available placeholders: %prefix%")
     public static final Property<String> no_commands_while_using_crate = newProperty("Messages.No-Commands-While-In-Crate", "%prefix%&cYou are not allowed to use commands while opening Crates.");
 
+    @Comment("A list of available placeholders: %prefix%")
     public static final Property<String> feature_disabled = newProperty("Messages.Feature-Disabled", "%prefix%&cThis feature is disabled.");
 
+    @Comment("A list of available placeholders: %prefix%")
+    public static final Property<String> cannot_set_type = newProperty("Messages.Cannot-Set-Menu-Type", "%prefix%&cYou cannot set the Menu to a block because the crate menu is disabled");
+
+    @Comment("A list of available placeholders: %prefix%, %key%, %crate%")
     public static final Property<String> no_keys = newProperty("Messages.No-Key", "%prefix%&cYou must have a %key% &cin your hand to use that crate.");
 
-    public static final Property<String> no_virtual_key = newProperty("Messages.No-Virtual-Key", "%prefix%&cYou need a key to open that Crate.");
+    @Comment("A list of available placeholders: %prefix%, %crate%")
+    public static final Property<String> no_virtual_key = newProperty("Messages.No-Virtual-Key", "%prefix%&cYou need a virtual key to open that Crate.");
 
+    @Comment("A list of available placeholders: %prefix%")
     public static final Property<String> not_on_block = newProperty("Messages.Not-On-Block", "%prefix%&cYou must be standing on a block to use this Crate.");
 
+    @Comment("A list of available placeholders: %prefix%, %crate%")
     public static final Property<String> already_opening_crate = newProperty("Messages.Already-Opening-Crate", "%prefix%&cYou are already opening a Crate.");
 
+    @Comment("A list of available placeholders: %prefix%, %crate%")
     public static final Property<String> quick_crate_in_use = newProperty("Messages.Quick-Crate-In-Use", "%prefix%&cThat Crate is already in use. Please wait for the Crate to open up.");
 
+    @Comment("A list of available placeholders: %prefix%, %world%")
     public static final Property<String> world_disabled = newProperty("Messages.World-Disabled", "%prefix%&cI am sorry but Crates are disabled in %world%.");
 
+    @Comment("A list of available placeholders: %prefix%")
     public static final Property<String> reloaded_plugin = newProperty("Messages.Reload", "%prefix%&3You have reloaded the Config and Data Files.");
 
+    @Comment("A list of available placeholders: %prefix%")
     public static final Property<String> reloaded_forced_out_of_preview = newProperty("Messages.Forced-Out-Of-Preview", "%prefix%&cA reload has forced you out of the preview.");
 
+    @Comment("A list of available placeholders: %prefix%, %player%")
     public static final Property<String> not_online = newProperty("Messages.Not-Online", "%prefix%&c%player% &7is not online.");
 
+    @Comment("A list of available placeholders: %prefix%")
     public static final Property<String> no_permission = newProperty("Messages.No-Permission", "%prefix%&cYou do not have permission to use that command/menu!");
 
+    @Comment("A list of available placeholders: %prefix%, %crate%")
     public static final Property<String> no_crate_permission = newProperty("Messages.No-Crate-Permission", "%prefix%&cYou do not have permission to use that crate.");
 
+    @Comment("A list of available placeholders: %prefix%, %crate%, %cratetype%")
     public static final Property<String> cant_be_a_virtual_crate = newProperty("Messages.Cant-Be-A-Virtual-Crate", "%prefix%&cThat Crate type cannot be used as a Virtual Crate.");
 
+    @Comment("A list of available placeholders: %prefix%, %crate%")
     public static final Property<String> inventory_not_empty = newProperty("Messages.Inventory-Full", "%prefix%&cYour inventory is full, Please make room before opening a Crate.");
 
+    @Comment("A list of available placeholders: %prefix%, %player%")
     public static final Property<String> too_close_to_another_player = newProperty("Messages.To-Close-To-Another-Player", "%prefix%&cYou are too close to a player that is opening their Crate.");
 
     @Comment("QuadCrate schematics need a fair bit of room so make sure you check the surroundings.")
     public static final Property<String> needs_more_room = newProperty("Messages.Needs-More-Room", "%prefix%&cThere is not enough space to open that here");
 
+    @Comment("A list of available placeholders: %prefix%, %crate%")
     public static final Property<String> out_of_time = newProperty("Messages.Out-Of-Time", "%prefix%&cYou took 5 Minutes to open the Crate so it closed.");
 
+    @Comment("A list of available placeholders: %prefix%")
     public static final Property<String> must_be_a_player = newProperty("Messages.Must-Be-A-Player", "%prefix%&cYou must be a player to use this command.");
 
+    @Comment("A list of available placeholders: %prefix%")
     public static final Property<String> must_be_console_sender = newProperty("Messages.Must-Be-A-Console-Sender", "%prefix%&cYou must be using console to use this command.");
 
+    @Comment("A list of available placeholders: %prefix%")
     public static final Property<String> must_be_looking_at_block = newProperty("Messages.Must-Be-Looking-At-A-Block", "%prefix%&cYou must be looking at a block.");
 
+    @Comment("A list of available placeholders: %prefix%, %crate%")
     public static final Property<String> not_a_crate = newProperty("Messages.Not-A-Crate", "%prefix%&cThere is no crate called &6%crate%.");
 
+    @Comment("A list of available placeholders: %prefix%, %number%")
     public static final Property<String> not_a_number = newProperty("Messages.Not-A-Number", "%prefix%&6%number% &cis not a number.");
 
+    @Comment("A list of available placeholders: %prefix%, %amount%, %player%, %keytype%")
     public static final Property<String> gave_a_player_keys = newProperty("Messages.Given-A-Player-Keys", "%prefix%&7You have given &6%player% %amount% &7Keys.");
 
+    @Comment("A list of available placeholders: %prefix%, %amount%, %amount%, %keytype%")
     public static final Property<String> cannot_give_player_keys = newProperty("Messages.Cannot-Give-Player-Keys", "%prefix%&7You have been given &6%amount% %key% &7virtual keys because your inventory was full.");
 
+    @Comment("A list of available placeholders: %prefix%, %amount%, %keytype%, %key%")
     public static final Property<String> obtaining_keys = newProperty("Messages.Obtaining-Keys", "%prefix%&7You have been given &6%amount% %key% &7Keys.");
 
+    @Comment("A list of available placeholders: %prefix%, %amount%, %keytype%")
     public static final Property<String> given_everyone_keys = newProperty("Messages.Given-Everyone-Keys", "%prefix%&7You have given everyone &6%amount% &7Keys.");
 
+    @Comment("A list of available placeholders: %prefix%, %amount%, %player%, %keytype%")
     public static final Property<String> given_offline_player_keys = newProperty("Messages.Given-Offline-Player-Keys", "%prefix%&7You have given &6%amount% &7key(s) to the offline player &6%player%.");
 
+    @Comment("A list of available placeholders: %prefix%, %amount%, %player%, %keytype%")
     public static final Property<String> take_players_keys = newProperty("Messages.Take-A-Player-Keys", "%prefix%&7You have taken &6%amount% &7key(s) from &6%player%.");
 
+    @Comment("A list of available placeholders: %prefix%, %player%")
     public static final Property<String> cannot_take_keys = newProperty("Messages.Cannot-Take-Keys", "%prefix%&7You cannot take keys from &6%player% &7as they are poor.");
 
+    @Comment("A list of available placeholders: %prefix%, %amount%, %player%, %keytype%")
     public static final Property<String> take_offline_player_keys = newProperty("Messages.Take-Offline-Player-Keys", "%prefix%&7You have taken &6%amount% &7key(s) from the offline player &6%player%.");
 
+    @Comment("A list of available placeholders: %prefix%, %crate%, %player%")
     public static final Property<String> opened_a_crate = newProperty("Messages.Opened-A-Crate", "%prefix%&7You have just opened the &6%crate% &7crate for &6%player%.");
 
+    @Comment("A list of available placeholders: %prefix%")
     public static final Property<String> internal_error = newProperty("Messages.Internal-Error", "%prefix%&cAn internal error has occurred. Please check the console for the full error.");
 
+    @Comment("A list of available placeholders: %prefix%")
     public static final Property<String> unknown_command = newProperty("Messages.Unknown-Command", "%prefix%&cThis command is not known.");
 
+    @Comment("A list of available placeholders: %prefix%, %usage%")
     public static final Property<String> correct_usage = newProperty("Messages.Correct-Usage", "%prefix%&cThe correct usage for this command is &e%usage%");
 
+    @Comment("A list of available placeholders: %prefix%, %crate%")
     public static final Property<String> no_item_in_hand = newProperty("Messages.No-Item-In-Hand", "%prefix%&cYou need to have an item in your hand to add it to the Crate.");
 
+    @Comment("A list of available placeholders: %prefix%, %crate%, %prize%")
     public static final Property<String> added_item_with_editor = newProperty("Messages.Added-Item-With-Editor", "%prefix%&7The item has been added to the %crate% Crate in prize #%prize%.");
 
-    public static final Property<String> failed_to_add_item = newProperty("Messages.Failed-To-Add-Item", "%prefix%&cCannot add an item if the crate type is a CosmicCrate for the time being.");
-
+    @Comment("A list of available placeholders: %prefix%, %crate%")
     public static final Property<String> preview_disabled = newProperty("Messages.Preview-Disabled", "%prefix%&cThe preview for that crate is currently disabled.");
 
+    @Comment("A list of available placeholders: %prefix%")
     public static final Property<String> no_schematics_found = newProperty("Messages.No-Schematics-Found", "%prefix%&cNo schematics were found. Please make sure files ending in .nbt exist in the schematics folder. If not delete the folder so they regenerate");
 
+    @Comment("A list of available placeholders: %prefix%, %crate%")
     public static final Property<String> no_prizes_found = newProperty("Messages.No-Prizes-Found", "%prefix%&cThis crate contains no prizes that you can win.");
 
+    @Comment("A list of available placeholders: %prefix%")
     public static final Property<String> same_player = newProperty("Messages.Same-Player", "%prefix%&cYou can''t use this command on yourself.");
 
+    @Comment("A list of available placeholders: %prefix%, %crate%, %prize%")
     public static final Property<String> prize_error = newProperty("Messages.Prize-Error", "%prefix%&cAn error has occurred while trying to give you the prize called &6%prize%&c in crate called &6%crate%&c. Please contact the server owner and show them this error.");
 
+    @Comment("A list of available placeholders: %prefix%, %amount%, %key-amount%, %crate%")
     public static final Property<String> required_keys = newProperty("Messages.Required-Keys", "%prefix%&7You need &c%key-amount% &7keys to open &c%crate%. &7You have &c%amount%.");
 
+    @Comment("A list of available placeholders: %prefix%")
     public static final Property<String> transfer_not_enough_keys = newProperty("Messages.Transfer-Keys.Not-Enough-Keys", "%prefix%&cYou do not have enough keys to transfer.");
 
+    @Comment("A list of available placeholders: %prefix%, %amount%, %player%, %keytype%, %crate%")
     public static final Property<String> transfer_sent_keys = newProperty("Messages.Transfer-Keys.Transferred-Keys", "%prefix%&7You have transferred %amount% %crate% keys to %player%.");
 
+    @Comment("A list of available placeholders: %prefix%, %amount%, %player%, %keytype%, %crate%")
     public static final Property<String> transfer_received_keys = newProperty("Messages.Transfer-Keys.Received-Transferred-Keys", "%prefix%&7You have received %amount% %crate% keys from %player%.");
 
+    @Comment("A list of available placeholders: %prefix%, %crate%")
     public static final Property<List<String>> created_physical_crate = newListProperty("Messages.Created-Physical-Crate", List.of(
             "%prefix%&7You have set that block to %crate%.",
             "&7To remove the crate shift break in creative to remove."
     ));
 
+    @Comment("A list of available placeholders: %prefix%, %id%")
     public static final Property<String> removed_physical_crate = newProperty("Messages.Removed-Physical-Crate", "%prefix%&7You have removed &6%id%.");
 
+    @Comment("A list of available placeholders: %prefix%")
     public static final Property<String> no_virtual_keys = newProperty("Messages.Keys.Personal.No-Virtual-Keys", "%prefix%&8&l(&4&l!&8&l) &7You currently do not have any virtual keys.");
 
+    @Comment("A list of available placeholders: %crates_opened%")
     public static final Property<List<String>> no_virtual_keys_header = newListProperty("Messages.Keys.Personal.Header", List.of(
             "&8&l(&6&l!&8&l) &7List of your current number of keys.",
             " &e -> Total Crates Opened: &c%crates_opened%"
     ));
 
+    @Comment("A list of available placeholders: %prefix%, %player%")
     public static final Property<String> other_player_no_keys = newProperty("Messages.Keys.Other-Player.No-Virtual-Keys", "%prefix%&8&l(&4&l!&8&l) &7The player %player% does not have any keys.");
 
+    @Comment("A list of available placeholders: %player%, %crates_opened%")
     public static final Property<List<String>> other_player_header = newListProperty("Messages.Keys.Other-Player.Header", List.of(
             "&8&l(&6&l!&8&l) &7List of %player%''s current number of keys.",
             " &e -> Total Crates Opened: &c%crates_opened%"
     ));
 
+    @Comment("A list of available placeholders: %crate%, %keys%, %crate_opened%")
     public static final Property<String> per_crate = newProperty("Messages.Keys.Per-Crate", "%crate% &7&l>&8&l> &6%keys% keys &7: Opened &6%crate_opened% times");
 
     @Comment("The output of /crazycrates help | Requires crazycrates.command.help")

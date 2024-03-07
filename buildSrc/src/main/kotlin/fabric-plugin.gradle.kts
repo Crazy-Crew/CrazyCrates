@@ -2,10 +2,6 @@ plugins {
     id("root-plugin")
 }
 
-base {
-    archivesName.set(rootProject.name)
-}
-
 val mcVersion = providers.gradleProperty("mcVersion").get()
 val fabricVersion = providers.gradleProperty("version").get()
 

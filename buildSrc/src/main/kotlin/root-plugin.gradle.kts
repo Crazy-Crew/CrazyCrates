@@ -17,6 +17,10 @@ plugins {
     idea
 }
 
+base {
+    archivesName.set(rootProject.name)
+}
+
 idea {
     module {
         isDownloadJavadoc = true
@@ -33,44 +37,6 @@ repositories {
 
     mavenCentral()
 }
-
-// The commit id for the "main" branch prior to merging a pull request.
-val start = "b1b0f99"
-
-// The commit id BEFORE merging the pull request so before "Merge pull request #30"
-val end = "2e5b558"
-
-val commitLog = getGitHistory().joinToString(separator = "") { formatGitLog(it) }
-
-fun getGitHistory(): List<String> {
-    val output: String = ByteArrayOutputStream().use { outputStream ->
-        project.exec {
-            executable("git")
-            args("log",  "$start..$end", "--format=format:%h %s")
-            standardOutput = outputStream
-        }
-
-        outputStream.toString()
-    }
-
-    return output.split("\n")
-}
-
-fun formatGitLog(commitLog: String): String {
-    val hash = commitLog.take(7)
-    val message = commitLog.substring(8) // Get message after commit hash + space between
-    return "[$hash](https://github.com/Crazy-Crew/${rootProject.name}/commit/$hash) $message<br>"
-}
-
-val changes = """
-${rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)} 
-## Commits  
-<details>  
-<summary>Other</summary>
-
-$commitLog
-</details>
-""".trimIndent()
 
 tasks {
     compileJava {
@@ -107,7 +73,7 @@ tasks {
 
             channel.set(type)
 
-            changelog.set(changes)
+            changelog.set(rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8))
 
             apiKey.set(System.getenv("hangar_key"))
 
@@ -130,7 +96,7 @@ tasks {
 
         projectId.set(rootProject.name.lowercase())
 
-        changelog.set(changes)
+        changelog.set(rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8))
 
         versionName.set("${rootProject.name} ${project.version}")
 

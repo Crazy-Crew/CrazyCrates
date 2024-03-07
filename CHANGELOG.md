@@ -1,10 +1,17 @@
 ## Additions:
-* Added the ability to override the menu button functionality to use your own menu through DeluxeMenus and any other gui plugin.
-  * The config options have been automatically added to your config.yml and default to false, They can be found where you edit what the menu button looks like.
+* Added extra placeholders to all messages. The messages.yml will update with new comments showing what each message can use.
+* Add config.yml/messages.yml to `examples` folder which auto-generate on reload.
+
+## Changes:
+* A few straggling placeholders that were still capitalized like %Crate% or %Player% have been made lowercase, double-check your configs.
+* %Keys%, %Keys_Physical% and %Keys_Total% have been made lowercase like %keys% instead. Please double-check your lores.
 
 ## Enhancements:
-* Re-did how /crate admin handles giving keys, It expands the size of the inventory to 54 slots and adds a button at the bottom explaining how to get keys.
-  * At the same time, This fixed an issue where the lore of the keys given were different. Will it be paginated? Someday
+* Play sounds in /crazycrates admin when a player gets virtual/physical keys.
+* Change from sending messages in chat for /crazycrates admin to using action bars.
+* Optimize item meta checks.
+* If the crate main menu is turned off, Trying to do /crates set menu will send you a message saying you can't.
+* If the crate main menu is disabled, /crates will simply open the help message instead.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
