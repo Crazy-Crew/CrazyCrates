@@ -87,7 +87,7 @@ public class InventoryManager {
         ItemBuilder button = new ItemBuilder(this.nextButton);
 
         if (player != null) {
-            button.addLorePlaceholder("%Page%", (getPage(player) + 1) + "");
+            button.addLorePlaceholder("{page}", (getPage(player) + 1) + "");
         }
 
         return button.setTarget(player).build();
@@ -97,7 +97,7 @@ public class InventoryManager {
         ItemBuilder button = new ItemBuilder(this.backButton);
 
         if (player != null) {
-            button.addLorePlaceholder("%Page%", (getPage(player) - 1) + "");
+            button.addLorePlaceholder("{page}", (getPage(player) - 1) + "");
         }
 
         return button.setTarget(player).build();
