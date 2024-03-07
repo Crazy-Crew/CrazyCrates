@@ -242,7 +242,7 @@ public class CrateMainMenu extends InventoryBuilder {
                 return;
             }
 
-            for (String world : this.config.getProperty(ConfigKeys.disabledWorlds)) {
+            for (String world : this.config.getProperty(ConfigKeys.disabled_worlds)) {
                 if (world.equalsIgnoreCase(player.getWorld().getName())) {
                     player.sendMessage(Messages.world_disabled.getMessage("%world%", player.getWorld().getName(), player));
                     return;
