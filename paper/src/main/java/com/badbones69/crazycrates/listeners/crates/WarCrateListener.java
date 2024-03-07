@@ -1,9 +1,11 @@
 package com.badbones69.crazycrates.listeners.crates;
 
+import com.badbones69.crazycrates.CrazyHandler;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.tasks.InventoryManager;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -25,6 +27,12 @@ public class WarCrateListener implements Listener {
 
     @NotNull
     private final CrazyCrates plugin = CrazyCrates.get();
+
+    @NotNull
+    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+
+    @NotNull
+    private final InventoryManager inventoryManager = this.crazyHandler.getInventoryManager();
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
@@ -118,5 +126,9 @@ public class WarCrateListener implements Listener {
                 }
             }
         }
+
+        this.inventoryManager.removeCrateViewer(player);
+        this.inventoryManager.removePageViewer(player);
+        this.inventoryManager.removeViewer(player);
     }
 }
