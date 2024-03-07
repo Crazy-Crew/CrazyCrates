@@ -33,12 +33,6 @@ public class ConfigKeys implements SettingsHolder {
                 ""
         };
 
-        conf.setComment("Settings.GUI-Customizer-Toggle", deprecation);
-
-        conf.setComment("Settings.Preview", deprecation);
-
-        conf.setComment("Settings.Filler", deprecation);
-
         conf.setComment("root", header);
     }
 
@@ -61,115 +55,130 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("The prefix used in console")
     public static final Property<String> console_prefix = newProperty("root.console_prefix", "&8[&bCrazyCrates&8] ");
 
-    @Comment("Whether to enable or disable the crate menu. This also removes the Menu button in crate previews")
-    public static final Property<Boolean> enable_crate_menu = newProperty("Settings.Enable-Crate-Menu", true);
+    @Comment("If /crates should open the main menu. Warning: This will remove the menu button from crate previews.")
+    public static final Property<Boolean> enable_crate_menu = newProperty("gui.toggle", true);
 
-    @Comment("Whether to show the item that appears above QuickCrate")
-    public static final Property<Boolean> show_quickcrate_item = newProperty("Settings.Show-QuickCrate-Item", true);
+    @Comment("Whether to show the display item when opening QuickCrate")
+    public static final Property<Boolean> show_quickcrate_item = newProperty("crate.quickcrate-display-item", true);
 
-    @Comment("Logs all crate actions to file if true. You might have to delete your logs file sometimes.")
-    public static final Property<Boolean> log_to_file = newProperty("Settings.Log-File", false);
+    @Comment("Logs all crate actions to a .txt file if enabled. It is recommended to delete the file occasionally.")
+    public static final Property<Boolean> log_to_file = newProperty("crate.log-file", false);
 
-    @Comment("Logs all crate actions to your console if true.")
-    public static final Property<Boolean> log_to_console = newProperty("Settings.Log-Console", false);
+    @Comment("Logs all crate actions to console if enabled.")
+    public static final Property<Boolean> log_to_console = newProperty("crate.log-console", false);
 
-    @Comment("The name of the gui (/crates)")
-    public static final Property<String> inventory_name = newProperty("Settings.InventoryName", "&b&lCrazy &4&lCrates");
+    @Comment("The name of the gui.")
+    public static final Property<String> inventory_name = newProperty("gui.inventory.name", "&b&lCrazy &4&lCrates");
 
-    @Comment("The size of the gui (/crates)")
-    public static final Property<Integer> inventory_size = newProperty("Settings.InventorySize", 45);
+    @Comment("The size of the gui. Valid sizes are 9,18,27,36,45")
+    public static final Property<Integer> inventory_size = newProperty("gui.inventory.size", 45);
 
-    @Comment("If crates should knock players back if they don't have a key.")
-    public static final Property<Boolean> knock_back = newProperty("Settings.KnockBack", true);
+    @Comment("If crates should knock you back if you have no keys.")
+    public static final Property<Boolean> knock_back = newProperty("crate.knock-back", true);
 
-    @Comment("If the player should be forced out of the preview when doing /cc reload")
-    public static final Property<Boolean> take_out_of_preview = newProperty("Settings.Force-Out-Of-Preview", false);
+    @Comment("If players should be forced to exit out of the preview during /crates reload")
+    public static final Property<Boolean> take_out_of_preview = newProperty("crate.preview.force-exit", false);
 
-    @Comment("If the player should be sent a message that they were removed from the preview gui during /cc reload.")
-    public static final Property<Boolean> send_preview_taken_out_message = newProperty("Settings.Force-Out-Of-Preview-Message", false);
+    @Comment("Send a message if they were forced out of the preview.")
+    public static final Property<Boolean> send_preview_taken_out_message = newProperty("crate.preview.send-message", false);
 
     @Comment({
             "If a player gets to the menu related to the Prizes gui, Should they be timed out?",
             "",
             "It will wait 10 seconds and if they already collected 3 prizes, It will only give one prize."
     })
-    public static final Property<Boolean> cosmic_crate_timeout = newProperty("Settings.Cosmic-Crate-Timeout", true);
+    public static final Property<Boolean> cosmic_crate_timeout = newProperty("crate.cosmic-crate-timeout", true);
 
-    @Comment("If physical crates can accept virtual keys.")
-    public static final Property<Boolean> physical_accepts_virtual_keys = newProperty("Settings.Physical-Accepts-Virtual-Keys", true);
+    @Comment("Should a physical crate accept virtual keys?")
+    public static final Property<Boolean> physical_accepts_virtual_keys = newProperty("crate.keys.physical-crate-accepts-virtual-keys", true);
 
-    @Comment("If physical crates can accept physical keys.")
-    public static final Property<Boolean> physical_accepts_physical_keys = newProperty("Settings.Physical-Accepts-Physical-Keys", true);
+    @Comment("Should a virtual crate ( /crates ) accept physical keys?")
+    public static final Property<Boolean> physical_accepts_physical_keys = newProperty("crate.keys.physical-crate-accepts-physical-keys", true);
 
-    @Comment("If virtual crates can accept physical keys.")
-    public static final Property<Boolean> virtual_accepts_physical_keys = newProperty("Settings.Virtual-Accepts-Physical-Keys", true);
+    @Comment("Should a physical crate accept physical keys?")
+    public static final Property<Boolean> virtual_accepts_physical_keys = newProperty("crate.keys.virtual-crate-accepts-physical-keys", true);
 
-    @Comment("If the player should be given virtual keys if inventory is full. If you leave it as false, All keys will be dropped on the ground.")
-    public static final Property<Boolean> give_virtual_keys_when_inventory_full = newProperty("Settings.Give-Virtual-Keys-When-Inventory-Full", false);
+    @Comment("Should the player should be given virtual keys if inventory is not empty? If you leave it as false, All keys will be dropped on the ground.")
+    public static final Property<Boolean> give_virtual_keys_when_inventory_full = newProperty("crate.keys.inventory-settings.give-virtual-keys", false);
 
-    @Comment("If the player should be notified when their inventory is full.")
-    public static final Property<Boolean> notify_player_when_inventory_full = newProperty("Settings.Give-Virtual-Keys-When-Inventory-Full-Message", false);
+    @Comment("Should the player should be notified when their inventory is not empty?")
+    public static final Property<Boolean> notify_player_when_inventory_full = newProperty("crate.keys.inventory-settings.send-message", false);
 
-    @Comment("If a sound should be played when a player tries to open a crate with no key.")
-    public static final Property<Boolean> need_key_sound_toggle = newProperty("Settings.Need-Key-Sound-Toggle", true);
+    @Comment("Should a sound should be played if they have no key?")
+    public static final Property<Boolean> need_key_sound_toggle = newProperty("crate.keys.key-sound.toggle", true);
 
-    @Comment("The sound player when a player tries to open a crate with no key.")
-    public static final Property<String> need_key_sound = newProperty("Settings.Need-Key-Sound", "ENTITY_VILLAGER_NO");
+    @Comment("The sound to play.")
+    public static final Property<String> need_key_sound = newProperty("crate.keys.key-sound.name", "ENTITY_VILLAGER_NO");
 
-    @Comment("How long should quadcrates run for when opened? Once the time is met, The quadcrate closes.")
-    public static final Property<Integer> quad_crate_timer = newProperty("Settings.QuadCrate.Timer", 300);
+    @Comment("How long should the quad crate be active?")
+    public static final Property<Integer> quad_crate_timer = newProperty("crate.quad-crate.timer", 300);
 
-    @Comment("A list of worlds crates are disabled in.")
-    public static final Property<List<String>> disabledWorlds = newListProperty("Settings.DisabledWorlds", List.of(
+    @Comment("What worlds do you want Crates to be disabled in?")
+    public static final Property<List<String>> disabled_worlds = newListProperty("crate.disabled-worlds", List.of(
             "world_nether"
     ));
 
-    public static final Property<String> menu_button_item = newProperty("Settings.Preview.Buttons.Menu.Item", "COMPASS");
+    @Comment("The item the button should be.")
+    public static final Property<String> menu_button_item = newProperty("gui.inventory.buttons.menu.item", "COMPASS");
 
     @Comment({
             "This will disable our current functionality of our main menu button in crate previews.",
             "It allows you to override and use a menu of your choice from your plugin using a command."
     })
-    public static final Property<Boolean> menu_button_override = newProperty("Settings.Preview.Buttons.Menu.override.toggle", false);
+    public static final Property<Boolean> menu_button_override = newProperty("gui.inventory.buttons.menu.override.toggle", false);
 
     @Comment({
             "A list of commands to run when the main menu button is clicked. The override option above has to be set to true.",
     })
-    public static final Property<List<String>> menu_button_command_list = newListProperty("Settings.Preview.Buttons.Menu.override.list", List.of("see %player%"));
+    public static final Property<List<String>> menu_button_command_list = newListProperty("gui.inventory.buttons.menu.override.list", List.of("see %player%"));
 
-    public static final Property<String> menu_button_name = newProperty("Settings.Preview.Buttons.Menu.Name", "&7&l>> &c&lMenu &7&l<<");
+    @Comment("The name of the item.")
+    public static final Property<String> menu_button_name = newProperty("gui.inventory.buttons.menu.name", "&7&l>> &c&lMenu &7&l<<");
 
-    public static final Property<List<String>> menu_button_lore = newListProperty("Settings.Preview.Buttons.Menu.Lore", List.of(
+    @Comment("The lore of the item.")
+    public static final Property<List<String>> menu_button_lore = newListProperty("gui.inventory.buttons.menu.lore", List.of(
             "&7Return to the menu."
     ));
 
-    public static final Property<String> next_button_item = newProperty("Settings.Preview.Buttons.Next.Item", "FEATHER");
+    @Comment("The item the button should be.")
+    public static final Property<String> next_button_item = newProperty("gui.inventory.buttons.next.item", "FEATHER");
 
-    public static final Property<String> next_button_name = newProperty("Settings.Preview.Buttons.Next.Name", "&6&lNext >>");
+    @Comment("The name of the item.")
+    public static final Property<String> next_button_name = newProperty("gui.inventory.buttons.next.name", "&6&lNext >>");
 
-    public static final Property<List<String>> next_button_lore = newListProperty("Settings.Preview.Buttons.Next.Lore", List.of(
-            "&7&lPage: &b%page%"
+    @Comment("The lore of the item.")
+    public static final Property<List<String>> next_button_lore = newListProperty("gui.inventory.buttons.next.lore", List.of(
+            "&7&lPage: &b{page}"
     ));
 
-    public static final Property<String> back_button_item = newProperty("Settings.Preview.Buttons.Back.Item", "FEATHER");
+    @Comment("The item the button should be.")
+    public static final Property<String> back_button_item = newProperty("gui.inventory.buttons.back.item", "FEATHER");
 
-    public static final Property<String> back_button_name = newProperty("Settings.Preview.Buttons.Back.Name", "&6&l<< Back");
+    @Comment("The name of the item.")
+    public static final Property<String> back_button_name = newProperty("gui.inventory.buttons.back.name", "&6&l<< Back");
 
-    public static final Property<List<String>> back_button_lore = newListProperty("Settings.Preview.Buttons.Back.Lore", List.of(
-            "&7&lPage: &b%page%"
+    @Comment("The lore of the item.")
+    public static final Property<List<String>> back_button_lore = newListProperty("gui.inventory.buttons.back.lore", List.of(
+            "&7&lPage: &b{page}"
     ));
 
-    public static final Property<Boolean> filler_toggle = newProperty("Settings.Filler.Toggle", false);
+    @Comment("Should the menu should be filled with one type of item?")
+    public static final Property<Boolean> filler_toggle = newProperty("gui.inventory.buttons.filler.toggle", false);
 
-    public static final Property<String> filler_item = newProperty("Settings.Filler.Item", "BLACK_STAINED_GLASS_PANE");
+    @Comment("The item to fill the menu with.")
+    public static final Property<String> filler_item = newProperty("gui.inventory.buttons.filler.item", "BLACK_STAINED_GLASS_PANE");
 
-    public static final Property<String> filler_name = newProperty("Settings.Filler.Name", " ");
+    @Comment("The name of the item.")
+    public static final Property<String> filler_name = newProperty("gui.inventory.buttons.filler.name", " ");
 
-    public static final Property<List<String>> filler_lore = newListProperty("Settings.Filler.Lore", Collections.emptyList());
+    @Comment("The lore of the item.")
+    public static final Property<List<String>> filler_lore = newListProperty("gui.inventory.buttons.filler.lore", Collections.emptyList());
 
-    public static final Property<Boolean> gui_customizer_toggle = newProperty("Settings.GUI-Customizer-Toggle", true);
+    @Comment("Should the customizer should be enabled?")
+    public static final Property<Boolean> gui_customizer_toggle = newProperty("gui.inventory.buttons.customizer.toggle", true);
 
-    public static final Property<List<String>> gui_customizer = newListProperty("Settings.GUI-Customizer", List.of(
+    @Comment("The items to set to the gui.")
+    public static final Property<List<String>> gui_customizer = newListProperty("gui.inventory.buttons.customizer.items", List.of(
             "Slot:1, Item:RED_STAINED_GLASS_PANE, Name: ",
             "Slot:2, Item:RED_STAINED_GLASS_PANE, Name: ",
             "Slot:3, Item:RED_STAINED_GLASS_PANE, Name: ",
