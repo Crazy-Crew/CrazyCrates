@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.api.MigrateManager;
 import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
@@ -12,6 +11,7 @@ import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.listeners.crates.*;
 import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.tasks.MigrationManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
@@ -44,8 +44,8 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Migrate configurations.
-        MigrateManager.migrate();
+        // Migrate as early as possible.
+        new MigrationManager().migrate();
 
         this.timer = new Timer();
 
