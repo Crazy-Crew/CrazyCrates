@@ -104,6 +104,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
                     placeholders.put("%keytype%", KeyType.physical_key.getFriendlyName());
 
+                    player.sendActionBar(Messages.obtaining_keys.getMessage(placeholders, player));
                 }
 
                 case RIGHT -> {
@@ -113,6 +114,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
                     placeholders.put("%keytype%", KeyType.virtual_key.getFriendlyName());
 
+                    player.sendActionBar(Messages.obtaining_keys.getMessage(placeholders, player));
                 }
             }
         }
