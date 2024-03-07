@@ -18,7 +18,6 @@ import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class PrizeManager {
