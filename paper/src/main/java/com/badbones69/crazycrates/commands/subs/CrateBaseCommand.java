@@ -91,7 +91,7 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        player.sendMessage(Messages.feature_disabled.getMessage(player));
+        onHelp(player);
     }
 
     @SubCommand("help")
