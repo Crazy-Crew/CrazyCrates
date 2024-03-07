@@ -218,6 +218,20 @@ public class MigrationManager {
 
     private String convert(String message) {
         return message
-                .replaceAll("%page%", "{page}");
+                .replaceAll("%page%", "{page}")
+                .replaceAll("%prefix%", "{prefix}")
+                .replaceAll("%world%", "{world}")
+                .replaceAll("%crate%", "{crate}")
+                .replaceAll("%key%", "{key}")
+                .replaceAll("%cratetype%", "{cratetype}")
+                .replaceAll("%player%", "{player}")
+                .replaceAll("%prize%", "{prize}")
+                .replaceAll("%number%", "{number}")
+                .replaceAll("%keytype%", "{keytype}")
+                .replaceAll("%usage%", "{usage}")
+                .replaceAll("%key-amount%", "{key_amount}")
+                .replaceAll("%amount%", "{amount}")
+                .replaceAll("%id%", "{id}")
+                .replaceAll("%crates_opened%", "{crates_opened}");
     }
 }
