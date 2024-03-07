@@ -1,5 +1,6 @@
 ## Additions:
 * Added extra placeholders to all messages. The messages.yml will update with new comments showing what each message can use.
+* Add config.yml/messages.yml to `examples` folder which auto-generate on reload.
 
 ## Changes:
 * A few straggling placeholders that were still capitalized like %Crate% or %Player% have been made lowercase, double-check your configs.

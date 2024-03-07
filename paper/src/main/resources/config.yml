@@ -1,0 +1,149 @@
+# Support: https://discord.gg/badbones-s-live-chat-182615261403283459
+# Github: https://github.com/Crazy-Crew
+# 
+# Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
+# Features: https://github.com/Crazy-Crew/CrazyCrates/issues
+# 
+# List of all sounds: https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+# List of all enchantments: https://jd.papermc.io/paper/1.20/org/bukkit/enchantments/Enchantment.html
+root:
+  # Whether you want CrazyCrates to shut up or not, This option is ignored by errors.
+  verbose_logging: true
+  # This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.
+  use-different-random: false
+  # Sends anonymous statistics about how the plugin is used to bstats.org.
+  # bstats is a service for plugin developers to find out how the plugin being used,
+  # This information helps us figure out how to better improve the plugin.
+  toggle_metrics: true
+  # The prefix used in commands
+  command_prefix: '&8[&bCrazyCrates&8]: '
+  # The prefix used in console
+  console_prefix: '&8[&bCrazyCrates&8] '
+Settings:
+  # Whether to enable or disable the crate menu. This also removes the Menu button in crate previews
+  Enable-Crate-Menu: true
+  # Whether to show the item that appears above QuickCrate
+  Show-QuickCrate-Item: true
+  # Logs all crate actions to file if true. You might have to delete your logs file sometimes.
+  Log-File: false
+  # Logs all crate actions to your console if true.
+  Log-Console: false
+  # The name of the gui (/crates)
+  InventoryName: '&b&lCrazy &4&lCrates'
+  # The size of the gui (/crates)
+  InventorySize: 45
+  # If crates should knock players back if they don't have a key.
+  KnockBack: true
+  # If the player should be forced out of the preview when doing /cc reload
+  Force-Out-Of-Preview: false
+  # If the player should be sent a message that they were removed from the preview gui during /cc reload.
+  Force-Out-Of-Preview-Message: false
+  # If a player gets to the menu related to the Prizes gui, Should they be timed out?
+  # 
+  # It will wait 10 seconds and if they already collected 3 prizes, It will only give one prize.
+  Cosmic-Crate-Timeout: true
+  # If physical crates can accept virtual keys.
+  Physical-Accepts-Virtual-Keys: true
+  # If physical crates can accept physical keys.
+  Physical-Accepts-Physical-Keys: true
+  # If virtual crates can accept physical keys.
+  Virtual-Accepts-Physical-Keys: true
+  # If the player should be given virtual keys if inventory is full. If you leave it as false, All keys will be dropped on the ground.
+  Give-Virtual-Keys-When-Inventory-Full: false
+  # If the player should be notified when their inventory is full.
+  Give-Virtual-Keys-When-Inventory-Full-Message: false
+  # If a sound should be played when a player tries to open a crate with no key.
+  Need-Key-Sound-Toggle: true
+  # The sound player when a player tries to open a crate with no key.
+  Need-Key-Sound: ENTITY_VILLAGER_NO
+  QuadCrate:
+    # How long should quadcrates run for when opened? Once the time is met, The quadcrate closes.
+    Timer: 300
+  # A list of worlds crates are disabled in.
+  DisabledWorlds:
+  - world_nether
+  # 
+  # Warning: This section is subject to change so it is considered deprecated.
+  # This is your warning before the change happens.
+  # 
+  Preview:
+    Buttons:
+      Menu:
+        Item: COMPASS
+        override:
+          # This will disable our current functionality of our main menu button in crate previews.
+          # It allows you to override and use a menu of your choice from your plugin using a command.
+          toggle: false
+          # A list of commands to run when the main menu button is clicked. The override option above has to be set to true.
+          list:
+          - see %player%
+        Name: '&7&l>> &c&lMenu &7&l<<'
+        Lore:
+        - '&7Return to the menu.'
+      Next:
+        Item: FEATHER
+        Name: '&6&lNext >>'
+        Lore:
+        - '&7&lPage: &b%page%'
+      Back:
+        Item: FEATHER
+        Name: '&6&l<< Back'
+        Lore:
+        - '&7&lPage: &b%page%'
+  # 
+  # Warning: This section is subject to change so it is considered deprecated.
+  # This is your warning before the change happens.
+  # 
+  Filler:
+    Toggle: false
+    Item: BLACK_STAINED_GLASS_PANE
+    Name: ' '
+    Lore: []
+  # 
+  # Warning: This section is subject to change so it is considered deprecated.
+  # This is your warning before the change happens.
+  # 
+  GUI-Customizer-Toggle: true
+  GUI-Customizer:
+  - 'Slot:1, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:2, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:3, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:4, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:5, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:6, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:7, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:8, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:9, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:37, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:38, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:39, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:40, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:41, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:42, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:43, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:44, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:45, Item:RED_STAINED_GLASS_PANE, Name: '
+  - 'Slot:10, Item:BLUE_STAINED_GLASS_PANE, Name: '
+  - 'Slot:19, Item:BLUE_STAINED_GLASS_PANE, Name: '
+  - 'Slot:28, Item:BLUE_STAINED_GLASS_PANE, Name: '
+  - 'Slot:18, Item:BLUE_STAINED_GLASS_PANE, Name: '
+  - 'Slot:27, Item:BLUE_STAINED_GLASS_PANE, Name: '
+  - 'Slot:36, Item:BLUE_STAINED_GLASS_PANE, Name: '
+  - 'Slot:11, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:13, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:15, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:25, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:17, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:20, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:21, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:22, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:23, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:24, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:25, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:26, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:29, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:31, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:32, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:33, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:34, Item:CYAN_STAINED_GLASS_PANE, Name: '
+  - 'Slot:35, Item:CYAN_STAINED_GLASS_PANE, Name: '
