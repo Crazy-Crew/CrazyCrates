@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.tasks.InventoryManager;
 import dev.triumphteam.cmd.core.annotation.ArgName;
 import dev.triumphteam.cmd.core.annotation.Command;
 import dev.triumphteam.cmd.core.annotation.Default;
@@ -185,13 +186,17 @@ public class CrateBaseCommand extends BaseCommand {
 
         this.crazyHandler.cleanFiles();
 
+        InventoryManager inventoryManager = this.crazyHandler.getInventoryManager();
+
         // Close previews
         if (this.config.getProperty(ConfigKeys.take_out_of_preview)) {
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {
-                this.crazyHandler.getInventoryManager().closeCratePreview(player);
+                if (inventoryManager.inCratePreview(player)) {
+                    inventoryManager.closeCratePreview(player);
 
-                if (this.config.getProperty(ConfigKeys.send_preview_taken_out_message)) {
-                    player.sendMessage(Messages.reloaded_forced_out_of_preview.getMessage(player));
+                    if (this.config.getProperty(ConfigKeys.send_preview_taken_out_message)) {
+                        player.sendMessage(Messages.reloaded_forced_out_of_preview.getMessage(player));
+                    }
                 }
             });
         }
