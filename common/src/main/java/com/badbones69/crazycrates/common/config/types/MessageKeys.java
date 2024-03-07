@@ -156,8 +156,8 @@ public class MessageKeys implements SettingsHolder {
     @Comment("A list of available placeholders: {prefix}, {crate}, {prize}")
     public static final Property<String> prize_error = newProperty("Messages.Prize-Error", "{prefix}&cAn error has occurred while trying to give you the prize called &6{prize}&c in crate called &6{crate}&c. Please contact the server owner and show them this error.");
 
-    @Comment("A list of available placeholders: {prefix}, {amount}, {key-amount}, {crate}")
-    public static final Property<String> required_keys = newProperty("Messages.Required-Keys", "{prefix}&7You need &c{key-amount} &7keys to open &c{crate}. &7You have &c{amount}.");
+    @Comment("A list of available placeholders: {prefix}, {amount}, {key_amount}, {crate}")
+    public static final Property<String> required_keys = newProperty("Messages.Required-Keys", "{prefix}&7You need &c{key_amount} &7keys to open &c{crate}. &7You have &c{amount}.");
 
     @Comment("A list of available placeholders: {prefix}")
     public static final Property<String> transfer_not_enough_keys = newProperty("Messages.Transfer-Keys.Not-Enough-Keys", "{prefix}&cYou do not have enough keys to transfer.");
