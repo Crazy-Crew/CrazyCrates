@@ -226,33 +226,6 @@ public class CrateBaseCommand extends BaseCommand {
         player.sendMessage(MsgUtils.color("&cThis feature is not yet developed internally by &eRyder Belserion."));
     }
 
-    /*@SubCommand("wand")
-    @Permission(value = "crazycrates.wand", def = PermissionDefault.OP)
-    public void onWandGive(Player player) {
-        player.getInventory().addItem(getItem(PersistentKeys.selector_wand.getNamespacedKey(), Material.DIAMOND_AXE, "&c&lPoint Selector"));
-        player.getInventory().addItem(getItem(PersistentKeys.crate_prize.getNamespacedKey(), Material.IRON_AXE, "&c&lTest Wand"));
-    }
-
-    private ItemStack getItem(NamespacedKey key, Material material, String name) {
-        ItemBuilder builder = new ItemBuilder();
-
-        builder.setMaterial(material).setName(name).setLore(List.of(
-                "&eSelect &cpoint #1 &eand &cpoint #2 &eto create a schematic.",
-                "&eOnce you select 2 points, Stand in the center",
-                "&eand run &c/schem-save to save your schematic."
-        ));
-
-        ItemMeta itemMeta = builder.getItemMeta();
-
-        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-
-        container.set(key, PersistentDataType.STRING, "none");
-
-        builder.setItemMeta(itemMeta);
-
-        return builder.build();
-    }*/
-
     @SubCommand("admin")
     @Permission(value = "crazycrates.command.admin.access", def = PermissionDefault.OP)
     public void onAdminMenu(Player player) {

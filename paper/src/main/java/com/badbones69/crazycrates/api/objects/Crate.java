@@ -586,8 +586,8 @@ public class Crate {
         if (item.hasItemMeta()) {
             ItemMeta itemMeta = item.getItemMeta();
 
-            if (itemMeta.hasDisplayName()) this.file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
-            if (itemMeta.hasLore()) this.file.set(path + ".Lore", item.getItemMeta().getLore());
+            if (itemMeta.hasDisplayName()) this.file.set(path + ".DisplayName", itemMeta.getDisplayName());
+            if (itemMeta.hasLore()) this.file.set(path + ".Lore", itemMeta.getLore());
 
             this.file.set(path + ".Unbreakable", itemMeta.isUnbreakable());
         }

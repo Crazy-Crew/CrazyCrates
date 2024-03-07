@@ -1066,16 +1066,15 @@ public class ItemBuilder {
     }
 
     private static ItemBuilder set(ItemStack item, ItemBuilder itemBuilder) {
-        ItemMeta itemMeta = item.getItemMeta();
-
-        if (item.hasItemMeta() && itemMeta != null) {
+        if (item.hasItemMeta()) {
+            ItemMeta itemMeta = item.getItemMeta();
 
             if (itemMeta.hasDisplayName()) itemBuilder.setName(itemMeta.getDisplayName());
             if (itemMeta.hasLore()) itemBuilder.setLore(itemMeta.getLore());
 
             itemMeta.setUnbreakable(itemMeta.isUnbreakable());
 
-            if (itemMeta instanceof Damageable) itemBuilder.setDamage(((Damageable) itemMeta).getDamage());
+            if (itemMeta instanceof Damageable damageable) itemBuilder.setDamage(damageable.getDamage());
         }
 
         return itemBuilder;

@@ -204,6 +204,8 @@ public class CosmicCrateListener implements Listener {
         // Check if null or air.
         if (itemStack == null || itemStack.getType() == Material.AIR) return;
 
+        if (!itemStack.hasItemMeta()) return;
+
         // Get crate manager.
         CosmicCrateManager cosmicCrateManager = (CosmicCrateManager) crate.getManager();
 

@@ -101,15 +101,20 @@ public class CosmicCrateManager extends AbstractCrateManager {
     }
 
     public Tier getTier(ItemStack itemStack, Crate crate) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemStack.hasItemMeta()) {
+            ItemMeta itemMeta = itemStack.getItemMeta();
 
-        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+            PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-        if (container.has(PersistentKeys.crate_tier.getNamespacedKey())) {
-            return crate.getTier(container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
+            if (container.has(PersistentKeys.crate_tier.getNamespacedKey())) {
+                return crate.getTier(container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
+            }
+
+            // In case there is no tier.
+            return PrizeManager.getTier(crate);
         }
 
-        // In case we don't find a tier.
+        // In case there is no item meta.
         return PrizeManager.getTier(crate);
     }
 

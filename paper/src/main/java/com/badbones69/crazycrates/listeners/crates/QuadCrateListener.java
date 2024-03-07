@@ -68,6 +68,7 @@ public class QuadCrateListener implements Listener {
 
                 Crate crate = session.getCrate();
                 Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
+
                 PrizeManager.givePrize(player, prize, crate);
 
                 // Get the display item.

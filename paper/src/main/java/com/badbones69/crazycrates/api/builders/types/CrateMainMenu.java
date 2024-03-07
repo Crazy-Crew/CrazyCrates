@@ -189,9 +189,12 @@ public class CrateMainMenu extends InventoryBuilder {
 
             if (item == null || item.getType() == Material.AIR) return;
 
-            if (!item.hasItemMeta() && !item.getItemMeta().hasDisplayName()) return;
+            if (!item.hasItemMeta()) return;
+
+            if (!item.getItemMeta().hasDisplayName()) return;
 
             NBTItem nbtItem = new NBTItem(item);
+
             if (!nbtItem.hasNBTData() && !nbtItem.hasTag("CrazyCrates-Crate")) return;
 
             Crate crate = this.plugin.getCrateManager().getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));

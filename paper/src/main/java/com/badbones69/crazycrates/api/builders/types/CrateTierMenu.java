@@ -96,9 +96,11 @@ public class CrateTierMenu extends InventoryBuilder {
 
             if (item == null || item.getType() == Material.AIR) return;
 
-            if (this.inventoryManager.getCratePreview(player) == null) return;
+            if (!item.hasItemMeta()) return;
 
             Crate crate = this.inventoryManager.getCratePreview(player);
+
+            if (crate == null) return;
 
             ItemMeta itemMeta = item.getItemMeta();
 

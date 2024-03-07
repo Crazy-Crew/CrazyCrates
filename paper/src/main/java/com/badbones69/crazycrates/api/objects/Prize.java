@@ -121,6 +121,7 @@ public class Prize {
         ItemStack itemStack = this.displayItem.build();
 
         ItemMeta itemMeta = itemStack.getItemMeta();
+
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
         container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeName);
@@ -137,6 +138,7 @@ public class Prize {
         ItemStack itemStack = this.displayItem.setTarget(player).build();
 
         ItemMeta itemMeta = itemStack.getItemMeta();
+
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
         container.set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeName);
@@ -275,9 +277,11 @@ public class Prize {
             ItemMeta itemMeta = builder.getItemMeta();
 
             itemMeta.getPersistentDataContainer().set(cratePrize, PersistentDataType.STRING, this.section.getName());
+
             builder.setItemMeta(itemMeta);
 
             int displayDamage = this.section.getInt("DisplayDamage", 0);
+
             builder.setDamage(displayDamage);
 
             if (this.section.contains("DisplayTrim.Pattern")) {
