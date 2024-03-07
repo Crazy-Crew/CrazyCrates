@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.users.UserManager;
-import java.util.HashMap;
 
 public class CrateAdminMenu extends InventoryBuilder {
 
@@ -93,29 +93,13 @@ public class CrateAdminMenu extends InventoryBuilder {
 
                     player.getInventory().addItem(key);
 
-                    if (key.getItemMeta() != null) {
-                        HashMap<String, String> placeholders = new HashMap<>();
-
-                        placeholders.put("%amount%", String.valueOf(1));
-                        placeholders.put("%key%", crate.getKeyName());
-
-                        player.sendMessage(Messages.obtaining_keys.getMessage(placeholders, player));
-                    }
+                    player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
                 }
 
                 case RIGHT -> {
                     this.userManager.addKeys(1, player.getUniqueId(), crate.getName(), KeyType.virtual_key);
 
-                    ItemStack key = crate.getKey(player);
-
-                    if (key.getItemMeta() != null) {
-                        HashMap<String, String> placeholders = new HashMap<>();
-
-                        placeholders.put("%amount%", String.valueOf(1));
-                        placeholders.put("%key%", crate.getKeyName());
-
-                        player.sendMessage(Messages.obtaining_keys.getMessage(placeholders, player));
-                    }
+                    player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
                 }
             }
         }
