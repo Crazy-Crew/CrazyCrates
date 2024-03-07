@@ -10,7 +10,7 @@ base {
 }
 
 dependencies {
-    compileOnlyApi(libs.adventure)
+    compileOnlyApi(libs.bundles.adventure)
 }
 
 java {
