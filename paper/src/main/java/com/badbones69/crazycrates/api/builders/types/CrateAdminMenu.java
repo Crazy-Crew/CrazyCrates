@@ -21,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.users.UserManager;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CrateAdminMenu extends InventoryBuilder {
 
@@ -87,6 +89,11 @@ public class CrateAdminMenu extends InventoryBuilder {
 
             ClickType clickType = event.getClick();
 
+            Map<String, String> placeholders = new HashMap<>();
+
+            placeholders.put("%amount%", String.valueOf(1));
+            placeholders.put("%key%", crate.getKeyName());
+
             switch (clickType) {
                 case LEFT -> {
                     ItemStack key = crate.getKey(player);
@@ -94,12 +101,18 @@ public class CrateAdminMenu extends InventoryBuilder {
                     player.getInventory().addItem(key);
 
                     player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
+
+                    placeholders.put("%keytype%", KeyType.physical_key.getFriendlyName());
+
                 }
 
                 case RIGHT -> {
                     this.userManager.addKeys(1, player.getUniqueId(), crate.getName(), KeyType.virtual_key);
 
                     player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
+
+                    placeholders.put("%keytype%", KeyType.virtual_key.getFriendlyName());
+
                 }
             }
         }
