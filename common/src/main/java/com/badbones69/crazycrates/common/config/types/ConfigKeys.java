@@ -33,6 +33,26 @@ public class ConfigKeys implements SettingsHolder {
                 ""
         };
 
+        conf.setComment("gui", "Settings related to guis.");
+        conf.setComment("gui.inventory", "Inventory settings like size.");
+        conf.setComment("gui.inventory.buttons", "The buttons in the gui.");
+
+        conf.setComment("gui.inventory.buttons.menu", "The main menu button.");
+        conf.setComment("gui.inventory.buttons.next", "The next button.");
+        conf.setComment("gui.inventory.buttons.back", "The back button.");
+
+        conf.setComment("gui.inventory.filler", "Allows you to fill the gui with a singular item.");
+
+        conf.setComment("gui.inventory.customizer", "Allows you to configure items per slot.");
+
+        conf.setComment("crate", "Settings related to crates.");
+        conf.setComment("crate.preview", "The preview settings.");
+        conf.setComment("crate.keys", "Settings related to how keys function.");
+
+        conf.setComment("crate.keys.inventory-settings", "Settings related to a player's inventory is not empty.");
+
+        conf.setComment("crate.quad-crate", "Settings related to QuadCrate");
+
         conf.setComment("root", header);
     }
 
