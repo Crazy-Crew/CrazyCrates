@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import org.bukkit.Material;
@@ -25,6 +26,8 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static java.util.regex.Matcher.quoteReplacement;
 
 public class CratePreviewMenu extends InventoryBuilder {
 
@@ -166,6 +169,8 @@ public class CratePreviewMenu extends InventoryBuilder {
 
             if (container.has(PersistentKeys.main_menu_button.getNamespacedKey()) && this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) { // Clicked the menu button.
                 if (this.inventoryManager.inCratePreview(player)) {
+                    if (holder.overrideMenu()) return;
+
                     crate.playSound(player, player.getLocation(), "click-sound","UI_BUTTON_CLICK", SoundCategory.PLAYERS);
 
                     if (crate.getCrateType() == CrateType.casino || crate.getCrateType() == CrateType.cosmic) {

@@ -1,3 +1,4 @@
+import gradle.kotlin.dsl.accessors._8291d1211fdf2e346e0abe66afb65704.idea
 import io.papermc.hangarpublishplugin.model.Platforms
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 import java.io.ByteArrayOutputStream
@@ -12,6 +13,15 @@ plugins {
     `java-library`
 
     `maven-publish`
+
+    idea
+}
+
+idea {
+    module {
+        isDownloadJavadoc = true
+        isDownloadSources = true
+    }
 }
 
 repositories {
@@ -25,10 +35,10 @@ repositories {
 }
 
 // The commit id for the "main" branch prior to merging a pull request.
-val start = "e888a19"
+val start = "b1b0f99"
 
 // The commit id BEFORE merging the pull request so before "Merge pull request #30"
-val end = "f78f454"
+val end = "2e5b558"
 
 val commitLog = getGitHistory().joinToString(separator = "") { formatGitLog(it) }
 
@@ -82,7 +92,7 @@ tasks {
         exclude("META-INF/**")
     }
 
-    val directory = File("$rootDir/jars")
+    val directory = File("$rootDir/jars/${project.name.lowercase()}")
     val mcVersion = providers.gradleProperty("mcVersion").get()
 
     val isBeta: Boolean = providers.gradleProperty("isBeta").get().toBoolean()

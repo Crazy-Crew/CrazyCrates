@@ -100,7 +100,7 @@ public class QuadCrateListener implements Listener {
                 // Set data
                 reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(plugin, true));
                 reward.setVelocity(new Vector(0, .2, 0));
-                reward.setCustomName(prize.getDisplayItem(player).getItemMeta().getDisplayName());
+                reward.setCustomName(itemMeta.getDisplayName());
                 reward.setCustomNameVisible(true);
                 reward.setPickupDelay(Integer.MAX_VALUE);
 

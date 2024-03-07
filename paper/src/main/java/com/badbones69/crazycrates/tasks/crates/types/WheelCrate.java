@@ -139,7 +139,7 @@ public class WheelCrate extends CrateBuilder {
 
                 ItemMeta itemMeta = item.getItemMeta();
 
-                boolean hasLore = item.getItemMeta().hasLore();
+                boolean hasLore = itemMeta.hasLore();
 
                 Material material = Material.LIME_STAINED_GLASS_PANE;
 

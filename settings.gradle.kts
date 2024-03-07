@@ -32,6 +32,8 @@ dependencyResolutionManagement {
 
             library("placeholderapi", "me.clip", "placeholderapi").version("2.11.5")
 
+            library("triumphgui", "dev.triumphteam", "triumph-gui").version("3.1.7")
+
             library("metrics", "org.bstats", "bstats-bukkit").version("3.0.2")
 
             library("nbtapi", "de.tr7zw", "item-nbt-api").version("2.12.2")
@@ -47,5 +49,5 @@ rootProject.name = "CrazyCrates"
 
 include("api")
 include("paper")
-include("fabric")
+//include("fabric")
 include("common")
