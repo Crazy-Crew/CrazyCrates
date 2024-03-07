@@ -153,6 +153,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         placeholders.put("%crate%", crate.getName());
         placeholders.put("%amount%", String.valueOf(amount));
+        placeholders.put("%keytype%", KeyType.virtual_key.getFriendlyName());
         placeholders.put("%player%", player.getName());
 
         sender.sendMessage(Messages.transfer_sent_keys.getMessage(placeholders, sender));
@@ -174,7 +175,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         FileUtils.loadFiles();
 
-        boolean isEnabled = this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.toggle_metrics);
+        boolean isEnabled = this.config.getProperty(ConfigKeys.toggle_metrics);
 
         if (!isEnabled) {
             this.crazyHandler.getMetrics().stop();
@@ -305,7 +306,7 @@ public class CrateBaseCommand extends BaseCommand {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item.getType() == Material.AIR) {
-            player.sendMessage(Messages.no_item_in_hand.getMessage(player));
+            player.sendMessage(Messages.no_item_in_hand.getMessage("%crate%", crateName, player));
 
             return;
         }
@@ -357,12 +358,12 @@ public class CrateBaseCommand extends BaseCommand {
 
         if (!crate.isPreviewEnabled()) {
             if (sender instanceof Player person) {
-                person.sendMessage(Messages.preview_disabled.getMessage(player));
+                person.sendMessage(Messages.preview_disabled.getMessage("%crate%", crate.getName(), player));
 
                 return;
             }
 
-            sender.sendMessage(Messages.preview_disabled.getMessage());
+            sender.sendMessage(Messages.preview_disabled.getMessage("%crate%", crate.getName()));
 
             return;
         }
@@ -407,25 +408,30 @@ public class CrateBaseCommand extends BaseCommand {
         }
 
         if (crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quick_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.quad_crate) {
+            Map<String, String> placeholders = new HashMap<>();
+
+            placeholders.put("%cratetype%", crate.getCrateType().getName());
+            placeholders.put("%crate%", crate.getName());
+
             if (sender instanceof Player person) {
-                sender.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(person));
+                sender.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, person));
 
                 return;
             }
 
-            sender.sendMessage(Messages.cant_be_a_virtual_crate.getMessage());
+            sender.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders));
 
             return;
         }
 
         if (this.crateManager.isInOpeningList(player)) {
             if (sender instanceof Player person) {
-                sender.sendMessage(Messages.already_opening_crate.getMessage(person));
+                sender.sendMessage(Messages.already_opening_crate.getMessage("%crate%", crate.getName(), person));
 
                 return;
             }
 
-            sender.sendMessage(Messages.already_opening_crate.getMessage());
+            sender.sendMessage(Messages.already_opening_crate.getMessage("%crate%", crate.getName()));
 
             return;
         }
@@ -454,8 +460,8 @@ public class CrateBaseCommand extends BaseCommand {
 
             HashMap<String, String> placeholders = new HashMap<>();
 
-            placeholders.put("%Crate%", crate.getName());
-            placeholders.put("%Player%", player.getName());
+            placeholders.put("%crate%", crate.getName());
+            placeholders.put("%player%", player.getName());
 
             player.sendMessage(Messages.opened_a_crate.getMessage(placeholders, player));
 
@@ -485,24 +491,24 @@ public class CrateBaseCommand extends BaseCommand {
             }
 
             if (sender instanceof Player person) {
-                sender.sendMessage(Messages.no_virtual_key.getMessage(person));
+                sender.sendMessage(Messages.no_virtual_key.getMessage("%crate%", crate.getName(), person));
 
                 return;
             }
 
-            sender.sendMessage(Messages.no_virtual_key.getMessage());
+            sender.sendMessage(Messages.no_virtual_key.getMessage("%crate%", crate.getName()));
 
             return;
         }
 
         if (MiscUtils.isInventoryFull(player)) {
             if (sender instanceof Player person) {
-                sender.sendMessage(Messages.inventory_not_empty.getMessage(person));
+                sender.sendMessage(Messages.inventory_not_empty.getMessage("%crate%", crate.getName(), person));
 
                 return;
             }
 
-            sender.sendMessage(Messages.inventory_not_empty.getMessage());
+            sender.sendMessage(Messages.inventory_not_empty.getMessage("%crate%", crate.getName()));
 
             return;
         }
@@ -511,8 +517,8 @@ public class CrateBaseCommand extends BaseCommand {
 
         HashMap<String, String> placeholders = new HashMap<>();
 
-        placeholders.put("%Crate%", crate.getName());
-        placeholders.put("%Player%", player.getName());
+        placeholders.put("%crate%", crate.getName());
+        placeholders.put("%player%", player.getName());
 
         player.sendMessage(Messages.opened_a_crate.getMessage(placeholders, player));
 
@@ -531,13 +537,18 @@ public class CrateBaseCommand extends BaseCommand {
         }
 
         if (crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quick_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.quad_crate) {
-            player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(player));
+            Map<String, String> placeholders = new HashMap<>();
+
+            placeholders.put("%cratetype%", crate.getCrateType().getName());
+            placeholders.put("%crate%", crate.getName());
+
+            player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
 
             return;
         }
 
         if (this.crateManager.isInOpeningList(player)) {
-            player.sendMessage(Messages.already_opening_crate.getMessage(player));
+            player.sendMessage(Messages.already_opening_crate.getMessage("%crate%", crate.getName(), player));
 
             return;
         }
@@ -571,13 +582,13 @@ public class CrateBaseCommand extends BaseCommand {
                 player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS,1f, 1f);
             }
 
-            player.sendMessage(Messages.no_virtual_key.getMessage(player));
+            player.sendMessage(Messages.no_virtual_key.getMessage("%crate%", crate.getName(), player));
 
             return;
         }
 
         if (MiscUtils.isInventoryFull(player)) {
-            player.sendMessage(Messages.inventory_not_empty.getMessage(player));
+            player.sendMessage(Messages.inventory_not_empty.getMessage("%crate%", crate.getName(), player));
 
             return;
         }
@@ -607,7 +618,12 @@ public class CrateBaseCommand extends BaseCommand {
         }
 
         if (crate.getCrateType() == CrateType.crate_on_the_go || crate.getCrateType() == CrateType.quick_crate || crate.getCrateType() == CrateType.fire_cracker || crate.getCrateType() == CrateType.quad_crate) {
-            player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(player));
+            Map<String, String> placeholders = new HashMap<>();
+
+            placeholders.put("%cratetype%", crate.getCrateType().getName());
+            placeholders.put("%crate%", crate.getName());
+
+            player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
 
             return;
         }
@@ -618,7 +634,7 @@ public class CrateBaseCommand extends BaseCommand {
         int keysUsed = 0;
 
         if (keys == 0) {
-            player.sendMessage(Messages.no_virtual_key.getMessage(player));
+            player.sendMessage(Messages.no_virtual_key.getMessage("%crate%", crateName, player));
 
             return;
         }
@@ -778,10 +794,11 @@ public class CrateBaseCommand extends BaseCommand {
                 this.userManager.addKeys(amount, player.getUniqueId(), crate.getName(), type);
             }
 
-            HashMap<String, String> placeholders = new HashMap<>();
+            Map<String, String> placeholders = new HashMap<>();
 
             placeholders.put("%amount%", String.valueOf(amount));
             placeholders.put("%player%", player.getName());
+            placeholders.put("%keytype%", type.getFriendlyName());
             placeholders.put("%key%", crate.getKeyName());
 
             boolean fullMessage = this.config.getProperty(ConfigKeys.notify_player_when_inventory_full);
@@ -810,6 +827,7 @@ public class CrateBaseCommand extends BaseCommand {
             Map<String, String> placeholders = new HashMap<>();
 
             placeholders.put("%amount%", String.valueOf(amount));
+            placeholders.put("%keytype%", type.getFriendlyName());
             placeholders.put("%player%", offlinePlayer.getName());
 
             if (sender instanceof Player person) {
@@ -910,12 +928,13 @@ public class CrateBaseCommand extends BaseCommand {
             Map<String, String> placeholders = new HashMap<>();
 
             placeholders.put("%amount%", String.valueOf(amount));
+            placeholders.put("%keytype%", type.getFriendlyName());
             placeholders.put("%player%", player.getName());
 
             if (sender instanceof Player human) {
-                human.sendMessage(Messages.take_player_keys.getMessage("%player%", player.getName(), human));
+                human.sendMessage(Messages.take_player_keys.getMessage(placeholders, human));
             } else {
-                sender.sendMessage(Messages.take_player_keys.getMessage("%player%", player.getName()));
+                sender.sendMessage(Messages.take_player_keys.getMessage(placeholders));
             }
 
             EventManager.logKeyEvent(player, sender, crate, type, EventManager.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
@@ -926,6 +945,7 @@ public class CrateBaseCommand extends BaseCommand {
         Map<String, String> placeholders = new HashMap<>();
 
         placeholders.put("%amount%", String.valueOf(amount));
+        placeholders.put("%keytype%", type.getFriendlyName());
         placeholders.put("%player%", offlinePlayer.getName());
 
         if (sender instanceof Player human) {
@@ -965,6 +985,7 @@ public class CrateBaseCommand extends BaseCommand {
         Map<String, String> placeholders = new HashMap<>();
 
         placeholders.put("%amount%", String.valueOf(amount));
+        placeholders.put("%keytype%", type.getFriendlyName());
         placeholders.put("%key%", crate.getKeyName());
 
         if (sender instanceof Player human) {

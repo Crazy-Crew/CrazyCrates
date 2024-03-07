@@ -210,14 +210,14 @@ public class CrateMainMenu extends InventoryBuilder {
                     this.inventoryManager.addViewer(player);
                     this.inventoryManager.openNewCratePreview(player, crate, crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
                 } else {
-                    player.sendMessage(Messages.preview_disabled.getMessage(player));
+                    player.sendMessage(Messages.preview_disabled.getMessage("%crate%", crate.getName(), player));
                 }
 
                 return;
             }
 
             if (this.crateManager.isInOpeningList(player)) {
-                player.sendMessage(Messages.already_opening_crate.getMessage(player));
+                player.sendMessage(Messages.already_opening_crate.getMessage("%crate%", crate.getName(), player));
                 return;
             }
 
@@ -238,7 +238,7 @@ public class CrateMainMenu extends InventoryBuilder {
                     player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
                 }
 
-                player.sendMessage(Messages.no_virtual_key.getMessage(player));
+                player.sendMessage(Messages.no_virtual_key.getMessage("%crate%", crate.getName(), player));
                 return;
             }
 
@@ -250,7 +250,7 @@ public class CrateMainMenu extends InventoryBuilder {
             }
 
             if (MiscUtils.isInventoryFull(player)) {
-                player.sendMessage(Messages.inventory_not_empty.getMessage(player));
+                player.sendMessage(Messages.inventory_not_empty.getMessage("%crate%", crate.getName(), player));
                 return;
             }
 

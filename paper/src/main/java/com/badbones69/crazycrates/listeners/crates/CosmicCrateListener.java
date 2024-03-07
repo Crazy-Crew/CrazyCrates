@@ -32,7 +32,10 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -288,8 +291,12 @@ public class CosmicCrateListener implements Listener {
 
             // If they don't have enough keys.
             if (value) {
+                Map<String, String> placeholders = new HashMap<>();
+                placeholders.put("%crate%", crate.getName());
+                placeholders.put("%key%", crate.getKeyName());
+
                 // Send no keys message.
-                player.sendMessage(Messages.no_keys.getMessage(player));
+                player.sendMessage(Messages.no_keys.getMessage(placeholders, player));
 
                 // Remove opening stuff.
                 this.crateManager.removePlayerFromOpeningList(player);
