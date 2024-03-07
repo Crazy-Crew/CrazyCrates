@@ -670,6 +670,12 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
+        if (crate.getCrateType() == CrateType.menu && !this.config.getProperty(ConfigKeys.enable_crate_menu)) {
+            player.sendMessage(Messages.cannot_set_type.getMessage(player));
+
+            return;
+        }
+
         Block block = player.getTargetBlock(null, 5);
 
         if (block.isEmpty()) {

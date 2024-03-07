@@ -21,6 +21,7 @@ public enum Messages {
     no_teleporting(MessageKeys.no_teleporting),
     no_commands_while_in_crate(MessageKeys.no_commands_while_using_crate),
     feature_disabled(MessageKeys.feature_disabled),
+    cannot_set_type(MessageKeys.cannot_set_type),
     no_keys(MessageKeys.no_keys),
     no_virtual_key(MessageKeys.no_virtual_key),
     not_on_block(MessageKeys.not_on_block),

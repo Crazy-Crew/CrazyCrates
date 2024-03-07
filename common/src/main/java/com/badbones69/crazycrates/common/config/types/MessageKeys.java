@@ -31,6 +31,8 @@ public class MessageKeys implements SettingsHolder {
 
     public static final Property<String> feature_disabled = newProperty("Messages.Feature-Disabled", "%prefix%&cThis feature is disabled.");
 
+    public static final Property<String> cannot_set_type = newProperty("Messages.Cannot-Set-Menu-Type", "%prefix%&cYou cannot set the Menu to a block because the crate menu is disabled");
+
     public static final Property<String> no_keys = newProperty("Messages.No-Key", "%prefix%&cYou must have a %key% &cin your hand to use that crate.");
 
     public static final Property<String> no_virtual_key = newProperty("Messages.No-Virtual-Key", "%prefix%&cYou need a key to open that Crate.");
