@@ -583,12 +583,14 @@ public class Crate {
      * @param path the path in the config to set the item at.
      */
     private void setItem(ItemStack item, int chance, String path) {
-        ItemMeta itemMeta = item.getItemMeta();
+        if (item.hasItemMeta()) {
+            ItemMeta itemMeta = item.getItemMeta();
 
-        if (itemMeta.hasDisplayName()) this.file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
-        if (itemMeta.hasLore()) this.file.set(path + ".Lore", item.getItemMeta().getLore());
+            if (itemMeta.hasDisplayName()) this.file.set(path + ".DisplayName", item.getItemMeta().getDisplayName());
+            if (itemMeta.hasLore()) this.file.set(path + ".Lore", item.getItemMeta().getLore());
 
-        this.file.set(path + ".Unbreakable", itemMeta.isUnbreakable());
+            this.file.set(path + ".Unbreakable", itemMeta.isUnbreakable());
+        }
 
         List<String> enchantments = new ArrayList<>();
 

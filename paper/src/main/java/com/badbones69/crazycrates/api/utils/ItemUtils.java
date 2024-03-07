@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemUtils {
 
@@ -27,14 +28,17 @@ public class ItemUtils {
         if (one != null && two != null) {
             if (one.getType() == two.getType()) {
                 if (one.hasItemMeta() && two.hasItemMeta()) {
-                    if (one.getItemMeta().hasDisplayName() && two.getItemMeta().hasDisplayName()) {
-                        if (one.getItemMeta().getDisplayName().equalsIgnoreCase(two.getItemMeta().getDisplayName())) {
-                            if (one.getItemMeta().hasLore() && two.getItemMeta().hasLore()) {
-                                if (one.getItemMeta().getLore().size() == two.getItemMeta().getLore().size()) {
+                    ItemMeta itemMetaOne = one.getItemMeta();
+                    ItemMeta itemMetaTwo = two.getItemMeta();
+
+                    if (itemMetaOne.hasDisplayName() && itemMetaTwo.hasDisplayName()) {
+                        if (itemMetaOne.getDisplayName().equalsIgnoreCase(itemMetaTwo.getDisplayName())) {
+                            if (itemMetaOne.hasLore() && itemMetaTwo.hasLore()) {
+                                if (itemMetaOne.getLore().size() == itemMetaTwo.getLore().size()) {
                                     int i = 0;
 
-                                    for (String lore : one.getItemMeta().getLore()) {
-                                        if (!lore.equals(two.getItemMeta().getLore().get(i))) {
+                                    for (String lore : itemMetaOne.getLore()) {
+                                        if (!lore.equals(itemMetaTwo.getLore().get(i))) {
                                             return false;
                                         }
 
@@ -43,15 +47,15 @@ public class ItemUtils {
 
                                     return true;
                                 }
-                            } else return !one.getItemMeta().hasLore() && !two.getItemMeta().hasLore();
+                            } else return !itemMetaOne.hasLore() && !itemMetaTwo.hasLore();
                         }
-                    } else if (!one.getItemMeta().hasDisplayName() && !two.getItemMeta().hasDisplayName()) {
-                        if (one.getItemMeta().hasLore() && two.getItemMeta().hasLore()) {
-                            if (one.getItemMeta().getLore().size() == two.getItemMeta().getLore().size()) {
+                    } else if (!itemMetaOne.hasDisplayName() && !itemMetaTwo.hasDisplayName()) {
+                        if (itemMetaOne.hasLore() && itemMetaTwo.hasLore()) {
+                            if (itemMetaOne.getLore().size() == itemMetaTwo.getLore().size()) {
                                 int i = 0;
 
-                                for (String lore : one.getItemMeta().getLore()) {
-                                    if (!lore.equals(two.getItemMeta().getLore().get(i))) {
+                                for (String lore : itemMetaOne.getLore()) {
+                                    if (!lore.equals(itemMetaTwo.getLore().get(i))) {
                                         return false;
                                     }
 
@@ -62,7 +66,7 @@ public class ItemUtils {
                             } else {
                                 return false;
                             }
-                        } else return !one.getItemMeta().hasLore() && !two.getItemMeta().hasLore();
+                        } else return !itemMetaOne.hasLore() && !itemMetaTwo.hasLore();
                     }
                 } else return !one.hasItemMeta() && !two.hasItemMeta();
             }

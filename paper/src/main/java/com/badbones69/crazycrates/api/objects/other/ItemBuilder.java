@@ -1066,8 +1066,9 @@ public class ItemBuilder {
     }
 
     private static ItemBuilder set(ItemStack item, ItemBuilder itemBuilder) {
-        if (item.hasItemMeta() && item.getItemMeta() != null) {
-            ItemMeta itemMeta = item.getItemMeta();
+        ItemMeta itemMeta = item.getItemMeta();
+
+        if (item.hasItemMeta() && itemMeta != null) {
 
             if (itemMeta.hasDisplayName()) itemBuilder.setName(itemMeta.getDisplayName());
             if (itemMeta.hasLore()) itemBuilder.setLore(itemMeta.getLore());

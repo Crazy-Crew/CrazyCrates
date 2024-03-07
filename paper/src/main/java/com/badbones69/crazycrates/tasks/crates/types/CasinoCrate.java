@@ -164,12 +164,14 @@ public class CasinoCrate extends CrateBuilder {
             ItemStack itemStack = getInventory().getItem(index);
 
             if (itemStack != null) {
-                ItemMeta itemMeta = itemStack.getItemMeta();
+                if (itemStack.hasItemMeta()) {
+                    ItemMeta itemMeta = itemStack.getItemMeta();
 
-                PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+                    PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-                if (!container.has(PersistentKeys.crate_prize.getNamespacedKey())) {
-                    setItem(index, getRandomGlassPane());
+                    if (!container.has(PersistentKeys.crate_prize.getNamespacedKey())) {
+                        setItem(index, getRandomGlassPane());
+                    }
                 }
             }
         }
