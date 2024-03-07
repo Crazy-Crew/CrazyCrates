@@ -8,18 +8,20 @@ package us.crazycrew.crazycrates.api.enums.types;
  */
 public enum KeyType {
     
-    physical_key("physical_key"),
-    virtual_key("virtual_key"),
-    free_key("free_key");
+    physical_key("physical_key", "Physical Key"),
+    virtual_key("virtual_key", "Virtual Key"),
+    free_key("free_key", "Free Key");
     
     private final String name;
+    private final String friendlyName;
 
     /**
      * A constructor to build a key type reference.
      *
      * @param name of the key-type
      */
-    KeyType(String name) {
+    KeyType(String name, String friendlyName) {
+        this.friendlyName = friendlyName;
         this.name = name;
     }
 
@@ -39,6 +41,15 @@ public enum KeyType {
         }
 
         return null;
+    }
+
+    /**
+     * Get a message friendly version of the key type.
+     *
+     * @return the name of the key-type
+     */
+    public String getFriendlyName() {
+        return this.friendlyName;
     }
 
     /**
