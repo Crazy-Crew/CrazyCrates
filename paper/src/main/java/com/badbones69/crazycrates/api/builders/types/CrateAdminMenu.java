@@ -1,10 +1,10 @@
 package com.badbones69.crazycrates.api.builders.types;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Material;
 import org.bukkit.Sound;
