@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import de.tr7zw.changeme.nbtapi.NBTItem;
@@ -36,7 +37,7 @@ public class CrateMainMenu extends InventoryBuilder {
     private final ConfigManager configManager = this.plugin.getConfigManager();
 
     @NotNull
-    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @NotNull
     private final SettingsManager config = this.configManager.getConfig();
@@ -134,11 +135,11 @@ public class CrateMainMenu extends InventoryBuilder {
                             .setCrateName(crate.getName())
                             .setPlayerName(file.getString(path + "Player"))
                             .setGlow(file.getBoolean(path + "Glowing"))
-                            .addLorePlaceholder("{keys}", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getVirtualKeys(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("{keys_physical}", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("{keys_total}", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getTotalKeys(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("{crate_opened}", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getCrateOpened(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("{player}", getPlayer().getName())
+                            .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(getPlayer().getUniqueId(), crate.getName())))
+                            .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(getPlayer().getUniqueId(), crate.getName())))
+                            .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(getPlayer().getUniqueId(), crate.getName())))
+                            .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(getPlayer().getUniqueId(), crate.getName())))
+                            .addLorePlaceholder("%player%", getPlayer().getName())
                             .build());
                 }
             }
@@ -149,10 +150,10 @@ public class CrateMainMenu extends InventoryBuilder {
 
     private String getCrates(String option) {
         for (Crate crate : this.plugin.getCrateManager().getUsableCrates()) {
-            option = option.replaceAll("{" + crate.getName().toLowerCase() + "}", this.crazyHandler.getUserManager().getVirtualKeys(getPlayer().getUniqueId(), crate.getName()) + "")
-                    .replaceAll("{" + crate.getName().toLowerCase() + "_physical}", this.crazyHandler.getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
-                    .replaceAll("{" + crate.getName().toLowerCase() + "_total}", this.crazyHandler.getUserManager().getTotalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
-                    .replaceAll("{" + crate.getName().toLowerCase() + "_opened}", this.crazyHandler.getUserManager().getCrateOpened(getPlayer().getUniqueId(), crate.getName()) + "");
+            option = option.replaceAll("%" + crate.getName().toLowerCase() + "}", this.userManager.getVirtualKeys(getPlayer().getUniqueId(), crate.getName()) + "")
+                    .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", this.userManager.getPhysicalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
+                    .replaceAll("%" + crate.getName().toLowerCase() + "_total%", this.userManager.getTotalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
+                    .replaceAll("%" + crate.getName().toLowerCase() + "_opened%", this.userManager.getCrateOpened(getPlayer().getUniqueId(), crate.getName()) + "");
         }
 
         return option;
