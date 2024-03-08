@@ -164,6 +164,56 @@ public class MigrationManager {
             messages.setProperty(CrateKeys.created_physical_crate, lines);
 
             messages.setProperty(CrateKeys.removed_physical_crate, convert(section.getString("Removed-Physical-Crate", CrateKeys.removed_physical_crate.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.opened_a_crate, convert(section.getString("Opened-A-Crate", CommandKeys.opened_a_crate.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.gave_a_player_keys, convert(section.getString("Given-A-Player-Keys", CommandKeys.gave_a_player_keys.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.cannot_give_player_keys, convert(section.getString("Cannot-Give-Player-Keys", CommandKeys.cannot_give_player_keys.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.given_everyone_keys, convert(section.getString("Given-Everyone-Keys", CommandKeys.given_everyone_keys.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.given_offline_player_keys, convert(section.getString("Given-Offline-Player-Keys", CommandKeys.given_offline_player_keys.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.take_players_keys, convert(section.getString("Take-A-Player-Keys", CommandKeys.take_players_keys.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.cannot_take_keys, convert(section.getString("Cannot-Take-Keys", CommandKeys.cannot_take_keys.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.take_offline_player_keys, convert(section.getString("Take-Offline-Player-Keys", CommandKeys.take_offline_player_keys.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.no_item_in_hand, convert(section.getString("No-Item-In-Hand", CommandKeys.no_item_in_hand.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.added_item_with_editor, convert(section.getString("Added-Item-With-Editor", CommandKeys.added_item_with_editor.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.reloaded_plugin, convert(section.getString("Reload", CommandKeys.reloaded_plugin.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.transfer_not_enough_keys, convert(section.getString("Transfer-Keys.Not-Enough-Keys", CommandKeys.transfer_not_enough_keys.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.transfer_sent_keys, convert(section.getString("Transfer-Keys.Transferred-Keys", CommandKeys.transfer_sent_keys.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.transfer_received_keys, convert(section.getString("Transfer-Keys.Received-Transferred-Keys", CommandKeys.transfer_received_keys.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.no_virtual_keys, convert(section.getString("Keys.Personal.No-Virtual-Keys", CommandKeys.no_virtual_keys.getDefaultValue())));
+
+            List<String> personalHeader = new ArrayList<>();
+
+            section.getStringList("Keys.Personal.Header").forEach(line -> personalHeader.add(convert(line)));
+
+            messages.setProperty(CommandKeys.virtual_keys_header, personalHeader);
+
+            messages.setProperty(CommandKeys.other_player_no_keys, convert(section.getString("Keys.Personal.Other-Player.No-Virtual-Keys", CommandKeys.other_player_no_keys.getDefaultValue())));
+
+            List<String> otherHeader = new ArrayList<>();
+
+            section.getStringList("Keys.Other-Player.Header").forEach(line -> otherHeader.add(convert(line)));
+
+            messages.setProperty(CommandKeys.other_player_header, otherHeader);
+
+            messages.setProperty(CommandKeys.per_crate, convert(section.getString("Keys.Per-Crate", CommandKeys.per_crate.getDefaultValue())));
+
+            messages.setProperty(CommandKeys.help, section.getStringList("Help"));
+
+            messages.setProperty(CommandKeys.admin_help, section.getStringList("Admin-Help"));
         }
 
         messages.save();
