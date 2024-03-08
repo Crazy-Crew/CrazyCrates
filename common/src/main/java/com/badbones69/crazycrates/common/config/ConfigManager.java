@@ -4,7 +4,11 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
-import com.badbones69.crazycrates.common.config.types.MessageKeys;
+import com.badbones69.crazycrates.common.config.types.messages.CommandKeys;
+import com.badbones69.crazycrates.common.config.types.messages.ErrorKeys;
+import com.badbones69.crazycrates.common.config.types.messages.MiscKeys;
+import com.badbones69.crazycrates.common.config.types.messages.CrateKeys;
+import com.badbones69.crazycrates.common.config.types.messages.PlayerKeys;
 import java.io.File;
 
 public class ConfigManager {
@@ -31,7 +35,7 @@ public class ConfigManager {
         this.messages = SettingsManagerBuilder
                 .withYamlFile(new File(this.dataFolder, "messages.yml"), builder)
                 .useDefaultMigrationService()
-                .configurationData(MessageKeys.class)
+                .configurationData(MiscKeys.class, ErrorKeys.class, PlayerKeys.class, CrateKeys.class, CommandKeys.class)
                 .create();
     }
 
