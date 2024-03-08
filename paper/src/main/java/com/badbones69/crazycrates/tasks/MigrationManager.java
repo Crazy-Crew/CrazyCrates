@@ -5,6 +5,12 @@ import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
+import com.badbones69.crazycrates.common.config.types.messages.CommandKeys;
+import com.badbones69.crazycrates.common.config.types.messages.CrateKeys;
+import com.badbones69.crazycrates.common.config.types.messages.ErrorKeys;
+import com.badbones69.crazycrates.common.config.types.messages.MiscKeys;
+import com.badbones69.crazycrates.common.config.types.messages.PlayerKeys;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +27,9 @@ public class MigrationManager {
     public void migrate() {
         // Update the config file.
         copyConfig();
+
+        // Update the messages file.
+        copyMessages();
 
         // Grab values from the plugin-config.yml if it even exists.
         copyPluginConfig();
@@ -51,6 +60,53 @@ public class MigrationManager {
 
         // Delete old file.
         if (input.delete()) this.plugin.getLogger().warning("Successfully migrated " + input.getName());
+    }
+
+    private void copyMessages() {
+        // Create the file object.
+        File input = new File(this.plugin.getDataFolder(), "messages.yml");
+
+        // Load the configuration.
+        YamlConfiguration old = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(input)).join();
+
+        if (old.getString("Messages.No-Teleporting") == null) return;
+
+        // Create the new file object.
+        File newFile = new File(this.plugin.getDataFolder(), "messages-backup.yml");
+        // Rename it.
+        input.renameTo(newFile);
+
+        YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
+
+        YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
+
+        SettingsManager messages = SettingsManagerBuilder
+                .withYamlFile(input, builder)
+                .useDefaultMigrationService()
+                .configurationData(MiscKeys.class, ErrorKeys.class, PlayerKeys.class, CrateKeys.class, CommandKeys.class)
+                .create();
+
+        ConfigurationSection section = configuration.getConfigurationSection("Messages");
+
+        if (section != null) {
+            messages.setProperty(MiscKeys.unknown_command, convert(section.getString("Unknown-Command", MiscKeys.unknown_command.getDefaultValue())));
+
+            messages.setProperty(MiscKeys.unknown_command, convert(section.getString("Unknown-Command", MiscKeys.unknown_command.getDefaultValue())));
+
+            messages.setProperty(MiscKeys.no_teleporting, convert(section.getString("No-Teleporting", MiscKeys.no_teleporting.getDefaultValue())));
+
+            messages.setProperty(MiscKeys.no_commands_while_using_crate, convert(section.getString("No-Commands-While-In-Crate", MiscKeys.no_commands_while_using_crate.getDefaultValue())));
+
+            messages.setProperty(MiscKeys.no_keys, convert(section.getString("No-Key", MiscKeys.no_keys.getDefaultValue())));
+
+            messages.setProperty(MiscKeys.no_virtual_key, convert(section.getString("No-Virtual-Key", MiscKeys.no_virtual_key.getDefaultValue())));
+
+            messages.setProperty(MiscKeys.correct_usage, convert(section.getString("Correct-Usage", MiscKeys.correct_usage.getDefaultValue())));
+
+            messages.setProperty(MiscKeys.feature_disabled, convert(section.getString("Feature-Disabled", MiscKeys.feature_disabled.getDefaultValue())));
+        }
+
+        messages.save();
     }
 
     private void copyConfig() {
