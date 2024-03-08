@@ -104,6 +104,66 @@ public class MigrationManager {
             messages.setProperty(MiscKeys.correct_usage, convert(section.getString("Correct-Usage", MiscKeys.correct_usage.getDefaultValue())));
 
             messages.setProperty(MiscKeys.feature_disabled, convert(section.getString("Feature-Disabled", MiscKeys.feature_disabled.getDefaultValue())));
+
+            messages.setProperty(ErrorKeys.no_prizes_found, convert(section.getString("No-Prizes-Found", ErrorKeys.no_prizes_found.getDefaultValue())));
+
+            messages.setProperty(ErrorKeys.no_schematics_found, convert(section.getString("No-Schematics-Found", ErrorKeys.no_schematics_found.getDefaultValue())));
+
+            messages.setProperty(ErrorKeys.internal_error, convert(section.getString("Internal-Error", ErrorKeys.internal_error.getDefaultValue())));
+
+            messages.setProperty(ErrorKeys.prize_error, convert(section.getString("Prize-Error", ErrorKeys.prize_error.getDefaultValue())));
+
+            messages.setProperty(PlayerKeys.must_be_a_player, convert(section.getString("Must-Be-A-Player", PlayerKeys.must_be_a_player.getDefaultValue())));
+
+            messages.setProperty(PlayerKeys.must_be_console_sender, convert(section.getString("Must-Be-A-Console-Sender", PlayerKeys.must_be_console_sender.getDefaultValue())));
+
+            messages.setProperty(PlayerKeys.must_be_looking_at_block, convert(section.getString("Must-Be-Looking-At-A-Block", PlayerKeys.must_be_looking_at_block.getDefaultValue())));
+
+            messages.setProperty(PlayerKeys.not_online, convert(section.getString("Not-Online", PlayerKeys.not_online.getDefaultValue())));
+
+            messages.setProperty(PlayerKeys.same_player, convert(section.getString("Same-Player", PlayerKeys.same_player.getDefaultValue())));
+
+            messages.setProperty(PlayerKeys.no_permission, convert(section.getString("No-Permission", PlayerKeys.no_permission.getDefaultValue())));
+
+            messages.setProperty(PlayerKeys.obtaining_keys, convert(section.getString("Obtaining-Keys", PlayerKeys.obtaining_keys.getDefaultValue())));
+
+            messages.setProperty(PlayerKeys.too_close_to_another_player, convert(section.getString("To-Close-To-Another-Player", PlayerKeys.too_close_to_another_player.getDefaultValue())));
+
+            messages.setProperty(CrateKeys.not_a_crate, convert(section.getString("Not-A-Crate", CrateKeys.not_a_crate.getDefaultValue())));
+
+            messages.setProperty(CrateKeys.not_a_number, convert(section.getString("Not-A-Number", CrateKeys.not_a_number.getDefaultValue())));
+
+            messages.setProperty(CrateKeys.required_keys, convert(section.getString("Required-Keys", CrateKeys.required_keys.getDefaultValue())));
+
+            messages.setProperty(CrateKeys.not_on_block, convert(section.getString("Not-On-Block", CrateKeys.not_on_block.getDefaultValue())));
+
+            messages.setProperty(CrateKeys.out_of_time, convert(section.getString("Out-Of-Time", CrateKeys.out_of_time.getDefaultValue())));
+
+            messages.setProperty(CrateKeys.reloaded_forced_out_of_preview, convert(section.getString("Forced-Out-Of-Preview", CrateKeys.reloaded_forced_out_of_preview.getDefaultValue())));
+
+            messages.setProperty(CrateKeys.cannot_set_type, convert(section.getString("Cannot-Set-Menu-Type", CrateKeys.cannot_set_type.getDefaultValue())));
+
+            messages.setProperty(CrateKeys.no_crate_permission, convert(section.getString("No-Crate-Permission", CrateKeys.no_crate_permission.getDefaultValue())));
+
+            messages.setProperty(CrateKeys.preview_disabled, convert(section.getString("Preview-Disabled", CrateKeys.preview_disabled.getDefaultValue())));
+
+            messages.setProperty(CrateKeys.already_opening_crate, convert(section.getString("Already-Opening-Crate", CrateKeys.already_opening_crate.getDefaultValue())));
+
+            messages.setProperty(CrateKeys.crate_in_use, convert(section.getString("Quick-Crate-In-Use", CrateKeys.crate_in_use.getDefaultValue())));
+
+            messages.setProperty(CrateKeys.cant_be_a_virtual_crate, convert(section.getString("Cant-Be-A-Virtual-Crate", CrateKeys.cant_be_a_virtual_crate.getDefaultValue())));
+
+            messages.setProperty(CrateKeys.needs_more_room, convert(section.getString("Needs-More-Room", CrateKeys.needs_more_room.getDefaultValue())));
+
+            messages.setProperty(CrateKeys.world_disabled, convert(section.getString("World-Disabled", CrateKeys.world_disabled.getDefaultValue())));
+
+            List<String> lines = new ArrayList<>();
+
+            section.getStringList("Created-Physical-Crate").forEach(line -> lines.add(convert(line)));
+
+            messages.setProperty(CrateKeys.created_physical_crate, lines);
+
+            messages.setProperty(CrateKeys.removed_physical_crate, convert(section.getString("Removed-Physical-Crate", CrateKeys.removed_physical_crate.getDefaultValue())));
         }
 
         messages.save();
