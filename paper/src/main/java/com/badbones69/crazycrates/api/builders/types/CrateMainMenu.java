@@ -73,18 +73,18 @@ public class CrateMainMenu extends InventoryBuilder {
 
                     for (String option : split) {
 
-                        if (option.contains("Item:")) item.setMaterial(option.replace("Item:", ""));
+                        if (option.contains("item:")) item.setMaterial(option.replace("item:", ""));
 
-                        if (option.contains("Name:")) {
-                            option = option.replace("Name:", "");
+                        if (option.contains("name:")) {
+                            option = option.replace("name:", "");
 
                             option = getCrates(option);
 
                             item.setName(option.replaceAll("\\{player}", getPlayer().getName()));
                         }
 
-                        if (option.contains("Lore:")) {
-                            option = option.replace("Lore:", "");
+                        if (option.contains("lore:")) {
+                            option = option.replace("lore:", "");
                             String[] lore = option.split(",");
 
                             for (String line : lore) {
@@ -94,15 +94,15 @@ public class CrateMainMenu extends InventoryBuilder {
                             }
                         }
 
-                        if (option.contains("Glowing:")) item.setGlow(Boolean.parseBoolean(option.replace("Glowing:", "")));
+                        if (option.contains("glowing:")) item.setGlow(Boolean.parseBoolean(option.replace("glowing:", "")));
 
-                        if (option.contains("Player:")) item.setPlayerName(option.replaceAll("\\{player}", getPlayer().getName()));
+                        if (option.contains("player:")) item.setPlayerName(option.replaceAll("\\{player}", getPlayer().getName()));
 
-                        if (option.contains("Slot:")) slot = Integer.parseInt(option.replace("Slot:", ""));
+                        if (option.contains("slot:")) slot = Integer.parseInt(option.replace("slot:", ""));
 
-                        if (option.contains("Unbreakable-Item")) item.setUnbreakable(Boolean.parseBoolean(option.replace("Unbreakable-Item:", "")));
+                        if (option.contains("unbreakable-item")) item.setUnbreakable(Boolean.parseBoolean(option.replace("unbreakable-item:", "")));
 
-                        if (option.contains("Hide-Item-Flags")) item.hideItemFlags(Boolean.parseBoolean(option.replace("Hide-Item-Flags:", "")));
+                        if (option.contains("hide-item-flags")) item.hideItemFlags(Boolean.parseBoolean(option.replace("hide-item-flags:", "")));
                     }
 
                     if (slot > getSize()) continue;
