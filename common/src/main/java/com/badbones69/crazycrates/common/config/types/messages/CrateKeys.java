@@ -50,7 +50,7 @@ public class CrateKeys implements SettingsHolder {
     public static final Property<String> already_opening_crate = newProperty("crates.crate-already-open", "{prefix}&cYou are already opening &6{crate}.");
 
     @Comment("A list of available placeholders: {prefix}, {crate}")
-    public static final Property<String> quick_crate_in_use = newProperty("crates.crate-in-use", "{prefix}&c{crate} is already in use. Please wait until it finishes.");
+    public static final Property<String> crate_in_use = newProperty("crates.crate-in-use", "{prefix}&c{crate} is already in use. Please wait until it finishes.");
 
     @Comment("A list of available placeholders: {prefix}, {crate}, {cratetype}")
     public static final Property<String> cant_be_a_virtual_crate = newProperty("crates.cannot-be-a-virtual-crate", "{prefix}&6{crate} &ccannot be used as a Virtual Crate.");

@@ -419,7 +419,7 @@ public class CrateManager {
             }
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    player.sendMessage(Messages.quick_crate_in_use.getMessage("{crate}", crate.getName(), player));
+                    player.sendMessage(Messages.crate_in_use.getMessage("{crate}", crate.getName(), player));
                     removePlayerFromOpeningList(player);
                     return;
                 }
@@ -453,7 +453,7 @@ public class CrateManager {
             }
             case quick_crate -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    player.sendMessage(Messages.quick_crate_in_use.getMessage("%crate%", crate.getName(), player));
+                    player.sendMessage(Messages.crate_in_use.getMessage("%crate%", crate.getName(), player));
                     removePlayerFromOpeningList(player);
                     return;
                 }

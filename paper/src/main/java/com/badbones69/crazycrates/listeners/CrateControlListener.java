@@ -171,18 +171,18 @@ public class CrateControlListener implements Listener {
 
                         if (!useQuickCrateAgain) {
                             if (this.crateManager.isInOpeningList(player)) {
-                                player.sendMessage(Messages.already_opening_crate.getMessage("%crate%", crate.getName(), player));
+                                player.sendMessage(Messages.already_opening_crate.getMessage("{crate}", crate.getName(), player));
                                 return;
                             }
 
                             if (this.crateManager.getCratesInUse().containsValue(crateLocation.getLocation())) {
-                                player.sendMessage(Messages.quick_crate_in_use.getMessage("%crate%", crate.getName(), player));
+                                player.sendMessage(Messages.crate_in_use.getMessage("{crate}", crate.getName(), player));
                                 return;
                             }
                         }
 
                         if (MiscUtils.isInventoryFull(player)) {
-                            player.sendMessage(Messages.inventory_not_empty.getMessage("%crate%", crate.getName(), player));
+                            player.sendMessage(Messages.inventory_not_empty.getMessage("{crate}", crate.getName(), player));
                             return;
                         }
 
