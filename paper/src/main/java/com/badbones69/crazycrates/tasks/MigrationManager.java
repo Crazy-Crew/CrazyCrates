@@ -71,70 +71,6 @@ public class MigrationManager {
 
         YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
 
-        String prefix = configuration.getString(settings + "Prefix", "&8[&bCrazyCrates&8]: ");
-        boolean toggleMetrics = configuration.getBoolean(settings + "Toggle-Metrics", true);
-
-        boolean toggleCrateMenu = configuration.getBoolean(settings + "Enable-Crate-Menu", true);
-        boolean toggleQuickCrate = configuration.getBoolean(settings + "Show-QuickCrate-Item", true);
-
-        boolean logFile = configuration.getBoolean(settings + "Log-Console", false);
-        boolean logConsole = configuration.getBoolean(settings + "Log-File", false);
-
-        String invName = configuration.getString(settings + "InventoryName", "&b&lCrazy &4&lCrates");
-        int invSize = configuration.getInt(settings + "InventorySize", 45);
-
-        boolean knockback = configuration.getBoolean(settings + "KnockBack", true);
-
-        boolean previewOut = configuration.getBoolean(settings + "Force-Out-Of-Preview", false);
-        boolean previewMsg = configuration.getBoolean(settings + "Force-Out-Of-Preview-Message", false);
-
-        boolean cosmic = configuration.getBoolean(settings + "Cosmic-Crate-Timeout", true);
-
-        boolean physicalVirtual = configuration.getBoolean(settings + "Physical-Accepts-Virtual-Keys", true);
-        boolean physicalPhysical = configuration.getBoolean(settings + "Physical-Accepts-Physical-Keys", true);
-        boolean virtualPhysical = configuration.getBoolean(settings + "Virtual-Accepts-Physical-Keys", true);
-
-        boolean invFull = configuration.getBoolean(settings + "Give-Virtual-Keys-When-Inventory-Full", false);
-        boolean invMsg = configuration.getBoolean(settings + "Give-Virtual-Keys-When-Inventory-Full-Message", false);
-
-        boolean needKeyToggle = configuration.getBoolean(settings + "Need-Key-Sound-Toggle", true);
-        String sound = configuration.getString(settings + "Need-Key-Sound", "ENTITY_VILLAGER_NO");
-
-        int timer = configuration.getInt(settings + "QuadCrate.Timer", 300);
-        List<String> worlds = configuration.getStringList(settings + "DisabledWorlds");
-
-        String previewPath = settings + "Preview.Buttons.";
-
-        String menuItem = configuration.getString(previewPath + "Menu.Item", "COMPASS");
-        String menuName = configuration.getString(previewPath + "Menu.Name", "&7&l>> &c&lMenu &7&l<<");
-        List<String> menuLore = configuration.getStringList(previewPath + "Menu.Lore");
-
-        String nextItem = configuration.getString(previewPath + "Next.Item", "COMPASS");
-        String nextName = configuration.getString(previewPath + "Next.Name", "&7&l>> &c&lMenu &7&l<<");
-
-        List<String> nextLore = new ArrayList<>();
-        configuration.getStringList(previewPath + "Next.Lore").forEach(line -> nextLore.add(convert(line)));
-
-        String backItem = configuration.getString(previewPath + "Back.Item", "COMPASS");
-        String backName = configuration.getString(previewPath + "Back.Name", "&7&l>> &c&lMenu &7&l<<");
-
-        List<String> backLore = new ArrayList<>();
-        configuration.getStringList(previewPath + "Back.Lore").forEach(line -> backLore.add(convert(line)));
-
-        boolean menuOverride = configuration.getBoolean(previewPath + "Menu.override.toggle", false);
-        List<String> menuList = configuration.getStringList(previewPath + "Menu.override.list");
-
-        boolean fillerToggle = configuration.getBoolean(settings + "Filler.Toggle", false);
-        String fillerItem = configuration.getString(settings + "Filler.Item", "BLACK_STAINED_GLASS_PANE");
-        String fillerName = configuration.getString(settings + "Filler.Name", " ");
-
-        List<String> fillerLore = new ArrayList<>();
-
-        configuration.getStringList(settings + "Filler.Lore").forEach(line -> fillerLore.add(convert(line)));
-
-        boolean customizerToggle = configuration.getBoolean(settings + "GUI-Customizer-Toggle", true);
-        List<String> customizer = configuration.getStringList(settings + "GUI-Customizer");
-
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
 
         SettingsManager config = SettingsManagerBuilder
@@ -143,75 +79,115 @@ public class MigrationManager {
                 .configurationData(ConfigKeys.class)
                 .create();
 
-        // If these are prent for whatever reason.
-        if (configuration.contains("Settings.Prefix")) {
-            config.setProperty(ConfigKeys.command_prefix, prefix);
+        ConfigurationSection section = configuration.getConfigurationSection("Settings");
+
+        if (section != null) {
+            if (section.contains("Prefix")) {
+                config.setProperty(ConfigKeys.command_prefix, section.getString("Prefix", ConfigKeys.command_prefix.getDefaultValue()));
+            }
+
+            // If these are prent for whatever reason.
+            if (configuration.contains("Toggle-Metrics")) {
+                config.setProperty(ConfigKeys.toggle_metrics, section.getBoolean("Toggle-Metrics", ConfigKeys.toggle_metrics.getDefaultValue()));
+            }
+
+            config.setProperty(ConfigKeys.enable_crate_menu, section.getBoolean("Enable-Crate-Menu", ConfigKeys.enable_crate_menu.getDefaultValue()));
+
+            config.setProperty(ConfigKeys.show_quickcrate_item, section.getBoolean("Show-QuickCrate-Item", ConfigKeys.show_quickcrate_item.getDefaultValue()));
+
+            config.setProperty(ConfigKeys.log_to_file, section.getBoolean("Log-File", ConfigKeys.log_to_file.getDefaultValue()));
+            config.setProperty(ConfigKeys.log_to_console, section.getBoolean("Log-Console", ConfigKeys.log_to_console.getDefaultValue()));
+
+            config.setProperty(ConfigKeys.inventory_name, section.getString("InventoryName", ConfigKeys.inventory_name.getDefaultValue()));
+
+            config.setProperty(ConfigKeys.inventory_size, section.getInt("InventorySize", ConfigKeys.inventory_size.getDefaultValue()));
+
+            config.setProperty(ConfigKeys.knock_back, section.getBoolean("KnockBack", ConfigKeys.knock_back.getDefaultValue()));
+
+            config.setProperty(ConfigKeys.take_out_of_preview, section.getBoolean("Force-Out-Of-Preview", ConfigKeys.take_out_of_preview.getDefaultValue()));
+            config.setProperty(ConfigKeys.send_preview_taken_out_message, section.getBoolean("Force-Out-Of-Preview-Message", ConfigKeys.send_preview_taken_out_message.getDefaultValue()));
+
+            config.setProperty(ConfigKeys.cosmic_crate_timeout, section.getBoolean("Cosmic-Crate-Timeout", ConfigKeys.cosmic_crate_timeout.getDefaultValue()));
+
+            config.setProperty(ConfigKeys.physical_accepts_virtual_keys, section.getBoolean("Physical-Accepts-Virtual-Keys", ConfigKeys.physical_accepts_virtual_keys.getDefaultValue()));
+            config.setProperty(ConfigKeys.physical_accepts_physical_keys, section.getBoolean("Physical-Accepts-Physical-Keys", ConfigKeys.physical_accepts_physical_keys.getDefaultValue()));
+            config.setProperty(ConfigKeys.virtual_accepts_physical_keys, section.getBoolean("Virtual-Accepts-Physical-Keys", ConfigKeys.virtual_accepts_physical_keys.getDefaultValue()));
+
+            config.setProperty(ConfigKeys.give_virtual_keys_when_inventory_full, section.getBoolean("Give-Virtual-Keys-When-Inventory-Full", ConfigKeys.give_virtual_keys_when_inventory_full.getDefaultValue()));
+
+            config.setProperty(ConfigKeys.notify_player_when_inventory_full, section.getBoolean("Give-Virtual-Keys-When-Inventory-Full-Message", ConfigKeys.notify_player_when_inventory_full.getDefaultValue()));
+
+            config.setProperty(ConfigKeys.need_key_sound_toggle, section.getBoolean("Need-Key-Sound-Toggle", ConfigKeys.need_key_sound_toggle.getDefaultValue()));
+            config.setProperty(ConfigKeys.need_key_sound, section.getString("Need-Key-Sound", ConfigKeys.need_key_sound.getDefaultValue()));
+
+            config.setProperty(ConfigKeys.quad_crate_timer, section.getInt("QuadCrate.Timer", ConfigKeys.quad_crate_timer.getDefaultValue()));
+
+            config.setProperty(ConfigKeys.disabled_worlds, section.getStringList("DisabledWorlds"));
+
+            String path = settings + "Preview.Buttons.";
+
+            config.setProperty(ConfigKeys.menu_button_item, section.getString(path + "Menu.Item", ConfigKeys.menu_button_item.getDefaultValue()));
+            config.setProperty(ConfigKeys.menu_button_name, convert(section.getString(path + "Menu.Name", ConfigKeys.menu_button_name.getDefaultValue())));
+
+            List<String> menuLore = new ArrayList<>();
+
+            section.getStringList(path + "Menu.Lore").forEach(line -> menuLore.add(convert(line)));
+
+            config.setProperty(ConfigKeys.menu_button_lore, menuLore);
+
+            config.setProperty(ConfigKeys.menu_button_override, section.getBoolean(path + "Menu.override.toggle", ConfigKeys.menu_button_override.getDefaultValue()));
+
+            List<String> commands = new ArrayList<>();
+
+            section.getStringList(path + "Menu.override.list").forEach(line -> commands.add(convert(line)));
+
+            config.setProperty(ConfigKeys.menu_button_command_list, commands);
+
+            config.setProperty(ConfigKeys.next_button_item, section.getString(path + "Next.Item", ConfigKeys.next_button_item.getDefaultValue()));
+            config.setProperty(ConfigKeys.next_button_name, convert(section.getString(path + "Next.Name", ConfigKeys.next_button_name.getDefaultValue())));
+
+            List<String> nextLore = new ArrayList<>();
+
+            section.getStringList(path + "Next.Lore").forEach(line -> nextLore.add(convert(line)));
+
+            config.setProperty(ConfigKeys.next_button_lore, nextLore);
+
+            config.setProperty(ConfigKeys.back_button_item, section.getString(path + "Back.Item", ConfigKeys.back_button_item.getDefaultValue()));
+            config.setProperty(ConfigKeys.back_button_name, convert(section.getString(path + "Back.Name", ConfigKeys.back_button_name.getDefaultValue())));
+
+            List<String> backLore = new ArrayList<>();
+
+            section.getStringList(path + "Back.Lore").forEach(line -> backLore.add(convert(line)));
+
+            config.setProperty(ConfigKeys.back_button_lore, backLore);
+
+            config.setProperty(ConfigKeys.filler_toggle, section.getBoolean("Filler.Toggle", ConfigKeys.filler_toggle.getDefaultValue()));
+            config.setProperty(ConfigKeys.filler_item, section.getString("Filler.Item", ConfigKeys.filler_item.getDefaultValue()));
+            config.setProperty(ConfigKeys.filler_name, convert(section.getString("Filler.Name", ConfigKeys.filler_name.getDefaultValue())));
+
+            List<String> fillerLore = new ArrayList<>();
+
+            section.getStringList("Filler.Lore").forEach(line -> fillerLore.add(convert(line)));
+
+            config.setProperty(ConfigKeys.filler_lore, fillerLore);
+
+            config.setProperty(ConfigKeys.gui_customizer_toggle, section.getBoolean("GUI-Customizer-Toggle", ConfigKeys.gui_customizer_toggle.getDefaultValue()));
+
+            List<String> customizer = new ArrayList<>();
+
+            section.getStringList("GUI-Customizer").forEach(line -> customizer.add(line
+                    .replaceAll("Item:", "item:")
+                    .replaceAll("Slot:", "slot:")
+                    .replaceAll("Name:", "name:")
+                    .replaceAll("Lore:", "lore:")
+                    .replaceAll("Glowing:" , "glowing:")
+                    .replaceAll("Player:", "player:")
+                    .replaceAll("Unbreakable-Item", "unbreakable_item:")
+                    .replaceAll("Hide-Item-Flags", "hide_item_flags:")
+            ));
+
+            config.setProperty(ConfigKeys.gui_customizer, customizer);
         }
-
-        // If these are prent for whatever reason.
-        if (configuration.contains("Settings.Toggle-Metrics")) {
-            config.setProperty(ConfigKeys.toggle_metrics, toggleMetrics);
-        }
-
-        config.setProperty(ConfigKeys.enable_crate_menu, toggleCrateMenu);
-
-        config.setProperty(ConfigKeys.show_quickcrate_item, toggleQuickCrate);
-
-        config.setProperty(ConfigKeys.log_to_file, logFile);
-        config.setProperty(ConfigKeys.log_to_console, logConsole);
-
-        config.setProperty(ConfigKeys.inventory_name, invName);
-        config.setProperty(ConfigKeys.inventory_size, invSize);
-
-        config.setProperty(ConfigKeys.knock_back, knockback);
-
-        config.setProperty(ConfigKeys.take_out_of_preview, previewOut);
-        config.setProperty(ConfigKeys.send_preview_taken_out_message, previewMsg);
-
-        config.setProperty(ConfigKeys.cosmic_crate_timeout, cosmic);
-
-        config.setProperty(ConfigKeys.physical_accepts_virtual_keys, physicalVirtual);
-        config.setProperty(ConfigKeys.physical_accepts_physical_keys, physicalPhysical);
-        config.setProperty(ConfigKeys.virtual_accepts_physical_keys, virtualPhysical);
-
-        config.setProperty(ConfigKeys.give_virtual_keys_when_inventory_full, invFull);
-        config.setProperty(ConfigKeys.notify_player_when_inventory_full, invMsg);
-
-        config.setProperty(ConfigKeys.need_key_sound_toggle, needKeyToggle);
-        config.setProperty(ConfigKeys.need_key_sound, sound);
-
-        config.setProperty(ConfigKeys.quad_crate_timer, timer);
-
-        config.setProperty(ConfigKeys.disabled_worlds, worlds);
-
-        config.setProperty(ConfigKeys.menu_button_item, menuItem);
-        config.setProperty(ConfigKeys.menu_button_name, menuName);
-
-        //todo() loop and replace %page%
-        config.setProperty(ConfigKeys.menu_button_lore, menuLore);
-
-        config.setProperty(ConfigKeys.menu_button_override, menuOverride);
-        config.setProperty(ConfigKeys.menu_button_command_list, menuList);
-
-        config.setProperty(ConfigKeys.next_button_item, nextItem);
-        config.setProperty(ConfigKeys.next_button_name, nextName);
-
-        //todo() loop and replace %page%
-        config.setProperty(ConfigKeys.next_button_lore, nextLore);
-
-        config.setProperty(ConfigKeys.back_button_item, backItem);
-        config.setProperty(ConfigKeys.back_button_name, backName);
-
-        //todo() loop and replace %page%
-        config.setProperty(ConfigKeys.back_button_lore, backLore);
-
-        config.setProperty(ConfigKeys.filler_toggle, fillerToggle);
-        config.setProperty(ConfigKeys.filler_item, fillerItem);
-        config.setProperty(ConfigKeys.filler_name, fillerName);
-        config.setProperty(ConfigKeys.filler_lore, fillerLore);
-
-        config.setProperty(ConfigKeys.gui_customizer_toggle, customizerToggle);
-        config.setProperty(ConfigKeys.gui_customizer, customizer);
 
         config.save();
     }
