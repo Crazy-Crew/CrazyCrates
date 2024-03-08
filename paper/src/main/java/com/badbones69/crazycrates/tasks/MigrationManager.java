@@ -41,10 +41,10 @@ public class MigrationManager {
                 .configurationData(ConfigKeys.class)
                 .create();
 
-        config.setProperty(ConfigKeys.verbose_logging, configuration.getBoolean("verbose_logging", false));
-        config.setProperty(ConfigKeys.toggle_metrics, configuration.getBoolean("toggle_metrics", false));
-        config.setProperty(ConfigKeys.command_prefix, configuration.getString("command_prefix", "&8[&bCrazyCrates&8]: "));
-        config.setProperty(ConfigKeys.console_prefix, configuration.getString("console_prefix", "&8[&bCrazyCrates&8] "));
+        config.setProperty(ConfigKeys.verbose_logging, configuration.getBoolean("verbose_logging", ConfigKeys.verbose_logging.getDefaultValue()));
+        config.setProperty(ConfigKeys.toggle_metrics, configuration.getBoolean("toggle_metrics", ConfigKeys.toggle_metrics.getDefaultValue()));
+        config.setProperty(ConfigKeys.command_prefix, configuration.getString("command_prefix", ConfigKeys.command_prefix.getDefaultValue()));
+        config.setProperty(ConfigKeys.console_prefix, configuration.getString("console_prefix", ConfigKeys.console_prefix.getDefaultValue()));
 
         // Save to file.
         config.save();
