@@ -291,8 +291,8 @@ public class CosmicCrateListener implements Listener {
             // If they don't have enough keys.
             if (value) {
                 Map<String, String> placeholders = new HashMap<>();
-                placeholders.put("%crate%", crate.getName());
-                placeholders.put("%key%", crate.getKeyName());
+                placeholders.put("{crate}", crate.getName());
+                placeholders.put("{key}", crate.getKeyName());
 
                 // Send no keys message.
                 player.sendMessage(Messages.no_keys.getMessage(placeholders, player));

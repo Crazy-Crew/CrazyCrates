@@ -160,8 +160,8 @@ public class CrateControlListener implements Listener {
                     if (this.config.getProperty(ConfigKeys.physical_accepts_virtual_keys) && this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) hasKey = true;
 
                     Map<String, String> placeholders = new HashMap<>();
-                    placeholders.put("%crate%", crate.getName());
-                    placeholders.put("%key%", keyName);
+                    placeholders.put("{crate}", crate.getName());
+                    placeholders.put("{key}", keyName);
 
                     if (hasKey) {
                         // Checks if the player uses the quick crate again.
