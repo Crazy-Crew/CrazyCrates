@@ -35,7 +35,7 @@ public class BaseKeyCommand extends BaseCommand {
 
         placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(player.getUniqueId())));
 
-        getKeys(player, player, Messages.no_virtual_keys_header.getMessage(placeholders, player), Messages.no_virtual_keys.getMessage(player));
+        getKeys(player, player, Messages.virtual_keys_header.getMessage(placeholders, player), Messages.no_virtual_keys.getMessage(player));
     }
 
     @SubCommand("view")

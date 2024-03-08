@@ -71,7 +71,7 @@ public class CommandKeys implements SettingsHolder {
     public static final Property<String> no_virtual_keys = newProperty("command.keys.personal.no-virtual-keys", "{prefix}&8&l(&4&l!&8&l) &7You currently do not have any virtual keys.");
 
     @Comment("A list of available placeholders: {crates_opened}")
-    public static final Property<List<String>> no_virtual_keys_header = newListProperty("command.keys.personal.virtual-keys-header", List.of(
+    public static final Property<List<String>> virtual_keys_header = newListProperty("command.keys.personal.virtual-keys-header", List.of(
             "&8&l(&6&l!&8&l) &7List of your current number of keys.",
             " &e -> Total Crates Opened: &c{crates_opened}"
     ));

@@ -76,7 +76,7 @@ public enum Messages {
     transfer_sent_keys(CommandKeys.transfer_sent_keys),
     transfer_received_keys(CommandKeys.transfer_received_keys),
     no_virtual_keys(CommandKeys.no_virtual_keys),
-    no_virtual_keys_header(CommandKeys.no_virtual_keys_header, true),
+    virtual_keys_header(CommandKeys.virtual_keys_header, true),
     other_player_no_keys(CommandKeys.other_player_no_keys),
     other_player_no_keys_header(CommandKeys.other_player_header, true),
     per_crate(CommandKeys.per_crate),
