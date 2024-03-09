@@ -27,8 +27,6 @@ public class MiscRelations extends MessageManager {
             } else {
                 send(sender, Messages.no_permission.getMessage());
             }
-
-            send(sender, Messages.no_permission.getMessage());
         });
 
         getBukkitCommandManager().registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> {
