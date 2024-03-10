@@ -79,8 +79,7 @@ public class MigrationManager {
         if (!newFile.exists()) {
             input.renameTo(newFile);
         }
-
-
+        
         YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
 
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
