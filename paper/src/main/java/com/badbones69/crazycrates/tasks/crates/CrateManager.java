@@ -999,9 +999,6 @@ public class CrateManager {
     public boolean isKeyFromCrate(ItemStack item, Crate crate) {
         if (crate.getCrateType() == CrateType.menu) return false;
 
-        if (item == null) return false;
-        if (item.getType() == Material.AIR) return false;
-
         return ItemUtils.isKey(item);
     }
 
