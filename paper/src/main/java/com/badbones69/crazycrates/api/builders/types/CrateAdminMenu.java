@@ -42,7 +42,7 @@ public class CrateAdminMenu extends InventoryBuilder {
                 .addLore("&7&lLeft click to get physical keys.").build());
 
         for (Crate crate : this.plugin.getCrateManager().getUsableCrates()) {
-            if (inventory.firstEmpty() >= 0) inventory.setItem(inventory.firstEmpty(), crate.getKey(getPlayer()));
+            if (inventory.firstEmpty() >= 0) inventory.setItem(inventory.firstEmpty(), crate.getKey(1, getPlayer()));
         }
 
         return this;
