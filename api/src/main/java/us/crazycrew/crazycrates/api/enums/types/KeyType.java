@@ -4,7 +4,7 @@ package us.crazycrew.crazycrates.api.enums.types;
  * An enum class that contains all our current key types.
  *
  * @author Ryder Belserion
- * @version 0.3
+ * @version 0.4
  */
 public enum KeyType {
     
