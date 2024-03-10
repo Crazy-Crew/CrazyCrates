@@ -22,21 +22,24 @@ import java.util.concurrent.CompletableFuture;
 public class MigrationManager {
 
     @NotNull
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    public void migrate() {
+    public static void migrate() {
+        File directory = new File(plugin.getDataFolder(), "backups");
+        directory.mkdirs();
+
         // Update the config file.
         copyConfig();
 
         // Update the messages file.
-        copyMessages();
+        copyMessages(directory);
 
         // Grab values from the plugin-config.yml if it even exists.
         copyPluginConfig();
     }
 
-    private void copyPluginConfig() {
-        File input = new File(this.plugin.getDataFolder(), "plugin-config.yml");
+    private static void copyPluginConfig() {
+        File input = new File(plugin.getDataFolder(), "plugin-config.yml");
 
         if (!input.exists()) return;
 
@@ -45,7 +48,7 @@ public class MigrationManager {
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
 
         SettingsManager config = SettingsManagerBuilder
-                .withYamlFile(new File(this.plugin.getDataFolder(), "config.yml"), builder)
+                .withYamlFile(new File(plugin.getDataFolder(), "config.yml"), builder)
                 .useDefaultMigrationService()
                 .configurationData(ConfigKeys.class)
                 .create();
@@ -59,12 +62,12 @@ public class MigrationManager {
         config.save();
 
         // Delete old file.
-        if (input.delete()) this.plugin.getLogger().warning("Successfully migrated " + input.getName());
+        if (input.delete()) plugin.getLogger().warning("Successfully migrated " + input.getName());
     }
 
-    private void copyMessages() {
+    private static void copyMessages(File directory) {
         // Create the file object.
-        File input = new File(this.plugin.getDataFolder(), "messages.yml");
+        File input = new File(plugin.getDataFolder(), "messages.yml");
 
         // Load the configuration.
         YamlConfiguration old = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(input)).join();
@@ -72,9 +75,11 @@ public class MigrationManager {
         if (old.getString("Messages.No-Teleporting") == null) return;
 
         // Create the new file object.
-        File newFile = new File(this.plugin.getDataFolder(), "messages-backup.yml");
-        // Rename it.
-        input.renameTo(newFile);
+        File newFile = new File(directory, "messages-backup.yml");
+        if (!newFile.exists()) {
+            input.renameTo(newFile);
+        }
+
 
         YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
 
@@ -219,9 +224,9 @@ public class MigrationManager {
         messages.save();
     }
 
-    private void copyConfig() {
+    private static void copyConfig() {
         // Create the file object.
-        File input = new File(this.plugin.getDataFolder(), "config.yml");
+        File input = new File(plugin.getDataFolder(), "config.yml");
 
         // Load the configuration.
         YamlConfiguration old = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(input)).join();
@@ -231,7 +236,7 @@ public class MigrationManager {
         if (old.getString(settings + "Enable-Crate-Menu") == null) return;
 
         // Create the new file object.
-        File newFile = new File(this.plugin.getDataFolder(), "config-backup.yml");
+        File newFile = new File(plugin.getDataFolder(), "config-backup.yml");
         // Rename it.
         input.renameTo(newFile);
 
@@ -358,7 +363,29 @@ public class MigrationManager {
         config.save();
     }
 
-    private String convert(String message) {
+    private static String colors(String message) {
+        return message.replaceAll("&0", "<black>")
+                .replaceAll("&1", "<dark_blue>")
+                .replaceAll("&2", "<dark_green>")
+                .replaceAll("&3", "<dark_aqua>")
+                .replaceAll("&4", "<dark_red>")
+                .replaceAll("&5", "<dark_purple>")
+                .replaceAll("&6", "<gold>")
+                .replaceAll("&7", "<gray>")
+                .replaceAll("&8", "<dark_gray>")
+                .replaceAll("&9", "<blue>")
+                .replaceAll("&a", "<green>")
+                .replaceAll("&b", "<aqua>")
+                .replaceAll("&c", "<red>")
+                .replaceAll("&d", "<light_purple>")
+                .replaceAll("&e", "<yellow>")
+                .replaceAll("&f", "<white>")
+                .replaceAll("&k", "<obfuscated>").replaceAll("&l", "<bold>")
+                .replaceAll("&m", "<strikethrough>").replaceAll("&n", "<underline>")
+                .replaceAll("&o", "<italic>").replaceAll("&r", "<reset>");
+    }
+
+    private static String convert(String message) {
         return message
                 .replaceAll("%page%", "{page}")
                 .replaceAll("%prefix%", "{prefix}")
