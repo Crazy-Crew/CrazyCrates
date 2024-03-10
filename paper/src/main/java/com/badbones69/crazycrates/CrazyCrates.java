@@ -45,7 +45,7 @@ public class CrazyCrates extends JavaPlugin {
     @Override
     public void onEnable() {
         // Migrate as early as possible.
-        new MigrationManager().migrate();
+        MigrationManager.migrate();
 
         this.timer = new Timer();
 
