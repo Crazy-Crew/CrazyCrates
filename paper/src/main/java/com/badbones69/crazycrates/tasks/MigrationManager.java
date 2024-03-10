@@ -29,7 +29,7 @@ public class MigrationManager {
         directory.mkdirs();
 
         // Update the config file.
-        copyConfig();
+        copyConfig(directory);
 
         // Update the messages file.
         copyMessages(directory);
@@ -75,7 +75,7 @@ public class MigrationManager {
         if (old.getString("Messages.No-Teleporting") == null) return;
 
         // Create the new file object.
-        File newFile = new File(directory, "messages-backup.yml");
+        File newFile = new File(directory, "messages-v1.yml");
         if (!newFile.exists()) {
             input.renameTo(newFile);
         }
@@ -223,7 +223,7 @@ public class MigrationManager {
         messages.save();
     }
 
-    private static void copyConfig() {
+    private static void copyConfig(File directory) {
         // Create the file object.
         File input = new File(plugin.getDataFolder(), "config.yml");
 
@@ -235,9 +235,10 @@ public class MigrationManager {
         if (old.getString(settings + "Enable-Crate-Menu") == null) return;
 
         // Create the new file object.
-        File newFile = new File(plugin.getDataFolder(), "config-backup.yml");
-        // Rename it.
-        input.renameTo(newFile);
+        File newFile = new File(directory, "config-v1.yml");
+        if (!newFile.exists()) {
+            input.renameTo(newFile);
+        }
 
         YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
 
