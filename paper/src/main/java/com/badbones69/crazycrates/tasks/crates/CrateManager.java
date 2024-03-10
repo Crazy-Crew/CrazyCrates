@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;

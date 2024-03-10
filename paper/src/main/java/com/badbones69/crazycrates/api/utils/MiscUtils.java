@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api.utils;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.support.PluginSupport;
 import org.bukkit.Color;

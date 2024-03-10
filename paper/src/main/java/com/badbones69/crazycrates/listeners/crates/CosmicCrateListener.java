@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.listeners.crates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
@@ -445,7 +446,7 @@ public class CosmicCrateListener implements Listener {
         player.updateInventory();
 
         if (ConfigManager.getConfig().getProperty(ConfigKeys.cosmic_crate_timeout)) {
-            this.plugin.getCrateManager().addCrateTask(player, new TimerTask() {
+            this.crateManager.addCrateTask(player, new TimerTask() {
                 @Override
                 public void run() {
                     // Close inventory.
