@@ -13,24 +13,17 @@ public abstract class CrazyCratesPlugin implements ICrazyCrates {
         this.dataFolder = dataFolder;
     }
 
-    private ConfigManager configManager;
-
     @Override
     public void enable() {
         CrazyCratesService.setService(this);
 
-        this.configManager = new ConfigManager(this.dataFolder);
-        this.configManager.load();
+        ConfigManager.load(this.dataFolder);
     }
 
     @Override
     public void disable() {
         CrazyCratesService.stopService();
 
-        this.configManager.reload();
-    }
-
-    public ConfigManager getConfigManager() {
-        return this.configManager;
+        ConfigManager.reload();
     }
 }

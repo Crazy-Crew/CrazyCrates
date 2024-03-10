@@ -1,20 +1,17 @@
 package com.badbones69.crazycrates.api.utils;
 
+import com.badbones69.crazycrates.common.config.ConfigManager;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static java.util.regex.Matcher.quoteReplacement;
 
 @SuppressWarnings("ALL")
 public class MsgUtils {
-
-    private static final CrazyCrates plugin = CrazyCrates.get();
 
     public static String color(String message) {
         Matcher matcher = Pattern.compile("#[a-fA-F\\d]{6}").matcher(message);
@@ -42,7 +39,7 @@ public class MsgUtils {
     }
 
     public static String getPrefix() {
-        return color(plugin.getCrazyHandler().getConfigManager().getConfig().getProperty(ConfigKeys.command_prefix));
+        return color(ConfigManager.getConfig().getProperty(ConfigKeys.command_prefix));
     }
 
     public static String getPrefix(String msg) {

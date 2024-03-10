@@ -16,7 +16,7 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 public class WheelCrate extends CrateBuilder {
 
@@ -24,7 +24,7 @@ public class WheelCrate extends CrateBuilder {
         super(crate, player, size);
     }
 
-    private final HashMap<UUID, HashMap<Integer, ItemStack>> rewards = new HashMap<>();
+    private Map<Integer, ItemStack> rewards;
 
     @Override
     public void open(KeyType type, boolean checkHand) {
@@ -49,17 +49,18 @@ public class WheelCrate extends CrateBuilder {
             setCustomGlassPane(index);
         }
 
-        HashMap<Integer, ItemStack> items = new HashMap<>();
+        this.rewards = new HashMap<>();
 
         for (int number : getBorder()) {
             Prize prize = getCrate().pickPrize(getPlayer());
             setItem(number, prize.getDisplayItem(getPlayer()));
-            items.put(number, prize.getDisplayItem(getPlayer()));
+
+            this.rewards.put(number, prize.getDisplayItem(getPlayer()));
         }
 
-        this.rewards.put(getPlayer().getUniqueId(), items);
-
         getPlayer().openInventory(getInventory());
+
+        Material material = Material.LIME_STAINED_GLASS_PANE;
 
         addCrateTask(new BukkitRunnable() {
             final List<Integer> slots = getBorder();
@@ -81,10 +82,64 @@ public class WheelCrate extends CrateBuilder {
 
                 if (this.what >= 18) this.what = 0;
 
-                if (this.full < this.timer) lore();
+                if (this.full < this.timer) {
+                    ItemStack itemStack = rewards.get(this.slots.get(this.uh));
+
+                    if (itemStack.hasItemMeta()) {
+                        ItemMeta itemMeta = itemStack.getItemMeta();
+
+                        if (itemMeta != null) {
+                            boolean hasLore = itemMeta.hasLore();
+
+                            String displayName = itemMeta.getDisplayName();
+
+                            if (hasLore) {
+                                setItem(this.slots.get(this.uh), material, displayName, itemMeta.getLore());
+                            } else {
+                                setItem(this.slots.get(this.uh), material, displayName);
+                            }
+
+                            int otherSlot = this.slots.get(this.what);
+
+                            setItem(this.slots.get(this.what), rewards.get(otherSlot));
+                        }
+                    }
+
+                    playSound("cycle-sound", SoundCategory.MUSIC, "BLOCK_NOTE_BLOCK_XYLOPHONE");
+
+                    this.uh++;
+                    this.what++;
+                }
 
                 if (this.full >= this.timer) {
-                    if (MiscUtils.slowSpin(46, 9).contains(this.slower)) lore();
+                    if (MiscUtils.slowSpin(46, 9).contains(this.slower)) {
+                        ItemStack itemStack = rewards.get(this.slots.get(this.uh));
+
+                        if (itemStack.hasItemMeta()) {
+                            ItemMeta itemMeta = itemStack.getItemMeta();
+
+                            if (itemMeta != null) {
+                                boolean hasLore = itemMeta.hasLore();
+
+                                String displayName = itemMeta.getDisplayName();
+
+                                if (hasLore) {
+                                    setItem(this.slots.get(this.uh), material, displayName, itemMeta.getLore());
+                                } else {
+                                    setItem(this.slots.get(this.uh), material, displayName);
+                                }
+
+                                int otherSlot = this.slots.get(this.what);
+
+                                setItem(this.slots.get(this.what), rewards.get(otherSlot));
+                            }
+                        }
+
+                        playSound("cycle-sound", SoundCategory.MUSIC, "BLOCK_NOTE_BLOCK_XYLOPHONE");
+
+                        this.uh++;
+                        this.what++;
+                    }
 
                     if (this.full == this.timer + 47) {
                         playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
@@ -102,11 +157,12 @@ public class WheelCrate extends CrateBuilder {
                         }
                     }
 
+                    // Crate is done.
                     if (this.full >= (this.timer + 55 + 47)) {
                         Prize prize = null;
 
                         if (plugin.getCrateManager().isInOpeningList(getPlayer())) {
-                            prize = getCrate().getPrize(rewards.get(getPlayer().getUniqueId()).get(this.slots.get(this.what)));
+                            prize = getCrate().getPrize(rewards.get(this.slots.get(this.what)));
                         }
 
                         PrizeManager.givePrize(getPlayer(), getCrate(), prize);
@@ -116,6 +172,9 @@ public class WheelCrate extends CrateBuilder {
                         getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
                         plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
                         plugin.getCrateManager().endCrate(getPlayer());
+
+                        // Clear it because why not.
+                        rewards.clear();
                     }
 
                     this.slower++;
@@ -128,35 +187,6 @@ public class WheelCrate extends CrateBuilder {
                     getPlayer().openInventory(getInventory());
                     this.open = 0;
                 }
-            }
-
-            private void lore() {
-                HashMap<Integer, ItemStack> map = rewards.get(getPlayer().getUniqueId());
-
-                int slot = this.slots.get(this.uh);
-
-                ItemStack item = map.get(slot);
-
-                ItemMeta itemMeta = item.getItemMeta();
-
-                boolean hasLore = itemMeta.hasLore();
-
-                Material material = Material.LIME_STAINED_GLASS_PANE;
-
-                String name = itemMeta.getDisplayName();
-
-                if (hasLore) {
-                    setItem(slot, material, name, itemMeta.getLore());
-                } else {
-                    setItem(slot, material, name);
-                }
-
-                int other = this.slots.get(this.what);
-
-                setItem(other, map.get(other));
-                playSound("cycle-sound", SoundCategory.MUSIC, "BLOCK_NOTE_BLOCK_XYLOPHONE");
-                this.uh++;
-                this.what++;
             }
         }.runTaskTimer(this.plugin, 1, 1));
     }

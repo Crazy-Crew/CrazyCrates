@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.tasks;
 
+import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -108,6 +111,8 @@ public class BukkitUserManager extends UserManager {
 
         Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
 
+        SettingsManager config = ConfigManager.getConfig();
+
         switch (keyType) {
             case physical_key -> {
                 if (!MiscUtils.isInventoryFull(player)) {
@@ -115,15 +120,15 @@ public class BukkitUserManager extends UserManager {
                     return;
                 }
 
-                if (this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.give_virtual_keys_when_inventory_full)) {
+                if (config.getProperty(ConfigKeys.give_virtual_keys_when_inventory_full)) {
                     addVirtualKeys(amount, player.getUniqueId(), crate.getName());
 
-                    if (this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.notify_player_when_inventory_full)) {
-                        HashMap<String, String> placeholders = new HashMap<>();
-                        placeholders.put("%amount%", String.valueOf(amount));
-                        placeholders.put("%player%", player.getName());
-                        placeholders.put("%keytype%", keyType.getFriendlyName());
-                        placeholders.put("%key%", crate.getKeyName());
+                    if (config.getProperty(ConfigKeys.notify_player_when_inventory_full)) {
+                        Map<String, String> placeholders = new HashMap<>();
+                        placeholders.put("{amount}", String.valueOf(amount));
+                        placeholders.put("{player}", player.getName());
+                        placeholders.put("{keytype}", keyType.getFriendlyName());
+                        placeholders.put("{key}", crate.getKeyName());
 
                         player.sendMessage(Messages.cannot_give_player_keys.getMessage(placeholders, player));
                     }

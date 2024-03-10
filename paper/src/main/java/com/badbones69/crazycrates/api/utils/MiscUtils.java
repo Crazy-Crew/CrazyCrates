@@ -32,6 +32,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MiscUtils {
 
+    @NotNull
     private static final CrazyCrates plugin = CrazyCrates.get();
 
     public static void sendCommand(String command) {
@@ -316,6 +317,6 @@ public class MiscUtils {
     }
 
     public static boolean useOtherRandom() {
-        return plugin.getConfigManager().getConfig().getProperty(ConfigKeys.use_different_random);
+        return ConfigManager.getConfig().getProperty(ConfigKeys.use_different_random);
     }
 }

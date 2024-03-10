@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 
+import com.badbones69.crazycrates.common.config.ConfigManager;
 import org.bukkit.SoundCategory;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.CrazyCrates;
@@ -27,7 +28,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class QuadCrateManager {
@@ -163,7 +163,7 @@ public class QuadCrateManager {
             if (entity instanceof Player) {
                 for (QuadCrateManager ongoingCrate : crateSessions) {
                     if (entity.getUniqueId() == ongoingCrate.player.getUniqueId()) {
-                        this.player.sendMessage(Messages.too_close_to_another_player.getMessage("%player%", entity.getName(), player));
+                        this.player.sendMessage(Messages.too_close_to_another_player.getMessage("{player}", entity.getName(), player));
                         this.crateManager.removePlayerFromOpeningList(this.player);
                         crateSessions.remove(this.instance);
                         return;
@@ -182,7 +182,7 @@ public class QuadCrateManager {
             return;
         }
 
-        if (this.plugin.getCrateManager().getHolograms() != null) this.plugin.getCrateManager().getHolograms().removeHologram(this.spawnLocation.getBlock());
+        if (this.plugin.getCrateManager().getHolograms() != null) this.crateManager.getHolograms().removeHologram(this.spawnLocation.getBlock());
 
         // Shove other players away from the player opening the crate.
         shovePlayers.forEach(entity -> entity.getLocation().toVector().subtract(this.spawnLocation.clone().toVector()).normalize().setY(1));
@@ -249,10 +249,10 @@ public class QuadCrateManager {
             public void run() {
                 // End the crate by force.
                 endCrateForce(true);
-                player.sendMessage(Messages.out_of_time.getMessage("%crate%", crate.getName(), player));
+                player.sendMessage(Messages.out_of_time.getMessage("{crate}", crate.getName(), player));
                 crate.playSound(player, player.getLocation(), "stop-sound", "ENTITY_PLAYER_LEVELUP", SoundCategory.PLAYERS);
             }
-        }.runTaskLater(this.plugin, this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
+        }.runTaskLater(this.plugin, ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
     }
 
     /**
@@ -277,7 +277,7 @@ public class QuadCrateManager {
                 // Restore the old blocks.
                 oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
 
-                if (crate.getHologram().isEnabled() && plugin.getCrateManager().getHolograms() != null) plugin.getCrateManager().getHolograms().createHologram(spawnLocation.getBlock(), crate);
+                if (crate.getHologram().isEnabled() && crateManager.getHolograms() != null) crateManager.getHolograms().createHologram(spawnLocation.getBlock(), crate);
 
                 // End the crate.
                 crateManager.endCrate(player);

@@ -91,8 +91,8 @@ public class CrateAdminMenu extends InventoryBuilder {
 
             Map<String, String> placeholders = new HashMap<>();
 
-            placeholders.put("%amount%", String.valueOf(1));
-            placeholders.put("%key%", crate.getKeyName());
+            placeholders.put("{amount}", String.valueOf(1));
+            placeholders.put("{key}", crate.getKeyName());
 
             switch (clickType) {
                 case LEFT -> {
@@ -102,7 +102,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
                     player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
-                    placeholders.put("%keytype%", KeyType.physical_key.getFriendlyName());
+                    placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
 
                     player.sendActionBar(Messages.obtaining_keys.getMessage(placeholders, player));
                 }
@@ -112,7 +112,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
                     player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
-                    placeholders.put("%keytype%", KeyType.virtual_key.getFriendlyName());
+                    placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
 
                     player.sendActionBar(Messages.obtaining_keys.getMessage(placeholders, player));
                 }

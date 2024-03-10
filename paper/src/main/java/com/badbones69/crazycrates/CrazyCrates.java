@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.api.MigrateManager;
 import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
@@ -12,6 +11,7 @@ import com.badbones69.crazycrates.listeners.MiscListener;
 import com.badbones69.crazycrates.listeners.crates.*;
 import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.tasks.MigrationManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
@@ -44,8 +44,8 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Migrate configurations.
-        MigrateManager.migrate();
+        // Migrate as early as possible.
+        MigrationManager.migrate();
 
         this.timer = new Timer();
 
@@ -79,7 +79,7 @@ public class CrazyCrates extends JavaPlugin {
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
 
         if (isLogging()) {
-            String prefix = this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.console_prefix);
+            String prefix = ConfigManager.getConfig().getProperty(ConfigKeys.console_prefix);
 
             // Print dependency garbage
             for (PluginSupport value : PluginSupport.values()) {
@@ -129,11 +129,6 @@ public class CrazyCrates extends JavaPlugin {
     }
 
     @NotNull
-    public ConfigManager getConfigManager() {
-        return getCrazyHandler().getConfigManager();
-    }
-
-    @NotNull
     public CrateManager getCrateManager() {
         return getCrazyHandler().getCrateManager();
     }
@@ -154,7 +149,7 @@ public class CrazyCrates extends JavaPlugin {
     }
 
     public boolean isLogging() {
-        return getConfigManager().getConfig().getProperty(ConfigKeys.verbose_logging);
+        return ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging);
     }
 
     private void registerPermissions() {

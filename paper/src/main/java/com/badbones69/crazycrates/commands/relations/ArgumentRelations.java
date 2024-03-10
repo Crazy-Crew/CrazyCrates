@@ -48,9 +48,9 @@ public class ArgumentRelations extends MessageManager {
 
             if (correctUsage != null) {
                 if (sender instanceof Player player) {
-                    send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage, player));
+                    send(sender, Messages.correct_usage.getMessage("{usage}", correctUsage, player));
                 } else {
-                    send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage));
+                    send(sender, Messages.correct_usage.getMessage("{usage}", correctUsage));
                 }
             }
         });
@@ -72,9 +72,9 @@ public class ArgumentRelations extends MessageManager {
 
             if (correctUsage != null) {
                 if (sender instanceof Player player) {
-                    send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage, player));
+                    send(sender, Messages.correct_usage.getMessage("{usage}", correctUsage, player));
                 } else {
-                    send(sender, Messages.correct_usage.getMessage("%usage%", correctUsage));
+                    send(sender, Messages.correct_usage.getMessage("{usage}", correctUsage));
                 }
             }
         });

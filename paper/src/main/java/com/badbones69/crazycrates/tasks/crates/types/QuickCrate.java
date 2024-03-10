@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.common.config.ConfigManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -95,7 +96,7 @@ public class QuickCrate extends CrateBuilder {
 
         this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(getPlayer(), getCrate(), getCrate().getName(), prize));
 
-        boolean showQuickCrateItem = this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.show_quickcrate_item);
+        boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
 
         // Only related to the item above the crate.
         if (showQuickCrateItem) {

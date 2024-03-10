@@ -10,7 +10,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
-import com.badbones69.crazycrates.CrazyCrates;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,10 +20,7 @@ import java.util.UUID;
 public class InventoryManager {
 
     @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
-
-    @NotNull
-    private final SettingsManager config = this.plugin.getConfigManager().getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
     private ItemBuilder menuButton;
     private ItemBuilder nextButton;
@@ -85,7 +81,7 @@ public class InventoryManager {
         ItemBuilder button = new ItemBuilder(this.nextButton);
 
         if (player != null) {
-            button.addLorePlaceholder("%Page%", (getPage(player) + 1) + "");
+            button.addLorePlaceholder("{page}", (getPage(player) + 1) + "");
         }
 
         return button.setTarget(player).build();
@@ -95,7 +91,7 @@ public class InventoryManager {
         ItemBuilder button = new ItemBuilder(this.backButton);
 
         if (player != null) {
-            button.addLorePlaceholder("%Page%", (getPage(player) - 1) + "");
+            button.addLorePlaceholder("{page}", (getPage(player) - 1) + "");
         }
 
         return button.setTarget(player).build();

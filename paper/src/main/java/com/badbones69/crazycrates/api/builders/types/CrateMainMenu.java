@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Material;
@@ -34,13 +35,10 @@ import java.util.List;
 public class CrateMainMenu extends InventoryBuilder {
 
     @NotNull
-    private final ConfigManager configManager = this.plugin.getConfigManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @NotNull
-    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
-
-    @NotNull
-    private final SettingsManager config = this.configManager.getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
     public CrateMainMenu(Player player, int size, String title) {
         super(player, size, title);
@@ -74,36 +72,36 @@ public class CrateMainMenu extends InventoryBuilder {
 
                     for (String option : split) {
 
-                        if (option.contains("Item:")) item.setMaterial(option.replace("Item:", ""));
+                        if (option.contains("item:")) item.setMaterial(option.replace("item:", ""));
 
-                        if (option.contains("Name:")) {
-                            option = option.replace("Name:", "");
+                        if (option.contains("name:")) {
+                            option = option.replace("name:", "");
 
                             option = getCrates(option);
 
-                            item.setName(option.replaceAll("%player%", getPlayer().getName()));
+                            item.setName(option.replaceAll("\\{player}", getPlayer().getName()));
                         }
 
-                        if (option.contains("Lore:")) {
-                            option = option.replace("Lore:", "");
+                        if (option.contains("lore:")) {
+                            option = option.replace("lore:", "");
                             String[] lore = option.split(",");
 
                             for (String line : lore) {
                                 option = getCrates(option);
 
-                                item.addLore(option.replaceAll("%player%", getPlayer().getName()));
+                                item.addLore(option.replaceAll("\\{player}", getPlayer().getName()));
                             }
                         }
 
-                        if (option.contains("Glowing:")) item.setGlow(Boolean.parseBoolean(option.replace("Glowing:", "")));
+                        if (option.contains("glowing:")) item.setGlow(Boolean.parseBoolean(option.replace("glowing:", "")));
 
-                        if (option.contains("Player:")) item.setPlayerName(option.replaceAll("%player%", getPlayer().getName()));
+                        if (option.contains("player:")) item.setPlayerName(option.replaceAll("\\{player}", getPlayer().getName()));
 
-                        if (option.contains("Slot:")) slot = Integer.parseInt(option.replace("Slot:", ""));
+                        if (option.contains("slot:")) slot = Integer.parseInt(option.replace("slot:", ""));
 
-                        if (option.contains("Unbreakable-Item")) item.setUnbreakable(Boolean.parseBoolean(option.replace("Unbreakable-Item:", "")));
+                        if (option.contains("unbreakable-item")) item.setUnbreakable(Boolean.parseBoolean(option.replace("unbreakable-item:", "")));
 
-                        if (option.contains("Hide-Item-Flags")) item.hideItemFlags(Boolean.parseBoolean(option.replace("Hide-Item-Flags:", "")));
+                        if (option.contains("hide-item-flags")) item.hideItemFlags(Boolean.parseBoolean(option.replace("hide-item-flags:", "")));
                     }
 
                     if (slot > getSize()) continue;
@@ -137,10 +135,10 @@ public class CrateMainMenu extends InventoryBuilder {
                             .setCrateName(crate.getName())
                             .setPlayerName(file.getString(path + "Player"))
                             .setGlow(file.getBoolean(path + "Glowing"))
-                            .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getVirtualKeys(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getTotalKeys(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.crazyHandler.getUserManager().getCrateOpened(getPlayer().getUniqueId(), crate.getName())))
+                            .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(getPlayer().getUniqueId(), crate.getName())))
+                            .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(getPlayer().getUniqueId(), crate.getName())))
+                            .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(getPlayer().getUniqueId(), crate.getName())))
+                            .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(getPlayer().getUniqueId(), crate.getName())))
                             .addLorePlaceholder("%player%", getPlayer().getName())
                             .build());
                 }
@@ -152,10 +150,10 @@ public class CrateMainMenu extends InventoryBuilder {
 
     private String getCrates(String option) {
         for (Crate crate : this.plugin.getCrateManager().getUsableCrates()) {
-            option = option.replaceAll("%" + crate.getName().toLowerCase() + "%", this.crazyHandler.getUserManager().getVirtualKeys(getPlayer().getUniqueId(), crate.getName()) + "")
-                    .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", this.crazyHandler.getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
-                    .replaceAll("%" + crate.getName().toLowerCase() + "_total%", this.crazyHandler.getUserManager().getTotalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
-                    .replaceAll("%" + crate.getName().toLowerCase() + "_opened%", this.crazyHandler.getUserManager().getCrateOpened(getPlayer().getUniqueId(), crate.getName()) + "");
+            option = option.replaceAll("%" + crate.getName().toLowerCase() + "}", this.userManager.getVirtualKeys(getPlayer().getUniqueId(), crate.getName()) + "")
+                    .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", this.userManager.getPhysicalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
+                    .replaceAll("%" + crate.getName().toLowerCase() + "_total%", this.userManager.getTotalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
+                    .replaceAll("%" + crate.getName().toLowerCase() + "_opened%", this.userManager.getCrateOpened(getPlayer().getUniqueId(), crate.getName()) + "");
         }
 
         return option;
@@ -170,7 +168,7 @@ public class CrateMainMenu extends InventoryBuilder {
         private final InventoryManager inventoryManager = this.plugin.getCrazyHandler().getInventoryManager();
 
         @NotNull
-        private final SettingsManager config = this.plugin.getConfigManager().getConfig();
+        private final SettingsManager config = ConfigManager.getConfig();
 
         @NotNull
         private final CrateManager crateManager = this.plugin.getCrateManager();
@@ -205,14 +203,14 @@ public class CrateMainMenu extends InventoryBuilder {
                     this.inventoryManager.addViewer(player);
                     this.inventoryManager.openNewCratePreview(player, crate, crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
                 } else {
-                    player.sendMessage(Messages.preview_disabled.getMessage("%crate%", crate.getName(), player));
+                    player.sendMessage(Messages.preview_disabled.getMessage("{crate}", crate.getName(), player));
                 }
 
                 return;
             }
 
             if (this.crateManager.isInOpeningList(player)) {
-                player.sendMessage(Messages.already_opening_crate.getMessage("%crate%", crate.getName(), player));
+                player.sendMessage(Messages.already_opening_crate.getMessage("{crate}", crate.getName(), player));
                 return;
             }
 
@@ -233,19 +231,19 @@ public class CrateMainMenu extends InventoryBuilder {
                     player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
                 }
 
-                player.sendMessage(Messages.no_virtual_key.getMessage("%crate%", crate.getName(), player));
+                player.sendMessage(Messages.no_virtual_key.getMessage("{crate}", crate.getName(), player));
                 return;
             }
 
-            for (String world : this.config.getProperty(ConfigKeys.disabledWorlds)) {
+            for (String world : this.config.getProperty(ConfigKeys.disabled_worlds)) {
                 if (world.equalsIgnoreCase(player.getWorld().getName())) {
-                    player.sendMessage(Messages.world_disabled.getMessage("%world%", player.getWorld().getName(), player));
+                    player.sendMessage(Messages.world_disabled.getMessage("{world}", player.getWorld().getName(), player));
                     return;
                 }
             }
 
             if (MiscUtils.isInventoryFull(player)) {
-                player.sendMessage(Messages.inventory_not_empty.getMessage("%crate%", crate.getName(), player));
+                player.sendMessage(Messages.inventory_not_empty.getMessage("{crate}", crate.getName(), player));
                 return;
             }
 

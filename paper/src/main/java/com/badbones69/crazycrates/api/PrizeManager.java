@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import static java.util.regex.Matcher.quoteReplacement;
@@ -43,11 +44,9 @@ public class PrizeManager {
 
         for (ItemStack item : prize.getItems()) {
             if (item == null) {
-                HashMap<String, String> placeholders = new HashMap<>();
-
-                placeholders.put("%crate%", prize.getCrateName());
-                placeholders.put("%prize%", prize.getPrizeName());
-
+                Map<String, String> placeholders = new HashMap<>();
+                placeholders.put("{crate}", prize.getCrateName());
+                placeholders.put("{prize}", prize.getPrizeName());
                 player.sendMessage(Messages.prize_error.getMessage(placeholders, player));
 
                 continue;
