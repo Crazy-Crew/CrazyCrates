@@ -190,6 +190,8 @@ public class CrateMainMenu extends InventoryBuilder {
 
             if (item == null || item.getType() == Material.AIR) return;
 
+            if (!item.hasItemMeta()) return;
+
             Crate crate = this.plugin.getCrateManager().getCrateFromName(ItemUtils.getKey(item));
 
             if (crate == null) return;

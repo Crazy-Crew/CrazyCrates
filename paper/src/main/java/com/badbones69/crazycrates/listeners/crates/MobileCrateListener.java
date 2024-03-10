@@ -34,8 +34,8 @@ public class MobileCrateListener implements Listener {
             ItemStack item = player.getInventory().getItemInMainHand();
             
             if (item.getType() == Material.AIR) return;
-            
-            for (Crate crate : this.crateManager.getUsableCrates()) {
+
+            if (!item.hasItemMeta()) return;
                 if (crate.getCrateType() == CrateType.crate_on_the_go && this.crateManager.isKeyFromCrate(item, crate)) {
                     event.setCancelled(true);
 
