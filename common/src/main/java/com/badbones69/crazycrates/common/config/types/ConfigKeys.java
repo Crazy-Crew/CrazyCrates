@@ -33,11 +33,25 @@ public class ConfigKeys implements SettingsHolder {
                 ""
         };
 
-        conf.setComment("Settings.GUI-Customizer-Toggle", deprecation);
+        conf.setComment("gui", "Settings related to guis.");
+        conf.setComment("gui.inventory", "Inventory settings like size.");
+        conf.setComment("gui.inventory.buttons", "The buttons in the gui.");
 
-        conf.setComment("Settings.Preview", deprecation);
+        conf.setComment("gui.inventory.buttons.menu", "The main menu button.");
+        conf.setComment("gui.inventory.buttons.next", "The next button.");
+        conf.setComment("gui.inventory.buttons.back", "The back button.");
 
-        conf.setComment("Settings.Filler", deprecation);
+        conf.setComment("gui.inventory.filler", "Allows you to fill the gui with a singular item.");
+
+        conf.setComment("gui.inventory.customizer", "Allows you to configure items per slot.");
+
+        conf.setComment("crate", "Settings related to crates.");
+        conf.setComment("crate.preview", "The preview settings.");
+        conf.setComment("crate.keys", "Settings related to how keys function.");
+
+        conf.setComment("crate.keys.inventory-settings", "Settings related to a player's inventory is not empty.");
+
+        conf.setComment("crate.quad-crate", "Settings related to QuadCrate");
 
         conf.setComment("root", header);
     }
@@ -61,159 +75,174 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("The prefix used in console")
     public static final Property<String> console_prefix = newProperty("root.console_prefix", "&8[&bCrazyCrates&8] ");
 
-    @Comment("Whether to enable or disable the crate menu. This also removes the Menu button in crate previews")
-    public static final Property<Boolean> enable_crate_menu = newProperty("Settings.Enable-Crate-Menu", true);
+    @Comment("If /crates should open the main menu. Warning: This will remove the menu button from crate previews.")
+    public static final Property<Boolean> enable_crate_menu = newProperty("gui.toggle", true);
 
-    @Comment("Whether to show the item that appears above QuickCrate")
-    public static final Property<Boolean> show_quickcrate_item = newProperty("Settings.Show-QuickCrate-Item", true);
+    @Comment("Whether to show the display item when opening QuickCrate")
+    public static final Property<Boolean> show_quickcrate_item = newProperty("crate.quickcrate-display-item", true);
 
-    @Comment("Logs all crate actions to file if true. You might have to delete your logs file sometimes.")
-    public static final Property<Boolean> log_to_file = newProperty("Settings.Log-File", false);
+    @Comment("Logs all crate actions to a .txt file if enabled. It is recommended to delete the file occasionally.")
+    public static final Property<Boolean> log_to_file = newProperty("crate.log-file", false);
 
-    @Comment("Logs all crate actions to your console if true.")
-    public static final Property<Boolean> log_to_console = newProperty("Settings.Log-Console", false);
+    @Comment("Logs all crate actions to console if enabled.")
+    public static final Property<Boolean> log_to_console = newProperty("crate.log-console", false);
 
-    @Comment("The name of the gui (/crates)")
-    public static final Property<String> inventory_name = newProperty("Settings.InventoryName", "&b&lCrazy &4&lCrates");
+    @Comment("The name of the gui.")
+    public static final Property<String> inventory_name = newProperty("gui.inventory.name", "&b&lCrazy &4&lCrates");
 
-    @Comment("The size of the gui (/crates)")
-    public static final Property<Integer> inventory_size = newProperty("Settings.InventorySize", 45);
+    @Comment("The size of the gui. Valid sizes are 9,18,27,36,45")
+    public static final Property<Integer> inventory_size = newProperty("gui.inventory.size", 45);
 
-    @Comment("If crates should knock players back if they don't have a key.")
-    public static final Property<Boolean> knock_back = newProperty("Settings.KnockBack", true);
+    @Comment("If crates should knock you back if you have no keys.")
+    public static final Property<Boolean> knock_back = newProperty("crate.knock-back", true);
 
-    @Comment("If the player should be forced out of the preview when doing /cc reload")
-    public static final Property<Boolean> take_out_of_preview = newProperty("Settings.Force-Out-Of-Preview", false);
+    @Comment("If players should be forced to exit out of the preview during /crates reload")
+    public static final Property<Boolean> take_out_of_preview = newProperty("crate.preview.force-exit", false);
 
-    @Comment("If the player should be sent a message that they were removed from the preview gui during /cc reload.")
-    public static final Property<Boolean> send_preview_taken_out_message = newProperty("Settings.Force-Out-Of-Preview-Message", false);
+    @Comment("Send a message if they were forced out of the preview.")
+    public static final Property<Boolean> send_preview_taken_out_message = newProperty("crate.preview.send-message", false);
 
     @Comment({
             "If a player gets to the menu related to the Prizes gui, Should they be timed out?",
             "",
             "It will wait 10 seconds and if they already collected 3 prizes, It will only give one prize."
     })
-    public static final Property<Boolean> cosmic_crate_timeout = newProperty("Settings.Cosmic-Crate-Timeout", true);
+    public static final Property<Boolean> cosmic_crate_timeout = newProperty("crate.cosmic-crate-timeout", true);
 
-    @Comment("If physical crates can accept virtual keys.")
-    public static final Property<Boolean> physical_accepts_virtual_keys = newProperty("Settings.Physical-Accepts-Virtual-Keys", true);
+    @Comment("Should a physical crate accept virtual keys?")
+    public static final Property<Boolean> physical_accepts_virtual_keys = newProperty("crate.keys.physical-crate-accepts-virtual-keys", true);
 
-    @Comment("If physical crates can accept physical keys.")
-    public static final Property<Boolean> physical_accepts_physical_keys = newProperty("Settings.Physical-Accepts-Physical-Keys", true);
+    @Comment("Should a virtual crate ( /crates ) accept physical keys?")
+    public static final Property<Boolean> physical_accepts_physical_keys = newProperty("crate.keys.physical-crate-accepts-physical-keys", true);
 
-    @Comment("If virtual crates can accept physical keys.")
-    public static final Property<Boolean> virtual_accepts_physical_keys = newProperty("Settings.Virtual-Accepts-Physical-Keys", true);
+    @Comment("Should a physical crate accept physical keys?")
+    public static final Property<Boolean> virtual_accepts_physical_keys = newProperty("crate.keys.virtual-crate-accepts-physical-keys", true);
 
-    @Comment("If the player should be given virtual keys if inventory is full. If you leave it as false, All keys will be dropped on the ground.")
-    public static final Property<Boolean> give_virtual_keys_when_inventory_full = newProperty("Settings.Give-Virtual-Keys-When-Inventory-Full", false);
+    @Comment("Should the player should be given virtual keys if inventory is not empty? If you leave it as false, All keys will be dropped on the ground.")
+    public static final Property<Boolean> give_virtual_keys_when_inventory_full = newProperty("crate.keys.inventory-settings.give-virtual-keys", false);
 
-    @Comment("If the player should be notified when their inventory is full.")
-    public static final Property<Boolean> notify_player_when_inventory_full = newProperty("Settings.Give-Virtual-Keys-When-Inventory-Full-Message", false);
+    @Comment("Should the player should be notified when their inventory is not empty?")
+    public static final Property<Boolean> notify_player_when_inventory_full = newProperty("crate.keys.inventory-settings.send-message", false);
 
-    @Comment("If a sound should be played when a player tries to open a crate with no key.")
-    public static final Property<Boolean> need_key_sound_toggle = newProperty("Settings.Need-Key-Sound-Toggle", true);
+    @Comment("Should a sound should be played if they have no key?")
+    public static final Property<Boolean> need_key_sound_toggle = newProperty("crate.keys.key-sound.toggle", true);
 
-    @Comment("The sound player when a player tries to open a crate with no key.")
-    public static final Property<String> need_key_sound = newProperty("Settings.Need-Key-Sound", "ENTITY_VILLAGER_NO");
+    @Comment("The sound to play.")
+    public static final Property<String> need_key_sound = newProperty("crate.keys.key-sound.name", "ENTITY_VILLAGER_NO");
 
-    @Comment("How long should quadcrates run for when opened? Once the time is met, The quadcrate closes.")
-    public static final Property<Integer> quad_crate_timer = newProperty("Settings.QuadCrate.Timer", 300);
+    @Comment("How long should the quad crate be active?")
+    public static final Property<Integer> quad_crate_timer = newProperty("crate.quad-crate.timer", 300);
 
-    @Comment("A list of worlds crates are disabled in.")
-    public static final Property<List<String>> disabledWorlds = newListProperty("Settings.DisabledWorlds", List.of(
+    @Comment("What worlds do you want Crates to be disabled in?")
+    public static final Property<List<String>> disabled_worlds = newListProperty("crate.disabled-worlds", List.of(
             "world_nether"
     ));
 
-    public static final Property<String> menu_button_item = newProperty("Settings.Preview.Buttons.Menu.Item", "COMPASS");
+    @Comment("The item the button should be.")
+    public static final Property<String> menu_button_item = newProperty("gui.inventory.buttons.menu.item", "COMPASS");
 
     @Comment({
             "This will disable our current functionality of our main menu button in crate previews.",
             "It allows you to override and use a menu of your choice from your plugin using a command."
     })
-    public static final Property<Boolean> menu_button_override = newProperty("Settings.Preview.Buttons.Menu.override.toggle", false);
+    public static final Property<Boolean> menu_button_override = newProperty("gui.inventory.buttons.menu.override.toggle", false);
 
     @Comment({
             "A list of commands to run when the main menu button is clicked. The override option above has to be set to true.",
     })
-    public static final Property<List<String>> menu_button_command_list = newListProperty("Settings.Preview.Buttons.Menu.override.list", List.of("see %player%"));
+    public static final Property<List<String>> menu_button_command_list = newListProperty("gui.inventory.buttons.menu.override.list", List.of("see {player}"));
 
-    public static final Property<String> menu_button_name = newProperty("Settings.Preview.Buttons.Menu.Name", "&7&l>> &c&lMenu &7&l<<");
+    @Comment("The name of the item.")
+    public static final Property<String> menu_button_name = newProperty("gui.inventory.buttons.menu.name", "&7&l>> &c&lMenu &7&l<<");
 
-    public static final Property<List<String>> menu_button_lore = newListProperty("Settings.Preview.Buttons.Menu.Lore", List.of(
+    @Comment("The lore of the item.")
+    public static final Property<List<String>> menu_button_lore = newListProperty("gui.inventory.buttons.menu.lore", List.of(
             "&7Return to the menu."
     ));
 
-    public static final Property<String> next_button_item = newProperty("Settings.Preview.Buttons.Next.Item", "FEATHER");
+    @Comment("The item the button should be.")
+    public static final Property<String> next_button_item = newProperty("gui.inventory.buttons.next.item", "FEATHER");
 
-    public static final Property<String> next_button_name = newProperty("Settings.Preview.Buttons.Next.Name", "&6&lNext >>");
+    @Comment("The name of the item.")
+    public static final Property<String> next_button_name = newProperty("gui.inventory.buttons.next.name", "&6&lNext >>");
 
-    public static final Property<List<String>> next_button_lore = newListProperty("Settings.Preview.Buttons.Next.Lore", List.of(
-            "&7&lPage: &b%page%"
+    @Comment("The lore of the item.")
+    public static final Property<List<String>> next_button_lore = newListProperty("gui.inventory.buttons.next.lore", List.of(
+            "&7&lPage: &b{page}"
     ));
 
-    public static final Property<String> back_button_item = newProperty("Settings.Preview.Buttons.Back.Item", "FEATHER");
+    @Comment("The item the button should be.")
+    public static final Property<String> back_button_item = newProperty("gui.inventory.buttons.back.item", "FEATHER");
 
-    public static final Property<String> back_button_name = newProperty("Settings.Preview.Buttons.Back.Name", "&6&l<< Back");
+    @Comment("The name of the item.")
+    public static final Property<String> back_button_name = newProperty("gui.inventory.buttons.back.name", "&6&l<< Back");
 
-    public static final Property<List<String>> back_button_lore = newListProperty("Settings.Preview.Buttons.Back.Lore", List.of(
-            "&7&lPage: &b%page%"
+    @Comment("The lore of the item.")
+    public static final Property<List<String>> back_button_lore = newListProperty("gui.inventory.buttons.back.lore", List.of(
+            "&7&lPage: &b{page}"
     ));
 
-    public static final Property<Boolean> filler_toggle = newProperty("Settings.Filler.Toggle", false);
+    @Comment("Should the menu should be filled with one type of item?")
+    public static final Property<Boolean> filler_toggle = newProperty("gui.inventory.buttons.filler.toggle", false);
 
-    public static final Property<String> filler_item = newProperty("Settings.Filler.Item", "BLACK_STAINED_GLASS_PANE");
+    @Comment("The item to fill the menu with.")
+    public static final Property<String> filler_item = newProperty("gui.inventory.buttons.filler.item", "BLACK_STAINED_GLASS_PANE");
 
-    public static final Property<String> filler_name = newProperty("Settings.Filler.Name", " ");
+    @Comment("The name of the item.")
+    public static final Property<String> filler_name = newProperty("gui.inventory.buttons.filler.name", " ");
 
-    public static final Property<List<String>> filler_lore = newListProperty("Settings.Filler.Lore", Collections.emptyList());
+    @Comment("The lore of the item.")
+    public static final Property<List<String>> filler_lore = newListProperty("gui.inventory.buttons.filler.lore", Collections.emptyList());
 
-    public static final Property<Boolean> gui_customizer_toggle = newProperty("Settings.GUI-Customizer-Toggle", true);
+    @Comment("Should the customizer should be enabled?")
+    public static final Property<Boolean> gui_customizer_toggle = newProperty("gui.inventory.buttons.customizer.toggle", true);
 
-    public static final Property<List<String>> gui_customizer = newListProperty("Settings.GUI-Customizer", List.of(
-            "Slot:1, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:2, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:3, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:4, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:5, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:6, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:7, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:8, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:9, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:37, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:38, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:39, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:40, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:41, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:42, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:43, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:44, Item:RED_STAINED_GLASS_PANE, Name: ",
-            "Slot:45, Item:RED_STAINED_GLASS_PANE, Name: ",
+    @Comment("The items to set to the gui.")
+    public static final Property<List<String>> gui_customizer = newListProperty("gui.inventory.buttons.customizer.items", List.of(
+            "slot:1, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:2, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:3, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:4, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:5, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:6, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:7, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:8, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:9, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:37, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:38, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:39, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:40, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:41, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:42, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:43, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:44, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:45, item:RED_STAINED_GLASS_PANE, name: ",
 
-            "Slot:10, Item:BLUE_STAINED_GLASS_PANE, Name: ",
-            "Slot:19, Item:BLUE_STAINED_GLASS_PANE, Name: ",
-            "Slot:28, Item:BLUE_STAINED_GLASS_PANE, Name: ",
-            "Slot:18, Item:BLUE_STAINED_GLASS_PANE, Name: ",
-            "Slot:27, Item:BLUE_STAINED_GLASS_PANE, Name: ",
-            "Slot:36, Item:BLUE_STAINED_GLASS_PANE, Name: ",
+            "slot:10, item:BLUE_STAINED_GLASS_PANE, name: ",
+            "slot:19, item:BLUE_STAINED_GLASS_PANE, name: ",
+            "slot:28, item:BLUE_STAINED_GLASS_PANE, name: ",
+            "slot:18, item:BLUE_STAINED_GLASS_PANE, name: ",
+            "slot:27, item:BLUE_STAINED_GLASS_PANE, name: ",
+            "slot:36, item:BLUE_STAINED_GLASS_PANE, name: ",
 
-            "Slot:11, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:13, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:15, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:25, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:17, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:20, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:21, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:22, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:23, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:24, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:25, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:26, Item:CYAN_STAINED_GLASS_PANE, Name: ",
+            "slot:11, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:13, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:15, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:25, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:17, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:20, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:21, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:22, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:23, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:24, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:25, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:26, item:CYAN_STAINED_GLASS_PANE, name: ",
 
-            "Slot:29, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:31, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:32, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:33, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:34, Item:CYAN_STAINED_GLASS_PANE, Name: ",
-            "Slot:35, Item:CYAN_STAINED_GLASS_PANE, Name: "
+            "slot:29, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:31, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:32, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:33, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:34, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:35, item:CYAN_STAINED_GLASS_PANE, name: "
     ));
 }

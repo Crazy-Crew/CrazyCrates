@@ -33,6 +33,9 @@ public class CrateTierMenu extends InventoryBuilder {
     @NotNull
     private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
 
+    @NotNull
+    private final SettingsManager config = ConfigManager.getConfig();
+
     public CrateTierMenu(List<Tier> tiers, Crate crate, Player player, int size, String title) {
         super(tiers, crate, player, size, title);
     }
@@ -61,7 +64,7 @@ public class CrateTierMenu extends InventoryBuilder {
             }
         }
 
-        if (this.crazyHandler.getInventoryManager().inCratePreview(getPlayer()) && this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu))
+        if (this.crazyHandler.getInventoryManager().inCratePreview(getPlayer()) && this.config.getProperty(ConfigKeys.enable_crate_menu))
             getInventory().setItem(getCrate().getAbsolutePreviewItemPosition(4), this.crazyHandler.getInventoryManager().getMenuButton(getPlayer()));
     }
 
@@ -77,10 +80,7 @@ public class CrateTierMenu extends InventoryBuilder {
         private final InventoryManager inventoryManager = this.crazyHandler.getInventoryManager();
 
         @NotNull
-        private final ConfigManager configManager = this.plugin.getConfigManager();
-
-        @NotNull
-        private final SettingsManager config = this.configManager.getConfig();
+        private final SettingsManager config = ConfigManager.getConfig();
 
         @EventHandler
         public void onInventoryClick(InventoryClickEvent event) {

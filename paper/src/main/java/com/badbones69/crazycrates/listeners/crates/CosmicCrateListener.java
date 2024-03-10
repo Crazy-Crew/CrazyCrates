@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.listeners.crates;
 
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
+import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
@@ -291,8 +292,8 @@ public class CosmicCrateListener implements Listener {
             // If they don't have enough keys.
             if (value) {
                 Map<String, String> placeholders = new HashMap<>();
-                placeholders.put("%crate%", crate.getName());
-                placeholders.put("%key%", crate.getKeyName());
+                placeholders.put("{crate}", crate.getName());
+                placeholders.put("{key}", crate.getKeyName());
 
                 // Send no keys message.
                 player.sendMessage(Messages.no_keys.getMessage(placeholders, player));
@@ -444,7 +445,7 @@ public class CosmicCrateListener implements Listener {
 
         player.updateInventory();
 
-        if (this.plugin.getCrazyHandler().getConfigManager().getConfig().getProperty(ConfigKeys.cosmic_crate_timeout)) {
+        if (ConfigManager.getConfig().getProperty(ConfigKeys.cosmic_crate_timeout)) {
             this.plugin.getCrateManager().addCrateTask(player, new TimerTask() {
                 @Override
                 public void run() {

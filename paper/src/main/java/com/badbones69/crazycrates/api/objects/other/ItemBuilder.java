@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -99,8 +100,8 @@ public class ItemBuilder {
     private Color mapColor;
 
     // Placeholders
-    private HashMap<String, String> namePlaceholders;
-    private HashMap<String, String> lorePlaceholders;
+    private Map<String, String> namePlaceholders;
+    private Map<String, String> lorePlaceholders;
 
     // Misc
     private ItemStack referenceItem;
@@ -678,7 +679,7 @@ public class ItemBuilder {
      * @param placeholders the placeholders that will be used.
      * @return the ItemBuilder with updated placeholders.
      */
-    public ItemBuilder setNamePlaceholders(HashMap<String, String> placeholders) {
+    public ItemBuilder setNamePlaceholders(Map<String, String> placeholders) {
         this.namePlaceholders = placeholders;
         return this;
     }
@@ -760,7 +761,7 @@ public class ItemBuilder {
      * @param placeholders the placeholders that you wish to use.
      * @return the ItemBuilder with updated info.
      */
-    public ItemBuilder setLorePlaceholders(HashMap<String, String> placeholders) {
+    public ItemBuilder setLorePlaceholders(Map<String, String> placeholders) {
         this.lorePlaceholders = placeholders;
         return this;
     }

@@ -1,10 +1,12 @@
 package com.badbones69.crazycrates.tasks.crates;
 
+import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
+import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;
@@ -380,9 +382,11 @@ public class CrateManager {
      * @param checkHand if it just checks the players hand or if it checks their inventory.
      */
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
+        SettingsManager config = ConfigManager.getConfig();
+
         if (crate.getCrateType() == CrateType.menu) {
-            if (this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
-                CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.inventory_size), this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.inventory_name));
+            if (config.getProperty(ConfigKeys.enable_crate_menu)) {
+                CrateMainMenu crateMainMenu = new CrateMainMenu(player, config.getProperty(ConfigKeys.inventory_size), config.getProperty(ConfigKeys.inventory_name));
 
                 player.openInventory(crateMainMenu.build().getInventory());
                 return;
@@ -407,8 +411,8 @@ public class CrateManager {
                 if (virtualCrate) {
                     Map<String, String> placeholders = new HashMap<>();
 
-                    placeholders.put("%cratetype%", crate.getCrateType().getName());
-                    placeholders.put("%crate%", crate.getName());
+                    placeholders.put("{cratetype}", crate.getCrateType().getName());
+                    placeholders.put("{crate}", crate.getName());
 
                     player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
                     removePlayerFromOpeningList(player);
@@ -419,7 +423,7 @@ public class CrateManager {
             }
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    player.sendMessage(Messages.quick_crate_in_use.getMessage("%crate%", crate.getName(), player));
+                    player.sendMessage(Messages.crate_in_use.getMessage("{crate}", crate.getName(), player));
                     removePlayerFromOpeningList(player);
                     return;
                 }
@@ -427,8 +431,8 @@ public class CrateManager {
                 if (virtualCrate) {
                     Map<String, String> placeholders = new HashMap<>();
 
-                    placeholders.put("%cratetype%", crate.getCrateType().getName());
-                    placeholders.put("%crate%", crate.getName());
+                    placeholders.put("{cratetype}", crate.getCrateType().getName());
+                    placeholders.put("{crate}", crate.getName());
 
                     player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
                     removePlayerFromOpeningList(player);
@@ -441,8 +445,8 @@ public class CrateManager {
                 if (virtualCrate) {
                     Map<String, String> placeholders = new HashMap<>();
 
-                    placeholders.put("%cratetype%", crate.getCrateType().getName());
-                    placeholders.put("%crate%", crate.getName());
+                    placeholders.put("{cratetype}", crate.getCrateType().getName());
+                    placeholders.put("{crate}", crate.getName());
 
                     player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
                     removePlayerFromOpeningList(player);
@@ -453,7 +457,7 @@ public class CrateManager {
             }
             case quick_crate -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    player.sendMessage(Messages.quick_crate_in_use.getMessage("%crate%", crate.getName(), player));
+                    player.sendMessage(Messages.crate_in_use.getMessage("{crate}", crate.getName(), player));
                     removePlayerFromOpeningList(player);
                     return;
                 }
@@ -461,8 +465,8 @@ public class CrateManager {
                 if (virtualCrate) {
                     Map<String, String> placeholders = new HashMap<>();
 
-                    placeholders.put("%cratetype%", crate.getCrateType().getName());
-                    placeholders.put("%crate%", crate.getName());
+                    placeholders.put("{cratetype}", crate.getCrateType().getName());
+                    placeholders.put("{crate}", crate.getName());
 
                     player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
                     removePlayerFromOpeningList(player);
