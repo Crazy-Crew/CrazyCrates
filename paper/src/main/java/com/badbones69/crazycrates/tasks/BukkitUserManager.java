@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.common.config.ConfigManager;
+import org.bukkit.inventory.meta.ItemMeta;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
@@ -207,26 +208,26 @@ public class BukkitUserManager extends UserManager {
                     }
 
                     for (ItemStack item : items) {
-                        if (item != null) {
-                            if (isKeyFromCrate(item, crate)) {
-                                int keyAmount = item.getAmount();
+                        if (this.plugin.getCrateManager().isKeyFromCrate(item, crate)) {
+                            int keyAmount = item.getAmount();
 
-                                if ((takeAmount - keyAmount) >= 0) {
-                                    MiscUtils.removeMultipleItemStacks(player.getInventory(), item);
+                            if ((takeAmount - keyAmount) >= 0) {
+                                MiscUtils.removeMultipleItemStacks(player.getInventory(), item);
 
-                                    if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), amount, crate.getName());
+                                if (crate.getCrateType() == CrateType.cosmic)
+                                    addOpenedCrate(player.getUniqueId(), amount, crate.getName());
 
-                                    takeAmount -= keyAmount;
-                                } else {
-                                    item.setAmount(keyAmount - takeAmount);
+                                takeAmount -= keyAmount;
+                            } else {
+                                item.setAmount(keyAmount - takeAmount);
 
-                                    if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), amount, crate.getName());
+                                if (crate.getCrateType() == CrateType.cosmic)
+                                    addOpenedCrate(player.getUniqueId(), amount, crate.getName());
 
-                                    takeAmount = 0;
-                                }
-
-                                if (takeAmount <= 0) return true;
+                                takeAmount = 0;
                             }
+
+                            if (takeAmount <= 0) return true;
                         }
                     }
 
@@ -234,7 +235,7 @@ public class BukkitUserManager extends UserManager {
                     if (takeAmount > 0) {
                         ItemStack item = player.getEquipment().getItemInOffHand();
 
-                        if (isKeyFromCrate(item, crate)) {
+                        if (this.plugin.getCrateManager().isKeyFromCrate(item, crate)) {
                             int keyAmount = item.getAmount();
 
                             if ((takeAmount - keyAmount) >= 0) {
@@ -255,6 +256,7 @@ public class BukkitUserManager extends UserManager {
                     }
                 } catch (Exception exception) {
                     MiscUtils.failedToTakeKey(player, crateName);
+
                     return false;
                 }
             }
@@ -275,6 +277,7 @@ public class BukkitUserManager extends UserManager {
                 if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), amount, crate.getName());
 
                 Files.DATA.saveFile();
+
                 return true;
             }
 
@@ -284,6 +287,7 @@ public class BukkitUserManager extends UserManager {
         }
 
         MiscUtils.failedToTakeKey(player, crateName);
+
         return false;
     }
 
@@ -291,11 +295,13 @@ public class BukkitUserManager extends UserManager {
     public boolean hasPhysicalKey(UUID uuid, String crateName, boolean checkHand) {
         if (isPlayerNull(uuid)) {
             if (this.plugin.isLogging()) this.plugin.getLogger().warning("Player with the uuid " + uuid + " is null.");
+
             return false;
         }
 
         if (isCrateInvalid(crateName)) {
             if (this.plugin.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
+
             return false;
         }
 
@@ -314,27 +320,8 @@ public class BukkitUserManager extends UserManager {
         }
 
         for (ItemStack item : items) {
-            if (item != null) {
-                if (isKeyFromCrate(item, crate)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if a key is from a specific Crate.
-     *
-     * @param item The key item you are checking.
-     * @param crate The crate you are checking.
-     * @return true if it belongs to that crate and false if it does not.
-     */
-    private boolean isKeyFromCrate(ItemStack item, Crate crate) {
-        if (crate.getCrateType() != CrateType.menu) {
-            if (item != null && item.getType() != Material.AIR) {
-                return ItemUtils.isKey(item);
+            if (this.plugin.getCrateManager().isKeyFromCrate(item, crate)) {
+                return true;
             }
         }
 
@@ -368,6 +355,7 @@ public class BukkitUserManager extends UserManager {
             return true;
         } catch (Exception exception) {
             this.plugin.getLogger().log(Level.SEVERE, "Could not add keys to offline player with uuid: " + uuid, exception);
+
             return false;
         }
     }
@@ -376,6 +364,7 @@ public class BukkitUserManager extends UserManager {
     public boolean takeOfflineKeys(UUID uuid, String crateName, int keys, KeyType keyType) {
         if (isCrateInvalid(crateName)) {
             if (this.plugin.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
+
             return false;
         }
 
@@ -406,6 +395,7 @@ public class BukkitUserManager extends UserManager {
             return true;
         } catch (Exception exception) {
             this.plugin.getLogger().log(Level.SEVERE, "Could not take keys from offline player with uuid: " + uuid, exception);
+
             return false;
         }
     }
@@ -578,6 +568,7 @@ public class BukkitUserManager extends UserManager {
     public void addOpenedCrate(UUID uuid, String crateName) {
         if (isCrateInvalid(crateName)) {
             if (this.plugin.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
+
             return;
         }
 
