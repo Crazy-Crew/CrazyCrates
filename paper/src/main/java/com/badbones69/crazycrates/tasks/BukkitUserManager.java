@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.tasks;
 
+import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.common.config.ConfigManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
@@ -109,6 +111,8 @@ public class BukkitUserManager extends UserManager {
 
         Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
 
+        SettingsManager config = ConfigManager.getConfig();
+
         switch (keyType) {
             case physical_key -> {
                 if (!MiscUtils.isInventoryFull(player)) {
@@ -116,10 +120,10 @@ public class BukkitUserManager extends UserManager {
                     return;
                 }
 
-                if (this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.give_virtual_keys_when_inventory_full)) {
+                if (config.getProperty(ConfigKeys.give_virtual_keys_when_inventory_full)) {
                     addVirtualKeys(amount, player.getUniqueId(), crate.getName());
 
-                    if (this.plugin.getConfigManager().getConfig().getProperty(ConfigKeys.notify_player_when_inventory_full)) {
+                    if (config.getProperty(ConfigKeys.notify_player_when_inventory_full)) {
                         Map<String, String> placeholders = new HashMap<>();
                         placeholders.put("{amount}", String.valueOf(amount));
                         placeholders.put("{player}", player.getName());

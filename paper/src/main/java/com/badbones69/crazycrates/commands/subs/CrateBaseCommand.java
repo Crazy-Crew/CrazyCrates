@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import dev.triumphteam.cmd.core.annotation.ArgName;
 import dev.triumphteam.cmd.core.annotation.Command;
@@ -76,7 +77,7 @@ public class CrateBaseCommand extends BaseCommand {
     private final FileManager fileManager = this.plugin.getFileManager();
 
     @NotNull
-    private final SettingsManager config = this.plugin.getConfigManager().getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
     @NotNull
     private final FileConfiguration locations = Files.LOCATIONS.getFile();
@@ -167,7 +168,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("reload")
     @Permission(value = "crazycrates.command.admin.reload", def = PermissionDefault.OP)
     public void onReload(CommandSender sender) {
-        this.plugin.getConfigManager().reload();
+        ConfigManager.reload();
 
         this.fileManager.reloadAllFiles();
         this.fileManager.setup();

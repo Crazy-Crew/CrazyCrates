@@ -13,43 +13,37 @@ import java.io.File;
 
 public class ConfigManager {
 
-    private final File dataFolder;
+    private static SettingsManager config;
 
-    public ConfigManager(File dataFolder) {
-        this.dataFolder = dataFolder;
-    }
+    private static SettingsManager messages;
 
-    private SettingsManager config;
-
-    private SettingsManager messages;
-
-    public void load() {
+    public static void load(File dataFolder) {
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
 
-        this.config = SettingsManagerBuilder
-                .withYamlFile(new File(this.dataFolder, "config.yml"), builder)
+        config = SettingsManagerBuilder
+                .withYamlFile(new File(dataFolder, "config.yml"), builder)
                 .useDefaultMigrationService()
                 .configurationData(ConfigKeys.class)
                 .create();
 
-        this.messages = SettingsManagerBuilder
-                .withYamlFile(new File(this.dataFolder, "messages.yml"), builder)
+        messages = SettingsManagerBuilder
+                .withYamlFile(new File(dataFolder, "messages.yml"), builder)
                 .useDefaultMigrationService()
                 .configurationData(MiscKeys.class, ErrorKeys.class, PlayerKeys.class, CrateKeys.class, CommandKeys.class)
                 .create();
     }
 
-    public void reload() {
-        this.config.reload();
+    public static void reload() {
+        config.reload();
 
-        this.messages.reload();
+        messages.reload();
     }
 
-    public SettingsManager getConfig() {
+    public static SettingsManager getConfig() {
         return config;
     }
 
-    public SettingsManager getMessages() {
-        return this.messages;
+    public static SettingsManager getMessages() {
+        return messages;
     }
 }

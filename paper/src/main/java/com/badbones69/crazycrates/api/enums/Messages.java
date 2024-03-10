@@ -113,11 +113,7 @@ public enum Messages {
     }
 
     @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
-    @NotNull
-    private final ConfigManager configManager = this.plugin.getCrazyHandler().getConfigManager();
-    @NotNull
-    private final SettingsManager configuration = this.configManager.getMessages();
+    private final SettingsManager configuration = ConfigManager.getMessages();
 
     private boolean isList() {
         return this.isList;
@@ -176,7 +172,7 @@ public enum Messages {
     }
 
     private String asString(Player player) {
-        String prefix = this.configManager.getConfig().getProperty(ConfigKeys.command_prefix);
+        String prefix = ConfigManager.getConfig().getProperty(ConfigKeys.command_prefix);
 
         String message = this.message.replaceAll("\\{prefix}", prefix);
 

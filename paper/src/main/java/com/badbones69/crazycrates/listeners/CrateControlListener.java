@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.events.KeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
+import com.badbones69.crazycrates.common.config.ConfigManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -41,7 +42,7 @@ public class CrateControlListener implements Listener {
     private final InventoryManager inventoryManager = this.plugin.getCrazyHandler().getInventoryManager();
 
     @NotNull
-    private final SettingsManager config = this.plugin.getConfigManager().getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
@@ -228,6 +229,7 @@ public class CrateControlListener implements Listener {
 
         if (player.isInsideVehicle() && player.getVehicle() != null) {
             player.getVehicle().setVelocity(vector);
+
             return;
         }
 

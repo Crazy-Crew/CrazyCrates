@@ -3,6 +3,7 @@ package com.badbones69.crazycrates;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.commands.CommandManager;
+import com.badbones69.crazycrates.common.config.ConfigManager;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.common.CrazyCratesPlugin;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
@@ -63,7 +64,7 @@ public class CrazyHandler extends CrazyCratesPlugin {
         commandManager.load();
 
         // Load metrics.
-        boolean metrics = getConfigManager().getConfig().getProperty(ConfigKeys.toggle_metrics);
+        boolean metrics = ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics);
 
         this.metrics = new MetricsManager();
         if (metrics) this.metrics.start();

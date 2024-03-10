@@ -34,13 +34,10 @@ import java.util.List;
 public class CrateMainMenu extends InventoryBuilder {
 
     @NotNull
-    private final ConfigManager configManager = this.plugin.getConfigManager();
-
-    @NotNull
     private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @NotNull
-    private final SettingsManager config = this.configManager.getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
     public CrateMainMenu(Player player, int size, String title) {
         super(player, size, title);
@@ -168,7 +165,7 @@ public class CrateMainMenu extends InventoryBuilder {
         private final InventoryManager inventoryManager = this.plugin.getCrazyHandler().getInventoryManager();
 
         @NotNull
-        private final SettingsManager config = this.plugin.getConfigManager().getConfig();
+        private final SettingsManager config = ConfigManager.getConfig();
 
         @NotNull
         private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();

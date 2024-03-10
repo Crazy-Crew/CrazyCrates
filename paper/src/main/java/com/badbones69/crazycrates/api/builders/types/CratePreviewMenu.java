@@ -80,7 +80,7 @@ public class CratePreviewMenu extends InventoryBuilder {
 
         int page = this.crazyHandler.getInventoryManager().getPage(getPlayer());
 
-        if (this.crazyHandler.getInventoryManager().inCratePreview(getPlayer()) && this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
+        if (this.crazyHandler.getInventoryManager().inCratePreview(getPlayer()) && ConfigManager.getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
             inventory.setItem(getCrate().getAbsoluteItemPosition(4), this.crazyHandler.getInventoryManager().getMenuButton(getPlayer()));
         }
 
@@ -140,10 +140,7 @@ public class CratePreviewMenu extends InventoryBuilder {
         private final InventoryManager inventoryManager = this.crazyHandler.getInventoryManager();
 
         @NotNull
-        private final ConfigManager configManager = this.plugin.getConfigManager();
-
-        @NotNull
-        private final SettingsManager config = this.configManager.getConfig();
+        private final SettingsManager config = ConfigManager.getConfig();
 
         @EventHandler
         public void onInventoryClick(InventoryClickEvent event) {
@@ -169,7 +166,7 @@ public class CratePreviewMenu extends InventoryBuilder {
 
             PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-            if (container.has(PersistentKeys.main_menu_button.getNamespacedKey()) && this.crazyHandler.getConfigManager().getConfig().getProperty(ConfigKeys.enable_crate_menu)) { // Clicked the menu button.
+            if (container.has(PersistentKeys.main_menu_button.getNamespacedKey()) && this.config.getProperty(ConfigKeys.enable_crate_menu)) { // Clicked the menu button.
                 if (this.inventoryManager.inCratePreview(player)) {
                     if (holder.overrideMenu()) return;
 
