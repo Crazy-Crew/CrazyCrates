@@ -8,7 +8,7 @@ import org.jetbrains.annotations.ApiStatus;
  * @author Ryder Belserion
  * @version 0.3
  */
-public class CrazyProvider {
+public class CrazyCratesProvider {
 
     private static ICrazyCrates instance = null;
 
@@ -21,7 +21,7 @@ public class CrazyProvider {
     }
 
     @ApiStatus.Internal
-    private CrazyProvider() {
+    private CrazyCratesProvider() {
         throw new UnsupportedOperationException("This class cannot be instantiated");
     }
 
@@ -31,11 +31,11 @@ public class CrazyProvider {
             return;
         }
 
-        CrazyProvider.instance = instance;
+        CrazyCratesProvider.instance = instance;
     }
 
     @ApiStatus.Internal
     public static void unregister() {
-        CrazyProvider.instance = null;
+        CrazyCratesProvider.instance = null;
     }
 }

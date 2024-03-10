@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.common;
 
 import com.badbones69.crazycrates.common.config.ConfigManager;
-import us.crazycrew.crazycrates.api.CrazyProvider;
+import us.crazycrew.crazycrates.api.CrazyCratesProvider;
 import us.crazycrew.crazycrates.api.ICrazyCrates;
 import java.io.File;
 
@@ -19,7 +19,7 @@ public abstract class CrazyCratesPlugin implements ICrazyCrates {
         ConfigManager.load(this.dataFolder);
 
         // Register provider.
-        CrazyProvider.register(this);
+        CrazyCratesProvider.register(this);
     }
 
     @Override
@@ -28,6 +28,6 @@ public abstract class CrazyCratesPlugin implements ICrazyCrates {
         ConfigManager.reload();
 
         // Unregister provider.
-        CrazyProvider.unregister();
+        CrazyCratesProvider.unregister();
     }
 }

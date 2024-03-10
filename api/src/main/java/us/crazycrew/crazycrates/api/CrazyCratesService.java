@@ -5,10 +5,10 @@ public class CrazyCratesService {
 
     @Deprecated(forRemoval = true, since = "0.4")
     public static ICrazyCrates get() {
-        if (CrazyProvider.get() == null) {
+        if (CrazyCratesProvider.get() == null) {
             throw new IllegalStateException("CrazyCrates API is not loaded.");
         }
 
-        return CrazyProvider.get();
+        return CrazyCratesProvider.get();
     }
 }
