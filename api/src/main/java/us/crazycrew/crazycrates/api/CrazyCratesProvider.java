@@ -27,7 +27,7 @@ public class CrazyCratesProvider {
 
     @ApiStatus.Internal
     public static void register(final ICrazyCrates instance) {
-        if (get() != null) {
+        if (CrazyCratesProvider.instance != null) {
             return;
         }
 
