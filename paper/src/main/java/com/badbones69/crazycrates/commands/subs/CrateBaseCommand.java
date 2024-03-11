@@ -99,12 +99,6 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("help")
     @Permission(value = "crazycrates.help", def = PermissionDefault.TRUE)
     public void onHelp(CommandSender sender) {
-        if (sender instanceof ConsoleCommandSender commandSender) {
-            commandSender.sendMessage(Messages.admin_help.getMessage());
-
-            return;
-        }
-
         if (sender instanceof Player player) {
             if (player.hasPermission("crazycrates.admin-access")) {
                 player.sendMessage(Messages.admin_help.getMessage(player));
@@ -113,7 +107,11 @@ public class CrateBaseCommand extends BaseCommand {
             }
 
             player.sendMessage(Messages.help.getMessage(player));
+
+            return;
         }
+
+        sender.sendMessage(Messages.admin_help.getMessage());
     }
 
     @SubCommand("transfer")
