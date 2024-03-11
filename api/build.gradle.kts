@@ -37,6 +37,7 @@ tasks {
             create<MavenPublication>("maven") {
                 group = project.group
                 artifactId = "api"
+                version = "0.4"
 
                 from(component)
 
