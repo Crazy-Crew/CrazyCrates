@@ -67,7 +67,7 @@ public class Crate {
     private final CrateHologram hologram;
 
     @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
+    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     @NotNull
     private final InventoryManager inventoryManager = this.plugin.getCrazyHandler().getInventoryManager();

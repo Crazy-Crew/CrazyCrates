@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.listeners.crates;
 
-import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -25,7 +25,7 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 public class MobileCrateListener implements Listener {
 
     @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
+    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();

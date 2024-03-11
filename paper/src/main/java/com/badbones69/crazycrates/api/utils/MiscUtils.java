@@ -1,9 +1,7 @@
 package com.badbones69.crazycrates.api.utils;
 
-import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.types.ConfigKeys;
+import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
 import com.badbones69.crazycrates.support.PluginSupport;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -22,7 +20,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +32,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MiscUtils {
 
     @NotNull
-    private static final CrazyCrates plugin = CrazyCrates.get();
+    private static final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     public static void sendCommand(String command) {
         Server server = plugin.getServer();

@@ -113,7 +113,8 @@ public enum Messages {
     }
 
     @NotNull
-    private final SettingsManager configuration = ConfigManager.getMessages();
+    protected final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+
 
     private boolean isList() {
         return this.isList;

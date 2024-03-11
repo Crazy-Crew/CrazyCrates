@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
+    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     @NotNull
     private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();

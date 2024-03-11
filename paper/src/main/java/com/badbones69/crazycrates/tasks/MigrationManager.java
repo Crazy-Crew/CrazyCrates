@@ -3,13 +3,13 @@ package com.badbones69.crazycrates.tasks;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
-import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.common.config.types.ConfigKeys;
-import com.badbones69.crazycrates.common.config.types.messages.CommandKeys;
-import com.badbones69.crazycrates.common.config.types.messages.CrateKeys;
-import com.badbones69.crazycrates.common.config.types.messages.ErrorKeys;
-import com.badbones69.crazycrates.common.config.types.messages.MiscKeys;
-import com.badbones69.crazycrates.common.config.types.messages.PlayerKeys;
+import com.badbones69.crazycrates.CrazyCratesPaper;
+import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.impl.messages.CommandKeys;
+import us.crazycrew.crazycrates.platform.impl.messages.CrateKeys;
+import us.crazycrew.crazycrates.platform.impl.messages.ErrorKeys;
+import us.crazycrew.crazycrates.platform.impl.messages.MiscKeys;
+import us.crazycrew.crazycrates.platform.impl.messages.PlayerKeys;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 public class MigrationManager {
 
     @NotNull
-    private static final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static final CrazyCratesPaper plugin = JavaPlugin.getPlugin(CrazyCratesPaper.class);
 
     public static void migrate() {
         File directory = new File(plugin.getDataFolder(), "backups");

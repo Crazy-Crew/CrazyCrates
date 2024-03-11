@@ -62,7 +62,7 @@ import java.util.logging.Level;
 public class CrateBaseCommand extends BaseCommand {
 
     @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
+    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     @NotNull
     private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();

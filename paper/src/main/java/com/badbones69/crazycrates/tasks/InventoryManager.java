@@ -21,7 +21,7 @@ import java.util.UUID;
 public class InventoryManager {
 
     @NotNull
-    private final SettingsManager config = ConfigManager.getConfig();
+    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     private ItemBuilder menuButton;
     private ItemBuilder nextButton;

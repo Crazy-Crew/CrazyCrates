@@ -162,7 +162,7 @@ public class CrateMainMenu extends InventoryBuilder {
     public static class CrateMenuListener implements Listener {
 
         @NotNull
-        private final CrazyCrates plugin = CrazyCrates.get();
+        private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
         @NotNull
         private final InventoryManager inventoryManager = this.plugin.getCrazyHandler().getInventoryManager();

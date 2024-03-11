@@ -44,7 +44,7 @@ import java.util.logging.Level;
 public class CosmicCrateListener implements Listener {
 
     @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
+    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();

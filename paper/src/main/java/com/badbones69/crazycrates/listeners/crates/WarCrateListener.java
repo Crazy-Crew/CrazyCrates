@@ -26,7 +26,7 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 public class WarCrateListener implements Listener {
 
     @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
+    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     @NotNull
     private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();

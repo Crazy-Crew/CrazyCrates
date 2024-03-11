@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api.utils;
 
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.CrazyCratesPaper;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -13,7 +13,7 @@ import java.util.logging.Level;
 public class FileUtils {
 
     @NotNull
-    private final static CrazyCrates plugin = CrazyCrates.get();
+    private final static CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     public static void copyFiles(Path directory, String folder, List<String> names) {
         names.forEach(name -> copyFile(directory, folder, name));
