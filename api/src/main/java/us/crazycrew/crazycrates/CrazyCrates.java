@@ -6,7 +6,6 @@ import us.crazycrew.crazycrates.api.ICrazyCrates;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import us.crazycrew.crazycrates.platform.Server;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
-
 import java.util.logging.Logger;
 
 public class CrazyCrates implements ICrazyCrates {

@@ -10,24 +10,24 @@ import org.jetbrains.annotations.ApiStatus;
  */
 public class CrazyCratesProvider {
 
-    private static CrazyCrates instance;
-
-    @ApiStatus.Internal
-    private CrazyCratesProvider() {
-        throw new UnsupportedOperationException("This class cannot be instantiated");
-    }
+    private static CrazyCrates instance = null;
 
     public static CrazyCrates get() {
         if (instance == null) {
-            throw new IllegalStateException("CrazyCrates is not loaded.");
+            throw new IllegalStateException("CrazyCrates API is not loaded.");
         }
 
         return instance;
     }
 
     @ApiStatus.Internal
+    private CrazyCratesProvider() {
+        throw new UnsupportedOperationException("This class cannot be instantiated");
+    }
+
+    @ApiStatus.Internal
     static void register(CrazyCrates instance) {
-        if (CrazyCratesProvider.instance == null) {
+        if (CrazyCratesProvider.instance != null) {
             return;
         }
 
