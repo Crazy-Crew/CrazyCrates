@@ -41,7 +41,7 @@ Older keys will still work temporarily but please get your players to trade your
 
 ## Fixes:
 * Remove player from crate/page/preview arrays on inventory close event as it wasn't before.
-* Fix the player getting a preview message if they weren't in the anyway preview when you did /crates reload.
+* Fix the player getting a preview message if they weren't in the preview when you did /crates reload.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
