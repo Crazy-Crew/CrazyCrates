@@ -942,13 +942,17 @@ public class CrateManager {
      * @return a crate location if the location is a physical crate otherwise null if not.
      */
     public CrateLocation getCrateLocation(Location location) {
-        for (CrateLocation crateLocation : this.crateLocations) {
-            if (crateLocation.getLocation().equals(location)) {
-                return crateLocation;
+        CrateLocation crateLocation = null;
+
+        for (CrateLocation key : this.crateLocations) {
+            if (key.getLocation().equals(location)) {
+                crateLocation = key;
+
+                break;
             }
         }
 
-        return null;
+        return crateLocation;
     }
 
     /**
