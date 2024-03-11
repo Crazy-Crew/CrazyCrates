@@ -29,45 +29,45 @@ public class MobileCrateListener implements Listener {
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
-    
+
     @EventHandler
-    public void onCrateOpen(PlayerInteractEvent event) {
+    public void onCrateOnTheGoUse(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            ItemStack item = player.getInventory().getItemInMainHand();
-            
-            if (item.getType() == Material.AIR) return;
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
-            if (!item.hasItemMeta()) return;
+        ItemStack item = player.getInventory().getItemInMainHand();
 
-            ItemMeta itemMeta = item.getItemMeta();
+        if (item.getType() == Material.AIR) return;
 
-            PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        if (!item.hasItemMeta()) return;
 
-            Crate crate = this.crateManager.getCrateFromName(container.get(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING));
+        ItemMeta itemMeta = item.getItemMeta();
 
-            if (crate == null) return;
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-            if (crate.getCrateType() != CrateType.crate_on_the_go) return;
+        Crate crate = this.crateManager.getCrateFromName(container.get(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING));
 
-            if (!this.crateManager.isKeyFromCrate(item, crate)) return;
+        if (crate == null) return;
 
-            event.setCancelled(true);
+        if (crate.getCrateType() != CrateType.crate_on_the_go) return;
 
-            this.crateManager.addPlayerToOpeningList(player, crate);
+        if (!this.crateManager.isKeyFromCrate(item, crate)) return;
 
-            ItemUtils.removeItem(item, player);
+        event.setCancelled(true);
 
-            Prize prize = crate.pickPrize(player);
+        this.crateManager.addPlayerToOpeningList(player, crate);
 
-            PrizeManager.givePrize(player, prize, crate);
+        ItemUtils.removeItem(item, player);
 
-            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, this.crateManager.getOpeningCrate(player).getName(), prize));
+        Prize prize = crate.pickPrize(player);
 
-            if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
+        PrizeManager.givePrize(player, prize, crate);
 
-            this.crateManager.removePlayerFromOpeningList(player);
-        }
+        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, this.crateManager.getOpeningCrate(player).getName(), prize));
+
+        if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
+
+        this.crateManager.removePlayerFromOpeningList(player);
     }
 }
