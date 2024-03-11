@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
@@ -29,6 +30,9 @@ public class MiscListener implements Listener {
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @NotNull
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
+
+    @NotNull
     private final InventoryManager inventoryManager = this.plugin.getCrazyHandler().getInventoryManager();
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -39,10 +43,10 @@ public class MiscListener implements Listener {
         this.crateManager.setNewPlayerKeys(player);
 
         // Just in case any old data is in there.
-        this.plugin.getUserManager().loadOldOfflinePlayersKeys(player, this.crateManager.getUsableCrates());
+        this.userManager.loadOldOfflinePlayersKeys(player, this.crateManager.getUsableCrates());
 
         // Also add the new data.
-        this.plugin.getUserManager().loadOfflinePlayersKeys(player, this.crateManager.getUsableCrates());
+        this.userManager.loadOfflinePlayersKeys(player, this.crateManager.getUsableCrates());
     }
 
     @EventHandler(ignoreCancelled = true)
