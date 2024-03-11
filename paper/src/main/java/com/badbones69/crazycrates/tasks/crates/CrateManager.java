@@ -523,7 +523,7 @@ public class CrateManager {
     /**
      * Removes a crate in use.
      *
-     * @param player the player finihsing a crate.
+     * @param player the player finishing a crate.
      */
     public void removeCrateInUse(Player player) {
         this.cratesInUse.remove(player.getUniqueId());
