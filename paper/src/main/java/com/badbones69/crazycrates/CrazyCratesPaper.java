@@ -72,7 +72,7 @@ public class CrazyCratesPaper extends JavaPlugin {
 
         int radius = DedicatedServer.getServer().getSpawnProtectionRadius();
 
-        if (radius >= 0) {
+        if (radius > 0) {
             List.of(
                     "The spawn protection is set to " + radius,
                     "Crates placed in the spawn protection will not function",
