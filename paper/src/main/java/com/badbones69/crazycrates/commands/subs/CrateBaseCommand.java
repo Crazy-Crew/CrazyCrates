@@ -1,12 +1,11 @@
 package com.badbones69.crazycrates.commands.subs;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.CrazyHandler;
+import com.badbones69.crazycrates.tasks.CrazyManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import dev.triumphteam.cmd.core.annotation.ArgName;
 import dev.triumphteam.cmd.core.annotation.Command;
@@ -21,10 +20,9 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.World;
-import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.Nullable;
-import com.badbones69.crazycrates.common.config.types.ConfigKeys;
-import com.badbones69.crazycrates.CrazyCrates;
+import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.EventManager;
 import com.badbones69.crazycrates.api.FileManager;
@@ -77,7 +75,7 @@ public class CrateBaseCommand extends BaseCommand {
     private final FileManager fileManager = this.plugin.getFileManager();
 
     @NotNull
-    private final SettingsManager config = ConfigManager.getConfig();
+    private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
 
     @NotNull
     private final FileConfiguration locations = Files.LOCATIONS.getFile();
@@ -166,7 +164,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("reload")
     @Permission(value = "crazycrates.command.admin.reload", def = PermissionDefault.OP)
     public void onReload(CommandSender sender) {
-        ConfigManager.reload();
+        this.plugin.getCrazyCrates().reload();
 
         this.fileManager.reloadAllFiles();
         this.fileManager.setup();

@@ -1,15 +1,13 @@
 package com.badbones69.crazycrates.api.builders.types;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.CrazyHandler;
+import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.tasks.CrazyManager;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.types.ConfigKeys;
+import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
@@ -26,15 +24,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
-import static java.util.regex.Matcher.quoteReplacement;
-
 public class CrateTierMenu extends InventoryBuilder {
 
     @NotNull
     private final CrazyManager crazyManager = this.plugin.getCrazyManager();
 
     @NotNull
-    private final SettingsManager config = ConfigManager.getConfig();
+    private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
 
     public CrateTierMenu(List<Tier> tiers, Crate crate, Player player, int size, String title) {
         super(tiers, crate, player, size, title);

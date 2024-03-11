@@ -80,7 +80,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
     }
 
     public boolean overrideMenu() {
-        SettingsManager config = ConfigManager.getConfig();
+        SettingsManager config = this.plugin.getCrazyCrates().getConfig();
 
         if (config.getProperty(ConfigKeys.menu_button_override)) {
             List<String> commands = config.getProperty(ConfigKeys.menu_button_command_list);

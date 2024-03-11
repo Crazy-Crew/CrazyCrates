@@ -1,16 +1,16 @@
 package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.common.config.ConfigManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.common.config.types.ConfigKeys;
+import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,6 +22,9 @@ public class InventoryManager {
 
     @NotNull
     private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+
+    @NotNull
+    private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
 
     private ItemBuilder menuButton;
     private ItemBuilder nextButton;

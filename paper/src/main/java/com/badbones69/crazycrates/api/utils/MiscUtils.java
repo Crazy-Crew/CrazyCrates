@@ -316,6 +316,6 @@ public class MiscUtils {
     }
 
     public static boolean useOtherRandom() {
-        return ConfigManager.getConfig().getProperty(ConfigKeys.use_different_random);
+        return plugin.getCrazyCrates().getConfig().getProperty(ConfigKeys.use_different_random);
     }
 }

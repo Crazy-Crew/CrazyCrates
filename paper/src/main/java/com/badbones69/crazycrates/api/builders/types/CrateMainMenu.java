@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api.builders.types;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
@@ -23,9 +23,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.types.ConfigKeys;
-import com.badbones69.crazycrates.CrazyHandler;
+import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.users.UserManager;
@@ -38,7 +36,7 @@ public class CrateMainMenu extends InventoryBuilder {
     private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @NotNull
-    private final SettingsManager config = ConfigManager.getConfig();
+    private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
 
     public CrateMainMenu(Player player, int size, String title) {
         super(player, size, title);
@@ -168,7 +166,7 @@ public class CrateMainMenu extends InventoryBuilder {
         private final InventoryManager inventoryManager = this.plugin.getCrazyManager().getInventoryManager();
 
         @NotNull
-        private final SettingsManager config = ConfigManager.getConfig();
+        private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
 
         @NotNull
         private final CrateManager crateManager = this.plugin.getCrateManager();

@@ -384,7 +384,7 @@ public class CrateManager {
      * @param checkHand if it just checks the players hand or if it checks their inventory.
      */
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
-        SettingsManager config = ConfigManager.getConfig();
+        SettingsManager config = this.plugin.getCrazyCrates().getConfig();
 
         if (crate.getCrateType() == CrateType.menu) {
             if (config.getProperty(ConfigKeys.enable_crate_menu)) {

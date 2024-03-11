@@ -95,7 +95,7 @@ public class QuickCrate extends CrateBuilder {
 
         this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(getPlayer(), getCrate(), getCrate().getName(), prize));
 
-        boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
+        boolean showQuickCrateItem = this.plugin.getCrazyCrates().getConfig().getProperty(ConfigKeys.show_quickcrate_item);
 
         // Only related to the item above the crate.
         if (showQuickCrateItem) {

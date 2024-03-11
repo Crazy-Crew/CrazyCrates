@@ -2,19 +2,18 @@ package com.badbones69.crazycrates.api.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
+import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.common.config.types.messages.CommandKeys;
-import com.badbones69.crazycrates.common.config.types.messages.CrateKeys;
-import com.badbones69.crazycrates.common.config.types.messages.ErrorKeys;
-import com.badbones69.crazycrates.common.config.types.messages.MiscKeys;
-import com.badbones69.crazycrates.common.config.types.messages.PlayerKeys;
+import us.crazycrew.crazycrates.platform.impl.messages.CommandKeys;
+import us.crazycrew.crazycrates.platform.impl.messages.CrateKeys;
+import us.crazycrew.crazycrates.platform.impl.messages.ErrorKeys;
+import us.crazycrew.crazycrates.platform.impl.messages.MiscKeys;
+import us.crazycrew.crazycrates.platform.impl.messages.PlayerKeys;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.types.ConfigKeys;
-import com.badbones69.crazycrates.common.utils.StringUtils;
-import com.badbones69.crazycrates.CrazyCrates;
+import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.utils.StringUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.HashMap;
 import java.util.List;
@@ -115,6 +114,8 @@ public enum Messages {
     @NotNull
     protected final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
+    @NotNull
+    private final SettingsManager configuration = this.plugin.getCrazyCrates().getMessages();
 
     private boolean isList() {
         return this.isList;
@@ -173,7 +174,7 @@ public enum Messages {
     }
 
     private String asString(Player player) {
-        String prefix = ConfigManager.getConfig().getProperty(ConfigKeys.command_prefix);
+        String prefix = this.plugin.getCrazyCrates().getConfig().getProperty(ConfigKeys.command_prefix);
 
         String message = this.message.replaceAll("\\{prefix}", prefix);
 

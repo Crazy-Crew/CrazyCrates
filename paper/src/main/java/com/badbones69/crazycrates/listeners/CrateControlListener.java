@@ -41,7 +41,7 @@ public class CrateControlListener implements Listener {
     private final InventoryManager inventoryManager = this.plugin.getCrazyManager().getInventoryManager();
 
     @NotNull
-    private final SettingsManager config = ConfigManager.getConfig();
+    private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
