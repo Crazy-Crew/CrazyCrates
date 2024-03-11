@@ -1,3 +1,15 @@
+## Breaking Changes:
+**Do not use this instantly on a live server, This is your warning, and I am not responsible for anything.**
+
+Warning, Any keys given to a player will likely not work on older versions. This is not backwards compatible.<br>
+I recommend taking a backup of your server prior and restore if needed.<br>
+Physical Keys and the data to identify what is a physical key has changed.<br>
+Older keys will still work temporarily but please get your players to trade your old physical keys for new ones.
+
+* Replaced all instances of NBT-API with PersistentDataContainer
+* We do not check if a key has lore/names when checking if you have a valid key because that makes the point of PersistentDataContainer redundant.
+* The ItemBuilder has been updated to a slightly more modern version in preparation for MiniMessage support.
+
 ## Additions:
 * Added extra placeholders to all messages. The messages.yml will update with new comments showing what each message can use.
 * Add config.yml/messages.yml to `examples` folder which auto-generate on reload.
