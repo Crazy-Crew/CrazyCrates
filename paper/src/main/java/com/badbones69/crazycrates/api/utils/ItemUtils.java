@@ -18,20 +18,6 @@ public class ItemUtils {
         } catch (Exception ignored) {}
     }
 
-    public static boolean isKey(ItemStack itemStack) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-
-        boolean asString = itemMeta.getAsString().contains("CrazyCrates-Crate");
-
-        String value = itemMeta.getAsString();
-
-        if (value.contains("CrazyCrates-Crate")) {
-            return true;
-        }
-
-        return itemMeta.getPersistentDataContainer().has(PersistentKeys.crate_key.getNamespacedKey());
-    }
-
     public static String getKey(ItemMeta itemMeta) {
         return itemMeta.getPersistentDataContainer().get(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }
