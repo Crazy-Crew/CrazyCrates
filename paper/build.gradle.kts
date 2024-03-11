@@ -9,7 +9,9 @@ dependencies {
 
     implementation(libs.triumphcmds)
 
-    implementation(libs.configme)
+    implementation(libs.configme) {
+        exclude(group = "org.yaml", module = "snakeyaml")
+    }
 
     implementation(libs.metrics)
 
