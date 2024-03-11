@@ -284,7 +284,7 @@ public class CrateManager {
             ).forEach(line -> this.plugin.getLogger().info(line));
         }
 
-        FileConfiguration locations = FileManager.Files.LOCATIONS.getFile();
+        FileConfiguration locations = Files.LOCATIONS.getFile();
         int loadedAmount = 0;
         int brokeAmount = 0;
 
@@ -763,8 +763,8 @@ public class CrateManager {
                 this.plugin.getCrateManager().getUsableCrates().stream()
                         .filter(Crate :: doNewPlayersGetKeys)
                         .forEach(crate -> {
-                            FileManager.Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
-                            FileManager.Files.DATA.saveFile();
+                            Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
+                            Files.DATA.saveFile();
                         });
             }
         }
@@ -1138,7 +1138,7 @@ public class CrateManager {
 
     // Cleans the data file.
     private void cleanDataFile() {
-        FileConfiguration data = FileManager.Files.DATA.getFile();
+        FileConfiguration data = Files.DATA.getFile();
 
         if (!data.contains("Players")) return;
 
@@ -1176,7 +1176,7 @@ public class CrateManager {
         }
 
         if (this.plugin.isLogging()) this.plugin.getLogger().info("The data.yml file has been cleaned.");
-        FileManager.Files.DATA.saveFile();
+        Files.DATA.saveFile();
     }
 
     // War Crate
