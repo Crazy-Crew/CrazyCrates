@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.common.utils;
+package us.crazycrew.crazycrates.utils;
 
 import java.util.List;
 
