@@ -26,6 +26,7 @@ import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.MigrationManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import net.minecraft.server.dedicated.DedicatedServer;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.badbones69.crazycrates.api.FileManager;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
@@ -68,6 +69,18 @@ public class CrazyCratesPaper extends JavaPlugin {
     public void onEnable() {
         // Migrate as early as possible.
         MigrationManager.migrate();
+
+        int radius = DedicatedServer.getServer().getSpawnProtectionRadius();
+
+        if (radius >= 0) {
+            List.of(
+                    "The spawn protection is set to " + radius,
+                    "Crates placed in the spawn protection will not function",
+                    "correctly as spawn protection overrides everything",
+                    "",
+                    "Change the value in server.properties to 0 then restart"
+            ).forEach(getLogger()::warning);
+        }
 
         // Load the config files.
         ConfigManager.load(getDataFolder());
