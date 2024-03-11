@@ -70,7 +70,7 @@ public class CrazyCratesPaper extends JavaPlugin {
         MigrationManager.migrate();
 
         // Load the config files.
-        ConfigManager.load();
+        ConfigManager.load(getDataFolder());
 
         // Register permissions that we need.
         registerPermissions();

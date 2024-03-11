@@ -15,23 +15,21 @@ import java.io.File;
 
 public class ConfigManager {
 
-    private static final CrazyCrates instance = CrazyCratesProvider.get();
-
     private static SettingsManager config;
 
     private static SettingsManager messages;
 
-    public static void load() {
+    public static void load(File dataFolder) {
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
 
         config = SettingsManagerBuilder
-                .withYamlFile(new File(instance.getServer().getFolder(), "config.yml"), builder)
+                .withYamlFile(new File(dataFolder, "config.yml"), builder)
                 .useDefaultMigrationService()
                 .configurationData(ConfigKeys.class)
                 .create();
 
         messages = SettingsManagerBuilder
-                .withYamlFile(new File(instance.getServer().getFolder(), "messages.yml"), builder)
+                .withYamlFile(new File(dataFolder, "messages.yml"), builder)
                 .useDefaultMigrationService()
                 .configurationData(MiscKeys.class, ErrorKeys.class, PlayerKeys.class, CrateKeys.class, CommandKeys.class)
                 .create();
