@@ -3,13 +3,13 @@ plugins {
 }
 
 dependencies {
-    api(project(":common"))
+    implementation(project(":api"))
 
     implementation(libs.cluster.paper)
 
     implementation(libs.triumphcmds)
 
-    //implementation(libs.triumphgui)
+    implementation(libs.configme)
 
     implementation(libs.metrics)
 

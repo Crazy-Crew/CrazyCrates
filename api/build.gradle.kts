@@ -11,6 +11,8 @@ base {
 
 dependencies {
     compileOnlyApi(libs.bundles.adventure)
+
+    compileOnly(libs.configme)
 }
 
 java {
