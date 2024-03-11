@@ -70,7 +70,7 @@ public class Crate {
     private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     @NotNull
-    private final InventoryManager inventoryManager = this.plugin.getCrazyManager().getInventoryManager();
+    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     @NotNull
     private final FileManager fileManager = this.plugin.getFileManager();
@@ -415,7 +415,7 @@ public class Crate {
      * @return the preview as an Inventory object.
      */
     public Inventory getPreview(Player player) {
-        return getPreview(player, this.plugin.getCrazyManager().getInventoryManager().getPage(player), false, null);
+        return getPreview(player, this.inventoryManager.getPage(player), false, null);
     }
     
     /**

@@ -1,6 +1,8 @@
 package com.badbones69.crazycrates.api.utils;
 
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.api.enums.Permissions;
+import org.bukkit.permissions.Permission;
 import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
 import com.badbones69.crazycrates.support.PluginSupport;
 import org.bukkit.Color;
@@ -317,5 +319,22 @@ public class MiscUtils {
 
     public static boolean useOtherRandom() {
         return plugin.getCrazyCrates().getConfig().getProperty(ConfigKeys.use_different_random);
+    }
+
+    public static void registerPermissions() {
+        Arrays.stream(Permissions.values()).toList().forEach(permission -> {
+            Permission newPermission = new Permission(
+                    permission.getPermission(),
+                    permission.getDescription(),
+                    permission.isDefault(),
+                    permission.getChildren()
+            );
+
+            plugin.getServer().getPluginManager().addPermission(newPermission);
+        });
+    }
+
+    public static boolean isLogging() {
+        return plugin.getCrazyCrates().getConfig().getProperty(ConfigKeys.verbose_logging);
     }
 }

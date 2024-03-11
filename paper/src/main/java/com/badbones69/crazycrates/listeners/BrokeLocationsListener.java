@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.listeners;
 import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -45,7 +46,7 @@ public class BrokeLocationsListener implements Listener {
 
         this.crateManager.removeBrokeLocation(fixedWorlds);
 
-        if (this.plugin.isLogging()) {
+        if (MiscUtils.isLogging()) {
             this.plugin.getLogger().warning("Fixed " + fixedAmount + " broken crate locations.");
 
             if (this.crateManager.getBrokeLocations().isEmpty()) this.plugin.getLogger().warning("All broken crate locations have been fixed.");

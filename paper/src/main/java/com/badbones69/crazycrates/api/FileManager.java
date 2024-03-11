@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +30,7 @@ public class FileManager {
     private final Map<Files, FileConfiguration> configurations = new HashMap<>();
 
     private final Logger logger = this.plugin.getLogger();
-    private final boolean isLogging = this.plugin.isLogging();
+    private final boolean isLogging = MiscUtils.isLogging();
 
     /**
      * Sets up the plugin and loads all necessary files.
@@ -504,7 +505,7 @@ public class FileManager {
             if (!root.exists()) {
                 root.mkdirs();
 
-                if (this.plugin.isLogging()) this.plugin.getLogger().info("The folder " + homeFolder + "/ was not found so it was created.");
+                if (MiscUtils.isLogging()) this.plugin.getLogger().info("The folder " + homeFolder + "/ was not found so it was created.");
 
                 this.file = null;
 
@@ -595,7 +596,7 @@ public class FileManager {
          */
         private void saveFile() {
             if (this.file == null) {
-                if (this.plugin.isLogging()) this.plugin.getLogger().warning("There was a null custom file that could not be found!");
+                if (MiscUtils.isLogging()) this.plugin.getLogger().warning("There was a null custom file that could not be found!");
 
                 return;
             }
@@ -603,7 +604,7 @@ public class FileManager {
             try {
                 this.file.save(new File(this.plugin.getDataFolder(), this.homeFolder + "/" + this.fileName));
 
-                if (this.plugin.isLogging()) this.plugin.getLogger().info("Successfully saved the " + this.fileName + ".");
+                if (MiscUtils.isLogging()) this.plugin.getLogger().info("Successfully saved the " + this.fileName + ".");
             } catch (IOException exception) {
                 this.plugin.getLogger().log(Level.SEVERE, "Could not save " + this.fileName + "!", exception);
             }
@@ -614,7 +615,7 @@ public class FileManager {
          */
         public void reloadFile() {
             if (this.file == null) {
-                if (this.plugin.isLogging()) this.plugin.getLogger().warning("There was a null custom file that could not be found!");
+                if (MiscUtils.isLogging()) this.plugin.getLogger().warning("There was a null custom file that could not be found!");
 
                 return;
             }
@@ -622,7 +623,7 @@ public class FileManager {
             try {
                 this.file = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "/" + this.homeFolder + "/" + this.fileName));
 
-                if (this.plugin.isLogging()) this.plugin.getLogger().info("Successfully reloaded the " + this.fileName + ".");
+                if (MiscUtils.isLogging()) this.plugin.getLogger().info("Successfully reloaded the " + this.fileName + ".");
             } catch (Exception exception) {
                 this.plugin.getLogger().log(Level.SEVERE, "Could not reload the " + this.fileName + "!", exception);
             }

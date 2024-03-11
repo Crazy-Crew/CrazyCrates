@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.api.builders.types;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCratesPaper;
-import com.badbones69.crazycrates.tasks.CrazyManager;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -27,7 +26,7 @@ import java.util.List;
 public class CrateTierMenu extends InventoryBuilder {
 
     @NotNull
-    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
+    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     @NotNull
     private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
@@ -60,8 +59,7 @@ public class CrateTierMenu extends InventoryBuilder {
             }
         }
 
-        if (this.crazyManager.getInventoryManager().inCratePreview(getPlayer()) && this.config.getProperty(ConfigKeys.enable_crate_menu))
-            getInventory().setItem(getCrate().getAbsolutePreviewItemPosition(4), this.crazyManager.getInventoryManager().getMenuButton(getPlayer()));
+        if (this.inventoryManager.inCratePreview(getPlayer()) && this.config.getProperty(ConfigKeys.enable_crate_menu)) getInventory().setItem(getCrate().getAbsolutePreviewItemPosition(4), this.inventoryManager.getMenuButton(getPlayer()));
     }
 
     public static class CrateTierListener implements Listener {
@@ -70,10 +68,7 @@ public class CrateTierMenu extends InventoryBuilder {
         private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
         @NotNull
-        private final CrazyManager crazyManager = this.plugin.getCrazyManager();
-
-        @NotNull
-        private final InventoryManager inventoryManager = this.crazyManager.getInventoryManager();
+        private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
         @NotNull
         private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();

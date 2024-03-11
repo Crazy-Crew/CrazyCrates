@@ -4,36 +4,42 @@ import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
-import com.badbones69.crazycrates.api.enums.Permissions;
+import com.badbones69.crazycrates.api.utils.FileUtils;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.api.utils.MsgUtils;
+import com.badbones69.crazycrates.commands.CommandManager;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
-import com.badbones69.crazycrates.listeners.crates.*;
+import com.badbones69.crazycrates.listeners.crates.CosmicCrateListener;
+import com.badbones69.crazycrates.listeners.crates.CrateOpenListener;
+import com.badbones69.crazycrates.listeners.crates.MobileCrateListener;
+import com.badbones69.crazycrates.listeners.crates.QuadCrateListener;
+import com.badbones69.crazycrates.listeners.crates.WarCrateListener;
 import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
 import com.badbones69.crazycrates.platform.PaperServer;
+import com.badbones69.crazycrates.support.PluginSupport;
+import com.badbones69.crazycrates.support.holograms.HologramManager;
+import com.badbones69.crazycrates.support.metrics.MetricsManager;
+import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.CrazyManager;
+import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.MigrationManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.tasks.crates.other.quadcrates.SessionManager;
-import com.badbones69.crazycrates.api.utils.MsgUtils;
-import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.FileManager;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
-import com.badbones69.crazycrates.support.PluginSupport;
 import us.crazycrew.crazycrates.CrazyCrates;
-import java.util.Arrays;
+import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
 import java.util.List;
 import java.util.Timer;
+import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions;
 
 public class CrazyCratesPaper extends JavaPlugin {
 
-    private CrazyCrates crazyCrates;
+    private CrazyCrates instance;
 
     @NotNull
     public static CrazyCratesPaper get() {
@@ -43,31 +49,81 @@ public class CrazyCratesPaper extends JavaPlugin {
     @NotNull
     private final BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(this);
 
-    private CrazyManager crazyManager;
-    private Timer timer;
+    private final Timer timer;
+
+    public CrazyCratesPaper() {
+        // Create timer object.
+        this.timer = new Timer();
+    }
+
+    private InventoryManager inventoryManager;
+    private BukkitUserManager userManager;
+    private CrateManager crateManager;
+    private FileManager fileManager;
+
+    private MetricsManager metrics;
 
     @Override
     public void onEnable() {
         // Migrate as early as possible.
         MigrationManager.migrate();
 
-        // Initialize api.
-        this.crazyCrates = new CrazyCrates(new PaperServer());
-
-        // Create timer object.
-        this.timer = new Timer();
-
-        // Register permissions.
+        // Register permissions that we need.
         registerPermissions();
 
-        // Load version 2 of crazycrates
-        this.crazyManager = new CrazyManager();
-        this.crazyManager.load();
+        // Initialize api and all configurations.
+        PaperServer server = new PaperServer();
 
-        // Clean if we have to.
-        this.crazyManager.cleanFiles();
+        this.instance = new CrazyCrates(server);
 
-        // Register listeners
+        // Bind file manager to the getter in server.
+        this.fileManager = server.getFileManager();
+
+        // Register files.
+        this.fileManager.registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("WarCrateExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("CasinoExample.yml", "/crates", "/crates")
+                .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("sea.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("soul.nbt", "/schematics", "/schematics")
+                .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
+                .registerCustomFilesFolder("/crates")
+                .registerCustomFilesFolder("/schematics")
+                .setup();
+
+        // Set variables
+        this.inventoryManager = server.getInventoryManager();
+        this.crateManager = server.getCrateManager();
+
+        // Load holograms.
+        this.crateManager.loadHolograms();
+
+        // Load example files.
+        FileUtils.loadFiles();
+
+        // Load the buttons.
+        this.inventoryManager.loadButtons();
+
+        // Load the crates.
+        this.crateManager.loadCrates();
+
+        this.userManager = server.getUserManager();
+
+        // Load commands.
+        CommandManager commandManager = new CommandManager();
+        commandManager.load();
+
+        // Load metrics.
+        boolean metrics = this.instance.getConfig().getProperty(ConfigKeys.toggle_metrics);
+
+        this.metrics = new MetricsManager();
+        if (metrics) this.metrics.start();
+
         List.of(
                 // Menu listeners.
                 new CratePreviewMenu.CratePreviewListener(),
@@ -87,8 +143,8 @@ public class CrazyCratesPaper extends JavaPlugin {
                 new MiscListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
 
-        if (isLogging()) {
-            String prefix = this.crazyCrates.getConfig().getProperty(ConfigKeys.console_prefix);
+        if (MiscUtils.isLogging()) {
+            String prefix = this.instance.getConfig().getProperty(ConfigKeys.console_prefix);
 
             // Print dependency garbage
             for (PluginSupport value : PluginSupport.values()) {
@@ -101,31 +157,32 @@ public class CrazyCratesPaper extends JavaPlugin {
         }
 
         if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
-            if (isLogging()) getLogger().info("PlaceholderAPI support is enabled!");
+            if (MiscUtils.isLogging()) getLogger().info("PlaceholderAPI support is enabled!");
+
             new PlaceholderAPISupport().register();
         }
 
-        if (isLogging()) getLogger().info("You can disable logging by going to the plugin-config.yml and setting verbose to false.");
+        if (MiscUtils.isLogging()) getLogger().info("You can disable logging by going to the plugin-config.yml and setting verbose to false.");
     }
 
     @Override
     public void onDisable() {
-        // End all crates.
-        SessionManager.endCrates();
-
-        if (this.crazyManager != null) {
-            CrateManager crateManager = this.crazyManager.getCrateManager();
-
-            // Remove quick crate rewards
-            crateManager.purgeRewards();
-
-            // Purge holograms.
-            if (crateManager.getHolograms() != null) crateManager.getHolograms().removeAllHolograms();
-        }
-
+        // Cancel the timer task.
         if (this.timer != null) this.timer.cancel();
 
-        if (this.crazyCrates != null) this.crazyCrates.disable();
+        // Clean up any mess we may have left behind.
+        if (this.crateManager != null) {
+            this.crateManager.purgeRewards();
+
+            HologramManager holograms = this.crateManager.getHolograms();
+
+            if (holograms != null && !holograms.isMapEmpty()) {
+                holograms.removeAllHolograms();
+            }
+        }
+
+        // Disable api
+        if (this.instance != null) this.instance.disable();
     }
 
     @NotNull
@@ -134,49 +191,37 @@ public class CrazyCratesPaper extends JavaPlugin {
     }
 
     @NotNull
+    public InventoryManager getInventoryManager() {
+        return this.inventoryManager;
+    }
+
+    @NotNull
     public BukkitUserManager getUserManager() {
-        return getCrazyManager().getUserManager();
+        return this.userManager;
     }
 
     @NotNull
     public CrateManager getCrateManager() {
-        return getCrazyManager().getCrateManager();
+        return this.crateManager;
+    }
+
+    @NotNull
+    public CrazyCrates getCrazyCrates() {
+        return this.instance;
     }
 
     @NotNull
     public FileManager getFileManager() {
-        return getCrazyManager().getFileManager();
+        return this.fileManager;
     }
 
     @NotNull
-    public CrazyManager getCrazyManager() {
-        return this.crazyManager;
+    public MetricsManager getMetrics() {
+        return this.metrics;
     }
 
     @NotNull
     public Timer getTimer() {
         return this.timer;
-    }
-
-    public boolean isLogging() {
-        return this.crazyCrates.getConfig().getProperty(ConfigKeys.verbose_logging);
-    }
-
-    private void registerPermissions() {
-        Arrays.stream(Permissions.values()).toList().forEach(permission -> {
-            Permission newPermission = new Permission(
-                    permission.getPermission(),
-                    permission.getDescription(),
-                    permission.isDefault(),
-                    permission.getChildren()
-            );
-
-            getServer().getPluginManager().addPermission(newPermission);
-        });
-    }
-
-    @NotNull
-    public CrazyCrates getCrazyCrates() {
-        return this.crazyCrates;
     }
 }

@@ -3,6 +3,10 @@ package us.crazycrew.crazycrates;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
+import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.CrazyCratesService;
+import us.crazycrew.crazycrates.api.ICrazyCrates;
+import us.crazycrew.crazycrates.api.users.UserManager;
 import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
 import us.crazycrew.crazycrates.platform.impl.messages.CommandKeys;
 import us.crazycrew.crazycrates.platform.impl.messages.CrateKeys;
@@ -12,7 +16,7 @@ import us.crazycrew.crazycrates.platform.impl.messages.PlayerKeys;
 import us.crazycrew.crazycrates.platform.Server;
 import java.io.File;
 
-public class CrazyCrates {
+public class CrazyCrates implements ICrazyCrates {
 
     private final SettingsManager messages;
 
@@ -41,6 +45,9 @@ public class CrazyCrates {
                 .configurationData(MiscKeys.class, ErrorKeys.class, PlayerKeys.class, CrateKeys.class, CommandKeys.class)
                 .create();
 
+        // Register legacy provider
+        CrazyCratesService.register(this);
+
         // Register provider.
         CrazyCratesProvider.register(this);
     }
@@ -56,6 +63,9 @@ public class CrazyCrates {
 
         this.messages.save();
 
+        // Unregister legacy provider.
+        CrazyCratesService.unregister();
+
         // Unregister provider.
         CrazyCratesProvider.unregister();
     }
@@ -70,5 +80,11 @@ public class CrazyCrates {
 
     public SettingsManager getMessages() {
         return this.messages;
+    }
+
+    @NotNull
+    @Override
+    public UserManager getUserManager() {
+        return this.server.getUserManager();
     }
 }

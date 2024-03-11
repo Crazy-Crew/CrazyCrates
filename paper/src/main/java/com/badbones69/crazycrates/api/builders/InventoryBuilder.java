@@ -96,7 +96,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
                 return true;
             }
 
-            if (this.plugin.isLogging()) this.plugin.getLogger().warning("The property " + ConfigKeys.menu_button_command_list.getPath() + " is empty so no commands were run.");
+            if (MiscUtils.isLogging()) this.plugin.getLogger().warning("The property " + ConfigKeys.menu_button_command_list.getPath() + " is empty so no commands were run.");
 
             return true;
         }

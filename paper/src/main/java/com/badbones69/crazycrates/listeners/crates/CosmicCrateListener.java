@@ -458,7 +458,7 @@ public class CosmicCrateListener implements Listener {
                     crateManager.removePickedPlayer(player);
 
                     // Log it
-                    if (plugin.isLogging()) {
+                    if (MiscUtils.isLogging()) {
                         List.of(
                                 player.getName() + " spent 10 seconds staring at a gui instead of collecting their prizes",
                                 "The task has been cancelled, They have been given their prizes and the gui is closed."

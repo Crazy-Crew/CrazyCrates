@@ -33,7 +33,7 @@ public class MiscListener implements Listener {
     private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @NotNull
-    private final InventoryManager inventoryManager = this.plugin.getCrazyManager().getInventoryManager();
+    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {

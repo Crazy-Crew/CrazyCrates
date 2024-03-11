@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @SuppressWarnings("unchecked")
@@ -149,7 +150,7 @@ public class InventoryManager {
         return this.crateViewers.containsKey(player.getUniqueId());
     }
 
-    private final HashMap<UUID, Integer> pageViewers = new HashMap<>();
+    private final Map<UUID, Integer> pageViewers = new HashMap<>();
 
     public void nextPage(Player player) {
         setPage(player, getPage(player) + 1);

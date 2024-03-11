@@ -163,7 +163,7 @@ public class CrateMainMenu extends InventoryBuilder {
         private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
         @NotNull
-        private final InventoryManager inventoryManager = this.plugin.getCrazyManager().getInventoryManager();
+        private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
         @NotNull
         private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();

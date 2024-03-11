@@ -149,6 +149,7 @@ public class QuadCrateManager {
             if (this.handler.getBlockBlackList().contains(loc.getBlock().getType())) {
                 this.player.sendMessage(Messages.needs_more_room.getMessage(player));
                 this.crateManager.removePlayerFromOpeningList(this.player);
+
                 crateSessions.remove(this.instance);
                 return;
             } else {
@@ -164,6 +165,7 @@ public class QuadCrateManager {
                     if (entity.getUniqueId() == ongoingCrate.player.getUniqueId()) {
                         this.player.sendMessage(Messages.too_close_to_another_player.getMessage("{player}", entity.getName(), player));
                         this.crateManager.removePlayerFromOpeningList(this.player);
+
                         crateSessions.remove(this.instance);
                         return;
                     }
@@ -173,15 +175,16 @@ public class QuadCrateManager {
             }
         }
 
-        if (!this.plugin.getCrazyManager().getUserManager().takeKeys(1, this.player.getUniqueId(), this.crate.getName(), this.keyType, this.checkHand)) {
+        if (!this.plugin.getUserManager().takeKeys(1, this.player.getUniqueId(), this.crate.getName(), this.keyType, this.checkHand)) {
             MiscUtils.failedToTakeKey(this.player, this.crate.getName());
 
             this.crateManager.removePlayerFromOpeningList(this.player);
+
             crateSessions.remove(this.instance);
             return;
         }
 
-        if (this.plugin.getCrateManager().getHolograms() != null) this.crateManager.getHolograms().removeHologram(this.spawnLocation.getBlock());
+        if (this.crateManager.getHolograms() != null) this.crateManager.getHolograms().removeHologram(this.spawnLocation.getBlock());
 
         // Shove other players away from the player opening the crate.
         shovePlayers.forEach(entity -> entity.getLocation().toVector().subtract(this.spawnLocation.clone().toVector()).normalize().setY(1));
@@ -303,6 +306,7 @@ public class QuadCrateManager {
 
         if (removeForce) {
             this.crateManager.removePlayerFromOpeningList(this.player);
+
             crateSessions.remove(this.instance);
         }
 

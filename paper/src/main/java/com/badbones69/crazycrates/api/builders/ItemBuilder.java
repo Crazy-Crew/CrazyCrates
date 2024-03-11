@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api.builders;
 
 import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.support.PluginSupport;
 import com.badbones69.crazycrates.support.SkullCreator;
@@ -424,7 +425,7 @@ public class ItemBuilder {
                 }
             });
         } else {
-            if (this.plugin.isLogging()) {
+            if (MiscUtils.isLogging()) {
                 Logger logger = this.plugin.getLogger();
 
                 logger.warning("Material cannot be of type AIR or null, If you see this.");
@@ -551,7 +552,7 @@ public class ItemBuilder {
                     "Material cannot be null or empty, Output: " + type + ".",
                     "Please take a screenshot of this before asking for support."
             ).forEach(line -> {
-                if (this.plugin.isLogging()) this.plugin.getLogger().warning(line);
+                if (MiscUtils.isLogging()) this.plugin.getLogger().warning(line);
             });
 
             return this;

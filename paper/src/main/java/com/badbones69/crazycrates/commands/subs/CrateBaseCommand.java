@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.commands.subs;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.tasks.CrazyManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.api.objects.Prize;
@@ -63,10 +62,10 @@ public class CrateBaseCommand extends BaseCommand {
     private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     @NotNull
-    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
+    private final UserManager userManager = this.plugin.getUserManager();
 
     @NotNull
-    private final UserManager userManager = this.plugin.getUserManager();
+    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
@@ -174,14 +173,12 @@ public class CrateBaseCommand extends BaseCommand {
         boolean isEnabled = this.config.getProperty(ConfigKeys.toggle_metrics);
 
         if (!isEnabled) {
-            this.crazyManager.getMetrics().stop();
+            this.plugin.getMetrics().stop();
         } else {
-            this.crazyManager.getMetrics().start();
+            this.plugin.getMetrics().start();
         }
 
-        this.crazyManager.cleanFiles();
-
-        InventoryManager inventoryManager = this.crazyManager.getInventoryManager();
+        FileUtils.cleanFiles();
 
         // Close previews
         if (this.config.getProperty(ConfigKeys.take_out_of_preview)) {
@@ -368,8 +365,8 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        this.crazyManager.getInventoryManager().addViewer(player);
-        this.crazyManager.getInventoryManager().openNewCratePreview(player, crate,crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
+        this.inventoryManager.addViewer(player);
+        this.inventoryManager.openNewCratePreview(player, crate,crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
     }
 
     @SubCommand("open-others")
@@ -903,7 +900,7 @@ public class CrateBaseCommand extends BaseCommand {
             int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), crate.getName());
 
             if (totalKeys < 1) {
-                if (this.plugin.isLogging()) this.plugin.getLogger().warning("The player " + player.getName() + " does not have enough keys to take.");
+                if (MiscUtils.isLogging()) this.plugin.getLogger().warning("The player " + player.getName() + " does not have enough keys to take.");
 
                 if (sender instanceof Player human) {
                     human.sendMessage(Messages.cannot_take_keys.getMessage("{player}", player.getName(), human));

@@ -12,10 +12,6 @@ import us.crazycrew.crazycrates.api.users.UserManager;
 @Deprecated(forRemoval = true, since = "0.4")
 public interface ICrazyCrates {
 
-    void enable();
-
-    void disable();
-
     /**
      * @return the user manager
      */

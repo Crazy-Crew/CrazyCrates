@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.api.utils;
 
+import com.badbones69.crazycrates.api.FileManager.Files;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCratesPaper;
 import java.io.File;
@@ -58,7 +60,7 @@ public class FileUtils {
 
         if (!dir.exists()) {
             if (dir.mkdirs()) {
-                if (plugin.isLogging()) plugin.getLogger().warning("Created " + dir.getName() + " because we couldn't find it.");
+                if (MiscUtils.isLogging()) plugin.getLogger().warning("Created " + dir.getName() + " because we couldn't find it.");
             }
         }
 
@@ -71,7 +73,7 @@ public class FileUtils {
         URL resource = loader.getResource(name);
 
         if (resource == null) {
-            if (plugin.isLogging()) plugin.getLogger().severe("Failed to find file: " + name);
+            if (MiscUtils.isLogging()) plugin.getLogger().severe("Failed to find file: " + name);
 
             return;
         }
@@ -92,7 +94,7 @@ public class FileUtils {
 
         if (!dir.exists()) {
             if (dir.mkdirs()) {
-                if (plugin.isLogging()) plugin.getLogger().warning("Created " + dir.getName() + " because we couldn't find it.");
+                if (MiscUtils.isLogging()) plugin.getLogger().warning("Created " + dir.getName() + " because we couldn't find it.");
             }
         }
 
@@ -111,6 +113,23 @@ public class FileUtils {
             while ((i = inputStream.read(buf)) != -1) {
                 outputStream.write(buf, 0, i);
             }
+        }
+    }
+
+    public static void cleanFiles() {
+        FileConfiguration locations = Files.LOCATIONS.getFile();
+        FileConfiguration data = Files.DATA.getFile();
+
+        if (!locations.contains("Locations")) {
+            locations.set("Locations.Clear", null);
+
+            Files.LOCATIONS.saveFile();
+        }
+
+        if (!data.contains("Players")) {
+            data.set("Players.Clear", null);
+
+            Files.DATA.saveFile();
         }
     }
 }

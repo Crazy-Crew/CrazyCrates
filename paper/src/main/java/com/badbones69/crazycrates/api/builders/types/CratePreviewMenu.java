@@ -18,7 +18,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
-import com.badbones69.crazycrates.tasks.CrazyManager;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ import java.util.List;
 public class CratePreviewMenu extends InventoryBuilder {
 
     @NotNull
-    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
+    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     private final boolean isTier;
     private final Tier tier;
@@ -74,10 +73,10 @@ public class CratePreviewMenu extends InventoryBuilder {
             }
         }
 
-        int page = this.crazyManager.getInventoryManager().getPage(getPlayer());
+        int page = this.inventoryManager.getPage(getPlayer());
 
-        if (this.crazyManager.getInventoryManager().inCratePreview(getPlayer()) && this.plugin.getCrazyCrates().getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
-            inventory.setItem(getCrate().getAbsoluteItemPosition(4), this.crazyManager.getInventoryManager().getMenuButton(getPlayer()));
+        if (this.inventoryManager.inCratePreview(getPlayer()) && this.plugin.getCrazyCrates().getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
+            inventory.setItem(getCrate().getAbsoluteItemPosition(4), this.inventoryManager.getMenuButton(getPlayer()));
         }
 
         if (page == 1) {
@@ -85,7 +84,7 @@ public class CratePreviewMenu extends InventoryBuilder {
                 inventory.setItem(getCrate().getAbsoluteItemPosition(3), getCrate().getBorderItem().setTarget(getPlayer()).build());
             }
         } else {
-            inventory.setItem(getCrate().getAbsoluteItemPosition(3), this.crazyManager.getInventoryManager().getBackButton(getPlayer()));
+            inventory.setItem(getCrate().getAbsoluteItemPosition(3), this.inventoryManager.getBackButton(getPlayer()));
         }
 
         if (page == getCrate().getMaxPage()) {
@@ -93,7 +92,7 @@ public class CratePreviewMenu extends InventoryBuilder {
                 inventory.setItem(getCrate().getAbsoluteItemPosition(5), getCrate().getBorderItem().setTarget(getPlayer()).build());
             }
         } else {
-            inventory.setItem(getCrate().getAbsoluteItemPosition(5), this.crazyManager.getInventoryManager().getNextButton(getPlayer()));
+            inventory.setItem(getCrate().getAbsoluteItemPosition(5), this.inventoryManager.getNextButton(getPlayer()));
         }
     }
 
@@ -130,10 +129,7 @@ public class CratePreviewMenu extends InventoryBuilder {
         private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
         @NotNull
-        private final CrazyManager crazyManager = this.plugin.getCrazyManager();
-
-        @NotNull
-        private final InventoryManager inventoryManager = this.crazyManager.getInventoryManager();
+        private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
         @NotNull
         private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();

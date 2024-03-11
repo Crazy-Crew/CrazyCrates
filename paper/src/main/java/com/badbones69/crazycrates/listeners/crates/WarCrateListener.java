@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.listeners.crates;
 
-import com.badbones69.crazycrates.tasks.CrazyManager;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
@@ -29,10 +28,7 @@ public class WarCrateListener implements Listener {
     private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     @NotNull
-    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
-
-    @NotNull
-    private final InventoryManager inventoryManager = this.crazyManager.getInventoryManager();
+    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
