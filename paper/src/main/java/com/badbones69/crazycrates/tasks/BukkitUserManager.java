@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.common.config.ConfigManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.inventory.meta.ItemMeta;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -34,6 +35,9 @@ public class BukkitUserManager extends UserManager {
     private final CrazyCrates plugin = CrazyCrates.get();
 
     @NotNull
+    private final CrateManager crateManager = this.plugin.getCrateManager();
+
+    @NotNull
     private final FileConfiguration data = Files.DATA.getFile();
 
     @Override
@@ -58,7 +62,7 @@ public class BukkitUserManager extends UserManager {
             return;
         }
 
-        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         Player player = getUser(uuid);
 
@@ -85,7 +89,7 @@ public class BukkitUserManager extends UserManager {
 
         Player player = getUser(uuid);
 
-        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         this.data.set("Players." + player.getUniqueId() + ".Name", player.getName());
         this.data.set("Players." + player.getUniqueId() + "." + crate.getName(), amount);
@@ -110,7 +114,7 @@ public class BukkitUserManager extends UserManager {
 
         Player player = getUser(uuid);
 
-        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         SettingsManager config = ConfigManager.getConfig();
 
@@ -170,7 +174,7 @@ public class BukkitUserManager extends UserManager {
 
             if (!item.hasItemMeta()) continue;
 
-            if (this.plugin.getCrateManager().isKeyFromCrate(item, this.plugin.getCrateManager().getCrateFromName(crateName))) keys += item.getAmount();
+            if (this.plugin.getCrateManager().isKeyFromCrate(item, this.crateManager.getCrateFromName(crateName))) keys += item.getAmount();
         }
 
         return keys;
@@ -190,7 +194,7 @@ public class BukkitUserManager extends UserManager {
 
         Player player = getUser(uuid);
 
-        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         switch (keyType) {
             case physical_key -> {
@@ -318,7 +322,7 @@ public class BukkitUserManager extends UserManager {
         }
 
         for (ItemStack item : items) {
-            if (this.plugin.getCrateManager().isKeyFromCrate(item, crate)) {
+            if (this.crateManager.isKeyFromCrate(item, crate)) {
                 return true;
             }
         }
@@ -333,7 +337,7 @@ public class BukkitUserManager extends UserManager {
             return false;
         }
 
-        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         try {
             if (keyType == KeyType.physical_key) {
@@ -366,7 +370,7 @@ public class BukkitUserManager extends UserManager {
             return false;
         }
 
-        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         try {
             if (keyType == KeyType.physical_key) {
@@ -446,8 +450,7 @@ public class BukkitUserManager extends UserManager {
 
                 int amount = this.data.getInt("Offline-Players." + uuid + "." + crate.getName());
 
-                //TODO() Instead of dropping the keys, make it so they need to empty their inventory and prompt them to open a gui.
-
+                //todo() Instead of dropping the keys, make it so they need to empty their inventory and prompt them to open a gui.
                 while (keysGiven < amount) {
                     // If the inventory is full, drop the remaining keys then stop.
                     if (crate.getCrateType() == CrateType.crate_on_the_go) {
@@ -539,7 +542,7 @@ public class BukkitUserManager extends UserManager {
             return;
         }
 
-        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         boolean hasValue = this.data.contains("Players." + uuid + ".tracking." + crate.getName());
 
@@ -570,7 +573,7 @@ public class BukkitUserManager extends UserManager {
             return;
         }
 
-        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
+        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         boolean hasValue = this.data.contains("Players." + uuid + ".tracking." + crate.getName());
 
@@ -596,6 +599,6 @@ public class BukkitUserManager extends UserManager {
     }
     
     private boolean isCrateInvalid(String crateName) {
-        return crateName.isBlank() || this.plugin.getCrateManager().getCrateFromName(crateName) == null;
+        return crateName.isBlank() || this.crateManager.getCrateFromName(crateName) == null;
     }
 }
