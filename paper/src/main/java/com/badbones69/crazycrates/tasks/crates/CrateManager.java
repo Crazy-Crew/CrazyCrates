@@ -152,17 +152,7 @@ public class CrateManager {
         }
     }
 
-    /**
-     * Loads the crates.
-     */
-    public void loadCrates() {
-        this.giveNewPlayersKeys = false;
-
-        purge();
-
-        // Removes all holograms so that they can be replaced.
-        if (this.holograms != null) this.holograms.removeAllHolograms();
-
+    public void loadHolograms() {
         if (PluginSupport.DECENT_HOLOGRAMS.isPluginEnabled()) {
             this.holograms = new DecentHologramsSupport();
             if (this.plugin.isLogging()) this.plugin.getLogger().info("DecentHolograms support has been enabled.");
@@ -172,8 +162,21 @@ public class CrateManager {
         } else if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginEnabled()) {
             this.holograms = new HolographicDisplaysSupport();
             if (this.plugin.isLogging()) this.plugin.getLogger().info("Holographic Displays support has been enabled.");
-        } else if (this.plugin.isLogging())
-            this.plugin.getLogger().warning("No holograms plugin were found. If using CMI, make sure holograms module is enabled.");
+        } else if (this.plugin.isLogging()) this.plugin.getLogger().warning("No holograms plugin were found. If using CMI, make sure holograms module is enabled.");
+    }
+
+    /**
+     * Loads the crates.
+     */
+    public void loadCrates() {
+        this.giveNewPlayersKeys = false;
+
+        purge();
+
+        // Removes all holograms so that they can be replaced.
+        if (this.holograms != null && !this.holograms.isMapEmpty()) {
+            this.holograms.removeAllHolograms();
+        }
 
         if (this.plugin.isLogging()) this.plugin.getLogger().info("Loading all crate information...");
 

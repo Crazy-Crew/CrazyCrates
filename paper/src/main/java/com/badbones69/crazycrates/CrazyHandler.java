@@ -54,6 +54,8 @@ public class CrazyHandler extends CrazyCratesPlugin {
         // Create inventory manager.
         this.inventoryManager = new InventoryManager();
 
+        this.crateManager.loadHolograms();
+
         this.crateManager.loadCrates();
 
         // Creates user manager instance.

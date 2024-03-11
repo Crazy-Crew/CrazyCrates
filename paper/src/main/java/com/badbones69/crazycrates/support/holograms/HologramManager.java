@@ -10,5 +10,7 @@ public abstract class HologramManager {
     public abstract void removeHologram(Block block);
 
     public abstract void removeAllHolograms();
+
+    public abstract boolean isMapEmpty();
     
 }

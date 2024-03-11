@@ -7,6 +7,8 @@ import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.block.Block;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
+
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -46,5 +48,10 @@ public class DecentHologramsSupport extends HologramManager {
     public void removeAllHolograms() {
         this.holograms.forEach((key, value) -> value.delete());
         this.holograms.clear();
+    }
+
+    @Override
+    public boolean isMapEmpty() {
+        return this.holograms.isEmpty();
     }
 }

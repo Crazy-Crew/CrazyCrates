@@ -7,6 +7,8 @@ import net.Zrips.CMILib.Container.CMILocation;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.block.Block;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
+
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -53,5 +55,10 @@ public class CMIHologramsSupport extends HologramManager {
     public void removeAllHolograms() {
         this.holograms.forEach((key, value) -> value.remove());
         this.holograms.clear();
+    }
+
+    @Override
+    public boolean isMapEmpty() {
+        return this.holograms.isEmpty();
     }
 }
