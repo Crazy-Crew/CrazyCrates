@@ -15,7 +15,7 @@ Older keys will still work temporarily but please get your players to trade your
 * Add config.yml/messages.yml to `examples` folder which auto-generate on reload.
 
 ## Changes:
-* All internal placeholders in the plugin have been changed except for the ones in crate files.
+* All internal placeholders used in config.yml and messages.yml have changed.
   * %player% is now {player}
   * %crate% is now {crate}
   * %amount% is now {amount}
