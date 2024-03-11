@@ -170,7 +170,7 @@ public class BukkitUserManager extends UserManager {
 
             if (!item.hasItemMeta()) continue;
 
-            if (ItemUtils.isKey(item)) keys += item.getAmount();
+            if (this.plugin.getCrateManager().isKeyFromCrate(item, this.plugin.getCrateManager().getCrateFromName(crateName))) keys += item.getAmount();
         }
 
         return keys;

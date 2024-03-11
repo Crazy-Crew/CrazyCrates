@@ -922,15 +922,17 @@ public class CrateManager {
      * @return a crate if is a key from a crate otherwise null if it is not.
      */
     public Crate getCrateFromKey(ItemStack item) {
-        if (item != null && item.getType() != Material.AIR) {
-            for (Crate crate : getUsableCrates()) {
-                if (isKeyFromCrate(item, crate)) {
-                    return crate;
-                }
-            }
+        if (!item.hasItemMeta()) return null;
+
+        ItemMeta itemMeta = item.getItemMeta();
+
+        if (!itemMeta.getPersistentDataContainer().has(PersistentKeys.crate_key.getNamespacedKey())) {
+            return getCrateNameFromOldKey(itemMeta);
         }
 
-        return null;
+        String crateName = ItemUtils.getKey(itemMeta);
+
+        return getCrateFromName(crateName);
     }
 
     /**
@@ -992,14 +994,79 @@ public class CrateManager {
     /**
      * Check if a key is from a specific Crate.
      *
-     * @param item the key ItemStack you are checking.
-     * @param crate the Crate you are checking.
+     * @param item the key you are checking.
+     * @param crate the crate you are checking.
      * @return true if it belongs to that Crate and false if it does not.
      */
     public boolean isKeyFromCrate(ItemStack item, Crate crate) {
+        // If the crate type is menu, return.
         if (crate.getCrateType() == CrateType.menu) return false;
 
-        return ItemUtils.isKey(item);
+        // If the item is null for whatever reason.
+        if (item == null) return false;
+
+        // If the item type is AIR for whatever reason.
+        if (item.getType() == Material.AIR) return false;
+
+        // If the item has no meta.
+        if (!item.hasItemMeta()) return false;
+
+        // Get the item meta.
+        ItemMeta itemMeta = item.getItemMeta();
+
+        // Check if it has key.
+        boolean hasNewCrateKey = itemMeta.getPersistentDataContainer().has(PersistentKeys.crate_key.getNamespacedKey());
+
+        // If we find no value in PDC, it's likely a legacy key. It'll return false if it does not contain it.
+        if (!hasNewCrateKey) {
+            // Get the item meta as a string
+            String value = itemMeta.getAsString();
+
+            String[] sections = value.split(",");
+
+            String pair = null;
+
+            for (String key : sections) {
+                if (key.contains("CrazyCrates-Crate")) {
+                    pair = key.trim().replaceAll("\\{", "").replaceAll("\"", "");
+
+                    break;
+                }
+            }
+
+            if (pair == null) {
+                return false;
+            }
+
+            return crate.getName().equals(pair.split(":")[1]);
+        }
+
+        // Get the crate name.
+        String crateName = ItemUtils.getKey(itemMeta);
+
+        return crate.getName().equals(crateName);
+    }
+
+    public Crate getCrateNameFromOldKey(ItemMeta itemMeta) {
+        // Get the item meta as a string
+        String value = itemMeta.getAsString();
+
+        String[] sections = value.split(",");
+
+        String pair = null;
+
+        for (String key : sections) {
+            if (key.contains("CrazyCrates-Crate")) {
+                pair = key.trim().replaceAll("\\{", "").replaceAll("\"", "");
+                break;
+            }
+        }
+
+        if (pair == null) {
+            return null;
+        }
+
+        return getCrateFromName(pair.split(":")[1]);
     }
 
     /**
