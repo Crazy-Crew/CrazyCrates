@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.support.holograms.types;
 
 
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.crates.CrateHologram;
+import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.objects.Crate;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;

@@ -4,7 +4,8 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -80,7 +81,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
     }
 
     public boolean overrideMenu() {
-        SettingsManager config = this.plugin.getCrazyCrates().getConfig();
+        SettingsManager config = ConfigManager.getConfig();
 
         if (config.getProperty(ConfigKeys.menu_button_override)) {
             List<String> commands = config.getProperty(ConfigKeys.menu_button_command_list);

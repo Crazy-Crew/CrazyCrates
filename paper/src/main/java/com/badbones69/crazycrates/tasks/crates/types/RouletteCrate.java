@@ -23,7 +23,6 @@ public class RouletteCrate extends CrateBuilder {
     @NotNull
     private final BukkitUserManager userManager = this.plugin.getUserManager();
 
-
     public RouletteCrate(Crate crate, Player player, int size) {
         super(crate, player, size);
     }

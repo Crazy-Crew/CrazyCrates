@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
@@ -10,7 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,10 +22,7 @@ import java.util.UUID;
 public class InventoryManager {
 
     @NotNull
-    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
-
-    @NotNull
-    private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
     private ItemBuilder menuButton;
     private ItemBuilder nextButton;
@@ -102,7 +99,7 @@ public class InventoryManager {
         return button.setTarget(player).build();
     }
 
-    private final HashMap<UUID, Crate> crateViewers = new HashMap<>();
+    private final Map<UUID, Crate> crateViewers = new HashMap<>();
 
     public void openNewCratePreview(Player player, Crate crate, boolean isTierPreview) {
         this.crateViewers.put(player.getUniqueId(), crate);

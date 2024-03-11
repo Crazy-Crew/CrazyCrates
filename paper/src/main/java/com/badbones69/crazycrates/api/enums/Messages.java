@@ -2,17 +2,17 @@ package com.badbones69.crazycrates.api.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
-import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import us.crazycrew.crazycrates.platform.impl.messages.CommandKeys;
-import us.crazycrew.crazycrates.platform.impl.messages.CrateKeys;
-import us.crazycrew.crazycrates.platform.impl.messages.ErrorKeys;
-import us.crazycrew.crazycrates.platform.impl.messages.MiscKeys;
-import us.crazycrew.crazycrates.platform.impl.messages.PlayerKeys;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.messages.CommandKeys;
+import us.crazycrew.crazycrates.platform.config.impl.messages.CrateKeys;
+import us.crazycrew.crazycrates.platform.config.impl.messages.ErrorKeys;
+import us.crazycrew.crazycrates.platform.config.impl.messages.MiscKeys;
+import us.crazycrew.crazycrates.platform.config.impl.messages.PlayerKeys;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import us.crazycrew.crazycrates.utils.StringUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.HashMap;
@@ -112,10 +112,7 @@ public enum Messages {
     }
 
     @NotNull
-    protected final CrazyCratesPaper plugin = CrazyCratesPaper.get();
-
-    @NotNull
-    private final SettingsManager configuration = this.plugin.getCrazyCrates().getMessages();
+    private final SettingsManager configuration = ConfigManager.getMessages();
 
     private boolean isList() {
         return this.isList;
@@ -174,7 +171,7 @@ public enum Messages {
     }
 
     private String asString(Player player) {
-        String prefix = this.plugin.getCrazyCrates().getConfig().getProperty(ConfigKeys.command_prefix);
+        String prefix = ConfigManager.getConfig().getProperty(ConfigKeys.command_prefix);
 
         String message = this.message.replaceAll("\\{prefix}", prefix);
 

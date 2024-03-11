@@ -1,11 +1,11 @@
 package com.badbones69.crazycrates.api.utils;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static java.util.regex.Matcher.quoteReplacement;
@@ -39,7 +39,7 @@ public class MsgUtils {
     }
 
     public static String getPrefix() {
-        return color(CrazyCratesPaper.get().getCrazyCrates().getConfig().getProperty(ConfigKeys.command_prefix));
+        return color(ConfigManager.getConfig().getProperty(ConfigKeys.command_prefix));
     }
 
     public static String getPrefix(String msg) {

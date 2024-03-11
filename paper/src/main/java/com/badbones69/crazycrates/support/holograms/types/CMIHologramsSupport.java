@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.support.holograms.types;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Holograms.CMIHologram;
-import us.crazycrew.crazycrates.crates.CrateHologram;
+import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import net.Zrips.CMILib.Container.CMILocation;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.block.Block;

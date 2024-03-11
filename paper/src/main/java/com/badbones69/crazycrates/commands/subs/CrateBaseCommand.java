@@ -19,8 +19,9 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.World;
-import org.jetbrains.annotations.Nullable;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.EventManager;
@@ -74,7 +75,7 @@ public class CrateBaseCommand extends BaseCommand {
     private final FileManager fileManager = this.plugin.getFileManager();
 
     @NotNull
-    private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
     @NotNull
     private final FileConfiguration locations = Files.LOCATIONS.getFile();
@@ -163,7 +164,7 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("reload")
     @Permission(value = "crazycrates.command.admin.reload", def = PermissionDefault.OP)
     public void onReload(CommandSender sender) {
-        this.plugin.getCrazyCrates().reload();
+        ConfigManager.reload();
 
         this.fileManager.reloadAllFiles();
         this.fileManager.setup();
@@ -895,7 +896,7 @@ public class CrateBaseCommand extends BaseCommand {
      * @param type the type of key.
      * @param amount the amount of keys.
      */
-    private void takeKey(CommandSender sender, @Nullable Player player, OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount) {
+    private void takeKey(CommandSender sender, Player player, OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount) {
         if (player != null) {
             int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), crate.getName());
 

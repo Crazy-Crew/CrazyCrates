@@ -1,7 +1,8 @@
 package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 
 import org.bukkit.SoundCategory;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -20,7 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.crates.quadcrates.CrateParticles;
+import us.crazycrew.crazycrates.api.crates.quadcrates.CrateParticles;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -254,7 +255,7 @@ public class QuadCrateManager {
                 player.sendMessage(Messages.out_of_time.getMessage("{crate}", crate.getName(), player));
                 crate.playSound(player, player.getLocation(), "stop-sound", "ENTITY_PLAYER_LEVELUP", SoundCategory.PLAYERS);
             }
-        }.runTaskLater(this.plugin, this.plugin.getCrazyCrates().getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
+        }.runTaskLater(this.plugin, ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
     }
 
     /**

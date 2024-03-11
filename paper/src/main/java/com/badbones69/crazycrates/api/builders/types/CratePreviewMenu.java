@@ -17,7 +17,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class CratePreviewMenu extends InventoryBuilder {
 
         int page = this.inventoryManager.getPage(getPlayer());
 
-        if (this.inventoryManager.inCratePreview(getPlayer()) && this.plugin.getCrazyCrates().getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
+        if (this.inventoryManager.inCratePreview(getPlayer()) && ConfigManager.getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
             inventory.setItem(getCrate().getAbsoluteItemPosition(4), this.inventoryManager.getMenuButton(getPlayer()));
         }
 
@@ -132,7 +133,7 @@ public class CratePreviewMenu extends InventoryBuilder {
         private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
         @NotNull
-        private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
+        private final SettingsManager config = ConfigManager.getConfig();
 
         @EventHandler
         public void onInventoryClick(InventoryClickEvent event) {

@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.crates;
+package us.crazycrew.crazycrates.api.crates;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class CrateHologram {
      * @return true if yes otherwise false.
      */
     public boolean isEnabled() {
-        return enabled;
+        return this.enabled;
     }
 
     /**
@@ -49,7 +49,7 @@ public class CrateHologram {
      * @return the range
      */
     public int getRange() {
-        return range;
+        return this.range;
     }
 
     /**
@@ -58,7 +58,7 @@ public class CrateHologram {
      * @return the height
      */
     public double getHeight() {
-        return height;
+        return this.height;
     }
 
     /**
@@ -67,6 +67,6 @@ public class CrateHologram {
      * @return the list of messages
      */
     public List<String> getMessages() {
-        return messages;
+        return this.messages;
     }
 }

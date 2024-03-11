@@ -122,9 +122,5 @@ public class WarCrateListener implements Listener {
                 }
             }
         }
-
-        this.inventoryManager.removeCrateViewer(player);
-        this.inventoryManager.removePageViewer(player);
-        this.inventoryManager.removeViewer(player);
     }
 }

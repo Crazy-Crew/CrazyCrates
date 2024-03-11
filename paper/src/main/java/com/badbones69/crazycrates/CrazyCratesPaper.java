@@ -32,7 +32,8 @@ import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CrazyCrates;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import java.util.List;
 import java.util.Timer;
 import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions;
@@ -68,16 +69,14 @@ public class CrazyCratesPaper extends JavaPlugin {
         // Migrate as early as possible.
         MigrationManager.migrate();
 
+        // Load the config files.
+        ConfigManager.load();
+
         // Register permissions that we need.
         registerPermissions();
 
-        // Initialize api and all configurations.
-        PaperServer server = new PaperServer();
-
-        this.instance = new CrazyCrates(server);
-
-        // Bind file manager to the getter in server.
-        this.fileManager = server.getFileManager();
+        // The file manager is depended on by the user manager.
+        this.fileManager = new FileManager();
 
         // Register files.
         this.fileManager.registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
@@ -96,9 +95,12 @@ public class CrazyCratesPaper extends JavaPlugin {
                 .registerCustomFilesFolder("/schematics")
                 .setup();
 
-        // Set variables
-        this.inventoryManager = server.getInventoryManager();
-        this.crateManager = server.getCrateManager();
+        this.inventoryManager = new InventoryManager();
+        this.crateManager = new CrateManager();
+        this.userManager = new BukkitUserManager();
+
+        // Init api
+        this.instance = new CrazyCrates(new PaperServer());
 
         // Load holograms.
         this.crateManager.loadHolograms();
@@ -112,17 +114,16 @@ public class CrazyCratesPaper extends JavaPlugin {
         // Load the crates.
         this.crateManager.loadCrates();
 
-        this.userManager = server.getUserManager();
-
         // Load commands.
         CommandManager commandManager = new CommandManager();
         commandManager.load();
 
         // Load metrics.
-        boolean metrics = this.instance.getConfig().getProperty(ConfigKeys.toggle_metrics);
+        if (ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) {
+            this.metrics = new MetricsManager();
 
-        this.metrics = new MetricsManager();
-        if (metrics) this.metrics.start();
+            this.metrics.start();
+        }
 
         List.of(
                 // Menu listeners.
@@ -144,7 +145,7 @@ public class CrazyCratesPaper extends JavaPlugin {
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
 
         if (MiscUtils.isLogging()) {
-            String prefix = this.instance.getConfig().getProperty(ConfigKeys.console_prefix);
+            String prefix = ConfigManager.getConfig().getProperty(ConfigKeys.console_prefix);
 
             // Print dependency garbage
             for (PluginSupport value : PluginSupport.values()) {
@@ -181,6 +182,9 @@ public class CrazyCratesPaper extends JavaPlugin {
             }
         }
 
+        // Save all files.
+        if (this.fileManager != null) this.fileManager.saveAllFiles();
+
         // Disable api
         if (this.instance != null) this.instance.disable();
     }
@@ -203,11 +207,6 @@ public class CrazyCratesPaper extends JavaPlugin {
     @NotNull
     public CrateManager getCrateManager() {
         return this.crateManager;
-    }
-
-    @NotNull
-    public CrazyCrates getCrazyCrates() {
-        return this.instance;
     }
 
     @NotNull

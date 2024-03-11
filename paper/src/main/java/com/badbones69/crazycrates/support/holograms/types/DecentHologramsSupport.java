@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.support.holograms.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
-import us.crazycrew.crazycrates.crates.CrateHologram;
+import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.block.Block;

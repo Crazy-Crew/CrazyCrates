@@ -3,7 +3,8 @@ package com.badbones69.crazycrates.listeners.crates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
@@ -448,7 +449,7 @@ public class CosmicCrateListener implements Listener {
 
         player.updateInventory();
 
-        if (this.plugin.getCrazyCrates().getConfig().getProperty(ConfigKeys.cosmic_crate_timeout)) {
+        if (ConfigManager.getConfig().getProperty(ConfigKeys.cosmic_crate_timeout)) {
             this.crateManager.addCrateTask(player, new TimerTask() {
                 @Override
                 public void run() {

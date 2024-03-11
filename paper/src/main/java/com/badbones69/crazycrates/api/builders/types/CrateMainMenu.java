@@ -22,8 +22,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.users.UserManager;
@@ -36,7 +38,7 @@ public class CrateMainMenu extends InventoryBuilder {
     private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @NotNull
-    private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
     public CrateMainMenu(Player player, int size, String title) {
         super(player, size, title);
@@ -166,7 +168,7 @@ public class CrateMainMenu extends InventoryBuilder {
         private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
         @NotNull
-        private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
+        private final SettingsManager config = ConfigManager.getConfig();
 
         @NotNull
         private final CrateManager crateManager = this.plugin.getCrateManager();

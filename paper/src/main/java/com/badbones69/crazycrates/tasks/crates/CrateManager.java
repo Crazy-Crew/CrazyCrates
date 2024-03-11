@@ -22,7 +22,8 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import org.bukkit.scheduler.BukkitTask;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
@@ -39,8 +40,8 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.crates.CrateHologram;
-import us.crazycrew.crazycrates.crates.quadcrates.CrateSchematic;
+import us.crazycrew.crazycrates.api.crates.CrateHologram;
+import us.crazycrew.crazycrates.api.crates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.DecentHologramsSupport;
@@ -385,7 +386,7 @@ public class CrateManager {
      * @param checkHand if it just checks the players hand or if it checks their inventory.
      */
     public void openCrate(Player player, Crate crate, KeyType keyType, Location location, boolean virtualCrate, boolean checkHand) {
-        SettingsManager config = this.plugin.getCrazyCrates().getConfig();
+        SettingsManager config = ConfigManager.getConfig();
 
         if (crate.getCrateType() == CrateType.menu) {
             if (config.getProperty(ConfigKeys.enable_crate_menu)) {

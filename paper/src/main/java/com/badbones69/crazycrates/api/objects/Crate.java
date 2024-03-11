@@ -15,7 +15,7 @@ import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.AbstractCrateManager;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.crates.CrateHologram;
+import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;

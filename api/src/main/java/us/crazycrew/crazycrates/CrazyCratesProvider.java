@@ -1,5 +1,7 @@
 package us.crazycrew.crazycrates;
 
+import org.jetbrains.annotations.ApiStatus;
+
 /**
  * A class used to initialize the api so other plugins can use it.
  *
@@ -10,6 +12,7 @@ public class CrazyCratesProvider {
 
     private static CrazyCrates instance;
 
+    @ApiStatus.Internal
     private CrazyCratesProvider() {
         throw new UnsupportedOperationException("This class cannot be instantiated");
     }
@@ -22,6 +25,7 @@ public class CrazyCratesProvider {
         return instance;
     }
 
+    @ApiStatus.Internal
     static void register(CrazyCrates instance) {
         if (CrazyCratesProvider.instance == null) {
             return;
@@ -30,6 +34,7 @@ public class CrazyCratesProvider {
         CrazyCratesProvider.instance = instance;
     }
 
+    @ApiStatus.Internal
     static void unregister() {
         CrazyCratesProvider.instance = null;
     }

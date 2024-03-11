@@ -3,7 +3,8 @@ package com.badbones69.crazycrates.api.utils;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import org.bukkit.permissions.Permission;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.support.PluginSupport;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -318,7 +319,7 @@ public class MiscUtils {
     }
 
     public static boolean useOtherRandom() {
-        return plugin.getCrazyCrates().getConfig().getProperty(ConfigKeys.use_different_random);
+        return ConfigManager.getConfig().getProperty(ConfigKeys.use_different_random);
     }
 
     public static void registerPermissions() {
@@ -335,6 +336,6 @@ public class MiscUtils {
     }
 
     public static boolean isLogging() {
-        return plugin.getCrazyCrates().getConfig().getProperty(ConfigKeys.verbose_logging);
+        return ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging);
     }
 }

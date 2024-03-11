@@ -19,9 +19,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
@@ -41,11 +43,12 @@ public class CrateControlListener implements Listener {
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     @NotNull
-    private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
+    @NotNull
     private final UserManager userManager = this.plugin.getUserManager();
 
     @EventHandler

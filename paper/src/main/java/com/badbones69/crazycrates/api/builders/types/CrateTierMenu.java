@@ -6,7 +6,8 @@ import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
@@ -29,7 +30,7 @@ public class CrateTierMenu extends InventoryBuilder {
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     @NotNull
-    private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
     public CrateTierMenu(List<Tier> tiers, Crate crate, Player player, int size, String title) {
         super(tiers, crate, player, size, title);
@@ -71,7 +72,7 @@ public class CrateTierMenu extends InventoryBuilder {
         private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
         @NotNull
-        private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
+        private final SettingsManager config = ConfigManager.getConfig();
 
         @EventHandler
         public void onInventoryClick(InventoryClickEvent event) {

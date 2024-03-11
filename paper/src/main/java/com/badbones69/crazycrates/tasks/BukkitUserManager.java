@@ -4,7 +4,8 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
@@ -113,7 +114,7 @@ public class BukkitUserManager extends UserManager {
 
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
-        SettingsManager config = this.plugin.getCrazyCrates().getConfig();
+        SettingsManager config = ConfigManager.getConfig();
 
         switch (keyType) {
             case physical_key -> {

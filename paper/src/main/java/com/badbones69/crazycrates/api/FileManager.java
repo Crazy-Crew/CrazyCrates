@@ -334,6 +334,16 @@ public class FileManager {
         }
     }
 
+    public void saveAllFiles() {
+        for (Files file : Files.values()) {
+            file.saveFile();
+        }
+
+        for (CustomFile file : this.customFiles) {
+            file.saveFile();
+        }
+    }
+
     /**
      * @return A list of crate names.
      */
