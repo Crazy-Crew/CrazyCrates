@@ -9,16 +9,11 @@ import us.crazycrew.crazycrates.api.users.UserManager;
  * @author Ryder Belserion
  * @version 0.4
  */
+@Deprecated(forRemoval = true, since = "0.4")
 public interface ICrazyCrates {
 
-    /**
-     * Enables the api service.
-     */
     void enable();
 
-    /**
-     * Disables the api service.
-     */
     void disable();
 
     /**
