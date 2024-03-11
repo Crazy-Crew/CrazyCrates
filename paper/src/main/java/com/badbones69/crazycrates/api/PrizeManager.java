@@ -1,11 +1,11 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.api.objects.Tier;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import org.apache.commons.lang.WordUtils;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.enums.Messages;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -36,6 +36,7 @@ public class PrizeManager {
     public static void givePrize(Player player, Prize prize, Crate crate) {
         if (prize == null) {
             if (plugin.isLogging()) plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
+
             return;
         }
 
@@ -47,6 +48,7 @@ public class PrizeManager {
                 placeholders.put("{crate}", prize.getCrateName());
                 placeholders.put("{prize}", prize.getPrizeName());
                 player.sendMessage(Messages.prize_error.getMessage(placeholders, player));
+
                 continue;
             }
 

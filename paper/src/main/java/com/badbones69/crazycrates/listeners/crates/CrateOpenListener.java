@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.listeners.crates;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
@@ -13,7 +14,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.CrazyHandler;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.List;
 
@@ -23,10 +23,10 @@ public class CrateOpenListener implements Listener {
     private final CrazyCrates plugin = CrazyCrates.get();
 
     @NotNull
-    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @EventHandler
     public void onCrateOpen(CrateOpenEvent event) {
@@ -56,7 +56,7 @@ public class CrateOpenListener implements Listener {
         }
 
         this.crateManager.addPlayerToOpeningList(player, crate);
-        if (crate.getCrateType() != CrateType.cosmic) this.crazyHandler.getUserManager().addOpenedCrate(player.getUniqueId(), crate.getName());
+        if (crate.getCrateType() != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), crate.getName());
 
         FileConfiguration configuration = event.getConfiguration();
 

@@ -4,12 +4,12 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -28,6 +28,7 @@ import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.CrazyHandler;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.api.users.UserManager;
 import java.text.NumberFormat;
 import java.util.List;
 
@@ -66,6 +67,7 @@ public class CrateMainMenu extends InventoryBuilder {
                 for (String custom : customizer) {
                     int slot = 0;
                     ItemBuilder item = new ItemBuilder();
+
                     String[] split = custom.split(", ");
 
                     for (String option : split) {
@@ -105,6 +107,7 @@ public class CrateMainMenu extends InventoryBuilder {
                     if (slot > getSize()) continue;
 
                     slot--;
+
                     inventory.setItem(slot, item.setTarget(getPlayer()).build());
                 }
             }
@@ -168,10 +171,10 @@ public class CrateMainMenu extends InventoryBuilder {
         private final SettingsManager config = ConfigManager.getConfig();
 
         @NotNull
-        private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+        private final CrateManager crateManager = this.plugin.getCrateManager();
 
         @NotNull
-        private final CrateManager crateManager = this.plugin.getCrateManager();
+        private final UserManager userManager = this.plugin.getUserManager();
 
         @EventHandler
         public void onInventoryClick(InventoryClickEvent event) {
@@ -189,13 +192,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
             if (!item.hasItemMeta()) return;
 
-            if (!item.getItemMeta().hasDisplayName()) return;
-
-            NBTItem nbtItem = new NBTItem(item);
-
-            if (!nbtItem.hasNBTData() && !nbtItem.hasTag("CrazyCrates-Crate")) return;
-
-            Crate crate = this.plugin.getCrateManager().getCrateFromName(nbtItem.getString("CrazyCrates-Crate"));
+            Crate crate = this.plugin.getCrateManager().getCrateFromName(ItemUtils.getKey(item.getItemMeta()));
 
             if (crate == null) return;
 
@@ -222,10 +219,10 @@ public class CrateMainMenu extends InventoryBuilder {
             boolean hasKey = false;
             KeyType keyType = KeyType.virtual_key;
 
-            if (this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
+            if (this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
                 hasKey = true;
             } else {
-                if (this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && this.crazyHandler.getUserManager().hasPhysicalKey(player.getUniqueId(), crate.getName(), false)) {
+                if (this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && this.userManager.hasPhysicalKey(player.getUniqueId(), crate.getName(), false)) {
                     hasKey = true;
                     keyType = KeyType.physical_key;
                 }

@@ -3,7 +3,7 @@ plugins {
 }
 
 project.group = "us.crazycrew.crazycrates"
-project.version = "0.3"
+project.version = "0.4"
 
 base {
     archivesName.set("${rootProject.name}-${project.name}")
@@ -37,6 +37,7 @@ tasks {
             create<MavenPublication>("maven") {
                 group = project.group
                 artifactId = "api"
+                version = "0.4"
 
                 from(component)
 

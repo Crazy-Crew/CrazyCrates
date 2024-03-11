@@ -1,10 +1,10 @@
 package com.badbones69.crazycrates.api.utils;
 
-import com.badbones69.crazycrates.api.objects.Crate;
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 public class ItemUtils {
 
@@ -18,76 +18,7 @@ public class ItemUtils {
         } catch (Exception ignored) {}
     }
 
-    public static boolean isSimilar(ItemStack itemStack, Crate crate) {
-        NBTItem nbtItem = new NBTItem(itemStack);
-        return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) || stripNBT(itemStack).isSimilar(crate.getKeyNoNBT()) ||
-                isSimilarCustom(crate.getKeyNoNBT(), itemStack) || (nbtItem.hasTag("CrazyCrates-Crate") && crate.getName().equals(nbtItem.getString("CrazyCrates-Crate")));
-    }
-
-    private static boolean isSimilarCustom(ItemStack one, ItemStack two) {
-        if (one != null && two != null) {
-            if (one.getType() == two.getType()) {
-                if (one.hasItemMeta() && two.hasItemMeta()) {
-                    ItemMeta itemMetaOne = one.getItemMeta();
-                    ItemMeta itemMetaTwo = two.getItemMeta();
-
-                    if (itemMetaOne.hasDisplayName() && itemMetaTwo.hasDisplayName()) {
-                        if (itemMetaOne.getDisplayName().equalsIgnoreCase(itemMetaTwo.getDisplayName())) {
-                            if (itemMetaOne.hasLore() && itemMetaTwo.hasLore()) {
-                                if (itemMetaOne.getLore().size() == itemMetaTwo.getLore().size()) {
-                                    int i = 0;
-
-                                    for (String lore : itemMetaOne.getLore()) {
-                                        if (!lore.equals(itemMetaTwo.getLore().get(i))) {
-                                            return false;
-                                        }
-
-                                        i++;
-                                    }
-
-                                    return true;
-                                }
-                            } else return !itemMetaOne.hasLore() && !itemMetaTwo.hasLore();
-                        }
-                    } else if (!itemMetaOne.hasDisplayName() && !itemMetaTwo.hasDisplayName()) {
-                        if (itemMetaOne.hasLore() && itemMetaTwo.hasLore()) {
-                            if (itemMetaOne.getLore().size() == itemMetaTwo.getLore().size()) {
-                                int i = 0;
-
-                                for (String lore : itemMetaOne.getLore()) {
-                                    if (!lore.equals(itemMetaTwo.getLore().get(i))) {
-                                        return false;
-                                    }
-
-                                    i++;
-                                }
-
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else return !itemMetaOne.hasLore() && !itemMetaTwo.hasLore();
-                    }
-                } else return !one.hasItemMeta() && !two.hasItemMeta();
-            }
-        }
-
-        return false;
-    }
-
-    private static ItemStack stripNBT(ItemStack item) {
-        try {
-            NBTItem nbtItem = new NBTItem(item.clone());
-
-            if (nbtItem.hasNBTData()) {
-                if (nbtItem.hasTag("CrazyCrates-Crate")) {
-                    nbtItem.removeKey("CrazyCrates-Crate");
-                }
-            }
-
-            return nbtItem.getItem();
-        } catch (Exception e) {
-            return item;
-        }
+    public static String getKey(ItemMeta itemMeta) {
+        return itemMeta.getPersistentDataContainer().get(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }
 }

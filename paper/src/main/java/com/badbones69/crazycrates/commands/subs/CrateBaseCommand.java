@@ -99,12 +99,6 @@ public class CrateBaseCommand extends BaseCommand {
     @SubCommand("help")
     @Permission(value = "crazycrates.help", def = PermissionDefault.TRUE)
     public void onHelp(CommandSender sender) {
-        if (sender instanceof ConsoleCommandSender commandSender) {
-            commandSender.sendMessage(Messages.admin_help.getMessage());
-
-            return;
-        }
-
         if (sender instanceof Player player) {
             if (player.hasPermission("crazycrates.admin-access")) {
                 player.sendMessage(Messages.admin_help.getMessage(player));
@@ -113,7 +107,11 @@ public class CrateBaseCommand extends BaseCommand {
             }
 
             player.sendMessage(Messages.help.getMessage(player));
+
+            return;
         }
+
+        sender.sendMessage(Messages.admin_help.getMessage());
     }
 
     @SubCommand("transfer")
@@ -662,7 +660,7 @@ public class CrateBaseCommand extends BaseCommand {
         if (crate.getCrateType() != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), keysUsed, crate.getName());
 
         if (!this.userManager.takeKeys(keysUsed, player.getUniqueId(), crate.getName(), type, false)) {
-            MiscUtils.failedToTakeKey(player, crate);
+            MiscUtils.failedToTakeKey(player, crateName);
 
             this.crateManager.removeCrateInUse(player);
             this.crateManager.removePlayerFromOpeningList(player);

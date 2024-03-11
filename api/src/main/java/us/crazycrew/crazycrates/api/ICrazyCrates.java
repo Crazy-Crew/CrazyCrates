@@ -7,7 +7,7 @@ import us.crazycrew.crazycrates.api.users.UserManager;
  * An interface used to enable api related functions.
  *
  * @author Ryder Belserion
- * @version 0.3
+ * @version 0.4
  */
 public interface ICrazyCrates {
 

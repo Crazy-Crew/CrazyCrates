@@ -2,12 +2,13 @@ package com.badbones69.crazycrates.listeners.crates;
 
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
 import org.bukkit.Material;
@@ -47,6 +48,9 @@ public class CosmicCrateListener implements Listener {
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
+
+    @NotNull
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
@@ -287,7 +291,7 @@ public class CosmicCrateListener implements Listener {
         if (size >= totalPrizes) {
             KeyType type = this.crateManager.getPlayerKeyType(player);
 
-            boolean value = type == KeyType.physical_key && !this.plugin.getUserManager().hasPhysicalKey(uuid, crateName, this.crateManager.getHand(player));
+            boolean value = type == KeyType.physical_key && !this.userManager.hasPhysicalKey(uuid, crateName, this.crateManager.getHand(player));
 
             // If they don't have enough keys.
             if (value) {
@@ -315,11 +319,11 @@ public class CosmicCrateListener implements Listener {
                 return;
             }
 
-            boolean hasKey = this.crateManager.hasPlayerKeyType(player) && !this.plugin.getUserManager().takeKeys(1, uuid, crateName, type, this.crateManager.getHand(player));
+            boolean hasKey = this.crateManager.hasPlayerKeyType(player) && !this.userManager.takeKeys(1, uuid, crateName, type, this.crateManager.getHand(player));
 
             if (hasKey) {
                 // Notify player/console.
-                MiscUtils.failedToTakeKey(player, crate);
+                MiscUtils.failedToTakeKey(player, crateName);
 
                 // Remove opening stuff.
                 this.crateManager.removePlayerFromOpeningList(player);
@@ -365,7 +369,7 @@ public class CosmicCrateListener implements Listener {
                             // Check if event is cancelled.
                             if (!event.isCancelled()) {
                                 // Add the keys
-                                plugin.getUserManager().addKeys(1, uuid, crateName, type);
+                                userManager.addKeys(1, uuid, crateName, type);
 
                                 // Remove opening stuff.
                                 crateManager.removePlayerFromOpeningList(player);
@@ -446,7 +450,7 @@ public class CosmicCrateListener implements Listener {
         player.updateInventory();
 
         if (ConfigManager.getConfig().getProperty(ConfigKeys.cosmic_crate_timeout)) {
-            this.plugin.getCrateManager().addCrateTask(player, new TimerTask() {
+            this.crateManager.addCrateTask(player, new TimerTask() {
                 @Override
                 public void run() {
                     // Close inventory.

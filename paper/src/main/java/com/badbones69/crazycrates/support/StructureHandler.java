@@ -58,9 +58,9 @@ public class StructureHandler {
 
     public void removeStructure() {
         this.structureBlocks.forEach(block -> {
-            Location blockLoc = block.toBlockLocation();
+            Location location = block.toBlockLocation();
 
-            blockLoc.getBlock().setType(Material.AIR, true);
+            location.getBlock().setType(Material.AIR, true);
         });
     }
 

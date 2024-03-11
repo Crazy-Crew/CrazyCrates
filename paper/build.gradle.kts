@@ -13,8 +13,6 @@ dependencies {
 
     implementation(libs.metrics)
 
-    implementation(libs.nbtapi)
-
     compileOnly(libs.holographicdisplays)
 
     compileOnly(libs.decentholograms)

@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.tasks.crates.other;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -24,7 +24,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
     private final FileConfiguration file;
     private final int totalPrizes;
 
-    private final Map<UUID, HashMap<Integer, Tier>> prizes = new HashMap<>();
+    private final Map<UUID, Map<Integer, Tier>> prizes = new HashMap<>();
 
     /**
      * Creates a cosmic crate manager instance.

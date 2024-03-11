@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.listeners.crates;
 
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import org.bukkit.Location;
 import org.bukkit.SoundCategory;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -13,7 +14,6 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.crates.other.quadcrates.QuadCrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.enums.Messages;

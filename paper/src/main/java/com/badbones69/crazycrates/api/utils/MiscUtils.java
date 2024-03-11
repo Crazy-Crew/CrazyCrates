@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api.utils;
 
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
 import com.badbones69.crazycrates.support.PluginSupport;
@@ -100,21 +100,26 @@ public class MiscUtils {
 
             for (int i = 0; i < items.length; i++) {
                 ItemStack item = items[i];
+
                 int toDelete = item.getAmount();
 
                 while (true) {
                     // Paper start - Allow searching entire contents
                     ItemStack[] toSearch = inventory.getContents();
+
                     int first = getFirstItem(item, false, toSearch);
                     // Paper end
 
                     // Drat! we don't have this type in the inventory
                     if (first == -1) {
                         item.setAmount(toDelete);
+
                         leftover.put(i, item);
+
                         break;
                     } else {
                         ItemStack itemStack = inventory.getItem(first);
+
                         int amount = itemStack.getAmount();
 
                         if (amount <= toDelete) {
@@ -124,7 +129,9 @@ public class MiscUtils {
                         } else {
                             // split the stack and store
                             itemStack.setAmount(amount - toDelete);
+
                             inventory.setItem(first, itemStack);
+
                             toDelete = 0;
                         }
                     }
@@ -164,10 +171,10 @@ public class MiscUtils {
         return -1;
     }
 
-    public static void failedToTakeKey(CommandSender player, Crate crate) {
+    public static void failedToTakeKey(CommandSender player, String crateName) {
         plugin.getServer().getLogger().warning("An error has occurred while trying to take a physical key from a player");
         plugin.getServer().getLogger().warning("Player: " + player.getName());
-        plugin.getServer().getLogger().warning("Crate: " + crate.getName());
+        plugin.getServer().getLogger().warning("Crate: " + crateName);
 
         player.sendMessage(MsgUtils.getPrefix("&cAn issue has occurred when trying to take a key."));
         player.sendMessage(MsgUtils.getPrefix("&cCommon reasons includes not having enough keys."));
@@ -214,6 +221,7 @@ public class MiscUtils {
 
     private static HashMap<String, String> getEnchantmentList() {
         HashMap<String, String> enchantments = new HashMap<>();
+
         enchantments.put("ARROW_DAMAGE", "Power");
         enchantments.put("ARROW_FIRE", "Flame");
         enchantments.put("ARROW_INFINITE", "Infinity");
@@ -248,6 +256,7 @@ public class MiscUtils {
         enchantments.put("CHANNELING", "Channeling");
         enchantments.put("IMPALING", "Impaling");
         enchantments.put("LOYALTY", "Loyalty");
+
         return enchantments;
     }
 
@@ -284,7 +293,7 @@ public class MiscUtils {
                 Material.RED_STAINED_GLASS_PANE
         );
 
-        return new ItemBuilder().setMaterial(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
+        return new ItemBuilder(new ItemStack(panes.get(ThreadLocalRandom.current().nextInt(panes.size()))));
     }
 
     /**

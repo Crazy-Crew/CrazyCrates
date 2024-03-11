@@ -4,8 +4,10 @@ import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
+import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
@@ -18,7 +20,6 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataContainer;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import org.bukkit.scheduler.BukkitTask;
 import com.badbones69.crazycrates.common.config.types.ConfigKeys;
@@ -27,7 +28,6 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
-import com.badbones69.crazycrates.api.objects.other.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
 import org.bukkit.Location;
@@ -284,7 +284,7 @@ public class CrateManager {
             ).forEach(line -> this.plugin.getLogger().info(line));
         }
 
-        FileConfiguration locations = FileManager.Files.LOCATIONS.getFile();
+        FileConfiguration locations = Files.LOCATIONS.getFile();
         int loadedAmount = 0;
         int brokeAmount = 0;
 
@@ -763,8 +763,8 @@ public class CrateManager {
                 this.plugin.getCrateManager().getUsableCrates().stream()
                         .filter(Crate :: doNewPlayersGetKeys)
                         .forEach(crate -> {
-                            FileManager.Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
-                            FileManager.Files.DATA.saveFile();
+                            Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
+                            Files.DATA.saveFile();
                         });
             }
         }
@@ -922,15 +922,17 @@ public class CrateManager {
      * @return a crate if is a key from a crate otherwise null if it is not.
      */
     public Crate getCrateFromKey(ItemStack item) {
-        if (item != null && item.getType() != Material.AIR) {
-            for (Crate crate : getUsableCrates()) {
-                if (isKeyFromCrate(item, crate)) {
-                    return crate;
-                }
-            }
+        if (!item.hasItemMeta()) return null;
+
+        ItemMeta itemMeta = item.getItemMeta();
+
+        if (!itemMeta.getPersistentDataContainer().has(PersistentKeys.crate_key.getNamespacedKey())) {
+            return getCrateNameFromOldKey(itemMeta);
         }
 
-        return null;
+        String crateName = ItemUtils.getKey(itemMeta);
+
+        return getCrateFromName(crateName);
     }
 
     /**
@@ -940,13 +942,17 @@ public class CrateManager {
      * @return a crate location if the location is a physical crate otherwise null if not.
      */
     public CrateLocation getCrateLocation(Location location) {
-        for (CrateLocation crateLocation : this.crateLocations) {
-            if (crateLocation.getLocation().equals(location)) {
-                return crateLocation;
+        CrateLocation crateLocation = null;
+
+        for (CrateLocation key : this.crateLocations) {
+            if (key.getLocation().equals(location)) {
+                crateLocation = key;
+
+                break;
             }
         }
 
-        return null;
+        return crateLocation;
     }
 
     /**
@@ -992,18 +998,79 @@ public class CrateManager {
     /**
      * Check if a key is from a specific Crate.
      *
-     * @param item the key ItemStack you are checking.
-     * @param crate the Crate you are checking.
+     * @param item the key you are checking.
+     * @param crate the crate you are checking.
      * @return true if it belongs to that Crate and false if it does not.
      */
     public boolean isKeyFromCrate(ItemStack item, Crate crate) {
-        if (crate.getCrateType() != CrateType.menu) {
-            if (item != null && item.getType() != Material.AIR) {
-                return ItemUtils.isSimilar(item, crate);
+        // If the crate type is menu, return.
+        if (crate.getCrateType() == CrateType.menu) return false;
+
+        // If the item is null for whatever reason.
+        if (item == null) return false;
+
+        // If the item type is AIR for whatever reason.
+        if (item.getType() == Material.AIR) return false;
+
+        // If the item has no meta.
+        if (!item.hasItemMeta()) return false;
+
+        // Get the item meta.
+        ItemMeta itemMeta = item.getItemMeta();
+
+        // Check if it has key.
+        boolean hasNewCrateKey = itemMeta.getPersistentDataContainer().has(PersistentKeys.crate_key.getNamespacedKey());
+
+        // If we find no value in PDC, it's likely a legacy key. It'll return false if it does not contain it.
+        if (!hasNewCrateKey) {
+            // Get the item meta as a string
+            String value = itemMeta.getAsString();
+
+            String[] sections = value.split(",");
+
+            String pair = null;
+
+            for (String key : sections) {
+                if (key.contains("CrazyCrates-Crate")) {
+                    pair = key.trim().replaceAll("\\{", "").replaceAll("\"", "");
+
+                    break;
+                }
+            }
+
+            if (pair == null) {
+                return false;
+            }
+
+            return crate.getName().equals(pair.split(":")[1]);
+        }
+
+        // Get the crate name.
+        String crateName = ItemUtils.getKey(itemMeta);
+
+        return crate.getName().equals(crateName);
+    }
+
+    public Crate getCrateNameFromOldKey(ItemMeta itemMeta) {
+        // Get the item meta as a string
+        String value = itemMeta.getAsString();
+
+        String[] sections = value.split(",");
+
+        String pair = null;
+
+        for (String key : sections) {
+            if (key.contains("CrazyCrates-Crate")) {
+                pair = key.trim().replaceAll("\\{", "").replaceAll("\"", "");
+                break;
             }
         }
 
-        return false;
+        if (pair == null) {
+            return null;
+        }
+
+        return getCrateFromName(pair.split(":")[1]);
     }
 
     /**
@@ -1066,12 +1133,12 @@ public class CrateManager {
         String id = file.getString("Crate.PhysicalKey.Item", "TRIPWIRE_HOOK");
         boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
 
-        return new ItemBuilder().setMaterial(id).setName(name).setLore(lore).setGlow(glowing).build();
+        return new ItemBuilder(new ItemStack(Material.valueOf(id))).setName(name).setLore(lore).setGlow(glowing).build();
     }
 
     // Cleans the data file.
     private void cleanDataFile() {
-        FileConfiguration data = FileManager.Files.DATA.getFile();
+        FileConfiguration data = Files.DATA.getFile();
 
         if (!data.contains("Players")) return;
 
@@ -1109,7 +1176,7 @@ public class CrateManager {
         }
 
         if (this.plugin.isLogging()) this.plugin.getLogger().info("The data.yml file has been cleaned.");
-        FileManager.Files.DATA.saveFile();
+        Files.DATA.saveFile();
     }
 
     // War Crate
