@@ -11,7 +11,7 @@ import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.CrazyCratesPaper;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -33,7 +33,7 @@ public class MiscListener implements Listener {
     private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @NotNull
-    private final InventoryManager inventoryManager = this.plugin.getCrazyHandler().getInventoryManager();
+    private final InventoryManager inventoryManager = this.plugin.getCrazyManager().getInventoryManager();
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {

@@ -10,12 +10,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.AbstractCrateManager;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.common.crates.CrateHologram;
+import us.crazycrew.crazycrates.crates.CrateHologram;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -70,7 +70,7 @@ public class Crate {
     private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     @NotNull
-    private final InventoryManager inventoryManager = this.plugin.getCrazyHandler().getInventoryManager();
+    private final InventoryManager inventoryManager = this.plugin.getCrazyManager().getInventoryManager();
 
     @NotNull
     private final FileManager fileManager = this.plugin.getFileManager();
@@ -415,7 +415,7 @@ public class Crate {
      * @return the preview as an Inventory object.
      */
     public Inventory getPreview(Player player) {
-        return getPreview(player, this.plugin.getCrazyHandler().getInventoryManager().getPage(player), false, null);
+        return getPreview(player, this.plugin.getCrazyManager().getInventoryManager().getPage(player), false, null);
     }
     
     /**

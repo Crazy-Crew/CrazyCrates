@@ -4,7 +4,6 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.events.KeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
-import com.badbones69.crazycrates.common.config.ConfigManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -22,8 +21,8 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.common.config.types.ConfigKeys;
-import com.badbones69.crazycrates.CrazyCrates;
+import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
@@ -39,7 +38,7 @@ public class CrateControlListener implements Listener {
     private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     @NotNull
-    private final InventoryManager inventoryManager = this.plugin.getCrazyHandler().getInventoryManager();
+    private final InventoryManager inventoryManager = this.plugin.getCrazyManager().getInventoryManager();
 
     @NotNull
     private final SettingsManager config = ConfigManager.getConfig();

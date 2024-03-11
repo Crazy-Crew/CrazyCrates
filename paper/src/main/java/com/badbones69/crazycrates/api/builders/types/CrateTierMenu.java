@@ -31,7 +31,7 @@ import static java.util.regex.Matcher.quoteReplacement;
 public class CrateTierMenu extends InventoryBuilder {
 
     @NotNull
-    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
 
     @NotNull
     private final SettingsManager config = ConfigManager.getConfig();
@@ -64,8 +64,8 @@ public class CrateTierMenu extends InventoryBuilder {
             }
         }
 
-        if (this.crazyHandler.getInventoryManager().inCratePreview(getPlayer()) && this.config.getProperty(ConfigKeys.enable_crate_menu))
-            getInventory().setItem(getCrate().getAbsolutePreviewItemPosition(4), this.crazyHandler.getInventoryManager().getMenuButton(getPlayer()));
+        if (this.crazyManager.getInventoryManager().inCratePreview(getPlayer()) && this.config.getProperty(ConfigKeys.enable_crate_menu))
+            getInventory().setItem(getCrate().getAbsolutePreviewItemPosition(4), this.crazyManager.getInventoryManager().getMenuButton(getPlayer()));
     }
 
     public static class CrateTierListener implements Listener {
@@ -74,13 +74,13 @@ public class CrateTierMenu extends InventoryBuilder {
         private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
         @NotNull
-        private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+        private final CrazyManager crazyManager = this.plugin.getCrazyManager();
 
         @NotNull
-        private final InventoryManager inventoryManager = this.crazyHandler.getInventoryManager();
+        private final InventoryManager inventoryManager = this.crazyManager.getInventoryManager();
 
         @NotNull
-        private final SettingsManager config = ConfigManager.getConfig();
+        private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
 
         @EventHandler
         public void onInventoryClick(InventoryClickEvent event) {

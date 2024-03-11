@@ -27,7 +27,7 @@ public class FireCrackerCrate extends CrateBuilder {
 
         this.plugin.getCrateManager().addCrateInUse(getPlayer(), getLocation());
 
-        boolean keyCheck = this.plugin.getCrazyHandler().getUserManager().takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
+        boolean keyCheck = this.plugin.getCrazyManager().getUserManager().takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
 
         if (!keyCheck) {
             // Send the message about failing to take the key.

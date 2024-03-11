@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.common.config.ConfigManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -15,7 +14,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.common.config.types.ConfigKeys;
+import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
@@ -40,8 +39,8 @@ public class QuickCrate extends CrateBuilder {
         this.plugin.getCrateManager().addCrateInUse(getPlayer(), getLocation());
 
         int keys = switch (type) {
-            case virtual_key -> this.plugin.getCrazyHandler().getUserManager().getVirtualKeys(getPlayer().getUniqueId(), getCrate().getName());
-            case physical_key -> this.plugin.getCrazyHandler().getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), getCrate().getName());
+            case virtual_key -> this.plugin.getCrazyManager().getUserManager().getVirtualKeys(getPlayer().getUniqueId(), getCrate().getName());
+            case physical_key -> this.plugin.getCrazyManager().getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), getCrate().getName());
             default -> 1;
         };
 
@@ -62,7 +61,7 @@ public class QuickCrate extends CrateBuilder {
                 used++;
             }
 
-            boolean keyCheck = this.plugin.getCrazyHandler().getUserManager().takeKeys(used, getPlayer().getUniqueId(), getCrate().getName(), type, false);
+            boolean keyCheck = this.plugin.getCrazyManager().getUserManager().takeKeys(used, getPlayer().getUniqueId(), getCrate().getName(), type, false);
 
             if (!keyCheck) {
                 // Send the message about failing to take the key.
@@ -79,7 +78,7 @@ public class QuickCrate extends CrateBuilder {
             return;
         }
 
-        boolean keyCheck = this.plugin.getCrazyHandler().getUserManager().takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, true);
+        boolean keyCheck = this.plugin.getCrazyManager().getUserManager().takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, true);
 
         if (!keyCheck) {
             // Send the message about failing to take the key.

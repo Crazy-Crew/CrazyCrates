@@ -65,7 +65,7 @@ public class CrateBaseCommand extends BaseCommand {
     private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     @NotNull
-    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
 
     @NotNull
     private final UserManager userManager = this.plugin.getUserManager();
@@ -176,14 +176,14 @@ public class CrateBaseCommand extends BaseCommand {
         boolean isEnabled = this.config.getProperty(ConfigKeys.toggle_metrics);
 
         if (!isEnabled) {
-            this.crazyHandler.getMetrics().stop();
+            this.crazyManager.getMetrics().stop();
         } else {
-            this.crazyHandler.getMetrics().start();
+            this.crazyManager.getMetrics().start();
         }
 
-        this.crazyHandler.cleanFiles();
+        this.crazyManager.cleanFiles();
 
-        InventoryManager inventoryManager = this.crazyHandler.getInventoryManager();
+        InventoryManager inventoryManager = this.crazyManager.getInventoryManager();
 
         // Close previews
         if (this.config.getProperty(ConfigKeys.take_out_of_preview)) {
@@ -370,8 +370,8 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        this.crazyHandler.getInventoryManager().addViewer(player);
-        this.crazyHandler.getInventoryManager().openNewCratePreview(player, crate,crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
+        this.crazyManager.getInventoryManager().addViewer(player);
+        this.crazyManager.getInventoryManager().openNewCratePreview(player, crate,crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
     }
 
     @SubCommand("open-others")
@@ -721,7 +721,7 @@ public class CrateBaseCommand extends BaseCommand {
     }
 
     public record CustomPlayer(String name) {
-        private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
+        private static final CrazyCratesPaper plugin = CrazyCratesPaper.getPlugin(CrazyCratesPaper.class);
 
         public @NotNull OfflinePlayer getOfflinePlayer() {
             CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> plugin.getServer().getOfflinePlayer(name)).thenApply(OfflinePlayer::getUniqueId);

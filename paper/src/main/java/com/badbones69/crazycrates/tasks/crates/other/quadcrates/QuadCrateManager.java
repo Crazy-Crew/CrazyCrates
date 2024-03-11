@@ -1,9 +1,8 @@
 package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 
-import com.badbones69.crazycrates.common.config.ConfigManager;
 import org.bukkit.SoundCategory;
-import com.badbones69.crazycrates.common.config.types.ConfigKeys;
-import com.badbones69.crazycrates.CrazyCrates;
+import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.enums.Messages;
@@ -21,7 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.common.crates.quadcrates.CrateParticles;
+import us.crazycrew.crazycrates.crates.quadcrates.CrateParticles;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -174,7 +173,7 @@ public class QuadCrateManager {
             }
         }
 
-        if (!this.plugin.getCrazyHandler().getUserManager().takeKeys(1, this.player.getUniqueId(), this.crate.getName(), this.keyType, this.checkHand)) {
+        if (!this.plugin.getCrazyManager().getUserManager().takeKeys(1, this.player.getUniqueId(), this.crate.getName(), this.keyType, this.checkHand)) {
             MiscUtils.failedToTakeKey(this.player, this.crate.getName());
 
             this.crateManager.removePlayerFromOpeningList(this.player);

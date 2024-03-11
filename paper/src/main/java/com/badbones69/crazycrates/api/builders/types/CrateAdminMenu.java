@@ -57,7 +57,7 @@ public class CrateAdminMenu extends InventoryBuilder {
         private final CrateManager crateManager = this.plugin.getCrateManager();
 
         @NotNull
-        private final UserManager userManager = this.plugin.getCrazyHandler().getUserManager();
+        private final UserManager userManager = this.plugin.getCrazyManager().getUserManager();
 
         @EventHandler
         public void onInventoryClick(InventoryClickEvent event) {

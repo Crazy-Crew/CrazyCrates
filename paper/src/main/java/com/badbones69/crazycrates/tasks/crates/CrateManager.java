@@ -8,7 +8,6 @@ import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;
@@ -22,7 +21,7 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import org.bukkit.scheduler.BukkitTask;
-import com.badbones69.crazycrates.common.config.types.ConfigKeys;
+import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
@@ -39,9 +38,9 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.common.crates.CrateHologram;
-import com.badbones69.crazycrates.common.crates.quadcrates.CrateSchematic;
-import com.badbones69.crazycrates.CrazyCrates;
+import us.crazycrew.crazycrates.crates.CrateHologram;
+import us.crazycrew.crazycrates.crates.quadcrates.CrateSchematic;
+import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.HolographicDisplaysSupport;
@@ -85,7 +84,7 @@ public class CrateManager {
     public void reloadCrate(Crate crate) {
         try {
             // Close previews
-            this.plugin.getServer().getOnlinePlayers().forEach(player -> this.plugin.getCrazyHandler().getInventoryManager().closeCratePreview(player));
+            this.plugin.getServer().getOnlinePlayers().forEach(player -> this.plugin.getCrazyManager().getInventoryManager().closeCratePreview(player));
 
             // Grab the new file.
             FileConfiguration file = crate.getFile();
@@ -137,15 +136,15 @@ public class CrateManager {
             crate.setPrize(prizes);
             crate.setPreviewItems(crate.getPreviewItems());
 
-            for (UUID uuid : this.plugin.getCrazyHandler().getInventoryManager().getViewers()) {
+            for (UUID uuid : this.plugin.getCrazyManager().getInventoryManager().getViewers()) {
                 Player player = this.plugin.getServer().getPlayer(uuid);
 
                 if (player != null) {
-                    this.plugin.getCrazyHandler().getInventoryManager().openNewCratePreview(player, crate, crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
+                    this.plugin.getCrazyManager().getInventoryManager().openNewCratePreview(player, crate, crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
                 }
             }
 
-            this.plugin.getCrazyHandler().getInventoryManager().purge();
+            this.plugin.getCrazyManager().getInventoryManager().purge();
         } catch (Exception exception) {
             this.brokeCrates.add(crate.getName());
             this.plugin.getLogger().log(Level.WARNING, "There was an error while loading the " + crate.getName() + ".yml file.", exception);
@@ -359,7 +358,7 @@ public class CrateManager {
 
         cleanDataFile();
 
-        this.plugin.getCrazyHandler().getInventoryManager().loadButtons();
+        this.plugin.getCrazyManager().getInventoryManager().loadButtons();
     }
 
     // The crate that the player is opening.

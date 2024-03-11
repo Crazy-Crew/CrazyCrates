@@ -1,12 +1,10 @@
 package com.badbones69.crazycrates.api.builders.types;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
@@ -19,20 +17,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.common.config.types.ConfigKeys;
-import com.badbones69.crazycrates.CrazyHandler;
+import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
+import com.badbones69.crazycrates.tasks.CrazyManager;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static java.util.regex.Matcher.quoteReplacement;
-
 public class CratePreviewMenu extends InventoryBuilder {
 
     @NotNull
-    private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+    private final CrazyManager crazyManager = this.plugin.getCrazyManager();
 
     private final boolean isTier;
     private final Tier tier;
@@ -78,10 +74,10 @@ public class CratePreviewMenu extends InventoryBuilder {
             }
         }
 
-        int page = this.crazyHandler.getInventoryManager().getPage(getPlayer());
+        int page = this.crazyManager.getInventoryManager().getPage(getPlayer());
 
-        if (this.crazyHandler.getInventoryManager().inCratePreview(getPlayer()) && ConfigManager.getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
-            inventory.setItem(getCrate().getAbsoluteItemPosition(4), this.crazyHandler.getInventoryManager().getMenuButton(getPlayer()));
+        if (this.crazyManager.getInventoryManager().inCratePreview(getPlayer()) && this.plugin.getCrazyCrates().getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
+            inventory.setItem(getCrate().getAbsoluteItemPosition(4), this.crazyManager.getInventoryManager().getMenuButton(getPlayer()));
         }
 
         if (page == 1) {
@@ -89,7 +85,7 @@ public class CratePreviewMenu extends InventoryBuilder {
                 inventory.setItem(getCrate().getAbsoluteItemPosition(3), getCrate().getBorderItem().setTarget(getPlayer()).build());
             }
         } else {
-            inventory.setItem(getCrate().getAbsoluteItemPosition(3), this.crazyHandler.getInventoryManager().getBackButton(getPlayer()));
+            inventory.setItem(getCrate().getAbsoluteItemPosition(3), this.crazyManager.getInventoryManager().getBackButton(getPlayer()));
         }
 
         if (page == getCrate().getMaxPage()) {
@@ -97,7 +93,7 @@ public class CratePreviewMenu extends InventoryBuilder {
                 inventory.setItem(getCrate().getAbsoluteItemPosition(5), getCrate().getBorderItem().setTarget(getPlayer()).build());
             }
         } else {
-            inventory.setItem(getCrate().getAbsoluteItemPosition(5), this.crazyHandler.getInventoryManager().getNextButton(getPlayer()));
+            inventory.setItem(getCrate().getAbsoluteItemPosition(5), this.crazyManager.getInventoryManager().getNextButton(getPlayer()));
         }
     }
 
@@ -134,13 +130,13 @@ public class CratePreviewMenu extends InventoryBuilder {
         private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
         @NotNull
-        private final CrazyHandler crazyHandler = this.plugin.getCrazyHandler();
+        private final CrazyManager crazyManager = this.plugin.getCrazyManager();
 
         @NotNull
-        private final InventoryManager inventoryManager = this.crazyHandler.getInventoryManager();
+        private final InventoryManager inventoryManager = this.crazyManager.getInventoryManager();
 
         @NotNull
-        private final SettingsManager config = ConfigManager.getConfig();
+        private final SettingsManager config = this.plugin.getCrazyCrates().getConfig();
 
         @EventHandler
         public void onInventoryClick(InventoryClickEvent event) {

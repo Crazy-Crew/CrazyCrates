@@ -6,8 +6,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.common.crates.quadcrates.CrateSchematic;
-import com.badbones69.crazycrates.CrazyCrates;
+import us.crazycrew.crazycrates.crates.quadcrates.CrateSchematic;
+import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.support.StructureHandler;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class QuadCrate extends CrateBuilder {
 
     @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
+    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();

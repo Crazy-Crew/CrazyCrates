@@ -1,23 +1,20 @@
-package com.badbones69.crazycrates;
+package com.badbones69.crazycrates.tasks;
 
+import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.commands.CommandManager;
-import com.badbones69.crazycrates.common.config.ConfigManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.common.CrazyCratesPlugin;
-import com.badbones69.crazycrates.common.config.types.ConfigKeys;
+import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.support.metrics.MetricsManager;
-import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.api.utils.FileUtils;
 
-public class CrazyHandler extends CrazyCratesPlugin {
+public class CrazyManager {
 
-    public CrazyHandler(CrazyCrates plugin) {
-        super(plugin.getDataFolder());
-    }
+    @NotNull
+    private final CrazyCratesPaper plugin = JavaPlugin.getPlugin(CrazyCratesPaper.class);
 
     private InventoryManager inventoryManager;
     private BukkitUserManager userManager;
@@ -26,8 +23,6 @@ public class CrazyHandler extends CrazyCratesPlugin {
     private MetricsManager metrics;
 
     public void load() {
-        super.enable();
-
         // Load all files.
         this.fileManager = new FileManager();
         this.fileManager.registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
@@ -66,14 +61,10 @@ public class CrazyHandler extends CrazyCratesPlugin {
         commandManager.load();
 
         // Load metrics.
-        boolean metrics = ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics);
+        boolean metrics = this.plugin.getCrazyCrates().getConfig().getProperty(ConfigKeys.toggle_metrics);
 
         this.metrics = new MetricsManager();
         if (metrics) this.metrics.start();
-    }
-
-    public void unload() {
-        super.disable();
     }
 
     public void cleanFiles() {
@@ -93,7 +84,6 @@ public class CrazyHandler extends CrazyCratesPlugin {
         return this.inventoryManager;
     }
 
-    @Override
     @NotNull
     public BukkitUserManager getUserManager() {
         return this.userManager;
