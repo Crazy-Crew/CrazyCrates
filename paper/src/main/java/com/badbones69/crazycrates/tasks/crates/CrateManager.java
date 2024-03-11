@@ -68,7 +68,7 @@ public class CrateManager {
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
     private final List<BrokeLocation> brokeLocations = new ArrayList<>();
-    private final HashMap<UUID, Location> cratesInUse = new HashMap<>();
+    private final Map<UUID, Location> cratesInUse = new HashMap<>();
     private final List<String> brokeCrates = new ArrayList<>();
     private final List<Crate> crates = new ArrayList<>();
 
@@ -362,18 +362,18 @@ public class CrateManager {
     }
 
     // The crate that the player is opening.
-    private final HashMap<UUID, Crate> playerOpeningCrates = new HashMap<>();
+    private final Map<UUID, Crate> playerOpeningCrates = new HashMap<>();
 
     // Keys that are being used in crates. Only needed in cosmic due to it taking the key after the player picks a prize and not in a start method.
-    private final HashMap<UUID, KeyType> playerKeys = new HashMap<>();
+    private final Map<UUID, KeyType> playerKeys = new HashMap<>();
 
     // A list of all current crate tasks that are running that a time. Used to force stop any crates it needs to.
-    private final HashMap<UUID, BukkitTask> currentTasks = new HashMap<>();
+    private final Map<UUID, BukkitTask> currentTasks = new HashMap<>();
 
-    private final HashMap<UUID, TimerTask> timerTasks = new HashMap<>();
+    private final Map<UUID, TimerTask> timerTasks = new HashMap<>();
 
     // A list of tasks being run by the QuadCrate type.
-    private final HashMap<UUID, List<BukkitTask>> currentQuadTasks = new HashMap<>();
+    private final Map<UUID, List<BukkitTask>> currentQuadTasks = new HashMap<>();
 
     /**
      * Opens a crate for a player.

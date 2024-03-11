@@ -6,6 +6,8 @@ import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -13,11 +15,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CasinoCrate extends CrateBuilder {
+
+    @NotNull
+    private final CrateManager crateManager = this.plugin.getCrateManager();
+
+    @NotNull
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     public CasinoCrate(Crate crate, Player player, int size) {
         super(crate, player, size);
@@ -63,13 +72,13 @@ public class CasinoCrate extends CrateBuilder {
             if (this.time >= 60) { // When the crate task is finished.
                 playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
 
-                this.plugin.getCrateManager().endCrate(getPlayer());
+                this.crateManager.endCrate(getPlayer());
 
                 PrizeManager.getPrize(getCrate(), getInventory(), 11, getPlayer());
                 PrizeManager.getPrize(getCrate(), getInventory(), 13, getPlayer());
                 PrizeManager.getPrize(getCrate(), getInventory(), 15, getPlayer());
 
-                this.plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
+                this.crateManager.removePlayerFromOpeningList(getPlayer());
 
                 new BukkitRunnable() {
                     @Override
@@ -94,14 +103,14 @@ public class CasinoCrate extends CrateBuilder {
             return;
         }
 
-        boolean keyCheck = this.plugin.getCrazyManager().getUserManager().takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
+        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
 
         if (!keyCheck) {
             // Send the message about failing to take the key.
             MiscUtils.failedToTakeKey(getPlayer(), getCrate().getName());
 
             // Remove from opening list.
-            this.plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
+            this.crateManager.removePlayerFromOpeningList(getPlayer());
 
             return;
         }

@@ -1,10 +1,13 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
@@ -13,6 +16,12 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class FireCrackerCrate extends CrateBuilder {
+
+    @NotNull
+    private final CrateManager crateManager = this.plugin.getCrateManager();
+
+    @NotNull
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     public FireCrackerCrate(Crate crate, Player player, int size, Location location) {
         super(crate, player, size, location);
@@ -25,22 +34,22 @@ public class FireCrackerCrate extends CrateBuilder {
             return;
         }
 
-        this.plugin.getCrateManager().addCrateInUse(getPlayer(), getLocation());
+        this.crateManager.addCrateInUse(getPlayer(), getLocation());
 
-        boolean keyCheck = this.plugin.getCrazyManager().getUserManager().takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
+        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
 
         if (!keyCheck) {
             // Send the message about failing to take the key.
             MiscUtils.failedToTakeKey(getPlayer(), getCrate().getName());
 
             // Remove from opening list.
-            this.plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
+            this.crateManager.removePlayerFromOpeningList(getPlayer());
 
             return;
         }
 
-        if (this.plugin.getCrateManager().getHolograms() != null) {
-            this.plugin.getCrateManager().getHolograms().removeHologram(getLocation().getBlock());
+        if (this.crateManager.getHolograms() != null) {
+            this.crateManager.getHolograms().removeHologram(getLocation().getBlock());
         }
 
         List<Color> colors = Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.AQUA, Color.MAROON, Color.PURPLE);
@@ -58,7 +67,7 @@ public class FireCrackerCrate extends CrateBuilder {
                 this.length++;
 
                 if (this.length == 25) {
-                    plugin.getCrateManager().endCrate(getPlayer());
+                    crateManager.endCrate(getPlayer());
 
                     QuickCrate quickCrate = new QuickCrate(getCrate(), getPlayer(), getLocation());
 

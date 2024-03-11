@@ -2,20 +2,30 @@ package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.HashMap;
+import java.util.Map;
 
 public class WarCrate extends CrateBuilder {
 
-    private final HashMap<ItemStack, String> colorCodes = new HashMap<>();
+    @NotNull
+    private final CrateManager crateManager = this.plugin.getCrateManager();
+
+    @NotNull
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
+
+    private final Map<ItemStack, String> colorCodes = new HashMap<>();
 
     public WarCrate(Crate crate, Player player, int size) {
         super(crate, player, size);
@@ -28,24 +38,24 @@ public class WarCrate extends CrateBuilder {
             return;
         }
 
-        boolean keyCheck = this.plugin.getCrazyManager().getUserManager().takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
+        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
 
         if (!keyCheck) {
             // Send the message about failing to take the key.
             MiscUtils.failedToTakeKey(getPlayer(), getCrate().getName());
 
             // Remove from opening list.
-            this.plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
+            this.crateManager.removePlayerFromOpeningList(getPlayer());
 
             // Remove closer/picker
-            this.plugin.getCrateManager().removeCloser(getPlayer());
-            this.plugin.getCrateManager().removePicker(getPlayer());
+            this.crateManager.removeCloser(getPlayer());
+            this.crateManager.removePicker(getPlayer());
 
             return;
         }
 
-        this.plugin.getCrateManager().addPicker(getPlayer(), false);
-        this.plugin.getCrateManager().addCloser(getPlayer(), false);
+        this.crateManager.addPicker(getPlayer(), false);
+        this.crateManager.addCloser(getPlayer(), false);
 
         addCrateTask(new BukkitRunnable() {
             int full = 0;
@@ -70,14 +80,14 @@ public class WarCrate extends CrateBuilder {
                 if (this.full == 26) {
                     playSound("stop-sound", SoundCategory.PLAYERS, "BLOCK_LAVA_POP");
                     setRandomGlass();
-                    plugin.getCrateManager().addPicker(getPlayer(), true);
+                    crateManager.addPicker(getPlayer(), true);
                 }
             }
         }.runTaskTimer(this.plugin, 1, 3));
     }
 
     private void setRandomPrizes() {
-        if (!this.plugin.getCrateManager().isInOpeningList(getPlayer()) && !(getInventory().getHolder(false) instanceof CratePrizeMenu)) return;
+        if (!this.crateManager.isInOpeningList(getPlayer()) && !(getInventory().getHolder(false) instanceof CratePrizeMenu)) return;
 
         for (int index = 0; index < 9; index++) {
             setItem(index, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
@@ -85,7 +95,7 @@ public class WarCrate extends CrateBuilder {
     }
 
     private void setRandomGlass() {
-        if (!this.plugin.getCrateManager().isInOpeningList(getPlayer()) && !(getInventory().getHolder(false) instanceof CratePrizeMenu)) return;
+        if (!this.crateManager.isInOpeningList(getPlayer()) && !(getInventory().getHolder(false) instanceof CratePrizeMenu)) return;
 
         if (this.colorCodes.isEmpty()) getColorCode();
 

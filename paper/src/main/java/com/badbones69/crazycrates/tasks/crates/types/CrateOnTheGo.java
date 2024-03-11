@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -19,6 +20,9 @@ public class CrateOnTheGo extends CrateBuilder {
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
+    @NotNull
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
+
     public CrateOnTheGo(Crate crate, Player player) {
         super(crate, player);
     }
@@ -30,7 +34,7 @@ public class CrateOnTheGo extends CrateBuilder {
             return;
         }
 
-        boolean keyCheck = this.plugin.getCrazyManager().getUserManager().takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), KeyType.physical_key, true);
+        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), KeyType.physical_key, true);
 
         if (!keyCheck) {
             // Send the message about failing to take the key.

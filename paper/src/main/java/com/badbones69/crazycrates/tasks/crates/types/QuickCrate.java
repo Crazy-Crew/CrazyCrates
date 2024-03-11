@@ -5,6 +5,8 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -13,6 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.platform.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -21,6 +24,12 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.logging.Level;
 
 public class QuickCrate extends CrateBuilder {
+
+    @NotNull
+    private final CrateManager crateManager = this.plugin.getCrateManager();
+
+    @NotNull
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     public QuickCrate(Crate crate, Player player, Location location) {
         super(crate, player, location);
@@ -36,11 +45,11 @@ public class QuickCrate extends CrateBuilder {
             }
         }
 
-        this.plugin.getCrateManager().addCrateInUse(getPlayer(), getLocation());
+        this.crateManager.addCrateInUse(getPlayer(), getLocation());
 
         int keys = switch (type) {
-            case virtual_key -> this.plugin.getCrazyManager().getUserManager().getVirtualKeys(getPlayer().getUniqueId(), getCrate().getName());
-            case physical_key -> this.plugin.getCrazyManager().getUserManager().getPhysicalKeys(getPlayer().getUniqueId(), getCrate().getName());
+            case virtual_key -> this.userManager.getVirtualKeys(getPlayer().getUniqueId(), getCrate().getName());
+            case physical_key -> this.userManager.getPhysicalKeys(getPlayer().getUniqueId(), getCrate().getName());
             default -> 1;
         };
 
@@ -61,31 +70,31 @@ public class QuickCrate extends CrateBuilder {
                 used++;
             }
 
-            boolean keyCheck = this.plugin.getCrazyManager().getUserManager().takeKeys(used, getPlayer().getUniqueId(), getCrate().getName(), type, false);
+            boolean keyCheck = this.userManager.takeKeys(used, getPlayer().getUniqueId(), getCrate().getName(), type, false);
 
             if (!keyCheck) {
                 // Send the message about failing to take the key.
                 MiscUtils.failedToTakeKey(getPlayer(), getCrate().getName());
 
                 // Remove from opening list.
-                this.plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
+                this.crateManager.removePlayerFromOpeningList(getPlayer());
 
                 return;
             }
 
-            this.plugin.getCrateManager().endQuickCrate(getPlayer(), getLocation(), getCrate(), true);
+            this.crateManager.endQuickCrate(getPlayer(), getLocation(), getCrate(), true);
 
             return;
         }
 
-        boolean keyCheck = this.plugin.getCrazyManager().getUserManager().takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, true);
+        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, true);
 
         if (!keyCheck) {
             // Send the message about failing to take the key.
             MiscUtils.failedToTakeKey(getPlayer(), getCrate().getName());
 
             // Remove from opening list.
-            this.plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
+            this.crateManager.removePlayerFromOpeningList(getPlayer());
 
             return;
         }
@@ -131,7 +140,7 @@ public class QuickCrate extends CrateBuilder {
             reward.setCustomNameVisible(true);
             reward.setPickupDelay(-1);
 
-            this.plugin.getCrateManager().addReward(getPlayer(), reward);
+            this.crateManager.addReward(getPlayer(), reward);
 
             // Always open the chest.
             ChestManager.openChest(getLocation().getBlock(), true);
@@ -143,7 +152,7 @@ public class QuickCrate extends CrateBuilder {
             addCrateTask(new BukkitRunnable() {
                 @Override
                 public void run() {
-                    plugin.getCrateManager().endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
+                    crateManager.endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
                 }
             }.runTaskLater(this.plugin, 5 * 20));
 
@@ -160,7 +169,7 @@ public class QuickCrate extends CrateBuilder {
         addCrateTask(new BukkitRunnable() {
             @Override
             public void run() {
-                plugin.getCrateManager().endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
+                crateManager.endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
             }
         }.runTaskLater(this.plugin, 40));
     }

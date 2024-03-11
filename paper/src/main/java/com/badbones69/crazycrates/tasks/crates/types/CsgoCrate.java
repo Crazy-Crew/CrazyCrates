@@ -4,11 +4,14 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
@@ -17,6 +20,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CsgoCrate extends CrateBuilder {
+
+    @NotNull
+    private final CrateManager crateManager = this.plugin.getCrateManager();
+
+    @NotNull
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     public CsgoCrate(Crate crate, Player player, int size) {
         super(crate, player, size);
@@ -29,14 +38,14 @@ public class CsgoCrate extends CrateBuilder {
             return;
         }
 
-        boolean keyCheck = this.plugin.getCrazyManager().getUserManager().takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
+        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
 
         if (!keyCheck) {
             // Send the message about failing to take the key.
             MiscUtils.failedToTakeKey(getPlayer(), getCrate().getName());
 
             // Remove from opening list.
-            this.plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
+            this.crateManager.removePlayerFromOpeningList(getPlayer());
 
             return;
         }
@@ -92,7 +101,7 @@ public class CsgoCrate extends CrateBuilder {
                             PrizeManager.givePrize(getPlayer(), getCrate(), prize);
                         }
 
-                        plugin.getCrateManager().removePlayerFromOpeningList(getPlayer());
+                        crateManager.removePlayerFromOpeningList(getPlayer());
 
                         cancel();
 
