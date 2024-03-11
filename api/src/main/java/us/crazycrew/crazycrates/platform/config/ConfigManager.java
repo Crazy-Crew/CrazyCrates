@@ -50,17 +50,17 @@ public class ConfigManager {
     }
 
     public static SettingsManager getConfig() {
-        if (config == null) {
-            instance.getLogger().warning("Unsupported Action: Trying to fetch config.yml while the variable is null.");
-        }
+        //if (config == null) {
+        //    instance.getLogger().warning("Unsupported Action: Trying to fetch config.yml while the variable is null.");
+        //}
 
         return config;
     }
 
     public static SettingsManager getMessages() {
-        if (messages == null) {
-            instance.getLogger().warning("Unsupported Action: Trying to fetch messages.yml while the variable is null.");
-        }
+        //if (messages == null) {
+        //    instance.getLogger().warning("Unsupported Action: Trying to fetch messages.yml while the variable is null.");
+        //}
 
         return messages;
     }
