@@ -182,9 +182,6 @@ public class CrazyCratesPaper extends JavaPlugin {
             }
         }
 
-        // Save all files.
-        if (this.fileManager != null) this.fileManager.saveAllFiles();
-
         // Disable api
         if (this.instance != null) this.instance.disable();
     }
