@@ -251,7 +251,7 @@ public class CrateManager {
                     }
                 }
 
-                int newPlayersKeys = file.getInt("Crate.StartingKeys");
+                int newPlayersKeys = file.getInt("Crate.StartingKeys", 0);
 
                 if (!this.giveNewPlayersKeys) {
                     if (newPlayersKeys > 0) this.giveNewPlayersKeys = true;
