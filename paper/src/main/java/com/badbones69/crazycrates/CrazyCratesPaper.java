@@ -37,6 +37,8 @@ import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import java.util.List;
 import java.util.Timer;
+
+import static com.badbones69.crazycrates.api.utils.MiscUtils.isLogging;
 import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions;
 
 public class CrazyCratesPaper extends JavaPlugin {
@@ -70,20 +72,23 @@ public class CrazyCratesPaper extends JavaPlugin {
         // Migrate as early as possible.
         MigrationManager.migrate();
 
+        // Load the config files.
+        ConfigManager.load(getDataFolder());
+
+
         int radius = DedicatedServer.getServer().getSpawnProtectionRadius();
 
         if (radius > 0) {
-            List.of(
-                    "The spawn protection is set to " + radius,
-                    "Crates placed in the spawn protection will not function",
-                    "correctly as spawn protection overrides everything",
-                    "",
-                    "Change the value in server.properties to 0 then restart"
-            ).forEach(getLogger()::warning);
+            if (isLogging()) {
+                List.of(
+                        "The spawn protection is set to " + radius,
+                        "Crates placed in the spawn protection will not function",
+                        "correctly as spawn protection overrides everything",
+                        "",
+                        "Change the value in server.properties to 0 then restart"
+                ).forEach(getLogger()::warning);
+            }
         }
-
-        // Load the config files.
-        ConfigManager.load(getDataFolder());
 
         // Register permissions that we need.
         registerPermissions();
