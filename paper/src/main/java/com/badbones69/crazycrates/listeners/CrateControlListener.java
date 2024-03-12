@@ -14,6 +14,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -233,8 +235,36 @@ public class CrateControlListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent e) {
-        Player player = e.getPlayer();
+    public void onPistonPushCrate(BlockPistonExtendEvent event) {
+        for (Block block : event.getBlocks()) {
+            Location location = block.getLocation();
+
+            Crate crate = this.crateManager.getCrateFromLocation(location);
+
+            if (crate != null) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPistonPullCrate(BlockPistonRetractEvent event) {
+        for (Block block : event.getBlocks()) {
+            Location location = block.getLocation();
+
+            Crate crate = this.crateManager.getCrateFromLocation(location);
+
+            if (crate != null) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
 
         if (this.crateManager.hasCrateTask(player)) this.crateManager.endCrate(player);
 

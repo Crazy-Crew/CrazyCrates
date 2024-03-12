@@ -959,6 +959,19 @@ public class CrateManager {
         return crateLocation;
     }
 
+    public Crate getCrateFromLocation(Location location) {
+        Crate crate = null;
+
+        for (CrateLocation key : this.crateLocations) {
+            if (key.getLocation().equals(location)) {
+                crate = key.getCrate();
+                break;
+            }
+        }
+
+        return crate;
+    }
+
     /**
      * Get a schematic based on its name.
      *
