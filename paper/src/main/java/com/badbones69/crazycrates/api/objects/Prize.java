@@ -64,7 +64,7 @@ public class Prize {
 
         this.prizeName = section.getString("DisplayName", WordUtils.capitalizeFully(section.getString("DisplayItem", "STONE").replaceAll("_", " ")));
         this.maxRange = section.getInt("MaxRange", 100);
-        this.chance = section.getInt("Chance", 100);
+        this.chance = section.getInt("Chance", 50);
         this.firework = section.getBoolean("Firework", false);
 
         this.messages = section.contains("Messages") ? section.getStringList("Messages") : Collections.emptyList();
