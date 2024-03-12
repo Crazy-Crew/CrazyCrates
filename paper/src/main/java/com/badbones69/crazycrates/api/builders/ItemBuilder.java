@@ -285,16 +285,21 @@ public class ItemBuilder {
      * @return the result of all the info that was given to the builder as an ItemStack.
      */
     public ItemStack build() {
-        if (this.itemStack == null) {
-            if (PluginSupport.ORAXEN.isPluginEnabled()) {
-                io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
+        // Check if oraxen is enabled.
+        if (PluginSupport.ORAXEN.isPluginEnabled()) {
+            // Get the item.
+            io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
 
-                if (oraxenItem != null) {
-                    this.itemStack = oraxenItem.build();
+            if (oraxenItem != null) {
+                // If the item isn't null, we don't need to re-build.
+                if (this.itemStack != null) {
+                    this.material = this.itemStack.getType();
+
+                    return this.itemStack;
                 }
-            } else {
-                this.itemStack = new ItemStack(Material.STONE);
-                this.itemStack.editMeta(itemMeta -> itemMeta.setDisplayName(parse("&cAn error has occurred with the item builder.")));
+
+                // This is just here in case it is null for whatever reason.
+                this.itemStack = oraxenItem.build();
 
                 this.material = this.itemStack.getType();
 
@@ -555,12 +560,17 @@ public class ItemBuilder {
                 if (MiscUtils.isLogging()) this.plugin.getLogger().warning(line);
             });
 
+            this.itemStack = new ItemStack(Material.STONE);
+            this.itemStack.editMeta(itemMeta -> itemMeta.setDisplayName(parse("&cAn error has occurred with the item builder.")));
+
+            this.material = this.itemStack.getType();
+
             return this;
         }
 
-        String metaData;
-
         this.customMaterial = type;
+
+        String metaData;
 
         if (type.contains(":")) {
             String[] section = type.split(":");
@@ -604,9 +614,23 @@ public class ItemBuilder {
         Material material = Material.matchMaterial(type);
 
         if (material != null) {
-            this.itemStack = new ItemStack(material);
+            if (material.isItem()) {
+                this.itemStack = new ItemStack(material);
+            }
 
             this.material = this.itemStack.getType();
+        } else {
+            if (PluginSupport.ORAXEN.isPluginEnabled()) {
+                io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
+
+                if (oraxenItem != null) {
+                    this.itemStack = oraxenItem.build();
+
+                    this.material = this.itemStack.getType();
+
+                    return this;
+                }
+            }
         }
 
         switch (this.material) {
