@@ -33,15 +33,23 @@ Older keys will still work temporarily but please get your players to trade your
   * %id% is now {id}
 
 ## Enhancements:
+* Added a warning on startup if the spawn protection in server.properties is 0.
+* Prevent pistons from moving blocks if they are a crate.
 * Play sounds in /crazycrates admin when a player gets virtual/physical keys.
 * Change from sending messages in chat for /crazycrates admin to using action bars.
 * Optimize item meta checks.
 * If the crate main menu is turned off, Trying to do /crates set menu will send you a message saying you can't.
 * If the crate main menu is disabled, /crates will simply open the help message instead.
 
+## API:
+* Deprecated and marked for removal `CrazyCratesService` and `ICrazyCrates`
+  * The example plugin has been updated. https://github.com/Crazy-Crew/ExamplePlugin
+* What else will be added in the API? Ways to add your own crate locations, view current crate locations or listen to events etc.
+
 ## Fixes:
 * Remove player from crate/page/preview arrays on inventory close event as it wasn't before.
 * Fix the player getting a preview message if they weren't in the preview when you did /crates reload.
+* Fixed a bug related to CrateOnTheGo where the event would fire twice using 2 of your crates.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
