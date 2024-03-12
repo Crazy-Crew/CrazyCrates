@@ -614,9 +614,7 @@ public class ItemBuilder {
         Material material = Material.matchMaterial(type);
 
         if (material != null) {
-            if (material.isItem()) {
-                this.itemStack = new ItemStack(material);
-            }
+            this.itemStack = new ItemStack(material);
 
             this.material = this.itemStack.getType();
         } else {
