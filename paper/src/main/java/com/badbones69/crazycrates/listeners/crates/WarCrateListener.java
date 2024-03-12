@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.tasks.InventoryManager;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -26,9 +25,6 @@ public class WarCrateListener implements Listener {
 
     @NotNull
     private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
-
-    @NotNull
-    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();
