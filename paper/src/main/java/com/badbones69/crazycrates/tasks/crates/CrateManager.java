@@ -190,8 +190,8 @@ public class CrateManager {
                 List<Tier> tiers = new ArrayList<>();
 
                 String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
-                int maxMassOpen = file.contains("Crate.Max-Mass-Open") ? file.getInt("Crate.Max-Mass-Open") : 10;
-                int requiredKeys = file.contains("Crate.RequiredKeys") ? file.getInt("Crate.RequiredKeys") : 0;
+                int maxMassOpen = file.getInt("Crate.Max-Mass-Open", 10);
+                int requiredKeys = file.getInt("Crate.RequiredKeys", 0);
 
                 ConfigurationSection section = file.getConfigurationSection("Crate.Tiers");
 
