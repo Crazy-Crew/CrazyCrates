@@ -1150,7 +1150,7 @@ public class CrateManager {
         String id = file.getString("Crate.PhysicalKey.Item", "TRIPWIRE_HOOK");
         boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
 
-        return new ItemBuilder(new ItemStack(Material.valueOf(id))).setName(name).setLore(lore).setGlow(glowing).build();
+        return new ItemBuilder().setMaterial(id).setName(name).setLore(lore).setGlow(glowing).build();
     }
 
     // Cleans the data file.
