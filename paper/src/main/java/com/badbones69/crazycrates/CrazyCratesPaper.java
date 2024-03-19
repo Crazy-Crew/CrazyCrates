@@ -26,6 +26,8 @@ import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.MigrationManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import fr.euphyllia.energie.Energie;
+import fr.euphyllia.energie.model.Scheduler;
 import net.minecraft.server.dedicated.DedicatedServer;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.badbones69.crazycrates.api.FileManager;
@@ -55,6 +57,8 @@ public class CrazyCratesPaper extends JavaPlugin {
 
     private final Timer timer;
 
+    private @NotNull Scheduler scheduler;
+
     public CrazyCratesPaper() {
         // Create timer object.
         this.timer = new Timer();
@@ -69,6 +73,7 @@ public class CrazyCratesPaper extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        scheduler = new Energie(this).getMinecraftScheduler();
         // Migrate as early as possible.
         MigrationManager.migrate();
 
@@ -237,5 +242,10 @@ public class CrazyCratesPaper extends JavaPlugin {
     @NotNull
     public Timer getTimer() {
         return this.timer;
+    }
+
+    @NotNull
+    public Scheduler getScheduler() {
+        return this.scheduler;
     }
 }

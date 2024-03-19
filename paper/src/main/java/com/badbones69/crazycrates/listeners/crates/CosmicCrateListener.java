@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.listeners.crates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import fr.euphyllia.energie.model.SchedulerType;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.PrizeManager;
@@ -361,7 +362,7 @@ public class CosmicCrateListener implements Listener {
                     try {
                         startRollingAnimation(player, view, holder);
                     } catch (Exception exception) {
-                        plugin.getServer().getScheduler().runTask(plugin, () -> {
+                        plugin.getScheduler().runTask(SchedulerType.SYNC, player, (taskInter) -> {
                             // Call the event.
                             PlayerReceiveKeyEvent keyEvent = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.REFUND, 1);
                             plugin.getServer().getPluginManager().callEvent(keyEvent);
@@ -391,7 +392,7 @@ public class CosmicCrateListener implements Listener {
                                 // Play a sound
                                 crate.playSound(player, player.getLocation(), "stop-sound", "BLOCK_ANVIL_PLACE", SoundCategory.PLAYERS);
                             }
-                        });
+                        }, null);
 
                         // Cancel the task.
                         cancel();
@@ -454,7 +455,7 @@ public class CosmicCrateListener implements Listener {
                 @Override
                 public void run() {
                     // Close inventory.
-                    plugin.getServer().getScheduler().runTask(plugin, () -> player.closeInventory(InventoryCloseEvent.Reason.UNLOADED));
+                    plugin.getScheduler().runTask(SchedulerType.SYNC, player, (task) -> player.closeInventory(InventoryCloseEvent.Reason.UNLOADED), null);
 
                     crateManager.removePickedPlayer(player);
 

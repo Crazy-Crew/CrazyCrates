@@ -3,10 +3,11 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import fr.euphyllia.energie.model.SchedulerType;
+import fr.euphyllia.energie.utils.SchedulerTaskRunnable;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -54,7 +55,7 @@ public class FireCrackerCrate extends CrateBuilder {
 
         List<Color> colors = Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.AQUA, Color.MAROON, Color.PURPLE);
 
-        addCrateTask(new BukkitRunnable() {
+        addCrateTask(new SchedulerTaskRunnable() {
             final int random = ThreadLocalRandom.current().nextInt(colors.size());
             final Location location = getLocation().clone().add(.5, 25, .5);
 
@@ -74,7 +75,7 @@ public class FireCrackerCrate extends CrateBuilder {
                     quickCrate.open(KeyType.free_key, false);
                 }
             }
-        }.runTaskTimer(this.plugin, 0, 2));
+        }.runAtFixedRate(this.plugin, SchedulerType.SYNC, getPlayer(), null, 0, 2));
     }
 
     @Override
