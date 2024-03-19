@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.listeners.crates;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import fr.euphyllia.energie.model.SchedulerType;
+import fr.euphyllia.energie.utils.EntityUtils;
 import fr.euphyllia.energie.utils.SchedulerTaskRunnable;
 import org.bukkit.Location;
 import org.bukkit.SoundCategory;
@@ -136,7 +137,7 @@ public class QuadCrateListener implements Listener {
             Location newLocation = event.getTo();
 
             if (oldLocation.getBlockX() != newLocation.getBlockX() || oldLocation.getBlockZ() != newLocation.getBlockZ()) {
-                player.teleport(oldLocation);
+                EntityUtils.teleportAsync(player, oldLocation);
                 event.setCancelled(true);
             }
         }

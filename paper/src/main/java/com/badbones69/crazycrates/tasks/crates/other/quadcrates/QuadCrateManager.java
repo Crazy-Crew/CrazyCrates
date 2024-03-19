@@ -210,7 +210,9 @@ public class QuadCrateManager {
         // Paste the structure in.
         this.handler.pasteStructure(this.spawnLocation.clone());
 
-        this.player.teleport(this.spawnLocation.toCenterLocation().add(0, 1.0, 0));
+        this.plugin.getScheduler().runTask(SchedulerType.SYNC, player, schedulerTask -> {
+            EntityUtils.teleportAsync(this.player, this.spawnLocation.toCenterLocation().add(0, 1.0, 0));
+        }, null);
 
         this.crateManager.addQuadCrateTask(this.player, new SchedulerTaskRunnable() {
 
@@ -305,7 +307,9 @@ public class QuadCrateManager {
         this.oldBlocks.keySet().forEach(location -> this.oldBlocks.get(location).update(true, false));
         this.crateLocations.forEach(location -> this.quadCrateChests.get(location).update(true, false));
         this.displayedRewards.forEach(Entity::remove);
-        this.player.teleport(this.lastLocation);
+        this.plugin.getScheduler().runTask(SchedulerType.SYNC, player, schedulerTask -> {
+            EntityUtils.teleportAsync(this.player, this.lastLocation);
+        }, null);
 
         if (removeForce) {
             this.crateManager.removePlayerFromOpeningList(this.player);
