@@ -270,10 +270,16 @@ public class QuadCrateManager {
             @Override
             public void run() {
                 // Update spawned crate block states which removes them.
-                crateLocations.forEach(location -> quadCrateChests.get(location).update(true, false));
+                crateLocations.forEach(location -> {
+                    plugin.getScheduler().runTask(SchedulerType.SYNC, location, schedulerTask -> {
+                        quadCrateChests.get(location).update(true, false);
+                    });
+                });
 
                 // Remove displayed rewards.
-                displayedRewards.forEach(Entity::remove);
+                for (Entity displayedReward : displayedRewards) {
+                    plugin.getScheduler().runTask(SchedulerType.SYNC, displayedReward, schedulerTask -> displayedReward.remove(), null);
+                }
 
                 // Teleport player to last location.
                 EntityUtils.teleportAsync(player, lastLocation);
@@ -282,7 +288,11 @@ public class QuadCrateManager {
                 handler.removeStructure();
 
                 // Restore the old blocks.
-                oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
+                oldBlocks.keySet().forEach(location -> {
+                    plugin.getScheduler().runTask(SchedulerType.SYNC, location, schedulerTask -> {
+                        oldBlocks.get(location).update(true, false);
+                    });
+                });
 
                 if (crate.getHologram().isEnabled() && crateManager.getHolograms() != null) crateManager.getHolograms().createHologram(spawnLocation.getBlock(), crate);
 
@@ -295,7 +305,7 @@ public class QuadCrateManager {
                 // Remove the "instance" from the crate sessions.
                 crateSessions.remove(instance);
             }
-        }.runDelayed(this.plugin, SchedulerType.SYNC, 5);
+        }.runDelayed(this.plugin, SchedulerType.SYNC, player, null, 5);
     }
 
     /**
