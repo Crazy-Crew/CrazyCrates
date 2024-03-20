@@ -142,7 +142,7 @@ public class CrateManager {
                 Player player = this.plugin.getServer().getPlayer(uuid);
 
                 if (player != null) {
-                    this.plugin.getInventoryManager().openNewCratePreview(player, crate, crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
+                    this.plugin.getInventoryManager().openNewCratePreview(player, crate);
                 }
             }
 

@@ -367,7 +367,7 @@ public class CrateBaseCommand extends BaseCommand {
         }
 
         this.inventoryManager.addViewer(player);
-        this.inventoryManager.openNewCratePreview(player, crate,crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
+        this.inventoryManager.openNewCratePreview(player, crate);
     }
 
     @SubCommand("open-others")
