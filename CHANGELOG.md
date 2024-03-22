@@ -13,6 +13,9 @@ Older keys will still work temporarily but please get your players to trade your
 ## Additions:
 * Added extra placeholders to all messages. The messages.yml will update with new comments showing what each message can use.
 * Add config.yml/messages.yml to `examples` folder which auto-generate on reload.
+* Added a toggle to allow legacy key checks for niche use cases.
+* Added default commands to run per crate if no prize commands are found similar to `Prize-Messages`
+* Added %reward_stripped% which returns a stripped version of the reward for plugins like DiscordSRV
 
 ## Changes:
 * All internal placeholders used in config.yml and messages.yml have changed.
