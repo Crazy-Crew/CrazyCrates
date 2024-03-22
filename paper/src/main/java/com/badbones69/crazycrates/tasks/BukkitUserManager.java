@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -167,12 +168,14 @@ public class BukkitUserManager extends UserManager {
         
         int keys = 0;
 
+        Crate crate = this.crateManager.getCrateFromName(crateName);
+
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
             if (item == null || item.getType() == Material.AIR) continue;
 
             if (!item.hasItemMeta()) continue;
 
-            if (this.plugin.getCrateManager().isKeyFromCrate(item, this.crateManager.getCrateFromName(crateName))) keys += item.getAmount();
+            if (ItemUtils.isSimilar(item, crate)) keys += item.getAmount();
         }
 
         return keys;
@@ -210,7 +213,7 @@ public class BukkitUserManager extends UserManager {
                     }
 
                     for (ItemStack item : items) {
-                        if (this.plugin.getCrateManager().isKeyFromCrate(item, crate)) {
+                        if (ItemUtils.isSimilar(item, crate)) {
                             int keyAmount = item.getAmount();
 
                             if ((takeAmount - keyAmount) >= 0) {
@@ -235,7 +238,7 @@ public class BukkitUserManager extends UserManager {
                     if (takeAmount > 0) {
                         ItemStack item = player.getEquipment().getItemInOffHand();
 
-                        if (this.plugin.getCrateManager().isKeyFromCrate(item, crate)) {
+                        if (ItemUtils.isSimilar(item, crate)) {
                             int keyAmount = item.getAmount();
 
                             if ((takeAmount - keyAmount) >= 0) {
@@ -320,7 +323,7 @@ public class BukkitUserManager extends UserManager {
         }
 
         for (ItemStack item : items) {
-            if (this.crateManager.isKeyFromCrate(item, crate)) {
+            if (ItemUtils.isSimilar(item, crate)) {
                 return true;
             }
         }

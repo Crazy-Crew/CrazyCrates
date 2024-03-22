@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.events.KeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
+import com.badbones69.crazycrates.api.utils.ItemUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -19,6 +20,7 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -172,7 +174,9 @@ public class CrateControlListener implements Listener {
             return;
         }
 
-        if (crate.getCrateType() != CrateType.crate_on_the_go && isKey && this.crateManager.isKeyFromCrate(player.getInventory().getItemInMainHand(), crate) && this.config.getProperty(ConfigKeys.physical_accepts_physical_keys)) {
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+
+        if (crate.getCrateType() != CrateType.crate_on_the_go && isKey && ItemUtils.isSimilar(itemStack, crate) && this.config.getProperty(ConfigKeys.physical_accepts_physical_keys)) {
             hasKey = true;
             isPhysical = true;
         }
