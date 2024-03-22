@@ -20,6 +20,7 @@ Older keys will still work temporarily but please get your players to trade your
   * %crate% is now {crate}
   * %amount% is now {amount}
   * %key% is now {key}
+  * %keys% is now {keys}
   * %page% is now {page}
   * %prefix% is now {prefix}
   * %world% is now {world}
