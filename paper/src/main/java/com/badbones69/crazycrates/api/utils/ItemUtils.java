@@ -30,8 +30,7 @@ public class ItemUtils {
 
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
         if (MiscUtils.legacyChecks()) {
-            return itemStack.getType() == crate.getKey().getType()
-                    || itemStack.isSimilar(crate.getKey())
+            return itemStack.isSimilar(crate.getKeyNoNBT())
                     || itemStack.isSimilar(crate.getKeyNoNBT())
                     || isSimilarCustom(crate.getKeyNoNBT(), itemStack)
                     || crateManager.isKeyFromCrate(itemStack, crate);
