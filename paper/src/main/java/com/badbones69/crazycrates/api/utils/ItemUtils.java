@@ -4,15 +4,12 @@ import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.platform.config.ConfigManager;
-import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 
 public class ItemUtils {
 
