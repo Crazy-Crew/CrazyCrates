@@ -123,13 +123,7 @@ public class CrateControlListener implements Listener {
         // If crate is null, return.
         if (crate == null) return;
 
-        boolean isKey;
-
-        if (MiscUtils.legacyChecks()) {
-            isKey = event.getHand() == EquipmentSlot.OFF_HAND ? ItemUtils.isSimilar(player.getInventory().getItemInOffHand(), crate) : ItemUtils.isSimilar(player.getInventory().getItemInMainHand(), crate);
-        } else {
-            isKey = event.getHand() == EquipmentSlot.OFF_HAND ? this.crateManager.isKey(player.getInventory().getItemInOffHand()) : this.crateManager.isKey(player.getInventory().getItemInMainHand());
-        }
+        boolean isKey = event.getHand() == EquipmentSlot.OFF_HAND ? ItemUtils.isSimilar(player.getInventory().getItemInOffHand(), crate) : ItemUtils.isSimilar(player.getInventory().getItemInMainHand(), crate);
 
         if (isKey) {
             event.setCancelled(true);
