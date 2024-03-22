@@ -139,7 +139,7 @@ public class PrizeManager {
         String defaultCommand = command
                 .replaceAll("%player%", quoteReplacement(player.getName()))
                 .replaceAll("%reward%", quoteReplacement(name))
-                .replaceAll("%reward_stripped%", quoteReplacement(MsgUtils.removeColor(name)))
+                .replaceAll("%reward_stripped%", quoteReplacement(MsgUtils.stripColor(name)))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName()));
 
         MiscUtils.sendCommand(MiscUtils.isPapiActive() ? PlaceholderAPI.setPlaceholders(player, defaultCommand) : defaultCommand);
@@ -153,7 +153,7 @@ public class PrizeManager {
         String defaultMessage = message
                 .replaceAll("%player%", quoteReplacement(player.getName()))
                 .replaceAll("%reward%", quoteReplacement(name))
-                .replaceAll("%reward_stripped%", quoteReplacement(MsgUtils.removeColor(name)))
+                .replaceAll("%reward_stripped%", quoteReplacement(MsgUtils.stripColor(name)))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName()));
 
         MsgUtils.sendMessage(player, MiscUtils.isPapiActive() ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
