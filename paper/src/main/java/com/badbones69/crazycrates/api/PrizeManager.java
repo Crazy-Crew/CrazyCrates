@@ -106,6 +106,7 @@ public class PrizeManager {
             MiscUtils.sendCommand(command
                     .replaceAll("%player%", quoteReplacement(player.getName()))
                     .replaceAll("%reward%", quoteReplacement(name))
+                    .replaceAll("%reward_stripped%", quoteReplacement(MsgUtils.removeColor(name)))
                     .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
         }
 
