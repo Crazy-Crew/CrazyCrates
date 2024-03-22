@@ -1030,7 +1030,7 @@ public class CrateManager {
         if (item.getType() == Material.AIR) return false;
 
         // If the item has no meta.
-        if (!item.hasItemMeta()) return false;
+        if (!item.hasItemMeta() && !ConfigManager.getConfig().getProperty(ConfigKeys.use_old_key_checks)) return false;
 
         // Get the item meta.
         ItemMeta itemMeta = item.getItemMeta();
