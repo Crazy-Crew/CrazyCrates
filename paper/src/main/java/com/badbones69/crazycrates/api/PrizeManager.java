@@ -130,6 +130,7 @@ public class PrizeManager {
         String defaultMessage = message
                 .replaceAll("%player%", quoteReplacement(player.getName()))
                 .replaceAll("%reward%", quoteReplacement(name))
+                .replaceAll("%reward_stripped%", quoteReplacement(MsgUtils.removeColor(name)))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName()));
 
         MsgUtils.sendMessage(player, MiscUtils.isPapiActive() ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
