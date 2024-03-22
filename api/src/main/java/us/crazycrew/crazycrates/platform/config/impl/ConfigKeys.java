@@ -84,7 +84,13 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("Logs all crate actions to a .txt file if enabled. It is recommended to delete the file occasionally.")
     public static final Property<Boolean> log_to_file = newProperty("crate.log-file", false);
 
-    @Comment("Allows you to use old extra key checks, Set the value to true if you want to use it.")
+    @Comment({
+            "This option is unsupported and not recommended for use.",
+            "It is not very performant and is recommended to keep false",
+            "The option only here for niche use cases for the time being",
+            "If at some point it ever gets more difficult to maintain this",
+            "The option and code related will be completely removed and not added back."
+    })
     public static final Property<Boolean> use_old_key_checks = newProperty("crate.unsupported-settings.old-key-checks", false);
 
     @Comment("Logs all crate actions to console if enabled.")
