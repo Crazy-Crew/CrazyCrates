@@ -69,14 +69,12 @@ public class PrizeManager {
             }
         }
 
-        if (!crate.getPrizeCommands().isEmpty() && prize.getCommands().isEmpty()) {
-            for (String command : crate.getPrizeCommands()) {
-                runCommands(player, prize, crate, command);
-            }
-        } else {
-            for (String command : prize.getCommands()) {
-                runCommands(player, prize, crate, command);
-            }
+        for (String command : crate.getPrizeCommands()) {
+            runCommands(player, prize, crate, command);
+        }
+
+        for (String command : prize.getCommands()) {
+            runCommands(player, prize, crate, command);
         }
 
         if (!crate.getPrizeMessage().isEmpty() && prize.getMessages().isEmpty()) {
