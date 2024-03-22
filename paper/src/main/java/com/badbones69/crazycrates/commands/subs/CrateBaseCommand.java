@@ -656,8 +656,6 @@ public class CrateBaseCommand extends BaseCommand {
         if (crate.getCrateType() != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), keysUsed, crate.getName());
 
         if (!this.userManager.takeKeys(keysUsed, player.getUniqueId(), crate.getName(), type, false)) {
-            MiscUtils.failedToTakeKey(player, crateName);
-
             this.crateManager.removeCrateInUse(player);
             this.crateManager.removePlayerFromOpeningList(player);
 
