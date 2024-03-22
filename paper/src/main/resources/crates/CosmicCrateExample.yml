@@ -10,6 +10,7 @@ Crate:
   RequiredKeys: 0
   Prize-Message:
     - '&7You have won &c%reward% &7from &c%crate%.'
+  Prize-Commands: []
   Max-Mass-Open: 10
   InGUI: true
   Slot: 14

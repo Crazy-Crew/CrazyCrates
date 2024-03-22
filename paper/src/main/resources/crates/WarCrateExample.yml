@@ -72,6 +72,7 @@ Crate:
   # i.e. Messages: [] or the value isn't there.
   Prize-Message:
     - '&7You have won &c%reward% &7from &c%crate%.'
+  Prize-Commands: []
   # Item the crate is in the GUI
   Item: 'BEACON'
   # If the crate in the main /cc GUI is glowing or not.
