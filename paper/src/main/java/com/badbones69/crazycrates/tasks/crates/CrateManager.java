@@ -930,6 +930,9 @@ public class CrateManager {
 
         ItemMeta itemMeta = item.getItemMeta();
 
+        // If null, return.
+        if (itemMeta == null) return null;
+
         if (!itemMeta.getPersistentDataContainer().has(PersistentKeys.crate_key.getNamespacedKey())) {
             return getCrateNameFromOldKey(itemMeta);
         }
