@@ -87,8 +87,8 @@ public class Crate {
      * @param file The crate file.
      */
     public Crate(String name, String previewName, CrateType crateType, ItemStack key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, CrateHologram hologram) {
+        this.keyNoNBT = ItemBuilder.convertItemStack(key).build();
         this.keyBuilder = ItemBuilder.convertItemStack(key).setCrateName(name);
-        this.keyNoNBT = this.keyBuilder.build();
         this.keyName = keyName;
 
         this.file = file;

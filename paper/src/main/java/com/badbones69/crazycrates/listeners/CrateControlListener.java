@@ -5,10 +5,7 @@ import com.badbones69.crazycrates.api.events.KeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -116,13 +113,6 @@ public class CrateControlListener implements Listener {
 
         if (clickedBlock == null) return;
 
-        boolean isKey = event.getHand() == EquipmentSlot.OFF_HAND ? this.crateManager.isKey(player.getInventory().getItemInOffHand()) : this.crateManager.isKey(player.getInventory().getItemInMainHand());
-
-        if (isKey) {
-            event.setCancelled(true);
-            player.updateInventory();
-        }
-
         CrateLocation crateLocation = this.crateManager.getCrateLocation(clickedBlock.getLocation());
 
         // If location is null, return.
@@ -132,6 +122,19 @@ public class CrateControlListener implements Listener {
 
         // If crate is null, return.
         if (crate == null) return;
+
+        boolean isKey;
+
+        if (MiscUtils.legacyChecks()) {
+            isKey = event.getHand() == EquipmentSlot.OFF_HAND ? ItemUtils.isSimilar(player.getInventory().getItemInOffHand(), crate) : ItemUtils.isSimilar(player.getInventory().getItemInMainHand(), crate);
+        } else {
+            isKey = event.getHand() == EquipmentSlot.OFF_HAND ? this.crateManager.isKey(player.getInventory().getItemInOffHand()) : this.crateManager.isKey(player.getInventory().getItemInMainHand());
+        }
+
+        if (isKey) {
+            event.setCancelled(true);
+            player.updateInventory();
+        }
 
         event.setCancelled(true);
 

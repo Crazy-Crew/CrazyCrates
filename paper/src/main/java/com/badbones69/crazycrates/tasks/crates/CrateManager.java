@@ -926,7 +926,7 @@ public class CrateManager {
      * @return a crate if is a key from a crate otherwise null if it is not.
      */
     public Crate getCrateFromKey(ItemStack item) {
-        if (!item.hasItemMeta()) return null;
+        if (!item.hasItemMeta() && !MiscUtils.legacyChecks()) return null;
 
         ItemMeta itemMeta = item.getItemMeta();
 
@@ -1030,7 +1030,7 @@ public class CrateManager {
         if (item.getType() == Material.AIR) return false;
 
         // If the item has no meta.
-        if (!item.hasItemMeta() && !ConfigManager.getConfig().getProperty(ConfigKeys.use_old_key_checks)) return false;
+        if (!item.hasItemMeta()) return false;
 
         // Get the item meta.
         ItemMeta itemMeta = item.getItemMeta();

@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -31,8 +32,12 @@ public class ItemUtils {
     }
 
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.use_old_key_checks)) {
-            return itemStack.isSimilar(crate.getKey()) || itemStack.isSimilar(crate.getKeyNoNBT()) || isSimilarCustom(crate.getKeyNoNBT(), itemStack) || crateManager.isKeyFromCrate(itemStack, crate);
+        if (MiscUtils.legacyChecks()) {
+            return itemStack.getType() == crate.getKey().getType()
+                    || itemStack.isSimilar(crate.getKey())
+                    || itemStack.isSimilar(crate.getKeyNoNBT())
+                    || isSimilarCustom(crate.getKeyNoNBT(), itemStack)
+                    || crateManager.isKeyFromCrate(itemStack, crate);
         }
 
         return crateManager.isKeyFromCrate(itemStack, crate);
@@ -61,7 +66,9 @@ public class ItemUtils {
 
                                     return true;
                                 }
-                            } else return !itemMetaOne.hasLore() && !itemMetaTwo.hasLore();
+                            } else {
+                                return !itemMetaOne.hasLore() && !itemMetaTwo.hasLore();
+                            }
                         }
                     } else if (!itemMetaOne.hasDisplayName() && !itemMetaTwo.hasDisplayName()) {
                         if (itemMetaOne.hasLore() && itemMetaTwo.hasLore()) {
@@ -80,9 +87,13 @@ public class ItemUtils {
                             } else {
                                 return false;
                             }
-                        } else return !itemMetaOne.hasLore() && !itemMetaTwo.hasLore();
+                        } else {
+                            return !itemMetaOne.hasLore() && !itemMetaTwo.hasLore();
+                        }
                     }
-                } else return !one.hasItemMeta() && !two.hasItemMeta();
+                } else {
+                    return !one.hasItemMeta() && !two.hasItemMeta();
+                }
             }
         }
 
@@ -92,6 +103,4 @@ public class ItemUtils {
     public static String getKey(ItemMeta itemMeta) {
         return itemMeta.getPersistentDataContainer().get(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }
-
-
 }
