@@ -208,6 +208,10 @@ public class ItemBuilder {
     }
 
     public ItemBuilder(ItemStack itemStack) {
+        if (itemStack == null) {
+            return;
+        }
+
         this.itemStack = itemStack;
 
         this.material = itemStack.getType();
