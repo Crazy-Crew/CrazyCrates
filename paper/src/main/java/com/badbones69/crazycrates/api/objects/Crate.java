@@ -55,7 +55,7 @@ public class Crate {
     private int previewTierCrateRows;
     private int previewTierMaxSlots;
 
-    private CrateType crateType;
+    private final CrateType crateType;
     private FileConfiguration file;
     private List<Prize> prizes;
     private String crateInventoryName;
@@ -138,6 +138,7 @@ public class Crate {
 
     public Crate(String name) {
         this.name = name;
+        this.crateType = CrateType.menu;
     }
 
     /**
