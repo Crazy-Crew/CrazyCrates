@@ -37,7 +37,7 @@ Older keys will still work temporarily but please get your players to trade your
   * %id% is now {id}
 
 ## Enhancements:
-* Added a warning on startup if the spawn protection in server.properties is 0.
+* Added a warning on startup if the spawn protection in server.properties isn't 0.
 * Prevent pistons from moving blocks if they are a crate.
 * Play sounds in /crazycrates admin when a player gets virtual/physical keys.
 * Change from sending messages in chat for /crazycrates admin to using action bars.
