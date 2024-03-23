@@ -39,32 +39,32 @@ public class Crate {
     
     private AbstractCrateManager manager;
     private final String name;
-    private final String keyName;
-    private final ItemBuilder keyBuilder;
-    private final ItemStack keyNoNBT;
+    private String keyName;
+    private ItemBuilder keyBuilder;
+    private ItemStack keyNoNBT;
     private int maxPage = 1;
-    private final int maxSlots;
-    private final String previewName;
-    private final boolean previewToggle;
-    private final boolean borderToggle;
-    private final ItemBuilder borderItem;
+    private int maxSlots;
+    private String previewName;
+    private boolean previewToggle;
+    private boolean borderToggle;
+    private ItemBuilder borderItem;
 
-    private final boolean previewTierToggle;
-    private final boolean previewTierBorderToggle;
-    private final ItemBuilder previewTierBorderItem;
+    private boolean previewTierToggle;
+    private boolean previewTierBorderToggle;
+    private ItemBuilder previewTierBorderItem;
     private int previewTierCrateRows;
-    private final int previewTierMaxSlots;
+    private int previewTierMaxSlots;
 
-    private final CrateType crateType;
-    private final FileConfiguration file;
+    private CrateType crateType;
+    private FileConfiguration file;
     private List<Prize> prizes;
-    private final String crateInventoryName;
-    private final boolean giveNewPlayerKeys;
+    private String crateInventoryName;
+    private boolean giveNewPlayerKeys;
     private int previewChestLines;
-    private final int newPlayerKeys;
+    private int newPlayerKeys;
     private List<ItemStack> preview;
-    private final List<Tier> tiers;
-    private final CrateHologram hologram;
+    private List<Tier> tiers;
+    private CrateHologram hologram;
 
     @NotNull
     private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
@@ -75,11 +75,11 @@ public class Crate {
     @NotNull
     private final FileManager fileManager = this.plugin.getFileManager();
 
-    private final int maxMassOpen;
-    private final int requiredKeys;
-    private final List<String> prizeMessage;
+    private int maxMassOpen;
+    private int requiredKeys;
+    private List<String> prizeMessage;
 
-    private final List<String> prizeCommands;
+    private List<String> prizeCommands;
 
     /**
      * @param name The name of the crate.
@@ -134,6 +134,10 @@ public class Crate {
         if (crateType == CrateType.cosmic) {
             if (this.file != null) this.manager = new CosmicCrateManager(this.file);
         }
+    }
+
+    public Crate(String name) {
+        this.name = name;
     }
 
     /**
