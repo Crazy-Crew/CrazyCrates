@@ -78,7 +78,7 @@ public class WarCrateListener implements Listener {
                                 @Override
                                 public void run() {
                                     for (int i = 0; i < 9; i++) {
-                                        if (i != slot) inventory.setItem(i, new ItemStack(Material.AIR));
+                                        if (i != slot) inventory.setItem(i, null);
                                     }
 
                                     if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);

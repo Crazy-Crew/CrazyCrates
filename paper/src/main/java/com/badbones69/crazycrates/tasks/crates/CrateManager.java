@@ -281,7 +281,7 @@ public class CrateManager {
             }
         }
 
-        addCrate(new Crate("Menu", "Menu", CrateType.menu, new ItemStack(Material.AIR), "", new ArrayList<>(), null, 0, null, 0, 0, Collections.emptyList(), Collections.emptyList(), null));
+        addCrate(new Crate("Menu", "Menu", CrateType.menu, null, "", new ArrayList<>(), null, 0, null, 0, 0, Collections.emptyList(), Collections.emptyList(), null));
 
         if (MiscUtils.isLogging()) {
             List.of(

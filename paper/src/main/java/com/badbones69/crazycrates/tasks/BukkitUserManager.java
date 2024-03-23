@@ -243,7 +243,7 @@ public class BukkitUserManager extends UserManager {
                             int keyAmount = item.getAmount();
 
                             if ((takeAmount - keyAmount) >= 0) {
-                                player.getEquipment().setItemInOffHand(new ItemStack(Material.AIR, 1));
+                                player.getEquipment().setItemInOffHand(null);
                                 takeAmount -= keyAmount;
 
                                 if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), amount, crate.getName());
