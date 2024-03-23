@@ -921,24 +921,7 @@ public class ItemBuilder {
      * @return the ItemBuilder with updated enchantments.
      */
     public ItemBuilder addEnchantment(Enchantment enchantment, int level, boolean unsafeEnchantments) {
-        getItemStack().editMeta(itemMeta -> {
-            itemMeta.addEnchant(enchantment, level, unsafeEnchantments);
-        });
-
-        return this;
-    }
-
-    /**
-     * Adds a single enchantment to an item.
-     *
-     * @param enchantment the type of enchantment.
-     * @param level the level of the enchantment.
-     * @return the ItemBuilder with updated enchantments.
-     */
-    public ItemBuilder addEnchantment(Enchantment enchantment, int level) {
-        getItemStack().editMeta(itemMeta -> {
-            itemMeta.addEnchant(enchantment, level, false);
-        });
+        getItemStack().editMeta(itemMeta -> itemMeta.addEnchant(enchantment, level, unsafeEnchantments));
 
         return this;
     }
@@ -950,9 +933,7 @@ public class ItemBuilder {
      * @return the ItemBuilder with updated data.
      */
     public ItemBuilder removeEnchantment(Enchantment enchantment) {
-        getItemStack().editMeta(itemMeta -> {
-            itemMeta.removeEnchant(enchantment);
-        });
+        getItemStack().editMeta(itemMeta -> itemMeta.removeEnchant(enchantment));
 
         return this;
     }
@@ -1067,10 +1048,8 @@ public class ItemBuilder {
      * @param enchantments a list of enchantments to add to the item.
      * @return the ItemBuilder with a list of updated enchantments.
      */
-    public ItemBuilder setEnchantments(HashMap<Enchantment, Integer> enchantments) {
-        if (enchantments != null) getItemStack().editMeta(meta -> {
-            enchantments.forEach((enchantment, amount) -> meta.addEnchant(enchantment, amount, false));
-        });
+    public ItemBuilder setEnchantments(HashMap<Enchantment, Integer> enchantments, boolean ignoreRestriction) {
+        if (enchantments != null) getItemStack().editMeta(meta -> enchantments.forEach((enchantment, amount) -> meta.addEnchant(enchantment, amount, ignoreRestriction)));
 
         return this;
     }
@@ -1082,10 +1061,8 @@ public class ItemBuilder {
      * @param level the level of the enchantment ( Unsafe levels included )
      * @return the ItemBuilder with updated enchantments.
      */
-    public ItemBuilder addEnchantments(Enchantment enchantment, int level) {
-        getItemStack().editMeta(meta -> {
-            meta.addEnchant(enchantment, level, false);
-        });
+    public ItemBuilder addEnchantments(Enchantment enchantment, int level, boolean ignoreRestriction) {
+        getItemStack().editMeta(meta -> meta.addEnchant(enchantment, level, ignoreRestriction));
 
         return this;
     }
@@ -1111,11 +1088,11 @@ public class ItemBuilder {
      * @return the ItemStack as an ItemBuilder with all the info from the item.
      */
     public static ItemBuilder convertItemStack(ItemStack item) {
-        return new ItemBuilder(item).setAmount(item.getAmount()).setEnchantments(new HashMap<>(item.getEnchantments()));
+        return new ItemBuilder(item).setAmount(item.getAmount()).setEnchantments(new HashMap<>(item.getEnchantments()), true);
     }
 
     public static ItemBuilder convertItemStack(ItemStack item, Player player) {
-        return new ItemBuilder(item).setTarget(player).setAmount(item.getAmount()).setEnchantments(new HashMap<>(item.getEnchantments()));
+        return new ItemBuilder(item).setTarget(player).setAmount(item.getAmount()).setEnchantments(new HashMap<>(item.getEnchantments()), true);
     }
 
     /**
@@ -1176,9 +1153,9 @@ public class ItemBuilder {
 
                         if (enchantment != null) {
                             try {
-                                itemBuilder.addEnchantments(enchantment, Integer.parseInt(value));
+                                itemBuilder.addEnchantments(enchantment, Integer.parseInt(value), true);
                             } catch (NumberFormatException e) {
-                                itemBuilder.addEnchantments(enchantment, 1);
+                                itemBuilder.addEnchantments(enchantment, 1, true);
                             }
 
                             break;
