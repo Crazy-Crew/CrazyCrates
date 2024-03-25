@@ -10,6 +10,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.platform.config.ConfigManager;
+import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 
 public class ItemUtils {
 
@@ -29,7 +31,7 @@ public class ItemUtils {
     }
 
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
-        if (MiscUtils.legacyChecks()) {
+        if (ConfigManager.getConfig().getProperty(ConfigKeys.use_old_key_checks)) {
             return itemStack.isSimilar(crate.getKeyNoNBT())
                     || itemStack.isSimilar(crate.getKeyNoNBT())
                     || isSimilarCustom(crate.getKeyNoNBT(), itemStack)

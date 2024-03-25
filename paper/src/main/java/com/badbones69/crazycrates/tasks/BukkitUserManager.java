@@ -174,7 +174,7 @@ public class BukkitUserManager extends UserManager {
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
             if (item == null || item.getType() == Material.AIR) continue;
 
-            if (!item.hasItemMeta() && !MiscUtils.legacyChecks()) continue;
+            if (!item.hasItemMeta() && !ConfigManager.getConfig().getProperty(ConfigKeys.use_old_key_checks)) continue;
 
             if (ItemUtils.isSimilar(item, crate)) keys += item.getAmount();
         }
