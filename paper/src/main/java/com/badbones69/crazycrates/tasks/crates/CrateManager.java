@@ -1005,6 +1005,8 @@ public class CrateManager {
 
             if (itemStack.getType() == Material.AIR) return false;
 
+            if (!itemStack.hasItemMeta()) return false;
+
             ItemMeta itemMeta = itemStack.getItemMeta();
 
             PersistentKeys prize = PersistentKeys.crate_prize;
