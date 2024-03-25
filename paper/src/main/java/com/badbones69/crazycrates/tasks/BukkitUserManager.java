@@ -202,7 +202,7 @@ public class BukkitUserManager extends UserManager {
             case physical_key -> {
                 int takeAmount = amount;
 
-                try {
+                List<ItemStack> items = new ArrayList<>();
                     List<ItemStack> items = new ArrayList<>();
 
                     if (checkHand) {
@@ -258,10 +258,6 @@ public class BukkitUserManager extends UserManager {
                             if (takeAmount <= 0) return true;
                         }
                     }
-                } catch (Exception exception) {
-                    MiscUtils.failedToTakeKey(player, crateName);
-
-                    return false;
                 }
             }
 
@@ -290,7 +286,7 @@ public class BukkitUserManager extends UserManager {
             }
         }
 
-        MiscUtils.failedToTakeKey(player, crateName);
+        MiscUtils.failedToTakeKey(player, crate.getName());
 
         return false;
     }
