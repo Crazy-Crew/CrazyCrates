@@ -203,17 +203,16 @@ public class BukkitUserManager extends UserManager {
                 int takeAmount = amount;
 
                 List<ItemStack> items = new ArrayList<>();
-                    List<ItemStack> items = new ArrayList<>();
 
-                    if (checkHand) {
-                        items.add(player.getEquipment().getItemInMainHand());
-                        items.add(player.getEquipment().getItemInOffHand());
-                    } else {
-                        items.add(player.getEquipment().getItemInOffHand());
-                        items.addAll(Arrays.asList(player.getInventory().getContents()));
-                    }
+                if (checkHand) {
+                    items.add(player.getEquipment().getItemInMainHand());
+                    items.add(player.getEquipment().getItemInOffHand());
+                } else {
+                    items.addAll(Arrays.asList(player.getInventory().getContents()));
+                }
 
-                    for (ItemStack item : items) {
+                for (ItemStack item : items) {
+                    if (item != null) {
                         if (ItemUtils.isSimilar(item, crate)) {
                             int keyAmount = item.getAmount();
 
@@ -234,29 +233,29 @@ public class BukkitUserManager extends UserManager {
                             if (takeAmount <= 0) return true;
                         }
                     }
+                }
 
-                    // This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the offhand.
-                    if (takeAmount > 0) {
-                        ItemStack item = player.getEquipment().getItemInOffHand();
+                // This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the offhand.
+                if (takeAmount > 0) {
+                    ItemStack item = player.getEquipment().getItemInOffHand();
 
-                        if (ItemUtils.isSimilar(item, crate)) {
-                            int keyAmount = item.getAmount();
+                    if (ItemUtils.isSimilar(item, crate)) {
+                        int keyAmount = item.getAmount();
 
-                            if ((takeAmount - keyAmount) >= 0) {
-                                player.getEquipment().setItemInOffHand(null);
-                                takeAmount -= keyAmount;
+                        if ((takeAmount - keyAmount) >= 0) {
+                            player.getEquipment().setItemInOffHand(null);
+                            takeAmount -= keyAmount;
 
-                                if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), amount, crate.getName());
-                            } else {
-                                item.setAmount(keyAmount - takeAmount);
+                            if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), amount, crate.getName());
+                        } else {
+                            item.setAmount(keyAmount - takeAmount);
 
-                                if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), amount, crate.getName());
+                            if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), amount, crate.getName());
 
-                                takeAmount = 0;
-                            }
-
-                            if (takeAmount <= 0) return true;
+                            takeAmount = 0;
                         }
+
+                        if (takeAmount <= 0) return true;
                     }
                 }
             }
