@@ -28,8 +28,6 @@ public class CrazyCrates implements ICrazyCrates {
     }
 
     public void disable() {
-        ConfigManager.save();
-
         // Unregister legacy provider.
         CrazyCratesService.unregister();
 

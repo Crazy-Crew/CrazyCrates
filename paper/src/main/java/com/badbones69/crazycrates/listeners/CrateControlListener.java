@@ -4,10 +4,8 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.events.KeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
+import com.badbones69.crazycrates.api.utils.ItemUtils;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +17,7 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -95,7 +94,7 @@ public class CrateControlListener implements Listener {
 
         if (crate.isPreviewEnabled()) {
             this.inventoryManager.addViewer(player);
-            this.inventoryManager.openNewCratePreview(player, crateLocation.getCrate(), crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
+            this.inventoryManager.openNewCratePreview(player, crateLocation.getCrate());
         } else {
             player.sendMessage(Messages.preview_disabled.getMessage("{crate}", crate.getName(), player));
         }
@@ -114,13 +113,6 @@ public class CrateControlListener implements Listener {
 
         if (clickedBlock == null) return;
 
-        boolean isKey = event.getHand() == EquipmentSlot.OFF_HAND ? this.crateManager.isKey(player.getInventory().getItemInOffHand()) : this.crateManager.isKey(player.getInventory().getItemInMainHand());
-
-        if (isKey) {
-            event.setCancelled(true);
-            player.updateInventory();
-        }
-
         CrateLocation crateLocation = this.crateManager.getCrateLocation(clickedBlock.getLocation());
 
         // If location is null, return.
@@ -130,6 +122,13 @@ public class CrateControlListener implements Listener {
 
         // If crate is null, return.
         if (crate == null) return;
+
+        boolean isKey = event.getHand() == EquipmentSlot.OFF_HAND ? ItemUtils.isSimilar(player.getInventory().getItemInOffHand(), crate) : ItemUtils.isSimilar(player.getInventory().getItemInMainHand(), crate);
+
+        if (isKey) {
+            event.setCancelled(true);
+            player.updateInventory();
+        }
 
         event.setCancelled(true);
 
@@ -172,7 +171,9 @@ public class CrateControlListener implements Listener {
             return;
         }
 
-        if (crate.getCrateType() != CrateType.crate_on_the_go && isKey && this.crateManager.isKeyFromCrate(player.getInventory().getItemInMainHand(), crate) && this.config.getProperty(ConfigKeys.physical_accepts_physical_keys)) {
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+
+        if (crate.getCrateType() != CrateType.crate_on_the_go && isKey && ItemUtils.isSimilar(itemStack, crate) && this.config.getProperty(ConfigKeys.physical_accepts_physical_keys)) {
             hasKey = true;
             isPhysical = true;
         }

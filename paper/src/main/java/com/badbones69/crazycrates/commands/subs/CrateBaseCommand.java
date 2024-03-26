@@ -370,7 +370,7 @@ public class CrateBaseCommand extends BaseCommand {
         }
 
         this.inventoryManager.addViewer(player);
-        this.inventoryManager.openNewCratePreview(player, crate,crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
+        this.inventoryManager.openNewCratePreview(player, crate);
     }
 
     @SubCommand("open-others")
@@ -659,8 +659,6 @@ public class CrateBaseCommand extends BaseCommand {
         if (crate.getCrateType() != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), keysUsed, crate.getName());
 
         if (!this.userManager.takeKeys(keysUsed, player.getUniqueId(), crate.getName(), type, false)) {
-            MiscUtils.failedToTakeKey(player, crateName);
-
             this.crateManager.removeCrateInUse(player);
             this.crateManager.removePlayerFromOpeningList(player);
 

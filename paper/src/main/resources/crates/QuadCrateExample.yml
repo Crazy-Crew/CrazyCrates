@@ -67,6 +67,7 @@ Crate:
       pitch: 1.0
   Prize-Message:
     - '&7You have won &c%reward% &7from &c%crate%.'
+  Prize-Commands: []
   Item: 'BREWING_STAND'
   Glowing: false
   Name: '&b&lQuad Crate'

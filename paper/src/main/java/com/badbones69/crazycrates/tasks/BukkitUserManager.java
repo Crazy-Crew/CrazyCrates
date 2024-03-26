@@ -1,7 +1,9 @@
 package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import org.bukkit.Bukkit;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
@@ -167,12 +169,14 @@ public class BukkitUserManager extends UserManager {
         
         int keys = 0;
 
+        Crate crate = this.crateManager.getCrateFromName(crateName);
+
         for (ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
             if (item == null || item.getType() == Material.AIR) continue;
 
-            if (!item.hasItemMeta()) continue;
+            if (!item.hasItemMeta() && !ConfigManager.getConfig().getProperty(ConfigKeys.use_old_key_checks)) continue;
 
-            if (this.plugin.getCrateManager().isKeyFromCrate(item, this.crateManager.getCrateFromName(crateName))) keys += item.getAmount();
+            if (ItemUtils.isSimilar(item, crate)) keys += item.getAmount();
         }
 
         return keys;
@@ -198,19 +202,18 @@ public class BukkitUserManager extends UserManager {
             case physical_key -> {
                 int takeAmount = amount;
 
-                try {
-                    List<ItemStack> items = new ArrayList<>();
+                List<ItemStack> items = new ArrayList<>();
 
-                    if (checkHand) {
-                        items.add(player.getEquipment().getItemInMainHand());
-                        items.add(player.getEquipment().getItemInOffHand());
-                    } else {
-                        items.addAll(Arrays.asList(player.getInventory().getContents()));
-                        items.remove(player.getEquipment().getItemInOffHand());
-                    }
+                if (checkHand) {
+                    items.add(player.getEquipment().getItemInMainHand());
+                    items.add(player.getEquipment().getItemInOffHand());
+                } else {
+                    items.addAll(Arrays.asList(player.getInventory().getContents()));
+                }
 
-                    for (ItemStack item : items) {
-                        if (this.plugin.getCrateManager().isKeyFromCrate(item, crate)) {
+                for (ItemStack item : items) {
+                    if (item != null) {
+                        if (ItemUtils.isSimilar(item, crate)) {
                             int keyAmount = item.getAmount();
 
                             if ((takeAmount - keyAmount) >= 0) {
@@ -230,34 +233,30 @@ public class BukkitUserManager extends UserManager {
                             if (takeAmount <= 0) return true;
                         }
                     }
+                }
 
-                    // This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the offhand.
-                    if (takeAmount > 0) {
-                        ItemStack item = player.getEquipment().getItemInOffHand();
+                // This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the offhand.
+                if (takeAmount > 0) {
+                    ItemStack item = player.getEquipment().getItemInOffHand();
 
-                        if (this.plugin.getCrateManager().isKeyFromCrate(item, crate)) {
-                            int keyAmount = item.getAmount();
+                    if (ItemUtils.isSimilar(item, crate)) {
+                        int keyAmount = item.getAmount();
 
-                            if ((takeAmount - keyAmount) >= 0) {
-                                player.getEquipment().setItemInOffHand(new ItemStack(Material.AIR, 1));
-                                takeAmount -= keyAmount;
+                        if ((takeAmount - keyAmount) >= 0) {
+                            player.getEquipment().setItemInOffHand(null);
+                            takeAmount -= keyAmount;
 
-                                if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), amount, crate.getName());
-                            } else {
-                                item.setAmount(keyAmount - takeAmount);
+                            if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), amount, crate.getName());
+                        } else {
+                            item.setAmount(keyAmount - takeAmount);
 
-                                if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), amount, crate.getName());
+                            if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), amount, crate.getName());
 
-                                takeAmount = 0;
-                            }
-
-                            if (takeAmount <= 0) return true;
+                            takeAmount = 0;
                         }
-                    }
-                } catch (Exception exception) {
-                    MiscUtils.failedToTakeKey(player, crateName);
 
-                    return false;
+                        if (takeAmount <= 0) return true;
+                    }
                 }
             }
 
@@ -286,7 +285,7 @@ public class BukkitUserManager extends UserManager {
             }
         }
 
-        MiscUtils.failedToTakeKey(player, crateName);
+        MiscUtils.failedToTakeKey(player, crate.getName());
 
         return false;
     }
@@ -320,7 +319,7 @@ public class BukkitUserManager extends UserManager {
         }
 
         for (ItemStack item : items) {
-            if (this.crateManager.isKeyFromCrate(item, crate)) {
+            if (ItemUtils.isSimilar(item, crate)) {
                 return true;
             }
         }

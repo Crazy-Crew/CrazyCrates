@@ -23,7 +23,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
@@ -203,7 +202,7 @@ public class CrateMainMenu extends InventoryBuilder {
                     player.closeInventory();
 
                     this.inventoryManager.addViewer(player);
-                    this.inventoryManager.openNewCratePreview(player, crate, crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
+                    this.inventoryManager.openNewCratePreview(player, crate);
                 } else {
                     player.sendMessage(Messages.preview_disabled.getMessage("{crate}", crate.getName(), player));
                 }

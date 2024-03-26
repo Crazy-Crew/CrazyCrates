@@ -306,7 +306,7 @@ public class Prize {
                     Enchantment enchantment = MiscUtils.getEnchantment(name.split(":")[0]);
 
                     if (enchantment != null) {
-                        builder.addEnchantments(enchantment, Integer.parseInt(name.split(":")[1]));
+                        builder.addEnchantment(enchantment, Integer.parseInt(name.split(":")[1]), true);
                     }
                 }
             }

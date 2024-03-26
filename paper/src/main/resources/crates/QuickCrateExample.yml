@@ -62,6 +62,7 @@ Crate:
       pitch: 1.0
   Prize-Message:
     - '&7You have won &c%reward% &7from &c%crate%.'
+  Prize-Commands: []
   Item: 'CHEST'
   Glowing: false
   Name: '&e&lClassic Crate'

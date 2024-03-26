@@ -54,6 +54,14 @@ public class MsgUtils {
         return TextComponent.toLegacyText(TextComponent.fromLegacyText(string));
     }
 
+    public static final Pattern STRIP_PATTERN = Pattern.compile("(?:(?<!<@)&|[§\u007F])(?i)[0-9a-fklmnorx]");
+
+    public static String stripColor(String msg) {
+        if (msg.isEmpty()) return "";
+
+        return STRIP_PATTERN.matcher(msg).replaceAll("");
+    }
+
     public static String removeColor(String msg) {
         return ChatColor.stripColor(msg);
     }

@@ -144,7 +144,7 @@ public class CrateManager {
                 Player player = this.plugin.getServer().getPlayer(uuid);
 
                 if (player != null) {
-                    this.plugin.getInventoryManager().openNewCratePreview(player, crate, crate.getCrateType() == CrateType.cosmic || crate.getCrateType() == CrateType.casino);
+                    this.plugin.getInventoryManager().openNewCratePreview(player, crate);
                 }
             }
 
@@ -261,8 +261,10 @@ public class CrateManager {
 
                 List<String> prizeMessage = file.contains("Crate.Prize-Message") ? file.getStringList("Crate.Prize-Message") : Collections.emptyList();
 
+                List<String> prizeCommands = file.contains("Crate.Prize-Commands") ? file.getStringList("Crate.Prize-Commands") : Collections.emptyList();
+
                 CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getInt("Crate.Hologram.Range", 8), file.getStringList("Crate.Hologram.Message"));
-                addCrate(new Crate(crateName, previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name"), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, holo));
+                addCrate(new Crate(crateName, previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name"), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, prizeCommands, holo));
 
                 Permission doesExist = this.plugin.getServer().getPluginManager().getPermission("crazycrates.open." + crateName);
 
@@ -281,7 +283,7 @@ public class CrateManager {
             }
         }
 
-        addCrate(new Crate("Menu", "Menu", CrateType.menu, new ItemStack(Material.AIR), "", new ArrayList<>(), null, 0, null, 0, 0, Collections.emptyList(), null));
+        addCrate(new Crate("Menu"));
 
         if (MiscUtils.isLogging()) {
             List.of(
@@ -928,9 +930,12 @@ public class CrateManager {
      * @return a crate if is a key from a crate otherwise null if it is not.
      */
     public Crate getCrateFromKey(ItemStack item) {
-        if (!item.hasItemMeta()) return null;
+        if (!item.hasItemMeta() && !ConfigManager.getConfig().getProperty(ConfigKeys.use_old_key_checks)) return null;
 
         ItemMeta itemMeta = item.getItemMeta();
+
+        // If null, return.
+        if (itemMeta == null) return null;
 
         if (!itemMeta.getPersistentDataContainer().has(PersistentKeys.crate_key.getNamespacedKey())) {
             return getCrateNameFromOldKey(itemMeta);
@@ -1001,6 +1006,8 @@ public class CrateManager {
             ItemStack itemStack = item.getItemStack();
 
             if (itemStack.getType() == Material.AIR) return false;
+
+            if (!itemStack.hasItemMeta()) return false;
 
             ItemMeta itemMeta = itemStack.getItemMeta();
 
