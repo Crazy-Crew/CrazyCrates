@@ -528,24 +528,6 @@ public class ItemBuilder {
     }
 
     /**
-     * Set trim material
-     *
-     * @param trimMaterial pattern to set.
-     */
-    public void setTrimMaterial(TrimMaterial trimMaterial) {
-        this.trimMaterial = trimMaterial;
-    }
-
-    /**
-     * Set trim pattern
-     *
-     * @param trimPattern pattern to set.
-     */
-    public void setTrimPattern(TrimPattern trimPattern) {
-        this.trimPattern = trimPattern;
-    }
-
-    /**
      * Set the type of item and its metadata in the builder.
      *
      * @param type the string must be in this form: %Material% or %Material%:%MetaData%
@@ -650,6 +632,24 @@ public class ItemBuilder {
         this.isBanner = name.endsWith("BANNER");
 
         return this;
+    }
+
+    /**
+     * Set trim material
+     *
+     * @param trimMaterial pattern to set.
+     */
+    public void setTrimMaterial(TrimMaterial trimMaterial) {
+        this.trimMaterial = trimMaterial;
+    }
+
+    /**
+     * Set trim pattern
+     *
+     * @param trimPattern pattern to set.
+     */
+    public void setTrimPattern(TrimPattern trimPattern) {
+        this.trimPattern = trimPattern;
     }
 
     /**
