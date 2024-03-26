@@ -7,13 +7,14 @@ import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import fr.euphyllia.energie.model.SchedulerType;
+import fr.euphyllia.energie.utils.SchedulerTaskRunnable;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -150,12 +151,12 @@ public class QuickCrate extends CrateBuilder {
             if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(0.5, 1, .5), null);
 
             // Always end the crate.
-            addCrateTask(new BukkitRunnable() {
+            addCrateTask(new SchedulerTaskRunnable() {
                 @Override
                 public void run() {
                     crateManager.endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
                 }
-            }.runTaskLater(this.plugin, 5 * 20));
+            }.runDelayed(this.plugin, SchedulerType.SYNC, getPlayer(), null, 5 * 20));
 
             return;
         }
@@ -167,12 +168,12 @@ public class QuickCrate extends CrateBuilder {
         if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(0.5, 1, .5), null);
 
         // Always end the crate.
-        addCrateTask(new BukkitRunnable() {
+        addCrateTask(new SchedulerTaskRunnable() {
             @Override
             public void run() {
                 crateManager.endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
             }
-        }.runTaskLater(this.plugin, 40));
+        }.runDelayed(this.plugin, SchedulerType.SYNC, getPlayer(), null, 40));
     }
     @Override
     public void run() {

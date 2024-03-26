@@ -2,6 +2,9 @@ package com.badbones69.crazycrates.listeners.crates;
 
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import fr.euphyllia.energie.model.SchedulerType;
+import fr.euphyllia.energie.utils.EntityUtils;
+import fr.euphyllia.energie.utils.SchedulerTaskRunnable;
 import org.bukkit.Location;
 import org.bukkit.SoundCategory;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -30,7 +33,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
@@ -114,13 +116,13 @@ public class QuadCrateListener implements Listener {
 
                 // Check if all crates have spawned then end if so.
                 if (session.allCratesOpened()) {
-                    new BukkitRunnable() {
+                    new SchedulerTaskRunnable() {
                         @Override
                         public void run() {
                             session.endCrate();
                             crate.playSound(player, block.getLocation(), "stop-sound", "BLOCK_ANVIL_LAND", SoundCategory.BLOCKS);
                         }
-                    }.runTaskLater(this.plugin, 60);
+                    }.runDelayed(this.plugin, SchedulerType.SYNC, player, null, 60);
                 }
             }
         }
@@ -135,7 +137,7 @@ public class QuadCrateListener implements Listener {
             Location newLocation = event.getTo();
 
             if (oldLocation.getBlockX() != newLocation.getBlockX() || oldLocation.getBlockZ() != newLocation.getBlockZ()) {
-                player.teleport(oldLocation);
+                EntityUtils.teleportAsync(player, oldLocation);
                 event.setCancelled(true);
             }
         }

@@ -6,11 +6,12 @@ import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import fr.euphyllia.energie.model.SchedulerType;
+import fr.euphyllia.energie.utils.SchedulerTaskRunnable;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -56,7 +57,7 @@ public class CsgoCrate extends CrateBuilder {
         // Open the inventory.
         getPlayer().openInventory(getInventory());
 
-        addCrateTask(new BukkitRunnable() {
+        addCrateTask(new SchedulerTaskRunnable() {
             int time = 1;
 
             int full = 0;
@@ -105,18 +106,18 @@ public class CsgoCrate extends CrateBuilder {
 
                         cancel();
 
-                        new BukkitRunnable() {
+                        new SchedulerTaskRunnable() {
                             @Override
                             public void run() {
                                 if (getPlayer().getOpenInventory().getTopInventory().equals(getInventory())) getPlayer().closeInventory();
                             }
-                        }.runTaskLater(plugin, 40);
+                        }.runDelayed(plugin, SchedulerType.SYNC, getPlayer(), null, 40);
                     } else if (this.time > 60) { // Added this due reports of the prizes spamming when low tps.
                         cancel();
                     }
                 }
             }
-        }.runTaskTimer(this.plugin, 1, 1));
+        }.runAtFixedRate(this.plugin, SchedulerType.SYNC, getPlayer(), null, 1, 1));
     }
 
     private void populate() {

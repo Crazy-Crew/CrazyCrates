@@ -5,6 +5,8 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
+import fr.euphyllia.energie.model.SchedulerTaskInter;
+import fr.euphyllia.energie.utils.SchedulerTaskRunnable;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
@@ -13,7 +15,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -23,7 +24,7 @@ import com.badbones69.crazycrates.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.List;
 
-public abstract class CrateBuilder extends BukkitRunnable {
+public abstract class CrateBuilder extends SchedulerTaskRunnable {
 
     @NotNull
     protected final CrazyCratesPaper plugin = CrazyCratesPaper.get();
@@ -161,7 +162,7 @@ public abstract class CrateBuilder extends BukkitRunnable {
      *
      * @param task task to add.
      */
-    public void addCrateTask(BukkitTask task) {
+    public void addCrateTask(SchedulerTaskInter task) {
         this.plugin.getCrateManager().addCrateTask(this.player, task);
     }
 

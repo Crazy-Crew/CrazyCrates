@@ -15,6 +15,8 @@ dependencies {
 
     implementation(libs.metrics)
 
+    implementation("com.github.Euphillya:Energie:1.1.9")
+
     compileOnly(libs.holographicdisplays)
 
     compileOnly(libs.decentholograms)
@@ -34,7 +36,8 @@ tasks {
             "com.ryderbelserion.cluster.paper",
             "de.tr7zw.changeme.nbtapi",
             "dev.triumphteam.cmd",
-            "org.bstats"
+            "org.bstats",
+            "fr.euphyllia.energie"
         ).forEach {
             relocate(it, "libs.$it")
         }

@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api.utils;
 
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.Permissions;
+import fr.euphyllia.energie.model.SchedulerType;
 import org.bukkit.permissions.Permission;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
@@ -38,11 +39,13 @@ public class MiscUtils {
     private static final CrazyCratesPaper plugin = CrazyCratesPaper.get();
 
     public static void sendCommand(String command) {
-        Server server = plugin.getServer();
+        plugin.getScheduler().runTask(SchedulerType.SYNC, schedulerTask -> {
+            Server server = plugin.getServer();
 
-        ConsoleCommandSender console = server.getConsoleSender();
+            ConsoleCommandSender console = server.getConsoleSender();
 
-        server.dispatchCommand(console, command);
+            server.dispatchCommand(console, command);
+        });
     }
 
     public static void spawnFirework(Location location, Color color) {
@@ -66,9 +69,7 @@ public class MiscUtils {
 
         fireworkData.set(PersistentKeys.no_firework_damage.getNamespacedKey(), PersistentDataType.BOOLEAN, true);
 
-        Server server = plugin.getServer();
-
-        server.getScheduler().scheduleSyncDelayedTask(plugin, firework::detonate, 3);
+        plugin.getScheduler().scheduleSyncDelayed(SchedulerType.SYNC, location, schedulerTask -> firework.detonate(), 3L);
     }
 
     /**

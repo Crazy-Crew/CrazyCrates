@@ -8,13 +8,14 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import fr.euphyllia.energie.model.SchedulerType;
+import fr.euphyllia.energie.utils.SchedulerTaskRunnable;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 
@@ -31,7 +32,7 @@ public class CasinoCrate extends CrateBuilder {
     public CasinoCrate(Crate crate, Player player, int size) {
         super(crate, player, size);
 
-        runTaskTimer(CrazyCratesPaper.get(), 1, 1);
+        runAtFixedRate(CrazyCratesPaper.get(), SchedulerType.SYNC, player, null, 1, 1);
     }
 
     private int counter = 0;
@@ -80,12 +81,12 @@ public class CasinoCrate extends CrateBuilder {
 
                 this.crateManager.removePlayerFromOpeningList(getPlayer());
 
-                new BukkitRunnable() {
+                new SchedulerTaskRunnable() {
                     @Override
                     public void run() {
                         if (getPlayer().getOpenInventory().getTopInventory().equals(getInventory())) getPlayer().closeInventory();
                     }
-                }.runTaskLater(this.plugin, 40);
+                }.runDelayed(this.plugin, SchedulerType.SYNC, getPlayer(), null, 40);
 
                 cancel();
 
