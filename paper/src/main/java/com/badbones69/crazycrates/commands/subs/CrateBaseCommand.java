@@ -626,8 +626,6 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        this.crateManager.addPlayerToOpeningList(player, crate);
-
         int keys = type == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), crate.getName()) : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName());
         int keysUsed = 0;
 
@@ -636,6 +634,8 @@ public class CrateBaseCommand extends BaseCommand {
 
             return;
         }
+
+        this.crateManager.addPlayerToOpeningList(player, crate);
 
         for (;keys > 0; keys--) {
             if (MiscUtils.isInventoryFull(player)) break;
