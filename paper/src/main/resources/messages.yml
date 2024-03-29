@@ -12,8 +12,8 @@ misc:
   # A list of available placeholders: {prefix}
   no-commands: '{prefix}&cYou are not allowed to use commands while opening crates.'
   # A list of available placeholders: {prefix}, {key}, {crate}
-  no-keys: '{prefix}&cYou must have a {key} &cin your hand to use &6{crate}.'
-  # A list of available placeholders: {prefix}, {crate}
+  no-keys: '{prefix}&cYou must have a {key} &cto use &6{crate}.'
+  # A list of available placeholders: {prefix}, {key}, {crate}
   no-virtual-keys: '{prefix}&cYou need a virtual key to open &6{crate}.'
   # A list of available placeholders: {prefix}, {usage}
   correct-usage: '{prefix}&cThe correct usage for this command is &e{usage}'
@@ -93,8 +93,8 @@ crates:
   physical-crate:
     # A list of available placeholders: {prefix}, {crate}
     created:
-      - '{prefix}&7You have set that block to {crate}.'
-      - '&7To remove the crate shift break in creative to remove.'
+    - '{prefix}&7You have set that block to {crate}.'
+    - '&7To remove the crate shift break in creative to remove.'
     # A list of available placeholders: {prefix}, {id}
     removed: '{prefix}&7You have removed &6{id}.'
 # All messages related to commands.
@@ -151,55 +151,55 @@ command:
         keys.'
       # A list of available placeholders: {crates_opened}
       virtual-keys-header:
-        - '&8&l(&6&l!&8&l) &7List of your current number of keys.'
-        - ' &e -> Total Crates Opened: &c{crates_opened}'
+      - '&8&l(&6&l!&8&l) &7List of your current number of keys.'
+      - ' &e -> Total Crates Opened: &c{crates_opened}'
     other-player:
       # A list of available placeholders: {prefix}, {player}
       no-virtual-keys: '{prefix}&8&l(&4&l!&8&l) &7The player {player} does not have
         any keys.'
       # A list of available placeholders: {player}, {crates_opened}
       virtual-keys-header:
-        - '&8&l(&6&l!&8&l) &7List of {player}''''s current number of keys.'
-        - ' &e -> Total Crates Opened: &c{crates_opened}'
+      - '&8&l(&6&l!&8&l) &7List of {player}''''s current number of keys.'
+      - ' &e -> Total Crates Opened: &c{crates_opened}'
     # A list of available placeholders: {crate}, {keys}, {crate_opened}
     crate-format: '{crate} &7&l>&8&l> &6{keys} keys &7: Opened &6{crate_opened} times'
   # This requires crazycrates.command.help
   player-help:
-    - '&e&lCrazy Crates Player Help'
-    - '&6/keys view [player] &7- &eCheck the number of keys a player has.'
-    - '&6/keys &7- &eShows how many keys you have.'
-    - '&6/cc &7- &eOpens the menu.'
+  - '&e&lCrazy Crates Player Help'
+  - '&6/keys view [player] &7- &eCheck the number of keys a player has.'
+  - '&6/keys &7- &eShows how many keys you have.'
+  - '&6/cc &7- &eOpens the menu.'
   # This requires crazycrates.command.admin.help
   admin-help:
-    - '&c&lCrazy Crates Admin Help'
-    - ''
-    - '&6/cc additem <crate_name> <prize_number> <chance> [tier] &7- &eAdd items in-game
+  - '&c&lCrazy Crates Admin Help'
+  - ''
+  - '&6/cc additem <crate_name> <prize_number> <chance> [tier] &7- &eAdd items in-game
     to a prize in a crate including Cosmic/Casino.'
-    - '&6/cc preview <crate_name> [player] &7- &eOpens the preview of a crate for a
+  - '&6/cc preview <crate_name> [player] &7- &eOpens the preview of a crate for a
     player.'
-    - '&6/cc list &7- &eLists all crates.'
-    - '&6/cc open <crate_name> &7- &eTries to open a crate for you if you have a key.'
-    - '&6/cc open-others <crate_name> [player] &7- &eTries to open a crate for a player
+  - '&6/cc list &7- &eLists all crates.'
+  - '&6/cc open <crate_name> &7- &eTries to open a crate for you if you have a key.'
+  - '&6/cc open-others <crate_name> [player] &7- &eTries to open a crate for a player
     if they have a key.'
-    - '&6/cc transfer <crate_name> [player] [amount &7- &eTransfers keys to players
+  - '&6/cc transfer <crate_name> [player] [amount &7- &eTransfers keys to players
     you chose.'
-    - '&6/cc debug &7- &eDebugs crates'
-    - '&6/cc admin &7- &eShows admin menu'
-    - '&6/cc forceopen <crate_name> [player] &7- &eOpens a crate for a player for free.'
-    - '&6/cc mass-open <crate_name> <physical/virtual> [amount] &7- &eMass opens a set
+  - '&6/cc debug &7- &eDebugs crates'
+  - '&6/cc admin &7- &eShows admin menu'
+  - '&6/cc forceopen <crate_name> [player] &7- &eOpens a crate for a player for free.'
+  - '&6/cc mass-open <crate_name> <physical/virtual> [amount] &7- &eMass opens a set
     amount of crates.'
-    - '&6/cc tp <location> &7- &eTeleport to a Crate.'
-    - '&6/cc give <physical/virtual> <crate_name> [amount] [player] &7- &eAllows you
+  - '&6/cc tp <location> &7- &eTeleport to a Crate.'
+  - '&6/cc give <physical/virtual> <crate_name> [amount] [player] &7- &eAllows you
     to take keys from a player.'
-    - '&6/cc set <crate_name> &7- &eSet the block you are looking at as a crate.'
-    - '&6/cc set Menu &7- &eSet the block you are looking at to open the /cc menu.'
-    - '&6/cc reload &7- &eReloads the config/data files.'
-    - '&6/cc set1/set2 &7- &eSets position &c#1 &eor &c#2 for when making a new schematic
+  - '&6/cc set <crate_name> &7- &eSet the block you are looking at as a crate.'
+  - '&6/cc set Menu &7- &eSet the block you are looking at to open the /cc menu.'
+  - '&6/cc reload &7- &eReloads the config/data files.'
+  - '&6/cc set1/set2 &7- &eSets position &c#1 &eor &c#2 for when making a new schematic
     for QuadCrates.'
-    - '&6/cc save <file name> &7- &eCreate a new nbt file in the schematics folder.'
-    - ''
-    - '&6/keys view [player] &7- &eCheck the number of keys a player has.'
-    - '&6/keys &7- &eShows how many keys you have.'
-    - '&6/cc &7- &eOpens the menu.'
-    - ''
-    - '&7You can find a list of permissions @ &ehttps://docs.crazycrew.us/crazycrates/info/commands/permissions'
+  - '&6/cc save <file name> &7- &eCreate a new nbt file in the schematics folder.'
+  - ''
+  - '&6/keys view [player] &7- &eCheck the number of keys a player has.'
+  - '&6/keys &7- &eShows how many keys you have.'
+  - '&6/cc &7- &eOpens the menu.'
+  - ''
+  - '&7You can find a list of permissions @ &ehttps://docs.crazycrew.us/crazycrates/info/commands/permissions'
