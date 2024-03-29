@@ -74,9 +74,6 @@ public class QuickCrate extends CrateBuilder {
             boolean keyCheck = this.userManager.takeKeys(used, getPlayer().getUniqueId(), getCrate().getName(), type, false);
 
             if (!keyCheck) {
-                // Send the message about failing to take the key.
-                MiscUtils.failedToTakeKey(getPlayer(), getCrate().getName());
-
                 // Remove from opening list.
                 this.crateManager.removePlayerFromOpeningList(getPlayer());
 

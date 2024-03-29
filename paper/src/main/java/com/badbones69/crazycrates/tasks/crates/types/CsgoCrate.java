@@ -41,9 +41,6 @@ public class CsgoCrate extends CrateBuilder {
         boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
 
         if (!keyCheck) {
-            // Send the message about failing to take the key.
-            MiscUtils.failedToTakeKey(getPlayer(), getCrate().getName());
-
             // Remove from opening list.
             this.crateManager.removePlayerFromOpeningList(getPlayer());
 
