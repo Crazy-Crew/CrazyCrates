@@ -468,15 +468,11 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        boolean hasVirtual = this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1;
-
-        boolean hasPhysical = this.userManager.hasPhysicalKey(player.getUniqueId(), crate.getName(), false);
-
-        if (hasVirtual) {
+        if (this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
             hasKey = true;
         } else {
             if (this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys)) {
-                if (hasPhysical) {
+                if (this.userManager.hasPhysicalKey(player.getUniqueId(), crate.getName(), false)) {
                     hasKey = true;
                     type = KeyType.physical_key;
                 }
