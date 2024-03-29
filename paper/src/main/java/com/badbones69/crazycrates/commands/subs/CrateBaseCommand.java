@@ -524,6 +524,12 @@ public class CrateBaseCommand extends BaseCommand {
     public void onAdminCrateOpen(Player player, @Suggestion("crates") String crateName) {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
+        if (MiscUtils.isInventoryFull(player)) {
+            player.sendMessage(Messages.inventory_not_empty.getMessage("{crate}", crate.getName(), player));
+
+            return;
+        }
+
         if (crate == null || crate.getCrateType() == CrateType.menu) {
             player.sendMessage(Messages.not_a_crate.getMessage("{crate}", crateName, player));
 
