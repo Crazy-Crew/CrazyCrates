@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.listeners.crates;
 
+import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -47,6 +48,7 @@ public class CrateOpenListener implements Listener {
 
         if (!player.hasPermission("crazycrates.open." + crate.getName()) || !player.hasPermission("crazycrates.open." + crate.getName().toLowerCase())) {
             player.sendMessage(Messages.no_crate_permission.getMessage("{crate}", crate.getName(), player));
+
             this.crateManager.removePlayerFromOpeningList(player);
             this.crateManager.removeCrateInUse(player);
 
@@ -56,6 +58,7 @@ public class CrateOpenListener implements Listener {
         }
 
         this.crateManager.addPlayerToOpeningList(player, crate);
+
         if (crate.getCrateType() != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), crate.getName());
 
         FileConfiguration configuration = event.getConfiguration();
@@ -65,7 +68,6 @@ public class CrateOpenListener implements Listener {
 
         if (broadcastToggle) {
             if (!broadcastMessage.isBlank()) {
-                //noinspection deprecation
                 this.plugin.getServer().broadcastMessage(MsgUtils.color(broadcastMessage.replaceAll("%prefix%", MsgUtils.getPrefix())).replaceAll("%player%", player.getName()));
             }
         }
