@@ -582,13 +582,12 @@ public class CrateBaseCommand extends BaseCommand {
                 player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS,1f, 1f);
             }
 
-            player.sendMessage(Messages.no_virtual_key.getMessage("{crate}", crate.getName(), player));
+            Map<String, String> placeholders = new HashMap<>();
 
-            return;
-        }
+            placeholders.put("{crate}", crate.getName());
+            placeholders.put("{key}", crate.getKeyName());
 
-        if (MiscUtils.isInventoryFull(player)) {
-            player.sendMessage(Messages.inventory_not_empty.getMessage("{crate}", crate.getName(), player));
+            player.sendMessage(Messages.no_keys.getMessage(placeholders, player));
 
             return;
         }
