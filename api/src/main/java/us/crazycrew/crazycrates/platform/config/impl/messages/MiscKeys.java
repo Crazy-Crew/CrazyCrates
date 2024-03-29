@@ -32,9 +32,9 @@ public class MiscKeys implements SettingsHolder {
     public static final Property<String> no_commands_while_using_crate = newProperty("misc.no-commands", "{prefix}&cYou are not allowed to use commands while opening crates.");
 
     @Comment("A list of available placeholders: {prefix}, {key}, {crate}")
-    public static final Property<String> no_keys = newProperty("misc.no-keys", "{prefix}&cYou must have a {key} &cin your hand to use &6{crate}.");
+    public static final Property<String> no_keys = newProperty("misc.no-keys", "{prefix}&cYou must have a {key} &cto use &6{crate}.");
 
-    @Comment("A list of available placeholders: {prefix}, {crate}")
+    @Comment("A list of available placeholders: {prefix}, {key}, {crate}")
     public static final Property<String> no_virtual_key = newProperty("misc.no-virtual-keys", "{prefix}&cYou need a virtual key to open &6{crate}.");
 
     @Comment("A list of available placeholders: {prefix}, {usage}")
