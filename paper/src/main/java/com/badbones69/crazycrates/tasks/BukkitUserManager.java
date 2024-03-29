@@ -331,7 +331,11 @@ public class BukkitUserManager extends UserManager {
         }
 
         for (ItemStack item : items) {
-            return ItemUtils.isSimilar(item, crate);
+            if (item != null) {
+                if (ItemUtils.isSimilar(item, crate)) {
+                    return true;
+                }
+            }
         }
 
         return false;
