@@ -49,6 +49,8 @@ public class ConfigKeys implements SettingsHolder {
         conf.setComment("crate.preview", "The preview settings.");
         conf.setComment("crate.keys", "Settings related to how keys function.");
 
+        conf.setComment("crate.unsupported-settings", "Settings that are not supported and can be removed at anytime.");
+
         conf.setComment("crate.keys.inventory-settings", "Settings related to a player's inventory is not empty.");
 
         conf.setComment("crate.quad-crate", "Settings related to QuadCrate");
