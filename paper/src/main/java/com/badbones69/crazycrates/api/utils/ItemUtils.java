@@ -32,10 +32,10 @@ public class ItemUtils {
 
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
         if (ConfigManager.getConfig().getProperty(ConfigKeys.use_old_key_checks)) {
-            return itemStack.isSimilar(crate.getKeyNoNBT())
-                    || itemStack.isSimilar(crate.getKeyNoNBT())
-                    || isSimilarCustom(crate.getKeyNoNBT(), itemStack)
-                    || crateManager.isKeyFromCrate(itemStack, crate);
+            boolean isSimilar = itemStack.isSimilar(crate.getEmptyKey());
+            boolean isCustom = isSimilarCustom(crate.getEmptyKey(), itemStack);
+
+            return isSimilar || isCustom || isKey;
         }
 
         return crateManager.isKeyFromCrate(itemStack, crate);
