@@ -131,20 +131,6 @@ public class PrizeManager {
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
     }
 
-    private static void sendCommand(Player player, Prize prize, Crate crate, String command) {
-        String display = prize.getDisplayItemBuilder().getName();
-
-        String name = display == null || display.isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " "))) : display;
-
-        String defaultCommand = command
-                .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%reward%", quoteReplacement(name))
-                .replaceAll("%reward_stripped%", quoteReplacement(MsgUtils.stripColor(name)))
-                .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName()));
-
-        MiscUtils.sendCommand(MiscUtils.isPapiActive() ? PlaceholderAPI.setPlaceholders(player, defaultCommand) : defaultCommand);
-    }
-
     private static void sendMessage(Player player, Prize prize, Crate crate, String message) {
         String display = prize.getDisplayItemBuilder().getName();
 
