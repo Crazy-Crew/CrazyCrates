@@ -83,8 +83,8 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("Whether to show the display item when opening QuickCrate")
     public static final Property<Boolean> show_quickcrate_item = newProperty("crate.quickcrate-display-item", true);
 
-    @Comment("Logs all crate actions to a .txt file if enabled. It is recommended to delete the file occasionally.")
-    public static final Property<Boolean> log_to_file = newProperty("crate.log-file", false);
+    //@Comment("Logs all crate actions to a .txt file if enabled. It is recommended to delete the file occasionally.")
+    //public static final Property<Boolean> log_to_file = newProperty("crate.log-file", false);
 
     @Comment({
             "This option is unsupported and not recommended for use.",
@@ -95,8 +95,8 @@ public class ConfigKeys implements SettingsHolder {
     })
     public static final Property<Boolean> use_old_key_checks = newProperty("crate.unsupported-settings.old-key-checks", false);
 
-    @Comment("Logs all crate actions to console if enabled.")
-    public static final Property<Boolean> log_to_console = newProperty("crate.log-console", false);
+    //@Comment("Logs all crate actions to console if enabled.")
+    //public static final Property<Boolean> log_to_console = newProperty("crate.log-console", false);
 
     @Comment("The name of the gui.")
     public static final Property<String> inventory_name = newProperty("gui.inventory.name", "&b&lCrazy &4&lCrates");
