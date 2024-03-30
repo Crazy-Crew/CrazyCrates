@@ -157,8 +157,6 @@ public class CrateBaseCommand extends BaseCommand {
         sender.sendMessage(Messages.transfer_sent_keys.getMessage(placeholders, sender));
 
         player.sendMessage(Messages.transfer_received_keys.getMessage("{player}", sender.getName(), player));
-
-        EventManager.logKeyEvent(player, sender, crate, KeyType.virtual_key, EventManager.KeyEventType.KEY_EVENT_RECEIVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
     }
 
     @SubCommand("reload")
@@ -463,8 +461,6 @@ public class CrateBaseCommand extends BaseCommand {
 
             player.sendMessage(Messages.opened_a_crate.getMessage(placeholders, player));
 
-            EventManager.logKeyEvent(player, player, crate, type, EventManager.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
-
             return;
         }
 
@@ -515,8 +511,6 @@ public class CrateBaseCommand extends BaseCommand {
         placeholders.put("{player}", player.getName());
 
         player.sendMessage(Messages.opened_a_crate.getMessage(placeholders, player));
-
-        EventManager.logKeyEvent(player, player, crate, type, EventManager.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
     }
 
     @SubCommand("open")
@@ -593,8 +587,6 @@ public class CrateBaseCommand extends BaseCommand {
         }
 
         this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
-
-        EventManager.logKeyEvent(player, player, crate, keyType, EventManager.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
     }
 
     @SubCommand("mass-open")
@@ -809,8 +801,6 @@ public class CrateBaseCommand extends BaseCommand {
 
             if (!inventoryCheck || !fullMessage && !MiscUtils.isInventoryFull(player) && player.isOnline()) player.sendMessage(Messages.obtaining_keys.getMessage(placeholders, player));
 
-            EventManager.logKeyEvent(player, sender, crate, type, EventManager.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
-
             return;
         }
 
@@ -832,8 +822,6 @@ public class CrateBaseCommand extends BaseCommand {
             } else {
                 sender.sendMessage(Messages.given_offline_player_keys.getMessage(placeholders));
             }
-
-            EventManager.logKeyEvent(offlinePlayer, sender, crate, type, EventManager.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
         }
     }
 
@@ -934,8 +922,6 @@ public class CrateBaseCommand extends BaseCommand {
                 sender.sendMessage(Messages.take_player_keys.getMessage(placeholders));
             }
 
-            EventManager.logKeyEvent(player, sender, crate, type, EventManager.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
-
             return;
         }
 
@@ -1008,8 +994,6 @@ public class CrateBaseCommand extends BaseCommand {
             }
 
             this.userManager.addKeys(amount, onlinePlayer.getUniqueId(), crate.getName(), type);
-
-            EventManager.logKeyEvent(onlinePlayer, sender, crate, type, EventManager.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
         }
     }
 }
