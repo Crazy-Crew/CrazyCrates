@@ -10,6 +10,11 @@ Older keys will still work temporarily but please get your players to trade your
 * We do not check if a key has lore/names when checking if you have a valid key because that makes the point of PersistentDataContainer redundant.
 * The ItemBuilder has been updated to a slightly more modern version in preparation for MiniMessage support.
 
+## Removed:
+* Temporarily disabled logging keys to console/file due to a weird issue with keys not being taken, The section handling logging is pending re-write
+
+
+
 ## Additions:
 * Added extra placeholders to all messages. The messages.yml will update with new comments showing what each message can use.
 * Add config.yml/messages.yml to `examples` folder which auto-generate on reload.
@@ -18,6 +23,7 @@ Older keys will still work temporarily but please get your players to trade your
 * Added %reward_stripped% which returns a stripped version of the reward for plugins like DiscordSRV
 
 ## Changes:
+* Updated example files in the examples folder
 * All internal placeholders used in config.yml and messages.yml have changed.
   * %player% is now {player}
   * %crate% is now {crate}
@@ -35,6 +41,7 @@ Older keys will still work temporarily but please get your players to trade your
   * %key-amount% is now {key_amount}
   * %crates_opened% is now {crates_opened}
   * %id% is now {id}
+* Used correct message when a player has no keys using /cc open
 
 ## Enhancements:
 * Added a warning on startup if the spawn protection in server.properties isn't 0.
@@ -44,6 +51,7 @@ Older keys will still work temporarily but please get your players to trade your
 * Optimize item meta checks.
 * If the crate main menu is turned off, Trying to do /crates set menu will send you a message saying you can't.
 * If the crate main menu is disabled, /crates will simply open the help message instead.
+* Only check if a player has physical keys if the config option is enabled.
 
 ## API:
 * Deprecated and marked for removal `CrazyCratesService` and `ICrazyCrates`
@@ -54,6 +62,9 @@ Older keys will still work temporarily but please get your players to trade your
 * Remove player from crate/page/preview arrays on inventory close event as it wasn't before.
 * Fix the player getting a preview message if they weren't in the preview when you did /crates reload.
 * Fixed a bug related to CrateOnTheGo where the event would fire twice using 2 of your crates.
+* Fixed an issue where failed to take keys would fire multiple times.
+* Fixed another issue with mass-open related to being added to opening list and not being removed if no keys found.
+* Fixed multiple issues with how the inventory is checked for keys.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
