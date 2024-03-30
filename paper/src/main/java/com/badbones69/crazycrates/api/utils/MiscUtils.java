@@ -329,6 +329,10 @@ public class MiscUtils {
         return ConfigManager.getConfig().getProperty(ConfigKeys.use_different_random);
     }
 
+    public static boolean useLegacyChecks() {
+        return ConfigManager.getConfig().getProperty(ConfigKeys.use_old_key_checks);
+    }
+
     public static void registerPermissions() {
         Arrays.stream(Permissions.values()).toList().forEach(permission -> {
             Permission newPermission = new Permission(
