@@ -56,16 +56,6 @@ public class CrateControlListener implements Listener {
     public void onLeftClickCrate(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        boolean isKey = event.getHand() == EquipmentSlot.OFF_HAND ? this.crateManager.isKey(player.getInventory().getItemInOffHand()) : this.crateManager.isKey(player.getInventory().getItemInMainHand());
-
-        if (isKey) {
-            event.setCancelled(true);
-
-            player.updateInventory();
-
-            return;
-        }
-
         if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;
 
         Block clickedBlock = event.getClickedBlock();
@@ -75,6 +65,16 @@ public class CrateControlListener implements Listener {
         CrateLocation crateLocation = this.crateManager.getCrateLocation(clickedBlock.getLocation());
 
         if (crateLocation == null) return;
+
+        boolean isKey = event.getHand() == EquipmentSlot.OFF_HAND ? this.crateManager.isKey(player.getInventory().getItemInOffHand()) : this.crateManager.isKey(player.getInventory().getItemInMainHand());
+
+        if (isKey) {
+            event.setCancelled(true);
+
+            player.updateInventory();
+
+            return;
+        }
 
         event.setCancelled(true);
 
