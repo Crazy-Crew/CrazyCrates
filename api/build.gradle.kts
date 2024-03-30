@@ -1,5 +1,5 @@
 plugins {
-    id("root-plugin")
+    `root-plugin`
 }
 
 project.group = "us.crazycrew.crazycrates"
@@ -12,7 +12,7 @@ base {
 dependencies {
     compileOnlyApi(libs.bundles.adventure)
 
-    compileOnly(libs.configme)
+    compileOnly(libs.config.me)
 }
 
 java {
