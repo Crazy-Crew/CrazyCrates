@@ -75,7 +75,6 @@ public class CrazyCratesPaper extends JavaPlugin {
         // Load the config files.
         ConfigManager.load(getDataFolder());
 
-
         int radius = DedicatedServer.getServer().getSpawnProtectionRadius();
 
         if (radius > 0) {
@@ -136,10 +135,10 @@ public class CrazyCratesPaper extends JavaPlugin {
         CommandManager commandManager = new CommandManager();
         commandManager.load();
 
+        this.metrics = new MetricsManager();
+
         // Load metrics.
         if (ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) {
-            this.metrics = new MetricsManager();
-
             this.metrics.start();
         }
 

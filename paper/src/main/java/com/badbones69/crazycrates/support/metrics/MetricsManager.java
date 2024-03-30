@@ -16,7 +16,7 @@ public class MetricsManager {
 
     public void start() {
         if (this.metrics != null) {
-            if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Metrics is already enabled.");
+            if (MiscUtils.isLogging()) this.plugin.getLogger().info("Metrics is already enabled.");
 
             return;
         }
@@ -34,12 +34,12 @@ public class MetricsManager {
             this.metrics.addCustomChart(chart);
         });
 
-        if (MiscUtils.isLogging()) this.plugin.getLogger().fine("Metrics has been enabled.");
+        if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Metrics has been enabled.");
     }
 
     public void stop() {
         if (this.metrics == null) {
-            if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Metrics isn't enabled so we do nothing.");
+            if (MiscUtils.isLogging()) this.plugin.getLogger().info("Metrics isn't enabled so we do nothing.");
 
             return;
         }
@@ -48,6 +48,6 @@ public class MetricsManager {
 
         this.metrics = null;
 
-        if (MiscUtils.isLogging()) this.plugin.getLogger().fine("Metrics has been turned off.");
+        if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Metrics has been turned off.");
     }
 }

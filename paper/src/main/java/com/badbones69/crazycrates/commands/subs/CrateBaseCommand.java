@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.support.metrics.MetricsManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import dev.triumphteam.cmd.core.annotation.ArgName;
 import dev.triumphteam.cmd.core.annotation.Command;
@@ -169,9 +170,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         FileUtils.loadFiles();
 
-        boolean isEnabled = this.config.getProperty(ConfigKeys.toggle_metrics);
-
-        if (!isEnabled) {
+        if (!this.config.getProperty(ConfigKeys.toggle_metrics)) {
             this.plugin.getMetrics().stop();
         } else {
             this.plugin.getMetrics().start();
