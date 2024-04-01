@@ -65,6 +65,7 @@ Crate:
       volume: 1.0
       # The speed of the sound.
       pitch: 1.0
+  # Only used for quadcrates
   particles:
     # Only used for "dust" particle
     color: '235,64,52'
