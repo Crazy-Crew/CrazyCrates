@@ -69,8 +69,8 @@ Crate:
   particles:
     # Only used for "dust" particle
     color: '235,64,52'
-    # You can use any particle here but the names are hard to find at the moment.
-    type: 'dust'
+    # https://minecraft.wiki/w/Particles_(Java_Edition)
+    type: 'crimson_spore'
   Prize-Message:
     - '&7You have won &c%reward% &7from &c%crate%.'
   Prize-Commands: []
