@@ -266,8 +266,8 @@ public class MigrationManager {
 
             config.setProperty(ConfigKeys.show_quickcrate_item, section.getBoolean("Show-QuickCrate-Item", ConfigKeys.show_quickcrate_item.getDefaultValue()));
 
-            config.setProperty(ConfigKeys.log_to_file, section.getBoolean("Log-File", ConfigKeys.log_to_file.getDefaultValue()));
-            config.setProperty(ConfigKeys.log_to_console, section.getBoolean("Log-Console", ConfigKeys.log_to_console.getDefaultValue()));
+            //config.setProperty(ConfigKeys.log_to_file, section.getBoolean("Log-File", ConfigKeys.log_to_file.getDefaultValue()));
+            //config.setProperty(ConfigKeys.log_to_console, section.getBoolean("Log-Console", ConfigKeys.log_to_console.getDefaultValue()));
 
             config.setProperty(ConfigKeys.inventory_name, section.getString("InventoryName", ConfigKeys.inventory_name.getDefaultValue()));
 

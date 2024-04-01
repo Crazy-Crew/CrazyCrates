@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.support.metrics.MetricsManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import dev.triumphteam.cmd.core.annotation.ArgName;
 import dev.triumphteam.cmd.core.annotation.Command;
@@ -159,8 +160,6 @@ public class CrateBaseCommand extends BaseCommand {
         sender.sendMessage(Messages.transfer_sent_keys.getMessage(placeholders, sender));
 
         player.sendMessage(Messages.transfer_received_keys.getMessage("{player}", sender.getName(), player));
-
-        EventManager.logKeyEvent(player, sender, crate, KeyType.virtual_key, EventManager.KeyEventType.KEY_EVENT_RECEIVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
     }
 
     @SubCommand("reload")
@@ -173,9 +172,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         FileUtils.loadFiles();
 
-        boolean isEnabled = this.config.getProperty(ConfigKeys.toggle_metrics);
-
-        if (!isEnabled) {
+        if (!this.config.getProperty(ConfigKeys.toggle_metrics)) {
             this.plugin.getMetrics().stop();
         } else {
             this.plugin.getMetrics().start();
@@ -466,20 +463,14 @@ public class CrateBaseCommand extends BaseCommand {
 
             player.sendMessage(Messages.opened_a_crate.getMessage(placeholders, player));
 
-            EventManager.logKeyEvent(player, player, crate, type, EventManager.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
-
             return;
         }
 
-        boolean hasVirtual = this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1;
-
-        boolean hasPhysical = this.userManager.hasPhysicalKey(player.getUniqueId(), crate.getName(), false);
-
-        if (hasVirtual) {
+        if (this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
             hasKey = true;
         } else {
             if (this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys)) {
-                if (hasPhysical) {
+                if (this.userManager.hasPhysicalKey(player.getUniqueId(), crate.getName(), false)) {
                     hasKey = true;
                     type = KeyType.physical_key;
                 }
@@ -522,14 +513,18 @@ public class CrateBaseCommand extends BaseCommand {
         placeholders.put("{player}", player.getName());
 
         player.sendMessage(Messages.opened_a_crate.getMessage(placeholders, player));
-
-        EventManager.logKeyEvent(player, player, crate, type, EventManager.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
     }
 
     @SubCommand("open")
     @Permission(value = "crazycrates.command.admin.open", def = PermissionDefault.OP)
     public void onAdminCrateOpen(Player player, @Suggestion("crates") String crateName) {
         Crate crate = this.crateManager.getCrateFromName(crateName);
+
+        if (MiscUtils.isInventoryFull(player)) {
+            player.sendMessage(Messages.inventory_not_empty.getMessage("{crate}", crate.getName(), player));
+
+            return;
+        }
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
             player.sendMessage(Messages.not_a_crate.getMessage("{crate}", crateName, player));
@@ -583,20 +578,17 @@ public class CrateBaseCommand extends BaseCommand {
                 player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS,1f, 1f);
             }
 
-            player.sendMessage(Messages.no_virtual_key.getMessage("{crate}", crate.getName(), player));
+            Map<String, String> placeholders = new HashMap<>();
 
-            return;
-        }
+            placeholders.put("{crate}", crate.getName());
+            placeholders.put("{key}", crate.getKeyName());
 
-        if (MiscUtils.isInventoryFull(player)) {
-            player.sendMessage(Messages.inventory_not_empty.getMessage("{crate}", crate.getName(), player));
+            player.sendMessage(Messages.no_keys.getMessage(placeholders, player));
 
             return;
         }
 
         this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
-
-        EventManager.logKeyEvent(player, player, crate, keyType, EventManager.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
     }
 
     @SubCommand("mass-open")
@@ -629,8 +621,6 @@ public class CrateBaseCommand extends BaseCommand {
             return;
         }
 
-        this.crateManager.addPlayerToOpeningList(player, crate);
-
         int keys = type == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), crate.getName()) : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName());
         int keysUsed = 0;
 
@@ -639,6 +629,8 @@ public class CrateBaseCommand extends BaseCommand {
 
             return;
         }
+
+        this.crateManager.addPlayerToOpeningList(player, crate);
 
         for (;keys > 0; keys--) {
             if (MiscUtils.isInventoryFull(player)) break;
@@ -811,8 +803,6 @@ public class CrateBaseCommand extends BaseCommand {
 
             if (!inventoryCheck || !fullMessage && !MiscUtils.isInventoryFull(player) && player.isOnline()) player.sendMessage(Messages.obtaining_keys.getMessage(placeholders, player));
 
-            EventManager.logKeyEvent(player, sender, crate, type, EventManager.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
-
             return;
         }
 
@@ -834,8 +824,6 @@ public class CrateBaseCommand extends BaseCommand {
             } else {
                 sender.sendMessage(Messages.given_offline_player_keys.getMessage(placeholders));
             }
-
-            EventManager.logKeyEvent(offlinePlayer, sender, crate, type, EventManager.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
         }
     }
 
@@ -936,8 +924,6 @@ public class CrateBaseCommand extends BaseCommand {
                 sender.sendMessage(Messages.take_player_keys.getMessage(placeholders));
             }
 
-            EventManager.logKeyEvent(player, sender, crate, type, EventManager.KeyEventType.KEY_EVENT_REMOVED, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
-
             return;
         }
 
@@ -1010,8 +996,6 @@ public class CrateBaseCommand extends BaseCommand {
             }
 
             this.userManager.addKeys(amount, onlinePlayer.getUniqueId(), crate.getName(), type);
-
-            EventManager.logKeyEvent(onlinePlayer, sender, crate, type, EventManager.KeyEventType.KEY_EVENT_GIVEN, this.config.getProperty(ConfigKeys.log_to_file), this.config.getProperty(ConfigKeys.log_to_console));
         }
     }
 }

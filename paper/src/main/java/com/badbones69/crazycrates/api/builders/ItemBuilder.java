@@ -331,9 +331,9 @@ public class ItemBuilder {
                 return CraftItemStack.asBukkitCopy(nmsItem);
             }
 
-            getItemStack().setAmount(this.itemAmount);
+            this.itemStack.setAmount(this.itemAmount);
 
-            getItemStack().editMeta(itemMeta -> {
+            this.itemStack.editMeta(itemMeta -> {
                 // If the item is able to be damaged.
                 if (itemMeta instanceof Damageable damageable) {
                     if (this.itemDamage >= 1) {
@@ -439,7 +439,7 @@ public class ItemBuilder {
             }
         }
 
-        return getItemStack();
+        return this.itemStack;
     }
 
     public ItemStack getItemStack() {

@@ -423,7 +423,9 @@ public class CrateManager {
                     placeholders.put("{crate}", crate.getName());
 
                     player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
+
                     removePlayerFromOpeningList(player);
+
                     return;
                 }
 
@@ -432,7 +434,9 @@ public class CrateManager {
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
                     player.sendMessage(Messages.crate_in_use.getMessage("{crate}", crate.getName(), player));
+
                     removePlayerFromOpeningList(player);
+
                     return;
                 }
 
@@ -443,7 +447,9 @@ public class CrateManager {
                     placeholders.put("{crate}", crate.getName());
 
                     player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
+
                     removePlayerFromOpeningList(player);
+
                     return;
                 }
 
@@ -457,7 +463,9 @@ public class CrateManager {
                     placeholders.put("{crate}", crate.getName());
 
                     player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
+
                     removePlayerFromOpeningList(player);
+
                     return;
                 }
 
@@ -466,7 +474,9 @@ public class CrateManager {
             case quick_crate -> {
                 if (this.cratesInUse.containsValue(location)) {
                     player.sendMessage(Messages.crate_in_use.getMessage("{crate}", crate.getName(), player));
+
                     removePlayerFromOpeningList(player);
+
                     return;
                 }
 
@@ -477,7 +487,9 @@ public class CrateManager {
                     placeholders.put("{crate}", crate.getName());
 
                     player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
+
                     removePlayerFromOpeningList(player);
+
                     return;
                 }
 
@@ -930,7 +942,7 @@ public class CrateManager {
      * @return a crate if is a key from a crate otherwise null if it is not.
      */
     public Crate getCrateFromKey(ItemStack item) {
-        if (!item.hasItemMeta() && !ConfigManager.getConfig().getProperty(ConfigKeys.use_old_key_checks)) return null;
+        if (!item.hasItemMeta() && !MiscUtils.useLegacyChecks()) return null;
 
         ItemMeta itemMeta = item.getItemMeta();
 

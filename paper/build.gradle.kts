@@ -1,15 +1,24 @@
 plugins {
-    id("paper-plugin")
+    `paper-plugin`
+
+    id("io.papermc.paperweight.userdev")
+
+    alias(libs.plugins.run.paper)
+    alias(libs.plugins.shadow)
 }
 
+val mcVersion: String = providers.gradleProperty("mcVersion").get()
+
 dependencies {
-    implementation(project(":api"))
+    paperweight.paperDevBundle(libs.versions.bundle)
+
+    implementation(projects.api)
 
     implementation(libs.cluster.paper)
 
-    implementation(libs.triumphcmds)
+    implementation(libs.triumph.cmds)
 
-    implementation(libs.configme) {
+    implementation(libs.config.me) {
         exclude(group = "org.yaml", module = "snakeyaml")
     }
 
@@ -19,18 +28,30 @@ dependencies {
 
     compileOnly(libs.holographicdisplays)
 
-    compileOnly(libs.decentholograms)
+    compileOnly(libs.decent.holograms)
 
-    compileOnly(libs.placeholderapi)
+    compileOnly(libs.placeholder.api)
 
-    compileOnly(libs.itemsadder)
+    compileOnly(libs.itemsadder.api)
 
-    compileOnly(libs.oraxen)
+    compileOnly(libs.oraxen.api)
 
     compileOnly(fileTree("libs").include("*.jar"))
 }
 
 tasks {
+    runServer {
+        jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")
+
+        defaultCharacterEncoding = Charsets.UTF_8.name()
+
+        minecraftVersion(mcVersion)
+    }
+
+    assemble {
+        dependsOn(reobfJar)
+    }
+
     shadowJar {
         listOf(
             "com.ryderbelserion.cluster.paper",

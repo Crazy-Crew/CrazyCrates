@@ -1,9 +1,9 @@
 # Support: https://discord.gg/badbones-s-live-chat-182615261403283459
 # Github: https://github.com/Crazy-Crew
-#
+# 
 # Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
 # Features: https://github.com/Crazy-Crew/CrazyCrates/issues
-#
+# 
 # List of all sounds: https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
 # List of all enchantments: https://jd.papermc.io/paper/1.20/org/bukkit/enchantments/Enchantment.html
 root:
@@ -41,12 +41,12 @@ gui:
           toggle: false
           # A list of commands to run when the main menu button is clicked. The override option above has to be set to true.
           list:
-            - see %player%
+          - see {player}
         # The name of the item.
         name: '&7&l>> &c&lMenu &7&l<<'
         # The lore of the item.
         lore:
-          - '&7Return to the menu.'
+        - '&7Return to the menu.'
       # The next button.
       next:
         # The item the button should be.
@@ -55,7 +55,7 @@ gui:
         name: '&6&lNext >>'
         # The lore of the item.
         lore:
-          - '&7&lPage: &b{page}'
+        - '&7&lPage: &b{page}'
       # The back button.
       back:
         # The item the button should be.
@@ -64,7 +64,7 @@ gui:
         name: '&6&l<< Back'
         # The lore of the item.
         lore:
-          - '&7&lPage: &b{page}'
+        - '&7&lPage: &b{page}'
       filler:
         # Should the menu should be filled with one type of item?
         toggle: false
@@ -79,56 +79,60 @@ gui:
         toggle: true
         # The items to set to the gui.
         items:
-          - 'Slot:1, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:2, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:3, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:4, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:5, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:6, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:7, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:8, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:9, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:37, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:38, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:39, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:40, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:41, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:42, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:43, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:44, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:45, Item:RED_STAINED_GLASS_PANE, Name: '
-          - 'Slot:10, Item:BLUE_STAINED_GLASS_PANE, Name: '
-          - 'Slot:19, Item:BLUE_STAINED_GLASS_PANE, Name: '
-          - 'Slot:28, Item:BLUE_STAINED_GLASS_PANE, Name: '
-          - 'Slot:18, Item:BLUE_STAINED_GLASS_PANE, Name: '
-          - 'Slot:27, Item:BLUE_STAINED_GLASS_PANE, Name: '
-          - 'Slot:36, Item:BLUE_STAINED_GLASS_PANE, Name: '
-          - 'Slot:11, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:13, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:15, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:25, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:17, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:20, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:21, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:22, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:23, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:24, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:25, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:26, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:29, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:31, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:32, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:33, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:34, Item:CYAN_STAINED_GLASS_PANE, Name: '
-          - 'Slot:35, Item:CYAN_STAINED_GLASS_PANE, Name: '
+        - 'slot:1, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:2, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:3, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:4, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:5, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:6, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:7, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:8, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:9, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:37, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:38, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:39, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:40, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:41, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:42, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:43, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:44, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:45, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:10, item:BLUE_STAINED_GLASS_PANE, name: '
+        - 'slot:19, item:BLUE_STAINED_GLASS_PANE, name: '
+        - 'slot:28, item:BLUE_STAINED_GLASS_PANE, name: '
+        - 'slot:18, item:BLUE_STAINED_GLASS_PANE, name: '
+        - 'slot:27, item:BLUE_STAINED_GLASS_PANE, name: '
+        - 'slot:36, item:BLUE_STAINED_GLASS_PANE, name: '
+        - 'slot:11, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:13, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:15, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:25, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:17, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:20, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:21, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:22, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:23, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:24, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:25, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:26, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:29, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:31, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:32, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:33, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:34, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:35, item:CYAN_STAINED_GLASS_PANE, name: '
 # Settings related to crates.
 crate:
   # Whether to show the display item when opening QuickCrate
   quickcrate-display-item: true
-  # Logs all crate actions to a .txt file if enabled. It is recommended to delete the file occasionally.
-  log-file: false
-  # Logs all crate actions to console if enabled.
-  log-console: false
+  # Settings that are not supported and can be removed at anytime.
+  unsupported-settings:
+    # This option is unsupported and not recommended for use.
+    # It is not very performant and is recommended to keep false
+    # The option only here for niche use cases for the time being
+    # If at some point it ever gets more difficult to maintain this
+    # The option and code related will be completely removed and not added back.
+    old-key-checks: false
   # If crates should knock you back if you have no keys.
   knock-back: true
   # The preview settings.
@@ -138,7 +142,7 @@ crate:
     # Send a message if they were forced out of the preview.
     send-message: false
   # If a player gets to the menu related to the Prizes gui, Should they be timed out?
-  #
+  # 
   # It will wait 10 seconds and if they already collected 3 prizes, It will only give one prize.
   cosmic-crate-timeout: true
   # Settings related to how keys function.
@@ -149,7 +153,7 @@ crate:
     physical-crate-accepts-physical-keys: true
     # Should a physical crate accept physical keys?
     virtual-crate-accepts-physical-keys: true
-    # Settings related to if a player's inventory is not empty.
+    # Settings related to a player's inventory is not empty.
     inventory-settings:
       # Should the player should be given virtual keys if inventory is not empty? If you leave it as false, All keys will be dropped on the ground.
       give-virtual-keys: false
@@ -166,4 +170,4 @@ crate:
     timer: 300
   # What worlds do you want Crates to be disabled in?
   disabled-worlds:
-    - world_nether
+  - world_nether

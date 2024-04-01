@@ -41,7 +41,7 @@ public class Crate {
     private final String name;
     private String keyName;
     private ItemBuilder keyBuilder;
-    private ItemStack keyNoNBT;
+    private ItemBuilder emptyKey;
     private int maxPage = 1;
     private int maxSlots;
     private String previewName;
@@ -89,7 +89,7 @@ public class Crate {
      * @param file The crate file.
      */
     public Crate(String name, String previewName, CrateType crateType, ItemStack key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, List<String> prizeCommands, CrateHologram hologram) {
-        this.keyNoNBT = ItemBuilder.convertItemStack(key).build();
+        this.emptyKey = ItemBuilder.convertItemStack(key);
         this.keyBuilder = ItemBuilder.convertItemStack(key).setCrateName(name);
         this.keyName = keyName;
 
@@ -500,8 +500,8 @@ public class Crate {
     /**
      * @return the key as an item stack with no nbt tags.
      */
-    public ItemStack getKeyNoNBT() {
-        return this.keyNoNBT.clone();
+    public ItemStack getEmptyKey() {
+        return this.emptyKey.build();
     }
     
     /**
@@ -509,12 +509,12 @@ public class Crate {
      *
      * @return the key as an item stack with no nbt tags.
      */
-    public ItemStack getKeyNoNBT(int amount) {
-        ItemStack key = this.keyNoNBT.clone();
+    public ItemStack getEmptyKey(int amount) {
+        ItemBuilder key = this.emptyKey;
 
         key.setAmount(amount);
 
-        return key;
+        return key.build();
     }
     
     /**
