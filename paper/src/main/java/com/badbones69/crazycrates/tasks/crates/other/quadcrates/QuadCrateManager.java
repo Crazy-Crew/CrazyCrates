@@ -21,14 +21,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.api.crates.quadcrates.CrateParticles;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class QuadCrateManager {
 
@@ -81,7 +77,7 @@ public class QuadCrateManager {
 
     // Get the particles that will be used to display above the crates.
     private final Color particleColor;
-    private final CrateParticles particle;
+    private final Particle particle;
 
     // Get the structure handler.
     private final StructureHandler handler;
@@ -110,9 +106,8 @@ public class QuadCrateManager {
 
         this.handler = handler;
 
-        List<CrateParticles> particles = Arrays.asList(CrateParticles.values());
-        this.particle = particles.get(ThreadLocalRandom.current().nextInt(particles.size()));
-        this.particleColor = getColors().get(ThreadLocalRandom.current().nextInt(getColors().size()));
+        this.particle = crate.getParticle();
+        this.particleColor = crate.getColor();
 
         crateSessions.add(this.instance);
     }
@@ -220,7 +215,7 @@ public class QuadCrateManager {
             @Override
             public void run() {
                 if (this.tickTillSpawn < 60) {
-                    spawnParticles(particle, particleColor, this.spiralLocationsClockwise.get(this.tickTillSpawn), this.spiralLocationsCounterClockwise.get(this.tickTillSpawn));
+                    spawnParticles(particleColor, this.spiralLocationsClockwise.get(this.tickTillSpawn), this.spiralLocationsCounterClockwise.get(this.tickTillSpawn));
                     this.tickTillSpawn++;
                 } else {
                     crate.playSound(player, player.getLocation(), "cycle-sound", "BLOCK_STONE_STEP", SoundCategory.PLAYERS);
@@ -324,41 +319,22 @@ public class QuadCrateManager {
     }
 
     /**
-     * Get an arraylist of colors.
-     *
-     * @return list of colors.
-     */
-    private List<Color> getColors() {
-        return Arrays.asList(
-                Color.AQUA, Color.BLACK, Color.BLUE, Color.FUCHSIA, Color.GRAY,
-                Color.GREEN, Color.LIME, Color.MAROON, Color.NAVY, Color.OLIVE,
-                Color.ORANGE, Color.PURPLE, Color.RED, Color.SILVER, Color.TEAL,
-                Color.WHITE, Color.YELLOW);
-    }
-
-    /**
      * Spawn particles at 2 specific locations with a customizable color.
      *
-     * @param quadCrateParticle the particle to spawn.
      * @param particleColor the color of the particle.
      * @param location1 the first location of the particle.
      * @param location2 the second location of the particle.
      */
-    private void spawnParticles(CrateParticles quadCrateParticle, Color particleColor, Location location1, Location location2) {
-        Particle particle = switch (quadCrateParticle) {
-            case flame -> Particle.FLAME;
-            case villager_happy -> Particle.VILLAGER_HAPPY;
-            case spell_witch -> Particle.SPELL_WITCH;
-            default -> Particle.REDSTONE;
-        };
+    private void spawnParticles(Color particleColor, Location location1, Location location2) {
+        if (this.particle == Particle.REDSTONE) {
+            location1.getWorld().spawnParticle(this.particle, location1, 0, new Particle.DustOptions(particleColor, 1));
+            location2.getWorld().spawnParticle(this.particle, location2, 0, new Particle.DustOptions(particleColor, 1));
 
-        if (particle == Particle.REDSTONE) {
-            location1.getWorld().spawnParticle(particle, location1, 0, new Particle.DustOptions(particleColor, 1));
-            location2.getWorld().spawnParticle(particle, location2, 0, new Particle.DustOptions(particleColor, 1));
-        } else {
-            location1.getWorld().spawnParticle(particle, location1, 0);
-            location2.getWorld().spawnParticle(particle, location2, 0);
+            return;
         }
+
+        location1.getWorld().spawnParticle(this.particle, location1, 0);
+        location2.getWorld().spawnParticle(this.particle, location2, 0);
     }
 
     /**

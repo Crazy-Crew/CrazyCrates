@@ -65,6 +65,11 @@ Crate:
       volume: 1.0
       # The speed of the sound.
       pitch: 1.0
+  particles:
+    # Only used for "dust" particle
+    color: '235,64,52'
+    # You can use any particle here but the names are hard to find at the moment.
+    type: 'dust'
   Prize-Message:
     - '&7You have won &c%reward% &7from &c%crate%.'
   Prize-Commands: []
