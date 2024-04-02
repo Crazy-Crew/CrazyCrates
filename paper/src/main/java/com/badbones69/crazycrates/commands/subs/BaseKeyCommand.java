@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.enums.Messages;
 import us.crazycrew.crazycrates.api.users.UserManager;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,9 +51,9 @@ public class BaseKeyCommand extends BaseCommand {
         placeholders.put("{player}", target.getName());
         placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(target.getUniqueId())));
 
-        String header = Messages.other_player_no_keys_header.getMessage(placeholders, sender instanceof Player ? (Player) sender : null);
+        String header = Messages.other_player_no_keys_header.getMessage(placeholders, sender);
 
-        String otherPlayer = Messages.other_player_no_keys.getMessage("{player}", target.getName(), sender instanceof Player ? (Player) sender : null);
+        String otherPlayer = Messages.other_player_no_keys.getMessage("{player}", target.getName(), sender);
 
         getKeys(target, sender, header, otherPlayer);
     }

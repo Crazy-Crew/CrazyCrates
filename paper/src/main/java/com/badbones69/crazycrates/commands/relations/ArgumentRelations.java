@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.commands.relations;
 import com.badbones69.crazycrates.commands.MessageManager;
 import dev.triumphteam.cmd.core.message.MessageKey;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
@@ -47,11 +46,7 @@ public class ArgumentRelations extends MessageManager {
             }
 
             if (correctUsage != null) {
-                if (sender instanceof Player player) {
-                    send(sender, Messages.correct_usage.getMessage("{usage}", correctUsage, player));
-                } else {
-                    send(sender, Messages.correct_usage.getMessage("{usage}", correctUsage));
-                }
+                send(sender, Messages.correct_usage.getMessage("{usage}", correctUsage, sender));
             }
         });
 
@@ -71,21 +66,11 @@ public class ArgumentRelations extends MessageManager {
             }
 
             if (correctUsage != null) {
-                if (sender instanceof Player player) {
-                    send(sender, Messages.correct_usage.getMessage("{usage}", correctUsage, player));
-                } else {
-                    send(sender, Messages.correct_usage.getMessage("{usage}", correctUsage));
-                }
+                send(sender, Messages.correct_usage.getMessage("{usage}", correctUsage, sender));
             }
         });
 
-        getBukkitCommandManager().registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> {
-            if (sender instanceof Player player) {
-                send(sender, Messages.unknown_command.getMessage(player));
-            } else {
-                send(sender, Messages.unknown_command.getMessage());
-            }
-        });
+        getBukkitCommandManager().registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> send(sender, Messages.unknown_command.getMessage(sender)));
     }
 
     @Override

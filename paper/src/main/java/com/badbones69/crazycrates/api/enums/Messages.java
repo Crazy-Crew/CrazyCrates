@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api.enums;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import org.bukkit.command.CommandSender;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.messages.CommandKeys;
 import us.crazycrew.crazycrates.platform.config.impl.messages.CrateKeys;
@@ -130,26 +131,30 @@ public enum Messages {
         return getMessage(placeholders, null);
     }
 
-    public String getMessage() {
+    public String getMessage(CommandSender sender) {
+        if (sender instanceof Player player) {
+            return getMessage(new HashMap<>(), player);
+        }
+
         return getMessage(new HashMap<>(), null);
     }
 
-    public String getMessage(Player player) {
-        return getMessage(new HashMap<>(), player);
-    }
-
-    public String getMessage(String placeholder, String replacement, Player player) {
+    public String getMessage(String placeholder, String replacement, CommandSender sender) {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put(placeholder, replacement);
 
-        return getMessage(placeholders, player);
+        if (sender instanceof Player player) {
+            return getMessage(placeholders, player);
+        }
+
+        return getMessage(placeholders, null);
     }
 
     public String getMessage(String placeholder, String replacement) {
         return getMessage(placeholder, replacement, null);
     }
 
-    public String getMessage(Map<String, String> placeholders, Player player) {
+    public String getMessage(Map<String, String> placeholders, CommandSender sender) {
         // Get the string first.
         String message;
 
@@ -167,16 +172,18 @@ public enum Messages {
 
         this.message = message;
 
-        return asString(player);
+        return asString(sender);
     }
 
-    private String asString(Player player) {
+    private String asString(CommandSender sender) {
         String prefix = ConfigManager.getConfig().getProperty(ConfigKeys.command_prefix);
 
         String message = this.message.replaceAll("\\{prefix}", prefix);
 
-        if (MiscUtils.isPapiActive() && player != null) {
-            return PlaceholderAPI.setPlaceholders(player, MsgUtils.color(message));
+        if (sender instanceof Player player) {
+            if (MiscUtils.isPapiActive()) {
+                return PlaceholderAPI.setPlaceholders(player, MsgUtils.color(message));
+            }
         }
 
         return MsgUtils.color(message);

@@ -117,7 +117,7 @@ public class QuadCrateListener implements Listener {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            session.endCrate();
+                            session.endCrate(false);
                             crate.playSound(player, block.getLocation(), "stop-sound", "BLOCK_ANVIL_LAND", SoundCategory.BLOCKS);
                         }
                     }.runTaskLater(this.plugin, 60);
@@ -205,7 +205,7 @@ public class QuadCrateListener implements Listener {
         Player player = event.getPlayer();
 
         if (this.sessionManager.inSession(player)) {
-            this.sessionManager.getSession(player).endCrate();
+            this.sessionManager.getSession(player).endCrate(true);
         }
     }
 }
