@@ -25,6 +25,7 @@ import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.MapMeta;
@@ -134,6 +135,8 @@ public class ItemBuilder {
     private Map<String, String> namePlaceholders = new HashMap<>();
     private Map<String, String> lorePlaceholders = new HashMap<>();
 
+    private boolean isBook;
+
     /**
      * Deduplicate an item builder.
      *
@@ -205,6 +208,8 @@ public class ItemBuilder {
         this.lorePlaceholders = new HashMap<>(itemBuilder.lorePlaceholders);
 
         this.crateName = itemBuilder.crateName;
+
+        this.isBook = itemBuilder.isBook;
     }
 
     public ItemBuilder(ItemStack itemStack) {
@@ -222,6 +227,7 @@ public class ItemBuilder {
             case PLAYER_HEAD -> this.isHead = true;
             case SPAWNER -> this.isSpawner = true;
             case SHIELD -> this.isShield = true;
+            case ENCHANTED_BOOK -> this.isBook = true;
         }
 
         this.itemStack.editMeta(itemMeta -> {
@@ -254,6 +260,7 @@ public class ItemBuilder {
             case PLAYER_HEAD -> this.isHead = true;
             case SPAWNER -> this.isSpawner = true;
             case SHIELD -> this.isShield = true;
+            case ENCHANTED_BOOK -> this.isBook = true;
         }
 
         this.itemStack.editMeta(itemMeta -> {
@@ -623,6 +630,7 @@ public class ItemBuilder {
             case PLAYER_HEAD -> this.isHead = true;
             case SPAWNER -> this.isSpawner = true;
             case SHIELD -> this.isShield = true;
+            case ENCHANTED_BOOK -> this.isBook = true;
         }
 
         String name = this.material.name();
@@ -921,7 +929,17 @@ public class ItemBuilder {
      * @return the ItemBuilder with updated enchantments.
      */
     public ItemBuilder addEnchantment(Enchantment enchantment, int level, boolean unsafeEnchantments) {
-        getItemStack().editMeta(itemMeta -> itemMeta.addEnchant(enchantment, level, unsafeEnchantments));
+        this.itemStack.editMeta(itemMeta -> {
+            if (this.isBook) {
+                EnchantmentStorageMeta storage = (EnchantmentStorageMeta) itemMeta;
+
+                storage.addStoredEnchant(enchantment, level, unsafeEnchantments);
+
+                return;
+            }
+
+            itemMeta.addEnchant(enchantment, level, unsafeEnchantments);
+        });
 
         return this;
     }
@@ -933,7 +951,17 @@ public class ItemBuilder {
      * @return the ItemBuilder with updated data.
      */
     public ItemBuilder removeEnchantment(Enchantment enchantment) {
-        getItemStack().editMeta(itemMeta -> itemMeta.removeEnchant(enchantment));
+        getItemStack().editMeta(itemMeta -> {
+            if (this.isBook) {
+                EnchantmentStorageMeta storage = (EnchantmentStorageMeta) itemMeta;
+
+                storage.removeStoredEnchant(enchantment);
+
+                return;
+            }
+
+            itemMeta.removeEnchant(enchantment);
+        });
 
         return this;
     }
