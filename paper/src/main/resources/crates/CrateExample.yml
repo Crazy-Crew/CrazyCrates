@@ -7,9 +7,9 @@ Crate:
   # See CosmicCrateExample.yml to see how the Cosmic CrateType works.
   CrateType: CSGO
   # Name of the Inventory if a GUI crate.
-  CrateName: '&aBasic Crate'
+  CrateName: "&aBasic Crate"
   # The name of the inventory that will be in the preview GUI.
-  Preview-Name: '&aBasic Crate Preview'
+  Preview-Name: "&aBasic Crate Preview"
   # Starting amount of keys when the player 1st joins.
   StartingKeys: 0
   # The amount of keys required to use the crate.
@@ -24,7 +24,7 @@ Crate:
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
-  BroadCast: '%prefix%&6&l%player%&r &7is opening a &7&lBasic Crate.'
+  BroadCast: "%prefix%&6&l%player%&r &7is opening a &7&lBasic Crate."
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
@@ -33,7 +33,7 @@ Crate:
     # Supports all placeholderapi placeholders
     # Supports %prefix which returns our prefix, %player% which uses the player name
     commands:
-      - 'put your command here.'
+      - "put your command here."
   sound:
     # The sound options when the animation is cycling.
     cycle-sound:
@@ -41,7 +41,7 @@ Crate:
       toggle: true
       # The type of sound to use.
       # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: 'BLOCK_NOTE_BLOCK_XYLOPHONE'
+      value: "BLOCK_NOTE_BLOCK_XYLOPHONE"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
@@ -52,7 +52,7 @@ Crate:
       toggle: true
       # The type of sound to use.
       # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: 'UI_BUTTON_CLICK'
+      value: "UI_BUTTON_CLICK"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
@@ -63,30 +63,30 @@ Crate:
       toggle: true
       # The type of sound to use.
       # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: 'ENTITY_PLAYER_LEVELUP'
+      value: "ENTITY_PLAYER_LEVELUP"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
       pitch: 1.0
-  # A default message if the prize doesn't have any Messages
-  # i.e. Messages: [] or the value isn't there.
+  # A default message if the prize doesn"t have any Messages
+  # i.e. Messages: [] or the value isn"t there.
   Prize-Message:
-    - '&7You have won &c%reward% &7from &c%crate%.'
-  # A default command if the prize doesn't have any commands
-  # i.e. Commands: [] or the value isn't there.
+    - "&7You have won &c%reward% &7from &c%crate%."
+  # A default command if the prize doesn"t have any commands
+  # i.e. Commands: [] or the value isn"t there.
   Prize-Commands: []
   # Item the crate is in the GUI
-  Item: 'DIAMOND'
+  Item: "DIAMOND"
   # If the crate in the main /cc GUI is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
-  Name: '&a&lBasic Crate'
+  Name: "&a&lBasic Crate"
   # The lore of the item in the GUI.
   Lore:
-    - '&7This crate contains strange objects.'
-    - '&7You have &6%keys% keys &7to open this crate with.'
-    - '&7You have opened this crate: &6%crate_opened% times'
-    - '&7&l(&e&l!&7&l) Right click to view rewards.'
+    - "&7This crate contains strange objects."
+    - "&7You have &6%keys% keys &7to open this crate with."
+    - "&7You have opened this crate: &6%crate_opened% times"
+    - "&7&l(&e&l!&7&l) Right click to view rewards."
   Preview:
     # Turn on and off the preview for this crate.
     Toggle: true
@@ -96,18 +96,18 @@ Crate:
       # Turn the glass border in the preview on and off.
       Toggle: true
       # The name of the border item.
-      Name: ' '
+      Name: " "
       # The item that shows in the border. Can be glass or any other item.
-      Item: 'GRAY_STAINED_GLASS_PANE'
+      Item: "GRAY_STAINED_GLASS_PANE"
   PhysicalKey:
     # Name of the Key.
-    Name: '&7&lBasic Crate &b&lKey'
+    Name: "&7&lBasic Crate &b&lKey"
     # Lore of the Key.
     Lore:
-      - '&7A special Key'
-      - '&7For a special Crate.'
+      - "&7A special Key"
+      - "&7For a special Crate."
     # The item the key is.
-    Item: 'TRIPWIRE_HOOK'
+    Item: "TRIPWIRE_HOOK"
     # Makes the key look enchanted.
     Glowing: true
     # Settings for the holograms.
@@ -120,21 +120,21 @@ Crate:
     Range: 8
     # The message that will be displayed.
     Message:
-      - '&7&lBasic Crate'
+      - "&7&lBasic Crate"
   # All the prizes that can be gotten in the Crate.
   Prizes:
     1:
       # Name of the item shown by the crate.
-      DisplayName: '&cAn example of a Player Head!'
+      DisplayName: "&cAn example of a Player Head!"
       # ITem shown by the crate.
-      DisplayItem: 'PLAYER_HEAD'
+      DisplayItem: "PLAYER_HEAD"
       # The amount displayed.
       DisplayAmount: 1
       # The lore in the crate preview
       Lore:
-        - '&7Want a player head?'
-        - ''
-        - '&cChance: &e25%'
+        - "&7Want a player head?"
+        - ""
+        - "&cChance: &e25%"
       # If you do not want a lore, Set the "Lore:" to look like the line below.
       # Lore: []
 
@@ -146,23 +146,23 @@ Crate:
       Chance: 25 # The chance out of MaxRange to win an item.
 
       # Can be a name as well.
-      Player: 'https://textures.minecraft.net/texture/1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e' # Custom Texture Example.
+      Player: "https://textures.minecraft.net/texture/1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e" # Custom Texture Example.
 
       # If you do not want a player supplied, Set the "Player:" to look like the line below.
-      # Player: ''
+      # Player: ""
 
       Items: # Give any item you want to the winning player & with a custom texture.
-        - 'Item:PLAYER_HEAD, Player:https://textures.minecraft.net/texture/1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Amount:1'
+        - "Item:PLAYER_HEAD, Player:https://textures.minecraft.net/texture/1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Amount:1"
       # If you do not want to give items, Set the "Items:" to look like the line below.
       # Items: []
 
       Commands: # You can run any plugin command here.
-        - 'broadcast &6&l%player%&r &7won %reward%! WOW'
+        - "broadcast &6&l%player%&r &7won %reward%! WOW"
       # If you do not want to send commands, Set the "Commands:" to look like the line below.
       # Commands: []
 
       Messages: # Send any message you want to the player.
-        - '&cYou won a &r%reward%!'
+        - "&cYou won a &r%reward%!"
       # If you do not want to send messages, Set the "Messages:" to look like the line below.
       # Messages: []
 
@@ -176,45 +176,45 @@ Crate:
         Commands: []
         Items: []
     2:
-      DisplayName: '&b&lCheap Helmet'
-      DisplayItem: 'GOLDEN_HELMET'
+      DisplayName: "&b&lCheap Helmet"
+      DisplayItem: "GOLDEN_HELMET"
       # Only works on items with durability. This will make the item appear more damaged.
       # It does not set the durability but subtracts this number from the durability is 100, It subtracts 50.
       # It cannot be 0.
       DisplayDamage: 50
       DisplayTrim:
         # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
-        Material: 'QUARTZ'
+        Material: "QUARTZ"
         # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
-        Pattern: 'SENTRY'
+        Pattern: "SENTRY"
       DisplayAmount: 1
       Lore:
-        - '&7Win a cheap helmet.'
-        - '&6&lChance: &c&l60%'
+        - "&7Win a cheap helmet."
+        - "&6&lChance: &c&l60%"
       MaxRange: 100
       Chance: 60
       Items:
-        - 'Item:GOLDEN_HELMET, Amount:1, Damage:50, Trim-Pattern:SENTRY, Trim-Material:QUARTZ, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1'
+        - "Item:GOLDEN_HELMET, Amount:1, Damage:50, Trim-Pattern:SENTRY, Trim-Material:QUARTZ, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1"
     3:
-      DisplayName: '&e&l$1,000'
-      DisplayItem: 'SUNFLOWER'
+      DisplayName: "&e&l$1,000"
+      DisplayItem: "SUNFLOWER"
       DisplayAmount: 1
       Lore:
-        - '&7Make it rain Money.'
-        - '&6&lChance: &c&l20%'
+        - "&7Make it rain Money."
+        - "&6&lChance: &c&l20%"
       MaxRange: 100
       Chance: 20
       Firework: true
       Commands:
-        - 'eco give %player% 1000'
-      # - 'lp user %player% permission set crazycrates.blacklist.basic.3' -> This is the line where you would give the user the permission.
+        - "eco give %player% 1000"
+      # - "lp user %player% permission set crazycrates.blacklist.basic.3" -> This is the line where you would give the user the permission.
       Messages:
-        - '&7You just won &r%reward%.'
+        - "&7You just won &r%reward%."
       BlackListed-Permissions:
-        - 'crazycrates.blacklist.basic.3'
+        - "crazycrates.blacklist.basic.3"
       Alternative-Prize:
         Toggle: true
         Messages:
-          - '&r &8[&bCrazyCrates&8]: &7You have already won that prize, so enjoy some gold nuggets.'
+          - "&r &8[&bCrazyCrates&8]: &7You have already won that prize, so enjoy some gold nuggets."
         Commands:
-          - 'give %player% gold_nugget 16'
+          - "give %player% gold_nugget 16"
