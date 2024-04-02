@@ -136,7 +136,8 @@ Crate:
       DisplayEnchantments:
         - "PROTECTION_ENVIRONMENTAL:5"
         - "DURABILITY:3"
-      Chance: 40.0
+      MaxRange: 100
+      Chance: 40
       Items:
         - "Item:NETHERITE_HELMET, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:&4&lWarlord's Helmet, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
     2:
@@ -154,7 +155,8 @@ Crate:
       DisplayEnchantments:
         - "PROTECTION_ENVIRONMENTAL:5"
         - "DURABILITY:3"
-      Chance: 40.0
+      MaxRange: 100
+      Chance: 40
       Items:
         - "Item:NETHERITE_CHESTPLATE, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:&4&lWarlord's Chestplate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
     3:
@@ -172,7 +174,8 @@ Crate:
       DisplayEnchantments:
         - "PROTECTION_ENVIRONMENTAL:5"
         - "DURABILITY:3"
-      Chance: 40.0
+      MaxRange: 100
+      Chance: 40
       Items:
         - "Item:NETHERITE_LEGGINGS, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:&4&lWarlord's Leggings, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
     4:
@@ -190,6 +193,7 @@ Crate:
       DisplayEnchantments:
         - "PROTECTION_ENVIRONMENTAL:5"
         - "DURABILITY:3"
-      Chance: 40.0
+      MaxRange: 100
+      Chance: 40
       Items:
         - "Item:NETHERITE_BOOTS, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:&4&lWarlord's Boots, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"

@@ -178,9 +178,9 @@ public class PrizeManager {
         if (crate.getTiers() != null && !crate.getTiers().isEmpty()) {
             for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
                 for (Tier tier : crate.getTiers()) {
-                    double chance = tier.getChance();
+                    int chance = tier.getChance();
 
-                    double num = MiscUtils.useOtherRandom() ? ThreadLocalRandom.current().nextDouble(tier.getMaxRange()) : new Random().nextDouble(tier.getMaxRange());
+                    int num = MiscUtils.useOtherRandom() ? ThreadLocalRandom.current().nextInt(tier.getMaxRange()) : new Random().nextInt(tier.getMaxRange());
 
                     if (num >= 1 && num <= chance) {
                         return tier;
