@@ -45,6 +45,36 @@ Older keys will still work temporarily but please get your players to trade your
 
 ## Enhancements:
 * Added a warning on startup if the spawn protection in server.properties isn't 0.
+* Added the ability to add enchants to ENCHANTED_BOOK, so they function in anvil.
+```yml
+      4:
+      DisplayName: "&d&lSharpness 5 / Looting 3"
+      DisplayItem: "ENCHANTED_BOOK"
+      DisplayAmount: 1
+      DisplayEnchantments:
+        - "SHARPNESS:5"
+        - "LOOTING:3"
+      Lore:
+        - "&7A sharp enchantment book."
+        - "&6&lChance: &c&l25%"
+      MaxRange: 100
+      Chance: 25
+      Firework: true
+      Messages:
+        - "&7You just won &r%reward%."
+      Items:
+        - "Item:ENCHANTED_BOOK, Amount:1, DAMAGE_ALL:5, LOOTING:3"
+```
+* Added the ability to select custom particles and colors for QuadCrates
+```yml
+Crate:
+  # Only used for quadcrates
+  particles:
+  # Only used for "dust" particle
+  color: "235,64,52"
+  # https://minecraft.wiki/w/Particles_(Java_Edition)
+  type: "crimson_spore" 
+```
 * Prevent pistons from moving blocks if they are a crate.
 * Play sounds in /crazycrates admin when a player gets virtual/physical keys.
 * Change from sending messages in chat for /crazycrates admin to using action bars.
@@ -65,6 +95,7 @@ Older keys will still work temporarily but please get your players to trade your
 * Fixed an issue where failed to take keys would fire multiple times.
 * Fixed another issue with mass-open related to being added to opening list and not being removed if no keys found.
 * Fixed multiple issues with how the inventory is checked for keys.
+* Fixed an issue with quadcrates where if you set the `structure.random` to false, It would still be random.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
