@@ -243,8 +243,7 @@ public class QuadCrateManager {
         this.crateManager.addCrateTask(this.player, new BukkitRunnable() {
             @Override
             public void run() {
-                // End the crate by force.
-                endCrateForce(true);
+                endCrate(true);
                 player.sendMessage(Messages.out_of_time.getMessage("{crate}", crate.getName(), player));
                 crate.playSound(player, player.getLocation(), "stop-sound", "ENTITY_PLAYER_LEVELUP", SoundCategory.PLAYERS);
             }
@@ -254,7 +253,7 @@ public class QuadCrateManager {
     /**
      * End the crate gracefully.
      */
-    public void endCrate() {
+    public void endCrate(boolean immediately) {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -284,27 +283,7 @@ public class QuadCrateManager {
                 // Remove the "instance" from the crate sessions.
                 crateSessions.remove(instance);
             }
-        }.runTaskLater(this.plugin, 5);
-    }
-
-    /**
-     * End the crate by force which cleans everything up.
-     *
-     * @param removeForce whether to stop the crate session or not.
-     */
-    public void endCrateForce(boolean removeForce) {
-        this.handler.removeStructure();
-
-        this.oldBlocks.keySet().forEach(location -> this.oldBlocks.get(location).update(true, false));
-        this.crateLocations.forEach(location -> this.quadCrateChests.get(location).update(true, false));
-        this.displayedRewards.forEach(Entity::remove);
-        this.player.teleport(this.lastLocation);
-
-        if (removeForce) {
-            this.crateManager.removePlayerFromOpeningList(this.player);
-
-            crateSessions.remove(this.instance);
-        }
+        }.runTaskLater(this.plugin, immediately ? 0 : 5);
     }
 
     /**

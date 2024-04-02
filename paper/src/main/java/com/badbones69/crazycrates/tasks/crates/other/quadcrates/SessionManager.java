@@ -39,7 +39,7 @@ public class SessionManager {
      */
     public static void endCrates() {
         if (!QuadCrateManager.getCrateSessions().isEmpty()) {
-            QuadCrateManager.getCrateSessions().forEach(session -> session.endCrateForce(false));
+            QuadCrateManager.getCrateSessions().forEach(session -> session.endCrate(true));
             QuadCrateManager.getCrateSessions().clear();
         }
     }
