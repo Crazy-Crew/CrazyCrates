@@ -13,8 +13,6 @@ Older keys will still work temporarily but please get your players to trade your
 ## Removed:
 * Temporarily disabled logging keys to console/file due to a weird issue with keys not being taken, The section handling logging is pending re-write
 
-
-
 ## Additions:
 * Added extra placeholders to all messages. The messages.yml will update with new comments showing what each message can use.
 * Add config.yml/messages.yml to `examples` folder which auto-generate on reload.
@@ -43,6 +41,27 @@ Older keys will still work temporarily but please get your players to trade your
   * %id% is now {id}
 * Used correct message when a player has no keys using /cc open
 
+### Chance System:
+* The way chances are calculated have changed. It used to be `(Chance/MaxRange)*100 = PercentageChance` which was very extra.
+  * The max range by default will now be 100 so the config option `MaxRange` has been removed.
+  * You can use 0.1 or 0.7 or 1.3 or 99.8 for your chances now as seen below.
+  * The tiers used in the crate types, Cosmic & Casino also have changed to use decimals with no `MaxRange`
+```yml
+    1:
+      # Name of the item shown by the crate.
+      DisplayName: "&cAn example of a Player Head!"
+      # ITem shown by the crate.
+      DisplayItem: "PLAYER_HEAD"
+      # The amount displayed.
+      DisplayAmount: 1
+      # The lore in the crate preview
+      Lore:
+        - "&7Want a player head?"
+        - ""
+        - "&cChance: &e25%"
+      Chance: 25.0 # The chance to win the prize out of 100.
+```
+
 ## Enhancements:
 * Added a warning on startup if the spawn protection in server.properties isn't 0.
 * Added the ability to add enchants to ENCHANTED_BOOK, so they function in anvil.
@@ -57,8 +76,7 @@ Older keys will still work temporarily but please get your players to trade your
       Lore:
         - "&7A sharp enchantment book."
         - "&6&lChance: &c&l25%"
-      MaxRange: 100
-      Chance: 25
+      Chance: 25.0
       Firework: true
       Messages:
         - "&7You just won &r%reward%."
