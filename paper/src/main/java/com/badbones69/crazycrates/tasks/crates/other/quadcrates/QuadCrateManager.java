@@ -293,6 +293,8 @@ public class QuadCrateManager {
      * @param removeForce whether to stop the crate session or not.
      */
     public void endCrateForce(boolean removeForce) {
+        this.handler.removeStructure();
+
         this.oldBlocks.keySet().forEach(location -> this.oldBlocks.get(location).update(true, false));
         this.crateLocations.forEach(location -> this.quadCrateChests.get(location).update(true, false));
         this.displayedRewards.forEach(Entity::remove);
@@ -303,8 +305,6 @@ public class QuadCrateManager {
 
             crateSessions.remove(this.instance);
         }
-
-        this.handler.removeStructure();
     }
 
     /**
