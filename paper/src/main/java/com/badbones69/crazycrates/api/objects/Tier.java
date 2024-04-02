@@ -13,11 +13,11 @@ import java.util.List;
 public class Tier {
 
     private final ItemBuilder item;
-    private final int maxRange;
+    private final double maxRange;
     private final String name;
     private final List<String> lore;
     private final String coloredName;
-    private final int chance;
+    private final double chance;
     private final int slot;
 
     public Tier(String tier, ConfigurationSection section) {
@@ -29,8 +29,8 @@ public class Tier {
 
         this.item = new ItemBuilder().setMaterial(section.getString("Item", "CHEST"));
 
-        this.chance = section.getInt("Chance");
-        this.maxRange = section.getInt("MaxRange", 100);
+        this.chance = section.getDouble("Chance", 50.0);
+        this.maxRange = 100.0;
 
         this.slot = section.getInt("Slot");
     }
@@ -59,14 +59,14 @@ public class Tier {
     /**
      * @return the chance of being picked.
      */
-    public int getChance() {
+    public double getChance() {
         return this.chance;
     }
     
     /**
      * @return the range of max possible chances.
      */
-    public int getMaxRange() {
+    public double getMaxRange() {
         return this.maxRange;
     }
 

@@ -67,6 +67,14 @@ public class CommandManager {
             return numbers;
         });
 
+        this.bukkitCommandManager.registerSuggestion(SuggestionKey.of("doubles"), (sender, context) -> {
+            List<String> numbers = new ArrayList<>();
+
+            for (double i = 1.0; i <= 100.0; i++) numbers.add(String.valueOf(i));
+
+            return numbers;
+        });
+
         this.bukkitCommandManager.registerArgument(CrateBaseCommand.CustomPlayer.class, (sender, context) -> new CrateBaseCommand.CustomPlayer(context));
 
         this.bukkitCommandManager.registerCommand(new CrateBaseCommand());

@@ -307,12 +307,12 @@ public class Crate {
     private void chanceCheck(List<Prize> prizes, List<Prize> usablePrizes) {
         for (int stop = 0; prizes.isEmpty() && stop <= 2000; stop++) {
             for (Prize prize : usablePrizes) {
-                int max = prize.getMaxRange();
-                int chance = prize.getChance();
-                int num;
+                double max = prize.getMaxRange();
+                double chance = prize.getChance();
+                double num;
 
                 for (int counter = 1; counter <= 1; counter++) {
-                    num = MiscUtils.useOtherRandom() ? 1 + ThreadLocalRandom.current().nextInt(max) : 1 + new Random().nextInt(max);
+                    num = MiscUtils.useOtherRandom() ? 1 + ThreadLocalRandom.current().nextDouble(max) : 1 + new Random().nextDouble(max);
 
                     if (num <= chance) prizes.add(prize);
                 }
@@ -593,7 +593,7 @@ public class Crate {
      * @param prize the prize the item is being added to.
      * @param item the ItemStack that is being added.
      */
-    public void addEditorItem(String prize, ItemStack item, int chance) {
+    public void addEditorItem(String prize, ItemStack item, double chance) {
         List<ItemStack> items = new ArrayList<>();
         items.add(item);
 
@@ -616,7 +616,7 @@ public class Crate {
      * @param chance the chance to win the item
      * @param path the path in the config to set the item at.
      */
-    private void setItem(ItemStack item, int chance, String path) {
+    private void setItem(ItemStack item, double chance, String path) {
         if (item.hasItemMeta()) {
             ItemMeta itemMeta = item.getItemMeta();
 
@@ -636,7 +636,6 @@ public class Crate {
 
         this.file.set(path + ".DisplayItem", item.getType().name());
         this.file.set(path + ".DisplayAmount", item.getAmount());
-        this.file.set(path + ".MaxRange", 100);
         this.file.set(path + ".Chance", chance);
     }
 
@@ -671,7 +670,7 @@ public class Crate {
      * @param item the ItemStack that is being added.
      * @param tier the tier for the crate.
      */
-    public void addEditorItem(String prize, ItemStack item, Tier tier, int chance) {
+    public void addEditorItem(String prize, ItemStack item, Tier tier, double chance) {
         List<ItemStack> items = new ArrayList<>();
         items.add(item);
 

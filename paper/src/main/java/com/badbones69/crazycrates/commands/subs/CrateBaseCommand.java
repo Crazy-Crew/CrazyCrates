@@ -278,7 +278,7 @@ public class CrateBaseCommand extends BaseCommand {
 
     @SubCommand("additem")
     @Permission(value = "crazycrates.command.admin.additem", def = PermissionDefault.OP)
-    public void onAdminCrateAddItem(Player player, @Suggestion("crates") String crateName, @Suggestion("prizes") String prize, @Suggestion("numbers") int chance, @Optional @Suggestion("tiers") String tier) {
+    public void onAdminCrateAddItem(Player player, @Suggestion("crates") String crateName, @Suggestion("prizes") String prize, @Suggestion("doubles") double chance, @Optional @Suggestion("tiers") String tier) {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item.getType() == Material.AIR) {

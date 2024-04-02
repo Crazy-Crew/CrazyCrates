@@ -123,8 +123,7 @@ Crate:
       DisplayEnchantments:
         - "PROTECTION_ENVIRONMENTAL:5"
         - "DURABILITY:3"
-      MaxRange: 100
-      Chance: 40
+      Chance: 40.0
       Items:
         - "Item:DIAMOND_CHESTPLATE, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:EMERALD, Name:&3Rare ChestPlate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
     2:
@@ -140,8 +139,7 @@ Crate:
       DisplayEnchantments:
         - "DAMAGE_ALL:5"
         - "FIRE_ASPECT:1"
-      MaxRange: 100
-      Chance: 35
+      Chance: 35.0
       Items:
         - "Item:GOLDEN_SWORD, Amount:1, Damage:13, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1"
       Messages:
@@ -153,8 +151,7 @@ Crate:
       Lore:
         - "&7Make it rain a butt load of Money."
         - "&6&lChance: &c&l20%"
-      MaxRange: 100
-      Chance: 20
+      Chance: 20.0
       Firework: true
       Commands:
         - "eco give %player% 1000000"
