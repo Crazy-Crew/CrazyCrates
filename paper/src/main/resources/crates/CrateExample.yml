@@ -218,3 +218,20 @@ Crate:
           - "&r &8[&bCrazyCrates&8]: &7You have already won that prize, so enjoy some gold nuggets."
         Commands:
           - "give %player% gold_nugget 16"
+    4:
+      DisplayName: "&d&lSharpness 5 / Looting 3"
+      DisplayItem: "ENCHANTED_BOOK"
+      DisplayAmount: 1
+      DisplayEnchantments:
+        - "SHARPNESS:5"
+        - "LOOTING:3"
+      Lore:
+        - "&7A sharp enchantment book."
+        - "&6&lChance: &c&l25%"
+      MaxRange: 100
+      Chance: 25
+      Firework: true
+      Messages:
+        - "&7You just won &r%reward%."
+      Items:
+        - "Item:ENCHANTED_BOOK, Amount:1, DAMAGE_ALL:5, LOOTING:3"
