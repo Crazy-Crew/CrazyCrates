@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.commands.MessageManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
 import dev.triumphteam.cmd.core.message.MessageKey;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
@@ -13,37 +12,13 @@ public class MiscRelations extends MessageManager {
 
     @Override
     public void build() {
-        getBukkitCommandManager().registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> {
-            if (sender instanceof Player player) {
-                send(sender, Messages.correct_usage.getMessage("{usage}", context.getTypedArgument(), player));
-            } else {
-                send(sender, Messages.correct_usage.getMessage("{usage}", context.getTypedArgument()));
-            }
-        });
+        getBukkitCommandManager().registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> send(sender, Messages.correct_usage.getMessage("{usage}", context.getTypedArgument(), sender)));
 
-        getBukkitCommandManager().registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> {
-            if (sender instanceof Player player) {
-                send(sender, Messages.no_permission.getMessage(player));
-            } else {
-                send(sender, Messages.no_permission.getMessage());
-            }
-        });
+        getBukkitCommandManager().registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> send(sender, Messages.no_permission.getMessage(sender)));
 
-        getBukkitCommandManager().registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> {
-            if (sender instanceof Player player) {
-                send(sender, Messages.must_be_a_player.getMessage(player));
-            } else {
-                send(sender, Messages.must_be_a_player.getMessage());
-            }
-        });
+        getBukkitCommandManager().registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> send(sender, Messages.must_be_a_player.getMessage(sender)));
 
-        getBukkitCommandManager().registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> {
-            if (sender instanceof Player player) {
-                send(sender, Messages.must_be_console_sender.getMessage(player));
-            } else {
-                send(sender, Messages.must_be_console_sender.getMessage());
-            }
-        });
+        getBukkitCommandManager().registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> send(sender, Messages.must_be_console_sender.getMessage(sender)));
     }
 
     @Override

@@ -247,8 +247,7 @@ public class QuadCrateManager {
         this.crateManager.addCrateTask(this.player, new SchedulerTaskRunnable() {
             @Override
             public void run() {
-                // End the crate by force.
-                endCrateForce(true);
+                endCrate(true);
                 player.sendMessage(Messages.out_of_time.getMessage("{crate}", crate.getName(), player));
                 crate.playSound(player, player.getLocation(), "stop-sound", "ENTITY_PLAYER_LEVELUP", SoundCategory.PLAYERS);
             }
@@ -258,7 +257,7 @@ public class QuadCrateManager {
     /**
      * End the crate gracefully.
      */
-    public void endCrate() {
+    public void endCrate(boolean immediately) {
         new SchedulerTaskRunnable() {
             @Override
             public void run() {
@@ -298,7 +297,7 @@ public class QuadCrateManager {
                 // Remove the "instance" from the crate sessions.
                 crateSessions.remove(instance);
             }
-        }.runDelayed(this.plugin, SchedulerType.SYNC, player, null, 5);
+        }.runDelayed(this.plugin, SchedulerType.SYNC, player, null, immediately ? 0 : 5);
     }
 
     /**

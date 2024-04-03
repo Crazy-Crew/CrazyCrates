@@ -119,7 +119,7 @@ public class QuadCrateListener implements Listener {
                     new SchedulerTaskRunnable() {
                         @Override
                         public void run() {
-                            session.endCrate();
+                            session.endCrate(false);
                             crate.playSound(player, block.getLocation(), "stop-sound", "BLOCK_ANVIL_LAND", SoundCategory.BLOCKS);
                         }
                     }.runDelayed(this.plugin, SchedulerType.SYNC, player, null, 60);
@@ -207,7 +207,7 @@ public class QuadCrateListener implements Listener {
         Player player = event.getPlayer();
 
         if (this.sessionManager.inSession(player)) {
-            this.sessionManager.getSession(player).endCrate();
+            this.sessionManager.getSession(player).endCrate(true);
         }
     }
 }
