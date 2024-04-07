@@ -3,8 +3,6 @@ package us.crazycrew.crazycrates.platform.config;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
-import us.crazycrew.crazycrates.CrazyCrates;
-import us.crazycrew.crazycrates.CrazyCratesProvider;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import us.crazycrew.crazycrates.platform.config.impl.messages.CommandKeys;
 import us.crazycrew.crazycrates.platform.config.impl.messages.CrateKeys;
@@ -48,18 +46,10 @@ public class ConfigManager {
     }
 
     public static SettingsManager getConfig() {
-        //if (config == null) {
-        //    instance.getLogger().warning("Unsupported Action: Trying to fetch config.yml while the variable is null.");
-        //}
-
         return config;
     }
 
     public static SettingsManager getMessages() {
-        //if (messages == null) {
-        //    instance.getLogger().warning("Unsupported Action: Trying to fetch messages.yml while the variable is null.");
-        //}
-
         return messages;
     }
 }

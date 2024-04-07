@@ -3,6 +3,12 @@ package us.crazycrew.crazycrates.api.crates;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class for crate holograms
+ *
+ * @author Ryder Belserion
+ * @version 1.0-snapshot
+ */
 public class CrateHologram {
     
     private final boolean enabled;

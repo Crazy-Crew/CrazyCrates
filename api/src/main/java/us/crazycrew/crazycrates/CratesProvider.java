@@ -1,18 +1,19 @@
 package us.crazycrew.crazycrates;
 
 import org.jetbrains.annotations.ApiStatus;
+import us.crazycrew.crazycrates.platform.Server;
 
 /**
  * A class used to initialize the api so other plugins can use it.
  *
  * @author Ryder Belserion
- * @version 0.4
+ * @version 1.0-snapshot
  */
-public class CrazyCratesProvider {
+public class CratesProvider {
 
-    private static CrazyCrates instance = null;
+    private static Server instance;
 
-    public static CrazyCrates get() {
+    public static Server get() {
         if (instance == null) {
             throw new IllegalStateException("CrazyCrates API is not loaded.");
         }
@@ -21,21 +22,19 @@ public class CrazyCratesProvider {
     }
 
     @ApiStatus.Internal
-    private CrazyCratesProvider() {
+    private CratesProvider() {
         throw new UnsupportedOperationException("This class cannot be instantiated");
     }
 
     @ApiStatus.Internal
-    static void register(CrazyCrates instance) {
-        if (CrazyCratesProvider.instance != null) {
-            return;
-        }
+    public static void register(Server instance) {
+        if (CratesProvider.instance != null) return;
 
-        CrazyCratesProvider.instance = instance;
+        CratesProvider.instance = instance;
     }
 
     @ApiStatus.Internal
-    static void unregister() {
-        CrazyCratesProvider.instance = null;
+    public static void unregister() {
+        CratesProvider.instance = null;
     }
 }
