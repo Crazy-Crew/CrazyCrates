@@ -45,7 +45,6 @@ import us.crazycrew.crazycrates.api.crates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.DecentHologramsSupport;
-import com.badbones69.crazycrates.support.holograms.types.HolographicDisplaysSupport;
 import com.badbones69.crazycrates.support.PluginSupport;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import java.io.File;
@@ -160,9 +159,6 @@ public class CrateManager {
         } else if (PluginSupport.CMI.isPluginEnabled() && CMIModule.holograms.isEnabled()) {
             this.holograms = new CMIHologramsSupport();
             if (MiscUtils.isLogging()) this.plugin.getLogger().info("CMI Hologram support has been enabled.");
-        } else if (PluginSupport.HOLOGRAPHIC_DISPLAYS.isPluginEnabled()) {
-            this.holograms = new HolographicDisplaysSupport();
-            if (MiscUtils.isLogging()) this.plugin.getLogger().info("Holographic Displays support has been enabled.");
         } else if (MiscUtils.isLogging()) this.plugin.getLogger().warning("No holograms plugin were found. If using CMI, make sure holograms module is enabled.");
     }
 

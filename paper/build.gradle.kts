@@ -24,8 +24,6 @@ dependencies {
 
     implementation(libs.metrics)
 
-    compileOnly(libs.holographicdisplays)
-
     compileOnly(libs.decent.holograms)
 
     compileOnly(libs.placeholder.api)
