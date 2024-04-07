@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -31,7 +31,7 @@ public class CasinoCrate extends CrateBuilder {
     public CasinoCrate(Crate crate, Player player, int size) {
         super(crate, player, size);
 
-        runTaskTimer(CrazyCratesPaper.get(), 1, 1);
+        runTaskTimer(CrazyCrates.get(), 1, 1);
     }
 
     private int counter = 0;

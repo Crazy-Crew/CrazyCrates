@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 import org.bukkit.SoundCategory;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.enums.Messages;
@@ -29,7 +29,7 @@ import java.util.Map;
 public class QuadCrateManager {
 
     @NotNull
-    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     @NotNull
     private final CrateManager crateManager = this.plugin.getCrateManager();

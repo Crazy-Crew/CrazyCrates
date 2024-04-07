@@ -21,7 +21,7 @@ import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.api.FileManager.Files;
@@ -58,7 +58,7 @@ import java.util.logging.Level;
 public class CrateBaseCommand extends BaseCommand {
 
     @NotNull
-    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     @NotNull
     private final UserManager userManager = this.plugin.getUserManager();
@@ -634,7 +634,7 @@ public class CrateBaseCommand extends BaseCommand {
     }
 
     public record CustomPlayer(String name) {
-        private static final CrazyCratesPaper plugin = CrazyCratesPaper.getPlugin(CrazyCratesPaper.class);
+        private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
         public @NotNull OfflinePlayer getOfflinePlayer() {
             CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> plugin.getServer().getOfflinePlayer(name)).thenApply(OfflinePlayer::getUniqueId);

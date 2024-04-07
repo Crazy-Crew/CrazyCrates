@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.support;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,7 +21,7 @@ import java.util.logging.Level;
 public class StructureHandler {
 
     @NotNull
-    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     private final File file;
 

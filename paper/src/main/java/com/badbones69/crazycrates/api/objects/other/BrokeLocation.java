@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.api.objects.other;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +16,7 @@ public class BrokeLocation {
     private Crate crate;
 
     @NotNull
-    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     /**
      * Builds a location that represents a broken crate.

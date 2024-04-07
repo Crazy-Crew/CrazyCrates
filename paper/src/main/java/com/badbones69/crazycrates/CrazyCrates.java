@@ -26,14 +26,12 @@ import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.MigrationManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.cluster.ClusterFactory;
 import net.minecraft.server.dedicated.DedicatedServer;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.badbones69.crazycrates.api.FileManager;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.CrazyCrates;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import java.util.List;
@@ -42,13 +40,13 @@ import java.util.Timer;
 import static com.badbones69.crazycrates.api.utils.MiscUtils.isLogging;
 import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions;
 
-public class CrazyCratesPaper extends JavaPlugin {
+public class CrazyCrates extends JavaPlugin {
 
-    private CrazyCrates instance;
+    private us.crazycrew.crazycrates.CrazyCrates instance;
 
     @NotNull
-    public static CrazyCratesPaper get() {
-        return JavaPlugin.getPlugin(CrazyCratesPaper.class);
+    public static CrazyCrates get() {
+        return JavaPlugin.getPlugin(CrazyCrates.class);
     }
 
     @NotNull
@@ -56,7 +54,7 @@ public class CrazyCratesPaper extends JavaPlugin {
 
     private final Timer timer;
 
-    public CrazyCratesPaper() {
+    public CrazyCrates() {
         // Create timer object.
         this.timer = new Timer();
     }
@@ -118,7 +116,7 @@ public class CrazyCratesPaper extends JavaPlugin {
         this.userManager = new BukkitUserManager();
 
         // Init api
-        this.instance = new CrazyCrates(new PaperServer());
+        this.instance = new us.crazycrew.crazycrates.CrazyCrates(new PaperServer());
 
         // Load holograms.
         this.crateManager.loadHolograms();

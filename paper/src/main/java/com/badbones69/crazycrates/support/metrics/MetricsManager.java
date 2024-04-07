@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.support.metrics;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
@@ -10,7 +10,7 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 public class MetricsManager {
 
     @NotNull
-    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     private Metrics metrics;
 

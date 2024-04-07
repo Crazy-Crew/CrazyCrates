@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.api;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import org.apache.commons.lang.WordUtils;
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
@@ -24,7 +24,7 @@ import static java.util.regex.Matcher.quoteReplacement;
 public class PrizeManager {
     
     @NotNull
-    private static final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private static final CrazyCrates plugin = CrazyCrates.get();
 
     /**
      * Gets the prize for the player.

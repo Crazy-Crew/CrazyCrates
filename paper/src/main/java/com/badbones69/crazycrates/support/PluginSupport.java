@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.support;
 
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 
 public enum PluginSupport {
 
@@ -15,7 +15,7 @@ public enum PluginSupport {
     private final String name;
 
     @NotNull
-    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     /**
      * @param name the name of the plugin.

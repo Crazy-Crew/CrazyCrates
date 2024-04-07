@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.tasks;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import us.crazycrew.crazycrates.platform.config.impl.messages.CommandKeys;
 import us.crazycrew.crazycrates.platform.config.impl.messages.CrateKeys;
@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 public class MigrationManager {
 
     @NotNull
-    private static final CrazyCratesPaper plugin = JavaPlugin.getPlugin(CrazyCratesPaper.class);
+    private static final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     public static void migrate() {
         File directory = new File(plugin.getDataFolder(), "backups");

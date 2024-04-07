@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.platform;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public class PaperServer implements Server, ICrazyCrates {
 
     @NotNull
-    private final CrazyCratesPaper plugin = JavaPlugin.getPlugin(CrazyCratesPaper.class);
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     @Override
     public File getFolder() {

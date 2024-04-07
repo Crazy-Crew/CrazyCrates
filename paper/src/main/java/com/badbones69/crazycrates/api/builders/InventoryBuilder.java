@@ -12,7 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.List;
 import static java.util.regex.Matcher.quoteReplacement;
@@ -21,7 +21,7 @@ import static java.util.regex.Matcher.quoteReplacement;
 public abstract class InventoryBuilder implements InventoryHolder {
 
     @NotNull
-    protected final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    protected final CrazyCrates plugin = CrazyCrates.get();
 
     private final Inventory inventory;
     private final Player player;

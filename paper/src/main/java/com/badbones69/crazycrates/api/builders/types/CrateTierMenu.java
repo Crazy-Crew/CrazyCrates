@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api.builders.types;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -66,7 +66,7 @@ public class CrateTierMenu extends InventoryBuilder {
     public static class CrateTierListener implements Listener {
 
         @NotNull
-        private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+        private final CrazyCrates plugin = CrazyCrates.get();
 
         @NotNull
         private final InventoryManager inventoryManager = this.plugin.getInventoryManager();

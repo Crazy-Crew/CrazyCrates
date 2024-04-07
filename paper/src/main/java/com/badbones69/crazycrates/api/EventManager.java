@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.api;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -29,7 +29,7 @@ import java.util.logging.Level;
 public class EventManager {
 
     @NotNull
-    private final static CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private final static CrazyCrates plugin = CrazyCrates.get();
 
     private final static String fileName = Files.LOGS.getFileName();
 

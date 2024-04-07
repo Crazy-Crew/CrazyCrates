@@ -18,7 +18,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.List;
 public abstract class CrateBuilder extends BukkitRunnable {
 
     @NotNull
-    protected final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    protected final CrazyCrates plugin = CrazyCrates.get();
 
     private final InventoryBuilder builder;
     private final Inventory inventory;

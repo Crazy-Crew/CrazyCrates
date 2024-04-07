@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.api.utils;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -10,12 +10,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.platform.config.ConfigManager;
-import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 
 public class ItemUtils {
 
-    private static final CrazyCratesPaper plugin = JavaPlugin.getPlugin(CrazyCratesPaper.class);
+    private static final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     @NotNull
     private static final CrateManager crateManager = plugin.getCrateManager();

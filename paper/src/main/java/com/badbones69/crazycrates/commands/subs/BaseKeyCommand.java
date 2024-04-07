@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.commands.subs;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.google.common.collect.Lists;
@@ -22,7 +22,7 @@ import java.util.Map;
 public class BaseKeyCommand extends BaseCommand {
 
     @NotNull
-    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private final CrazyCrates plugin = CrazyCrates.get();
 
     @NotNull
     private final UserManager userManager = this.plugin.getUserManager();

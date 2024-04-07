@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.api.builders.types;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
@@ -51,7 +51,7 @@ public class CrateAdminMenu extends InventoryBuilder {
     public static class CrateAdminListener implements Listener {
 
         @NotNull
-        private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+        private final CrazyCrates plugin = CrazyCrates.get();
 
         @NotNull
         private final CrateManager crateManager = this.plugin.getCrateManager();
