@@ -48,4 +48,32 @@ tasks {
     reobfJar {
         outputJar = rootProject.layout.buildDirectory.file("$rootDir/jars/paper/${rootProject.name}-${rootProject.version}.jar")
     }
+
+    shadowJar {
+        listOf(
+            "dev.triumphteam",
+            "org.bstats",
+            "ch.jalu"
+        ).forEach {
+            relocate(it, "libs.$it")
+        }
+    }
+
+    processResources {
+        val properties = hashMapOf(
+            "name" to rootProject.name,
+            "version" to rootProject.version,
+            "group" to rootProject.group,
+            "description" to rootProject.description,
+            "apiVersion" to providers.gradleProperty("apiVersion").get(),
+            "authors" to providers.gradleProperty("authors").get(),
+            "website" to providers.gradleProperty("website").get()
+        )
+
+        inputs.properties(properties)
+
+        filesMatching("plugin.yml") {
+            expand(properties)
+        }
+    }
 }
