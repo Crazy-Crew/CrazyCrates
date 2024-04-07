@@ -21,7 +21,7 @@ public class DecentHologramsSupport extends HologramManager {
 
         if (!crateHologram.isEnabled()) return;
 
-        Hologram hologram = DHAPI.createHologram(name(), location.add(getVector(crate)));
+        Hologram hologram = DHAPI.createHologram(name(), location.clone().add(getVector(crate)));
 
         crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, MsgUtils.color(line)));
 

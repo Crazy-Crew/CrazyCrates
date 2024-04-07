@@ -21,7 +21,7 @@ public class CMIHologramsSupport extends HologramManager {
 
         if (!crateHologram.isEnabled()) return;
 
-        CMIHologram hologram = new CMIHologram(name(), new CMILocation(location).add(getVector(crate)));
+        CMIHologram hologram = new CMIHologram(name(), new CMILocation(location.clone().add(getVector(crate))));
 
         hologram.setLines(crateHologram.getMessages());
         hologram.setShowRange(crateHologram.getRange());
