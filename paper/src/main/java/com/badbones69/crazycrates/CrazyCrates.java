@@ -193,7 +193,7 @@ public class CrazyCrates extends JavaPlugin {
 
             HologramManager holograms = this.crateManager.getHolograms();
 
-            if (holograms != null && !holograms.isMapEmpty()) {
+            if (holograms != null && !holograms.isEmpty()) {
                 holograms.removeAllHolograms();
             }
         }

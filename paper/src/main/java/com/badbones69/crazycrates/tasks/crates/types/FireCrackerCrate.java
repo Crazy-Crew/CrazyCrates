@@ -46,7 +46,7 @@ public class FireCrackerCrate extends CrateBuilder {
         }
 
         if (this.crateManager.getHolograms() != null) {
-            this.crateManager.getHolograms().removeHologram(getLocation().getBlock());
+            this.crateManager.getHolograms().removeHologram(getLocation());
         }
 
         List<Color> colors = Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.AQUA, Color.MAROON, Color.PURPLE);

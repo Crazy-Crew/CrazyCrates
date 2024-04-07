@@ -171,7 +171,7 @@ public class CrateManager {
         purge();
 
         // Removes all holograms so that they can be replaced.
-        if (this.holograms != null && !this.holograms.isMapEmpty()) {
+        if (this.holograms != null && !this.holograms.isEmpty()) {
             this.holograms.removeAllHolograms();
         }
 
@@ -314,7 +314,7 @@ public class CrateManager {
                         this.crateLocations.add(new CrateLocation(locationName, crate, location));
 
                         if (this.holograms != null) {
-                            this.holograms.createHologram(location.getBlock(), crate);
+                            this.holograms.createHologram(location, crate);
                         }
 
                         loadedAmount++;
@@ -843,7 +843,7 @@ public class CrateManager {
 
         addLocation(new CrateLocation(id, crate, location));
 
-        if (this.holograms != null) this.holograms.createHologram(location.getBlock(), crate);
+        if (this.holograms != null) this.holograms.createHologram(location, crate);
     }
 
     /**
@@ -866,7 +866,7 @@ public class CrateManager {
         if (location != null) {
             removeLocation(location);
 
-            if (this.holograms != null) this.holograms.removeHologram(location.getLocation().getBlock());
+            if (this.holograms != null) this.holograms.removeHologram(location.getLocation());
         }
     }
 
@@ -1288,7 +1288,7 @@ public class CrateManager {
         if (!useQuickCrateAgain) {
             HologramManager handler = this.plugin.getCrateManager().getHolograms();
 
-            if (handler != null && crate != null) handler.createHologram(location.getBlock(), crate);
+            if (handler != null && crate != null) handler.createHologram(location, crate);
         }
     }
 

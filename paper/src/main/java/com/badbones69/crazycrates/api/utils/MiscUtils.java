@@ -71,6 +71,10 @@ public class MiscUtils {
         server.getScheduler().scheduleSyncDelayedTask(plugin, firework::detonate, 3);
     }
 
+    public static String location(Location location) {
+        return location.getWorld().getUID() + "," + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ();
+    }
+
     /**
      * Checks if the player's inventory is empty by checking if the first empty slot is -1.
      *

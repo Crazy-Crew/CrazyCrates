@@ -2,52 +2,44 @@ package com.badbones69.crazycrates.support.holograms.types;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Holograms.CMIHologram;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
+import org.bukkit.Location;
 import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import net.Zrips.CMILib.Container.CMILocation;
 import com.badbones69.crazycrates.api.objects.Crate;
-import org.bukkit.block.Block;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class CMIHologramsSupport extends HologramManager {
 
-    private final Map<Block, CMIHologram> holograms = new HashMap<>();
+    private final Map<String, CMIHologram> holograms = new HashMap<>();
 
     @Override
-    public void createHologram(Block block, Crate crate) {
+    public void createHologram(Location location, Crate crate) {
         CrateHologram crateHologram = crate.getHologram();
 
         if (!crateHologram.isEnabled()) return;
 
-        double height = crateHologram.getHeight();
-
-        CMILocation location = new CMILocation(block.getLocation().add(0.5, height, 0.5));
-
-        CMIHologram hologram = new CMIHologram("CrazyCrates-" + UUID.randomUUID(), location);
+        CMIHologram hologram = new CMIHologram(name(), new CMILocation(location).add(getVector(crate)));
 
         hologram.setLines(crateHologram.getMessages());
-
         hologram.setShowRange(crateHologram.getRange());
 
         CMI.getInstance().getHologramManager().addHologram(hologram);
 
         hologram.update();
 
-        this.holograms.put(block, hologram);
+        this.holograms.put(MiscUtils.location(location), hologram);
     }
 
     @Override
-    public void removeHologram(Block block) {
-        if (!this.holograms.containsKey(block)) return;
+    public void removeHologram(Location location) {
+        CMIHologram hologram = this.holograms.remove(MiscUtils.location(location));
 
-        CMIHologram hologram = this.holograms.get(block);
-
-        this.holograms.remove(block);
-
-        hologram.remove();
+        if (hologram != null) {
+            hologram.remove();
+        }
     }
 
     @Override
@@ -57,7 +49,7 @@ public class CMIHologramsSupport extends HologramManager {
     }
 
     @Override
-    public boolean isMapEmpty() {
+    public boolean isEmpty() {
         return this.holograms.isEmpty();
     }
 }

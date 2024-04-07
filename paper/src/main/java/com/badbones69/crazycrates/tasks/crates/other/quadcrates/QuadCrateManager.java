@@ -178,7 +178,7 @@ public class QuadCrateManager {
             return;
         }
 
-        if (this.crateManager.getHolograms() != null) this.crateManager.getHolograms().removeHologram(this.spawnLocation.getBlock());
+        if (this.crateManager.getHolograms() != null) this.crateManager.getHolograms().removeHologram(this.spawnLocation);
 
         // Shove other players away from the player opening the crate.
         shovePlayers.forEach(entity -> entity.getLocation().toVector().subtract(this.spawnLocation.clone().toVector()).normalize().setY(1));
@@ -272,7 +272,7 @@ public class QuadCrateManager {
                 // Restore the old blocks.
                 oldBlocks.keySet().forEach(location -> oldBlocks.get(location).update(true, false));
 
-                if (crate.getHologram().isEnabled() && crateManager.getHolograms() != null) crateManager.getHolograms().createHologram(spawnLocation.getBlock(), crate);
+                if (crate.getHologram().isEnabled() && crateManager.getHolograms() != null) crateManager.getHolograms().createHologram(spawnLocation, crate);
 
                 // End the crate.
                 crateManager.endCrate(player);
