@@ -53,3 +53,11 @@ subprojects {
         }
     }
 }
+
+tasks {
+    assemble {
+        doFirst {
+            delete("$rootDir/jars")
+        }
+    }
+}
