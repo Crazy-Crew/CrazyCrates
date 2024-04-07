@@ -7,7 +7,8 @@ import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.support.PluginSupport;
 import com.badbones69.crazycrates.support.SkullCreator;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.ryderbelserion.cluster.utils.DyeUtils;
+import com.ryderbelserion.vital.api.enums.Support;
+import com.ryderbelserion.vital.utils.DyeUtils;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.nbt.TagParser;
@@ -35,6 +36,7 @@ import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -51,8 +53,7 @@ import java.util.stream.Collectors;
 
 public class ItemBuilder {
 
-    @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     // Items
     private Material material = Material.STONE;
@@ -279,7 +280,7 @@ public class ItemBuilder {
     public ItemBuilder() {}
 
     private String parse(String message) {
-        if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled() && this.target != null) {
+        if (Support.placeholder_api.isEnabled()  && this.target != null) {
             return MsgUtils.color(PlaceholderAPI.setPlaceholders(this.target, message));
         }
 
@@ -293,7 +294,7 @@ public class ItemBuilder {
      */
     public ItemStack build() {
         // Check if oraxen is enabled.
-        if (PluginSupport.ORAXEN.isPluginEnabled()) {
+        if (Support.oraxen.isEnabled() ) {
             // Get the item.
             io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
 
@@ -607,7 +608,7 @@ public class ItemBuilder {
 
             this.material = this.itemStack.getType();
         } else {
-            if (PluginSupport.ORAXEN.isPluginEnabled()) {
+            if (Support.oraxen.isEnabled() ) {
                 io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
 
                 if (oraxenItem != null) {
@@ -1172,7 +1173,7 @@ public class ItemBuilder {
         } catch (Exception exception) {
             itemBuilder.setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor : &c" + (placeHolder != null ? placeHolder : "")));
 
-            CrazyCrates plugin = CrazyCrates.get();
+            CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
             plugin.getLogger().log(Level.WARNING, "An error has occurred with the item builder: ", exception);
         }
 

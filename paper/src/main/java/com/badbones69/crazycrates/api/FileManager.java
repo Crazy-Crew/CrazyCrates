@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,8 +20,7 @@ import java.util.logging.Logger;
 
 public class FileManager {
 
-    @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final Map<Files, File> files = new HashMap<>();
     private final List<String> homeFolders = new ArrayList<>();
@@ -410,7 +410,7 @@ public class FileManager {
         private final String fileLocation;
 
         @NotNull
-        private final CrazyCrates plugin = CrazyCrates.get();
+        private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
         @NotNull
         private final FileManager fileManager = this.plugin.getFileManager();
@@ -497,7 +497,7 @@ public class FileManager {
         private FileConfiguration file;
 
         @NotNull
-        private final CrazyCrates plugin = CrazyCrates.get();
+        private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
         /**
          * A custom file that is being made.

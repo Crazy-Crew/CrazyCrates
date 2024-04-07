@@ -16,6 +16,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
@@ -126,14 +127,11 @@ public class CratePreviewMenu extends InventoryBuilder {
 
     public static class CratePreviewListener implements Listener {
 
-        @NotNull
-        private final CrazyCrates plugin = CrazyCrates.get();
+        private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-        @NotNull
-        private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+        private final @NotNull InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
-        @NotNull
-        private final SettingsManager config = ConfigManager.getConfig();
+        private final @NotNull SettingsManager config = ConfigManager.getConfig();
 
         @EventHandler
         public void onInventoryClick(InventoryClickEvent event) {

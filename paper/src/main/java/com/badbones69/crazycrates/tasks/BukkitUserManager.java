@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
@@ -30,14 +31,11 @@ import java.util.logging.Level;
 
 public class BukkitUserManager extends UserManager {
 
-    @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-    @NotNull
-    private final FileConfiguration data = Files.DATA.getFile();
+    private final @NotNull FileConfiguration data = Files.DATA.getFile();
 
     @Override
     public Player getUser(UUID uuid) {

@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api.utils;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.support.PluginSupport;
@@ -34,8 +35,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MiscUtils {
 
-    @NotNull
-    private static final CrazyCrates plugin = CrazyCrates.get();
+    private static final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     public static void sendCommand(String command) {
         Server server = plugin.getServer();
@@ -323,10 +323,6 @@ public class MiscUtils {
         }
 
         return slow;
-    }
-
-    public static boolean isPapiActive() {
-        return PluginSupport.PLACEHOLDERAPI.isPluginEnabled();
     }
 
     public static boolean useOtherRandom() {

@@ -17,7 +17,6 @@ import com.badbones69.crazycrates.listeners.crates.MobileCrateListener;
 import com.badbones69.crazycrates.listeners.crates.QuadCrateListener;
 import com.badbones69.crazycrates.listeners.crates.WarCrateListener;
 import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
-import com.badbones69.crazycrates.platform.PaperServer;
 import com.badbones69.crazycrates.support.PluginSupport;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.support.metrics.MetricsManager;
@@ -26,31 +25,24 @@ import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.MigrationManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.api.enums.Support;
 import net.minecraft.server.dedicated.DedicatedServer;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.badbones69.crazycrates.api.FileManager;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.platform.Server;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import java.util.List;
 import java.util.Timer;
-
 import static com.badbones69.crazycrates.api.utils.MiscUtils.isLogging;
 import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions;
 
 public class CrazyCrates extends JavaPlugin {
 
-    private us.crazycrew.crazycrates.CrazyCrates instance;
-
-    @NotNull
-    public static CrazyCrates get() {
-        return JavaPlugin.getPlugin(CrazyCrates.class);
-    }
-
-    @NotNull
-    private final BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(this);
+    private Server instance;
 
     private final Timer timer;
 
@@ -67,29 +59,12 @@ public class CrazyCrates extends JavaPlugin {
     private MetricsManager metrics;
 
     @Override
-    public void onEnable() {
+    public void onLoad() {
         // Migrate as early as possible.
         MigrationManager.migrate();
 
-        // Load the config files.
-        ConfigManager.load(getDataFolder());
-
-        int radius = DedicatedServer.getServer().getSpawnProtectionRadius();
-
-        if (radius > 0) {
-            if (isLogging()) {
-                List.of(
-                        "The spawn protection is set to " + radius,
-                        "Crates placed in the spawn protection will not function",
-                        "correctly as spawn protection overrides everything",
-                        "",
-                        "Change the value in server.properties to 0 then restart"
-                ).forEach(getLogger()::warning);
-            }
-        }
-
-        // Register permissions that we need.
-        registerPermissions();
+        this.instance = new Server(this);
+        this.instance.enable();
 
         // The file manager is depended on by the user manager.
         this.fileManager = new FileManager();
@@ -110,13 +85,30 @@ public class CrazyCrates extends JavaPlugin {
                 .registerCustomFilesFolder("/crates")
                 .registerCustomFilesFolder("/schematics")
                 .setup();
+    }
+
+    @Override
+    public void onEnable() {
+        int radius = DedicatedServer.getServer().getSpawnProtectionRadius();
+
+        if (radius > 0) {
+            if (isLogging()) {
+                List.of(
+                        "The spawn protection is set to " + radius,
+                        "Crates placed in the spawn protection will not function",
+                        "correctly as spawn protection overrides everything",
+                        "",
+                        "Change the value in server.properties to 0 then restart"
+                ).forEach(getLogger()::warning);
+            }
+        }
+
+        // Register permissions that we need.
+        registerPermissions();
 
         this.inventoryManager = new InventoryManager();
         this.crateManager = new CrateManager();
         this.userManager = new BukkitUserManager();
-
-        // Init api
-        this.instance = new us.crazycrew.crazycrates.CrazyCrates(new PaperServer());
 
         // Load holograms.
         this.crateManager.loadHolograms();
@@ -173,7 +165,7 @@ public class CrazyCrates extends JavaPlugin {
             }
         }
 
-        if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled()) {
+        if (Support.placeholder_api.isEnabled()) {
             if (MiscUtils.isLogging()) getLogger().info("PlaceholderAPI support is enabled!");
 
             new PlaceholderAPISupport().register();
@@ -185,7 +177,9 @@ public class CrazyCrates extends JavaPlugin {
     @Override
     public void onDisable() {
         // Cancel the timer task.
-        if (this.timer != null) this.timer.cancel();
+        if (this.timer != null) {
+            this.timer.cancel();
+        }
 
         // Clean up any mess we may have left behind.
         if (this.crateManager != null) {
@@ -198,42 +192,31 @@ public class CrazyCrates extends JavaPlugin {
             }
         }
 
-        // Disable api
-        if (this.instance != null) this.instance.disable();
+        if (this.instance != null) {
+            this.instance.disable();
+        }
     }
 
-    @NotNull
-    public BukkitCommandManager<CommandSender> getCommandManager() {
-        return this.commandManager;
-    }
-
-    @NotNull
-    public InventoryManager getInventoryManager() {
+    public @NotNull InventoryManager getInventoryManager() {
         return this.inventoryManager;
     }
 
-    @NotNull
-    public BukkitUserManager getUserManager() {
+    public @NotNull BukkitUserManager getUserManager() {
         return this.userManager;
     }
 
-    @NotNull
-    public CrateManager getCrateManager() {
+    public @NotNull CrateManager getCrateManager() {
         return this.crateManager;
     }
 
-    @NotNull
-    public FileManager getFileManager() {
+    public @NotNull FileManager getFileManager() {
         return this.fileManager;
     }
-
-    @NotNull
-    public MetricsManager getMetrics() {
+    public @NotNull MetricsManager getMetrics() {
         return this.metrics;
     }
 
-    @NotNull
-    public Timer getTimer() {
+    public @NotNull Timer getTimer() {
         return this.timer;
     }
 }

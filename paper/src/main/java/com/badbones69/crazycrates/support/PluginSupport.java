@@ -1,21 +1,18 @@
 package com.badbones69.crazycrates.support;
 
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
 
 public enum PluginSupport {
 
     DECENT_HOLOGRAMS("DecentHolograms"),
-    HOLOGRAPHIC_DISPLAYS("HolographicDisplays"),
-    CMI("CMI"),
-    PLACEHOLDERAPI("PlaceholderAPI"),
-    ORAXEN("Oraxen"),
-    ITEMS_ADDER("ItemsAdder");
+    CMI("CMI");
     
     private final String name;
 
     @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     /**
      * @param name the name of the plugin.

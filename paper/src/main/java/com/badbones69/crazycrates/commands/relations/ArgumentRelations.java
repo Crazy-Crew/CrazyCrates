@@ -30,7 +30,7 @@ public class ArgumentRelations extends MessageManager {
 
     @Override
     public void build() {
-        getBukkitCommandManager().registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
+        commandManager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
             String command = context.getCommand();
             String subCommand = context.getSubCommand();
 
@@ -50,7 +50,7 @@ public class ArgumentRelations extends MessageManager {
             }
         });
 
-        getBukkitCommandManager().registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
+        commandManager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
             String command = context.getCommand();
             String subCommand = context.getSubCommand();
 
@@ -70,7 +70,7 @@ public class ArgumentRelations extends MessageManager {
             }
         });
 
-        getBukkitCommandManager().registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> send(sender, Messages.unknown_command.getMessage(sender)));
+        commandManager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> send(sender, Messages.unknown_command.getMessage(sender)));
     }
 
     @Override

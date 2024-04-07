@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 
 import org.bukkit.SoundCategory;
+import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.CrazyCrates;
@@ -28,11 +29,9 @@ import java.util.Map;
 
 public class QuadCrateManager {
 
-    @NotNull
-    private final CrazyCrates plugin = CrazyCrates.get();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
     private static final List<QuadCrateManager> crateSessions = new ArrayList<>();
 

@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api.utils;
 
 import com.badbones69.crazycrates.api.FileManager.Files;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
 import java.io.File;
@@ -14,8 +15,7 @@ import java.util.logging.Level;
 
 public class FileUtils {
 
-    @NotNull
-    private final static CrazyCrates plugin = CrazyCrates.get();
+    private final static @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     public static void copyFiles(Path directory, String folder, List<String> names) {
         names.forEach(name -> copyFile(directory, folder, name));

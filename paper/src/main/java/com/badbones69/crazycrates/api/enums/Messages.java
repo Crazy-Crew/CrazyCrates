@@ -2,7 +2,8 @@ package com.badbones69.crazycrates.api.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.ryderbelserion.vital.api.enums.Support;
+import com.ryderbelserion.vital.utils.MiscUtils;
 import org.bukkit.command.CommandSender;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.messages.CommandKeys;
@@ -14,7 +15,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
-import us.crazycrew.crazycrates.utils.StringUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.HashMap;
 import java.util.List;
@@ -159,7 +159,7 @@ public enum Messages {
         String message;
 
         if (isList()) {
-            message = StringUtils.convertList(getPropertyList(this.listProperty));
+            message = MiscUtils.convertList(getPropertyList(this.listProperty));
         } else {
             message = getProperty(this.property);
         }
@@ -181,7 +181,7 @@ public enum Messages {
         String message = this.message.replaceAll("\\{prefix}", prefix);
 
         if (sender instanceof Player player) {
-            if (MiscUtils.isPapiActive()) {
+            if (Support.placeholder_api.isEnabled()) {
                 return PlaceholderAPI.setPlaceholders(player, MsgUtils.color(message));
             }
         }
