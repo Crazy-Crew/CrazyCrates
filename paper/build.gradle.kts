@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.run.paper)
+    alias(libs.plugins.shadow)
 }
 
 val mcVersion = libs.versions.bundle.get()
@@ -13,8 +14,6 @@ dependencies {
 
     implementation(project(":api"))
 
-    implementation(libs.decent.holograms)
-
     implementation(libs.bundles.triumph)
 
     implementation(libs.config.me)
@@ -23,13 +22,17 @@ dependencies {
 
     compileOnly(libs.head.database.api)
 
+    compileOnly(libs.decent.holograms)
+
     compileOnly(libs.placeholder.api)
 
     compileOnly(libs.itemsadder.api)
 
     compileOnly(libs.oraxen.api)
 
-    compileOnly(libs.vault)
+    compileOnly(libs.vault) {
+        exclude("org.bukkit", "bukkit")
+    }
 }
 
 tasks {
