@@ -1,38 +1,55 @@
 plugins {
-    `root-plugin`
+    alias(libs.plugins.userdev) apply false
+
+    `java-library`
 }
 
-tasks {
-    assemble {
-        val jarsDir = File("$rootDir/jars")
+rootProject.group = "com.badbones69.crazycrates"
+rootProject.description = "Create unlimited crates with multiple crate types to choose from!"
+rootProject.version = "2.0"
 
-        doFirst {
-            delete(jarsDir)
+subprojects {
+    apply(plugin = "io.papermc.paperweight.userdev")
+    apply(plugin = "java-library")
 
-            jarsDir.mkdirs()
+    repositories {
+        maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+
+        maven("https://repo.papermc.io/repository/maven-public/")
+
+        maven("https://repo.codemc.io/repository/maven-public/")
+
+        maven("https://repo.triumphteam.dev/snapshots/")
+
+        maven("https://repo.crazycrew.us/snapshots/")
+
+        maven("https://repo.crazycrew.us/releases/")
+
+        maven("https://repo.oraxen.com/releases/")
+
+        maven("https://jitpack.io/")
+
+        flatDir { dirs("libs") }
+
+        mavenCentral()
+    }
+
+    java {
+        toolchain.languageVersion.set(JavaLanguageVersion.of("17"))
+    }
+
+    tasks {
+        compileJava {
+            options.encoding = Charsets.UTF_8.name()
+            options.release.set(17)
         }
 
-        subprojects.filter { it.name == "paper" }.forEach { project ->
-            dependsOn(":${project.name}:build")
+        javadoc {
+            options.encoding = Charsets.UTF_8.name()
+        }
 
-            doLast {
-                runCatching {
-                    val file = File("$jarsDir/${project.name.lowercase()}")
-
-                    file.mkdirs()
-
-                    copy {
-                        from(project.layout.buildDirectory.file("libs/${rootProject.name}-${project.version}.jar"))
-                        into(file)
-                    }
-                }.onSuccess {
-                    // Delete to save space on jenkins.
-                    delete(project.layout.buildDirectory.get())
-                    delete(rootProject.layout.buildDirectory.get())
-                }.onFailure {
-                    println("Failed to copy file out of build folder into jars directory: Likely does not exist.")
-                }
-            }
+        processResources {
+            filteringCharset = Charsets.UTF_8.name()
         }
     }
 }

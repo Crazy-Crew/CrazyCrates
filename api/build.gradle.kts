@@ -1,16 +1,16 @@
 plugins {
-    `root-plugin`
+    `maven-publish`
 }
 
 project.group = "us.crazycrew.crazycrates"
-project.version = "0.4"
+project.version = "1.0-snapshot"
 
-base {
-    archivesName.set("${rootProject.name}-${project.name}")
-}
+val mcVersion = libs.versions.bundle.get()
 
 dependencies {
-    compileOnlyApi(libs.bundles.adventure)
+    compileOnly(fileTree("libs/shade").include("*.jar"))
+
+    paperweight.paperDevBundle(mcVersion)
 
     compileOnly(libs.config.me)
 }
@@ -20,17 +20,15 @@ java {
     withJavadocJar()
 }
 
-val component: SoftwareComponent = components["java"]
-
 tasks {
     publishing {
         repositories {
             maven {
-                url = uri("https://repo.crazycrew.us/releases/")
+                uri("https://repo.crazycrew.us/snapshots/")
 
                 credentials {
-                    this.username = System.getenv("GRADLE_USERNAME")
-                    this.password = System.getenv("GRADLE_PASSWORD")
+                    this.username = System.getenv("gradle_username")
+                    this.password = System.getenv("gradle_password")
                 }
             }
         }
@@ -38,50 +36,10 @@ tasks {
         publications {
             create<MavenPublication>("maven") {
                 group = project.group
-                artifactId = "api"
-                version = "0.4"
+                artifactId = project.name
+                version = project.version.toString()
 
-                from(component)
-
-                pom {
-                    name.set("CrazyCrates API")
-                    description.set("A nifty crates plugin for Minecraft Servers.")
-                    url.set("https://github.com/Crazy-Crew/CrazyCrates")
-
-                    licenses {
-                        license {
-                            name.set("MIT")
-                            url.set("https://github.com/Crazy-Crew/CrazyCrates/blob/main/LICENSE")
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id.set("ryderbelserion")
-                            name.set("Ryder Belserion")
-                            url.set("https://github.com/ryderbelserion")
-                            email.set("no-reply@ryderbelserion.com")
-                        }
-
-                        developer {
-                            id.set("badbones69")
-                            name.set("Badbones69")
-                            url.set("https://github.com/badbones69")
-                            email.set("joewojcik14@gmail.com")
-                        }
-                    }
-
-                    scm {
-                        connection.set("scm:git:https://github.com/Crazy-Crew/CrazyCrates.git")
-                        developerConnection.set("scm:git:git@github.com:Crazy-Crew/CrazyCrates.git")
-                        url.set("https://github.com/Crazy-Crew/CrazyCrates")
-                    }
-
-                    issueManagement {
-                        system.set("GitHub")
-                        url.set("https://github.com/Crazy-Crew/CrazyCrates/issues")
-                    }
-                }
+                artifact(reobfJar)
             }
         }
     }

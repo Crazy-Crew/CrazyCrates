@@ -1,30 +1,27 @@
 plugins {
-    `paper-plugin`
-
-    id("io.papermc.paperweight.userdev")
-
     alias(libs.plugins.run.paper)
-    alias(libs.plugins.shadow)
 }
 
-val mcVersion: String = providers.gradleProperty("mcVersion").get()
+val mcVersion = libs.versions.bundle.get()
 
 dependencies {
-    paperweight.paperDevBundle(libs.versions.bundle)
+    compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
 
-    implementation(projects.api)
+    implementation(fileTree("$rootDir/libs/shade").include("*.jar"))
 
-    implementation(libs.cluster.paper)
+    paperweight.paperDevBundle(mcVersion)
 
-    implementation(libs.triumph.cmds)
+    implementation(project(":api"))
 
-    implementation(libs.config.me) {
-        exclude(group = "org.yaml", module = "snakeyaml")
-    }
+    implementation(libs.decent.holograms)
+
+    implementation(libs.bundles.triumph)
+
+    implementation(libs.config.me)
 
     implementation(libs.metrics)
 
-    compileOnly(libs.decent.holograms)
+    compileOnly(libs.head.database.api)
 
     compileOnly(libs.placeholder.api)
 
@@ -32,7 +29,7 @@ dependencies {
 
     compileOnly(libs.oraxen.api)
 
-    compileOnly(fileTree("libs").include("*.jar"))
+    compileOnly(libs.vault)
 }
 
 tasks {
@@ -48,32 +45,7 @@ tasks {
         dependsOn(reobfJar)
     }
 
-    shadowJar {
-        listOf(
-            "com.ryderbelserion.cluster.paper",
-            "de.tr7zw.changeme.nbtapi",
-            "dev.triumphteam.cmd",
-            "org.bstats"
-        ).forEach {
-            relocate(it, "libs.$it")
-        }
-    }
-
-    processResources {
-        val properties = hashMapOf(
-            "name" to rootProject.name,
-            "version" to project.version,
-            "group" to rootProject.group,
-            "description" to rootProject.description,
-            "apiVersion" to providers.gradleProperty("apiVersion").get(),
-            "authors" to providers.gradleProperty("authors").get(),
-            "website" to providers.gradleProperty("website").get()
-        )
-
-        inputs.properties(properties)
-
-        filesMatching("plugin.yml") {
-            expand(properties)
-        }
+    reobfJar {
+        outputJar = rootProject.layout.buildDirectory.file("$rootDir/jars/paper/${rootProject.name.lowercase()}-${rootProject.version}.jar")
     }
 }
