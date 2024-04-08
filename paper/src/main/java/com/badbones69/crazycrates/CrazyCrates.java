@@ -67,7 +67,7 @@ public class CrazyCrates extends JavaPlugin {
         this.instance.enable();
 
         // The file manager is depended on by the user manager.
-        this.fileManager = new FileManager();
+    private VitalPlugin plugin;
 
         // Register files.
         this.fileManager.registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
@@ -89,6 +89,9 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        this.plugin = new VitalPlugin(this);
+        this.plugin.start();
+
         int radius = DedicatedServer.getServer().getSpawnProtectionRadius();
 
         if (radius > 0) {
@@ -179,6 +182,10 @@ public class CrazyCrates extends JavaPlugin {
         // Cancel the timer task.
         if (this.timer != null) {
             this.timer.cancel();
+        }
+
+        if (this.plugin != null) {
+            this.plugin.stop();
         }
 
         // Clean up any mess we may have left behind.
