@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
-val mcVersion = libs.versions.bundle.get()
+val mcVersion = libs.versions.bundle
 
 dependencies {
     compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
@@ -41,7 +41,7 @@ tasks {
 
         defaultCharacterEncoding = Charsets.UTF_8.name()
 
-        minecraftVersion(mcVersion)
+        minecraftVersion("1.20.4")
     }
 
     assemble {
