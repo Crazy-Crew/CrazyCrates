@@ -6,7 +6,6 @@ run-paper = { id = "xyz.jpenilla.run-paper", version = "2.2.3" }
 
 [versions]
 bundle = "1.20.4-R0.1-SNAPSHOT"
-cluster = "1.0-SNAPSHOT"
 
 [libraries]
 itemsadder-api = { group = "com.github.LoneDev6", name = "api-itemsadder", version = "3.6.1" }
@@ -14,8 +13,7 @@ oraxen-api = { group = "io.th0rgal", name = "oraxen", version = "1.171.0" }
 placeholder-api = { group = "me.clip", name = "placeholderapi", version = "2.11.5" }
 head-database-api = { group = "com.arcaniax", name = "HeadDatabase-API", version = "1.3.1" }
 
-cluster-api = { group = "com.ryderbelserion.cluster", name = "api", version.ref = "cluster" }
-cluster-paper = { group = "com.ryderbelserion.cluster", name = "paper", version.ref = "cluster" }
+vital = { group = "com.ryderbelserion.vital", name = "Vital", version = "1.0-snapshot" }
 
 decent-holograms = { group = "com.github.decentsoftware-eu", name = "decentholograms", version = "2.8.6" }
 

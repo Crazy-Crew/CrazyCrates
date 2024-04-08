@@ -25,6 +25,7 @@ import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.MigrationManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.VitalPlugin;
 import com.ryderbelserion.vital.api.enums.Support;
 import net.minecraft.server.dedicated.DedicatedServer;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -83,6 +84,8 @@ public class CrazyCrates extends JavaPlugin {
                 .registerCustomFilesFolder("/schematics")
                 .setup();
     }
+
+    private VitalPlugin plugin;
 
     @Override
     public void onEnable() {

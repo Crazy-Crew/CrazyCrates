@@ -8,8 +8,6 @@ val mcVersion = libs.versions.bundle.get()
 dependencies {
     compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
 
-    implementation(fileTree("$rootDir/libs/shade").include("*.jar"))
-
     paperweight.paperDevBundle(mcVersion)
 
     implementation(project(":api"))
@@ -19,6 +17,8 @@ dependencies {
     implementation(libs.config.me)
 
     implementation(libs.metrics)
+
+    implementation(libs.vital)
 
     compileOnly(libs.head.database.api)
 
