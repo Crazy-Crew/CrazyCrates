@@ -296,7 +296,7 @@ public class CrateBaseCommand extends BaseCommand {
                 crate.addEditorItem(prize, item, crate.getTier(tier), chance);
             }
         } catch (Exception exception) {
-            this.plugin.getServer().getLogger().log(Level.WARNING, "Failed to add a new prize to the " + crate.getName() + " crate.", exception);
+            this.plugin.getLogger().log(Level.WARNING, "Failed to add a new prize to the " + crate.getName() + " crate.", exception);
 
             return;
         }

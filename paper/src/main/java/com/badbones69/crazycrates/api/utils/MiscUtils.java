@@ -181,7 +181,7 @@ public class MiscUtils {
                 "An error has occurred while trying to take a key from a player.",
                 "Player: " + player.getName(),
                 "Key: " + crateName
-        ).forEach(plugin.getServer().getLogger()::warning);
+        ).forEach(plugin.getLogger()::warning);
 
         List.of(
                 "&cAn issue has occurred when trying to take a key.",
