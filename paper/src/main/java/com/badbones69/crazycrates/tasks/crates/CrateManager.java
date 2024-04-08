@@ -2,8 +2,6 @@ package com.badbones69.crazycrates.tasks.crates;
 
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
-import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
@@ -12,6 +10,7 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;
+import com.ryderbelserion.vital.files.FileManager;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -19,10 +18,12 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.java.JavaPlugin;
+import us.crazycrew.crazycrates.api.enums.Files;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import org.bukkit.scheduler.BukkitTask;
+import us.crazycrew.crazycrates.platform.Server;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
@@ -62,6 +63,8 @@ import java.util.logging.Level;
 public class CrateManager {
 
     private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
+    private final @NotNull Server instance = this.plugin.getInstance();
 
     private final @NotNull FileManager fileManager = this.plugin.getFileManager();
 
@@ -176,9 +179,11 @@ public class CrateManager {
 
         if (MiscUtils.isLogging()) this.plugin.getLogger().info("Loading all crate information...");
 
-        for (String crateName : this.fileManager.getAllCratesNames()) {
+        for (File crate : this.instance.getCrateFiles()) {
+            String crateName = crate.getName();
+
             try {
-                FileConfiguration file = this.fileManager.getFile(crateName).getFile();
+                FileConfiguration file = this.fileManager.getCustomFile(crateName).getConfiguration();
                 CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));
 
                 List<Prize> prizes = new ArrayList<>();
@@ -285,7 +290,7 @@ public class CrateManager {
             ).forEach(line -> this.plugin.getLogger().info(line));
         }
 
-        FileConfiguration locations = Files.LOCATIONS.getFile();
+        FileConfiguration locations = Files.locations.getFile();
         int loadedAmount = 0;
         int brokeAmount = 0;
 
@@ -776,8 +781,8 @@ public class CrateManager {
                 this.plugin.getCrateManager().getUsableCrates().stream()
                         .filter(Crate :: doNewPlayersGetKeys)
                         .forEach(crate -> {
-                            Files.DATA.getFile().set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
-                            Files.DATA.saveFile();
+                            Files.data.getFile().set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
+                            Files.data.save();
                         });
             }
         }
@@ -819,7 +824,7 @@ public class CrateManager {
      * @param crate the crate which you would like to set it to.
      */
     public void addCrateLocation(Location location, Crate crate) {
-        FileConfiguration locations = Files.LOCATIONS.getFile();
+        FileConfiguration locations = Files.locations.getFile();
         String id = "1"; // Location ID
 
         for (int i = 1; locations.contains("Locations." + i); i++) {
@@ -838,7 +843,7 @@ public class CrateManager {
         locations.set("Locations." + id + ".X", location.getBlockX());
         locations.set("Locations." + id + ".Y", location.getBlockY());
         locations.set("Locations." + id + ".Z", location.getBlockZ());
-        Files.LOCATIONS.saveFile();
+        Files.locations.save();
 
         addLocation(new CrateLocation(id, crate, location));
 
@@ -851,8 +856,8 @@ public class CrateManager {
      * @param id the id of the location.
      */
     public void removeCrateLocation(String id) {
-        Files.LOCATIONS.getFile().set("Locations." + id, null);
-        Files.LOCATIONS.saveFile();
+        Files.locations.getFile().set("Locations." + id, null);
+        Files.locations.save();
         CrateLocation location = null;
 
         for (CrateLocation crateLocation : getCrateLocations()) {
@@ -1169,7 +1174,7 @@ public class CrateManager {
 
     // Cleans the data file.
     private void cleanDataFile() {
-        FileConfiguration data = Files.DATA.getFile();
+        FileConfiguration data = Files.data.getFile();
 
         if (!data.contains("Players")) return;
 
@@ -1207,7 +1212,8 @@ public class CrateManager {
         }
 
         if (MiscUtils.isLogging()) this.plugin.getLogger().info("The data.yml file has been cleaned.");
-        Files.DATA.saveFile();
+
+        Files.data.save();
     }
 
     // War Crate

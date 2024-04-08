@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
+import com.ryderbelserion.vital.files.FileManager;
 import dev.triumphteam.cmd.core.annotation.ArgName;
 import dev.triumphteam.cmd.core.annotation.Command;
 import dev.triumphteam.cmd.core.annotation.Default;
@@ -13,6 +14,7 @@ import dev.triumphteam.cmd.core.annotation.Description;
 import dev.triumphteam.cmd.core.annotation.Optional;
 import dev.triumphteam.cmd.core.annotation.SubCommand;
 import dev.triumphteam.cmd.core.annotation.Suggestion;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -20,12 +22,11 @@ import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
+import us.crazycrew.crazycrates.api.enums.Files;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.enums.Permissions;
@@ -70,7 +71,7 @@ public class CrateBaseCommand extends BaseCommand {
 
     private final @NotNull SettingsManager config = ConfigManager.getConfig();
 
-    private final @NotNull FileConfiguration locations = Files.LOCATIONS.getFile();
+    private final @NotNull FileConfiguration locations = Files.locations.getFile();
 
     @Default
     @Permission(value = "crazycrates.command.player.menu", def = PermissionDefault.TRUE)
@@ -146,8 +147,7 @@ public class CrateBaseCommand extends BaseCommand {
     public void onReload(CommandSender sender) {
         ConfigManager.reload();
 
-        this.fileManager.reloadAllFiles();
-        this.fileManager.setup();
+        this.fileManager.create();
 
         FileUtils.loadFiles();
 
@@ -162,8 +162,8 @@ public class CrateBaseCommand extends BaseCommand {
         // Close previews
         if (this.config.getProperty(ConfigKeys.take_out_of_preview)) {
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {
-                if (inventoryManager.inCratePreview(player)) {
-                    inventoryManager.closeCratePreview(player);
+                if (this.inventoryManager.inCratePreview(player)) {
+                    this.inventoryManager.closeCratePreview(player);
 
                     if (this.config.getProperty(ConfigKeys.send_preview_taken_out_message)) {
                         player.sendMessage(Messages.reloaded_forced_out_of_preview.getMessage(player));
@@ -246,7 +246,7 @@ public class CrateBaseCommand extends BaseCommand {
         if (!this.locations.contains("Locations")) {
             this.locations.set("Locations.Clear", null);
 
-            Files.LOCATIONS.saveFile();
+            Files.locations.save();
         }
 
         for (String name : this.locations.getConfigurationSection("Locations").getKeys(false)) {

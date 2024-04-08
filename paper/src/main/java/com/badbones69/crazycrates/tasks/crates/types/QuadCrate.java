@@ -14,7 +14,6 @@ import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.support.StructureHandler;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.quadcrates.QuadCrateManager;
-
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 

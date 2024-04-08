@@ -25,11 +25,10 @@ import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.MigrationManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.VitalPlugin;
 import com.ryderbelserion.vital.api.enums.Support;
+import com.ryderbelserion.vital.files.FileManager;
 import net.minecraft.server.dedicated.DedicatedServer;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.badbones69.crazycrates.api.FileManager;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.platform.Server;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
@@ -53,7 +52,6 @@ public class CrazyCrates extends JavaPlugin {
     private InventoryManager inventoryManager;
     private BukkitUserManager userManager;
     private CrateManager crateManager;
-    private FileManager fileManager;
 
     private MetricsManager metrics;
 
@@ -64,33 +62,10 @@ public class CrazyCrates extends JavaPlugin {
 
         this.instance = new Server(this);
         this.instance.enable();
-
-        // Register files.
-        this.fileManager = new FileManager();
-        this.fileManager.registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("QuickCrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("WarCrateExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("CasinoExample.yml", "/crates", "/crates")
-                .registerDefaultGenerateFiles("classic.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("nether.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("outdoors.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("sea.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("soul.nbt", "/schematics", "/schematics")
-                .registerDefaultGenerateFiles("wooden.nbt", "/schematics", "/schematics")
-                .registerCustomFilesFolder("/crates")
-                .registerCustomFilesFolder("/schematics")
-                .setup();
     }
-
-    private VitalPlugin plugin;
 
     @Override
     public void onEnable() {
-        this.plugin = new VitalPlugin(this);
-        this.plugin.start();
-
         int radius = DedicatedServer.getServer().getSpawnProtectionRadius();
 
         if (radius > 0) {
@@ -182,10 +157,6 @@ public class CrazyCrates extends JavaPlugin {
             this.timer.cancel();
         }
 
-        if (this.plugin != null) {
-            this.plugin.stop();
-        }
-
         // Clean up any mess we may have left behind.
         if (this.crateManager != null) {
             this.crateManager.purgeRewards();
@@ -215,11 +186,15 @@ public class CrazyCrates extends JavaPlugin {
     }
 
     public @NotNull FileManager getFileManager() {
-        return this.fileManager;
+        return this.instance.getFileManager();
     }
 
     public @NotNull MetricsManager getMetrics() {
         return this.metrics;
+    }
+
+    public @NotNull Server getInstance() {
+        return this.instance;
     }
 
     public @NotNull Timer getTimer() {

@@ -16,7 +16,6 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CasinoCrate extends CrateBuilder {

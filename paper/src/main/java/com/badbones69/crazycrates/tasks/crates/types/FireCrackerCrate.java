@@ -17,11 +17,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class FireCrackerCrate extends CrateBuilder {
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-    @NotNull
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
     public FireCrackerCrate(Crate crate, Player player, int size, Location location) {
         super(crate, player, size, location);

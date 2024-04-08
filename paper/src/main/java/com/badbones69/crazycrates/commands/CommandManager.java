@@ -13,7 +13,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CommandManager {
@@ -31,7 +34,7 @@ public class CommandManager {
         new ArgumentRelations().build();
 
         commandManager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> {
-            List<String> crates = new ArrayList<>(plugin.getFileManager().getAllCratesNames());
+            List<String> crates = new ArrayList<>(Arrays.stream(plugin.getInstance().getCrateFiles()).map(File::getName).toList());
 
             crates.add("Menu");
 
