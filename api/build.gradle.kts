@@ -26,7 +26,7 @@ tasks {
     publishing {
         repositories {
             maven {
-                uri("https://repo.crazycrew.us/snapshots/")
+                url = uri("https://repo.crazycrew.us/snapshots")
 
                 credentials {
                     this.username = System.getenv("gradle_username")
