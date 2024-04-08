@@ -34,7 +34,7 @@ public class MetricsManager {
             this.metrics.addCustomChart(chart);
         });
 
-        if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Metrics has been enabled.");
+        if (MiscUtils.isLogging()) this.plugin.getLogger().info("Metrics has been enabled.");
     }
 
     public void stop() {
@@ -48,6 +48,6 @@ public class MetricsManager {
 
         this.metrics = null;
 
-        if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Metrics has been turned off.");
+        if (MiscUtils.isLogging()) this.plugin.getLogger().info("Metrics has been turned off.");
     }
 }

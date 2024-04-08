@@ -30,8 +30,6 @@ import com.ryderbelserion.vital.api.enums.Support;
 import net.minecraft.server.dedicated.DedicatedServer;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.badbones69.crazycrates.api.FileManager;
-import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
-import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.platform.Server;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
@@ -68,6 +66,7 @@ public class CrazyCrates extends JavaPlugin {
         this.instance.enable();
 
         // Register files.
+        this.fileManager = new FileManager();
         this.fileManager.registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("CosmicCrateExample.yml", "/crates", "/crates")
@@ -126,8 +125,7 @@ public class CrazyCrates extends JavaPlugin {
         this.crateManager.loadCrates();
 
         // Load commands.
-        CommandManager commandManager = new CommandManager();
-        commandManager.load();
+        CommandManager.load();
 
         this.metrics = new MetricsManager();
 
@@ -219,6 +217,7 @@ public class CrazyCrates extends JavaPlugin {
     public @NotNull FileManager getFileManager() {
         return this.fileManager;
     }
+
     public @NotNull MetricsManager getMetrics() {
         return this.metrics;
     }

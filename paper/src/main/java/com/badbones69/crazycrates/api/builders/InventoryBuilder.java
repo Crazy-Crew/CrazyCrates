@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api.builders;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
@@ -14,7 +15,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.List;
 import static java.util.regex.Matcher.quoteReplacement;
