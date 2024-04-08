@@ -66,9 +66,6 @@ public class CrazyCrates extends JavaPlugin {
         this.instance = new Server(this);
         this.instance.enable();
 
-        // The file manager is depended on by the user manager.
-    private VitalPlugin plugin;
-
         // Register files.
         this.fileManager.registerDefaultGenerateFiles("CrateExample.yml", "/crates", "/crates")
                 .registerDefaultGenerateFiles("QuadCrateExample.yml", "/crates", "/crates")
