@@ -8,7 +8,7 @@ project.version = "1.0-snapshot"
 val mcVersion = libs.versions.bundle.get()
 
 dependencies {
-    compileOnly(fileTree("libs/shade").include("*.jar"))
+    compileOnly(libs.vital)
 
     paperweight.paperDevBundle(mcVersion)
 
