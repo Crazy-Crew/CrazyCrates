@@ -181,6 +181,8 @@ public class CrateBaseCommand extends BaseCommand {
             });
         }
 
+        this.crateManager.loadHolograms();
+
         this.crateManager.loadCrates();
 
         sender.sendMessage(Messages.reloaded_plugin.getMessage(sender));
