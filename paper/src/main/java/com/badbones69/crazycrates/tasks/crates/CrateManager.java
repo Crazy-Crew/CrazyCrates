@@ -337,7 +337,7 @@ public class CrateManager {
                     int y = locations.getInt("Locations." + locationName + ".Y");
                     int z = locations.getInt("Locations." + locationName + ".Z");
                     Location location = new Location(world, x, y, z);
-                    Crate crate = this.plugin.getCrateManager().getCrateFromName(locations.getString("Locations." + locationName + ".Crate"));
+                    Crate crate = getCrateFromName(locations.getString("Locations." + locationName + ".Crate"));
 
                     if (world != null && crate != null) {
                         this.crateLocations.add(new CrateLocation(locationName, crate, location));
@@ -803,7 +803,7 @@ public class CrateManager {
             String uuid = player.getUniqueId().toString();
 
             if (!player.hasPlayedBefore()) {
-                this.plugin.getCrateManager().getUsableCrates().stream()
+                getUsableCrates().stream()
                         .filter(Crate :: doNewPlayersGetKeys)
                         .forEach(crate -> {
                             Files.data.getFile().set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
