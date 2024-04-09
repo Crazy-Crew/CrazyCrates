@@ -12,7 +12,7 @@ public class BrokeLocation {
      * Empty values that get instantiated below.
      */
     private int x, y, z;
-    private String world;
+    private final String world;
     private final String locationName;
     private Crate crate;
 
@@ -99,15 +99,6 @@ public class BrokeLocation {
      */
     public String getWorld() {
         return this.world;
-    }
-
-    /**
-     * Set the World name.
-     *
-     * @param world the world name
-     */
-    public void setWorld(String world) {
-        this.world = world;
     }
 
     /**
