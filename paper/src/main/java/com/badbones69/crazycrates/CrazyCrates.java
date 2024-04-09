@@ -68,7 +68,6 @@ public class CrazyCrates extends JavaPlugin {
                         "The spawn protection is set to " + radius,
                         "Crates placed in the spawn protection will not function",
                         "correctly as spawn protection overrides everything",
-                        "",
                         "Change the value in server.properties to 0 then restart"
                 ).forEach(getLogger()::warning);
             }
