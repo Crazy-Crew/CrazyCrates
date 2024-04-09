@@ -147,15 +147,26 @@ public class CrateBaseCommand extends BaseCommand {
 
         this.fileManager.create();
 
-        FileUtils.loadFiles();
-
         if (!this.config.getProperty(ConfigKeys.toggle_metrics)) {
             this.plugin.getMetrics().stop();
         } else {
             this.plugin.getMetrics().start();
         }
 
-        FileUtils.cleanFiles();
+        FileConfiguration locations = Files.locations.getFile();
+        FileConfiguration data = Files.data.getFile();
+
+        if (!locations.contains("Locations")) {
+            locations.set("Locations.Clear", null);
+
+            Files.locations.save();
+        }
+
+        if (!data.contains("Players")) {
+            data.set("Players.Clear", null);
+
+            Files.data.save();
+        }
 
         // Close previews
         if (this.config.getProperty(ConfigKeys.take_out_of_preview)) {
