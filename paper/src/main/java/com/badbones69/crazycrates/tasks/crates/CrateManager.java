@@ -151,6 +151,9 @@ public class CrateManager {
         }
     }
 
+    /**
+     * Load the holograms.
+     */
     public void loadHolograms() {
         if (PluginSupport.DECENT_HOLOGRAMS.isPluginEnabled()) {
             this.holograms = new DecentHologramsSupport();
@@ -180,6 +183,18 @@ public class CrateManager {
      * Loads the crates.
      */
     public void loadCrates() {
+        /*copyFile(List.of(
+                "CosmicCrateExample.yml",
+                "CrateExample.yml",
+                "QuadCrateExample.yml",
+                "QuickCrateExample.yml",
+                "WarCrateExample.yml",
+                "CasinoExample.yml"
+        ), "crates", "examples", true);
+
+        copyFile("examples", "config.yml", true);
+        copyFile("examples", "messages.yml", true);*/
+
         this.giveNewPlayersKeys = false;
 
         purge();
