@@ -164,7 +164,15 @@ public class CrateManager {
         } else if (Support.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
             this.holograms = new CMIHologramsSupport();
             if (MiscUtils.isLogging()) this.plugin.getLogger().info("CMI Hologram support has been enabled.");
-        } else if (MiscUtils.isLogging()) this.plugin.getLogger().warning("No holograms plugin were found. If using CMI, make sure holograms module is enabled.");
+        } else {
+            if (MiscUtils.isLogging()) {
+                List.of(
+                        "There was no hologram plugin found on the server. If you are using CMI",
+                        "Please make sure you enabled the hologram module in modules.yml",
+                        "You can run /crazycrates reload if using CMI otherwise restart your server."
+                ).forEach(this.plugin.getLogger()::warning);
+            }
+        }
     }
 
     /**
