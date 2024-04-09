@@ -165,6 +165,21 @@ public class CrateManager {
     }
 
     /**
+     * @return a list of crate names.
+     */
+    public List<String> getCrateNames() {
+        List<String> files = new ArrayList<>();
+
+        for (File crate : this.plugin.getInstance().getCrateFiles()) {
+            String file = crate.getName().replace(".yml", "");
+
+            files.add(file);
+        }
+
+        return Collections.unmodifiableList(files);
+    }
+
+    /**
      * Loads the crates.
      */
     public void loadCrates() {
@@ -179,9 +194,7 @@ public class CrateManager {
 
         if (MiscUtils.isLogging()) this.plugin.getLogger().info("Loading all crate information...");
 
-        for (File crate : this.instance.getCrateFiles()) {
-            String crateName = crate.getName();
-
+        for (String crateName : getCrateNames()) {
             try {
                 FileConfiguration file = this.fileManager.getCustomFile(crateName).getConfiguration();
                 CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));

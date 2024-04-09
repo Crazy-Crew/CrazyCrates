@@ -34,7 +34,7 @@ public class CommandManager {
         new ArgumentRelations().build();
 
         commandManager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> {
-            List<String> crates = new ArrayList<>(Arrays.stream(plugin.getInstance().getCrateFiles()).map(File::getName).toList());
+            List<String> crates = new ArrayList<>(plugin.getCrateManager().getCrateNames());
 
             crates.add("Menu");
 

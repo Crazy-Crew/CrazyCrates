@@ -13,7 +13,7 @@ oraxen-api = { group = "io.th0rgal", name = "oraxen", version = "1.171.0" }
 placeholder-api = { group = "me.clip", name = "placeholderapi", version = "2.11.5" }
 head-database-api = { group = "com.arcaniax", name = "HeadDatabase-API", version = "1.3.1" }
 
-vital = { group = "com.ryderbelserion.vital", name = "Vital", version = "1.0-snapshot" }
+vital = { group = "com.ryderbelserion.vital", name = "vital", version = "1.0-snapshot" }
 
 decent-holograms = { group = "com.github.decentsoftware-eu", name = "decentholograms", version = "2.8.6" }
 
