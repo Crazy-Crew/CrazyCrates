@@ -27,7 +27,6 @@ import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.api.users.UserManager;
 import java.text.NumberFormat;
 import java.util.List;
 

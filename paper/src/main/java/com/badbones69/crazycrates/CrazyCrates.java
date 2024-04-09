@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
-import com.badbones69.crazycrates.api.utils.FileUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
@@ -89,9 +88,6 @@ public class CrazyCrates extends JavaPlugin {
 
         // Load holograms.
         this.crateManager.loadHolograms();
-
-        // Load example files.
-        FileUtils.loadFiles();
 
         // Load the buttons.
         this.inventoryManager.loadButtons();
