@@ -10,6 +10,7 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;
+import com.ryderbelserion.vital.api.enums.Support;
 import com.ryderbelserion.vital.files.FileManager;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -46,7 +47,6 @@ import us.crazycrew.crazycrates.api.crates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.DecentHologramsSupport;
-import com.badbones69.crazycrates.support.PluginSupport;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import java.io.File;
 import java.util.ArrayList;
@@ -155,10 +155,10 @@ public class CrateManager {
      * Load the holograms.
      */
     public void loadHolograms() {
-        if (PluginSupport.DECENT_HOLOGRAMS.isPluginEnabled()) {
+        if (Support.decent_holograms.isEnabled()) {
             this.holograms = new DecentHologramsSupport();
             if (MiscUtils.isLogging()) this.plugin.getLogger().info("DecentHolograms support has been enabled.");
-        } else if (PluginSupport.CMI.isPluginEnabled() && CMIModule.holograms.isEnabled()) {
+        } else if (Support.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
             this.holograms = new CMIHologramsSupport();
             if (MiscUtils.isLogging()) this.plugin.getLogger().info("CMI Hologram support has been enabled.");
         } else if (MiscUtils.isLogging()) this.plugin.getLogger().warning("No holograms plugin were found. If using CMI, make sure holograms module is enabled.");
