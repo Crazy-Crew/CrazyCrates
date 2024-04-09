@@ -24,7 +24,7 @@ public class BaseKeyCommand extends BaseCommand {
 
     private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final @NotNull UserManager userManager = this.plugin.getUserManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
     @Default
     @Permission("crazycrates.command.player.key")

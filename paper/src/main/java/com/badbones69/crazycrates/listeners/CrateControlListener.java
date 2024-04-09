@@ -45,7 +45,7 @@ public class CrateControlListener implements Listener {
 
     private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-    private final @NotNull UserManager userManager = this.plugin.getUserManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
     @EventHandler
     public void onLeftClickCrate(PlayerInteractEvent event) {

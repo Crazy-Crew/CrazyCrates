@@ -59,7 +59,7 @@ public class CrateBaseCommand extends BaseCommand {
 
     private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final @NotNull UserManager userManager = this.plugin.getUserManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
     private final @NotNull InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
