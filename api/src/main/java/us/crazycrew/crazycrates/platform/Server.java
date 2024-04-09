@@ -26,10 +26,11 @@ public class Server {
     }
 
     public void enable() {
+        this.vital.start();
+
         ConfigManager.load(this.plugin.getDataFolder());
 
         this.vital.setLogging(ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging));
-        this.vital.start();
 
         this.fileManager = new FileManager();
         this.fileManager

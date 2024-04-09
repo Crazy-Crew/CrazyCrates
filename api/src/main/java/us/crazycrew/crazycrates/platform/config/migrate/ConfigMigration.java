@@ -2,76 +2,66 @@ package us.crazycrew.crazycrates.platform.config.migrate;
 
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.migration.PlainMigrationService;
-import ch.jalu.configme.properties.Property;
-import ch.jalu.configme.properties.convertresult.PropertyValue;
 import ch.jalu.configme.resource.PropertyReader;
-import com.ryderbelserion.vital.api.ServerProvider;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
-import java.util.logging.Logger;
-import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
+import us.crazycrew.crazycrates.api.enums.Properties;
 
 public class ConfigMigration extends PlainMigrationService {
 
-    private static final Logger logger = ServerProvider.get().getLogger();
+    //private static final Logger logger = ServerProvider.get().getLogger();
 
     @Override
     protected boolean performMigrations(@NotNull PropertyReader reader, @NotNull ConfigurationData configurationData) {
-        return migrateConfig(reader, configurationData);
+        return migrateLocale(reader, configurationData);
     }
 
-    private boolean migrateConfig(@NotNull PropertyReader reader, @NotNull ConfigurationData configurationData) {
-        String oldPath = "Settings.Enable-Crate-Menu";
+    private boolean migrateLocale(@NotNull PropertyReader reader, @NotNull ConfigurationData configurationData) {
+        return Properties.enable_crate_menu.moveBoolean(reader, configurationData)
+                | Properties.show_quickcrate.moveBoolean(reader, configurationData)
+                | Properties.knockback.moveBoolean(reader, configurationData)
 
-        if (reader.getString(oldPath) == null) {
-            return false;
-        }
+                | Properties.force_out_of_preview.moveBoolean(reader, configurationData)
+                | Properties.send_preview_message.moveBoolean(reader, configurationData)
 
-        return moveProperty(oldPrefix, ConfigKeys.command_prefix, reader, configurationData);
-    }
+                | Properties.cosmic_crate_timeout.moveBoolean(reader, configurationData)
 
-    private <T> boolean moveProperty(String oldProperty, Property<T> newProperty, PropertyReader reader, ConfigurationData data) {
-        if (!reader.contains(newProperty.getPath())) {
-            String key = reader.getString(oldProperty);
+                | Properties.physical_accepts_virtual_keys.moveBoolean(reader, configurationData)
+                | Properties.physical_accepts_physical_keys.moveBoolean(reader, configurationData)
+                | Properties.virtual_accepts_physical_keys.moveBoolean(reader, configurationData)
 
+                | Properties.give_virtual_keys_when_inventory_full.moveBoolean(reader, configurationData)
+                | Properties.give_virtual_keys_when_inventory_full_message.moveBoolean(reader, configurationData)
 
-            if (key != null) {
-                PropertyValue<T> propertyKey = data.
-                data.setValue(newProperty, key);
-            }
+                | Properties.quadcrate_timer.moveInteger(reader, configurationData)
 
-            return true;
-        }
+                | Properties.need_key_sound_toggle.moveBoolean(reader, configurationData)
+                | Properties.need_key_sound.moveString(reader, configurationData)
 
-        return false;
-    }
+                | Properties.inventory_name.moveString(reader, configurationData)
+                | Properties.inventory_size.moveInteger(reader, configurationData)
 
+                | Properties.disabled_worlds.moveList(reader, configurationData)
 
-    /**
-     * Checks for an old property path and moves it to a new path if it is present and the new path is not yet set.
-     *
-     * @param oldProperty The old property (create a temporary {@link Property} object with the path)
-     * @param newProperty The new property to move the value to
-     * @param reader The property reader
-     * @param configData Configuration data
-     * @param <T> The type of the property
-     * @return True if a migration has been done, false otherwise
-     */
-    protected static <T> boolean moveProperty(Property<T> oldProperty, Property<T> newProperty, PropertyReader reader, ConfigurationData configData) {
-        PropertyValue<T> oldPropertyValue = oldProperty.determineValue(reader);
+                | Properties.menu_button_override.moveBoolean(reader, configurationData)
+                | Properties.menu_button_commands.moveList(reader, configurationData)
+                | Properties.menu_button_name.moveString(reader, configurationData)
+                | Properties.menu_button_item.moveString(reader, configurationData)
+                | Properties.menu_button_lore.moveList(reader, configurationData)
 
-        if (oldPropertyValue.isValidInResource()) {
-            if (reader.contains(newProperty.getPath())) {
-                logger.info("Detected deprecated property " + oldProperty.getPath());
-            } else {
-                logger.info("Renaming " + oldProperty.getPath() + " to " + newProperty.getPath());
+                | Properties.next_button_name.moveString(reader, configurationData)
+                | Properties.next_button_item.moveString(reader, configurationData)
+                | Properties.next_button_lore.moveList(reader, configurationData)
 
-                configData.setValue(newProperty, oldPropertyValue.getValue());
-            }
+                | Properties.back_button_name.moveString(reader, configurationData)
+                | Properties.back_button_item.moveString(reader, configurationData)
+                | Properties.back_button_lore.moveList(reader, configurationData)
 
-            return true;
-        }
+                | Properties.filler_toggle.moveBoolean(reader, configurationData)
+                | Properties.filler_item.moveString(reader, configurationData)
+                | Properties.filler_name.moveString(reader, configurationData)
+                | Properties.filler_lore.moveList(reader, configurationData)
 
-        return false;
+                | Properties.gui_customizer_toggle.moveBoolean(reader, configurationData)
+                | Properties.gui_customizer_lore.moveList(reader, configurationData);
     }
 }

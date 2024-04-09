@@ -21,7 +21,6 @@ import com.badbones69.crazycrates.support.metrics.MetricsManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
-import com.badbones69.crazycrates.tasks.MigrationManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.api.enums.Support;
 import com.ryderbelserion.vital.files.FileManager;
@@ -55,9 +54,6 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        // Migrate as early as possible.
-        MigrationManager.migrate();
-
         this.instance = new Server(this);
         this.instance.enable();
     }
