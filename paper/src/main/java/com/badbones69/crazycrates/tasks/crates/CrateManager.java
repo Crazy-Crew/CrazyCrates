@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;
@@ -62,6 +63,7 @@ import java.util.logging.Level;
 public class CrateManager {
 
     private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final @NotNull InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     private final @NotNull FileManager fileManager = this.plugin.getFileManager();
 
@@ -84,7 +86,7 @@ public class CrateManager {
     public void reloadCrate(Crate crate) {
         try {
             // Close previews
-            this.plugin.getServer().getOnlinePlayers().forEach(player -> this.plugin.getInventoryManager().closeCratePreview(player));
+            this.plugin.getServer().getOnlinePlayers().forEach(this.inventoryManager::closeCratePreview);
 
             // Grab the new file.
             FileConfiguration file = crate.getFile();
@@ -140,11 +142,11 @@ public class CrateManager {
                 Player player = this.plugin.getServer().getPlayer(uuid);
 
                 if (player != null) {
-                    this.plugin.getInventoryManager().openNewCratePreview(player, crate);
+                    this.inventoryManager.openNewCratePreview(player, crate);
                 }
             }
 
-            this.plugin.getInventoryManager().purge();
+            this.inventoryManager.purge();
         } catch (Exception exception) {
             this.brokeCrates.add(crate.getName());
             this.plugin.getLogger().log(Level.WARNING, "There was an error while loading the " + crate.getName() + ".yml file.", exception);
@@ -387,7 +389,7 @@ public class CrateManager {
 
         cleanDataFile();
 
-        this.plugin.getInventoryManager().loadButtons();
+        this.inventoryManager.loadButtons();
     }
 
     // The crate that the player is opening.
@@ -1242,8 +1244,8 @@ public class CrateManager {
     }
 
     // War Crate
-    private final HashMap<UUID, Boolean> canPick = new HashMap<>();
-    private final HashMap<UUID, Boolean> canClose = new HashMap<>();
+    private final Map<UUID, Boolean> canPick = new HashMap<>();
+    private final Map<UUID, Boolean> canClose = new HashMap<>();
 
     public void addPicker(Player player, boolean value) {
         this.canPick.put(player.getUniqueId(), value);
@@ -1273,7 +1275,7 @@ public class CrateManager {
         this.canClose.remove(player.getUniqueId());
     }
 
-    private final HashMap<UUID, Boolean> checkHands = new HashMap<>();
+    private final Map<UUID, Boolean> checkHands = new HashMap<>();
 
     public void addHands(Player player, boolean checkHand) {
         this.checkHands.put(player.getUniqueId(), checkHand);
@@ -1289,7 +1291,7 @@ public class CrateManager {
 
     // QuickCrate/FireCracker
     private final List<Entity> allRewards = new ArrayList<>();
-    private final HashMap<UUID, Entity> rewards = new HashMap<>();
+    private final Map<UUID, Entity> rewards = new HashMap<>();
 
     public void addReward(Player player, Entity entity) {
         this.allRewards.add(entity);
