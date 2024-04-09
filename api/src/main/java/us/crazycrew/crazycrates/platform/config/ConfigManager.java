@@ -3,6 +3,7 @@ package us.crazycrew.crazycrates.platform.config;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
+import org.jetbrains.annotations.ApiStatus;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import us.crazycrew.crazycrates.platform.config.impl.messages.CommandKeys;
 import us.crazycrew.crazycrates.platform.config.impl.messages.CrateKeys;
@@ -19,6 +20,7 @@ public class ConfigManager {
 
     private static SettingsManager messages;
 
+    @ApiStatus.Internal
     public static void load(File dataFolder) {
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
 

@@ -3,12 +3,12 @@ package us.crazycrew.crazycrates.platform.config.migrate;
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.migration.PlainMigrationService;
 import ch.jalu.configme.resource.PropertyReader;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.Properties;
 
+@ApiStatus.Internal
 public class ConfigMigration extends PlainMigrationService {
-
-    //private static final Logger logger = ServerProvider.get().getLogger();
 
     @Override
     protected boolean performMigrations(@NotNull PropertyReader reader, @NotNull ConfigurationData configurationData) {

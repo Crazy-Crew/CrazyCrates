@@ -3,7 +3,7 @@ package us.crazycrew.crazycrates.api.enums;
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.properties.Property;
 import ch.jalu.configme.resource.PropertyReader;
-import com.ryderbelserion.vital.api.ServerProvider;
+import org.jetbrains.annotations.ApiStatus;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import us.crazycrew.crazycrates.platform.config.impl.messages.CommandKeys;
 import us.crazycrew.crazycrates.platform.config.impl.messages.CrateKeys;
@@ -13,10 +13,10 @@ import us.crazycrew.crazycrates.platform.config.impl.messages.PlayerKeys;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
+@ApiStatus.Internal
 public enum Properties {
 
     enable_crate_menu(ConfigKeys.enable_crate_menu, newProperty("Settings.Enable-Crate-Menu", ConfigKeys.enable_crate_menu.getDefaultValue()), false),
@@ -133,8 +133,6 @@ public enum Properties {
         this.newString = newString;
         this.oldString = oldString;
     }
-
-    private final Logger logger = ServerProvider.get().getLogger();
 
     public boolean moveString(PropertyReader reader, ConfigurationData configuration) {
         String key = reader.getString(this.oldString.getPath());
