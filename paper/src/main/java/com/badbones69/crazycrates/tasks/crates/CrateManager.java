@@ -59,6 +59,7 @@ import java.util.Objects;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.logging.Level;
+import static com.ryderbelserion.vital.utils.FileUtils.copyFile;
 
 public class CrateManager {
 
@@ -185,7 +186,7 @@ public class CrateManager {
      * Loads the crates.
      */
     public void loadCrates() {
-        /*copyFile(List.of(
+        copyFile(List.of(
                 "CosmicCrateExample.yml",
                 "CrateExample.yml",
                 "QuadCrateExample.yml",
@@ -195,7 +196,7 @@ public class CrateManager {
         ), "crates", "examples", true);
 
         copyFile("examples", "config.yml", true);
-        copyFile("examples", "messages.yml", true);*/
+        copyFile("examples", "messages.yml", true);
 
         this.giveNewPlayersKeys = false;
 
@@ -211,6 +212,7 @@ public class CrateManager {
         for (String crateName : getCrateNames()) {
             try {
                 FileConfiguration file = this.fileManager.getCustomFile(crateName).getConfiguration();
+
                 CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));
 
                 List<Prize> prizes = new ArrayList<>();
