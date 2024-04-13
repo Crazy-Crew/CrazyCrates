@@ -112,6 +112,8 @@ public class CrazyCrates extends JavaPlugin {
         this.crateManager = new CrateManager();
         this.userManager = new BukkitUserManager();
 
+        this.instance.setUserManager(this.userManager);
+
         // Load holograms.
         this.crateManager.loadHolograms();
 
