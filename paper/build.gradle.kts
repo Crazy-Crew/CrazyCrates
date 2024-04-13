@@ -8,7 +8,7 @@ val mcVersion = libs.versions.bundle.get()
 dependencies {
     compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
 
-    paperweight.paperDevBundle(mcVersion)
+    paperweight.paperDevBundle("$mcVersion-R0.1-SNAPSHOT")
 
     implementation(project(":api"))
 

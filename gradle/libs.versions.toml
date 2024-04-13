@@ -5,7 +5,7 @@ shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
 run-paper = { id = "xyz.jpenilla.run-paper", version = "2.2.3" }
 
 [versions]
-bundle = "1.20.4-R0.1-SNAPSHOT"
+bundle = "1.20.4"
 
 [libraries]
 itemsadder-api = { group = "com.github.LoneDev6", name = "api-itemsadder", version = "3.6.1" }
