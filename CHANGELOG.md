@@ -96,5 +96,5 @@ Crate:
 * Fixed an issue with quadcrates where if you set the `structure.random` to false, It would still be random.
 
 ## Other:
-* [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/issues)
+* [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/discussions/categories/features)
 * [Bug Reports](https://github.com/Crazy-Crew/CrazyCrates/issues)
