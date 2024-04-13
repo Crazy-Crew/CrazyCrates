@@ -11,7 +11,8 @@ import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;
-import com.ryderbelserion.vital.api.enums.Support;
+import com.ryderbelserion.vital.common.util.FileUtil;
+import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.files.FileManager;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -59,7 +60,6 @@ import java.util.Objects;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.logging.Level;
-import static com.ryderbelserion.vital.utils.FileUtils.copyFile;
 
 public class CrateManager {
 
@@ -198,17 +198,7 @@ public class CrateManager {
      * Loads the crates.
      */
     public void loadCrates() {
-        copyFile(List.of(
-                "CosmicCrateExample.yml",
-                "CrateExample.yml",
-                "QuadCrateExample.yml",
-                "QuickCrateExample.yml",
-                "WarCrateExample.yml",
-                "CasinoExample.yml"
-        ), "crates", "examples", true);
-
-        copyFile("examples", "config.yml", true);
-        copyFile("examples", "messages.yml", true);
+        FileUtil.extracts(this.plugin.getClass(), "examples", this.plugin.getDataFolder().toPath().resolve("examples"), true);
 
         this.giveNewPlayersKeys = false;
 

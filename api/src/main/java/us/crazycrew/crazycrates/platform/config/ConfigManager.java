@@ -43,12 +43,6 @@ public class ConfigManager {
         messages.reload();
     }
 
-    public static void save() {
-        config.save();
-
-        messages.save();
-    }
-
     public static SettingsManager getConfig() {
         return config;
     }

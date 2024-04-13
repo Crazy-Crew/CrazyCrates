@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.ryderbelserion.vital.files.FileManager;
-import com.ryderbelserion.vital.utils.DyeUtils;
+import com.ryderbelserion.vital.util.DyeUtil;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
@@ -138,7 +138,7 @@ public class Crate {
         if (crateType == CrateType.quad_crate) {
             this.particle = Registry.PARTICLE_TYPE.get(NamespacedKey.minecraft(file != null ? file.getString("Crate.particles.type", "dust") : "dust"));
 
-            this.color = DyeUtils.getColor(file != null ? file.getString("Crate.particles.color", "235,64,52") : "235,64,52");
+            this.color = DyeUtil.getColor(file != null ? file.getString("Crate.particles.color", "235,64,52") : "235,64,52");
         }
 
         this.hologram = hologram != null ? hologram : new CrateHologram();

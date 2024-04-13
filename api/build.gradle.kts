@@ -13,8 +13,6 @@ dependencies {
     paperweight.paperDevBundle(mcVersion)
 
     compileOnly(libs.config.me)
-
-    compileOnly(libs.vital)
 }
 
 java {

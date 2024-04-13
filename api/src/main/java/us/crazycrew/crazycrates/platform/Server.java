@@ -1,35 +1,34 @@
 package us.crazycrew.crazycrates.platform;
 
-import com.ryderbelserion.vital.VitalPlugin;
+import com.ryderbelserion.vital.common.AbstractPlugin;
 import com.ryderbelserion.vital.files.FileManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
-import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.logging.Logger;
 
-public class Server {
+public class Server extends AbstractPlugin {
 
     private FileManager fileManager;
     private final JavaPlugin plugin;
     private final File crateFolder;
 
-    private final VitalPlugin vital;
-
+    @ApiStatus.Internal
     public Server(JavaPlugin plugin) {
+        super(plugin.getName());
+
         this.plugin = plugin;
 
         this.crateFolder = new File(this.plugin.getDataFolder(), "crates");
-        this.vital = new VitalPlugin(plugin);
     }
 
+    @ApiStatus.Internal
     public void enable() {
         ConfigManager.load(this.plugin.getDataFolder());
-
-        this.vital.start();
-        this.vital.setLogging(ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging));
 
         this.fileManager = new FileManager();
         this.fileManager
@@ -57,24 +56,23 @@ public class Server {
         ConfigManager.reload();
     }
 
+    @ApiStatus.Internal
     public void disable() {
-        if (this.vital != null) {
-            this.vital.stop();
-        }
-
         CratesProvider.unregister();
     }
 
-    public FileManager getFileManager() {
-        return this.fileManager;
+    @Override
+    public @NotNull Path getDirectory() {
+        return this.plugin.getDataFolder().toPath();
     }
 
-    public @NotNull File getFolder() {
-        return this.plugin.getDataFolder();
-    }
-
+    @Override
     public @NotNull Logger getLogger() {
         return this.plugin.getLogger();
+    }
+
+    public @NotNull FileManager getFileManager() {
+        return this.fileManager;
     }
 
     public @NotNull File getCrateFolder() {
