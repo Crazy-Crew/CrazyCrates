@@ -157,6 +157,8 @@ public class CrateBaseCommand extends BaseCommand {
             this.plugin.getMetrics().start();
         }
 
+        this.plugin.getPlugin().setLogging(MiscUtils.isLogging());
+
         FileUtils.cleanFiles();
 
         // Close previews

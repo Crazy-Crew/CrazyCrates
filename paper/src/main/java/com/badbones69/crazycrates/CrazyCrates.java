@@ -89,6 +89,7 @@ public class CrazyCrates extends JavaPlugin {
     @Override
     public void onEnable() {
         this.plugin = new VitalPlugin(this);
+        this.plugin.setLogging(MiscUtils.isLogging());
         this.plugin.start();
 
         int radius = DedicatedServer.getServer().getSpawnProtectionRadius();
@@ -202,6 +203,10 @@ public class CrazyCrates extends JavaPlugin {
         if (this.instance != null) {
             this.instance.disable();
         }
+    }
+
+    public @NotNull VitalPlugin getPlugin() {
+        return this.plugin;
     }
 
     public @NotNull InventoryManager getInventoryManager() {
