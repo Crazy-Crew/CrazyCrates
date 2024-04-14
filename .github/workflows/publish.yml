@@ -1,4 +1,4 @@
-name: Upload
+name: Publish
 on:
   push:
     branches:
@@ -32,5 +32,4 @@ jobs:
         env:
           HANGAR_TOKEN: ${{ secrets.HANGAR_TOKEN }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-        #run: ./gradlew assemble modrinth publishAllPublicationsToHangar --stacktrace
-        run: ./gradlew assemble modrinth --stacktrace
+        run: ./gradlew assemble modrinth publishAllPublicationsToHangar --stacktrace
