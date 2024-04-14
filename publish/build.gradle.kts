@@ -14,12 +14,6 @@ val baseVersion = rootProject.version as String
 val isSnapshot = baseVersion.contains("-snapshot")
 val isMainBranch = branch == "main"
 
-val newVersion = if (isSnapshot) {
-    "$baseVersion-${System.getenv("GITHUB_RUN_NUMBER")}"
-} else {
-    baseVersion
-}
-
 val content: String = if (isSnapshot) {
     latestCommitsHistory().joinToString(separator = "") { formatLog(it, rootProject.name) }
 } else {
@@ -33,12 +27,12 @@ modrinth {
 
     versionType.set(if (isSnapshot) "beta" else "release")
 
-    versionName.set("${rootProject.name} $newVersion")
-    versionNumber.set(newVersion)
+    versionName.set("${rootProject.name} $baseVersion")
+    versionNumber.set(baseVersion)
 
     changelog.set(content)
 
-    uploadFile.set("$rootDir/jars/${rootProject.name}-$newVersion.jar")
+    uploadFile.set("$rootDir/jars/${rootProject.name}-$baseVersion.jar")
 
     gameVersions.set(listOf(libs.versions.bundle.get()))
 
@@ -55,7 +49,7 @@ hangarPublish {
 
         id.set(rootProject.name.lowercase())
 
-        version.set(newVersion)
+        version.set(baseVersion)
 
         channel.set(if (isSnapshot) "Snapshot" else "Release")
 
@@ -63,7 +57,7 @@ hangarPublish {
 
         platforms {
             paper {
-                jar.set(file("$rootDir/jars/${rootProject.name}-$newVersion.jar"))
+                jar.set(file("$rootDir/jars/${rootProject.name}-$baseVersion.jar"))
 
                 platformVersions.set(listOf(libs.versions.bundle.get()))
 
