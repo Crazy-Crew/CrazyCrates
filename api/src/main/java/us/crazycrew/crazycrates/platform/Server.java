@@ -61,12 +61,10 @@ public class Server implements ICrazyCrates {
 
     private UserManager userManager;
 
-    @Deprecated(forRemoval = true)
     public void setUserManager(UserManager userManager) {
         this.userManager = userManager;
     }
 
-    @Deprecated(forRemoval = true)
     @Override
     public @NotNull UserManager getUserManager() {
         return this.userManager;
