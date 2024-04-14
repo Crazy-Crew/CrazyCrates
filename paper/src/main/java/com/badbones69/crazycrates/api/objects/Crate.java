@@ -97,7 +97,7 @@ public class Crate {
     public Crate(String name, String previewName, CrateType crateType, ItemStack key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, List<String> prizeCommands, CrateHologram hologram) {
         this.emptyKey = ItemBuilder.convertItemStack(key);
         this.keyBuilder = ItemBuilder.convertItemStack(key).setCrateName(name);
-        this.keyName = keyName;
+        this.keyName = keyName != null ? keyName : "Crate.PhysicalKey.Name == null";
 
         this.file = file;
         this.name = name;
