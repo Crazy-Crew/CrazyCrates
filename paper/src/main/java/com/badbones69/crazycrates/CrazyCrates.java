@@ -25,7 +25,6 @@ import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.VitalPaper;
 import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.files.FileManager;
-import net.minecraft.server.dedicated.DedicatedServer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.platform.Server;
@@ -63,7 +62,7 @@ public class CrazyCrates extends JavaPlugin {
     public void onEnable() {
         new VitalPaper(this);
       
-        int radius = DedicatedServer.getServer().getSpawnProtectionRadius();
+        int radius = getServer().getSpawnRadius();
 
         if (radius > 0) {
             if (isLogging()) {
