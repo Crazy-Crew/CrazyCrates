@@ -1,6 +1,4 @@
 name: Publishing
-env:
-  COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
 on:
   push:
     branches:
