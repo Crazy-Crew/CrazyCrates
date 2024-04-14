@@ -12,19 +12,18 @@ dependencies {
 val branch = branchName()
 val baseVersion = project.version as String
 val isSnapshot = branch.contains("-")
-val isMainBranch = branch == "main"
 
-val newVersion = if (!isSnapshot) {
-    baseVersion
-} else {
+val newVersion = if (isSnapshot) {
     "$baseVersion-${System.getenv("GITHUB_RUN_NUMBER")}"
+} else {
+    baseVersion
 }
 
-val content = if (!isSnapshot) {
-    rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
-} else {
+val content = if (isSnapshot) {
     val hash = rootProject.latestCommitHash()
     "[$hash](https://github.com/Crazy-Crew/${rootProject.name}/commit/$hash) ${rootProject.latestCommitMessage()}"
+} else {
+    rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 }
 
 modrinth {
@@ -87,17 +86,5 @@ hangarPublish {
                 }
             }
         }
-    }
-}
-
-tasks.modrinth {
-    onlyIf {
-        !isSnapshot || isMainBranch
-    }
-}
-
-tasks.publishAllPublicationsToHangar {
-    onlyIf {
-        !isSnapshot || isMainBranch
     }
 }
