@@ -39,7 +39,7 @@ tasks.publishAllPublicationsToHangar {
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
 
-    projectId.set("blockparticles")
+    projectId.set("sockets")
 
     versionType.set(if (isSnapshot) "beta" else "release")
 
