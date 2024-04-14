@@ -1,32 +1,25 @@
 plugins {
-    `paper-plugin`
-
-    id("io.papermc.paperweight.userdev")
-
     alias(libs.plugins.run.paper)
-    alias(libs.plugins.shadow)
+
+    `paper-plugin`
 }
 
-val mcVersion: String = providers.gradleProperty("mcVersion").get()
+val mcVersion = libs.versions.bundle
 
 dependencies {
-    paperweight.paperDevBundle(libs.versions.bundle)
+    compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
 
-    implementation(projects.api)
+    implementation(project(":api"))
 
-    implementation(libs.cluster.paper)
+    implementation(libs.bundles.triumph)
 
-    implementation(libs.triumph.cmds)
-
-    implementation(libs.config.me) {
-        exclude(group = "org.yaml", module = "snakeyaml")
-    }
+    implementation(libs.config.me)
 
     implementation(libs.metrics)
 
-    implementation("com.github.Euphillya:Energie:1.1.9")
+    implementation(libs.vital)
 
-    compileOnly(libs.holographicdisplays)
+    compileOnly(libs.head.database.api)
 
     compileOnly(libs.decent.holograms)
 
@@ -35,8 +28,6 @@ dependencies {
     compileOnly(libs.itemsadder.api)
 
     compileOnly(libs.oraxen.api)
-
-    compileOnly(fileTree("libs").include("*.jar"))
 }
 
 tasks {
@@ -45,7 +36,7 @@ tasks {
 
         defaultCharacterEncoding = Charsets.UTF_8.name()
 
-        minecraftVersion(mcVersion)
+        minecraftVersion("1.20.4")
     }
 
     assemble {
@@ -53,12 +44,15 @@ tasks {
     }
 
     shadowJar {
+        archiveClassifier.set("")
+
+        //archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
+        //destinationDirectory.set(rootProject.projectDir.resolve("jars"))
+
         listOf(
-            "com.ryderbelserion.cluster.paper",
-            "de.tr7zw.changeme.nbtapi",
-            "dev.triumphteam.cmd",
+            "dev.triumphteam",
             "org.bstats",
-            "fr.euphyllia.energie"
+            "ch.jalu"
         ).forEach {
             relocate(it, "libs.$it")
         }
@@ -67,12 +61,12 @@ tasks {
     processResources {
         val properties = hashMapOf(
             "name" to rootProject.name,
-            "version" to project.version,
+            "version" to rootProject.version,
             "group" to rootProject.group,
             "description" to rootProject.description,
-            "apiVersion" to providers.gradleProperty("apiVersion").get(),
-            "authors" to providers.gradleProperty("authors").get(),
-            "website" to providers.gradleProperty("website").get()
+            "apiVersion" to "1.20",
+            "authors" to listOf("RyderBelserion", "BadBones69"),
+            "website" to "https://modrinth.com/plugin/crazycrates"
         )
 
         inputs.properties(properties)
