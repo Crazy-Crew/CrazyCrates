@@ -17,7 +17,6 @@ import com.badbones69.crazycrates.listeners.crates.MobileCrateListener;
 import com.badbones69.crazycrates.listeners.crates.QuadCrateListener;
 import com.badbones69.crazycrates.listeners.crates.WarCrateListener;
 import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
-import com.badbones69.crazycrates.support.PluginSupport;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.support.metrics.MetricsManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
@@ -160,11 +159,11 @@ public class CrazyCrates extends JavaPlugin {
             String prefix = ConfigManager.getConfig().getProperty(ConfigKeys.console_prefix);
 
             // Print dependency garbage
-            for (PluginSupport value : PluginSupport.values()) {
-                if (value.isPluginEnabled()) {
-                    getServer().getConsoleSender().sendMessage(MsgUtils.color(prefix + "&6&l" + value.name() + " &a&lFOUND"));
+            for (Support value : Support.values()) {
+                if (value.isEnabled()) {
+                    getServer().getConsoleSender().sendMessage(MsgUtils.color(prefix + "&6&l" + value.getName() + " &a&lFOUND"));
                 } else {
-                    getServer().getConsoleSender().sendMessage(MsgUtils.color(prefix + "&6&l" + value.name() + " &c&lNOT FOUND"));
+                    getServer().getConsoleSender().sendMessage(MsgUtils.color(prefix + "&6&l" + value.getName() + " &c&lNOT FOUND"));
                 }
             }
         }
