@@ -14,16 +14,16 @@ val baseVersion = rootProject.version as String
 val isSnapshot = baseVersion.contains("-snapshot")
 val isMainBranch = branch == "main"
 
-val newVersion = if (!isSnapshot) {
-    baseVersion
-} else {
+val newVersion = if (isSnapshot) {
     "$baseVersion-${System.getenv("GITHUB_RUN_NUMBER")}"
+} else {
+    baseVersion
 }
 
-val content: String = if (!isSnapshot) {
-    rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
+val content: String = if (isSnapshot) {
+    latestCommitsHistory().joinToString(separator = "") { formatLog(it, rootProject.name) }
 } else {
-    System.getenv("COMMIT_MESSAGE")
+    rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 }
 
 modrinth {
@@ -31,7 +31,7 @@ modrinth {
 
     projectId.set("blockparticles")
 
-    versionType.set(if (!isSnapshot) "release" else "beta")
+    versionType.set(if (isSnapshot) "beta" else "release")
 
     versionName.set("${rootProject.name} $newVersion")
     versionNumber.set(newVersion)
@@ -57,7 +57,7 @@ hangarPublish {
 
         version.set(newVersion)
 
-        channel.set(if (!isSnapshot) "Release" else "Snapshot")
+        channel.set(if (isSnapshot) "Snapshot" else "Release")
 
         changelog.set(content)
 
