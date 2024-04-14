@@ -7,7 +7,7 @@ fun Project.latestCommitHistory(start: String, end: String): List<String> {
 
 fun formatLog(commit: String, project: String): String {
     val hash = commit.take(7)
-    val message = commit.substring(8) // Get message after commit hash + space between
+    val message = commit.substring(0) // Get message after commit hash + space between
     return "[$hash](https://github.com/Crazy-Crew/$project/commit/$hash) $message<br>"
 }
 
