@@ -15,7 +15,11 @@ val isSnapshot = baseVersion.contains("-")
 val isMainBranch = branch == "main"
 
 val content: String = if (isSnapshot) {
-    latestCommitsHistory().joinToString(separator = "") { formatLog(it, rootProject.name) }
+    if (System.getenv("COMMIT_MESSAGE") != null) {
+        System.getenv("COMMIT_MESSAGE")
+    } else {
+        formatLog(latestCommitHash(), latestCommitMessage(), rootProject.name)
+    }
 } else {
     rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 }

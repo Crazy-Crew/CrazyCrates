@@ -1,18 +1,8 @@
 import org.gradle.api.Project
 import java.io.ByteArrayOutputStream
 
-fun Project.latestCommitHistory(start: String, end: String): List<String> {
-    return runGitCommand(listOf("log", "$start..$end", "--format=format:%h %s")).split("\n")
-}
-
-fun formatLog(commit: String, project: String): String {
-    val hash = commit.take(7)
-    val message = commit.substring(0) // Get message after commit hash + space between
+fun formatLog(hash: String, message: String, project: String): String {
     return "[$hash](https://github.com/Crazy-Crew/$project/commit/$hash) $message<br>"
-}
-
-fun Project.latestCommitsHistory(): List<String> {
-    return runGitCommand(listOf("log", "--pretty=%B")).split("\n")
 }
 
 fun Project.latestCommitHash(): String {
