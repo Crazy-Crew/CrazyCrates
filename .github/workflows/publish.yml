@@ -34,12 +34,9 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build the plugin
-        run: ./gradlew assemble
-
       - name: Publish
         env:
           HANGAR_KEY: ${{ secrets.HANGAR_KEY }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-        # run: ./gradlew modrinth publishAllPublicationsToHangar --stacktrace
-        run: ./gradlew modrinth --stacktrace
+        # run: ./gradlew assemble modrinth publishAllPublicationsToHangar --stacktrace
+        run: ./gradlew assemble modrinth --stacktrace
