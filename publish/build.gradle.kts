@@ -20,11 +20,10 @@ val newVersion = if (!isSnapshot) {
     "$baseVersion-${System.getenv("GITHUB_RUN_NUMBER")}"
 }
 
-val content = if (!isSnapshot) {
+val content: String = if (!isSnapshot) {
     rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 } else {
-    val hash = rootProject.latestCommitHash()
-    "[$hash](https://github.com/Crazy-Crew/${rootProject.name}/commit/$hash) ${rootProject.latestCommitMessage()}"
+    System.getenv("COMMIT_MESSAGE")
 }
 
 modrinth {
