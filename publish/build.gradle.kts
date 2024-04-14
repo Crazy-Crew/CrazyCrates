@@ -30,12 +30,12 @@ val content = if (!isSnapshot) {
 modrinth {
     token.set(System.getenv("modrinth_token"))
 
-    projectId.set("blockparticles")
+    projectId.set(rootProject.name.lowercase())
 
     versionType.set(if (!isSnapshot) "release" else "beta")
 
+    versionName.set("${rootProject.name} ${rootProject.version}")
     versionNumber.set(newVersion)
-    versionName.set(newVersion)
 
     changelog.set(content)
 
@@ -48,6 +48,10 @@ modrinth {
 
     autoAddDependsOn.set(false)
     detectLoaders.set(false)
+
+    dependencies {
+        optional.project("PlaceholderAPI")
+    }
 }
 
 hangarPublish {
@@ -55,6 +59,8 @@ hangarPublish {
         apiKey.set(System.getenv("HANGAR_TOKEN"))
 
         id.set(rootProject.name.lowercase())
+
+        version.set(newVersion)
 
         channel.set(if (!isSnapshot) "Release" else "Snapshot")
 
@@ -65,6 +71,24 @@ hangarPublish {
                 jar.set(file("$rootDir/jars/${rootProject.name}-${rootProject.version}.jar"))
 
                 platformVersions.set(listOf(libs.versions.bundle.get()))
+
+                dependencies {
+                    hangar("PlaceholderAPI") {
+                        required = false
+                    }
+
+                    url("Oraxen", "https://www.spigotmc.org/resources/%E2%98%84%EF%B8%8F-oraxen-custom-items-blocks-emotes-furniture-resourcepack-and-gui-1-18-1-20-4.72448/") {
+                        required = false
+                    }
+
+                    url("CMI", "https://www.spigotmc.org/resources/cmi-298-commands-insane-kits-portals-essentials-economy-mysql-sqlite-much-more.3742/") {
+                        required = false
+                    }
+
+                    url("DecentHolograms", "https://www.spigotmc.org/resources/decentholograms-1-8-1-20-4-papi-support-no-dependencies.96927/") {
+                        required = false
+                    }
+                }
             }
         }
     }
