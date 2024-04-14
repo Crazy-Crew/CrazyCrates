@@ -18,7 +18,7 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'Crazy-Crew' && "!contains(github.event.commits[0].message, '[ci-skip]')"
+    if: github.repository_owner == 'Crazy-Crew' && !contains(github.event.commits[0].message, '[ci-skip]')
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -34,12 +34,13 @@ jobs:
       - name: Gradle Properties Import.
         shell: bash
         run: cat gradle.properties >> $GITHUB_ENV
+
       # https://github.com/granny/Pl3xMap/blob/1df593e5706444de28fc61855df5a7552afcd3c7/.github/workflows/build.yml#L26C1-L58C92
       - uses: actions/github-script@v6
         name: Prepare build number if it doesn't exist
         with:
           debug: true
-          github-token: ${{ secrets.GH_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { owner, repo } = context.repo;
 
@@ -79,4 +80,5 @@ jobs:
         env:
           HANGAR_KEY: ${{ secrets.HANGAR_KEY }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-        run: ./gradlew modrinth publishAllPublicationsToHangar --stacktrace
+        # run: ./gradlew modrinth publishAllPublicationsToHangar --stacktrace
+        run: ./gradlew modrinth --stacktrace

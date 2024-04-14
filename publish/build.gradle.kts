@@ -30,7 +30,7 @@ val content = if (!isSnapshot) {
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
 
-    projectId.set(rootProject.name.lowercase())
+    projectId.set("blockparticles")
 
     versionType.set(if (!isSnapshot) "release" else "beta")
 
