@@ -28,8 +28,11 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
+      - name: Assemble
+        run: ./gradlew assemble --stacktrace
+
       - name: Publish
         env:
           HANGAR_TOKEN: ${{ secrets.HANGAR_TOKEN }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-        run: ./gradlew assemble modrinth publishAllPublicationsToHangar --stacktrace
+        run: ./gradlew modrinth publishAllPublicationsToHangar --stacktrace
