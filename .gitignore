@@ -3,19 +3,26 @@
 
 build
 
+buildSrc/.gradle
+buildSrc/build
+
 api/.gradle
 api/build
+
+publish/build
+publish/.gradle
 
 paper/.gradle
 paper/build
 
-paper/run
+paper/run/
+
+!paper/run/config/paper-global.yml
+!paper/run/config/paper-world-defaults.yml
 !paper/run/bukkit.yml
+!paper/run/eula.txt
 !paper/run/ops.json
 !paper/run/server.properties
 !paper/run/spigot.yml
-!paper/run/config/paper-world-defaults.yml
-!paper/run/config/paper-global.yml
-!paper/run/eula.txt
 
 jars

@@ -60,6 +60,10 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        this.plugin = new VitalPlugin(this);
+        this.plugin.setLogging(MiscUtils.isLogging());
+        this.plugin.start();
+      
         int radius = DedicatedServer.getServer().getSpawnProtectionRadius();
 
         if (radius > 0) {
@@ -79,6 +83,8 @@ public class CrazyCrates extends JavaPlugin {
         this.inventoryManager = new InventoryManager();
         this.crateManager = new CrateManager();
         this.userManager = new BukkitUserManager();
+
+        this.instance.setUserManager(this.userManager);
 
         // Load holograms.
         this.crateManager.loadHolograms();
@@ -161,6 +167,10 @@ public class CrazyCrates extends JavaPlugin {
         if (this.instance != null) {
             this.instance.disable();
         }
+    }
+
+    public @NotNull VitalPlugin getPlugin() {
+        return this.plugin;
     }
 
     public @NotNull InventoryManager getInventoryManager() {

@@ -161,7 +161,7 @@ public class CrateManager {
         if (this.holograms != null) {
             return;
         }
-
+      
         if (Support.decent_holograms.isEnabled()) {
             this.holograms = new DecentHologramsSupport();
             if (MiscUtils.isLogging()) this.plugin.getLogger().info("DecentHolograms support has been enabled.");

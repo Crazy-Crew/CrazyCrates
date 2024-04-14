@@ -6,12 +6,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
+import us.crazycrew.crazycrates.api.CrazyCratesService;
+import us.crazycrew.crazycrates.api.ICrazyCrates;
+import us.crazycrew.crazycrates.api.users.UserManager;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
-public class Server extends AbstractPlugin {
+public class Server extends AbstractPlugin implements ICrazyCrates {
 
     private FileManager fileManager;
     private final JavaPlugin plugin;
@@ -29,7 +32,7 @@ public class Server extends AbstractPlugin {
     @ApiStatus.Internal
     public void enable() {
         ConfigManager.load(this.plugin.getDataFolder());
-
+      
         this.fileManager = new FileManager();
         this.fileManager
                 .addDefaultFile("crates", "CrateExample.yml")
@@ -49,6 +52,10 @@ public class Server extends AbstractPlugin {
                 .addFolder("crates")
                 .addFolder("schematics").create();
 
+        // Register legacy provider.
+        CrazyCratesService.register(this);
+
+        // Register default provider.
         CratesProvider.register(this);
     }
 
@@ -58,6 +65,10 @@ public class Server extends AbstractPlugin {
 
     @ApiStatus.Internal
     public void disable() {
+        // Unregister legacy provider.
+        CrazyCratesService.unregister();
+
+        // Unregister default provider.
         CratesProvider.unregister();
     }
 
@@ -81,5 +92,16 @@ public class Server extends AbstractPlugin {
 
     public @NotNull File[] getCrateFiles() {
         return this.crateFolder.listFiles((dir, name) -> name.endsWith(".yml"));
+    }
+
+    private UserManager userManager;
+
+    public void setUserManager(UserManager userManager) {
+        this.userManager = userManager;
+    }
+
+    @Override
+    public @NotNull UserManager getUserManager() {
+        return this.userManager;
     }
 }

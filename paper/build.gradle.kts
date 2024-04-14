@@ -1,14 +1,13 @@
 plugins {
     alias(libs.plugins.run.paper)
-    alias(libs.plugins.shadow)
+
+    `paper-plugin`
 }
 
 val mcVersion = libs.versions.bundle
 
 dependencies {
     compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
-
-    paperweight.paperDevBundle(mcVersion)
 
     implementation(project(":api"))
 
@@ -29,10 +28,6 @@ dependencies {
     compileOnly(libs.itemsadder.api)
 
     compileOnly(libs.oraxen.api)
-
-    compileOnly(libs.vault) {
-        exclude("org.bukkit", "bukkit")
-    }
 }
 
 tasks {
@@ -49,10 +44,12 @@ tasks {
     }
 
     reobfJar {
-        outputJar = rootProject.layout.buildDirectory.file("$rootDir/jars/paper/${rootProject.name}-${rootProject.version}.jar")
+        outputJar = rootProject.projectDir.resolve("jars").resolve("${rootProject.name}-${rootProject.version}.jar")
     }
 
     shadowJar {
+        archiveClassifier.set("")
+
         listOf(
             "dev.triumphteam",
             "org.bstats",
