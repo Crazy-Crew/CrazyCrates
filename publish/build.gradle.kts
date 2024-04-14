@@ -24,6 +24,18 @@ val content: String = if (isSnapshot) {
     rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 }
 
+tasks.modrinth {
+    onlyIf {
+        isSnapshot || isMainBranch
+    }
+}
+
+tasks.publishAllPublicationsToHangar {
+    onlyIf {
+        isSnapshot || isMainBranch
+    }
+}
+
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
 
