@@ -12,7 +12,7 @@ fun formatLog(commit: String, project: String): String {
 }
 
 fun Project.latestCommitsHistory(): List<String> {
-    return runGitCommand(listOf("log", "--format=format:%h %s")).split("\n")
+    return runGitCommand(listOf("log", "--pretty=%B")).split("\n")
 }
 
 fun Project.latestCommitHash(): String {
