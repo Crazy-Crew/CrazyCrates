@@ -34,12 +34,12 @@ modrinth {
 
     versionType.set(if (!isSnapshot) "release" else "beta")
 
-    versionName.set("${rootProject.name} ${rootProject.version}")
+    versionName.set("${rootProject.name} $newVersion")
     versionNumber.set(newVersion)
 
     changelog.set(content)
 
-    uploadFile.set("$rootDir/jars/${rootProject.name}-${rootProject.version}.jar")
+    uploadFile.set("$rootDir/jars/${rootProject.name}-$newVersion.jar")
 
     gameVersions.set(listOf(libs.versions.bundle.get()))
 
@@ -64,7 +64,7 @@ hangarPublish {
 
         platforms {
             paper {
-                jar.set(file("$rootDir/jars/${rootProject.name}-${rootProject.version}.jar"))
+                jar.set(file("$rootDir/jars/${rootProject.name}-$newVersion.jar"))
 
                 platformVersions.set(listOf(libs.versions.bundle.get()))
 
