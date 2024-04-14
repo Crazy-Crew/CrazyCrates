@@ -34,10 +34,14 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
+      - name: Assemble
+        run:
+          ./gradlew assemble --stacktrace
+
       - name: Publish
         env:
           HANGAR_KEY: ${{ secrets.HANGAR_KEY }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
         # run: ./gradlew assemble modrinth publishAllPublicationsToHangar --stacktrace
-        run: ./gradlew assemble modrinth --stacktrace
+        run: ./gradlew modrinth --stacktrace

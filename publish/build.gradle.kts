@@ -9,10 +9,8 @@ dependencies {
     api(projects.paper)
 }
 
-val branch = branchName()
-val baseVersion = rootProject.version as String
-val isSnapshot = baseVersion.contains("-")
-val isMainBranch = branch == "main"
+val finalVersion = if (System.getenv("GITHUB_RUN_NUMBER") != null) "${rootProject.version}-${System.getenv("GITHUB_RUN_NUMBER")}" else rootProject.version as String
+val isSnapshot = rootProject.version.toString().contains("-")
 
 val content: String = if (isSnapshot) {
     if (System.getenv("COMMIT_MESSAGE") != null) {
@@ -24,18 +22,6 @@ val content: String = if (isSnapshot) {
     rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 }
 
-tasks.modrinth {
-    onlyIf {
-        isSnapshot || isMainBranch
-    }
-}
-
-tasks.publishAllPublicationsToHangar {
-    onlyIf {
-        isSnapshot || isMainBranch
-    }
-}
-
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
 
@@ -43,12 +29,12 @@ modrinth {
 
     versionType.set(if (isSnapshot) "beta" else "release")
 
-    versionName.set("${rootProject.name} $baseVersion")
-    versionNumber.set(baseVersion)
+    versionName.set("${rootProject.name} $finalVersion")
+    versionNumber.set(finalVersion)
 
     changelog.set(content)
 
-    uploadFile.set("$rootDir/jars/${rootProject.name}-$baseVersion.jar")
+    uploadFile.set(tasks.shadowJar.flatMap { it.archiveFile })
 
     gameVersions.set(listOf(libs.versions.bundle.get()))
 
@@ -65,7 +51,7 @@ hangarPublish {
 
         id.set(rootProject.name.lowercase())
 
-        version.set(baseVersion)
+        version.set(finalVersion)
 
         channel.set(if (isSnapshot) "Snapshot" else "Release")
 
@@ -73,7 +59,7 @@ hangarPublish {
 
         platforms {
             paper {
-                jar.set(file("$rootDir/jars/${rootProject.name}-$baseVersion.jar"))
+                jar.set(file(tasks.shadowJar.flatMap { it.archiveFile }))
 
                 platformVersions.set(listOf(libs.versions.bundle.get()))
 

@@ -35,7 +35,7 @@ tasks {
                 artifactId = project.name
                 version = "${project.version}"
 
-                artifact(reobfJar)
+                artifact(shadowJar)
             }
         }
     }

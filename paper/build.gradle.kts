@@ -43,12 +43,11 @@ tasks {
         dependsOn(reobfJar)
     }
 
-    reobfJar {
-        outputJar = rootProject.projectDir.resolve("jars").resolve("${rootProject.name}-${rootProject.version}.jar")
-    }
-
     shadowJar {
         archiveClassifier.set("")
+
+        //archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
+        //destinationDirectory.set(rootProject.projectDir.resolve("jars"))
 
         listOf(
             "dev.triumphteam",
@@ -65,9 +64,9 @@ tasks {
             "version" to rootProject.version,
             "group" to rootProject.group,
             "description" to rootProject.description,
-            "apiVersion" to providers.gradleProperty("apiVersion").get(),
-            "authors" to providers.gradleProperty("authors").get(),
-            "website" to providers.gradleProperty("website").get()
+            "apiVersion" to "1.20",
+            "authors" to listOf("RyderBelserion", "BadBones69"),
+            "website" to "https://modrinth.com/plugin/crazycrates"
         )
 
         inputs.properties(properties)
