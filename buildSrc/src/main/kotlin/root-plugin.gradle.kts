@@ -1,9 +1,5 @@
-import io.papermc.hangarpublishplugin.model.Platforms
-
 plugins {
-    id("io.papermc.hangar-publish-plugin")
-
-    id("com.modrinth.minotaur")
+    id("com.github.johnrengelman.shadow")
 
     `java-library`
 
@@ -15,11 +11,23 @@ base {
 }
 
 repositories {
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+
+    maven("https://repo.papermc.io/repository/maven-public/")
+
+    maven("https://repo.codemc.io/repository/maven-public/")
+
+    maven("https://repo.triumphteam.dev/snapshots/")
+
     maven("https://repo.crazycrew.us/snapshots/")
 
     maven("https://repo.crazycrew.us/releases/")
 
+    maven("https://repo.oraxen.com/releases/")
+
     maven("https://jitpack.io/")
+
+    flatDir { dirs("libs") }
 
     mavenCentral()
 }
@@ -40,54 +48,5 @@ tasks {
 
     processResources {
         filteringCharset = Charsets.UTF_8.name()
-    }
-
-    val directory = File("$rootDir/jars/${project.name.lowercase()}")
-    val mcVersion = providers.gradleProperty("mcVersion").get()
-
-    val isBeta: Boolean = providers.gradleProperty("isBeta").get().toBoolean()
-    val type = if (isBeta) "Beta" else "Release"
-
-    // Publish to hangar.papermc.io.
-    hangarPublish {
-        publications.register("plugin") {
-            version.set("${project.version}")
-
-            id.set(rootProject.name)
-
-            channel.set(type)
-
-            changelog.set(rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8))
-
-            apiKey.set(System.getenv("hangar_key"))
-
-            platforms {
-                register(Platforms.PAPER) {
-                    jar.set(file("$directory/${rootProject.name}-${project.version}.jar"))
-
-                    platformVersions.set(listOf(mcVersion))
-                }
-            }
-        }
-    }
-
-    modrinth {
-        versionType.set(type.lowercase())
-
-        autoAddDependsOn.set(false)
-
-        token.set(System.getenv("modrinth_token"))
-
-        projectId.set(rootProject.name.lowercase())
-
-        changelog.set(rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8))
-
-        versionName.set("${rootProject.name} ${project.version}")
-
-        versionNumber.set("${project.version}")
-
-        uploadFile.set("$directory/${rootProject.name}-${project.version}.jar")
-
-        gameVersions.add(mcVersion)
     }
 }

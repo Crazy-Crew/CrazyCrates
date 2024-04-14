@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -18,21 +17,19 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CasinoCrate extends CrateBuilder {
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-    @NotNull
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
     public CasinoCrate(Crate crate, Player player, int size) {
         super(crate, player, size);
 
         runAtFixedRate(CrazyCratesPaper.get(), SchedulerType.SYNC, player, null, 1, 1);
+        runTaskTimer(this.plugin, 1, 1);
     }
 
     private int counter = 0;

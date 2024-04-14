@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.listeners;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import java.util.ArrayList;
@@ -16,11 +17,9 @@ import java.util.List;
 // Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
 public class BrokeLocationsListener implements Listener {
 
-    @NotNull
-    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
     
     @EventHandler
     public void onWorldLoad(WorldLoadEvent event) {
@@ -36,7 +35,7 @@ public class BrokeLocationsListener implements Listener {
                 if (brokeLocation.getCrate() != null) {
                     this.crateManager.addLocation(new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location));
 
-                    if (brokeLocation.getCrate().getHologram().isEnabled() && this.crateManager.getHolograms() != null) this.crateManager.getHolograms().createHologram(location.getBlock(), brokeLocation.getCrate());
+                    if (brokeLocation.getCrate().getHologram().isEnabled() && this.crateManager.getHolograms() != null) this.crateManager.getHolograms().createHologram(location, brokeLocation.getCrate());
 
                     fixedWorlds.add(brokeLocation);
                     fixedAmount++;

@@ -2,7 +2,7 @@ package us.crazycrew.crazycrates.api;
 
 import org.jetbrains.annotations.ApiStatus;
 
-@Deprecated(forRemoval = true, since = "0.4")
+@Deprecated(forRemoval = true)
 public class CrazyCratesService {
 
     private static ICrazyCrates instance = null;

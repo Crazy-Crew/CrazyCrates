@@ -1,9 +1,12 @@
 package com.badbones69.crazycrates.api.builders;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.ryderbelserion.vital.enums.Support;
+import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -12,7 +15,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.CrazyCratesPaper;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.List;
 import static java.util.regex.Matcher.quoteReplacement;
@@ -20,8 +22,7 @@ import static java.util.regex.Matcher.quoteReplacement;
 @SuppressWarnings("ALL")
 public abstract class InventoryBuilder implements InventoryHolder {
 
-    @NotNull
-    protected final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    protected final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final Inventory inventory;
     private final Player player;
@@ -36,7 +37,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
         this.player = player;
         this.size = size;
 
-        String inventoryTitle = MiscUtils.isPapiActive() ? PlaceholderAPI.setPlaceholders(getPlayer(), MsgUtils.color(this.title)) : MsgUtils.color(this.title);
+        String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), MsgUtils.color(this.title)) : MsgUtils.color(this.title);
 
         this.inventory = this.plugin.getServer().createInventory(this, this.size, inventoryTitle);
     }
@@ -48,7 +49,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
 
         this.crate = crate;
 
-        String inventoryTitle = MiscUtils.isPapiActive() ? PlaceholderAPI.setPlaceholders(getPlayer(), MsgUtils.color(this.title)) : MsgUtils.color(this.title);
+        String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), MsgUtils.color(this.title)) : MsgUtils.color(this.title);
 
         this.inventory = this.plugin.getServer().createInventory(this, this.size, inventoryTitle);
     }
@@ -61,7 +62,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
 
         this.crate = crate;
 
-        String inventoryTitle = MiscUtils.isPapiActive() ? PlaceholderAPI.setPlaceholders(getPlayer(), MsgUtils.color(this.title)) : MsgUtils.color(this.title);
+        String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), MsgUtils.color(this.title)) : MsgUtils.color(this.title);
 
         this.inventory = this.plugin.getServer().createInventory(this, this.size, inventoryTitle);
     }
@@ -75,7 +76,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
 
         this.tiers = tiers;
 
-        String inventoryTitle = MiscUtils.isPapiActive() ? PlaceholderAPI.setPlaceholders(getPlayer(), MsgUtils.color(this.title)) : MsgUtils.color(this.title);
+        String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), MsgUtils.color(this.title)) : MsgUtils.color(this.title);
 
         this.inventory = this.plugin.getServer().createInventory(this, this.size, inventoryTitle);
     }

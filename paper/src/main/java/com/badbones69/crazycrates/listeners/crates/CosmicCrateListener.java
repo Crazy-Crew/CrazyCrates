@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import fr.euphyllia.energie.model.SchedulerType;
+import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.PrizeManager;
@@ -28,7 +29,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.enums.Messages;
@@ -44,14 +45,11 @@ import java.util.logging.Level;
 
 public class CosmicCrateListener implements Listener {
 
-    @NotNull
-    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-    @NotNull
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {

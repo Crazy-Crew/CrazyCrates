@@ -1,16 +1,16 @@
 package com.badbones69.crazycrates.support.metrics;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
 public class MetricsManager {
 
-    @NotNull
-    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private Metrics metrics;
 
@@ -34,7 +34,7 @@ public class MetricsManager {
             this.metrics.addCustomChart(chart);
         });
 
-        if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Metrics has been enabled.");
+        if (MiscUtils.isLogging()) this.plugin.getLogger().info("Metrics has been enabled.");
     }
 
     public void stop() {
@@ -48,6 +48,6 @@ public class MetricsManager {
 
         this.metrics = null;
 
-        if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Metrics has been turned off.");
+        if (MiscUtils.isLogging()) this.plugin.getLogger().info("Metrics has been turned off.");
     }
 }

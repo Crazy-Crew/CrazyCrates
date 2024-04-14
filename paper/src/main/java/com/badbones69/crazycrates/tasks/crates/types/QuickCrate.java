@@ -27,11 +27,9 @@ import java.util.logging.Level;
 
 public class QuickCrate extends CrateBuilder {
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-    @NotNull
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
     public QuickCrate(Crate crate, Player player, Location location) {
         super(crate, player, location);
@@ -172,6 +170,7 @@ public class QuickCrate extends CrateBuilder {
             }
         }.runDelayed(this.plugin, SchedulerType.SYNC, getPlayer(), null, 40));
     }
+
     @Override
     public void run() {
 

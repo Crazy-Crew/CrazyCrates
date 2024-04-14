@@ -1,13 +1,13 @@
 package com.badbones69.crazycrates.api.builders;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
-import com.badbones69.crazycrates.support.PluginSupport;
 import com.badbones69.crazycrates.support.SkullCreator;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.ryderbelserion.cluster.utils.DyeUtils;
+import com.ryderbelserion.vital.enums.Support;
+import com.ryderbelserion.vital.util.DyeUtil;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.nbt.TagParser;
@@ -35,6 +35,7 @@ import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -51,8 +52,7 @@ import java.util.stream.Collectors;
 
 public class ItemBuilder {
 
-    @NotNull
-    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     // Items
     private Material material = Material.STONE;
@@ -279,7 +279,7 @@ public class ItemBuilder {
     public ItemBuilder() {}
 
     private String parse(String message) {
-        if (PluginSupport.PLACEHOLDERAPI.isPluginEnabled() && this.target != null) {
+        if (Support.placeholder_api.isEnabled()  && this.target != null) {
             return MsgUtils.color(PlaceholderAPI.setPlaceholders(this.target, message));
         }
 
@@ -293,7 +293,7 @@ public class ItemBuilder {
      */
     public ItemStack build() {
         // Check if oraxen is enabled.
-        if (PluginSupport.ORAXEN.isPluginEnabled()) {
+        if (Support.oraxen.isEnabled() ) {
             // Get the item.
             io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
 
@@ -583,10 +583,10 @@ public class ItemBuilder {
             } else {
                 this.potionType = getPotionType(PotionEffectType.getByName(metaData)).getEffectType();
 
-                this.potionColor = DyeUtils.getColor(metaData);
-                this.armorColor = DyeUtils.getColor(metaData);
-                this.mapColor = DyeUtils.getColor(metaData);
-                this.fireworkColor = DyeUtils.getColor(metaData);
+                this.potionColor = DyeUtil.getColor(metaData);
+                this.armorColor = DyeUtil.getColor(metaData);
+                this.mapColor = DyeUtil.getColor(metaData);
+                this.fireworkColor = DyeUtil.getColor(metaData);
             }
         } else if (type.contains("#")) {
             String[] section = type.split("#");
@@ -607,7 +607,7 @@ public class ItemBuilder {
 
             this.material = this.itemStack.getType();
         } else {
-            if (PluginSupport.ORAXEN.isPluginEnabled()) {
+            if (Support.oraxen.isEnabled() ) {
                 io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
 
                 if (oraxenItem != null) {
@@ -1160,7 +1160,7 @@ public class ItemBuilder {
                         try {
                             for (PatternType pattern : PatternType.values()) {
                                 if (option.equalsIgnoreCase(pattern.name()) || value.equalsIgnoreCase(pattern.getIdentifier())) {
-                                    DyeColor color = DyeUtils.getDyeColor(value);
+                                    DyeColor color = DyeUtil.getDyeColor(value);
                                     if (color != null) itemBuilder.addPattern(new Pattern(color, pattern));
                                     break;
                                 }
@@ -1172,7 +1172,7 @@ public class ItemBuilder {
         } catch (Exception exception) {
             itemBuilder.setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor : &c" + (placeHolder != null ? placeHolder : "")));
 
-            CrazyCratesPaper plugin = CrazyCratesPaper.get();
+            CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
             plugin.getLogger().log(Level.WARNING, "An error has occurred with the item builder: ", exception);
         }
 
@@ -1363,7 +1363,7 @@ public class ItemBuilder {
             for (PatternType pattern : PatternType.values()) {
 
                 if (split[0].equalsIgnoreCase(pattern.name()) || split[0].equalsIgnoreCase(pattern.getIdentifier())) {
-                    DyeColor color = DyeUtils.getDyeColor(split[1]);
+                    DyeColor color = DyeUtil.getDyeColor(split[1]);
 
                     if (color != null) addPattern(new Pattern(color, pattern));
 

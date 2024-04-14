@@ -4,7 +4,7 @@ package us.crazycrew.crazycrates.api.enums.types;
  * An enum class that contains all our current crate types.
  *
  * @author Ryder Belserion
- * @version 0.4
+ * @version 1.0-snapshot
  */
 public enum CrateType {
 

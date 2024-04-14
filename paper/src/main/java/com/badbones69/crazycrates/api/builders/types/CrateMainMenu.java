@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api.builders.types;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
@@ -21,13 +21,12 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.api.users.UserManager;
 import java.text.NumberFormat;
 import java.util.List;
 
@@ -160,20 +159,15 @@ public class CrateMainMenu extends InventoryBuilder {
 
     public static class CrateMenuListener implements Listener {
 
-        @NotNull
-        private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+        private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-        @NotNull
-        private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+        private final @NotNull InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
-        @NotNull
-        private final SettingsManager config = ConfigManager.getConfig();
+        private final @NotNull SettingsManager config = ConfigManager.getConfig();
 
-        @NotNull
-        private final CrateManager crateManager = this.plugin.getCrateManager();
+        private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-        @NotNull
-        private final UserManager userManager = this.plugin.getUserManager();
+        private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
         @EventHandler
         public void onInventoryClick(InventoryClickEvent event) {

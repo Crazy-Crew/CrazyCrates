@@ -3,20 +3,10 @@ package com.badbones69.crazycrates.commands;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.CrazyCratesPaper;
 
 public abstract class MessageManager {
 
-    @NotNull
-    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
-
-    @NotNull
-    private final BukkitCommandManager<CommandSender> bukkitCommandManager = this.plugin.getCommandManager();
-
-    @NotNull
-    public BukkitCommandManager<CommandSender> getBukkitCommandManager() {
-        return this.bukkitCommandManager;
-    }
+    protected final @NotNull BukkitCommandManager<CommandSender> commandManager = CommandManager.getCommandManager();
 
     public abstract void build();
 

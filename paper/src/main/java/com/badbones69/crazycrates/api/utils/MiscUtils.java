@@ -4,9 +4,9 @@ import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import fr.euphyllia.energie.model.SchedulerType;
 import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.support.PluginSupport;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -24,7 +24,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,8 +35,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MiscUtils {
 
-    @NotNull
-    private static final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private static final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     public static void sendCommand(String command) {
         plugin.getScheduler().runTask(SchedulerType.SYNC, schedulerTask -> {
@@ -72,6 +71,10 @@ public class MiscUtils {
         plugin.getScheduler().scheduleSyncDelayed(SchedulerType.SYNC, location, schedulerTask -> firework.detonate(), 3L);
     }
 
+    public static String location(Location location) {
+        return location.getWorld().getUID() + "," + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ();
+    }
+
     /**
      * Checks if the player's inventory is empty by checking if the first empty slot is -1.
      *
@@ -79,18 +82,6 @@ public class MiscUtils {
      */
     public static boolean isInventoryFull(Player player) {
         return player.getInventory().firstEmpty() == -1;
-    }
-
-    /**
-     * Remove or subtract an item from a player's inventory.
-     */
-    public static void removeItemStack(Player player, ItemStack item) {
-        if (item.getAmount() <= 1) {
-            player.getInventory().removeItem(item);
-            return;
-        }
-
-        item.setAmount(item.getAmount() - 1);
     }
 
     // ElectronicBoy is the author.
@@ -178,7 +169,7 @@ public class MiscUtils {
                 "An error has occurred while trying to take a key from a player.",
                 "Player: " + player.getName(),
                 "Key: " + crateName
-        ).forEach(plugin.getServer().getLogger()::warning);
+        ).forEach(plugin.getLogger()::warning);
 
         List.of(
                 "&cAn issue has occurred when trying to take a key.",
@@ -284,21 +275,6 @@ public class MiscUtils {
                 Material.GRAY_STAINED_GLASS_PANE,
                 Material.LIME_STAINED_GLASS_PANE,
                 Material.PINK_STAINED_GLASS_PANE,
-                Material.RED_STAINED_GLASS_PANE,
-
-                Material.LIGHT_BLUE_STAINED_GLASS_PANE,
-                Material.MAGENTA_STAINED_GLASS_PANE,
-                Material.YELLOW_STAINED_GLASS_PANE,
-                Material.PURPLE_STAINED_GLASS_PANE,
-                Material.ORANGE_STAINED_GLASS_PANE,
-                Material.GREEN_STAINED_GLASS_PANE,
-                Material.BROWN_STAINED_GLASS_PANE,
-                Material.BLACK_STAINED_GLASS_PANE,
-                Material.BLUE_STAINED_GLASS_PANE,
-                Material.CYAN_STAINED_GLASS_PANE,
-                Material.GRAY_STAINED_GLASS_PANE,
-                Material.LIME_STAINED_GLASS_PANE,
-                Material.PINK_STAINED_GLASS_PANE,
                 Material.RED_STAINED_GLASS_PANE
         );
 
@@ -320,10 +296,6 @@ public class MiscUtils {
         }
 
         return slow;
-    }
-
-    public static boolean isPapiActive() {
-        return PluginSupport.PLACEHOLDERAPI.isPluginEnabled();
     }
 
     public static boolean useOtherRandom() {

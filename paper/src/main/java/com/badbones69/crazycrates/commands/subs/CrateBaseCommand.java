@@ -5,7 +5,9 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
+import com.ryderbelserion.vital.files.FileManager;
 import dev.triumphteam.cmd.core.annotation.ArgName;
 import dev.triumphteam.cmd.core.annotation.Command;
 import dev.triumphteam.cmd.core.annotation.Default;
@@ -21,12 +23,12 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.World;
+import org.bukkit.plugin.java.JavaPlugin;
+import us.crazycrew.crazycrates.api.enums.Files;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.api.FileManager;
-import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.enums.Permissions;
@@ -44,10 +46,8 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.api.utils.FileUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
-import us.crazycrew.crazycrates.api.users.UserManager;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -59,26 +59,19 @@ import java.util.logging.Level;
 @Description("The base command for CrazyCrates")
 public class CrateBaseCommand extends BaseCommand {
 
-    @NotNull
-    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    @NotNull
-    private final UserManager userManager = this.plugin.getUserManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
-    @NotNull
-    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    private final @NotNull InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-    @NotNull
-    private final FileManager fileManager = this.plugin.getFileManager();
+    private final @NotNull FileManager fileManager = this.plugin.getFileManager();
 
-    @NotNull
-    private final SettingsManager config = ConfigManager.getConfig();
+    private final @NotNull SettingsManager config = ConfigManager.getConfig();
 
-    @NotNull
-    private final FileConfiguration locations = Files.LOCATIONS.getFile();
+    private final @NotNull FileConfiguration locations = Files.locations.getFile();
 
     @Default
     @Permission(value = "crazycrates.command.player.menu", def = PermissionDefault.TRUE)
@@ -154,10 +147,7 @@ public class CrateBaseCommand extends BaseCommand {
     public void onReload(CommandSender sender) {
         ConfigManager.reload();
 
-        this.fileManager.reloadAllFiles();
-        this.fileManager.setup();
-
-        FileUtils.loadFiles();
+        this.fileManager.create();
 
         if (!this.config.getProperty(ConfigKeys.toggle_metrics)) {
             this.plugin.getMetrics().stop();
@@ -165,13 +155,26 @@ public class CrateBaseCommand extends BaseCommand {
             this.plugin.getMetrics().start();
         }
 
-        FileUtils.cleanFiles();
+        FileConfiguration locations = Files.locations.getFile();
+        FileConfiguration data = Files.data.getFile();
+
+        if (!locations.contains("Locations")) {
+            locations.set("Locations.Clear", null);
+
+            Files.locations.save();
+        }
+
+        if (!data.contains("Players")) {
+            data.set("Players.Clear", null);
+
+            Files.data.save();
+        }
 
         // Close previews
         if (this.config.getProperty(ConfigKeys.take_out_of_preview)) {
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {
-                if (inventoryManager.inCratePreview(player)) {
-                    inventoryManager.closeCratePreview(player);
+                if (this.inventoryManager.inCratePreview(player)) {
+                    this.inventoryManager.closeCratePreview(player);
 
                     if (this.config.getProperty(ConfigKeys.send_preview_taken_out_message)) {
                         player.sendMessage(Messages.reloaded_forced_out_of_preview.getMessage(player));
@@ -179,6 +182,8 @@ public class CrateBaseCommand extends BaseCommand {
                 }
             });
         }
+
+        this.crateManager.loadHolograms();
 
         this.crateManager.loadCrates();
 
@@ -254,7 +259,7 @@ public class CrateBaseCommand extends BaseCommand {
         if (!this.locations.contains("Locations")) {
             this.locations.set("Locations.Clear", null);
 
-            Files.LOCATIONS.saveFile();
+            Files.locations.save();
         }
 
         for (String name : this.locations.getConfigurationSection("Locations").getKeys(false)) {
@@ -305,7 +310,7 @@ public class CrateBaseCommand extends BaseCommand {
                 crate.addEditorItem(prize, item, crate.getTier(tier), chance);
             }
         } catch (Exception exception) {
-            this.plugin.getServer().getLogger().log(Level.WARNING, "Failed to add a new prize to the " + crate.getName() + " crate.", exception);
+            this.plugin.getLogger().log(Level.WARNING, "Failed to add a new prize to the " + crate.getName() + " crate.", exception);
 
             return;
         }
@@ -637,7 +642,7 @@ public class CrateBaseCommand extends BaseCommand {
     }
 
     public record CustomPlayer(String name) {
-        private static final CrazyCratesPaper plugin = CrazyCratesPaper.getPlugin(CrazyCratesPaper.class);
+        private static final CrazyCrates plugin = CrazyCrates.getPlugin(CrazyCrates.class);
 
         public @NotNull OfflinePlayer getOfflinePlayer() {
             CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> plugin.getServer().getOfflinePlayer(name)).thenApply(OfflinePlayer::getUniqueId);

@@ -3,10 +3,12 @@ package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 import fr.euphyllia.energie.model.SchedulerType;
 import fr.euphyllia.energie.utils.EntityUtils;
 import fr.euphyllia.energie.utils.SchedulerTaskRunnable;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import org.bukkit.SoundCategory;
+import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.enums.Messages;
@@ -30,11 +32,10 @@ import java.util.Map;
 
 public class QuadCrateManager {
 
-    @NotNull
-    private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
     private static final List<QuadCrateManager> crateSessions = new ArrayList<>();
 
@@ -69,13 +70,13 @@ public class QuadCrateManager {
     private final List<Location> crateLocations = new ArrayList<>();
 
     // Stores if the crate is open or not.
-    private final HashMap<Location, Boolean> cratesOpened = new HashMap<>();
+    private final Map<Location, Boolean> cratesOpened = new HashMap<>();
 
     // Saves all the chests spawned by the QuadCrate task.
-    private final HashMap<Location, BlockState> quadCrateChests = new HashMap<>();
+    private final Map<Location, BlockState> quadCrateChests = new HashMap<>();
 
     // Saves all the old blocks to restore after.
-    private final HashMap<Location, BlockState> oldBlocks = new HashMap<>();
+    private final Map<Location, BlockState> oldBlocks = new HashMap<>();
 
     // Get the particles that will be used to display above the crates.
     private final Color particleColor;
@@ -127,7 +128,7 @@ public class QuadCrateManager {
         }
 
         // Check if schematic folder is empty.
-        if (this.plugin.getCrateManager().getCrateSchematics().isEmpty()) {
+        if (this.crateManager.getCrateSchematics().isEmpty()) {
             this.player.sendMessage(Messages.no_schematics_found.getMessage(player));
             this.crateManager.removePlayerFromOpeningList(this.player);
             crateSessions.remove(this.instance);
@@ -173,14 +174,14 @@ public class QuadCrateManager {
             }
         }
 
-        if (!this.plugin.getUserManager().takeKeys(1, this.player.getUniqueId(), this.crate.getName(), this.keyType, this.checkHand)) {
+        if (!this.userManager.takeKeys(1, this.player.getUniqueId(), this.crate.getName(), this.keyType, this.checkHand)) {
             this.crateManager.removePlayerFromOpeningList(this.player);
 
             crateSessions.remove(this.instance);
             return;
         }
 
-        if (this.crateManager.getHolograms() != null) this.crateManager.getHolograms().removeHologram(this.spawnLocation.getBlock());
+        if (this.crateManager.getHolograms() != null) this.crateManager.getHolograms().removeHologram(this.spawnLocation);
 
         // Shove other players away from the player opening the crate.
         shovePlayers.forEach(entity -> entity.getLocation().toVector().subtract(this.spawnLocation.clone().toVector()).normalize().setY(1));
@@ -286,7 +287,7 @@ public class QuadCrateManager {
                     });
                 });
 
-                if (crate.getHologram().isEnabled() && crateManager.getHolograms() != null) crateManager.getHolograms().createHologram(spawnLocation.getBlock(), crate);
+                if (crate.getHologram().isEnabled() && crateManager.getHolograms() != null) crateManager.getHolograms().createHologram(spawnLocation, crate);
 
                 // End the crate.
                 crateManager.endCrate(player);
@@ -384,7 +385,7 @@ public class QuadCrateManager {
      *
      * @return map of opened crates.
      */
-    public HashMap<Location, Boolean> getCratesOpened() {
+    public Map<Location, Boolean> getCratesOpened() {
         return this.cratesOpened;
     }
 

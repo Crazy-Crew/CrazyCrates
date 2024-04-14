@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.paperweight.userdev)
-    implementation(libs.publishing.modrinth)
-    implementation(libs.publishing.hangar)
+    implementation("io.papermc.paperweight", "paperweight-userdev", "1.5.15")
+
+    implementation("com.github.johnrengelman", "shadow", "8.1.1")
 }

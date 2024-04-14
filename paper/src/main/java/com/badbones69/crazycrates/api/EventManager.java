@@ -1,13 +1,13 @@
 package com.badbones69.crazycrates.api;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.api.FileManager.Files;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -28,10 +28,9 @@ import java.util.logging.Level;
  */
 public class EventManager {
 
-    @NotNull
-    private final static CrazyCratesPaper plugin = CrazyCratesPaper.get();
+    private final static @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final static String fileName = Files.LOGS.getFileName();
+    //private final static @NotNull String fileName = Files.LOGS.getFileName();
 
     public static void logCrateEvent(Player player, Crate crate, KeyType keyType, boolean logFile, boolean logConsole) {
         if (logFile) {
@@ -80,10 +79,10 @@ public class EventManager {
     private static void log(String toLog, String eventType) {
         BufferedWriter bufferedWriter = null;
 
-        try {
-            bufferedWriter = new BufferedWriter(new FileWriter(plugin.getDataFolder() + "/" + fileName, true));
+        /*try {
+            //bufferedWriter = new BufferedWriter(new FileWriter(plugin.getDataFolder() + "/" + fileName, true));
 
-            bufferedWriter.write("[" + getDateTime() + " " + eventType + "]: " + toLog + System.lineSeparator());
+            //bufferedWriter.write("[" + getDateTime() + " " + eventType + "]: " + toLog + System.lineSeparator());
             bufferedWriter.flush();
         } catch (IOException exception) {
             plugin.getLogger().log(Level.WARNING, "Failed to write to " + fileName, exception);
@@ -93,7 +92,7 @@ public class EventManager {
             } catch (IOException exception) {
                 plugin.getLogger().log(Level.WARNING, "Failed to close buffer for " + fileName, exception);
             }
-        }
+        }*/
     }
 
     private static String getDateTime() {

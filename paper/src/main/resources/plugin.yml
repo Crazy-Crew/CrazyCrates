@@ -1,5 +1,5 @@
 name: '${name}'
-main: '${group}.CrazyCratesPaper'
+main: '${group}.${name}'
 
 authors: ${authors}
 
@@ -9,4 +9,4 @@ description: '${description}'
 website: '${website}'
 folia-supported: true
 
-softdepend: [CMI, DecentHolograms, HolographicDisplays, PlaceholderAPI, ItemsAdder, Oraxen]
+softdepend: [CMI, DecentHolograms, PlaceholderAPI, ItemsAdder, Oraxen]

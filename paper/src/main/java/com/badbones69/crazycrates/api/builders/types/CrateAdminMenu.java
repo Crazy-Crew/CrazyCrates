@@ -1,10 +1,11 @@
 package com.badbones69.crazycrates.api.builders.types;
 
-import com.badbones69.crazycrates.CrazyCratesPaper;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -17,10 +18,10 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.api.users.UserManager;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,14 +51,11 @@ public class CrateAdminMenu extends InventoryBuilder {
 
     public static class CrateAdminListener implements Listener {
 
-        @NotNull
-        private final CrazyCratesPaper plugin = CrazyCratesPaper.get();
+        private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-        @NotNull
-        private final CrateManager crateManager = this.plugin.getCrateManager();
+        private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-        @NotNull
-        private final UserManager userManager = this.plugin.getUserManager();
+        private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
         @EventHandler
         public void onInventoryClick(InventoryClickEvent event) {

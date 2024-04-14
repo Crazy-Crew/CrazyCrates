@@ -194,4 +194,5 @@ public class CrazyCrates extends JavaPlugin {
     public @NotNull Timer getTimer() {
         return this.timer;
     }
+
 }

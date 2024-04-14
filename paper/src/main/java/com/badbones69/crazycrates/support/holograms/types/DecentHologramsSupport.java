@@ -1,56 +1,55 @@
 package com.badbones69.crazycrates.support.holograms.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
-import us.crazycrew.crazycrates.api.crates.CrateHologram;
-import eu.decentsoftware.holograms.api.DHAPI;
-import eu.decentsoftware.holograms.api.holograms.Hologram;
-import org.bukkit.block.Block;
-import com.badbones69.crazycrates.support.holograms.HologramManager;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
-
+import eu.decentsoftware.holograms.api.DHAPI;
+import org.bukkit.Location;
+import eu.decentsoftware.holograms.api.holograms.Hologram;
+import com.badbones69.crazycrates.support.holograms.HologramManager;
+import us.crazycrew.crazycrates.api.crates.CrateHologram;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class DecentHologramsSupport extends HologramManager {
 
-    private final Map<Block, Hologram> holograms = new HashMap<>();
+    private final Map<String, Hologram> holograms = new HashMap<>();
 
     @Override
-    public void createHologram(Block block, Crate crate) {
+    public void createHologram(Location location, Crate crate) {
+        if (crate.getCrateType() == CrateType.menu) return;
+
         CrateHologram crateHologram = crate.getHologram();
 
         if (!crateHologram.isEnabled()) return;
 
-        double height = crateHologram.getHeight();
-
-        Hologram hologram = DHAPI.createHologram("CrazyCrates-" + UUID.randomUUID(), block.getLocation().add(.5, height, .5));
-
-        hologram.setDisplayRange(crateHologram.getRange());
+        Hologram hologram = DHAPI.createHologram(name(), location.clone().add(getVector(crate)));
 
         crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, MsgUtils.color(line)));
 
-        this.holograms.put(block, hologram);
+        hologram.setDisplayRange(crateHologram.getRange());
+
+        this.holograms.put(MiscUtils.location(location), hologram);
     }
 
     @Override
-    public void removeHologram(Block block) {
-        if (!this.holograms.containsKey(block)) return;
+    public void removeHologram(Location location) {
+        Hologram hologram = this.holograms.remove(MiscUtils.location(location));
 
-        Hologram hologram = this.holograms.get(block);
-
-        this.holograms.remove(block);
-        hologram.delete();
+        if (hologram != null) {
+            hologram.destroy();
+        }
     }
 
     @Override
     public void removeAllHolograms() {
-        this.holograms.forEach((key, value) -> value.delete());
+        this.holograms.forEach((key, value) -> value.destroy());
         this.holograms.clear();
     }
 
     @Override
-    public boolean isMapEmpty() {
+    public boolean isEmpty() {
         return this.holograms.isEmpty();
     }
 }

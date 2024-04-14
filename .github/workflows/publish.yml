@@ -1,0 +1,47 @@
+name: Publishing
+on:
+  push:
+    branches:
+      - main
+      #- dev
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log Level'
+        required: false
+        default: 'warning'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'Crazy-Crew' && !contains(github.event.commits[0].message, '[ci-skip]')
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          check-latest: true
+
+      - name: Gradle Properties Import.
+        shell: bash
+        run: cat gradle.properties >> $GITHUB_ENV
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Assemble
+        run:
+          ./gradlew assemble --stacktrace
+
+      - name: Publish
+        env:
+          HANGAR_KEY: ${{ secrets.HANGAR_KEY }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
+        # run: ./gradlew assemble modrinth publishAllPublicationsToHangar --stacktrace
+        run: ./gradlew modrinth --stacktrace
