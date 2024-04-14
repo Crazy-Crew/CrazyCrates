@@ -10,8 +10,8 @@ dependencies {
 }
 
 val branch = branchName()
-val baseVersion = project.version as String
-val isSnapshot = branch.contains("-")
+val baseVersion = rootProject.version as String
+val isSnapshot = baseVersion.contains("-snapshot")
 val isMainBranch = branch == "main"
 
 val newVersion = if (!isSnapshot) {
