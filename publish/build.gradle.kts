@@ -88,15 +88,3 @@ hangarPublish {
         }
     }
 }
-
-tasks.modrinth {
-    onlyIf {
-        !isSnapshot || isMainBranch
-    }
-}
-
-tasks.publishAllPublicationsToHangar {
-    onlyIf {
-        !isSnapshot || isMainBranch
-    }
-}
