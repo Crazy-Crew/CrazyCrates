@@ -5,9 +5,7 @@ plugins {
 rootProject.group = "com.badbones69.crazycrates"
 rootProject.description = "Create unlimited crates with multiple crate types to choose from!"
 
-
-val buildNumber = System.getenv("NEXT_BUILD_NUMBER") ?: "snapshot"
-rootProject.version = "2.1-$buildNumber"
+rootProject.version = "2.1-snapshot"
 
 tasks {
     assemble {
