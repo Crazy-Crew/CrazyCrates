@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import us.crazycrew.crazycrates.api.crates.CrateHologram;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +18,8 @@ public class DecentHologramsSupport extends HologramManager {
 
     @Override
     public void createHologram(Location location, Crate crate) {
+        if (crate.getCrateType() == CrateType.menu) return;
+
         CrateHologram crateHologram = crate.getHologram();
 
         if (!crateHologram.isEnabled()) return;
