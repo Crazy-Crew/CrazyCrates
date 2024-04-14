@@ -28,10 +28,6 @@ dependencies {
     compileOnly(libs.itemsadder.api)
 
     compileOnly(libs.oraxen.api)
-
-    compileOnly(libs.vault) {
-        exclude("org.bukkit", "bukkit")
-    }
 }
 
 tasks {
