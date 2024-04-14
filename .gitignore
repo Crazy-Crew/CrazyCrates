@@ -3,8 +3,14 @@
 
 build
 
+buildSrc/.gradle
+buildSrc/build
+
 api/.gradle
 api/build
+
+publish/build
+publish/.gradle
 
 paper/.gradle
 paper/build

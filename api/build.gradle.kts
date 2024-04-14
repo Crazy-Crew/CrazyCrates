@@ -1,16 +1,12 @@
 plugins {
-    `maven-publish`
+    `paper-plugin`
 }
 
 project.group = "us.crazycrew.crazycrates"
 project.version = "1.0-snapshot"
 
-val mcVersion = libs.versions.bundle.get()
-
 dependencies {
     compileOnly(fileTree("libs/shade").include("*.jar"))
-
-    paperweight.paperDevBundle("$mcVersion-R0.1-SNAPSHOT")
 
     compileOnly(libs.config.me)
 
@@ -39,7 +35,7 @@ tasks {
             create<MavenPublication>("maven") {
                 group = project.group
                 artifactId = project.name
-                version = project.version.toString()
+                version = "${project.version}"
 
                 artifact(reobfJar)
             }

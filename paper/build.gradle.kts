@@ -1,14 +1,13 @@
 plugins {
     alias(libs.plugins.run.paper)
-    alias(libs.plugins.shadow)
+
+    `paper-plugin`
 }
 
 val mcVersion = libs.versions.bundle.get()
 
 dependencies {
     compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
-
-    paperweight.paperDevBundle("$mcVersion-R0.1-SNAPSHOT")
 
     implementation(project(":api"))
 
@@ -49,10 +48,12 @@ tasks {
     }
 
     reobfJar {
-        outputJar = rootProject.layout.buildDirectory.file("$rootDir/jars/paper/${rootProject.name}-${rootProject.version}.jar")
+        outputJar = rootProject.projectDir.resolve("jars").resolve("${rootProject.name}-${rootProject.version}.jar")
     }
 
     shadowJar {
+        archiveClassifier.set("")
+
         listOf(
             "dev.triumphteam",
             "org.bstats",

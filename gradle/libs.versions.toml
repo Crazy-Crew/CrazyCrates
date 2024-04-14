@@ -1,7 +1,5 @@
 [plugins]
-userdev = { id = "io.papermc.paperweight.userdev", version = "1.5.12" }
 bukkit-convention = { id = "xyz.jpenilla.resource-factory-bukkit-convention", version = "1.0.0" }
-shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
 run-paper = { id = "xyz.jpenilla.run-paper", version = "2.2.3" }
 
 [versions]
