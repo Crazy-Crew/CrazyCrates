@@ -48,10 +48,6 @@ modrinth {
 
     autoAddDependsOn.set(false)
     detectLoaders.set(false)
-
-    dependencies {
-        optional.project("PlaceholderAPI")
-    }
 }
 
 hangarPublish {
