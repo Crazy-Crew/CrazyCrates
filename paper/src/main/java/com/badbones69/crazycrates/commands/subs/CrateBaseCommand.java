@@ -167,10 +167,6 @@ public class CrateBaseCommand extends BaseCommand {
 
             Files.data.save();
         }
-      
-        this.plugin.getPlugin().setLogging(MiscUtils.isLogging());
-
-        FileUtils.cleanFiles();
 
         // Close previews
         if (this.config.getProperty(ConfigKeys.take_out_of_preview)) {

@@ -22,6 +22,7 @@ import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.VitalPaper;
 import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.files.FileManager;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -60,9 +61,7 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.plugin = new VitalPlugin(this);
-        this.plugin.setLogging(MiscUtils.isLogging());
-        this.plugin.start();
+        new VitalPaper(this);
       
         int radius = DedicatedServer.getServer().getSpawnProtectionRadius();
 
@@ -167,10 +166,6 @@ public class CrazyCrates extends JavaPlugin {
         if (this.instance != null) {
             this.instance.disable();
         }
-    }
-
-    public @NotNull VitalPlugin getPlugin() {
-        return this.plugin;
     }
 
     public @NotNull InventoryManager getInventoryManager() {
