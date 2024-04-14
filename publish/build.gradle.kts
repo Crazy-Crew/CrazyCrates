@@ -28,7 +28,7 @@ val content = if (!isSnapshot) {
 }
 
 modrinth {
-    token.set(System.getenv("modrinth_token"))
+    token.set(System.getenv("MODRINTH_TOKEN"))
 
     projectId.set(rootProject.name.lowercase())
 
@@ -56,7 +56,7 @@ modrinth {
 
 hangarPublish {
     publications.register("plugin") {
-        apiKey.set(System.getenv("HANGAR_TOKEN"))
+        apiKey.set(System.getenv("HANGAR_KEY"))
 
         id.set(rootProject.name.lowercase())
 
