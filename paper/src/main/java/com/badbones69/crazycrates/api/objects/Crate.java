@@ -4,7 +4,8 @@ import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
-import com.ryderbelserion.vital.utils.DyeUtils;
+import com.ryderbelserion.vital.files.FileManager;
+import com.ryderbelserion.vital.util.DyeUtil;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
@@ -17,7 +18,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.AbstractCrateManager;
 import org.jetbrains.annotations.NotNull;
@@ -138,7 +138,7 @@ public class Crate {
         if (crateType == CrateType.quad_crate) {
             this.particle = Registry.PARTICLE_TYPE.get(NamespacedKey.minecraft(file != null ? file.getString("Crate.particles.type", "dust") : "dust"));
 
-            this.color = DyeUtils.getColor(file != null ? file.getString("Crate.particles.color", "235,64,52") : "235,64,52");
+            this.color = DyeUtil.getColor(file != null ? file.getString("Crate.particles.color", "235,64,52") : "235,64,52");
         }
 
         this.hologram = hologram != null ? hologram : new CrateHologram();
@@ -657,7 +657,7 @@ public class Crate {
             this.plugin.getLogger().log(Level.SEVERE, "Failed to save " + this.name + ".yml", exception);
         }
 
-        this.fileManager.getFile(this.name).reloadFile();
+        this.fileManager.getCustomFile(this.name).reload();
 
         this.plugin.getCrateManager().reloadCrate(this.plugin.getCrateManager().getCrateFromName(this.name));
     }

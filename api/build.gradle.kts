@@ -6,11 +6,9 @@ project.group = "us.crazycrew.crazycrates"
 project.version = "1.0-snapshot"
 
 dependencies {
-    compileOnly(fileTree("libs/shade").include("*.jar"))
+    compileOnly(libs.vital)
 
     compileOnly(libs.config.me)
-
-    compileOnly(libs.vital)
 }
 
 java {

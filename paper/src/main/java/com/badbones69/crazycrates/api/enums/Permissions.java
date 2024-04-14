@@ -7,11 +7,8 @@ import java.util.HashMap;
 public enum Permissions {
 
     CRAZYCRATES_PLAYER_TRANSFER_KEYS("command.player.transfer", "Allows players to send virtual keys to another player.", PermissionDefault.OP),
-    CRAZYCRATES_PLAYER_HELP("command.player.help", "Shows the help menu for Crazy Crates.", PermissionDefault.OP),
+    CRAZYCRATES_PLAYER_HELP("help", "Shows the help menu for Crazy Crates.", PermissionDefault.TRUE),
     CRAZYCRATES_PLAYER_EXCLUDE("command.exclude.player.giveall", "Permission to prevent a player from getting keys.", PermissionDefault.OP),
-    CRAZYCRATES_ADMIN_HELP("command.admin.help", "Shows the help menu for admins.", PermissionDefault.OP, new HashMap<>() {{
-        put("crazycrates.command.admin.reload", true);
-    }}),
     CRAZYCRATES_OPEN("command.admin.open", "Tries to open a crate for the player if they have a key.", PermissionDefault.OP),
     CRAZYCRATES_OPEN_OTHER("command.admin.open.others", "Tries to open a crate for a player if they have a key.", PermissionDefault.OP, new HashMap<>() {{
         put("crazycrates.command.admin.open", true);
@@ -64,7 +61,6 @@ public enum Permissions {
         put("crazycrates.command.admin.access", true);
         put("crazycrates.command.admin.debug", true);
         put("crazycrates.command.admin.list", true);
-        put("crazycrates.command.admin.help", true);
 
         put("crazycrates.wand", true);
         put("crazycrates.save", true);
@@ -72,8 +68,8 @@ public enum Permissions {
 
     CRAZYCRATES_PLAYER_ALL("command.players.*", "Give all player based permissions.", PermissionDefault.OP, new HashMap<>() {{
         put("crazycrates.command.player.key.others", true);
-        put("crazycrates.command.player.help", true);
         put("crazycrates.command.player.menu", true);
+        put("crazycrates.help", true);
     }});
 
     private final String node;
