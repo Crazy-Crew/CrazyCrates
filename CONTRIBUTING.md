@@ -17,7 +17,7 @@ Pull Requests must be labeled properly according to if it's a bug fix, a new fea
   * `git checkout -b quality/your_enhancement`
  * Commit your changes using `git commit -m 'your commit'`
  * Push to your branch using `git push`
- * Open a pull request to the `main` branch on our repository to add your change. 
+ * Open a pull request to the `dev` branch on our repository to add your change. 
 
 You must explain what your pull request is changing and if needed, Supply a video of your change as Pull Requests are a way to get feedback.
 
