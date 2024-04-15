@@ -38,10 +38,12 @@ public class MiscUtils {
 
     public static void sendCommand(String command) {
         Server server = plugin.getServer();
+        server.getGlobalRegionScheduler().run(plugin, scheduledTask -> {
 
-        ConsoleCommandSender console = server.getConsoleSender();
+            ConsoleCommandSender console = server.getConsoleSender();
 
-        server.dispatchCommand(console, command);
+            server.dispatchCommand(console, command);
+        });
     }
 
     public static void spawnFirework(Location location, Color color) {
@@ -65,9 +67,9 @@ public class MiscUtils {
 
         fireworkData.set(PersistentKeys.no_firework_damage.getNamespacedKey(), PersistentDataType.BOOLEAN, true);
 
-        Server server = plugin.getServer();
-
-        server.getScheduler().scheduleSyncDelayedTask(plugin, firework::detonate, 3);
+        plugin.getServer().getRegionScheduler().runDelayed(plugin, location, scheduledTask -> {
+            firework.detonate();
+        }, 3L);
     }
 
     public static String location(Location location) {

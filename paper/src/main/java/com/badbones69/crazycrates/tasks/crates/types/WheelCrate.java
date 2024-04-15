@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Material;
@@ -11,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -66,7 +66,7 @@ public class WheelCrate extends CrateBuilder {
 
         Material material = Material.LIME_STAINED_GLASS_PANE;
 
-        addCrateTask(new BukkitRunnable() {
+        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
             final List<Integer> slots = getBorder();
 
             int uh = 0;
@@ -192,7 +192,7 @@ public class WheelCrate extends CrateBuilder {
                     this.open = 0;
                 }
             }
-        }.runTaskTimer(this.plugin, 1, 1));
+        }.runAtFixedRate(this.plugin, 1, 1));
     }
 
     private List<Integer> getBorder() {
