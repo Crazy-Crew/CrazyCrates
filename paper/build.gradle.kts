@@ -41,6 +41,13 @@ tasks {
 
     assemble {
         dependsOn(reobfJar)
+
+        doLast {
+            copy {
+                from(reobfJar.get())
+                into(rootProject.projectDir.resolve("jars"))
+            }
+        }
     }
 
     shadowJar {
