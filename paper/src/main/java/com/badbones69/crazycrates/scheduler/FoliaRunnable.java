@@ -77,7 +77,7 @@ public abstract class FoliaRunnable implements Runnable {
         } else if (this.asyncScheduler != null){
             return setupTask(this.asyncScheduler.runNow(plugin, scheduledTask -> this.run()));
         } else {
-            throw new UnsupportedOperationException("The region type is not supported.");
+            throw new UnsupportedOperationException("The task type is not supported.");
         }
     }
 
@@ -109,7 +109,7 @@ public abstract class FoliaRunnable implements Runnable {
         } else if (this.asyncScheduler != null && this.timeUnit != null) {
             return setupTask(this.asyncScheduler.runDelayed(plugin, scheduledTask -> this.run(), delay, timeUnit));
         } else {
-            throw new UnsupportedOperationException("The region type is not supported.");
+            throw new UnsupportedOperationException("The task type is not supported.");
         }
     }
 
@@ -144,7 +144,7 @@ public abstract class FoliaRunnable implements Runnable {
         } else if (this.asyncScheduler != null && this.timeUnit != null) {
             return setupTask(this.asyncScheduler.runAtFixedRate(plugin, scheduledTask -> this.run(), delay, period, timeUnit));
         } else {
-            throw new UnsupportedOperationException("The region type is not supported.");
+            throw new UnsupportedOperationException("The task type is not supported.");
         }
     }
 
