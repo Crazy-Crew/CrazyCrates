@@ -2,10 +2,9 @@ package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import fr.euphyllia.energie.model.SchedulerType;
-import fr.euphyllia.energie.utils.SchedulerTaskRunnable;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -53,7 +52,7 @@ public class WarCrate extends CrateBuilder {
         this.crateManager.addPicker(getPlayer(), false);
         this.crateManager.addCloser(getPlayer(), false);
 
-        addCrateTask(new SchedulerTaskRunnable() {
+        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
             int full = 0;
             int open = 0;
 
@@ -79,7 +78,7 @@ public class WarCrate extends CrateBuilder {
                     crateManager.addPicker(getPlayer(), true);
                 }
             }
-        }.runAtFixedRate(this.plugin, SchedulerType.SYNC, getPlayer(), null, 1, 3));
+        }.runAtFixedRate(this.plugin, 1, 3));
     }
 
     private void setRandomPrizes() {

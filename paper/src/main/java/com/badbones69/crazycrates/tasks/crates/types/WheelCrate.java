@@ -3,10 +3,9 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import fr.euphyllia.energie.model.SchedulerType;
-import fr.euphyllia.energie.utils.SchedulerTaskRunnable;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -67,7 +66,7 @@ public class WheelCrate extends CrateBuilder {
 
         Material material = Material.LIME_STAINED_GLASS_PANE;
 
-        addCrateTask(new SchedulerTaskRunnable() {
+        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
             final List<Integer> slots = getBorder();
 
             int uh = 0;
@@ -193,7 +192,7 @@ public class WheelCrate extends CrateBuilder {
                     this.open = 0;
                 }
             }
-        }.runAtFixedRate(this.plugin, SchedulerType.SYNC, getPlayer(), null, 1, 1));
+        }.runAtFixedRate(this.plugin, 1, 1));
     }
 
     private List<Integer> getBorder() {

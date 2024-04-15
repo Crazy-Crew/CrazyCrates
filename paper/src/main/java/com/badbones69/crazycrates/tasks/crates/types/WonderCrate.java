@@ -5,10 +5,9 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import fr.euphyllia.energie.model.SchedulerType;
-import fr.euphyllia.energie.utils.SchedulerTaskRunnable;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -58,7 +57,7 @@ public class WonderCrate extends CrateBuilder {
 
         getPlayer().openInventory(getInventory());
 
-        addCrateTask(new SchedulerTaskRunnable() {
+        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
             int time = 0;
             int full = 0;
 
@@ -122,7 +121,7 @@ public class WonderCrate extends CrateBuilder {
 
                 if (this.time > 2) this.time = 0;
             }
-        }.runAtFixedRate(this.plugin, SchedulerType.SYNC, getPlayer(), null, 0, 2));
+        }.runAtFixedRate(this.plugin, 0, 2));
     }
 
     @Override

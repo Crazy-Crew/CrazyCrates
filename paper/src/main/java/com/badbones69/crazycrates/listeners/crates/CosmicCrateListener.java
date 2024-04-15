@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.listeners.crates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import fr.euphyllia.energie.model.SchedulerType;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
@@ -361,8 +360,7 @@ public class CosmicCrateListener implements Listener {
                     try {
                         startRollingAnimation(player, view, holder);
                     } catch (Exception exception) {
-                        plugin.getScheduler().runTask(SchedulerType.SYNC, player, (taskInter) -> {
-                            // Call the event.
+                        player.getScheduler().run(plugin, scheduledTask -> {
                             PlayerReceiveKeyEvent keyEvent = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.REFUND, 1);
                             plugin.getServer().getPluginManager().callEvent(keyEvent);
 
@@ -454,7 +452,9 @@ public class CosmicCrateListener implements Listener {
                 @Override
                 public void run() {
                     // Close inventory.
-                    plugin.getScheduler().runTask(SchedulerType.SYNC, player, (task) -> player.closeInventory(InventoryCloseEvent.Reason.UNLOADED), null);
+                    player.getScheduler().run(plugin, scheduledTask -> {
+                        player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
+                    }, null);
 
                     crateManager.removePickedPlayer(player);
 

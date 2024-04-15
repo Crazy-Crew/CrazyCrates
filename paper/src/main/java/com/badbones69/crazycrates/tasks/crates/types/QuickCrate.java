@@ -5,10 +5,9 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import fr.euphyllia.energie.model.SchedulerType;
-import fr.euphyllia.energie.utils.SchedulerTaskRunnable;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -146,12 +145,12 @@ public class QuickCrate extends CrateBuilder {
             if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(0.5, 1, .5), null);
 
             // Always end the crate.
-            addCrateTask(new SchedulerTaskRunnable() {
+            addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
                 @Override
                 public void run() {
                     crateManager.endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
                 }
-            }.runDelayed(this.plugin, SchedulerType.SYNC, getPlayer(), null, 5 * 20));
+            }.runDelayed(this.plugin, 5 * 20));
 
             return;
         }
@@ -163,12 +162,12 @@ public class QuickCrate extends CrateBuilder {
         if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(0.5, 1, .5), null);
 
         // Always end the crate.
-        addCrateTask(new SchedulerTaskRunnable() {
+        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
             @Override
             public void run() {
                 crateManager.endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
             }
-        }.runDelayed(this.plugin, SchedulerType.SYNC, getPlayer(), null, 40));
+        }.runDelayed(this.plugin, 40));
     }
 
     @Override

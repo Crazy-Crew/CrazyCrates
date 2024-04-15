@@ -15,8 +15,6 @@ import dev.triumphteam.cmd.core.annotation.Description;
 import dev.triumphteam.cmd.core.annotation.Optional;
 import dev.triumphteam.cmd.core.annotation.SubCommand;
 import dev.triumphteam.cmd.core.annotation.Suggestion;
-import fr.euphyllia.energie.model.SchedulerType;
-import fr.euphyllia.energie.utils.EntityUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -271,9 +269,7 @@ public class CrateBaseCommand extends BaseCommand {
                 int z = this.locations.getInt("Locations." + name + ".Z");
 
                 Location loc = new Location(world, x, y, z);
-                plugin.getScheduler().runTask(SchedulerType.SYNC, player, schedulerTask -> {
-                    EntityUtils.teleportAsync(player, loc.add(.5, 0, .5));
-                }, null);
+                player.teleportAsync(loc.add(.5, 0, .5));
 
                 player.sendMessage(MsgUtils.getPrefix("&7You have been teleported to &6" + name + "&7."));
 

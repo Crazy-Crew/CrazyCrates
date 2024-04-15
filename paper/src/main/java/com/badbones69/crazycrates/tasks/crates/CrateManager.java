@@ -11,11 +11,10 @@ import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;
-import fr.euphyllia.energie.model.SchedulerTaskInter;
-import fr.euphyllia.energie.utils.SchedulerTaskRunnable;
 import com.ryderbelserion.vital.common.util.FileUtil;
 import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.files.FileManager;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -27,7 +26,6 @@ import us.crazycrew.crazycrates.api.enums.Files;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
-import org.bukkit.scheduler.BukkitTask;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
@@ -405,12 +403,12 @@ public class CrateManager {
     private final Map<UUID, KeyType> playerKeys = new HashMap<>();
 
     // A list of all current crate tasks that are running that a time. Used to force stop any crates it needs to.
-    private final Map<UUID, SchedulerTaskInter> currentTasks = new HashMap<>();
+    private final Map<UUID, ScheduledTask> currentTasks = new HashMap<>();
 
     private final Map<UUID, TimerTask> timerTasks = new HashMap<>();
 
     // A list of tasks being run by the QuadCrate type.
-    private final Map<UUID, List<SchedulerTaskInter>> currentQuadTasks = new HashMap<>();
+    private final Map<UUID, List<ScheduledTask>> currentQuadTasks = new HashMap<>();
 
     /**
      * Opens a crate for a player.
@@ -603,7 +601,7 @@ public class CrateManager {
      */
     public void endQuadCrate(Player player) {
         if (this.currentQuadTasks.containsKey(player.getUniqueId())) {
-            for (SchedulerTaskInter task : this.currentQuadTasks.get(player.getUniqueId())) {
+            for (ScheduledTask task : this.currentQuadTasks.get(player.getUniqueId())) {
                 task.cancel();
             }
 
@@ -617,7 +615,7 @@ public class CrateManager {
      * @param player the player opening the crate.
      * @param task the task of the quad crate.
      */
-    public void addQuadCrateTask(Player player, SchedulerTaskInter task) {
+    public void addQuadCrateTask(Player player, ScheduledTask task) {
         if (!this.currentQuadTasks.containsKey(player.getUniqueId())) {
             this.currentQuadTasks.put(player.getUniqueId(), new ArrayList<>());
         }
@@ -641,7 +639,7 @@ public class CrateManager {
      * @param player player opening the crate.
      * @param task task of the crate.
      */
-    public void addCrateTask(Player player, SchedulerTaskInter task) {
+    public void addCrateTask(Player player, ScheduledTask task) {
         this.currentTasks.put(player.getUniqueId(), task);
     }
 
@@ -697,7 +695,7 @@ public class CrateManager {
      * @param player the player opening the crate.
      * @return the task of the crate.
      */
-    public SchedulerTaskInter getCrateTask(Player player) {
+    public ScheduledTask getCrateTask(Player player) {
         return this.currentTasks.get(player.getUniqueId());
     }
 

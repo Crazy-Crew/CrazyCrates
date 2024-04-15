@@ -3,10 +3,9 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import fr.euphyllia.energie.model.SchedulerType;
-import fr.euphyllia.energie.utils.SchedulerTaskRunnable;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -44,7 +43,7 @@ public class RouletteCrate extends CrateBuilder {
 
         setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
 
-        addCrateTask(new SchedulerTaskRunnable() {
+        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
             int full = 0;
             int time = 1;
 
@@ -98,16 +97,16 @@ public class RouletteCrate extends CrateBuilder {
 
                         crateManager.removePlayerFromOpeningList(getPlayer());
 
-                        new SchedulerTaskRunnable() {
+                        new FoliaRunnable(getPlayer().getScheduler(), null) {
                             @Override
                             public void run() {
                                 if (getPlayer().getOpenInventory().getTopInventory().equals(getInventory())) getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
                             }
-                        }.runDelayed(plugin, SchedulerType.SYNC, getPlayer(), null,40);
+                        }.runDelayed(plugin, 40);
                     }
                 }
             }
-        }.runAtFixedRate(this.plugin, SchedulerType.SYNC, getPlayer(), null, 2, 2));
+        }.runAtFixedRate(this.plugin, 2, 2));
     }
 
     private void setGlass() {

@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.api.utils;
 
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.Permissions;
-import fr.euphyllia.energie.model.SchedulerType;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
@@ -38,8 +37,8 @@ public class MiscUtils {
     private static final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     public static void sendCommand(String command) {
-        plugin.getScheduler().runTask(SchedulerType.SYNC, schedulerTask -> {
-            Server server = plugin.getServer();
+        Server server = plugin.getServer();
+        server.getGlobalRegionScheduler().run(plugin, scheduledTask -> {
 
             ConsoleCommandSender console = server.getConsoleSender();
 
@@ -68,7 +67,9 @@ public class MiscUtils {
 
         fireworkData.set(PersistentKeys.no_firework_damage.getNamespacedKey(), PersistentDataType.BOOLEAN, true);
 
-        plugin.getScheduler().scheduleSyncDelayed(SchedulerType.SYNC, location, schedulerTask -> firework.detonate(), 3L);
+        plugin.getServer().getRegionScheduler().runDelayed(plugin, location, scheduledTask -> {
+            firework.detonate();
+        }, 3L);
     }
 
     public static String location(Location location) {
