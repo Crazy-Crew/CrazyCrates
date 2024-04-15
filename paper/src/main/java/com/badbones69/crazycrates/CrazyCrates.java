@@ -32,7 +32,6 @@ import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import java.util.List;
 import java.util.Timer;
-import static com.badbones69.crazycrates.api.utils.MiscUtils.isLogging;
 import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions;
 
 public class CrazyCrates extends JavaPlugin {
@@ -61,19 +60,6 @@ public class CrazyCrates extends JavaPlugin {
     @Override
     public void onEnable() {
         new VitalPaper(this);
-      
-        int radius = getServer().getSpawnRadius();
-
-        if (radius > 0) {
-            if (isLogging()) {
-                List.of(
-                        "The spawn protection is set to " + radius,
-                        "Crates placed in the spawn protection will not function",
-                        "correctly as spawn protection overrides everything",
-                        "Change the value in server.properties to 0 then restart"
-                ).forEach(getLogger()::warning);
-            }
-        }
 
         // Register permissions that we need.
         registerPermissions();
