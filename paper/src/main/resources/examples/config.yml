@@ -1,0 +1,173 @@
+# Support: https://discord.gg/badbones-s-live-chat-182615261403283459
+# Github: https://github.com/Crazy-Crew
+# 
+# Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
+# Features: https://github.com/Crazy-Crew/CrazyCrates/issues
+# 
+# List of all sounds: https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+# List of all enchantments: https://jd.papermc.io/paper/1.20/org/bukkit/enchantments/Enchantment.html
+root:
+  # Whether you want CrazyCrates to shut up or not, This option is ignored by errors.
+  verbose_logging: true
+  # This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.
+  use-different-random: false
+  # Sends anonymous statistics about how the plugin is used to bstats.org.
+  # bstats is a service for plugin developers to find out how the plugin being used,
+  # This information helps us figure out how to better improve the plugin.
+  toggle_metrics: true
+  # The prefix used in commands
+  command_prefix: '&8[&bCrazyCrates&8]: '
+  # The prefix used in console
+  console_prefix: '&8[&bCrazyCrates&8] '
+# Settings related to guis.
+gui:
+  # If /crates should open the main menu. Warning: This will remove the menu button from crate previews.
+  toggle: true
+  # Inventory settings like size.
+  inventory:
+    # The name of the gui.
+    name: '&b&lCrazy &4&lCrates'
+    # The size of the gui. Valid sizes are 9,18,27,36,45
+    size: 45
+    # The buttons in the gui.
+    buttons:
+      # The main menu button.
+      menu:
+        # The item the button should be.
+        item: COMPASS
+        override:
+          # This will disable our current functionality of our main menu button in crate previews.
+          # It allows you to override and use a menu of your choice from your plugin using a command.
+          toggle: false
+          # A list of commands to run when the main menu button is clicked. The override option above has to be set to true.
+          list:
+          - see {player}
+        # The name of the item.
+        name: '&7&l>> &c&lMenu &7&l<<'
+        # The lore of the item.
+        lore:
+        - '&7Return to the menu.'
+      # The next button.
+      next:
+        # The item the button should be.
+        item: FEATHER
+        # The name of the item.
+        name: '&6&lNext >>'
+        # The lore of the item.
+        lore:
+        - '&7&lPage: &b{page}'
+      # The back button.
+      back:
+        # The item the button should be.
+        item: FEATHER
+        # The name of the item.
+        name: '&6&l<< Back'
+        # The lore of the item.
+        lore:
+        - '&7&lPage: &b{page}'
+      filler:
+        # Should the menu should be filled with one type of item?
+        toggle: false
+        # The item to fill the menu with.
+        item: BLACK_STAINED_GLASS_PANE
+        # The name of the item.
+        name: ' '
+        # The lore of the item.
+        lore: []
+      customizer:
+        # Should the customizer should be enabled?
+        toggle: true
+        # The items to set to the gui.
+        items:
+        - 'slot:1, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:2, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:3, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:4, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:5, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:6, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:7, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:8, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:9, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:37, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:38, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:39, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:40, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:41, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:42, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:43, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:44, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:45, item:RED_STAINED_GLASS_PANE, name: '
+        - 'slot:10, item:BLUE_STAINED_GLASS_PANE, name: '
+        - 'slot:19, item:BLUE_STAINED_GLASS_PANE, name: '
+        - 'slot:28, item:BLUE_STAINED_GLASS_PANE, name: '
+        - 'slot:18, item:BLUE_STAINED_GLASS_PANE, name: '
+        - 'slot:27, item:BLUE_STAINED_GLASS_PANE, name: '
+        - 'slot:36, item:BLUE_STAINED_GLASS_PANE, name: '
+        - 'slot:11, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:13, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:15, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:25, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:17, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:20, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:21, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:22, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:23, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:24, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:25, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:26, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:29, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:31, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:32, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:33, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:34, item:CYAN_STAINED_GLASS_PANE, name: '
+        - 'slot:35, item:CYAN_STAINED_GLASS_PANE, name: '
+# Settings related to crates.
+crate:
+  # Whether to show the display item when opening QuickCrate
+  quickcrate-display-item: true
+  # Settings that are not supported and can be removed at anytime.
+  unsupported-settings:
+    # This option is unsupported and not recommended for use.
+    # It is not very performant and is recommended to keep false
+    # The option only here for niche use cases for the time being
+    # If at some point it ever gets more difficult to maintain this
+    # The option and code related will be completely removed and not added back.
+    old-key-checks: false
+  # If crates should knock you back if you have no keys.
+  knock-back: true
+  # The preview settings.
+  preview:
+    # If players should be forced to exit out of the preview during /crates reload
+    force-exit: false
+    # Send a message if they were forced out of the preview.
+    send-message: false
+  # If a player gets to the menu related to the Prizes gui, Should they be timed out?
+  # 
+  # It will wait 10 seconds and if they already collected 3 prizes, It will only give one prize.
+  cosmic-crate-timeout: true
+  # Settings related to how keys function.
+  keys:
+    # Should a physical crate accept virtual keys?
+    physical-crate-accepts-virtual-keys: true
+    # Should a virtual crate ( /crates ) accept physical keys?
+    physical-crate-accepts-physical-keys: true
+    # Should a physical crate accept physical keys?
+    virtual-crate-accepts-physical-keys: true
+    # Settings related to a player's inventory is not empty.
+    inventory-settings:
+      # Should the player should be given virtual keys if inventory is not empty? If you leave it as false, All keys will be dropped on the ground.
+      give-virtual-keys: false
+      # Should the player should be notified when their inventory is not empty?
+      send-message: false
+    key-sound:
+      # Should a sound should be played if they have no key?
+      toggle: true
+      # The sound to play.
+      name: ENTITY_VILLAGER_NO
+  # Settings related to QuadCrate
+  quad-crate:
+    # How long should the quad crate be active?
+    timer: 300
+  # What worlds do you want Crates to be disabled in?
+  disabled-worlds:
+  - world_nether

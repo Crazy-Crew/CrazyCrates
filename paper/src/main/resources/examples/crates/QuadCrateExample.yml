@@ -1,0 +1,162 @@
+Crate:
+  # Type of crate -> CSGO/Casino/Cosmic/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War
+
+  # Make sure to check out the wiki for anything not explained here.
+  # https://docs.crazycrew.us/crazycrates/home
+
+  # See CosmicCrateExample.yml to see how the Cosmic CrateType works.
+  # Spawns 4 chests and a custom structure.
+  CrateType: QuadCrate
+  CrateName: "&bQuad Crate Preview"
+  Preview-Name: "&bQuad Crate Preview"
+  StartingKeys: 0
+  RequiredKeys: 0
+  Max-Mass-Open: 10
+  InGUI: true
+  Slot: 16
+  OpeningBroadCast: true
+  BroadCast: "%prefix%&6&l%player%&r &7is opening a &b&lCrazy Crate."
+  # This section is related to .nbt files.
+  structure:
+    # If it should randomly use an .nbt file.
+    random: true
+    # The file to use inside schematic"s folder.
+    file: "classic.nbt"
+  # This section is related to commands opening when a crate is opened.
+  opening-command:
+    # If the commands should be sent or not.
+    toggle: false
+    # The commands to run when the crate opens.
+    # Supports all placeholderapi placeholders
+    # Supports %prefix which returns our prefix, %player% which uses the player name
+    commands:
+      - "put your command here."
+  sound:
+    # The sound options when the animation is cycling.
+    cycle-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: "BLOCK_STONE_STEP"
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
+    # The sound options when an item is clicked.
+    click-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: "UI_BUTTON_CLICK"
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
+    # The sound options when a crate ends.
+    stop-sound:
+      # If sound should be enabled or not.
+      toggle: true
+      # The type of sound to use.
+      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+      value: "BLOCK_ANVIL_LAND"
+      # The volume of the pitch.
+      volume: 1.0
+      # The speed of the sound.
+      pitch: 1.0
+  # Only used for quadcrates
+  particles:
+    # Only used for "dust" particle
+    color: "235,64,52"
+    # https://minecraft.wiki/w/Particles_(Java_Edition)
+    type: "crimson_spore"
+  Prize-Message:
+    - "&7You have won &c%reward% &7from &c%crate%."
+  Prize-Commands: []
+  Item: "BREWING_STAND"
+  Glowing: false
+  Name: "&b&lQuad Crate"
+  Lore:
+    - "&7This crate contains crazy things."
+    - "&7You have &6%keys% keys &7to open this crate with."
+    - "&7You have opened this crate: &6%crate_opened% times"
+    - "&7&l(&e&l!&7&l) Right click to view rewards."
+  Preview:
+    Toggle: true
+    ChestLines: 6
+    Glass:
+      Toggle: true
+      # The name of the border item.
+      Name: " "
+      Item: "BLACK_STAINED_GLASS_PANE"
+  PhysicalKey:
+    Name: "&b&lQuad Crate &6&lKey"
+    Lore:
+      - "&7A special Key"
+      - "&7For a special Crate."
+    Item: "TRIPWIRE_HOOK"
+    Glowing: True
+  Hologram:
+    Toggle: true
+    Height: 1.5
+    Range: 8
+    Message:
+      - "&b&lCrazy Crate"
+  Prizes:
+    1:
+      DisplayName: "&3&lRare ChestPlate"
+      DisplayItem: "DIAMOND_CHESTPLATE"
+      # Only works on items with durability. This will make the item appear more damaged.
+      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 25.
+      # It cannot be 0.
+      DisplayDamage: 25
+      DisplayTrim:
+        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
+        Material: "QUARTZ"
+        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
+        Pattern: "SENTRY"
+      DisplayAmount: 1
+      Lore:
+        - "&7Win a very rare chest plate."
+        - "&6&lChance: &c&l40%"
+      DisplayEnchantments:
+        - "PROTECTION_ENVIRONMENTAL:5"
+        - "DURABILITY:3"
+      MaxRange: 100
+      Chance: 40
+      Items:
+        - "Item:DIAMOND_CHESTPLATE, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:EMERALD, Name:&3Rare ChestPlate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
+    2:
+      DisplayName: "&b&lCrazy &4&lSword"
+      DisplayItem: "GOLDEN_SWORD"
+      # Only works on items with durability. This will make the item appear more damaged.
+      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 13.
+      DisplayDamage: 13
+      DisplayAmount: 1
+      Lore:
+        - "&7Win a crazy cool sword."
+        - "&6&lChance: &c&l35%"
+      DisplayEnchantments:
+        - "DAMAGE_ALL:5"
+        - "FIRE_ASPECT:1"
+      MaxRange: 100
+      Chance: 35
+      Items:
+        - "Item:GOLDEN_SWORD, Amount:1, Damage:13, Name:&b&lCrazy &4&lSword, DAMAGE_ALL:5, FIRE_ASPECT:1"
+      Messages:
+        - "&7You just won &r%reward%."
+    3:
+      DisplayName: "&e&l$1,000,000"
+      DisplayItem: "SUNFLOWER"
+      DisplayAmount: 1
+      Lore:
+        - "&7Make it rain a butt load of Money."
+        - "&6&lChance: &c&l20%"
+      MaxRange: 100
+      Chance: 20
+      Firework: true
+      Commands:
+        - "eco give %player% 1000000"
+      Messages:
+        - "&7You just won &r%reward%."
