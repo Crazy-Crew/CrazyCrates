@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.scheduler;
 
-
 import io.papermc.paper.threadedregions.scheduler.*;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -87,7 +86,7 @@ public abstract class FoliaRunnable implements Runnable {
      *
      * @param plugin the reference to the plugin scheduling task
      * @param delay the ticks to wait before running the task
-     * @return a BukkitTask that contains the id number
+     * @return a ScheduledTask that contains the id number
      * @throws IllegalArgumentException if plugin is null
      * @throws IllegalStateException if this was already scheduled
      */
@@ -121,7 +120,7 @@ public abstract class FoliaRunnable implements Runnable {
      * @param plugin the reference to the plugin scheduling task
      * @param delay the ticks to wait before running the task
      * @param period the ticks to wait between runs
-     * @return a BukkitTask that contains the id number
+     * @return a ScheduledTask that contains the id number
      * @throws IllegalArgumentException if plugin is null
      * @throws IllegalStateException if this was already scheduled
      */
