@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public class Crate {
     
@@ -274,9 +275,11 @@ public class Crate {
 
         // ================= Blacklist Check ================= //
         if (player.isOp()) {
-            usablePrizes.addAll(getPrizes());
+            usablePrizes.addAll(getPrizes().stream().filter(prize -> prize.getChance() != -1).toList());
         } else {
             for (Prize prize : getPrizes()) {
+                if (prize.getChance() == -1) continue;
+
                 if (prize.hasPermission(player)) {
                     if (prize.hasAlternativePrize()) continue;
                 }
@@ -324,7 +327,7 @@ public class Crate {
      * @param prizes list of prizes
      */
     public void setPrize(List<Prize> prizes) {
-        this.prizes = prizes;
+        this.prizes = prizes.stream().filter(prize -> prize.getChance() != -1).toList();;
     }
 
     /**
