@@ -360,8 +360,7 @@ public class CosmicCrateListener implements Listener {
                     try {
                         startRollingAnimation(player, view, holder);
                     } catch (Exception exception) {
-                        plugin.getServer().getScheduler().runTask(plugin, () -> {
-                            // Call the event.
+                        player.getScheduler().run(plugin, scheduledTask -> {
                             PlayerReceiveKeyEvent keyEvent = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.REFUND, 1);
                             plugin.getServer().getPluginManager().callEvent(keyEvent);
 
@@ -390,7 +389,7 @@ public class CosmicCrateListener implements Listener {
                                 // Play a sound
                                 crate.playSound(player, player.getLocation(), "stop-sound", "BLOCK_ANVIL_PLACE", SoundCategory.PLAYERS);
                             }
-                        });
+                        }, null);
 
                         // Cancel the task.
                         cancel();
@@ -453,7 +452,9 @@ public class CosmicCrateListener implements Listener {
                 @Override
                 public void run() {
                     // Close inventory.
-                    plugin.getServer().getScheduler().runTask(plugin, () -> player.closeInventory(InventoryCloseEvent.Reason.UNLOADED));
+                    player.getScheduler().run(plugin, scheduledTask -> {
+                        player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
+                    }, null);
 
                     crateManager.removePickedPlayer(player);
 

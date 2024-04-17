@@ -3,13 +3,13 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -43,7 +43,7 @@ public class RouletteCrate extends CrateBuilder {
 
         setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
 
-        addCrateTask(new BukkitRunnable() {
+        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
             int full = 0;
             int time = 1;
 
@@ -97,16 +97,16 @@ public class RouletteCrate extends CrateBuilder {
 
                         crateManager.removePlayerFromOpeningList(getPlayer());
 
-                        new BukkitRunnable() {
+                        new FoliaRunnable(getPlayer().getScheduler(), null) {
                             @Override
                             public void run() {
                                 if (getPlayer().getOpenInventory().getTopInventory().equals(getInventory())) getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
                             }
-                        }.runTaskLater(plugin, 40);
+                        }.runDelayed(plugin, 40);
                     }
                 }
             }
-        }.runTaskTimer(this.plugin, 2, 2));
+        }.runAtFixedRate(this.plugin, 2, 2));
     }
 
     private void setGlass() {

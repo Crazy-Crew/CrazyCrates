@@ -269,8 +269,7 @@ public class CrateBaseCommand extends BaseCommand {
                 int z = this.locations.getInt("Locations." + name + ".Z");
 
                 Location loc = new Location(world, x, y, z);
-
-                player.teleport(loc.add(.5, 0, .5));
+                player.teleportAsync(loc.add(.5, 0, .5));
 
                 player.sendMessage(MsgUtils.getPrefix("&7You have been teleported to &6" + name + "&7."));
 

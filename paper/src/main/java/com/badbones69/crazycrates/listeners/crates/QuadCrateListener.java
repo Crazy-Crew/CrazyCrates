@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.listeners.crates;
 
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import org.bukkit.Location;
 import org.bukkit.SoundCategory;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -114,13 +115,13 @@ public class QuadCrateListener implements Listener {
 
                 // Check if all crates have spawned then end if so.
                 if (session.allCratesOpened()) {
-                    new BukkitRunnable() {
+                    new FoliaRunnable(player.getScheduler(), null) {
                         @Override
                         public void run() {
                             session.endCrate(false);
                             crate.playSound(player, block.getLocation(), "stop-sound", "BLOCK_ANVIL_LAND", SoundCategory.BLOCKS);
                         }
-                    }.runTaskLater(this.plugin, 60);
+                    }.runDelayed(this.plugin, 60);
                 }
             }
         }
@@ -135,7 +136,7 @@ public class QuadCrateListener implements Listener {
             Location newLocation = event.getTo();
 
             if (oldLocation.getBlockX() != newLocation.getBlockX() || oldLocation.getBlockZ() != newLocation.getBlockZ()) {
-                player.teleport(oldLocation);
+                player.teleportAsync(oldLocation);
                 event.setCancelled(true);
             }
         }
