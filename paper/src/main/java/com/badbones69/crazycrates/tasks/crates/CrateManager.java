@@ -12,7 +12,8 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;
-import com.ryderbelserion.vital.api.enums.Support;
+import com.ryderbelserion.vital.common.util.FileUtil;
+import com.ryderbelserion.vital.enums.Support;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -186,7 +187,7 @@ public class CrateManager {
                 List<Prize> prizes = new ArrayList<>();
                 List<Tier> tiers = new ArrayList<>();
 
-                String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.Name");
+                String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.CrateName");
                 int maxMassOpen = file.getInt("Crate.Max-Mass-Open", 10);
                 int requiredKeys = file.getInt("Crate.RequiredKeys", 0);
 
