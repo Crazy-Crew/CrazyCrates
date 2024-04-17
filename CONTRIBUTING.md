@@ -29,5 +29,4 @@ Adding new methods is perfectly fine as it won't break current plugins depending
 Under no circumstance is existing methods suppose to have a change to the variables in the methods. You can change anything inside the method.
  * i.e. UUID cannot become Player in `getKeys`, You should create a new method and deprecate the old one.
 
-If trying to expose internal hashmap's or arraylists using the API, It is best instead of directly returning the hashmap or arraylist. You return an unmodifiable version or clone them.
-All internals should be accessed through proper means rather than just allowing anyone to cripple the plugin.
+If trying to expose internal hashmap's or arraylists using the API, Return an unmodifiable version of the map/arraylists
