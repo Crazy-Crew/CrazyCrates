@@ -82,7 +82,7 @@ jobs:
         env:
           HANGAR_KEY: ${{ secrets.HANGAR_KEY }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-          COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
+          COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>* ') }}
         run: ./gradlew modrinth publishAllPublicationsToHangar --stacktrace
 
       - name: Build Succeeded
