@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.commands.subs;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.google.common.collect.Lists;
-import com.ryderbelserion.vital.api.enums.Support;
+import com.ryderbelserion.vital.enums.Support;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.*;

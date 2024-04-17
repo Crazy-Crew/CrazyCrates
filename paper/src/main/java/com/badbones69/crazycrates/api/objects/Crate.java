@@ -138,7 +138,7 @@ public class Crate {
         if (crateType == CrateType.quad_crate) {
             this.particle = Registry.PARTICLE_TYPE.get(NamespacedKey.minecraft(file != null ? file.getString("Crate.particles.type", "dust") : "dust"));
 
-            this.color = DyeUtils.getColor(file != null ? file.getString("Crate.particles.color", "235,64,52") : "235,64,52");
+            this.color = DyeUtil.getColor(file != null ? file.getString("Crate.particles.color", "235,64,52") : "235,64,52");
         }
 
         this.hologram = hologram != null ? hologram : new CrateHologram();
