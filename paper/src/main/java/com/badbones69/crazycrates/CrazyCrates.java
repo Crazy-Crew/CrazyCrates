@@ -136,9 +136,7 @@ public class CrazyCrates extends JavaPlugin {
         getServer().getGlobalRegionScheduler().cancelTasks(this);
         getServer().getAsyncScheduler().cancelTasks(this);
         // Cancel the timer task.
-        if (this.timer != null) {
-            this.timer.cancel();
-        }
+        this.timer.cancel();
 
         // Clean up any mess we may have left behind.
         if (this.crateManager != null) {
