@@ -65,7 +65,9 @@ public class CrateOpenListener implements Listener {
 
         if (broadcastToggle) {
             if (!broadcastMessage.isBlank()) {
-                this.plugin.getServer().broadcastMessage(MsgUtils.color(broadcastMessage.replaceAll("%prefix%", MsgUtils.getPrefix())).replaceAll("%player%", player.getName()));
+                String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
+
+                this.plugin.getServer().broadcastMessage(MsgUtils.color(builder.replaceAll("%prefix%", MsgUtils.getPrefix())).replaceAll("%player%", player.getName()));
             }
         }
 
