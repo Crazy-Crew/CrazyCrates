@@ -9,8 +9,7 @@ dependencies {
     api(projects.paper)
 }
 
-val finalVersion = if (System.getenv("NEXT_BUILD_NUMBER") != null) "${rootProject.version}-${System.getenv("NEXT_BUILD_NUMBER")}" else rootProject.version as String
-val isSnapshot = finalVersion.contains("-")
+val isSnapshot = rootProject.version.toString().contains("-")
 
 val content: String = if (isSnapshot) {
     if (System.getenv("COMMIT_MESSAGE") != null) {
@@ -29,12 +28,12 @@ modrinth {
 
     versionType.set(if (isSnapshot) "beta" else "release")
 
-    versionName.set("${rootProject.name} $finalVersion")
-    versionNumber.set(finalVersion)
+    versionName.set("${rootProject.name} ${rootProject.version}")
+    versionNumber.set(rootProject.version as String)
 
     changelog.set(content)
 
-    uploadFile.set(file("$rootDir/jars/${rootProject.name}-$finalVersion.jar"))
+    uploadFile.set(file("$rootDir/jars/${rootProject.name}-${rootProject.version}.jar"))
 
     gameVersions.set(listOf(libs.versions.bundle.get()))
 
@@ -52,7 +51,7 @@ hangarPublish {
 
         id.set(rootProject.name.lowercase())
 
-        version.set(finalVersion)
+        version.set(rootProject.version as String)
 
         channel.set(if (isSnapshot) "Snapshot" else "Release")
 
@@ -60,7 +59,7 @@ hangarPublish {
 
         platforms {
             paper {
-                jar.set(file("$rootDir/jars/${rootProject.name}-$finalVersion.jar"))
+                jar.set(file("$rootDir/jars/${rootProject.name}-${rootProject.version}.jar"))
 
                 platformVersions.set(listOf(libs.versions.bundle.get()))
 
