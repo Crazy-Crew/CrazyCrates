@@ -9,7 +9,7 @@ dependencies {
     api(projects.paper)
 }
 
-val finalVersion = if (System.getenv("GITHUB_RUN_NUMBER") != null) "${rootProject.version}-${System.getenv("GITHUB_RUN_NUMBER")}" else rootProject.version as String
+val finalVersion = if (System.getenv("NEXT_BUILD_NUMBER") != null) "${rootProject.version}-${System.getenv("NEXT_BUILD_NUMBER")}" else rootProject.version as String
 val isSnapshot = rootProject.version.toString().contains("-")
 
 val content: String = if (isSnapshot) {
@@ -25,7 +25,7 @@ val content: String = if (isSnapshot) {
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
 
-    projectId.set("sockets")
+    projectId.set(rootProject.name.lowercase())
 
     versionType.set(if (isSnapshot) "beta" else "release")
 

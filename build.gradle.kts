@@ -2,7 +2,6 @@ plugins {
     `root-plugin`
 }
 
-
 tasks {
     assemble {
         doFirst {
