@@ -74,7 +74,7 @@ public class ItemBuilder {
 
     // Potions
     private boolean isPotion = false;
-    private Color potionColor = Color.RED;
+    private Color potionColor = null;
     private PotionEffectType potionType = null;
     private int potionDuration = -1;
     private int potionAmplifier = 1;
@@ -96,7 +96,7 @@ public class ItemBuilder {
     // Trims
     private TrimMaterial trimMaterial = null;
     private TrimPattern trimPattern = null;
-    private Color armorColor = Color.RED;
+    private Color armorColor = null;
 
     // Banners
     private boolean isBanner = false;
@@ -107,12 +107,12 @@ public class ItemBuilder {
 
     // Maps
     private boolean isMap = false;
-    private Color mapColor = Color.RED;
+    private Color mapColor = null;
 
     // Fireworks
     private boolean isFirework = false;
     private boolean isFireworkStar = false;
-    private Color fireworkColor = Color.RED;
+    private Color fireworkColor = null;
     private List<Color> fireworkColors = new ArrayList<>();
     private int fireworkPower = 1;
 
@@ -581,12 +581,14 @@ public class ItemBuilder {
             if (isInt(metaData)) {
                 this.itemDamage = Integer.parseInt(metaData);
             } else {
-                this.potionType = getPotionType(PotionEffectType.getByName(metaData)).getEffectType();
+                try {
+                    this.potionType = getPotionType(PotionEffectType.getByName(metaData)).getEffectType();
+                } catch (Exception ignored) {}
 
-                this.potionColor = DyeUtil.getColor(metaData);
-                this.armorColor = DyeUtil.getColor(metaData);
-                this.mapColor = DyeUtil.getColor(metaData);
-                this.fireworkColor = DyeUtil.getColor(metaData);
+                this.potionColor = DyeUtil.getColor(metaData) == null ? DyeUtil.getDefaultColor(metaData) : DyeUtil.getColor(metaData);
+                this.armorColor = DyeUtil.getColor(metaData) == null ? DyeUtil.getDefaultColor(metaData) : DyeUtil.getColor(metaData);
+                this.mapColor = DyeUtil.getColor(metaData) == null ? DyeUtil.getDefaultColor(metaData) : DyeUtil.getColor(metaData);
+                this.fireworkColor = DyeUtil.getColor(metaData) == null ? DyeUtil.getDefaultColor(metaData) : DyeUtil.getColor(metaData);
             }
         } else if (type.contains("#")) {
             String[] section = type.split("#");
