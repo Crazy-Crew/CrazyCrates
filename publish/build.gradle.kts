@@ -34,7 +34,7 @@ modrinth {
 
     changelog.set(content)
 
-    uploadFile.set(tasks.shadowJar.flatMap { it.archiveFile })
+    uploadFile.set(file("$rootDir/jars/${rootProject.name}-$finalVersion.jar"))
 
     gameVersions.set(listOf(libs.versions.bundle.get()))
 
@@ -59,7 +59,7 @@ hangarPublish {
 
         platforms {
             paper {
-                jar.set(file(tasks.shadowJar.flatMap { it.archiveFile }))
+                jar.set(file("$rootDir/jars/${rootProject.name}-$finalVersion.jar"))
 
                 platformVersions.set(listOf(libs.versions.bundle.get()))
 
