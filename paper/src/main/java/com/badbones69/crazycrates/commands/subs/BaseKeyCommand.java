@@ -84,7 +84,7 @@ public class BaseKeyCommand extends BaseCommand {
 
                 hasKeys = true;
 
-                placeholders.put("{crate}", crate.getFile().getString("Crate.Name"));
+                placeholders.put("{crate}", crate.getFile().getString("Crate.CrateName"));
                 placeholders.put("{keys}", String.valueOf(amount));
                 placeholders.put("{crate_opened}", String.valueOf(this.userManager.getCrateOpened(player.getUniqueId(), crate.getName())));
 
