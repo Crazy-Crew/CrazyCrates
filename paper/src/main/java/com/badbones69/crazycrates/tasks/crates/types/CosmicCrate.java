@@ -19,7 +19,7 @@ public class CosmicCrate extends CrateBuilder {
     private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
     public CosmicCrate(Crate crate, Player player, int size) {
-        super(crate, player, size, crate.getFile().getString("Crate.CrateName") + " - Choose");
+        super(crate, player, size, crate.getCrateInventoryName() + " - Choose");
     }
 
     @Override

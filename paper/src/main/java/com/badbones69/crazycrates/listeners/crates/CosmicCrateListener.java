@@ -341,7 +341,7 @@ public class CosmicCrateListener implements Listener {
             }
 
             // Get new name.
-            String shufflingName = crate.getFile().getString("Crate.CrateName") + " - Shuffling";
+            String shufflingName = crate.getCrateInventoryName() + " - Shuffling";
 
             // Update the cosmic name.
             holder.title(shufflingName);
@@ -432,7 +432,7 @@ public class CosmicCrateListener implements Listener {
     }
 
     private void showRewards(Player player, InventoryView view, CratePrizeMenu cosmic, CosmicCrateManager crateManager) {
-        String rewardsName = cosmic.getCrate().getFile().getString("Crate.CrateName") + " - Prizes";
+        String rewardsName = cosmic.getCrate().getCrateInventoryName() + " - Prizes";
 
         cosmic.title(rewardsName);
 
