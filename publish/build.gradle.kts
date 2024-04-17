@@ -40,6 +40,7 @@ modrinth {
 
     loaders.add("paper")
     loaders.add("purpur")
+    loaders.add("folia")
 
     autoAddDependsOn.set(false)
     detectLoaders.set(false)
