@@ -10,7 +10,7 @@ dependencies {
 }
 
 val finalVersion = if (System.getenv("NEXT_BUILD_NUMBER") != null) "${rootProject.version}-${System.getenv("NEXT_BUILD_NUMBER")}" else rootProject.version as String
-val isSnapshot = rootProject.version.toString().contains("-")
+val isSnapshot = finalVersion.contains("-")
 
 val content: String = if (isSnapshot) {
     if (System.getenv("COMMIT_MESSAGE") != null) {
