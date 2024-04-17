@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
-import com.ryderbelserion.vital.utils.DyeUtils;
+import com.ryderbelserion.vital.util.DyeUtil;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
@@ -97,7 +97,7 @@ public class Crate {
     public Crate(String name, String previewName, CrateType crateType, ItemStack key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, List<String> prizeCommands, CrateHologram hologram) {
         this.emptyKey = ItemBuilder.convertItemStack(key);
         this.keyBuilder = ItemBuilder.convertItemStack(key).setCrateName(name);
-        this.keyName = keyName;
+        this.keyName = keyName != null ? keyName : "Crate.PhysicalKey.Name is not in the " + name + ".yml";
 
         this.file = file;
         this.name = name;
