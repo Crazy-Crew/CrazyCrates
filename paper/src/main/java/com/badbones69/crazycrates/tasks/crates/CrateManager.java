@@ -165,6 +165,8 @@ public class CrateManager {
      * Loads the crates.
      */
     public void loadCrates() {
+        FileUtil.extracts(this.plugin.getClass(), "/examples/", this.plugin.getDataFolder().toPath().resolve("examples"), true);
+
         this.giveNewPlayersKeys = false;
 
         purge();
