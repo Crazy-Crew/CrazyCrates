@@ -2,8 +2,8 @@ package com.badbones69.crazycrates.api.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
-import com.ryderbelserion.vital.api.enums.Support;
-import com.ryderbelserion.vital.utils.MiscUtils;
+import com.ryderbelserion.vital.common.util.StringUtil;
+import com.ryderbelserion.vital.enums.Support;
 import org.bukkit.command.CommandSender;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.messages.CommandKeys;
@@ -159,7 +159,7 @@ public enum Messages {
         String message;
 
         if (isList()) {
-            message = MiscUtils.convertList(getPropertyList(this.listProperty));
+            message = StringUtil.convertList(getPropertyList(this.listProperty));
         } else {
             message = getProperty(this.property);
         }

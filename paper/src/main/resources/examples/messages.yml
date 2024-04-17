@@ -1,0 +1,205 @@
+# Support: https://discord.gg/badbones-s-live-chat-182615261403283459
+# Github: https://github.com/Crazy-Crew
+# 
+# Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
+# Features: https://github.com/Crazy-Crew/CrazyCrates/issues
+# 
+misc:
+  # A list of available placeholders: {prefix}
+  unknown-command: '{prefix}&cThis command is not known.'
+  # Only activates when you try to use an ender pearl while opening a crate.
+  no-teleporting: '{prefix}&cYou may not teleport away while opening a crate.'
+  # A list of available placeholders: {prefix}
+  no-commands: '{prefix}&cYou are not allowed to use commands while opening crates.'
+  # A list of available placeholders: {prefix}, {key}, {crate}
+  no-keys: '{prefix}&cYou must have a {key} &cto use &6{crate}.'
+  # A list of available placeholders: {prefix}, {key}, {crate}
+  no-virtual-keys: '{prefix}&cYou need a virtual key to open &6{crate}.'
+  # A list of available placeholders: {prefix}, {usage}
+  correct-usage: '{prefix}&cThe correct usage for this command is &e{usage}'
+  # A list of available placeholders: {prefix}
+  feature-disabled: '{prefix}&cThis feature is disabled.'
+# All messages related to errors.
+errors:
+  # A list of available placeholders: {prefix}, {crate}
+  no-prizes-found: '{prefix}&cThis crate contains no prizes that you can win.'
+  # A list of available placeholders: {prefix}
+  no-schematics-found: '{prefix}&cNo schematics were found. Please make sure files
+    ending in .nbt exist in the schematics folder. If not delete the folder so they
+    regenerate.'
+  # A list of available placeholders: {prefix}
+  internal-error: '{prefix}&cAn internal error has occurred. Please check the console
+    for the full error.'
+  # A list of available placeholders: {prefix}, {crate}, {prize}
+  prize-error: '{prefix}&cAn error has occurred while trying to give you the prize
+    called &6{prize}&c in crate called &6{crate}&c. Please contact the server owner
+    and show them this error.'
+# All messages related to players.
+player:
+  requirements:
+    # A list of available placeholders: {prefix}
+    must-be-player: '{prefix}&cYou must be a player to use this command.'
+    # A list of available placeholders: {prefix}
+    must-be-console-sender: '{prefix}&cYou must be using console to use this command.'
+    # A list of available placeholders: {prefix}
+    must-be-looking-at-block: '{prefix}&cYou must be looking at a block.'
+  # A list of available placeholders: {prefix}, {player}
+  target-not-online: '{prefix}&c{player} &7is not online.'
+  # A list of available placeholders: {prefix}
+  target-same-player: '{prefix}&cYou can''''t use this command on yourself.'
+  # A list of available placeholders: {prefix}
+  no-permission: '{prefix}&cYou do not have permission to use that command/menu!'
+  # A list of available placeholders: {prefix}, {crate}
+  inventory-not-empty: '{prefix}&cInventory is not empty, Please make room before
+    opening &6{crate}.'
+  # A list of available placeholders: {prefix}, {amount}, {keytype}, {key}
+  obtaining-keys: '{prefix}&7You have been given &6{amount} {key} &7key(s).'
+  # A list of available placeholders: {prefix}, {player}
+  too-close-to-another-player: '{prefix}&cYou are too close to a player that is opening
+    a crate.'
+# All messages related to crates.
+crates:
+  requirements:
+    # A list of available placeholders: {prefix}, {crate}
+    not-a-crate: '{prefix}&cThere is no crate called &6{crate}.'
+    # A list of available placeholders: {prefix}, {number}
+    not-a-number: '{prefix}&6{number} &cis not a number.'
+    # A list of available placeholders: {prefix}, {amount}, {key_amount}, {crate}
+    not-enough-keys: '{prefix}&7You need &c{key_amount} &7keys to open &c{crate}.
+      &7You have &c{amount}.'
+  # A list of available placeholders: {prefix}
+  not-a-block: '{prefix}&cYou must be standing on a block to use &6{crate}.'
+  # A list of available placeholders: {prefix}, {crate}
+  out-of-time: '{prefix}&cYou took &65 minutes &cto open &6{crate} &cso it closed.'
+  # A list of available placeholders: {prefix}
+  forced-out-of-preview: '{prefix}&cA reload has forced you out of the preview.'
+  # A list of available placeholders: {prefix}
+  cannot-set-menu-type: '{prefix}&cYou cannot set the Menu to a block because the
+    crate menu is disabled'
+  # A list of available placeholders: {prefix}, {crate}
+  crate-no-permission: '{prefix}&cYou do not have permission to use that {crate}.'
+  # A list of available placeholders: {prefix}, {crate}
+  crate-preview-disabled: '{prefix}&cThe preview for &6{crate} &cis currently disabled.'
+  # A list of available placeholders: {prefix}, {crate}
+  crate-already-open: '{prefix}&cYou are already opening &6{crate}.'
+  # A list of available placeholders: {prefix}, {crate}
+  crate-in-use: '{prefix}&c{crate} is already in use. Please wait until it finishes.'
+  # A list of available placeholders: {prefix}, {crate}, {cratetype}
+  cannot-be-a-virtual-crate: '{prefix}&6{crate} &ccannot be used as a Virtual Crate.'
+  # QuadCrate schematics need a fair bit of room so make sure you check the surroundings.
+  need-more-room: '{prefix}&cThere is not enough space to open that here'
+  # A list of available placeholders: {prefix}, {world}
+  world-disabled: '{prefix}&cI am sorry but Crates are disabled in {world}.'
+  physical-crate:
+    # A list of available placeholders: {prefix}, {crate}
+    created:
+    - '{prefix}&7You have set that block to {crate}.'
+    - '&7To remove the crate shift break in creative to remove.'
+    # A list of available placeholders: {prefix}, {id}
+    removed: '{prefix}&7You have removed &6{id}.'
+# All messages related to commands.
+command:
+  open:
+    # A list of available placeholders: {prefix}, {crate}, {player}
+    opened-a-crate: '{prefix}&7You have opened the &6{crate} for &6{player}.'
+  give:
+    # A list of available placeholders: {prefix}, {amount}, {player}, {keytype}
+    given-player-keys: '{prefix}&7You have given &6{player} {amount} &7key(s).'
+    # A list of available placeholders: {prefix}, {amount}, {amount}, {keytype}
+    full-inventory: '{prefix}&7You have been given &6{amount} {key} &7virtual key(s)
+      because your inventory was full.'
+    # A list of available placeholders: {prefix}, {amount}, {keytype}
+    given-everyone-keys: '{prefix}&7You have given everyone &6{amount} &7key(s).'
+    # A list of available placeholders: {prefix}, {amount}, {player}, {keytype}
+    given-offline-player-keys: '{prefix}&7You have given &6{amount} &7key(s) to the
+      offline player &6{player}.'
+  take:
+    # A list of available placeholders: {prefix}, {amount}, {player}, {keytype}
+    take-player-keys: '{prefix}&7You have taken &6{amount} &7key(s) from &6{player}.'
+    # A list of available placeholders: {prefix}, {player}
+    cannot-take-keys: '{prefix}&7You cannot take key(s) from &6{player} &7as they
+      are poor.'
+    # A list of available placeholders: {prefix}, {amount}, {player}, {keytype}
+    take-offline-player-keys: '{prefix}&7You have taken &6{amount} &7key(s) from the
+      offline player &6{player}.'
+  additem:
+    # A list of available placeholders: {prefix}, {crate}
+    no-item-in-hand: '{prefix}&cYou need to have an item in your hand to add it {crate}.'
+    # A list of available placeholders: {prefix}, {crate}, {prize}
+    add-item-from-hand: '{prefix}&7The item has been added to the {crate} in prize
+      #{prize}.'
+  convert:
+    no-files-to-convert: '&cNo available plugins to convert files.'
+    error-converting-files: '&cAn error has occurred while trying to convert files.
+      We could not convert &a{file} &cso please check the console.'
+  successfully-converted-files: '&aPlugin Conversion has succeeded!'
+  reload:
+    # A list of available placeholders: {prefix}
+    completed: '{prefix}&3You have reloaded the Config and Data Files.'
+  transfer:
+    # A list of available placeholders: {prefix}
+    not-enough-keys: '{prefix}&cYou do not have enough keys to transfer.'
+    # A list of available placeholders: {prefix}, {amount}, {player}, {keytype}, {crate}
+    transferred-keys: '{prefix}&7You have transferred {amount} {crate} keys to {player}.'
+    # A list of available placeholders: {prefix}, {amount}, {player}, {keytype}, {crate}
+    transferred-keys-received: '{prefix}&7You have received {amount} {crate} keys
+      from {player}.'
+  keys:
+    personal:
+      # A list of available placeholders: {prefix}
+      no-virtual-keys: '{prefix}&8&l(&4&l!&8&l) &7You currently do not have any virtual
+        keys.'
+      # A list of available placeholders: {crates_opened}
+      virtual-keys-header:
+      - '&8&l(&6&l!&8&l) &7List of your current number of keys.'
+      - ' &e -> Total Crates Opened: &c{crates_opened}'
+    other-player:
+      # A list of available placeholders: {prefix}, {player}
+      no-virtual-keys: '{prefix}&8&l(&4&l!&8&l) &7The player {player} does not have
+        any keys.'
+      # A list of available placeholders: {player}, {crates_opened}
+      virtual-keys-header:
+      - '&8&l(&6&l!&8&l) &7List of {player}''''s current number of keys.'
+      - ' &e -> Total Crates Opened: &c{crates_opened}'
+    # A list of available placeholders: {crate}, {keys}, {crate_opened}
+    crate-format: '{crate} &7&l>&8&l> &6{keys} keys &7: Opened &6{crate_opened} times'
+  # This requires crazycrates.command.help
+  player-help:
+  - '&e&lCrazy Crates Player Help'
+  - '&6/keys view [player] &7- &eCheck the number of keys a player has.'
+  - '&6/keys &7- &eShows how many keys you have.'
+  - '&6/cc &7- &eOpens the menu.'
+  # This requires crazycrates.command.admin.help
+  admin-help:
+  - '&c&lCrazy Crates Admin Help'
+  - ''
+  - '&6/cc additem <crate_name> <prize_number> <chance> [tier] &7- &eAdd items in-game
+    to a prize in a crate including Cosmic/Casino.'
+  - '&6/cc preview <crate_name> [player] &7- &eOpens the preview of a crate for a
+    player.'
+  - '&6/cc list &7- &eLists all crates.'
+  - '&6/cc open <crate_name> &7- &eTries to open a crate for you if you have a key.'
+  - '&6/cc open-others <crate_name> [player] &7- &eTries to open a crate for a player
+    if they have a key.'
+  - '&6/cc transfer <crate_name> [player] [amount &7- &eTransfers keys to players
+    you chose.'
+  - '&6/cc debug &7- &eDebugs crates'
+  - '&6/cc admin &7- &eShows admin menu'
+  - '&6/cc forceopen <crate_name> [player] &7- &eOpens a crate for a player for free.'
+  - '&6/cc mass-open <crate_name> <physical/virtual> [amount] &7- &eMass opens a set
+    amount of crates.'
+  - '&6/cc tp <location> &7- &eTeleport to a Crate.'
+  - '&6/cc give <physical/virtual> <crate_name> [amount] [player] &7- &eAllows you
+    to take keys from a player.'
+  - '&6/cc set <crate_name> &7- &eSet the block you are looking at as a crate.'
+  - '&6/cc set Menu &7- &eSet the block you are looking at to open the /cc menu.'
+  - '&6/cc reload &7- &eReloads the config/data files.'
+  - '&6/cc set1/set2 &7- &eSets position &c#1 &eor &c#2 for when making a new schematic
+    for QuadCrates.'
+  - '&6/cc save <file name> &7- &eCreate a new nbt file in the schematics folder.'
+  - ''
+  - '&6/keys view [player] &7- &eCheck the number of keys a player has.'
+  - '&6/keys &7- &eShows how many keys you have.'
+  - '&6/cc &7- &eOpens the menu.'
+  - ''
+  - '&7You can find a list of permissions @ &ehttps://docs.crazycrew.us/crazycrates/info/commands/permissions'

@@ -6,8 +6,8 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.support.SkullCreator;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.ryderbelserion.vital.api.enums.Support;
-import com.ryderbelserion.vital.utils.DyeUtils;
+import com.ryderbelserion.vital.enums.Support;
+import com.ryderbelserion.vital.util.DyeUtil;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.nbt.TagParser;
@@ -583,10 +583,10 @@ public class ItemBuilder {
             } else {
                 this.potionType = getPotionType(PotionEffectType.getByName(metaData)).getEffectType();
 
-                this.potionColor = DyeUtils.getColor(metaData);
-                this.armorColor = DyeUtils.getColor(metaData);
-                this.mapColor = DyeUtils.getColor(metaData);
-                this.fireworkColor = DyeUtils.getColor(metaData);
+                this.potionColor = DyeUtil.getColor(metaData);
+                this.armorColor = DyeUtil.getColor(metaData);
+                this.mapColor = DyeUtil.getColor(metaData);
+                this.fireworkColor = DyeUtil.getColor(metaData);
             }
         } else if (type.contains("#")) {
             String[] section = type.split("#");
@@ -1160,7 +1160,7 @@ public class ItemBuilder {
                         try {
                             for (PatternType pattern : PatternType.values()) {
                                 if (option.equalsIgnoreCase(pattern.name()) || value.equalsIgnoreCase(pattern.getIdentifier())) {
-                                    DyeColor color = DyeUtils.getDyeColor(value);
+                                    DyeColor color = DyeUtil.getDyeColor(value);
                                     if (color != null) itemBuilder.addPattern(new Pattern(color, pattern));
                                     break;
                                 }
@@ -1363,7 +1363,7 @@ public class ItemBuilder {
             for (PatternType pattern : PatternType.values()) {
 
                 if (split[0].equalsIgnoreCase(pattern.name()) || split[0].equalsIgnoreCase(pattern.getIdentifier())) {
-                    DyeColor color = DyeUtils.getDyeColor(split[1]);
+                    DyeColor color = DyeUtil.getDyeColor(split[1]);
 
                     if (color != null) addPattern(new Pattern(color, pattern));
 
