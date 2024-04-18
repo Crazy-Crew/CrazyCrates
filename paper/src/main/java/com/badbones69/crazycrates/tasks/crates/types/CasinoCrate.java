@@ -51,6 +51,7 @@ public class CasinoCrate extends CrateBuilder {
 
         if (this.open >= 5) {
             getPlayer().openInventory(getInventory());
+
             this.open = 0;
         }
 

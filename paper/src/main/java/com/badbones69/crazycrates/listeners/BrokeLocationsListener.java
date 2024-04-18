@@ -26,6 +26,7 @@ public class BrokeLocationsListener implements Listener {
         if (this.crateManager.getBrokeLocations().isEmpty()) return;
 
         int fixedAmount = 0;
+
         List<BrokeLocation> fixedWorlds = new ArrayList<>();
 
         for (BrokeLocation brokeLocation : this.crateManager.getBrokeLocations()) {

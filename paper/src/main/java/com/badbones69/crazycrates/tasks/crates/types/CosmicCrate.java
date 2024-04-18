@@ -41,9 +41,11 @@ public class CosmicCrate extends CrateBuilder {
 
             if (tier != null) {
                 itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING, tier.getName());
+
                 stack.setItemMeta(itemMeta);
 
                 setItem(index, stack);
+
                 slot++;
             }
         }

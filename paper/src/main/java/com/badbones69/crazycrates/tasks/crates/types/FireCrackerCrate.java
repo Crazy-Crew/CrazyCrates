@@ -58,7 +58,9 @@ public class FireCrackerCrate extends CrateBuilder {
             @Override
             public void run() {
                 this.location.subtract(0, 1, 0);
+
                 MiscUtils.spawnFirework(this.location, colors.get(this.random));
+
                 this.length++;
 
                 if (this.length == 25) {

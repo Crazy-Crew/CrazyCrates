@@ -57,10 +57,12 @@ public class RouletteCrate extends CrateBuilder {
                     setGlass();
 
                     playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
+
                     this.even++;
 
                     if (this.even >= 4) {
                         this.even = 0;
+
                         setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
                     }
                 }
@@ -69,6 +71,7 @@ public class RouletteCrate extends CrateBuilder {
 
                 if (this.open >= 5) {
                     getPlayer().openInventory(getInventory());
+
                     this.open = 0;
                 }
 
@@ -77,6 +80,7 @@ public class RouletteCrate extends CrateBuilder {
                 if (this.full > 16) {
                     if (MiscUtils.slowSpin(46, 9).contains(this.time)) {
                         setGlass();
+
                         setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
 
                         playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
@@ -86,6 +90,7 @@ public class RouletteCrate extends CrateBuilder {
 
                     if (this.time >= 23) {
                         playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
+
                         crateManager.endCrate(getPlayer());
 
                         ItemStack item = getInventory().getItem(13);

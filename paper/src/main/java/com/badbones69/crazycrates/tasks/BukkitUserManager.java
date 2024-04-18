@@ -543,6 +543,7 @@ public class BukkitUserManager extends UserManager {
     public int getCrateOpened(UUID uuid, String crateName) {
         if (isCrateInvalid(crateName)) {
             this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
+
             return 0;
         }
         

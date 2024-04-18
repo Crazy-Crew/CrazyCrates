@@ -62,6 +62,7 @@ public class CsgoCrate extends CrateBuilder {
             public void run() {
                 if (this.full <= 50) { // When Spinning
                     moveItemsAndSetGlass();
+
                     playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
                 }
 
@@ -69,6 +70,7 @@ public class CsgoCrate extends CrateBuilder {
 
                 if (this.open >= 5) {
                     getPlayer().openInventory(getInventory());
+
                     this.open = 0;
                 }
 
@@ -144,6 +146,7 @@ public class CsgoCrate extends CrateBuilder {
         setItem(3 + 18, glass.get(5));
 
         ItemStack itemStack = new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build();
+
         setItem(4, itemStack);
         setItem(4 + 18, itemStack);
 

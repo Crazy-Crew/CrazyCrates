@@ -384,7 +384,7 @@ public class CosmicCrateListener implements Listener {
 
                                 // Send refund notices.
                                 player.sendMessage(MsgUtils.getPrefix("&cAn issue has occurred and so a key refund was given."));
-                                plugin.getServer().getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + crate.getName() + " crate and so they were issued a key refund.", exception);
+                                plugin.getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + crate.getName() + " crate and so they were issued a key refund.", exception);
 
                                 // Play a sound
                                 crate.playSound(player, player.getLocation(), "stop-sound", "BLOCK_ANVIL_PLACE", SoundCategory.PLAYERS);
@@ -452,9 +452,7 @@ public class CosmicCrateListener implements Listener {
                 @Override
                 public void run() {
                     // Close inventory.
-                    player.getScheduler().run(plugin, scheduledTask -> {
-                        player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
-                    }, null);
+                    player.getScheduler().run(plugin, scheduledTask -> player.closeInventory(InventoryCloseEvent.Reason.UNLOADED), null);
 
                     crateManager.removePickedPlayer(player);
 

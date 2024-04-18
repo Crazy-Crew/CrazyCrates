@@ -34,6 +34,7 @@ public class CrateOpenListener implements Listener {
         if (crate.getCrateType() != CrateType.menu) {
             if (!crate.canWinPrizes(player)) {
                 player.sendMessage(Messages.no_prizes_found.getMessage("{crate}", crate.getName(), player));
+
                 this.crateManager.removePlayerFromOpeningList(player);
                 this.crateManager.removePlayerKeyType(player);
 

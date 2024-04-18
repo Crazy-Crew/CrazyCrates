@@ -106,6 +106,7 @@ public class InventoryManager {
 
         if (crate.isPreviewTierToggle()) {
             player.openInventory(crate.getTierPreview(player));
+
             return;
         }
 
@@ -128,6 +129,7 @@ public class InventoryManager {
         this.pageViewers.remove(player.getUniqueId());
         this.viewers.remove(player.getUniqueId());
         this.crateViewers.remove(player.getUniqueId());
+
         player.closeInventory();
     }
 

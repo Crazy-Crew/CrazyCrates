@@ -74,6 +74,7 @@ public class CrateAdminMenu extends InventoryBuilder {
             if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(player)) {
                 player.closeInventory(InventoryCloseEvent.Reason.CANT_USE);
                 player.sendMessage(Messages.no_permission.getMessage(player));
+
                 return;
             }
 

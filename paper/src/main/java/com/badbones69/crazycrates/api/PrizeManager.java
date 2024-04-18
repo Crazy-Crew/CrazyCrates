@@ -46,8 +46,10 @@ public class PrizeManager {
         for (ItemStack item : prize.getItems()) {
             if (item == null) {
                 Map<String, String> placeholders = new HashMap<>();
+
                 placeholders.put("{crate}", prize.getCrateName());
                 placeholders.put("{prize}", prize.getPrizeName());
+
                 player.sendMessage(Messages.prize_error.getMessage(placeholders, player));
 
                 continue;
@@ -103,6 +105,7 @@ public class PrizeManager {
                     try {
                         long min = Long.parseLong(word.split("-")[0]);
                         long max = Long.parseLong(word.split("-")[1]);
+
                         commandBuilder.append(MiscUtils.pickNumber(min, max)).append(" ");
                     } catch (Exception e) {
                         commandBuilder.append("1 ");

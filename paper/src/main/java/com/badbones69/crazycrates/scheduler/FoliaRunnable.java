@@ -43,7 +43,7 @@ public abstract class FoliaRunnable implements Runnable {
         this.location = location;
     }
 
-    public FoliaRunnable(@NotNull RegionScheduler scheduler, World world, int chunkX, int chunkZ) {
+    public FoliaRunnable(@NotNull RegionScheduler scheduler, @Nullable World world, int chunkX, int chunkZ) {
         this.regionScheduler = scheduler;
         this.world = world;
         this.chunkX = chunkX;
@@ -52,6 +52,7 @@ public abstract class FoliaRunnable implements Runnable {
 
     public boolean isCancelled() throws IllegalStateException {
         checkScheduled();
+
         return task.isCancelled();
     }
 
@@ -62,6 +63,7 @@ public abstract class FoliaRunnable implements Runnable {
     @NotNull
     public ScheduledTask run(@NotNull Plugin plugin) throws IllegalArgumentException, IllegalStateException {
         checkNotYetScheduled();
+
         if (this.globalRegionScheduler != null) {
             return setupTask(this.globalRegionScheduler.run(plugin, scheduledTask -> this.run()));
         } else if (this.entityScheduler != null) {
@@ -93,7 +95,9 @@ public abstract class FoliaRunnable implements Runnable {
     @NotNull
     public ScheduledTask runDelayed(@NotNull Plugin plugin, long delay) throws IllegalArgumentException, IllegalStateException {
         checkNotYetScheduled();
+
         delay = Math.max(1, delay);
+
         if (this.globalRegionScheduler != null) {
             return setupTask(this.globalRegionScheduler.runDelayed(plugin, scheduledTask -> this.run(), delay));
         } else if (this.entityScheduler != null) {
@@ -127,8 +131,10 @@ public abstract class FoliaRunnable implements Runnable {
     @NotNull
     public ScheduledTask runAtFixedRate(@NotNull Plugin plugin, long delay, long period) throws IllegalArgumentException, IllegalStateException {
         checkNotYetScheduled();
+
         delay = Math.max(1, delay);
         period = Math.max(1, period);
+
         if (this.globalRegionScheduler != null) {
             return setupTask(this.globalRegionScheduler.runAtFixedRate(plugin, scheduledTask -> this.run(), delay, period));
         } else if (this.entityScheduler != null) {
@@ -156,6 +162,7 @@ public abstract class FoliaRunnable implements Runnable {
      */
     public int getTaskId() throws IllegalStateException {
         checkScheduled();
+
         return task.hashCode();
     }
 
@@ -176,5 +183,4 @@ public abstract class FoliaRunnable implements Runnable {
         this.task = task;
         return task;
     }
-
 }

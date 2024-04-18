@@ -247,6 +247,7 @@ public class CrateBaseCommand extends BaseCommand {
             int z = loc.getLocation().getBlockZ();
 
             sender.sendMessage(MsgUtils.color("&8[&b" + line + "&8]: " + "&c" + loc.getID() + "&8, &c" + crate.getName() + "&8, &c" + world + "&8, &c" + x + "&8, &c" + y + "&8, &c" + z));
+
             line++;
         }
     }

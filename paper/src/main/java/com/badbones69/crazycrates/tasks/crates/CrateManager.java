@@ -164,9 +164,11 @@ public class CrateManager {
       
         if (Support.decent_holograms.isEnabled()) {
             this.holograms = new DecentHologramsSupport();
+
             if (MiscUtils.isLogging()) this.plugin.getLogger().info("DecentHolograms support has been enabled.");
         } else if (Support.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
             this.holograms = new CMIHologramsSupport();
+
             if (MiscUtils.isLogging()) this.plugin.getLogger().info("CMI Hologram support has been enabled.");
         } else {
             if (MiscUtils.isLogging()) {
@@ -355,6 +357,7 @@ public class CrateManager {
                         loadedAmount++;
                     } else {
                         this.brokeLocations.add(new BrokeLocation(locationName, crate, x, y, z, worldName));
+
                         brokeAmount++;
                     }
 
@@ -426,6 +429,7 @@ public class CrateManager {
                 CrateMainMenu crateMainMenu = new CrateMainMenu(player, config.getProperty(ConfigKeys.inventory_size), config.getProperty(ConfigKeys.inventory_name));
 
                 player.openInventory(crateMainMenu.build().getInventory());
+
                 return;
             }
 
@@ -460,6 +464,7 @@ public class CrateManager {
 
                 crateBuilder = new QuadCrate(crate, player, location);
             }
+
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
                     player.sendMessage(Messages.crate_in_use.getMessage("{crate}", crate.getName(), player));
@@ -484,6 +489,7 @@ public class CrateManager {
 
                 crateBuilder = new FireCrackerCrate(crate, player, 45, location);
             }
+
             case crate_on_the_go -> {
                 if (virtualCrate) {
                     Map<String, String> placeholders = new HashMap<>();
@@ -500,6 +506,7 @@ public class CrateManager {
 
                 crateBuilder = new CrateOnTheGo(crate, player);
             }
+
             case quick_crate -> {
                 if (this.cratesInUse.containsValue(location)) {
                     player.sendMessage(Messages.crate_in_use.getMessage("{crate}", crate.getName(), player));
@@ -524,6 +531,7 @@ public class CrateManager {
 
                 crateBuilder = new QuickCrate(crate, player, location);
             }
+
             default -> {
                 crateBuilder = new CsgoCrate(crate, player, 27);
 
@@ -865,6 +873,7 @@ public class CrateManager {
         for (CrateLocation crateLocation : getCrateLocations()) {
             if (crateLocation.getLocation().equals(location)) {
                 id = crateLocation.getID();
+
                 break;
             }
         }
@@ -874,6 +883,7 @@ public class CrateManager {
         locations.set("Locations." + id + ".X", location.getBlockX());
         locations.set("Locations." + id + ".Y", location.getBlockY());
         locations.set("Locations." + id + ".Z", location.getBlockZ());
+
         Files.locations.save();
 
         addLocation(new CrateLocation(id, crate, location));
@@ -889,11 +899,13 @@ public class CrateManager {
     public void removeCrateLocation(String id) {
         Files.locations.getFile().set("Locations." + id, null);
         Files.locations.save();
+
         CrateLocation location = null;
 
         for (CrateLocation crateLocation : getCrateLocations()) {
             if (crateLocation.getID().equalsIgnoreCase(id)) {
                 location = crateLocation;
+
                 break;
             }
         }
@@ -910,6 +922,7 @@ public class CrateManager {
      */
     public List<Crate> getUsableCrates() {
         List<Crate> crateList = new ArrayList<>(this.crates);
+
         crateList.removeIf(crate -> crate.getCrateType() == CrateType.menu);
 
         return Collections.unmodifiableList(crateList);
@@ -1013,6 +1026,7 @@ public class CrateManager {
         for (CrateLocation key : this.crateLocations) {
             if (key.getLocation().equals(location)) {
                 crate = key.getCrate();
+
                 break;
             }
         }
@@ -1129,6 +1143,7 @@ public class CrateManager {
         for (String key : sections) {
             if (key.contains("CrazyCrates-Crate")) {
                 pair = key.trim().replaceAll("\\{", "").replaceAll("\"", "");
+
                 break;
             }
         }

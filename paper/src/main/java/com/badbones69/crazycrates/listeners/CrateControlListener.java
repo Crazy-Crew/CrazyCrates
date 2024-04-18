@@ -157,6 +157,7 @@ public class CrateControlListener implements Listener {
 
         if (requiredKeys > 0 && totalKeys < requiredKeys) {
             Map<String, String> placeholders = new HashMap<>();
+
             placeholders.put("{key_amount}", String.valueOf(requiredKeys));
             placeholders.put("{crate}", crate.getPreviewName());
             placeholders.put("{amount}", String.valueOf(totalKeys));
@@ -176,6 +177,7 @@ public class CrateControlListener implements Listener {
         if (this.config.getProperty(ConfigKeys.physical_accepts_virtual_keys) && this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) hasKey = true;
 
         Map<String, String> placeholders = new HashMap<>();
+
         placeholders.put("{crate}", crate.getName());
         placeholders.put("{key}", keyName);
 
@@ -239,6 +241,7 @@ public class CrateControlListener implements Listener {
 
             if (crate != null) {
                 event.setCancelled(true);
+
                 return;
             }
         }
@@ -253,6 +256,7 @@ public class CrateControlListener implements Listener {
 
             if (crate != null) {
                 event.setCancelled(true);
+
                 return;
             }
         }

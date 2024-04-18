@@ -2,7 +2,11 @@ package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 
 import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.SoundCategory;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
@@ -116,16 +120,22 @@ public class QuadCrateManager {
         // Check if it is on a block.
         if (this.spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
             this.player.sendMessage(Messages.not_on_block.getMessage(player));
+
             this.crateManager.removePlayerFromOpeningList(player);
+
             crateSessions.remove(this.instance);
+
             return;
         }
 
         // Check if schematic folder is empty.
         if (this.crateManager.getCrateSchematics().isEmpty()) {
             this.player.sendMessage(Messages.no_schematics_found.getMessage(player));
+
             this.crateManager.removePlayerFromOpeningList(this.player);
+
             crateSessions.remove(this.instance);
+
             return;
         }
 
@@ -141,9 +151,11 @@ public class QuadCrateManager {
         for (Location loc : structureLocations) {
             if (this.handler.getBlockBlackList().contains(loc.getBlock().getType())) {
                 this.player.sendMessage(Messages.needs_more_room.getMessage(player));
+
                 this.crateManager.removePlayerFromOpeningList(this.player);
 
                 crateSessions.remove(this.instance);
+
                 return;
             } else {
                 if (!loc.getBlock().getType().equals(Material.AIR)) this.oldBlocks.put(loc.getBlock().getLocation(), loc.getBlock().getState());
@@ -157,9 +169,12 @@ public class QuadCrateManager {
                 for (QuadCrateManager ongoingCrate : crateSessions) {
                     if (entity.getUniqueId() == ongoingCrate.player.getUniqueId()) {
                         this.player.sendMessage(Messages.too_close_to_another_player.getMessage("{player}", entity.getName(), player));
+
                         this.crateManager.removePlayerFromOpeningList(this.player);
 
+
                         crateSessions.remove(this.instance);
+
                         return;
                     }
                 }
@@ -172,6 +187,7 @@ public class QuadCrateManager {
             this.crateManager.removePlayerFromOpeningList(this.player);
 
             crateSessions.remove(this.instance);
+
             return;
         }
 
@@ -201,7 +217,6 @@ public class QuadCrateManager {
         player.teleportAsync(this.spawnLocation.toCenterLocation().add(0, 1.0, 0));
 
         this.crateManager.addQuadCrateTask(this.player, new FoliaRunnable(getPlayer().getScheduler(), null) {
-
             double radius = 0.0; // Radius of the particle spiral.
             int crateNumber = 0; // The crate number that spawns next.
             int tickTillSpawn = 0; // At tick 60 the crate will spawn and then reset the tick.
@@ -213,6 +228,7 @@ public class QuadCrateManager {
             public void run() {
                 if (this.tickTillSpawn < 60) {
                     spawnParticles(particleColor, this.spiralLocationsClockwise.get(this.tickTillSpawn), this.spiralLocationsCounterClockwise.get(this.tickTillSpawn));
+
                     this.tickTillSpawn++;
                 } else {
                     crate.playSound(player, player.getLocation(), "cycle-sound", "BLOCK_STONE_STEP", SoundCategory.PLAYERS);
@@ -241,7 +257,9 @@ public class QuadCrateManager {
             @Override
             public void run() {
                 endCrate(true);
+
                 player.sendMessage(Messages.out_of_time.getMessage("{crate}", crate.getName(), player));
+
                 crate.playSound(player, player.getLocation(), "stop-sound", "ENTITY_PLAYER_LEVELUP", SoundCategory.PLAYERS);
             }
         }.runDelayed(this.plugin, ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
@@ -251,15 +269,11 @@ public class QuadCrateManager {
      * End the crate gracefully.
      */
     public void endCrate(boolean immediately) {
-        new FoliaRunnable(Bukkit.getGlobalRegionScheduler()) {
+        new FoliaRunnable(this.plugin.getServer().getGlobalRegionScheduler()) {
             @Override
             public void run() {
                 // Update spawned crate block states which removes them.
-                crateLocations.forEach(location -> {
-                    plugin.getServer().getRegionScheduler().run(plugin, location, schedulerTask -> {
-                        quadCrateChests.get(location).update(true, false);
-                    });
-                });
+                crateLocations.forEach(location -> plugin.getServer().getRegionScheduler().run(plugin, location, schedulerTask -> quadCrateChests.get(location).update(true, false)));
 
                 // Remove displayed rewards.
                 for (Entity displayedReward : displayedRewards) {
@@ -273,11 +287,7 @@ public class QuadCrateManager {
                 handler.removeStructure();
 
                 // Restore the old blocks.
-                oldBlocks.keySet().forEach(location -> {
-                    plugin.getServer().getRegionScheduler().run(plugin, location, schedulerTask -> {
-                        oldBlocks.get(location).update(true, false);
-                    });
-                });
+                oldBlocks.keySet().forEach(location -> plugin.getServer().getRegionScheduler().run(plugin, location, schedulerTask -> oldBlocks.get(location).update(true, false)));
 
                 if (crate.getHologram().isEnabled() && crateManager.getHolograms() != null) crateManager.getHolograms().createHologram(spawnLocation, crate);
 

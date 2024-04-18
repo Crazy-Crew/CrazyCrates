@@ -50,6 +50,7 @@ public class MiscListener implements Listener {
     public void onPlayerAttemptPickUp(PlayerAttemptPickupItemEvent event) {
         if (this.crateManager.isDisplayReward(event.getItem())) {
             event.setCancelled(true);
+
             return;
         }
 

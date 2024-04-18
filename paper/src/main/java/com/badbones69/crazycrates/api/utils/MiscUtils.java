@@ -38,8 +38,8 @@ public class MiscUtils {
 
     public static void sendCommand(String command) {
         Server server = plugin.getServer();
-        server.getGlobalRegionScheduler().run(plugin, scheduledTask -> {
 
+        server.getGlobalRegionScheduler().run(plugin, scheduledTask -> {
             ConsoleCommandSender console = server.getConsoleSender();
 
             server.dispatchCommand(console, command);
@@ -67,9 +67,7 @@ public class MiscUtils {
 
         fireworkData.set(PersistentKeys.no_firework_damage.getNamespacedKey(), PersistentDataType.BOOLEAN, true);
 
-        plugin.getServer().getRegionScheduler().runDelayed(plugin, location, scheduledTask -> {
-            firework.detonate();
-        }, 3L);
+        plugin.getServer().getRegionScheduler().runDelayed(plugin, location, scheduledTask -> firework.detonate(), 3L);
     }
 
     public static String location(Location location) {
@@ -206,8 +204,7 @@ public class MiscUtils {
                     return enchantment;
                 }
 
-                if (stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null &&
-                        stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
+                if (stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null && stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
                     return enchantment;
                 }
             } catch (Exception ignore) {}

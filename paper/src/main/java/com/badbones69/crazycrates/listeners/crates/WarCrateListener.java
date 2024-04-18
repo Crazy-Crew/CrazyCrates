@@ -47,7 +47,9 @@ public class WarCrateListener implements Listener {
 
                 if (item != null && item.getType().toString().contains(Material.GLASS_PANE.toString())) {
                     int slot = event.getRawSlot();
+
                     Prize prize = crate.pickPrize(player);
+
                     inventory.setItem(slot, prize.getDisplayItem(player));
 
                     if (this.crateManager.hasCrateTask(player)) this.crateManager.endCrate(player);

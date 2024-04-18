@@ -174,6 +174,7 @@ public class WheelCrate extends CrateBuilder {
                         playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
 
                         getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
+
                         crateManager.removePlayerFromOpeningList(getPlayer());
                         crateManager.endCrate(getPlayer());
 
@@ -189,6 +190,7 @@ public class WheelCrate extends CrateBuilder {
 
                 if (this.open > 5) {
                     getPlayer().openInventory(getInventory());
+
                     this.open = 0;
                 }
             }

@@ -44,6 +44,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      */
     public CrateBuilder(Crate crate, Player player, int size) {
         super(player.getScheduler(), null);
+
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
 
@@ -68,6 +69,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      */
     public CrateBuilder(Crate crate, Player player, int size, String crateName) {
         super(player.getScheduler(), null);
+
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
 
@@ -92,6 +94,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      */
     public CrateBuilder(Crate crate, Player player, int size, Location location) {
         super(player.getScheduler(), null);
+
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
         Preconditions.checkNotNull(location, "Location can't be null.");
@@ -115,6 +118,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      */
     public CrateBuilder(Crate crate, Player player) {
         super(player.getScheduler(), null);
+
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
 
@@ -138,6 +142,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      */
     public CrateBuilder(Crate crate, Player player, Location location) {
         super(player.getScheduler(), null);
+
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
         Preconditions.checkNotNull(location, "Location can't be null.");

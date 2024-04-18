@@ -50,6 +50,7 @@ public class WonderCrate extends CrateBuilder {
 
         for (int index = 0; index < getSize(); index++) {
             Prize prize = getCrate().pickPrize(getPlayer());
+
             slots.add(String.valueOf(index));
 
             setItem(index, prize.getDisplayItem(getPlayer()));
@@ -84,6 +85,7 @@ public class WonderCrate extends CrateBuilder {
 
                     for (String slot : slots) {
                         this.prize = getCrate().pickPrize(getPlayer());
+
                         setItem(Integer.parseInt(slot), this.prize.getDisplayItem(getPlayer()));
                     }
 
@@ -111,6 +113,7 @@ public class WonderCrate extends CrateBuilder {
                     if (this.prize.useFireworks()) MiscUtils.spawnFirework(getPlayer().getLocation().add(0, 1, 0), null);
 
                     plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(getPlayer(), getCrate(), getCrate().getName(), this.prize));
+
                     crateManager.removePlayerFromOpeningList(getPlayer());
 
                     return;

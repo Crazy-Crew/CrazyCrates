@@ -60,6 +60,7 @@ public class WarCrate extends CrateBuilder {
             public void run() {
                 if (this.full < 25) {
                     setRandomPrizes();
+
                     playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_LAVA_POP");
                 }
 
@@ -67,6 +68,7 @@ public class WarCrate extends CrateBuilder {
 
                 if (this.open >= 3) {
                     getPlayer().openInventory(getInventory());
+
                     this.open = 0;
                 }
 
@@ -74,7 +76,9 @@ public class WarCrate extends CrateBuilder {
 
                 if (this.full == 26) {
                     playSound("stop-sound", SoundCategory.PLAYERS, "BLOCK_LAVA_POP");
+
                     setRandomGlass();
+
                     crateManager.addPicker(getPlayer(), true);
                 }
             }

@@ -84,6 +84,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
         if (crate == null) {
             this.plugin.getLogger().warning("Crate: " + crateName + " is not a valid crate name.");
+
             return "N/A";
         }
 
