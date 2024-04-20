@@ -1,6 +1,8 @@
 plugins {
     id("com.github.johnrengelman.shadow")
 
+    alias(libs.plugins.run.paper)
+
     `paper-plugin`
 }
 
