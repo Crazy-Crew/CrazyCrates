@@ -62,7 +62,7 @@ tasks {
         inputs.properties("name" to rootProject.name)
         inputs.properties("version" to project.version)
         inputs.properties("group" to project.group)
-        inputs.properties("authors" to project.properties["authors"])
+        //inputs.properties("authors" to project.properties["authors"])
         inputs.properties("description" to project.properties["description"])
         inputs.properties("website" to project.properties["website"])
 
