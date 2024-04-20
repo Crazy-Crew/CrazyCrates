@@ -1,17 +1,21 @@
-plugins {
-    `root-plugin`
+import git.formatLog
+import git.latestCommitHash
+import git.latestCommitMessage
 
+plugins {
     id("io.papermc.hangar-publish-plugin") version "0.1.2"
     id("com.modrinth.minotaur") version "2.+"
+
+    id("com.github.johnrengelman.shadow")
+
+    `root-plugin`
 }
 
-rootProject.version = if (System.getenv("NEXT_BUILD_NUMBER") != null) "2.1-${System.getenv("NEXT_BUILD_NUMBER")}" else "2.1"
+val buildNumber: String? = System.getenv("NEXT_RUN_NUMBER")
 
-dependencies {
-    api(project(":paper", configuration = "shadow"))
-}
+rootProject.version = if (buildNumber != null) "2.1-$buildNumber" else "2.1"
 
-val isSnapshot = rootProject.version.toString().contains("-")
+val isSnapshot = true
 
 val content: String = if (isSnapshot) {
     if (System.getenv("COMMIT_MESSAGE") != null) {
@@ -21,6 +25,10 @@ val content: String = if (isSnapshot) {
     }
 } else {
     rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
+}
+
+subprojects.filter { it.name != "api" }.forEach {
+    it.project.version = rootProject.version
 }
 
 modrinth {
@@ -35,9 +43,12 @@ modrinth {
 
     changelog.set(content)
 
-    uploadFile.set(file("$rootDir/jars/${rootProject.name}-${rootProject.version}.jar"))
+    uploadFile.set(rootProject.projectDir.resolve("jars/${rootProject.name}-${rootProject.version}.jar"))
 
-    gameVersions.set(listOf(libs.versions.bundle.get()))
+    gameVersions.set(listOf(
+        "1.20.4"
+        //"1.20.5"
+    ))
 
     loaders.add("paper")
     loaders.add("purpur")
@@ -61,9 +72,12 @@ hangarPublish {
 
         platforms {
             paper {
-                jar.set(file("$rootDir/jars/${rootProject.name}-${rootProject.version}.jar"))
+                jar.set(rootProject.projectDir.resolve("jars/${rootProject.name}-${rootProject.version}.jar"))
 
-                platformVersions.set(listOf(libs.versions.bundle.get()))
+                platformVersions.set(listOf(
+                    "1.20.4"
+                    //"1.20.5"
+                ))
 
                 dependencies {
                     hangar("PlaceholderAPI") {
@@ -90,7 +104,7 @@ hangarPublish {
 tasks {
     assemble {
         doFirst {
-            delete("$rootDir/jars")
+            delete(rootProject.projectDir.resolve("jars"))
         }
     }
 }

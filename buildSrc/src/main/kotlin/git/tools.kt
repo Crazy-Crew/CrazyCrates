@@ -1,3 +1,5 @@
+package git
+
 import org.gradle.api.Project
 import java.io.ByteArrayOutputStream
 

@@ -1,6 +1,4 @@
 plugins {
-    id("com.github.johnrengelman.shadow")
-
     `java-library`
 
     `maven-publish`
@@ -18,8 +16,6 @@ repositories {
     maven("https://repo.codemc.io/repository/maven-public/")
 
     maven("https://repo.triumphteam.dev/snapshots/")
-
-    maven("https://repo.crazycrew.us/snapshots/")
 
     maven("https://repo.crazycrew.us/releases/")
 
