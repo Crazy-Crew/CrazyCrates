@@ -132,9 +132,10 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // CancelTask
+        // Cancel the tasks
         getServer().getGlobalRegionScheduler().cancelTasks(this);
         getServer().getAsyncScheduler().cancelTasks(this);
+
         // Cancel the timer task.
         this.timer.cancel();
 
