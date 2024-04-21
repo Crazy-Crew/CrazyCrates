@@ -17,7 +17,6 @@ import com.badbones69.crazycrates.listeners.crates.QuadCrateListener;
 import com.badbones69.crazycrates.listeners.crates.WarCrateListener;
 import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
-import com.badbones69.crazycrates.support.metrics.MetricsManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
@@ -48,8 +47,6 @@ public class CrazyCrates extends JavaPlugin {
     private InventoryManager inventoryManager;
     private BukkitUserManager userManager;
     private CrateManager crateManager;
-
-    private MetricsManager metrics;
 
     @Override
     public void onLoad() {
@@ -169,10 +166,6 @@ public class CrazyCrates extends JavaPlugin {
 
     public @NotNull FileManager getFileManager() {
         return this.instance.getFileManager();
-    }
-
-    public @NotNull MetricsManager getMetrics() {
-        return this.metrics;
     }
 
     public @NotNull Server getInstance() {
