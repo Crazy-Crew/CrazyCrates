@@ -11,13 +11,13 @@ dependencies {
 
     implementation(project(":api"))
 
-    implementation(libs.triumph.cmds)
-
-    implementation(libs.config.me)
-
-    //implementation(libs.metrics)
-
     implementation(libs.vital)
+
+    compileOnly(libs.triumph.cmds)
+
+    compileOnly(libs.config.me)
+
+    //compileOnly(libs.metrics)
 
     compileOnly(libs.head.database.api)
 
@@ -52,9 +52,7 @@ tasks {
 
     shadowJar {
         listOf(
-            "dev.triumphteam",
-            //"org.bstats",
-            "ch.jalu"
+            "com.ryderbelserion.vital"
         ).forEach { relocate(it, "libs.$it") }
     }
 
