@@ -11,7 +11,7 @@ plugins {
     `root-plugin`
 }
 
-val buildNumber: String? = System.getenv("NEXT_RUN_NUMBER")
+val buildNumber: String? = System.getenv("NEXT_BUILD_NUMBER")
 
 rootProject.version = if (buildNumber != null) "2.1-$buildNumber" else "2.1"
 
@@ -97,14 +97,6 @@ hangarPublish {
                     }
                 }
             }
-        }
-    }
-}
-
-tasks {
-    assemble {
-        doFirst {
-            delete(rootProject.projectDir.resolve("jars"))
         }
     }
 }
