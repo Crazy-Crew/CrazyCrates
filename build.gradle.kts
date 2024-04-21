@@ -18,11 +18,7 @@ rootProject.version = if (buildNumber != null) "2.1-$buildNumber" else "2.1"
 val isSnapshot = true
 
 val content: String = if (isSnapshot) {
-    if (System.getenv("COMMIT_MESSAGE") != null) {
-        System.getenv("COMMIT_MESSAGE")
-    } else {
-        formatLog(latestCommitHash(), latestCommitMessage(), rootProject.name)
-    }
+    formatLog(latestCommitHash(), latestCommitMessage(), rootProject.name)
 } else {
     rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 }
