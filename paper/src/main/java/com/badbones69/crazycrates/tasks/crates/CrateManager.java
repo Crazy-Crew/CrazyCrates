@@ -51,6 +51,7 @@ import com.badbones69.crazycrates.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.DecentHologramsSupport;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -200,7 +201,20 @@ public class CrateManager {
      * Loads the crates.
      */
     public void loadCrates() {
-        FileUtil.extracts(this.plugin.getClass(), "/examples/", this.plugin.getDataFolder().toPath().resolve("examples"), true);
+        if (ConfigManager.getConfig().getProperty(ConfigKeys.update_examples_folder)) {
+            Path path = this.plugin.getDataFolder().toPath();
+            Class<? extends @NotNull CrazyCrates> classObject = this.plugin.getClass();
+
+            FileUtil.extracts(classObject, "/crates/", path.resolve("examples").resolve("crates"), true);
+            FileUtil.extracts(classObject, "/schematics/", path.resolve("examples").resolve("schematics"), true);
+
+            List.of(
+                    "config.yml",
+                    "data.yml",
+                    "locations.yml",
+                    "messages.yml"
+            ).forEach(file -> FileUtil.extract(classObject, file, path.resolve("examples"), true));
+        }
 
         this.giveNewPlayersKeys = false;
 
