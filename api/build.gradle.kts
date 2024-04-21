@@ -1,14 +1,22 @@
 plugins {
-    `paper-plugin`
+    id("com.github.johnrengelman.shadow")
+
+    `root-plugin`
 }
 
 project.group = "us.crazycrew.crazycrates"
 project.version = "1.0-snapshot"
 
+repositories {
+    maven("https://repo.papermc.io/repository/maven-public/")
+}
+
 dependencies {
-    compileOnly(libs.vital)
+    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
 
     compileOnly(libs.config.me)
+
+    compileOnly(libs.vital)
 }
 
 java {

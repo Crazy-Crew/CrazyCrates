@@ -1,17 +1,17 @@
 plugins {
+    id("com.github.johnrengelman.shadow")
+
     alias(libs.plugins.run.paper)
 
     `paper-plugin`
 }
-
-val mcVersion = libs.versions.bundle
 
 dependencies {
     compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
 
     implementation(project(":api"))
 
-    implementation(libs.bundles.triumph)
+    implementation(libs.triumph.cmds)
 
     implementation(libs.config.me)
 
@@ -51,35 +51,23 @@ tasks {
     }
 
     shadowJar {
-        archiveClassifier.set("")
-
-        //archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
-        //destinationDirectory.set(rootProject.projectDir.resolve("jars"))
-
         listOf(
             "dev.triumphteam",
             "org.bstats",
             "ch.jalu"
-        ).forEach {
-            relocate(it, "libs.$it")
-        }
+        ).forEach { relocate(it, "libs.$it") }
     }
 
     processResources {
-        val properties = hashMapOf(
-            "name" to rootProject.name,
-            "version" to rootProject.version,
-            "group" to rootProject.group,
-            "description" to rootProject.description,
-            "apiVersion" to "1.20",
-            "authors" to listOf("RyderBelserion", "BadBones69"),
-            "website" to "https://modrinth.com/plugin/crazycrates"
-        )
+        inputs.properties("name" to rootProject.name)
+        inputs.properties("version" to project.version)
+        inputs.properties("group" to project.group)
+        //inputs.properties("authors" to project.properties["authors"])
+        inputs.properties("description" to project.properties["description"])
+        inputs.properties("website" to project.properties["website"])
 
-        inputs.properties(properties)
-
-        filesMatching("plugin.yml") {
-            expand(properties)
+        filesMatching("paper-plugin.yml") {
+            expand(inputs.properties)
         }
     }
 }
