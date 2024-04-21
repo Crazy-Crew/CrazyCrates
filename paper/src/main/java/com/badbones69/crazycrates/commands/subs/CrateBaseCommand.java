@@ -147,11 +147,11 @@ public class CrateBaseCommand extends BaseCommand {
 
         this.fileManager.create();
 
-        if (!this.config.getProperty(ConfigKeys.toggle_metrics)) {
-            this.plugin.getMetrics().stop();
-        } else {
-            this.plugin.getMetrics().start();
-        }
+        //if (!this.config.getProperty(ConfigKeys.toggle_metrics)) {
+        //    this.plugin.getMetrics().stop();
+        //} else {
+        //    this.plugin.getMetrics().start();
+        //}
 
         FileConfiguration locations = Files.locations.getFile();
         FileConfiguration data = Files.data.getFile();

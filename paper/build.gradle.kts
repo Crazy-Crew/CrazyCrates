@@ -15,7 +15,7 @@ dependencies {
 
     implementation(libs.config.me)
 
-    implementation(libs.metrics)
+    //implementation(libs.metrics)
 
     implementation(libs.vital)
 
@@ -53,7 +53,7 @@ tasks {
     shadowJar {
         listOf(
             "dev.triumphteam",
-            "org.bstats",
+            //"org.bstats",
             "ch.jalu"
         ).forEach { relocate(it, "libs.$it") }
     }
