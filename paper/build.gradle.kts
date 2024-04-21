@@ -15,8 +15,6 @@ dependencies {
 
     implementation(libs.config.me)
 
-    implementation(libs.metrics)
-
     implementation(libs.vital)
 
     compileOnly(libs.head.database.api)
@@ -53,7 +51,6 @@ tasks {
     shadowJar {
         listOf(
             "dev.triumphteam",
-            "org.bstats",
             "ch.jalu"
         ).forEach { relocate(it, "libs.$it") }
     }
