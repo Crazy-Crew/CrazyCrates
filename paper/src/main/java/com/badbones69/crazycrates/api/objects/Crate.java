@@ -128,10 +128,13 @@ public class Crate {
         this.crateInventoryName = file != null ? MsgUtils.sanitizeColor(file.getString("Crate.CrateName")) : "";
 
         String borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? MsgUtils.color(file.getString("Crate.Preview.Glass.Name")) : " ";
-        this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item", "GRAY_STAINED_GLASS_PANE")).setName(borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(borderName);
+        this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item", "GRAY_STAINED_GLASS_PANE"))
+                .hideItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
+                .setName(borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(borderName);
 
         String previewTierBorderName = file != null ? MsgUtils.color(file.getString("Crate.tier-preview.glass.name", " ")) : " ";
-        this.previewTierBorderItem = file != null ? new ItemBuilder().setMaterial(file.getString("Crate.tier-preview.glass.item", "GRAY_STAINED_GLASS_PANE")).setName(previewTierBorderName) : new ItemBuilder().setMaterial(Material.AIR).setName(previewTierBorderName);
+        this.previewTierBorderItem = file != null ? new ItemBuilder().setMaterial(file.getString("Crate.tier-preview.glass.item", "GRAY_STAINED_GLASS_PANE")).hideItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
+                .setName(previewTierBorderName) : new ItemBuilder().setMaterial(Material.AIR).setName(previewTierBorderName);
 
         setTierPreviewRows(file != null ? file.getInt("Crate.tier-preview.rows", 5) : 5);
         this.previewTierMaxSlots = this.previewTierCrateRows * 9;

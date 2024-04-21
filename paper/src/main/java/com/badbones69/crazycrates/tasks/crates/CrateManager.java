@@ -1214,8 +1214,9 @@ public class CrateManager {
         List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
         String id = file.getString("Crate.PhysicalKey.Item", "TRIPWIRE_HOOK");
         boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
+        boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        return new ItemBuilder().setMaterial(id).setName(name).setLore(lore).setGlow(glowing).build();
+        return new ItemBuilder().setMaterial(id).setName(name).setLore(lore).setGlow(glowing).hideItemFlags(hideFlags).build();
     }
 
     // Cleans the data file.
