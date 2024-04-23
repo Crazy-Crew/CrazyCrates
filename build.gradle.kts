@@ -11,9 +11,9 @@ plugins {
     `root-plugin`
 }
 
-val buildNumber: String? = System.getenv("NEXT_BUILD_NUMBER")
+val buildNumber: String = System.getenv("NEXT_BUILD_NUMBER") ?: "SNAPSHOT"
 
-rootProject.version = if (buildNumber != null) "2.1-$buildNumber" else "2.1"
+rootProject.version = "2.1-$buildNumber"
 
 val isSnapshot = true
 
