@@ -13,12 +13,6 @@ dependencies {
 
     implementation(libs.vital)
 
-    compileOnly(libs.triumph.cmds)
-
-    compileOnly(libs.config.me)
-
-    //compileOnly(libs.metrics)
-
     compileOnly(libs.head.database.api)
 
     compileOnly(libs.decent.holograms)
@@ -27,7 +21,11 @@ dependencies {
 
     compileOnly(libs.itemsadder.api)
 
+    compileOnly(libs.triumph.cmds)
+
     compileOnly(libs.oraxen.api)
+
+    compileOnly(libs.config.me)
 }
 
 tasks {
@@ -36,7 +34,7 @@ tasks {
 
         defaultCharacterEncoding = Charsets.UTF_8.name()
 
-        minecraftVersion("1.20.4")
+        minecraftVersion("1.20.5")
     }
 
     assemble {

@@ -79,13 +79,6 @@ public class CrazyCrates extends JavaPlugin {
         // Load commands.
         CommandManager.load();
 
-        //this.metrics = new MetricsManager();
-
-        // Load metrics.
-        //if (ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) {
-            //this.metrics.start();
-        //}
-
         List.of(
                 // Menu listeners.
                 new CratePreviewMenu.CratePreviewListener(),

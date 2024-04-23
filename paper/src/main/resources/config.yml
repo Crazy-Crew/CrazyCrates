@@ -11,10 +11,6 @@ root:
   verbose_logging: true
   # This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.
   use-different-random: false
-  # Sends anonymous statistics about how the plugin is used to bstats.org.
-  # bstats is a service for plugin developers to find out how the plugin being used,
-  # This information helps us figure out how to better improve the plugin.
-  toggle_metrics: true
   # The prefix used in commands
   command_prefix: '&8[&bCrazyCrates&8]: '
   # The prefix used in console
