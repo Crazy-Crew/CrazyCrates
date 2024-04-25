@@ -33,7 +33,7 @@ public class BaseKeyCommand extends BaseCommand {
 
         placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(player.getUniqueId())));
 
-        getKeys(player, player, Messages.virtual_keys_header.getMessage(placeholders, player), Messages.no_virtual_keys.getMessage(player));
+        getKeys(player, player, Messages.virtual_keys_header.getMessage(player, placeholders), Messages.no_virtual_keys.getMessage(player));
     }
 
     @SubCommand("view")
@@ -50,11 +50,11 @@ public class BaseKeyCommand extends BaseCommand {
         placeholders.put("{player}", target.getName());
         placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(target.getUniqueId())));
 
-        String header = Messages.other_player_no_keys_header.getMessage(placeholders, sender);
+        String header = Messages.other_player_no_keys_header.getMessage(null, placeholders);
 
-        String otherPlayer = Messages.other_player_no_keys.getMessage("{player}", target.getName(), sender);
+        String content = Messages.other_player_no_keys.getMessage(null, "{player}", target.getName());
 
-        getKeys(target, sender, header, otherPlayer);
+        getKeys(target, sender, header, content);
     }
 
     /**
@@ -63,9 +63,9 @@ public class BaseKeyCommand extends BaseCommand {
      * @param player player to get keys.
      * @param sender sender to send message to.
      * @param header header of the message.
-     * @param messageContent content of the message.
+     * @param content content of the message.
      */
-    private void getKeys(Player player, CommandSender sender, String header, String messageContent) {
+    private void getKeys(Player player, CommandSender sender, String header, String content) {
         List<String> message = Lists.newArrayList();
 
         message.add(header);
@@ -88,19 +88,19 @@ public class BaseKeyCommand extends BaseCommand {
                 placeholders.put("{keys}", String.valueOf(amount));
                 placeholders.put("{crate_opened}", String.valueOf(this.userManager.getCrateOpened(player.getUniqueId(), crate.getName())));
 
-                message.add(Messages.per_crate.getMessage(placeholders, player));
+                message.add(Messages.per_crate.getMessage(player, placeholders));
             }
         }
 
         if (Support.placeholder_api.isEnabled() ) {
             if (sender instanceof Player person) {
                 if (hasKeys) {
-                    message.forEach(line -> person.sendMessage(PlaceholderAPI.setPlaceholders(person, line)));
+                    message.forEach(line -> person.sendRichMessage(PlaceholderAPI.setPlaceholders(person, line)));
 
                     return;
                 }
 
-                sender.sendMessage(PlaceholderAPI.setPlaceholders(person, messageContent));
+                sender.sendRichMessage(PlaceholderAPI.setPlaceholders(person, content));
 
                 return;
             }
@@ -109,11 +109,11 @@ public class BaseKeyCommand extends BaseCommand {
         }
 
         if (hasKeys) {
-            message.forEach(sender::sendMessage);
+            message.forEach(sender::sendRichMessage);
 
             return;
         }
 
-        sender.sendMessage(messageContent);
+        sender.sendRichMessage(content);
     }
 }

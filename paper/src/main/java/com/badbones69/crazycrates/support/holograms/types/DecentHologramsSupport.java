@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.support.holograms.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.api.utils.MsgUtils;
 import eu.decentsoftware.holograms.api.DHAPI;
 import org.bukkit.Location;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
@@ -26,7 +25,7 @@ public class DecentHologramsSupport extends HologramManager {
 
         Hologram hologram = DHAPI.createHologram(name(), location.clone().add(getVector(crate)));
 
-        crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, MsgUtils.color(line)));
+        crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, color(line)));
 
         hologram.setDisplayRange(crateHologram.getRange());
 

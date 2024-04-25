@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.support.holograms.types.FancyHologramsSupport;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.types.*;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
@@ -171,6 +172,10 @@ public class CrateManager {
             this.holograms = new CMIHologramsSupport();
 
             if (MiscUtils.isLogging()) this.plugin.getLogger().info("CMI Hologram support has been enabled.");
+        } else if (Support.fancy_holograms.isEnabled()) {
+            this.holograms = new FancyHologramsSupport();
+
+            if (MiscUtils.isLogging()) this.plugin.getLogger().info("FancyHolograms support has been enabled.");
         } else {
             if (MiscUtils.isLogging()) {
                 List.of(
@@ -309,7 +314,7 @@ public class CrateManager {
                 List<String> prizeCommands = file.contains("Crate.Prize-Commands") ? file.getStringList("Crate.Prize-Commands") : Collections.emptyList();
 
                 CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getInt("Crate.Hologram.Range", 8), file.getStringList("Crate.Hologram.Message"));
-                addCrate(new Crate(crateName, previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name"), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, prizeCommands, holo));
+                addCrate(new Crate(crateName, previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name", "Crate.PhysicalKey.Name is missing from " + crateName + ".yml"), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, prizeCommands, holo));
 
                 Permission doesExist = this.plugin.getServer().getPluginManager().getPermission("crazycrates.open." + crateName);
 
@@ -447,7 +452,7 @@ public class CrateManager {
                 return;
             }
 
-            player.sendMessage(Messages.feature_disabled.getMessage(player));
+            player.sendRichMessage(Messages.feature_disabled.getMessage(player));
 
             return;
         }
@@ -469,7 +474,7 @@ public class CrateManager {
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());
 
-                    player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
+                    player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
 
                     removePlayerFromOpeningList(player);
 
@@ -481,7 +486,7 @@ public class CrateManager {
 
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    player.sendMessage(Messages.crate_in_use.getMessage("{crate}", crate.getName(), player));
+                    player.sendRichMessage(Messages.crate_in_use.getMessage(player, "{crate}", crate.getName()));
 
                     removePlayerFromOpeningList(player);
 
@@ -494,7 +499,7 @@ public class CrateManager {
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());
 
-                    player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
+                    player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
 
                     removePlayerFromOpeningList(player);
 
@@ -511,7 +516,7 @@ public class CrateManager {
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());
 
-                    player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
+                    player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
 
                     removePlayerFromOpeningList(player);
 
@@ -523,7 +528,7 @@ public class CrateManager {
 
             case quick_crate -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    player.sendMessage(Messages.crate_in_use.getMessage("{crate}", crate.getName(), player));
+                    player.sendRichMessage(Messages.crate_in_use.getMessage(player, "{crate}", crate.getName()));
 
                     removePlayerFromOpeningList(player);
 
@@ -536,7 +541,7 @@ public class CrateManager {
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());
 
-                    player.sendMessage(Messages.cant_be_a_virtual_crate.getMessage(placeholders, player));
+                    player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
 
                     removePlayerFromOpeningList(player);
 
@@ -551,7 +556,7 @@ public class CrateManager {
 
                 if (MiscUtils.isLogging()) {
                     List.of(
-                            crate.getCrateInventoryName() + " has an invalid crate type. Your Value: " + crate.getFile().getString("Crate.CrateType"),
+                            crate.getName() + " has an invalid crate type. Your Value: " + crate.getFile().getString("Crate.CrateType", "CSGO"),
                             "We will use " + CrateType.csgo.getName() + " until you change the crate type.",
                             "Valid Crate Types: CSGO/Casino/Cosmic/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War"
                     ).forEach(line -> this.plugin.getLogger().warning(line));

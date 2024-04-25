@@ -19,6 +19,11 @@ val isSnapshot = true
 
 val content: String = if (isSnapshot) {
     formatLog(latestCommitHash(), latestCommitMessage(), rootProject.name)
+    "Warning, I did not include a migrator for MiniMessage so when you do update, It will be raw legacy color codes."
+
+    "CMI/DecentHolograms do not support MiniMessage so you still have to use legacy color codes for that."
+
+    "Added support for FancyHolograms by Oliver"
 } else {
     rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 }

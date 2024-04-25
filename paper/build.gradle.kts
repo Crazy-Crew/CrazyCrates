@@ -6,6 +6,10 @@ plugins {
     `paper-plugin`
 }
 
+repositories {
+    maven("https://repo.fancyplugins.de/releases")
+}
+
 dependencies {
     compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
 
@@ -22,6 +26,8 @@ dependencies {
     compileOnly(libs.head.database.api)
 
     compileOnly(libs.decent.holograms)
+
+    compileOnly(libs.fancy.holograms)
 
     compileOnly(libs.placeholder.api)
 

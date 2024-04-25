@@ -77,7 +77,7 @@ public class CrateControlListener implements Listener {
             if (crateLocation.getLocation().equals(clickedBlock.getLocation())) {
                 this.crateManager.removeCrateLocation(crateLocation.getID());
 
-                player.sendMessage(Messages.removed_physical_crate.getMessage("{id}", crateLocation.getID(), player));
+                player.sendRichMessage(Messages.removed_physical_crate.getMessage(player, "{id}", crateLocation.getID()));
             }
 
             return;
@@ -91,7 +91,7 @@ public class CrateControlListener implements Listener {
             this.inventoryManager.addViewer(player);
             this.inventoryManager.openNewCratePreview(player, crateLocation.getCrate());
         } else {
-            player.sendMessage(Messages.preview_disabled.getMessage("{crate}", crate.getName(), player));
+            player.sendRichMessage(Messages.preview_disabled.getMessage(player, "{crate}", crate.getName()));
         }
     }
     
@@ -134,7 +134,7 @@ public class CrateControlListener implements Listener {
 
                 player.openInventory(crateMainMenu.build().getInventory());
             } else {
-                player.sendMessage(Messages.feature_disabled.getMessage(player));
+                player.sendRichMessage(Messages.feature_disabled.getMessage(player));
             }
 
             return;
@@ -162,7 +162,7 @@ public class CrateControlListener implements Listener {
             placeholders.put("{crate}", crate.getPreviewName());
             placeholders.put("{amount}", String.valueOf(totalKeys));
 
-            player.sendMessage(Messages.required_keys.getMessage(placeholders, player));
+            player.sendRichMessage(Messages.required_keys.getMessage(player, placeholders));
 
             return;
         }
@@ -189,20 +189,20 @@ public class CrateControlListener implements Listener {
 
             if (!useQuickCrateAgain) {
                 if (this.crateManager.isInOpeningList(player)) {
-                    player.sendMessage(Messages.already_opening_crate.getMessage("{crate}", crate.getName(), player));
+                    player.sendRichMessage(Messages.already_opening_crate.getMessage(player, "{crate}", crate.getName()));
 
                     return;
                 }
 
                 if (this.crateManager.getCratesInUse().containsValue(crateLocation.getLocation())) {
-                    player.sendMessage(Messages.crate_in_use.getMessage("{crate}", crate.getName(), player));
+                    player.sendRichMessage(Messages.crate_in_use.getMessage(player, "{crate}", crate.getName()));
 
                     return;
                 }
             }
 
             if (MiscUtils.isInventoryFull(player)) {
-                player.sendMessage(Messages.inventory_not_empty.getMessage("{crate}", crate.getName(), player));
+                player.sendRichMessage(Messages.inventory_not_empty.getMessage(player, "{crate}", crate.getName()));
 
                 return;
             }
@@ -228,7 +228,7 @@ public class CrateControlListener implements Listener {
                 player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
             }
 
-            player.sendMessage(Messages.no_keys.getMessage(placeholders, player));
+            player.sendRichMessage(Messages.no_keys.getMessage(player, placeholders));
         }
     }
 

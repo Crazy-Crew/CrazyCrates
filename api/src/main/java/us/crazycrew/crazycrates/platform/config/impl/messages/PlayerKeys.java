@@ -18,29 +18,29 @@ public class PlayerKeys implements SettingsHolder {
     }
 
     @Comment("A list of available placeholders: {prefix}")
-    public static final Property<String> must_be_a_player = newProperty("player.requirements.must-be-player", "{prefix}&cYou must be a player to use this command.");
+    public static final Property<String> must_be_a_player = newProperty("player.requirements.must-be-player", "{prefix}<red>You must be a player to use this command.");
 
     @Comment("A list of available placeholders: {prefix}")
-    public static final Property<String> must_be_console_sender = newProperty("player.requirements.must-be-console-sender", "{prefix}&cYou must be using console to use this command.");
+    public static final Property<String> must_be_console_sender = newProperty("player.requirements.must-be-console-sender", "{prefix}<red>You must be using console to use this command.");
 
     @Comment("A list of available placeholders: {prefix}")
-    public static final Property<String> must_be_looking_at_block = newProperty("player.requirements.must-be-looking-at-block", "{prefix}&cYou must be looking at a block.");
+    public static final Property<String> must_be_looking_at_block = newProperty("player.requirements.must-be-looking-at-block", "{prefix}<red>You must be looking at a block.");
 
     @Comment("A list of available placeholders: {prefix}, {player}")
-    public static final Property<String> not_online = newProperty("player.target-not-online", "{prefix}&c{player} &7is not online.");
+    public static final Property<String> not_online = newProperty("player.target-not-online", "{prefix}<red>{player} <gray>is not online.");
 
     @Comment("A list of available placeholders: {prefix}")
-    public static final Property<String> same_player = newProperty("player.target-same-player", "{prefix}&cYou can''t use this command on yourself.");
+    public static final Property<String> same_player = newProperty("player.target-same-player", "{prefix}<red>You can''t use this command on yourself.");
 
     @Comment("A list of available placeholders: {prefix}")
-    public static final Property<String> no_permission = newProperty("player.no-permission", "{prefix}&cYou do not have permission to use that command/menu!");
+    public static final Property<String> no_permission = newProperty("player.no-permission", "{prefix}<red>You do not have permission to use that command/menu!");
 
     @Comment("A list of available placeholders: {prefix}, {crate}")
-    public static final Property<String> inventory_not_empty = newProperty("player.inventory-not-empty", "{prefix}&cInventory is not empty, Please make room before opening &6{crate}.");
+    public static final Property<String> inventory_not_empty = newProperty("player.inventory-not-empty", "{prefix}<red>Inventory is not empty, Please make room before opening <gold>{crate}.");
 
     @Comment("A list of available placeholders: {prefix}, {amount}, {keytype}, {key}")
-    public static final Property<String> obtaining_keys = newProperty("player.obtaining-keys", "{prefix}&7You have been given &6{amount} {key} &7key(s).");
+    public static final Property<String> obtaining_keys = newProperty("player.obtaining-keys", "{prefix}<gray>You have been given <gold>{amount} {key} <gray>key(s).");
 
     @Comment("A list of available placeholders: {prefix}, {player}")
-    public static final Property<String> too_close_to_another_player = newProperty("player.too-close-to-another-player", "{prefix}&cYou are too close to a player that is opening a crate.");
+    public static final Property<String> too_close_to_another_player = newProperty("player.too-close-to-another-player", "{prefix}<red>You are too close to a player that is opening a crate.");
 }

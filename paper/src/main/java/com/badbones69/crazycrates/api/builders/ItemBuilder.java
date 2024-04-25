@@ -8,9 +8,12 @@ import com.badbones69.crazycrates.support.SkullCreator;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.util.DyeUtil;
+import com.ryderbelserion.vital.util.MiscUtil;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.Component;
 import net.minecraft.nbt.TagParser;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
 import org.bukkit.block.Banner;
 import org.bukkit.block.banner.Pattern;
@@ -153,7 +156,14 @@ public class ItemBuilder {
         this.itemAmount = itemBuilder.itemAmount;
         this.itemData = itemBuilder.itemData;
 
-        this.displayName = itemBuilder.displayName;
+        if (!itemBuilder.displayName.isBlank()) {
+            this.displayName = itemBuilder.displayName;
+        } else {
+            String material = WordUtils.capitalizeFully(this.material.getKey().getKey().replaceAll("_", " "));
+
+            this.displayName = material;
+        }
+
         this.displayLore = itemBuilder.displayLore;
         this.itemDamage = itemBuilder.itemDamage;
 
@@ -230,17 +240,17 @@ public class ItemBuilder {
             case ENCHANTED_BOOK -> this.isBook = true;
         }
 
-        this.itemStack.editMeta(itemMeta -> {
+        /*this.itemStack.editMeta(itemMeta -> {
             if (itemMeta.hasDisplayName()) this.displayName = itemMeta.getDisplayName();
 
             if (itemMeta.hasLore()) this.displayLore = itemMeta.getLore();
-        });
+        });*/
 
         String name = this.material.name();
 
-        this.isArmor = name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE") || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS");
+        this.isArmor = name.endsWith("_helmet") || name.endsWith("_chestplate") || name.endsWith("_leggings") || name.endsWith("_boots");
 
-        this.isBanner = name.endsWith("BANNER");
+        this.isBanner = name.endsWith("banner");
     }
 
     public ItemBuilder(ItemStack itemStack, Player target) {
@@ -263,27 +273,27 @@ public class ItemBuilder {
             case ENCHANTED_BOOK -> this.isBook = true;
         }
 
-        this.itemStack.editMeta(itemMeta -> {
+        /*this.itemStack.editMeta(itemMeta -> {
             if (itemMeta.hasDisplayName()) this.displayName = itemMeta.getDisplayName();
 
             if (itemMeta.hasLore()) this.displayLore = itemMeta.getLore();
-        });
+        });*/
 
         String name = this.material.name();
 
-        this.isArmor = name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE") || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS");
+        this.isArmor = name.endsWith("_helmet") || name.endsWith("_chestplate") || name.endsWith("_leggings") || name.endsWith("_boots");
 
-        this.isBanner = name.endsWith("BANNER");
+        this.isBanner = name.endsWith("banner");
     }
 
     public ItemBuilder() {}
 
-    private String parse(String message) {
-        if (Support.placeholder_api.isEnabled()  && this.target != null) {
-            return MsgUtils.color(PlaceholderAPI.setPlaceholders(this.target, message));
+    private Component parse(String message) {
+        if (Support.placeholder_api.isEnabled() && this.target != null) {
+            return MiscUtil.parse(PlaceholderAPI.setPlaceholders(this.target, message));
         }
 
-        return MsgUtils.color(message);
+        return MiscUtil.parse(message);
     }
 
     /**
@@ -427,8 +437,8 @@ public class ItemBuilder {
                     }
                 }
 
-                itemMeta.setDisplayName(getUpdatedName());
-                itemMeta.setLore(getUpdatedLore());
+                itemMeta.displayName(getUpdatedName());
+                itemMeta.lore(getUpdatedLore());
 
                 if (!this.crateName.isBlank() || !this.crateName.isEmpty()) {
                     PersistentDataContainer container = itemMeta.getPersistentDataContainer();
@@ -480,7 +490,7 @@ public class ItemBuilder {
      *
      * @return The name with all the placeholders in it.
      */
-    public String getUpdatedName() {
+    public Component getUpdatedName() {
         String newName = this.displayName;
 
         for (String placeholder : this.namePlaceholders.keySet()) {
@@ -550,7 +560,7 @@ public class ItemBuilder {
             });
 
             this.itemStack = new ItemStack(Material.STONE);
-            this.itemStack.editMeta(itemMeta -> itemMeta.setDisplayName(parse("&cAn error has occurred with the item builder.")));
+            this.itemStack.editMeta(itemMeta -> itemMeta.displayName(MiscUtil.parse("<red>An error has occurred with the item builder.")));
 
             this.material = this.itemStack.getType();
 
@@ -695,8 +705,12 @@ public class ItemBuilder {
      * @return the ItemBuilder with an updated name.
      */
     public ItemBuilder setName(String itemName) {
-        if (itemName != null) {
+        if (!itemName.isBlank()) {
             this.displayName = itemName;
+        } else {
+            String material = WordUtils.capitalizeFully(this.material.getKey().getKey().replaceAll("_", " "));
+
+            this.displayName = material;
         }
 
         return this;
@@ -738,7 +752,7 @@ public class ItemBuilder {
     }
 
     /**
-     * Set the lore of the item in the builder. This will auto force color in all the lores that contains color code. (&a, &c, &7, etc...)
+     * Set the lore of the item in the builder. This will auto force color in all the lores that contains color code. (<green>, <red>, <gray>, etc...)
      *
      * @param lore the lore of the item in the builder.
      * @return the ItemBuilder with updated info.
@@ -746,17 +760,14 @@ public class ItemBuilder {
     public ItemBuilder setLore(List<String> lore) {
         if (lore != null) {
             this.displayLore.clear();
-
-            for (String line : lore) {
-                this.displayLore.add(MsgUtils.color(line));
-            }
+            this.displayLore.addAll(lore);
         }
 
         return this;
     }
 
     /**
-     * Set the lore of the item with papi support in the builder. This will auto force color in all the lores that contains color code. (&a, &c, &7, etc...)
+     * Set the lore of the item with papi support in the builder. This will auto force color in all the lores that contains color code. (<green>, <red>, <gray>, etc...)
      *
      * @param player the player viewing the button.
      * @param lore the lore of the item in the builder.
@@ -767,7 +778,7 @@ public class ItemBuilder {
             this.displayLore.clear();
 
             for (String line : lore) {
-                this.displayLore.add(PlaceholderAPI.setPlaceholders(player, MsgUtils.color(line)));
+                this.displayLore.add(PlaceholderAPI.setPlaceholders(player, line));
             }
         }
 
@@ -775,13 +786,13 @@ public class ItemBuilder {
     }
 
     /**
-     * Add a line to the current lore of the item. This will auto force color in the lore that contains color code. (&a, &c, &7, etc...)
+     * Add a line to the current lore of the item. This will auto force color in the lore that contains color code. (<green>, <red>, <gray>, etc...)
      *
-     * @param lore the new line you wish to add.
+     * @param line the new line you wish to add.
      * @return the ItemBuilder with updated info.
      */
-    public ItemBuilder addLore(String lore) {
-        if (lore != null) this.displayLore.add(MsgUtils.color(lore));
+    public ItemBuilder addLore(String line) {
+        if (line != null) this.displayLore.add(line);
 
         return this;
     }
@@ -816,8 +827,8 @@ public class ItemBuilder {
      *
      * @return the lore with all placeholders in it.
      */
-    public List<String> getUpdatedLore() {
-        List<String> newLore = new ArrayList<>();
+    public List<Component> getUpdatedLore() {
+        List<Component> newLore = new ArrayList<>();
 
         for (String item : this.displayLore) {
             for (String placeholder : this.lorePlaceholders.keySet()) {
@@ -886,7 +897,7 @@ public class ItemBuilder {
      * @param amount the amount of the item stack.
      * @return the ItemBuilder with an updated item count.
      */
-    public ItemBuilder setAmount(Integer amount) {
+    public ItemBuilder setAmount(int amount) {
         this.itemAmount = amount;
 
         return this;
@@ -1172,7 +1183,7 @@ public class ItemBuilder {
                 }
             }
         } catch (Exception exception) {
-            itemBuilder.setMaterial(Material.RED_TERRACOTTA).setName("&c&lERROR").setLore(Arrays.asList("&cThere is an error", "&cFor : &c" + (placeHolder != null ? placeHolder : "")));
+            itemBuilder.setMaterial(Material.RED_TERRACOTTA).setName("<bold><red>ERROR</bold>").setLore(Arrays.asList("<red>There is an error", "<red>For : <red>" + (placeHolder != null ? placeHolder : "")));
 
             CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
             plugin.getLogger().log(Level.WARNING, "An error has occurred with the item builder: ", exception);

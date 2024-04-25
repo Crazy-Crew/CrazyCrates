@@ -6,7 +6,6 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.concurrent.TimeUnit;
 
 public abstract class FoliaRunnable implements Runnable {
@@ -22,7 +21,6 @@ public abstract class FoliaRunnable implements Runnable {
     private @Nullable World world;
     private int chunkX;
     private int chunkZ;
-
 
     public FoliaRunnable(@NotNull AsyncScheduler scheduler, @Nullable TimeUnit timeUnit) {
         this.asyncScheduler = scheduler;
@@ -76,7 +74,7 @@ public abstract class FoliaRunnable implements Runnable {
             } else {
                 throw new UnsupportedOperationException("The region type is not supported.");
             }
-        } else if (this.asyncScheduler != null){
+        } else if (this.asyncScheduler != null) {
             return setupTask(this.asyncScheduler.runNow(plugin, scheduledTask -> this.run()));
         } else {
             throw new UnsupportedOperationException("The task type is not supported.");
@@ -181,6 +179,7 @@ public abstract class FoliaRunnable implements Runnable {
     @NotNull
     private ScheduledTask setupTask(final ScheduledTask task) {
         this.task = task;
+
         return task;
     }
 }

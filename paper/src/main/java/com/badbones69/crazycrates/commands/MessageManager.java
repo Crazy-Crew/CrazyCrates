@@ -12,6 +12,4 @@ public abstract class MessageManager {
 
     public abstract void send(@NotNull CommandSender sender, @NotNull String component);
 
-    public abstract String parse(@NotNull String message);
-
 }

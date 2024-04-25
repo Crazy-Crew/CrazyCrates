@@ -4,17 +4,17 @@ Crate:
   # Make sure to check out the wiki for anything not explained here.
   # https://docs.crazycrew.us/crazycrates/home
 
-  # See CosmicCrateExample.yml to see how the Cosmic CrateType works.
+  # See CosmicCrateExample.yml or CasinoExample.yml to see how the Cosmic/Casino CrateType works.
   CrateType: War
   # Name of the Inventory if a GUI crate.
-  CrateName: "&4War Crate"
+  CrateName: "<dark_red>War Crate"
   # The name of the inventory that will be in the preview GUI.
-  Preview-Name: "&4War Crate Preview"
+  Preview-Name: "<dark_red>War Crate Preview"
   # Starting amount of keys when the player 1st joins.
   StartingKeys: 0
   # The amount of keys required to use the crate.
   RequiredKeys: 0
-  #Max amount of crates that can be opened at once using /cc mass-open
+  # Max amount of crates that can be opened at once using /cc mass-open
   Max-Mass-Open: 10
   # If the crate shows in the /cc GUI.
   # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
@@ -24,7 +24,7 @@ Crate:
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
-  BroadCast: "%prefix%&6&l%player%&r &7is opening a &4&lWar Crate&7."
+  BroadCast: "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><dark_red>War Crate.</bold>"
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
@@ -41,7 +41,7 @@ Crate:
       toggle: true
       # The type of sound to use.
       # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: "BLOCK_LAVA_POP"
+      value: "BLOCK_NOTE_BLOCK_XYLOPHONE"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
@@ -71,20 +71,22 @@ Crate:
   # A default message if the prize doesn't have any Messages
   # i.e. Messages: [] or the value isn't there.
   Prize-Message:
-    - "&7You have won &c%reward% &7from &c%crate%."
+    - "<gray>You have won <red>%reward% <gray>from <red>%crate%."
+  # A default command if the prize doesn't have any commands
+  # i.e. Commands: [] or the value isn't there.
   Prize-Commands: []
   # Item the crate is in the GUI
   Item: "BEACON"
   # If the crate in the main /cc GUI is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
-  Name: "&4&lWar Crate"
+  Name: "<bold><dark_red>War Crate</bold>"
   # The lore of the item in the GUI.
   Lore:
-    - "&7This crate contains strange objects."
-    - "&7You have &6%keys% keys &7to open this crate with."
-    - "&7You have opened this crate: &6%crate_opened% times"
-    - "&7&l(&e&l!&7&l) Right click to view rewards."
+    - "<gray>This crate contains strange objects."
+    - "<gray>You have <gold>%keys% keys <gray>to open this crate with."
+    - "<gray>You have opened this crate: <gold>%crate_opened% times"
+    - "<gray>(<yellow>!<gray>) Right click to view rewards."
   Preview:
     # Turn on and off the preview for this crate.
     Toggle: true
@@ -99,30 +101,31 @@ Crate:
       Item: "GRAY_STAINED_GLASS_PANE"
   PhysicalKey:
     # Name of the Key.
-    Name: "&4&lWar Crate &b&lKey"
+    Name: "<bold><dark_red>War Crate Key</bold>"
     # Lore of the Key.
     Lore:
-      - "&7A special Key"
-      - "&7For a special Crate."
+      - "<gray>A special Key"
+      - "<gray>For a special Crate."
     # The item the key is.
     Item: "TRIPWIRE_HOOK"
     # Makes the key look enchanted.
     Glowing: true
-    # Settings for the holograms.
+  # Settings for the holograms.
   Hologram:
     # Toggle on and off the holograms for the crates.
     Toggle: true
     # The height of the hologram above the crate.
     Height: 1.5
-    # The distance the hologram can be seen. Only works with CMI and DecentHolograms
+    # The distance the hologram can be seen.
     Range: 8
-    # The message that will be displayed.
+    # The message that will be displayed above the crate.
+    # Note: MiniMessage or Color Codes being supported is depending on the 'holograms' plugin.
     Message:
-      - "&4&lWar Crate"
+      - "<bold><dark_red>War Crate</bold>"
   # All the prizes that can be gotten in the Crate.
   Prizes:
     1:
-      DisplayName: "&4&lWarlord's Helmet"
+      DisplayName: "<bold><dark_red>Warlord's Helmet</bold>"
       DisplayItem: "NETHERITE_HELMET"
       DisplayTrim:
         # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
@@ -131,17 +134,17 @@ Crate:
         Pattern: "SENTRY"
       DisplayAmount: 1
       Lore:
-        - "&7Win the warlord's helmet."
-        - "&6&lChance: &c&l40%"
+        - "<gray>Win the warlord's helmet."
+        - "<bold><gold>Chance: <red>40%</bold>"
       DisplayEnchantments:
         - "PROTECTION_ENVIRONMENTAL:5"
         - "DURABILITY:3"
       MaxRange: 100
       Chance: 40
       Items:
-        - "Item:NETHERITE_HELMET, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:&4&lWarlord's Helmet, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
+        - "Item:NETHERITE_HELMET, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:<bold><dark_red>Warlord's Helmet</bold>, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
     2:
-      DisplayName: "&4&lWarlord's Chestplate"
+      DisplayName: "<bold><dark_red>Warlord's Chestplate</bold>"
       DisplayItem: "NETHERITE_CHESTPLATE"
       DisplayTrim:
         # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
@@ -150,17 +153,17 @@ Crate:
         Pattern: "SENTRY"
       DisplayAmount: 1
       Lore:
-        - "&7Win the warlord's chestplate."
-        - "&6&lChance: &c&l40%"
+        - "<gray>Win the warlord's chestplate."
+        - "<bold><gold>Chance: <red>40%</bold>"
       DisplayEnchantments:
         - "PROTECTION_ENVIRONMENTAL:5"
         - "DURABILITY:3"
       MaxRange: 100
       Chance: 40
       Items:
-        - "Item:NETHERITE_CHESTPLATE, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:&4&lWarlord's Chestplate, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
+        - "Item:NETHERITE_CHESTPLATE, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:<bold><dark_red>Warlord's Chestplate</bold>, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
     3:
-      DisplayName: "&4&lWarlord's Leggings"
+      DisplayName: "<bold><dark_red>Warlord's Leggings</bold>"
       DisplayItem: "NETHERITE_LEGGINGS"
       DisplayTrim:
         # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
@@ -169,17 +172,17 @@ Crate:
         Pattern: "SENTRY"
       DisplayAmount: 1
       Lore:
-        - "&7Win the warlord's leggings."
-        - "&6&lChance: &c&l40%"
+        - "<gray>Win the warlord's leggings."
+        - "<bold><gold>Chance: <red>40%</bold>"
       DisplayEnchantments:
         - "PROTECTION_ENVIRONMENTAL:5"
         - "DURABILITY:3"
       MaxRange: 100
       Chance: 40
       Items:
-        - "Item:NETHERITE_LEGGINGS, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:&4&lWarlord's Leggings, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
+        - "Item:NETHERITE_LEGGINGS, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:<bold><dark_red>Warlord's Leggings</bold>, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
     4:
-      DisplayName: "&4&lWarlord's Boots"
+      DisplayName: "<bold><dark_red>Warlord's Boots"
       DisplayItem: "NETHERITE_BOOTS"
       DisplayTrim:
         # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
@@ -188,12 +191,12 @@ Crate:
         Pattern: "SENTRY"
       DisplayAmount: 1
       Lore:
-        - "&7Win the warlord's boots."
-        - "&6&lChance: &c&l40%"
+        - "<gray>Win the warlord's boots."
+        - "<bold><gold>Chance: <red>40%</bold>"
       DisplayEnchantments:
         - "PROTECTION_ENVIRONMENTAL:5"
         - "DURABILITY:3"
       MaxRange: 100
       Chance: 40
       Items:
-        - "Item:NETHERITE_BOOTS, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:&4&lWarlord's Boots, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
+        - "Item:NETHERITE_BOOTS, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:<bold><dark_red>Warlord's Boots</bold>, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
