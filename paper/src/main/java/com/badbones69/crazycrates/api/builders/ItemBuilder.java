@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.api.builders;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.support.SkullCreator;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.ryderbelserion.vital.enums.Support;
@@ -240,13 +239,7 @@ public class ItemBuilder {
             case ENCHANTED_BOOK -> this.isBook = true;
         }
 
-        /*this.itemStack.editMeta(itemMeta -> {
-            if (itemMeta.hasDisplayName()) this.displayName = itemMeta.getDisplayName();
-
-            if (itemMeta.hasLore()) this.displayLore = itemMeta.getLore();
-        });*/
-
-        String name = this.material.name();
+        String name = this.material.getKey().getKey();
 
         this.isArmor = name.endsWith("_helmet") || name.endsWith("_chestplate") || name.endsWith("_leggings") || name.endsWith("_boots");
 
@@ -273,13 +266,7 @@ public class ItemBuilder {
             case ENCHANTED_BOOK -> this.isBook = true;
         }
 
-        /*this.itemStack.editMeta(itemMeta -> {
-            if (itemMeta.hasDisplayName()) this.displayName = itemMeta.getDisplayName();
-
-            if (itemMeta.hasLore()) this.displayLore = itemMeta.getLore();
-        });*/
-
-        String name = this.material.name();
+        String name = this.material.getKey().getKey();
 
         this.isArmor = name.endsWith("_helmet") || name.endsWith("_chestplate") || name.endsWith("_leggings") || name.endsWith("_boots");
 
