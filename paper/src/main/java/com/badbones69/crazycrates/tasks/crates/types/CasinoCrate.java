@@ -109,7 +109,7 @@ public class CasinoCrate extends CrateBuilder {
 
         setDisplayItems(true);
 
-        runAtFixedRate(this.plugin, 1, 1);
+        runTaskTimer(this.plugin, 1, 1);
 
         getPlayer().openInventory(getInventory());
     }
