@@ -56,6 +56,24 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        String version = getServer().getMinecraftVersion();
+
+        if (!version.equals("1.20.5")) {
+            List.of(
+                    "You are not running 1.20.5, Please download Paper or Purpur 1.20.5",
+                    "Paper Downloads: https://papermc.io/downloads/paper",
+                    "Purpur Downloads: https://purpurmc.org/downloads",
+                    "",
+                    "We only support 1.20.5, If you need older versions. You can downgrade versions of the plugin.",
+                    "All our older versions can be found in the versions tab on Modrinth",
+                    "The older versions do not get updates or fixes."
+            ).forEach(getLogger()::severe);
+
+            getServer().getPluginManager().disablePlugin(this);
+
+            return;
+        }
+
         new VitalPaper(this);
 
         // Register permissions that we need.
