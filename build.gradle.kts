@@ -52,6 +52,10 @@ modrinth {
 
     autoAddDependsOn.set(false)
     detectLoaders.set(false)
+
+    dependencies {
+        optional.version("fancyholograms", "2.0.6")
+    }
 }
 
 hangarPublish {
@@ -77,6 +81,10 @@ hangarPublish {
 
                 dependencies {
                     hangar("PlaceholderAPI") {
+                        required = false
+                    }
+
+                    hangar("FancyHolograms") {
                         required = false
                     }
 

@@ -16,6 +16,10 @@ dependencies:
      load: BEFORE
      required: false
      join-classpath: true
+    FancyHolograms:
+      load: BEFORE
+      required: false
+      join-classpath: true
     PlaceholderAPI:
      load: BEFORE
      required: false

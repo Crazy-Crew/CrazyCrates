@@ -119,7 +119,7 @@ public class QuadCrateManager {
     public void startCrate() {
         // Check if it is on a block.
         if (this.spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
-            this.player.sendMessage(Messages.not_on_block.getMessage(player));
+            this.player.sendRichMessage(Messages.not_on_block.getMessage(player));
 
             this.crateManager.removePlayerFromOpeningList(player);
 
@@ -130,7 +130,7 @@ public class QuadCrateManager {
 
         // Check if schematic folder is empty.
         if (this.crateManager.getCrateSchematics().isEmpty()) {
-            this.player.sendMessage(Messages.no_schematics_found.getMessage(player));
+            this.player.sendRichMessage(Messages.no_schematics_found.getMessage(player));
 
             this.crateManager.removePlayerFromOpeningList(this.player);
 
@@ -150,7 +150,7 @@ public class QuadCrateManager {
 
         for (Location loc : structureLocations) {
             if (this.handler.getBlockBlackList().contains(loc.getBlock().getType())) {
-                this.player.sendMessage(Messages.needs_more_room.getMessage(player));
+                this.player.sendRichMessage(Messages.needs_more_room.getMessage(player));
 
                 this.crateManager.removePlayerFromOpeningList(this.player);
 
@@ -168,7 +168,7 @@ public class QuadCrateManager {
             if (entity instanceof Player) {
                 for (QuadCrateManager ongoingCrate : crateSessions) {
                     if (entity.getUniqueId() == ongoingCrate.player.getUniqueId()) {
-                        this.player.sendMessage(Messages.too_close_to_another_player.getMessage("{player}", entity.getName(), player));
+                        this.player.sendRichMessage(Messages.too_close_to_another_player.getMessage(player, "{player}", entity.getName()));
 
                         this.crateManager.removePlayerFromOpeningList(this.player);
 
@@ -258,7 +258,7 @@ public class QuadCrateManager {
             public void run() {
                 endCrate(true);
 
-                player.sendMessage(Messages.out_of_time.getMessage("{crate}", crate.getName(), player));
+                player.sendRichMessage(Messages.out_of_time.getMessage(player, "{crate}", crate.getName()));
 
                 crate.playSound(player, player.getLocation(), "stop-sound", "ENTITY_PLAYER_LEVELUP", SoundCategory.PLAYERS);
             }

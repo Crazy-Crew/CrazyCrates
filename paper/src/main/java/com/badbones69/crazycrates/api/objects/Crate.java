@@ -96,9 +96,9 @@ public class Crate {
      * @param file The crate file.
      */
     public Crate(String name, String previewName, CrateType crateType, ItemStack key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, List<String> prizeCommands, CrateHologram hologram) {
-        this.emptyKey = ItemBuilder.convertItemStack(key);
-        this.keyBuilder = ItemBuilder.convertItemStack(key).setCrateName(name);
-        this.keyName = keyName != null ? keyName : "Crate.PhysicalKey.Name is not in the " + name + ".yml";
+        this.emptyKey = ItemBuilder.convertItemStack(key).setName(keyName);
+        this.keyBuilder = ItemBuilder.convertItemStack(key).setName(keyName).setCrateName(name);
+        this.keyName = keyName;
 
         this.file = file;
         this.name = name;
@@ -117,7 +117,7 @@ public class Crate {
         this.previewTierBorderToggle = file != null && file.getBoolean("Crate.tier-preview.glass.toggle", false);
 
         setPreviewChestLines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
-        this.previewName = MsgUtils.sanitizeColor(previewName);
+        this.previewName = previewName;
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
 
@@ -125,14 +125,14 @@ public class Crate {
 
         for (int amount = this.preview.size(); amount > this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0); amount -= this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0), this.maxPage++) ;
 
-        this.crateInventoryName = file != null ? MsgUtils.sanitizeColor(file.getString("Crate.CrateName")) : "";
+        this.crateInventoryName = file != null ? file.getString("Crate.CrateName") : "";
 
-        String borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? MsgUtils.color(file.getString("Crate.Preview.Glass.Name")) : " ";
+        String borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? file.getString("Crate.Preview.Glass.Name") : " ";
         this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item", "GRAY_STAINED_GLASS_PANE"))
                 .hideItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
                 .setName(borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(borderName);
 
-        String previewTierBorderName = file != null ? MsgUtils.color(file.getString("Crate.tier-preview.glass.name", " ")) : " ";
+        String previewTierBorderName = file != null ? file.getString("Crate.tier-preview.glass.name", " ") : " ";
         this.previewTierBorderItem = file != null ? new ItemBuilder().setMaterial(file.getString("Crate.tier-preview.glass.item", "GRAY_STAINED_GLASS_PANE")).hideItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
                 .setName(previewTierBorderName) : new ItemBuilder().setMaterial(Material.AIR).setName(previewTierBorderName);
 

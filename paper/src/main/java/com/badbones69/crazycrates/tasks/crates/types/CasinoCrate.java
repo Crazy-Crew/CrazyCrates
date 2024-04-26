@@ -26,8 +26,6 @@ public class CasinoCrate extends CrateBuilder {
 
     public CasinoCrate(Crate crate, Player player, int size) {
         super(crate, player, size);
-
-        runAtFixedRate(this.plugin, 1, 1);
     }
 
     private int counter = 0;
@@ -110,6 +108,8 @@ public class CasinoCrate extends CrateBuilder {
         }
 
         setDisplayItems(true);
+
+        runAtFixedRate(this.plugin, 1, 1);
 
         getPlayer().openInventory(getInventory());
     }

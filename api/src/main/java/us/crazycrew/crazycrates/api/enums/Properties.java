@@ -259,6 +259,6 @@ public enum Properties {
                 .replaceAll("&f", "<white>")
                 .replaceAll("&k", "<obfuscated>").replaceAll("&l", "<bold>")
                 .replaceAll("&m", "<strikethrough>").replaceAll("&n", "<underline>")
-                .replaceAll("&o", "<italic>").replaceAll("&r", "<reset>");
+                .replaceAll("&o", "<italic>").replaceAll("<reset>", "<reset>");
     }
 }

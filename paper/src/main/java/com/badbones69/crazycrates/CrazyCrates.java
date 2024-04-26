@@ -104,9 +104,9 @@ public class CrazyCrates extends JavaPlugin {
             // Print dependency garbage
             for (Support value : Support.values()) {
                 if (value.isEnabled()) {
-                    getServer().getConsoleSender().sendMessage(MsgUtils.color(prefix + "&6&l" + value.getName() + " &a&lFOUND"));
+                    getServer().getConsoleSender().sendRichMessage(prefix + "<bold><gold>" + value.getName() + " <green>FOUND");
                 } else {
-                    getServer().getConsoleSender().sendMessage(MsgUtils.color(prefix + "&6&l" + value.getName() + " &c&lNOT FOUND"));
+                    getServer().getConsoleSender().sendRichMessage(prefix + "<bold><gold>" + value.getName() + " <red>NOT FOUND");
                 }
             }
         }

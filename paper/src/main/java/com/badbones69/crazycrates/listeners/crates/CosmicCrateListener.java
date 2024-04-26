@@ -3,6 +3,10 @@ package com.badbones69.crazycrates.listeners.crates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.ryderbelserion.vital.enums.Support;
+import com.ryderbelserion.vital.util.MiscUtil;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
@@ -299,7 +303,7 @@ public class CosmicCrateListener implements Listener {
                 placeholders.put("{key}", crate.getKeyName());
 
                 // Send no keys message.
-                player.sendMessage(Messages.no_keys.getMessage(placeholders, player));
+                player.sendRichMessage(Messages.no_keys.getMessage(player, placeholders));
 
                 // Remove opening stuff.
                 this.crateManager.removePlayerFromOpeningList(player);
@@ -318,9 +322,9 @@ public class CosmicCrateListener implements Listener {
                 return;
             }
 
-            boolean hasKey = this.crateManager.hasPlayerKeyType(player) && !this.userManager.takeKeys(1, uuid, crateName, type, this.crateManager.getHand(player));
+            boolean cannotTakeKey = this.crateManager.hasPlayerKeyType(player) && !this.userManager.takeKeys(1, uuid, crateName, type, this.crateManager.getHand(player));
 
-            if (hasKey) {
+            if (cannotTakeKey) {
                 // Notify player/console.
                 MiscUtils.failedToTakeKey(player, crateName);
 
@@ -345,12 +349,23 @@ public class CosmicCrateListener implements Listener {
 
             // Update the cosmic name.
             holder.title(shufflingName);
-
-            // Set the new title.
-            view.setTitle(MsgUtils.color(shufflingName));
+            holder.sendTitleChange();
 
             // Clear the top inventory.
             view.getTopInventory().clear();
+
+            FileConfiguration configuration = crate.getFile();
+
+            String broadcastMessage = configuration.getString("Crate.BroadCast", "");
+            boolean broadcastToggle = configuration.contains("Crate.OpeningBroadCast") && configuration.getBoolean("Crate.OpeningBroadCast");
+
+            if (broadcastToggle) {
+                if (!broadcastMessage.isBlank()) {
+                    String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
+
+                    this.plugin.getServer().broadcast(MiscUtil.parse(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                }
+            }
 
             this.crateManager.addRepeatingCrateTask(player, new TimerTask() {
                 int time = 0;
@@ -383,7 +398,7 @@ public class CosmicCrateListener implements Listener {
                                 cosmicCrateManager.removePickedPlayer(player);
 
                                 // Send refund notices.
-                                player.sendMessage(MsgUtils.getPrefix("&cAn issue has occurred and so a key refund was given."));
+                                player.sendRichMessage(MsgUtils.getPrefix("<red>An issue has occurred and so a key refund was given."));
                                 plugin.getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + crate.getName() + " crate and so they were issued a key refund.", exception);
 
                                 // Play a sound
@@ -434,8 +449,7 @@ public class CosmicCrateListener implements Listener {
         String rewardsName = cosmic.getCrate().getCrateInventoryName() + " - Prizes";
 
         cosmic.title(rewardsName);
-
-        view.setTitle(MsgUtils.color(rewardsName));
+        cosmic.sendTitleChange();
 
         view.getTopInventory().clear();
 

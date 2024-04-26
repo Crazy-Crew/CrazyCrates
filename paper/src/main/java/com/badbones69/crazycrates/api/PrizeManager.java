@@ -3,6 +3,8 @@ package com.badbones69.crazycrates.api;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.enums.Support;
+import com.ryderbelserion.vital.util.MiscUtil;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.apache.commons.lang.WordUtils;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
@@ -43,32 +45,36 @@ public class PrizeManager {
 
         prize = prize.hasPermission(player) ? prize.getAlternativePrize() : prize;
 
-        for (ItemStack item : prize.getItems()) {
-            if (item == null) {
-                Map<String, String> placeholders = new HashMap<>();
+        if (!prize.getItems().isEmpty()) {
+            for (ItemStack item : prize.getItems()) {
+                if (item == null) {
+                    Map<String, String> placeholders = new HashMap<>();
 
-                placeholders.put("{crate}", prize.getCrateName());
-                placeholders.put("{prize}", prize.getPrizeName());
+                    placeholders.put("{crate}", prize.getCrateName());
+                    placeholders.put("{prize}", prize.getPrizeName());
 
-                player.sendMessage(Messages.prize_error.getMessage(placeholders, player));
+                    player.sendRichMessage(Messages.prize_error.getMessage(player, placeholders));
 
-                continue;
-            }
+                    continue;
+                }
 
-            if (!MiscUtils.isInventoryFull(player)) {
-                player.getInventory().addItem(item);
-            } else {
-                player.getWorld().dropItemNaturally(player.getLocation(), item);
+                if (!MiscUtils.isInventoryFull(player)) {
+                    player.getInventory().addItem(item);
+                } else {
+                    player.getWorld().dropItemNaturally(player.getLocation(), item);
+                }
             }
         }
 
-        for (ItemBuilder item : prize.getItemBuilders()) {
-            ItemBuilder clone = new ItemBuilder(item).setTarget(player);
+        if (!prize.getItemBuilders().isEmpty()) {
+            for (ItemBuilder item : prize.getItemBuilders()) {
+                ItemBuilder clone = new ItemBuilder(item).setTarget(player);
 
-            if (!MiscUtils.isInventoryFull(player)) {
-                player.getInventory().addItem(clone.build());
-            } else {
-                player.getWorld().dropItemNaturally(player.getLocation(), clone.build());
+                if (!MiscUtils.isInventoryFull(player)) {
+                    player.getInventory().addItem(clone.build());
+                } else {
+                    player.getWorld().dropItemNaturally(player.getLocation(), clone.build());
+                }
             }
         }
 
@@ -126,24 +132,24 @@ public class PrizeManager {
 
         String display = prize.getDisplayItemBuilder().getName();
 
-        String name = display == null || display.isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " "))) : display;
+        String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
 
         MiscUtils.sendCommand(command
                 .replaceAll("%player%", quoteReplacement(player.getName()))
                 .replaceAll("%reward%", quoteReplacement(name))
-                .replaceAll("%reward_stripped%", quoteReplacement(MsgUtils.stripColor(name)))
+                .replaceAll("%reward_stripped%", quoteReplacement(PlainTextComponentSerializer.plainText().serialize(MiscUtil.parse(name))))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
     }
 
     private static void sendMessage(Player player, Prize prize, Crate crate, String message) {
         String display = prize.getDisplayItemBuilder().getName();
 
-        String name = display == null || display.isEmpty() ? MsgUtils.color(WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " "))) : display;
+        String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
 
         String defaultMessage = message
                 .replaceAll("%player%", quoteReplacement(player.getName()))
                 .replaceAll("%reward%", quoteReplacement(name))
-                .replaceAll("%reward_stripped%", quoteReplacement(MsgUtils.stripColor(name)))
+                .replaceAll("%reward_stripped%", quoteReplacement(PlainTextComponentSerializer.plainText().serialize(MiscUtil.parse(name))))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName()));
 
         MsgUtils.sendMessage(player, Support.placeholder_api.isEnabled()  ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
@@ -164,7 +170,7 @@ public class PrizeManager {
 
             plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
         } else {
-            player.sendMessage(MsgUtils.getPrefix("&cNo prize was found, please report this issue if you think this is an error."));
+            player.sendRichMessage(MsgUtils.getPrefix("<red>No prize was found, please report this issue if you think this is an error."));
         }
     }
 

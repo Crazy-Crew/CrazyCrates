@@ -198,14 +198,14 @@ public class CrateMainMenu extends InventoryBuilder {
                     this.inventoryManager.addViewer(player);
                     this.inventoryManager.openNewCratePreview(player, crate);
                 } else {
-                    player.sendMessage(Messages.preview_disabled.getMessage("{crate}", crate.getName(), player));
+                    player.sendRichMessage(Messages.preview_disabled.getMessage(player, "{crate}", crate.getName()));
                 }
 
                 return;
             }
 
             if (this.crateManager.isInOpeningList(player)) {
-                player.sendMessage(Messages.already_opening_crate.getMessage("{crate}", crate.getName(), player));
+                player.sendRichMessage(Messages.already_opening_crate.getMessage(player, "{crate}", crate.getName()));
 
                 return;
             }
@@ -227,21 +227,21 @@ public class CrateMainMenu extends InventoryBuilder {
                     player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
                 }
 
-                player.sendMessage(Messages.no_virtual_key.getMessage("{crate}", crate.getName(), player));
+                player.sendRichMessage(Messages.no_virtual_key.getMessage(player, "{crate}", crate.getName()));
 
                 return;
             }
 
             for (String world : this.config.getProperty(ConfigKeys.disabled_worlds)) {
                 if (world.equalsIgnoreCase(player.getWorld().getName())) {
-                    player.sendMessage(Messages.world_disabled.getMessage("{world}", player.getWorld().getName(), player));
+                    player.sendRichMessage(Messages.world_disabled.getMessage(player, "{world}", player.getWorld().getName()));
 
                     return;
                 }
             }
 
             if (MiscUtils.isInventoryFull(player)) {
-                player.sendMessage(Messages.inventory_not_empty.getMessage("{crate}", crate.getName(), player));
+                player.sendRichMessage(Messages.inventory_not_empty.getMessage(player, "{crate}", crate.getName()));
 
                 return;
             }

@@ -313,13 +313,13 @@ public class Prize {
             return builder;
         } catch (Exception exception) {
             List<String> list = new ArrayList<>() {{
-               add("&cThere was an error with one of your prizes!");
-               add("&cThe reward in question is labeled: &e" + section.getName() + " &cin crate: &e" + crateName);
-               add("&cName of the reward is " + section.getString("DisplayName"));
-               add("&cIf you are confused, Stop by our discord for support!");
+               add("<red>There was an error with one of your prizes!");
+               add("<red>The reward in question is labeled: <yellow>" + section.getName() + " <red>in crate: <yellow>" + crateName);
+               add("<red>Name of the reward is " + section.getString("DisplayName"));
+               add("<red>If you are confused, Stop by our discord for support!");
             }};
 
-            return new ItemBuilder(new ItemStack(Material.RED_TERRACOTTA)).setName("&c&lERROR").setLore(list);
+            return new ItemBuilder(new ItemStack(Material.RED_TERRACOTTA)).setName("<bold><red>ERROR</bold>").setLore(list);
         }
     }
 }

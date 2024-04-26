@@ -171,21 +171,20 @@ public class MiscUtils {
         ).forEach(plugin.getLogger()::warning);
 
         List.of(
-                "&cAn issue has occurred when trying to take a key.",
-                "&cA list of potential reasons",
+                "<red>An issue has occurred when trying to take a key.",
+                "<red>A list of potential reasons",
                 "",
-                " &e-> &dNot enough keys.",
-                " &e-> &dKey is in off hand."
-        ).forEach(line -> player.sendMessage(MsgUtils.getPrefix(line)));
+                " <yellow>-> <light_purple>Not enough keys.",
+                " <yellow>-> <light_purple>Key is in off hand."
+        ).forEach(line -> player.sendRichMessage(MsgUtils.getPrefix(line)));
     }
 
     public static long pickNumber(long min, long max) {
         max++;
 
         try {
-            // new Random() does not have a nextLong(long bound) method.
             return min + ThreadLocalRandom.current().nextLong(max - min);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException exception) {
             return min;
         }
     }
