@@ -43,9 +43,9 @@ tasks {
         minecraftVersion("1.20.5")
     }
 
-    assemble {
-        dependsOn(reobfJar)
+    paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
+    assemble {
         doLast {
             copy {
                 from(reobfJar.get())
