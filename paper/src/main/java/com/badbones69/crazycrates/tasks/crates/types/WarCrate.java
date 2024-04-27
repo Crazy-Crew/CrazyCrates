@@ -99,7 +99,7 @@ public class WarCrate extends CrateBuilder {
         if (this.colorCodes.isEmpty()) getColorCode();
 
         ItemBuilder builder = MiscUtils.getRandomPaneColor();
-        builder.setName("<" + this.colorCodes.get(builder.build()) + "><bold>???</bold>");
+        builder.setDisplayName("<" + this.colorCodes.get(builder.build()) + "><bold>???</bold>");
         ItemStack item = builder.build();
 
         for (int index = 0; index < 9; index++) {

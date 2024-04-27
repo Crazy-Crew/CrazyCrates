@@ -29,6 +29,7 @@ import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
 import java.util.List;
+import java.util.UUID;
 
 public class CrateMainMenu extends InventoryBuilder {
 
@@ -51,7 +52,7 @@ public class CrateMainMenu extends InventoryBuilder {
             String name = this.config.getProperty(ConfigKeys.filler_name);
             List<String> lore = this.config.getProperty(ConfigKeys.filler_lore);
 
-            ItemStack item = new ItemBuilder().setMaterial(id).setName(name).setLore(lore).setTarget(getPlayer()).build();
+            ItemStack item = new ItemBuilder().setMaterial(id).setDisplayName(name).setDisplayLore(lore).setTarget(getPlayer()).build();
 
             for (int i = 0; i < getSize(); i++) {
                 inventory.setItem(i, item.clone());
@@ -77,7 +78,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
                             option = getCrates(option);
 
-                            item.setName(option.replaceAll("\\{player}", getPlayer().getName()));
+                            item.setDisplayName(option.replaceAll("\\{player}", getPlayer().getName()));
                         }
 
                         if (option.contains("lore:")) {
@@ -87,13 +88,14 @@ public class CrateMainMenu extends InventoryBuilder {
                             for (String line : lore) {
                                 option = getCrates(option);
 
-                                item.addLore(option.replaceAll("\\{player}", getPlayer().getName()));
+                                item.addDisplayLore(option.replaceAll("\\{player}", getPlayer().getName()));
                             }
                         }
 
-                        if (option.contains("glowing:")) item.setGlow(Boolean.parseBoolean(option.replace("glowing:", "")));
+                        if (option.contains("glowing:")) item.setGlowing(Boolean.parseBoolean(option.replace("glowing:", "")));
 
-                        if (option.contains("player:")) item.setPlayerName(option.replaceAll("\\{player}", getPlayer().getName()));
+                        //todo() update this to support HeadDatabase.
+                        //if (option.contains("player:")) item.setUUID(UUID.fromString(option.replaceAll("\\{player}", getPlayer().getUniqueId().toString())));
 
                         if (option.contains("slot:")) slot = Integer.parseInt(option.replace("slot:", ""));
 
@@ -126,13 +128,13 @@ public class CrateMainMenu extends InventoryBuilder {
                     String name = file.getString(path + "Name", path + "Name is missing in " + crate.getName() + ".yml");
 
                     inventory.setItem(slot, new ItemBuilder()
+                            .setCrateName(crate.getName())
                             .setTarget(getPlayer())
                             .setMaterial(file.getString(path + "Item", "CHEST"))
-                            .setName(name)
-                            .setLore(file.getStringList(path + "Lore"))
-                            .setCrateName(crate.getName())
-                            .setPlayerName(file.getString(path + "Player"))
-                            .setGlow(file.getBoolean(path + "Glowing"))
+                            .setDisplayName(name)
+                            .setDisplayLore(file.getStringList(path + "Lore"))
+                            .setUUID(UUID.fromString(file.getString(path + "Player")))
+                            .setGlowing(file.getBoolean(path + "Glowing"))
                             .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(getPlayer().getUniqueId(), crate.getName())))
                             .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(getPlayer().getUniqueId(), crate.getName())))
                             .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(getPlayer().getUniqueId(), crate.getName())))

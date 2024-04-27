@@ -275,7 +275,7 @@ public class MiscUtils {
                 Material.RED_STAINED_GLASS_PANE
         );
 
-        return new ItemBuilder(new ItemStack(panes.get(ThreadLocalRandom.current().nextInt(panes.size()))));
+        return new ItemBuilder().setMaterial(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
     }
 
     /**

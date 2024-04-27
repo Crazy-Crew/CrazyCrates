@@ -56,12 +56,6 @@ tasks {
         }
     }
 
-    shadowJar {
-        listOf(
-            "com.ryderbelserion.vital"
-        ).forEach { relocate(it, "libs.$it") }
-    }
-
     processResources {
         inputs.properties("name" to rootProject.name)
         inputs.properties("version" to project.version)

@@ -32,7 +32,6 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
@@ -92,7 +91,7 @@ public class QuadCrateListener implements Listener {
                 ItemBuilder itemBuilder = ItemBuilder.convertItemStack(display);
 
                 // Makes sure items do not merge.
-                itemBuilder.addLore(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE) + "");
+                itemBuilder.addDisplayLore(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE) + "");
 
                 // Builds the item.
                 ItemStack item = itemBuilder.build();

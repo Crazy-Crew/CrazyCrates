@@ -6,14 +6,10 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.trim.TrimMaterial;
-import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +31,7 @@ public class Prize {
     private int chance = 0;
 
     private List<Tier> tiers = new ArrayList<>();
-    private final List<ItemBuilder> builders;
+    private final List<ItemBuilder> builders = new ArrayList<>();
     private Prize alternativePrize;
 
     private final ConfigurationSection section;
@@ -55,7 +51,8 @@ public class Prize {
             }
         }
 
-        this.builders = ItemBuilder.convertStringList(this.section.getStringList("Items"), this.prizeNumber);
+        //todo() update this.
+        //this.builders = ItemBuilder.convertStringList(this.section.getStringList("Items"), this.prizeNumber);
 
         this.tiers = tierPrizes;
 
@@ -87,7 +84,8 @@ public class Prize {
     public Prize(String prizeName, String prizeNumber, ConfigurationSection section) {
         this.prizeName = prizeName;
 
-        this.builders = ItemBuilder.convertStringList(section.getStringList("Items"), prizeNumber);
+        //todo() update this.
+        //this.builders = ItemBuilder.convertStringList(section.getStringList("Items"), prizeNumber);
 
         this.messages = section.getStringList("Messages");
         this.commands = section.getStringList("Commands");
@@ -249,27 +247,22 @@ public class Prize {
 
             builder.setMaterial(material)
                     .setAmount(amount)
-                    .setName(this.prizeName)
-                    .setLore(lore)
-                    .setGlow(isGlowing)
+                    .setDisplayName(this.prizeName)
+                    .setDisplayLore(lore)
+                    .setGlowing(isGlowing)
                     .setUnbreakable(isUnbreakable)
                     .hideItemFlags(hideItemFlags)
-                    .addItemFlags(itemFlags)
-                    .addPatterns(patterns)
-                    .setPlayerName(playerName);
+                    .addItemFlags(itemFlags);
+                    //.addPatterns(patterns)
+                    //.setPlayerName(playerName);
 
-            NamespacedKey cratePrize = PersistentKeys.crate_prize.getNamespacedKey();
-
-            ItemMeta itemMeta = builder.getItemMeta();
-
-            itemMeta.getPersistentDataContainer().set(cratePrize, PersistentDataType.STRING, this.section.getName());
-
-            builder.setItemMeta(itemMeta);
+            builder.setString(PersistentKeys.crate_prize.getNamespacedKey(), this.section.getName());
 
             int displayDamage = this.section.getInt("DisplayDamage", 0);
 
-            builder.setDamage(displayDamage);
+            builder.setItemDamage(displayDamage);
 
+            //todo() update this.
             if (this.section.contains("DisplayTrim.Pattern")) {
                 NamespacedKey key = null;
 
@@ -280,11 +273,12 @@ public class Prize {
                 }
 
                 if (key != null) {
-                    TrimPattern registry = Registry.TRIM_PATTERN.get(key);
-                    builder.setTrimPattern(registry);
+                    //TrimPattern registry = Registry.TRIM_PATTERN.get(key);
+                    //builder.setTrimPattern(registry);
                 }
             }
 
+            //todo() update this.
             if (this.section.contains("DisplayTrim.Material")) {
                 NamespacedKey key = null;
 
@@ -295,17 +289,18 @@ public class Prize {
                 }
 
                 if (key != null) {
-                    TrimMaterial registry = Registry.TRIM_MATERIAL.get(key);
-                    builder.setTrimMaterial(registry);
+                    //TrimMaterial registry = Registry.TRIM_MATERIAL.get(key);
+                    //builder.setTrimMaterial(registry);
                 }
             }
 
+            //todo() update this.
             if (this.section.contains("DisplayEnchantments")) {
                 for (String name : this.section.getStringList("DisplayEnchantments")) {
                     Enchantment enchantment = MiscUtils.getEnchantment(name.split(":")[0]);
 
                     if (enchantment != null) {
-                        builder.addEnchantment(enchantment, Integer.parseInt(name.split(":")[1]), true);
+                        //builder.addEnchantment(enchantment, Integer.parseInt(name.split(":")[1]), true);
                     }
                 }
             }
@@ -319,7 +314,7 @@ public class Prize {
                add("<red>If you are confused, Stop by our discord for support!");
             }};
 
-            return new ItemBuilder(new ItemStack(Material.RED_TERRACOTTA)).setName("<bold><red>ERROR</bold>").setLore(list);
+            return new ItemBuilder().setMaterial(Material.RED_TERRACOTTA).setDisplayName("<bold><red>ERROR</bold>").setDisplayLore(list);
         }
     }
 }

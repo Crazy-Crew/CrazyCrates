@@ -1,12 +1,12 @@
 package com.badbones69.crazycrates.api.builders.types;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.items.ParentBuilder;
 import com.ryderbelserion.vital.util.MiscUtil;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -36,7 +36,7 @@ public class CrateAdminMenu extends InventoryBuilder {
     public InventoryBuilder build() {
         Inventory inventory = getInventory();
 
-        inventory.setItem(49, new ParentBuilder().setMaterial(Material.CHEST)
+        inventory.setItem(49, new ItemBuilder().setMaterial(Material.CHEST)
                 .setDisplayName("<red>What is this menu?")
                 .addDisplayLore("")
                 .addDisplayLore("<light_purple>A cheat cheat menu of all your available keys.")

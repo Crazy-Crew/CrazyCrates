@@ -32,7 +32,7 @@ import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.api.utils.MsgUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,7 +40,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 public class Crate {
     
@@ -96,8 +95,10 @@ public class Crate {
      * @param file The crate file.
      */
     public Crate(String name, String previewName, CrateType crateType, ItemStack key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, List<String> prizeCommands, CrateHologram hologram) {
-        this.emptyKey = ItemBuilder.convertItemStack(key).setName(keyName);
-        this.keyBuilder = ItemBuilder.convertItemStack(key).setName(keyName).setCrateName(name);
+        //todo() update how keys are built i.e what you can do with them, right now it's pretty shit.
+        this.emptyKey = ItemBuilder.convertItemStack(key).setDisplayName(keyName);
+        this.keyBuilder = ItemBuilder.convertItemStack(key).setDisplayName(keyName).setCrateName(name);
+
         this.keyName = keyName;
 
         this.file = file;
@@ -130,11 +131,11 @@ public class Crate {
         String borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? file.getString("Crate.Preview.Glass.Name") : " ";
         this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item", "GRAY_STAINED_GLASS_PANE"))
                 .hideItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
-                .setName(borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(borderName);
+                .setDisplayName(borderName) : new ItemBuilder().setMaterial(Material.AIR).setDisplayName(borderName);
 
         String previewTierBorderName = file != null ? file.getString("Crate.tier-preview.glass.name", " ") : " ";
         this.previewTierBorderItem = file != null ? new ItemBuilder().setMaterial(file.getString("Crate.tier-preview.glass.item", "GRAY_STAINED_GLASS_PANE")).hideItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
-                .setName(previewTierBorderName) : new ItemBuilder().setMaterial(Material.AIR).setName(previewTierBorderName);
+                .setDisplayName(previewTierBorderName) : new ItemBuilder().setMaterial(Material.AIR).setDisplayName(previewTierBorderName);
 
         setTierPreviewRows(file != null ? file.getInt("Crate.tier-preview.rows", 5) : 5);
         this.previewTierMaxSlots = this.previewTierCrateRows * 9;

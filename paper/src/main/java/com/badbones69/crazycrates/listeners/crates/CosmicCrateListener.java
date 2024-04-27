@@ -246,10 +246,7 @@ public class CosmicCrateListener implements Listener {
                         .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
 
                 // Set the tier name from before to the pdc if it exists.
-                ItemMeta meta = cosmicCrateManager.setTier(builder.getItemMeta(), tierName);
-
-                // Set the item meta.
-                builder.setItemMeta(meta);
+                cosmicCrateManager.setTier(builder, tierName);
 
                 // Overwrite the current item.
                 event.setCurrentItem(builder.build());
@@ -270,10 +267,7 @@ public class CosmicCrateListener implements Listener {
                     .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
 
             // Set the tier name from before to the pdc if it exists.
-            ItemMeta meta = cosmicCrateManager.setTier(builder.getItemMeta(), tierName);
-
-            // Set the item meta.
-            builder.setItemMeta(meta);
+            cosmicCrateManager.setTier(builder, tierName);
 
             // Overwrite the current item.
             event.setCurrentItem(builder.build());

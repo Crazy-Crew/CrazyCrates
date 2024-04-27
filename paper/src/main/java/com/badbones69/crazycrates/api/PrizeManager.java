@@ -130,29 +130,31 @@ public class PrizeManager {
 
         if (Support.placeholder_api.isEnabled() ) command = PlaceholderAPI.setPlaceholders(player, command);
 
-        String display = prize.getDisplayItemBuilder().getName();
+        //todo() re-work this.
+        //String display = prize.getDisplayItemBuilder().getName();
 
-        String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
+        //String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
 
-        MiscUtils.sendCommand(command
-                .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%reward%", quoteReplacement(name))
-                .replaceAll("%reward_stripped%", quoteReplacement(PlainTextComponentSerializer.plainText().serialize(MiscUtil.parse(name))))
-                .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
+        //MiscUtils.sendCommand(command
+        //        .replaceAll("%player%", quoteReplacement(player.getName()))
+        //        .replaceAll("%reward%", quoteReplacement(name))
+        //        .replaceAll("%reward_stripped%", quoteReplacement(PlainTextComponentSerializer.plainText().serialize(MiscUtil.parse(name))))
+        //        .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
     }
 
     private static void sendMessage(Player player, Prize prize, Crate crate, String message) {
-        String display = prize.getDisplayItemBuilder().getName();
+        //todo() re-work this.
+        //String display = prize.getDisplayItemBuilder().getName();
 
-        String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
+        //String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
 
-        String defaultMessage = message
-                .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%reward%", quoteReplacement(name))
-                .replaceAll("%reward_stripped%", quoteReplacement(PlainTextComponentSerializer.plainText().serialize(MiscUtil.parse(name))))
-                .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName()));
+        //String defaultMessage = message
+        //        .replaceAll("%player%", quoteReplacement(player.getName()))
+        //        .replaceAll("%reward%", quoteReplacement(name))
+        //        .replaceAll("%reward_stripped%", quoteReplacement(PlainTextComponentSerializer.plainText().serialize(MiscUtil.parse(name))))
+        //        .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName()));
 
-        MsgUtils.sendMessage(player, Support.placeholder_api.isEnabled()  ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
+        //MsgUtils.sendMessage(player, Support.placeholder_api.isEnabled()  ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
     }
 
     /**

@@ -81,22 +81,7 @@ public class Tier {
      * @return the tier item shown in the preview.
      */
     public ItemStack getTierItem(Player target) {
-        this.item.setTarget(target);
-
-        this.item.setName(this.coloredName);
-
-        this.item.setLore(this.lore);
-
-        ItemMeta itemMeta = this.item.getItemMeta();
-
-        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-
-        PersistentKeys key = PersistentKeys.preview_tier_button;
-
-        //noinspection unchecked
-        container.set(key.getNamespacedKey(), key.getType(), this.name);
-
-        this.item.setItemMeta(itemMeta);
+        this.item.setTarget(target).setDisplayName(this.coloredName).setDisplayLore(this.lore).setString(PersistentKeys.preview_tier_button.getNamespacedKey(), this.name);
 
         return this.item.build();
     }

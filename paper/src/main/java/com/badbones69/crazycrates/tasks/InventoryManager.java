@@ -6,8 +6,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
@@ -18,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@SuppressWarnings("unchecked")
 public class InventoryManager {
 
     @NotNull
@@ -31,48 +28,21 @@ public class InventoryManager {
     public void loadButtons() {
         this.menuButton = new ItemBuilder()
                 .setMaterial(this.config.getProperty(ConfigKeys.menu_button_item))
-                .setName(this.config.getProperty(ConfigKeys.menu_button_name))
-                .setLore(this.config.getProperty(ConfigKeys.menu_button_lore));
-
-        ItemMeta menuMeta = this.menuButton.getItemMeta();
-
-        PersistentDataContainer menuContainer = menuMeta.getPersistentDataContainer();
-
-        PersistentKeys main_menu_button = PersistentKeys.main_menu_button;
-
-        menuContainer.set(main_menu_button.getNamespacedKey(), main_menu_button.getType(), "none");
-
-        this.menuButton.setItemMeta(menuMeta);
+                .setDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
+                .setDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore))
+                .setString(PersistentKeys.main_menu_button.getNamespacedKey(), "none");
 
         this.nextButton = new ItemBuilder()
                 .setMaterial(this.config.getProperty(ConfigKeys.next_button_item))
-                .setName(this.config.getProperty(ConfigKeys.next_button_name))
-                .setLore(this.config.getProperty(ConfigKeys.next_button_lore));
-
-        ItemMeta nextMeta = this.nextButton.getItemMeta();
-
-        PersistentDataContainer nextContainer = nextMeta.getPersistentDataContainer();
-
-        PersistentKeys next_button = PersistentKeys.next_button;
-
-        nextContainer.set(next_button.getNamespacedKey(), next_button.getType(), "none");
-
-        this.nextButton.setItemMeta(nextMeta);
+                .setDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
+                .setDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore))
+                .setString(PersistentKeys.next_button.getNamespacedKey(), "none");
 
         this.backButton = new ItemBuilder()
                 .setMaterial(this.config.getProperty(ConfigKeys.back_button_item))
-                .setName(this.config.getProperty(ConfigKeys.back_button_name))
-                .setLore(this.config.getProperty(ConfigKeys.back_button_lore));
-
-        ItemMeta backMeta = this.backButton.getItemMeta();
-
-        PersistentDataContainer backContainer = backMeta.getPersistentDataContainer();
-
-        PersistentKeys back_button = PersistentKeys.back_button;
-
-        backContainer.set(back_button.getNamespacedKey(), back_button.getType(), "none");
-
-        this.backButton.setItemMeta(backMeta);
+                .setDisplayName(this.config.getProperty(ConfigKeys.back_button_name))
+                .setDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore))
+                .setString(PersistentKeys.back_button.getNamespacedKey(), "none");
     }
 
     public ItemStack getMenuButton(Player player) {

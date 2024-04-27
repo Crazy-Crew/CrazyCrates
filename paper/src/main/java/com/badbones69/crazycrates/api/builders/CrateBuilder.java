@@ -302,7 +302,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param lore lore of item.
      */
     public void setItem(int slot, Material material, String name, List<String> lore) {
-        ItemBuilder builder = new ItemBuilder(new ItemStack(material)).setName(name).setLore(lore).setTarget(getPlayer());
+        ItemBuilder builder = new ItemBuilder().setMaterial(material).setTarget(getPlayer()).setDisplayName(name).setDisplayLore(lore);
 
         getInventory().setItem(slot, builder.build());
     }
@@ -315,7 +315,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param name name of item.
      */
     public void setItem(int slot, Material material, String name) {
-        ItemBuilder builder = new ItemBuilder(new ItemStack(material)).setName(name).setTarget(getPlayer());
+        ItemBuilder builder = new ItemBuilder().setMaterial(material).setTarget(getPlayer()).setDisplayName(name);
 
         getInventory().setItem(slot, builder.build());
     }
@@ -330,7 +330,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
     }
 
     public ItemStack getRandomGlassPane() {
-        return MiscUtils.getRandomPaneColor().setName(" ").build();
+        return MiscUtils.getRandomPaneColor().setDisplayName(" ").build();
     }
 
     /**

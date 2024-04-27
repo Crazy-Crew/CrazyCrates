@@ -40,35 +40,19 @@ public class CosmicCrateManager extends AbstractCrateManager {
 
         this.mysteryCrate = new ItemBuilder()
         .setMaterial(file.getString(path + "Mystery-Crate.Item", "CHEST"))
-        .setName(file.getString(path + "Mystery-Crate.Name", "<bold><white>???</bold>"))
+        .setDisplayName(file.getString(path + "Mystery-Crate.Name", "<bold><white>???</bold>"))
         .hideItemFlags(file.getBoolean(path + "Mystery-Crate.HideItemFlags", false))
-        .setLore(file.contains(path + "Mystery-Crate.Lore") ? file.getStringList(path + "Mystery-Crate.Lore") : Collections.singletonList("<gray>You may choose 4 crates."));
+        .setDisplayLore(file.contains(path + "Mystery-Crate.Lore") ? file.getStringList(path + "Mystery-Crate.Lore") : Collections.singletonList("<gray>You may choose 4 crates."));
 
-        ItemMeta mysteryItemMeta = this.mysteryCrate.getItemMeta();
-
-        PersistentDataContainer mysteryData = mysteryItemMeta.getPersistentDataContainer();
-
-        PersistentKeys mysteryCrate = PersistentKeys.cosmic_mystery_crate;
-
-        mysteryData.set(mysteryCrate.getNamespacedKey(), mysteryCrate.getType(), 1);
-
-        this.mysteryCrate.setItemMeta(mysteryItemMeta);
+        this.mysteryCrate.setInteger(PersistentKeys.cosmic_mystery_crate.getNamespacedKey(), 1);
 
         this.pickedCrate = new ItemBuilder()
         .setMaterial(file.getString(path + "Picked-Crate.Item", Material.GLASS_PANE.toString()))
-        .setName(file.getString(path + "Picked-Crate.Name", "<bold><white>???</white>"))
+        .setDisplayName(file.getString(path + "Picked-Crate.Name", "<bold><white>???</white>"))
         .hideItemFlags(file.getBoolean(path + "Picked-Crate.HideItemFlags", false))
-        .setLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("<gray>You have chosen #%slot%."));
+        .setDisplayLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("<gray>You have chosen #%slot%."));
 
-        ItemMeta pickedCrateMeta = this.pickedCrate.getItemMeta();
-
-        PersistentDataContainer pickedCrateData = pickedCrateMeta.getPersistentDataContainer();
-
-        PersistentKeys pickedCrate = PersistentKeys.cosmic_picked_crate;
-
-        pickedCrateData.set(pickedCrate.getNamespacedKey(), pickedCrate.getType(), 1);
-
-        this.pickedCrate.setItemMeta(pickedCrateMeta);
+        this.pickedCrate.setInteger(PersistentKeys.cosmic_picked_crate.getNamespacedKey(), 1);
     }
 
     /**
@@ -117,10 +101,8 @@ public class CosmicCrateManager extends AbstractCrateManager {
         return PrizeManager.getTier(crate);
     }
 
-    public ItemMeta setTier(ItemMeta itemMeta, String name) {
-        itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING, name);
-
-        return itemMeta;
+    public void setTier(ItemBuilder itemBuilder, String name) {
+        itemBuilder.setString(PersistentKeys.crate_tier.getNamespacedKey(), name);
     }
 
     /**

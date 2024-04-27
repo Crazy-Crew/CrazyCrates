@@ -1,447 +1,78 @@
 package com.badbones69.crazycrates.api.builders;
 
-public class ItemBuilder extends com.ryderbelserion.vital.items.ItemBuilder {
+import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.ryderbelserion.vital.items.ParentItemBuilder;
+import me.arcaniax.hdb.api.HeadDatabaseAPI;
+import org.bukkit.DyeColor;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.block.banner.PatternType;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
-    /*private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+public class ItemBuilder extends ParentItemBuilder {
 
-    // Items
-    private Material material = Material.STONE;
-    private ItemStack itemStack = null;
-    private int itemAmount = 1;
+    private String crateName;
 
-    // NBT Data
-    private String itemData = "";
-
-    // Display
-    private String displayName = "";
-    private List<String> displayLore = new ArrayList<>();
-    private int itemDamage = 0;
-
-    // Model Data
-    private boolean hasCustomModelData = false;
-    private int customModelData = 0;
-    private String customMaterial = "";
-
-    // Potions
-    private boolean isPotion = false;
-    private Color potionColor = null;
-    private PotionEffectType potionType = null;
-    private int potionDuration = -1;
-    private int potionAmplifier = 1;
-
-    // Player Heads
-    private boolean isHash = false;
-    private boolean isURL = false;
-    private boolean isHead = false;
-
-    private String player = "";
-
-    // Arrows
-    private boolean isTippedArrow = false;
-
-    // Armor
-    private boolean isLeatherArmor = false;
-    private boolean isArmor = false;
-
-    // Trims
-    private TrimMaterial trimMaterial = null;
-    private TrimPattern trimPattern = null;
-    private Color armorColor = null;
-
-    // Banners
-    private boolean isBanner = false;
-    private List<Pattern> patterns = new ArrayList<>();
-
-    // Shields
-    private boolean isShield = false;
-
-    // Maps
-    private boolean isMap = false;
-    private Color mapColor = null;
-
-    // Fireworks
-    private boolean isFirework = false;
-    private boolean isFireworkStar = false;
-    private Color fireworkColor = null;
-    private List<Color> fireworkColors = new ArrayList<>();
-    private int fireworkPower = 1;
-
-    // Enchantments or ItemFlags
-    private boolean isUnbreakable = false;
-
-    private boolean hideItemFlags = false;
-    private List<ItemFlag> itemFlags = new ArrayList<>();
-
-    private boolean isGlowing = false;
-
-    private boolean isSpawner = false;
-    private EntityType entityType = EntityType.BAT;
-
-    // Crates
-    private String crateName = "";
-    private Player target = null;
-
-    // Placeholders
-    private Map<String, String> namePlaceholders = new HashMap<>();
-    private Map<String, String> lorePlaceholders = new HashMap<>();
-
-    private boolean isBook;
+    public ItemBuilder() {
+        super();
+    }
 
     public ItemBuilder(ItemBuilder itemBuilder) {
-        if (!itemBuilder.displayName.isBlank()) {
-            this.displayName = itemBuilder.displayName;
-        } else {
-            String material = WordUtils.capitalizeFully(this.material.getKey().getKey().replaceAll("_", " "));
-
-            this.displayName = material;
-        }
-
-        this.namePlaceholders = new HashMap<>(itemBuilder.namePlaceholders);
-        this.lorePlaceholders = new HashMap<>(itemBuilder.lorePlaceholders);
+        super(itemBuilder);
 
         this.crateName = itemBuilder.crateName;
     }
 
-    public ItemBuilder(ItemStack itemStack) {
-
-    }
-
-    public ItemBuilder(ItemStack itemStack, Player target) {
-
-    }
-
-    public ItemBuilder() {}
-
-    private Component parse(String message) {
-        if (Support.placeholder_api.isEnabled() && this.target != null) {
-            return MiscUtil.parse(PlaceholderAPI.setPlaceholders(this.target, message));
-        }
-
-        return MiscUtil.parse(message);
-    }
-
-    public ItemStack build() {
-        return new ItemStack(Material.STONE);
-    }
-
-    public ItemStack getItemStack() {
-        return this.itemStack;
-    }
-
-    public ItemMeta getItemMeta() {
-        return this.itemStack.getItemMeta();
-    }
-
-    public ItemBuilder setItemMeta(ItemMeta itemMeta) {
-        this.itemStack.setItemMeta(itemMeta);
-
-        return this;
-    }
-
-    public ItemBuilder setTarget(Player target) {
-        this.target = target;
-
-        return this;
-    }
-
-    public Component getUpdatedName() {
-        String newName = this.displayName;
-
-        for (String placeholder : this.namePlaceholders.keySet()) {
-            newName = newName.replace(placeholder, this.namePlaceholders.get(placeholder)).replace(placeholder.toLowerCase(), this.namePlaceholders.get(placeholder));
-        }
-
-        return parse(newName);
-    }
-
-    public String getName() {
-        return this.displayName;
-    }
-
-    public Material getMaterial() {
-        return this.material;
-    }
-
-    public ItemBuilder setMaterial(Material material) {
-        this.material = material;
-
-        if (this.itemStack == null) {
-            // If item stack is null, we create new item stack based on material.
-            this.itemStack = new ItemStack(this.material);
-        } else {
-            // Get old item meta.
-            ItemMeta itemMeta = this.itemStack.getItemMeta();
-
-            // Create new itemstack.
-            ItemStack newItemStack = new ItemStack(this.material);
-            // Set old item meta to new itemstack.
-            newItemStack.setItemMeta(itemMeta);
-
-            // Overwrite old item stack with new item stack.
-            this.itemStack = newItemStack;
-        }
-
-        this.isHead = material == Material.PLAYER_HEAD;
-
-        return this;
-    }
-
-    public ItemBuilder setMaterial(String type) {
-        return this;
-    }
-
-    public void setTrimMaterial(TrimMaterial trimMaterial) {
-        this.trimMaterial = trimMaterial;
-    }
-
-    public void setTrimPattern(TrimPattern trimPattern) {
-        this.trimPattern = trimPattern;
-    }
-
+    /**
+     * Adds the crate to the item meta pdc.
+     *
+     * @param crateName the name of the crate.
+     * @return the ItemBuilder with updated information.
+     */
     public ItemBuilder setCrateName(String crateName) {
-        this.crateName = crateName;
+        setString(PersistentKeys.crate_key.getNamespacedKey(), this.crateName = crateName);
 
         return this;
     }
 
-    public void setDamage(int damage) {
-        this.itemDamage = damage;
+    /**
+     * @return the name of the crate.
+     */
+    public String getCrateName() {
+        return this.crateName;
     }
 
-    public int getDamage() {
-        return this.itemDamage;
-    }
+    public static ItemBuilder convertItemStack(Player player, ItemStack itemStack) {
+        ItemBuilder itemBuilder = new ItemBuilder().setMaterial(itemStack.getType()).setAmount(itemStack.getAmount());
 
-    public ItemBuilder setName(String itemName) {
-        return this;
-    }
-
-    public ItemBuilder setNamePlaceholders(Map<String, String> placeholders) {
-        this.namePlaceholders = placeholders;
-
-        return this;
-    }
-
-    public ItemBuilder addNamePlaceholder(String placeholder, String argument) {
-        this.namePlaceholders.put(placeholder, argument);
-
-        return this;
-    }
-
-    public ItemBuilder removeNamePlaceholder(String placeholder) {
-        this.namePlaceholders.remove(placeholder);
-
-        return this;
-    }
-
-    public ItemBuilder setLore(List<String> lore) {
-        if (lore != null) {
-            this.displayLore.clear();
-            this.displayLore.addAll(lore);
+        if (itemStack.hasItemMeta()) {
+            itemStack.editMeta(itemMeta -> {
+                if (itemMeta.hasEnchants()) {
+                    itemMeta.getEnchants().forEach((enchantment, level) -> itemBuilder.addEnchantment(enchantment.translationKey(), level, true));
+                }
+            });
         }
 
-        return this;
-    }
-
-    public ItemBuilder setLore(Player player, List<String> lore) {
-        if (lore != null) {
-            this.displayLore.clear();
-
-            for (String line : lore) {
-                this.displayLore.add(PlaceholderAPI.setPlaceholders(player, line));
-            }
+        if (player != null) {
+            itemBuilder.setTarget(player);
         }
 
-        return this;
+        return itemBuilder;
     }
 
-    public ItemBuilder addLore(String line) {
-        if (line != null) this.displayLore.add(line);
-
-        return this;
+    public static ItemBuilder convertItemStack(ItemStack itemStack) {
+        return convertItemStack(null, itemStack);
     }
 
-    public ItemBuilder setLorePlaceholders(Map<String, String> placeholders) {
-        this.lorePlaceholders = placeholders;
 
-        return this;
-    }
-
-    public ItemBuilder addLorePlaceholder(String placeholder, String argument) {
-        this.lorePlaceholders.put(placeholder, argument);
-
-        return this;
-    }
-
-    public List<Component> getUpdatedLore() {
-        List<Component> newLore = new ArrayList<>();
-
-        for (String item : this.displayLore) {
-            for (String placeholder : this.lorePlaceholders.keySet()) {
-                item = item.replace(placeholder, this.lorePlaceholders.get(placeholder)).replace(placeholder.toLowerCase(), this.lorePlaceholders.get(placeholder));
-            }
-
-            newLore.add(parse(item));
-        }
-
-        return newLore;
-    }
-
-    public ItemBuilder removeLorePlaceholder(String placeholder) {
-        this.lorePlaceholders.remove(placeholder);
-
-        return this;
-    }
-
-    public ItemBuilder setEntityType(EntityType entityType) {
-        this.entityType = entityType;
-
-        return this;
-    }
-
-    public ItemBuilder addPatterns(List<String> patterns) {
-        //patterns.forEach(this::addPatterns);
-
-        return this;
-    }
-
-    public ItemBuilder addPattern(Pattern pattern) {
-        this.patterns.add(pattern);
-
-        return this;
-    }
-
-    public ItemBuilder setPattern(List<Pattern> patterns) {
-        this.patterns = patterns;
-
-        return this;
-    }
-
-    public ItemBuilder setAmount(int amount) {
-        this.itemAmount = amount;
-
-        return this;
-    }
-
-    public ItemBuilder setPlayerName(String playerName) {
-        this.player = playerName;
-
-        if (this.player != null && this.player.length() > 16) {
-            this.isHash = true;
-            this.isURL = this.player.startsWith("http");
-        }
-
-        return this;
-    }
-
-    public ItemBuilder addEnchantments(Map<Enchantment, Integer> enchantments, boolean unsafeEnchantments) {
-        enchantments.forEach((enchantment, level) -> addEnchantment(enchantment, level, unsafeEnchantments));
-
-        return this;
-    }
-
-    public ItemBuilder addEnchantment(Enchantment enchantment, int level, boolean unsafeEnchantments) {
-        this.itemStack.editMeta(itemMeta -> {
-            if (this.isBook) {
-                EnchantmentStorageMeta storage = (EnchantmentStorageMeta) itemMeta;
-
-                storage.addStoredEnchant(enchantment, level, unsafeEnchantments);
-
-                return;
-            }
-
-            itemMeta.addEnchant(enchantment, level, unsafeEnchantments);
-        });
-
-        return this;
-    }
-
-    public ItemBuilder removeEnchantment(Enchantment enchantment) {
-        getItemStack().editMeta(itemMeta -> {
-            if (this.isBook) {
-                EnchantmentStorageMeta storage = (EnchantmentStorageMeta) itemMeta;
-
-                storage.removeStoredEnchant(enchantment);
-
-                return;
-            }
-
-            itemMeta.removeEnchant(enchantment);
-        });
-
-        return this;
-    }
-
-    public ItemBuilder setFlagsFromStrings(List<String> flagStrings) {
-        this.itemFlags.clear();
-
-        for (String flagString : flagStrings) {
-            //ItemFlag flag = getFlag(flagString);
-
-            //if (flag != null) this.itemFlags.add(flag);
-        }
-
-        return this;
-    }
-
-    public ItemBuilder addItemFlags(List<String> flagStrings) {
-        for (String flagString : flagStrings) {
-            try {
-                ItemFlag itemFlag = ItemFlag.valueOf(flagString.toUpperCase());
-
-                addItemFlag(itemFlag);
-            } catch (Exception ignored) {}
-        }
-
-        return this;
-    }
-
-    public ItemBuilder addFlags(String flagString) {
-        //ItemFlag flag = getFlag(flagString);
-
-        //if (flag != null) this.itemFlags.add(flag);
-
-        return this;
-    }
-
-    public ItemBuilder addItemFlag(ItemFlag itemFlag) {
-        if (itemFlag != null) this.itemFlags.add(itemFlag);
-
-        return this;
-    }
-
-    public ItemBuilder setItemFlags(List<ItemFlag> itemFlags) {
-        this.itemFlags = itemFlags;
-
-        return this;
-    }
-
-    public ItemBuilder hideItemFlags(boolean hideItemFlags) {
-        this.hideItemFlags = hideItemFlags;
-
-        return this;
-    }
-
-    public ItemBuilder setUnbreakable(boolean unbreakable) {
-        this.isUnbreakable = unbreakable;
-
-        return this;
-    }
-
-    public ItemBuilder setGlow(boolean glow) {
-        this.isGlowing = glow;
-
-        return this;
-    }
-
-    public static ItemBuilder convertItemStack(ItemStack item) {
-        return new ItemBuilder(item).setAmount(item.getAmount()).addEnchantments(new HashMap<>(item.getEnchantments()), true);
-    }
-
-    public static ItemBuilder convertItemStack(ItemStack item, Player player) {
-        return new ItemBuilder(item).setTarget(player).setAmount(item.getAmount()).addEnchantments(new HashMap<>(item.getEnchantments()), true);
-    }
-
+    /*
     public static ItemBuilder convertString(String itemString) {
         return convertString(itemString, null);
     }
@@ -528,8 +159,287 @@ public class ItemBuilder extends com.ryderbelserion.vital.items.ItemBuilder {
         return convertStringList(itemStrings, null);
     }
 
-
     public static List<ItemBuilder> convertStringList(List<String> itemStrings, String placeholder) {
         return itemStrings.stream().map(itemString -> convertString(itemString, placeholder)).collect(Collectors.toList());
     }*/
+
+    @Override
+    public ItemBuilder setMaterial(Material material) {
+        super.setMaterial(material);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setMaterial(String material) {
+        super.setMaterial(material);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setNamePlaceholders(Map<String, String> placeholders) {
+        super.setNamePlaceholders(placeholders);
+        
+        return this;
+    }
+
+    @Override
+    public ItemBuilder addNamePlaceholder(String placeholder, String argument) {
+        super.addNamePlaceholder(placeholder, argument);
+        
+        return this;
+    }
+
+    @Override
+    public ItemBuilder removeNamePlaceholder(String placeholder) {
+        super.removeNamePlaceholder(placeholder);
+        
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setDisplayName(String displayName) {
+        super.setDisplayName(displayName);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setLorePlaceholders(Map<String, String> placeholders) {
+        super.setLorePlaceholders(placeholders);
+        
+        return this;
+    }
+
+    @Override
+    public ItemBuilder addLorePlaceholder(String placeholder, String argument) {
+        super.addLorePlaceholder(placeholder, argument);
+        
+        return this;
+    }
+
+    @Override
+    public ItemBuilder removeLorePlaceholder(String placeholder) {
+        super.removeLorePlaceholder(placeholder);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setDisplayLore(List<String> displayLore) {
+        super.setDisplayLore(displayLore);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder addDisplayLore(String value) {
+        super.addDisplayLore(value);
+        
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setPatterns(Map<PatternType, DyeColor> types) {
+        super.setPatterns(types);
+
+        return this;
+    }
+    
+    @Override
+    public ItemBuilder addPattern(PatternType pattern, DyeColor color) {
+        super.addPattern(pattern, color);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setTrimMaterial(String material) {
+        super.setTrimMaterial(material);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setTrimPattern(String pattern) {
+        super.setTrimPattern(pattern);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setPotionAmplifier(int potionAmplifier) {
+        super.setPotionAmplifier(potionAmplifier);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setPotionDuration(int potionDuration) {
+        super.setPotionDuration(potionDuration);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setGlowing(boolean isGlowing) {
+        super.setGlowing(isGlowing);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setUnbreakable(boolean unbreakable) {
+        super.setUnbreakable(unbreakable);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setAmount(int amount) {
+        super.setAmount(amount);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setEffects(List<FireworkEffect.Builder> effects) {
+        super.setEffects(effects);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder addEffect(FireworkEffect.Builder effect) {
+        super.addEffect(effect);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setFireworkPower(int power) {
+        super.setFireworkPower(power);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setEntityType(EntityType entityType) {
+        super.setEntityType(entityType);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder addEnchantments(Map<String, Integer> enchantments, boolean ignoreLevelRestriction) {
+        super.addEnchantments(enchantments, ignoreLevelRestriction);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder addEnchantment(String value, int level, boolean ignoreLevelRestriction) {
+        super.addEnchantment(value, level, ignoreLevelRestriction);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder removeEnchantment(String value) {
+        super.removeEnchantment(value);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setTexture(String texture) {
+        super.setTexture(texture);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setUUID(UUID uuid) {
+        super.setUUID(uuid);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setSkull(String skull, HeadDatabaseAPI api) {
+        super.setSkull(skull, api);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setTarget(Player target) {
+        super.setTarget(target);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder hideItemFlags(boolean hideItemFlags) {
+        super.hideItemFlags(hideItemFlags);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder addItemFlags(List<String> flags) {
+        super.addItemFlags(flags);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder addItemFlag(ItemFlag itemFlag) {
+        super.addItemFlag(itemFlag);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setString(NamespacedKey key, String value) {
+        super.setString(key, value);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setDouble(NamespacedKey key, double value) {
+        super.setDouble(key, value);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setInteger(NamespacedKey key, int value) {
+        super.setInteger(key, value);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setBoolean(NamespacedKey key, boolean value) {
+        super.setBoolean(key, value);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setList(NamespacedKey key, List<String> values) {
+        super.setList(key, values);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder removeKey(NamespacedKey key) {
+        super.removeKey(key);
+
+        return this;
+    }
 }

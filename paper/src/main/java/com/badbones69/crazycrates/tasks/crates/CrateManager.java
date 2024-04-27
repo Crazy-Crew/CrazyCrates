@@ -1235,7 +1235,7 @@ public class CrateManager {
         boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        return new ItemBuilder().setMaterial(id).setName(name).setLore(lore).setGlow(glowing).hideItemFlags(hideFlags).build();
+        return new ItemBuilder().setMaterial(id).setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).hideItemFlags(hideFlags).build();
     }
 
     // Cleans the data file.

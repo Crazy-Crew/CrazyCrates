@@ -26,7 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import static java.util.regex.Matcher.quoteReplacement;
 
-@SuppressWarnings("ALL")
 public abstract class InventoryBuilder implements InventoryHolder {
 
     protected final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
@@ -96,8 +95,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
 
             if (!commands.isEmpty()) {
                 commands.forEach(value -> {
-                    String command = value.replaceAll("%player%", quoteReplacement(player.getName()))
-                            .replaceAll("%crate%", quoteReplacement(crate.getName()));
+                    String command = value.replaceAll("%player%", quoteReplacement(player.getName())).replaceAll("%crate%", quoteReplacement(crate.getName()));
 
                     MiscUtils.sendCommand(command);
                 });

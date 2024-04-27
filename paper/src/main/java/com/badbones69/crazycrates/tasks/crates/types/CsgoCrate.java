@@ -145,7 +145,7 @@ public class CsgoCrate extends CrateBuilder {
         setItem(3, glass.get(5));
         setItem(3 + 18, glass.get(5));
 
-        ItemStack itemStack = new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build();
+        ItemStack itemStack = new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").build();
 
         setItem(4, itemStack);
         setItem(4 + 18, itemStack);
