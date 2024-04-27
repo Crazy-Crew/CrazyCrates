@@ -6,15 +6,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
-import us.crazycrew.crazycrates.api.CrazyCratesService;
-import us.crazycrew.crazycrates.api.ICrazyCrates;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
-public class Server extends AbstractPlugin implements ICrazyCrates {
+public class Server extends AbstractPlugin {
 
     private FileManager fileManager;
     private final JavaPlugin plugin;
@@ -52,9 +50,6 @@ public class Server extends AbstractPlugin implements ICrazyCrates {
                 .addFolder("crates")
                 .addFolder("schematics").create();
 
-        // Register legacy provider.
-        CrazyCratesService.register(this);
-
         // Register default provider.
         CratesProvider.register(this);
     }
@@ -65,9 +60,6 @@ public class Server extends AbstractPlugin implements ICrazyCrates {
 
     @ApiStatus.Internal
     public void disable() {
-        // Unregister legacy provider.
-        CrazyCratesService.unregister();
-
         // Unregister default provider.
         CratesProvider.unregister();
     }
@@ -100,7 +92,6 @@ public class Server extends AbstractPlugin implements ICrazyCrates {
         this.userManager = userManager;
     }
 
-    @Override
     public @NotNull UserManager getUserManager() {
         return this.userManager;
     }
