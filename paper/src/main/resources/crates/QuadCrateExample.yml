@@ -119,7 +119,7 @@ Crate:
       - "<gray>A special Key"
       - "<gray>For a special Crate."
     # The item the key is.
-    Item: "tripwire_hook"
+    Item: "light_blue_dye"
     # Makes the key look enchanted.
     Glowing: true
   # Settings for the holograms.
