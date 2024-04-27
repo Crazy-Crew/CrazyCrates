@@ -117,7 +117,7 @@ public class Prize {
     public ItemStack getDisplayItem() {
         ItemStack itemStack = this.displayItem.build();
 
-        itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeName));
+        itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeNumber));
 
         return itemStack;
     }
@@ -128,7 +128,7 @@ public class Prize {
     public ItemStack getDisplayItem(Player player) {
         ItemStack itemStack = this.displayItem.setTarget(player).build();
 
-        itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeName));
+        itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeNumber));
 
         return itemStack;
     }

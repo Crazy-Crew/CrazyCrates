@@ -564,7 +564,7 @@ public class Crate {
      */
     public Prize getPrize(String name) {
         for (Prize prize : this.prizes) {
-            if (prize.getPrizeName().equalsIgnoreCase(name)) return prize;
+            if (prize.getPrizeNumber().equalsIgnoreCase(name)) return prize;
         }
 
         return null;
