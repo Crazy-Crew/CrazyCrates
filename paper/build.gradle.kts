@@ -43,7 +43,9 @@ tasks {
         minecraftVersion("1.20.5")
     }
 
-    paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
+    paperweight {
+        reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
+    }
 
     assemble {
         doLast {
