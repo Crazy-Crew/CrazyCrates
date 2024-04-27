@@ -1,5 +1,5 @@
 plugins {
-    id("com.github.johnrengelman.shadow")
+    id("io.github.goooler.shadow")
 
     alias(libs.plugins.run.paper)
 
@@ -41,6 +41,14 @@ tasks {
         defaultCharacterEncoding = Charsets.UTF_8.name()
 
         minecraftVersion("1.20.5")
+    }
+
+    shadowJar {
+        listOf(
+            "com.ryderbelserion.vital"
+        ).forEach {
+            relocate(it, "libs.$it")
+        }
     }
 
     paperweight {
