@@ -246,7 +246,21 @@ public class ItemBuilder extends ParentItemBuilder {
 
         return this;
     }
-    
+
+    @Override
+    public ItemBuilder addPatterns(List<String> patterns) {
+        super.addPatterns(patterns);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder addPattern(String pattern) {
+        super.addPattern(pattern);
+
+        return this;
+    }
+
     @Override
     public ItemBuilder addPattern(PatternType pattern, DyeColor color) {
         super.addPattern(pattern, color);

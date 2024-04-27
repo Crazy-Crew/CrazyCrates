@@ -252,9 +252,9 @@ public class Prize {
                     .setGlowing(isGlowing)
                     .setUnbreakable(isUnbreakable)
                     .hideItemFlags(hideItemFlags)
-                    .addItemFlags(itemFlags);
+                    .addItemFlags(itemFlags)
+                    .addPatterns(patterns);
                     //todo() update this, player skulls are handled differently.
-                    //.addPatterns(patterns)
                     //.setPlayerName(playerName);
 
             builder.setString(PersistentKeys.crate_prize.getNamespacedKey(), this.section.getName());
