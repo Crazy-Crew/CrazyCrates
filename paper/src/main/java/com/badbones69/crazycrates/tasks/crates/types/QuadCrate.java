@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
+import com.ryderbelserion.vital.util.structures.StructureManager;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -11,7 +12,6 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.crates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.support.StructureHandler;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.quadcrates.QuadCrateManager;
 import java.util.List;
@@ -42,7 +42,7 @@ public class QuadCrate extends CrateBuilder {
         List<CrateSchematic> schematics = this.crateManager.getCrateSchematics();
 
         CrateSchematic crateSchematic = config.getBoolean("Crate.structure.random", true) ? schematics.get(ThreadLocalRandom.current().nextInt(schematics.size())) : this.crateManager.getCrateSchematic(config.getString("Crate.structure.file"));
-        StructureHandler handler = new StructureHandler(crateSchematic.getSchematicFile());
+        StructureManager handler = new StructureManager(this.plugin, crateSchematic.schematicFile());
         CrateLocation crateLocation = this.crateManager.getCrateLocation(this.location);
         QuadCrateManager session = new QuadCrateManager(getPlayer(), getCrate(), type, crateLocation.getLocation(), checkHand, handler);
 

@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 
 import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.ryderbelserion.vital.util.structures.StructureManager;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,7 +16,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.SpiralManager;
-import com.badbones69.crazycrates.support.StructureHandler;
 import com.badbones69.crazycrates.api.ChestManager;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class QuadCrateManager {
 
@@ -81,7 +82,7 @@ public class QuadCrateManager {
     private final Particle particle;
 
     // Get the structure handler.
-    private final StructureHandler handler;
+    private final StructureManager handler;
 
     /**
      * A constructor to build the quad crate session.
@@ -93,7 +94,7 @@ public class QuadCrateManager {
      * @param inHand checks the hand of the player.
      * @param handler the structure handler instance.
      */
-    public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, boolean inHand, StructureHandler handler) {
+    public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, boolean inHand, StructureManager handler) {
         this.instance = this;
         this.player = player;
         this.crate = crate;
@@ -140,16 +141,13 @@ public class QuadCrateManager {
         }
 
         // Check if the blocks are able to be changed.
-        List<Location> structureLocations;
-
-        structureLocations = this.handler.getBlocks(this.spawnLocation.clone());
+        Set<Location> structureLocations = this.handler.getBlocks(this.spawnLocation.clone());
 
         // Loop through the blocks and check if the blacklist contains the block type.
         // Do not open the crate if the block is not able to be changed.
         assert structureLocations != null;
-
         for (Location loc : structureLocations) {
-            if (this.handler.getBlockBlackList().contains(loc.getBlock().getType())) {
+            if (this.handler.getBlockBlacklist().contains(loc.getBlock().getType())) {
                 this.player.sendRichMessage(Messages.needs_more_room.getMessage(player));
 
                 this.crateManager.removePlayerFromOpeningList(this.player);
@@ -212,7 +210,7 @@ public class QuadCrateManager {
         }
 
         // Paste the structure in.
-        this.handler.pasteStructure(this.spawnLocation.clone());
+        this.handler.pasteStructure(this.spawnLocation.clone(), true);
 
         player.teleportAsync(this.spawnLocation.toCenterLocation().add(0, 1.0, 0));
 
