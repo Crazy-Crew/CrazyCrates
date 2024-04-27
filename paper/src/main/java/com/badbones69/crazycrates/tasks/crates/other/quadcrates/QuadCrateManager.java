@@ -342,7 +342,7 @@ public class QuadCrateManager {
      * @param location2 the second location of the particle.
      */
     private void spawnParticles(Color particleColor, Location location1, Location location2) {
-        if (this.particle == Particle.REDSTONE) {
+        if (this.particle == Particle.DUST) {
             location1.getWorld().spawnParticle(this.particle, location1, 0, new Particle.DustOptions(particleColor, 1));
             location2.getWorld().spawnParticle(this.particle, location2, 0, new Particle.DustOptions(particleColor, 1));
 
