@@ -7,5 +7,8 @@ import java.io.File;
  *
  * @author Ryder Belserion
  * @version 1.0-snapshot
+ *
+ * @param schematicName the name of the file
+ * @param schematicFile the file object
  */
-public record CrateSchematic(String getSchematicName, File getSchematicFile) {}
+public record CrateSchematic(String schematicName, File schematicFile) {}

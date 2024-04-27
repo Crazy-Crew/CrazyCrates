@@ -29,9 +29,10 @@ public class CrateHologram {
     /**
      * A secondary constructor to build a hologram.
      *
-     * @param enabled if the hologram enabled or not
-     * @param height of the hologram from the ground
-     * @param messages the hologram will display
+     * @param enabled if the hologram enabled or not.
+     * @param height height of the hologram from the ground.
+     * @param range range the hologram can be seen.
+     * @param messages the hologram will display.
      */
     public CrateHologram(boolean enabled, double height, int range, List<String> messages) {
         this.enabled = enabled;

@@ -1063,7 +1063,7 @@ public class CrateManager {
      */
     public CrateSchematic getCrateSchematic(String name) {
         for (CrateSchematic schematic : this.crateSchematics) {
-            if (schematic.getSchematicName().equalsIgnoreCase(name)) {
+            if (schematic.schematicName().equalsIgnoreCase(name)) {
                 return schematic;
             }
         }
