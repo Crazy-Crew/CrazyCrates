@@ -22,7 +22,7 @@ public class ConfigKeys implements SettingsHolder {
                 "Issues: https://github.com/Crazy-Crew/CrazyCrates/issues",
                 "Features: https://github.com/Crazy-Crew/CrazyCrates/issues",
                 "",
-                "List of all sounds: https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html",
+                "List of all sounds: https://minecraft.wiki/w/Sounds.json#Java_Edition_values",
                 "List of all enchantments: https://jd.papermc.io/paper/1.20/org/bukkit/enchantments/Enchantment.html"
         };
 
@@ -141,8 +141,11 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("Should a sound should be played if they have no key?")
     public static final Property<Boolean> need_key_sound_toggle = newProperty("crate.keys.key-sound.toggle", true);
 
-    @Comment("The sound to play.")
-    public static final Property<String> need_key_sound = newProperty("crate.keys.key-sound.name", "ENTITY_VILLAGER_NO");
+    @Comment({
+            "The type of sound to use.",
+            "https://minecraft.wiki/w/Sounds.json#Java_Edition_values"
+    })
+    public static final Property<String> need_key_sound = newProperty("crate.keys.key-sound.name", "entity.villager.no");
 
     @Comment("How long should the quad crate be active?")
     public static final Property<Integer> quad_crate_timer = newProperty("crate.quad-crate.timer", 300);
@@ -153,7 +156,7 @@ public class ConfigKeys implements SettingsHolder {
     ));
 
     @Comment("The item the button should be.")
-    public static final Property<String> menu_button_item = newProperty("gui.inventory.buttons.menu.item", "COMPASS");
+    public static final Property<String> menu_button_item = newProperty("gui.inventory.buttons.menu.item", "compass");
 
     @Comment({
             "This will disable our current functionality of our main menu button in crate previews.",
@@ -175,7 +178,7 @@ public class ConfigKeys implements SettingsHolder {
     ));
 
     @Comment("The item the button should be.")
-    public static final Property<String> next_button_item = newProperty("gui.inventory.buttons.next.item", "FEATHER");
+    public static final Property<String> next_button_item = newProperty("gui.inventory.buttons.next.item", "feather");
 
     @Comment("The name of the item.")
     public static final Property<String> next_button_name = newProperty("gui.inventory.buttons.next.name", "<bold><gold>Next »</bold>");
@@ -186,7 +189,7 @@ public class ConfigKeys implements SettingsHolder {
     ));
 
     @Comment("The item the button should be.")
-    public static final Property<String> back_button_item = newProperty("gui.inventory.buttons.back.item", "FEATHER");
+    public static final Property<String> back_button_item = newProperty("gui.inventory.buttons.back.item", "feather");
 
     @Comment("The name of the item.")
     public static final Property<String> back_button_name = newProperty("gui.inventory.buttons.back.name", "<bold><gold>« Back</bold>");
@@ -200,7 +203,7 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<Boolean> filler_toggle = newProperty("gui.inventory.buttons.filler.toggle", false);
 
     @Comment("The item to fill the menu with.")
-    public static final Property<String> filler_item = newProperty("gui.inventory.buttons.filler.item", "BLACK_STAINED_GLASS_PANE");
+    public static final Property<String> filler_item = newProperty("gui.inventory.buttons.filler.item", "black_stained_glass_pane");
 
     @Comment("The name of the item.")
     public static final Property<String> filler_name = newProperty("gui.inventory.buttons.filler.name", " ");
@@ -213,50 +216,50 @@ public class ConfigKeys implements SettingsHolder {
 
     @Comment("The items to set to the gui.")
     public static final Property<List<String>> gui_customizer = newListProperty("gui.inventory.buttons.customizer.items", List.of(
-            "slot:1, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:2, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:3, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:4, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:5, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:6, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:7, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:8, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:9, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:37, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:38, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:39, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:40, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:41, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:42, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:43, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:44, item:RED_STAINED_GLASS_PANE, name: ",
-            "slot:45, item:RED_STAINED_GLASS_PANE, name: ",
+            "slot:1, item:red_stained_glass_pane, name: ",
+            "slot:2, item:red_stained_glass_pane, name: ",
+            "slot:3, item:red_stained_glass_pane, name: ",
+            "slot:4, item:red_stained_glass_pane, name: ",
+            "slot:5, item:red_stained_glass_pane, name: ",
+            "slot:6, item:red_stained_glass_pane, name: ",
+            "slot:7, item:red_stained_glass_pane, name: ",
+            "slot:8, item:red_stained_glass_pane, name: ",
+            "slot:9, item:red_stained_glass_pane, name: ",
+            "slot:37, item:red_stained_glass_pane, name: ",
+            "slot:38, item:red_stained_glass_pane, name: ",
+            "slot:39, item:red_stained_glass_pane, name: ",
+            "slot:40, item:red_stained_glass_pane, name: ",
+            "slot:41, item:red_stained_glass_pane, name: ",
+            "slot:42, item:red_stained_glass_pane, name: ",
+            "slot:43, item:red_stained_glass_pane, name: ",
+            "slot:44, item:red_stained_glass_pane, name: ",
+            "slot:45, item:red_stained_glass_pane, name: ",
 
-            "slot:10, item:BLUE_STAINED_GLASS_PANE, name: ",
-            "slot:19, item:BLUE_STAINED_GLASS_PANE, name: ",
-            "slot:28, item:BLUE_STAINED_GLASS_PANE, name: ",
-            "slot:18, item:BLUE_STAINED_GLASS_PANE, name: ",
-            "slot:27, item:BLUE_STAINED_GLASS_PANE, name: ",
-            "slot:36, item:BLUE_STAINED_GLASS_PANE, name: ",
+            "slot:10, item:blue_stained_glass_pane, name: ",
+            "slot:19, item:blue_stained_glass_pane, name: ",
+            "slot:28, item:blue_stained_glass_pane, name: ",
+            "slot:18, item:blue_stained_glass_pane, name: ",
+            "slot:27, item:blue_stained_glass_pane, name: ",
+            "slot:36, item:blue_stained_glass_pane, name: ",
 
-            "slot:11, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:13, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:15, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:25, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:17, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:20, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:21, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:22, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:23, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:24, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:25, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:26, item:CYAN_STAINED_GLASS_PANE, name: ",
+            "slot:11, item:cyan_stained_glass_pane, name: ",
+            "slot:13, item:cyan_stained_glass_pane, name: ",
+            "slot:15, item:cyan_stained_glass_pane, name: ",
+            "slot:25, item:cyan_stained_glass_pane, name: ",
+            "slot:17, item:cyan_stained_glass_pane, name: ",
+            "slot:20, item:cyan_stained_glass_pane, name: ",
+            "slot:21, item:cyan_stained_glass_pane, name: ",
+            "slot:22, item:cyan_stained_glass_pane, name: ",
+            "slot:23, item:cyan_stained_glass_pane, name: ",
+            "slot:24, item:cyan_stained_glass_pane, name: ",
+            "slot:25, item:cyan_stained_glass_pane, name: ",
+            "slot:26, item:cyan_stained_glass_pane, name: ",
 
-            "slot:29, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:31, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:32, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:33, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:34, item:CYAN_STAINED_GLASS_PANE, name: ",
-            "slot:35, item:CYAN_STAINED_GLASS_PANE, name: "
+            "slot:29, item:cyan_stained_glass_pane, name: ",
+            "slot:31, item:cyan_stained_glass_pane, name: ",
+            "slot:32, item:cyan_stained_glass_pane, name: ",
+            "slot:33, item:cyan_stained_glass_pane, name: ",
+            "slot:34, item:cyan_stained_glass_pane, name: ",
+            "slot:35, item:cyan_stained_glass_pane, name: "
     ));
 }

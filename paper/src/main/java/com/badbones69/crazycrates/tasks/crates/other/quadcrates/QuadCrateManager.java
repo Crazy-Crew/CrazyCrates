@@ -260,7 +260,7 @@ public class QuadCrateManager {
 
                 player.sendRichMessage(Messages.out_of_time.getMessage(player, "{crate}", crate.getName()));
 
-                crate.playSound(player, player.getLocation(), "stop-sound", "ENTITY_PLAYER_LEVELUP", SoundCategory.PLAYERS);
+                crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", SoundCategory.PLAYERS);
             }
         }.runDelayed(this.plugin, ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
     }

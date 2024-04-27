@@ -64,7 +64,7 @@ public class WarCrateListener implements Listener {
                     this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                     this.crateManager.removePlayerFromOpeningList(player);
 
-                    crate.playSound(player, player.getLocation(), "cycle-sound", "BLOCK_ANVIL_LAND", SoundCategory.PLAYERS);
+                    crate.playSound(player, player.getLocation(), "cycle-sound", "block.anvil.land", SoundCategory.PLAYERS);
 
                     this.crateManager.addCrateTask(player, new FoliaRunnable(player.getScheduler(), null) {
                         @Override

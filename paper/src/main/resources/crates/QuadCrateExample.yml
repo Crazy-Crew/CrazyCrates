@@ -40,8 +40,8 @@ Crate:
       # If sound should be enabled or not.
       toggle: true
       # The type of sound to use.
-      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: "BLOCK_NOTE_BLOCK_XYLOPHONE"
+      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      value: "block.note_block.xylophone"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
@@ -51,8 +51,8 @@ Crate:
       # If sound should be enabled or not.
       toggle: true
       # The type of sound to use.
-      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: "UI_BUTTON_CLICK"
+      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      value: "ui.button.click"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
@@ -62,12 +62,18 @@ Crate:
       # If sound should be enabled or not.
       toggle: true
       # The type of sound to use.
-      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: "ENTITY_PLAYER_LEVELUP"
+      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      value: "entity.player.levelup"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
       pitch: 1.0
+  # Only used for quadcrates
+  particles:
+    # Only used for "dust" particle
+    color: "235,64,52"
+    # https://minecraft.wiki/w/Particles_(Java_Edition)
+    type: "crimson_spore"
   # A default message if the prize doesn't have any Messages
   # i.e. Messages: [] or the value isn't there.
   Prize-Message:
@@ -76,7 +82,7 @@ Crate:
   # i.e. Commands: [] or the value isn't there.
   Prize-Commands: []
   # Item the crate is in the GUI
-  Item: "BREWING_STAND"
+  Item: "brewing_stand"
   # If the crate in the main /cc GUI is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
@@ -98,7 +104,7 @@ Crate:
       # The name of the border item.
       Name: " "
       # The item that shows in the border. Can be glass or any other item.
-      Item: "GRAY_STAINED_GLASS_PANE"
+      Item: "gray_stained_glass_pane"
   # This section is related to .nbt files.
   structure:
     # If it should randomly use an .nbt file.
@@ -113,7 +119,7 @@ Crate:
       - "<gray>A special Key"
       - "<gray>For a special Crate."
     # The item the key is.
-    Item: "TRIPWIRE_HOOK"
+    Item: "tripwire_hook"
     # Makes the key look enchanted.
     Glowing: true
   # Settings for the holograms.
@@ -130,58 +136,11 @@ Crate:
       - "<bold><blue>Quad Crate</bold>"
   Prizes:
     1:
-      DisplayName: "<bold><dark_aqua>Rare ChestPlate</bold>"
-      DisplayItem: "DIAMOND_CHESTPLATE"
-      # Only works on items with durability. This will make the item appear more damaged.
-      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 25.
-      # It cannot be 0.
-      DisplayDamage: 25
-      DisplayTrim:
-        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
-        Material: "QUARTZ"
-        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
-        Pattern: "SENTRY"
+      DisplayName: "Golden Helmet"
+      DisplayItem: "golden_helmet"
       DisplayAmount: 1
-      Lore:
-        - "<gray>Win a very rare chest plate."
-        - "<bold><gold>Chance: <red>40%</bold>"
-      DisplayEnchantments:
-        - "PROTECTION_ENVIRONMENTAL:5"
-        - "DURABILITY:3"
+      Lore: {}
       MaxRange: 100
-      Chance: 40
+      Chance: 5
       Items:
-        - "Item:DIAMOND_CHESTPLATE, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:EMERALD, Name:<bold><dark_aqua>Rare ChestPlate</bold>, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
-    2:
-      DisplayName: "<bold><blue>Crazy <dark_red>Sword</bold>"
-      DisplayItem: "GOLDEN_SWORD"
-      # Only works on items with durability. This will make the item appear more damaged.
-      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 13.
-      DisplayDamage: 13
-      DisplayAmount: 1
-      Lore:
-        - "<gray>Win a crazy cool sword."
-        - "<bold><gold>Chance: <red>35%</bold>"
-      DisplayEnchantments:
-        - "DAMAGE_ALL:5"
-        - "FIRE_ASPECT:1"
-      MaxRange: 100
-      Chance: 35
-      Items:
-        - "Item:GOLDEN_SWORD, Amount:1, Damage:13, Name:<bold><blue>Crazy <dark_red>Sword</bold>, DAMAGE_ALL:5, FIRE_ASPECT:1"
-      Messages:
-        - "<gray>You just won <reset>%reward%."
-    3:
-      DisplayName: "<bold><yellow>$1,000,000</bold>"
-      DisplayItem: "SUNFLOWER"
-      DisplayAmount: 1
-      Lore:
-        - "<gray>Make it rain a butt load of Money."
-        - "<bold><gold>Chance: <red>20%</bold>"
-      MaxRange: 100
-      Chance: 20
-      Firework: true
-      Commands:
-        - "eco give %player% 1000000"
-      Messages:
-        - "<gray>You just won <reset>%reward%."
+        - "Item:golden_helmet, Amount:1"

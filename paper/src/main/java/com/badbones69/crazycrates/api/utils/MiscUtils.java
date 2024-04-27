@@ -148,7 +148,6 @@ public class MiscUtils {
      *
      * @return -1 or item amount.
      */
-    @SuppressWarnings("SameParameterValue")
     private static int getFirstItem(ItemStack item, boolean getAmount, ItemStack[] inventory) {
         if (item == null) return -1;
 
@@ -191,70 +190,6 @@ public class MiscUtils {
 
     public static int randomNumber(int min, int max) {
         return MiscUtils.useOtherRandom() ? min + ThreadLocalRandom.current().nextInt(max - min) : min + new Random().nextInt(max - min);
-    }
-
-    public static Enchantment getEnchantment(String enchantmentName) {
-        HashMap<String, String> enchantments = getEnchantmentList();
-        enchantmentName = stripEnchantmentName(enchantmentName);
-
-        for (Enchantment enchantment : Enchantment.values()) {
-            try {
-                if (stripEnchantmentName(enchantment.getKey().getKey()).equalsIgnoreCase(enchantmentName)) {
-                    return enchantment;
-                }
-
-                if (stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null && stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
-                    return enchantment;
-                }
-            } catch (Exception ignore) {}
-        }
-
-        return null;
-    }
-
-    private static String stripEnchantmentName(String enchantmentName) {
-        return enchantmentName != null ? enchantmentName.replace("-", "").replace("_", "").replace(" ", "") : null;
-    }
-
-    private static HashMap<String, String> getEnchantmentList() {
-        HashMap<String, String> enchantments = new HashMap<>();
-
-        enchantments.put("ARROW_DAMAGE", "Power");
-        enchantments.put("ARROW_FIRE", "Flame");
-        enchantments.put("ARROW_INFINITE", "Infinity");
-        enchantments.put("ARROW_KNOCKBACK", "Punch");
-        enchantments.put("DAMAGE_ALL", "Sharpness");
-        enchantments.put("DAMAGE_ARTHROPODS", "Bane_Of_Arthropods");
-        enchantments.put("DAMAGE_UNDEAD", "Smite");
-        enchantments.put("DEPTH_STRIDER", "Depth_Strider");
-        enchantments.put("DIG_SPEED", "Efficiency");
-        enchantments.put("DURABILITY", "Unbreaking");
-        enchantments.put("FIRE_ASPECT", "Fire_Aspect");
-        enchantments.put("KNOCKBACK", "KnockBack");
-        enchantments.put("LOOT_BONUS_BLOCKS", "Fortune");
-        enchantments.put("LOOT_BONUS_MOBS", "Looting");
-        enchantments.put("LUCK", "Luck_Of_The_Sea");
-        enchantments.put("LURE", "Lure");
-        enchantments.put("OXYGEN", "Respiration");
-        enchantments.put("PROTECTION_ENVIRONMENTAL", "Protection");
-        enchantments.put("PROTECTION_EXPLOSIONS", "Blast_Protection");
-        enchantments.put("PROTECTION_FALL", "Feather_Falling");
-        enchantments.put("PROTECTION_FIRE", "Fire_Protection");
-        enchantments.put("PROTECTION_PROJECTILE", "Projectile_Protection");
-        enchantments.put("SILK_TOUCH", "Silk_Touch");
-        enchantments.put("THORNS", "Thorns");
-        enchantments.put("WATER_WORKER", "Aqua_Affinity");
-        enchantments.put("BINDING_CURSE", "Curse_Of_Binding");
-        enchantments.put("MENDING", "Mending");
-        enchantments.put("FROST_WALKER", "Frost_Walker");
-        enchantments.put("VANISHING_CURSE", "Curse_Of_Vanishing");
-        enchantments.put("SWEEPING_EDGE", "Sweeping_Edge");
-        enchantments.put("RIPTIDE", "Riptide");
-        enchantments.put("CHANNELING", "Channeling");
-        enchantments.put("IMPALING", "Impaling");
-        enchantments.put("LOYALTY", "Loyalty");
-
-        return enchantments;
     }
 
     public static ItemBuilder getRandomPaneColor() {

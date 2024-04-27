@@ -40,7 +40,7 @@ public class CasinoCrate extends CrateBuilder {
         }
 
         if (this.counter <= 50) { // When the crate is currently spinning.
-            playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
+            playSound("cycle-sound", SoundCategory.PLAYERS, "block.note_block.xylophone");
 
             cycle();
         }
@@ -57,7 +57,7 @@ public class CasinoCrate extends CrateBuilder {
 
         if (this.counter > 51) {
             if (MiscUtils.slowSpin(120, 15).contains(this.time)) {
-                playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
+                playSound("cycle-sound", SoundCategory.PLAYERS, "block.note_block.xylophone");
 
                 cycle();
             }
@@ -65,7 +65,7 @@ public class CasinoCrate extends CrateBuilder {
             this.time++;
 
             if (this.time >= 60) { // When the crate task is finished.
-                playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
+                playSound("stop-sound", SoundCategory.PLAYERS, "entity.player.levelup");
 
                 this.crateManager.endCrate(getPlayer());
 

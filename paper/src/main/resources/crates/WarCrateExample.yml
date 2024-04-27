@@ -40,8 +40,8 @@ Crate:
       # If sound should be enabled or not.
       toggle: true
       # The type of sound to use.
-      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: "BLOCK_NOTE_BLOCK_XYLOPHONE"
+      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      value: "block.note_block.xylophone"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
@@ -51,8 +51,8 @@ Crate:
       # If sound should be enabled or not.
       toggle: true
       # The type of sound to use.
-      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: "UI_BUTTON_CLICK"
+      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      value: "ui.button.click"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
@@ -62,8 +62,8 @@ Crate:
       # If sound should be enabled or not.
       toggle: true
       # The type of sound to use.
-      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: "ENTITY_PLAYER_LEVELUP"
+      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      value: "entity.player.levelup"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
@@ -76,7 +76,7 @@ Crate:
   # i.e. Commands: [] or the value isn't there.
   Prize-Commands: []
   # Item the crate is in the GUI
-  Item: "BEACON"
+  Item: "beacon"
   # If the crate in the main /cc GUI is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
@@ -98,7 +98,7 @@ Crate:
       # The name of the border item.
       Name: " "
       # The item that shows in the border. Can be glass or any other item.
-      Item: "GRAY_STAINED_GLASS_PANE"
+      Item: "gray_stained_glass_pane"
   PhysicalKey:
     # Name of the Key.
     Name: "<bold><dark_red>War Crate Key</bold>"
@@ -107,7 +107,7 @@ Crate:
       - "<gray>A special Key"
       - "<gray>For a special Crate."
     # The item the key is.
-    Item: "TRIPWIRE_HOOK"
+    Item: "tripwire_hook"
     # Makes the key look enchanted.
     Glowing: true
   # Settings for the holograms.
@@ -125,78 +125,11 @@ Crate:
   # All the prizes that can be gotten in the Crate.
   Prizes:
     1:
-      DisplayName: "<bold><dark_red>Warlord's Helmet</bold>"
-      DisplayItem: "NETHERITE_HELMET"
-      DisplayTrim:
-        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
-        Material: "REDSTONE"
-        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
-        Pattern: "SENTRY"
+      DisplayName: "Golden Helmet"
+      DisplayItem: "golden_helmet"
       DisplayAmount: 1
-      Lore:
-        - "<gray>Win the warlord's helmet."
-        - "<bold><gold>Chance: <red>40%</bold>"
-      DisplayEnchantments:
-        - "PROTECTION_ENVIRONMENTAL:5"
-        - "DURABILITY:3"
+      Lore: {}
       MaxRange: 100
-      Chance: 40
+      Chance: 5
       Items:
-        - "Item:NETHERITE_HELMET, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:<bold><dark_red>Warlord's Helmet</bold>, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
-    2:
-      DisplayName: "<bold><dark_red>Warlord's Chestplate</bold>"
-      DisplayItem: "NETHERITE_CHESTPLATE"
-      DisplayTrim:
-        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
-        Material: "REDSTONE"
-        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
-        Pattern: "SENTRY"
-      DisplayAmount: 1
-      Lore:
-        - "<gray>Win the warlord's chestplate."
-        - "<bold><gold>Chance: <red>40%</bold>"
-      DisplayEnchantments:
-        - "PROTECTION_ENVIRONMENTAL:5"
-        - "DURABILITY:3"
-      MaxRange: 100
-      Chance: 40
-      Items:
-        - "Item:NETHERITE_CHESTPLATE, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:<bold><dark_red>Warlord's Chestplate</bold>, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
-    3:
-      DisplayName: "<bold><dark_red>Warlord's Leggings</bold>"
-      DisplayItem: "NETHERITE_LEGGINGS"
-      DisplayTrim:
-        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
-        Material: "REDSTONE"
-        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
-        Pattern: "SENTRY"
-      DisplayAmount: 1
-      Lore:
-        - "<gray>Win the warlord's leggings."
-        - "<bold><gold>Chance: <red>40%</bold>"
-      DisplayEnchantments:
-        - "PROTECTION_ENVIRONMENTAL:5"
-        - "DURABILITY:3"
-      MaxRange: 100
-      Chance: 40
-      Items:
-        - "Item:NETHERITE_LEGGINGS, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:<bold><dark_red>Warlord's Leggings</bold>, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
-    4:
-      DisplayName: "<bold><dark_red>Warlord's Boots"
-      DisplayItem: "NETHERITE_BOOTS"
-      DisplayTrim:
-        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
-        Material: "REDSTONE"
-        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
-        Pattern: "SENTRY"
-      DisplayAmount: 1
-      Lore:
-        - "<gray>Win the warlord's boots."
-        - "<bold><gold>Chance: <red>40%</bold>"
-      DisplayEnchantments:
-        - "PROTECTION_ENVIRONMENTAL:5"
-        - "DURABILITY:3"
-      MaxRange: 100
-      Chance: 40
-      Items:
-        - "Item:NETHERITE_BOOTS, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:<bold><dark_red>Warlord's Boots</bold>, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
+        - "Item:golden_helmet, Amount:1"

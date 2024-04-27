@@ -124,7 +124,8 @@ public class CrateManager {
                             boolean isEnabled = alternativeSection.getBoolean("Toggle");
 
                             if (isEnabled) {
-                                alternativePrize = new Prize(prizeSection.getString("DisplayName", WordUtils.capitalizeFully(prizeSection.getString("DisplayItem", "STONE").replaceAll("_", " "))), prizeSection.getName(), alternativeSection);
+                                alternativePrize = new Prize(prizeSection.getString("DisplayName", WordUtils.capitalizeFully(prizeSection.getString("DisplayItem", "stone")
+                                        .replaceAll("_", " "))), prizeSection.getName(), alternativeSection);
                             }
                         }
 
@@ -294,7 +295,8 @@ public class CrateManager {
                                 boolean isEnabled = alternativeSection.getBoolean("Toggle");
 
                                 if (isEnabled) {
-                                    alternativePrize = new Prize(prizeSection.getString("DisplayName", WordUtils.capitalizeFully(prizeSection.getString("DisplayItem", "STONE").replaceAll("_", " "))), prizeSection.getName(), alternativeSection);
+                                    alternativePrize = new Prize(prizeSection.getString("DisplayName", WordUtils.capitalizeFully(prizeSection.getString("DisplayItem", "stone")
+                                            .replaceAll("_", " "))), prizeSection.getName(), alternativeSection);
                                 }
                             }
 
@@ -1231,7 +1233,7 @@ public class CrateManager {
     private ItemStack getKey(FileConfiguration file) {
         String name = file.getString("Crate.PhysicalKey.Name");
         List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
-        String id = file.getString("Crate.PhysicalKey.Item", "TRIPWIRE_HOOK");
+        String id = file.getString("Crate.PhysicalKey.Item", "tripwire_hook");
         boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 

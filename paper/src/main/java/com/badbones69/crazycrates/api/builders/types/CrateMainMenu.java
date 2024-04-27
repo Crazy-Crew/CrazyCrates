@@ -133,6 +133,7 @@ public class CrateMainMenu extends InventoryBuilder {
                             .setMaterial(file.getString(path + "Item", "CHEST"))
                             .setDisplayName(name)
                             .setDisplayLore(file.getStringList(path + "Lore"))
+                            //todo() update this.
                             .setUUID(UUID.fromString(file.getString(path + "Player")))
                             .setGlowing(file.getBoolean(path + "Glowing"))
                             .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(getPlayer().getUniqueId(), crate.getName())))
@@ -193,7 +194,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
             if (event.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
                 if (crate.isPreviewEnabled()) {
-                    crate.playSound(player, player.getLocation(), "click-sound", "UI_BUTTON_CLICK", SoundCategory.PLAYERS);
+                    crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", SoundCategory.PLAYERS);
 
                     player.closeInventory();
 

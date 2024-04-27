@@ -119,7 +119,7 @@ public class QuadCrateListener implements Listener {
                         public void run() {
                             session.endCrate(false);
 
-                            crate.playSound(player, block.getLocation(), "stop-sound", "BLOCK_ANVIL_LAND", SoundCategory.BLOCKS);
+                            crate.playSound(player, block.getLocation(), "stop-sound", "block.anvil.land", SoundCategory.BLOCKS);
                         }
                     }.runDelayed(this.plugin, 60);
                 }

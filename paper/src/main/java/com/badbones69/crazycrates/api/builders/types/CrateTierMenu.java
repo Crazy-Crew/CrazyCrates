@@ -98,7 +98,7 @@ public class CrateTierMenu extends InventoryBuilder {
                 if (this.inventoryManager.inCratePreview(player)) {
                     if (holder.overrideMenu()) return;
 
-                    crate.playSound(player, player.getLocation(), "click-sound", "UI_BUTTON_CLICK", SoundCategory.PLAYERS);
+                    crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", SoundCategory.PLAYERS);
 
                     this.inventoryManager.removeViewer(player);
                     this.inventoryManager.closeCratePreview(player);
@@ -112,7 +112,7 @@ public class CrateTierMenu extends InventoryBuilder {
             }
 
             if (container.has(PersistentKeys.preview_tier_button.getNamespacedKey())) {
-                crate.playSound(player, player.getLocation(), "click-sound", "UI_BUTTON_CLICK", SoundCategory.PLAYERS);
+                crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", SoundCategory.PLAYERS);
 
                 String tierName = container.get(PersistentKeys.preview_tier_button.getNamespacedKey(), PersistentDataType.STRING);
 

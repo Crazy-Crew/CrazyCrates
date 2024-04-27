@@ -42,8 +42,8 @@ Crate:
       # If sound should be enabled or not.
       toggle: true
       # The type of sound to use.
-      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: "BLOCK_NOTE_BLOCK_XYLOPHONE"
+      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      value: "block.note_block.xylophone"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
@@ -53,8 +53,8 @@ Crate:
       # If sound should be enabled or not.
       toggle: true
       # The type of sound to use.
-      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: "UI_BUTTON_CLICK"
+      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      value: "ui.button.click"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
@@ -64,8 +64,8 @@ Crate:
       # If sound should be enabled or not.
       toggle: true
       # The type of sound to use.
-      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: "ENTITY_PLAYER_LEVELUP"
+      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      value: "entity.player.levelup"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
@@ -126,60 +126,11 @@ Crate:
       - "<bold><yellow>Classic Crate</bold>"
   Prizes:
     1:
-      DisplayName: "<bold><green>Fancy Pants</bold>"
-      DisplayItem: "CHAINMAIL_LEGGINGS"
-      # Only works on items with durability. This will make the item appear more damaged.
-      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 75.
-      # It cannot be 0.
-      DisplayDamage: 75
-      DisplayTrim:
-        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
-        Material: "QUARTZ"
-        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
-        Pattern: "SENTRY"
+      DisplayName: "Golden Helmet"
+      DisplayItem: "golden_helmet"
       DisplayAmount: 1
-      Lore:
-        - "<gray>Win a fancy pair of pants."
-        - "<bold><gold>Chance: <red>40%</bold>"
-      DisplayEnchantments:
-        - "PROTECTION_ENVIRONMENTAL:2"
+      Lore: {}
       MaxRange: 100
-      Chance: 40
+      Chance: 5
       Items:
-        - "Item:CHAINMAIL_LEGGINGS, Amount:1, Damage:75, Trim-Pattern:SENTRY, Trim-Material:LAPIS, Name:<bold><green>Fancy Pants</bold>, PROTECTION_ENVIRONMENTAL:2"
-      Messages:
-        - "<gray>You just won a <reset>%reward%."
-    2:
-      DisplayName: "<bold><blue>Classic Sword</bold>"
-      DisplayItem: "DIAMOND_SWORD"
-      # Only works on items with durability. This will make the item appear more damaged.
-      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 7.
-      # It cannot be 0.
-      DisplayDamage: 7
-      DisplayAmount: 1
-      Lore:
-        - "<gray>Win a old classic sword."
-        - "<bold><gold>Chance: <red>35%</bold>"
-      DisplayEnchantments:
-        - "DAMAGE_ALL:2"
-        - "FIRE_ASPECT:1"
-      MaxRange: 100
-      Chance: 35
-      Items:
-        - "Item:DIAMOND_SWORD, Amount:1, Damage:7, Name:<bold><blue>Classic Sword</bold>, DAMAGE_ALL:2, FIRE_ASPECT:1"
-      Messages:
-        - "<gray>You just won <reset>%reward%."
-    3:
-      DisplayName: "<bold><yellow>$100,000</bold>"
-      DisplayItem: "SUNFLOWER"
-      DisplayAmount: 1
-      Lore:
-        - "<gray>Make it rain a lot of Money."
-        - "<bold><gold>Chance: <red>20%</bold>"
-      MaxRange: 100
-      Chance: 20
-      Firework: true
-      Commands:
-        - "eco give %player% 100000"
-      Messages:
-        - "<gray>You just won <reset>%reward%."
+        - "Item:golden_helmet, Amount:1"

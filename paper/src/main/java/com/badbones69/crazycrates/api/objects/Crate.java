@@ -129,7 +129,7 @@ public class Crate {
         this.crateInventoryName = file != null ? file.getString("Crate.CrateName") : "";
 
         String borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? file.getString("Crate.Preview.Glass.Name") : " ";
-        this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item", "GRAY_STAINED_GLASS_PANE"))
+        this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane"))
                 .hideItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
                 .setDisplayName(borderName) : new ItemBuilder().setMaterial(Material.AIR).setDisplayName(borderName);
 

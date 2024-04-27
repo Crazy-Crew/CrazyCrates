@@ -61,7 +61,7 @@ public class WarCrate extends CrateBuilder {
                 if (this.full < 25) {
                     setRandomPrizes();
 
-                    playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_LAVA_POP");
+                    playSound("cycle-sound", SoundCategory.PLAYERS, "block.lava.pop");
                 }
 
                 this.open++;
@@ -75,7 +75,7 @@ public class WarCrate extends CrateBuilder {
                 this.full++;
 
                 if (this.full == 26) {
-                    playSound("stop-sound", SoundCategory.PLAYERS, "BLOCK_LAVA_POP");
+                    playSound("stop-sound", SoundCategory.PLAYERS, "block.lava.pop");
 
                     setRandomGlass();
 

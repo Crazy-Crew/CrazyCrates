@@ -5,8 +5,6 @@ import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class Tier {
 
         this.lore = section.getStringList("Lore").isEmpty() ? Collections.emptyList() : section.getStringList("Lore");
 
-        this.item = new ItemBuilder().setMaterial(section.getString("Item", "CHEST")).hideItemFlags(section.getBoolean("HideItemFlags", false));
+        this.item = new ItemBuilder().setMaterial(section.getString("Item", "chest")).hideItemFlags(section.getBoolean("HideItemFlags", false));
 
         this.chance = section.getInt("Chance");
         this.maxRange = section.getInt("MaxRange", 100);

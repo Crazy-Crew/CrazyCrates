@@ -40,8 +40,8 @@ Crate:
       # If sound should be enabled or not.
       toggle: true
       # The type of sound to use.
-      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: "BLOCK_NOTE_BLOCK_XYLOPHONE"
+      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      value: "block.note_block.xylophone"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
@@ -51,8 +51,8 @@ Crate:
       # If sound should be enabled or not.
       toggle: true
       # The type of sound to use.
-      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: "UI_BUTTON_CLICK"
+      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      value: "ui.button.click"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
@@ -62,8 +62,8 @@ Crate:
       # If sound should be enabled or not.
       toggle: true
       # The type of sound to use.
-      # https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
-      value: "ENTITY_PLAYER_LEVELUP"
+      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      value: "entity.player.levelup"
       # The volume of the pitch.
       volume: 1.0
       # The speed of the sound.
@@ -76,7 +76,7 @@ Crate:
   # i.e. Commands: [] or the value isn't there.
   Prize-Commands: []
   # Item the crate is in the GUI
-  Item: "GOLD_INGOT"
+  Item: "gold_ingot"
   # If the crate in the main /cc GUI is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
@@ -98,7 +98,7 @@ Crate:
       # The name of the border item.
       Name: " "
       # The item that shows in the border. Can be glass or any other item.
-      Item: "GRAY_STAINED_GLASS_PANE"
+      Item: "gray_stained_glass_pane"
   tier-preview:
     # Turn on and off the preview for this crate.
     toggle: true
@@ -110,7 +110,7 @@ Crate:
       # The name of the border item.
       name: " "
       # The item that shows in the border. Can be glass or any other item.
-      item: "RED_STAINED_GLASS_PANE"
+      item: "red_stained_glass_pane"
   # Tier related settings only for Casino.
   random:
     # If the tiers should be random.
@@ -134,7 +134,7 @@ Crate:
       Lore:
         - "<gray>A basic tier."
       # The item used for the secondary gui when you right-click for the preview.
-      Item: "CHEST"
+      Item: "chest"
       # Chance of that item getting picked. It would be 80/100 chance because MaxRange is 100.
       Chance: 50
       # The max range that the chance will go though.
@@ -145,7 +145,7 @@ Crate:
       Name: "<green>Uncommon Tier"
       Lore:
         - "<green>An uncommon tier."
-      Item: "CHEST"
+      Item: "chest"
       Chance: 35
       MaxRange: 100
       Slot: 22
@@ -153,7 +153,7 @@ Crate:
       Name: "<dark_red>Rare Tier"
       Lore:
         - "<red>A rare tier."
-      Item: "ENDER_CHEST"
+      Item: "ender_chest"
       Chance: 25
       MaxRange: 100
       Slot: 24
@@ -165,7 +165,7 @@ Crate:
       - "<gray>A special Key"
       - "<gray>For a special Crate."
     # The item the key is.
-    Item: "TRIPWIRE_HOOK"
+    Item: "tripwire_hook"
     # Makes the key look enchanted.
     Glowing: true
   # Settings for the holograms.
@@ -183,196 +183,32 @@ Crate:
   # All the prizes that can be gotten in the Crate.
   Prizes:
     1:
-      # Name of the item shown by the crate.
-      DisplayName: "<red>An example of a Player Head!"
-      # Item shown by the crate.
-      DisplayItem: "PLAYER_HEAD"
-      # The amount displayed.
+      DisplayName: "<green>Golden Helmet"
+      DisplayItem: "golden_helmet"
       DisplayAmount: 1
-      # The lore in the crate preview
-      Lore:
-        - "<gray>Want a player head?"
-        - ""
-        - "<bold><red>Chance: <yellow>25%</bold>"
-      # Tiers are available in Cosmic and Casino crate types.
-      # The Tiers the rewards can be found in.
-      Tiers:
-        - "Basic"
-      # If you do not want a lore, Set the "Lore:" to look like the line below.
-      # Lore: []
-
-      MaxRange: 100 # Available values: 100, 1000, 10000, 100000, 1000000, 10000000
-      #
-      # 25 is 25% if Max Range is 100
-      # Read more on "Chance" @ https://github.com/Crazy-Crew/Crazy-Crates/wiki/Chance-System
-      #
-      Chance: 25 # The chance out of MaxRange to win an item.
-
-      # Can be a name as well.
-      Player: "https://textures.minecraft.net/texture/1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e" # Custom Texture Example.
-
-      # If you do not want a player supplied, Set the "Player:" to look like the line below.
-      # Player: ""
-
-      Items: # Give any item you want to the winning player & with a custom texture.
-        - "Item:PLAYER_HEAD, Player:https://textures.minecraft.net/texture/1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Amount:1"
-      # If you do not want to give items, Set the "Items:" to look like the line below.
-      # Items: []
-
-      Commands: # You can run any plugin command here.
-        - "broadcast <bold><gold>%player%</bold><reset> <gray>won %reward%! WOW"
-      # If you do not want to send commands, Set the "Commands:" to look like the line below.
-      # Commands: []
-
-      Messages: # Send any message you want to the player.
-        - "<red>You won a <reset>%reward%!"
-      # If you do not want to send messages, Set the "Messages:" to look like the line below.
-      # Messages: []
-
-      #This allows for one time winnable prizes. If a player has one of the permissions then they will not be able to win it.
-      BlackListed-Permissions: []
-      #This allows users who have won the same prize before to get alternative prizes. They must have a BlackListed-Permission to get an alternative prize.
-      Alternative-Prize:
-        #Toggle if the prize will use alternative prizes for the blacklisted permission.
-        Toggle: false
-        Messages: []
-        Commands: []
-        Items: []
-    2:
-      DisplayName: "<bold><blue>Cheap Helmet</bold>"
-      DisplayItem: "GOLDEN_HELMET"
-      # Only works on items with durability. This will make the item appear more damaged.
-      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 50.
-      # It cannot be 0.
-      DisplayDamage: 50
-      DisplayTrim:
-        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
-        Material: "QUARTZ"
-        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
-        Pattern: "SENTRY"
-      DisplayAmount: 1
-      Lore:
-        - "<gray>Win a cheap helmet."
-        - "<bold><gold>Chance: <red>60%</bold>"
-      # Tiers are available in Cosmic and Casino crate types.
-      # The Tiers the rewards can be found in.
-      Tiers:
-        - "Basic"
       MaxRange: 100
       Chance: 15
       Items:
-        - "Item:GOLDEN_HELMET, Amount:1, Damage:50, Trim-Pattern:SENTRY, Trim-Material:QUARTZ, Name:<bold><blue>Cheap Helmet</bold>, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1"
-    3:
-      DisplayName: "<bold><yellow>$1,000</bold>"
-      DisplayItem: "SUNFLOWER"
+        - "Item:golden_helmet, Amount:1"
+      Tiers:
+        - "Rare"
+    2:
+      DisplayName: "<blue>Golden Helmet"
+      DisplayItem: "golden_helmet"
       DisplayAmount: 1
-      Lore:
-        - "<gray>Make it rain Money."
-        - "<bold><gold>Chance: <red>20%</bold>"
-      # Tiers are available in Cosmic and Casino crate types.
-      # The Tiers the rewards can be found in.
+      MaxRange: 100
+      Chance: 15
+      Items:
+        - "Item:golden_helmet, Amount:1"
       Tiers:
         - "Basic"
-      MaxRange: 100
-      Chance: 35
-      Firework: true
-      Commands:
-        - "eco give %player% 1000"
-      # - "lp user %player% permission set crazycrates.blacklist.basic.3" -> This is the line where you would give the user the permission.
-      Messages:
-        - "<gray>You just won <reset>%reward%."
-      BlackListed-Permissions:
-        - "crazycrates.blacklist.basic.3"
-      Alternative-Prize:
-        Toggle: true
-        Messages:
-          - "<reset> <dark_gray>[<blue>CrazyCrates<dark_gray>]: <gray>You have already won that prize, so enjoy some gold nuggets."
-        Commands:
-          - "give %player% gold_nugget 16"
-    4:
-      DisplayName: "<bold><dark_red>Warlord's Helmet</bold>"
-      DisplayItem: "NETHERITE_HELMET"
-      DisplayTrim:
-        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
-        Material: "REDSTONE"
-        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
-        Pattern: "SENTRY"
+    3:
+      DisplayName: "<red>Golden Helmet"
+      DisplayItem: "golden_helmet"
       DisplayAmount: 1
-      Lore:
-        - "<gray>Win the warlord's helmet."
-        - "<bold><gold>Chance: <red>40%</bold>"
-      DisplayEnchantments:
-        - "PROTECTION_ENVIRONMENTAL:5"
-        - "DURABILITY:3"
+      MaxRange: 100
+      Chance: 15
+      Items:
+        - "Item:golden_helmet, Amount:1"
       Tiers:
         - "UnCommon"
-      MaxRange: 100
-      Chance: 10
-      Items:
-        - "Item:NETHERITE_HELMET, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:<bold><dark_red>Warlord's Helmet</bold>, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
-    5:
-      DisplayName: "<bold><dark_red>Warlord's Chestplate</bold>"
-      DisplayItem: "NETHERITE_CHESTPLATE"
-      DisplayTrim:
-        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
-        Material: "REDSTONE"
-        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
-        # Boots and leggings should be in rare. ( row 3 )
-        # Helmet and chestplate should be in UnCommon ( row 2 )
-        # Head/Gold/Sunflower should be in basic ( row 1 )
-        Pattern: "SENTRY"
-      DisplayAmount: 1
-      Lore:
-        - "<gray>Win the warlord's chestplate."
-        - "<bold><gold>Chance: <red>40%</bold>"
-      DisplayEnchantments:
-        - "PROTECTION_ENVIRONMENTAL:5"
-        - "DURABILITY:3"
-      Tiers:
-        - "UnCommon"
-      MaxRange: 100
-      Chance: 3
-      Items:
-        - "Item:NETHERITE_CHESTPLATE, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:<bold><dark_red>Warlord's Chestplate</bold>, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
-    6:
-      DisplayName: "<bold><dark_red>Warlord's Leggings</bold>"
-      DisplayItem: "NETHERITE_LEGGINGS"
-      DisplayTrim:
-        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
-        Material: "REDSTONE"
-        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
-        Pattern: "SENTRY"
-      DisplayAmount: 1
-      Lore:
-        - "<gray>Win the warlord's leggings."
-        - "<bold><gold>Chance: <red>40%</bold>"
-      DisplayEnchantments:
-        - "PROTECTION_ENVIRONMENTAL:5"
-        - "DURABILITY:3"
-      Tiers:
-        - "Rare"
-      MaxRange: 100
-      Chance: 3
-      Items:
-        - "Item:NETHERITE_LEGGINGS, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:<bold><dark_red>Warlord's Leggings</bold>, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"
-    7:
-      DisplayName: "<bold><dark_red>Warlord's Boots</bold>"
-      DisplayItem: "NETHERITE_BOOTS"
-      DisplayTrim:
-        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
-        Material: "REDSTONE"
-        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
-        Pattern: "SENTRY"
-      DisplayAmount: 1
-      Lore:
-        - "<gray>Win the warlord's boots."
-        - "<bold><gold>Chance: <red>40%</bold>"
-      DisplayEnchantments:
-        - "PROTECTION_ENVIRONMENTAL:5"
-        - "DURABILITY:3"
-      Tiers:
-        - "Rare"
-      MaxRange: 100
-      Chance: 3
-      Items:
-        - "Item:NETHERITE_BOOTS, Amount:1, Damage:25, Trim-Pattern:SENTRY, Trim-Material:REDSTONE, Name:<bold><dark_red>Warlord's Boots</bold>, PROTECTION_ENVIRONMENTAL:5, DURABILITY:3"

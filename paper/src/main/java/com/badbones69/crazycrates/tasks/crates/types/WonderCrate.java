@@ -108,7 +108,7 @@ public class WonderCrate extends CrateBuilder {
 
                     PrizeManager.givePrize(getPlayer(), this.prize, getCrate());
 
-                    playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
+                    playSound("stop-sound", SoundCategory.PLAYERS, "entity.player.levelup");
 
                     if (this.prize.useFireworks()) MiscUtils.spawnFirework(getPlayer().getLocation().add(0, 1, 0), null);
 

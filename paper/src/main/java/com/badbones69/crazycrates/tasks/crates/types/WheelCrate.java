@@ -109,7 +109,7 @@ public class WheelCrate extends CrateBuilder {
                         }
                     }
 
-                    playSound("cycle-sound", SoundCategory.MUSIC, "BLOCK_NOTE_BLOCK_XYLOPHONE");
+                    playSound("cycle-sound", SoundCategory.MUSIC, "block.note_block.xylophone");
 
                     this.uh++;
                     this.what++;
@@ -139,14 +139,14 @@ public class WheelCrate extends CrateBuilder {
                             }
                         }
 
-                        playSound("cycle-sound", SoundCategory.MUSIC, "BLOCK_NOTE_BLOCK_XYLOPHONE");
+                        playSound("cycle-sound", SoundCategory.MUSIC, "block.note_block.xylophone");
 
                         this.uh++;
                         this.what++;
                     }
 
                     if (this.full == this.timer + 47) {
-                        playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
+                        playSound("stop-sound", SoundCategory.PLAYERS, "entity.player.levelup");
                     }
 
                     if (this.full >= this.timer + 47) {
@@ -171,7 +171,7 @@ public class WheelCrate extends CrateBuilder {
 
                         PrizeManager.givePrize(getPlayer(), getCrate(), prize);
 
-                        playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
+                        playSound("stop-sound", SoundCategory.PLAYERS, "entity.player.levelup");
 
                         getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 

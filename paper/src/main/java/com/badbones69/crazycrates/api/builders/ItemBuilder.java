@@ -46,7 +46,7 @@ public class ItemBuilder extends ParentItemBuilder {
      * @return the name of the crate.
      */
     public String getCrateName() {
-        return this.crateName;
+        return getString(PersistentKeys.crate_key.getNamespacedKey());
     }
 
     public static ItemBuilder convertItemStack(Player player, ItemStack itemStack) {

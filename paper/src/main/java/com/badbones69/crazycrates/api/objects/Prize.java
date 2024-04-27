@@ -234,7 +234,7 @@ public class Prize {
         ItemBuilder builder = new ItemBuilder();
 
         try {
-            String material = this.section.getString("DisplayItem", "RED_TERRACOTTA");
+            String material = this.section.getString("DisplayItem", "red_terracotta");
 
             int amount = this.section.getInt("DisplayAmount", 1);
             List<String> lore = this.section.getStringList("Lore");
@@ -253,6 +253,7 @@ public class Prize {
                     .setUnbreakable(isUnbreakable)
                     .hideItemFlags(hideItemFlags)
                     .addItemFlags(itemFlags);
+                    //todo() update this, player skulls are handled differently.
                     //.addPatterns(patterns)
                     //.setPlayerName(playerName);
 
@@ -262,46 +263,19 @@ public class Prize {
 
             builder.setItemDamage(displayDamage);
 
-            //todo() update this.
             if (this.section.contains("DisplayTrim.Pattern")) {
-                NamespacedKey key = null;
-
-                String trimPattern = this.section.getString("DisplayTrim.Pattern");
-
-                if (trimPattern != null) {
-                    key = NamespacedKey.minecraft(trimPattern.toLowerCase());
-                }
-
-                if (key != null) {
-                    //TrimPattern registry = Registry.TRIM_PATTERN.get(key);
-                    //builder.setTrimPattern(registry);
-                }
+                builder.setTrimPattern(this.section.getString("DisplayTrim.Pattern", "sentry"));
             }
 
-            //todo() update this.
             if (this.section.contains("DisplayTrim.Material")) {
-                NamespacedKey key = null;
-
-                String trimMaterial = this.section.getString("DisplayTrim.Material");
-
-                if (trimMaterial != null) {
-                    key = NamespacedKey.minecraft(trimMaterial.toLowerCase());
-                }
-
-                if (key != null) {
-                    //TrimMaterial registry = Registry.TRIM_MATERIAL.get(key);
-                    //builder.setTrimMaterial(registry);
-                }
+                builder.setTrimMaterial(this.section.getString("DisplayTrim.Material", "quartz"));
             }
 
-            //todo() update this.
             if (this.section.contains("DisplayEnchantments")) {
                 for (String name : this.section.getStringList("DisplayEnchantments")) {
-                    Enchantment enchantment = MiscUtils.getEnchantment(name.split(":")[0]);
+                    String[] value = name.split(":");
 
-                    if (enchantment != null) {
-                        //builder.addEnchantment(enchantment, Integer.parseInt(name.split(":")[1]), true);
-                    }
+                    builder.addEnchantment(value[0], Integer.parseInt(value[1]), true);
                 }
             }
 
