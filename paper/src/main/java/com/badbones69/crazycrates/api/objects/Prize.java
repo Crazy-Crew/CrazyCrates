@@ -27,7 +27,7 @@ public class Prize {
     private String crateName = "";
     private final String prizeName;
     private int maxRange = 100;
-    private final String prizeNumber;
+    private final String sectionName;
     private int chance = 0;
 
     private List<Tier> tiers = new ArrayList<>();
@@ -39,7 +39,7 @@ public class Prize {
     public Prize(ConfigurationSection section, List<Tier> tierPrizes, String crateName, Prize alternativePrize) {
         this.section = section;
 
-        this.prizeNumber = section.getName();
+        this.sectionName = section.getName();
 
         this.crateName = crateName;
 
@@ -81,7 +81,7 @@ public class Prize {
      *
      * @param section the configuration section.
      */
-    public Prize(String prizeName, String prizeNumber, ConfigurationSection section) {
+    public Prize(String prizeName, String sectionName, ConfigurationSection section) {
         this.prizeName = prizeName;
 
         //todo() update this.
@@ -90,7 +90,7 @@ public class Prize {
         this.messages = section.getStringList("Messages");
         this.commands = section.getStringList("Commands");
 
-        this.prizeNumber = prizeNumber;
+        this.sectionName = sectionName;
 
         this.section = section;
     }
@@ -103,10 +103,10 @@ public class Prize {
     }
 
     /**
-     * @return the prize number.
+     * @return the section name.
      */
-    public String getPrizeNumber() {
-        return this.prizeNumber;
+    public String getSectionName() {
+        return this.sectionName;
     }
 
     /**
@@ -115,7 +115,7 @@ public class Prize {
     public ItemStack getDisplayItem() {
         ItemStack itemStack = this.displayItem.build();
 
-        itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeName));
+        itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.sectionName));
 
         return itemStack;
     }
@@ -126,7 +126,7 @@ public class Prize {
     public ItemStack getDisplayItem(Player player) {
         ItemStack itemStack = this.displayItem.setTarget(player).build();
 
-        itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeName));
+        itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.sectionName));
 
         return itemStack;
     }
