@@ -43,7 +43,19 @@ tasks {
         minecraftVersion("1.20.5")
     }
 
+    assemble {
+        doLast {
+            copy {
+                from(shadowJar.get())
+                into(rootProject.projectDir.resolve("jars"))
+            }
+        }
+    }
+
     shadowJar {
+        archiveBaseName.set(rootProject.name)
+        archiveClassifier.set("")
+
         listOf(
             "com.ryderbelserion.vital"
         ).forEach {
@@ -51,20 +63,10 @@ tasks {
         }
     }
 
-    assemble {
-        doLast {
-            copy {
-                from(reobfJar.get())
-                into(rootProject.projectDir.resolve("jars"))
-            }
-        }
-    }
-
     processResources {
         inputs.properties("name" to rootProject.name)
         inputs.properties("version" to project.version)
         inputs.properties("group" to project.group)
-        //inputs.properties("authors" to project.properties["authors"])
         inputs.properties("description" to project.properties["description"])
         inputs.properties("website" to project.properties["website"])
 
