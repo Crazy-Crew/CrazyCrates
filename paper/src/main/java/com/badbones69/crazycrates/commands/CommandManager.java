@@ -2,8 +2,6 @@ package com.badbones69.crazycrates.commands;
 
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.commands.relations.ArgumentRelations;
-import com.badbones69.crazycrates.commands.subs.CrateBaseCommand;
-import com.badbones69.crazycrates.commands.subs.BaseKeyCommand;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
@@ -45,7 +43,7 @@ public class CommandManager {
         commandManager.registerSuggestion(SuggestionKey.of("prizes"), (sender, context) -> {
             List<String> numbers = new ArrayList<>();
 
-            crateManager.getCrateFromName(context.getArgs().get(0)).getPrizes().forEach(prize -> numbers.add(prize.getSectionName()));
+            crateManager.getCrateFromName(context.getFirst()).getPrizes().forEach(prize -> numbers.add(prize.getSectionName()));
 
             return numbers;
         });
@@ -53,7 +51,7 @@ public class CommandManager {
         commandManager.registerSuggestion(SuggestionKey.of("tiers"), (sender, context) -> {
             List<String> numbers = new ArrayList<>();
 
-            crateManager.getCrateFromName(context.getArgs().get(0)).getTiers().forEach(tier -> numbers.add(tier.getName()));
+            crateManager.getCrateFromName(context.getFirst()).getTiers().forEach(tier -> numbers.add(tier.getName()));
 
             return numbers;
         });
@@ -66,10 +64,10 @@ public class CommandManager {
             return numbers;
         });
 
-        commandManager.registerArgument(CrateBaseCommand.CustomPlayer.class, (sender, context) -> new CrateBaseCommand.CustomPlayer(context));
+        //commandManager.registerArgument(CrateBaseCommand.CustomPlayer.class, (sender, context) -> new CrateBaseCommand.CustomPlayer(context));
 
-        commandManager.registerCommand(new CrateBaseCommand());
-        commandManager.registerCommand(new BaseKeyCommand());
+        //commandManager.registerCommand(new CrateBaseCommand());
+        //commandManager.registerCommand(new BaseKeyCommand());
     }
 
     public static @NotNull BukkitCommandManager<CommandSender> getCommandManager() {

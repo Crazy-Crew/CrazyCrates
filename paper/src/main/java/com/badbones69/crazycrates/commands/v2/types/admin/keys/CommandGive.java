@@ -1,0 +1,97 @@
+package com.badbones69.crazycrates.commands.v2.types.admin.keys;
+
+import com.badbones69.crazycrates.api.enums.Messages;
+import com.badbones69.crazycrates.api.enums.Permissions;
+import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
+import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.commands.v2.BaseCommand;
+import dev.triumphteam.cmd.bukkit.annotation.Permission;
+import dev.triumphteam.cmd.core.annotations.Command;
+import dev.triumphteam.cmd.core.annotations.Suggestion;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionDefault;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import java.util.HashMap;
+import java.util.Map;
+
+public class CommandGive extends BaseCommand {
+
+    @Command("give")
+    @Permission(value = "crazycrates.givekey", def = PermissionDefault.OP)
+    public void give(CommandSender sender, @Suggestion("types") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("players") CustomPlayer target) {
+        KeyType keyType = getKeyType(sender, type);
+
+        if (amount <= 0) {
+            sender.sendRichMessage(Messages.not_a_number.getMessage(sender, "{number}", String.valueOf(amount)));
+
+            return;
+        }
+
+        Crate crate = getCrate(sender, crateName);
+
+        if (crate == null) {
+            return;
+        }
+
+        if (target.getPlayer() != null) {
+            addKey(sender, target.getPlayer(), crate, keyType, amount);
+
+            return;
+        }
+
+        addKey(sender, target.getOfflinePlayer(), crate, keyType, amount);
+    }
+
+    @Command("give-random")
+    @Permission(value = "crazycrates.giverandomkey", def = PermissionDefault.OP)
+    public void random(CommandSender sender, @Suggestion("types") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("players") CustomPlayer target) {
+        give(sender, type, this.crateManager.getUsableCrates().get((int) MiscUtils.pickNumber(0, (this.crateManager.getUsableCrates().size() - 2))).getName(), amount, target);
+    }
+
+    @Command("giveall")
+    public void all(CommandSender sender, @Suggestion("types") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount) {
+        KeyType keyType = getKeyType(sender, type);
+
+        if (amount <= 0) {
+            sender.sendRichMessage(Messages.not_a_number.getMessage(sender, "{number}", String.valueOf(amount)));
+
+            return;
+        }
+
+        Crate crate = getCrate(sender, crateName);
+
+        if (crate == null) {
+            return;
+        }
+
+        Map<String, String> placeholders = new HashMap<>();
+
+        placeholders.put("{amount}", String.valueOf(amount));
+        placeholders.put("{keytype}", keyType.getFriendlyName());
+        placeholders.put("{key}", crate.getKeyName());
+
+        sender.sendRichMessage(Messages.given_everyone_keys.getMessage(sender, placeholders));
+
+        for (Player player : this.plugin.getServer().getOnlinePlayers()) {
+            if (Permissions.CRAZYCRATES_PLAYER_EXCLUDE.hasPermission(player)) continue;
+
+            PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_ALL_COMMAND, amount);
+            this.plugin.getServer().getPluginManager().callEvent(event);
+
+            if (event.isCancelled()) return;
+
+            player.sendRichMessage(Messages.obtaining_keys.getMessage(player, placeholders));
+
+            if (crate.getCrateType() == CrateType.crate_on_the_go) {
+                player.getInventory().addItem(crate.getKey(amount, player));
+
+                return;
+            }
+
+            this.userManager.addKeys(amount, player.getUniqueId(), crate.getName(), keyType);
+        }
+    }
+}

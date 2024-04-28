@@ -15,7 +15,7 @@ public class CommandPreview extends BaseCommand {
 
     @Command("preview")
     @Permission(value = "crazycrates.preview", def = PermissionDefault.OP)
-    public void onPreview(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("online-players") Player player) {
+    public void preview(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("online-players") Player player) {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {

@@ -12,7 +12,7 @@ public class CommandList extends BaseCommand {
 
     @Command("list")
     @Permission(value = "crazycrates.list", def = PermissionDefault.OP)
-    public void onList(CommandSender sender) {
+    public void list(CommandSender sender) {
         StringBuilder crates = new StringBuilder();
         String brokeCrates;
 

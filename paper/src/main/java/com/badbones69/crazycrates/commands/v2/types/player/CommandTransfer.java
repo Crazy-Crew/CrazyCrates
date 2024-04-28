@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
