@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.support.holograms.types;
 
 import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Modules.Display.CMIBillboard;
 import com.Zrips.CMI.Modules.Holograms.CMIHologram;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import org.bukkit.Location;
@@ -16,6 +17,8 @@ import java.util.Map;
 
 public class CMIHologramsSupport extends HologramManager {
 
+    private final com.Zrips.CMI.Modules.Holograms.HologramManager hologramManager = CMI.getInstance().getHologramManager();
+
     private final Map<String, CMIHologram> holograms = new HashMap<>();
 
     @Override
@@ -24,22 +27,36 @@ public class CMIHologramsSupport extends HologramManager {
 
         CrateHologram crateHologram = crate.getHologram();
 
-        if (!crateHologram.isEnabled()) return;
+        if (!crateHologram.isEnabled()) {
+            removeHologram(location);
+
+            return;
+        }
+
+        String loc = MiscUtils.location(location);
+
+        if (this.holograms.containsKey(loc)) {
+            CMIHologram hologram = this.holograms.get(loc);
+
+            hologram.setShowRange(crateHologram.getRange());
+            hologram.setLines(lines(crateHologram));
+
+            this.holograms.put(loc, hologram);
+
+            return;
+        }
 
         CMIHologram hologram = new CMIHologram(name(), new CMILocation(location.clone().add(getVector(crate))));
 
-        List<String> lines = new ArrayList<>();
+        hologram.setNewDisplayMethod(true);
+        hologram.setBillboard(CMIBillboard.CENTER);
 
-        crateHologram.getMessages().forEach(line -> lines.add(color(line)));
-
-        hologram.setLines(lines);
         hologram.setShowRange(crateHologram.getRange());
+        hologram.setLines(lines(crateHologram));
 
-        CMI.getInstance().getHologramManager().addHologram(hologram);
+        this.hologramManager.addHologram(hologram);
 
-        hologram.update();
-
-        this.holograms.put(MiscUtils.location(location), hologram);
+        this.holograms.putIfAbsent(MiscUtils.location(location), hologram);
     }
 
     @Override
