@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -616,5 +619,24 @@ public class BukkitUserManager extends UserManager {
     
     private boolean isCrateInvalid(String crateName) {
         return crateName.isBlank() || this.crateManager.getCrateFromName(crateName) == null;
+    }
+
+    /**
+     * Adds internal placeholders to the itembuilder.
+     *
+     * @param itemBuilder the itembuilder
+     * @param crate the crate
+     * @return the itembuilder
+     */
+    public ItemBuilder addPlaceholders(ItemBuilder itemBuilder, Crate crate) {
+        UUID uuid = itemBuilder.getTarget().getUniqueId();
+        String name = crate.getName();
+
+        itemBuilder.addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(getVirtualKeys(uuid, name)))
+                .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(getPhysicalKeys(uuid, name)))
+                .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(getTotalKeys(uuid, name)))
+                .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(getCrateOpened(uuid, name)));
+
+        return itemBuilder;
     }
 }

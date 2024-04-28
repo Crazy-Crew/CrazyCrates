@@ -1228,14 +1228,14 @@ public class CrateManager {
     }
 
     // Internal methods.
-    private ItemStack getKey(FileConfiguration file) {
+    private ItemBuilder getKey(FileConfiguration file) {
         String name = file.getString("Crate.PhysicalKey.Name");
         List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
         String id = file.getString("Crate.PhysicalKey.Item", "TRIPWIRE_HOOK");
         boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        return new ItemBuilder().setMaterial(id).setName(name).setLore(lore).setGlow(glowing).hideItemFlags(hideFlags).build();
+        return new ItemBuilder().setMaterial(id).setName(name).setLore(lore).setGlow(glowing).hideItemFlags(hideFlags);
     }
 
     // Cleans the data file.

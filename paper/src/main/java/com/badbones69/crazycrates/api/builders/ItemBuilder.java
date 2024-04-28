@@ -67,7 +67,6 @@ public class ItemBuilder {
     // Display
     private String displayName = "";
     private List<String> displayLore = new ArrayList<>();
-    private List<Component> componentLore = new ArrayList<>();
     private int itemDamage = 0;
 
     // Model Data
@@ -474,6 +473,13 @@ public class ItemBuilder {
     }
 
     /**
+     * @return the player object.
+     */
+    public Player getTarget() {
+        return this.target;
+    }
+
+    /**
      * Get the item's name with all the placeholders added to it.
      *
      * @return The name with all the placeholders in it.
@@ -756,22 +762,6 @@ public class ItemBuilder {
     }
 
     /**
-     * Set the lore of the item in the builder. This will auto force color in all the lores that contains color code. (<green>, <red>, <gray>, etc...)
-     *
-     * @param lore the lore of the item in the builder.
-     * @return the ItemBuilder with updated info.
-     */
-    public ItemBuilder setComponentLore(List<Component> lore) {
-        if (lore != null) {
-            this.componentLore.clear();
-
-            lore.forEach(this::addLore);
-        }
-
-        return this;
-    }
-
-    /**
      * Set the lore of the item with papi support in the builder. This will auto force color in all the lores that contains color code. (<green>, <red>, <gray>, etc...)
      *
      * @param player the player viewing the button.
@@ -798,18 +788,6 @@ public class ItemBuilder {
      */
     public ItemBuilder addLore(String line) {
         if (line != null) this.displayLore.add(line);
-
-        return this;
-    }
-
-    /**
-     * Add a line to the current lore of the item. This will auto force color in the lore that contains color code. (<green>, <red>, <gray>, etc...)
-     *
-     * @param line the new line you wish to add.
-     * @return the ItemBuilder with updated info.
-     */
-    public ItemBuilder addLore(Component line) {
-        if (line != null) this.componentLore.add(line);
 
         return this;
     }
@@ -845,10 +823,6 @@ public class ItemBuilder {
      * @return the lore with all placeholders in it.
      */
     public List<Component> getUpdatedLore() {
-        if (!this.componentLore.isEmpty()) {
-            return this.componentLore;
-        }
-
         List<Component> newLore = new ArrayList<>();
 
         for (String item : this.displayLore) {
@@ -1111,11 +1085,11 @@ public class ItemBuilder {
      * @return the ItemStack as an ItemBuilder with all the info from the item.
      */
     public static ItemBuilder convertItemStack(ItemStack item) {
-        return new ItemBuilder(item).setComponentLore(item.lore()).setAmount(item.getAmount()).addEnchantments(new HashMap<>(item.getEnchantments()), true);
+        return new ItemBuilder(item).setAmount(item.getAmount()).addEnchantments(new HashMap<>(item.getEnchantments()), true);
     }
 
     public static ItemBuilder convertItemStack(ItemStack item, Player player) {
-        return new ItemBuilder(item).setTarget(player).setComponentLore(item.lore()).setAmount(item.getAmount()).addEnchantments(new HashMap<>(item.getEnchantments()), true);
+        return new ItemBuilder(item).setTarget(player).setAmount(item.getAmount()).addEnchantments(new HashMap<>(item.getEnchantments()), true);
     }
 
     /**

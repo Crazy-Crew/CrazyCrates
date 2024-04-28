@@ -3,6 +3,8 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.ryderbelserion.vital.files.FileManager;
 import com.ryderbelserion.vital.util.DyeUtil;
@@ -78,6 +80,8 @@ public class Crate {
 
     private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+
     private final @NotNull InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     private final @NotNull FileManager fileManager = this.plugin.getFileManager();
@@ -95,9 +99,9 @@ public class Crate {
      * @param prizes The prizes that can be won.
      * @param file The crate file.
      */
-    public Crate(String name, String previewName, CrateType crateType, ItemStack key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, List<String> prizeCommands, CrateHologram hologram) {
-        this.emptyKey = ItemBuilder.convertItemStack(key).setName(keyName);
-        this.keyBuilder = ItemBuilder.convertItemStack(key).setName(keyName).setCrateName(name);
+    public Crate(String name, String previewName, CrateType crateType, ItemBuilder key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, List<String> prizeCommands, CrateHologram hologram) {
+        this.emptyKey = key.setName(keyName);
+        this.keyBuilder = key.setName(keyName).setCrateName(name);
         this.keyName = keyName;
 
         this.file = file;
@@ -499,7 +503,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public ItemStack getKey(Player player) {
-        return this.keyBuilder.setTarget(player).build();
+        return this.userManager.addPlaceholders(this.keyBuilder.setTarget(player), this).build();
     }
 
     /**
@@ -519,9 +523,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public ItemStack getKey(int amount, Player player) {
-        ItemBuilder key = this.keyBuilder.setTarget(player).setAmount(amount);
-
-        return key.build();
+        return this.userManager.addPlaceholders(this.keyBuilder.setTarget(player).setAmount(amount), this).build();
     }
     
     /**
