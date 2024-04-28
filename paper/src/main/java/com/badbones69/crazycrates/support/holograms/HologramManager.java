@@ -6,6 +6,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
+import us.crazycrew.crazycrates.api.crates.CrateHologram;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,5 +42,13 @@ public abstract class HologramManager {
         }
 
         return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
+    }
+
+    protected List<String> lines(CrateHologram crateHologram) {
+        List<String> lines = new ArrayList<>();
+
+        crateHologram.getMessages().forEach(line -> lines.add(color(line)));
+
+        return lines;
     }
 }
