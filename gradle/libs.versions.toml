@@ -15,7 +15,7 @@ vital = { group = "com.ryderbelserion.vital", name = "paper", version = "1.0-sna
 decent-holograms = { group = "com.github.decentsoftware-eu", name = "decentholograms", version = "2.8.6" }
 fancy-holograms = { group = "de.oliver", name = "FancyHolograms", version = "2.0.6" }
 
-triumph-cmds = { group = "dev.triumphteam", name = "triumph-cmd-bukkit", version = "2.0.0-SNAPSHOT" }
+triumph-cmds = { group = "dev.triumphteam", name = "triumph-cmd-bukkit", version = "2.0.0-ALPHA-10" }
 triumph-gui = { group = "dev.triumphteam", name = "triumph-gui", version = "3.1.7" }
 
 vault = { group = "com.github.MilkBowl", name = "VaultAPI", version = "1.7.1" }

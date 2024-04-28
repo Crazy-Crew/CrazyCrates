@@ -1,24 +1,7 @@
 package com.badbones69.crazycrates.commands.subs;
 
-import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.google.common.collect.Lists;
-import com.ryderbelserion.vital.enums.Support;
-import dev.triumphteam.cmd.bukkit.annotation.Permission;
-import dev.triumphteam.cmd.core.BaseCommand;
-import dev.triumphteam.cmd.core.annotation.*;
-import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.api.enums.Messages;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-@Command(value = "keys", alias = {"key"})
+/*@Command(value = "keys", alias = {"key"})
 @Description("Views the amount of keys you/others have.")
 public class BaseKeyCommand extends BaseCommand {
 
@@ -64,7 +47,7 @@ public class BaseKeyCommand extends BaseCommand {
      * @param sender sender to send message to.
      * @param header header of the message.
      * @param content content of the message.
-     */
+
     private void getKeys(Player player, CommandSender sender, String header, String content) {
         List<String> message = Lists.newArrayList();
 
@@ -116,4 +99,4 @@ public class BaseKeyCommand extends BaseCommand {
 
         sender.sendRichMessage(content);
     }
-}
+}*/
