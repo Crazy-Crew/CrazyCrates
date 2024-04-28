@@ -2,7 +2,7 @@
 run-paper = { id = "xyz.jpenilla.run-paper", version = "2.2.3" }
 
 [versions]
-minecraftVersion = "1.20.4"
+minecraftVersion = "1.20.5"
 
 [libraries]
 itemsadder-api = { group = "com.github.LoneDev6", name = "api-itemsadder", version = "3.6.1" }
