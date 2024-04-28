@@ -13,7 +13,7 @@ plugins {
 
 val buildNumber: String = System.getenv("NEXT_BUILD_NUMBER") ?: "SNAPSHOT"
 
-val isSnapshot = true
+val isSnapshot = false
 
 rootProject.version = if (isSnapshot) "3.0-$buildNumber" else "3.0"
 
