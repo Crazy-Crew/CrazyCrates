@@ -30,7 +30,7 @@ public class CommandGive extends BaseCommand {
             return;
         }
 
-        Crate crate = getCrate(sender, crateName);
+        Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null) {
             return;
@@ -61,7 +61,7 @@ public class CommandGive extends BaseCommand {
             return;
         }
 
-        Crate crate = getCrate(sender, crateName);
+        Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null) {
             return;
