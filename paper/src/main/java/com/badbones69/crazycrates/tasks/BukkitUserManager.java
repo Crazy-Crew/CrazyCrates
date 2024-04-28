@@ -22,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -616,7 +615,7 @@ public class BukkitUserManager extends UserManager {
 
         this.data.save();
     }
-    
+
     private boolean isCrateInvalid(String crateName) {
         return crateName.isBlank() || this.crateManager.getCrateFromName(crateName) == null;
     }
