@@ -49,12 +49,9 @@ public class ItemBuilder extends ParentItemBuilder {
         return getString(PersistentKeys.crate_key.getNamespacedKey());
     }
 
-    /**
-     * Get the item's name with all the placeholders added to it.
-     *
-     * @return The name with all the placeholders in it.
-     */
-    public Component getUpdatedName() {
+    public static ItemBuilder convertItemStack(Player player, ItemStack itemStack) {
+        ItemBuilder itemBuilder = new ItemBuilder().setMaterial(itemStack.getType()).setAmount(itemStack.getAmount());
+
         if (itemStack.hasItemMeta()) {
             itemStack.editMeta(itemMeta -> {
                 if (itemMeta.hasEnchants()) {
@@ -68,10 +65,6 @@ public class ItemBuilder extends ParentItemBuilder {
         }
 
         return itemBuilder;
-    }
-  
-    public static ItemBuilder convertItemStack(Player player, ItemStack itemStack) {
-        ItemBuilder itemBuilder = new ItemBuilder().setMaterial(itemStack.getType()).setAmount(itemStack.getAmount());
     }
 
     public static ItemBuilder convertItemStack(ItemStack itemStack) {
@@ -179,6 +172,8 @@ public class ItemBuilder extends ParentItemBuilder {
     @Override
     public ItemBuilder setMaterial(String material) {
         super.setMaterial(material);
+
+        return this;
     }
 
     @Override
