@@ -76,6 +76,12 @@ public class PrizeManager {
                     player.getWorld().dropItemNaturally(player.getLocation(), clone.build());
                 }
             }
+        } else {
+            if (!MiscUtils.isInventoryFull(player)) {
+                player.getInventory().addItem(prize.getDisplayItem(player));
+            } else {
+                player.getWorld().dropItemNaturally(player.getLocation(), prize.getDisplayItem(player));
+            }
         }
 
         for (String command : crate.getPrizeCommands()) {

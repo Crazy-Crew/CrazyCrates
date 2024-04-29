@@ -25,6 +25,7 @@ import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.files.FileManager;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.apache.commons.lang.WordUtils;
+import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
@@ -235,8 +236,8 @@ public class CrateManager {
         purge();
 
         // Removes all holograms so that they can be replaced.
-        if (this.holograms != null && !this.holograms.isEmpty()) {
-            this.holograms.removeAllHolograms();
+        if (this.holograms != null) {
+            this.holograms.removeAllHolograms(false);
         }
 
         if (MiscUtils.isLogging()) this.plugin.getLogger().info("Loading all crate information...");
@@ -323,7 +324,7 @@ public class CrateManager {
 
                 List<String> prizeCommands = file.contains("Crate.Prize-Commands") ? file.getStringList("Crate.Prize-Commands") : Collections.emptyList();
 
-                CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getInt("Crate.Hologram.Range", 8), file.getStringList("Crate.Hologram.Message"));
+                CrateHologram holo = new CrateHologram(file.getBoolean("Crate.Hologram.Toggle"), file.getDouble("Crate.Hologram.Height", 0.0), file.getInt("Crate.Hologram.Range", 8), file.getString("Crate.Hologram.Color", "transparent"), file.getStringList("Crate.Hologram.Message"));
                 addCrate(new Crate(crateName, previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name", "Crate.PhysicalKey.Name is missing from " + crateName + ".yml"), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, prizeCommands, holo));
 
                 Permission doesExist = this.plugin.getServer().getPluginManager().getPermission("crazycrates.open." + crateName);
@@ -1013,7 +1014,7 @@ public class CrateManager {
      * @return a crate if is a key from a crate otherwise null if it is not.
      */
     public Crate getCrateFromKey(ItemStack item) {
-        if (!item.hasItemMeta() && !MiscUtils.useLegacyChecks()) return null;
+        if (!item.hasItemMeta()) return null;
 
         ItemMeta itemMeta = item.getItemMeta();
 

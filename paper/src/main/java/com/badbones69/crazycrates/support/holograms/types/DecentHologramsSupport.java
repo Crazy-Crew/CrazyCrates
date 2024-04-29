@@ -21,15 +21,21 @@ public class DecentHologramsSupport extends HologramManager {
 
         CrateHologram crateHologram = crate.getHologram();
 
-        if (!crateHologram.isEnabled()) return;
+        if (!crateHologram.isEnabled()) {
+            removeHologram(location);
+
+            return;
+        }
 
         Hologram hologram = DHAPI.createHologram(name(), location.clone().add(getVector(crate)));
+
+        lines(crateHologram).forEach(line -> DHAPI.addHologramLine(hologram, line));
 
         crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, color(line)));
 
         hologram.setDisplayRange(crateHologram.getRange());
 
-        this.holograms.put(MiscUtils.location(location), hologram);
+        this.holograms.putIfAbsent(MiscUtils.location(location), hologram);
     }
 
     @Override
@@ -42,9 +48,11 @@ public class DecentHologramsSupport extends HologramManager {
     }
 
     @Override
-    public void removeAllHolograms() {
-        this.holograms.forEach((key, value) -> value.destroy());
-        this.holograms.clear();
+    public void removeAllHolograms(boolean isShutdown) {
+        if (!isEmpty()) {
+            this.holograms.forEach((key, value) -> value.destroy());
+            this.holograms.clear();
+        }
     }
 
     @Override

@@ -176,6 +176,9 @@ Crate:
     Height: 1.5
     # The distance the hologram can be seen.
     Range: 8
+    # The background color of the hologram. It uses hex colors. This only works with CMI/FancyHolograms
+    # Set the color to transparent if you don't want any color.
+    Color: "transparent"
     # The message that will be displayed above the crate.
     # Note: MiniMessage or Color Codes being supported is depending on the 'holograms' plugin.
     Message:

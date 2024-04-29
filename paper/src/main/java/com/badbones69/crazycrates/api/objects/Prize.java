@@ -10,6 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -237,6 +238,16 @@ public class Prize {
             String material = this.section.getString("DisplayItem", "red_terracotta");
 
             int amount = this.section.getInt("DisplayAmount", 1);
+            String nbt = this.section.getString("DisplayNbt");
+
+            if (nbt != null && !nbt.isEmpty()) {
+                builder.setMaterial(material).setAmount(amount).setTag(nbt);
+
+                builder.setString(PersistentKeys.crate_prize.getNamespacedKey(), this.section.getName());
+
+                return builder;
+            }
+
             List<String> lore = this.section.getStringList("Lore");
             boolean isGlowing = this.section.getBoolean("Glowing", false);
             boolean isUnbreakable = this.section.getBoolean("Unbreakable", false);

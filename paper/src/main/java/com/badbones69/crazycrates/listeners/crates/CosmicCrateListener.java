@@ -96,7 +96,7 @@ public class CosmicCrateListener implements Listener {
         }
 
         // Play sound.
-        if (playSound) holder.getCrate().playSound(player, player.getLocation(), "click-sound", "ui.button.click", SoundCategory.PLAYERS);
+        if (playSound) crate.playSound(player, player.getLocation(), "click-sound", "UI_BUTTON_CLICK", SoundCategory.PLAYERS);
 
         // Remove opening stuff.
         this.crateManager.removePlayerFromOpeningList(player);

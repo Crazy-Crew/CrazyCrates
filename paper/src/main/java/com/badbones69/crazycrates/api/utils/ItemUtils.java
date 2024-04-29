@@ -13,10 +13,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ItemUtils {
 
-    private static final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    @NotNull
-    private static final CrateManager crateManager = plugin.getCrateManager();
+    private static final @NotNull CrateManager crateManager = plugin.getCrateManager();
 
     public static void removeItem(ItemStack item, Player player) {
         try {
@@ -29,73 +28,7 @@ public class ItemUtils {
     }
 
     public static boolean isSimilar(ItemStack itemStack, Crate crate) {
-        boolean isKey = crateManager.isKeyFromCrate(itemStack, crate);
-
-        if (MiscUtils.useLegacyChecks()) {
-            boolean isSimilar = itemStack.isSimilar(crate.getEmptyKey());
-            boolean isCustom = isSimilarCustom(crate.getEmptyKey(), itemStack);
-
-            return isSimilar || isCustom || isKey;
-        }
-
-        return isKey;
-    }
-
-    private static boolean isSimilarCustom(ItemStack one, ItemStack two) {
-        if (one != null && two != null) {
-            if (one.getType() == two.getType()) {
-                if (one.hasItemMeta() && two.hasItemMeta()) {
-                    ItemMeta itemMetaOne = one.getItemMeta();
-                    ItemMeta itemMetaTwo = two.getItemMeta();
-
-                    if (itemMetaOne.hasDisplayName() && itemMetaTwo.hasDisplayName()) {
-                        if (itemMetaOne.getDisplayName().equalsIgnoreCase(itemMetaTwo.getDisplayName())) {
-                            if (itemMetaOne.hasLore() && itemMetaTwo.hasLore()) {
-                                if (itemMetaOne.getLore().size() == itemMetaTwo.getLore().size()) {
-                                    int i = 0;
-
-                                    for (String lore : itemMetaOne.getLore()) {
-                                        if (!lore.equals(itemMetaTwo.getLore().get(i))) {
-                                            return false;
-                                        }
-
-                                        i++;
-                                    }
-
-                                    return true;
-                                }
-                            } else {
-                                return !itemMetaOne.hasLore() && !itemMetaTwo.hasLore();
-                            }
-                        }
-                    } else if (!itemMetaOne.hasDisplayName() && !itemMetaTwo.hasDisplayName()) {
-                        if (itemMetaOne.hasLore() && itemMetaTwo.hasLore()) {
-                            if (itemMetaOne.getLore().size() == itemMetaTwo.getLore().size()) {
-                                int i = 0;
-
-                                for (String lore : itemMetaOne.getLore()) {
-                                    if (!lore.equals(itemMetaTwo.getLore().get(i))) {
-                                        return false;
-                                    }
-
-                                    i++;
-                                }
-
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return !itemMetaOne.hasLore() && !itemMetaTwo.hasLore();
-                        }
-                    }
-                } else {
-                    return !one.hasItemMeta() && !two.hasItemMeta();
-                }
-            }
-        }
-
-        return false;
+        return crateManager.isKeyFromCrate(itemStack, crate);
     }
 
     public static String getKey(ItemMeta itemMeta) {

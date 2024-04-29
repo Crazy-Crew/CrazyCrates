@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.ryderbelserion.vital.files.FileManager;
 import com.ryderbelserion.vital.util.DyeUtil;
@@ -14,6 +13,7 @@ import org.bukkit.Particle;
 import org.bukkit.Registry;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -27,7 +27,6 @@ import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -49,7 +48,6 @@ public class Crate {
     private final String name;
     private String keyName;
     private ItemBuilder keyBuilder;
-    private ItemBuilder emptyKey;
     private int maxPage = 1;
     private int maxSlots;
     private String previewName;
@@ -99,7 +97,6 @@ public class Crate {
      * @param file The crate file.
      */
     public Crate(String name, String previewName, CrateType crateType, ItemBuilder key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, List<String> prizeCommands, CrateHologram hologram) {
-        this.emptyKey = key.setDisplayName(keyName);
         this.keyBuilder = key.setDisplayName(keyName).setCrateName(name);
         this.keyName = keyName;
 
@@ -524,27 +521,7 @@ public class Crate {
     public ItemStack getKey(int amount, Player player) {
         return this.userManager.addPlaceholders(this.keyBuilder.setTarget(player).setAmount(amount), this).build();
     }
-    
-    /**
-     * @return the key as an item stack with no nbt tags.
-     */
-    public ItemStack getEmptyKey() {
-        return this.emptyKey.build();
-    }
-    
-    /**
-     * @param amount the amount of keys you want.
-     *
-     * @return the key as an item stack with no nbt tags.
-     */
-    public ItemStack getEmptyKey(int amount) {
-        ItemBuilder key = this.emptyKey;
 
-        key.setAmount(amount);
-
-        return key.build();
-    }
-    
     /**
      * @return the crates file.
      */
@@ -600,19 +577,11 @@ public class Crate {
      * @param item the ItemStack that is being added.
      */
     public void addEditorItem(String prize, ItemStack item, int chance) {
-        List<ItemStack> items = new ArrayList<>();
-        items.add(item);
-
         String path = "Crate.Prizes." + prize;
 
-        if (!this.file.contains(path)) {
-            setItem(item, chance, path);
-        } else {
-            // Must be checked as getList will return null if nothing is found.
-            if (this.file.contains(path + ".Editor-Items")) this.file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
-        }
+        setItem(item, chance, path);
 
-        saveFile(items, path);
+        saveFile();
     }
 
     /**
@@ -623,22 +592,13 @@ public class Crate {
      * @param path the path in the config to set the item at.
      */
     private void setItem(ItemStack item, int chance, String path) {
-        if (item.hasItemMeta()) {
-            ItemMeta itemMeta = item.getItemMeta();
+        net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 
-            if (itemMeta.hasDisplayName()) this.file.set(path + ".DisplayName", itemMeta.getDisplayName());
-            if (itemMeta.hasLore()) this.file.set(path + ".Lore", itemMeta.getLore());
+        String tag = nmsItem.getOrCreateTag().getAsString();
 
-            this.file.set(path + ".Unbreakable", itemMeta.isUnbreakable());
+        if (!tag.isEmpty()) {
+            this.file.set(path + ".DisplayNbt", tag);
         }
-
-        List<String> enchantments = new ArrayList<>();
-
-        for (Enchantment enchantment : item.getEnchantments().keySet()) {
-            enchantments.add((enchantment.getKey().getKey() + ":" + item.getEnchantmentLevel(enchantment)));
-        }
-
-        if (!enchantments.isEmpty()) this.file.set(path + ".DisplayEnchantments", enchantments);
 
         this.file.set(path + ".DisplayItem", item.getType().name());
         this.file.set(path + ".DisplayAmount", item.getAmount());
@@ -648,13 +608,8 @@ public class Crate {
 
     /**
      * Saves item stacks to editor-items
-     *
-     * @param items list of items
-     * @param path the path in the config.
      */
-    private void saveFile(List<ItemStack> items, String path) {
-        this.file.set(path + ".Editor-Items", items);
-
+    private void saveFile() {
         File crates = new File(this.plugin.getDataFolder(), "crates");
 
         File crateFile = new File(crates, this.name + ".yml");
@@ -678,23 +633,15 @@ public class Crate {
      * @param tier the tier for the crate.
      */
     public void addEditorItem(String prize, ItemStack item, Tier tier, int chance) {
-        List<ItemStack> items = new ArrayList<>();
-        items.add(item);
-
         String path = "Crate.Prizes." + prize;
 
-        if (!this.file.contains(path)) {
-            setItem(item, chance, path);
+        setItem(item, chance, path);
 
-            this.file.set(path + ".Tiers", new ArrayList<>() {{
-                add(tier.getName());
-            }});
-        } else {
-            // Must be checked as getList will return null if nothing is found.
-            if (this.file.contains(path + ".Editor-Items")) this.file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
-        }
+        this.file.set(path + ".Tiers", new ArrayList<>() {{
+            add(tier.getName());
+        }});
 
-        saveFile(items, path);
+        saveFile();
     }
     
     /**
