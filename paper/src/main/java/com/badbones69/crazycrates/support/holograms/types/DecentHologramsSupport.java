@@ -29,7 +29,7 @@ public class DecentHologramsSupport extends HologramManager {
 
         Hologram hologram = DHAPI.createHologram(name(), location.clone().add(getVector(crate)));
 
-        lines(crateHologram).forEach(line -> DHAPI.addHologramLine(hologram, line));
+        DHAPI.addHologramPage(hologram, lines(crateHologram));
 
         crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, color(line)));
 
