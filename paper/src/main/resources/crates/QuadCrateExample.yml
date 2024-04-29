@@ -68,6 +68,12 @@ Crate:
       volume: 1.0
       # The speed of the sound.
       pitch: 1.0
+  # Only used for quadcrates
+  particles:
+    # Only used for "dust" particle
+    color: "235,64,52"
+    # https://minecraft.wiki/w/Particles_(Java_Edition)
+    type: "crimson_spore"
   # A default message if the prize doesn't have any Messages
   # i.e. Messages: [] or the value isn't there.
   Prize-Message:
@@ -124,6 +130,8 @@ Crate:
     Height: 1.5
     # The distance the hologram can be seen.
     Range: 8
+    # The background color of the hologram. It uses hex colors. This only works with CMI/FancyHolograms
+    Color: "transparent"
     # The message that will be displayed above the crate.
     # Note: MiniMessage or Color Codes being supported is depending on the 'holograms' plugin.
     Message:

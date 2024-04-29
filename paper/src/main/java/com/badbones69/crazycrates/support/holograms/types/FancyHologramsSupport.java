@@ -10,6 +10,7 @@ import de.oliver.fancyholograms.api.HologramType;
 import de.oliver.fancyholograms.api.data.DisplayHologramData;
 import de.oliver.fancyholograms.api.data.HologramData;
 import de.oliver.fancyholograms.api.data.TextHologramData;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Display;
@@ -43,6 +44,16 @@ public class FancyHologramsSupport extends HologramManager {
         String uuid = name();
 
         TextHologramData textData = TextHologramData.getDefault(uuid);
+        textData.setBackground(TextColor.fromCSSHexString(crateHologram.getBackgroundColor()));
+
+        String color = crateHologram.getBackgroundColor();
+
+        if (color.equalsIgnoreCase("transparent")) {
+            textData.setBackground(Hologram.TRANSPARENT);
+        } else {
+            textData.setBackground(TextColor.fromCSSHexString(color));
+        }
+
         textData.setText(crateHologram.getMessages());
 
         HologramData hologramData = new HologramData(uuid, displayData, HologramType.TEXT, textData);
@@ -50,6 +61,7 @@ public class FancyHologramsSupport extends HologramManager {
         Hologram hologram = this.manager.create(hologramData);
 
         this.manager.addHologram(hologram);
+        this.manager.saveHolograms();
 
         Server server = this.plugin.getServer();
 
@@ -68,6 +80,32 @@ public class FancyHologramsSupport extends HologramManager {
         Hologram hologram = this.holograms.remove(MiscUtils.location(location));
 
         if (hologram != null) {
+            nuke(hologram, false);
+        }
+    }
+
+    @Override
+    public void removeAllHolograms(boolean isShutdown) {
+        if (!isEmpty()) {
+            this.holograms.forEach((key, value) -> nuke(value, isShutdown));
+            this.holograms.clear();
+        }
+
+        if (this.manager.getHolograms().isEmpty()) {
+            this.manager.loadHolograms();
+        }
+
+        this.manager.getHolograms().forEach(hologram -> {
+            String name = hologram.getData().getName();
+
+            if (name.startsWith(this.plugin.getName().toLowerCase() + "-")) {
+                nuke(hologram, isShutdown);
+            }
+        });
+    }
+
+    private void nuke(Hologram hologram, boolean isShutdown) {
+        if (!isShutdown) {
             new FoliaRunnable(this.plugin.getServer().getAsyncScheduler(), null) {
                 @Override
                 public void run() {
@@ -75,30 +113,10 @@ public class FancyHologramsSupport extends HologramManager {
                     hologram.hideHologram(plugin.getServer().getOnlinePlayers());
                 }
             }.run(this.plugin);
-
-            // Yeet the hologram.
-            this.manager.removeHologram(hologram);
         }
-    }
 
-    @Override
-    public void removeAllHolograms(boolean isShutdown) {
-        this.holograms.forEach((key, value) -> {
-            if (!isShutdown) {
-                new FoliaRunnable(this.plugin.getServer().getAsyncScheduler(), null) {
-                    @Override
-                    public void run() {
-                        // Hide the hologram first.
-                        value.hideHologram(plugin.getServer().getOnlinePlayers());
-                    }
-                }.run(this.plugin);
-            }
-
-            // Yeet the hologram.
-            this.manager.removeHologram(value);
-        });
-
-        this.holograms.clear();
+        this.manager.removeHologram(hologram);
+        this.manager.saveHolograms();
     }
 
     @Override

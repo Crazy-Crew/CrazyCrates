@@ -26,7 +26,7 @@ public abstract class HologramManager {
     public abstract boolean isEmpty();
 
     protected String name() {
-        return "crazycrates-" + UUID.randomUUID();
+        return this.plugin.getName().toLowerCase() + "-" + UUID.randomUUID();
     }
 
     protected Vector getVector(Crate crate) {
@@ -47,7 +47,11 @@ public abstract class HologramManager {
     protected List<String> lines(CrateHologram crateHologram) {
         List<String> lines = new ArrayList<>();
 
-        crateHologram.getMessages().forEach(line -> lines.add(color(line)));
+        crateHologram.getMessages().forEach(line -> {
+            this.plugin.getLogger().warning("Line: " + line);
+
+            lines.add(color(line));
+        });
 
         return lines;
     }
