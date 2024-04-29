@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 
-import com.badbones69.crazycrates.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.ryderbelserion.vital.util.structures.StructureManager;
 import org.bukkit.Color;

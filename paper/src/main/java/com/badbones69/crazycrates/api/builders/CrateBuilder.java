@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.api.builders;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
