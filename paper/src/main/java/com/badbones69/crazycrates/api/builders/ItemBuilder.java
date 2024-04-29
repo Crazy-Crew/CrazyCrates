@@ -637,11 +637,11 @@ public class ItemBuilder {
             case ENCHANTED_BOOK -> this.isBook = true;
         }
 
-        String name = this.material.name();
+        String name = this.material.getKey().getKey();
 
-        this.isArmor = name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE") || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS");
+        this.isArmor = name.endsWith("_helmet") || name.endsWith("_chestplate") || name.endsWith("_leggings") || name.endsWith("_boots");
 
-        this.isBanner = name.endsWith("BANNER");
+        this.isBanner = name.endsWith("banner");
 
         return this;
     }
