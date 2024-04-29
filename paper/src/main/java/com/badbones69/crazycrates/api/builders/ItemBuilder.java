@@ -11,6 +11,7 @@ import com.ryderbelserion.vital.util.MiscUtil;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.*;
@@ -60,6 +61,7 @@ public class ItemBuilder {
     private Material material = Material.STONE;
     private ItemStack itemStack = null;
     private int itemAmount = 1;
+    private CompoundTag tag = null;
 
     // NBT Data
     private String itemData = "";
@@ -146,6 +148,8 @@ public class ItemBuilder {
      */
     public ItemBuilder(ItemBuilder itemBuilder) {
         this.target = itemBuilder.target;
+
+        this.tag = itemBuilder.tag;
 
         this.material = itemBuilder.material;
         this.itemStack = itemBuilder.itemStack;
@@ -273,6 +277,20 @@ public class ItemBuilder {
 
     public ItemBuilder() {}
 
+    public ItemBuilder setTag(String tag) {
+        try {
+            this.tag = TagParser.parseTag(tag);
+        } catch (CommandSyntaxException exception) {
+            this.plugin.getLogger().log(Level.WARNING, "Failed to set tag compound.", exception);
+        }
+
+        return this;
+    }
+
+    public CompoundTag getTag() {
+        return this.tag;
+    }
+
     private Component parse(String message) {
         if (Support.placeholder_api.isEnabled() && this.target != null) {
             return MiscUtil.parse(PlaceholderAPI.setPlaceholders(this.target, message));
@@ -321,16 +339,11 @@ public class ItemBuilder {
 
         if (this.itemStack.getType() != Material.AIR) {
             // If item data is not empty. We ignore all other options and simply return.
-            if (!this.itemData.isEmpty()) {
+            if (this.tag != null) {
                 net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(getItemStack());
+                nmsItem.setTag(this.tag);
 
-                try {
-                    nmsItem.setTag(TagParser.parseTag(this.itemData));
-                } catch (CommandSyntaxException exception) {
-                    this.plugin.getLogger().log(Level.WARNING, "Failed to set nms tag.", exception);
-                }
-
-                return CraftItemStack.asBukkitCopy(nmsItem);
+                this.itemStack = CraftItemStack.asBukkitCopy(nmsItem);
             }
 
             this.itemStack.setAmount(this.itemAmount);
@@ -422,8 +435,10 @@ public class ItemBuilder {
                     }
                 }
 
-                itemMeta.displayName(getUpdatedName());
-                itemMeta.lore(getUpdatedLore());
+                if (this.tag == null) {
+                    itemMeta.displayName(getUpdatedName());
+                    itemMeta.lore(getUpdatedLore());
+                }
 
                 if (!this.crateName.isBlank() || !this.crateName.isEmpty()) {
                     PersistentDataContainer container = itemMeta.getPersistentDataContainer();

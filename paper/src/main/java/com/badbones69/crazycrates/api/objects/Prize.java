@@ -237,8 +237,23 @@ public class Prize {
 
         try {
             String material = this.section.getString("DisplayItem", "RED_TERRACOTTA");
-
             int amount = this.section.getInt("DisplayAmount", 1);
+            String nbt = this.section.getString("DisplayNbt");
+
+            if (nbt != null && !nbt.isEmpty()) {
+                builder.setMaterial(material).setAmount(amount).setTag(nbt);
+
+                NamespacedKey cratePrize = PersistentKeys.crate_prize.getNamespacedKey();
+
+                ItemMeta itemMeta = builder.getItemMeta();
+
+                itemMeta.getPersistentDataContainer().set(cratePrize, PersistentDataType.STRING, this.section.getName());
+
+                builder.setItemMeta(itemMeta);
+
+                return builder;
+            }
+
             List<String> lore = this.section.getStringList("Lore");
             boolean isGlowing = this.section.getBoolean("Glowing", false);
             boolean isUnbreakable = this.section.getBoolean("Unbreakable", false);
