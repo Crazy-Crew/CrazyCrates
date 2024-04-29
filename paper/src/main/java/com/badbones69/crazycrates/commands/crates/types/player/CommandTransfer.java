@@ -1,9 +1,9 @@
-package com.badbones69.crazycrates.commands.v2.types.player;
+package com.badbones69.crazycrates.commands.crates.types.player;
 
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.commands.v2.BaseCommand;
+import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
@@ -19,7 +19,7 @@ public class CommandTransfer extends BaseCommand {
 
     @Command("transfer")
     @Permission(value = "crazycrates.transfer", def = PermissionDefault.OP)
-    public void transfer(Player player, @Suggestion("crates") String crateName, @Suggestion("players") Player target, @Suggestion("amount") int amount) {
+    public void transfer(Player player, @Suggestion("crates") String crateName, @Suggestion("players") Player target, @Suggestion("numbers") int amount) {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
         // If the crate is menu or null. we return

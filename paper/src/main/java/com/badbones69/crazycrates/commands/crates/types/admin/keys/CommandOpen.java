@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.commands.v2.types.admin.keys;
+package com.badbones69.crazycrates.commands.crates.types.admin.keys;
 
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.enums.Messages;
@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.commands.v2.BaseCommand;
+import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import com.ryderbelserion.vital.util.ItemUtil;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -78,7 +78,7 @@ public class CommandOpen extends BaseCommand {
 
     @Command("open")
     @Permission(value = "crazycrates.open", def = PermissionDefault.OP)
-    public void open(Player player, @Suggestion("crates") String crateName, @Suggestion("key-types") String type) {
+    public void open(Player player, @Suggestion("crates") String crateName, @Suggestion("keys") String type) {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) {
             return;
@@ -112,7 +112,7 @@ public class CommandOpen extends BaseCommand {
     @Command("open-others")
     @CommandFlags({@Flag(flag = "f", argument = boolean.class)})
     @Permission(value = "crazycrates.open-others", def = PermissionDefault.TRUE)
-    public void others(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("players") Player player, @Suggestion("key-types") String type, @Suggestion("numbers") int amount, @Optional Flags flags) {
+    public void others(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("players") Player player, @Suggestion("keys") String type, @Suggestion("numbers") int amount, @Optional Flags flags) {
         AtomicReference<KeyType> keyType = new AtomicReference<>(getKeyType(sender, type));
 
         if (sender == player && keyType.get() != KeyType.free_key) {
@@ -166,7 +166,7 @@ public class CommandOpen extends BaseCommand {
 
     @Command("mass-open")
     @Permission(value = "crazycrates.massopen", def = PermissionDefault.OP)
-    public void mass(Player player, @Suggestion("crates") String crateName, @Suggestion("key-types") String type, @Suggestion("numbers") int amount) {
+    public void mass(Player player, @Suggestion("crates") String crateName, @Suggestion("keys") String type, @Suggestion("numbers") int amount) {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) {
             return;

@@ -1,9 +1,9 @@
-package com.badbones69.crazycrates.commands.v2.types.admin.crates;
+package com.badbones69.crazycrates.commands.crates.types.admin.crates;
 
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.commands.v2.BaseCommand;
+import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
@@ -18,7 +18,7 @@ public class CommandDebug extends BaseCommand {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null) {
-            player.sendMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
+            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
 
             return;
         }

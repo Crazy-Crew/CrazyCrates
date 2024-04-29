@@ -1,11 +1,11 @@
-package com.badbones69.crazycrates.commands.v2.types.admin.keys;
+package com.badbones69.crazycrates.commands.crates.types.admin.keys;
 
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.commands.v2.BaseCommand;
+import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
@@ -21,7 +21,7 @@ public class CommandGive extends BaseCommand {
 
     @Command("give")
     @Permission(value = "crazycrates.givekey", def = PermissionDefault.OP)
-    public void give(CommandSender sender, @Suggestion("types") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("players") CustomPlayer target) {
+    public void give(CommandSender sender, @Suggestion("keys") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("players") CustomPlayer target) {
         KeyType keyType = getKeyType(sender, type);
 
         if (amount <= 0) {
@@ -47,12 +47,12 @@ public class CommandGive extends BaseCommand {
 
     @Command("give-random")
     @Permission(value = "crazycrates.giverandomkey", def = PermissionDefault.OP)
-    public void random(CommandSender sender, @Suggestion("types") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("players") CustomPlayer target) {
+    public void random(CommandSender sender, @Suggestion("keys") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("players") CustomPlayer target) {
         give(sender, type, this.crateManager.getUsableCrates().get((int) MiscUtils.pickNumber(0, (this.crateManager.getUsableCrates().size() - 2))).getName(), amount, target);
     }
 
     @Command("giveall")
-    public void all(CommandSender sender, @Suggestion("types") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount) {
+    public void all(CommandSender sender, @Suggestion("keys") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount) {
         KeyType keyType = getKeyType(sender, type);
 
         if (amount <= 0) {

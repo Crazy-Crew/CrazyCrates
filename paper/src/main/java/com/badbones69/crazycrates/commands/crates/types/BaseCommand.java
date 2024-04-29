@@ -1,10 +1,11 @@
-package com.badbones69.crazycrates.commands.v2;
+package com.badbones69.crazycrates.commands.crates.types;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
@@ -149,6 +150,24 @@ public abstract class BaseCommand {
         }
 
         return crate;
+    }
+
+    protected Prize getPrize(CommandSender sender, String crateName, String name, boolean ignoreChecks) {
+        Crate crate = getCrate(sender, crateName, false);
+
+        if (crate == null) {
+            return null;
+        }
+
+        Prize prize = crate.getPrize(name);
+
+        if (prize == null) {
+            //todo() add better message.
+
+            return null;
+        }
+
+        return prize;
     }
 
     /**
