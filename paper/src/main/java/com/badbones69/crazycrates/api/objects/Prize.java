@@ -95,7 +95,7 @@ public class Prize {
 
         this.section = section;
     }
-    
+
     /**
      * @return the name of the prize.
      */
@@ -117,6 +117,7 @@ public class Prize {
         ItemStack itemStack = this.displayItem.build();
 
         itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.sectionName));
+
 
         return itemStack;
     }
