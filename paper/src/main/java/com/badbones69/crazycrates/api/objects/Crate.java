@@ -594,7 +594,9 @@ public class Crate {
     private void setItem(ItemStack item, int chance, String path) {
         net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 
-        String tag = nmsItem.getOrCreateTag().getAsString();
+        String tag = nmsItem.getItem().toString();
+
+        this.plugin.getLogger().warning("Tag: " + tag);
 
         if (!tag.isEmpty()) {
             this.file.set(path + ".DisplayNbt", tag);
