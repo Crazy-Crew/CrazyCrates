@@ -77,10 +77,13 @@ public class PrizeManager {
                 }
             }
         } else {
-            if (!MiscUtils.isInventoryFull(player)) {
-                player.getInventory().addItem(prize.getDisplayItem(player));
-            } else {
-                player.getWorld().dropItemNaturally(player.getLocation(), prize.getDisplayItem(player));
+            // Only give them the display item as a reward if prize commands are empty.
+            if (crate.getPrizeCommands().isEmpty()) {
+                if (!MiscUtils.isInventoryFull(player)) {
+                    player.getInventory().addItem(prize.getDisplayItem(player));
+                } else {
+                    player.getWorld().dropItemNaturally(player.getLocation(), prize.getDisplayItem(player));
+                }
             }
         }
 
