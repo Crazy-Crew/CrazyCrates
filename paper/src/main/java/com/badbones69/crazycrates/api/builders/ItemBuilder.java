@@ -158,9 +158,7 @@ public class ItemBuilder {
         if (!itemBuilder.displayName.isBlank()) {
             this.displayName = itemBuilder.displayName;
         } else {
-            String material = WordUtils.capitalizeFully(this.material.getKey().getKey().replaceAll("_", " "));
-
-            this.displayName = material;
+            this.displayName = WordUtils.capitalizeFully(this.material.getKey().getKey().replaceAll("_", " "));
         }
 
         this.displayLore = itemBuilder.displayLore;
@@ -290,7 +288,7 @@ public class ItemBuilder {
      */
     public ItemStack build() {
         // Check if oraxen is enabled.
-        if (Support.oraxen.isEnabled() ) {
+        if (Support.oraxen.isEnabled()) {
             // Get the item.
             io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
 
@@ -702,9 +700,7 @@ public class ItemBuilder {
         if (!itemName.isBlank()) {
             this.displayName = itemName;
         } else {
-            String material = WordUtils.capitalizeFully(this.material.getKey().getKey().replaceAll("_", " "));
-
-            this.displayName = material;
+            this.displayName = WordUtils.capitalizeFully(this.material.getKey().getKey().replaceAll("_", " "));
         }
 
         return this;
