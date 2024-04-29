@@ -227,7 +227,7 @@ public class CrateManager {
 
         // Removes all holograms so that they can be replaced.
         if (this.holograms != null && !this.holograms.isEmpty()) {
-            this.holograms.removeAllHolograms();
+            this.holograms.removeAllHolograms(false);
         }
 
         if (MiscUtils.isLogging()) this.plugin.getLogger().info("Loading all crate information...");

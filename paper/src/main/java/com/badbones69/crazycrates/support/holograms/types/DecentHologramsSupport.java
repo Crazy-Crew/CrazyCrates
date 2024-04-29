@@ -48,7 +48,7 @@ public class DecentHologramsSupport extends HologramManager {
     }
 
     @Override
-    public void removeAllHolograms() {
+    public void removeAllHolograms(boolean isShutdown) {
         this.holograms.forEach((key, value) -> value.destroy());
 
         this.holograms.clear();

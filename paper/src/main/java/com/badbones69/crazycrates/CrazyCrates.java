@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
@@ -143,7 +142,7 @@ public class CrazyCrates extends JavaPlugin {
             HologramManager holograms = this.crateManager.getHolograms();
 
             if (holograms != null && !holograms.isEmpty()) {
-                holograms.removeAllHolograms();
+                holograms.removeAllHolograms(true);
             }
         }
 

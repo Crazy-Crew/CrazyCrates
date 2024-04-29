@@ -21,7 +21,7 @@ public abstract class HologramManager {
 
     public abstract void removeHologram(Location location);
 
-    public abstract void removeAllHolograms();
+    public abstract void removeAllHolograms(boolean isShutdown);
 
     public abstract boolean isEmpty();
 
