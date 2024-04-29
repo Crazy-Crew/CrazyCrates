@@ -11,12 +11,12 @@ import de.oliver.fancyholograms.api.data.DisplayHologramData;
 import de.oliver.fancyholograms.api.data.HologramData;
 import de.oliver.fancyholograms.api.data.TextHologramData;
 import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.entity.Display;
 import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class FancyHologramsSupport extends HologramManager {
 
@@ -30,28 +30,37 @@ public class FancyHologramsSupport extends HologramManager {
 
         CrateHologram crateHologram = crate.getHologram();
 
-        if (!crateHologram.isEnabled()) return;
+        if (!crateHologram.isEnabled()) {
+            removeHologram(location);
 
-        DisplayHologramData displayData = DisplayHologramData.getDefault(location.clone().add(getVector(crate))).setBillboard(Display.Billboard.CENTER).setVisibilityDistance(crateHologram.getRange());
+            return;
+        }
 
-        TextHologramData textData = TextHologramData.getDefault(name());
+        DisplayHologramData displayData = DisplayHologramData.getDefault(location.clone().add(getVector(crate)))
+                .setBillboard(Display.Billboard.CENTER)
+                .setVisibilityDistance(crateHologram.getRange());
+
+        String uuid = name();
+
+        TextHologramData textData = TextHologramData.getDefault(uuid);
         textData.setText(crateHologram.getMessages());
 
-        HologramData hologramData = new HologramData(name(), displayData, HologramType.TEXT, textData);
+        HologramData hologramData = new HologramData(uuid, displayData, HologramType.TEXT, textData);
 
         Hologram hologram = this.manager.create(hologramData);
 
         this.manager.addHologram(hologram);
 
-        new FoliaRunnable(this.plugin.getServer().getAsyncScheduler(), TimeUnit.SECONDS) {
+        Server server = this.plugin.getServer();
+
+        new FoliaRunnable(server.getAsyncScheduler(), null) {
             @Override
             public void run() {
-                hologram.showHologram(plugin.getServer().getOnlinePlayers());
+                hologram.showHologram(server.getOnlinePlayers());
             }
         }.run(this.plugin);
 
         this.holograms.put(MiscUtils.location(location), hologram);
-        this.manager.saveHolograms();
     }
 
     @Override
@@ -59,17 +68,37 @@ public class FancyHologramsSupport extends HologramManager {
         Hologram hologram = this.holograms.remove(MiscUtils.location(location));
 
         if (hologram != null) {
+            new FoliaRunnable(this.plugin.getServer().getAsyncScheduler(), null) {
+                @Override
+                public void run() {
+                    // Hide the hologram first.
+                    hologram.hideHologram(plugin.getServer().getOnlinePlayers());
+                }
+            }.run(this.plugin);
+
+            // Yeet the hologram.
             this.manager.removeHologram(hologram);
-            this.manager.saveHolograms();
         }
     }
 
     @Override
-    public void removeAllHolograms() {
-        this.holograms.forEach((key, value) -> this.manager.removeHologram(value));
-        this.holograms.clear();
+    public void removeAllHolograms(boolean isShutdown) {
+        this.holograms.forEach((key, value) -> {
+            if (!isShutdown) {
+                new FoliaRunnable(this.plugin.getServer().getAsyncScheduler(), null) {
+                    @Override
+                    public void run() {
+                        // Hide the hologram first.
+                        value.hideHologram(plugin.getServer().getOnlinePlayers());
+                    }
+                }.run(this.plugin);
+            }
 
-        this.manager.reloadHolograms();
+            // Yeet the hologram.
+            this.manager.removeHologram(value);
+        });
+
+        this.holograms.clear();
     }
 
     @Override
