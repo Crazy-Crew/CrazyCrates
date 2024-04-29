@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.tasks.crates.effects;
 
+import com.ryderbelserion.vital.util.ItemUtil;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -25,7 +26,7 @@ public class SoundEffect {
     public SoundEffect(ConfigurationSection section, String type, String fallback, SoundCategory category) {
         this.isEnabled = section.getBoolean(type + ".toggle", false);
 
-        this.sound = Sound.valueOf(section.getString(type + ".value", fallback));
+        this.sound = ItemUtil.getSound(section.getString(type + ".value", fallback));
         this.volume = (float) section.getDouble(type + ".volume", 1.0);
         this.pitch = (float) section.getDouble(type + ".pitch", 1.0);
 

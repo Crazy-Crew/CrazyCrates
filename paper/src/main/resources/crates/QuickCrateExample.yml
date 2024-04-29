@@ -78,7 +78,7 @@ Crate:
   # i.e. Commands: [] or the value isn't there.
   Prize-Commands: []
   # Item the crate is in the GUI
-  Item: "CHEST"
+  Item: "chest"
   # If the crate in the main /cc GUI is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
@@ -100,7 +100,7 @@ Crate:
       # The name of the border item.
       Name: " "
       # The item that shows in the border. Can be glass or any other item.
-      Item: "GRAY_STAINED_GLASS_PANE"
+      Item: "gray_stained_glass_pane"
   PhysicalKey:
     # Name of the Key.
     Name: "<bold><yellow>Classic Crate Key</bold>"

@@ -134,7 +134,7 @@ public class CrateMainMenu extends InventoryBuilder {
                             .setDisplayName(name)
                             .setDisplayLore(file.getStringList(path + "Lore"))
                             //todo() update this.
-                            .setUUID(UUID.fromString(file.getString(path + "Player")))
+                            //.setUUID(UUID.fromString(file.getString(path + "Player")))
                             .setGlowing(file.getBoolean(path + "Glowing"))
                             .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(getPlayer().getUniqueId(), crate.getName())))
                             .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(getPlayer().getUniqueId(), crate.getName())))

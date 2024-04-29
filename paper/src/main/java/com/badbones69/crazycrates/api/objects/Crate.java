@@ -133,7 +133,7 @@ public class Crate {
                 .setDisplayName(borderName) : new ItemBuilder().setMaterial(Material.AIR).setDisplayName(borderName);
 
         String previewTierBorderName = file != null ? file.getString("Crate.tier-preview.glass.name", " ") : " ";
-        this.previewTierBorderItem = file != null ? new ItemBuilder().setMaterial(file.getString("Crate.tier-preview.glass.item", "GRAY_STAINED_GLASS_PANE")).hideItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
+        this.previewTierBorderItem = file != null ? new ItemBuilder().setMaterial(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane")).hideItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
                 .setDisplayName(previewTierBorderName) : new ItemBuilder().setMaterial(Material.AIR).setDisplayName(previewTierBorderName);
 
         setTierPreviewRows(file != null ? file.getInt("Crate.tier-preview.rows", 5) : 5);

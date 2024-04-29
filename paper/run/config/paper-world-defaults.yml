@@ -131,7 +131,6 @@ entities:
       wither: true
       wither-skeleton: true
     spiders-immune-to-poison-effect: true
-    undead-immune-to-certain-effects: true
   sniffer:
     boosted-hatch-time: default
     hatch-time: default

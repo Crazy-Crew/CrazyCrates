@@ -109,7 +109,7 @@ Crate:
   structure:
     # If it should randomly use an .nbt file.
     random: true
-    # The file to use inside schematic"s folder.
+    # The file to use inside schematic's folder.
     file: "classic.nbt"
   PhysicalKey:
     # Name of the Key.
