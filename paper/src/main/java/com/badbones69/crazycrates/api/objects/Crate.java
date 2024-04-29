@@ -7,6 +7,8 @@ import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.ryderbelserion.vital.files.FileManager;
 import com.ryderbelserion.vital.util.DyeUtil;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
@@ -594,18 +596,18 @@ public class Crate {
     private void setItem(ItemStack item, int chance, String path) {
         net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 
-        String tag = nmsItem.getItem().toString();
+        String tag = nmsItem.getComponents().toString();
 
         this.plugin.getLogger().warning("Tag: " + tag);
 
-        if (!tag.isEmpty()) {
-            this.file.set(path + ".DisplayNbt", tag);
-        }
+        //if (!tag.isEmpty()) {
+        //    this.file.set(path + ".DisplayNbt", tag);
+        //}
 
-        this.file.set(path + ".DisplayItem", item.getType().name());
-        this.file.set(path + ".DisplayAmount", item.getAmount());
-        this.file.set(path + ".MaxRange", 100);
-        this.file.set(path + ".Chance", chance);
+        //this.file.set(path + ".DisplayItem", item.getType().getKey().getKey());
+        //this.file.set(path + ".DisplayAmount", item.getAmount());
+        //this.file.set(path + ".MaxRange", 100);
+        //this.file.set(path + ".Chance", chance);
     }
 
     /**
