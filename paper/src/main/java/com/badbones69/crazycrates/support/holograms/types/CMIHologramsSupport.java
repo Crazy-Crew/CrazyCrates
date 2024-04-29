@@ -68,7 +68,7 @@ public class CMIHologramsSupport extends HologramManager {
         if (color.equalsIgnoreCase("transparent")) {
             hologram.setBackgroundAlpha(0);
         } else {
-            hologram.setBackgroundColor(CMIChatColor.getByHex(color));
+            hologram.setBackgroundColor(CMIChatColor.getClosest(color));
         }
 
         hologram.setShowRange(crateHologram.getRange());

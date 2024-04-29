@@ -28,7 +28,7 @@ public class CrateHologram {
         this.height = 0.0;
         this.range = 8;
         this.messages = new ArrayList<>();
-        this.backgroundColor = "#aaaaaa";
+        this.backgroundColor = "transparent";
     }
 
     /**
