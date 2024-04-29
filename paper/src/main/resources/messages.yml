@@ -138,6 +138,7 @@ command:
       virtual-keys-header:
         - "<bold><dark_gray>(<gold>!<dark_gray>)</bold> <gray>List of your current number of keys."
         - " <yellow> -> Total Crates Opened: <red>{crates_opened}"
+        - ""
     other-player:
       # A list of available placeholders: {prefix}, {player}
       no-virtual-keys: "{prefix}<bold><dark_gray>(<dark_red>!<dark_gray>)</bold> <gray>The player {player} does not have any keys."
@@ -145,11 +146,13 @@ command:
       virtual-keys-header:
         - "<bold><dark_gray>(<gold>!<dark_gray>)</bold> <gray>List of {player}""s current number of keys."
         - " <yellow> -> Total Crates Opened: <red>{crates_opened}"
+        - ""
     # A list of available placeholders: {crate}, {keys}, {crate_opened}
     crate-format: "{crate} <bold><gray>><dark_gray>></bold> <gold>{keys} keys <gray>: Opened <gold>{crate_opened} times"
   # This requires crazycrates.command.help
   player-help:
     - "<bold><yellow>Crazy Crates Player Help</bold>"
+    - ""
     - "<gold>/keys view [player] <gray>- <yellow>Check the number of keys a player has."
     - "<gold>/keys <gray>- <yellow>Shows how many keys you have."
     - "<gold>/cc <gray>- <yellow>Opens the menu."
