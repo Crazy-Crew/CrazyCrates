@@ -527,26 +527,6 @@ public class Crate {
     }
     
     /**
-     * @return the key as an item stack with no nbt tags.
-     */
-    public ItemStack getEmptyKey() {
-        return this.emptyKey.build();
-    }
-    
-    /**
-     * @param amount the amount of keys you want.
-     *
-     * @return the key as an item stack with no nbt tags.
-     */
-    public ItemStack getEmptyKey(int amount) {
-        ItemBuilder key = this.emptyKey;
-
-        key.setAmount(amount);
-
-        return key.build();
-    }
-    
-    /**
      * @return the crates file.
      */
     public FileConfiguration getFile() {

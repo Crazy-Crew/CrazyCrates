@@ -1003,7 +1003,7 @@ public class CrateManager {
      * @return a crate if is a key from a crate otherwise null if it is not.
      */
     public Crate getCrateFromKey(ItemStack item) {
-        if (!item.hasItemMeta() && !MiscUtils.useLegacyChecks()) return null;
+        if (!item.hasItemMeta()) return null;
 
         ItemMeta itemMeta = item.getItemMeta();
 
