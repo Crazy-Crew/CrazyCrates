@@ -15,16 +15,16 @@ public class ArgumentRelations extends MessageManager {
         String usage = null;
 
         switch (command) {
-            case "transfer" -> usage = order + "<crate-name> <player-name> <amount>";
-            case "debug", "open", "set" -> usage = order + "<crate-name>";
+            case "transfer" -> usage = order + " <crate-name> <player-name> <amount>";
+            case "debug", "open", "set" -> usage = order + " <crate-name>";
             case "tp" -> usage = order + "<id>";
-            case "additem" -> usage = order + "<crate-name> <prize-number> <chance> [tier]";
-            case "preview", "forceopen" -> usage = order + "<crate-name> <player-name>";
-            case "open-others" -> usage = order + "<crate-name> <player-name> [key-type]";
-            case "mass-open" -> usage = order + "<crate-name> <key-type> <amount>";
-            case "give-random" -> usage = order + "<key-type> <amount> <player-name>";
-            case "give", "take" -> usage = order + "<key-type> <crate-name> <amount> <player-name>";
-            case "giveall" -> usage = order + "<key-type> <crate-name> <amount>";
+            case "additem" -> usage = order + " <crate-name> <prize-number> <chance> [tier]";
+            case "preview", "forceopen" -> usage = order + " <crate-name> <player-name>";
+            case "open-others" -> usage = order + " <crate-name> <player-name> [key-type]";
+            case "mass-open" -> usage = order + " <crate-name> <key-type> <amount>";
+            case "give-random" -> usage = order + " <key-type> <amount> <player-name>";
+            case "give", "take" -> usage = order + " <key-type> <crate-name> <amount> <player-name>";
+            case "giveall" -> usage = order + " <key-type> <crate-name> <amount>";
             case "admin" -> usage = order;
         }
 
