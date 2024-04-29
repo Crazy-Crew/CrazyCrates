@@ -1,5 +1,5 @@
 plugins {
-    id("io.github.goooler.shadow")
+    id("com.github.johnrengelman.shadow")
 
     alias(libs.plugins.run.paper)
 
@@ -40,7 +40,7 @@ tasks {
 
         defaultCharacterEncoding = Charsets.UTF_8.name()
 
-        minecraftVersion("1.20.5")
+        minecraftVersion("1.20.6")
     }
 
     assemble {

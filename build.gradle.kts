@@ -6,7 +6,7 @@ plugins {
     id("io.papermc.hangar-publish-plugin") version "0.1.2"
     id("com.modrinth.minotaur") version "2.+"
 
-    id("io.github.goooler.shadow")
+    id("com.github.johnrengelman.shadow")
 
     `root-plugin`
 }
@@ -42,7 +42,8 @@ modrinth {
     uploadFile.set(rootProject.projectDir.resolve("jars/${rootProject.name}-${rootProject.version}.jar"))
 
     gameVersions.set(listOf(
-        "1.20.5"
+        "1.20.5",
+        "1.20.6"
     ))
 
     loaders.add("paper")
@@ -74,7 +75,8 @@ hangarPublish {
                 jar.set(rootProject.projectDir.resolve("jars/${rootProject.name}-${rootProject.version}.jar"))
 
                 platformVersions.set(listOf(
-                    "1.20.5"
+                    "1.20.5",
+                    "1.20.6"
                 ))
 
                 dependencies {
