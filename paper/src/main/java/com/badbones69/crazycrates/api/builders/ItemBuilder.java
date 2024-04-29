@@ -233,6 +233,20 @@ public class ItemBuilder extends ParentItemBuilder {
     }
 
     @Override
+    public ItemBuilder setItemDamage(int itemDamage) {
+        super.setItemDamage(itemDamage);
+
+        return this;
+    }
+
+    @Override
+    public ItemBuilder setTag(String tag) {
+        super.setTag(tag);
+
+        return this;
+    }
+
+    @Override
     public ItemBuilder addDisplayLore(String value) {
         super.addDisplayLore(value);
         
