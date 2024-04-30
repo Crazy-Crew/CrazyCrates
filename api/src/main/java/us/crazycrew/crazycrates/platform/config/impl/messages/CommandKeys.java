@@ -73,7 +73,8 @@ public class CommandKeys implements SettingsHolder {
     @Comment("A list of available placeholders: {crates_opened}")
     public static final Property<List<String>> virtual_keys_header = newListProperty("command.keys.personal.virtual-keys-header", List.of(
             "<bold><dark_gray>(<gold>!<dark_gray>)</bold> <gray>List of your current number of keys.",
-            " <yellow> -> Total Crates Opened: <red>{crates_opened}"
+            " <yellow> -> Total Crates Opened: <red>{crates_opened}",
+            ""
     ));
 
     @Comment("A list of available placeholders: {prefix}, {player}")
@@ -82,7 +83,8 @@ public class CommandKeys implements SettingsHolder {
     @Comment("A list of available placeholders: {player}, {crates_opened}")
     public static final Property<List<String>> other_player_header = newListProperty("command.keys.other-player.virtual-keys-header", List.of(
             "<bold><dark_gray>(<gold>!<dark_gray>)</bold> <gray>List of {player}''s current number of keys.",
-            " <yellow> -> Total Crates Opened: <red>{crates_opened}"
+            " <yellow> -> Total Crates Opened: <red>{crates_opened}",
+            ""
     ));
 
     @Comment("A list of available placeholders: {crate}, {keys}, {crate_opened}")
@@ -91,6 +93,7 @@ public class CommandKeys implements SettingsHolder {
     @Comment("This requires crazycrates.command.help")
     public static final Property<List<String>> help = newListProperty("command.player-help", List.of(
             "<bold><yellow>Crazy Crates Player Help</bold>",
+            "",
             "<gold>/keys view [player] <gray>- <yellow>Check the number of keys a player has.",
             "<gold>/keys <gray>- <yellow>Shows how many keys you have.",
             "<gold>/cc <gray>- <yellow>Opens the menu."
