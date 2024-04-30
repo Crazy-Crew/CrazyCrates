@@ -79,14 +79,14 @@ Check our public [trello board](https://trello.com/b/bzQ5TwXo) for our current p
 
 ## Support the Developers
 Ryder Belserion on:
- * [Github Sponsors](https://github.com/sponsors/ryderbelserion)
- * [Kofi](https://ko-fi.com/ryderbelserion)
+* [Github Sponsors](https://github.com/sponsors/ryderbelserion)
+* [Kofi](https://ko-fi.com/ryderbelserion)
 
 TDL on:
- * [Kofi](https://ko-fi.com/truedarklord)
+* [Kofi](https://ko-fi.com/truedarklord)
 
 BadBones on:
- * [Paypal](https://www.paypal.me/joewojcik/)
+* [Paypal](https://www.paypal.me/joewojcik/)
 
 ## License
 Distributed under the MIT License. See [`LICENSE`](/LICENSE) for more information.
