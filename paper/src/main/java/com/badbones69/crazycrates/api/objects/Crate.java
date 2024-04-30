@@ -636,13 +636,13 @@ public class Crate {
      * @param item the ItemStack that is being added.
      * @param tier the tier for the crate.
      */
-    public void addEditorItem(String prize, ItemStack item, Tier tier, int chance) {
+    public void addEditorItem(String prize, ItemStack item, String tier, int chance) {
         String path = "Crate.Prizes." + prize;
 
         setItem(item, chance, path);
 
         this.file.set(path + ".Tiers", new ArrayList<>() {{
-            add(tier.getName());
+            add(tier);
         }});
 
         saveFile();
