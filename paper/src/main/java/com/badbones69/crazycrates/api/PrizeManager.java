@@ -78,7 +78,7 @@ public class PrizeManager {
             }
         } else {
             // Only give them the display item as a reward if prize commands are empty.
-            if (crate.getPrizeCommands().isEmpty()) {
+            if (prize.getCommands().isEmpty()) {
                 if (!MiscUtils.isInventoryFull(player)) {
                     player.getInventory().addItem(prize.getDisplayItem(player));
                 } else {
