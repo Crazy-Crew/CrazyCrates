@@ -1,9 +1,6 @@
 [plugins]
 run-paper = { id = "xyz.jpenilla.run-paper", version = "2.2.4" }
 
-[versions]
-minecraftVersion = "1.20.5"
-
 [libraries]
 itemsadder-api = { group = "com.github.LoneDev6", name = "api-itemsadder", version = "3.6.1" }
 oraxen-api = { group = "io.th0rgal", name = "oraxen", version = "1.171.0" }
