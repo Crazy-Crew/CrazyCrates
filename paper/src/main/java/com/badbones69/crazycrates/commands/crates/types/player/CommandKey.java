@@ -24,7 +24,7 @@ public class CommandKey {
     }
 
     @Command("view")
-    @Permission("crazycrates.keys.others")
+    @Permission("crazycrates.keys-others")
     public void view(CommandSender sender, @Suggestion("players") BaseCommand.CustomPlayer target) {
         /*if (target == sender) {
             viewPersonal(target);
