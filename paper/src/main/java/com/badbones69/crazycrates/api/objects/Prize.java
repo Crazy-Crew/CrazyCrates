@@ -2,18 +2,14 @@ package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.api.utils.ItemUtils;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Prize {
@@ -32,7 +28,7 @@ public class Prize {
     private int chance = 0;
 
     private List<Tier> tiers = new ArrayList<>();
-    private final List<ItemBuilder> builders = new ArrayList<>();
+    private final List<ItemBuilder> builders;
     private Prize alternativePrize;
 
     private final ConfigurationSection section;
@@ -58,15 +54,15 @@ public class Prize {
 
         this.alternativePrize = alternativePrize;
 
-        this.prizeName = section.getString("DisplayName", WordUtils.capitalizeFully(section.getString("DisplayItem", "STONE").replaceAll("_", " ")));
+        this.prizeName = section.getString("DisplayName", WordUtils.capitalizeFully(section.getString("DisplayItem", "stone").replaceAll("_", " ")));
         this.maxRange = section.getInt("MaxRange", 100);
         this.chance = section.getInt("Chance", 50);
         this.firework = section.getBoolean("Firework", false);
 
-        this.messages = section.contains("Messages") ? section.getStringList("Messages") : Collections.emptyList();
-        this.commands = section.contains("Commands") ? section.getStringList("Commands") : Collections.emptyList();
+        this.messages = section.getStringList("Messages"); // this returns an empty list if not found anyway.
+        this.commands = section.getStringList("Commands"); // this returns an empty list if not found anyway.
 
-        this.permissions = section.contains("BlackListed-Permissions") ? section.getStringList("BlackListed-Permissions") : Collections.emptyList();
+        this.permissions = section.getStringList("BlackListed-Permissions"); // this returns an empty list if not found anyway.
 
         if (!this.permissions.isEmpty()) {
             this.permissions.replaceAll(String::toLowerCase);
@@ -83,9 +79,6 @@ public class Prize {
      */
     public Prize(String prizeName, String sectionName, ConfigurationSection section) {
         this.prizeName = prizeName;
-
-        //todo() update this.
-        //this.builders = ItemBuilder.convertStringList(section.getStringList("Items"), prizeNumber);
 
         this.messages = section.getStringList("Messages");
         this.commands = section.getStringList("Commands");
@@ -118,7 +111,6 @@ public class Prize {
         ItemStack itemStack = this.displayItem.build();
 
         itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.sectionName));
-
 
         return itemStack;
     }

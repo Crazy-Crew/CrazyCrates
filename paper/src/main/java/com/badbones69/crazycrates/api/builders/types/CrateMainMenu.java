@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api.builders.types;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
+import com.badbones69.crazycrates.api.hooks.HeadDatabaseListener;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
@@ -13,6 +14,7 @@ import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,15 +31,14 @@ import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
 import java.util.List;
-import java.util.UUID;
 
 public class CrateMainMenu extends InventoryBuilder {
 
-    @NotNull
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
-    @NotNull
-    private final SettingsManager config = ConfigManager.getConfig();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+
+    private final @NotNull SettingsManager config = ConfigManager.getConfig();
 
     public CrateMainMenu(Player player, int size, String title) {
         super(player, size, title);
@@ -70,7 +71,6 @@ public class CrateMainMenu extends InventoryBuilder {
                     String[] split = custom.split(", ");
 
                     for (String option : split) {
-
                         if (option.contains("item:")) item.setMaterial(option.replace("item:", ""));
 
                         if (option.contains("name:")) {
@@ -78,7 +78,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
                             option = getCrates(option);
 
-                            item.setDisplayName(option.replaceAll("\\{player}", getPlayer().getName()));
+                            item.setDisplayName(option.replace("{player}", getPlayer().getName())); // ryder - this didn't need to be replaceAll, what logic would an owner need to put the player name twice in the displayName?
                         }
 
                         if (option.contains("lore:")) {
@@ -147,7 +147,7 @@ public class CrateMainMenu extends InventoryBuilder {
     }
 
     private String getCrates(String option) {
-        for (Crate crate : this.plugin.getCrateManager().getUsableCrates()) {
+        for (Crate crate : this.crateManager.getUsableCrates()) {
             option = option.replaceAll("%" + crate.getName().toLowerCase() + "}", this.userManager.getVirtualKeys(getPlayer().getUniqueId(), crate.getName()) + "")
                     .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", this.userManager.getPhysicalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
                     .replaceAll("%" + crate.getName().toLowerCase() + "_total%", this.userManager.getTotalKeys(getPlayer().getUniqueId(), crate.getName()) + "")

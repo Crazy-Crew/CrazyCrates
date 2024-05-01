@@ -431,15 +431,8 @@ public class ItemBuilder extends ParentItemBuilder {
     }
 
     @Override
-    public ItemBuilder setTexture(String texture) {
-        super.setTexture(texture);
-
-        return this;
-    }
-
-    @Override
-    public ItemBuilder setUUID(UUID uuid) {
-        super.setUUID(uuid);
+    public ItemBuilder setPlayer(String name) {
+        super.setPlayer(name);
 
         return this;
     }
