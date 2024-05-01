@@ -92,16 +92,18 @@ public class CrateMainMenu extends InventoryBuilder {
                             }
                         }
 
-                        if (option.contains("glowing:")) item.setGlowing(Boolean.parseBoolean(option.replace("glowing:", "")));
+                        if (option.contains("glowing:")) item.setGlowing(option.replace("glowing:", "").equalsIgnoreCase("true"));
 
-                        //todo() update this to support HeadDatabase.
-                        //if (option.contains("player:")) item.setUUID(UUID.fromString(option.replaceAll("\\{player}", getPlayer().getUniqueId().toString())));
+                        //todo() test the new options.
+                        if (option.contains("hdb:")) item.setSkull(option.replace("hdb:", ""), HeadDatabaseListener.getHeads());
+
+                        if (option.contains("player:")) item.setPlayer(option.replace("{player}", getPlayer().getName())); // ryder - this doesn't need to be replaceAll, what logic would an owner need to put the player name twice in the displayName?
 
                         if (option.contains("slot:")) slot = Integer.parseInt(option.replace("slot:", ""));
 
-                        if (option.contains("unbreakable-item")) item.setUnbreakable(Boolean.parseBoolean(option.replace("unbreakable-item:", "")));
+                        if (option.contains("unbreakable-item:")) item.setUnbreakable(option.replace("unbreakable-item:", "").equalsIgnoreCase("true"));
 
-                        if (option.contains("hide-item-flags")) item.hideItemFlags(Boolean.parseBoolean(option.replace("hide-item-flags:", "")));
+                        if (option.contains("hide-item-flags:")) item.hideItemFlags(option.replace("hide-item-flags:", "").equalsIgnoreCase("true"));
                     }
 
                     if (slot > getSize()) continue;
