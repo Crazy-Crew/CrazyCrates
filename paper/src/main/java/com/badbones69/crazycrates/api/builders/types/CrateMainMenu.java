@@ -113,35 +113,30 @@ public class CrateMainMenu extends InventoryBuilder {
             }
         }
 
-        for (Crate crate : this.plugin.getCrateManager().getUsableCrates()) {
+        for (Crate crate : this.crateManager.getUsableCrates()) {
             FileConfiguration file = crate.getFile();
 
             if (file != null) {
-                if (file.getBoolean("Crate.InGUI", false)) {
-                    String path = "Crate.";
-                    int slot = file.getInt(path + "Slot");
+                ConfigurationSection section = file.getConfigurationSection("Crate");
 
-                    if (slot > getSize()) continue;
+                if (section != null) {
+                    if (section.getBoolean("InGUI", false)) {
+                        int slot = section.getInt("Slot");
 
-                    slot--;
+                        if (slot > getSize()) continue;
 
-                    String name = file.getString(path + "Name", path + "Name is missing in " + crate.getName() + ".yml");
+                        slot--;
 
-                    inventory.setItem(slot, new ItemBuilder()
-                            .setCrateName(crate.getName())
-                            .setTarget(getPlayer())
-                            .setMaterial(file.getString(path + "Item", "CHEST"))
-                            .setDisplayName(name)
-                            .setDisplayLore(file.getStringList(path + "Lore"))
-                            //todo() update this.
-                            //.setUUID(UUID.fromString(file.getString(path + "Player")))
-                            .setGlowing(file.getBoolean(path + "Glowing"))
-                            .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(getPlayer().getUniqueId(), crate.getName())))
-                            .addLorePlaceholder("%player%", getPlayer().getName())
-                            .build());
+                        ItemBuilder builder = new ItemBuilder().setCrateName(crate.getName()).setDisplayName(section.getString("CrateName", crate.getName())).setMaterial(section.getString("Item", "chest"));
+
+                        ItemUtils.getItem(section, builder, getPlayer()).addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(getPlayer().getUniqueId(), crate.getName())))
+                                .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(getPlayer().getUniqueId(), crate.getName())))
+                                .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(getPlayer().getUniqueId(), crate.getName())))
+                                .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(getPlayer().getUniqueId(), crate.getName())))
+                                .addLorePlaceholder("%player%", getPlayer().getName());
+
+                        inventory.setItem(slot, builder.build());
+                    }
                 }
             }
         }

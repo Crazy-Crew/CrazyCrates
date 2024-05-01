@@ -240,9 +240,9 @@ public class Prize {
             String material = this.section.getString("DisplayItem", "red_terracotta");
 
             int amount = this.section.getInt("DisplayAmount", 1);
-            String nbt = this.section.getString("DisplayNbt");
+            String nbt = this.section.getString("DisplayNbt", "");
 
-            if (nbt != null && !nbt.isEmpty()) {
+            if (!nbt.isEmpty()) {
                 builder.setMaterial(material).setAmount(amount).setTag(nbt);
 
                 builder.setString(PersistentKeys.crate_prize.getNamespacedKey(), this.section.getName());
@@ -250,47 +250,10 @@ public class Prize {
                 return builder;
             }
 
-            List<String> lore = this.section.getStringList("Lore");
-            boolean isGlowing = this.section.getBoolean("Glowing", false);
-            boolean isUnbreakable = this.section.getBoolean("Unbreakable", false);
-            boolean hideItemFlags = this.section.getBoolean("HideItemFlags", false);
-            List<String> itemFlags = this.section.getStringList("Flags");
-            List<String> patterns = this.section.getStringList("Patterns");
-            String playerName = this.section.getString("Player", "");
+            builder.setMaterial(material).setAmount(amount).setDisplayName(this.prizeName);
 
-            builder.setMaterial(material)
-                    .setAmount(amount)
-                    .setDisplayName(this.prizeName)
-                    .setDisplayLore(lore)
-                    .setGlowing(isGlowing)
-                    .setUnbreakable(isUnbreakable)
-                    .hideItemFlags(hideItemFlags)
-                    .addItemFlags(itemFlags)
-                    .addPatterns(patterns);
-                    //todo() update this, player skulls are handled differently.
-                    //.setPlayerName(playerName);
-
-            builder.setString(PersistentKeys.crate_prize.getNamespacedKey(), this.section.getName());
-
-            int displayDamage = this.section.getInt("DisplayDamage", 0);
-
-            builder.setItemDamage(displayDamage);
-
-            if (this.section.contains("DisplayTrim.Pattern")) {
-                builder.setTrimPattern(this.section.getString("DisplayTrim.Pattern", "sentry"));
-            }
-
-            if (this.section.contains("DisplayTrim.Material")) {
-                builder.setTrimMaterial(this.section.getString("DisplayTrim.Material", "quartz"));
-            }
-
-            if (this.section.contains("DisplayEnchantments")) {
-                for (String name : this.section.getStringList("DisplayEnchantments")) {
-                    String[] value = name.split(":");
-
-                    builder.addEnchantment(value[0], Integer.parseInt(value[1]), true);
-                }
-            }
+            // Set the pdc with the section name.
+            ItemUtils.getItem(this.section, builder).setString(PersistentKeys.crate_prize.getNamespacedKey(), this.section.getName());
 
             return builder;
         } catch (Exception exception) {
