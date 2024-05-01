@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
+import com.badbones69.crazycrates.api.hooks.HeadDatabaseListener;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
@@ -77,6 +78,11 @@ public class CrazyCrates extends JavaPlugin {
 
         // Register permissions that we need.
         registerPermissions();
+
+        // Register head database listener if the plugin enabled.
+        if (Support.head_database.isEnabled()) {
+            getServer().getPluginManager().registerEvents(new HeadDatabaseListener(), this);
+        }
 
         this.inventoryManager = new InventoryManager();
         this.crateManager = new CrateManager();
