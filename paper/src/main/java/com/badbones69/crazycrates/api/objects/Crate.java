@@ -583,7 +583,7 @@ public class Crate {
 
         setItem(item, chance, path);
 
-        saveFile();
+        //saveFile();
     }
 
     /**
@@ -594,11 +594,9 @@ public class Crate {
      * @param path the path in the config to set the item at.
      */
     private void setItem(ItemStack item, int chance, String path) {
-        net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+        net.minecraft.world.item.ItemStack craftStack = CraftItemStack.asNMSCopy(item);
 
-        String tag = nmsItem.getComponents().toString();
-
-        this.plugin.getLogger().warning("Tag: " + tag);
+        //todo() find out how to convert an itemstack to an nbt compound
 
         //if (!tag.isEmpty()) {
         //    this.file.set(path + ".DisplayNbt", tag);

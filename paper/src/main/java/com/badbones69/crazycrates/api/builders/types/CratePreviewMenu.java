@@ -61,50 +61,56 @@ public class CratePreviewMenu extends InventoryBuilder {
     }
 
     private void setDefaultItems(Inventory inventory) {
-        if (getCrate().isBorderToggle()) {
+        Player player = getPlayer();
+        Crate crate = getCrate();
+
+        if (crate.isBorderToggle()) {
             List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
 
             for (int i : borderItems) { // Top Border slots
-                inventory.setItem(i, getCrate().getBorderItem().setTarget(getPlayer()).build());
+                inventory.setItem(i, crate.getBorderItem().setTarget(player).build());
             }
 
-            borderItems.replaceAll(getCrate()::getAbsoluteItemPosition);
+            borderItems.replaceAll(crate::getAbsoluteItemPosition);
 
             for (int i : borderItems) { // Bottom Border slots
-                inventory.setItem(i, getCrate().getBorderItem().setTarget(getPlayer()).build());
+                inventory.setItem(i, crate.getBorderItem().setTarget(player).build());
             }
         }
 
-        int page = this.inventoryManager.getPage(getPlayer());
+        int page = this.inventoryManager.getPage(player);
 
-        if (this.inventoryManager.inCratePreview(getPlayer()) && ConfigManager.getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
-            inventory.setItem(getCrate().getAbsoluteItemPosition(4), this.inventoryManager.getMenuButton(getPlayer()));
+        if (this.inventoryManager.inCratePreview(player) && ConfigManager.getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
+            inventory.setItem(getCrate().getAbsoluteItemPosition(4), this.inventoryManager.getMenuButton(player));
         }
 
         if (page == 1) {
-            if (getCrate().isBorderToggle()) {
-                inventory.setItem(getCrate().getAbsoluteItemPosition(3), getCrate().getBorderItem().setTarget(getPlayer()).build());
+            if (crate.isBorderToggle()) {
+                inventory.setItem(crate.getAbsoluteItemPosition(3), getCrate().getBorderItem().setTarget(player).build());
             }
         } else {
-            inventory.setItem(getCrate().getAbsoluteItemPosition(3), this.inventoryManager.getBackButton(getPlayer()));
+            inventory.setItem(crate.getAbsoluteItemPosition(3), this.inventoryManager.getBackButton(player));
         }
 
-        if (page == getCrate().getMaxPage()) {
-            if (getCrate().isBorderToggle()) {
-                inventory.setItem(getCrate().getAbsoluteItemPosition(5), getCrate().getBorderItem().setTarget(getPlayer()).build());
+        if (page == crate.getMaxPage()) {
+            if (crate.isBorderToggle()) {
+                inventory.setItem(crate.getAbsoluteItemPosition(5), crate.getBorderItem().setTarget(player).build());
             }
         } else {
-            inventory.setItem(getCrate().getAbsoluteItemPosition(5), this.inventoryManager.getNextButton(getPlayer()));
+            inventory.setItem(crate.getAbsoluteItemPosition(5), this.inventoryManager.getNextButton(player));
         }
     }
 
     private List<ItemStack> getPageItems(int page) {
-        List<ItemStack> list = !this.isTier ? getCrate().getPreviewItems(getPlayer()) : getCrate().getPreviewItems(this.tier, getPlayer());
+        Player player = getPlayer();
+        Crate crate = getCrate();
+
+        List<ItemStack> list = !this.isTier ? crate.getPreviewItems(player) : crate.getPreviewItems(this.tier, player);
         List<ItemStack> items = new ArrayList<>();
 
         if (page <= 0) page = 1;
 
-        int max = getCrate().getMaxSlots() - (getCrate().isBorderToggle() ? 18 : getCrate().getMaxSlots() >= list.size() ? 0 : getCrate().getMaxSlots() != 9 ? 9 : 0);
+        int max = crate.getMaxSlots() - (crate.isBorderToggle() ? 18 : crate.getMaxSlots() >= list.size() ? 0 : crate.getMaxSlots() != 9 ? 9 : 0);
         int index = page * max - max;
         int endIndex = index >= list.size() ? list.size() - 1 : index + max;
 

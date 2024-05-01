@@ -43,23 +43,27 @@ public class CrateTierMenu extends InventoryBuilder {
     }
 
     private void setDefaultItems() {
-        getTiers().forEach(tier -> getInventory().setItem(tier.getSlot(), tier.getTierItem(getPlayer())));
+        Inventory inventory = getInventory();
+        Player player = getPlayer();
+        Crate crate = getCrate();
 
-        if (getCrate().isPreviewTierBorderToggle()) {
+        getTiers().forEach(tier -> inventory.setItem(tier.getSlot(), tier.getTierItem(player)));
+
+        if (crate.isPreviewTierBorderToggle()) {
             List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
 
             for (int item : borderItems) { // Top border slots
-                getInventory().setItem(item, getCrate().getPreviewTierBorderItem().setTarget(getPlayer()).build());
+                inventory.setItem(item, crate.getPreviewTierBorderItem().setTarget(player).build());
             }
 
-            borderItems.replaceAll(getCrate()::getAbsolutePreviewItemPosition);
+            borderItems.replaceAll(crate::getAbsolutePreviewItemPosition);
 
             for (int item : borderItems) { // Bottom border slots
-                getInventory().setItem(item, getCrate().getPreviewTierBorderItem().setTarget(getPlayer()).build());
+                inventory.setItem(item, crate.getPreviewTierBorderItem().setTarget(player).build());
             }
         }
 
-        if (this.inventoryManager.inCratePreview(getPlayer()) && this.config.getProperty(ConfigKeys.enable_crate_menu)) getInventory().setItem(getCrate().getAbsolutePreviewItemPosition(4), this.inventoryManager.getMenuButton(getPlayer()));
+        if (this.inventoryManager.inCratePreview(player) && this.config.getProperty(ConfigKeys.enable_crate_menu)) inventory.setItem(crate.getAbsolutePreviewItemPosition(4), this.inventoryManager.getMenuButton(player));
     }
 
     public static class CrateTierListener implements Listener {

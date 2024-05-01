@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class BrokeLocation {
 
+    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
     /**
      * Empty values that get instantiated below.
      */
@@ -15,8 +17,6 @@ public class BrokeLocation {
     private final String world;
     private final String locationName;
     private Crate crate;
-
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     /**
      * Builds a location that represents a broken crate.
