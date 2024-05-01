@@ -1,8 +1,13 @@
 package com.badbones69.crazycrates.api.builders;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.hooks.HeadDatabaseListener;
 import com.ryderbelserion.vital.items.ParentItemBuilder;
+import com.ryderbelserion.vital.util.DyeUtil;
+import com.ryderbelserion.vital.util.ItemUtil;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
@@ -12,9 +17,13 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
+import static com.ryderbelserion.vital.util.ItemUtil.getEnchantment;
 
 public class ItemBuilder extends ParentItemBuilder {
 
@@ -49,6 +58,13 @@ public class ItemBuilder extends ParentItemBuilder {
         return getString(PersistentKeys.crate_key.getNamespacedKey());
     }
 
+    /**
+     * Converts an item stack to an itembuilder
+     *
+     * @param player the player.
+     * @param itemStack the itemstack.
+     * @return the itembuilder.
+     */
     public static ItemBuilder convertItemStack(Player player, ItemStack itemStack) {
         ItemBuilder itemBuilder = new ItemBuilder().setMaterial(itemStack.getType()).setAmount(itemStack.getAmount());
 
@@ -67,10 +83,136 @@ public class ItemBuilder extends ParentItemBuilder {
         return itemBuilder;
     }
 
+    /**
+     * Converts an itemstack without a player.
+     *
+     * @param itemStack the itemstack.
+     * @return the itembuilder.
+     */
     public static ItemBuilder convertItemStack(ItemStack itemStack) {
         return convertItemStack(null, itemStack);
     }
 
+    /**
+     * Converts a list of Strings to a list of ItemBuilders.
+     *
+     * @param itemStrings the list of Strings.
+     * @return the list of ItemBuilders.
+     */
+    public static List<ItemBuilder> convertStringList(List<String> itemStrings) {
+        return convertStringList(itemStrings, null);
+    }
+
+    /**
+     * Converts a list of Strings to a list of ItemBuilders with a placeholder for errors.
+     *
+     * @param itemStrings the list of strings.
+     * @param placeholder the placeholder for errors.
+     * @return the list of ItemBuilders.
+     */
+    public static List<ItemBuilder> convertStringList(List<String> itemStrings, String placeholder) {
+        return itemStrings.stream().map(itemString -> convertString(itemString, placeholder)).collect(Collectors.toList());
+    }
+
+    /**
+     * Converts a String to an ItemBuilder.
+     *
+     * @param itemString the string you wish to convert.
+     * @return the string as an ItemBuilder.
+     */
+    public static ItemBuilder convertString(String itemString) {
+        return convertString(itemString, null);
+    }
+
+    /**
+     * Converts a string to an ItemBuilder with a placeholder for errors.
+     *
+     * @param itemString the string you wish to convert.
+     * @param placeHolder the placeholder to use if there is an error.
+     * @return the string as an ItemBuilder.
+     */
+    public static ItemBuilder convertString(String itemString, String placeHolder) {
+        ItemBuilder itemBuilder = new ItemBuilder();
+
+        try {
+            for (String optionString : itemString.split(", ")) {
+                String option = optionString.split(":")[0];
+                String value = optionString.replace(option + ":", "").replace(option, "");
+
+                switch (option.toLowerCase()) {
+                    case "item" -> itemBuilder.setMaterial(value);
+                    case "name" -> itemBuilder.setDisplayName(value);
+                    case "amount" -> {
+                        try {
+                            itemBuilder.setAmount(Integer.parseInt(value));
+                        } catch (NumberFormatException e) {
+                            itemBuilder.setAmount(1);
+                        }
+                    }
+                    case "damage" -> {
+                        try {
+                            itemBuilder.setItemDamage(Integer.parseInt(value));
+                        } catch (NumberFormatException e) {
+                            itemBuilder.setItemDamage(0);
+                        }
+                    }
+                    case "lore" -> itemBuilder.setDisplayLore(Arrays.asList(value.split(",")));
+                    case "hdb" -> itemBuilder.setSkull(value, HeadDatabaseListener.getHeads());
+                    case "player" -> itemBuilder.setPlayer(value);
+                    case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
+                    case "trim-pattern" -> {
+                        if (!value.isEmpty()) itemBuilder.setTrimPattern(value);
+                    }
+                    case "trim-material" -> {
+                        if (!value.isEmpty()) itemBuilder.setTrimMaterial(value);
+                    }
+                    default -> {
+                        if (getEnchantment(option) != null) {
+                            try {
+                                itemBuilder.addEnchantment(option, Integer.parseInt(value), true);
+                            } catch (NumberFormatException e) {
+                                itemBuilder.addEnchantment(option, 1, true);
+                            }
+
+                            break;
+                        }
+
+                        for (ItemFlag itemFlag : ItemFlag.values()) {
+                            if (itemFlag.name().equalsIgnoreCase(option)) {
+                                itemBuilder.addItemFlag(itemFlag);
+
+                                break;
+                            }
+                        }
+
+                        try {
+                            DyeColor color = DyeUtil.getDyeColor(value);
+
+                            if (color != null) {
+                                itemBuilder.addPattern(ItemUtil.getPatternType(option), color);
+                            }
+                        } catch (Exception ignored) {}
+                    }
+                }
+            }
+        } catch (Exception exception) {
+            itemBuilder.setMaterial(Material.RED_TERRACOTTA).setDisplayName("<red>ERROR").setDisplayLore(Arrays.asList(
+                    "<red>There is an error",
+                    "<red>For : " + (placeHolder != null ? placeHolder : "")
+            ));
+
+            CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+            plugin.getLogger().log(Level.WARNING, "An error has occurred with the item builder: ", exception);
+        }
+
+        return itemBuilder;
+    }
+
+    public String getPlainDisplayName() {
+        return PlainTextComponentSerializer.plainText().serialize(getDisplayName());
+    }
+
+    // Super methods
     @Override
     public ItemBuilder setMaterial(Material material) {
         super.setMaterial(material);

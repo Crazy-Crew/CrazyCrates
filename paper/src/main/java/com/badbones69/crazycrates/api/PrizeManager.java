@@ -139,31 +139,33 @@ public class PrizeManager {
 
         if (Support.placeholder_api.isEnabled() ) command = PlaceholderAPI.setPlaceholders(player, command);
 
-        //todo() re-work this.
-        //String display = prize.getDisplayItemBuilder().getName();
+        ItemBuilder builder = prize.getDisplayItemBuilder();
 
-        //String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
+        String display = builder.getPlainDisplayName();
 
-        //MiscUtils.sendCommand(command
-        //        .replaceAll("%player%", quoteReplacement(player.getName()))
-        //        .replaceAll("%reward%", quoteReplacement(name))
-        //        .replaceAll("%reward_stripped%", quoteReplacement(PlainTextComponentSerializer.plainText().serialize(MiscUtil.parse(name))))
-        //        .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
+        String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(builder.getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
+
+        MiscUtils.sendCommand(command
+                .replaceAll("%player%", quoteReplacement(player.getName()))
+                .replaceAll("%reward%", quoteReplacement(name))
+                .replaceAll("%reward_stripped%", quoteReplacement(name))
+                .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
     }
 
     private static void sendMessage(Player player, Prize prize, Crate crate, String message) {
-        //todo() re-work this.
-        //String display = prize.getDisplayItemBuilder().getName();
+        ItemBuilder builder = prize.getDisplayItemBuilder();
 
-        //String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
+        String display = builder.getPlainDisplayName();
 
-        //String defaultMessage = message
-        //        .replaceAll("%player%", quoteReplacement(player.getName()))
-        //        .replaceAll("%reward%", quoteReplacement(name))
-        //        .replaceAll("%reward_stripped%", quoteReplacement(PlainTextComponentSerializer.plainText().serialize(MiscUtil.parse(name))))
-        //        .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName()));
+        String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(builder.getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
 
-        //MsgUtils.sendMessage(player, Support.placeholder_api.isEnabled()  ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
+        String defaultMessage = message
+                .replaceAll("%player%", quoteReplacement(player.getName()))
+                .replaceAll("%reward%", quoteReplacement(name))
+                .replaceAll("%reward_stripped%", quoteReplacement(name))
+                .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName()));
+
+        MsgUtils.sendMessage(player, Support.placeholder_api.isEnabled()  ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
     }
 
     /**

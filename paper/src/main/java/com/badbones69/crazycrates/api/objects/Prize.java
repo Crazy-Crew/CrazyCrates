@@ -52,8 +52,7 @@ public class Prize {
             }
         }
 
-        //todo() update this.
-        //this.builders = ItemBuilder.convertStringList(this.section.getStringList("Items"), this.prizeNumber);
+        this.builders = ItemBuilder.convertStringList(this.section.getStringList("Items"), this.sectionName);
 
         this.tiers = tierPrizes;
 
@@ -94,6 +93,8 @@ public class Prize {
         this.sectionName = sectionName;
 
         this.section = section;
+
+        this.builders = ItemBuilder.convertStringList(this.section.getStringList("Items"), this.sectionName);
     }
 
     /**
