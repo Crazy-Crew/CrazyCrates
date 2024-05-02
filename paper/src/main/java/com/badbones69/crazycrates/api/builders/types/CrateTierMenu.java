@@ -52,14 +52,16 @@ public class CrateTierMenu extends InventoryBuilder {
         if (crate.isPreviewTierBorderToggle()) {
             List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
 
+            ItemStack itemStack = crate.getPreviewTierBorderItem().setTarget(player).build();
+
             for (int item : borderItems) { // Top border slots
-                inventory.setItem(item, crate.getPreviewTierBorderItem().setTarget(player).build());
+                inventory.setItem(item, itemStack);
             }
 
             borderItems.replaceAll(crate::getAbsolutePreviewItemPosition);
 
             for (int item : borderItems) { // Bottom border slots
-                inventory.setItem(item, crate.getPreviewTierBorderItem().setTarget(player).build());
+                inventory.setItem(item, itemStack);
             }
         }
 
