@@ -8,7 +8,7 @@ project.group = "us.crazycrew.crazycrates"
 project.version = "1.0"
 
 repositories {
-    maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.papermc.io/repository/maven-public")
 }
 
 dependencies {
