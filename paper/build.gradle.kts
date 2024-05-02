@@ -15,6 +15,8 @@ dependencies {
 
     implementation(project(":api"))
 
+    implementation(libs.vital)
+
     compileOnly(libs.head.database.api)
 
     compileOnly(libs.decent.holograms)
@@ -30,8 +32,6 @@ dependencies {
     compileOnly(libs.oraxen.api)
 
     compileOnly(libs.config.me)
-
-    compileOnly(libs.vital)
 }
 
 tasks {
@@ -55,6 +55,12 @@ tasks {
     shadowJar {
         archiveBaseName.set(rootProject.name)
         archiveClassifier.set("")
+
+        listOf(
+            "com.ryderbelserion.vital"
+        ).forEach {
+            relocate(it, "libs.$it")
+        }
     }
 
     processResources {

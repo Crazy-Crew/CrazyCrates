@@ -16,11 +16,8 @@ public class LibraryLoader implements PluginLoader {
 
         resolver.addDependency(new Dependency(new DefaultArtifact("dev.triumphteam:triumph-cmd-bukkit:2.0.0-ALPHA-10"), null));
 
-        resolver.addDependency(new Dependency(new DefaultArtifact("com.ryderbelserion.vital:paper:1.0-snapshot"), null));
-
         resolver.addDependency(new Dependency(new DefaultArtifact("ch.jalu:configme:1.4.1"), null));
 
-        resolver.addRepository(new RemoteRepository.Builder("crazycrewSnapshots", "default", "https://repo.crazycrew.us/snapshots/").build());
         resolver.addRepository(new RemoteRepository.Builder("paper", "default", "https://repo.papermc.io/repository/maven-public/").build());
         resolver.addRepository(new RemoteRepository.Builder("triumphteam", "default", "https://repo.triumphteam.dev/snapshots/").build());
 
