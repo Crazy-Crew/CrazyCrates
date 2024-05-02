@@ -133,7 +133,7 @@ public class CrateManager {
                             boolean isEnabled = alternativeSection.getBoolean("Toggle");
 
                             if (isEnabled) {
-                                alternativePrize = new Prize(prizeSection.getString("DisplayName", WordUtils.capitalizeFully(prizeSection.getString("DisplayItem", "stone")
+                                alternativePrize = new Prize(prizeSection.getString("DisplayName", WordUtils.capitalizeFully(prizeSection.getString("DisplayItem", "Stone")
                                         .replaceAll("_", " "))), prizeSection.getName(), alternativeSection);
                             }
                         }
@@ -304,7 +304,7 @@ public class CrateManager {
                                 boolean isEnabled = alternativeSection.getBoolean("Toggle");
 
                                 if (isEnabled) {
-                                    alternativePrize = new Prize(prizeSection.getString("DisplayName", WordUtils.capitalizeFully(prizeSection.getString("DisplayItem", "stone")
+                                    alternativePrize = new Prize(prizeSection.getString("DisplayName", WordUtils.capitalizeFully(prizeSection.getString("DisplayItem", "Stone")
                                             .replaceAll("_", " "))), prizeSection.getName(), alternativeSection);
                                 }
                             }

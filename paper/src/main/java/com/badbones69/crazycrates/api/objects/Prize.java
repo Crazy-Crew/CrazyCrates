@@ -80,8 +80,8 @@ public class Prize {
     public Prize(String prizeName, String sectionName, ConfigurationSection section) {
         this.prizeName = prizeName;
 
-        this.messages = section.getStringList("Messages");
-        this.commands = section.getStringList("Commands");
+        this.messages = section.getStringList("Messages"); // this returns an empty list if not found anyway.
+        this.commands = section.getStringList("Commands"); // this returns an empty list if not found anyway.
 
         this.sectionName = sectionName;
 
@@ -235,7 +235,7 @@ public class Prize {
             String nbt = this.section.getString("DisplayNbt", "");
 
             if (!nbt.isEmpty()) {
-                builder.setMaterial(material).setAmount(amount).setTag(nbt);
+                builder.setMaterial(material).setAmount(amount).setCompoundTag(nbt);
 
                 builder.setString(PersistentKeys.crate_prize.getNamespacedKey(), this.section.getName());
 

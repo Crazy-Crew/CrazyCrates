@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.ryderbelserion.vital.files.FileManager;
 import com.ryderbelserion.vital.util.DyeUtil;
@@ -12,11 +13,11 @@ import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
@@ -74,6 +75,8 @@ public class Crate {
     private CrateHologram hologram;
 
     private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
     private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
@@ -567,41 +570,111 @@ public class Crate {
     public int getNewPlayerKeys() {
         return this.newPlayerKeys;
     }
-    
+
     /**
      * Add a new editor item to a prize in the crate.
      *
-     * @param prize the prize the item is being added to.
-     * @param item the ItemStack that is being added.
+     * @param itemStack the itemstack to add.
+     * @param prizeName the name of the prize.
+     * @param chance the chance to add.
      */
-    public void addEditorItem(String prize, ItemStack item, int chance) {
-        String path = "Crate.Prizes." + prize;
+    public void addEditorItem(ItemStack itemStack, Player player, String prizeName, int chance) {
+        ConfigurationSection section = getPrizeSection();
 
-        setItem(item, chance, path);
+        if (section == null) {
+            return;
+        }
 
-        //saveFile();
+        setItem(itemStack, player, prizeName, section, chance, null);
     }
 
     /**
-     * Sets display item to config
+     * Add a new editor item to a prize in the crate.
      *
-     * @param item the item to use
-     * @param chance the chance to win the item
-     * @param path the path in the config to set the item at.
+     * @param itemStack the itemstack to add.
+     * @param prizeName the name of the prize.
+     * @param tier the tier to add.
+     * @param chance the chance to add.
      */
-    private void setItem(ItemStack item, int chance, String path) {
-        net.minecraft.world.item.ItemStack craftStack = CraftItemStack.asNMSCopy(item);
+    public void addEditorItem(ItemStack itemStack, Player player, String prizeName, String tier, int chance) {
+        ConfigurationSection section = getPrizeSection();
 
-        //todo() find out how to convert an itemstack to an nbt compound
+        if (section == null) {
+            return;
+        }
 
-        //if (!tag.isEmpty()) {
-        //    this.file.set(path + ".DisplayNbt", tag);
-        //}
+        setItem(itemStack, player, prizeName, section, chance, tier);
+    }
 
-        //this.file.set(path + ".DisplayItem", item.getType().getKey().getKey());
-        //this.file.set(path + ".DisplayAmount", item.getAmount());
-        //this.file.set(path + ".MaxRange", 100);
-        //this.file.set(path + ".Chance", chance);
+    /**
+     * @return the configuration section.
+     */
+    public ConfigurationSection getPrizeSection() {
+        ConfigurationSection section = this.file.getConfigurationSection("Crate");
+
+        if (section == null) {
+            return null;
+        }
+
+        return section.getConfigurationSection("Prizes");
+    }
+
+    /**
+     * Adds an item to the config to display in the crate.
+     *
+     * @param itemStack the itemstack to set.
+     * @param prizeName the prize name.
+     * @param section the prizes section.
+     * @param chance the chance of the prize.
+     * @param tier the tier of the prize.
+     */
+    private void setItem(ItemStack itemStack, Player player, String prizeName, ConfigurationSection section, int chance, @Nullable String tier) {
+        String nbt = new ItemBuilder().getCompoundTag(itemStack, player).getCompoundTag().getAsString();
+
+        String path = getPath(prizeName, "DisplayNbt");
+
+        String tiers = getPath(prizeName, "Tiers");
+
+        // The section already contains a prize name, so we return.
+        if (section.contains(prizeName)) {
+            section.set(path, null);
+            section.set(path, nbt);
+
+            section.set(getPath(prizeName, "Chance"), chance);
+
+            if (tier != null) {
+                if (section.contains(tiers)) {
+                    List<String> list = section.getStringList(tiers);
+                    list.add(tier);
+
+                    section.set(tiers, list);
+                } else {
+                    section.set(tiers, new ArrayList<>() {{
+                        add(tier);
+                    }});
+                }
+
+                saveFile();
+            }
+
+            return;
+        }
+
+        section.set(getPath(prizeName, "Chance"), chance);
+        section.set(getPath(prizeName, "MaxRange"), 100);
+        section.set(path, nbt);
+
+        if (tier != null) {
+            section.set(tiers, new ArrayList<>() {{
+                add(tier);
+            }});
+        }
+
+        saveFile();
+    }
+
+    private String getPath(String section, String path) {
+        return section + "." + path;
     }
 
     /**
@@ -620,26 +693,7 @@ public class Crate {
 
         this.fileManager.getCustomFile(this.name).reload();
 
-        this.plugin.getCrateManager().reloadCrate(this.plugin.getCrateManager().getCrateFromName(this.name));
-    }
-
-    /**
-     * Add a new editor item to a prize in the crate.
-     *
-     * @param prize the prize the item is being added to.
-     * @param item the ItemStack that is being added.
-     * @param tier the tier for the crate.
-     */
-    public void addEditorItem(String prize, ItemStack item, String tier, int chance) {
-        String path = "Crate.Prizes." + prize;
-
-        setItem(item, chance, path);
-
-        this.file.set(path + ".Tiers", new ArrayList<>() {{
-            add(tier);
-        }});
-
-        saveFile();
+        this.crateManager.reloadCrate(this.crateManager.getCrateFromName(this.name));
     }
     
     /**

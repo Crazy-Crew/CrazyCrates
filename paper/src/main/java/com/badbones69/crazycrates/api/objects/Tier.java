@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import java.util.Collections;
 import java.util.List;
 
 public class Tier {
@@ -23,7 +22,7 @@ public class Tier {
 
         this.coloredName = section.getString("Name", "");
 
-        this.lore = section.getStringList("Lore").isEmpty() ? Collections.emptyList() : section.getStringList("Lore");
+        this.lore = section.getStringList("Lore"); // this returns an empty list if not found anyway.
 
         this.item = new ItemBuilder().setMaterial(section.getString("Item", "chest")).hideItemFlags(section.getBoolean("HideItemFlags", false));
 
