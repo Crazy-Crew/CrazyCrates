@@ -129,21 +129,13 @@ Crate:
   Prizes:
      # An example prize of how to use a shulker box.
     '1':
+      # The name of the item to display in the gui.
       DisplayName: "<purple>Shulker Box"
+      # The item to display in the gui.
       DisplayItem: "shulker_box"
-      # Special display type option for specific items that may need extra leverage.
-      # This currently is only used for Shulkers or Barrels to display their internal contents.
-      #
-      # Available Options:
-      # -> shulker
-      # -> barrel
-      DisplayType: "shulker"
+      # The amount to display in the gui.
       DisplayAmount: 1
-      # This supports the following items:
-      # -> Shulker Boxes
-      # -> Barrels
-      DisplayContent:
-        - "item:diamond_sword;1, enchantments:sharpness;1|fire_aspect;2"
-        - "item:stick;1, enchantments:knockback;1"
+      # The max range i.e. 5/100 = 5% chance to win.
       MaxRange: 100
+      # The chance to win i.e. 5%
       Chance: 5
