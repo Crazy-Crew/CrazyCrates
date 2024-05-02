@@ -127,12 +127,23 @@ Crate:
       - "<bold><green>Basic Crate</bold>"
   # All the prizes that can be gotten in the Crate.
   Prizes:
-    1:
-      DisplayName: "Golden Helmet"
-      DisplayItem: "golden_helmet"
+     # An example prize of how to use a shulker box.
+    '1':
+      DisplayName: "<purple>Shulker Box"
+      DisplayItem: "shulker_box"
+      # Special display type option for specific items that may need extra leverage.
+      # This currently is only used for Shulkers or Barrels to display their internal contents.
+      #
+      # Available Options:
+      # -> shulker
+      # -> barrel
+      DisplayType: "shulker"
       DisplayAmount: 1
-      Lore: {}
+      # This supports the following items:
+      # -> Shulker Boxes
+      # -> Barrels
+      DisplayContent:
+        - "item:diamond_sword;1, enchantments:sharpness;1|fire_aspect;2"
+        - "item:stick;1, enchantments:knockback;1"
       MaxRange: 100
       Chance: 5
-      Items:
-        - "Item:golden_helmet, Amount:1"
