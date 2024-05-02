@@ -18,6 +18,7 @@ import com.badbones69.crazycrates.commands.crates.types.admin.keys.CommandTake;
 import com.badbones69.crazycrates.commands.crates.types.player.CommandKey;
 import com.badbones69.crazycrates.commands.crates.types.player.CommandTransfer;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.util.builders.PlayerBuilder;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
 import org.bukkit.command.CommandSender;
@@ -79,7 +80,7 @@ public class CommandManager {
             return numbers;
         });
 
-        commandManager.registerArgument(BaseCommand.CustomPlayer.class, (sender, context) -> new BaseCommand.CustomPlayer(context));
+        commandManager.registerArgument(PlayerBuilder.class, (sender, context) -> new PlayerBuilder(context));
 
         List.of(
                 new CommandTeleport(),

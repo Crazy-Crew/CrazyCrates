@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.commands.crates.types.player;
 
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
+import com.ryderbelserion.vital.util.builders.PlayerBuilder;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Description;
@@ -25,7 +26,7 @@ public class CommandKey {
 
     @Command("view")
     @Permission("crazycrates.keys-others")
-    public void view(CommandSender sender, @Suggestion("players") BaseCommand.CustomPlayer target) {
+    public void view(CommandSender sender, @Suggestion("players") PlayerBuilder target) {
         /*if (target == sender) {
             viewPersonal(target);
 

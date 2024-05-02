@@ -15,7 +15,6 @@ import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.files.FileManager;
 import dev.triumphteam.cmd.core.annotations.Command;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,8 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 @Command(value = "crazycrates", alias = {"crates", "crate"})
 public abstract class BaseCommand {
@@ -47,18 +44,6 @@ public abstract class BaseCommand {
     protected final @NotNull FileManager fileManager = this.plugin.getFileManager();
 
     protected final @NotNull SettingsManager config = ConfigManager.getConfig();
-
-    public record CustomPlayer(String name) {
-        public @NotNull OfflinePlayer getOfflinePlayer() {
-            CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> Bukkit.getServer().getOfflinePlayer(name)).thenApply(OfflinePlayer::getUniqueId);
-
-            return Bukkit.getServer().getOfflinePlayer(future.join());
-        }
-
-        public Player getPlayer() {
-            return Bukkit.getServer().getPlayer(name);
-        }
-    }
 
     /**
      * Add keys to a player who is online.

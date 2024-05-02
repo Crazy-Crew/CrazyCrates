@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.commands.crates.types.admin.keys;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
+import com.ryderbelserion.vital.util.builders.PlayerBuilder;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
@@ -15,7 +16,7 @@ public class CommandTake extends BaseCommand {
 
     @Command("take")
     @Permission(value = "crazycrates.takekey", def = PermissionDefault.OP)
-    public void take(CommandSender sender, @Suggestion("keys") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("players") CustomPlayer target) {
+    public void take(CommandSender sender, @Suggestion("keys") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("players") PlayerBuilder target) {
         KeyType keyType = getKeyType(sender, type);
 
         Crate crate = getCrate(sender, crateName, false);
