@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.commands;
 
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
+import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandAddItem;
 import com.badbones69.crazycrates.commands.relations.ArgumentRelations;
 import com.badbones69.crazycrates.commands.crates.types.player.CommandHelp;
 import com.badbones69.crazycrates.commands.crates.types.admin.CommandAdmin;
@@ -82,6 +83,7 @@ public class CommandManager {
 
         List.of(
                 new CommandTeleport(),
+                new CommandAddItem(),
                 new CommandPreview(),
                 new CommandDebug(),
                 new CommandList(),

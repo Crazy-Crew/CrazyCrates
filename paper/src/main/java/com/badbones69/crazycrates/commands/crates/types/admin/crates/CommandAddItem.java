@@ -24,11 +24,11 @@ public class CommandAddItem extends BaseCommand {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (tier != null) {
-            crate.addEditorItem(prizeName, item, tier, chance);
+            crate.addEditorItem(item, player, prizeName, tier, chance);
 
             return;
         }
 
-        crate.addEditorItem(prizeName, item, chance);
+        crate.addEditorItem(item, player, prizeName, chance);
     }
 }
