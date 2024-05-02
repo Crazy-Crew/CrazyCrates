@@ -12,6 +12,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import java.util.UUID;
 
 public class CrateOnTheGo extends CrateBuilder {
 
@@ -32,21 +33,26 @@ public class CrateOnTheGo extends CrateBuilder {
             return;
         }
 
-        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), KeyType.physical_key, true);
+        Player player = getPlayer();
+        UUID uuid = player.getUniqueId();
+        Crate crate = getCrate();
+        String crateName = crate.getName();
+
+        boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, KeyType.physical_key, true);
 
         if (!keyCheck) {
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(getPlayer());
+            this.crateManager.removePlayerFromOpeningList(player);
 
             return;
         }
 
-        Prize prize = getCrate().pickPrize(getPlayer());
-        PrizeManager.givePrize(getPlayer(), prize, getCrate());
+        Prize prize = crate.pickPrize(player);
+        PrizeManager.givePrize(player, prize, crate);
 
-        if (prize.useFireworks()) MiscUtils.spawnFirework(getPlayer().getLocation().add(0, 1, 0), null);
+        if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
-        this.crateManager.removePlayerKeyType(getPlayer());
+        this.crateManager.removePlayerKeyType(player);
     }
 
     @Override

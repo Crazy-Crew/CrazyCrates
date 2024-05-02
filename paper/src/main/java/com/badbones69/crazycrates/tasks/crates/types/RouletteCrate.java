@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import java.util.UUID;
 
 public class RouletteCrate extends CrateBuilder {
 
@@ -32,18 +33,23 @@ public class RouletteCrate extends CrateBuilder {
             return;
         }
 
-        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
+        Player player = getPlayer();
+        UUID uuid = player.getUniqueId();
+        Crate crate = getCrate();
+        String crateName = crate.getName();
+
+        boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(getPlayer());
+            this.crateManager.removePlayerFromOpeningList(player);
 
             return;
         }
 
-        setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
+        setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(player));
 
-        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
+        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
             int full = 0;
             int time = 1;
 
@@ -53,7 +59,7 @@ public class RouletteCrate extends CrateBuilder {
             @Override
             public void run() {
                 if (this.full <= 15) {
-                    setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
+                    setItem(13, crate.pickPrize(player).getDisplayItem(player));
                     setGlass();
 
                     playSound("cycle-sound", SoundCategory.PLAYERS, "block.note_block.xylophone");
@@ -63,14 +69,14 @@ public class RouletteCrate extends CrateBuilder {
                     if (this.even >= 4) {
                         this.even = 0;
 
-                        setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
+                        setItem(13, crate.pickPrize(player).getDisplayItem(player));
                     }
                 }
 
                 this.open++;
 
                 if (this.open >= 5) {
-                    getPlayer().openInventory(getInventory());
+                    player.openInventory(getInventory());
 
                     this.open = 0;
                 }
@@ -81,7 +87,7 @@ public class RouletteCrate extends CrateBuilder {
                     if (MiscUtils.slowSpin(46, 9).contains(this.time)) {
                         setGlass();
 
-                        setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
+                        setItem(13, crate.pickPrize(player).getDisplayItem(player));
 
                         playSound("cycle-sound", SoundCategory.PLAYERS, "block.note_block.xylophone");
                     }
@@ -91,21 +97,21 @@ public class RouletteCrate extends CrateBuilder {
                     if (this.time >= 23) {
                         playSound("stop-sound", SoundCategory.PLAYERS, "entity.player.levelup");
 
-                        crateManager.endCrate(getPlayer());
+                        crateManager.endCrate(player);
 
                         ItemStack item = getInventory().getItem(13);
 
                         if (item != null) {
-                            Prize prize = getCrate().getPrize(item);
-                            PrizeManager.givePrize(getPlayer(), getCrate(), prize);
+                            Prize prize = crate.getPrize(item);
+                            PrizeManager.givePrize(player, crate, prize);
                         }
 
-                        crateManager.removePlayerFromOpeningList(getPlayer());
+                        crateManager.removePlayerFromOpeningList(player);
 
-                        new FoliaRunnable(getPlayer().getScheduler(), null) {
+                        new FoliaRunnable(player.getScheduler(), null) {
                             @Override
                             public void run() {
-                                if (getPlayer().getOpenInventory().getTopInventory().equals(getInventory())) getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
+                                if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
                             }
                         }.runDelayed(plugin, 40);
                     }

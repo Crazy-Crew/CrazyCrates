@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class WheelCrate extends CrateBuilder {
 
@@ -40,11 +41,16 @@ public class WheelCrate extends CrateBuilder {
             return;
         }
 
-        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
+        Player player = getPlayer();
+        UUID uuid = player.getUniqueId();
+        Crate crate = getCrate();
+        String crateName = crate.getName();
+
+        boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(getPlayer());
+            this.crateManager.removePlayerFromOpeningList(player);
 
             return;
         }
@@ -56,17 +62,17 @@ public class WheelCrate extends CrateBuilder {
         this.rewards = new HashMap<>();
 
         for (int number : getBorder()) {
-            Prize prize = getCrate().pickPrize(getPlayer());
-            setItem(number, prize.getDisplayItem(getPlayer()));
+            Prize prize = crate.pickPrize(player);
+            setItem(number, prize.getDisplayItem(player));
 
-            this.rewards.put(number, prize.getDisplayItem(getPlayer()));
+            this.rewards.put(number, prize.getDisplayItem(player));
         }
 
-        getPlayer().openInventory(getInventory());
+        player.openInventory(getInventory());
 
         Material material = Material.LIME_STAINED_GLASS_PANE;
 
-        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
+        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
             final List<Integer> slots = getBorder();
 
             int uh = 0;
@@ -165,18 +171,18 @@ public class WheelCrate extends CrateBuilder {
                     if (this.full >= (this.timer + 55 + 47)) {
                         Prize prize = null;
 
-                        if (crateManager.isInOpeningList(getPlayer())) {
-                            prize = getCrate().getPrize(rewards.get(this.slots.get(this.what)));
+                        if (crateManager.isInOpeningList(player)) {
+                            prize = crate.getPrize(rewards.get(this.slots.get(this.what)));
                         }
 
-                        PrizeManager.givePrize(getPlayer(), getCrate(), prize);
+                        PrizeManager.givePrize(player, crate, prize);
 
                         playSound("stop-sound", SoundCategory.PLAYERS, "entity.player.levelup");
 
-                        getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
+                        player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 
-                        crateManager.removePlayerFromOpeningList(getPlayer());
-                        crateManager.endCrate(getPlayer());
+                        crateManager.removePlayerFromOpeningList(player);
+                        crateManager.endCrate(player);
 
                         // Clear it because why not.
                         rewards.clear();
@@ -189,7 +195,7 @@ public class WheelCrate extends CrateBuilder {
                 this.open++;
 
                 if (this.open > 5) {
-                    getPlayer().openInventory(getInventory());
+                    player.openInventory(getInventory());
 
                     this.open = 0;
                 }

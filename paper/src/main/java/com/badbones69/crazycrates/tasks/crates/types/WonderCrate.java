@@ -19,6 +19,7 @@ import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class WonderCrate extends CrateBuilder {
 
@@ -37,7 +38,12 @@ public class WonderCrate extends CrateBuilder {
             return;
         }
 
-        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
+        Player player = getPlayer();
+        UUID uuid = player.getUniqueId();
+        Crate crate = getCrate();
+        String crateName = crate.getName();
+
+        boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
@@ -49,16 +55,16 @@ public class WonderCrate extends CrateBuilder {
         final List<String> slots = new ArrayList<>();
 
         for (int index = 0; index < getSize(); index++) {
-            Prize prize = getCrate().pickPrize(getPlayer());
+            Prize prize = crate.pickPrize(player);
 
             slots.add(String.valueOf(index));
 
-            setItem(index, prize.getDisplayItem(getPlayer()));
+            setItem(index, prize.getDisplayItem(player));
         }
 
-        getPlayer().openInventory(getInventory());
+        player.openInventory(getInventory());
 
-        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
+        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
             int time = 0;
             int full = 0;
 
@@ -84,9 +90,9 @@ public class WonderCrate extends CrateBuilder {
                     setItem(this.slot2, material);
 
                     for (String slot : slots) {
-                        this.prize = getCrate().pickPrize(getPlayer());
+                        this.prize = crate.pickPrize(player);
 
-                        setItem(Integer.parseInt(slot), this.prize.getDisplayItem(getPlayer()));
+                        setItem(Integer.parseInt(slot), this.prize.getDisplayItem(player));
                     }
 
                     this.slot1++;
@@ -99,22 +105,22 @@ public class WonderCrate extends CrateBuilder {
                     }
                 }
 
-                getPlayer().openInventory(getInventory());
+                player.openInventory(getInventory());
 
                 if (this.full > 100) {
-                    crateManager.endCrate(getPlayer());
+                    crateManager.endCrate(player);
 
                     getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 
-                    PrizeManager.givePrize(getPlayer(), this.prize, getCrate());
+                    PrizeManager.givePrize(player, this.prize, crate);
 
                     playSound("stop-sound", SoundCategory.PLAYERS, "entity.player.levelup");
 
                     if (this.prize.useFireworks()) MiscUtils.spawnFirework(getPlayer().getLocation().add(0, 1, 0), null);
 
-                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(getPlayer(), getCrate(), getCrate().getName(), this.prize));
+                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crateName, this.prize));
 
-                    crateManager.removePlayerFromOpeningList(getPlayer());
+                    crateManager.removePlayerFromOpeningList(player);
 
                     return;
                 }

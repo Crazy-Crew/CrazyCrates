@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
@@ -16,6 +17,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CasinoCrate extends CrateBuilder {
@@ -34,6 +37,9 @@ public class CasinoCrate extends CrateBuilder {
 
     @Override
     public void run() {
+        Player player = getPlayer();
+        Crate crate = getCrate();
+
         // If cancelled, we return.
         if (this.isCancelled) {
             return;
@@ -48,7 +54,7 @@ public class CasinoCrate extends CrateBuilder {
         this.open++;
 
         if (this.open >= 5) {
-            getPlayer().openInventory(getInventory());
+            player.openInventory(getInventory());
 
             this.open = 0;
         }
@@ -67,18 +73,18 @@ public class CasinoCrate extends CrateBuilder {
             if (this.time >= 60) { // When the crate task is finished.
                 playSound("stop-sound", SoundCategory.PLAYERS, "entity.player.levelup");
 
-                this.crateManager.endCrate(getPlayer());
+                this.crateManager.endCrate(player);
 
-                PrizeManager.getPrize(getCrate(), getInventory(), 11, getPlayer());
-                PrizeManager.getPrize(getCrate(), getInventory(), 13, getPlayer());
-                PrizeManager.getPrize(getCrate(), getInventory(), 15, getPlayer());
+                PrizeManager.getPrize(crate, getInventory(), 11, player);
+                PrizeManager.getPrize(crate, getInventory(), 13, player);
+                PrizeManager.getPrize(crate, getInventory(), 15, player);
 
-                this.crateManager.removePlayerFromOpeningList(getPlayer());
+                this.crateManager.removePlayerFromOpeningList(player);
 
-                new FoliaRunnable(getPlayer().getScheduler(), null) {
+                new FoliaRunnable(player.getScheduler(), null) {
                     @Override
                     public void run() {
-                        if (getPlayer().getOpenInventory().getTopInventory().equals(getInventory())) getPlayer().closeInventory();
+                        if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory();
                     }
                 }.runDelayed(this.plugin, 40);
 
@@ -98,11 +104,16 @@ public class CasinoCrate extends CrateBuilder {
             return;
         }
 
-        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
+        Player player = getPlayer();
+        UUID uuid = player.getUniqueId();
+        Crate crate = getCrate();
+        String crateName = crate.getName();
+
+        boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(getPlayer());
+            this.crateManager.removePlayerFromOpeningList(player);
 
             return;
         }
@@ -111,11 +122,13 @@ public class CasinoCrate extends CrateBuilder {
 
         runAtFixedRate(this.plugin, 1, 1);
 
-        getPlayer().openInventory(getInventory());
+        player.openInventory(getInventory());
     }
 
     private void setDisplayItems(boolean isStatic) {
-        ConfigurationSection section = getCrate().getFile().getConfigurationSection("Crate.random");
+        Crate crate = getCrate();
+
+        ConfigurationSection section = crate.getFile().getConfigurationSection("Crate.random");
 
         if (isStatic) {
             for (int index = 0; index < 27; index++) {
@@ -131,34 +144,36 @@ public class CasinoCrate extends CrateBuilder {
             String row_tres = section.getString("types.row-3");
 
             if (isRandom) {
+                List<Tier> tiers = crate.getTiers();
+
                 ThreadLocalRandom random = ThreadLocalRandom.current();
 
-                setItem(2, getDisplayItem(getCrate().getTiers().get(random.nextInt(getCrate().getTiers().size()))));
-                setItem(11, getDisplayItem(getCrate().getTiers().get(random.nextInt(getCrate().getTiers().size()))));
-                setItem(20, getDisplayItem(getCrate().getTiers().get(random.nextInt(getCrate().getTiers().size()))));
+                setItem(2, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
+                setItem(11, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
+                setItem(20, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
 
-                setItem(4, getDisplayItem(getCrate().getTiers().get(random.nextInt(getCrate().getTiers().size()))));
-                setItem(13, getDisplayItem(getCrate().getTiers().get(random.nextInt(getCrate().getTiers().size()))));
-                setItem(22, getDisplayItem(getCrate().getTiers().get(random.nextInt(getCrate().getTiers().size()))));
+                setItem(4, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
+                setItem(13, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
+                setItem(22, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
 
-                setItem(6, getDisplayItem(getCrate().getTiers().get(random.nextInt(getCrate().getTiers().size()))));
-                setItem(15, getDisplayItem(getCrate().getTiers().get(random.nextInt(getCrate().getTiers().size()))));
-                setItem(24, getDisplayItem(getCrate().getTiers().get(random.nextInt(getCrate().getTiers().size()))));
+                setItem(6, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
+                setItem(15, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
+                setItem(24, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
 
                 return;
             }
 
-            setItem(2, getDisplayItem(getCrate().getTier(row_uno)));
-            setItem(11, getDisplayItem(getCrate().getTier(row_uno)));
-            setItem(20, getDisplayItem(getCrate().getTier(row_uno)));
+            setItem(2, getDisplayItem(crate.getTier(row_uno)));
+            setItem(11, getDisplayItem(crate.getTier(row_uno)));
+            setItem(20, getDisplayItem(crate.getTier(row_uno)));
 
-            setItem(4, getDisplayItem(getCrate().getTier(row_dos)));
-            setItem(13, getDisplayItem(getCrate().getTier(row_dos)));
-            setItem(22, getDisplayItem(getCrate().getTier(row_dos)));
+            setItem(4, getDisplayItem(crate.getTier(row_dos)));
+            setItem(13, getDisplayItem(crate.getTier(row_dos)));
+            setItem(22, getDisplayItem(crate.getTier(row_dos)));
 
-            setItem(6, getDisplayItem(getCrate().getTier(row_tres)));
-            setItem(15, getDisplayItem(getCrate().getTier(row_tres)));
-            setItem(24, getDisplayItem(getCrate().getTier(row_tres)));
+            setItem(6, getDisplayItem(crate.getTier(row_tres)));
+            setItem(15, getDisplayItem(crate.getTier(row_tres)));
+            setItem(24, getDisplayItem(crate.getTier(row_tres)));
         }
     }
 

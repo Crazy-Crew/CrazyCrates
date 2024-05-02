@@ -16,6 +16,7 @@ import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class WarCrate extends CrateBuilder {
 
@@ -36,23 +37,28 @@ public class WarCrate extends CrateBuilder {
             return;
         }
 
-        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
+        Player player = getPlayer();
+        UUID uuid = player.getUniqueId();
+        Crate crate = getCrate();
+        String crateName = crate.getName();
+
+        boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(getPlayer());
+            this.crateManager.removePlayerFromOpeningList(player);
 
             // Remove closer/picker
-            this.crateManager.removeCloser(getPlayer());
-            this.crateManager.removePicker(getPlayer());
+            this.crateManager.removeCloser(player);
+            this.crateManager.removePicker(player);
 
             return;
         }
 
-        this.crateManager.addPicker(getPlayer(), false);
-        this.crateManager.addCloser(getPlayer(), false);
+        this.crateManager.addPicker(player, false);
+        this.crateManager.addCloser(player, false);
 
-        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
+        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
             int full = 0;
             int open = 0;
 
@@ -67,7 +73,7 @@ public class WarCrate extends CrateBuilder {
                 this.open++;
 
                 if (this.open >= 3) {
-                    getPlayer().openInventory(getInventory());
+                    player.openInventory(getInventory());
 
                     this.open = 0;
                 }
@@ -79,22 +85,27 @@ public class WarCrate extends CrateBuilder {
 
                     setRandomGlass();
 
-                    crateManager.addPicker(getPlayer(), true);
+                    crateManager.addPicker(player, true);
                 }
             }
         }.runAtFixedRate(this.plugin, 1, 3));
     }
 
     private void setRandomPrizes() {
-        if (!this.crateManager.isInOpeningList(getPlayer()) && !(getInventory().getHolder(false) instanceof CratePrizeMenu)) return;
+        Player player = getPlayer();
+        Crate crate = getCrate();
+
+        if (!this.crateManager.isInOpeningList(player) && !(getInventory().getHolder(false) instanceof CratePrizeMenu)) return;
 
         for (int index = 0; index < 9; index++) {
-            setItem(index, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
+            setItem(index, crate.pickPrize(player).getDisplayItem(player));
         }
     }
 
     private void setRandomGlass() {
-        if (!this.crateManager.isInOpeningList(getPlayer()) && !(getInventory().getHolder(false) instanceof CratePrizeMenu)) return;
+        Player player = getPlayer();
+
+        if (!this.crateManager.isInOpeningList(player) && !(getInventory().getHolder(false) instanceof CratePrizeMenu)) return;
 
         if (this.colorCodes.isEmpty()) getColorCode();
 

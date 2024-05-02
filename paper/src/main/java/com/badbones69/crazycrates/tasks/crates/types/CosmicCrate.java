@@ -29,15 +29,18 @@ public class CosmicCrate extends CrateBuilder {
             return;
         }
 
-        CosmicCrateManager manager = (CosmicCrateManager) getCrate().getManager();
+        Player player = getPlayer();
+        Crate crate = getCrate();
+
+        CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
         int slot = 1;
 
         for (int index = 0; index < getSize(); index++) {
-            ItemStack stack = manager.getMysteryCrate().setTarget(getPlayer()).setAmount(slot).addNamePlaceholder("%Slot%", String.valueOf(slot)).addLorePlaceholder("%Slot%", String.valueOf(slot)).build();
+            ItemStack stack = manager.getMysteryCrate().setTarget(player).setAmount(slot).addNamePlaceholder("%Slot%", String.valueOf(slot)).addLorePlaceholder("%Slot%", String.valueOf(slot)).build();
 
             ItemMeta itemMeta = stack.getItemMeta();
 
-            Tier tier = PrizeManager.getTier(getCrate());
+            Tier tier = PrizeManager.getTier(crate);
 
             if (tier != null) {
                 itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING, tier.getName());
@@ -50,10 +53,10 @@ public class CosmicCrate extends CrateBuilder {
             }
         }
 
-        this.crateManager.addPlayerKeyType(getPlayer(), type);
-        this.crateManager.addHands(getPlayer(), checkHand);
+        this.crateManager.addPlayerKeyType(player, type);
+        this.crateManager.addHands(player, checkHand);
 
-        getPlayer().openInventory(getInventory());
+        player.openInventory(getInventory());
     }
 
     @Override

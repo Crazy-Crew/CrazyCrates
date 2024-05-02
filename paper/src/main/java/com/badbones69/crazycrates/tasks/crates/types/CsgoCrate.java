@@ -18,6 +18,8 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class CsgoCrate extends CrateBuilder {
 
@@ -36,11 +38,16 @@ public class CsgoCrate extends CrateBuilder {
             return;
         }
 
-        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
+        Player player = getPlayer();
+        UUID uuid = player.getUniqueId();
+        Crate crate = getCrate();
+        String crateName = crate.getName();
+
+        boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(getPlayer());
+            this.crateManager.removePlayerFromOpeningList(player);
 
             return;
         }
@@ -49,9 +56,9 @@ public class CsgoCrate extends CrateBuilder {
         populate();
 
         // Open the inventory.
-        getPlayer().openInventory(getInventory());
+        player.openInventory(getInventory());
 
-        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
+        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
             int time = 1;
 
             int full = 0;
@@ -69,7 +76,7 @@ public class CsgoCrate extends CrateBuilder {
                 this.open++;
 
                 if (this.open >= 5) {
-                    getPlayer().openInventory(getInventory());
+                    player.openInventory(getInventory());
 
                     this.open = 0;
                 }
@@ -88,24 +95,24 @@ public class CsgoCrate extends CrateBuilder {
                     if (this.time == 60) { // When done
                         playSound("stop-sound", SoundCategory.PLAYERS, "entity.player.levelup");
 
-                        plugin.getCrateManager().endCrate(getPlayer());
+                        crateManager.endCrate(player);
 
                         ItemStack item = getInventory().getItem(13);
 
                         if (item != null) {
-                            Prize prize = getCrate().getPrize(item);
+                            Prize prize = crate.getPrize(item);
 
-                            PrizeManager.givePrize(getPlayer(), getCrate(), prize);
+                            PrizeManager.givePrize(player, crate, prize);
                         }
 
-                        crateManager.removePlayerFromOpeningList(getPlayer());
+                        crateManager.removePlayerFromOpeningList(player);
 
                         cancel();
 
-                        new FoliaRunnable(getPlayer().getScheduler(), null) {
+                        new FoliaRunnable(player.getScheduler(), null) {
                             @Override
                             public void run() {
-                                if (getPlayer().getOpenInventory().getTopInventory().equals(getInventory())) getPlayer().closeInventory();
+                                if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory();
                             }
                         }.runDelayed(plugin, 40);
                     } else if (this.time > 60) { // Added this due reports of the prizes spamming when low tps.
@@ -117,7 +124,10 @@ public class CsgoCrate extends CrateBuilder {
     }
 
     private void populate() {
-        HashMap<Integer, ItemStack> glass = new HashMap<>();
+        Map<Integer, ItemStack> glass = new HashMap<>();
+
+        Player player = getPlayer();
+        Crate crate = getCrate();
 
         for (int index = 0; index < 10; index++) {
             if (index < 9 && index != 3) glass.put(index, getInventory().getItem(index));
@@ -164,18 +174,21 @@ public class CsgoCrate extends CrateBuilder {
 
         // Set display items.
         for (int index = 9; index > 8 && index < 18; index++) {
-            setItem(index, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
+            setItem(index, crate.pickPrize(player).getDisplayItem(player));
         }
     }
 
     private void moveItemsAndSetGlass() {
         List<ItemStack> items = new ArrayList<>();
 
+        Player player = getPlayer();
+        Crate crate = getCrate();
+
         for (int i = 9; i > 8 && i < 17; i++) {
             items.add(getInventory().getItem(i));
         }
 
-        setItem(9, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
+        setItem(9, crate.pickPrize(player).getDisplayItem(player));
 
         for (int i = 0; i < 8; i++) {
             setItem(i + 10, items.get(i));
