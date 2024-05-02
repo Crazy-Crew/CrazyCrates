@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.api.builders;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.hooks.HeadDatabaseListener;
-import com.ryderbelserion.vital.items.ParentItemBuilder;
+import com.ryderbelserion.vital.items.ItemHandler;
 import com.ryderbelserion.vital.util.DyeUtil;
 import com.ryderbelserion.vital.util.ItemUtil;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
@@ -25,7 +25,7 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import static com.ryderbelserion.vital.util.ItemUtil.getEnchantment;
 
-public class ItemBuilder extends ParentItemBuilder {
+public class ItemBuilder extends ItemHandler {
 
     private String crateName;
 
@@ -214,6 +214,13 @@ public class ItemBuilder extends ParentItemBuilder {
 
     // Super methods
     @Override
+    public ItemBuilder getCompoundTag(ItemStack item, Player player) {
+        super.getCompoundTag(item, player);
+
+        return this;
+    }
+
+    @Override
     public ItemBuilder setMaterial(Material material) {
         super.setMaterial(material);
 
@@ -230,21 +237,21 @@ public class ItemBuilder extends ParentItemBuilder {
     @Override
     public ItemBuilder setNamePlaceholders(Map<String, String> placeholders) {
         super.setNamePlaceholders(placeholders);
-        
+
         return this;
     }
 
     @Override
     public ItemBuilder addNamePlaceholder(String placeholder, String argument) {
         super.addNamePlaceholder(placeholder, argument);
-        
+
         return this;
     }
 
     @Override
     public ItemBuilder removeNamePlaceholder(String placeholder) {
         super.removeNamePlaceholder(placeholder);
-        
+
         return this;
     }
 
@@ -258,14 +265,14 @@ public class ItemBuilder extends ParentItemBuilder {
     @Override
     public ItemBuilder setLorePlaceholders(Map<String, String> placeholders) {
         super.setLorePlaceholders(placeholders);
-        
+
         return this;
     }
 
     @Override
     public ItemBuilder addLorePlaceholder(String placeholder, String argument) {
         super.addLorePlaceholder(placeholder, argument);
-        
+
         return this;
     }
 
@@ -291,8 +298,8 @@ public class ItemBuilder extends ParentItemBuilder {
     }
 
     @Override
-    public ItemBuilder setTag(String tag) {
-        super.setTag(tag);
+    public ItemBuilder setCompoundTag(String tag) {
+        super.setCompoundTag(tag);
 
         return this;
     }
@@ -300,7 +307,7 @@ public class ItemBuilder extends ParentItemBuilder {
     @Override
     public ItemBuilder addDisplayLore(String value) {
         super.addDisplayLore(value);
-        
+
         return this;
     }
 
