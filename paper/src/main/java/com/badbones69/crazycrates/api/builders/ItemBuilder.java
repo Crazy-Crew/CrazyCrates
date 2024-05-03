@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.api.builders;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.hooks.HeadDatabaseListener;
-import com.ryderbelserion.vital.items.ItemHandler;
+import com.ryderbelserion.vital.items.AbstractItemHandler;
 import com.ryderbelserion.vital.util.DyeUtil;
 import com.ryderbelserion.vital.util.ItemUtil;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
@@ -25,7 +25,7 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import static com.ryderbelserion.vital.util.ItemUtil.getEnchantment;
 
-public class ItemBuilder extends ItemHandler {
+public class ItemBuilder extends AbstractItemHandler {
 
     private String crateName;
 
