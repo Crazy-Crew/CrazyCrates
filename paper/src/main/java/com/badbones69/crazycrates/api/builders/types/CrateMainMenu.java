@@ -136,15 +136,13 @@ public class CrateMainMenu extends InventoryBuilder {
 
                         slot--;
 
-                        ItemBuilder builder = new ItemBuilder().setCrateName(crate.getName()).setDisplayName(section.getString("CrateName", crateName)).setMaterial(section.getString("Item", "chest"));
-
-                        ItemUtils.getItem(section, builder, player).addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)))
+                        ItemBuilder builder = new ItemBuilder().addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)))
                                 .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, crateName)))
                                 .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, crateName)))
                                 .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, crateName)))
-                                .addLorePlaceholder("%player%", getPlayer().getName());
+                                .addLorePlaceholder("%player%", getPlayer().getName()).setCrateName(crate.getName()).setDisplayName(section.getString("CrateName", crateName)).setMaterial(section.getString("Item", "chest"));
 
-                        inventory.setItem(slot, builder.build());
+                        inventory.setItem(slot, ItemUtils.getItem(section, builder, player).build());
                     }
                 }
             }
