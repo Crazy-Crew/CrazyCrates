@@ -24,6 +24,8 @@ java {
     withJavadocJar()
 }
 
+val component: SoftwareComponent = components["java"]
+
 tasks {
     publishing {
         repositories {
@@ -43,7 +45,7 @@ tasks {
                 artifactId = project.name
                 version = "${project.version}"
 
-                artifact(shadowJar)
+                from(component)
             }
         }
     }
