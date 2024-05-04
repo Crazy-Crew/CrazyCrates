@@ -1,8 +1,5 @@
 package us.crazycrew.crazycrates.api.crates;
 
-import com.ryderbelserion.vital.util.DyeUtil;
-import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +7,7 @@ import java.util.List;
  * A class for crate holograms
  *
  * @author Ryder Belserion
- * @version 1.0-snapshot
+ * @version 0.5
  */
 public class CrateHologram {
     

@@ -6,7 +6,7 @@ import java.io.File;
  * A class for crate schematics
  *
  * @author Ryder Belserion
- * @version 1.0-snapshot
+ * @version 0.5
  *
  * @param schematicName the name of the file
  * @param schematicFile the file object
