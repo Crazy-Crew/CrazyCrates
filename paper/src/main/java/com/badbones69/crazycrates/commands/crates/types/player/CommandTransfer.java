@@ -52,8 +52,8 @@ public class CommandTransfer extends BaseCommand {
         // If the event is cancelled, We return.
         if (event.isCancelled()) return;
 
-        this.userManager.takeKeys(amount, uuid, crate.getName(), KeyType.virtual_key, false);
-        this.userManager.addKeys(amount, receiver, crate.getName(), KeyType.virtual_key);
+        this.userManager.takeKeys(uuid, crate.getName(), KeyType.virtual_key, amount, false);
+        this.userManager.addKeys(receiver, crate.getName(), KeyType.virtual_key, amount);
 
         Map<String, String> placeholders = new HashMap<>();
 

@@ -41,7 +41,7 @@ public class FireCrackerCrate extends CrateBuilder {
 
         this.crateManager.addCrateInUse(player, getLocation());
 
-        final boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
+        final boolean keyCheck = this.userManager.takeKeys(uuid, crateName, type, 1, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.

@@ -92,7 +92,7 @@ public class CommandGive extends BaseCommand {
                 return;
             }
 
-            this.userManager.addKeys(amount, player.getUniqueId(), crate.getName(), keyType);
+            this.userManager.addKeys(player.getUniqueId(), crate.getName(), keyType, amount);
         }
     }
 }

@@ -233,7 +233,7 @@ public abstract class BaseCommand {
                 amount = type == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), crate.getName()) : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName());
             }
 
-            this.userManager.takeKeys(amount, player.getUniqueId(), crate.getName(), type, false);
+            this.userManager.takeKeys(player.getUniqueId(), crate.getName(), type, amount, false);
 
             Map<String, String> placeholders = new HashMap<>();
 
@@ -254,7 +254,7 @@ public abstract class BaseCommand {
 
         sender.sendRichMessage(Messages.take_offline_player_keys.getMessage(sender, placeholders));
 
-        this.userManager.takeOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), amount, type);
+        this.userManager.takeOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), type, amount);
     }
 
     @ApiStatus.Internal
@@ -269,7 +269,7 @@ public abstract class BaseCommand {
             if (crate.getCrateType() == CrateType.crate_on_the_go) {
                 player.getInventory().addItem(crate.getKey(amount, player));
             } else {
-                this.userManager.addKeys(amount, player.getUniqueId(), crate.getName(), type);
+                this.userManager.addKeys(player.getUniqueId(), crate.getName(), type, amount);
             }
 
             Map<String, String> placeholders = new HashMap<>();
@@ -290,7 +290,7 @@ public abstract class BaseCommand {
             return;
         }
 
-        if (!this.userManager.addOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), amount, type)) {
+        if (!this.userManager.addOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), type, amount)) {
             sender.sendRichMessage(Messages.internal_error.getMessage(sender));
         } else {
             Map<String, String> placeholders = new HashMap<>();

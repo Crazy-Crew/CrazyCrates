@@ -75,7 +75,7 @@ public class QuickCrate extends CrateBuilder {
                 used++;
             }
 
-            final boolean keyCheck = this.userManager.takeKeys(used, uuid, crateName, type, false);
+            final boolean keyCheck = this.userManager.takeKeys(uuid, crateName, type, used, false);
 
             if (!keyCheck) {
                 // Remove from opening list.
@@ -89,7 +89,7 @@ public class QuickCrate extends CrateBuilder {
             return;
         }
 
-        final boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, true);
+        final boolean keyCheck = this.userManager.takeKeys(uuid, crateName, type, 1, true);
 
         if (!keyCheck) {
             // Send the message about failing to take the key.

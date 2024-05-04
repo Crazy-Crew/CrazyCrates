@@ -203,9 +203,9 @@ public class CommandOpen extends BaseCommand {
             used++;
         }
 
-        if (crateType != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), used, crate.getName());
+        if (crateType != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), crate.getName(), used);
 
-        if (!this.userManager.takeKeys(used, player.getUniqueId(), crate.getName(), keyType, false)) {
+        if (!this.userManager.takeKeys(player.getUniqueId(), crate.getName(), keyType, used, false)) {
             this.crateManager.removeCrateInUse(player);
             this.crateManager.removePlayerFromOpeningList(player);
 

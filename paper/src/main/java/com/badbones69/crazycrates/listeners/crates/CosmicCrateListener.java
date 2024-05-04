@@ -316,7 +316,7 @@ public class CosmicCrateListener implements Listener {
                 return;
             }
 
-            boolean cannotTakeKey = this.crateManager.hasPlayerKeyType(player) && !this.userManager.takeKeys(1, uuid, crateName, type, this.crateManager.getHand(player));
+            boolean cannotTakeKey = this.crateManager.hasPlayerKeyType(player) && !this.userManager.takeKeys(uuid, crateName, type, 1, this.crateManager.getHand(player));
 
             if (cannotTakeKey) {
                 // Notify player/console.
@@ -376,7 +376,7 @@ public class CosmicCrateListener implements Listener {
                             // Check if event is cancelled.
                             if (!event.isCancelled()) {
                                 // Add the keys
-                                userManager.addKeys(1, uuid, crateName, type);
+                                userManager.addKeys(uuid, crateName, type, 1);
 
                                 // Remove opening stuff.
                                 crateManager.removePlayerFromOpeningList(player);

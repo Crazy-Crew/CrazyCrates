@@ -38,7 +38,7 @@ public class CrateOnTheGo extends CrateBuilder {
         final Crate crate = getCrate();
         final String crateName = crate.getName();
 
-        final boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, KeyType.physical_key, true);
+        final boolean keyCheck = this.userManager.takeKeys(uuid, crateName, KeyType.physical_key, 1, true);
 
         if (!keyCheck) {
             // Remove from opening list.

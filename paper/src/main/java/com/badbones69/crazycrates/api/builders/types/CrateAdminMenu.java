@@ -128,7 +128,7 @@ public class CrateAdminMenu extends InventoryBuilder {
                 }
 
                 case RIGHT -> {
-                    this.userManager.addKeys(1, uuid, crateName, KeyType.virtual_key);
+                    this.userManager.addKeys(uuid, crateName, KeyType.virtual_key, 1);
 
                     player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
@@ -138,7 +138,7 @@ public class CrateAdminMenu extends InventoryBuilder {
                 }
 
                 case SHIFT_RIGHT -> {
-                    this.userManager.addKeys(8, uuid, crateName, KeyType.virtual_key);
+                    this.userManager.addKeys(uuid, crateName, KeyType.virtual_key, 8);
 
                     player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 

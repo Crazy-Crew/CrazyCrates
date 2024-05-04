@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 public class LibraryLoader implements PluginLoader {
 
     @Override
-    public void classloader(@NotNull PluginClasspathBuilder classpathBuilder) {
+    public void classloader(@NotNull final PluginClasspathBuilder classpathBuilder) {
         MavenLibraryResolver resolver = new MavenLibraryResolver();
 
         resolver.addDependency(new Dependency(new DefaultArtifact("dev.triumphteam:triumph-cmd-bukkit:2.0.0-ALPHA-10"), null));

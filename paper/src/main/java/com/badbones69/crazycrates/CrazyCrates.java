@@ -35,8 +35,6 @@ import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions
 
 public class CrazyCrates extends JavaPlugin {
 
-    private Server instance;
-
     private final Timer timer;
 
     public CrazyCrates() {
@@ -47,6 +45,8 @@ public class CrazyCrates extends JavaPlugin {
     private InventoryManager inventoryManager;
     private BukkitUserManager userManager;
     private CrateManager crateManager;
+
+    private Server instance;
 
     @Override
     public void onLoad() {
