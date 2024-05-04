@@ -5,7 +5,7 @@ plugins {
 }
 
 project.group = "us.crazycrew.crazycrates"
-project.version = "1.1"
+project.version = "0.5"
 
 repositories {
     maven("https://repo.papermc.io/repository/maven-public")
@@ -28,7 +28,7 @@ tasks {
     publishing {
         repositories {
             maven {
-                url = uri("https://repo.crazycrew.us/snapshots")
+                url = uri("https://repo.crazycrew.us/releases")
 
                 credentials {
                     this.username = System.getenv("gradle_username")
