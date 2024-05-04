@@ -246,7 +246,7 @@ public class CrateManager {
             try {
                 FileConfiguration file = this.fileManager.getCustomFile(crateName).getConfiguration();
 
-                CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));
+                CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType", "CSGO"));
 
                 List<Prize> prizes = new ArrayList<>();
                 List<Tier> tiers = new ArrayList<>();
