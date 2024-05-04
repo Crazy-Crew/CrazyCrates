@@ -27,7 +27,7 @@ public class CasinoCrate extends CrateBuilder {
 
     private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
-    public CasinoCrate(Crate crate, Player player, int size) {
+    public CasinoCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
     }
 
@@ -37,8 +37,8 @@ public class CasinoCrate extends CrateBuilder {
 
     @Override
     public void run() {
-        Player player = getPlayer();
-        Crate crate = getCrate();
+        final Player player = getPlayer();
+        final Crate crate = getCrate();
 
         // If cancelled, we return.
         if (this.isCancelled) {
@@ -98,18 +98,18 @@ public class CasinoCrate extends CrateBuilder {
     }
 
     @Override
-    public void open(KeyType type, boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand) {
         // Crate event failed so we return.
         if (isCrateEventValid(type, checkHand)) {
             return;
         }
 
-        Player player = getPlayer();
-        UUID uuid = player.getUniqueId();
-        Crate crate = getCrate();
-        String crateName = crate.getName();
+        final Player player = getPlayer();
+        final UUID uuid = player.getUniqueId();
+        final Crate crate = getCrate();
+        final String crateName = crate.getName();
 
-        boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
+        final boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
@@ -125,10 +125,10 @@ public class CasinoCrate extends CrateBuilder {
         player.openInventory(getInventory());
     }
 
-    private void setDisplayItems(boolean isStatic) {
-        Crate crate = getCrate();
+    private void setDisplayItems(final boolean isStatic) {
+        final Crate crate = getCrate();
 
-        ConfigurationSection section = crate.getFile().getConfigurationSection("Crate.random");
+        final ConfigurationSection section = crate.getFile().getConfigurationSection("Crate.random");
 
         if (isStatic) {
             for (int index = 0; index < 27; index++) {

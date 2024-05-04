@@ -31,12 +31,12 @@ public class QuickCrate extends CrateBuilder {
 
     private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
-    public QuickCrate(Crate crate, Player player, Location location) {
+    public QuickCrate(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location) {
         super(crate, player, location);
     }
 
     @Override
-    public void open(KeyType type, boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand) {
         // If the crate type is not fire cracker.
         if (!isFireCracker()) {
             // If the crate event failed.
@@ -45,10 +45,10 @@ public class QuickCrate extends CrateBuilder {
             }
         }
 
-        Player player = getPlayer();
-        UUID uuid = player.getUniqueId();
-        Crate crate = getCrate();
-        String crateName = crate.getName();
+        final Player player = getPlayer();
+        final UUID uuid = player.getUniqueId();
+        final Crate crate = getCrate();
+        final String crateName = crate.getName();
 
         this.crateManager.addCrateInUse(player, getLocation());
 
@@ -75,7 +75,7 @@ public class QuickCrate extends CrateBuilder {
                 used++;
             }
 
-            boolean keyCheck = this.userManager.takeKeys(used, uuid, crateName, type, false);
+            final boolean keyCheck = this.userManager.takeKeys(used, uuid, crateName, type, false);
 
             if (!keyCheck) {
                 // Remove from opening list.
@@ -89,7 +89,7 @@ public class QuickCrate extends CrateBuilder {
             return;
         }
 
-        boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, true);
+        final boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, true);
 
         if (!keyCheck) {
             // Send the message about failing to take the key.
@@ -106,7 +106,7 @@ public class QuickCrate extends CrateBuilder {
 
         this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crateName, prize));
 
-        boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
+        final boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
 
         // Only related to the item above the crate.
         if (showQuickCrateItem) {

@@ -16,19 +16,19 @@ public class CosmicCrate extends CrateBuilder {
 
     private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-    public CosmicCrate(Crate crate, Player player, int size) {
+    public CosmicCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size, crate.getCrateInventoryName() + " - Choose");
     }
 
     @Override
-    public void open(KeyType type, boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand) {
         // If the crate event failed.
         if (isCrateEventValid(type, checkHand)) {
             return;
         }
 
-        Player player = getPlayer();
-        Crate crate = getCrate();
+        final Player player = getPlayer();
+        final Crate crate = getCrate();
 
         CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
         int slot = 1;

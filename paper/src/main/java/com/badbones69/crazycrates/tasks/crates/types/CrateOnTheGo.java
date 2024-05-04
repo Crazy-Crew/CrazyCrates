@@ -22,23 +22,23 @@ public class CrateOnTheGo extends CrateBuilder {
 
     private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
-    public CrateOnTheGo(Crate crate, Player player) {
+    public CrateOnTheGo(@NotNull final Crate crate, @NotNull final Player player) {
         super(crate, player);
     }
 
     @Override
-    public void open(KeyType type, boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand) {
         // Crate event failed so we return.
         if (isCrateEventValid(KeyType.physical_key, checkHand)) {
             return;
         }
 
-        Player player = getPlayer();
-        UUID uuid = player.getUniqueId();
-        Crate crate = getCrate();
-        String crateName = crate.getName();
+        final Player player = getPlayer();
+        final UUID uuid = player.getUniqueId();
+        final Crate crate = getCrate();
+        final String crateName = crate.getName();
 
-        boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, KeyType.physical_key, true);
+        final boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, KeyType.physical_key, true);
 
         if (!keyCheck) {
             // Remove from opening list.
@@ -47,7 +47,7 @@ public class CrateOnTheGo extends CrateBuilder {
             return;
         }
 
-        Prize prize = crate.pickPrize(player);
+        final Prize prize = crate.pickPrize(player);
         PrizeManager.givePrize(player, prize, crate);
 
         if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);

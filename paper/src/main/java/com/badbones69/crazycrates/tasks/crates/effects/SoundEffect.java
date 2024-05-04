@@ -6,6 +6,7 @@ import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class SoundEffect {
 
@@ -23,7 +24,7 @@ public class SoundEffect {
      * @param fallback the fallback sound if no sound is found.
      * @param category category of sound as to respect the client side sound settings.
      */
-    public SoundEffect(ConfigurationSection section, String type, String fallback, SoundCategory category) {
+    public SoundEffect(@NotNull final ConfigurationSection section, @NotNull final String type, @NotNull final String fallback, @NotNull final SoundCategory category) {
         this.isEnabled = section.getBoolean(type + ".toggle", false);
 
         this.sound = ItemUtil.getSound(section.getString(type + ".value", fallback));
@@ -39,7 +40,7 @@ public class SoundEffect {
      * @param player player to play sound to.
      * @param location location for sound to play at.
      */
-    public void play(Player player, Location location) {
+    public void play(@NotNull final Player player, @NotNull final Location location) {
         if (!this.isEnabled) return;
 
         player.playSound(location, this.sound, this.category, this.volume, this.pitch);

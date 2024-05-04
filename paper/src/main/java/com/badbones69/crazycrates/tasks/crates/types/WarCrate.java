@@ -26,23 +26,23 @@ public class WarCrate extends CrateBuilder {
 
     private final Map<ItemStack, String> colorCodes = new HashMap<>();
 
-    public WarCrate(Crate crate, Player player, int size) {
+    public WarCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
     }
 
     @Override
-    public void open(KeyType type, boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand) {
         // Crate event failed so we return.
         if (isCrateEventValid(type, checkHand)) {
             return;
         }
 
-        Player player = getPlayer();
-        UUID uuid = player.getUniqueId();
-        Crate crate = getCrate();
-        String crateName = crate.getName();
+        final Player player = getPlayer();
+        final UUID uuid = player.getUniqueId();
+        final Crate crate = getCrate();
+        final String crateName = crate.getName();
 
-        boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
+        final boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
@@ -92,8 +92,8 @@ public class WarCrate extends CrateBuilder {
     }
 
     private void setRandomPrizes() {
-        Player player = getPlayer();
-        Crate crate = getCrate();
+        final Player player = getPlayer();
+        final Crate crate = getCrate();
 
         if (!this.crateManager.isInOpeningList(player) && !(getInventory().getHolder(false) instanceof CratePrizeMenu)) return;
 
@@ -103,15 +103,15 @@ public class WarCrate extends CrateBuilder {
     }
 
     private void setRandomGlass() {
-        Player player = getPlayer();
+        final Player player = getPlayer();
 
         if (!this.crateManager.isInOpeningList(player) && !(getInventory().getHolder(false) instanceof CratePrizeMenu)) return;
 
         if (this.colorCodes.isEmpty()) getColorCode();
 
-        ItemBuilder builder = MiscUtils.getRandomPaneColor();
+        final ItemBuilder builder = MiscUtils.getRandomPaneColor();
         builder.setDisplayName("<" + this.colorCodes.get(builder.build()) + "><bold>???</bold>");
-        ItemStack item = builder.build();
+        final ItemStack item = builder.build();
 
         for (int index = 0; index < 9; index++) {
             setItem(index, item);

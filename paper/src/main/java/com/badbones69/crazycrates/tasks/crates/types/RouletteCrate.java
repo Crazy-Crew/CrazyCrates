@@ -22,23 +22,23 @@ public class RouletteCrate extends CrateBuilder {
 
     private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
-    public RouletteCrate(Crate crate, Player player, int size) {
+    public RouletteCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
     }
 
     @Override
-    public void open(KeyType type, boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand) {
         // Crate event failed so we return.
         if (isCrateEventValid(type, checkHand)) {
             return;
         }
 
-        Player player = getPlayer();
-        UUID uuid = player.getUniqueId();
-        Crate crate = getCrate();
-        String crateName = crate.getName();
+        final Player player = getPlayer();
+        final UUID uuid = player.getUniqueId();
+        final Crate crate = getCrate();
+        final String crateName = crate.getName();
 
-        boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
+        final boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
@@ -99,7 +99,7 @@ public class RouletteCrate extends CrateBuilder {
 
                         crateManager.endCrate(player);
 
-                        ItemStack item = getInventory().getItem(13);
+                        final ItemStack item = getInventory().getItem(13);
 
                         if (item != null) {
                             Prize prize = crate.getPrize(item);

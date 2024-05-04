@@ -28,23 +28,23 @@ public class WheelCrate extends CrateBuilder {
 
     private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
-    public WheelCrate(Crate crate, Player player, int size) {
+    public WheelCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
     }
 
     private Map<Integer, ItemStack> rewards;
 
     @Override
-    public void open(KeyType type, boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand) {
         // Crate event failed so we return.
         if (isCrateEventValid(type, checkHand)) {
             return;
         }
 
-        Player player = getPlayer();
-        UUID uuid = player.getUniqueId();
-        Crate crate = getCrate();
-        String crateName = crate.getName();
+        final Player player = getPlayer();
+        final UUID uuid = player.getUniqueId();
+        final Crate crate = getCrate();
+        final String crateName = crate.getName();
 
         boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
 
@@ -62,7 +62,7 @@ public class WheelCrate extends CrateBuilder {
         this.rewards = new HashMap<>();
 
         for (int number : getBorder()) {
-            Prize prize = crate.pickPrize(player);
+            final Prize prize = crate.pickPrize(player);
             setItem(number, prize.getDisplayItem(player));
 
             this.rewards.put(number, prize.getDisplayItem(player));
@@ -70,7 +70,7 @@ public class WheelCrate extends CrateBuilder {
 
         player.openInventory(getInventory());
 
-        Material material = Material.LIME_STAINED_GLASS_PANE;
+        final Material material = Material.LIME_STAINED_GLASS_PANE;
 
         addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
             final List<Integer> slots = getBorder();
@@ -93,15 +93,15 @@ public class WheelCrate extends CrateBuilder {
                 if (this.what >= 18) this.what = 0;
 
                 if (this.full < this.timer) {
-                    ItemStack itemStack = rewards.get(this.slots.get(this.uh));
+                    final ItemStack itemStack = rewards.get(this.slots.get(this.uh));
 
                     if (itemStack.hasItemMeta()) {
                         ItemMeta itemMeta = itemStack.getItemMeta();
 
                         if (itemMeta != null) {
-                            boolean hasLore = itemMeta.hasLore();
+                            final boolean hasLore = itemMeta.hasLore();
 
-                            String displayName = itemMeta.getDisplayName();
+                            final String displayName = itemMeta.getDisplayName();
 
                             if (hasLore) {
                                 setItem(this.slots.get(this.uh), material, displayName, itemMeta.getLore());
@@ -123,15 +123,15 @@ public class WheelCrate extends CrateBuilder {
 
                 if (this.full >= this.timer) {
                     if (MiscUtils.slowSpin(46, 9).contains(this.slower)) {
-                        ItemStack itemStack = rewards.get(this.slots.get(this.uh));
+                        final ItemStack itemStack = rewards.get(this.slots.get(this.uh));
 
                         if (itemStack.hasItemMeta()) {
                             ItemMeta itemMeta = itemStack.getItemMeta();
 
                             if (itemMeta != null) {
-                                boolean hasLore = itemMeta.hasLore();
+                                final boolean hasLore = itemMeta.hasLore();
 
-                                String displayName = itemMeta.getDisplayName();
+                                final String displayName = itemMeta.getDisplayName();
 
                                 if (hasLore) {
                                     setItem(this.slots.get(this.uh), material, displayName, itemMeta.getLore());

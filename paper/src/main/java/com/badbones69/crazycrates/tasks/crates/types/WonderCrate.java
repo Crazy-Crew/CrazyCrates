@@ -27,23 +27,23 @@ public class WonderCrate extends CrateBuilder {
 
     private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
-    public WonderCrate(Crate crate, Player player, int size) {
+    public WonderCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
     }
 
     @Override
-    public void open(KeyType type, boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand) {
         // Crate event failed so we return.
         if (isCrateEventValid(type, checkHand)) {
             return;
         }
 
-        Player player = getPlayer();
-        UUID uuid = player.getUniqueId();
-        Crate crate = getCrate();
-        String crateName = crate.getName();
+        final Player player = getPlayer();
+        final UUID uuid = player.getUniqueId();
+        final Crate crate = getCrate();
+        final String crateName = crate.getName();
 
-        boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
+        final boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
@@ -55,7 +55,7 @@ public class WonderCrate extends CrateBuilder {
         final List<String> slots = new ArrayList<>();
 
         for (int index = 0; index < getSize(); index++) {
-            Prize prize = crate.pickPrize(player);
+            final Prize prize = crate.pickPrize(player);
 
             slots.add(String.valueOf(index));
 
@@ -84,7 +84,7 @@ public class WonderCrate extends CrateBuilder {
                     other.add(this.slot1);
                     other.add(this.slot2);
 
-                    ItemStack material = new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").build();
+                    final ItemStack material = new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").build();
 
                     setItem(this.slot1, material);
                     setItem(this.slot2, material);

@@ -28,20 +28,20 @@ public class FireCrackerCrate extends CrateBuilder {
     }
 
     @Override
-    public void open(KeyType type, boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand) {
         // Crate event failed so we return.
         if (isCrateEventValid(type, checkHand)) {
             return;
         }
 
-        Player player = getPlayer();
-        UUID uuid = player.getUniqueId();
-        Crate crate = getCrate();
-        String crateName = crate.getName();
+        final Player player = getPlayer();
+        final UUID uuid = player.getUniqueId();
+        final Crate crate = getCrate();
+        final String crateName = crate.getName();
 
         this.crateManager.addCrateInUse(player, getLocation());
 
-        boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
+        final boolean keyCheck = this.userManager.takeKeys(1, uuid, crateName, type, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
@@ -50,13 +50,13 @@ public class FireCrackerCrate extends CrateBuilder {
             return;
         }
 
-        HologramManager manager = this.crateManager.getHolograms();
+        final HologramManager manager = this.crateManager.getHolograms();
 
         if (manager != null) {
             manager.removeHologram(getLocation());
         }
 
-        List<Color> colors = Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.AQUA, Color.MAROON, Color.PURPLE);
+        final List<Color> colors = Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.AQUA, Color.MAROON, Color.PURPLE);
 
         addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
             final int random = ThreadLocalRandom.current().nextInt(colors.size());

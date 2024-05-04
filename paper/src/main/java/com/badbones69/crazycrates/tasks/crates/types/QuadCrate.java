@@ -32,19 +32,19 @@ public class QuadCrate extends CrateBuilder {
     }
 
     @Override
-    public void open(KeyType type, boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand) {
         // Crate event failed so we return.
         if (isCrateEventValid(type, checkHand)) {
             return;
         }
 
-        FileConfiguration config = getFile();
-        List<CrateSchematic> schematics = this.crateManager.getCrateSchematics();
+        final FileConfiguration config = getFile();
+        final List<CrateSchematic> schematics = this.crateManager.getCrateSchematics();
 
-        CrateSchematic crateSchematic = config.getBoolean("Crate.structure.random", true) ? schematics.get(ThreadLocalRandom.current().nextInt(schematics.size())) : this.crateManager.getCrateSchematic(config.getString("Crate.structure.file"));
-        StructureManager handler = new StructureManager(this.plugin, crateSchematic.schematicFile());
-        CrateLocation crateLocation = this.crateManager.getCrateLocation(this.location);
-        QuadCrateManager session = new QuadCrateManager(getPlayer(), getCrate(), type, crateLocation.getLocation(), checkHand, handler);
+        final CrateSchematic crateSchematic = config.getBoolean("Crate.structure.random", true) ? schematics.get(ThreadLocalRandom.current().nextInt(schematics.size())) : this.crateManager.getCrateSchematic(config.getString("Crate.structure.file"));
+        final StructureManager handler = new StructureManager(this.plugin, crateSchematic.schematicFile());
+        final CrateLocation crateLocation = this.crateManager.getCrateLocation(this.location);
+        final QuadCrateManager session = new QuadCrateManager(getPlayer(), getCrate(), type, crateLocation.getLocation(), checkHand, handler);
 
         session.startCrate();
     }
