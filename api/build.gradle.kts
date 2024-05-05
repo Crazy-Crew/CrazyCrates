@@ -5,7 +5,7 @@ plugins {
 }
 
 project.group = "us.crazycrew.crazycrates"
-project.version = "0.6"
+project.version = "0.5"
 
 repositories {
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
