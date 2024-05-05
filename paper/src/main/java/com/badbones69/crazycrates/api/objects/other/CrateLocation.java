@@ -34,15 +34,6 @@ public class CrateLocation {
     public @NotNull final Crate getCrate() {
         return this.crate;
     }
-
-    /**
-     * Overwrites the current crate object.
-     *
-     * @param crate crate object
-     */
-    public void setCrate(Crate crate) {
-        this.crate = crate;
-    }
     
     /**
      * Get the crate type of the crate.
