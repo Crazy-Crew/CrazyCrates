@@ -32,7 +32,7 @@ public class Prize {
     private int chance = 0;
 
     private List<Tier> tiers = new ArrayList<>();
-    private final List<ItemBuilder> builders;
+    private final List<ItemStackBuilder> builders;
     private Prize alternativePrize;
 
     private final ConfigurationSection section;
@@ -164,7 +164,7 @@ public class Prize {
     /**
      * @return the ItemBuilders for all the custom items made from the Items: option.
      */
-    public @NotNull final List<ItemBuilder> getItemBuilders() {
+    public @NotNull final List<ItemStackBuilder> getItemBuilders() {
         return Collections.unmodifiableList(this.builders);
     }
     

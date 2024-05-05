@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.enums.Support;
-import org.apache.commons.lang.WordUtils;
+import com.ryderbelserion.vital.items.ItemStackBuilder;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -66,8 +66,8 @@ public class PrizeManager {
         }
 
         if (!prize.getItemBuilders().isEmpty()) {
-            for (final ItemBuilder item : prize.getItemBuilders()) {
-                final ItemBuilder clone = new ItemBuilder(item).setTarget(player);
+            for (final ItemStackBuilder item : prize.getItemBuilders()) {
+                final ItemStackBuilder clone = item.setPlayer(player);
 
                 if (!MiscUtils.isInventoryFull(player)) {
                     player.getInventory().addItem(clone.build());
@@ -139,34 +139,28 @@ public class PrizeManager {
 
         if (Support.placeholder_api.isEnabled() ) cmd = PlaceholderAPI.setPlaceholders(player, cmd);
 
-        final ItemBuilder builder = prize.getDisplayItemBuilder();
+        final ItemStackBuilder builder = prize.getDisplayItemBuilder();
 
-        final String display = builder.getPlainDisplayName();
-
-        //todo() we will not need this with the new itembuilder
-        final String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(builder.getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
+        final String display = PlainTextComponentSerializer.plainText().serialize(builder.displayName());
 
         MiscUtils.sendCommand(cmd
                 .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%reward%", quoteReplacement(name))
-                .replaceAll("%reward_stripped%", quoteReplacement(name))
+                //.replaceAll("%reward%", quoteReplacement(name))
+                .replaceAll("%reward_stripped%", quoteReplacement(display))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
     }
 
     private static void sendMessage(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, String message) {
         if (message.isEmpty()) return;
 
-        final ItemBuilder builder = prize.getDisplayItemBuilder();
+        final ItemStackBuilder builder = prize.getDisplayItemBuilder();
 
-        final String display = builder.getPlainDisplayName();
-
-        //todo() we will not need this with the new itembuilder
-        final String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(builder.getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
+        final String display = PlainTextComponentSerializer.plainText().serialize(builder.displayName());
 
         final String defaultMessage = message
                 .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%reward%", quoteReplacement(name))
-                .replaceAll("%reward_stripped%", quoteReplacement(name))
+                //.replaceAll("%reward%", quoteReplacement(name))
+                .replaceAll("%reward_stripped%", quoteReplacement(display))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName()));
 
         MsgUtils.sendMessage(player, Support.placeholder_api.isEnabled()  ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
