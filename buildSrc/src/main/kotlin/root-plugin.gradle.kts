@@ -22,9 +22,9 @@ repositories {
 
     maven("https://repo.triumphteam.dev/snapshots/")
 
-    maven("https://repo.crazycrew.us/snapshots/")
+    //maven("https://repo.crazycrew.us/snapshots/")
 
-    maven("https://repo.crazycrew.us/releases/")
+    //maven("https://repo.crazycrew.us/releases/")
 
     maven("https://repo.oraxen.com/releases/")
 
@@ -33,6 +33,7 @@ repositories {
     flatDir { dirs("libs") }
 
     mavenCentral()
+    mavenLocal()
 }
 
 java {
