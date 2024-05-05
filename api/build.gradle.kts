@@ -8,11 +8,13 @@ project.group = "us.crazycrew.crazycrates"
 project.version = "0.5"
 
 repositories {
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+
     maven("https://repo.papermc.io/repository/maven-public")
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
 
     compileOnly(libs.config.me)
 
