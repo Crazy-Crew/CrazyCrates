@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api.builders;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.hooks.HeadDatabaseListener;
+import com.ryderbelserion.vital.items.ItemStackBuilder;
 import com.ryderbelserion.vital.util.DyeUtil;
 import com.ryderbelserion.vital.util.ItemUtil;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
@@ -61,8 +62,8 @@ public class ItemBuilder {
      * @param itemStack the itemstack.
      * @return the itembuilder.
      */
-    public static ItemBuilder convertItemStack(Player player, ItemStack itemStack) {
-        ItemBuilder itemBuilder = new ItemBuilder().setMaterial(itemStack.getType()).setAmount(itemStack.getAmount());
+    public static ItemStackBuilder convertItemStack(Player player, ItemStack itemStack) {
+        ItemStackBuilder itemBuilder = new ItemStackBuilder(itemStack.getType()).setDisplayAmount(itemStack.getAmount());
 
         if (itemStack.hasItemMeta()) {
             itemStack.editMeta(itemMeta -> {
@@ -73,7 +74,7 @@ public class ItemBuilder {
         }
 
         if (player != null) {
-            itemBuilder.setTarget(player);
+            itemBuilder.setPlayer(player);
         }
 
         return itemBuilder;
@@ -85,7 +86,7 @@ public class ItemBuilder {
      * @param itemStack the itemstack.
      * @return the itembuilder.
      */
-    public static ItemBuilder convertItemStack(ItemStack itemStack) {
+    public static ItemStackBuilder convertItemStack(ItemStack itemStack) {
         return convertItemStack(null, itemStack);
     }
 
@@ -95,7 +96,7 @@ public class ItemBuilder {
      * @param itemStrings the list of Strings.
      * @return the list of ItemBuilders.
      */
-    public static List<ItemBuilder> convertStringList(List<String> itemStrings) {
+    public static List<ItemStackBuilder> convertStringList(List<String> itemStrings) {
         return convertStringList(itemStrings, null);
     }
 
@@ -103,11 +104,11 @@ public class ItemBuilder {
      * Converts a list of Strings to a list of ItemBuilders with a placeholder for errors.
      *
      * @param itemStrings the list of strings.
-     * @param placeholder the placeholder for errors.
+     * @param section the placeholder for errors.
      * @return the list of ItemBuilders.
      */
-    public static List<ItemBuilder> convertStringList(List<String> itemStrings, String placeholder) {
-        return itemStrings.stream().map(itemString -> convertString(itemString, placeholder)).collect(Collectors.toList());
+    public static List<ItemStackBuilder> convertStringList(List<String> itemStrings, String section) {
+        return itemStrings.stream().map(itemString -> convertString(itemString, section)).collect(Collectors.toList());
     }
 
     /**
@@ -116,7 +117,7 @@ public class ItemBuilder {
      * @param itemString the string you wish to convert.
      * @return the string as an ItemBuilder.
      */
-    public static ItemBuilder convertString(String itemString) {
+    public static ItemStackBuilder convertString(String itemString) {
         return convertString(itemString, null);
     }
 
@@ -124,11 +125,11 @@ public class ItemBuilder {
      * Converts a string to an ItemBuilder with a placeholder for errors.
      *
      * @param itemString the string you wish to convert.
-     * @param placeHolder the placeholder to use if there is an error.
+     * @param section the placeholder to use if there is an error.
      * @return the string as an ItemBuilder.
      */
-    public static ItemBuilder convertString(String itemString, String placeHolder) {
-        ItemBuilder itemBuilder = new ItemBuilder();
+    public static ItemStackBuilder convertString(String itemString, String section) {
+        ItemStackBuilder itemBuilder = new ItemStackBuilder(null);
 
         try {
             for (String optionString : itemString.split(", ")) {
@@ -136,7 +137,7 @@ public class ItemBuilder {
                 String value = optionString.replace(option + ":", "").replace(option, "");
 
                 switch (option.toLowerCase()) {
-                    case "item" -> itemBuilder.setMaterial(value);
+                    //case "item" -> itemBuilder.setMaterial(value);
                     case "name" -> itemBuilder.setDisplayName(value);
                     case "amount" -> {
                         try {
@@ -146,21 +147,21 @@ public class ItemBuilder {
                         }
                     }
                     case "damage" -> {
-                        try {
-                            itemBuilder.setItemDamage(Integer.parseInt(value));
-                        } catch (NumberFormatException e) {
-                            itemBuilder.setItemDamage(0);
-                        }
+                        //try {
+                        //    itemBuilder.setItemDamage(Integer.parseInt(value));
+                        //} catch (NumberFormatException e) {
+                        //    itemBuilder.setItemDamage(0);
+                        //}
                     }
                     case "lore" -> itemBuilder.setDisplayLore(Arrays.asList(value.split(",")));
-                    case "hdb" -> itemBuilder.setSkull(value, HeadDatabaseListener.getHeads());
+                    //case "hdb" -> itemBuilder.setSkull(value, HeadDatabaseListener.getHeads());
                     case "player" -> itemBuilder.setPlayer(value);
                     case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
                     case "trim-pattern" -> {
-                        if (!value.isEmpty()) itemBuilder.setTrimPattern(value);
+                        //if (!value.isEmpty()) itemBuilder.setTrimPattern(value);
                     }
                     case "trim-material" -> {
-                        if (!value.isEmpty()) itemBuilder.setTrimMaterial(value);
+                        //if (!value.isEmpty()) itemBuilder.setTrimMaterial(value);
                     }
                     default -> {
                         if (getEnchantment(option) != null) {
@@ -192,10 +193,10 @@ public class ItemBuilder {
                 }
             }
         } catch (Exception exception) {
-            itemBuilder.setMaterial(Material.RED_TERRACOTTA).setDisplayName("<red>ERROR").setDisplayLore(Arrays.asList(
+            /*itemBuilder.setMaterial(Material.RED_TERRACOTTA).setDisplayName("<red>ERROR").setDisplayLore(Arrays.asList(
                     "<red>There is an error",
                     "<red>For : " + (placeHolder != null ? placeHolder : "")
-            ));
+            ));*/
 
             CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
             plugin.getLogger().log(Level.WARNING, "An error has occurred with the item builder: ", exception);
