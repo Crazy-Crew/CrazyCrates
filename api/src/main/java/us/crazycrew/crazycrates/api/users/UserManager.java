@@ -38,7 +38,7 @@ public abstract class UserManager {
      * @param crateName The crate of whose keys you are giving.
      * @param amount The amount of keys you are giving them.
      */
-    public abstract void addVirtualKeys(@NotNull final UUID uuid, @NotNull final String crateName, int amount);
+    public abstract void addVirtualKeys(@NotNull final UUID uuid, @NotNull final String crateName, final int amount);
 
     /**
      * Set the amount of virtual keys a player has.
@@ -47,7 +47,7 @@ public abstract class UserManager {
      * @param crateName The crate of whose keys are being set.
      * @param amount The amount the player will have.
      */
-    public abstract void setKeys(@NotNull final UUID uuid, @NotNull final String crateName, int amount);
+    public abstract void setKeys(@NotNull final UUID uuid, @NotNull final String crateName, final int amount);
 
     /**
      * Give a player keys for a crate.
@@ -57,7 +57,7 @@ public abstract class UserManager {
      * @param keyType The type of key you are giving to the player.
      * @param amount The amount of keys you are giving them.
      */
-    public abstract void addKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull KeyType keyType, int amount);
+    public abstract void addKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull KeyType keyType, final int amount);
 
     /**
      * Get the total amount of keys a player has.
@@ -87,7 +87,7 @@ public abstract class UserManager {
      * @param checkHand If it just checks the players hand or if it checks their inventory.
      * @return true if successfully taken keys and false if not.
      */
-    public abstract boolean takeKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull KeyType keyType, int amount, boolean checkHand);
+    public abstract boolean takeKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull KeyType keyType, final int amount, final boolean checkHand);
 
     /**
      * Checks to see if the player has a physical key of the crate in their main hand or inventory.
@@ -97,7 +97,7 @@ public abstract class UserManager {
      * @param checkHand If it just checks the players hand or if it checks their inventory.
      * @return true if they have the key and false if not.
      */
-    public abstract boolean hasPhysicalKey(@NotNull final UUID uuid, @NotNull final String crateName, boolean checkHand);
+    public abstract boolean hasPhysicalKey(@NotNull final UUID uuid, @NotNull final String crateName, final boolean checkHand);
 
     /**
      * Give keys to an offline player.
@@ -145,7 +145,7 @@ public abstract class UserManager {
      * @param crateName The name of the crate.
      * @param amount The amount of times they opened.
      */
-    public abstract void addOpenedCrate(@NotNull final UUID uuid, @NotNull final String crateName, int amount);
+    public abstract void addOpenedCrate(@NotNull final UUID uuid, @NotNull final String crateName, final int amount);
 
     /**
      * Adds how many times a player has opened a crate.

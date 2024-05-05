@@ -52,7 +52,7 @@ public class BukkitUserManager extends UserManager {
     }
 
     @Override
-    public void addVirtualKeys(@NotNull final UUID uuid, @NotNull final String crateName, int amount) {
+    public void addVirtualKeys(@NotNull final UUID uuid, @NotNull final String crateName, final int amount) {
         if (isPlayerNull(uuid)) {
             if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
 
@@ -79,7 +79,7 @@ public class BukkitUserManager extends UserManager {
     }
 
     @Override
-    public void setKeys(@NotNull final UUID uuid, @NotNull final String crateName, int amount) {
+    public void setKeys(@NotNull final UUID uuid, @NotNull final String crateName, final int amount) {
         if (isPlayerNull(uuid)) {
             if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Player with the uuid: " + uuid + " is null.");
 
@@ -195,7 +195,7 @@ public class BukkitUserManager extends UserManager {
     }
 
     @Override
-    public boolean takeKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull KeyType keyType, int amount, boolean checkHand) {
+    public boolean takeKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull KeyType keyType, final int amount, final boolean checkHand) {
         if (isPlayerNull(uuid)) {
             if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Player with the uuid " + uuid + " is null.");
 
@@ -305,7 +305,7 @@ public class BukkitUserManager extends UserManager {
     }
 
     @Override
-    public boolean hasPhysicalKey(@NotNull final UUID uuid, @NotNull final String crateName, boolean checkHand) {
+    public boolean hasPhysicalKey(@NotNull final UUID uuid, @NotNull final String crateName, final boolean checkHand) {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
@@ -548,7 +548,7 @@ public class BukkitUserManager extends UserManager {
     }
 
     @Override
-    public void addOpenedCrate(@NotNull final UUID uuid, @NotNull final String crateName, int amount) {
+    public void addOpenedCrate(@NotNull final UUID uuid, @NotNull final String crateName, final int amount) {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
